@@ -9,13 +9,7 @@ docs_area: stream_data
 
 CockroachDB supports the following sinks:
 
-- [Kafka](#kafka)
-- [Confluent Cloud](#confluent-cloud)
-- [Google Cloud Pub/Sub](#google-cloud-pub-sub)
-- [Cloud Storage](#cloud-storage-sink) / HTTP
-- [Webhook](#webhook-sink)
-- [Azure Event Hubs](#azure-event-hubs)
-- [Apache Pulsar](#apache-pulsar) (in Preview)
+{% include {{ page.version.version }}/cdc/sink-list.md %}
 
 The [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) page provides detail on using the SQL statement and a complete list of the [query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters) and options available when setting up a changefeed.
 
@@ -43,6 +37,17 @@ To set a different sink URI to an existing changefeed, use the [`sink` option]({
 {% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
 
 ## Kafka
+
+{{site.data.alerts.callout_info}}
+CockroachDB uses a different version of the Kafka sink that is implemented with the [franz-go](https://github.com/twmb/franz-go) Kafka client library. If you are using a [testing release]({% link releases/index.md %}#patch-releases) of v24.2 or v24.2.0, we recommend that you enable this updated version of the Kafka sink to avoid a potential bug in the previous version of the CockroachDB Kafka sink; for more details, refer to the [technical advisory 122372]({% link advisories/a122372.md %}). You can enable this Kafka sink with the cluster setting [`changefeed.new_kafka_sink.enabled`]({% link v24.2/show-cluster-setting.md %}).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING changefeed.new_kafka_sink.enabled = true;
+~~~
+
+If you are running v24.2.1 and later, the `changefeed.new_kafka_sink.enabled` cluster setting is enabled by default.
+{{site.data.alerts.end}}
 
 ### Kafka sink connection
 
@@ -207,6 +212,62 @@ See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-exam
 
 {% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
+## Amazon MSK
+
+{{site.data.alerts.callout_info}}
+On CockroachDB {{ site.data.products.core }} clusters, you must create instances in the same VPC as the MSK or MSK Serverless cluster in order for the changefeed to authenticate successfully.
+
+If you would like to connect a CockroachDB {{ site.data.products.dedicated }} cluster to an Amazon MSK cluster, contact your Cockroach Labs account team.
+{{site.data.alerts.end}}
+
+Changefeeds can deliver messages to Amazon MSK clusters ([Amazon Managed Streaming for Apache Kafka](https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html)). Amazon MSK cluster types include: [MSK](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html) and [MSK Serverless](https://docs.aws.amazon.com/msk/latest/developerguide/serverless.html). Changefeeds support the following authentication methods for these MSK cluster types:
+
+- MSK: `SCRAM` or `IAM`
+- MSK Serverless: `IAM`
+
+{% include_cached new-in.html version="v24.2" %} Changefeeds can deliver messages to MSK and MSK Serverless clusters using AWS IAM roles.
+
+{% comment %}will change out the links here to CRDB tutorials in a follow-up PR.{% endcomment %}
+
+For initial setup guides, refer to the AWS documentation:
+
+- [MSK clusters](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)
+- [MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless-getting-started.html)
+
+Changefeeds connecting to Amazon MSK clusters use the `kafka://` scheme. The example URIs show the necessary parameters for MSK and MSK Serverless clusters depending on the authentication type:
+
+- To connect to an MSK cluster using `SCRAM` authentication, you must include the following parameters in the URI:
+
+      ~~~
+      kafka://{cluster_endpoint}/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=SCRAM-SHA-512&sasl_user={user}&sasl_password={password}
+      ~~~
+
+      For SCRAM authentication, add your SASL username and password to the URI.
+
+- To connect to an MSK or MSK Serverless cluster using AWS IAM roles, you must include the following parameters in the URI:
+
+      ~~~
+      kafka://{cluster_endpoint}/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region={region}&sasl_aws_iam_role_arn={arn}&sasl_aws_iam_session_name={your_session_name}
+      ~~~
+
+      For IAM authentication, add the MSK cluster region, IAM role ARN, and session name to the URI.
+
+This table outlines the available parameters for Amazon MSK URIs:
+
+URI Parameter  | Description
+---------------+------------------------------------------------------------------
+`cluster_endpoint` | The endpoint listed for your Amazon MSK cluster in the AWS Console. For example, `boot-a1test.c3.kafka-serverless.us-east-2.amazonaws.com:9098`.
+`sasl_aws_iam_role_arn` | The ARN for the IAM role that has the permissions to create a topic and send data to the topic.
+`sasl_aws_iam_session_name` | The user-specified string that identifies the session in AWS.
+`sasl_aws_region` | The region of the Amazon MSK cluster.
+`sasl_enabled` | Enable SASL authentication. Set this to `true`.
+`sasl_mechanism` | Set to `AWS_MSK_IAM`, `SCRAM-SHA-512`, or `SCRAM-SHA-256`.
+`sasl_password` | Your SASL password.
+`sasl_user` | Your SASL username.
+`tls_enabled` | Enable Transport Layer Security (TLS) on the connection to Amazon MSK clusters. Set this to `true`.
+
+For more detail on each of these parameters, refer to [Query Parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters).
+
 ## Confluent Cloud
 
 Changefeeds can deliver messages to Kafka clusters hosted on [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree/).
@@ -247,7 +308,7 @@ Since CockroachDB v23.2, the `changefeed.new_pubsub_sink_enabled` cluster settin
 A Pub/Sub sink URI follows this example:
 
 ~~~
-'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded credentials}'
 ~~~
 
 <a name ="pub-sub-parameters"></a>
@@ -258,7 +319,7 @@ URI Parameter      | Description
 `region`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
 `AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication page]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
-`CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
+`CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts).
 `ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`. Refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for an example on setting up assume role authentication.
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
@@ -296,9 +357,10 @@ For a list of compatible parameters and options, refer to [Parameters]({% link {
 
 ### Pub/Sub sink configuration
 
-The `pubsub_sink_config` option allows the changefeed flushing and retry behavior of your Pub/Sub sink to be configured.
+You can configure flushing, retry, and concurrency behavior of changefeeds running to a Pub/Sub sink with the following:
 
-You can configure the following fields:
+- Set the [`changefeed.sink_io_workers` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a Pub/Sub sink. When you set `changefeed.sink_io_workers`, it will not affect running changefeeds; [pause the changefeed]({% link {{ page.version.version }}/pause-job.md %}), set `changefeed.sink_io_workers`, and then [resume the changefeed]({% link {{ page.version.version }}/resume-job.md %}). Note that this cluster setting will also affect changefeeds running to [webhook sinks](#webhook-sink).
+- Set the `pubsub_sink_config` option to configure the changefeed flushing and retry behavior to your webhook sink. For details on the `pubsub_sink_config` option's configurable fields, refer to the following table and examples.
 
 Field              | Type                | Description      | Default
 -------------------+---------------------+------------------+-------------------
@@ -495,13 +557,13 @@ The following are considerations when using the webhook sink:
 
 * Only supports HTTPS. Use the [`insecure_tls_skip_verify`]({% link {{ page.version.version }}/create-changefeed.md %}#insecure-tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
 * Supports JSON output format. You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option in combination with [`initial_scan='only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for CSV-formatted messages.
-* There is no concurrency configurability.
 
 ### Webhook sink configuration
 
- The `webhook_sink_config` option allows the changefeed flushing and retry behavior of your webhook sink to be configured.
+You can configure flushing, retry, and concurrency behavior of changefeeds running to a webhook sink with the following:
 
-The following details the configurable fields:
+- Set the [`changefeed.sink_io_workers` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a webhook sink. When you set `changefeed.sink_io_workers`, it will not affect running changefeeds; [pause the changefeed]({% link {{ page.version.version }}/pause-job.md %}), set `changefeed.sink_io_workers`, and then [resume the changefeed]({% link {{ page.version.version }}/resume-job.md %}). Note that this cluster setting will also affect changefeeds running to [Google Cloud Pub/Sub sinks](#google-cloud-pub-sub).
+- Set the `webhook_sink_config` option to configure the changefeed flushing and retry behavior to your webhook sink. For details on the `webhook_sink_config` option's configurable fields, refer to the following table and examples.
 
 Field              | Type                | Description      | Default
 -------------------+---------------------+------------------+-------------------

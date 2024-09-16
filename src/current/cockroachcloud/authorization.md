@@ -28,14 +28,14 @@ CockroachDB {{ site.data.products.cloud }} has a hierarchical authorization mode
     Organizing clusters using folders is available in [Public Preview]({% link v23.1/cockroachdb-feature-availability.md %}#feature-availability-phases). To learn more, refer to [Organize {{ site.data.products.db }} Clusters Using Folders]({% link cockroachcloud/folders.md %}).
     {{site.data.alerts.end}}
 
-1. Cluster: Each CockroachDB cluster defines its own set of [SQL users](https://www.cockroachlabs.com/docs/stable/authorization#create-cockroachdb-users) and [roles](https://www.cockroachlabs.com/docs/stable/authorization#create-and-manage-roles) which manage permission to execute SQL statements on the cluster.
+1. Cluster: Each CockroachDB cluster defines its own set of [SQL users]({% link {{ site.current_cloud_version }}/security-reference/authorization.md %}#create-and-manage-users) and [roles]({% link {{ site.current_cloud_version }}/security-reference/authorization.md %}#roles) which manage permission to execute SQL statements on the cluster.
 
 The levels within the hierarchy intersect, because administering SQL-level users on specific clusters within an organization is an organization-level function.
 
 For the main pages covering users and roles at the SQL level within a specific database cluster, refer to:
 
 - [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
-- [Managing Cluster User Authorization]({% link {{site.current_cloud_version}}/authorization.md %})
+- [Managing Cluster User Authorization]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
 
 ## Organization user roles
 
@@ -82,7 +82,7 @@ Cluster Operators can perform a variety of cluster functions:
   - View a cluster's Jobs from the [Jobs page]({% link cockroachcloud/jobs-page.md %}).
   - View a cluster's Metrics from the [Metrics page]({% link cockroachcloud/metrics-page.md %}).
   - View a cluster's Insights from the [Insights page]({% link cockroachcloud/insights-page.md %}).
-  - [Upgrade]({% link cockroachcloud/upgrade-to-v23.1.md %}#step-5-start-the-upgrade) a cluster's CRDB version.
+  - [Upgrade]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}) a cluster's CockroachDB version.
   - View a cluster's [PCI-readiness status (Dedicated Advanced clusters only)]({% link cockroachcloud/cluster-overview-page.md %}?filters=dedicated#pci-ready-dedicated-advanced).
   - Send a test alert from the [Alerts Page]({% link cockroachcloud/alerts-page.md %}).
   - Configure single sign-on (SSO) enforcement.

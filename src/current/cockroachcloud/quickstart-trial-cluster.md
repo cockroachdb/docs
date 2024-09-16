@@ -71,7 +71,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 ## Step 4. Connect to the cluster
 
-To download CockroachDB locally and configure it to connect to the cluster with the SQL user you just created, refer to [Connect to a CockroachDB Serverless cluster](https://cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster). Make a note of the `cockroach sql` command provided in the **Connect** dialog.
+To download CockroachDB locally and configure it to connect to the cluster with the SQL user you just created, refer to [Connect to a CockroachDB Serverless cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}). Make a note of the `cockroach sql` command provided in the **Connect** dialog.
 
 ## Step 5. Use the built-in SQL client
 
@@ -137,9 +137,9 @@ To download CockroachDB locally and configure it to connect to the cluster with 
 
 Learn more:
 
-- Use the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql) to connect to your cluster and [learn CockroachDB SQL]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
-- Build a ["Hello World" app with the Django framework](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django), or [install a client driver](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/install-client-drivers) for your favorite language.
-- Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/demo-fault-tolerance-and-recovery).
+- Use the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}) to connect to your cluster and [learn CockroachDB SQL]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
+- Build a ["Hello World" app with the Django framework]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.md %}), or [install a client driver]({% link {{site.current_cloud_version}}/install-client-drivers.md %}) for your favorite language.
+- Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair]({% link {{site.current_cloud_version}}/demo-fault-tolerance-and-recovery.md %}).
 
 Before you move into production:
 

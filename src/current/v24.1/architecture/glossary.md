@@ -43,7 +43,7 @@ For more information on deployment options and guidelines on how to choose a dep
 
 {% include common/basic-terms.md %}
 
-For more information on CockroachDB Cloud, see [CockroachDB Cloud Architecture](https://www.cockroachlabs.com/docs/cockroachcloud/architecture#architecture).
+For more information on CockroachDB Cloud, see [CockroachDB Cloud Architecture]({% link cockroachcloud/architecture.md %}#architecture).
 
 ## Spatial and GIS terms
 

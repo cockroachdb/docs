@@ -22,7 +22,7 @@ This page describes:
 
 ### Enable rangefeeds
 
-Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
+Changefeeds connect to a long-lived request called a _rangefeed_, which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
 
 **Rangefeeds must be enabled for a changefeed to work.** To [enable the cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}):
 
@@ -31,9 +31,9 @@ Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes ch
 SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
 
-If you are working on a CockroachDB Serverless cluster, the `kv.rangefeed.enabled` cluster setting is enabled by default.
+Any created changefeeds will error until this setting is enabled. If you are working on a CockroachDB Serverless cluster, the `kv.rangefeed.enabled` cluster setting is enabled by default.
 
-Any created changefeeds will error until this setting is enabled. Note that enabling rangefeeds currently has a small performance cost (about a 5-10% increase in latencies), whether or not the rangefeed is being used in a changefeed.
+Enabling rangefeeds has a small performance cost (about a 5–10% increase in write latencies), whether or not the rangefeed is being used in a changefeed. When `kv.rangefeed.enabled` is set to `true`, a small portion of the latency cost is caused by additional write event information that is sent to the [Raft log]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft-logs) and for [replication]({% link {{ page.version.version }}/architecture/replication-layer.md %}). The remainder of the latency cost is incurred once a changefeed is running; the write event information is reconstructed and sent to an active rangefeed, which will push the event to the changefeed.
 
 For further detail on performance-related configuration, refer to the [Advanced Changefeed Confguration]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}) page.
 
@@ -115,6 +115,8 @@ To show a list of {{ site.data.products.enterprise }} changefeed jobs:
 
 {% include {{ page.version.version }}/cdc/show-changefeed-job-retention.md %}
 
+{% include {{ page.version.version }}/cdc/filter-show-changefeed-jobs-columns.md %}
+
 For more information, refer to [`SHOW CHANGEFEED JOB`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs).
 
 ### Pause
@@ -182,6 +184,8 @@ For more information, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.versio
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 - {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
+- {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}
 
 ## See also
 

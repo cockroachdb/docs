@@ -9,7 +9,7 @@ cloud: true
 CockroachDB {{ site.data.products.dedicated }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/), [Datadog](https://www.datadoghq.com/), [Prometheus](https://prometheus.io/), or [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/data-platform-metrics). Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 {{site.data.alerts.callout_success}}
-To export metrics from a CockroachDB {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitoring-and-alerting) instead of this page.
+To export metrics from a CockroachDB {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting]({% link {{site.current_cloud_version}}/monitoring-and-alerting.md %}) instead of this page.
 {{site.data.alerts.end}}
 
 Exporting metrics to AWS CloudWatch is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on AWS. Exporting metrics to Azure Monitor is only available on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on Azure. Metrics export to Datadog and Prometheus is supported on all CockroachDB {{ site.data.products.dedicated }} clusters.
@@ -224,6 +224,12 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
 
 <section class="filter-content" markdown="1" data-scope="prometheus-metrics-export">
 
+{{site.data.alerts.callout_info}}
+For CockroachDB {{ site.data.products.dedicated }} clusters hosted on **Azure**:
+{% include_cached feature-phases/preview.md %}
+
+For CockroachDB {{ site.data.products.dedicated }} clusters hosted on AWS and GCP: This feature is in [general availability]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %}).{{site.data.alerts.end}}
+
 1. Find your CockroachDB {{ site.data.products.dedicated }} cluster ID:
 
 	1. Visit the CockroachDB {{ site.data.products.cloud }} console [cluster page](https://cockroachlabs.cloud/clusters).
@@ -331,7 +337,7 @@ A subset of CockroachDB metrics require that you explicitly [enable percentiles]
 <section class="filter-content" markdown="1" data-scope="azure-monitor-metrics-export">
 
 {{site.data.alerts.callout_info}}
-Exporting Metrics to Azure Monitor from a CockroachDB {{ site.data.products.dedicated }} cluster is in **[limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
+Exporting Metrics to Azure Monitor from a CockroachDB {{ site.data.products.dedicated }} cluster is in **[limited access]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %})** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
 {{site.data.alerts.end}}
 
 Exporting metrics to Azure Monitor is available only on CockroachDB {{ site.data.products.dedicated }} clusters that are hosted on Azure. If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on AWS, you can export metrics to [AWS CloudWatch]({% link cockroachcloud/export-metrics.md %}?filters=aws-metrics-export). If your CockroachDB {{ site.data.products.dedicated }} cluster is hosted on GCP, you can export metrics to [Datadog]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Prometheus]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) instead.

@@ -130,10 +130,10 @@ You can add up to nine regions at a time through the Console. See [Planning your
 
 ### Remove a region from your cluster
 
-When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-cluster.md %}#multi-region-clusters) cluster, the node in that region with the highest ordinal will be [decommissioned](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/node-shutdown?filters=decommission#decommission-the-node) first. Any ranges on that node will be [up-replicated](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-replication-dashboard#snapshot-data-received) to other nodes, and once decommission is complete that node will be shut down. This process is then repeated for every other node in the region.
+When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-cluster.md %}#multi-region-clusters) cluster, the node in that region with the highest ordinal will be [decommissioned]({% link {{site.current_cloud_version}}/node-shutdown.md %}?filters=decommission#decommission-the-node) first. Any ranges on that node will be [up-replicated]({% link {{site.current_cloud_version}}/ui-replication-dashboard.md %}#snapshot-data-received) to other nodes, and once decommission is complete that node will be shut down. This process is then repeated for every other node in the region.
 
 {{site.data.alerts.callout_info}}
-If your [zone configurations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) are set to pin range replicas to a specific region, you cannot remove that region.
+If your [zone configurations]({% link {{site.current_cloud_version}}/configure-replication-zones.md %}) are set to pin range replicas to a specific region, you cannot remove that region.
 {{site.data.alerts.end}}
 
 To remove a region from your cluster:

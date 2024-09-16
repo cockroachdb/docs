@@ -28,7 +28,7 @@ CockroachDB returns single-row reads in 2ms or less and single-row writes in 4ms
 
 ### How easy is it to get started with CockroachDB?
 
-You can get started with CockroachDB with just a few clicks. Sign up for a CockroachDB {{ site.data.products.cloud }} account to create a free CockroachDB {{ site.data.products.serverless }} cluster. For more details, see [Quickstart](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart).
+You can get started with CockroachDB with just a few clicks. Sign up for a CockroachDB {{ site.data.products.cloud }} account to create a free CockroachDB {{ site.data.products.serverless }} cluster. For more details, see [Quickstart]({% link cockroachcloud/quickstart.md %}).
 
 Alternatively, you can download a binary or run our official Kubernetes configurations or Docker image. For more details, see [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 
@@ -54,8 +54,8 @@ When your cluster spans multiple nodes (physical machines, virtual machines, or 
 
 For more information about scaling a CockroachDB cluster, see the following docs:
 
-- [Plan Your Serverless Cluster - Cluster scaling](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster#cluster-scaling)
-- [Manage Your Dedicated Cluster - Scale your cluster](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster?filters=dedicated#cluster-scaling)
+- [Plan Your Serverless Cluster - Cluster scaling]({% link cockroachcloud/plan-your-cluster.md %}#cluster-scaling)
+- [Manage Your Dedicated Cluster - Scale your cluster]({% link cockroachcloud/plan-your-cluster.md %}?filters=dedicated#cluster-scaling)
 - [`cockroach start` - Add a node to a cluster]({% link {{ page.version.version }}/cockroach-start.md %}#add-a-node-to-a-cluster)
 
 ### How does CockroachDB survive failures?

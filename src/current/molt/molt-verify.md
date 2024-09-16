@@ -29,7 +29,7 @@ The following databases are currently supported:
 - [MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
 - CockroachDB
 
-## Install and run MOLT Verify
+## Installation
 
 To install MOLT Verify, download the binary that matches your system. To download the latest binary:
 
@@ -68,11 +68,13 @@ Flag | Description
 `--source` | (Required) Connection string for the source database.
 `--target` | (Required) Connection string for the target database.
 `--concurrency` | Number of threads to process at a time when reading the tables. <br>**Default:** 16 <br>For faster verification, set this flag to a higher value. {% comment %}<br>Note: Table splitting by shard only works for [`INT`]({% link {{site.current_cloud_version}}/int.md %}), [`UUID`]({% link {{site.current_cloud_version}}/uuid.md %}), and [`FLOAT`]({% link {{site.current_cloud_version}}/float.md %}) data types.{% endcomment %}
-`--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
-`--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
-`--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
 `--continuous` | Verify tables in a continuous loop. <br />**Default:** `false`
 `--live` | Retry verification on rows before emitting warnings or errors. This is useful during live data import, when temporary mismatches can occur. <br />**Default:** `false`
+`--log-file` | Write messages to the specified log filename. If no filename is provided, messages write to `verify-{datetime}.log`. If `"stdout"` is provided, messages write to `stdout`.
+`--metrics-listen-addr` | Address of the metrics endpoint, which has the path `{address}/metrics`.<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                                 |
+`--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
+`--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
+`--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
 
 ## Usage
 
@@ -110,6 +112,10 @@ When verification completes, the output displays a summary message like the foll
 - `num_column_mismatch` is the number of columns with mismatched types on the target database, preventing `molt verify` from comparing the column's rows. For example, if your source table uses an auto-incrementing ID, MOLT Verify will identify a mismatch with CockroachDB's [`UUID`]({% link {{site.current_cloud_version}}/uuid.md %}) type. In such cases, you might fix the mismatch by [creating a composite type]({% link {{site.current_cloud_version}}/create-type.md %}#create-a-composite-data-type) on CockroachDB that uses the auto-incrementing ID.
 - `num_success` is the number of rows that matched.
 - `num_conditional_success` is the number of rows that matched while having a column mismatch due to a type difference. This value indicates that all other columns that could be compared have matched successfully. You should manually review the warnings and errors in the output to determine whether the column mismatches can be ignored.
+
+## Docker usage
+
+{% include {{ page.version.version }}/molt/molt-docker.md %}
 
 ## Known limitations
 

@@ -1,45 +1,71 @@
 ---
 title: MOLT Releases
-summary: Changelog for MOLT Fetch, Verify, and Live Migration Service
+summary: Changelog for MOLT Fetch and Verify
 toc: true
 docs_area: releases
 ---
 
 This page has details about each release of the following [MOLT (Migrate Off Legacy Technology) tools]({% link molt/molt-overview.md %}):
 
-- [Fetch]({% link molt/molt-fetch.md %}) and [Verify]({% link molt/molt-verify.md %})
-- [Live Migration Service (LMS)]({% link molt/live-migration-service.md %})
+- [Fetch]({% link molt/molt-fetch.md %})
+- [Verify]({% link molt/molt-verify.md %})
 
 Cockroach Labs recommends using the latest available version of each tool. See [Installation](#installation).
 
-<div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="fetch_verify">Fetch/Verify</button>
-    <button class="filter-button" data-scope="lms">LMS</button>
-</div>
-
 ## Installation
 
-<section class="filter-content" markdown="1" data-scope="fetch_verify">
 To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
 
-{{site.data.alerts.callout_info}}
-[MOLT Fetch]({% link molt/molt-fetch.md %}) is supported on Red Hat Enterprise Linux (RHEL) 9 and above.
-{{site.data.alerts.end}}
-</section>
+## August 26, 2024
 
-<section class="filter-content" markdown="1" data-scope="lms">
-To install the LMS, refer to [MOLT Live Migration Service]({% link molt/live-migration-service.md %}#installation).
+MOLT Fetch/Verify 1.1.7 is [available](#installation).
 
-To update the LMS once installed, configure the following [Helm chart values](https://github.com/cockroachdb/molt-helm-charts/blob/main/lms/values.yaml):
+- When a [Fetch transformation rule]({% link molt/molt-fetch.md %}#transformations) is used to rename a table or map partitioned tables, a script in the format `partitionTableScript.{timestamp}.ts` is now automatically generated to ensure that [replication]({% link molt/molt-fetch.md %}#fetch-mode) works properly if enabled.
 
-{% include molt/update-lms-version.md %}
+## August 19, 2024
 
-For more information, refer to [Configuration]({% link molt/live-migration-service.md %}#configuration).
-</section>
+MOLT Fetch/Verify 1.1.6 is [available](#installation).
 
-<section class="filter-content" markdown="1" data-scope="fetch_verify">
+- Fixed a Fetch bug where [`--table-exclusion-filter`]({% link molt/molt-fetch.md %}#schema-and-table-selection) was ignored when `--table-filter` and `--schema-filter` were set to the default (`'.*'`).
+
+## August 15, 2024
+
+MOLT Fetch/Verify 1.1.5 is [available](#installation).
+
+- **Deprecated** the `--ongoing-replication` flag in favor of [`--mode data-load-and-replication`]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes), using the new `--mode` flag. Users should replace all instances of `--ongoing-replication` with `--mode data-load-and-replication`.
+- Fetch can now be run in an export-only mode by specifying [`--mode export-only`]({% link molt/molt-fetch.md %}#export-data-to-storage). This will export all the data in `csv` or `csv.gz` format to the specified cloud or local store.
+- Fetch can now be run in an import-only mode by specifying [`--mode import-only`]({% link molt/molt-fetch.md %}#import-data-from-storage). This will load all data in the specified cloud or local store into the target CockroachDB database, effectively skipping the export data phase.
+- Strings for the `--mode` flag are now word-separated by hyphens instead of underscores. For example, `replication-only` instead of `replication_only`.
+
+## August 8, 2024
+
+MOLT Fetch/Verify 1.1.4 is [available](#installation).
+
+- Added a replication-only mode for Fetch that allows the user to run ongoing replication without schema creation or initial data load. This requires users to set `--mode replication_only` and `--replicator-flags` to specify the `defaultGTIDSet` ([MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical)) or `slotName` ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical)).
+- Partitioned tables can now be mapped to renamed tables on the target database, using the Fetch [transformations framework]({% link molt/molt-fetch.md %}#transformations).
+- Added a new `--metrics-scrape-interval` flag to allow users to specify their Prometheus scrape interval and apply a sleep at the end to allow for the final metrics to be scraped.
+- Previously, there was a mismatch between the errors logged in log lines and those recorded in the exceptions table when an `IMPORT INTO` or `COPY FROM` operation failed due to a non-PostgreSQL error. Now, all errors will lead to an exceptions table entry that allows the user to continue progress from a certain table's file.
+- Fixed a bug that will allow Fetch to properly determine a GTID if there are multiple `source_uuids`.
+
+## July 31, 2024
+
+MOLT Fetch/Verify 1.1.3 is [available](#installation).
+
+- `'infinity'::timestamp` values can now be moved with Fetch.
+- Fixed an issue where connections were not being closed immediately after sharding was completed. This could lead to errors if the [maximum number of connections]({% link molt/molt-fetch.md %}#best-practices) was set to a low value.
+- Fetch users can now exclude specific tables from migration using the [`--table-exclusion-filter` flag]({% link molt/molt-fetch.md %}#global-flags).
+
+## July 18, 2024
+
+MOLT Fetch/Verify 1.1.2 is [available](#installation).
+
+- Fetch users can now specify columns to exclude from table migrations in order to migrate a subset of their data. This is supported in the schema creation, export, import, and direct copy phases.
+- Fetch now automatically maps a partitioned table from a PostgreSQL source to the target CockroachDB schema.
+- Fetch now supports column exclusions and computed column mappings via a new [transformations framework]({% link molt/molt-fetch.md %}#transformations). 
+- The new Fetch [`--transformations-file`]({% link molt/molt-fetch.md %}#global-flags) flag specifies a JSON file for schema/table/column transformations, which has validation utilities built in.
+
 ## July 10, 2024
 
 MOLT Fetch/Verify 1.1.1 is [available](#installation).
@@ -134,21 +160,3 @@ MOLT Fetch/Verify 0.1.0 is [available](#installation).
 - Updated the MOLT README with an OS + Docker-based edge case with Fetch.
 - Logging for Fetch and Verify now defaults to structured JSON logging, which contains at least the message, level, and formatted time string. The `--use-console-writer` flag enables prettier console writing that has colored and human-readable log output. Structured logging is the default because it is easier to parse with log ingestion tools and is more efficient for the application to output.
 - Task/data logs can now be written to specified log files using `--log-file`. If the flag is left empty, the MOLT tool will only write to `stdout`, which is more efficient.
-</section>
-
-<section class="filter-content" markdown="1" data-scope="lms">
-## May 31, 2024
-
-LMS 0.2.6 is [available](#installation).
-
-## May 30, 2024
-
-LMS 0.2.5 is [available](#installation).
-
-## January 26, 2024
-
-LMS 0.2.4 is [available](#installation).
-
-- Added a restriction for [shadowing mode]({% link molt/live-migration-service.md %}#shadowing-modes) according to the cutover type. Consistent cutover **must** be executed without any shadowing (i.e., must be performed with the non-sync mode).
-
-</section>

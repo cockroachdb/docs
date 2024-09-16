@@ -9,7 +9,7 @@ Authorization, generally, is the control over **who** (users/roles) can perform 
 
 This page describes authorization of SQL users on particular [CockroachDB database clusters]({% link {{ page.version.version }}/architecture/glossary.md %}#cluster). This is distinct from authorization of CockroachDB {{ site.data.products.cloud }} users on CockroachDB {{ site.data.products.cloud }} organiations.
 
-Learn more: [Overview of the CockroachDB {{ site.data.products.cloud }} authorization model](https://www.cockroachlabs.com/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
+Learn more: [Overview of the CockroachDB {{ site.data.products.cloud }} authorization model]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-authorization-model)
 
 ## Authorization models
 

@@ -61,7 +61,7 @@ The **Storage Used** graph displays the amount of data being stored in the clust
 
 ### SQL Statements
 
-The **SQL Statements** graph displays an average of the number of [`SELECT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/select-clause), [`INSERT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/insert), [`UPDATE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/update), and [`DELETE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/delete) statements successfully executed per second.
+The **SQL Statements** graph displays an average of the number of [`SELECT`]({% link {{site.current_cloud_version}}/select-clause.md %}), [`INSERT`]({% link {{site.current_cloud_version}}/insert.md %}), [`UPDATE`]({% link {{site.current_cloud_version}}/update.md %}), and [`DELETE`]({% link {{site.current_cloud_version}}/delete.md %}) statements successfully executed per second.
 
 </section>
 
@@ -75,8 +75,8 @@ The **Cluster configuration** panel displays the settings you chose during [clus
 |-----------|---------------------------------------------------------------------------------------------------------|
 | Cloud     | The cluster's [cloud provider]({% link cockroachcloud/create-your-cluster.md %}#step-2-select-the-cloud-provider). |
 | Plan type | The [plan type]({% link cockroachcloud/create-your-cluster.md %}#step-1-start-the-cluster-creation-process) used to create the cluster.                                                           |
-| Region(s) | The cluster's [region(s)]({% link cockroachcloud/create-your-cluster.md %}#step-3-configure-region-s-and-node-s).         |
-| Nodes     | The [number of nodes]({% link cockroachcloud/create-your-cluster.md %}#step-3-configure-region-s-and-node-s) the cluster has and how many are live. |
+| Regions   | The cluster's [region(s)]({% link cockroachcloud/create-your-cluster.md %}#step-3-configure-regions-and-nodes).         |
+| Nodes     | The [number of nodes]({% link cockroachcloud/create-your-cluster.md %}#step-3-configure-regions-and-nodes) the cluster has and how many are live. |
 | Compute   | The cluster's [compute power per node]({% link cockroachcloud/create-your-cluster.md %}#step-5-configure-cluster-capacity).         |
 | Storage   | The cluster's [storage per node]({% link cockroachcloud/create-your-cluster.md %}#step-5-configure-cluster-capacity).         |
 

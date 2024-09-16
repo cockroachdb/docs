@@ -45,7 +45,6 @@ You can use PCR in a disaster recovery plan to:
 
 Cockroach Labs supports PCR up to the following scale:
 
-- Cluster size: 30TB
 - Writes: 10,000 writes per second
 - Reads: 18,000 reads per second
 
@@ -70,15 +69,11 @@ For more comprehensive guides, refer to:
 - [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}): for detail on metrics and observability into a replication stream.
 - [Cut Over from a Primary Cluster to a Standby Cluster]({% link {{ page.version.version }}/cutover-replication.md %}): for a guide on how to complete a replication stream and cut over to the standby cluster.
 
-### Cluster versions and upgrades
-
-The standby cluster host will need to be at the same major version as, or one version ahead of, the primary's virtual cluster at the time of [cutover]({% link {{ page.version.version }}/cutover-replication.md %}).
-
-To [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) a virtualized cluster, you must carefully and manually apply the upgrade. For details, refer to [Upgrades]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#upgrade-a-cluster) in the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}).
-
-When PCR is enabled, we recommend following this procedure on the standby cluster first, before upgrading the primary cluster. It is preferable to avoid a situation in which the virtual cluster, which is being replicated, is a version higher than what the standby cluster can serve if you were to cut over.
-
 ### Start clusters
+
+{{site.data.alerts.callout_danger}}
+Before starting PCR, ensure that the standby cluster is at the same version, or one version ahead of, the primary cluster. For more details, refer to [Cluster versions and upgrades](#cluster-versions-and-upgrades).
+{{site.data.alerts.end}}
 
 To use PCR on clusters, you must [initialize]({% link {{ page.version.version }}/cockroach-start.md %}) the primary and standby CockroachDB clusters with the `--virtualized` and `--virtualized-empty` flags respectively. This enables [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) and sets up each cluster ready for replication.
 
@@ -143,6 +138,20 @@ Statement | Action
 [`ALTER VIRTUAL CLUSTER ... START SERVICE SHARED`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}#start-a-virtual-cluster) | Initiate a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}).
 [`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %}) | Show all virtual clusters.
 [`DROP VIRTUAL CLUSTER`]({% link {{ page.version.version }}/drop-virtual-cluster.md %}) | Remove a virtual cluster.
+
+### Cluster versions and upgrades
+
+{{site.data.alerts.callout_danger}}
+The standby cluster must be at the same version as, or one version ahead of, the primary's virtual cluster.
+{{site.data.alerts.end}}
+
+When PCR is enabled, upgrade with the following procedure. This upgrades the standby cluster before the primary cluster. Within the primary and standby CockroachDB clusters, the system virtual cluster must be at a cluster version greater than or equal to the virtual cluster:
+
+1. [Upgrade the binaries]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-4-perform-the-rolling-upgrade) on the primary and standby clusters. Replace the binary on each node of the cluster and restart the node.
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the standby's system virtual cluster.
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the primary's system virtual cluster.
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the standby's virtual cluster.
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the primary's virtual cluster.
 
 ## Demo video
 

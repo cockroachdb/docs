@@ -35,14 +35,14 @@ If you have not done so already, [create a cluster]({% link cockroachcloud/creat
 
 ## Step 2. Connect to your cluster
 
-Refer to [Connect to a CockroachDB Dedicated cluster](https://cockroachlabs.com/docs/cockroachcloud/connect-to-your-cluster) for detailed instructions on how to to:
+Refer to [Connect to a CockroachDB Dedicated cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) for detailed instructions on how to to:
 
 1. Download and install CockroachDB and your cluster's CA certificate locally.
 1. Generate the `cockroach sql` command that you will use to connect to the cluster from the command line as a SQL user with [admin] privileges in the cluster.
 
 ## Step 3. Configure your cluster
 
-1. In your terminal, enter the `cockroach sql` command and connection string from [Step 2. Connect to your cluster](#step-2-connect-to-your-cluster) to start the [built-in SQL client](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql.html).
+1. In your terminal, enter the `cockroach sql` command and connection string from [Step 2. Connect to your cluster](#step-2-connect-to-your-cluster) to start the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}).
 
 1. Enable [rangefeeds](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#enable-rangefeeds). Note that rangefeeds are enabled by default on {{ site.data.products.serverless }} clusters:
 
@@ -129,7 +129,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 1. Navigate back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new date-based directory should display on the **Objects** tab.
 
     {{site.data.alerts.callout_info}}
-    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitor-and-debug-changefeeds#debug-a-changefeed).
+    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed]({% link {{site.current_cloud_version}}/monitor-and-debug-changefeeds.md %}#debug-a-changefeed).
     {{site.data.alerts.end}}
 
 ## Step 9. Configure Snowflake
@@ -238,7 +238,7 @@ The following points outline two potential workarounds. For detailed instruction
 ## Known limitations
 
 - Snowflake cannot filter streaming updates by table. Because of this, we recommend creating a changefeed that watches only one table.
-- Snowpipe is unaware of CockroachDB [resolved timestamps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-changefeed#resolved). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
+- Snowpipe is unaware of CockroachDB [resolved timestamps]({% link {{site.current_cloud_version}}/create-changefeed.md %}#resolved). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
 - Snowpipe works best with append-only workloads, as Snowpipe lacks native ETL capabilities to perform updates to data. You may need to pre-process data before uploading it to Snowflake.
 
-Refer to the [Create and Configure Changefeeds](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-and-configure-changefeeds#known-limitations) page for more general changefeed known limitations.
+Refer to the [Create and Configure Changefeeds]({% link {{site.current_cloud_version}}/create-and-configure-changefeeds.md %}#known-limitations) page for more general changefeed known limitations.

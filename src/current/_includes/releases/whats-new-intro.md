@@ -1,8 +1,14 @@
+{% assign DEBUG = false %}
+{% assign branched = false %}
+{% assign old = false %}
+{% assign no_highlights = false %}
+{% assign skippable = false %}
+{% assign will_never_have_lts = false %}
+{% assign lts = false %}
+{% assign install_links = '' %}
+
 {% comment %}Early in development, a new major-version directory may not
              yet exist. Adapt some links in this situation.{% endcomment %}
-{% assign branched = false %}
-{% assign ancient = false %}
-{% assign install_links = '' %}
 
 {% for file in site.pages %}
   {% unless branched == true %}
@@ -13,14 +19,28 @@
   {% endunless %}
 {% endfor %}
 
-{% comment %}Some old pages need different links to install and upgrade pages{% endcomment %}
-{% if page.major_version == 'v1.0' or page.major_version == 'v1.1' or page.major_version == 'v2.0' or page.major_version == 'v2.1' or page.major_version == 'v21.1' %}
+{% comment %}Some old pages don't have feature highlights and won't get LTS{% endcomment %}
+{% if page.major_version == 'v1.0' or
+      page.major_version == 'v1.1' or
+      page.major_version == 'v2.0' or
+      page.major_version == 'v2.1' or
+      page.major_version == 'v19.1' or
+      page.major_version == 'v19.2' or
+      page.major_version == 'v20.1' or
+      page.major_version == 'v20.2' or
+      page.major_version == 'v21.1' or
+      page.major_version == 'v21.2' or
+      page.major_version == 'v22.1' or
+      page.major_version == 'v22.2' %}
   {% assign branched = true %}
-  {% assign ancient = true %}
+  {% assign no_highlights = true %}
+  {% assign will_never_have_lts = true %}
+{% endif %}
+
+{% if page.major_version == 'v1.0' or page.major_version == 'v1.1' or page.major_version == 'v2.0' or page.major_version == 'v2.1' or page.major_version == 'v21.1' %}
   {% capture install_link %}[install CockroachDB](https://cockroachlabs.com/docs/{{ page.major_version}}/install-cockroachdb.html){% endcapture %}
   {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }}.{% endcapture %}
 {% elsif page.major_version == 'v19.1' or page.major_version == 'v19.2' or page.major_version == 'v20.1' or page.major_version == 'v20.2' %}
-  {% assign branched = true %}
   {% capture install_link %}[install CockroachDB](https://cockroachlabs.com/docs/{{ page.major_version}}/install-cockroachdb.html){% endcapture %}
   {% capture upgrade_link %}[upgrade your cluster](https://cockroachlabs.com/docs/{{ page.major_version }}/upgrade-cockroach-version.html){% endcapture %}
   {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }} or {{ upgrade_link }}.{% endcapture %}
@@ -35,7 +55,36 @@
   {% capture install_sentence %}After downloading a supported CockroachDB binary, learn how to {{ install_link }} or {{ upgrade_link }}.{% endcapture %}
 {% endif %}
 
-On this page, you can read about changes and find downloads for all production and testing releases of CockroachDB {{ page.major_version }}.
+{% comment %}Is it skippable or LTS?{% endcomment %}
+
+{% if include.major_version.release_date != "N/A" %}
+  {% if include.major_version.asst_supp_exp_date == "N/A" %}
+    {% assign skippable = true %}
+  {% elsif include.major_version.initial_lts_patch != "N/A" %}
+    {% assign lts = true %}
+  {% endif %}
+{% endif %}
+
+{% if DEBUG == true %}
+include.major_version: {{ include.major_version }}<br />
+page.major_version: {{ page.major_version }}<br />
+branched: {{ branched }}<br />
+will_never_have_lts: {{ will_never_have_lts }}<br />
+lts: {{ lts }}<br />
+skippable: {{ skippable }}<br />
+no_highlights: {{ no_highlights }}<br />
+<br />
+{% endif %}
+
+{% if skippable == true %}
+CockroachDB {{ page.major_version }} is an [Innovation Release]({% link releases/release-support-policy.md %}#support-types), which is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} clusters but is required for CockroachDB {{ site.data.products.serverless }}.
+{% else %}
+CockroachDB {{ page.major_version }}{% if lts == true %} [(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %} is a required [Regular Release]({% link releases/release-support-policy.md %}#support-types).
+{% endif %}
+
+Refer to [Major release types]({% link releases/release-support-policy.md %}#support-types) before installing or upgrading for release timing and support details.{% if no_highlights == false %} To learn what’s new in this release, refer to its [Feature Highlights](#feature-highlights).{% endif %}
+
+On this page, you can read about changes and find downloads for all production and testing releases of CockroachDB {{ page.major_version }}{% if lts == true %}&nbsp;[(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %}
 
 {% comment %}v1.0 has no #v1-0-0 anchor, and before GA other releases also do not.{% endcomment %}
 - For key feature enhancements in {{ page.major_version }} and other upgrade considerations, refer to the notes for {% if include.major_version.release_date != 'N/A' and page.major_version != 'v1.0' %}[{{ page.major_version }}.0](#{{ page.major_version | replace: '.', '-' }}-0){% else %}{{ page.major_version }} on this page{% endif %}.
@@ -43,7 +92,7 @@ On this page, you can read about changes and find downloads for all production a
 - Be sure to also review the [Release Support Policy]({% link releases/release-support-policy.md %}).
 - {{ install_sentence | strip_newlines }}
 
-{% comment %}The strip_newlines is needed here because otherwise Jekyll inserts <p> tags around the install and ugrade links{% endcomment %}
+{% comment %}The strip_newlines is needed here because otherwise Jekyll inserts <p> tags around the install and upgrade links{% endcomment %}
 Get future release notes emailed to you:
 
 {% include_cached marketo.html formId=1083 %}

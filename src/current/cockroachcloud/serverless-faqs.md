@@ -49,11 +49,11 @@ Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachc
 
 ### How can I reduce the number of RUs my workload consumes?
 
-Make sure your queries have been [optimized for performance](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/make-queries-fast), and follow the [SQL best practices recommendations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview).
+Make sure your queries have been [optimized for performance]({% link {{site.current_cloud_version}}/make-queries-fast.md %}), and follow the [SQL best practices recommendations]({% link {{site.current_cloud_version}}/performance-best-practices-overview.md %}).
 
-For example, if your statement uses filters in a `WHERE` clause but you don't have [indexes on the filter columns](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/schema-design-indexes#best-practices), you will consume more RUs because the statement causes a full table scan when doing the join. Use the [`EXPLAIN` statement](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/explain) with your queries to find full table scans or other costly operations. Adding the correct index will result in better performance for the statement, and also consume fewer RUs.
+For example, if your statement uses filters in a `WHERE` clause but you don't have [indexes on the filter columns]({% link {{site.current_cloud_version}}/schema-design-indexes.md %}#best-practices), you will consume more RUs because the statement causes a full table scan when doing the join. Use the [`EXPLAIN` statement]({% link {{site.current_cloud_version}}/explain.md %}) with your queries to find full table scans or other costly operations. Adding the correct index will result in better performance for the statement, and also consume fewer RUs.
 
-The size of the data in your columns also directly affects RU consumption and query performance. For example, Cockroach Labs recommends [keeping `JSONB` column data under 1 MB](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/jsonb#size) to maximize performance. Statements that read or write large `JSONB` values will consume more RUs as the storage and I/O costs are higher. Adding [GIN indexes](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/inverted-indexes) or [partial GIN indexes](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/partial-indexes#partial-gin-indexes) when querying `JSONB` columns can help improve performance and reduce the RU usage of these statements.
+The size of the data in your columns also directly affects RU consumption and query performance. For example, Cockroach Labs recommends [keeping `JSONB` column data under 1 MB]({% link {{site.current_cloud_version}}/jsonb.md %}#size) to maximize performance. Statements that read or write large `JSONB` values will consume more RUs as the storage and I/O costs are higher. Adding [GIN indexes]({% link {{site.current_cloud_version}}/inverted-indexes.md %}) or [partial GIN indexes]({% link {{site.current_cloud_version}}/partial-indexes.md %}#partial-gin-indexes) when querying `JSONB` columns can help improve performance and reduce the RU usage of these statements.
 
 ### What can I use CockroachDB {{ site.data.products.serverless }} for?
 
@@ -77,9 +77,9 @@ Yes, your free cluster has been automatically migrated to CockroachDB {{ site.da
 
 ### Why does my RU usage briefly spike when I'm running a steady workload?
 
-CockroachDB [automatically collects statistics](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cost-based-optimizer#table-statistics) in a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). The statistics are used by the cost-based optimizer to tune statements for higher performance.
+CockroachDB [automatically collects statistics]({% link {{site.current_cloud_version}}/cost-based-optimizer.md %}#table-statistics) in a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). The statistics are used by the cost-based optimizer to tune statements for higher performance.
 
-When automatic statistics collection starts, the cluster will experience a spike in RU usage. You can [disable automatic statistics collection](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cost-based-optimizer#enable-and-disable-automatic-statistics-collection-for-clusters) to avoid these RU bursts, but this may cause the cost-based optimizer to choose inefficient statement plans based on outdated statistics.
+When automatic statistics collection starts, the cluster will experience a spike in RU usage. You can [disable automatic statistics collection]({% link {{site.current_cloud_version}}/cost-based-optimizer.md %}#enable-and-disable-automatic-statistics-collection-for-clusters) to avoid these RU bursts, but this may cause the cost-based optimizer to choose inefficient statement plans based on outdated statistics.
 
 Refreshing the Cloud Console will also consume RUs.
 
@@ -113,9 +113,9 @@ Yes, intra-cluster communications are secured using certificates, and all connec
 
 All connections to CockroachDB {{ site.data.products.serverless }} require SSL encryption. When connecting to your cluster using the CockroachDB SQL client or many drivers and ORMs, you don't need to download a root CA certificate and configure your client to use that certificate because the client will connect using the system root CA certificates.
 
-However, some drivers and ORMs don't use the system root CA certificates. In those cases, you need to download a root CA certificate and configure your client to use that certificate to verify the cluster's identity when connecting to it. You can [download the root CA certificate]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}?filters=connection-string#connect-to-your-cluster) by following the instructions in the CockroachDB {{ site.data.products.cloud }} Console. Configure your client to use this certificate (for example, by setting `sslrootcert=<path to the root CA certificate>` in your [connection string](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connection-parameters#additional-connection-parameters)) and to use SSL (for example, by setting `sslmode=verify-full` in your connection string) to connect to your cluster. We recommend using `sslmode=verify-full` so that your cluster is not vulnerable to man-in-the-middle attacks.
+However, some drivers and ORMs don't use the system root CA certificates. In those cases, you need to download a root CA certificate and configure your client to use that certificate to verify the cluster's identity when connecting to it. You can [download the root CA certificate]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}?filters=connection-string#connect-to-your-cluster) by following the instructions in the CockroachDB {{ site.data.products.cloud }} Console. Configure your client to use this certificate (for example, by setting `sslrootcert=<path to the root CA certificate>` in your [connection string]({% link {{site.current_cloud_version}}/connection-parameters.md %}#additional-connection-parameters)) and to use SSL (for example, by setting `sslmode=verify-full` in your connection string) to connect to your cluster. We recommend using `sslmode=verify-full` so that your cluster is not vulnerable to man-in-the-middle attacks.
 
-See [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connect-to-the-database) for detailed information on connecting to your cluster using CockroachDB supported languages, drivers, and ORMs
+See [Connect to a CockroachDB Cluster]({% link {{site.current_cloud_version}}/connect-to-the-database.md %}) for detailed information on connecting to your cluster using CockroachDB supported languages, drivers, and ORMs
 
 ### Is encryption-at-rest enabled on CockroachDB {{ site.data.products.serverless }}?
 
@@ -124,7 +124,7 @@ Yes. All data on CockroachDB {{ site.data.products.cloud }} is encrypted-at-rest
 - Data stored in clusters running in GCP is encrypted-at-rest using [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption).
 - Data stored in clusters running in AWS is encrypted-at-rest using [EBS encryption](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html).
 
-As noted above, we rely on the cloud provider's encryption implementation. We do not enable CockroachDB's [internal implementation of encryption-at-rest](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/encryption#encryption-at-rest-enterprise).
+As noted above, we rely on the cloud provider's encryption implementation. We do not enable CockroachDB's [internal implementation of encryption-at-rest]({% link {{site.current_cloud_version}}/security-reference/encryption.md %}#encryption-at-rest-enterprise).
 
 ### Is there a public API for CockroachDB {{ site.data.products.cloud }}?
 
@@ -142,13 +142,13 @@ Yes, you can upgrade your cluster through the Console by [increasing your resour
 
 ### Can I upgrade the version of CockroachDB my CockroachDB {{ site.data.products.serverless }} cluster is running on?
 
-No, CockroachDB {{ site.data.products.serverless }} clusters are upgraded automatically for you. You can see what version of CockroachDB your cluster is running in the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) or in the [latest release notes](https://www.cockroachlabs.com/docs/releases/cloud).
+No, CockroachDB {{ site.data.products.serverless }} clusters are upgraded automatically for you. You can see what version of CockroachDB your cluster is running in the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) or in the [latest release notes]({% link releases/cloud.md %}).
 
 ## Product features
 
 ### Do you have a UI? How can I see details?
 
-Yes, you can view and your clusters in the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/). However, some [DB Console](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview) pages are not currently available for CockroachDB {{ site.data.products.serverless }} clusters.
+Yes, you can view and your clusters in the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/). However, some [DB Console]({% link {{site.current_cloud_version}}/ui-overview.md %}) pages are not currently available for CockroachDB {{ site.data.products.serverless }} clusters.
 
 ### Are all CockroachDB features available in CockroachDB {{ site.data.products.serverless }} clusters?
 
@@ -156,9 +156,9 @@ There are some features of CockroachDB that are unsupported or partially support
 
 ### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
 
-Yes, you can [IMPORT](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/import#import-data-into-your-cockroachdb-cloud-cluster) and [EXPORT](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/export#export-data-out-of-cockroachdb-cloud) on CockroachDB {{ site.data.products.serverless }} clusters. You can use a [cloud storage provider](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage) or set up a [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) location.
+Yes, you can [IMPORT]({% link {{site.current_cloud_version}}/import-into.md %}) and [EXPORT]({% link {{site.current_cloud_version}}/export.md %}#export-data-out-of-cockroachdb-cloud) on CockroachDB {{ site.data.products.serverless }} clusters. You can use a [cloud storage provider]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}) or set up a [`userfile`]({% link {{site.current_cloud_version}}/use-userfile-storage.md %}) location.
 
-We don't recommend [`userfile`](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/use-userfile-storage) for [`EXPORT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/export) operations. You can either use cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-sql#general). For example:
+We don't recommend [`userfile`]({% link {{ site.current_cloud_version }}/use-userfile-storage.md %}) for [`EXPORT`]({% link {{site.current_cloud_version}}/export.md %}) operations. You can either use cloud storage or export data to a local CSV file by using [`cockroach sql --execute`]({% link {{site.current_cloud_version}}/cockroach-sql.md %}#general). For example:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -169,12 +169,12 @@ $ cockroach sql \
 
 ### Is change data capture available to me?
 
-Yes, CockroachDB {{ site.data.products.serverless }} clusters have access to both [Core changefeeds](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/changefeed-examples#create-a-core-changefeed) and [Enterprise changefeeds](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/changefeed-examples).
+Yes, CockroachDB {{ site.data.products.serverless }} clusters have access to both [Core changefeeds]({% link {{site.current_cloud_version}}/changefeed-examples.md %}#create-a-core-changefeed) and [Enterprise changefeeds]({% link {{site.current_cloud_version}}/changefeed-examples.md %}).
 
-You can run a "sinkless" changefeed to the current SQL session with [`EXPERIMENTAL CHANGEFEED FOR`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/changefeed-for) or [`CREATE CHANGEFEED`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-changefeed), or you can [run a changefeed to a configurable sink](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/changefeed-sinks).
+You can run a "sinkless" changefeed to the current SQL session with [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{site.current_cloud_version}}/changefeed-for.md %}) or [`CREATE CHANGEFEED`]({% link {{site.current_cloud_version}}/create-changefeed.md %}), or you can [run a changefeed to a configurable sink]({% link {{site.current_cloud_version}}/changefeed-sinks.md %}).
 
 ### Can I backup my CockroachDB {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
-CockroachDB {{ site.data.products.cloud }} automatically [runs full backups](use-managed-service-backups.html?filters=serverless) daily for every CockroachDB {{ site.data.products.serverless }} cluster. Full backups are retained for 30 days. CockroachDB {{ site.data.products.cloud }} does not take incremental backups of CockroachDB {{ site.data.products.serverless }} clusters, or allow database or table level restores from automatic full cluster backups. However, you can also [take manual backups locally](take-and-restore-customer-owned-backups.html) and store them in your cloud storage buckets using the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) statement.
+CockroachDB {{ site.data.products.cloud }} automatically [runs full backups](use-managed-service-backups.html?filters=serverless) daily for every CockroachDB {{ site.data.products.serverless }} cluster. Full backups are retained for 30 days. CockroachDB {{ site.data.products.cloud }} does not take incremental backups of CockroachDB {{ site.data.products.serverless }} clusters, or allow database or table level restores from automatic full cluster backups. However, you can also [take manual backups locally](take-and-restore-customer-owned-backups.html) and store them in your cloud storage buckets using the [`BACKUP`]({% link {{site.current_cloud_version}}/backup.md %}) statement.
 
-Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
+Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team]({% link {{site.current_cloud_version}}/support-resources.md %}). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.

@@ -21,17 +21,17 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications with explicit budget constraints.</li>
       </ul></td>
       <td>
-      <a id="serverless"></a><b><a href="https://www.cockroachlabs.com/docs/cockroachcloud/quickstart">CockroachDB {{ site.data.products.serverless }}</a></b>: A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.
+      <a id="serverless"></a><b><a href="{% link cockroachcloud/quickstart.md %}">CockroachDB {{ site.data.products.serverless }}</a></b>: A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.
       </td>
       <td><ul>
         <li><b>Scale</b>: Automatic transactional capacity scaling (up and down) depending on database activity. Ability to scale down to zero and consume zero resources.</li>
         <li><b>Availability</b>: High availability. Data replication in triplicate within a single region. Ensures outage survival by spreading replicas across availability zones.</li>
         <li><b>Operations</b>: Cockroach Labs SRE team manages and maintains every cluster. Backups every three hours.</li>
-        <li><b>Cost</b>: Free for 10 GiB of storage and 50M <a href="https://www.cockroachlabs.com/docs/cockroachcloud/serverless-faqs#what-is-a-request-unit">Request Units</a>. Consumption based billing and <a href="architecture/glossary.html#resource-limits">resource limits</a> enforce budget requirements.</li>
+        <li><b>Cost</b>: Free for 10 GiB of storage and 50M <a href="{% link cockroachcloud/serverless-faqs.md %}#what-is-a-request-unit">Request Units</a>. Consumption based billing and <a href="architecture/glossary.html#resource-limits">resource limits</a> enforce budget requirements.</li>
         <li><b>Resource isolation</b>: Shared CockroachDB software and infrastructure. Data is protected and not shared between deployments.</li>
         <li><b><a href="../cockroachcloud/cloud-org-sso.html">Single Sign-On (SSO)</a></b>: Authentication enforcement using a centralized identity managed by an IdP for clusters and organizations.</li>
         <li><b>Support</b>: Provided by CockroachDB <a href="https://forum.cockroachlabs.com/">community forum</a> and public <a href="https://cockroachdb.slack.com/">Slack workspace</a>.</li>
-        <li><b><a href="enterprise-licensing.html">Enterprise Features</a></b>: Enabled (excluding features that are currently <a href="https://www.cockroachlabs.com/docs/cockroachcloud/serverless-unsupported-features">unsupported</a>). </li>
+        <li><b><a href="enterprise-licensing.html">Enterprise Features</a></b>: Enabled (excluding features that are currently <a href="{% link cockroachcloud/serverless-unsupported-features.md %}">unsupported</a>). </li>
       </ul></td>
   </tr>
   <tr>
@@ -42,7 +42,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td>
-      <a id="dedicated"></a><b><a href="https://www.cockroachlabs.com/docs/cockroachcloud/quickstart-trial-cluster">CockroachDB {{ site.data.products.dedicated }}</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
+      <a id="dedicated"></a><b><a href="{% link cockroachcloud/quickstart-trial-cluster.md %}">CockroachDB {{ site.data.products.dedicated }}</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
       </td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
@@ -99,7 +99,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
 
 - [CockroachDB deployment]({% link {{ page.version.version }}/architecture/glossary.md %}#cockroachdb-deployment-terms)
 - [CockroachDB pricing](https://www.cockroachlabs.com/get-started-cockroachdb/)
-- [CockroachDB Cloud FAQs](https://www.cockroachlabs.com/docs/cockroachcloud/serverless-faqs)
-- [CockroachDB Cloud Architecture](https://www.cockroachlabs.com/docs/cockroachcloud/architecture)
+- [CockroachDB Cloud FAQs]({% link cockroachcloud/serverless-faqs.md %})
+- [CockroachDB Cloud Architecture]({% link cockroachcloud/architecture.md %})
 - [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %})
 - [Kubernetes Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})

@@ -46,12 +46,12 @@ When you start or [resume]({% link {{ page.version.version }}/resume-job.md %}) 
 
 Once the coordinating node is determined, nodes that match the locality requirements will take part in emitting changefeed messages to the sink. The following will happen in different cases:
 
-- If the [leaseholder]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#architecture-leaseholder) for the change data matches the filter, it will emit the changefeed messages.
-- If the leaseholder does not match the locality filter, a node will be selected matching the locality filter with a preference for nodes with localities that are more similar to the leaseholder.
+- If a [replica]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#architecture-replica) for the change data matches the filter, it will emit the changefeed messages.
+- If a replica does not match the locality filter, a node will be selected matching the locality filter with a preference for nodes with localities that are more similar to a replica.
 
-When a node matching the locality filter takes part in the changefeed job, that node will read from the closest [replica]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#architecture-replica). If the node is the leaseholder, or is itself a replica, it can read from itself. In the scenario where no replicas are available in the region of the assigned node, it may then read from a replica in a different region. As a result, you may want to consider [placing replicas]({% link {{ page.version.version }}/configure-replication-zones.md %}), including potentially [non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas) that will have less impact on read latency, in the locality or region that you plan on pinning for changefeed job execution.
+When a node matching the locality filter takes part in the changefeed job, that node will read from the closest [replica]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#architecture-replica). If the node is a replica, it can read from itself. In the scenario where no replicas are available in the region of the assigned node, it may then read from a replica in a different region. As a result, you may want to consider [placing replicas]({% link {{ page.version.version }}/configure-replication-zones.md %}), including potentially [non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas) that will have less impact on read latency, in the locality or region that you plan on pinning for changefeed job execution.
 
-For an overview of how a changefeed job works, see the [How does an Enterprise changefeed work?]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) section.
+For an overview of how a changefeed job works, refer to the [How does an Enterprise changefeed work?]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) page.
 
 ## Run changefeeds on regional by row tables
 

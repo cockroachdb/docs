@@ -46,14 +46,7 @@ front-matter.
   </div>
   <div id="toc" class="d-none"></div>
 {% endif %}
-{% comment %}Release pages and normal versioned pages store their major version differently{% endcomment %}
-{% assign majorversion = 0 %}
-{% if page.version.version %}
-  {% assign majorversion = page.version.version %}
-{% elsif page.major_version %}
-  {% assign majorversion = page.major_version %}
-{% endif %}
-{% if majorversion and majorversion != 0 %}{% include unsupported-version.md major_version=majorversion %}{% endif %}
+
 {{content}}
 
 {% if page.feedback != false %}

@@ -1,7 +1,7 @@
-{% if page.name != "known-limitations.md" # New limitations in v24.1 %}
+{% if page.name != "known-limitations.md" # New limitations in v24.2 %}
+{% endif %}
 - It is not possible to use a variable as a target more than once in the same `INTO` clause. For example, `SELECT 1, 2 INTO x, x;`. [#121605](https://github.com/cockroachdb/cockroach/issues/121605)
 - PLpgSQL variable declarations cannot inherit the type of a table row or column using `%TYPE` or `%ROWTYPE` syntax. [#114676](https://github.com/cockroachdb/cockroach/issues/114676)
-{% endif %}
 - PL/pgSQL arguments cannot be referenced with ordinals (e.g., `$1`, `$2`). [#114701](https://github.com/cockroachdb/cockroach/issues/114701)
 - The following statements are not supported:
 	- `FOR` loops, including `FOR` cursor loops, `FOR` query loops, and `FOREACH` loops. [#105246](https://github.com/cockroachdb/cockroach/issues/105246)
@@ -18,3 +18,9 @@
 - Cursors opened in PL/pgSQL execute their queries on opening, affecting performance and resource usage. [#111479](https://github.com/cockroachdb/cockroach/issues/111479)
 - Cursors in PL/pgSQL cannot be declared with arguments. [#117746](https://github.com/cockroachdb/cockroach/issues/117746)
 - `OPEN FOR EXECUTE` is not supported for opening cursors. [#117744](https://github.com/cockroachdb/cockroach/issues/117744)
+- The `print_strict_params` option is not supported in PL/pgSQL. [#123671](https://github.com/cockroachdb/cockroach/issues/123671)
+- The `FOUND` local variable, which checks whether a statement affected any rows, is not supported in PL/pgSQL. [#122306](https://github.com/cockroachdb/cockroach/issues/122306)
+- By default, when a PL/pgSQL variable conflicts with a column name, CockroachDB resolves the ambiguity by treating it as a column reference rather than a variable reference. This behavior differs from PostgreSQL, where an ambiguous column error is reported, and it is possible to change the `plpgsql.variable_conflict` setting in order to prefer either columns or variables. [#115680](https://github.com/cockroachdb/cockroach/issues/115680)
+- It is not possible to define a `RECORD`-returning PL/pgSQL function that returns different-typed expressions from different `RETURN` statements. CockroachDB requires a consistent return type for `RECORD`-returning functions. [#115384](https://github.com/cockroachdb/cockroach/issues/115384)
+- Variables cannot be declared with an associated collation using the `COLLATE` keyword. [#105245](https://github.com/cockroachdb/cockroach/issues/105245)
+- Variables cannot be accessed using the `label.var_name` pattern. [#122322](https://github.com/cockroachdb/cockroach/issues/122322)

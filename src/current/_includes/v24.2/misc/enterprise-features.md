@@ -7,6 +7,8 @@ Feature | Description
 [Multi-Region Capabilities]({% link {{ page.version.version }}/multiregion-overview.md %}) | Row-level control over where your data is stored to help you reduce read and write latency and meet regulatory requirements.
 [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}) | Use a procedural language in [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) and [stored procedures]({% link {{ page.version.version }}/stored-procedures.md %}) to improve performance and enable more complex queries.
 [Node Map]({% link {{ page.version.version }}/enable-node-map.md %}) | Visualize the geographical distribution of a cluster by plotting its node localities on a world map.
+[Generic query plans]({% link {{ page.version.version }}/cost-based-optimizer.md %}#query-plan-type) | Improve performance for prepared statements by enabling generic plans that eliminate most of the query latency attributed to planning.
+[`VECTOR` type]({% link {{ page.version.version }}/vector.md %}) | Represent data points in multi-dimensional space, using fixed-length arrays of floating-point numbers.
 
 ## Recovery and streaming
 

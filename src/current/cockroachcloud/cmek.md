@@ -18,7 +18,7 @@ To learn more, visit [Managing Customer-Managed Encryption Keys (CMEK) for Cockr
 CockroachDB {{ site.data.products.dedicated }} includes support for referring to CMEK keys in [HashiCorp Vault Secrets Manager](https://www.vaultproject.io/docs/secrets/key-management), which can distribute keys stored in multiple KMS systems, as long as the actual keys are stored in AWS KMS or GCP KMS.
 
 {{site.data.alerts.callout_success}}
-You can learn more about the [supported integrations between CockroachDB and HashiCorp Vault](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/hashicorp-integration).
+You can learn more about the [supported integrations between CockroachDB and HashiCorp Vault]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
 {{site.data.alerts.end}}
 
 CockroachDB {{ site.data.products.cloud }} communicates with the KMS platform using the KMS platform's API, and you manage CockroachDB {{ site.data.products.cloud }}'s access to the CMEK key using the KMS platform's identity and access management (IAM) system. The CMEK key is never present in a cluster and CockroachDB {{ site.data.products.cloud }} never has direct access to the CMEK key material. When CMEK is enabled, the CMEK key must be available before the cluster can start and the cluster's newly-written data at rest can be accessed.
@@ -35,7 +35,7 @@ This section describes some of the ways that CMEK can help you protect your data
 
     <ul><li><p>If a CMEK key is destroyed, the cluster's data can't be recovered by you or by CockroachDB {{ site.data.products.cloud }}, even by restoring from a CockroachDB {{ site.data.products.cloud }}-managed backup. After enabling CMEK, do not disable, schedule for destruction, or destroy a CMEK that is in use by clusters. Instead, first rotate the cluster to use a new CMEK or decommission the cluster, and then use your KMS platform's audit logs to verify that the CMEK is no longer being used.</p></li><li><p>To protect against inadvertent data loss, your KMS platform may impose a waiting period before a key is permanently deleted. This waiting period may be configurable when you create the key. Check the documentation for your KMS platform for details about how long before a key deletion is permanent and irreversible.</p></li></ul>
     {{site.data.alerts.end}}
-- **Enforcement of data domiciling and locality requirements**: In a multi-region cluster, you can confine an individual database to a single region or multiple regions. For more information and limitations, see [Data Domiciling with CockroachDB](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/data-domiciling). When you enable CMEK on a multi-region cluster, you can optionally assign a separate CMEK key to each region, or use the same CMEK key for multiple related regions.
+- **Enforcement of data domiciling and locality requirements**: In a multi-region cluster, you can confine an individual database to a single region or multiple regions. For more information and limitations, see [Data Domiciling with CockroachDB]({% link {{site.current_cloud_version}}/data-domiciling.md %}). When you enable CMEK on a multi-region cluster, you can optionally assign a separate CMEK key to each region, or use the same CMEK key for multiple related regions.
 - **Enforcement of encryption requirements**: With CMEK, you have control the CMEK key's encryption strength. The CMEK key's size is determined by what your KMS provider supports.
 
     You can use your KMS platform's controls to configure the regions where the CMEK key is available, enable automatic rotation schedules for CMEK keys, and view audit logs that show each time the CMEK key is used by CockroachDB {{ site.data.products.cloud }}. CockroachDB {{ site.data.products.cloud }} does not need any visibility into these details.
@@ -58,7 +58,7 @@ When you enable CMEK on a CockroachDB {{ site.data.products.dedicated }} advance
 
 1. The _store key_ is a Key Encryption Key (KEK) that encrypts the data keys at rest. It is encrypted at rest by the CMEK key before being propagated to cluster nodes, and is decrypted in memory on each node when the cluster starts. The store key is not automatically rotated.
 
-For more details about encryption in CockroachDB {{ site.data.products.cloud }}, see [Encryption At Rest](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/encryption).
+For more details about encryption in CockroachDB {{ site.data.products.cloud }}, see [Encryption At Rest]({% link {{site.current_cloud_version}}/encryption.md %}).
 
 Enabling CMEK has no impact on a cluster's existing data.
 
@@ -100,7 +100,7 @@ This section describes how enabling CMEK changes backup and restore operations o
 
 Backups in CockroachDB {{ site.data.products.dedicated }} are triggered in two ways, only one of which is affected by CMEK.
 
-- You can perform a manual backup by using the `BACKUP` SQL command to back up database objects in a cluster. To restore from a manual backup, you use the `RESTORE` SQL command. Manual backups are not automatically encrypted, but you can optionally encrypt a manual backup by specifying an encryption key when you run the `BACKUP` command. Enabling CMEK has no impact on manual backups. To learn about encrypting manual backups, see [Take and Restore Encrypted Backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/take-and-restore-encrypted-backups).
+- You can perform a manual backup by using the `BACKUP` SQL command to back up database objects in a cluster. To restore from a manual backup, you use the `RESTORE` SQL command. Manual backups are not automatically encrypted, but you can optionally encrypt a manual backup by specifying an encryption key when you run the `BACKUP` command. Enabling CMEK has no impact on manual backups. To learn about encrypting manual backups, see [Take and Restore Encrypted Backups]({% link {{ site.current_cloud_version }}/take-and-restore-encrypted-backups.md %}).
 
 - CockroachDB {{ site.data.products.cloud }} automatically backs up clusters on a set schedule that is not configurable. You can view, manage, or restore from these backups using the CockroachDB {{ site.data.products.cloud }} Console. Managed backups operate on all databases, tables, views, and scheduled jobs in the cluster. Managed backups can be restored only to the cluster where they were taken. Managed backups are automatically encrypted using data keys that are distinct from those used to encrypt the cluster's data.
 
@@ -146,7 +146,7 @@ To learn more about rotating a CMEK key using the CockroachDB {{ site.data.produ
 
 #### Are CockroachDB {{ site.data.products.dedicated }} managed backups also encrypted using the CMEK?
 
-Yes, the [managed backups]({% link cockroachcloud/use-managed-service-backups.md %}) stored in CockroachDB {{ site.data.products.cloud }} infrastructure are also encrypted using the CMEK, using CoackroachDB’s [encrypted backup](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/take-and-restore-encrypted-backups) capability. Internally, a backup data key is wrapped by the CMEK, and then the backup data key is used for encrypting the backup.
+Yes, the [managed backups]({% link cockroachcloud/use-managed-service-backups.md %}) stored in CockroachDB {{ site.data.products.cloud }} infrastructure are also encrypted using the CMEK, using CoackroachDB’s [encrypted backup]({% link {{site.current_cloud_version}}/take-and-restore-encrypted-backups.md %}) capability. Internally, a backup data key is wrapped by the CMEK, and then the backup data key is used for encrypting the backup.
 
 #### As part of managed backup encryption, is the same backup data key used to encrypt all backups for a cluster?
 
@@ -177,4 +177,4 @@ The CMEK feature has the following limitations:
 
 - [Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB {{ site.data.products.dedicated }}]({% link cockroachcloud/managing-cmek.md %})
 - [Create Private Clusters]({% link cockroachcloud/private-clusters.md %})
-- [Encryption At Rest](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/encryption)
+- [Encryption At Rest]({% link {{site.current_cloud_version}}/encryption.md %})
