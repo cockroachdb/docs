@@ -1,21 +1,26 @@
 ---
-title: Provision a CockroachDB Cloud Cluster with Terraform
-summary: Learn how to provision a cluster using the CockroachDB Cloud Terraform provider.
+title: Use the CockroachDB Cloud Terraform provider
+summary: Learn how to provision and manage clusters and other CockroachDB Cloud resources using the CockroachDB Cloud Terraform provider.
 toc: true
 docs_area: manage
 ---
 
 [Terraform](https://terraform.io) is an infrastructure-as-code provisioning tool that uses configuration files to define application and network resources. You can provision CockroachDB Cloud clusters and cluster resources by using the [CockroachDB Cloud Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) in your Terraform configuration files.
 
-This tutorial shows you how to provision a CockroachDB Cloud cluster using the CockroachDB Cloud Terraform provider.
+This page shows how to use the CockroachDB Cloud Terraform provider to create and manage clusters in CockroachDB Cloud. This page is not exhaustive; you can browse an extensive set of [example recipes](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples) in the Terraform provider's GitHub registry.
+
+{{site.data.alerts.callout_info}}
+If you used the Terraform provider to manage CockroachDB {{ site.data.products.serverless }} clusters that have been migrated to CockroachDB {{ site.data.products.basic }}, your recipes must be updated to work with CockroachDB {{ site.data.products.basic }}.
+{{site.data.alerts.end}}
 
 Watch a demo where we use Terraform to create a CockroachDB Serverless cluster here:
 
 {% include_cached youtube.html video_id="LEytD1eld8M" %}
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="serverless"><strong>CockroachDB {{ site.data.products.serverless }}</strong></button>
-    <button class="filter-button page-level" data-scope="dedicated"><strong>CockroachDB {{ site.data.products.dedicated }}</strong></button>
+    <button class="filter-button page-level" data-scope="basic"><strong>CockroachDB {{ site.data.products.basic }}</strong></button>
+    <button class="filter-button page-level" data-scope="standard"><strong>CockroachDB {{ site.data.products.standard }}</strong></button>
+    <button class="filter-button page-level" data-scope="advanced"><strong>CockroachDB {{ site.data.products.advanced }}</strong></button>
 </div>
 
 ## Before you begin
@@ -23,46 +28,12 @@ Watch a demo where we use Terraform to create a CockroachDB Serverless cluster h
 Before you start this tutorial, you must
 
 - [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli).
-- Create a [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) and [API key]({% link cockroachcloud/managing-access.md %}#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud), and assign `admin` privilege or Cluster Creator / Cluster Admin role at the organization scope. Refer to: [Service Accounts]({% link cockroachcloud/authorization.md %}#service-accounts)
+- Create a [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) and [API key]({% link cockroachcloud/managing-access.md %}#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud), and assign it the Cluster Creator or Cluster Admin role at the organization scope. Refer to [Service Accounts]({% link cockroachcloud/authorization.md %}#service-accounts).
 
-## Create the Terraform configuration files
+## Create the Terraform configuration file
 
-Terraform uses a infrastructure-as-code approach to managing resources. Terraform configuration files allow you to define resources declaratively and let Terraform manage their lifecycle.
-
-<section class="filter-content" markdown="1" data-scope="serverless">
-
-In this tutorial, you will create a CockroachDB {{ site.data.products.serverless }} cluster.
-
-1. In a terminal create a new directory and use `curl` to download the CockroachDB {{ site.data.products.serverless }} `main.tf` example file:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl -o main.tf https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_serverless_cluster/main.tf
-    ~~~
-
-1. In a text editor create a new file `terraform.tfvars` with the following settings:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~
-    cluster_name = "{cluster name}"
-    sql_user_name = "{SQL user name}"
-    sql_user_password = "{SQL user password}"
-    ~~~
-
-    Where:
-    - `{cluster name}` is the name of the cluster you want to create.
-    - `{SQL user name}` is the name of the SQL user you want to create.
-    - `{SQL user password}` is the password for the SQL user you want to create.
-
-    For example, the following `terraform.tfvars` file creates a CockroachDB {{ site.data.products.serverless }} with a `maxroach` SQL user.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~
-    cluster_name = "blue-dog"
-    sql_user_name = "maxroach"
-    sql_user_password = "NotAGoodPassword"
-    ~~~
-
+{% comment %}Steps that are common{% endcomment %}
+{% capture remaining_steps %}
 1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key]({% link cockroachcloud/managing-access.md %}#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
 
     {% include_cached copy-clipboard.html %}
@@ -72,75 +43,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.serverless
 
     Where `{API key}` is the API key you copied from the CockroachDB Cloud Console.
 
-</section>
-
-<section class="filter-content" markdown="1" data-scope="dedicated">
-
-In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated }} cluster
-
-1. In a terminal create a new directory and use `curl` to download the CockroachDB {{ site.data.products.dedicated }} `main.tf` example file:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl -o main.tf https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_dedicated_cluster/main.tf
-    ~~~
-
-1. In a text editor create a new file `terraform.tfvars` with the following settings:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~
-    cluster_name = "{cluster name}"
-    sql_user_name = "{SQL user name}"
-    sql_user_password = "{SQL user password}"
-    cloud_provider = "{cloud provider}"
-    cloud_provider_regions = ["{cloud provider region}"]
-    cluster_node_count = {number of nodes}
-    storage_gib = {storage in GiB}
-    allow_list_name = "{allow list name}"
-    cidr_ip = "{allow list CIDR IP}"
-    cidr_mask = {allow list CIDR mask}
-    ~~~
-
-    Where:
-       - `{cluster name}` is the name of the cluster you want to create.
-       - `{SQL user name}` is the name of the SQL user you want to create.
-       - `{SQL user password}` is the password for the SQL user you want to create.
-       - `{cloud provider}` is the cloud infrastructure provider. Possible values are `GCP`, `AWS`, `AZURE`.
-       - `{cloud provider regions}` is the region code or codes for the cloud infrastructure provider. For multi-region clusters, separate each region with a comma.
-       - `{number of nodes}` is the number of nodes in each region. Cockroach Labs recommends at least 3 nodes per region, and the same number of nodes in each region for multi-region clusters.
-       - `{storage in GiB}` is the amount of storage specified in GiB.
-       - `{allow list name}` is the name for the [IP allow list]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting). Use a descriptive name to identify the IP allow list.
-       - `{allow list CIDR IP}` is the Classless Inter-Domain Routing (CIDR) IP address base.
-       - `{allow list CIDR mask}` is the CIDR mask.
-
-    For example, the following `terraform.tfvars` file creates a single region 3 node CockroachDB {{ site.data.products.dedicated }} cluster and sets an IP allowlist for a single IP address.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~
-    cluster_name = "blue-dog"
-    sql_user_name = "maxroach"
-    sql_user_password = "NotAGoodPassword"
-    cloud_provider = "GCP"
-    cloud_provider_regions = ["us-west2"]
-    cluster_node_count = 3
-    storage_gib = 15
-    allow_list_name = "Max's home network"
-    cidr_ip = "1.2.3.4"
-    cidr_mask = 32
-    ~~~
-
-1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key]({% link cockroachcloud/managing-access.md %}#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    export COCKROACH_API_KEY={API key}
-    ~~~
-
-    Where `{API key}` is the API key you copied from the CockroachDB Cloud Console.
-
-</section>
-
-## Provision the cluster
+## Provision a cluster
 
 1. Initialize the provider:
 
@@ -149,7 +52,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
     terraform init -upgrade
     ~~~
 
-    This reads the `main.tf` configuration file and uses the `terraform.tfvars` file for settings specific to your cluster. The `-upgrade` flag ensures you are using the latest version of the provider.
+    This reads the `main.tf` configuration file. The `-upgrade` flag ensures you are using the latest version of the provider.
 
 1. Create the Terraform plan. This shows the actions the provider will take, but won't perform them:
 
@@ -167,220 +70,109 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.dedicated 
 
     Enter `yes` when prompted to apply the plan and create the cluster.
 
-You will see output similar to the following:
+Terraform reports the actions it will take. Verify the details, then type `yes` to apply the changes.
+{% endcapture %}
 
-<section class="filter-content" markdown="1" data-scope="serverless">
+Terraform uses a infrastructure-as-code approach to managing resources. Terraform configuration files allow you to define resources declaratively and let Terraform manage their lifecycle.
 
-~~~
-Terraform used the selected providers to generate the following execution
-plan. Resource actions are indicated with the following symbols:
-  + create
+<section class="filter-content" markdown="1" data-scope="basic">
 
-Terraform will perform the following actions:
+In this tutorial, you will create a CockroachDB {{ site.data.products.basic }} cluster.
 
-  # cockroach_cluster.example will be created
-  + resource "cockroach_cluster" "example" {
-      + account_id        = (known after apply)
-      + cloud_provider    = "GCP"
-      + cockroach_version = (known after apply)
-      + creator_id        = (known after apply)
-      + id                = (known after apply)
-      + name              = "blue-dog"
-      + operation_status  = (known after apply)
-      + plan              = (known after apply)
-      + regions           = [
-          + {
-              + name       = "us-central1"
-              + node_count = (known after apply)
-              + sql_dns    = (known after apply)
-              + ui_dns     = (known after apply)
-            },
-        ]
-      + serverless        = {
-          + routing_id  = (known after apply)
-          + spend_limit = 0
+1. In a terminal create a new file named `main.tf` with the following contents:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ hcl
+    resource "cockroach_cluster" "basic" {
+      name           = "cockroach-basic"
+      cloud_provider = "GCP"
+      plan           = "BASIC"
+      serverless     = {}
+      regions = [
+        {
+          name = "us-east1"
         }
-      + state             = (known after apply)
+      ]
+      delete_protection = false
     }
-
-  # cockroach_sql_user.example will be created
-  + resource "cockroach_sql_user" "example" {
-      + cluster_id = (known after apply)
-      + id         = (known after apply)
-      + name       = "maxroach"
-      + password   = (sensitive value)
-    }
-
-Plan: 2 to add, 0 to change, 0 to destroy.
-
-Do you want to perform these actions?
-  Terraform will perform the actions described above.
-  Only 'yes' will be accepted to approve.
-
-  Enter a value: yes
-
-cockroach_cluster.example: Creating...
-cockroach_cluster.example: Creation complete after 5s [id=1aaae1f8-19e2-4653-ba62-db16de2a84b9]
-cockroach_sql_user.example: Creating...
-cockroach_sql_user.example: Creation complete after 2s [id=1aaae1f8-19e2-4653-ba62-db16de2a84b9:maxroach]
-
-Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-~~~
+    ~~~
+      - Replace `cockroach-basic` with a name for the cluster.
+      - Set `cloud_provider` to `AWS` `AZURE`, or `GCP`.
+      - Under `regions`, add the names of one or more regions for the cluster.
+      - To optionally enable [deletion protection]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection), set `delete_protection` to `true`.
+{{ remaining_steps }}
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="dedicated">
+<section class="filter-content" markdown="1" data-scope="standard">
 
-~~~
-Terraform used the selected providers to generate the following execution
-plan. Resource actions are indicated with the following symbols:
-  + create
- <= read (data resources)
+In this tutorial, you will create a CockroachDB {{ site.data.products.standard }} cluster.
 
-Terraform will perform the following actions:
+1. In a terminal create a new file named `main.tf` with the following contents:
 
-  # data.cockroach_cluster.example will be read during apply
-  # (config refers to values not yet known)
- <= data "cockroach_cluster" "example" {
-      + account_id        = (known after apply)
-      + cloud_provider    = (known after apply)
-      + cockroach_version = (known after apply)
-      + creator_id        = (known after apply)
-      + dedicated         = {
-          + disk_iops        = (known after apply)
-          + memory_gib       = (known after apply)
-          + num_virtual_cpus = (known after apply)
-          + storage_gib      = (known after apply)
-        } -> (known after apply)
-      + id                = (known after apply)
-      + name              = (known after apply)
-      + operation_status  = (known after apply)
-      + plan              = (known after apply)
-      + regions           = [
-        ] -> (known after apply)
-      + serverless        = {
-          + routing_id  = (known after apply)
-          + spend_limit = (known after apply)
-        } -> (known after apply)
-      + state             = (known after apply)
-    }
-
-  # cockroach_allow_list.example will be created
-  + resource "cockroach_allow_list" "example" {
-      + cidr_ip    = "1.2.3.4"
-      + cidr_mask  = 32
-      + cluster_id = (known after apply)
-      + id         = (known after apply)
-      + name       = "Max's home network"
-      + sql        = true
-      + ui         = true
-    }
-
-  # cockroach_cluster.example will be created
-  + resource "cockroach_cluster" "example" {
-      + account_id        = (known after apply)
-      + cloud_provider    = "GCP"
-      + cockroach_version = "v22.2"
-      + creator_id        = (known after apply)
-      + dedicated         = {
-          + disk_iops        = (known after apply)
-          + memory_gib       = (known after apply)
-          + num_virtual_cpus = (known after apply)
-          + storage_gib      = 15
+    {% include_cached copy-clipboard.html %}
+    ~~~ hcl
+    resource "cockroach_cluster" "standard" {
+      name           = "cockroach-standard"
+      cloud_provider = "GCP"
+      plan           = "STANDARD"
+      serverless = {
+        usage_limits = {
+          provisioned_vcpus = 2
         }
-      + id                = (known after apply)
-      + name              = "blue-dog"
-      + operation_status  = (known after apply)
-      + plan              = (known after apply)
-      + regions           = [
-          + {
-              + name       = "us-west2"
-              + node_count = 3
-              + sql_dns    = (known after apply)
-              + ui_dns     = (known after apply)
-            },
-        ]
-      + state             = (known after apply)
+      }
+      regions = [
+        {
+          name = "us-east1"
+        }
+      ]
+      delete_protection = false
     }
-
-  # cockroach_sql_user.example will be created
-  + resource "cockroach_sql_user" "example" {
-      + cluster_id = (known after apply)
-      + id         = (known after apply)
-      + name       = "maxroach"
-      + password   = (sensitive value)
-    }
-
-Plan: 3 to add, 0 to change, 0 to destroy.
-
-Changes to Outputs:
-  + cluster = {
-      + account_id        = (known after apply)
-      + cloud_provider    = (known after apply)
-      + cockroach_version = (known after apply)
-      + creator_id        = (known after apply)
-      + dedicated         = (known after apply)
-      + id                = (known after apply)
-      + name              = (known after apply)
-      + operation_status  = (known after apply)
-      + plan              = (known after apply)
-      + regions           = (known after apply)
-      + serverless        = (known after apply)
-      + state             = (known after apply)
-    }
-
-Do you want to perform these actions?
-  Terraform will perform the actions described above.
-  Only 'yes' will be accepted to approve.
-
-  Enter a value: yes
-
-cockroach_cluster.example: Creating...
-...
-cockroach_cluster.example: Still creating... [22m10s elapsed]
-cockroach_cluster.example: Creation complete after 22m14s [id=2697e5de-73e6-4d67-a4b4-2b2075dc2dfe]
-data.cockroach_cluster.example: Reading...
-cockroach_sql_user.example: Creating...
-cockroach_allow_list.example: Creating...
-data.cockroach_cluster.example: Read complete after 0s [id=2697e5de-73e6-4d67-a4b4-2b2075dc2dfe]
-cockroach_allow_list.example: Creation complete after 0s [id=2697e5de-73e6-4d67-a4b4-2b2075dc2dfe:76.14.55.13/32]
-cockroach_sql_user.example: Creation complete after 2s [id=2697e5de-73e6-4d67-a4b4-2b2075dc2dfe:maxroach]
-
-Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
-
-Outputs:
-
-cluster = {
-  "account_id" = tostring(null)
-  "cloud_provider" = "GCP"
-  "cockroach_version" = "v22.2.0"
-  "creator_id" = tostring(null)
-  "dedicated" = {
-    "disk_iops" = 450
-    "memory_gib" = 7.5
-    "num_virtual_cpus" = 2
-    "storage_gib" = 15
-  }
-  "id" = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
-  "name" = "blue-dog"
-  "operation_status" = "CLUSTER_STATUS_UNSPECIFIED"
-  "plan" = "DEDICATED"
-  "regions" = tolist([
-    {
-      "name" = "us-west2"
-      "node_count" = 3
-      "sql_dns" = "blue-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
-      "ui_dns" = "admin-blue-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
-    },
-  ])
-  "serverless" = null /* object */
-  "state" = "CREATED"
-}
-~~~
+    ~~~
+      - Replace `cockroach-standard` with a name for the cluster.
+      - Set `cloud_provider` to `AWS` `AZURE`, or `GCP`.
+      - Under `usage_limits`, set `provisioned_vcpus` to the number of vCPUs required per node.
+      - Under `regions`, add the names of one or more regions for the cluster.
+      - To optionally enable [deletion protection]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection), set `delete_protection` to `true`.
+{{ remaining_steps }}
 
 </section>
 
-## Get information about your cluster
+<section class="filter-content" markdown="1" data-scope="advanced">
+
+In this tutorial, you will create a CockroachDB {{ site.data.products.advanced }} cluster.
+
+1. In a terminal create a new file named `main.tf` with the following contents:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ hcl
+    resource "cockroach_cluster" "advanced" {
+      name           = "cockroach-advanced"
+      cloud_provider = "GCP"
+      plan           = "ADVANCED"
+      dedicated = {
+        storage_gib = 15
+        num_vcpus = 4
+      }
+      regions = [
+        {
+          name       = "us-central1"
+          node_count = 1
+        }
+      ]
+      delete_protection = true
+    }
+    ~~~
+      - Replace `cockroach-advanced` with a name for the cluster.
+      - Set `cloud_provider` to `AWS` `AZURE`, or `GCP`.
+      - Under `dedicated`, set `storage_gib` to a value large enough to contain the cluster's expected data. Set `num_vcpus` to the number of vCPUs per node.
+      - Under `regions`, add the names of one or more regions for the cluster and specify the `node_count`, or the number of nodes, per region.
+      - To optionally enable [deletion protection]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection), set `delete_protection` to `true`.
+{{ remaining_steps }}
+
+</section>
+
+## Get information about a cluster
 
 The `terraform show` command shows detailed information of your cluster resources.
 
@@ -389,141 +181,9 @@ The `terraform show` command shows detailed information of your cluster resource
 terraform show
 ~~~
 
-This will show the following output:
+## Delete a cluster
 
-<section class="filter-content" markdown="1" data-scope="serverless">
-
-~~~
-# cockroach_cluster.example:
-resource "cockroach_cluster" "example" {
-    cloud_provider    = "GCP"
-    cockroach_version = "v22.1"
-    creator_id        = "98e75f0a-072b-44dc-95d2-cc36cd425cab"
-    id                = "1aaae1f8-19e2-4653-ba62-db16de2a84b9"
-    name              = "blue-dog"
-    operation_status  = "CLUSTER_STATUS_UNSPECIFIED"
-    plan              = "SERVERLESS"
-    regions           = [
-        # (1 unchanged element hidden)
-    ]
-    serverless        = {
-        routing_id  = "blue-dog-6821"
-        spend_limit = 0
-    }
-    state             = "CREATED"
-}
-
-# cockroach_sql_user.example:
-resource "cockroach_sql_user" "example" {
-    cluster_id = "1aaae1f8-19e2-4653-ba62-db16de2a84b9"
-    id         = "1aaae1f8-19e2-4653-ba62-db16de2a84b9:maxroach"
-    name       = "maxroach"
-    password   = (sensitive value)
-}
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="dedicated">
-
-~~~
-# cockroach_allow_list.example:
-resource "cockroach_allow_list" "example" {
-    cidr_ip    = "1.2.3.4"
-    cidr_mask  = 32
-    cluster_id = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
-    id         = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe:76.14.55.13/32"
-    name       = "Max's home network"
-    sql        = true
-    ui         = true
-}
-
-# cockroach_cluster.example:
-resource "cockroach_cluster" "example" {
-    account_id        = "crl-prod-gwq"
-    cloud_provider    = "GCP"
-    cockroach_version = "v22.2"
-    creator_id        = "98e75f0a-072b-44dc-95d2-cc36cd425cab"
-    dedicated         = {
-        disk_iops        = 450
-        memory_gib       = 7.5
-        num_virtual_cpus = 2
-        storage_gib      = 15
-    }
-    id                = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
-    name              = "blue-dog"
-    operation_status  = "CLUSTER_STATUS_UNSPECIFIED"
-    plan              = "DEDICATED"
-    regions           = [
-        # (1 unchanged element hidden)
-    ]
-    state             = "CREATED"
-}
-
-# cockroach_sql_user.example:
-resource "cockroach_sql_user" "example" {
-    cluster_id = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
-    id         = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe:maxroach"
-    name       = "maxroach"
-    password   = (sensitive value)
-}
-
-# data.cockroach_cluster.example:
-data "cockroach_cluster" "example" {
-    cloud_provider    = "GCP"
-    cockroach_version = "v22.2.0"
-    dedicated         = {
-        disk_iops        = 450
-        memory_gib       = 7.5
-        num_virtual_cpus = 2
-        storage_gib      = 15
-    }
-    id                = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
-    name              = "blue-dog"
-    operation_status  = "CLUSTER_STATUS_UNSPECIFIED"
-    plan              = "DEDICATED"
-    regions           = [
-        # (1 unchanged element hidden)
-    ]
-    state             = "CREATED"
-}
-
-
-Outputs:
-
-cluster = {
-    account_id        = null
-    cloud_provider    = "GCP"
-    cockroach_version = "v22.2.0"
-    creator_id        = null
-    dedicated         = {
-        disk_iops        = 450
-        memory_gib       = 7.5
-        num_virtual_cpus = 2
-        storage_gib      = 15
-    }
-    id                = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
-    name              = "blue-dog"
-    operation_status  = "CLUSTER_STATUS_UNSPECIFIED"
-    plan              = "DEDICATED"
-    regions           = [
-        {
-            name       = "us-west2"
-            node_count = 3
-            sql_dns    = "blue-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
-            ui_dns     = "admin-blue-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
-        },
-    ]
-    serverless        = null
-    state             = "CREATED"
-}
-~~~
-
-</section>
-
-## Delete the cluster
-
-If you want to delete the cluster, run the following command:
+If you want to delete a cluster managed by Terraform, run the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -532,80 +192,7 @@ terraform destroy
 
 Enter `yes` when prompted to delete the cluster.
 
-You will see output similar to the following:
-
-<section class="filter-content" markdown="1" data-scope="serverless">
-
-~~~
-cockroach_cluster.example: Refreshing state... [id=1aaae1f8-19e2-4653-ba62-db16de2a84b9]
-cockroach_sql_user.example: Refreshing state... [id=1aaae1f8-19e2-4653-ba62-db16de2a84b9:maxroach]
-
-Terraform used the selected providers to generate the following execution
-plan. Resource actions are indicated with the following symbols:
-  - destroy
-
-Terraform will perform the following actions:
-
-  # cockroach_cluster.example will be destroyed
-...
-Plan: 0 to add, 0 to change, 2 to destroy.
-
-Do you really want to destroy all resources?
-  Terraform will destroy all your managed infrastructure, as shown above.
-  There is no undo. Only 'yes' will be accepted to confirm.
-
-  Enter a value: yes
-
-cockroach_sql_user.example: Destroying... [id=1aaae1f8-19e2-4653-ba62-db16de2a84b9:maxroach]
-cockroach_sql_user.example: Destruction complete after 1s
-cockroach_cluster.example: Destroying... [id=1aaae1f8-19e2-4653-ba62-db16de2a84b9]
-cockroach_cluster.example: Destruction complete after 1s
-
-Destroy complete! Resources: 2 destroyed.
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="dedicated">
-
-~~~
-cockroach_cluster.example: Refreshing state... [id=2697e5de-73e6-4d67-a4b4-2b2075dc2dfe]
-cockroach_sql_user.example: Refreshing state... [id=2697e5de-73e6-4d67-a4b4-2b2075dc2dfe:maxroach]
-cockroach_allow_list.example: Refreshing state... [id=2697e5de-73e6-4d67-a4b4-2b2075dc2dfe:76.14.55.13/32]
-data.cockroach_cluster.example: Reading...
-data.cockroach_cluster.example: Read complete after 0s [id=2697e5de-73e6-4d67-a4b4-2b2075dc2dfe]
-
-Terraform used the selected providers to generate the following execution
-plan. Resource actions are indicated with the following symbols:
-  - destroy
-
-Terraform will perform the following actions:
-
-  # cockroach_allow_list.example will be destroyed
-...
-
-Plan: 0 to add, 0 to change, 3 to destroy.
-
-...
-
-Do you really want to destroy all resources?
-  Terraform will destroy all your managed infrastructure, as shown above.
-  There is no undo. Only 'yes' will be accepted to confirm.
-
-  Enter a value: yes
-
-cockroach_sql_user.example: Destroying... [id=2697e5de-73e6-4d67-a4b4-2b2075dc2dfe:maxroach]
-cockroach_allow_list.example: Destroying... [id=2697e5de-73e6-4d67-a4b4-2b2075dc2dfe:76.14.55.13/32]
-cockroach_allow_list.example: Destruction complete after 1s
-cockroach_sql_user.example: Destruction complete after 3s
-cockroach_cluster.example: Destroying... [id=2697e5de-73e6-4d67-a4b4-2b2075dc2dfe]
-cockroach_cluster.example: Destruction complete after 2s
-
-Destroy complete! Resources: 3 destroyed.
-~~~
-
-</section>
-
 ## Next steps
 
-The [CockroachDB Cloud Terraform provider reference docs](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs) provide detailed information on the resources you can manage using Terraform.
+- Read the [CockroachDB Cloud Terraform provider reference docs](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs) in the Terraform registry, which provide detailed information on the resources you can manage using Terraform.
+- Browse the [example recipes](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples) in the Terraform Provider's GitHub repository.

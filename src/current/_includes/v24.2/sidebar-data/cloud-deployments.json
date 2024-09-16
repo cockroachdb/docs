@@ -48,7 +48,7 @@
                     ]
             },
             {
-                "title": "Provision a Serverless Cluster with Terraform",
+                "title": "Use the Terraform provider",
                 "urls": [
                     "/cockroachcloud/provision-a-cluster-with-terraform.html"
                 ]
