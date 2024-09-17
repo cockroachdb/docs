@@ -51,7 +51,7 @@ Refer to [Plan a CockroachDB Advanced cluster](plan-your-cluster-advanced.html) 
 You can add a maximum of 150 nodes to your cluster. To express interest in larger configurations, [contact your Cockroach Labs account team](https://support.cockroachlabs.com/hc/requests/new).
 
 Click **Next: Capacity**.
-{% comment %}VPC peering status pending
+
 ## Step 4. Enable VPC Peering (optional)
 
 You can use [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) to connect a GCP application to a CockroachDB {{ site.data.products.cloud }} cluster deployed on GCP. A separate VPC Peering connection is required for each cluster.
@@ -75,9 +75,8 @@ You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and si
         After your cluster is created, you can [establish VPC Peering or AWS PrivateLink]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-private-connectivity).
 
 If you don't want to enable VPC Peering, leave the default selection of **Use the default IP range** as is and click **Next: Capacity**.
-{% endcomment %}
 
-## Step 4. Configure cluster capacity
+## Step 5. Configure cluster capacity
 
 {% capture cap_per_vcpu %}{% include_cached {{ site.current_cloud_version }}/prod-deployment/provision-storage.md %}{% endcapture %}
 
@@ -122,9 +121,9 @@ Click **Next: Security**.
 
 You can enable advanced security features for PCI DSS and HIPAA [compliance]({% link cockroachcloud/compliance.md %}) at an additional cost. These features are not yet available for CockroachDB {{ site.data.products.advanced }} on Azure. Refer to [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
-    {{site.data.alerts.callout_danger}}
-    Advanced security features cannot be enabled or disabled after cluster creation.
-    {{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+Advanced security features cannot be enabled or disabled after cluster creation.
+{{site.data.alerts.end}}
 
 ## Step 7. Enter billing details
 

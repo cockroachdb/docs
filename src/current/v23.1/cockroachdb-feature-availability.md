@@ -33,9 +33,6 @@ General availability (GA)                     | Feature is production-ready and 
 ### Export metrics to Azure Monitor
 [Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics-advanced.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
-### AWS PrivateLink for CockroachDB Serverless
-[Connecting privately to a multi-region CockroachDB {{ site.data.products.serverless }} cluster using AWS PrivateLink]({% link cockroachcloud/aws-privatelink.md %}?filters=serverless) is in limited access. This can help your organization meet its security requirements and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
-
 ## Features in preview
 
 {{site.data.alerts.callout_info}}
@@ -69,9 +66,9 @@ The [schema-conversion summary report]({% link cockroachcloud/migrations-page.md
 
 The [SQL Shell]({% link cockroachcloud/sql-shell.md %}) in the CockroachDB {{ site.data.products.cloud }} Console is in preview. The SQL Shell enables you to run [queries]({% link {{ page.version.version }}/selection-queries.md %}) on your CockroachDB {{ site.data.products.cloud }} cluster directly from your browser.
 
-### Restore a CockroachDB {{ site.data.products.dedicated }} cluster from a managed-service backup
+### Restore a CockroachDB {{ site.data.products.advanced }} cluster from a managed-service backup
 
-[Restoring an entire CockroachDB {{ site.data.products.dedicated }} cluster from a managed-service backup]({% link cockroachcloud/use-managed-service-backups.md %}#restore-a-cluster) is in preview. Managed-service backups are automated backups of clusters in CockroachDB {{ site.data.products.cloud }} that are stored in Cockroach Labs' cloud storage.
+[Restoring an entire CockroachDB {{ site.data.products.advanced }} cluster from a managed-service backup]({% link cockroachcloud/use-managed-service-backups.md %}#restore-a-cluster) is in preview. Managed-service backups are automated backups of clusters in CockroachDB {{ site.data.products.cloud }} that are stored in Cockroach Labs' cloud storage.
 
 ### Log SQL Statistics to Datadog
 
