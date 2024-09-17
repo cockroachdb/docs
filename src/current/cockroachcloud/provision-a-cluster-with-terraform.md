@@ -73,8 +73,6 @@ Before you start this tutorial, you must
 Terraform reports the actions it will take. Verify the details, then type `yes` to apply the changes.
 {% endcapture %}
 
-Terraform uses a infrastructure-as-code approach to managing resources. Terraform configuration files allow you to define resources declaratively and let Terraform manage their lifecycle.
-
 <section class="filter-content" markdown="1" data-scope="basic">
 
 In this tutorial, you will create a CockroachDB {{ site.data.products.basic }} cluster.
@@ -118,7 +116,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.standard }
       plan           = "STANDARD"
       serverless = {
         usage_limits = {
-          provisioned_vcpus = 2
+          provisioned_virtual_cpus = 2
         }
       }
       regions = [
@@ -131,7 +129,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.standard }
     ~~~
       - Replace `cockroach-standard` with a name for the cluster.
       - Set `cloud_provider` to `AWS` `AZURE`, or `GCP`.
-      - Under `usage_limits`, set `provisioned_vcpus` to the number of vCPUs required per node.
+      - Under `usage_limits`, set `provisioned_virtual_cpus` to the required maximum vCPUs for the cluster.
       - Under `regions`, add the names of one or more regions for the cluster.
       - To optionally enable [deletion protection]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection), set `delete_protection` to `true`.
 {{ remaining_steps }}
@@ -152,7 +150,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.advanced }
       plan           = "ADVANCED"
       dedicated = {
         storage_gib = 15
-        num_vcpus = 4
+        num_virtual_cpus = 4
       }
       regions = [
         {
@@ -165,7 +163,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.advanced }
     ~~~
       - Replace `cockroach-advanced` with a name for the cluster.
       - Set `cloud_provider` to `AWS` `AZURE`, or `GCP`.
-      - Under `dedicated`, set `storage_gib` to a value large enough to contain the cluster's expected data. Set `num_vcpus` to the number of vCPUs per node.
+      - Under `dedicated`, set `storage_gib` to a value large enough to contain the cluster's expected data. Set `num_virtual_cpus` to the number of vCPUs per node.
       - Under `regions`, add the names of one or more regions for the cluster and specify the `node_count`, or the number of nodes, per region.
       - To optionally enable [deletion protection]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection), set `delete_protection` to `true`.
 {{ remaining_steps }}
