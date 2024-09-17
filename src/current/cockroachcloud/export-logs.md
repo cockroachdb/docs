@@ -519,7 +519,7 @@ curl --request GET \
 
 Where:
 
-- `{cluster_id}` is your CockroachDB {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+- `{cluster_id}` is your CockroachDB {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 - `{secret_key}` is your CockroachDB {{ site.data.products.dedicated }} API key. See [API Access]({% link cockroachcloud/managing-access.md %}) for instructions on generating this key.
 
 ## Update an existing log export configuration

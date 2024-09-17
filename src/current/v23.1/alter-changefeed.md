@@ -21,7 +21,7 @@ It is necessary to [**pause**]({% link {{ page.version.version }}/pause-job.md %
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/alter_changefeed.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_changefeed.html %}
 </div>
 
 ## Parameters
