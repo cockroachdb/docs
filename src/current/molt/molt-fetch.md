@@ -789,10 +789,10 @@ Cockroach Labs recommends monitoring the following metrics:
 | `molt_fetch_num_tables`               | Number of tables that will be moved from the source.                                                               |
 | `molt_fetch_num_task_errors`          | Number of errors encountered by the fetch task.                                                                    |
 | `molt_fetch_overall_duration`         | Duration (in seconds) of the fetch task.                                                                           |
-| `molt_fetch_rows_exported`            | Number of rows that have been exported from a table (e.g., `molt_fetch_rows_exported{table="public.users"}`)       |
-| `molt_fetch_rows_imported`            | Number of rows that have been imported from a table (e.g., `molt_fetch_rows_imported{table="public.users"}`)       |
-| `molt_fetch_table_export_duration_ms` | Duration (in milliseconds) of a table's export (e.g., `molt_fetch_table_export_duration_ms{table="public.users"}`. |
-| `molt_fetch_table_import_duration_ms` | Duration (in milliseconds) of a table's import (e.g., `molt_fetch_table_import_duration_ms{table="public.users"}`. |
+| `molt_fetch_rows_exported`            | Number of rows that have been exported from a table. For example:<br>`molt_fetch_rows_exported{table="public.users"}` |
+| `molt_fetch_rows_imported`            | Number of rows that have been imported from a table. For example:<br>`molt_fetch_rows_imported{table="public.users"}` |
+| `molt_fetch_table_export_duration_ms` | Duration (in milliseconds) of a table's export. For example:<br>`molt_fetch_table_export_duration_ms{table="public.users"}` |
+| `molt_fetch_table_import_duration_ms` | Duration (in milliseconds) of a table's import. For example:<br>`molt_fetch_table_import_duration_ms{table="public.users"}` |
 
 ## Docker usage
 
