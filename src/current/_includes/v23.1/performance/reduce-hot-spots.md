@@ -4,9 +4,9 @@
 
     - Benefits of increasing normalization:
 
-        - Can improve performance for write-heavy workloads. This is because, with increased normalization, more data is written to one place rather than to multiple places.  
+        - Can improve performance for write-heavy workloads. This is because, with increased normalization, a given business fact must be written to one place rather than to multiple places.  
         - Allows separate transactions to modify related underlying data without causing [contention](#transaction-contention).
-        - Reduces the chance of data inconsistency, since more data is written only to one place.
+        - Reduces the chance of data inconsistency, since a given business fact must be written only to one place.
         - Reduces or eliminates data redundancy.
         - Uses less disk space.
 
