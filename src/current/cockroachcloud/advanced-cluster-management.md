@@ -150,9 +150,9 @@ To set a maintenance window:
 
 ## Restore data from a backup
 
-Cockroach Labs automatically runs full managed backups daily and incremental backups hourly for every CockroachDB {{ site.data.products.advanced }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. Refer to [Use Managed-Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) for ways to restore data from your cluster's automatic backups in the Console.
+Cockroach Labs automatically runs full managed backups daily and incremental backups hourly for every CockroachDB {{ site.data.products.advanced }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. Refer to [Use Managed-Service Backups]({% link cockroachcloud/managed-backups.md %}) for ways to restore data from your cluster's automatic backups in the Console.
 
-Additionally, you can [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your CockroachDB {{ site.data.products.advanced }} cluster manually. For detail on taking backups to your cloud storage, see [Take and Restore Customer-Owned Backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}).
+Additionally, you can [back up and restore]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) your CockroachDB {{ site.data.products.advanced }} cluster manually. For detail on taking backups to your cloud storage, see [Take and Restore Customer-Owned Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.

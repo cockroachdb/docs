@@ -20,7 +20,7 @@ You can then use the following SQL statements to inspect details relating to sch
 - [`SHOW JOBS`]({% link {{site.current_cloud_version}}/show-jobs.md %})
 - [`SHOW BACKUP`]({% link {{site.current_cloud_version}}/show-backup.md %})
 
-For detail on [managed-service backups]({% link cockroachcloud/use-managed-service-backups.md %}) that Cockroach Labs stores for your CockroachDB {{ site.data.products.cloud }} cluster, refer to the **Backup and Restore** page in the Cloud Console.
+For detail on [managed backups]({% link cockroachcloud/managed-backups.md %}) that Cockroach Labs stores for your CockroachDB {{ site.data.products.cloud }} cluster, refer to the **Backup and Restore** page in the Cloud Console.
 
 {% include cockroachcloud/backups/metrics-per-node.md %}
 

@@ -32,7 +32,7 @@ Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of c
 CockroachDB {{ site.data.products.basic }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each non-contract CockroachDB {{ site.data.products.cloud }} organization is given 50 million [Request Units](#request-units) and 10 GiB of storage for free each month. Free resources do not apply to contract customers. Free resources can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
 Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You must [set resource limits]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) if you've already created one free CockroachDB {{ site.data.products.basic }} cluster. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
-  
+
 ## Choose resource limits
 
 Your cluster's [configured capacity]({% link cockroachcloud/create-a-basic-cluster.md %}#step-4-configure-cluster-capacity) determines the [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) (the maximum amount of storage and RUs the cluster can use in a month).
@@ -48,7 +48,7 @@ Each [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administ
 
 ## Multi-region clusters
 
-When you create a multi-region {{ site.data.products.basic }} cluster, you will be prompted to select a **Primary region** from which CockroachDB will optimize access to data. If you want to change your region configuration, [you can use the {{ site.data.products.cloud }} Console]({% link cockroachcloud/basic-cluster-management.md %}#edit-regions), or you can [back up and restore]({% link cockroachcloud/use-managed-service-backups.md %}) your data into a new cluster with the desired configuration. 
+When you create a multi-region {{ site.data.products.basic }} cluster, you will be prompted to select a **Primary region** from which CockroachDB will optimize access to data. If you want to change your region configuration, [you can use the {{ site.data.products.cloud }} Console]({% link cockroachcloud/basic-cluster-management.md %}#edit-regions), or you can [back up and restore]({% link cockroachcloud/managed-backups.md %}) your data into a new cluster with the desired configuration.
 
 {{site.data.alerts.callout_info}}
 You cannot currently remove regions once they have been added.
