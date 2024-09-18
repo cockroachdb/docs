@@ -181,27 +181,15 @@
             "title": "Customer-Managed Encryption Keys (CMEK)",
             "items": [
                 {
-                "title": "Manage CMEK for Dedicated",
-                "urls": [
-                    "/cockroachcloud/managing-cmek.html"
-                ]
-                },
-                {
-                "title": "Provision AWS for CMEK",
-                "urls": [
-                    "/cockroachcloud/cmek-ops-aws.html"
-                ]
-                },
-                {
-                "title": "Provision GCP for CMEK",
-                "urls": [
-                    "/cockroachcloud/cmek-ops-gcp.html"
-                ]
-                },
-                {
-                "title": "Customer-Managed Encryption Keys (CMEK) Overview",
+                "title": "Overview",
                 "urls": [
                     "/cockroachcloud/cmek.html"
+                ]
+                },
+                {
+                "title": "Manage CMEK",
+                "urls": [
+                    "/cockroachcloud/managing-cmek.html"
                 ]
                 }
             ]

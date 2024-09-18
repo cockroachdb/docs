@@ -387,7 +387,7 @@ Get future release notes emailed to you:
 <h3 id="2023-07-05-security-changes"> Security updates </h3>
 
 - The [Organization Audit Logs API]({% link cockroachcloud/cloud-org-audit-logs.md %}), which provides logs of events that occur in a Cloud organization, is now [generally available](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability#feature-availability-phases).
-- `ExternalId` support is now re-enabled in the [Customer-managed Encryption Key (CMEK)]({% link cockroachcloud/cmek-ops-aws.md %}) capability on AWS.
+- `ExternalId` support is now re-enabled in the [Customer-managed Encryption Key (CMEK)]({% link cockroachcloud/cmek.md %}) capability on AWS.
 
 <h3 id="2023-07-05-bug-fixes"> Bug fixes </h3>
 

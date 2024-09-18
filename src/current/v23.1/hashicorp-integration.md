@@ -30,8 +30,6 @@ Resources:
 
 - [CMEK overview]({% link cockroachcloud/cmek.md %})
 - [Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated]({% link cockroachcloud/managing-cmek.md %})
-- [Provisioning GCP KMS Keys and Service Accounts for CMEK]({% link cockroachcloud/cmek-ops-gcp.md %})
-- [Provisioning AWS KMS Keys and IAM Roles for CMEK]({% link cockroachcloud/cmek-ops-aws.md %})
 
 ## Use Vault's PKI Secrets Engine to manage a CockroachDB {{ site.data.products.dedicated }} cluster's certificate authority (CA) and client certificates.
 
@@ -41,7 +39,7 @@ By using Vault to manage certificates, you can use only certificates with short 
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}) for an overview.
 
-Refer to [Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters]({% link cockroachcloud/client-certs-dedicated.md %}) for procedures involved in administering PKI for a CockroachDB {{ site.data.products.dedicated }} cluster.
+Refer to [Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters]({% link cockroachcloud/client-certs-dedicated.md %}) for procedures in involved in administering PKI for a CockroachDB {{ site.data.products.dedicated }} cluster.
 
 ## Use Vault's PKI Secrets Engine to manage a CockroachDB {{ site.data.products.core }} cluster's certificate authority (CA), server, and client certificates
 
@@ -63,10 +61,6 @@ CockroachDB users can use Vault's PostgreSQL Database Secrets Engine to handle t
 
 Try the tutorial: [Using HashiCorp Vault's Dynamic Secrets for Enhanced Database Credential Security in CockroachDB]({% link {{ page.version.version }}/vault-db-secrets-tutorial.md %})
 
-### How to speed up user/role management
-
-{% include {{page.version.version}}/sql/grant-revoke-schema-changes.md %}
-
 ## Use Vault's Transit Secrets Engine to manage a CockroachDB {{ site.data.products.core }} cluster's {{ site.data.products.enterprise }} Encryption At Rest store key
 
 When deploying {{ site.data.products.enterprise }}, customers can provide their own externally managed encryption keys for use as the *store key* for CockroachDB's [{{ site.data.products.enterprise }} Encryption At Rest]({% link {{ page.version.version }}/security-reference/encryption.md %}#encryption-at-rest-enterprise).
@@ -77,8 +71,6 @@ Vault's [Transit Secrets Engine](https://www.vaultproject.io/docs/secrets/transi
 
 - [CMEK overview]({% link cockroachcloud/cmek.md %})
 - [Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated]({% link cockroachcloud/managing-cmek.md %})
-- [Provisioning GCP KMS Keys and Service Accounts for CMEK]({% link cockroachcloud/cmek-ops-gcp.md %})
-- [Provisioning AWS KMS Keys and IAM Roles for CMEK]({% link cockroachcloud/cmek-ops-aws.md %})
 - [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %})
 - [Certificate Authentication for SQL Clients in Dedicated Clusters]({% link cockroachcloud/client-certs-dedicated.md %})
 - [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %})

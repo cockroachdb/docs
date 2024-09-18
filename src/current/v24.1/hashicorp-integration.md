@@ -30,8 +30,6 @@ Resources:
 
 - [CMEK overview]({% link cockroachcloud/cmek.md %})
 - [Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated]({% link cockroachcloud/managing-cmek.md %})
-- [Provisioning GCP KMS Keys and Service Accounts for CMEK]({% link cockroachcloud/cmek-ops-gcp.md %})
-- [Provisioning AWS KMS Keys and IAM Roles for CMEK]({% link cockroachcloud/cmek-ops-aws.md %})
 
 ## Use Vault's PKI Secrets Engine to manage a CockroachDB {{ site.data.products.dedicated }} cluster's certificate authority (CA) and client certificates.
 
@@ -77,8 +75,6 @@ Vault's [Transit Secrets Engine](https://www.vaultproject.io/docs/secrets/transi
 
 - [CMEK overview]({% link cockroachcloud/cmek.md %})
 - [Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated]({% link cockroachcloud/managing-cmek.md %})
-- [Provisioning GCP KMS Keys and Service Accounts for CMEK]({% link cockroachcloud/cmek-ops-gcp.md %})
-- [Provisioning AWS KMS Keys and IAM Roles for CMEK]({% link cockroachcloud/cmek-ops-aws.md %})
 - [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %})
 - [Certificate Authentication for SQL Clients in Dedicated Clusters]({% link cockroachcloud/client-certs-dedicated.md %})
 - [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %})
