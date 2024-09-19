@@ -39,7 +39,7 @@ In {{ site.data.products.standard }} and {{ site.data.products.advanced }} clust
 For instructions on how to view and configure managed backup settings, use:
 
 - The [Cloud Console](#cloud-console) for {{ site.data.products.standard }} or {{ site.data.products.advanced }}.
-- The [Cloud API]({% link cockroachcloud/cloud-api.md %}) for [{{ site.data.products.standard }}](#cloud-api-for-standard-clusters) or [{{ site.data.products.advanced }}](#cloud-api-for-advanced-clusters).
+- The [Cloud API]({% link cockroachcloud/cloud-api.md %}) for [{{ site.data.products.standard }}]({% link cockroachcloud/managed-backups.md %}?filters=standard#cloud-api-for-standard-clusters) or [{{ site.data.products.advanced }}]({% link cockroachcloud/managed-backups.md %}?filters=advanced#cloud-api-for-advanced-clusters).
 
 #### Frequency
 
