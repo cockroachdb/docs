@@ -20,15 +20,15 @@ In addition to managed backups, you can take manual backups to your own storage 
 
 ## Managed backup settings
 
-You can modify the settings of managed backups for [{{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters](#standard-and-advanced-clusters).
+You can modify the settings of managed backups in [{{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters](#standard-and-advanced-clusters).
 
-[{{ site.data.products.basic }} clusters](#basic-clusters) have a default configuration that you cannot modify.
+[{{ site.data.products.basic }} clusters](#basic-clusters) have default settings that you cannot modify.
 
 ### Basic clusters
 
 Cockroach Labs will take a managed backup every 24 hours. By default, managed backups will be retained for 30 days in {{ site.data.products.basic }} clusters.
 
-Once a cluster is deleted, Cockroach Labs retains the backup for 30 days. If an organization is deleted, you will lose access to all of the managed backups that Cockroach Labs has taken of the cluster after 30 days.
+Once a cluster or organization is deleted, Cockroach Labs retains the backup for 30 days.
 
 For more details on restoring a managed backup, refer to the [Cloud Console](#restore-a-basic-cluster) section. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources).
 
@@ -36,10 +36,16 @@ For more details on restoring a managed backup, refer to the [Cloud Console](#re
 
 In {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters you can configure the [frequency](#frequency) and [retention](#retention) of managed backups.
 
+{{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters take a combination of full and incremental backups in order to meet the set frequency. The type of managed backup the cluster takes is **not** configurable. Each incremental backup is dependent on the last full backup, which has an effect on the managed backups that you can restore in the set retention period.
+
+Full backups in the cluster will be deleted when they reach the set retention period. At this point, any incremental backups dependent on the deleted full backup will also be deleted. The Cloud Console will not list any backups that are beyond the set retention period, or incremental backups that cannot be restored.
+
 For instructions on how to view and configure managed backup settings, use:
 
-- The [Cloud Console](#cloud-console) for {{ site.data.products.standard }} or {{ site.data.products.advanced }}.
+- The [Cloud Console](#cloud-console) for [{{ site.data.products.standard }}]({% link cockroachcloud/managed-backups.md %}?filters=standard#cloud-console) or [{{ site.data.products.advanced }}]({% link cockroachcloud/managed-backups.md %}?filters=advanced#cloud-console).
 - The [Cloud API]({% link cockroachcloud/cloud-api.md %}) for [{{ site.data.products.standard }}]({% link cockroachcloud/managed-backups.md %}?filters=standard#cloud-api-for-standard-clusters) or [{{ site.data.products.advanced }}]({% link cockroachcloud/managed-backups.md %}?filters=advanced#cloud-api-for-advanced-clusters).
+
+{% include cockroachcloud/backups/full-backup-setting-change.md %}
 
 #### Frequency
 
@@ -143,6 +149,12 @@ For each backup, the following details display:
 
 ### Modify backup settings
 
+{{site.data.alerts.callout_info}}
+{% include cockroachcloud/backups/full-backup-setting-change.md %}
+{{site.data.alerts.end}}
+
+{% include cockroachcloud/backups/review-settings.md %}
+
 Click on **Settings** and the **Backup Settings** module will open.
 
 The **Enable backups** switch allows you to enable or disable backups.
@@ -150,7 +162,6 @@ The **Enable backups** switch allows you to enable or disable backups.
 To modify the [frequency](#frequency) of backups, click on the dropdown under **Schedule backups every**. This will display the following options to select:
 
 {% include cockroachcloud/backups/frequency-settings.md %}
-
 
 To modify the [retention](#retention) of backups, click on **Retain backups for**. This will display the following options to select:
 
@@ -188,6 +199,8 @@ To restore a cluster:
 ## Cloud API for Standard clusters
 
 {% include cockroachcloud/backups/cloud-api-get-put.md %}
+
+{% include cockroachcloud/backups/full-backup-setting-change.md %}
 
 </section>
 
@@ -229,6 +242,12 @@ For each table in the database, the **Name** of the table displays.
 To [restore a table](#restore-a-table), click **Restore** in the corresponding row.
 
 ### Modify backup settings in an Advanced cluster
+
+{{site.data.alerts.callout_info}}
+{% include cockroachcloud/backups/full-backup-setting-change.md %}
+{{site.data.alerts.end}}
+
+{% include cockroachcloud/backups/review-settings.md %}
 
 On the **Backup and Restore** page, click on **Settings** and the **Backup Settings** module will open.
 
@@ -366,6 +385,8 @@ For each restore job, the tab will display:
 ## Cloud API for Advanced clusters
 
 {% include cockroachcloud/backups/cloud-api-get-put.md %}
+
+{% include cockroachcloud/backups/full-backup-setting-change.md %}
 
 </section>
 

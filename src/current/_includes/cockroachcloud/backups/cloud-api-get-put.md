@@ -36,6 +36,8 @@ If the request was successful, the API will return details about the managed bac
 
 ### Modify backup settings on a cluster
 
+{% include cockroachcloud/backups/review-settings.md %}
+
 To configure the frequency and retention of managed backups, send a `PUT` request to the `/v1/clusters/{cluster_id}/backups/config` endpoint.
 
 {% include_cached copy-clipboard.html %}
