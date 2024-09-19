@@ -12,7 +12,7 @@ This page provides recipes for fixing performance issues in your applications.
 
 This section describes how to use CockroachDB commands and dashboards to identify performance problems in your applications.
 
-<table>
+<table markdown="1">
   <tr>
     <th>Observation</th>
     <th>Diagnosis</th>
