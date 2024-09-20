@@ -80,7 +80,7 @@ Complete the following items before using MOLT Fetch:
 
 - If a table in the source database is much larger than the other tables, [filter and export the largest table](#schema-and-table-selection) in its own `molt fetch` task. Repeat this for each of the largest tables. Then export the remaining tables in another task.
 
-- When using [`IMPORT INTO`](#data-movement) to load tables into CockroachDB, if the fetch process terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation](#fetch-continuation), or restart the process from the beginning.
+- When using [`IMPORT INTO`](#data-movement) to load tables into CockroachDB, if the fetch task terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation](#fetch-continuation), or restart the task from the beginning.
 
 ## Security recommendations
 
@@ -167,7 +167,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 
 | Command |                                               Usage                                               |
 |---------|---------------------------------------------------------------------------------------------------|
-| `fetch` | Start the fetch process. This loads data from a source database to a target CockroachDB database. |
+| `fetch` | Start the fetch task. This loads data from a source database to a target CockroachDB database. |
 
 ### Subcommands
 
@@ -187,13 +187,13 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--bucket-path`                               | The path within the [cloud storage](#cloud-storage) bucket where intermediate files are written (e.g., `'s3://bucket/path'` or `'gs://bucket/path'`). Only the path is used; query parameters (e.g., credentials) are ignored.                                                                                                                                                                                                                                                                |
 | `--cleanup`                                   | Whether to delete intermediate files after moving data using [cloud or local storage](#data-path). **Note:** Cleanup does not occur on [continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                   |
 | `--compression`                               | Compression method for data when using [`IMPORT INTO`](#data-movement) (`gzip`/`none`).<br><br>**Default:** `gzip`                                                                                                                                                                                                                                                                                                                                                                            |
-| `--continuation-file-name`                    | Restart fetch at the specified filename if the process encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                       |
-| `--continuation-token`                        | Restart fetch at a specific table, using the specified continuation token, if the process encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                    |
+| `--continuation-file-name`                    | Restart fetch at the specified filename if the task encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                          |
+| `--continuation-token`                        | Restart fetch at a specific table, using the specified continuation token, if the task encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                       |
 | `--crdb-pts-duration`                         | The duration for which each timestamp used in data export from a CockroachDB source is protected from garbage collection. This ensures that the data snapshot remains consistent. For example, if set to `24h`, each timestamp is protected for 24 hours from the initiation of the export job. This duration is extended at regular intervals specified in `--crdb-pts-refresh-interval`.<br><br>**Default:** `24h0m0s`                                                                      |
 | `--crdb-pts-refresh-interval`                 | The frequency at which the protected timestamp's validity is extended. This interval maintains protection of the data snapshot until data export from a CockroachDB source is completed. For example, if set to `10m`, the protected timestamp's expiration will be extended by the duration specified in `--crdb-pts-duration` (e.g., `24h`) every 10 minutes while export is not complete. <br><br>**Default:** `10m0s`                                                                     |
 | `--direct-copy`                               | Enables [direct copy](#direct-copy), which copies data directly from source to target without using an intermediate store.                                                                                                                                                                                                                                                                                                                                                                    |
 | `--export-concurrency`                        | Number of shards to export at a time, each on a dedicated thread. This only applies when exporting data from the source database, not when loading data into the target database. The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`.<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. Refer to [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source |
-| `--fetch-id`                                  | Restart fetch process corresponding to the specified ID. If `--continuation-file-name` or `--continuation-token` are not specified, fetch restarts for all failed tables.                                                                                                                                                                                                                                                                                                                     |
+| `--fetch-id`                                  | Restart fetch task corresponding to the specified ID. If `--continuation-file-name` or `--continuation-token` are not specified, fetch restarts for all failed tables.                                                                                                                                                                                                                                                                                                                        |
 | `--flush-rows`                                | Number of rows before the source data is flushed to intermediate files. **Note:** If `--flush-size` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                  |
 | `--flush-size`                                | Size (in bytes) before the source data is flushed to intermediate files. **Note:** If `--flush-rows` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                 |
 | `--import-batch-size`                         | The number of files to be imported at a time to the target database. This applies only when using [`IMPORT INTO`](#data-movement) to load data into the target. **Note:** Increasing this value can improve the performance of full-scan queries on the target database shortly after fetch completes, but very high values are not recommended. If any individual file in the import batch fails, you must [retry](#fetch-continuation) the entire batch.<br><br>**Default:** `1000`         |
@@ -202,9 +202,9 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--local-path-listen-addr`                    | Write intermediate files to a [local file server](#local-file-server) at the specified address (e.g., `'localhost:3000'`). `--local-path` must be specified.                                                                                                                                                                                                                                                                                                                                  |
 | `--log-file`                                  | Write messages to the specified log filename. If no filename is provided, messages write to `fetch-{datetime}.log`. If `"stdout"` is provided, messages write to `stdout`.                                                                                                                                                                                                                                                                                                                    |
 | `--logging`                                   | Level at which to log messages (`trace`/`debug`/`info`/`warn`/`error`/`fatal`/`panic`).<br><br>**Default:** `info`                                                                                                                                                                                                                                                                                                                                                                            |
-| `--metrics-listen-addr`                       | Address of the metrics endpoint, which has the path `{address}/metrics`.<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                               |
+| `--metrics-listen-addr`                       | Address of the Prometheus metrics endpoint, which has the path `{address}/metrics`. For details on important metrics to monitor, see [Metrics](#metrics).<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                              |
 | `--mode`                                      | Configure the MOLT Fetch behavior: `data-load`, `data-load-and-replication`, `replication-only`, `export-only`, or `import-only`. For details, refer to [Fetch mode](#fetch-mode).<br><br>**Default:** `data-load`                                                                                                                                                                                                                                                                            |
-| `--non-interactive`                           | Run the fetch process without interactive prompts. This is recommended **only** when running `molt fetch` in an automated process (i.e., a job or continuous integration).                                                                                                                                                                                                                                                                                                                    |
+| `--non-interactive`                           | Run the fetch task without interactive prompts. This is recommended **only** when running `molt fetch` in an automated process (i.e., a job or continuous integration).                                                                                                                                                                                                                                                                                                                       |
 | `--pglogical-replication-slot-drop-if-exists` | Drop the replication slot, if specified with `--pglogical-replication-slot-name`. Otherwise, the default replication slot is not dropped.                                                                                                                                                                                                                                                                                                                                                     |
 | `--pglogical-replication-slot-name`           | The name of a replication slot to create before taking a snapshot of data (e.g., `'fetch'`). **Required** in order to perform continuous [replication](#load-data-and-replicate-changes) from a source PostgreSQL database.                                                                                                                                                                                                                                                                   |
 | `--pglogical-replication-slot-plugin`         | The output plugin used for logical replication under `--pglogical-replication-slot-name`.<br><br>**Default:** `pgoutput`                                                                                                                                                                                                                                                                                                                                                                      |
@@ -216,7 +216,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--table-exclusion-filter`                    | Exclude tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>This value **cannot** be set to `'.*'`, which would cause every table to be excluded. <br><br>**Default:** Empty string                                                                                                                                                                                                                                               |
 | `--table-filter`                              | Move tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                      |
 | `--table-handling`                            | How tables are initialized on the target database (`none`/`drop-on-target-and-recreate`/`truncate-if-exists`). For details, see [Target table handling](#target-table-handling).<br><br>**Default:** `none`                                                                                                                                                                                                                                                                                   |
-| `--transformations-file`                      | Path to a JSON file that defines transformations to be performed on the target schema during the fetch process. Refer to [Transformations](#transformations).                                                                                                                                                                                                                                                                                                                                 |
+| `--transformations-file`                      | Path to a JSON file that defines transformations to be performed on the target schema during the fetch task. Refer to [Transformations](#transformations).                                                                                                                                                                                                                                                                                                                                    |
 | `--type-map-file`                             | Path to a JSON file that contains explicit type mappings for automatic schema creation, when enabled with `--table-handling drop-on-target-and-recreate`. For details on the JSON format and valid type mappings, see [type mapping](#type-mapping).                                                                                                                                                                                                                                          |
 | `--use-console-writer`                        | Use the console writer, which has cleaner log output but introduces more latency.<br><br>**Default:** `false` (log as structured JSON)                                                                                                                                                                                                                                                                                                                                                        |
 | `--use-copy`                                  | Use [`COPY FROM`](#data-movement) to move data. This makes tables queryable during data load, but is slower than using `IMPORT INTO`. For details, refer to [Data movement](#data-movement).                                                                                                                                                                                                                                                                                                  |
@@ -534,8 +534,8 @@ If [`drop-on-target-and-recreate`](#target-table-handling) is set, MOLT Fetch au
 - PostgreSQL types are mapped to existing CockroachDB [types]({% link {{site.current_cloud_version}}/data-types.md %}) that have the same [`OID`]({% link {{site.current_cloud_version}}/oid.md %}).
 - The following MySQL types are mapped to corresponding CockroachDB types:
 
-	|                      MySQL type                     |                                                CockroachDB type                                                |
-	|-----------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+	|                      MySQL type                     |                                                  CockroachDB type                                                  |
+	|-----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
 	| `CHAR`, `CHARACTER`, `VARCHAR`, `NCHAR`, `NVARCHAR` | [`VARCHAR`]({% link {{site.current_cloud_version}}/string.md %})                                                   |
 	| `TINYTEXT`, `TEXT`, `MEDIUMTEXT`, `LONGTEXT`        | [`STRING`]({% link {{site.current_cloud_version}}/string.md %})                                                    |
 	| `GEOMETRY`                                          | [`GEOMETRY`]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#geometry)                          |
@@ -614,7 +614,7 @@ The following JSON example defines two type mappings:
 
 ### Transformations
 
-You can define transformation rules to be performed on the target schema during the fetch process. These can be used to:
+You can define transformation rules to be performed on the target schema during the fetch task. These can be used to:
 
 - Map [computed columns]({% link {{ site.current_cloud_version }}/computed-columns.md %}) to a target schema.
 - Map [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) to a single target table.
@@ -667,7 +667,7 @@ The following JSON example defines two transformation rules:
 		Columns that match the `column` regex will **not** be moved to CockroachDB if `add_computed_def` is omitted or set to `false` (default), or if a matching column is a non-computed column.
 		{{site.data.alerts.end}}
 - `table_rename_opts` configures the following option for table renaming:
-	- `value` specifies the table name to which the matching `resource_specifier` is mapped. If only one source table matches `resource_specifier`, it is renamed to `table_rename_opts.value` on the target. If more than one table matches `resource_specifier` (i.e., an n-to-1 mapping), the fetch process assumes that all matching tables are [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same schema, and moves their data to a table named `table_rename_opts.value` on the target. Otherwise, the process will error. 
+	- `value` specifies the table name to which the matching `resource_specifier` is mapped. If only one source table matches `resource_specifier`, it is renamed to `table_rename_opts.value` on the target. If more than one table matches `resource_specifier` (i.e., an n-to-1 mapping), the fetch task assumes that all matching tables are [partitioned tables]({% link {{ site.current_cloud_version }}/partitioning.md %}) with the same schema, and moves their data to a table named `table_rename_opts.value` on the target. Otherwise, the task will error. 
 		
 		Additionally, in an n-to-1 mapping situation: 
 
@@ -707,7 +707,7 @@ SHOW CREATE TABLE computed;
 
 ### Fetch continuation
 
-If MOLT Fetch fails while loading data into CockroachDB from intermediate files, it exits with an error message, fetch ID, and [continuation token](#list-active-continuation-tokens) for each table that failed to load on the target database. You can use this information to continue the process from the *continuation point* where it was interrupted. For an example, see [Continue fetch after encountering an error](#continue-fetch-after-encountering-an-error).
+If MOLT Fetch fails while loading data into CockroachDB from intermediate files, it exits with an error message, fetch ID, and [continuation token](#list-active-continuation-tokens) for each table that failed to load on the target database. You can use this information to continue the task from the *continuation point* where it was interrupted. For an example, see [Continue fetch after encountering an error](#continue-fetch-after-encountering-an-error).
 
 Continuation is only possible under the following conditions:
 
@@ -725,10 +725,10 @@ To retry all data starting from the continuation point, reissue the `molt fetch`
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
 ~~~
 
-To retry a specific table that failed, include both `--fetch-id` and `--continuation-token`. The latter flag specifies a token string that corresponds to a specific table on the source database. A continuation token is written in the `molt fetch` output for each failed table. If the fetch process encounters a subsequent error, it generates a new token for each failed table. See [List active continuation tokens](#list-active-continuation-tokens).
+To retry a specific table that failed, include both `--fetch-id` and `--continuation-token`. The latter flag specifies a token string that corresponds to a specific table on the source database. A continuation token is written in the `molt fetch` output for each failed table. If the fetch task encounters a subsequent error, it generates a new token for each failed table. See [List active continuation tokens](#list-active-continuation-tokens).
 
 {{site.data.alerts.callout_info}}
-This will retry only the table that corresponds to the continuation token. If the fetch process succeeds, there may still be source data that is not yet loaded into CockroachDB.
+This will retry only the table that corresponds to the continuation token. If the fetch task succeeds, there may still be source data that is not yet loaded into CockroachDB.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -770,13 +770,29 @@ Continuation Tokens.
 
 ### CDC cursor
 
-A change data capture (CDC) cursor is written to the output as `cdc_cursor` at the beginning and end of the fetch process. For example:
+A change data capture (CDC) cursor is written to the output as `cdc_cursor` at the beginning and end of the fetch task. For example:
 
 ~~~ json
 {"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":1,"tables":["public.employees"],"cdc_cursor":"0/3F41E40","net_duration_ms":4879.890041,"net_duration":"000h 00m 04s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
 ~~~
 
 You can use the `cdc_cursor` value with an external change data capture (CDC) tool to continuously replicate subsequent changes on the source data to CockroachDB.
+
+### Metrics
+
+By default, MOLT Fetch exports [Prometheus](https://prometheus.io/) metrics at `127.0.0.1:3030/metrics`. You can configure this endpoint with the `--metrics-listen-addr` [flag](#global-flags).
+
+Cockroach Labs recommends monitoring the following metrics:
+
+|              Metric Name              |                                                    Description                                                     |
+|---------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| `molt_fetch_num_tables`               | Number of tables that will be moved from the source.                                                               |
+| `molt_fetch_num_task_errors`          | Number of errors encountered by the fetch task.                                                                    |
+| `molt_fetch_overall_duration`         | Duration (in seconds) of the fetch task.                                                                           |
+| `molt_fetch_rows_exported`            | Number of rows that have been exported from a table. For example:<br>`molt_fetch_rows_exported{table="public.users"}` |
+| `molt_fetch_rows_imported`            | Number of rows that have been imported from a table. For example:<br>`molt_fetch_rows_imported{table="public.users"}` |
+| `molt_fetch_table_export_duration_ms` | Duration (in milliseconds) of a table's export. For example:<br>`molt_fetch_table_export_duration_ms{table="public.users"}` |
+| `molt_fetch_table_import_duration_ms` | Duration (in milliseconds) of a table's import. For example:<br>`molt_fetch_table_import_duration_ms{table="public.users"}` |
 
 ## Docker usage
 
@@ -812,16 +828,16 @@ molt fetch \
 - `--bucket-path` specifies a directory on an [Amazon S3 bucket](#data-path) where intermediate files will be written.
 - `--cleanup` specifies that the intermediate files should be removed after the source data is loaded.
 - `--pglogical-replication-slot-name` specifies a replication slot name to be created on the source PostgreSQL database. This is used in continuous [replication](#load-data-and-replicate-changes).
-- `--mode data-load-and-replication` starts continuous [replication](#load-data-and-replicate-changes) of data from the source database to CockroachDB after the fetch process succeeds.
+- `--mode data-load-and-replication` starts continuous [replication](#load-data-and-replicate-changes) of data from the source database to CockroachDB after the fetch task succeeds.
 
-If the fetch process succeeds, the output displays a `fetch complete` message like the following:
+If the fetch task succeeds, the output displays a `fetch complete` message like the following:
 
 ~~~ json
 {"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":1,"tables":["public.employees"],"cdc_cursor":"0/3F41E40","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
 ~~~
 
 {{site.data.alerts.callout_info}}
-If the fetch process encounters an error, it will exit and can be [continued](#continue-fetch-after-encountering-an-error).
+If the fetch task encounters an error, it will exit and can be [continued](#continue-fetch-after-encountering-an-error).
 {{site.data.alerts.end}}
 
 Continuous [replication](#load-data-and-replicate-changes) begins immediately afterward:
@@ -856,16 +872,16 @@ molt fetch \
 - `--bucket-path` specifies a directory on an [Google Cloud Storage bucket](#data-path) where intermediate files will be written.
 - `--use-copy` specifies that `COPY FROM` is used to load the tables, keeping the source tables online and queryable but loading the data more slowly than `IMPORT INTO`.
 - `--cleanup` specifies that the intermediate files should be removed after the source data is loaded.
-- `--mode data-load-and-replication` starts continuous [replication](#load-data-and-replicate-changes) of data from the source database to CockroachDB after the fetch process succeeds.
+- `--mode data-load-and-replication` starts continuous [replication](#load-data-and-replicate-changes) of data from the source database to CockroachDB after the fetch task succeeds.
 
-If the fetch process succeeds, the output displays a `fetch complete` message like the following:
+If the fetch task succeeds, the output displays a `fetch complete` message like the following:
 
 ~~~ json
 {"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":1,"tables":["public.employees"],"cdc_cursor":"0/3F41E40","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
 ~~~
 
 {{site.data.alerts.callout_info}}
-If the fetch process encounters an error, it will exit and can be [continued](#continue-fetch-after-encountering-an-error).
+If the fetch task encounters an error, it will exit and can be [continued](#continue-fetch-after-encountering-an-error).
 {{site.data.alerts.end}}
 
 Continuous [replication](#load-data-and-replicate-changes) begins immediately afterward:
@@ -897,7 +913,7 @@ molt fetch \
 
 ### Continue fetch after encountering an error
 
-If the fetch process encounters an error, it exits with an error message, fetch ID, and continuation token for each table that failed to load on the target database. You can use these values to [continue the fetch process](#fetch-continuation) from where it was interrupted.
+If the fetch task encounters an error, it exits with an error message, fetch ID, and continuation token for each table that failed to load on the target database. You can use these values to [continue the fetch task](#fetch-continuation) from where it was interrupted.
 
 ~~~ json
 {"level":"info","table":"public.tbl1","file_name":"shard_01_part_00000001.csv","message":"creating or updating token for duplicate key value violates unique constraint \"tbl1_pkey\"; Key (id)=(22) already exists."}
