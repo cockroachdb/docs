@@ -12,7 +12,7 @@ You can configure the following in [{{ site.data.products.standard }} and {{ sit
 - The frequency of the backups to meet [recovery point objective (RPO)]({% link {{site.current_cloud_version}}/disaster-recovery-overview.md %}#resilience-strategy) requirements.
 - The retention of the backups to set how long Cockroach Labs retains the backups.
 
-In [{{ site.data.products.basic }} clusters](#basic-clusters), you can view the default daily managed backups in the Cloud Console.
+[{{ site.data.products.basic }} clusters](#basic-clusters) have a default non-configurable schedule.
 
 {{site.data.alerts.callout_info}}
 In addition to managed backups, you can take manual backups to your own storage bucket with self-managed backups. Refer to the [Take and Restore Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) page.
@@ -28,13 +28,13 @@ You can modify the settings of managed backups in [{{ site.data.products.standar
 
 Cockroach Labs will take a managed backup every 24 hours. By default, managed backups will be retained for 30 days in {{ site.data.products.basic }} clusters.
 
-Once a cluster or organization is deleted, Cockroach Labs retains the backup for 30 days.
+When you delete a {{ site.data.products.basic }} cluster or the [organization]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-authorization-model) is deleted, the cluster's managed backups will follow the default retention period of 30 days.
 
 For more details on restoring a managed backup, refer to the [Cloud Console](#restore-a-basic-cluster) section. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources).
 
 ### Standard and Advanced clusters
 
-In {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters you can configure the [frequency](#frequency) and [retention](#retention) of managed backups.
+In {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters, you can configure the [frequency](#frequency) and [retention](#retention) of managed backups.
 
 {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters take a combination of full and incremental backups in order to meet the set frequency. The type of managed backup the cluster takes is **not** configurable. Each incremental backup is dependent on the last full backup, which has an effect on the managed backups that you can restore in the set retention period.
 
@@ -198,9 +198,11 @@ To restore a cluster:
 
 ## Cloud API for Standard clusters
 
-{% include cockroachcloud/backups/cloud-api-get-put.md %}
-
+{{site.data.alerts.callout_info}}
 {% include cockroachcloud/backups/full-backup-setting-change.md %}
+{{site.data.alerts.end}}
+
+{% include cockroachcloud/backups/cloud-api-get-put.md %}
 
 </section>
 
@@ -384,9 +386,11 @@ For each restore job, the tab will display:
 
 ## Cloud API for Advanced clusters
 
-{% include cockroachcloud/backups/cloud-api-get-put.md %}
-
+{{site.data.alerts.callout_info}}
 {% include cockroachcloud/backups/full-backup-setting-change.md %}
+{{site.data.alerts.end}}
+
+{% include cockroachcloud/backups/cloud-api-get-put.md %}
 
 </section>
 
