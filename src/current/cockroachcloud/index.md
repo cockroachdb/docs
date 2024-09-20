@@ -8,6 +8,7 @@ homepage: true
 docs_area:
 ---
 
+
 <div class="home-header mb-xl-5 bg-cover bg-cover__bg-gradient-purple-blue">
   <div class="p-2 p-md-5">
   <h1 class="m-0 text-white">CockroachDB Cloud Docs</h1>
