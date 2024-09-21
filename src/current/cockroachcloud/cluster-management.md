@@ -53,7 +53,7 @@ To edit your cluster's capacity:
 
 1. In the sidebar, verify the new estimated cost for the cluster and click **Update cluster**.
 
-To learn more, refer to [Plan a CockroachDB {{ site.data.products.standard }} cluster]({% link plan-your-cluster.md %}#provisioned-capacity).
+To learn more, refer to [Plan a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/plan-your-cluster.md %}#provisioned-capacity).
 
 ## Manage cluster upgrades
 
