@@ -114,7 +114,7 @@ Refer to [Pricing](https://www.cockroachlabs.com/pricing/).
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
-Each node of a CockroachDB {{ site.data.products.advanced }} cluster is provisioned with dedicated vCPU resources. You can [customize]({% link create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity) the number of vCPUs per node. This configuration applies to all nodes in the cluster. Compute costs are based on the vCPUs provisioned for each node, at rates that vary rates depending on the cloud provider and region.
+Each node of a CockroachDB {{ site.data.products.advanced }} cluster is provisioned with dedicated vCPU resources. You can [customize]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity) the number of vCPUs per node. This configuration applies to all nodes in the cluster. Compute costs are based on the vCPUs provisioned for each node, at rates that vary rates depending on the cloud provider and region.
 
 Compute charges are calculated hourly by multiplying the hourly rate of the provisioned compute per node and number of nodes per cluster. These charges are accumulated throughout the month to determine the total monthly compute charges. When you configure your cluster's capacity, you are implicitly selecting a _machine type_ offered by the cloud provider. Different machine types are billed at different rates. The hourly compute cost is calculated by multiplying the hourly rate of the machine type by the number of nodes.
 
@@ -233,8 +233,14 @@ In CockroachDB {{ site.data.products.standard }}, Change Data Capture is billed 
 
 </section>
 
+## Usage-based metrics in Preview
+
+Usage-based metrics for [data transfer](#data-transfer), [managed backup storage](#storage), and [Change Data Capture](#change-data-capture) are in [Preview]({% link {{site.current_cloud_version }}/cockroachdb-feature-availability.md %}#features-in-preview). You can view the usage of these metrics in your invoice page under **Billing**.
+
+There will be no additional charges for these metrics during the preview period, which is in effect until December, 2024. During this time, charges will appear as $0 on your monthly invoice.
+
 ## Next steps
 
 - [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}) and [Create a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}).
-- [Plan a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/plan-your-cluster.md %}) and [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link create-your-cluster.md %})
+- [Plan a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/plan-your-cluster.md %}) and [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %})
 - [Plan a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}) and [Create a CockroachDB {{ site.data.products.advanced }} cluster]{% link cockroachcloud/create-an-advanced-cluster.md %}
