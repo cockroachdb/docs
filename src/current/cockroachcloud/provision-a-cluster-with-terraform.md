@@ -96,6 +96,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.basic }} c
     ~~~
       - Replace `cockroach-basic` with a name for the cluster.
       - Set `cloud_provider` to `AWS` `AZURE`, or `GCP`.
+      - Under `serverless {}`, optionally set values for `resource_unit_limit` and `storage_mib_limits`.
       - Under `regions`, add the names of one or more regions for the cluster.
       - To optionally enable [deletion protection]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection), set `delete_protection` to `true`.
 {{ remaining_steps }}
@@ -218,12 +219,13 @@ To migrate from CockroachDB {{ site.data.products.standard }} to CockroachDB {{ 
 
 1. Edit the cluster's Terraform template:
     -  Change `plan` to `BASIC`.
-    - Replace the contents of `serverless {}` optional limits for Request Units and Storage. The `provisioned_virtual_cpus` field is not supported for CockroachDB {{ site.data.products.basic }}. This field is required for CockroachDB {{ site.data.products.standard }}. It is not possible to set storage limitations on CockroachDB {{ site.data.products.standard }}.
+    - Replace the contents of `serverless {...}` with optional limits for Request Units and Storage. The `provisioned_virtual_cpus` field is not supported on CockroachDB {{ site.data.products.basic }}.
       {% include_cached copy-clipboard.html %}
       ~~~ hcl
-            serverless = {
+        serverless = {
           usage_limits = {
-            provisioned_virtual_cpus = 2
+            request_unit_limit = 4000
+            storage_mib_limit = 2000
           }
         }
       ~~~
