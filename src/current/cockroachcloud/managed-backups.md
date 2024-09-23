@@ -30,7 +30,9 @@ Cockroach Labs will take a managed backup every 24 hours. By default, managed ba
 
 When you delete a {{ site.data.products.basic }} cluster or the [organization]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-authorization-model) is deleted, the cluster's managed backups will follow the default retention period of 30 days.
 
-For more details on restoring a managed backup, refer to the [Cloud Console](#restore-a-basic-cluster) section. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources).
+When a cluster is deleted, or the customer is no longer in an agreement with Cockroach Labs, managed backups taken on {{ site.data.products.basic }} clusters will be retained for 30 days, after which the backups will be deleted. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources).
+
+Refer to the [Cloud Console](#restore-a-basic-cluster) section for details on viewing and managing the backups.
 
 ### Standard and Advanced clusters
 
