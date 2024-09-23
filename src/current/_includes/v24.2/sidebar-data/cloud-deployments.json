@@ -3,6 +3,12 @@
     "is_top_level": true,
     "items": [
     {
+        "title": "Overview",
+        "urls": [
+            "/cockroachcloud/index.html"
+        ]
+    },
+    {
         "title": "Create an Account",
         "urls": [
             "/cockroachcloud/create-an-account.html"
