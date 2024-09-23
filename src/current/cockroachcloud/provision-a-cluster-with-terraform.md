@@ -7,7 +7,7 @@ docs_area: manage
 
 [Terraform](https://terraform.io) is an infrastructure-as-code provisioning tool that uses configuration files to define application and network resources. You can provision CockroachDB Cloud clusters and cluster resources by using the [CockroachDB Cloud Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) in your Terraform configuration files.
 
-This page shows how to use the CockroachDB Cloud Terraform provider to create and manage clusters in CockroachDB Cloud. This page is not exhaustive; you can browse an extensive set of [example recipes](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples) in the Terraform provider's GitHub registry.
+This page shows how to use the CockroachDB Cloud Terraform provider to create and manage clusters in CockroachDB Cloud. This page is not exhaustive; you can browse an extensive set of [example recipes](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples) in the Terraform provider's GitHub repository.
 
 {{site.data.alerts.callout_info}}
 If you used the Terraform provider to manage CockroachDB {{ site.data.products.serverless }} clusters that have been migrated to CockroachDB {{ site.data.products.basic }}, your recipes must be updated to work with CockroachDB {{ site.data.products.basic }}.
