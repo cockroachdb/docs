@@ -100,6 +100,10 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.basic }} c
       - To optionally enable [deletion protection]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection), set `delete_protection` to `true`.
 {{ remaining_steps }}
 
+{{site.data.alerts.callout_success}}
+To change a cluster's plan in place between CockroachDB {{ site.data.products.basic }} and CockroachDB {{ site.data.products.standard }}, refer to [Change a cluster's plan](#change-a-clusters-plan).
+{{site.data.alerts.end}}
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="standard">
@@ -133,6 +137,10 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.standard }
       - Under `regions`, add the names of one or more regions for the cluster.
       - To optionally enable [deletion protection]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection), set `delete_protection` to `true`.
 {{ remaining_steps }}
+
+{{site.data.alerts.callout_success}}
+To change a cluster's plan in place between CockroachDB {{ site.data.products.basic }} and CockroachDB {{ site.data.products.standard }}, refer to [Change a cluster's plan](#change-a-clusters-plan).
+{{site.data.alerts.end}}
 
 </section>
 
@@ -178,6 +186,53 @@ The `terraform show` command shows detailed information of your cluster resource
 ~~~ shell
 terraform show
 ~~~
+
+## Change a cluster's plan
+
+To change a CockroachDB {{ site.data.products.basic }} cluster's plan to CockroachDB {{ site.data.products.standard }} in place, or to change a CockroachDB {{ site.data.products.standard }} cluster to CockroachDB {{ site.data.products.basic }}, you can use Terraform.
+
+{{site.data.alerts.callout_info}}
+To migrate between CockroachDB {{ site.data.products.advanced }} and either CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }}, you must create and configure a new cluster, back up the existing cluster's data, and restore the backup to the new cluster. Migration in place is not supported. Refer to [Customer-owned backups]({% link cockroachcloud/backup-and-restore-overview.md %}#customer-owned-backups).
+{{site.data.alerts.end}}
+
+To migrate from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ site.data.products.standard }} in place:
+
+1. Edit the cluster's Terraform template:
+    - Change `plan` to `STANDARD`.
+    - Replace the contents of `serverless {}` (which may be empty) with the provisioned vCPUs for the cluster. This field is required for CockroachDB {{ site.data.products.standard }}. It is not possible to set storage limitations on CockroachDB {{ site.data.products.standard }}.
+      {% include_cached copy-clipboard.html %}
+      ~~~ hcl
+            serverless = {
+          usage_limits = {
+            provisioned_virtual_cpus = 2
+          }
+        }
+      ~~~
+1. Apply the template:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    terraform apply
+    ~~~
+
+To migrate from CockroachDB {{ site.data.products.standard }} to CockroachDB {{ site.data.products.basic }} in place:
+
+1. Edit the cluster's Terraform template:
+    -  Change `plan` to `BASIC`.
+    - Replace the contents of `serverless {}` optional limits for Request Units and Storage. The `provisioned_virtual_cpus` field is not supported for CockroachDB {{ site.data.products.basic }}. This field is required for CockroachDB {{ site.data.products.standard }}. It is not possible to set storage limitations on CockroachDB {{ site.data.products.standard }}.
+      {% include_cached copy-clipboard.html %}
+      ~~~ hcl
+            serverless = {
+          usage_limits = {
+            provisioned_virtual_cpus = 2
+          }
+        }
+      ~~~
+    - Remove fields that are unsupported on CockroachDB {{ site.data.products.basic }}, such as private connectivity.
+1. Apply the template:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    terraform apply
+    ~~~
 
 ## Delete a cluster
 
