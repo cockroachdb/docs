@@ -18,13 +18,13 @@ To get started right away, you can [sign up for a CockroachDB {{ site.data.produ
 
 When you create a cluster in CockroachDB {{ site.data.products.cloud }}, you select its plan. A CockroachDB {{ site.data.products.cloud }} organization can include clusters of each plan. This section provides an overview of each plan. For a more detailed comparison, refer to [Compare plans](#compare-plans).
 
-- **CockroachDB {{ site.data.products.basic }}**: TODO
+- **CockroachDB {{ site.data.products.basic }}**: Usage-based. CockroachDB Serverless clusters are now on CockroachDB {{ site.data.products.basic }}.
 
-- **CockroachDB {{ site.data.products.standard }}**: TODO
+- **CockroachDB {{ site.data.products.standard }}**: A new plan in [Preview]({% link {{ site.current_cloud_version}}/cockroachdb-feature-availability.md %}#features-in-preview). Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
 
-- ** CockroachDB {{ site.data.products.advanced }}**: TODO
+- **CockroachDB {{ site.data.products.advanced }}**: Fully pre-provisioned, with additional security and compliance features. CockroachDB Dedicated clusters are now on CockroachDB {{ site.data.products.advanced }}. CockroachDB Dedicated Advanced clusters are now on CockroachDB {{ site.data.products.advanced }} with enhanced security features enabled.
 
-## Compare plans
+### Compare plans
 
 This section summarizes key details about each plan to help you make the best choice for each cluster and its workload. For more details, refer to:
 
