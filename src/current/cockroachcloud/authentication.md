@@ -51,11 +51,11 @@ To authenticate `ccloud` to a particular organization, run the following command
 ccloud auth login --org <organization label>
 ~~~
 
-Refer to: [Log in to CockroachDB Cloud using ccloud auth]({% link cockroachcloud/ccloud-get-started.md %}#log-in-to-cockroachdb-cloud-using-ccloud-auth)
+Refer to: [Log in to CockroachDB Cloud using `ccloud auth`]({% link cockroachcloud/ccloud-get-started.md %}#log-in-to-cockroachdb-cloud-using-ccloud-auth)
 
 ## Cloud API authentication
 
-The [Cloud API]({% link cockroachcloud/cloud-api.md %}) allows automated execution of organization functions. Unlike `ccloud` and the console UI, however, the API can not be authenticated by human users, but by service accounts.
+The [Cloud API]({% link cockroachcloud/cloud-api.md %}) allows automated execution of organization functions. Unlike `ccloud` and the console UI, however, only service accounts can authenticate to the API.
 
 Service accounts authenticate to the API using API keys, which are provisioned through the console UI.
 
@@ -121,4 +121,4 @@ The table below lists the `sslmode` settings you can use to [connect to your clu
 - [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %})
 - [Configure Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %})
 - [Client Connection Parameters]({% link {{site.current_cloud_version}}/connection-parameters.md %})
-- [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
+- [Connect to Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})

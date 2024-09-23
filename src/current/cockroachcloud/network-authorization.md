@@ -1,6 +1,6 @@
 ---
-title: Network Authorization for CockroachDB Cloud Clusters
-summary: Learn about the network authorization features for CockroachDB Cloud clusters.
+title: Network Authorization for CockroachDB Cloud
+summary: Learn about the network authorization features for CockroachDB Cloud.
 toc: true
 docs_area: manage
 ---
@@ -13,8 +13,8 @@ This page describes these options and how they help to protect CockroachDB {{ si
 
 You can authorize network access to your cluster by:
 
-- [Adding an authorized range of public IP addresses](#ip-allowlisting).
-- Setting up private connectivity so that inbound connections to your cluster from your cloud tenant are made over the cloud provider's private network rather than over the public internet, for enhanced network security and reduced network latency. If you use IP allowlisting rules together with private connectivity, private networks do not need to be added to that allowlist.
+- [Adding an authorized range of public IP addresses](#ip-allowlisting) that can access a cluster.
+- Set up private connectivity so that inbound connections to your cluster from your cloud tenant are made over the cloud provider's private network rather than over the public internet, for enhanced network security and reduced network latency. Available for CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.standard }}. If you use IP allowlisting rules together with private connectivity, private networks do not consume an allowlist entry.
 
     - <a id="gcp-private-service-connect"></a><a id="gcp-vpc-peering"></a><a id="vpc-peering"></a>CockroachDB {{ site.data.products.dedicated }} clusters deployed on GCP can connect privately using GCP Private Service Connect (PSC) (Preview) or GCP VPC peering. PSC allows you to connect your cluster directly to a VPC within your Google Cloud project, while VPC Peering allows you to peer your cluster's VPC in CockroachDB {{ site.data.products.cloud }} to a VPC within your Google Cloud project.
     - <a id="aws-privatelink"></a>CockroachDB {{ site.data.products.dedicated }} clusters deployed on AWS, as well as multi-region CockroachDB {{ site.data.products.serverless }} clusters deployed on AWS, can connect privately using AWS PrivateLink, which allows you to connect your cluster to a VPC within your AWS account.
@@ -70,12 +70,8 @@ If you need to add more than the maximum number of allowlist rules, [contact Sup
 While developing and testing your application, you may add `0.0.0.0/0` to the allowlist, which allows all networks. However, before moving into production, make sure you delete the `0.0.0.0/0` network.
 {{site.data.alerts.end}}
 
-If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can connect to your CockroachDB {{ site.data.products.dedicated }} clusters using VPC Peering or AWS PrivateLink instead.
-
-Refer to:
-
+If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can connect to a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster privately instead.
 - [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-a-basic-cluster.md %}#authorize-your-network).
-- [Connect to a CockroachDB {{ site.data.products.dedicated }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network).
 
 ## DB Console
 

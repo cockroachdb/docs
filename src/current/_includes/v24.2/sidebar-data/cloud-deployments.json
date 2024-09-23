@@ -257,9 +257,9 @@
                         ]
                     },
                     {
-                        "title": "SQL Client Certificate Authentication for Dedicated Clusters",
+                        "title": "SQL Client Certificate Authentication for Advanced Clusters",
                         "urls": [
-                        "/cockroachcloud/client-certs-dedicated.html"
+                        "/cockroachcloud/client-certs-advanced.html"
                         ]
                     }
                 ]
