@@ -62,20 +62,20 @@ This section summarizes key details about each plan to help you make the best ch
   <tr>
     <td>Managed backup storage</td>
     <td>Daily backups included in Request Unit costs</td>
-    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore).</td>
-    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore).</td>
+    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore).</td>
+    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore).</td>
   </tr>
   <tr>
     <td>[Data transfer](#data-transfer)</td>
     <td>Usage-based via Request Units</td>
-    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)</td>
-    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)</td>
+    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
+    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
   </tr>
   <tr>
     <td>[Change Data Capture]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %})</td>
     <td>Usage-based via Request Units</td>
-    <td>Usage-based.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)</td>
-    <td>Usage-based.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)</td>
+    <td>Usage-based.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
+    <td>Usage-based.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
   </tr>
 </tbody>
 </table>
@@ -125,7 +125,7 @@ Refer to [Pricing](https://www.cockroachlabs.com/pricing/).
 ### Storage
 
 {{site.data.alerts.callout_info}}
-There is no charge for backup storage during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)
+There is no charge for backup storage during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="basic">
@@ -160,7 +160,7 @@ Hourly storage charges are accumulated throughout the month to determine the tot
 ### Data transfer
 
 {{site.data.alerts.callout_info}}
-There is no charge for data transfer during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)
+There is no charge for data transfer during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="basic">
@@ -203,7 +203,7 @@ For CockroachDB {{ site.data.products.advanced }}, data transfer is billed based
 All CockroachDB {{ site.data.products.cloud }} clusters can use [Enterprise Changefeeds](% link {{ site.current_cloud_version}}/how-does-an-enterprise-changefeed-work.md %).
 
 {{site.data.alerts.callout_info}}
-There is no charge for changefeeds during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)
+There is no charge for changefeeds during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="basic">
