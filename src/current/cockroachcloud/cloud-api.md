@@ -47,7 +47,7 @@ Where `{secret_key}` is the [secret key string you stored when you created the A
 
 ## Set the API version
 
-The `Cc-Version` HTTP header specifies the version of the Cloud API to use. If you omit the `Cc-Version` header, the Cloud API will default to version `2022-03-31` (the initial release of the Cloud API). The Cloud API uses date-based versions of the form `YYYY-MM-DD`, in [ISO 8601 format](https://www.w3.org/TR/NOTE-datetime).
+The Cloud API uses date-based versions of the form `YYYY-MM-DD`, in [ISO 8601 format](https://www.w3.org/TR/NOTE-datetime). It is strongly recommended that you use the `Cc-Version` HTTP header to specify the version of the Cloud API to use. If you omit the `Cc-Version` header, the Cloud API will default to the latest version. If you don’t specify the version your application expects, breakage may occur. While we try to minimize the risk of breaking API changes, passing the version explicitly helps to mitigate against this risk and is strongly recommended.
 
 If you set an invalid version, you will get an HTTP 400 response with the message "invalid Cc-Version."
 
