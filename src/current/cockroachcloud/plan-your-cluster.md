@@ -102,5 +102,5 @@ If you add a 6th replica, the cluster will consume 3000 GiB (500 x 6), and will 
 
 - [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %})
 - [Edit cluster capacity]({% link cockroachcloud/cluster-management.md %}#edit-cluster-capacity)
-- [Plan an CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/plan-an-advanced-cluster.md %})
-- [Plan an CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-a-basic-cluster.md %})
+- [Plan an CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %})
+- [Plan an CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %})
