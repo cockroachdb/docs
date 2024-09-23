@@ -76,7 +76,7 @@ The [SQL Shell]({% link cockroachcloud/sql-shell.md %}) in the CockroachDB {{ si
 
 ### Restore a CockroachDB {{ site.data.products.dedicated }} cluster from a managed-service backup
 
-[Restoring an entire CockroachDB {{ site.data.products.dedicated }} cluster from a managed-service backup]({% link cockroachcloud/managed-backups.md %}#restore-a-cluster) is in preview. Managed backups are automated backups of clusters in CockroachDB {{ site.data.products.cloud }} that are stored in Cockroach Labs' cloud storage.
+[Restoring an entire CockroachDB {{ site.data.products.advanced }} cluster from a managed backup]({% link cockroachcloud/managed-backups.md %}?filters=advanced#restore-data-in-advanced-clusters) is in preview. Managed backups are automated backups of clusters in CockroachDB {{ site.data.products.cloud }} that are stored in Cockroach Labs' cloud storage.
 
 ### Log SQL Statistics to Datadog
 

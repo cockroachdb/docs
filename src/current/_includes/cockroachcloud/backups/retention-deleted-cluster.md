@@ -2,4 +2,4 @@ When a cluster is deleted, Cockroach Labs will retain the managed backups for fo
 
 If a customer is no longer in an agreement with Cockroach Labs, managed backups will be retained for 30 days and then deleted. If a backup's retention time was set to **less** than 30 days, Cockroach Labs will retain the managed backups for the configured retention time, after which the backups will be deleted.
 
-To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources).
+To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team]({% link {{site.current_cloud_version}}/support-resources.md %}).

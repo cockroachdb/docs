@@ -58,13 +58,13 @@ The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores
 
 [Organizing CockroachDB {{ site.data.products.cloud }} clusters using folders]({% link cockroachcloud/folders.md %}) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing.
 
-### GCP Private Service Connect for CockroachDB Dedicated
+### GCP Private Service Connect for CockroachDB Advanced
 
-[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using GCP Private Service Connect]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect) is in preview. Private Service Connect allows you to selectively connect your cluster deployed on GCP to a VPC within your Google Cloud project.
+[Connecting privately to a CockroachDB {{ site.data.products.advanced }} cluster using GCP Private Service Connect]({% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect) is in preview. Private Service Connect allows you to selectively connect your cluster deployed on GCP to a VPC within your Google Cloud project.
 
-### Azure Private Link for CockroachDB Dedicated
+### Azure Private Link for CockroachDB Advanced
 
-[Connecting privately to a CockroachDB {{ site.data.products.dedicated }} cluster using Azure Private Link]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link) is in preview. Azure Private Link allows you to selectively connect your cluster deployed on Azure to a virtual network within your Azure tenant.
+[Connecting privately to a CockroachDB {{ site.data.products.advanced }} cluster using Azure Private Link]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link) is in preview. Azure Private Link allows you to selectively connect your cluster deployed on Azure to a virtual network within your Azure tenant.
 
 ### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 
@@ -91,9 +91,9 @@ The [schema-conversion summary report]({% link cockroachcloud/migrations-page.md
 
 The [SQL Shell]({% link cockroachcloud/sql-shell.md %}) in the CockroachDB {{ site.data.products.cloud }} Console is in preview. The SQL Shell enables you to run [queries]({% link {{ page.version.version }}/selection-queries.md %}) on your CockroachDB {{ site.data.products.cloud }} cluster directly from your browser.
 
-### Restore a CockroachDB {{ site.data.products.dedicated }} cluster from a managed-service backup
+### Restore a CockroachDB {{ site.data.products.advanced }} cluster from a managed-service backup
 
-[Restoring an entire CockroachDB {{ site.data.products.dedicated }} cluster from a managed-service backup]({% link cockroachcloud/managed-backups.md %}#restore-a-cluster) is in preview. Managed backups are automated backups of clusters in CockroachDB {{ site.data.products.cloud }} that are stored in Cockroach Labs' cloud storage.
+[Restoring an entire CockroachDB {{ site.data.products.advanced }} cluster from a managed-service backup]({% link cockroachcloud/managed-backups.md %}#restore-a-cluster) is in preview. Managed backups are automated backups of clusters in CockroachDB {{ site.data.products.cloud }} that are stored in Cockroach Labs' cloud storage.
 
 ### Log SQL Statistics to Datadog
 

@@ -85,7 +85,7 @@ A CockroachDB {{ site.data.products.basic }} cluster cannot be moved from one re
 
 ## Restore data from a backup
 
-Use the [Managed-Service Backups]({% link cockroachcloud/managed-backups.md %}) to restore your cluster from automatic full cluster backups.
+Use the [Managed Backups]({% link cockroachcloud/managed-backups.md %}) to restore your cluster from automatic full cluster backups.
 
 You can also [back up and restore]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) your CockroachDB {{ site.data.products.basic }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to [`userfile`]({% link {{site.current_cloud_version}}/use-userfile-storage.md %}) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
 

@@ -30,7 +30,7 @@ Cockroach Labs will take a managed backup every 24 hours. By default, managed ba
 
 When you delete a {{ site.data.products.basic }} cluster or the [organization]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-authorization-model) is deleted, the cluster's managed backups will follow the default retention period of 30 days.
 
-When a cluster is deleted, or the customer is no longer in an agreement with Cockroach Labs, managed backups taken on {{ site.data.products.basic }} clusters will be retained for 30 days, after which the backups will be deleted. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources).
+When a cluster is deleted, or the customer is no longer in an agreement with Cockroach Labs, managed backups taken on {{ site.data.products.basic }} clusters will be retained for 30 days, after which the backups will be deleted. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team]({% link {{site.current_cloud_version}}/support-resources.md %}).
 
 Refer to the [Cloud Console](#restore-a-basic-cluster) section for details on viewing and managing the backups.
 
@@ -90,7 +90,7 @@ Select the cluster tier to view its Cloud Console functionality:
 
 <section class="filter-content" markdown="1" data-scope="basic">
 
-### View Basic cluster backup settings
+### View backups in a Basic cluster
 
 Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
 
@@ -120,23 +120,19 @@ To restore a cluster:
 
     The **Restore cluster** module displays with backup details.
 
-1. Select the cluster to restore to. You can restore to either the same cluster or a different cluster. By default, the option shows the current cluster. The dropdown displays options to restore to a different cluster.
+1. You can restore a backup to the same cluster.
 
     {{site.data.alerts.callout_info}}
-    Only active clusters are displayed. CockroachDB {{ site.data.products.cloud }} clusters do not support cross-cluster restores through the CockroachDB {{ site.data.products.cloud }} Console. If you need to restore data into a new or different cluster, use [self-managed backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) or [contact support](https://support.cockroachlabs.com).
+    If you need to restore data into a new or different cluster, use [self-managed backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) or [contact support]({% link {{site.current_cloud_version}}/support-resources.md %}).
     {{site.data.alerts.end}}
 
 1. Click **Restore**.
-
-1. Enter the name of the destination cluster.
-
-1. Once you have reviewed the restore details, click **Restore**.
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="standard">
 
-### View backup settings
+### View backups
 
 Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
 
@@ -186,17 +182,13 @@ To restore a cluster:
 
     The **Restore cluster** module displays with backup details.
 
-1. Select the cluster to restore to. You can restore to either the same cluster or a different cluster. By default, the option shows the current cluster. The dropdown displays options to restore to a different cluster.
+1. You can restore a backup to the same cluster.
 
     {{site.data.alerts.callout_info}}
-    Only active clusters are displayed. You can perform a cross-cluster restore across {{ site.data.products.advanced }} clusters that belong to the same organization.
+    If you need to restore data into a new or different cluster, use [self-managed backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) or [contact support]({% link {{site.current_cloud_version}}/support-resources.md %}).
     {{site.data.alerts.end}}
 
 1. Click **Restore**.
-
-1. Enter the name of the destination cluster.
-
-1. Once you have reviewed the restore details, click **Restore**.
 
 ## Cloud API for Standard clusters
 
@@ -210,9 +202,9 @@ To restore a cluster:
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
-Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
+### View backups in an Advanced cluster
 
-### View backups settings in an Advanced cluster
+Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
 
 The **Backups** tab displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
 
@@ -223,7 +215,7 @@ For each backup, the following details display:
 - **Type**: Whether the backup is a full or incremental backup.
 - **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
 - [**Databases**](#databases): The number of databases included in the backup.
-- **Restore**: [Restore a particular cluster backup](#restore-a-cluster), click **Restore** in the corresponding row.
+- **Restore**: [Restore a particular cluster backup](#restore-an-advanced-cluster), click **Restore** in the corresponding row.
 
 #### Databases
 

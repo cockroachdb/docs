@@ -233,9 +233,9 @@ If you use `cockroach userfile delete {file}`, it will take as long as the [garb
 
 ### Back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ site.data.products.cloud }} cluster
 
-To back up a self-hosted CockroachDB cluster into a CockroachDB {{ site.data.products.cloud }} cluster:
+To back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ site.data.products.cloud }} cluster:
 
-1. While [connected to your self-hosted CockroachDB cluster](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/connect-to-the-database), [back up](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) your databases and/or tables to an [external location](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup#backup-file-urls):
+1. While [connected to your self-hosted CockroachDB cluster]({% link {{site.current_cloud_version}}/connect-to-the-database.md %}), [back up]({% link {{site.current_cloud_version}}/backup.md %}) your databases and/or tables to an [external location]({% link {{site.current_cloud_version}}/backup.md %}#backup-file-urls):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

@@ -4,4 +4,4 @@
 - 90 days
 - 365 days
 
-You'll be able to modify the retention setting once for a cluster. To modify the setting again, contact the [Cockroach Labs Support team](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/support-resources).
+You'll be able to modify the retention setting once for a cluster. To modify the setting again, contact the [Cockroach Labs Support team]({% link {{site.current_cloud_version}}/support-resources.md %}).

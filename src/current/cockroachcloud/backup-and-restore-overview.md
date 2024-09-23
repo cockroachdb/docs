@@ -11,7 +11,7 @@ CockroachDB is built to be [fault-tolerant through automatic recovery]({% link {
 CockroachDB Cloud clusters can run two types of backups:
 
 - Automated [managed backups](#managed-backups)
-- Manual [self-managed](#self-managed-backups)
+- Manual [self-managed backups](#self-managed-backups)
 
 ### Managed backups
 
