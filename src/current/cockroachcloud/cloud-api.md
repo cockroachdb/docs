@@ -47,7 +47,7 @@ Authorization: Bearer {secret_key}
 
 </section>
 
-Where `{secret_key}` is the secret key string you stored when you [created the API key in the Console]({% link cockroachcloud/managing-access.md %}#create-api-keys).
+Replace `{secret_key}` with the secret key string you stored when you [created the API key in the Console]({% link cockroachcloud/managing-access.md %}#create-api-keys).
 
 ## Set the API version
 
@@ -130,14 +130,14 @@ curl --request POST \
 
 Where:
 
-  - `{cluster_name}` is the name of the cluster. This should be a short string with no whitespace.
+  - `{cluster_name}`: the name of the cluster. This should be a short string with no whitespace.
   - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
-  - `{region_name}` is the zone code of the cloud infrastructure provider. For example, on GCP you can set the "us-west2" zone code. [Available regions]({% link cockroachcloud/regions.md %}) may vary depending on the selected plan type (`BASIC`, `STANDARD`, or `ADVANCED`) and the cloud infrastructure provider.
+  - `{region_name}`: the name of a CockroachDB Cloud [region]({% link cockroachcloud/regions.md %}). Region names are set by the cloud provider. For example,`us-west2` is a GCP region. Available regions vary based on both the selected plan type (`BASIC`, `STANDARD`, or `ADVANCED`) and the cloud provider.
 
-  - The `plan` field specifies the cluster plan. Possible values are: `BASIC`, `STANDARD`, `ADVANCED`. The default is `STANDARD`.
+  - `plan`: the cluster's plan, `BASIC`, `STANDARD`, or `ADVANCED`. The default is `STANDARD`.
   - The `usage_limits` field specifies the resource limits for the cluster. The `provisioned_virtual_cpus` field () indicates the maximum number of virtual CPUs (vCPUs) the cluster can provision.
 
-For example, to create a new Standard cluster named "notorious-moose" using the default values for the cloud infrastructure provider and region:
+For example, to create a new Standard cluster named `notorious-moose` using the default values for the cloud infrastructure provider and region:
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -374,7 +374,7 @@ Where:
 
 ## Change resource limits for a Basic cluster
 
-To set or update the maximum RU or storage limits for a cluster, send a `PATCH` request to the `/v1/clusters/{cluster_id}` endpoint.
+To set or update the maximum RU or storage limits for a cluster, send a `PATCH` request to the `/v1/clusters/{cluster_id}` endpoint with an updated `serverless.usage_limits` field.
 
 {{site.data.alerts.callout_success}}
 The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
@@ -429,12 +429,12 @@ Where:
 If the request was successful, the client will not receive a response payload.
 
 {{site.data.alerts.callout_info}}
-The previously deprecated `spend_limit` field has been removed. Use the `usage_limits` field instead to set resource limits for the cluster.
+The `spend_limit` field, which was deprecated in Serverless, is not supported on Basic or Standard. Instead, use `usage_limits`.
 {{site.data.alerts.end}}
 
 ## Change provisioned vCPUs for a Standard cluster
 
-To update the provisioned vCPUs for a cluster, send a `PATCH` request to the `/v1/clusters/{cluster_id}` endpoint.
+To update the provisioned vCPUs for a cluster, send a `PATCH` request to the `/v1/clusters/{cluster_id}` endpoint  with an updated `serverless.usage_limits` field.
 
 {{site.data.alerts.callout_success}}
 The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
@@ -658,7 +658,7 @@ Where:
   - `{region_name}` is the zone code of the cloud infrastructure provider where the cluster is located.
   - `{private_endpoint_dns}` is the DNS name which is used to connect the cluster directly to a VPC within your Google Cloud project using GCP Private Service Connect.
 
-## List the available regions for a cloud infrastructure provider
+## List the available regions for a cloud provider
 
 To list the [available regions]({% link cockroachcloud/regions.md %}) for creating new clusters, send a `GET` request to the `/v1/clusters/available-regions?provider={cloud_provider}` endpoint.
 
@@ -693,7 +693,7 @@ Where:
 
   - `{region_array}` is a string array of regions available from the cloud infrastructure provider.
 
-## List all the SQL users in a cluster
+## List the SQL users in a cluster
 
 To list the SQL users in a cluster, send a `GET` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint.
 
@@ -742,9 +742,9 @@ TODO - review: This endpoint returns paginated results. Use the `next_page` toke
 TODO - review: The available regions may vary depending on the selected plan type (BASIC, STANDARD, or ADVANCED) and the cloud infrastructure provider.
 {{site.data.alerts.end}}
 
-## Create a new SQL user
+## Create a SQL user
 
-To create a new SQL user, send a `POST` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint.
+To create a SQL user, send a `POST` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint.
 
 {{site.data.alerts.callout_success}}
 The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
@@ -822,7 +822,7 @@ If the request was successful, the client will receive a response with the name 
 Where `{sql_username}` is the username of the deleted SQL user.
 
 {{site.data.alerts.callout_danger}}
-Deleting a SQL user is irreversible. Ensure that you want to permanently remove this user and all their associated permissions before proceeding.
+Deleting a SQL user cannot be undone.
 {{site.data.alerts.end}}
 
 ## Change a SQL user's password
