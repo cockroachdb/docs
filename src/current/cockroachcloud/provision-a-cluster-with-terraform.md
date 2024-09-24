@@ -249,13 +249,13 @@ To migrate from CockroachDB {{ site.data.products.standard }} to CockroachDB {{ 
 
 To migrate from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ site.data.products.standard }} in place:
 
-1. Edit the API command or application code that was used to created the cluster. In the JSON header, replace the contents of `serverless {}` (which may be empty) with the provisioned vCPUs for the cluster. This field is required for CockroachDB {{ site.data.products.standard }}. It is not possible to set storage limitations on CockroachDB {{ site.data.products.standard }}. Refer to [CockroachDB API: Create a Standard cluster](/docs/api/cloud/v1.html#post-/api/v1/clusters).
+1. Edit the API command or application code that was used to created the cluster. In the JSON header, replace the contents of `serverless {}` (which may be empty) with the provisioned vCPUs for the cluster. This field is required for CockroachDB {{ site.data.products.standard }}. It is not possible to set storage limitations on CockroachDB {{ site.data.products.standard }}. Refer to [CockroachDB API: Create a Standard cluster](https://cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters).
 1. Run the command or application code.
 
 To migrate from CockroachDB {{ site.data.products.standard }} to CockroachDB {{ site.data.products.basic }}:
 
 1. Edit the API command or application code that was used to create the cluster. In the JSON header:
-  - Replace the `serverless.usage_limits.provisioned_virtual_cpus` field with an empty value for no resource limits, or optionally values for `request_unit_limit` and `storage_mib_limit`. It is not possible to reserve compute on CockroachDB {{ site.data.products.basic }}. Refer to [CockroachDB API: Create a Standard cluster](/docs/api/cloud/v1.html#post-/api/v1/clusters).
+  - Replace the `serverless.usage_limits.provisioned_virtual_cpus` field with an empty value for no resource limits, or optionally values for `request_unit_limit` and `storage_mib_limit`. It is not possible to reserve compute on CockroachDB {{ site.data.products.basic }}. Refer to [CockroachDB API: Create a Standard cluster](https://cockroachlabs.com/docs/docs/api/cloud/v1.html#post-/api/v1/clusters).
   - Remove configurations for features that are unsupported on CockroachDB {{ site.data.products.basic }}, such as private connectivity. Otherwise, running the updated command or application code will fail.
 
 </section>
