@@ -49,6 +49,8 @@ Where:
 - `{log-channel}` is the CockroachDB [log channel]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels), such as `HEALTH` or `OPS`.
 - `{N}` is the node number of the CockroachDB {{ site.data.products.advanced }} node emitting the log messages. Log messages received before a node is fully started may appear in a log named without an explicit node number, ending in just `.n`.
 
+For Azure Monitor, the logs have a different name format, refer to [Enable log export - Verify]({% link cockroachcloud/export-logs-advanced.md %}?filters=azure-monitor-log-export#verify) instructions.
+
 ## Enable log export
 
 <div class="filters clearfix">
