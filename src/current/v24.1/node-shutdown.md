@@ -24,6 +24,7 @@ This page describes:
 - How to [prepare for graceful shutdown](#prepare-for-graceful-shutdown) on CockroachDB {{ site.data.products.core }} clusters by coordinating load balancer, client application server, process manager, and cluster settings.
 - How to [perform node shutdown](#perform-node-shutdown) on CockroachDB {{ site.data.products.core }} deployments by manually draining or decommissioning a node.
 - How to handle node shutdown when CockroachDB is deployed using [Kubernetes](#decommissioning-and-draining-on-kubernetes) or in a [CockroachDB {{ site.data.products.advanced }} cluster](#decommissioning-and-draining-on-cockroachdb-advanced).
+- How to [shut down the entire cluster](#shut-down-a-cluster) temporarily or permanently.
 
 {{site.data.alerts.callout_success}}
 This guidance applies to primarily to manual deployments. For more details about graceful termination when CockroachDB is deployed using Kubernetes, refer to [Decommissioning and draining on Kubernetes](#decommissioning-and-draining-on-kubernetes). For more details about graceful termination in a CockroachDB {{ site.data.products.advanced }} cluster, refer to [Decommissioning and draining on CockroachDB {{ site.data.products.advanced }}](#decommissioning-and-draining-on-cockroachdb-advanced).
@@ -879,6 +880,22 @@ Cockroach Labs recommends that you:
 Most of the guidance in this page is most relevant to manual deployments, although decommissioning and draining work the same way behind the scenes in a CockroachDB {{ site.data.products.advanced }} cluster. CockroachDB {{ site.data.products.advanced }} clusters have a `server.shutdown.connections.timeout` of 1800 seconds (30 minutes) and a termination grace period that is slightly longer. The termination grace period is not configurable, and adjusting `server.shutdown.connections.timeout` is generally not recommended.
 
 Client applications or application servers that connect to CockroachDB {{ site.data.products.advanced }} clusters should use connection pools that have a maximum lifetime that is shorter than the [`server.shutdown.connections.timeout`](#server-shutdown-connections-timeout) setting.
+
+## Shut down a cluster
+
+{{site.data.alerts.callout_info}}
+A cluster in CockroachDB {{ site.data.products.cloud }} cannot be shut down.
+{{site.data.alerts.end}}
+
+To shut down an entire cluster:
+
+1. One at a time, gracefully terminate each node except for the last node using your process manager or by sending a `SIGINT` or `SIGKILL` signal to the `cockroach` process. The node will attempt to finish pending transactions and drain client connections, which will be sent to other nodes. If a node does not shut down in the expected time, as a last resort you can send a `SIGKILL` signal to the process. It's best to avoid this because it increases load on the cluster when work in progress is sent to the other nodes, which will also be shut down shortly. It also could increase the time it takes to restart the cluster.
+1. The last node cannot shut down with a `SIGINT` or `SIGTERM` signal because it has nowhere to send pending work, and it has no quorum to write data to the cluster. Send a `SIGKILL` process to stop the node. The cluster is now stopped.
+
+To restart a stopped cluster, restart each node.
+
+To permanently decommission a cluster, remove the data and the `cockroach` process from each node.
+
 
 ## See also
 
