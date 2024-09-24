@@ -190,10 +190,6 @@ To restore a cluster:
 
 ## Cloud API for Standard clusters
 
-{{site.data.alerts.callout_info}}
-{% include cockroachcloud/backups/full-backup-setting-change.md %}
-{{site.data.alerts.end}}
-
 {% include cockroachcloud/backups/cloud-api-get-put.md %}
 
 </section>
@@ -377,10 +373,6 @@ For each restore job, the tab will display:
 - **Job ID**: The job ID of the restore job.
 
 ## Cloud API for Advanced clusters
-
-{{site.data.alerts.callout_info}}
-{% include cockroachcloud/backups/full-backup-setting-change.md %}
-{{site.data.alerts.end}}
 
 {% include cockroachcloud/backups/cloud-api-get-put.md %}
 
