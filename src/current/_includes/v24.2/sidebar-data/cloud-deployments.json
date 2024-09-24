@@ -48,7 +48,7 @@
                     ]
             },
             {
-                "title": "Provision a Serverless Cluster with Terraform",
+                "title": "Use the Terraform provider",
                 "urls": [
                     "/cockroachcloud/provision-a-cluster-with-terraform.html"
                 ]
@@ -453,6 +453,12 @@
                                 "urls": [
                                   "/${VERSION}/essential-metrics-advanced.html"
                                 ]
+                            },
+                            {
+                              "title": "Essential Alerts for CockroachDB {{ site.data.products.advanced }} Deployments",
+                              "urls": [
+                                "/${VERSION}/essential-alerts-advanced.html"
+                              ]
                             }
                         ]
                   },

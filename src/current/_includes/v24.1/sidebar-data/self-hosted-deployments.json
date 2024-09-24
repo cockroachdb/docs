@@ -366,6 +366,12 @@
                     "urls": [
                       "/${VERSION}/essential-metrics-self-hosted.html"
                     ]
+                  },
+                  {
+                    "title": "Essential Alerts for CockroachDB {{ site.data.products.core }} Deployments",
+                    "urls": [
+                      "/${VERSION}/essential-alerts-self-hosted.html"
+                    ]
                   }
             ]
           },

@@ -17,7 +17,7 @@ This page outlines _feature availability_, which is separate from Cockroach Labs
 Phase                            | Definition | Accessibility
 ---------------------------------+------------+-------------
 Private preview                  | Feature is available to select customers and not publicly documented. | Invite-only
-Limited access                   | Feature is publicly documented but not yet available widely. This feature may have limitations and/or capabilities that may change or be added based on feedback, before being promoted to GA. | Opt-in </br>Contact your Cockroach Labs account team.
+Limited access                   | Feature is publicly documented but not yet available widely. This feature may have limitations and/or capabilities that may change or be added based on feedback, before being promoted to GA. | Opt-in <br />Contact your Cockroach Labs account team.
 [Preview](#features-in-preview)  | Feature is publicly available and documented. This feature may have limitations and/or capabilities that may change or be added based on feedback, before being promoted to GA. | Public
 General availability (GA)        | Feature is publicly available and documented. | Public
 
@@ -36,9 +36,6 @@ Any feature made available in a phase prior to GA is provided without any warran
 
 ### Export metrics to Azure Monitor
 [Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics-advanced.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
-
-### AWS PrivateLink for CockroachDB Serverless
-[Connecting privately to a multi-region CockroachDB {{ site.data.products.serverless }} cluster using AWS PrivateLink]({% link cockroachcloud/aws-privatelink.md %}?filters=serverless) is in limited access. This can help your organization meet its security requirements and reduce your cluster's exposure to public networks. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ## Features in preview
 
@@ -76,7 +73,7 @@ The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-
 [Exporting metrics from CockroachDB {{ site.data.products.advanced }} to Prometheus]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export) using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in preview for clusters hosted on Azure. It is in general availability for clusters hosted on AWS and GCP.
 
 {{site.data.alerts.callout_info}}
-Exporting metrics to Azure Monitor is in limited access. Refer to [Exporting metrics to Azure Monitor](#export-metrics-to-azure-monitor).
+Exporting metrics to Azure Monitor is in limited access. Refer to [Export metrics to Azure Monitor](#export-metrics-to-azure-monitor).
 {{site.data.alerts.end}}
 
 ### Convert a schema from Oracle or Microsoft SQL Server
@@ -90,10 +87,6 @@ The [schema-conversion summary report]({% link cockroachcloud/migrations-page.md
 ### SQL Shell
 
 The [SQL Shell]({% link cockroachcloud/sql-shell.md %}) in the CockroachDB {{ site.data.products.cloud }} Console is in preview. The SQL Shell enables you to run [queries]({% link {{ page.version.version }}/selection-queries.md %}) on your CockroachDB {{ site.data.products.cloud }} cluster directly from your browser.
-
-### Restore a CockroachDB {{ site.data.products.advanced }} cluster from a managed-service backup
-
-[Restoring an entire CockroachDB {{ site.data.products.advanced }} cluster from a managed-service backup]({% link cockroachcloud/managed-backups.md %}#restore-a-cluster) is in preview. Managed backups are automated backups of clusters in CockroachDB {{ site.data.products.cloud }} that are stored in Cockroach Labs' cloud storage.
 
 ### Log SQL Statistics to Datadog
 
