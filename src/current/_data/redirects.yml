@@ -396,8 +396,8 @@
   sources: ['change-data-capture.md']
   versions: ['v20.2', 'v21.1']
 
-- destination: take-and-restore-customer-owned-backups.md
-  sources: ['run-bulk-operations.md']
+- destination: take-and-restore-self-managed-backups.md
+  sources: ['run-bulk-operations.md', 'take-and-restore-customer-owned-backups.md']
   versions: ['cockroachcloud']
 
 - destination: take-full-and-incremental-backups.md
@@ -495,8 +495,8 @@
   sources: ['use-cloud-storage-for-bulk-operations.md']
   versions: ['v22.2', 'v23.1']
 
-- destination: use-managed-service-backups.md
-  sources: ['backups-page.md']
+- destination: managed-backups.md
+  sources: ['backups-page.md', 'use-managed-service-backups.md']
   versions: ['cockroachcloud']
 
 - destination: use-userfile-storage.md

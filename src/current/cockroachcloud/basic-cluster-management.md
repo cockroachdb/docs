@@ -81,15 +81,15 @@ To set the primary region:
 
 A CockroachDB {{ site.data.products.basic }} cluster cannot be moved from one region to another directly. Instead, you must restore the cluster's data from a backup to a new CockroachDB {{ site.data.products.basic }} cluster with the desired region configuration:
 
-1. [Back up your existing cluster's data]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}).
+1. [Back up your existing cluster's data]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
 1. [Create a new CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) in the desired region.
-1. Once the new cluster is set up, [restore your data]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) from the backup into the new cluster.
+1. Once the new cluster is set up, [restore your data]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) from the backup into the new cluster.
 
 ## Restore data from a backup
 
-Use the [Managed-Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) to restore your cluster from automatic full cluster backups.
+Use the [Managed Backups]({% link cockroachcloud/managed-backups.md %}) to restore your cluster from automatic full cluster backups.
 
-You can also [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your CockroachDB {{ site.data.products.basic }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) to [`userfile`]({% link {{site.current_cloud_version}}/use-userfile-storage.md %}) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}).
+You can also [back up and restore]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) your CockroachDB {{ site.data.products.basic }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to [`userfile`]({% link {{site.current_cloud_version}}/use-userfile-storage.md %}) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
 
 ## Enable deletion protection
 

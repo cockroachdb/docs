@@ -440,13 +440,13 @@
                     {
                         "title": "Use Managed-Service Backups",
                         "urls": [
-                          "/cockroachcloud/use-managed-service-backups.html"
+                          "/cockroachcloud/managed-backups.html"
                         ]
                     },
                     {
                         "title": "Take and Restore Customer-Owned Backups on CockroachDB Cloud",
                         "urls": [
-                          "/cockroachcloud/take-and-restore-customer-owned-backups.html"
+                          "/cockroachcloud/take-and-restore-self-managed-backups.html"
                         ]
                     }
                 ]

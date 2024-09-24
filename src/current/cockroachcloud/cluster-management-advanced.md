@@ -63,9 +63,9 @@ You can also check the status of these features on the [**PCI ready**]({% link c
 
 ## Restore data from a backup
 
-Refer to [Managed-Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) for instructions to restore your cluster from an automatic cluster backup.
+Refer to [Managed-Service Backups]({% link cockroachcloud/managed-backups.md %}) for instructions to restore your cluster from an automatic cluster backup.
 
-You can also [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) to [`userfile`]({% link {{site.current_cloud_version}}/use-userfile-storage.md %}) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}).
+You can also [back up and restore]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) your cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to [`userfile`]({% link {{site.current_cloud_version}}/use-userfile-storage.md %}) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
 
 ## Enable deletion protection
 
