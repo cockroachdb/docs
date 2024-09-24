@@ -190,11 +190,18 @@ terraform show
 
 ## Change a cluster's plan
 
-To change a CockroachDB {{ site.data.products.basic }} cluster's plan to CockroachDB {{ site.data.products.standard }} in place, or to change a CockroachDB {{ site.data.products.standard }} cluster to CockroachDB {{ site.data.products.basic }}, you can use Terraform.
+To change a CockroachDB {{ site.data.products.basic }} cluster's plan to CockroachDB {{ site.data.products.standard }} in place, or vice versa, you can use Terraform or the CockroachDB {{ site.data.products.cloud }} API.
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="terraform">Terraform</button>
+    <button class="filter-button page-level" data-scope="api"><strong>CockroachDB Cloud API</button>
+</div>
 
 {{site.data.alerts.callout_info}}
-To migrate between CockroachDB {{ site.data.products.advanced }} and either CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }}, you must create and configure a new cluster, back up the existing cluster's data, and restore the backup to the new cluster. Migration in place is not supported. Refer to [Customer-owned backups]({% link cockroachcloud/backup-and-restore-overview.md %}#customer-owned-backups).
+To migrate between CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.standard }}, you must create and configure a new cluster, back up the existing cluster's data, and restore the backup to the new cluster. Migration in place is not supported. Refer to [Customer-owned backups]({% link cockroachcloud/backup-and-restore-overview.md %}#customer-owned-backups).
 {{site.data.alerts.end}}
+
+<section class="filter-content" markdown="1" data-scope="terraform">
 
 To migrate from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ site.data.products.standard }} in place:
 
@@ -229,12 +236,29 @@ To migrate from CockroachDB {{ site.data.products.standard }} to CockroachDB {{ 
           }
         }
       ~~~
-    - Remove fields that are unsupported on CockroachDB {{ site.data.products.basic }}, such as private connectivity.
+    - Remove configurations for features that are unsupported on CockroachDB {{ site.data.products.basic }}, such as private connectivity. Otherwise, applying the template will fail.
 1. Apply the template:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     terraform apply
     ~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="api">
+
+To migrate from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ site.data.products.standard }} in place:
+
+1. Edit the API command or application code that was used to created the cluster. In the JSON header, replace the contents of `serverless {}` (which may be empty) with the provisioned vCPUs for the cluster. This field is required for CockroachDB {{ site.data.products.standard }}. It is not possible to set storage limitations on CockroachDB {{ site.data.products.standard }}. Refer to [CockroachDB API: Create a Standard cluster](/docs/api/cloud/v1.html#post-/api/v1/clusters).
+1. Run the command or application code.
+
+To migrate from CockroachDB {{ site.data.products.standard }} to CockroachDB {{ site.data.products.basic }}:
+
+1. Edit the API command or application code that was used to create the cluster. In the JSON header:
+  - Replace the `serverless.usage_limits.provisioned_virtual_cpus` field with an empty value for no resource limits, or optionally values for `request_unit_limit` and `storage_mib_limit`. It is not possible to reserve compute on CockroachDB {{ site.data.products.basic }}. Refer to [CockroachDB API: Create a Standard cluster](/docs/api/cloud/v1.html#post-/api/v1/clusters).
+  - Remove configurations for features that are unsupported on CockroachDB {{ site.data.products.basic }}, such as private connectivity. Otherwise, running the updated command or application code will fail.
+
+</section>
 
 ## Delete a cluster
 
