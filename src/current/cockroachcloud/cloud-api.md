@@ -389,7 +389,7 @@ If the request was successful, the client will not receive a response payload.
 
 ## Change a cluster's plan
 
-This section shows how to change a cluster's plan using the CockroachDB {{ site.data.products.cloud }} API. To use Terraform instead, refer to [Provision a cluster with Terraform]({% link cockroachcloud/provision-a-cluster-with-terraform#change-a-clusters-plan}).
+This section shows how to change a cluster's plan using the CockroachDB {{ site.data.products.cloud }} API. To use Terraform instead, refer to [Provision a cluster with Terraform]({% link cockroachcloud/provision-a-cluster-with-terraform#change-a-clusters-plan %}).
 .
 To change a cluster's plan from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ site.data.products.standard }} in place:
 
