@@ -88,11 +88,11 @@ For information on managing SQL user credentials, including provisioning passwor
 
 ### PKI security certificate
 
-SQL clients may authenticate to CockroachDB {{ site.data.products.dedicated }} clusters using PKI security certificates.
+SQL clients may authenticate to CockroachDB {{ site.data.products.advanced }} clusters using PKI security certificates.
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
-Refer to [Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters]({% link cockroachcloud/client-certs-dedicated.md %}) for procedural information on administering and using client certificate authentication.
+Refer to [Certificate Authentication for SQL Clients in CockroachDB Advanced Clusters]({% link cockroachcloud/client-certs-advanced.md %}) for procedural information on administering and using client certificate authentication.
 
 ## Node identity verification
 

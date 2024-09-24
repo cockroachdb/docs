@@ -216,7 +216,7 @@ Get future release notes emailed to you:
 
 <h3 id="2023-11-29-security-updates"> Security updates </h3>
 
-- [Authenticating to CockroachDB {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates]({% link cockroachcloud/client-certs-dedicated.md %}) is now [Generally Available](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability) to all CockroachDB {{ site.data.products.cloud }} organizations.
+- [Authenticating to CockroachDB {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates]({% link cockroachcloud/client-certs-advanced.md %}) is now [Generally Available](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability) to all CockroachDB {{ site.data.products.cloud }} organizations.
 - [SCIM Provisioning]({% link cockroachcloud/configure-scim-provisioning.md %}), which centralizes provisioning and management of CockroachDB {{ site.data.products.cloud }} organization members in an identity provider (IdP) such as Okta using [System for Cross-Domain Identity Management SCIM](https://www.rfc-editor.org/rfc/rfc7644), is now [Generally Available](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability) to all CockroachDB {{ site.data.products.cloud }} organizations.
 
 ## November 08, 2023
