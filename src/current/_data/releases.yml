@@ -6732,7 +6732,7 @@
   release_date: '2024-09-25'
   release_type: Production
   go_version: go1.22.5
-  sha: 0963c2b1afa7c313c99acedc567cdc99c046d29d
+  sha: 217b43e69da61e9712d73e3e19fd5076fbdb26df
   has_sql_only: true
   has_sha256sum: true
   mac:
