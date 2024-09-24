@@ -403,7 +403,7 @@ To migrate from CockroachDB {{ site.data.products.standard }} to CockroachDB {{ 
   - Remove configurations for features that are unsupported on CockroachDB {{ site.data.products.basic }}, such as private connectivity. Otherwise, running the updated command or application code will fail.
 
 {{site.data.alerts.callout_info}}
-To change a cluster's plan between CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.standard }}, you must create and configure a new cluster, back up the existing cluster's data, and restore the backup to the new cluster. Migration in place is not supported. Refer to [Customer-owned backups]({% link cockroachcloud/backup-and-restore-overview.md %}#customer-owned-backups).
+To change a cluster's plan between CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.standard }}, you must create and configure a new cluster, back up the existing cluster's data, and restore the backup to the new cluster. Migration in place is not supported. Refer to [Self-managed backups]({% link cockroachcloud/backup-and-restore-overview.md %}#self-managed-backups).
 {{site.data.alerts.end}}
 
 ## Delete a cluster
