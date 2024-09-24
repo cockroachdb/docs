@@ -18,6 +18,15 @@ To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
 
+## September 23, 2024
+
+MOLT Fetch/Verify 1.1.8 is [available](#installation).
+
+- The [`--pprof-list-addr` flag]({% link molt/molt-fetch.md %}#global-flags), which specifies the address of the `pprof` endpoint, is now configurable. The default value is `'127.0.0.1:3031'`.
+- [Fetch modes]({% link molt/molt-fetch.md %}#fetch-modes) involving replication now notify the user that only MySQL 8.0 and later are currently supported for replication.
+- [Partitioned tables]({% link molt/molt-fetch.md %}#transformations) can now be moved to CockroachDB using [`IMPORT INTO`]({% link {{ site.current_cloud_version }}/import-into.md %}).
+- Improved logging for the [Fetch]({% link molt/molt-fetch.md %}) schema check phases under the `trace` logging level, which is set with [`--logging trace`]({% link molt/molt-fetch.md %}#global-flags).
+
 ## August 26, 2024
 
 MOLT Fetch/Verify 1.1.7 is [available](#installation).
