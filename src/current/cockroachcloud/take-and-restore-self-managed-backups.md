@@ -1,11 +1,11 @@
 ---
-title: Take and Restore Customer-Owned Backups on CockroachDB Cloud
+title: Take and Restore Self-Managed Backups on CockroachDB Cloud
 summary: Run backups and restores from your CockroachDB Cloud cluster.
 toc: true
 docs_area: manage
 ---
 
-This page describes how to take and restore [_customer-owned backups_]({% link cockroachcloud/backup-and-restore-overview.md %}) on CockroachDB {{ site.data.products.standard }}, {{ site.data.products.advanced }}, and {{ site.data.products.basic }} clusters.
+This page describes how to take and restore [_self-managed backups_]({% link cockroachcloud/backup-and-restore-overview.md %}) on CockroachDB {{ site.data.products.standard }}, {{ site.data.products.advanced }}, and {{ site.data.products.basic }} clusters.
 
 The [examples](#examples) on this page provide a quick overview of the backup features you can run to your own storage bucket. For more technical detail on the complete list of backup features, refer to:
 
@@ -20,7 +20,7 @@ The [examples](#examples) on this page provide a quick overview of the backup fe
 
 ## Examples
 
-Before you begin, connect to your cluster. Refer to:
+Before you begin, connect to your cluster:
 
 - [Connect to a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 - [Connect to a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}).
@@ -231,7 +231,56 @@ cockroach userfile delete bank-backup --url {CONNECTION STRING}
 
 If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection]({% link {{site.current_cloud_version}}/configure-replication-zones.md %}#gc-ttlseconds) to be removed from disk.
 
-To resolve database or table naming conflicts during a restore, see [Troubleshooting naming conflicts]({% link cockroachcloud/use-managed-service-backups.md %}#troubleshooting).
+### Back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ site.data.products.cloud }} cluster
+
+To back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ site.data.products.cloud }} cluster:
+
+1. While [connected to your self-hosted CockroachDB cluster]({% link {{site.current_cloud_version}}/connect-to-the-database.md %}), [back up]({% link {{site.current_cloud_version}}/backup.md %}) your databases and/or tables to an [external location]({% link {{site.current_cloud_version}}/backup.md %}#backup-file-urls):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    BACKUP DATABASE example_database INTO 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+    ~~~
+
+    {{site.data.alerts.callout_danger}}
+    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as CockroachDB {{ site.data.products.cloud }} will need the `specified` credentials upon [`RESTORE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restore). For more information on authentication parameters to cloud storage providers, see [Cloud Storage Authentication](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cloud-storage-authentication).
+    {{site.data.alerts.end}}
+
+1. [Connect to your CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %}):
+
+    <div class="filters clearfix">
+      <button class="filter-button page-level" data-scope="mac">Mac</button>
+      <button class="filter-button page-level" data-scope="linux">Linux</button>
+      <button class="filter-button page-level" data-scope="windows">Windows</button>
+    </div>
+
+    {% include cockroachcloud/sql-connection-string.md %}
+
+
+1. [Restore](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restore) to your CockroachDB {{ site.data.products.cloud }} cluster.
+
+    Use `SHOW BACKUPS` with your external location to find the backup's subdirectory:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW BACKUPS IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+    ~~~
+
+    ~~~
+            path
+    ------------------------
+    2021/03/23-213101.37
+    2021/03/24-172553.85
+    2021/03/24-210532.53
+    (3 rows)
+    ~~~
+
+    Use the subdirectory to specify the backup to restore:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+    ~~~
 
 ## See also
 
