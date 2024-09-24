@@ -133,7 +133,7 @@ There is no charge for backup storage during [Usage-based backup metrics Preview
 
 Storage for CockroachDB {{ site.data.products.basic }} is automatically provisioned on demand, eliminating the need for manual management. Costs are based on actual usage and adjust dynamically as data is added or removed, starting from zero.
 
-Storage is billed hourly, with [rates](https://www.cockroachlabs.com/pricing) depending on the cloud provider and the region where the cluster is hosted.{% comment %}TODO: Resolve this contradiction. https://cockroachlabs.slack.com/archives/C05KHQULKFB/p1726955009576009{% endcomment %}
+Storage is billed hourly. Refer to [Pricing](https://www.cockroachlabs.com/pricing).
 
 </section>
 
