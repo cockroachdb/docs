@@ -44,7 +44,7 @@ This section summarizes key details about each plan to help you make the best ch
 <tbody>
   <tr>
     <td>[Compute](#compute)</td>
-    <td>Usage-based via [Request Units]({% link cockroachcloud/create-a-basic-cluster.md %}#step-4-edit-cluster-capacity)</td>
+    <td>Usage-based via [Request Units]({% link cockroachcloud/create-a-basic-cluster.md %}#step-4-configure-cluster-capacity)</td>
     <td>Provisioned; cost per hour based on [vCPU quantity, cloud provider, and regions]({% link cockroachcloud/create-your-cluster.md %}#step-4-provision-cluster-capacity).</td>
     <td>Provisioned; cost per hour per node based on [vCPU quantity, cloud provider, and region]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity)</td>
   </tr>
@@ -63,20 +63,20 @@ This section summarizes key details about each plan to help you make the best ch
   <tr>
     <td>Managed backup storage</td>
     <td>Daily backups included in Request Unit costs</td>
-    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore).</td>
-    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore).</td>
+    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore).</td>
+    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore).</td>
   </tr>
   <tr>
     <td>[Data transfer](#data-transfer)</td>
     <td>Usage-based via Request Units</td>
-    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)</td>
-    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)</td>
+    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
+    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
   </tr>
   <tr>
     <td>[Change Data Capture]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %})</td>
     <td>Usage-based via Request Units</td>
-    <td>Usage-based.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)</td>
-    <td>Usage-based.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)</td>
+    <td>Usage-based.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
+    <td>Usage-based.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
   </tr>
 </tbody>
 </table>
@@ -115,7 +115,7 @@ Refer to [Pricing](https://www.cockroachlabs.com/pricing/).
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
-Each node of a CockroachDB {{ site.data.products.advanced }} cluster is provisioned with dedicated vCPU resources. You can [customize]({% link create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity) the number of vCPUs per node. This configuration applies to all nodes in the cluster. Compute costs are based on the vCPUs provisioned for each node, at rates that vary rates depending on the cloud provider and region.
+Each node of a CockroachDB {{ site.data.products.advanced }} cluster is provisioned with dedicated vCPU resources. You can [customize]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity) the number of vCPUs per node. This configuration applies to all nodes in the cluster. Compute costs are based on the vCPUs provisioned for each node, at rates that vary rates depending on the cloud provider and region.
 
 Compute charges are calculated hourly by multiplying the hourly rate of the provisioned compute per node and number of nodes per cluster. These charges are accumulated throughout the month to determine the total monthly compute charges. When you configure your cluster's capacity, you are implicitly selecting a _machine type_ offered by the cloud provider. Different machine types are billed at different rates. The hourly compute cost is calculated by multiplying the hourly rate of the machine type by the number of nodes.
 
@@ -126,7 +126,7 @@ Refer to [Pricing](https://www.cockroachlabs.com/pricing/).
 ### Storage
 
 {{site.data.alerts.callout_info}}
-There is no charge for backup storage during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)
+There is no charge for backup storage during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="basic">
@@ -161,7 +161,7 @@ Hourly storage charges are accumulated throughout the month to determine the tot
 ### Data transfer
 
 {{site.data.alerts.callout_info}}
-There is no charge for data transfer during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)
+There is no charge for data transfer during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="basic">
@@ -201,10 +201,10 @@ For CockroachDB {{ site.data.products.advanced }}, data transfer is billed based
 
 ### Changefeeds
 
-All CockroachDB {{ site.data.products.cloud }} clusters can use [Enterprise Changefeeds](% link {{ site.current_cloud_version}}/how-does-an-enterprise-changefeed-work.md %).
+All CockroachDB {{ site.data.products.cloud }} clusters can use [Enterprise Changefeeds]({% link {{ site.current_cloud_version}}/how-does-an-enterprise-changefeed-work.md %}).
 
 {{site.data.alerts.callout_info}}
-There is no charge for changefeeds during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics.md %}#backup-and-restore)
+There is no charge for changefeeds during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="basic">
@@ -234,8 +234,14 @@ In CockroachDB {{ site.data.products.standard }}, Change Data Capture is billed 
 
 </section>
 
+## Usage-based metrics in Preview
+
+Usage-based metrics for [data transfer](#data-transfer), [managed backup storage](#storage), and [changefeeds](#changefeeds) are in [Preview]({% link {{site.current_cloud_version }}/cockroachdb-feature-availability.md %}#features-in-preview). You can view the usage of these metrics in your invoice page under **Billing**.
+
+There will be no additional charges for these metrics during the preview period, which is in effect until December, 2024. During this time, charges will appear as $0 on your monthly invoice.
+
 ## Next steps
 
 - [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}) and [Create a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}).
-- [Plan a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/plan-your-cluster.md %}) and [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link create-your-cluster.md %})
+- [Plan a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/plan-your-cluster.md %}) and [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %})
 - [Plan a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}) and [Create a CockroachDB {{ site.data.products.advanced }} cluster]{% link cockroachcloud/create-an-advanced-cluster.md %}

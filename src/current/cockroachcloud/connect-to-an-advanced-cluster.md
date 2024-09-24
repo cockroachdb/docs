@@ -162,7 +162,7 @@ To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink f
 
   <section class="filter-content" markdown="1" data-scope="command-line">
 
-You can connect to your cluster with any [supported version]({% link releases/release-support-policy.md %}#current-supported-releases) of the full CockroachDB binary or the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}). To download the full binary and connect to a CockroachDB {{ site.data.products.advanced }} cluster, follow these steps.
+You can connect to your cluster with any [supported version]({% link releases/release-support-policy.md %}#supported-versions) of the full CockroachDB binary or the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}). To download the full binary and connect to a CockroachDB {{ site.data.products.advanced }} cluster, follow these steps.
 
 {{site.data.alerts.callout_success}}
 To download a supported version of the SQL shell instead of the full binary, visit [Releases](https://cockroachlabs.com/releases).

@@ -138,12 +138,6 @@
       	      ]
       	    },
             {
-              "title": "Migrate from Serverless to Dedicated",
-              "urls": [
-                "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
-              ]
-            },
-            {
       	      "title": "Migrate from Oracle",
       	      "urls": [
       		      "/{{site.current_cloud_version}}/migrate-from-oracle.html"

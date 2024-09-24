@@ -25,6 +25,8 @@ PKI involves careful management of the certificates used for authentication and 
 
 PKI can be implemented in many ways; key pairs can be generated and certificates signed using many different commands or tools, including OpenSSL, the CockroachDB CLI, or other utilities or services. Similarly, there are multiple ways to safely distribute those credentials to servers and clients.
 
+### PKI strategy
+
 The key elements of the strategy here are:
 
 - To leverage the strength of Vault's secrets engines to manage the certificates.

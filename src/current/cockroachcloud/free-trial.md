@@ -3,13 +3,13 @@ title: Try CockroachDB Cloud for free [WIP]
 summary: Learn about free trial credits for CockroachDB Cloud
 toc: true
 cloud: true
---- 
+---
 
 When you sign up for CockroachDB Cloud, your new organization's account starts with $400 in free credits, allowing you to try the product at no cost.
 
 ## Free trial credits
 
-Free trial credits are applied to the first $400 in costs for all clusters created in your organization, regardless of the plan: CockroachDB Standard, Advanced, or Basic.
+Free trial credits are applied to the first $400 in costs for all clusters created in your organization, regardless of the plan: CockroachDB CockroachDB {{ site.data.products.standard }}, CockroachDB {{ site.data.products.advanced }}, or CockroachDB {{ site.data.products.basic }}.
 
 Monthly billing begins when the free trial ends: on the day that the last credit is used, or when any remaining credits expire. By the end of the trial, you must provide a payment method to prevent interruptions in service or loss of data.
 
@@ -21,7 +21,7 @@ Only organizations charged monthly by credit card are eligible for the free tria
 
 ### View your credit balance
 
-To check your free credit balance and see how much time is remaining before your free credit expires, navigate to <TODO> in the CockroachDB Cloud Console.
+To check your free credit balance and see how much time is remaining before your free credit expires, navigate to **Billing** in the CockroachDB Cloud Console.
 
 ## Free trial notifications
 
@@ -29,11 +29,11 @@ During your free trial, you will receive email notifications from Cockroach Labs
 
 An email is sent when:
 
-- The trial begins, providing terms and resources for getting started.  
+- The trial begins, providing terms and resources for getting started.
 - 50% of credits have been consumed or 50% of the time until credits expire has elapsed.
-- 75% of credits have been consumed or less than 7 days remain before credits expire.  
-- The trial ends (all credits have been consumed or have expired).  
-- Less than 24 hours remain in a post-expiration grace period.  
+- 75% of credits have been consumed or less than 7 days remain before credits expire.
+- The trial ends (all credits have been consumed or have expired).
+- Less than 24 hours remain in a post-expiration grace period.
 - The grace period ends, and trial clusters are deleted.
 
 If you enter a payment method before the end of your free trial, you will not receive further email notifications about the trial. For more details, refer to [Add payment methods](#add-payment-methods).

@@ -6,13 +6,13 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
-          "title": "Manage a CockroachDB Serverless (Basic) Cluster",
+          "title": "Manage a CockroachDB Basic Cluster",
           "urls": [
             "/cockroachcloud/basic-cluster-management.html"
           ]
         },
         {
-          "title": "Manage a CockroachDB Dedicated Cluster",
+          "title": "Manage a CockroachDB Standard Cluster",
           "urls": [
             "/cockroachcloud/cluster-management.html"
           ]
@@ -229,9 +229,9 @@
 										]
 									},
                   {
-                    "title": "Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters",
+                    "title": "Certificate Authentication for SQL Clients in CockroachDB Advanced Clusters",
                     "urls": [
-                      "/cockroachcloud/client-certs-dedicated.html"
+                      "/cockroachcloud/client-certs-advanced.html"
                     ]
                   }
 								]
@@ -502,7 +502,7 @@
         },
 
         {
-         "title": "Export Logs From CockroachDB {{ site.data.products.dedicated }}",
+         "title": "Export Logs From CockroachDB Advanced",
          "urls": [
            "/cockroachcloud/export-logs.html"
          ]

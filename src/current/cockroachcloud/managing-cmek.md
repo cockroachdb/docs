@@ -459,3 +459,42 @@ Within your KMS, **do not revoke** access to a CMEK that is in use by one or mor
 1. [Check your CMEK status](#check-cmek-status) to confirm the revocation has taken effect.
 
 1. Once you have resolved the security incident, re-authorize CMEK for your cluster to return to normal operations. Contact your account team, or [create a support ticket](https://support.cockroachlabs.com/).
+
+<section class="filter-content" markdown="1" data-scope="aws">
+
+## Appendix: IAM policy for the CMEK key
+
+This IAM policy is to be attached to the CMEK key. It grants the required KMS permissions to the cross-account IAM role to be used by CockroachDB {{ site.data.products.dedicated }}.
+
+Note that this IAM policy refers to the ARN for the cross-account IAM role you created at the end of [Step 1. Provision the cross-account IAM role](#step-1-provision-the-cross-account-iam-role).
+
+{% include_cached copy-clipboard.html %}
+~~~json
+{
+	"Version": "2012-10-17",
+	"Id": "crdb-cmek-kms",
+	"Statement": [
+	    {
+	        "Sid": "Allow use of the key for CMEK",
+	        "Effect": "Allow",
+	        "Principal": {
+	            "AWS": "{ARN_OF_CROSS_ACCOUNT_IAM_ROLE}"
+	        },
+	        "Action": [
+	            "kms:Encrypt",
+	            "kms:Decrypt",
+	            "kms:GenerateDataKey*",
+	            "kms:DescribeKey",
+	            "kms:ReEncrypt*"
+	        ],
+	        "Resource": "*"
+	    },
+	    {
+			{OTHER_POLICY_STATEMENT_FOR_ADMINISTRATING_KEY}
+	    }
+	]
+}
+
+~~~
+
+</section>

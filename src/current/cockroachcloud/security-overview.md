@@ -65,7 +65,7 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>✓</td>
-      <td>Client identity authentication using <a href="{% link cockroachcloud/client-certs-dedicated.md %}">PKI certificates</a></td>
+      <td>Client identity authentication using <a href="{% link cockroachcloud/client-certs-advanced.md %}">PKI certificates</a></td>
     </tr>
     <tr>
       <td>&nbsp;</td>

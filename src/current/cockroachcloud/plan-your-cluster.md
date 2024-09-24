@@ -29,9 +29,9 @@ To achieve a rough initial estimate of compute capacity, consider:
   - **Exceeding capacity limit**: CockroachDB {{ site.data.products.standard }} enforces the cluster's provisioned capacity, limiting application throughput if the workload exceeds the cluster's provisioned capacity. This can lead to increased query latency and degraded application performance.
   - **Notifications to prevent overrun**: To help mitigate against the risk of exceeding a cluster's capacity, email and CockroachDB {{ site.data.products.cloud }} Console notifications will occur when a cluster workload exceeds 90% and 90% of its provisioned capacity.
 
-- **Multi-region deployments**: The provisioned capacity of your cluster applies to the entire cluster, regardless of the number of nodes or regional topography. The provisioned capacity is effectively a budget for the cluster that can be used by a node in any region to meet its compute demand. This simplifies planning compute capacity for multi-region deployments. The overall [compute capacity cost]({% link cockroachcloud/billing.md %}) for a multi-region CockroachDB {{ site.data.products.standard }} cluster is calculated based on the price of the most expensive region in the cluster.
+- **Multi-region deployments**: The provisioned capacity of your cluster applies to the entire cluster, regardless of the number of nodes or regional topography. The provisioned capacity is effectively a budget for the cluster that can be used by a node in any region to meet its compute demand. This simplifies planning compute capacity for multi-region deployments. The overall [compute capacity cost]({% link cockroachcloud/billing-management.md %}) for a multi-region CockroachDB {{ site.data.products.standard }} cluster is calculated based on the price of the most expensive region in the cluster.
 
-After considering the above factors, you have enough information to [create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}) using the CockroachDB {{ site.data.products.cloud }} Console or the [CockroachDB Terraform provider]({% link cockroachcloud/provision-a-cluster-using-terraform.md %}). After the cluster is deployed, you can [scale its compute capacity]({% link cockroachcloud/cluster-management.md %}#edit-cluster-capacity) by increasing or decreasing its provisioned capacity as needed.
+After considering the above factors, you have enough information to [create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}) using the CockroachDB {{ site.data.products.cloud }} Console or the [CockroachDB Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). After the cluster is deployed, you can [scale its compute capacity]({% link cockroachcloud/cluster-management.md %}#edit-cluster-capacity) by increasing or decreasing its provisioned capacity as needed.
 
 {{site.data.alerts.callout_success}}
 You can decrease the provisioned capacity only three times within a 7-day period. You can increase the provisioned capacity at any time.
@@ -49,13 +49,13 @@ Important capacity and pricing policies mentioned elsewhere are summarized here:
 
 - **Capacity for multi-region clusters**: A multi-region cluster's capacity is available to all cluster nodes in all regions, but is not pre-allocated per region. The cluster's CPU utilization across regions cannot exceed its provisioned capacity.
 
-- **Multi-region pricing by the most expensive region**: The overall [compute capacity cost]({% link cockroachcloud/billing.md %}) for a multi-region CockroachDB {{ site.data.products.standard }} cluster is calculated based on the price of the most expensive region in the cluster.
+- **Multi-region pricing by the most expensive region**: The overall [compute capacity cost]({% link cockroachcloud/billing-management.md %}) for a multi-region CockroachDB {{ site.data.products.standard }} cluster is calculated based on the price of the most expensive region in the cluster.
 
 - **Limitations on capacity scaling**: You can decrease the provisioned capacity only three times within a 7-day period. You can increase the provisioned capacity at any time.
 
 ### More details about capacity
 
-We recommend that you start with [Quickstart: Provisioning and adjusting capacity](#quickstart-provision-and-adjusting-capacity) to arrive at the best initial compute capacity for your workload and that you adjust the cluster's capacity over time as the workload evolves. In addition, consider the following:
+We recommend that you start with [Quickstart: Provision and adjust capacity](#quickstart-provision-and-adjust-capacity) to arrive at the best initial compute capacity for your workload and that you adjust the cluster's capacity over time as the workload evolves. In addition, consider the following:
 
 - **Smaller workloads**: CockroachDB {{ site.data.products.standard }} is well suited for workloads that require 12 or fewer vCPUs. By contrast, 12 vCPUs (3 nodes x 4 vCPUs) is the minimum configuration for CockroachDB {{ site.data.products.advanced }}.
 
@@ -71,11 +71,11 @@ We recommend that you start with [Quickstart: Provisioning and adjusting capacit
 
 - **Workloads with advanced security or compliance requirements**: For workloads subject to advanced security or compliance requirements, consider CockroachDB {{ site.data.products.advanced }}, which complies with [PCI DSS and HIPAA]({% link cockroachcloud/pci-dss.md %}). To learn more refer to [Compliance in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/compliance.md %}).
 
-For more details to help you compare CockroachDB {{ site.data.products.cloud }} cluster plans, refer to [TBD COMPARISON PAGE](/).
+For more details to help you compare CockroachDB {{ site.data.products.cloud }} cluster plans, refer to [CockroachDB {{ site.data.products.cloud }} Overview]({% link cockroachcloud/index.md %}).
 
 ## Storage pricing
 
-Storage capacity for a CockroachDB {{ site.data.products.standard }} cluster is [priced]({% link cockroachcloud/billing.md %}) on demand in units of GiB-month. Storage prices vary across providers and [regions]({% link cockroachcloud/regions.md %}). Storage is charged based on the logical amount of data in the database.
+Storage capacity for a CockroachDB {{ site.data.products.standard }} cluster is [priced]({% link cockroachcloud/billing-management.md %}) on demand in units of GiB-month. Storage prices vary across providers and [regions]({% link cockroachcloud/regions.md %}). Storage is charged based on the logical amount of data in the database.
 - **3 replicas included**: - CockroachDB {{ site.data.products.standard }} maintains at minimum three replicas of your data at no additional cost.
 
   For a cluster with more than three replicas, storage for each additional replica is priced at the storage price for the region.
@@ -102,5 +102,5 @@ If you add a 6th replica, the cluster will consume 3000 GiB (500 x 6), and will 
 
 - [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %})
 - [Edit cluster capacity]({% link cockroachcloud/cluster-management.md %}#edit-cluster-capacity)
-- [Plan an CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/plan-an-advanced-cluster.md %})
-- [Plan an CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-a-basic-cluster.md %})
+- [Plan an CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %})
+- [Plan an CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %})
