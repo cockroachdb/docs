@@ -55,7 +55,7 @@ Important capacity and pricing policies mentioned elsewhere are summarized here:
 
 ### More details about capacity
 
-We recommend that you start with [Quickstart: Provisioning and adjusting capacity](#quickstart-provision-and-adjusting-capacity) to arrive at the best initial compute capacity for your workload and that you adjust the cluster's capacity over time as the workload evolves. In addition, consider the following:
+We recommend that you start with [Quickstart: Provision and adjust capacity](#quickstart-provision-and-adjust-capacity) to arrive at the best initial compute capacity for your workload and that you adjust the cluster's capacity over time as the workload evolves. In addition, consider the following:
 
 - **Smaller workloads**: CockroachDB {{ site.data.products.standard }} is well suited for workloads that require 12 or fewer vCPUs. By contrast, 12 vCPUs (3 nodes x 4 vCPUs) is the minimum configuration for CockroachDB {{ site.data.products.advanced }}.
 
@@ -71,7 +71,7 @@ We recommend that you start with [Quickstart: Provisioning and adjusting capacit
 
 - **Workloads with advanced security or compliance requirements**: For workloads subject to advanced security or compliance requirements, consider CockroachDB {{ site.data.products.advanced }}, which complies with [PCI DSS and HIPAA]({% link cockroachcloud/pci-dss.md %}). To learn more refer to [Compliance in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/compliance.md %}).
 
-For more details to help you compare CockroachDB {{ site.data.products.cloud }} cluster plans, refer to [TBD COMPARISON PAGE](/).
+For more details to help you compare CockroachDB {{ site.data.products.cloud }} cluster plans, refer to [CockroachDB {{ site.data.products.cloud }} Overview]({% link cockroachcloud/index.md %}).
 
 ## Storage pricing
 

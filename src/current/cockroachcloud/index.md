@@ -201,7 +201,7 @@ For CockroachDB {{ site.data.products.advanced }}, data transfer is billed based
 
 ### Changefeeds
 
-All CockroachDB {{ site.data.products.cloud }} clusters can use [Enterprise Changefeeds](% link {{ site.current_cloud_version}}/how-does-an-enterprise-changefeed-work.md %).
+All CockroachDB {{ site.data.products.cloud }} clusters can use [Enterprise Changefeeds]({% link {{ site.current_cloud_version}}/how-does-an-enterprise-changefeed-work.md %}).
 
 {{site.data.alerts.callout_info}}
 There is no charge for changefeeds during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)
@@ -236,7 +236,7 @@ In CockroachDB {{ site.data.products.standard }}, Change Data Capture is billed 
 
 ## Usage-based metrics in Preview
 
-Usage-based metrics for [data transfer](#data-transfer), [managed backup storage](#storage), and [Change Data Capture](#change-data-capture) are in [Preview]({% link {{site.current_cloud_version }}/cockroachdb-feature-availability.md %}#features-in-preview). You can view the usage of these metrics in your invoice page under **Billing**.
+Usage-based metrics for [data transfer](#data-transfer), [managed backup storage](#storage), and [changefeeds](#changefeeds) are in [Preview]({% link {{site.current_cloud_version }}/cockroachdb-feature-availability.md %}#features-in-preview). You can view the usage of these metrics in your invoice page under **Billing**.
 
 There will be no additional charges for these metrics during the preview period, which is in effect until December, 2024. During this time, charges will appear as $0 on your monthly invoice.
 
