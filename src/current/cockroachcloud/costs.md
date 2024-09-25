@@ -94,7 +94,7 @@ Standard deployments have provisioned compute capacity where customers set a max
 
 The compute pricing is measured in vCPU-hour, with rates depending on the cloud provider and the region. Billing is based on the capacity reserved, not the actual usage. Charges are accumulated throughout the month to determine the total monthly compute charges.
 
-Note: In multi-region clusters, the price of the most expensive region is applied to the entire cluster’s compute capacity. 
+Note: In multi-region clusters, the price of the most expensive region is applied to the entire cluster’s compute capacity.
 
 For example, consider a three region Multi-Region GCP deployment provisioned in Iowa (us-central1), St. Ghislain (europe-central1) and Jurong West(asia-southeast1) with 32 vCPUs provisioned compute capacity. The compute cost for the deployment is calculated by multiplying the number of vCPUs provisioned by the highest per vCPU-hour rate amongst Iowa ($0.1000000), St. Ghislain ($0.1130000) and Jurong West ($0.1210000) regions: (32 vCPU \* $0.121), which equals $3.872 per hour.
 
@@ -136,14 +136,14 @@ A CockroachDB Standard cluster maintains a minimum of three replicas of your dat
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
-Each Advanced cluster is provisioned with dedicated storage, and users can configure the storage size for each node when setting up their cluster. This storage setting applies to all nodes in the cluster. The storage is billed hourly, with the rate depending on the cloud provider and the region where the cluster is hosted. Storage costs are independent of other resources, meaning you can adjust your cluster's storage capacity without altering its vCPU or memory configurations. For guidance on provisioning compute and storage, refer to [Plan Your Cluster]({% cockroachcloud/plan-your-cluster-advanced.md }).
+Each Advanced cluster is provisioned with dedicated storage, and users can configure the storage size for each node when setting up their cluster. This storage setting applies to all nodes in the cluster. The storage is billed hourly, with the rate depending on the cloud provider and the region where the cluster is hosted. Storage costs are independent of other resources, meaning you can adjust your cluster's storage capacity without altering its vCPU or memory configurations. For guidance on provisioning compute and storage, refer to [Plan Your Cluster]({% link cockroachcloud/plan-your-cluster-advanced.md }).
 
 - For AWS clusters: Storage charge (per hour) is calculated by multiplying the storage size (in GiB) by the per GiB-hour rate for storage, plus any additional charges for IOPS.
 - For GCP and Azure clusters: Node storage charge (per hour) is determined by multiplying the storage size (in GiB) by the per GiB-hour rate, without additional IOPS fees.
 
 These charges are accumulated throughout the month to determine the total monthly storage charges.
 
-For example, consider a GCP cluster provisioned in Oregon (us-west1). The cluster consists of three nodes, each with 75 GiB of storage. The storage cost for the cluster is determined by multiplying the storage size (75 GiB) by the storage rate ($0.0010338 per GiB) per node. The total storage cost is then calculated by multiplying this figure by the number of nodes: (75 GiB \* $0.0010338) \* 3, which equals $0.232605 per hour. 
+For example, consider a GCP cluster provisioned in Oregon (us-west1). The cluster consists of three nodes, each with 75 GiB of storage. The storage cost for the cluster is determined by multiplying the storage size (75 GiB) by the storage rate ($0.0010338 per GiB) per node. The total storage cost is then calculated by multiplying this figure by the number of nodes: (75 GiB \* $0.0010338) \* 3, which equals $0.232605 per hour.
 
 **Note:** These prices are intended as examples only. For the latest pricing, refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/).
 
@@ -165,17 +165,17 @@ For CockroachDB Standard and Advanced, CockroachDB Cloud bills directly to custo
 
 The usage data is based on the volume of data moved (per GiB) and the cloud provider’s line item for each type of data transfer, which CockroachDB categorizes as **Same-region data transfer**, **Cross-Region data transfer**, or **Public Internet data transfer**.
 
-Cloud providers may vary in how they calculate each category. We recommend consulting the provider’s documentation for details (i.e. [AWS](https://aws.amazon.com/ec2/pricing/on-demand/), [GCP](https://cloud.google.com/vpc/network-pricing), or [Azure](https://azure.microsoft.com/en-us/pricing/details/bandwidth/)). 
+Cloud providers may vary in how they calculate each category. We recommend consulting the provider’s documentation for details (i.e. [AWS](https://aws.amazon.com/ec2/pricing/on-demand/), [GCP](https://cloud.google.com/vpc/network-pricing), or [Azure](https://azure.microsoft.com/en-us/pricing/details/bandwidth/)).
 
-#### Same-region 
+#### Same-region
 
 A minimum production grade CockroachDB Advanced deployment consists of three nodes or more placed across three Availability Zones (AZs) within the selected region. When data moves between these AZs within a single region, this is considered same-region data transfer.
 
-#### Cross-region 
+#### Cross-region
 
 Similar to same-region data transfer , when data moves between CockroachDB nodes across multiple regions, we get cross-region charges (also known as inter-region charges). Typically, data transfer costs across regions are higher than data transfer costs across AZs (data centers) in a single region.
 
-#### Public internet 
+#### Public internet
 
 This is the usage for any data leaving CockroachDB such as SQL data being sent to clients, or logs and metrics exported to third-party tools.
 
@@ -191,17 +191,17 @@ For CockroachDB Standard and Advanced, CockroachDB Cloud bills directly to custo
 
 The usage data is based on the volume of data moved (per GiB) and the cloud provider’s line item for each type of data transfer, which CockroachDB categorizes as **Same-region data transfer**, **Cross-Region data transfer**, or **Public Internet data transfer**.
 
-Cloud providers may vary in how they calculate each category. We recommend consulting the provider’s documentation for details (i.e. [AWS](https://aws.amazon.com/ec2/pricing/on-demand/), [GCP](https://cloud.google.com/vpc/network-pricing), or [Azure](https://azure.microsoft.com/en-us/pricing/details/bandwidth/)). 
+Cloud providers may vary in how they calculate each category. We recommend consulting the provider’s documentation for details (i.e. [AWS](https://aws.amazon.com/ec2/pricing/on-demand/), [GCP](https://cloud.google.com/vpc/network-pricing), or [Azure](https://azure.microsoft.com/en-us/pricing/details/bandwidth/)).
 
-#### Same-region 
+#### Same-region
 
 A minimum production grade CockroachDB Advanced deployment consists of three nodes or more placed across three Availability Zones (AZs) within the selected region. When data moves between these AZs within a single region, this is considered same-region data transfer.
 
-#### Cross-region 
+#### Cross-region
 
 Similar to same-region data transfer , when data moves between CockroachDB nodes across multiple regions, we get cross-region charges (also known as inter-region charges). Typically, data transfer costs across regions are higher than data transfer costs across AZs (data centers) in a single region.
 
-#### Public internet 
+#### Public internet
 
 This is the usage for any data leaving CockroachDB such as SQL data being sent to clients, or logs and metrics exported to third-party tools.
 

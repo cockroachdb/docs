@@ -29,11 +29,11 @@ During your free trial, you will receive email notifications from Cockroach Labs
 
 An email is sent when:
 
-* The trial begins, providing terms and resources for getting started.  
-* 50% of credits have been consumed or less than 15 days remain before credits expire.  
-* 75% of credits have been consumed or less than 7 days remain before credits expire.  
-* The trial ends (all credits have been consumed or have expired).  
-* Less than 24 hours remain in a post-expiration grace period.  
+* The trial begins, providing terms and resources for getting started.
+* 50% of credits have been consumed or less than 15 days remain before credits expire.
+* 75% of credits have been consumed or less than 7 days remain before credits expire.
+* The trial ends (all credits have been consumed or have expired).
+* Less than 24 hours remain in a post-expiration grace period.
 * The grace period ends, and trial clusters are deleted.
 
 If you enter a payment method before the end of your free trial, you will not receive further email notifications about the trial. For more details, refer to [Add payment methods](#add-payment-methods).
@@ -44,7 +44,7 @@ To understand how costs vary per tier and begin to estimate future expenses, ref
 
 ## Add payment methods
 
-During the free trial, an Organization Admin can [add a credit card]({% link cockroachcloud/billing-management %}) in the CockroachDB Cloud Console or [subscribe through the AWS Marketplace]({% cockroachcloud/billing-management?filters=marketplace %}) (pay as you go). You can also [contact Sales](https://cockroachlabs.com/contact-sales) during the trial to learn more about CockroachDB and consider invoice billing.
+During the free trial, an Organization Admin can [add a credit card]({% link cockroachcloud/billing-management.md %}) in the CockroachDB Cloud Console or [subscribe through the AWS Marketplace]({% link cockroachcloud/billing-management.md %}?filters=marketplace) (pay as you go). You can also [contact Sales](https://cockroachlabs.com/contact-sales) during the trial to learn more about CockroachDB and consider invoice billing.
 
 {{site.data.alerts.callout_info}}
 Callout: To avoid service disruption and possible data loss, be sure to enter a payment method or be in communication with Sales before your free trial ends.
@@ -52,7 +52,7 @@ Callout: To avoid service disruption and possible data loss, be sure to enter a 
 
 If the trial ends and a payment method has not been provided, a three-day grace period begins where your organization’s clusters operate normally, but you are restricted from modifying their configuration, for example, to scale up or down, or update regions.
 
-The cluster will be fully restored if a payment method is added. Any charges accrued during the grace period will be billed to the payment method. 
+The cluster will be fully restored if a payment method is added. Any charges accrued during the grace period will be billed to the payment method.
 
 {{site.data.alerts.callout_danger}}
 If the end of the grace period is reached and no payment method has been added, all clusters in the organization are deleted.
