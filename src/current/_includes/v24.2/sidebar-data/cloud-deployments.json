@@ -15,9 +15,9 @@
         ]
     },
     {
-        "title": "CockroachDB Cloud Regions",
+        "title": "CockroachDB Cloud Costs",
         "urls": [
-            "/cockroachcloud/regions.html"
+            "/cockroachcloud/costs.html"
         ]
     },
     {
@@ -62,7 +62,7 @@
         ]
     },
     {
-        "title": "Standard Deployments",
+        "title": "Standard Deployments (Preview)",
         "items": [
             {
             "title": "Plan a Standard Cluster",
@@ -165,6 +165,12 @@
                 "/cockroachcloud/migrate-from-standard-to-advanced.html"
             ]
             }
+        ]
+    },
+    {
+        "title": "CockroachDB Cloud Regions",
+        "urls": [
+            "/cockroachcloud/regions.html"
         ]
     },
     {
