@@ -35,7 +35,7 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 
 ## Edit cluster capacity
 
-The price-performance characteristics of CockroachDB {{ site.data.products.basic }} vary significantly depending on the workload. It can be difficult to estimate a workload's compute requirements in advance. To increase or decrease a cluster's capacity:
+The price-performance characteristics of CockroachDB {{ site.data.products.basic }} vary significantly depending on the workload. It can be difficult to estimate a workload's compute requirements in advance. With {{ site.data.products.basic }}, by default compute and storage scale with your cluster's needs, but you can limit a cluster's resource usage:
 
 1. In the **Capacity used this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Update capacity**.
 
