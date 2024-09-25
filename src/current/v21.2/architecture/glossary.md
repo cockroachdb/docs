@@ -23,6 +23,4 @@ Term | Definition
 **availability zone**  | A part of a data center that is considered to form a unit with regards to failures and fault tolerance. There can be multiple nodes in a single availability zone, however Cockroach Labs recommends that you to place different replicas of your data in different availability zones.
 **[CockroachDB Self-Hosted](../start-a-local-cluster.html)** | A full featured, self-managed CockroachDB deployment.
 
-For more information on deployment options and guidelines on how to choose a deployment option, see [How to Choose a Deployment Option](../choose-a-deployment-option.html).
-
 {% include common/basic-terms.md %}

@@ -28,7 +28,7 @@ This page provides important recommendations for CockroachDB {{ site.data.produc
 
 ## Deployment options
 
-When planning your deployment, it is important to carefully review and choose the [deployment options]({% link {{site.current_cloud_version}}/choose-a-deployment-option.md %}) that best meet your scale, cost, security, and resiliency requirements.
+When planning your deployment, it is important to carefully review and choose the deployment options that best meet your scale, cost, security, and resiliency requirements.
 
 Make sure your cluster has sufficient storage, CPU, and memory to handle the workload. The general formula to calculate the storage requirement is as follows:
 
