@@ -35,11 +35,13 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 
 ## Edit cluster capacity
 
-On the **Overview** page, you can edit your resource limits. Changes apply to the current and future billing cycles. For more details, refer to [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}).
+The price-performance characteristics of CockroachDB {{ site.data.products.basic }} vary significantly depending on the workload. It can be difficult to estimate a workload's compute requirements in advance. With {{ site.data.products.basic }}, by default compute and storage scale with your cluster's needs, but you can limit a cluster's resource usage:
 
 1. In the **Capacity used this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Update capacity**.
 
-1. On the **Capacity** page, set the configure the new resource limits. In the sidebar, click **Update cluster**.
+1. On the **Capacity** page, edit the resource limits. In the sidebar, click **Update cluster**.
+
+Changes apply to the current and future billing cycles. For more details, refer to [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}).
 
 ## Edit regions
 

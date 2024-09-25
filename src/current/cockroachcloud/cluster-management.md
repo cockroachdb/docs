@@ -38,6 +38,8 @@ From the **Overview** page, you can connect to your cluster. For more informatio
 
 ## Edit cluster capacity
 
+The price-performance characteristics of CockroachDB {{ site.data.products.standard }} vary significantly depending on the workload. It can be difficult to estimate a workload's compute requirements in advance. To increase or decrease a cluster's provisioned capacity:
+
 To edit your cluster's capacity:
 
 1. Navigate to the cluster's **Overview** page.
@@ -46,10 +48,12 @@ To edit your cluster's capacity:
 1. Enter the desired number of request units per second or use the slider to increase or decrease the request units per second.
 
     {{site.data.alerts.callout_success}}
-    You can decrease the provisioned capacity only three times within a 7-day period.
+    You can decrease the provisioned capacity only three times within a 7-day period. You can increase the provisioned capacity at any time.
     {{site.data.alerts.end}}
 
 1. In the sidebar, verify the new estimated cost for the cluster and click **Update cluster**.
+
+To learn more, refer to [Plan a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/plan-your-cluster.md %}#provisioned-capacity).
 
 ## Manage cluster upgrades
 
