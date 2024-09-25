@@ -8,9 +8,9 @@ cloud: true
 
 The Cloud API is a [REST interface](https://wikipedia.org/wiki/Representational_state_transfer) that allows you programmatic access to manage the lifecycle of clusters within your organization.
 
-This document covers the `latest` version (`2024-09-16`) of the API's `v1` endpoints. For for more detailed coverage of API endpoints for this version and prior verisons, refer to the [API reference documentation](https://www.cockroachlabs.com/docs/api/cloud/v1). 
+This document pertains to the `latest` version of the API's `v1` endpoints, `2024-09-16`. For more detailed coverage of API endpoints for this version and prior verisons, refer to the [API reference documentation](https://www.cockroachlabs.com/docs/api/cloud/v1). 
 
-Alternatively, you can make use of the [CockroachDB Cloud Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}) for cluster management.
+To manage clusters and other resources in CockroachDB Cloud, you can also use the [CockroachDB Cloud Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}), which implements the API.
 
 {{site.data.alerts.callout_info}}
 If you used the API to manage CockroachDB Serverless clusters that have been migrated to CockroachDB Basic, ensure your code is updated to work with CockroachDB Basic.
@@ -51,7 +51,7 @@ Replace `{secret_key}` with the secret key string you stored when you [created t
 
 ## Set the API version
 
-The `Cc-Version` HTTP header specifies the version of the Cloud API to use. If you omit the `Cc-Version` header, the Cloud API will default to version `2022-03-31` (the initial release of the Cloud API). The Cloud API uses date-based versions of the form `YYYY-MM-DD`, in [ISO 8601 format](https://www.w3.org/TR/NOTE-datetime).
+The Cloud API uses date-based versions of the form `YYYY-MM-DD`, in [ISO 8601 format](https://www.w3.org/TR/NOTE-datetime). It is strongly recommended that you use the `Cc-Version` HTTP header to specify the version of the Cloud API to use. If you omit the `Cc-Version` header, the Cloud API will default to the latest version. If you don’t specify the version your application expects, breakage may occur. While we try to minimize the risk of breaking API changes, passing the version explicitly helps to mitigate against this risk and is strongly recommended.
 
 If you set an invalid version, you will get an HTTP 400 response with the message "invalid Cc-Version."
 
@@ -80,7 +80,7 @@ Cc-Version: {version}
 
 Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console]({% link cockroachcloud/managing-access.md %}#create-api-keys) and `{version}` is the version of the Cloud API.
 
-## Create a new cluster
+## Create a new Basic cluster
 
 To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
 
@@ -100,7 +100,113 @@ The service account associated with the secret key must have the Cluster Adminis
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"STANDARD","spec":{"serverless":{"regions":["{region_name}"],"usage_limits":{"provisioned_virtual_cpus":"2"}}}}'
+  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"BASIC","spec":{"serverless":{"regions":["{region_name}"],"usage_limits":{"storage_mib_limit":"{storage_limit}","request_unit_limit":"{request_unit_limit}"}}}}'
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="raw">
+
+{% include_cached copy-clipboard.html %}
+~~~ json
+{
+  "name": "{cluster_name}",
+  "provider": "{cloud_provider}",
+  "plan": "BASIC",
+  "spec": {
+    "serverless": {
+      "regions": [
+        "{region_name}"
+      ],
+      "usage_limits": {
+        "storage_mib_limit": "{storage_limit}",
+        "request_unit_limit": "{request_unit_limit}"
+      }
+    }
+  }
+}
+~~~
+
+</section>
+
+Where:
+
+  - `{cluster_name}` is the name of the cluster. The name must be 6-20 characters in length and can include numbers, lowercase letters, and dashes (but no leading or trailing dashes).
+  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
+  - `{region_name}` is the name of a CockroachDB Cloud [region]({% link cockroachcloud/regions.md %}). Region names are set by the cloud provider. For example, `us-central1` is a GCP region. Available regions vary based on both the selected plan type (`BASIC`, `STANDARD`, or `ADVANCED`) and the cloud provider.
+  - `plan` is set to `BASIC` for a Basic cluster.
+  - The `usage_limits` field specifies the resource limits for the cluster. This is optional upon cluster creation and can be specified at any time. (Refer to [Set or update resource limits for a Basic cluster](#set-or-update-resource-limits-for-a-basic-cluster).)
+    - `storage_mib_limit` is the maximum storage in MiB (1 MiB = 1,048,576 bytes).
+    - `request_unit_limit` is the maximum number of request units the cluster can consume.
+
+For example, to create a new Basic cluster named `basic-test` using GCP as the cloud provider and setting specific usage limits:
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
+    <button class="filter-button page-level" data-scope="raw"><strong>Raw</strong></button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="curl">
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request POST \
+  --url https://cockroachlabs.cloud/api/v1/clusters \
+  --header 'Authorization: Bearer {secret_key}' \
+  --json '{"name":"basic-test","provider":"GCP","plan":"BASIC","spec":{"serverless":{"regions":["us-central1"],"usage_limits":{"storage_mib_limit":"5242880","request_unit_limit":"50000000"}}}}'
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="raw">
+
+{% include_cached copy-clipboard.html %}
+~~~ JSON
+{
+  "name": "basic-test",
+  "provider": "GCP",
+  "plan": "BASIC",
+  "spec": {
+    "serverless": {
+      "regions": [
+        "us-central1"
+      ],
+      "usage_limits": {
+        "storage_mib_limit": "5242880",
+        "request_unit_limit": "50000000"
+      }
+    }
+  }
+}
+~~~
+
+</section>
+
+If the request was successful, the API returns information about the new cluster.
+
+For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters) in the API reference.
+
+## Create a new Standard cluster
+
+To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+{{site.data.alerts.end}}
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
+    <button class="filter-button page-level" data-scope="raw"><strong>Raw</strong></button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="curl">
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request POST \
+  --url https://cockroachlabs.cloud/api/v1/clusters \
+  --header 'Authorization: Bearer {secret_key}' \
+  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"STANDARD","spec":{"serverless":{"regions":["{region_name}"],"usage_limits":{"provisioned_virtual_cpus":"2"}}}}'
 ~~~
 
 </section>
@@ -130,12 +236,11 @@ curl --request POST \
 
 Where:
 
-  - `{cluster_name}`: the name of the cluster. This should be a short string with no whitespace.
+  - `{cluster_name}` is the name of the cluster. The name must be 6-20 characters in length and can include numbers, lowercase letters, and dashes (but no leading or trailing dashes).
   - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
-  - `{region_name}`: the name of a CockroachDB Cloud [region]({% link cockroachcloud/regions.md %}). Region names are set by the cloud provider. For example,`us-west2` is a GCP region. Available regions vary based on both the selected plan type (`BASIC`, `STANDARD`, or `ADVANCED`) and the cloud provider.
-
-  - `plan`: the cluster's plan, `BASIC`, `STANDARD`, or `ADVANCED`. The default is `STANDARD`.
-  - The `usage_limits` field specifies the resource limits for the cluster. The `provisioned_virtual_cpus` field () indicates the maximum number of virtual CPUs (vCPUs) the cluster can provision.
+  - `{region_name}` is the name of a CockroachDB Cloud [region]({% link cockroachcloud/regions.md %}). Region names are set by the cloud provider. For example,`us-west2` is a GCP region. Available regions vary based on both the selected plan type (`BASIC`, `STANDARD`, or `ADVANCED`) and the cloud provider.
+  - `plan` is the cluster's plan, `BASIC`, `STANDARD`, or `ADVANCED`. The default is `STANDARD`.
+  - The `usage_limits` field specifies the resource limits for the cluster. The `provisioned_virtual_cpus` field indicates the maximum number of virtual CPUs (vCPUs) the cluster can provision.
 
 For example, to create a new Standard cluster named `notorious-moose` using the default values for the cloud infrastructure provider and region:
 
@@ -151,7 +256,7 @@ For example, to create a new Standard cluster named `notorious-moose` using the 
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"notorious-moose","provider":"GCP","plan":"STANDARD","spec":{"serverless":{"regions":["us-central1"],"usage_limits":{"provisioned_virtual_cpus":"2"}}}}'
+  --json '{"name":"notorious-moose","provider":"GCP","plan":"STANDARD","spec":{"serverless":{"regions":["us-central1"],"usage_limits":{"provisioned_virtual_cpus":"2"}}}}'
 ~~~
 
 </section>
@@ -179,64 +284,119 @@ curl --request POST \
 
 </section>
 
-If the request was successful, the API will return information about the newly created cluster.
+If the request was successful, the API returns information about the new cluster.
+
+For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters) in the API reference.
+
+## Create a new Advanced cluster
+
+To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+{{site.data.alerts.end}}
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
+    <button class="filter-button page-level" data-scope="raw"><strong>Raw</strong></button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="curl">
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request POST \
+  --url https://cockroachlabs.cloud/api/v1/clusters \
+  --header 'Authorization: Bearer {secret_key}' \
+  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"{region_name}":3},"hardware":{"machine_spec":{"machine_type":"{machine_type}"}},"cockroach_version":"{version}"}}}'
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="raw">
 
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
-  "account_id": "",
-  "cloud_provider": "{cloud_provider}",
-  "cockroach_version": "v23.2.4",
-  "config": {
-    "serverless": {
-      "routing_id": "{routing_id}",
-      "upgrade_type": "{upgrade_type}",
-      "usage_limits": {
-        "provisioned_virtual_cpus": "2"
-      }
-    }
-  },
-  "created_at": "2022-03-22T20:23:11.285067Z",
-  "creator_id": "{account_id}",
-  "id": "{cluster_id}",
   "name": "{cluster_name}",
-  "operation_status": "UNSPECIFIED",
-  "plan": "STANDARD",
-  "regions": [
-    {
-      "internal_dns": "{internal_dns}",
-      "name": "{region_name}",
-      "node_count": 0,
-      "private_endpoint_dns": "{private_endpoint_dns}",
-      "sql_dns": "{server_host}",
-      "ui_dns": ""
+  "provider": "{cloud_provider}",
+  "plan": "ADVANCED",
+  "spec": {
+    "dedicated": {
+      "region_nodes": {
+        "{region_name}": 3
+      },
+      "hardware": {
+        "machine_spec": {
+          "machine_type": "{machine_type}"
+        }
+      },
+      "cockroach_version": "{version}"
     }
-  ],
-  "state": "CREATED",
-  "updated_at": "2022-03-22T20:23:11.879593Z",
-  "upgrade_status": "UPGRADE_AVAIALBLE"
+  }
 }
 ~~~
 
+</section>
+
 Where:
 
-  - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP`, `AWS`, `AZURE`.
-  - `serverless` displays configuration for a CockroachDB Basic or Standard cluster
-    - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}). For example, `funky-skunk-123`.
-    - `{upgrade_type}` specifies whether the cluster will receive `AUTOMATIC` or `MANUAL` major version upgrades. `MANUAL` is not available for CockroachDB Basic.
-    - For Basic clusters
-      - `{request_unit_limit}` is the maximum number of request units that the cluster can consume during the month.
-      - `{storage_mib_limit}` is the maximum number of Mebibytes of storage that the cluster can have at any time during the month.
-    - For Standard clusters
-      - `{provisioned_virtual_cpus}` is the maximum number of virtual CPUs (vCPUs) that the cluster can use. Once this limit is reached, operation latency may increase due to throttling.
-  - `dedicated`, if present, represents configuration for a CockroachDB Advanced cluster.
-  - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
-  - `{cluster_id}` is the unique ID of this cluster.
-  {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}).
-  {{site.data.alerts.end}}
-  - `{cluster_name}` is the name of the cluster.
-  - `{internal_dns}` is the internal DNS name of the cluster within the cloud provider's network. It is used to connect to the cluster with AWS PrivateLink, Azure Private Link, and GCP VPC Peering, but not GCP Private Service Connect. 
+  - `{cluster_name}` is the name of the cluster. The name must be 6-20 characters in length and can include numbers, lowercase letters, and dashes (but no leading or trailing dashes).
+  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
+  - `plan` is set to `ADVANCED` for an Advanced cluster.
+  - `{region_name}` is the name of a CockroachDB Cloud [region]({% link cockroachcloud/regions.md %}). Region names are set by the cloud provider. For example, `us-east-1` is an AWS region. Available regions vary based on both the selected plan type and the cloud provider.
+  - The `region_nodes` field specifies the number of nodes in each region. The minimum is 3 nodes per region for an Advanced cluster.
+  - `{machine_type}` is the machine type identifier within the given cloud provider, e.g., `n2-standard-4` for GCP or `m5.xlarge` for AWS.
+  - `{version}` is the CockroachDB version for the cluster. This field is optional; if omitted, the current version will be used.
+
+For example, to create a new Advanced cluster named `advanced-test` using AWS as the cloud provider:
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
+    <button class="filter-button page-level" data-scope="raw"><strong>Raw</strong></button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="curl">
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request POST \
+  --url https://cockroachlabs.cloud/api/v1/clusters \
+  --header 'Authorization: Bearer {secret_key}' \
+  --json '{"name":"advanced-test","provider":"AWS","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"us-east-1":3},"hardware":{"machine_spec":{"machine_type":"m5.xlarge"}},"cockroach_version":"v23.1.2"}}}'
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="raw">
+
+{% include_cached copy-clipboard.html %}
+~~~ JSON
+{
+  "name": "advanced-test",
+  "provider": "AWS",
+  "plan": "ADVANCED",
+  "spec": {
+    "dedicated": {
+      "region_nodes": {
+        "us-east-1": 3
+      },
+      "hardware": {
+        "machine_spec": {
+          "machine_type": "m5.xlarge"
+        }
+      },
+      "cockroach_version": "v23.1.2"
+    }
+  }
+}
+~~~
+
+</section>
+
+If the request was successful, the API returns information about the new cluster.
+
+For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters) in the API reference.
 
 ## Get information about a specific cluster
 
@@ -263,62 +423,7 @@ Where:
 
 If the request was successful, the API will return detailed information about the cluster.
 
-{% include_cached copy-clipboard.html %}
-~~~ json
-{
-  "account_id": "",
-  "cloud_provider": "{cloud_provider}",
-  "cockroach_version": "v23.2.4",
-  "config": {
-    "serverless": {
-      "routing_id": "{routing_id}",
-      "upgrade_type": "{upgrade_type}",
-      "usage_limits": {
-        "provisioned_virtual_cpus": "2"
-      }
-    }
-  },
-  "created_at": "2022-03-22T20:23:11.285067Z",
-  "creator_id": "{account_id}",
-  "id": "{cluster_id}",
-  "name": "{cluster_name}",
-  "operation_status": "UNSPECIFIED",
-  "plan": "STANDARD",
-  "regions": [
-    {
-      "internal_dns": "{internal_dns}",
-      "name": "{region_name}",
-      "node_count": 0,
-      "private_endpoint_dns": "{private_endpoint_dns}",
-      "sql_dns": "{server_host}",
-      "ui_dns": ""
-    }
-  ],
-  "state": "CREATED",
-  "updated_at": "2022-03-22T20:23:11.879593Z",
-  "upgrade_status": "UPGRADE_AVAIALBLE"
-}
-~~~
-
-Where:
-
-  - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP`, `AWS`, `AZURE`.
-  - `serverless` displays configuration for a CockroachDB Basic or Standard cluster
-    - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}). For example, `funky-skunk-123`.
-    - `{upgrade_type}` specifies whether the cluster will receive `AUTOMATIC` or `MANUAL` major version upgrades. `MANUAL` is not available for CockroachDB Basic.
-    - For Basic clusters
-      - `{request_unit_limit}` is the maximum number of request units that the cluster can consume during the month.
-      - `{storage_mib_limit}` is the maximum number of Mebibytes of storage that the cluster can have at any time during the month.
-    - For Standard clusters
-      - `{provisioned_virtual_cpus}` is the maximum number of virtual CPUs (vCPUs) that the cluster can use. Once this limit is reached, operation latency may increase due to throttling.
-  - `dedicated`, if present, represents configuration for a CockroachDB Advanced cluster.
-  - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
-  - `{cluster_id}` is the unique ID of this cluster.
-  {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}).
-  {{site.data.alerts.end}}
-  - `{cluster_name}` is the name of the cluster.
-  - `{internal_dns}` is the internal DNS name of the cluster within the cloud provider's network. It is used to connect to the cluster with AWS PrivateLink, Azure Private Link, and GCP VPC Peering, but not GCP Private Service Connect. 
+For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/clusters) in the API reference.
 
 ## Get information about a cluster's nodes
 
@@ -372,15 +477,17 @@ Where:
 - `{region_name}` is the cloud infrastructure provider region where the cluster is located.
 - `{status}` is the status of the node. Possible values are: `LIVE` and `NOT_READY`.
 
-## Change resource limits for a Basic cluster
+## Set or update resource limits for a Basic cluster
 
-To set or update the maximum RU or storage limits for a cluster, send a `PATCH` request to the `/v1/clusters/{cluster_id}` endpoint with an updated `serverless.usage_limits` field.
+To specify the maximum RU or storage limits for a cluster, send a `PATCH` request to the `/v1/clusters/{cluster_id}` endpoint with an updated `serverless.usage_limits` field.
+
+{{site.data.alerts.callout_info}}
+The `spend_limit` field, which was deprecated in Serverless, is not supported on Basic or Standard. Instead, use `usage_limits`.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
 The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
-
-The service account associated with the secret key must have `ADMIN` or `EDIT` [permission]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) to retrieve information about an organization's clusters.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -394,8 +501,7 @@ The service account associated with the secret key must have `ADMIN` or `EDIT` [
 curl --request PATCH \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
   --header 'Authorization: Bearer {secret_key}' \
-  --header 'Content-Type: application/json' \
-  --data '{"serverless":{"usage_limits":{"storage_mib_limit":"5242880","request_unit_limit":"50000000"}}}'
+  --json '{"serverless":{"usage_limits":{"storage_mib_limit":"5242880","request_unit_limit":"50000000"}}}'
 ~~~
 
 </section>
@@ -426,13 +532,11 @@ Where:
   - `storage_mib_limit` is the maximum number of Mebibytes of storage that the cluster can have at any time during the month. If this limit is exceeded, then the cluster is throttled, where only one SQL connection is allowed at a time, with the expectation that it is used to delete data to reduce storage usage. It is an error for this value to be zero.
   - `request_unit_limit` is the maximum number of request units that the cluster can consume during the month. If this limit is exceeded, then the cluster is disabled until the limit is increased, or until the beginning of the next month when more request units are granted. It is an error for this to be zero.
 
-If the request was successful, the client will not receive a response payload.
+If the request was successful, the API returns the updated cluster details.
 
-{{site.data.alerts.callout_info}}
-The `spend_limit` field, which was deprecated in Serverless, is not supported on Basic or Standard. Instead, use `usage_limits`.
-{{site.data.alerts.end}}
+For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-) in the API reference.
 
-## Change provisioned vCPUs for a Standard cluster
+## Change the number of provisioned vCPUs for a Standard cluster
 
 To update the provisioned vCPUs for a cluster, send a `PATCH` request to the `/v1/clusters/{cluster_id}` endpoint  with an updated `serverless.usage_limits` field.
 
@@ -454,7 +558,7 @@ The service account associated with the secret key must have `ADMIN` or `EDIT` [
 curl --request PATCH \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
   --header 'Authorization: Bearer {secret_key}' \
-  --data '{"usage_limits": {"provisioned_virtual_cpus": "{provisioned_virtual_cpus}"}}'
+  --json '{"serverless":{"usage_limits":{"provisioned_virtual_cpus":"{provisioned_virtual_cpus}"}}}'
 ~~~
 
 </section>
@@ -464,8 +568,10 @@ curl --request PATCH \
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
-  "usage_limits": {
-    "provisioned_virtual_cpus": "{provisioned_virtual_cpus}"
+  "serverless": {
+    "usage_limits": {
+      "provisioned_virtual_cpus": "{provisioned_virtual_cpus}"
+    }
   }
 }
 ~~~
@@ -481,7 +587,9 @@ Where:
   - `{secret_key}` is the secret key for the service account.
   - `{provisioned_virtual_cpus}` is the maximum number of virtual CPUs (vCPUs) that the cluster can use. Once this limit is reached, operation latency may increase due to throttling.
 
-If the request was successful, the client will not receive a response payload.
+If the request was successful, the API returns the updated cluster details.
+
+For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-) in the API reference.
 
 ## Delete a cluster
 
@@ -589,74 +697,18 @@ Where:
 
   - `{secret_key}` is the secret key for the service account.
 
-If the request was successful, the client will receive a list of all clusters within the organization.
+If the request was successful, the client will receive a list of all clusters within the organization, in the following format.
 
-{% include_cached copy-clipboard.html %}
 ~~~ json
 {
   "clusters": [
-    {
-      "account_id": "",
-      "cloud_provider": "{cloud_provider}",
-      "cockroach_version": "v23.2.4",
-      "config": {
-        "serverless": {
-          "routing_id": "{routing_id}",
-          "upgrade_type": "{upgrade_type}",
-          "usage_limits": {
-            "provisioned_virtual_cpus": "2"
-          }
-        }
-      },
-      "created_at": "2022-03-22T20:23:11.285067Z",
-      "creator_id": "{account_id}",
-      "id": "{cluster_id}",
-      "name": "{cluster_name}",
-      "operation_status": "UNSPECIFIED",
-      "plan": "STANDARD",
-      "regions": [
-        {
-          "internal_dns": "{internal_dns}",
-          "name": "{region_name}",
-          "node_count": 0,
-          "private_endpoint_dns": "{private_endpoint_dns}",
-          "sql_dns": "{server_host}",
-          "ui_dns": ""
-        }
-      ],
-      "state": "CREATED",
-      "updated_at": "2022-03-22T20:23:11.879593Z",
-      "upgrade_status": "UPGRADE_AVAILABLE"
-    }
+    {<cluster_object1>},
+    {<cluster_object2>},
+    {<cluster_object3>}
   ],
-  "pagination": {
-    "next_page": "<string>",
-    "previous_page": "<string>"
-  }
-}
+  "pagination": null
+}    
 ~~~
-
-Where:
-
-  - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP`, `AWS`, `AZURE`.
-  - `serverless` displays configuration for a CockroachDB Basic or Standard cluster
-    - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}). For example, `funky-skunk-123`.
-    - `{upgrade_type}` specifies whether the cluster will receive `AUTOMATIC` or `MANUAL` major version upgrades.
-    - For Basic clusters
-      - `{request_unit_limit}` is the maximum number of request units that the cluster can consume during the month.
-      - `{storage_mib_limit}` is the maximum number of Mebibytes of storage that the cluster can have at any time during the month.
-    - For Standard clusters
-      - `{provisioned_virtual_cpus}` is the maximum number of virtual CPUs (vCPUs) that the cluster can use. Once this limit is reached, operation latency may increase due to throttling.
-  - `dedicated`, if present, represents configuration for a CockroachDB Advanced cluster.
-  - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
-  - `{cluster_id}` is the unique ID of this cluster.
-  {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}).
-  {{site.data.alerts.end}}
-  - `{cluster_name}` is the name of the cluster.
-  -  {internal_dns} is the internal DNS name of the cluster within the cloud provider's network. It is used to connect to the cluster with AWS PrivateLink, Azure Private Link, and GCP VPC Peering, but not GCP Private Service Connect.
-  - `{region_name}` is the zone code of the cloud infrastructure provider where the cluster is located.
-  - `{private_endpoint_dns}` is the DNS name which is used to connect the cluster directly to a VPC within your Google Cloud project using GCP Private Service Connect.
 
 ## List the available regions for a cloud provider
 
@@ -722,11 +774,14 @@ If the request was successful, the client will receive a list of SQL users.
 {
   "users": [
     {
-      "name": "{user name}"
+      "name": "<SQL-username-1>"
+    },
+    {
+      "name": "<SQL-username-2>"
     }
   ],
   "pagination": {
-    "next_page": "{next_page_token}"
+    "next_page": "<next_page_token>"
   }
 }
 ~~~
@@ -734,13 +789,6 @@ If the request was successful, the client will receive a list of SQL users.
 Where:
 - `{user name}` is the SQL username of the user.
 - `{next_page_token}` is the token to use for retrieving the next page of results, if any.
-
-{{site.data.alerts.callout_info}}
-TODO - review: This endpoint returns paginated results. Use the `next_page` token in the response to fetch subsequent pages if available.
-{{site.data.alerts.end}}
-{{site.data.alerts.callout_info}}
-TODO - review: The available regions may vary depending on the selected plan type (BASIC, STANDARD, or ADVANCED) and the cloud infrastructure provider.
-{{site.data.alerts.end}}
 
 ## Create a SQL user
 
@@ -760,8 +808,7 @@ When possible, it is best practice to [limit each user's privileges]({% link coc
 curl --request POST \
   --url 'https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/sql-users' \
   --header 'Authorization: Bearer {secret_key}' \
-  --header 'Content-Type: application/json' \
-  --data '{"name":"{sql_username}","password":"{password}"}'
+  --json '{"name":"{sql_username}","password":"{password}"}'
 ~~~
 
 Where:
@@ -774,15 +821,15 @@ The cluster ID used in the Cloud API is different from the routing ID used when 
 - `{sql_username}` is the username of the new SQL user you want to create.
 - `{password}` is the new user's password.
 
-If the request was successful, the client will receive a response with the name of the new user.
+If the request was successful, the client receives a response with the name of the new user.
 
 ~~~ json
 {
-  "name": "{sql_username}"
+  "name": "<sql_username>"
 }
 ~~~
 
-Where `{sql_username}` is the username of the newly created SQL user.
+Where `<sql_username>` is the username of the newly created SQL user.
 
 {{site.data.alerts.callout_info}}
 Ensure that you store the password securely, as it cannot be retrieved later. If the password is lost, you'll need to reset it.
@@ -811,15 +858,13 @@ The cluster ID used in the Cloud API is different from the routing ID used when 
 - `{sql_username}` is the username of the SQL user you want to delete.
 - `{secret_key}` is the secret key for the service account.
 
-If the request was successful, the client will receive a response with the name of the deleted user.
+If the request was successful, the client receives a response with the name of the deleted user.
 
 ~~~ json
 {
-  "name": "{sql_username}"
+  "name": "<sql_username>"
 }
 ~~~
-
-Where `{sql_username}` is the username of the deleted SQL user.
 
 {{site.data.alerts.callout_danger}}
 Deleting a SQL user cannot be undone.
@@ -838,7 +883,7 @@ The service account associated with the secret key must have the Cluster Adminis
 curl --request PUT \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/sql-users/{sql_username}/password \
   --header 'Authorization: Bearer {secret_key}' \
-  --data '{"password":"{new_password}"}'
+  --json '{"password":"{new_password}"}'
 ~~~
 
 Where:
@@ -849,13 +894,12 @@ The cluster ID used in the Cloud API is different from the routing ID used when 
 - `{sql_username}` is the username of the SQL user whose password you want to change.
 - `{new_password}` is the new password for the SQL user.
 
-
-If the request was successful, the client will receive a response with the name of the SQL user whose password was changed.
+If the request was successful, the client receives a response with the name of the SQL user whose password was changed.
 
 ~~~ json
 {
-  "name": "{sql_username}"
+  "name": "<sql_username>"
 }
 ~~~
 
-Where `{sql_username}` is the name of the SQL user whose password was changed.
+Where `<sql_username>` is the name of the SQL user whose password was changed.
