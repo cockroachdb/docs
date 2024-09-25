@@ -7,13 +7,13 @@ docs_area: manage
 
 Amazon Web Services (AWS) PrivateLink support allows customers to establish SQL access to their clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance. PrivateLink is supported for CockroachDB {{ site.data.products.advanced }} CockroachDB {{ site.data.products.standard }} clusters deployed on AWS.
 
-This page shows how to set up AWS PrivateLink for CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.standard }} clusters from your AWS account. For broader context, refer to [Network Authorization for CockroachDB {{ site.data.products.cloud }} Clusters]({% link cockroachcloud/network-authorization.md %}).
+This page shows how to set up AWS PrivateLink for CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.standard }} clusters, both in CockroachDB {{ site.data.products.cloud }}and in your AWS account. For broader context, refer to [Network Authorization for CockroachDB {{ site.data.products.cloud }} Clusters]({% link cockroachcloud/network-authorization.md %}).
 
 {% include_cached common/aws-privatelink-basic.md %}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="advanced">CockroachDB {{ site.data.products.advanced }}</button>
-  <button class="filter-button" data-scope="standard">Multi-region CockroachDB {{ site.data.products.standard }}</button>
+  <button class="filter-button" data-scope="standard">CockroachDB {{ site.data.products.standard }}</button>
 </div>
 
 {{site.data.alerts.callout_success}}
@@ -271,7 +271,7 @@ After a short (less than 5 minute) delay, the status will change from **Pending 
 ## What's next?
 
 - [Client Connection Parameters]({% link {{site.current_cloud_version}}/connection-parameters.md %})
-<section class="filter-content" markdown="1" data-scope="standard">
+<section class="filter-content" markdown="1" data-scope="advanced">
 - [Connect to your CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-an-advanced-cluster.md %})
 </section>
 <section class="filter-content" markdown="1" data-scope="standard">

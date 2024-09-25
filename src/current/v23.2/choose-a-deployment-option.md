@@ -1,13 +1,13 @@
 ---
 title: Choose a Deployment Option
-summary: Learn how to choose between CockroachDB Serverless, Dedicated, and Self-Hosted deployment option.
+summary: Learn how to choose between CockroachDB Cloud and Self-Hosted deployment option.
 toc: true
 docs_area: deploy
 ---
 
-Cockroach Labs offers four ways to deploy CockroachDB: three managed services&mdash;CockroachDB {{ site.data.products.serverless }}, CockroachDB {{ site.data.products.dedicated }} standard, and CockroachDB {{ site.data.products.dedicated }} advanced&mdash;and a self managed option&mdash;CockroachDB {{ site.data.products.core }}. To help you choose which deployment option will best satisfy your requirements, this page describes the application types each deployment is designed for and lists some of the deployment option features that support the application types. For a full feature comparison list, see [CockroachDB: A cloud native, globally-distributed SQL database](https://www.cockroachlabs.com/get-started-cockroachdb/).
+Cockroach Labs offers several options for clusters: CockroachDB {{ site.data.products.basic }}, and CockroachDB {{ site.data.products.standard }}, CockroachDB {{ site.data.products.advanced }} run in CockroachDB {{ site.data.products.cloud }}. As an alternative, you can manage your own CockroachDB {{ site.data.products.core }} deployment. To help you choose which deployment option will best satisfy your requirements, this page describes the application types each deployment is designed for and lists some of the deployment option features that support the application types. For a full feature comparison list, see [CockroachDB: A cloud native, globally-distributed SQL database](https://www.cockroachlabs.com/get-started-cockroachdb/).
 
-<table>
+<table markdown="1">
   <tr>
     <th><b>Application type</b></th>
     <th><b>Deployment option</b></th>
@@ -42,7 +42,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td>
-      <a id="dedicated"></a><b><a href="{% link cockroachcloud/quickstart-trial-cluster.md %}">CockroachDB {{ site.data.products.dedicated }}</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
+      <a id="dedicated"></a><b><a href="{% link cockroachcloud/quickstart-trial-cluster.md %}">CockroachDB {{ site.data.products.advanced }}</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
       </td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
@@ -62,10 +62,10 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications that require PCI-readiness.</li>
       </ul></td>
       <td>
-      <a id="dedicated-advanced"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">{{ site.data.products.dedicated-advanced }}</a></b>: A fully managed, single tenant, <a href="../cockroachcloud/pci-dss.html">PCI-ready</a> CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
+      <a id="dedicated-advanced"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">{{ site.data.products.advanced }}</a> with advanced security features enabled</b>: A fully managed, single tenant, <a href="../cockroachcloud/pci-dss.html">PCI-ready</a> CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
       </td>
       <td><ul>
-        <li><b>All CockroachDB Dedicated features.</b></li>
+        <li><b>All CockroachDB Advanced features.</b></li>
         <li><b><a href="../cockroachcloud/cmek.html">Customer-Managed Encryption Keys (CMEK)</a></b>: Data protection at rest using a cryptographic key hosted in a supported cloud provider key-management system (KMS).</li>
         <li><b><a href="../cockroachcloud/egress-perimeter-controls.html">Egress Perimeter Controls</a></b>: Allowlist configuration to ensure that the data is sent to a secure location.</li>
       </ul></td>

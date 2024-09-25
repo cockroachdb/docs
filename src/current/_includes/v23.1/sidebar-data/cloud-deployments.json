@@ -48,9 +48,9 @@
                     ]
             },
             {
-                "title": "Provision a Serverless Cluster with Terraform",
+                "title": "Provision a Basic Cluster with Terraform",
                 "urls": [
-                    "/cockroachcloud/provision-a-cluster-with-terraform.html"
+                    "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=basic"
                 ]
             }
         ]
@@ -95,15 +95,9 @@
             ]
             },
             {
-            "title": "Provision a Dedicated Cluster with Terraform",
+            "title": "Provision a Standard Cluster with Terraform",
             "urls": [
-                "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=dedicated"
-            ]
-            },
-            {
-            "title": "Migrate from Serverless to Dedicated",
-            "urls": [
-                "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
+                "/cockroachcloud/provision-a-cluster-with-terraform.html"
             ]
             }
         ]
@@ -142,21 +136,15 @@
             ]
             },
             {
-            "title": "Provision a Dedicated Cluster with Terraform",
+            "title": "Provision a Advanced Cluster with Terraform",
             "urls": [
-                "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=dedicated"
+                "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=advanced"
             ]
             },
             {
             "title": "CockroachDB Advanced on Azure",
             "urls": [
                 "/cockroachcloud/cockroachdb-advanced-on-azure.html"
-            ]
-            },
-            {
-            "title": "Migrate from Serverless to Dedicated",
-            "urls": [
-                "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
             ]
             }
         ]
@@ -181,27 +169,15 @@
             "title": "Customer-Managed Encryption Keys (CMEK)",
             "items": [
                 {
-                "title": "Manage CMEK for Dedicated",
-                "urls": [
-                    "/cockroachcloud/managing-cmek.html"
-                ]
-                },
-                {
-                "title": "Provision AWS for CMEK",
-                "urls": [
-                    "/cockroachcloud/cmek-ops-aws.html"
-                ]
-                },
-                {
-                "title": "Provision GCP for CMEK",
-                "urls": [
-                    "/cockroachcloud/cmek-ops-gcp.html"
-                ]
-                },
-                {
-                "title": "Customer-Managed Encryption Keys (CMEK) Overview",
+                "title": "Overview",
                 "urls": [
                     "/cockroachcloud/cmek.html"
+                ]
+                },
+                {
+                "title": "Manage CMEK",
+                "urls": [
+                    "/cockroachcloud/managing-cmek.html"
                 ]
                 }
             ]
@@ -210,7 +186,7 @@
             "title": "Compliance",
             "items": [
                 {
-                    "title": "Compliance in Dedicated",
+                    "title": "Compliance in Advanced",
                     "urls": [
                       "/cockroachcloud/compliance.html"
                     ]
@@ -257,9 +233,9 @@
                         ]
                     },
                     {
-                        "title": "SQL Client Certificate Authentication for Dedicated Clusters",
+                        "title": "SQL Client Certificate Authentication for Advanced Clusters",
                         "urls": [
-                        "/cockroachcloud/client-certs-dedicated.html"
+                        "/cockroachcloud/client-certs-advanced.html"
                         ]
                     }
                 ]

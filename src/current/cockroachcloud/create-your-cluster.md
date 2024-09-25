@@ -54,7 +54,7 @@ Click **Next: Capacity**.
 
 ## Step 4. Provision cluster capacity
 
-Provisioned capacity refers to the processing resources (Request Units per sec) reserved for your workload. Each 500 RUs/sec equals approximately 1 vCPU. We recommend setting capacity at least 40% above expected peak workload to avoid performance issues. Refer to [Planning your cluster](plan-your-cluster.html) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.standard }} clusters.
+Provisioned capacity refers to the reserved compute capacity for your cluster, expressed in vCPUs. We recommend at minimum 4-8 vCPUs for production workloads, and allowing for at least 40% above expected peak workload to avoid performance issues. Refer to [Plan your cluster]({% link cockroachcloud/plan-your-cluster.md %}) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.standard }} clusters.
 
 {% comment %}Verify VPC Peering status
 {{site.data.alerts.callout_success}}

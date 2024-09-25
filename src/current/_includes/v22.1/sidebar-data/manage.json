@@ -6,13 +6,13 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
-          "title": "Manage a CockroachDB Serverless (Basic) Cluster",
+          "title": "Manage a CockroachDB Basic Cluster",
           "urls": [
             "/cockroachcloud/basic-cluster-management.html"
           ]
         },
         {
-          "title": "Manage a CockroachDB Dedicated Cluster",
+          "title": "Manage a CockroachDB Standard Cluster",
           "urls": [
             "/cockroachcloud/cluster-management.html"
           ]
@@ -190,26 +190,20 @@
           "urls": ["/cockroachcloud/security-overview.html"],
           "items": [
             {
-              "title": "Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
+              "title": "Customer-Managed Encryption Keys (CMEK) for CockroachDB Advanced",
               "urls": [],
               "items": [
                 {
-                  "title": "Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
-                  "urls": [
+                "title": "Overview",
+                "urls": [
+                    "/cockroachcloud/cmek.html"
+                ]
+                },
+                {
+                "title": "Manage CMEK",
+                "urls": [
                     "/cockroachcloud/managing-cmek.html"
-                  ]
-                },
-                {
-                  "title": "Provisioning AWS KMS Keys and IAM Roles for CMEK",
-                  "urls": [
-                    "/cockroachcloud/cmek-ops-aws.html"
-                  ]
-                },
-                {
-                  "title": "Provisioning GCP KMS Keys and Service Accounts for CMEK",
-                  "urls": [
-                    "/cockroachcloud/cmek-ops-gcp.html"
-                  ]
+                ]
                 }
               ]
             },
@@ -235,9 +229,9 @@
 										]
 									},
                   {
-                    "title": "Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters",
+                    "title": "Certificate Authentication for SQL Clients in CockroachDB Advanced Clusters",
                     "urls": [
-                      "/cockroachcloud/client-certs-dedicated.html"
+                      "/cockroachcloud/client-certs-advanced.html"
                     ]
                   }
 								]
@@ -278,7 +272,7 @@
           "title": "Secure CockroachDB Self-Hosted Clusters",
           "items": [
             {
-              "title": "Managing Security Certificates",
+              "title": "Manage Security Certificates",
               "items": [
                 {
                   "title": "Use the CockroachDB CLI to provision a development cluster",
@@ -287,7 +281,7 @@
                   ]
                 },
                 {
-                  "title": "Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault",
+                  "title": "Manage PKI certificates with HashiCorp Vault",
                   "urls": [
                     "/${VERSION}/manage-certs-vault.html"
                   ]
@@ -299,7 +293,7 @@
                   ]
                 },
                 {
-                  "title": "Using Online Certificate Status Protocol (OCSP) with CockroachDB",
+                  "title": "Use Online Certificate Status Protocol (OCSP)",
                   "urls": [
                     "/${VERSION}/manage-certs-revoke-ocsp.html"
                   ]
@@ -360,7 +354,7 @@
               ]
             },
             {
-              "title": "Using Hashicorp Vault's Dynamic Secrets for Enhanced Database Credential Security",
+              "title": "Use Hashicorp Vault's Dynamic Secrets",
               "urls": [
                 "/${VERSION}/vault-db-secrets-tutorial.html"
               ]
@@ -508,7 +502,7 @@
         },
 
         {
-         "title": "Export Logs From CockroachDB {{ site.data.products.dedicated }}",
+         "title": "Export Logs From CockroachDB Advanced",
          "urls": [
            "/cockroachcloud/export-logs.html"
          ]
