@@ -35,7 +35,7 @@ Refer to the [Cloud Console](#restore-a-basic-cluster) section for details on vi
 ### Standard and Advanced clusters
 
 {{site.data.alerts.callout_info}}
-Configurable managed backup settings are available in all [supported versions]({% link releases/release-support-policy.md %}) of CockroachDB on {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters.
+Configurable managed backup settings are available in all [supported versions]({% link releases/release-support-policy.md %}#supported-versions) of CockroachDB on {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters.
 {{site.data.alerts.end}}
 
 In {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters, you can configure the [frequency](#frequency) and [retention](#retention) of managed backups.
