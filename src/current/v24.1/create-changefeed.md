@@ -267,7 +267,7 @@ For example:
 
 ## Examples
 
-Before running any of the examples in this section it is necessary to [enable the `kv.rangefeed.enabled` cluster setting]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds). If you are working on a CockroachDB {{ site.data.products.serverless }} cluster, this cluster setting is enabled by default.
+Before running any of the examples in this section it is necessary to [enable the `kv.rangefeed.enabled` cluster setting]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds). If you are working on a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster, this cluster setting is enabled by default.
 
 The following examples show the syntax for managing changefeeds and starting changefeeds with different use cases and features. The [Options](#options) table on this page provides a list of all the available options. For information on sink-specific query parameters and configurations, refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page.
 
