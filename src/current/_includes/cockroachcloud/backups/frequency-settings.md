@@ -1,0 +1,7 @@
+- 5 minutes
+- 10 minutes
+- 15 minutes
+- 30 minutes
+- 1 hour (default)
+- 4 hours
+- 24 hours

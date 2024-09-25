@@ -17,14 +17,14 @@
       	{
       	  "title": "Create a CockroachDB Cloud Cluster",
       	  "urls": [
-      	    "/cockroachcloud/create-a-serverless-cluster.html",
+      	    "/cockroachcloud/create-a-basic-cluster.html",
             "/cockroachcloud/create-your-cluster.html"
       	  ]
       	},
         {
       	  "title": "Connect to Your Cluster",
       	  "urls": [
-      	    "/cockroachcloud/connect-to-a-serverless-cluster.html",
+      	    "/cockroachcloud/connect-to-a-basic-cluster.html",
             "/cockroachcloud/connect-to-your-cluster.html"
       	  ]
       	},
@@ -48,7 +48,7 @@
         {
           "title": "Manage Your Cluster",
           "urls": [
-            "/cockroachcloud/serverless-cluster-management.html",
+            "/cockroachcloud/basic-cluster-management.html",
             "/cockroachcloud/cluster-management.html"
           ]
         },
@@ -137,12 +137,6 @@
       		      "/{{site.current_cloud_version}}/migration-overview.html"
       	      ]
       	    },
-            {
-              "title": "Migrate from Serverless to Dedicated",
-              "urls": [
-                "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
-              ]
-            },
             {
       	      "title": "Migrate from Oracle",
       	      "urls": [
@@ -254,13 +248,13 @@
         {
           "title": "Take and Restore Customer-Owned Backups",
           "urls": [
-            "/cockroachcloud/take-and-restore-customer-owned-backups.html"
+            "/cockroachcloud/take-and-restore-self-managed-backups.html"
           ]
         },
       	{
       	  "title": "Use Managed-Service Backups",
       	  "urls": [
-      	    "/cockroachcloud/use-managed-service-backups.html"
+      	    "/cockroachcloud/managed-backups.html"
       	  ]
       	},
       	{
@@ -307,12 +301,6 @@
       ]
     },
     {
-      "title": "Architecture",
-      "urls": [
-         "/cockroachcloud/architecture.html"
-      ]
-    },
-    {
       "title": "Tutorials",
       "items": [
       	{
@@ -327,13 +315,6 @@
       	    "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
       	  ]
       	}
-      ]
-    },
-    {
-      "title": "FAQs",
-      "urls": [
-        "/cockroachcloud/serverless-faqs.html",
-        "/cockroachcloud/frequently-asked-questions.html"
       ]
     },
     {

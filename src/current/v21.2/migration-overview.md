@@ -11,10 +11,6 @@ This page summarizes the steps of migrating a database to CockroachDB:
 1. [Move your data into CockroachDB.](#step-2-move-your-data-to-cockroachdb)
 1. [Test and update your application.](#step-3-test-and-update-your-application)
 
-{{site.data.alerts.callout_info}}
-If you need to migrate data from a CockroachDB {{ site.data.products.serverless }} cluster to a CockroachDB {{ site.data.products.dedicated }} cluster, see [Migrate data from Serverless to Dedicated](../cockroachcloud/migrate-from-serverless-to-dedicated.html).
-{{site.data.alerts.end}}
-
 ## Step 1. Test and update your schema
 
 To begin a new migration to CockroachDB, extract the [data definition language (DDL)](sql-statements.html#data-definition-statements) of the source database. We strongly recommend migrating your database schema to a new CockroachDB database before migrating the data.

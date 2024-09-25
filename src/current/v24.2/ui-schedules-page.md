@@ -18,14 +18,14 @@ To view these details, [access the DB console]({% link {{ page.version.version }
 - Use the **Status** menu to filter schedules by schedule status, displaying all schedules, only active schedules, or only paused schedules.
 - Use the **Show** menu to toggle displaying the latest 50 schedules or all schedules on the cluster.
 
-## Schedules list 
+## Schedules list
 
 Use the **Schedules** list to see your active and paused schedules.
 
 - To view schedule details click the schedule ID.
 - If you drop a schedule, it will no longer be listed.
 
-The following screenshot shows a list of backups and automated statistics compaction schedules: 
+The following screenshot shows a list of backups and automated statistics compaction schedules:
 
 <img src="{{ 'images/v24.2/schedules-page.png' | relative_url }}" alt="Schedules Page UI in the DB Console showing a list of schedules" style="border:1px solid #eee;max-width:100%" />
 

@@ -1,30 +1,28 @@
 ---
 title: Serverless Function Best Practices
-summary: Best practices for optimizing the performance of serverless functions (e.g., AWS Lambda functions or Google Cloud Functions) that connect to CockroachDB.
+summary: Best practices for optimizing the performance of serverless functions that connect to CockroachDB, such AWS Lambda functions or Google Cloud Functions.
 toc: true
 referral_id: docs_serverless_functions
 docs_area: get_started
 ---
 
-This page provides best practices for optimizing the performance of serverless functions (e.g., [AWS Lambda functions](https://aws.amazon.com/lambda) and [Google Cloud Functions](https://cloud.google.com/functions)) that connect to CockroachDB.
+This page provides best practices for optimizing the performance of serverless functions that connect to CockroachDB, such as [AWS Lambda functions](https://aws.amazon.com/lambda) and [Google Cloud Functions](https://cloud.google.com/functions).
 
-## Use connection pools
+## Use connection pools that persist across function invocations
 
-Use connection pools to manage the lifecycle of database connections established by serverless functions. Connection pools health-check connections and re-establish broken connections in the event of a communication error.
+Use [connection pools]({% link {{ page.version.version }}/connection-pooling.md %}) to manage the lifecycle of database connections established by serverless functions. Connection pools check connection health and re-establish broken connections in the event of a communication error.
 
 When creating connection pools in serverless functions:
 
 - Set the maximum connection pool size to 1, unless your function is multi-threaded and establishes multiple concurrent requests to your database within a single function instance.
-
 - Do not set a minimum idle connection count. The connection pool should be free to open connections as needed.
-
 - If supported by your pooling library, set the maximum lifetime on the connection pool to 30 minutes.
 
-## Persist connection pools across function invocations
+If you plan to invoke a serverless function frequently, configure the function to persist connection pools across function invocations. This helps to limit the number of new connection attempts to the cluster. One way to do this is to initialize the connection pool variable outside the scope of the serverless function definition.
 
-If you plan to invoke a serverless function at a high frequency, you should configure the function to persist connection pools across function invocations, to limit the number of new connection attempts to the database. This is typically done by initializing the connection pool variable outside the scope of the serverless function definition.
+For example if an AWS Lambda function uses [`INSERT`]({% link {{ page.version.version }}/insert.md %}) to add data to a table and runs every few seconds, initialize the connection pool variable outside of the [handler function](https://docs.aws.amazon.com/lambda/latest/dg/foundation-progmodel.html) definition, then define the connection pool in the handler only if the pool does not already exist.
 
-For example, suppose you are writing an AWS Lambda function that [`INSERT`]({% link {{ page.version.version }}/insert.md %})s data into a table on a CockroachDB cluster, and you plan to run this query every few seconds. To persist a connection pool across invocations, initialize the connection pool variable outside of the [handler function](https://docs.aws.amazon.com/lambda/latest/dg/foundation-progmodel.html) definition and then define the connection pool in the handler only if the pool does not already exist.
+Select either node.js or Python to continue.
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="node">node.JS</button>
@@ -33,7 +31,7 @@ For example, suppose you are writing an AWS Lambda function that [`INSERT`]({% l
 
 <section class="filter-content" markdown="1" data-scope="node">
 
-A node.JS function that implements this pattern could look similar to the following:
+The following node.js code implements this pattern:
 
 {% include_cached copy-clipboard.html %}
 ~~~ js
@@ -69,7 +67,7 @@ exports.handler = async (context) => {
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-A Python function that implements this pattern could look similar to the following:
+The following Python code implements this pattern:
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
@@ -97,17 +95,17 @@ def lambda_handler(context):
 
 </section>
 
-## Use CockroachDB {{ site.data.products.serverless }}
+## Use CockroachDB {{ site.data.products.standard }}
 
-As a database-as-a-service, CockroachDB {{ site.data.products.serverless }} abstracts away the complexity of deploying, scaling, and load-balancing your database. Additionally, idle database connections to CockroachDB use very little memory (~20-30 KiB) when compared to PostgreSQL (~2-10 MiB).
+As a database-as-a-service, CockroachDB {{ site.data.products.standard }} abstracts away the complexity of deploying, scaling, and load-balancing your database.
 
-To create a free CockroachDB {{ site.data.products.serverless }} cluster:
+To create a free CockroachDB {{ site.data.products.standard }} cluster:
 
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+{% include_cached cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
-## Deploy serverless functions in the same region as your database
+## Deploy serverless functions in the same region as your cluster
 
-To minimize network latency, you should deploy your serverless functions in the same region as your database deployment. If your serverless function provider does not offer deployments in the same region as your database deployment, choose the region closest to the region where your database is deployed.
+To minimize network latency, you should deploy your serverless functions in the same region as your cluster. If your serverless function provider does not offer deployments in the same region as your database deployment, choose the region nearest to the region where your database is deployed.
 
 ## See also
 

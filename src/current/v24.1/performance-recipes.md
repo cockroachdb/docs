@@ -12,7 +12,7 @@ This page provides recipes for fixing performance issues in your applications.
 
 This section describes how to use CockroachDB commands and dashboards to identify performance problems in your applications.
 
-<table>
+<table markdown="1">
   <tr>
     <th>Observation</th>
     <th>Diagnosis</th>
@@ -28,8 +28,8 @@ This section describes how to use CockroachDB commands and dashboards to identif
       <li>The Transactions page in the <a href="{% link cockroachcloud/transactions-page.md %}">CockroachDB {{ site.data.products.cloud }} Console</a> or <a href="ui-transactions-page.html#active-executions-table">DB Console</a> shows transactions with <code>Waiting</code> status.</li>
       <li>Your application is experiencing degraded performance with <code>SQLSTATE: 40001</code> and a <a href="{% link {{ page.version.version }}/transaction-retry-error-reference.md %}#transaction-retry-error-reference">transaction retry error</a> message.</li>
       <li>Querying the <a href="{% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events"><code>crdb_internal.transaction_contention_events</code></a> table indicates that your transactions have experienced contention.</li>
-      <li>The SQL Statement Contention graph in the <a href="{% link cockroachcloud/metrics-page.md %}#sql-statement-contention">CockroachDB {{ site.data.products.cloud }} Console</a> or <a href="ui-sql-dashboard.html#sql-statement-contention">DB Console</a> is showing spikes over time.</li>
-      <li>The Transaction Restarts graph in the <a href="{% link cockroachcloud/metrics-page.md %}#transaction-restarts">CockroachDB {{ site.data.products.cloud }} Console</a> or <a href="ui-sql-dashboard.html#transaction-restarts">DB Console</a> is showing spikes in retries over time.</li>
+      <li>The SQL Statement Contention graph in the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/metrics-sql.md %}#sql-statement-contention) or <a href="ui-sql-dashboard.html#sql-statement-contention">DB Console</a> is showing spikes over time.</li>
+      <li>The Transaction Restarts graph in the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/metrics-sql.md %}#transaction-restarts) or <a href="ui-sql-dashboard.html#transaction-restarts">DB Console</a> is showing spikes in retries over time.</li>
     </td>
     <td><ul><li>Your application is experiencing <a href="{% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention">transaction contention</a>.</li></ul></td>
     <td>
@@ -102,17 +102,17 @@ These are indicators that lock contention occurred in the past:
 
 - Querying the [`crdb_internal.transaction_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events) table `WHERE contention_type='LOCK_WAIT'` indicates that your transactions have experienced lock contention.
 
-  - This is also shown in the **Transaction Executions** view on the **Insights** page ([CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/insights-page.md %}#transaction-executions-view) and [DB Console]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view)). Transaction executions will display the [**High Contention** insight]({% link {{ page.version.version }}/ui-insights-page.md %}#high-contention). 
+  - This is also shown in the **Transaction Executions** view on the **Insights** page ([CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/insights-page.md %}#transaction-executions-view) and [DB Console]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view)). Transaction executions will display the [**High Contention** insight]({% link {{ page.version.version }}/ui-insights-page.md %}#high-contention).
     {{site.data.alerts.callout_info}}
     {%- include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md -%}
     {{site.data.alerts.end}}
 
-- The **SQL Statement Contention** graph ([CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/metrics-page.md %}#sql-statement-contention) and [DB Console]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-contention)) is showing spikes over time.
+- The **SQL Statement Contention** graph ([CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/metrics-sql.md %}#sql-statement-contention) and [DB Console]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-contention)) is showing spikes over time.
   <img src="{{ 'images/v24.1/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in DB Console" style="border:1px solid #eee;max-width:100%" />
 
-If a long-running transaction is waiting due to [lock contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention): 
+If a long-running transaction is waiting due to [lock contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention):
 
-1. [Identify the blocking transaction](#identify-conflicting-transactions). 
+1. [Identify the blocking transaction](#identify-conflicting-transactions).
 1. Evaluate whether you can cancel the transaction. If so, [cancel it](#cancel-a-blocking-transaction) to unblock the waiting transaction.
 1. Optimize the transaction to [reduce further contention](#reduce-transaction-contention). In particular, break down larger transactions such as [bulk deletes]({% link {{ page.version.version }}/bulk-delete-data.md %}) into smaller ones to have transactions hold locks for a shorter duration, and use [historical reads]({% link {{ page.version.version }}/as-of-system-time.md %}) when possible to reduce conflicts with other writes.
 
@@ -124,11 +124,11 @@ These are indicators that a transaction has failed due to [contention]({% link {
 
 - A [transaction retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) with `SQLSTATE: 40001`, the string [`restart transaction`]({% link {{ page.version.version }}/common-errors.md %}#restart-transaction), and an error code such as [`RETRY_WRITE_TOO_OLD`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_write_too_old) or [`RETRY_SERIALIZABLE`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_serializable), is emitted to the client. These errors are typically seen under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) and not [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation.
 - Querying the [`crdb_internal.transaction_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events) table `WHERE contention_type='SERIALIZATION_CONFLICT'` indicates that your transactions have experienced serialization conflicts.
-  - This is also shown in the **Transaction Executions** view on the **Insights** page ([CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/insights-page.md %}#transaction-executions-view) and [DB Console]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view)). Transaction executions will display the [**Failed Execution** insight due to a serialization conflict]({% link {{ page.version.version }}/ui-insights-page.md %}#serialization-conflict-due-to-transaction-contention). 
+  - This is also shown in the **Transaction Executions** view on the **Insights** page ([CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/insights-page.md %}#transaction-executions-view) and [DB Console]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view)). Transaction executions will display the [**Failed Execution** insight due to a serialization conflict]({% link {{ page.version.version }}/ui-insights-page.md %}#serialization-conflict-due-to-transaction-contention).
 
 These are indicators that transaction retries occurred in the past:
 
-- The **Transaction Restarts** graph ([CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/metrics-page.md %}#transaction-restarts) and [DB Console]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#transaction-restarts) is showing spikes in transaction retries over time.
+- The **Transaction Restarts** graph ([CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/metrics-sql.md %}#transaction-restarts) and [DB Console]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#transaction-restarts) is showing spikes in transaction retries over time.
 
 {% include {{ page.version.version }}/performance/transaction-retry-error-actions.md %}
 
@@ -168,7 +168,7 @@ To view tables and indexes that experienced [contention]({% link {{ page.version
 - Query the [`crdb_internal.transaction_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events) table to view [transactions that have blocked other transactions]({% link {{ page.version.version }}/crdb-internal.md %}#transaction-contention-example).
 - Query the [`crdb_internal.cluster_contended_tables`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_contended_tables) table to [view all tables that have experienced contention]({% link {{ page.version.version }}/crdb-internal.md %}#view-all-tables-that-have-experienced-contention).
 - Query the [`crdb_internal.cluster_contended_indexes`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_contended_indexes) table to [view all indexes that have experienced contention]({% link {{ page.version.version }}/crdb-internal.md %}#view-all-indexes-that-have-experienced-contention).
-- Query the [`crdb_internal.cluster_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_contention_events) table 
+- Query the [`crdb_internal.cluster_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_contention_events) table
 to [view the tables, indexes, and transactions with the most time under contention]({% link {{ page.version.version }}/crdb-internal.md %}#view-the-tables-indexes-with-the-most-time-under-contention).
 
 ##### Reduce transaction contention

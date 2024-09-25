@@ -2,7 +2,7 @@ To measure metrics per changefeed, you can define a "metrics label" for one or m
 
 It is necessary to consider the following when applying metrics labels to changefeeds:
 
-- Metrics labels are **not** available in CockroachDB {{ site.data.products.serverless }}.
+- Metrics labels are **not** available in CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }}.
 - Metrics labels are not supported as tags in [Datadog]({% link {{ page.version.version }}/datadog.md %}).
 - The `server.child_metrics.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) must be set to `true` before using the `metrics_label` option.
 - Metrics label information is sent to the `_status/vars` endpoint, but will **not** show up in [`debug.zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) or the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}).

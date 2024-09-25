@@ -9,16 +9,15 @@ To prevent denial-of-service attacks, brute force password attacks, and other fo
 1. Navigate to your cluster's **Networking > IP Allowlist** tab.
 
     The **IP Allowlist** tab displays a list of authorized networks (i.e., an IP network allowlist) that can access the cluster.
+1. If the network is not listed, authorize it:
+    1. Click the **Add Network** button. The **Add Network** dialog displays.
+    1. _(Optional)_ Enter a **Network name**.
+    1. From the **Network** dropdown, select:
+        - **New Network** to authorize the network of your local machine or application deployment or another valid source. Enter the public IPv4 address of the source machine in the **Network** field. To add a range of source IP addresses, use the CIDR (Classless Inter-Domain Routing) notation. For a general introduction to IP routing, refer to [Digital Ocean&mdash;Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+        - **Current Network** to auto-populate your local machine's IP address.
+        - **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
+1. Select whether the network can connect to the cluster's **DB Console to monitor the cluster**, **CockroachDB Client to access databases**, or both.
 
-1. Check if the current network has been authorized. If not, proceed with the following steps.
+    The DB Console is where you can observe your cluster's health and performance. For more information, see [DB Console Overview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-overview).
 
-1. Click the **Add Network** button.
-
-    The **Add Network** dialog displays.
-
-1. _(Optional)_ Enter a **Network name**.
-
-1. From the **Network** dropdown, select:
-    - **New Network** to authorize the network of your local machine or application deployment or another valid source. Enter the public IPv4 address of the source machine in the **Network** field. To add a range of source IP addresses, use the CIDR (Classless Inter-Domain Routing) notation. For a general introduction to IP routing, refer to [Digital Ocean&mdash;Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
-    - **Current Network** to auto-populate your local machine's IP address.
-    - **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
+1. Click **Apply**.

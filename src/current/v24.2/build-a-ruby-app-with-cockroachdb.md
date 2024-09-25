@@ -107,4 +107,4 @@ The code connects as the user you created and executes some basic SQL statements
 
 Read more about using the [Ruby pg driver](https://rubygems.org/gems/pg).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

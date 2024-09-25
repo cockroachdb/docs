@@ -1,4 +1,4 @@
-In this example, you'll set up a core changefeed on your CockroachDB {{ site.data.products.serverless }} cluster.
+In this example, you'll set up a core changefeed on your CockroachDB {{ site.data.products.standard }} cluster.
 
 1. As the `root` user, open the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}):
 

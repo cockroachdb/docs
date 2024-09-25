@@ -9,14 +9,12 @@ This page guides you through setting up a virtual environment for developing and
 
 ## Before you begin
 
-1. Complete the previous section of the tutorial, [Create a Multi-Region Database Schema]({% link {{ page.version.version }}/movr-flask-database.md %}).
+1. Complete the previous sections of the tutorial, ending with [Create a Multi-Region Database Schema]({% link {{ page.version.version }}/movr-flask-database.md %}).
 
-1. Make sure that you have the following installed on your local machine:
-      - [CockroachDB]({% link {{ page.version.version }}/install-cockroachdb-mac.md %})
-      - [Python 3](https://www.python.org/downloads/)
-      - [Pipenv](https://pipenv.pypa.io)
-
-1. Clone the [`movr-flask`](https://github.com/cockroachlabs/movr-flask) repository. We'll reference the source code in this repository throughout the tutorial.
+1. On your local machine:
+      - [Install CockroachDB](/docs/{{ page.version.version }}/install-cockroachdb.html).
+      - [Install Python 3](https://www.python.org/downloads/) and [Pipenv](https://pipenv.pypa.io) if necessary.
+      - Clone the [`movr-flask`](https://github.com/cockroachlabs/movr-flask) repository. We'll reference the source code in this repository throughout the tutorial.
 
 ## Set up a demo multi-region CockroachDB cluster
 
@@ -26,25 +24,27 @@ For debugging and development purposes, you can use the [`cockroach demo`]({% li
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach demo \
-    --nodes=9 \
-    --demo-locality=region=gcp-us-east1:region=gcp-us-east1:region=gcp-us-east1:\
-    region=gcp-us-west1:region=gcp-us-west1:region=gcp-us-west1:\
-    region=gcp-europe-west1:region=gcp-europe-west1:region=gcp-europe-west1 \
-    --empty
+    cockroach demo \
+      --nodes=9 \
+      --demo-locality=region=gcp-us-east1:region=gcp-us-east1:region=gcp-us-east1:\
+      region=gcp-us-west1:region=gcp-us-west1:region=gcp-us-west1:\
+      region=gcp-europe-west1:\
+      region=gcp-europe-west1:region=gcp-europe-west1 \
+      --empty
     ~~~
 
     Keep this terminal window open. Closing it will shut down the demo cluster.
 
-1. Open another terminal window. In the new window, run the following command to load `dbinit.sql` to the demo database. This file contains the `movr` database schema that we covered in [Create a Multi-Region Database Schema]({% link {{ page.version.version }}/movr-flask-database.md %}).
+1. In a new terminal, load the `dbinit.sql` script to the demo database. This file contains the `movr` database schema that we covered in [Create a Multi-Region Database Schema]({% link {{ page.version.version }}/movr-flask-database.md %}).
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --url='postgres://demo:<demo_password>@127.0.0.1:26257?sslmode=require' -f dbinit.sql
+    cockroach sql \
+      --url='postgres://demo:<demo_password>@127.0.0.1:26257?sslmode=require' \
+      -f dbinit.sql
     ~~~
 
-
-1. In the demo cluster terminal, verify that the database schema loaded properly:
+1. Verify that the database schema loaded:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -61,35 +61,34 @@ For debugging and development purposes, you can use the [`cockroach demo`]({% li
     ~~~
 
 {{site.data.alerts.callout_info}}
-In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. For instructions on deploying a multi-region CockroachDB cluster for this application, using CockroachDB {{ site.data.products.dedicated }}, see [Deploy a Global, Serverless Application]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
+A production deployment should ideally have nodes on machines located in different areas of the world. You will deploy a multi-region CockroachDB cluster for this application using CockroachDB {{ site.data.products.standard }} in the final section of this tutorial series, [Deploy a Global, Serverless Application]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
 {{site.data.alerts.end}}
-
 
 ## Set up a virtual development environment
 
 For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dependencies with `pip` and creates virtual environments with `virtualenv`.
 
-1. Run the following command to initialize the project's virtual environment:
+1. Initialize the project's virtual environment:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ pipenv --three
+    pipenv
     ~~~
 
     `pipenv` creates a `Pipfile` in the current directory, with the requirements needed for the app.
 
-1. Run the following command to install the packages listed in the `Pipfile`:
+1. Install the packages listed in the `Pipfile`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ pipenv install
+    pipenv install
     ~~~
 
 1. Activate the virtual environment:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ pipenv shell
+    pipenv shell
     ~~~
 
     From this shell, you can run any Python 3 application with the required dependencies that you listed in the `Pipfile`, and the environment variables that you listed in the `.env` file. You can exit the shell subprocess at any time with a simple `exit` command.
@@ -98,21 +97,22 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dep
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ python server.py
+    python server.py
     ~~~
 
-1. Navigate to the URL provided to test out the application. By default, this should be http://127.0.0.1:5000/.
+    To run Python commands within the virtual environment, you do not need to add `3` to the end of the command. For example, running `python3 server.py` instead of the above command results in an error.
+
+1. Navigate to the application's test URL, which defaults to [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
 
 {{site.data.alerts.callout_info}}
-In production, you want to [containerize](https://www.docker.com/resources/what-container) your application and deploy it with a deployment orchestration tool, like [Kubernetes](https://kubernetes.io/), or with a serverless deployment service, like [Google Cloud Run](https://cloud.google.com/run). We cover deploying the application with Google Cloud Run in [Deploy a Global Application]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
+In production, it is often recommended to [containerize](https://www.docker.com/resources/what-container) your application and deploy it with a deployment orchestration tool like [Kubernetes](https://kubernetes.io/) or with a serverless deployment service like [Google Cloud Run](https://cloud.google.com/run). You will learn to deploy the application with Google Cloud Run in the final section of this tutorial series,  [Deploy a Global Application]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
 {{site.data.alerts.end}}
 
 ## Next steps
 
-Now that you've set up a development environment, you can start [developing and debugging the application]({% link {{ page.version.version }}/movr-flask-application.md %}).
+Now that you've set up a development environment, you can learn about [developing and debugging the application]({% link {{ page.version.version }}/movr-flask-application.md %}).
 
 ## See also
 
 - [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
 - [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})
-- [Pipenv](https://pipenv.pypa.io)

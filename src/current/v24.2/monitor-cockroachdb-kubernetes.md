@@ -429,7 +429,7 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec cockroachdb-2 -- cat cockroach-data/logs/cockroach-dev.log
-    ~~~  
+    ~~~
 </section>
 
 ## See also

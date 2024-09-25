@@ -152,4 +152,4 @@ Note that interleaved execution (partial execution of multiple statements within
 
 Read more about using the [Hibernate ORM](http://hibernate.org/orm/), or check out a more realistic implementation of Hibernate with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

@@ -82,7 +82,7 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
     export DATABASE_URL="<connection-string>"
     ~~~
 
-    TypeORM accepts the following format for CockroachDB {{ site.data.products.serverless }} connection strings:
+    TypeORM accepts the following format for CockroachDB {{ site.data.products.standard }} connection strings:
 
     {% include_cached copy-clipboard.html %}
     ~~~
@@ -131,4 +131,4 @@ Printing balances from account 4e26653a-3821-48c8-a481-47eb73b3e4cc.
 
 Read more about using the [TypeORM](https://typeorm.io/#/).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

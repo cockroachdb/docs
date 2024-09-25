@@ -10,10 +10,10 @@ prev_version: v22.2
 {% capture previous_version_numeric %}{{ page.prev_version | remove_first: 'v' }}{% endcapture %}
 {% capture major_version_numeric %}{{ page.page_version | remove_first: 'v' }}{% endcapture %}
 
-Now that [CockroachDB v23.1]({% link releases/v23.1.md %}) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process for an Admin.
+Now that [CockroachDB v23.1]({% link releases/v23.1.md %}) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.advanced }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. This page guides you through the process for an Org Administrator.
 
 {{site.data.alerts.callout_success}}
-Upgrading a CockroachDB {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+Upgrading a CockroachDB {{ site.data.products.advanced }} cluster to a new major version is opt-in. Before proceeding, review the CockroachDB {{ site.data.products.cloud }} [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 {{site.data.alerts.end}}
 
 ## Step 1. Verify that you can upgrade

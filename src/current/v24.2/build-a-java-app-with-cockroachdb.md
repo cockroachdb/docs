@@ -328,4 +328,4 @@ For guidance on connection pooling, with an example using JDBC and [HikariCP](ht
 
 Read more about using the [Java JDBC driver](https://jdbc.postgresql.org/).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

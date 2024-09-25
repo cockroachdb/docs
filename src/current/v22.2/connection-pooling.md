@@ -83,7 +83,7 @@ Idle connections in CockroachDB do not consume many resources compared to Postgr
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-The [SQL Connection Attempts graph]({% link cockroachcloud/metrics-page.md %}#identify-sql-problems) shows how many new connections are being created each second. The [SQL Open Sessions graph]({% link cockroachcloud/metrics-page.md %}#sql-open-sessions) shows the total number of SQL client connections across the cluster. To determine if your connection pool is correctly configured use the metrics from these graphs in the following formula:
+The [SQL Connection graph]({% link cockroachcloud/metrics-sql.md %}#sql-connections) shows how many new connections are being created each second. The [Open SQL Sessions graph]({% link cockroachcloud/metrics-sql.md %}#open-sql-sessions) shows the total number of SQL client connections across the cluster. To determine if your connection pool is correctly configured use the metrics from these graphs in the following formula:
 
 **SQL Connection Attempts < SQL Open Sessions/100**
 
@@ -126,7 +126,7 @@ The [`sql.new_conns` metric]({% link {{ page.version.version }}/metrics.md %}#av
 </section>
 
 <section class="filter-content" markdown="1" data-scope="serverless">
-The [SQL Connection Attempts graph]({% link cockroachcloud/metrics-page.md %}#identify-sql-problems) shows the number of new SQL connections per second.
+The [SQL Connections graph]({% link cockroachcloud/metrics-sql.md %}#sql-connections) shows the number of new SQL connections per second.
 </section>
 
 A misconfigured connection pool will result in most database operations requiring a new connection to be established, which will increase query latency.
@@ -151,7 +151,7 @@ Reducing the number of active connections may increase overall throughput, possi
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-The [SQL Open Sessions graph]({% link cockroachcloud/metrics-page.md %}#sql-open-sessions) shows the number of open connections on your cluster.
+The [Open SQL Sessions graph]({% link cockroachcloud/metrics-sql.md %}#open-sql-sessions) shows the number of open connections on your cluster.
 
 </section>
 
