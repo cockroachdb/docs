@@ -80,7 +80,11 @@ Cc-Version: {version}
 
 Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console]({% link cockroachcloud/managing-access.md %}#create-api-keys) and `{version}` is the version of the Cloud API.
 
-## Create a new Basic cluster
+## Create a cluster
+
+Get started by creating a new CockroachDB [Basic](#create-a-basic-cluster), [Standard](#create-a-standard-cluster), or [Advanced](#create-an-advanced-cluster) cluster.
+
+### Create a Basic cluster
 
 To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
 
@@ -132,7 +136,7 @@ curl --request POST \
 Where:
 
   - `{cluster_name}` is the name of the cluster. The name must be 6-20 characters in length and can include numbers, lowercase letters, and dashes (but no leading or trailing dashes).
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
+  - `{cloud_provider}` is the name of the cloud provider on which you want your cluster to run: `AWS`, `AZURE`, or `GCP`.
   - `{region_name}` is the name of a CockroachDB Cloud [region]({% link cockroachcloud/regions.md %}). Region names are set by the cloud provider. For example, `us-central1` is a GCP region. Available regions vary based on both the selected plan type (`BASIC`, `STANDARD`, or `ADVANCED`) and the cloud provider.
   - `plan` is set to `BASIC` for a Basic cluster.
   - The `usage_limits` field specifies the resource limits for the cluster. This is optional upon cluster creation and can be specified at any time. (Refer to [Set or update resource limits for a Basic cluster](#set-or-update-resource-limits-for-a-basic-cluster).)
@@ -186,7 +190,7 @@ If the request was successful, the API returns information about the new cluster
 
 For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters) in the API reference.
 
-## Create a new Standard cluster
+### Create a Standard cluster
 
 To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
 
@@ -237,12 +241,12 @@ curl --request POST \
 Where:
 
   - `{cluster_name}` is the name of the cluster. The name must be 6-20 characters in length and can include numbers, lowercase letters, and dashes (but no leading or trailing dashes).
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
+  - `{cloud_provider}` is the name of the cloud provider on which you want your cluster to run: `AWS`, `AZURE`, or `GCP`.
   - `{region_name}` is the name of a CockroachDB Cloud [region]({% link cockroachcloud/regions.md %}). Region names are set by the cloud provider. For example,`us-west2` is a GCP region. Available regions vary based on both the selected plan type (`BASIC`, `STANDARD`, or `ADVANCED`) and the cloud provider.
   - `plan` is the cluster's plan, `BASIC`, `STANDARD`, or `ADVANCED`. The default is `STANDARD`.
   - The `usage_limits` field specifies the resource limits for the cluster. The `provisioned_virtual_cpus` field indicates the maximum number of virtual CPUs (vCPUs) the cluster can provision.
 
-For example, to create a new Standard cluster named `notorious-moose` using the default values for the cloud infrastructure provider and region:
+For example, to create a new Standard cluster named `notorious-moose` using the default values for the cloud provider and region:
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -288,7 +292,7 @@ If the request was successful, the API returns information about the new cluster
 
 For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters) in the API reference.
 
-## Create a new Advanced cluster
+### Create an Advanced cluster
 
 To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
 
@@ -342,7 +346,7 @@ curl --request POST \
 Where:
 
   - `{cluster_name}` is the name of the cluster. The name must be 6-20 characters in length and can include numbers, lowercase letters, and dashes (but no leading or trailing dashes).
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
+  - `{cloud_provider}` is the name of the cloud provider on which you want your cluster to run: `AWS`, `AZURE`, or `GCP`.
   - `plan` is set to `ADVANCED` for an Advanced cluster.
   - `{region_name}` is the name of a CockroachDB Cloud [region]({% link cockroachcloud/regions.md %}). Region names are set by the cloud provider. For example, `us-east-1` is an AWS region. Available regions vary based on both the selected plan type and the cloud provider.
   - The `region_nodes` field specifies the number of nodes in each region. The minimum is 3 nodes per region for an Advanced cluster.
@@ -455,7 +459,7 @@ If the request was successful, the API will return detailed information about th
 {
   "nodes": [
     {
-      "name": "{node_name}",
+      "name": "<node_name}",
       "region_name": "{region_name}",
       "status": "{status}"
     }
@@ -474,8 +478,8 @@ If the request was successful, the API will return detailed information about th
 Where:
 
 - `{node_name}` is the name of the node.
-- `{region_name}` is the cloud infrastructure provider region where the cluster is located.
-- `{status}` is the status of the node. Possible values are: `LIVE` and `NOT_READY`.
+- `{region_name}` is the cloud provider region where the cluster is located.
+- `{status}` is the status of the node: `LIVE` or `NOT_READY`.
 
 ## Set or update resource limits for a Basic cluster
 
@@ -727,23 +731,23 @@ curl --request GET \
 
 Where:
 
-  - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP`, `AWS`, `AZURE`.
+  - `{cloud_provider}` is the name of the cloud provider: `AWS`, `AZURE`, or `GCP`.
   - `{secret_key}` is the secret key for the service account.
 
-If the request was successful, the client will receive a list of available regions for the specified cloud infrastructure provider.
+If the request was successful, the client will receive a list of available regions for the specified cloud provider.
 
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
   "regions": [
-    "{region_array}"
+    "<region_array>"
   ]
 }
 ~~~
 
 Where:
 
-  - `{region_array}` is a string array of regions available from the cloud infrastructure provider.
+  - `<region_array>` is a string array of regions available from the cloud provider.
 
 ## List the SQL users in a cluster
 
@@ -774,10 +778,10 @@ If the request was successful, the client will receive a list of SQL users.
 {
   "users": [
     {
-      "name": "<SQL-username-1>"
+      "name": "<SQL-username>"
     },
     {
-      "name": "<SQL-username-2>"
+      "name": "<SQL-username>"
     }
   ],
   "pagination": {
@@ -787,8 +791,8 @@ If the request was successful, the client will receive a list of SQL users.
 ~~~
 
 Where:
-- `{user name}` is the SQL username of the user.
-- `{next_page_token}` is the token to use for retrieving the next page of results, if any.
+- `<SQL-username>` is the SQL username of the user.
+- `<next_page_token>` is the token to use for retrieving the next page of results, if any.
 
 ## Create a SQL user
 
