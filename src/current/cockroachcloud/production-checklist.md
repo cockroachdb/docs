@@ -22,7 +22,7 @@ The customer is responsible for the following tasks:
 - Ensuring that the workload is distributed appropriately across the nodes of the cluster.
 - Performance tuning of SQL queries and schema.
 - Initiating major version upgrades and selecting maintenance windows for patch releases.
-- (Optional) Taking customer-owned backups.
+- (Optional) Taking self-managed backups.
 
 This page provides important recommendations for CockroachDB {{ site.data.products.cloud }} production tasks for which the customer is responsible.
 
@@ -118,7 +118,7 @@ Cluster data can be restored to the current cluster or a different cluster in th
 Restoring to a cluster will completely erase all data in the destination cluster. All cluster data will be replaced with the data from the backup. The destination cluster will be unavailable while this operation is in progress. This operation cannot be canceled, paused, or reversed.
 {{site.data.alerts.end}}
 
-You can [manage your own backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}), including incremental, database, and table-level backups. When you perform a manual backup, you must specify a storage location, which can be on your local system or in cloud storage.
+You can [manage your own backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}), including incremental, database, and table-level backups. When you perform a manual backup, you must specify a storage location, which can be on your local system or in cloud storage.
 
 ## Patches and upgrades
 

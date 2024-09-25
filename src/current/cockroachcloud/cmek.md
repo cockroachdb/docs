@@ -98,13 +98,13 @@ To learn more about rotating a CMEK key using the CockroachDB {{ site.data.produ
 
 This section describes how enabling CMEK changes backup and restore operations on a cluster.
 
-Backups in CockroachDB {{ site.data.products.dedicated }} are triggered in two ways, only one of which is affected by CMEK.
+Backups in CockroachDB {{ site.data.products.advanced }} are triggered in two ways, only one of which is affected by CMEK.
 
 - You can perform a manual backup by using the `BACKUP` SQL command to back up database objects in a cluster. To restore from a manual backup, you use the `RESTORE` SQL command. Manual backups are not automatically encrypted, but you can optionally encrypt a manual backup by specifying an encryption key when you run the `BACKUP` command. Enabling CMEK has no impact on manual backups. To learn about encrypting manual backups, see [Take and Restore Encrypted Backups]({% link {{ site.current_cloud_version }}/take-and-restore-encrypted-backups.md %}).
 
-- CockroachDB {{ site.data.products.cloud }} automatically backs up clusters on a set schedule that is not configurable. You can view, manage, or restore from these backups using the CockroachDB {{ site.data.products.cloud }} Console. Managed backups operate on all databases, tables, views, and scheduled jobs in the cluster. Managed backups can be restored only to the cluster where they were taken. Managed backups are automatically encrypted using data keys that are distinct from those used to encrypt the cluster's data.
+- CockroachDB {{ site.data.products.cloud }} automatically backs up {{ site.data.products.advanced }} and {{ site.data.products.standard }} clusters on a configurable schedule. You can view, manage, or restore from these backups using the CockroachDB {{ site.data.products.cloud }} Console. Managed backups operate on all databases, tables, views, and scheduled jobs in the cluster. Managed backups are automatically encrypted using data keys that are distinct from those used to encrypt the cluster's data.
 
-  When CMEK is enabled for a cluster, managed backups change in the following ways:
+  When CMEK is enabled for a cluster, **managed backups** change in the following ways:
 
   - You can no longer restore from a managed backup that was taken before CMEK was enabled.
   - The data keys used to encrypt managed backups in CockroachDB {{ site.data.products.cloud }} are encrypted using the CMEK key before being written to persistent storage. If the CMEK is not available, managed backups will fail to run.
@@ -146,7 +146,7 @@ To learn more about rotating a CMEK key using the CockroachDB {{ site.data.produ
 
 #### Are CockroachDB {{ site.data.products.dedicated }} managed backups also encrypted using the CMEK?
 
-Yes, the [managed backups]({% link cockroachcloud/use-managed-service-backups.md %}) stored in CockroachDB {{ site.data.products.cloud }} infrastructure are also encrypted using the CMEK, using CoackroachDB’s [encrypted backup]({% link {{site.current_cloud_version}}/take-and-restore-encrypted-backups.md %}) capability. Internally, a backup data key is wrapped by the CMEK, and then the backup data key is used for encrypting the backup.
+Yes, the [managed backups]({% link cockroachcloud/managed-backups.md %}) stored in CockroachDB {{ site.data.products.cloud }} infrastructure are also encrypted using the CMEK, using CoackroachDB’s [encrypted backup]({% link {{site.current_cloud_version}}/take-and-restore-encrypted-backups.md %}) capability. Internally, a backup data key is wrapped by the CMEK, and then the backup data key is used for encrypting the backup.
 
 #### As part of managed backup encryption, is the same backup data key used to encrypt all backups for a cluster?
 
