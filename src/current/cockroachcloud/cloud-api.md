@@ -104,7 +104,7 @@ The service account associated with the secret key must have the Cluster Adminis
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"BASIC","spec":{"serverless":{"regions":["{region_name}"],"usage_limits":{"storage_mib_limit":"{storage_limit}","request_unit_limit":"{request_unit_limit}"}}}}'
+  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"BASIC","spec":{"serverless":{"regions":["{region_name}"]}}}'
 ~~~
 
 </section>
@@ -121,11 +121,7 @@ curl --request POST \
     "serverless": {
       "regions": [
         "{region_name}"
-      ],
-      "usage_limits": {
-        "storage_mib_limit": "{storage_limit}",
-        "request_unit_limit": "{request_unit_limit}"
-      }
+      ]
     }
   }
 }
@@ -139,9 +135,6 @@ Where:
   - `{cloud_provider}` is the name of the cloud provider on which you want your cluster to run: `AWS`, `AZURE`, or `GCP`.
   - `{region_name}` is the name of a CockroachDB Cloud [region]({% link cockroachcloud/regions.md %}). Region names are set by the cloud provider. For example, `us-central1` is a GCP region. Available regions vary based on both the selected plan type (`BASIC`, `STANDARD`, or `ADVANCED`) and the cloud provider.
   - `plan` is set to `BASIC` for a Basic cluster.
-  - The `usage_limits` field specifies the resource limits for the cluster. This is optional upon cluster creation and can be specified at any time. (Refer to [Set or update resource limits for a Basic cluster](#set-or-update-resource-limits-for-a-basic-cluster).)
-    - `storage_mib_limit` is the maximum storage in MiB (1 MiB = 1,048,576 bytes).
-    - `request_unit_limit` is the maximum number of request units the cluster can consume.
 
 For example, to create a new Basic cluster named `basic-test` using GCP as the cloud provider and setting specific usage limits:
 
@@ -157,7 +150,7 @@ For example, to create a new Basic cluster named `basic-test` using GCP as the c
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --json '{"name":"basic-test","provider":"GCP","plan":"BASIC","spec":{"serverless":{"regions":["us-central1"],"usage_limits":{"storage_mib_limit":"5242880","request_unit_limit":"50000000"}}}}'
+  --json '{"name":"basic-test","provider":"GCP","plan":"BASIC","spec":{"serverless":{"regions":["us-central1"]}}}'
 ~~~
 
 </section>
@@ -174,11 +167,7 @@ curl --request POST \
     "serverless": {
       "regions": [
         "us-central1"
-      ],
-      "usage_limits": {
-        "storage_mib_limit": "5242880",
-        "request_unit_limit": "50000000"
-      }
+      ]
     }
   }
 }
@@ -312,7 +301,7 @@ The service account associated with the secret key must have the Cluster Adminis
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"{region_name}":3},"hardware":{"machine_spec":{"machine_type":"{machine_type}"}},"cockroach_version":"{version}"}}}'
+  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"{region_name}":3},"hardware":{"num_virtual_cpus":{num_cpus}},"cockroach_version":"{version}"}}}'
 ~~~
 
 </section>
@@ -331,9 +320,7 @@ curl --request POST \
         "{region_name}": 3
       },
       "hardware": {
-        "machine_spec": {
-          "machine_type": "{machine_type}"
-        }
+        "num_virtual_cpus": {num_cpus}
       },
       "cockroach_version": "{version}"
     }
@@ -350,7 +337,7 @@ Where:
   - `plan` is set to `ADVANCED` for an Advanced cluster.
   - `{region_name}` is the name of a CockroachDB Cloud [region]({% link cockroachcloud/regions.md %}). Region names are set by the cloud provider. For example, `us-east-1` is an AWS region. Available regions vary based on both the selected plan type and the cloud provider.
   - The `region_nodes` field specifies the number of nodes in each region. The minimum is 3 nodes per region for an Advanced cluster.
-  - `{machine_type}` is the machine type identifier within the given cloud provider, e.g., `n2-standard-4` for GCP or `m5.xlarge` for AWS.
+  - `{num_cpus}` is the number of virtual CPUs per node in the cluster. This value determines the machine type that will be provisioned.
   - `{version}` is the CockroachDB version for the cluster. This field is optional; if omitted, the current version will be used.
 
 For example, to create a new Advanced cluster named `advanced-test` using AWS as the cloud provider:
@@ -367,7 +354,7 @@ For example, to create a new Advanced cluster named `advanced-test` using AWS as
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --json '{"name":"advanced-test","provider":"AWS","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"us-east-1":3},"hardware":{"machine_spec":{"machine_type":"m5.xlarge"}},"cockroach_version":"v23.1.2"}}}'
+  --json '{"name":"advanced-test","provider":"AWS","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"us-east-1":3},"hardware":{"num_virtual_cpus":4},"cockroach_version":"v23.1.2"}}}'
 ~~~
 
 </section>
@@ -386,9 +373,7 @@ curl --request POST \
         "us-east-1": 3
       },
       "hardware": {
-        "machine_spec": {
-          "machine_type": "m5.xlarge"
-        }
+        "num_virtual_cpus": 4
       },
       "cockroach_version": "v23.1.2"
     }
@@ -454,7 +439,6 @@ Where:
 
 If the request was successful, the API will return detailed information about the nodes in the cluster.
 
-{% include_cached copy-clipboard.html %}
 ~~~ json
 {
   "nodes": [
@@ -533,7 +517,7 @@ Where:
   The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
-  - `storage_mib_limit` is the maximum number of Mebibytes of storage that the cluster can have at any time during the month. If this limit is exceeded, then the cluster is throttled, where only one SQL connection is allowed at a time, with the expectation that it is used to delete data to reduce storage usage. It is an error for this value to be zero.
+  - `storage_mib_limit` is the maximum number of MiB of storage that the cluster can use at any time during the month. If this limit is exceeded, then the cluster is throttled, where only one SQL connection is allowed at a time, with the expectation that it is used to delete data to reduce storage usage. It is an error for this value to be zero.
   - `request_unit_limit` is the maximum number of request units that the cluster can consume during the month. If this limit is exceeded, then the cluster is disabled until the limit is increased, or until the beginning of the next month when more request units are granted. It is an error for this to be zero.
 
 If the request was successful, the API returns the updated cluster details.
@@ -545,10 +529,12 @@ For details about returned fields, refer to the [response example and schema](ht
 To update the [provisioned capacity for a Standard cluster]({% link cockroachcloud/plan-your-cluster.md %}), send a `PATCH` request to the `/v1/clusters/{cluster_id}` endpoint with an updated `serverless.usage_limits` field to provide a new number of provisioned vCPUs.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+You can decrease the provisioned capacity only three times within a 7-day period. You can increase the provisioned capacity at any time.
 {{site.data.alerts.end}}
 
-The service account associated with the secret key must have `ADMIN` or `EDIT` [permission]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) to retrieve information about an organization's clusters.
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+{{site.data.alerts.end}}
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -589,7 +575,7 @@ Where:
   The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
-  - `{provisioned_virtual_cpus}` is the maximum number of virtual CPUs (vCPUs) that the cluster can use. Once this limit is reached, operation latency may increase due to throttling.
+  - `{provisioned_virtual_cpus}` is the number of virtual CPUs (vCPUs) the cluster provides. Once this limit is reached, operation latency may increase due to throttling.
 
 If the request was successful, the API returns the updated cluster details.
 
@@ -736,7 +722,6 @@ Where:
 
 If the request was successful, the client will receive a list of available regions for the specified cloud provider.
 
-{% include_cached copy-clipboard.html %}
 ~~~ json
 {
   "regions": [
