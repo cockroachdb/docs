@@ -12,6 +12,22 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## September 25, 2024
+
+[CockroachDB {{ site.data.products.cloud }} plans]({% link cockroachcloud/index.md %}) have been updated, and existing clusters have been transitioned to the new plans. There is no impact on the functionality or availability of existing clusters.
+
+- CockroachDB Serverless clusters have been renamed to **CockroachDB {{ site.data.products.basic }}**.
+- **CockroachDB {{ site.data.products.standard }}** is a new plan in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}#features-in-preview). You can easily [switch]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}#change-a-clusters-plan) a {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place or [start a new Standard cluster]({% link cockroachcloud/create-your-cluster.md %}). New {{ site.data.products.cloud }} organizations can benefit from a free trial{% comment %}TODO link{% endcomment %}.
+    CockroachDB {{ site.data.products.standard }} offers the benefits of a scalable, shared architecture, along with many enterprise-ready features, including:
+        - Private Connectivity options for AWS and GCP clusters.
+        - Customer control of [major version upgrades]({% link cockroachcloud/cluster-management.md %}#manage-cluster-upgrades).
+        - Customer-configurable [Managed Backups]({% link cockroachcloud/managed-backups.md %}).
+        - [Metrics export]({% link cockroachcloud/export-metrics.md %}) to Amazon CloudWatch, Datadog, and Prometheus.
+        - [Log export]({% link cockroachcloud/export-metrics.md %}) to Amazon CloudWatch and GCP Cloud Logging.
+- CockroachDB Dedicated clusters have been renamed to CockroachDB {{ site.data.products.advanced }}. CockroachDB Dedicated Advanced clusters are now CockroachDB Advanced clusters with [advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) enabled.
+
+For more details, refer to the [CockroachDB Blog](https://cockroachlabs.com/blog/roachfest-24-product-updates){% comment %}TODO link{% endcomment %} and learn more about [CockroachDB {{ site.data.products.cloud }} Costs across plans](/pricing/).
+
 
 ## August 12, 2024
 
