@@ -190,7 +190,7 @@ terraform show
 
 ## Change a cluster's plan
 
-To change a CockroachDB {{ site.data.products.basic }} cluster's plan to CockroachDB {{ site.data.products.standard }} in place, or to change a CockroachDB {{ site.data.products.standard }} cluster to CockroachDB {{ site.data.products.basic }}, you can use Terraform.
+To change a CockroachDB {{ site.data.products.basic }} cluster's plan to CockroachDB {{ site.data.products.standard }} in place, or to change a CockroachDB {{ site.data.products.standard }} cluster to CockroachDB {{ site.data.products.basic }} using Terraform..or the [CockroachDB {{ site.data.products.cloud }} API](https://cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-).
 
 {{site.data.alerts.callout_info}}
 To migrate between CockroachDB {{ site.data.products.advanced }} and either CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }}, you must create and configure a new cluster, back up the existing cluster's data, and restore the backup to the new cluster. Migration in place is not supported. Refer to [Self-managed backups]({% link cockroachcloud/backup-and-restore-overview.md %}#self-managed-backups).
@@ -203,7 +203,7 @@ To migrate from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ sit
     - Replace the contents of `serverless {}` (which may be empty) with the provisioned vCPUs for the cluster. This field is required for CockroachDB {{ site.data.products.standard }}. It is not possible to set storage limitations on CockroachDB {{ site.data.products.standard }}.
       {% include_cached copy-clipboard.html %}
       ~~~ hcl
-            serverless = {
+        serverless = {
           usage_limits = {
             provisioned_virtual_cpus = 2
           }
@@ -215,7 +215,7 @@ To migrate from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ sit
     terraform apply
     ~~~
 
-To migrate from CockroachDB {{ site.data.products.standard }} to CockroachDB {{ site.data.products.basic }} in place:
+To change a cluster's plan from CockroachDB {{ site.data.products.standard }} to CockroachDB {{ site.data.products.basic }} in place:
 
 1. Edit the cluster's Terraform template:
     -  Change `plan` to `BASIC`.
@@ -229,7 +229,7 @@ To migrate from CockroachDB {{ site.data.products.standard }} to CockroachDB {{ 
           }
         }
       ~~~
-    - Remove fields that are unsupported on CockroachDB {{ site.data.products.basic }}, such as private connectivity.
+    - Remove configurations for features that are unsupported on CockroachDB {{ site.data.products.basic }}, such as private connectivity. Otherwise, applying the template will fail.
 1. Apply the template:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
