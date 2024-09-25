@@ -7,7 +7,7 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page guides you through the process of creating a CockroachDB {{ site.data.products.standard }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).
+This page guides you through the process of creating a CockroachDB {{ site.data.products.standard }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a Standard cluster]({% link cockroachcloud/cloud-api.md %}#create-a-standard-cluster) in the API documentation.
 
 If you need permission to create a cluster, contact an CockroachDB {{ site.data.products.cloud }} Org Administrator.
 

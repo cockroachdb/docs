@@ -588,7 +588,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 <h3 id="2023-01-09-api-changes"> Cloud API changes </h3>
 
-- The [create cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster) request now exposes the `restrict-egress-traffic` boolean field to allow dedicated clusters to be created with a [deny-by-default egress traffic policy]({% link cockroachcloud/egress-perimeter-controls.md %}#use-a-deny-by-default-egress-traffic-policy). This field and the broader egress perimeter controls capability can be used only with [private dedicated clusters]({% link cockroachcloud/private-clusters.md %}), which require the `network-visibility` field to be set to `NETWORK_VISIBILITY_PRIVATE`.
+- The [create cluster]({% link cockroachcloud/cloud-api.md %}#create-a-cluster) request now exposes the `restrict-egress-traffic` boolean field to allow dedicated clusters to be created with a [deny-by-default egress traffic policy]({% link cockroachcloud/egress-perimeter-controls.md %}#use-a-deny-by-default-egress-traffic-policy). This field and the broader egress perimeter controls capability can be used only with [private dedicated clusters]({% link cockroachcloud/private-clusters.md %}), which require the `network-visibility` field to be set to `NETWORK_VISIBILITY_PRIVATE`.
 
 <h3 id="2023-01-09-bug-fixes"> Bug fixes </h3>
 
