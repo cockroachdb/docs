@@ -33,6 +33,11 @@ Get future release notes emailed to you:
 
 For more details, refer to the [CockroachDB Blog](https://cockroachlabs.com/blog/roachfest-24-product-updates){% comment %}TODO link{% endcomment %} and learn more about [CockroachDB {{ site.data.products.cloud }} Costs across plans](https://cockroachlabs.com/pricing/).
 
+In addition, this release includes the following features:
+
+- A collection of [Metrics graphs]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page) in the Cloud Console for all plans.
+- Configurable backup frequency and retention for [Managed Backups]({% link cockroachcloud/managed-backups.md %}) on CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }} clusters, so you can meet your Disaster Recovery requirements.
+- Updates to the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}) and [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}) to support the new plans and features.
 
 ## August 12, 2024
 
