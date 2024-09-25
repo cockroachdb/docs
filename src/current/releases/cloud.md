@@ -29,7 +29,7 @@ Get future release notes emailed to you:
         - [Log export]({% link cockroachcloud/export-metrics.md %}) to Amazon CloudWatch and GCP Cloud Logging.
 - CockroachDB Dedicated clusters have been renamed to CockroachDB {{ site.data.products.advanced }}. CockroachDB Dedicated Advanced clusters are now CockroachDB Advanced clusters with [advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) enabled.
 
-For more details, refer to the [CockroachDB Blog](https://cockroachlabs.com/blog/roachfest-24-product-updates){% comment %}TODO link{% endcomment %} and learn more about [CockroachDB {{ site.data.products.cloud }} Costs across plans](/pricing/).
+For more details, refer to the [CockroachDB Blog](https://cockroachlabs.com/blog/roachfest-24-product-updates){% comment %}TODO link{% endcomment %} and learn more about [CockroachDB {{ site.data.products.cloud }} Costs across plans](https://cockroachlabs.com/pricing/).
 
 
 ## August 12, 2024
