@@ -136,7 +136,7 @@ A CockroachDB Standard cluster maintains a minimum of three replicas of your dat
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
-Each Advanced cluster is provisioned with dedicated storage, and users can configure the storage size for each node when setting up their cluster. This storage setting applies to all nodes in the cluster. The storage is billed hourly, with the rate depending on the cloud provider and the region where the cluster is hosted. Storage costs are independent of other resources, meaning you can adjust your cluster's storage capacity without altering its vCPU or memory configurations. For guidance on provisioning compute and storage, refer to [Plan Your Cluster]({% link cockroachcloud/plan-your-cluster-advanced.md }).
+Each Advanced cluster is provisioned with dedicated storage, and users can configure the storage size for each node when setting up their cluster. This storage setting applies to all nodes in the cluster. The storage is billed hourly, with the rate depending on the cloud provider and the region where the cluster is hosted. Storage costs are independent of other resources, meaning you can adjust your cluster's storage capacity without altering its vCPU or memory configurations. For guidance on provisioning compute and storage, refer to [Plan Your Cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}).
 
 - For AWS clusters: Storage charge (per hour) is calculated by multiplying the storage size (in GiB) by the per GiB-hour rate for storage, plus any additional charges for IOPS.
 - For GCP and Azure clusters: Node storage charge (per hour) is determined by multiplying the storage size (in GiB) by the per GiB-hour rate, without additional IOPS fees.
