@@ -80,7 +80,7 @@ If you don't want to enable VPC Peering, leave the default selection of **Use th
 
 {% capture cap_per_vcpu %}{% include_cached {{ site.current_cloud_version }}/prod-deployment/provision-storage.md %}{% endcapture %}
 
-The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster. Refer to [Plan your {{ site.data.products.advanced }}cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example).
+The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster. Refer to [Plan your {{ site.data.products.advanced }} cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example).
 
 1. On the **Capacity** page, select the **Compute per node**.
 

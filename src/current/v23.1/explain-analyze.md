@@ -401,7 +401,7 @@ EXPLAIN ANALYZE (DEBUG) SELECT city, AVG(revenue) FROM rides GROUP BY city;
   Debug -> Statement Diagnostics History), via the direct link below, or using
   the SQL shell or command line.
   Admin UI: http://127.0.0.1:8080
-  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/765493679630483457 (Not available for CockroachDB {{ site.data.products.serverless }} clusters.)
+  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/765493679630483457 (Not available for CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }}  clusters.)
   SQL shell: \statement-diag download 765493679630483457
   Command line: cockroach statement-diag download 765493679630483457
 (7 rows)

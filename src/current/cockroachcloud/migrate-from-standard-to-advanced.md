@@ -1,11 +1,11 @@
 ---
-title: Migrate from Serverless to Dedicated
-summary: Learn how to migrate data from a CockroachDB Serverless cluster into a CockroachDB Dedicated cluster.
+title: Migrate from Standard or Basic to Advanced
+summary: Learn how to migrate data from a CockroachDB Standard or Basic cluster into a CockroachDB Advanced cluster.
 toc: true
 docs_area: migrate
 ---
 
-This page has instructions for migrating data from a CockroachDB {{ site.data.products.serverless }} cluster to a CockroachDB {{ site.data.products.dedicated }} cluster, by exporting to CSV and using [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}). You may want to migrate to CockroachDB {{ site.data.products.dedicated }} if you want a single-tenant cluster with no shared resources.
+This page has instructions for migrating data from a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster to a CockroachDB {{ site.data.products.advanced }} cluster, by exporting to CSV and using [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}). You may want to migrate to CockroachDB {{ site.data.products.advanced }} if you want a single-tenant cluster with no shared resources.
 
 The steps below use sample data from the [`tpcc` workload]({% link {{site.current_cloud_version}}/cockroach-workload.md %}#workloads).
 
@@ -13,13 +13,13 @@ The steps below use sample data from the [`tpcc` workload]({% link {{site.curren
 
 These instructions assume you already have the following:
 
-- A [CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) from which you want to migrate data.
-- A [paid CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/quickstart-trial-cluster.md %}). Your first paid CockroachDB {{ site.data.products.dedicated }} cluster is free for a 30-day trial.
+- A [CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster]({% link cockroachcloud/quickstart.md %}) from which you want to migrate data.
+- A [paid CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/quickstart-trial-cluster.md %}). Your first paid CockroachDB {{ site.data.products.advanced }} cluster is free for a 30-day trial.
 - [Cloud storage]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}).
 
 ## Step 1. Export data to cloud storage
 
-First, upload your CockroachDB {{ site.data.products.serverless }} data to a cloud storage location where the CockroachDB {{ site.data.products.dedicated }} cluster can access it.
+First, upload your CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} data to a cloud storage location where the CockroachDB {{ site.data.products.advanced }} cluster can access it.
 
 1. [Connect to your CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}) and run the [`EXPORT`]({% link {{site.current_cloud_version}}/export.md %}) statement for each table you need to migrate. For example, the following statement exports the `warehouse` table from the [`tpcc`]({% link {{site.current_cloud_version}}/cockroach-workload.md %}#workloads) database to an Amazon S3 bucket:
 
@@ -86,7 +86,7 @@ First, upload your CockroachDB {{ site.data.products.serverless }} data to a clo
 For best practices for optimizing import performance in CockroachDB, see [Import Performance Best Practices]({% link {{site.current_cloud_version}}/import-performance-best-practices.md %}).
 {{site.data.alerts.end}}
 
-1. [Connect to your CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and [create the database]({% link {{site.current_cloud_version}}/create-database.md %}) you want to import the tables into. For example:
+1. [Connect to your CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and [create the database]({% link {{site.current_cloud_version}}/create-database.md %}) you want to import the tables into. For example:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -96,7 +96,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 1. Write a [`CREATE TABLE`]({% link {{site.current_cloud_version}}/create-table.md %}) statement that matches the schema of the table data you're importing.
 
     {{site.data.alerts.callout_success}}
-    You can use the [`SHOW CREATE TABLE`]({% link {{site.current_cloud_version}}/show-create.md %}#show-the-create-table-statement-for-a-table) statement in the CockroachDB {{ site.data.products.serverless }} cluster to view the `CREATE` statement for the table you're migrating.
+    You can use the [`SHOW CREATE TABLE`]({% link {{site.current_cloud_version}}/show-create.md %}#show-the-create-table-statement-for-a-table) statement in the CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster to view the `CREATE` statement for the table you're migrating.
     {{site.data.alerts.end}}
 
     {% include v20.2/misc/csv-import-callout.md %}
@@ -190,7 +190,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
 ## Step 3. Add any foreign key relationships
 
-Once all of the tables you want to migrate have been imported into the CockroachDB {{ site.data.products.dedicated }} cluster, add the [foreign key]({% link {{site.current_cloud_version}}/foreign-key.md %}) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`]({% link {{site.current_cloud_version}}/alter-table.md %}#add-constraint). For example:
+Once all of the tables you want to migrate have been imported into the CockroachDB {{ site.data.products.advanced }} cluster, add the [foreign key]({% link {{site.current_cloud_version}}/foreign-key.md %}) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`]({% link {{site.current_cloud_version}}/alter-table.md %}#add-constraint). For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql

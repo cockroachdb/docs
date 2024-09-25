@@ -160,7 +160,7 @@ Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?fi
 
        This is a workaround to prevent [data validation](#step-3-validate-the-migrated-data) from failing due to collation mismatches. For more details, see the [MOLT Verify] ({% link molt/molt-verify.md %}#known-limitations) documentation.
 
-1. Click [**Migrate Schema**]({% link cockroachcloud/migrations-page.md %}?filters=mysql#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `world`.
+1. Click [**Migrate Schema**]({% link cockroachcloud/migrations-page.md %}?filters=mysql#migrate-the-schema) to create a new {{ site.data.products.standard }} cluster with the converted schema. Name the database `world`.
 
        You can view this database on the [**Databases** page]({% link cockroachcloud/databases-page.md %}) of the {{ site.data.products.cloud }} Console.
 
