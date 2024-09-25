@@ -1,18 +1,16 @@
 ---
-title: SQL Client Certificate Authentication for CockroachDB Dedicated Clusters
-summary: procedures for managing client certificates for CockroachDB Dedicated clusters
+title: SQL Client Certificate Authentication for CockroachDB Advanced
+summary: Learn how to manage client certificates for CockroachDB Advanced clusters.
 toc: true
 docs_area: manage.security
 cloud: true
 ---
 
-SQL clients may authenticate to CockroachDB {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates as an alternative to authenticating using a username and password or using [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console]({% link cockroachcloud/cloud-sso-sql.md %}) or [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)]({% link {{site.current_cloud_version}}/sso-sql.md %}).
+SQL clients may authenticate to CockroachDB {{ site.data.products.advanced }} clusters using public key infrastructure (PKI) security certificates as an alternative to authenticating using a username and password or using [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console]({% link cockroachcloud/cloud-sso-sql.md %}) or [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)]({% link {{site.current_cloud_version}}/sso-sql.md %}).
 
-{{site.data.alerts.callout_success}}
-Cockroach Labs recommends using single sign on (SSO) for authentication of human users where possible, and JWT or security certificate for authentication of your application users.
-{{site.data.alerts.end}}
+{% include cockroachcloud/prefer-sso.md %}
 
-This page describes how to administer [public key infrastructure (PKI)]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}) for a CockroachDB {{ site.data.products.dedicated }} cluster, using [HashiCorp Vault PKI Secrets Engine]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
+This page describes how to administer [public key infrastructure (PKI)]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}) for a CockroachDB {{ site.data.products.advanced }} cluster, using [HashiCorp Vault PKI Secrets Engine]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
@@ -61,7 +59,7 @@ Alternatively, you can generate certificates [using CockroachDB's `cockroach cer
 
 ### Create the certificate authority (CA) certificate
 
-This CA certificate will be used to [configure your cluster's Trust Store](#upload-a-certificate-authority-ca-certificate-for-a-cockroachdb-dedicated-cluster). Any client certificate signed by the CA identified by this certificate will be trusted and can authenticate to your cluster.
+This CA certificate will be used to [configure your cluster's Trust Store](#upload-a-certificate-authority-ca-certificate-for-a-cockroachdb-advanced-cluster). Any client certificate signed by the CA identified by this certificate will be trusted and can authenticate to your cluster.
 
 1. Create a PKI secrets engine to serve as your client CA.
 
@@ -158,14 +156,14 @@ You can authenticate to a cluster using the private key and public certificate p
     chown $USER ${SECRETS_DIR}/clients/client.root.key
     ~~~
 
-## Upload a certificate authority (CA) certificate for a CockroachDB {{ site.data.products.dedicated }} cluster
+## Upload a certificate authority (CA) certificate for a CockroachDB {{ site.data.products.advanced }} cluster
 
 Add a CA certificate to your cluster's trust store for client authentication. Client certificates signed using the private key corresponding to this certificate will be accepted by your cluster for certificate-based client authentication.
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI): The CockroachDB certificate Trust Store]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}#the-cockroachdb-certificate-trust-store)
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.dedicated }} cluster.
+The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -245,7 +243,7 @@ Clients must be provisioned with client certificates signed by the cluster's CA 
 This section shows how to replace the CA certificate used by your cluster for certificate-based client authentication. To roll out a new CA certificate gradually instead of following this procedure directly, CockroachDB supports the ability to include multiple CA certificates for a cluster by concatenating them in PEM format. This allows clients to connect as long as the client certificate is signed by either the old CA certificate or the new one. PEM format requires a blank line in between certificates.
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.dedicated }} cluster.
+The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -324,7 +322,7 @@ After this operation is performed, clients can no longer authenticate with certi
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.dedicated }} cluster.
+The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -384,7 +382,7 @@ To delete the client CA cert on a cluster, remove the [`cockroach_client_ca_cert
 
 ## Authenticate a SQL client using certificate authentication
 
-To use certificate authentication for a SQL client, you must include the filepaths to the client's private key and public certificate. The public certificate must be signed by a CA that the cluster has been configured to trust. Refer to [Upload a certificate authority (CA) certificate for a CockroachDB {{ site.data.products.dedicated }} cluster](#upload-a-certificate-authority-ca-certificate-for-a-cockroachdb-dedicated-cluster).
+To use certificate authentication for a SQL client, you must include the filepaths to the client's private key and public certificate. The public certificate must be signed by a CA that the cluster has been configured to trust. Refer to [Upload a certificate authority (CA) certificate for a CockroachDB {{ site.data.products.advanced }} cluster](#upload-a-certificate-authority-ca-certificate-for-a-cockroachdb-advanced-cluster).
 
 1. From your cluster's overview page, `https://cockroachlabs.cloud/cluster/{ your cluster ID }`, click the **Connect** button.
 

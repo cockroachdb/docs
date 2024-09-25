@@ -6,11 +6,32 @@ toc_not_nested: true
 docs_area: releases
 ---
 
+
+[CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/index.md %}) supports major versions of CockroachDB according to the schedule in the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}). On that page, select a supported version to view its feature highlights. Updates that are specific to CockroachDB {{ site.data.products.cloud }} are exclusively listed on this page.
+
 CockroachDB {{ site.data.products.cloud }} supports the latest major version of CockroachDB and the version immediately preceding it. For more information, see the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
+
+## September 25, 2024
+
+[CockroachDB {{ site.data.products.cloud }} plans]({% link cockroachcloud/index.md %}) have been updated, and existing clusters have been transitioned to the new plans. There is no impact on the functionality or availability of existing clusters.
+
+- CockroachDB Serverless clusters have been renamed to **CockroachDB {{ site.data.products.basic }}**.
+- **CockroachDB {{ site.data.products.standard }}** is a new plan in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}#features-in-preview). You can easily [switch]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}#change-a-clusters-plan) a {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place or [start a new Standard cluster]({% link cockroachcloud/create-your-cluster.md %}). New {{ site.data.products.cloud }} organizations can benefit from a free trial{% comment %}TODO link{% endcomment %}.
+
+    CockroachDB {{ site.data.products.standard }} offers the benefits of a scalable, shared architecture, along with many enterprise-ready features, including:
+
+    - [Private Connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) to AWS Privatelink, GCP VPC Peering, and GCP Private Service Connect (Preview).
+    - Customer control of [major version upgrades]({% link cockroachcloud/cluster-management.md %}#manage-cluster-upgrades).
+    - Customer-configurable [Managed Backups]({% link cockroachcloud/managed-backups.md %}).
+    - [Metrics export]({% link cockroachcloud/export-metrics.md %}) to Amazon CloudWatch, Datadog, and Prometheus.
+    - [Log export]({% link cockroachcloud/export-metrics.md %}) to Amazon CloudWatch and GCP Cloud Logging.
+- CockroachDB Dedicated clusters have been renamed to CockroachDB {{ site.data.products.advanced }}. CockroachDB Dedicated Advanced clusters are now CockroachDB Advanced clusters with [advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) enabled.
+
+For more details, refer to the [CockroachDB Blog](https://cockroachlabs.com/blog/roachfest-24-product-updates){% comment %}TODO link{% endcomment %} and learn more about [CockroachDB {{ site.data.products.cloud }} Costs across plans](https://cockroachlabs.com/pricing/).
 
 
 ## August 12, 2024
@@ -216,7 +237,7 @@ Get future release notes emailed to you:
 
 <h3 id="2023-11-29-security-updates"> Security updates </h3>
 
-- [Authenticating to CockroachDB {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates]({% link cockroachcloud/client-certs-dedicated.md %}) is now [Generally Available](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability) to all CockroachDB {{ site.data.products.cloud }} organizations.
+- [Authenticating to CockroachDB {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates]({% link cockroachcloud/client-certs-advanced.md %}) is now [Generally Available](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability) to all CockroachDB {{ site.data.products.cloud }} organizations.
 - [SCIM Provisioning]({% link cockroachcloud/configure-scim-provisioning.md %}), which centralizes provisioning and management of CockroachDB {{ site.data.products.cloud }} organization members in an identity provider (IdP) such as Okta using [System for Cross-Domain Identity Management SCIM](https://www.rfc-editor.org/rfc/rfc7644), is now [Generally Available](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability) to all CockroachDB {{ site.data.products.cloud }} organizations.
 
 ## November 08, 2023
@@ -274,7 +295,7 @@ Get future release notes emailed to you:
 
 <h3 id="2023-09-08-general-changes"> General changes </h3>
 
-- [Managed-service backups](https://www.cockroachlabs.com/docs/cockroachcloud/use-managed-service-backups?filters=dedicated) are now available for [CockroachDB {{ site.data.products.dedicated }} clusters on Azure (Limited Access)]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
+- [Managed backups](https://www.cockroachlabs.com/docs/cockroachcloud/managed-backups?filters=dedicated) are now available for [CockroachDB {{ site.data.products.dedicated }} clusters on Azure (Limited Access)]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
 - You can now create new [multi-region](https://www.cockroachlabs.com/docs/stable/multiregion-overview) CockroachDB {{ site.data.products.dedicated }} clusters on Azure.
 
@@ -361,7 +382,7 @@ Get future release notes emailed to you:
 <h3 id="2023-07-10-console-changes"> Console changes </h3>
 
 - The **Add database** button on the [**Databases** page]({% link cockroachcloud/databases-page.md %}) of the Console is temporarily disabled.
-- CockroachDB {{ site.data.products.dedicated }} [restore jobs](https://www.cockroachlabs.com/docs/cockroachcloud/use-managed-service-backups?filters=dedicated#ways-to-restore-data) now have the following more descriptive statuses: `Preparing`, `Running`, `Reverting`, `Finalizing`, `Succeeded`, and `Failed` statuses. Additionally, destination clusters of self-service restores now display a `Restoring` state during the restore.
+- CockroachDB {{ site.data.products.dedicated }} [restore jobs](https://www.cockroachlabs.com/docs/cockroachcloud/managed-backupsfilters=advanced#restore-data-in-advanced-clusters) now have the following more descriptive statuses: `Preparing`, `Running`, `Reverting`, `Finalizing`, `Succeeded`, and `Failed` statuses. Additionally, destination clusters of self-service restores now display a `Restoring` state during the restore.
 - The [**Databases** page]({% link cockroachcloud/databases-page.md %}) now includes additional statistics for clusters running [v23.1.0]({% link releases/v23.1.md %}) and later.
 - You can now set up an AWS CloudWatch integration and view its status directly from the [**Tools** page]({% link cockroachcloud/export-metrics-advanced.md %}) of the CockroachDB {{ site.data.products.cloud }} Console.
 
@@ -381,18 +402,18 @@ Get future release notes emailed to you:
 <h3 id="2023-07-05-console-changes"> Console changes </h3>
 
 - Organizations that have purchased premium support will now see it included in their [invoices]({% link cockroachcloud/billing-management.md %}).
-- Cross-cluster [restores]({% link cockroachcloud/use-managed-service-backups.md %}#restore-a-cluster) are now limited to CockroachDB {{ site.data.products.dedicated }} clusters with a major version greater than or equal to the major version of the source cluster.
-- The [**Restore jobs**]({% link cockroachcloud/use-managed-service-backups.md %}#restore-a-cluster) tab of the **Backups page** now shows more information about a restore job, such as the source and destination clusters, the restore type, the backup size, and the job's progress.
+- Cross-cluster [restores]({% link cockroachcloud/managed-backups.md %}#restore-a-cluster) are now limited to CockroachDB {{ site.data.products.dedicated }} clusters with a major version greater than or equal to the major version of the source cluster.
+- The [**Restore jobs**]({% link cockroachcloud/managed-backups.md %}?filters=advanced#restore-data-in-advanced-clusters) tab of the **Backups page** now shows more information about a restore job, such as the source and destination clusters, the restore type, the backup size, and the job's progress.
 
 <h3 id="2023-07-05-security-changes"> Security updates </h3>
 
 - The [Organization Audit Logs API]({% link cockroachcloud/cloud-org-audit-logs.md %}), which provides logs of events that occur in a Cloud organization, is now [generally available](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability#feature-availability-phases).
-- `ExternalId` support is now re-enabled in the [Customer-managed Encryption Key (CMEK)]({% link cockroachcloud/cmek-ops-aws.md %}) capability on AWS.
+- `ExternalId` support is now re-enabled in the [Customer-managed Encryption Key (CMEK)]({% link cockroachcloud/cmek.md %}) capability on AWS.
 
 <h3 id="2023-07-05-bug-fixes"> Bug fixes </h3>
 
 - The `status` returned by the [`logexport` Cloud API endpoint]({% link cockroachcloud/export-logs.md %}#the-logexport-endpoint) is now determined by the state of both the latest log export's job state and the readiness of the underlying logging resources. Before this change, a `GET` request to the `logexport` endpoint could report an outdated log export status that conflicted with the latest log export update job state or with the most recent state of the logging infrastructure.
-- Fixed a bug where concurrent [restores]({% link cockroachcloud/use-managed-service-backups.md %}#restore-a-cluster) could run on the same destination cluster and cause the destination cluster to become unusable.
+- Fixed a bug where concurrent [restores]({% link cockroachcloud/managed-backups.md %}#restore-a-cluster) could run on the same destination cluster and cause the destination cluster to become unusable.
 - Fixed a bug where the IOPS price preview shown when [creating]({% link cockroachcloud/create-your-cluster.md %}) or [editing a cluster]({% link cockroachcloud/cluster-management.md %}) was inaccurate.
 - The **Group** tab is now shown only to users who have this feature enabled. Previously, an error page was shown to users who navigated to the **Group** tab without enabling the feature.
 
@@ -419,7 +440,7 @@ In addition to many of the Feature Highlights in the [CockroachDB v23.1.0 Releas
 
 <h3 id="2023-05-15-console-changes"> Console changes </h3>
 
-- CockroachDB {{ site.data.products.dedicated }} users can now [restore clusters from the Cloud console]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}).
+- CockroachDB {{ site.data.products.dedicated }} users can now [restore clusters from the Cloud console]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
 
 ## May 10, 2023
 
@@ -446,7 +467,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 <h3 id="2023-05-01-console-changes"> Console changes </h3>
 
-- CockroachDB {{ site.data.products.dedicated }} users can now [use the Cloud Console for full-cluster restores](https://www.cockroachlabs.com/docs/cockroachcloud/use-managed-service-backups?filters=dedicated#restore-a-cluster).
+- CockroachDB {{ site.data.products.dedicated }} users can now [use the Cloud Console for full-cluster restores](https://www.cockroachlabs.com/docs/cockroachcloud/managed-backups?filters=advanced#restore-data-in-advanced-clusters).
 - The [**Access Management** page]({% link cockroachcloud/managing-access.md %}) in the Cloud Console now shows only relevant content based on the [user's role assignments]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 
 <h3 id="2023-05-01-api-changes">Cloud API changes </h3>
@@ -464,7 +485,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h3 id="2023-05-01-bug-fixes"> Bug fixes </h3>
 
 - The [**Connect to your cluster**]({% link cockroachcloud/connect-to-your-cluster.md %}) dialog and [**Databases** page]({% link cockroachcloud/databases-page.md %}) in the Console now respond significantly faster for clusters with over 100 databases.
-- Fixed a bug where table and database [restores]({% link cockroachcloud/use-managed-service-backups.md %}) were disabled for clusters running CockroachDB versions [v22.2.6]({% link releases/v22.2.md %}#v22-2-6) or below.
+- Fixed a bug where table and database [restores]({% link cockroachcloud/managed-backups.md %}) were disabled for clusters running CockroachDB versions [v22.2.6]({% link releases/v22.2.md %}#v22-2-6) or below.
 
 ## April 26, 2023
 
@@ -563,7 +584,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 <h3 id="2023-01-09-console-changes"> Console changes </h3>
 
-- CockroachDB {{ site.data.products.dedicated }} clusters running CockroachDB [v22.1.8]({% link releases/v22.1.md %}#v22-1-8) or later now have a separate tab for incomplete backup jobs on the [**Backups** page]({% link cockroachcloud/use-managed-service-backups.md %}).
+- CockroachDB {{ site.data.products.dedicated }} clusters running CockroachDB [v22.1.8]({% link releases/v22.1.md %}#v22-1-8) or later now have a separate tab for incomplete backup jobs on the [**Backups** page]({% link cockroachcloud/managed-backups.md %}).
 
 <h3 id="2023-01-09-api-changes"> Cloud API changes </h3>
 
@@ -589,7 +610,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h3 id="2022-12-05-bug-fixes"> Bug fixes </h3>
 
 - Trial coupon limits for CockroachDB {{ site.data.products.dedicated }} clusters' storage and compute are now enforced in the [**Edit cluster**]({% link cockroachcloud/cluster-management.md %}) dialog.
-- Fixed a bug where [backups]({% link cockroachcloud/use-managed-service-backups.md %}) shown for a particular day included backups for midnight on the following day.
+- Fixed a bug where [backups]({% link cockroachcloud/managed-backups.md %}) shown for a particular day included backups for midnight on the following day.
 - Fixed a bug  on the [**Databases page**]({% link cockroachcloud/databases-page.md %}) where the number of index recommendations displayed for a database was inconsistent with the actual number of index recommendations for the database.
 - Fixed a bug that could break the [**Databases page**]({% link cockroachcloud/databases-page.md %}) when fetching index usage statistics for databases.
 
@@ -769,7 +790,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 - CockroachDB {{ site.data.products.cloud }} clusters now have a **Databases** page in the Console, which shows your databases, tables, indexes, and grants.
 - When creating or editing a SQL user, passwords are now generated and saved automatically when users click the **Generate and save password** button. Previously, users had to enter passwords manually and remember to save them.
-- CockroachDB {{ site.data.products.dedicated }} users can now [restore]({% link cockroachcloud/use-managed-service-backups.md %}) databases configured for multiple regions.
+- CockroachDB {{ site.data.products.dedicated }} users can now [restore]({% link cockroachcloud/managed-backups.md %}) databases configured for multiple regions.
 
 ## February 10, 2022
 
@@ -903,7 +924,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 <h3 id="2021-08-09-general-changes">General changes</h3>
 
 - New CockroachDB {{ site.data.products.cloud }} clusters will now run CockroachDB [v21.1.6]({% link releases/v21.1.md %}#v21-1-6).
-- CockroachDB {{ site.data.products.cloud }} Free (beta) users can now perform [backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) (`IMPORT`, `BACKUP`, `RESTORE` and CDC) with `userfile` storage.
+- CockroachDB {{ site.data.products.cloud }} Free (beta) users can now perform [backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) (`IMPORT`, `BACKUP`, `RESTORE` and CDC) with `userfile` storage.
 
 <h3 id="2021-08-09-console-changes">Console changes</h3>
 
@@ -1030,7 +1051,7 @@ New CockroachDB {{ site.data.products.cloud }} clusters will now run CockroachDB
 
     You can submit feedback or log any bugs you find through [this survey](https://forms.gle/jWNgmCFtF4y15ePw5).
 
-- You can now [restore databases and tables]({% link cockroachcloud/use-managed-service-backups.md %}) from backups of CockroachDB {{ site.data.products.cloud }} clusters. This feature is only available to clusters running the paid version of CockroachDB {{ site.data.products.cloud }}.
+- You can now [restore databases and tables]({% link cockroachcloud/managed-backups.md %}) from backups of CockroachDB {{ site.data.products.cloud }} clusters. This feature is only available to clusters running the paid version of CockroachDB {{ site.data.products.cloud }}.
 - [reCAPTCHA](https://www.google.com/recaptcha/about/) has been added to the sign up process for new users signing up with an email and password. Some users may need to complete an image challenge.
 - An email will now be sent to [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) when a [30-day free trial of CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/quickstart-trial-cluster.md %}) is nearing its end and once it has expired.
 
@@ -1062,7 +1083,7 @@ New CockroachDB {{ site.data.products.cloud }} clusters will now run CockroachDB
 - [Create a 30-day free CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/quickstart.md %}).
 - [Add or remove nodes]({% link cockroachcloud/advanced-cluster-management.md %}#add-or-remove-nodes-from-a-cluster) through the CockroachDB {{ site.data.products.cloud }} Console.
 - [Set up VPC peering]({% link cockroachcloud/network-authorization.md %}) for clusters running on GCP.
-- [View backups]({% link cockroachcloud/use-managed-service-backups.md %}) that Cockroach Labs has taken for your CockroachDB {{ site.data.products.cloud }} cluster.
+- [View backups]({% link cockroachcloud/managed-backups.md %}) that Cockroach Labs has taken for your CockroachDB {{ site.data.products.cloud }} cluster.
 
 ## July 6, 2020
 

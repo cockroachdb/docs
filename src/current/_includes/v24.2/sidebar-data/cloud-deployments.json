@@ -3,15 +3,21 @@
     "is_top_level": true,
     "items": [
     {
+        "title": "Overview",
+        "urls": [
+            "/cockroachcloud/index.html"
+        ]
+    },
+    {
         "title": "Create an Account",
         "urls": [
             "/cockroachcloud/create-an-account.html"
         ]
     },
     {
-        "title": "CockroachDB Cloud Regions",
+        "title": "CockroachDB Cloud Costs",
         "urls": [
-            "/cockroachcloud/regions.html"
+            "/cockroachcloud/costs.html"
         ]
     },
     {
@@ -48,7 +54,7 @@
                     ]
             },
             {
-                "title": "Provision a Serverless Cluster with Terraform",
+                "title": "Use the Terraform provider",
                 "urls": [
                     "/cockroachcloud/provision-a-cluster-with-terraform.html"
                 ]
@@ -56,7 +62,7 @@
         ]
     },
     {
-        "title": "Standard Deployments",
+        "title": "Standard Deployments (Preview)",
         "items": [
             {
             "title": "Plan a Standard Cluster",
@@ -95,15 +101,15 @@
             ]
             },
             {
-            "title": "Provision a Dedicated Cluster with Terraform",
+            "title": "Provision a Standard Cluster with Terraform",
             "urls": [
-                "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=dedicated"
+                "/cockroachcloud/provision-a-cluster-with-terraform.html"
             ]
             },
             {
-            "title": "Migrate from Serverless to Dedicated",
+            "title": "Migrate from Standard or Basic to Advanced",
             "urls": [
-                "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
+                "/cockroachcloud/migrate-from-standard-to-advanced.html"
             ]
             }
         ]
@@ -142,9 +148,9 @@
             ]
             },
             {
-            "title": "Provision a Dedicated Cluster with Terraform",
+            "title": "Provision an Advanced Cluster with Terraform",
             "urls": [
-                "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=dedicated"
+                "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=advanced"
             ]
             },
             {
@@ -154,11 +160,17 @@
             ]
             },
             {
-            "title": "Migrate from Serverless to Dedicated",
+            "title": "Migrate from Standard or Basic to Advanced",
             "urls": [
-                "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
+                "/cockroachcloud/migrate-from-standard-to-advanced.html"
             ]
             }
+        ]
+    },
+    {
+        "title": "CockroachDB Cloud Regions",
+        "urls": [
+            "/cockroachcloud/regions.html"
         ]
     },
     {
@@ -181,27 +193,15 @@
             "title": "Customer-Managed Encryption Keys (CMEK)",
             "items": [
                 {
-                "title": "Manage CMEK for Dedicated",
-                "urls": [
-                    "/cockroachcloud/managing-cmek.html"
-                ]
-                },
-                {
-                "title": "Provision AWS for CMEK",
-                "urls": [
-                    "/cockroachcloud/cmek-ops-aws.html"
-                ]
-                },
-                {
-                "title": "Provision GCP for CMEK",
-                "urls": [
-                    "/cockroachcloud/cmek-ops-gcp.html"
-                ]
-                },
-                {
-                "title": "Customer-Managed Encryption Keys (CMEK) Overview",
+                "title": "Overview",
                 "urls": [
                     "/cockroachcloud/cmek.html"
+                ]
+                },
+                {
+                "title": "Manage CMEK",
+                "urls": [
+                    "/cockroachcloud/managing-cmek.html"
                 ]
                 }
             ]
@@ -210,7 +210,7 @@
             "title": "Compliance",
             "items": [
                 {
-                    "title": "Compliance in Dedicated",
+                    "title": "Compliance in Advanced",
                     "urls": [
                       "/cockroachcloud/compliance.html"
                     ]
@@ -257,9 +257,9 @@
                         ]
                     },
                     {
-                        "title": "SQL Client Certificate Authentication for Dedicated Clusters",
+                        "title": "SQL Client Certificate Authentication for Advanced Clusters",
                         "urls": [
-                        "/cockroachcloud/client-certs-dedicated.html"
+                        "/cockroachcloud/client-certs-advanced.html"
                         ]
                     }
                 ]
@@ -515,15 +515,15 @@
                         ]
                     },
                     {
-                        "title": "Use Managed-Service Backups",
+                        "title": "Managed Backups",
                         "urls": [
-                          "/cockroachcloud/use-managed-service-backups.html"
+                          "/cockroachcloud/managed-backups.html"
                         ]
                     },
                     {
-                        "title": "Take and Restore Customer-Owned Backups",
+                        "title": "Take and Restore Self-Managed Backups",
                         "urls": [
-                          "/cockroachcloud/take-and-restore-customer-owned-backups.html"
+                          "/cockroachcloud/take-and-restore-self-managed-backups.html"
                         ]
                     },
                     {

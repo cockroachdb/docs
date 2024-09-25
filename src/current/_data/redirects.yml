@@ -260,8 +260,10 @@
   sources: ['cloud-deployment.md']
   versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
 
-- destination: migrate-from-serverless-to-dedicated.md
-  sources: ['migrate-from-free-to-dedicated.md']
+- destination: provision-a-cluster-with-terraform.md
+  sources:
+  - 'migrate-from-free-to-dedicated.md'
+  - 'migrate-from-serverless-to-dedicated.md'
   versions: ['cockroachcloud']
 
 - destination: migration-overview.md
@@ -394,8 +396,8 @@
   sources: ['change-data-capture.md']
   versions: ['v20.2', 'v21.1']
 
-- destination: take-and-restore-customer-owned-backups.md
-  sources: ['run-bulk-operations.md']
+- destination: take-and-restore-self-managed-backups.md
+  sources: ['run-bulk-operations.md', 'take-and-restore-customer-owned-backups.md']
   versions: ['cockroachcloud']
 
 - destination: take-full-and-incremental-backups.md
@@ -493,8 +495,8 @@
   sources: ['use-cloud-storage-for-bulk-operations.md']
   versions: ['v22.2', 'v23.1']
 
-- destination: use-managed-service-backups.md
-  sources: ['backups-page.md']
+- destination: managed-backups.md
+  sources: ['backups-page.md', 'use-managed-service-backups.md']
   versions: ['cockroachcloud']
 
 - destination: use-userfile-storage.md
@@ -846,6 +848,10 @@
     - 'learn-about-request-units.md'
   versions: ['cockroachcloud']
 
+- destination: index.md
+  sources:
+    - 'serverless-faqs.md'
+    - 'choose-a-deployment-option.md'
 # Cloud releases
 
 - destination: releases/cloud.md#january-22-2021

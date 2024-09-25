@@ -1,26 +1,26 @@
 ---
-title: Payment Card Industry Data Security Standard (PCI DSS) Compliance in CockroachDB Dedicated advanced
-summary: Learn about compliance with the Payment Card Industry Data Security Standard (PCI DSS) for CockroachDB Dedicated advanced clusters.
+title: Payment Card Industry Data Security Standard (PCI DSS) Compliance in CockroachDB Advanced
+summary: Learn about compliance with the Payment Card Industry Data Security Standard (PCI DSS) for CockroachDB Advanced clusters.
 toc: true
 docs_area: manage.security
 ---
 
-The Payment Card Industry Data Security Standard (PCI DSS) is a minimum set of requirements for the safe handling of sensitive data associated with credit and debit cards. In the PCI DSS standard, this data is referred to as "cardholder data." When implemented correctly, PCI DSS helps to protect cardholder data from fraud, exfiltration, and theft. PCI DSS is mandated by credit card issuers but administered by the [Payment Card Industry Security Standards Council](https://www.pcisecuritystandards.org/).
+The Payment Card Industry Data Security Standard (PCI DSS) is a minimum set of requirements for the safe handling of sensitive data associated with credit and debit cards. In the PCI DSS standard, this data is referred to as "cardholder data". When implemented correctly, PCI DSS helps to protect cardholder data from fraud, exfiltration, and theft. PCI DSS is mandated by credit card issuers but administered by the [Payment Card Industry Security Standards Council](https://www.pcisecuritystandards.org/).
 
 Many organizations that do not store cardholder data still rely upon PCI DSS to help protect other sensitive or confidential data or metadata.
 
 Responsibility for compliance with PCI DSS is shared among multiple parties, including card issuers, banks, software-as-a-service (SaaS) providers, and retail merchants. Compliance measures are implemented as a series of business practices, security controls, and technological solutions. An organization's compliance with PCI DSS is certified by a PCI Qualified Security Assessor (QSA).
 
-CockroachDB {{ site.data.products.dedicated }} advanced has been certified by a PCI Qualified Security Assessor (QSA) as a PCI DSS [Level 1 Service Provider](https://www.pcidssguide.com/what-are-pci-service-provider-compliance-levels/). This certification extends the existing [SOC 2 Type 2 certification](https://www.cockroachlabs.com/blog/soc-2-compliance-2/) of CockroachDB {{ site.data.products.dedicated }}. SOC 2 Type 2 provides a baseline level of security controls to safeguard customer data.
+CockroachDB {{ site.data.products.advanced }} has been certified by a PCI Qualified Security Assessor (QSA) as a PCI DSS [Level 1 Service Provider](https://www.pcidssguide.com/what-are-pci-service-provider-compliance-levels/). This certification extends the existing [SOC 2 Type 2 certification](https://www.cockroachlabs.com/blog/soc-2-compliance-2/) of CockroachDB {{ site.data.products.advanced }}. SOC 2 Type 2 provides a baseline level of security controls to safeguard customer data.
 
-This page provides information about compliance with PCI DSS within CockroachDB {{ site.data.products.dedicated }} advanced, describes some of the ways that CockroachDB {{ site.data.products.cloud }} implements and enforces compliance, and illustrates some of the types of changes you may need to implement outside of your CockroachDB {{ site.data.products.dedicated }} clusters.
+This page provides information about compliance with PCI DSS within CockroachDB {{ site.data.products.advanced }}, describes some of the ways that CockroachDB {{ site.data.products.cloud }} implements and enforces compliance, and illustrates some of the types of changes you may need to implement outside of your clusters.
 
 <a id="hipaa"></a>
 {{site.data.alerts.callout_success}}
-When a CockroachDB {{ site.data.products.dedicated }} advanced cluster is configured appropriately for compliance with PCI DSS, the cluster also meets the requirements of the Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_.
+When a CockroachDB {{ site.data.products.advanced }} cluster is configured appropriately for compliance with PCI DSS, the cluster also meets the requirements of the Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_.
 {{site.data.alerts.end}}
 
-PCI DSS is not yet available for [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
+Features to support PCI DSS are not yet available on Azure. Refer to [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
 ## Overview of PCI DSS
 
@@ -86,11 +86,11 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
 </tgroup>
 </table>
 
-CockroachDB {{ site.data.products.dedicated }} advanced is certified by a PCI QSA to be compliant with [PCI DSS 3.2.1](https://listings.pcisecuritystandards.org/documents/SAQ_D_v3_Merchant.pdf) within the DBaaS platform. Customers are still responsible to ensure that their applications are PCI DSS compliant. Customers may need to take the additional actions outlined in [Responsibilities of the customer](#responsibilities-of-the-customer) to maintain their own PCI compliance when using CockroachDB {{ site.data.products.dedicated }} clusters for cardholder data or other sensitive data.
+CockroachDB {{ site.data.products.advanced }} is certified by a PCI QSA to be compliant with [PCI DSS 3.2.1](https://listings.pcisecuritystandards.org/documents/SAQ_D_v3_Merchant.pdf) within the DBaaS platform. Customers are still responsible to ensure that their applications are PCI DSS compliant. Customers may need to take the additional actions outlined in [Responsibilities of the customer](#responsibilities-of-the-customer) to maintain their own PCI compliance when using CockroachDB {{ site.data.products.advanced }} clusters for cardholder data or other sensitive data.
 
 ## Responsibilities of Cockroach Labs
 
-Cockroach Labs takes actions to ensure that the operating procedures and the deployment environment for CockroachDB {{ site.data.products.dedicated }} clusters meet or exceed the requirements of PCI DSS 3.2.1. Some of these actions include:
+Cockroach Labs takes actions to ensure that the operating procedures and the deployment environment for CockroachDB {{ site.data.products.advanced }} clusters meet or exceed the requirements of PCI DSS 3.2.1. Some of these actions include:
 
 - Enforcing comprehensive security policies and standards.
 - Providing periodic security training for all Cockroach Labs employees.
@@ -107,37 +107,38 @@ Compliance is a shared responsibility. Be sure to read [Responsibilities of the 
 
 ## Responsibilities of the customer
 
-For a CockroachDB {{ site.data.products.dedicated }} cluster to meet PCI DSS standards, you must take additional steps, such as implementing security recommendations and carefully choosing business partners and vendors, and ensuring that your cardholder data or other sensitive information is protected throughout its journey into and out of your CockroachDB {{ site.data.products.dedicated }} clusters.
+For a CockroachDB {{ site.data.products.advanced }} cluster to meet PCI DSS standards, you must take additional steps, such as implementing security recommendations and carefully choosing business partners and vendors, and ensuring that your cardholder data or other sensitive information is protected throughout its journey into and out of your CockroachDB {{ site.data.products.advanced }} clusters.
 
 It is the customer’s responsibility to know what is required for your compliance with PCI DSS and how to implement a specific requirement. The following points help to illustrate some steps that organizations might take.
 
-A CockroachDB {{ site.data.products.dedicated }} cluster must have the following features enabled to be used in a PCI DSS compliant manner:
+A CockroachDB {{ site.data.products.advanced }} cluster must have the following features enabled to be used in a PCI DSS compliant manner:
 
-- The cluster must be created as a CockroachDB {{ site.data.products.dedicated }} advanced [private cluster]({% link cockroachcloud/private-clusters.md %}). A private cluster's nodes have no public IP addresses, and its egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster. An existing cluster cannot be migrated to be a private cluster.
+- The cluster must be created as a CockroachDB {{ site.data.products.advanced }} [private cluster]({% link cockroachcloud/private-clusters.md %}). A private cluster's nodes have no public IP addresses, and its egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster. An existing cluster cannot be migrated to be a private cluster.
+- The cluster must be created with [enhanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}). Enhanced security features cannot be changed after the cluster is created.
 - Single Sign-On (SSO) helps you avoid storing user passwords in CockroachDB {{ site.data.products.cloud }}:
 
     - [Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %}) allows members of your CockroachDB {{ site.data.products.cloud }} organization to authenticate to CockroachDB {{ site.data.products.cloud }} using an identity from an identity provider (IdP). This integration can be done using SAML or OIDC.
     - [Cluster SSO]({% link cockroachcloud/cloud-sso-sql.md %}) allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or self-hosted) with the full security of SSO, and the convenience of being able to choose from a variety of SSO identity providers, including CockroachDB {{ site.data.products.cloud }}, Google, Azure, GitHub, or your own self-hosted OIDC.
 
 - Enable [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}), which allow you to protect data at rest in a CockroachDB {{ site.data.products.dedicated }} cluster using a cryptographic key that is entirely within your control, hosted in a supported key-management system (KMS) platform. It enables file-based encryption of all new or updated data, and provides additional protection on top of the storage-level encryption of cluster disks.
-- Enable [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %}), which ensure that cluster egress operations, such as [customer-managed cluster backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) or [change data capture]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}), are restricted to a list of specified external destinations.
+- Enable [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %}), which ensure that cluster egress operations, such as [self-managed cluster backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) or [change data capture]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}), are restricted to a list of specified external destinations.
 - [Cluster log exports]({% link cockroachcloud/export-logs.md %}) must have the redaction feature enabled to prevent the exposure of sensitive data in logs exported to your instance of Amazon CloudWatch or GCP Cloud Logging.
 - [Cloud Organization audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %}) automatically capture information when many types of events occur in your CockroachDB {{ site.data.products.cloud }} organization, such as when a cluster is created or when a member is added to or removed from an organization. You can export your CockroachDB {{ site.data.products.cloud }} organization's audit logs to analyze usage patterns and investigate security incidents.
 - [Cluster audit log export]({% link cockroachcloud/export-logs.md %}) automatically capture detailed information about queries being executed in your cluster.
 
 Cockroach Labs cannot provide specific advice about ensuring end-to-end compliance of your overall system with PCI DSS or how to implement a specific requirement across all operating environments. The following are additional guidelines for a cluster to be used in a PCI DSS compliant manner:
 
-- Before you insert cardholder data into the cluster, protect it by a combination of encryption, hashing, masking, and truncation. For an example implementation, refer to [Integrate CockroachDB {{ site.data.products.dedicated }} with Satori]({% link {{ site.current_cloud_version }}/satori-integration.md %}).
+- Before you insert cardholder data into the cluster, protect it by a combination of encryption, hashing, masking, and truncation. For an example implementation, refer to [Integrate CockroachDB {{ site.data.products.advanced }} with Satori]({% link {{ site.current_cloud_version }}/satori-integration.md %}).
 - The cryptographic materials used to protect cardholder data must themselves be protected at rest and in transit, and access to the unencrypted key materials must be strictly limited only to approved individuals.
 - Within the cluster, restrict access to cardholder data on a “need to know basis” basis. Access to tables and views in the cluster that contain cardholder data must be restricted, and you are responsible to regularly test for compliance. Refer to [Authorization]({% link {{ site.current_cloud_version }}/authorization.md %}).
 - Protect networks that transmit cardholder data from malicious access over the public internet, and regularly test for compliance. For more information about protecting the cluster’s networks, refer to [Network Authorization]({% link cockroachcloud/network-authorization.md %}).
-- Important security and stability updates are applied regularly and automatically to CockroachDB {{ site.data.products.dedicated }} clusters. These updates include, but are not limited to, the cluster’s CockroachDB runtime, the operating systems of cluster nodes, APIs, and management utilities. Customers are notified about upcoming cluster maintenance before it happens, when it starts, and when it completes.
+- Important security and stability updates are applied regularly and automatically to CockroachDB {{ site.data.products.advanced }} clusters. These updates include, but are not limited to, the cluster’s CockroachDB runtime, the operating systems of cluster nodes, APIs, and management utilities. Customers are notified about upcoming cluster maintenance before it happens, when it starts, and when it completes.
 - If your cluster is part of a solution that includes external systems and applications that store or process cardholder data, it is your responsibility to ensure that these systems and applications, as well as their dependencies, are compliant with PCI DSS. You are responsible for regularly testing these systems and applications for known vulnerabilities and compliance violations and regularly applying updates and mitigations.
 
 ## See also
 
 - [Authorization]({% link {{ site.current_cloud_version }}/authorization.md %})
-- [Integrate CockroachDB {{ site.data.products.dedicated }} with Satori]({% link {{ site.current_cloud_version }}/satori-integration.md %})
+- [Integrate CockroachDB {{ site.data.products.advanced }} with Satori]({% link {{ site.current_cloud_version }}/satori-integration.md %})
 - [CockroachDB Releases]({% link releases/index.md %})
 - [CockroachDB {{ site.data.products.cloud }} Releases]({% link releases/cloud.md %})
 - [Security and Audit Monitoring]({% link {{ site.current_cloud_version }}/logging-use-cases.md %}#security-and-audit-monitoring)

@@ -25,7 +25,7 @@ For a technical overview of how a locality-aware backup works, refer to [Job coo
 
 ## Supported products
 
-Locality-aware backups are available in **CockroachDB {{ site.data.products.dedicated }}**, **CockroachDB {{ site.data.products.serverless }}**, and **CockroachDB {{ site.data.products.core }}** clusters when you are running [customer-owned backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}). For a full list of features on CockroachDB Cloud, refer to [Backup and Restore Overview]({% link cockroachcloud/backup-and-restore-overview.md %}).
+Locality-aware backups are available in **CockroachDB {{ site.data.products.advanced }}**, **CockroachDB {{ site.data.products.standard }}**, **CockroachDB {{ site.data.products.basic }}, and **CockroachDB {{ site.data.products.core }}** clusters when you are running [self-managed backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}). For a full list of features on CockroachDB Cloud, refer to [Backup and Restore Overview]({% link cockroachcloud/backup-and-restore-overview.md %}).
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/backups/locality-aware-multi-tenant.md %}

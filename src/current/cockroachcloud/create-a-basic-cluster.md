@@ -52,7 +52,7 @@ Click **Next: Capacity**.
 
 ## Step 4. Configure cluster capacity
 
-Your cluster's capacity dictates its resource limits, which are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
+Your cluster's capacity dictates its resource limits, which are the maximum amount of storage and RUs you can use in a month. Resource limits are optional. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
 
 Each CockroachDB {{ site.data.products.cloud }} organization gets 50M RUs and 10 GiB of storage for free each month. Free resources can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization. You can set higher resource limits to maintain a high level of performance with larger workloads. You will only be charged for what you use.
 

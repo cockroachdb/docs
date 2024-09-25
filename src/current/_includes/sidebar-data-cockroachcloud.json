@@ -138,12 +138,6 @@
       	      ]
       	    },
             {
-              "title": "Migrate from Serverless to Dedicated",
-              "urls": [
-                "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
-              ]
-            },
-            {
       	      "title": "Migrate from Oracle",
       	      "urls": [
       		      "/{{site.current_cloud_version}}/migrate-from-oracle.html"
@@ -254,13 +248,13 @@
         {
           "title": "Take and Restore Customer-Owned Backups",
           "urls": [
-            "/cockroachcloud/take-and-restore-customer-owned-backups.html"
+            "/cockroachcloud/take-and-restore-self-managed-backups.html"
           ]
         },
       	{
       	  "title": "Use Managed-Service Backups",
       	  "urls": [
-      	    "/cockroachcloud/use-managed-service-backups.html"
+      	    "/cockroachcloud/managed-backups.html"
       	  ]
       	},
       	{
