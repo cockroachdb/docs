@@ -5,6 +5,10 @@ toc: true
 docs_area: deploy
 ---
 
+{{site.data.alerts.callout_info}}
+CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+{{site.data.alerts.end}}
+
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
 This page guides you through the process of creating a CockroachDB {{ site.data.products.standard }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster).

@@ -109,6 +109,10 @@ To change a cluster's plan in place between CockroachDB {{ site.data.products.ba
 
 <section class="filter-content" markdown="1" data-scope="standard">
 
+{{site.data.alerts.callout_info}}
+CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+{{site.data.alerts.end}}
+
 In this tutorial, you will create a CockroachDB {{ site.data.products.standard }} cluster.
 
 1. In a terminal create a new file named `main.tf` with the following contents:

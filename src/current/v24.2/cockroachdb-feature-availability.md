@@ -43,6 +43,10 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
+### CockroachDB Standard
+
+CockroachDB Standard is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity](% link cockroachcloud/plan-your-cluster), instant scaling capabilities, enterprise security and availability.
+
 ### Generic query plans
 
 [Generic query plans]({% link {{ page.version.version }}/cost-based-optimizer.md %}#query-plan-type) are generated and optimized once without considering specific placeholder values, and are not regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) and must be re-optimized. This approach eliminates most of the query latency attributed to planning.
