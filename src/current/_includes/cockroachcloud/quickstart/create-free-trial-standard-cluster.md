@@ -1,4 +1,4 @@
-1. [Create a CockroachDB {{ site.data.products.cloud }} account](https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}) and learn more about your [free trial credits]({% link cockroachcloud/free-trial %}). 
+1. [Create a CockroachDB {{ site.data.products.cloud }} account](https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}) and learn more about your [free trial credits]({% link cockroachcloud/free-trial.md %}). 
 1. On the **Get Started** page, click **Create cluster**.
 1. On the **Select a plan** page, select **Standard**.
 1. On the **Cloud & Regions** page, select a cloud provider (GCP or AWS) in the **Cloud provider** section.
