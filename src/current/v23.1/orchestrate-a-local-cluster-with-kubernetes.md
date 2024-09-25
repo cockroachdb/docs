@@ -20,7 +20,6 @@ To orchestrate a physically distributed cluster in production, see [Orchestrated
 
 {% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 
-
 {% include {{ page.version.version }}/orchestration/local-start-kubernetes.md %}
 
 ## Step 2. Start CockroachDB
@@ -63,7 +62,7 @@ Choose a way to deploy and maintain the CockroachDB cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ minikube stop
+    minikube stop
     ~~~
 
     ~~~
@@ -77,7 +76,7 @@ Choose a way to deploy and maintain the CockroachDB cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ minikube delete
+    minikube delete
     ~~~
 
     ~~~
@@ -85,7 +84,9 @@ Choose a way to deploy and maintain the CockroachDB cluster:
     Machine deleted.
     ~~~
 
-    {{site.data.alerts.callout_success}}To retain logs, copy them from each pod's <code>stderr</code> before deleting the cluster and all its resources. To access a pod's standard error stream, run <code>kubectl logs &lt;podname&gt;</code>.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_success}}
+    To retain logs, copy them from each pod's `stderr` before deleting the cluster and all its resources. To access a pod's standard error stream, run `kubectl logs &lt;podname&gt;`.
+    {{site.data.alerts.end}}
 
 ## See also
 

@@ -100,4 +100,4 @@ For other ways to install psycopg2, see the [official documentation](http://init
 
 Read more about using the [Python psycopg2 driver](https://www.psycopg.org/docs/).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

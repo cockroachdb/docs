@@ -35,7 +35,7 @@ If you have not done so already, [create a cluster]({% link cockroachcloud/creat
 
 ## Step 2. Connect to your cluster
 
-Refer to [Connect to a CockroachDB Dedicated cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) for detailed instructions on how to to:
+Refer to [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) for detailed instructions on how to:
 
 1. Download and install CockroachDB and your cluster's CA certificate locally.
 1. Generate the `cockroach sql` command that you will use to connect to the cluster from the command line as a SQL user with [admin] privileges in the cluster.
@@ -44,12 +44,14 @@ Refer to [Connect to a CockroachDB Dedicated cluster]({% link cockroachcloud/con
 
 1. In your terminal, enter the `cockroach sql` command and connection string from [Step 2. Connect to your cluster](#step-2-connect-to-your-cluster) to start the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}).
 
-1. Enable [rangefeeds](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#enable-rangefeeds). Note that rangefeeds are enabled by default on {{ site.data.products.serverless }} clusters:
+1. Enable [rangefeeds](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#enable-rangefeeds):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
+
+    Note that rangefeeds are enabled by default on CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters.
 
 ## Step 4. Create a database
 

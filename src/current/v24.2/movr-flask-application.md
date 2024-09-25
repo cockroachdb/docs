@@ -7,15 +7,13 @@ docs_area: develop
 
 This page guides you through developing a globally-available web application. It is the fourth section of the [Develop and Deploy a Global Application]({% link {{ page.version.version }}/movr.md %}#develop-and-deploy-a-global-application) tutorial.
 
-{% comment %} {% include {{ page.version.version }}/misc/movr-live-demo.md %} {% endcomment %}
-
 {{site.data.alerts.callout_info}}
-This tutorial assumes you are running under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation. Client-side retry handling is **not** necessary under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation.
+This tutorial uses [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation. Client-side retry handling is **not** necessary under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation.
 {{site.data.alerts.end}}
 
 ## Before you begin
 
-Before you begin this section, complete the previous section of the tutorial, [Set Up a Virtual Environment for Developing Global Applications]({% link {{ page.version.version }}/movr-flask-setup.md %}).
+Before you begin this section, complete the previous sections of the tutorial, ending with [Set Up a Virtual Environment for Developing Global Applications]({% link {{ page.version.version }}/movr-flask-setup.md %}).
 
 ## Project structure
 
@@ -23,22 +21,22 @@ The application needs to handle requests from clients, namely web browsers. To t
 
 - A multi-region database schema that defines the tables and indexes for user, vehicle, and ride data.
     The database schema is covered on a separate page, [Create a Multi-Region Database Schema]({% link {{ page.version.version }}/movr-flask-database.md %}).
-- A multi-node, geo-distributed CockroachDB cluster, with each node's locality corresponding to cloud provider regions.
+- A multi-node geographically-distributed CockroachDB cluster where each node's locality corresponds to a cloud provider region.
     Database deployment is covered on two separate pages:
-      - For instructions on setting up a demo cluster, see [Set Up a Virtual Environment for Developing Multi-Region Applications]({% link {{ page.version.version }}/movr-flask-setup.md %}).
-      - For instructions on setting up a multi-region cluster, see [Deploy a Global Application]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
-- Python class definitions that map to the tables in our database.
-    For details, see [Mappings](#mappings) below.
+      - To set up a demo cluster, refer to [Set Up a Virtual Environment for Developing Multi-Region Applications]({% link {{ page.version.version }}/movr-flask-setup.md %}).
+      - To set up up a multi-region cluster, refer to [Deploy a Global Application]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
+- Python class definitions that map to the tables in the database.
+    Refer to [Mappings](#mappings).
 - Functions that wrap database transactions.
-    For details, see [Transactions](#transactions) below.
+    Refer to [Transactions](#transactions).
 - A backend API that defines the application's connection to the database.
-    For details, see [Database connection](#database-connection) below.
+    Refer to [Database connection](#database-connection).
 - A [Flask](https://palletsprojects.com/p/flask/) server that handles requests from clients.
-    For details, see [Web application](#web-application) below.
+    Refer to [Web application](#web-application).
 - HTML files that the Flask server can render into web pages.
-    For details, see [User interface](#user-interface) below.
+    Refer to [User interface](#user-interface).
 
-In the sections that follow, we go over each of the files and folders in the project, with a focus on the backend and database components. Here is the application's project directory structure:
+In the sections that follow, we go over each of the files and folders in the project, with a focus on the backend and database components. The project's code is structured as follows:
 
 ~~~ shell
 movr
@@ -78,10 +76,9 @@ movr
     └── gunicorn.py  ## Contains gunicorn configuration settings
 ~~~
 
-
 ## SQLAlchemy with CockroachDB
 
-Object Relational Mappers (ORMs) map classes to tables, class instances to rows, and class methods to transactions on the rows of a table. The `sqlalchemy` package includes some base classes and methods that you can use to connect to your database's server from a Python application, and then map tables in that database to Python classes.
+Object Relational Mappers (ORMs) map classes to tables, class instances to rows, and class methods to transactions on the rows of a table. The `sqlalchemy` package includes some base classes and methods that you can use to connect to your database's cluster from a Python application, and then map tables in that database to Python classes.
 
 In our example, we use SQLAlchemy's [Declarative](https://docs.sqlalchemy.org/orm/extensions/declarative/) extension, which is built on the `mapper()` and `Table` data structures. We also use the [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) Python package, which defines the CockroachDB SQLAlchemy [dialect](https://docs.sqlalchemy.org/dialects/). The package includes some functions that help you handle [transactions]({% link {{ page.version.version }}/transactions.md %}) in a running CockroachDB cluster.
 
@@ -130,7 +127,7 @@ Recall that the `vehicles` table contains more columns and data types than the `
 
 #### The `Ride` class
 
-Lastly, there's the `Ride` class:
+Take a look at the `Ride` class:
 
 ~~~ python
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/movr/models.py ||# START Ride ||# END Ride %}
@@ -152,16 +149,15 @@ The [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroa
 
 - When passed a [`sqlalchemy.orm.session.sessionmaker`](https://docs.sqlalchemy.org/orm/session_api.html#session-and-sessionmaker) object, it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction. Note that a `sessionmaker` objects is different from a `session` object, which is not an allowable `transactor` for `run_transaction()`.
 - By abstracting transaction retry logic away from your application, it keeps your application code portable across different databases.
+    Because all callback functions are passed to `run_transaction()`, the `Session` method calls within those callback functions are written a little differently than the typical SQLAlchemy application. Most importantly, those functions must not change the session and/or transaction state. This is in line with the recommendations of the [SQLAlchemy FAQs](https://docs.sqlalchemy.org/orm/session_basics.html#session-frequently-asked-questions), which state (with emphasis added by the original author) that
 
- Because all callback functions are passed to `run_transaction()`, the `Session` method calls within those callback functions are written a little differently than the typical SQLAlchemy application. Most importantly, those functions must not change the session and/or transaction state. This is in line with the recommendations of the [SQLAlchemy FAQs](https://docs.sqlalchemy.org/orm/session_basics.html#session-frequently-asked-questions), which state (with emphasis added by the original author) that
+    <q>As a general rule, the application should manage the lifecycle of the session *externally* to functions that deal with specific data. This is a fundamental separation of concerns which keeps data-specific operations agnostic of the context in which they access and manipulate that data.</q>
 
-<q>As a general rule, the application should manage the lifecycle of the session *externally* to functions that deal with specific data. This is a fundamental separation of concerns which keeps data-specific operations agnostic of the context in which they access and manipulate that data.</q>
+    and
 
- and
+    <q>Keep the lifecycle of the session (and usually the transaction) **separate and external**.</q>
 
-<q>Keep the lifecycle of the session (and usually the transaction) **separate and external**.</q>
-
- In keeping with the above recommendations from the official docs, we strongly recommend avoiding any explicit mutations of the transaction state inside the callback passed to `run_transaction()`. Specifically, we do not make calls to the following functions from inside `run_transaction()`:
+    In keeping with the above recommendations from the official docs, we strongly recommend avoiding any explicit mutations of the transaction state inside the callback passed to `run_transaction()`. Specifically, we do not make calls to the following functions from inside `run_transaction()`:
 
  - [`sqlalchemy.orm.Session.commit()`](https://docs.sqlalchemy.org/orm/session_api.html?highlight=commit#sqlalchemy.orm.session.Session.commit) (or other variants of `commit()`)
 
@@ -173,13 +169,17 @@ The [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroa
 
  - `Session.flush()`
 
-    This will not work as expected with CockroachDB because [CockroachDB does not support nested transactions]({% link {{ page.version.version }}/savepoint.md %}), which are necessary for `Session.flush()` to work properly. If the call to `Session.flush()` encounters an error and aborts, it will try to rollback. This will not be allowed by the currently-executing CockroachDB transaction created by `run_transaction()`, and will result in an error message like the following: `sqlalchemy.orm.exc.DetachedInstanceError: Instance <FooModel at 0x12345678> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: http://sqlalche.me/e/bhk3)`.
+    This will not work as expected with CockroachDB because [CockroachDB does not support nested transactions]({% link {{ page.version.version }}/savepoint.md %}), which are necessary for `Session.flush()` to work properly. If the call to `Session.flush()` encounters an error and aborts, it will try to roll back. This will not be allowed by the currently-executing CockroachDB transaction created by `run_transaction()`, and will result in an error message like the following:
 
- In the example application, all calls to `run_transaction()` are found within the methods of the `MovR` class (defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/movr.py)), which represents the connection to the running database. Requests to the web application frontend (defined in [`server.py`](https://github.com/cockroachlabs/movr-flask/blob/master/server.py)), are routed to the `MovR` class methods.
+    ~~~
+    sqlalchemy.orm.exc.DetachedInstanceError: Instance <FooModel at 0x12345678> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: http://sqlalche.me/e/bhk3).
+    ~~~
+
+    In the example application, all calls to `run_transaction()` are located within the methods of the `MovR` class, which is defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/movr.py). This class represents the connection to the running database. Requests to the web application frontend, which are defined in [`server.py`](https://github.com/cockroachlabs/movr-flask/blob/master/server.py), are routed to the `MovR` class methods.
 
 #### Transaction callback functions
 
- To separate concerns, we define all callback functions passed to `run_transaction()` calls in a separate file, [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/transactions.py). These callback functions wrap `Session` method calls, like [`session.query()`](https://docs.sqlalchemy.org/orm/session_api.html#sqlalchemy.orm.session.Session.query) and [`session.add()`](https://docs.sqlalchemy.org/orm/session_api.html#sqlalchemy.orm.session.Session.add), to perform database operations within a transaction.
+To separate concerns, we define all callback functions passed to `run_transaction()` calls in a separate file, [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/transactions.py). These callback functions wrap `Session` method calls, like [`session.query()`](https://docs.sqlalchemy.org/orm/session_api.html#sqlalchemy.orm.session.Session.query) and [`session.add()`](https://docs.sqlalchemy.org/orm/session_api.html#sqlalchemy.orm.session.Session.add), to perform database operations within a transaction.
 
 {{site.data.alerts.callout_success}}
 We recommend that you use a `sessionmaker` object, bound to an existing `Engine`, as the `transactor` that you pass to `run_transaction()`. This protects you from accidentally reusing objects via any sessions created outside the transaction. Every time `run_transaction()` is called, it uses the `sessionmaker` object to create a new [`Session`](https://docs.sqlalchemy.org/orm/session.html) object for the callback. If the `sessionmaker` is bound to an existing `Engine`, the same database connection can be reused.
@@ -383,11 +383,10 @@ We've also added some Bootstrap syntax and Google Maps, for UX purposes. As you 
 
 ## Next Steps
 
-After you finish developing and debugging your application, you can start [deploying the application]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
+After you finish developing and debugging your application, you can learn about [deploying the application]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
 
 ## See also
 
-{% comment %} [MovR (live demo)](https://movr.cloud){% endcomment %}
 - [SQLAlchemy documentation](https://docs.sqlalchemy.org/)
 - [Transactions]({% link {{ page.version.version }}/transactions.md %})
 - [Flask documentation](https://flask.palletsprojects.com/)

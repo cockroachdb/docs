@@ -27,7 +27,7 @@ In this `logs.yaml` example:
 
    1. To send telemetry events directly to Datadog without writing events to disk, override telemetry default configuration by setting `file-groups: telemetry: channels:` to `[]`.
    {{site.data.alerts.callout_danger}}
-    Given the [volume of `sampled_query` and `sampled_transaction` events](#step-3-configure-cockroachdb-to-emit-query-events), do not write these events to disk, or [`file-groups`]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files). Writing a high volume of `sampled_query` and `sampled_transaction` events to a file group will unnecessarily consume cluster resources and impact workload performance. 
+    Given the [volume of `sampled_query` and `sampled_transaction` events](#step-3-configure-cockroachdb-to-emit-query-events), do not write these events to disk, or [`file-groups`]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files). Writing a high volume of `sampled_query` and `sampled_transaction` events to a file group will unnecessarily consume cluster resources and impact workload performance.
 
     To disable the creation of a telemetry file and avoid writing `sampled_query` and `sampled_transaction` events and other [telemetry events]({% link {{ page.version.version }}/eventlog.md %}#telemetry-events) to disk, change the telemetry `file-groups` setting from the [default of `channels: [TELEMETRY]`]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration) to `channels: []`.
    {{site.data.alerts.end}}

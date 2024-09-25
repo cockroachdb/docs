@@ -103,4 +103,4 @@ For other ways to install Psycopg, see the [official documentation](https://www.
 
 Read more about using the [Python psycopg3 driver](https://www.psycopg.org/docs/).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

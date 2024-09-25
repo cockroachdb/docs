@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-This page describes basic considerations and provides a basic [example](#example-migrate-frenchtowns-to-cockroachdb) of migrating data from PostgreSQL to CockroachDB. The information on this page assumes that you have read [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}), which describes the broad phases and considerations of migrating a database to CockroachDB. 
+This page describes basic considerations and provides a basic [example](#example-migrate-frenchtowns-to-cockroachdb) of migrating data from PostgreSQL to CockroachDB. The information on this page assumes that you have read [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}), which describes the broad phases and considerations of migrating a database to CockroachDB.
 
 The [PostgreSQL migration example](#example-migrate-frenchtowns-to-cockroachdb) on this page demonstrates how to use [MOLT tooling]({% link {{ page.version.version }}/migration-overview.md %}#molt) to update the PostgreSQL schema, perform an initial load of data, and validate the data. These steps are essential when [preparing for a full migration]({% link {{ page.version.version }}/migration-overview.md %}#prepare-for-migration).
 
@@ -15,7 +15,7 @@ If you need help migrating to CockroachDB, contact our <a href="mailto:sales@coc
 
 ## Syntax differences
 
-CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and is largely compatible with PostgreSQL syntax. 
+CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and is largely compatible with PostgreSQL syntax.
 
 For syntax differences, refer to [Features that differ from PostgreSQL]({% link {{ page.version.version }}/postgresql-compatibility.md %}#features-that-differ-from-postgresql).
 
@@ -29,7 +29,7 @@ The following PostgreSQL features do not yet exist in CockroachDB:
 
 You can use one of the following methods to migrate PostgreSQL data to CockroachDB:
 
-- {% include {{ page.version.version }}/migration/load-data-import-into.md %} 
+- {% include {{ page.version.version }}/migration/load-data-import-into.md %}
 
        {% include {{ page.version.version }}/misc/import-perf.md %}
 
@@ -47,7 +47,7 @@ In the context of a full migration, these steps ensure that PostgreSQL data can 
 
 ### Before you begin
 
-The example uses a modified version of the PostgreSQL `french-towns-communes-francais` data set and demonstrates how to migrate the schema and data to a {{ site.data.products.serverless }} cluster. To follow along with these steps:
+The example uses a modified version of the PostgreSQL `french-towns-communes-francais` data set and demonstrates how to migrate the schema and data to a CockroachDB {{ site.data.products.standard }} cluster. To follow along with these steps:
 
 1. Download the `frenchtowns` data set:
 
@@ -70,7 +70,7 @@ The example uses a modified version of the PostgreSQL `french-towns-communes-fra
        psql frenchtowns -a -f frenchtowns.sql
        ~~~
 
-1. Create a free [{{ site.data.products.cloud }} account]({% link cockroachcloud/create-an-account.md %}), which is used to access the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) and create the {{ site.data.products.serverless }} cluster.
+1. Create a free [{{ site.data.products.cloud }} account]({% link cockroachcloud/create-an-account.md %}), which is used to access the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) and [create the CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 {{site.data.alerts.callout_success}}
 {% include cockroachcloud/migration/sct-self-hosted.md %}
@@ -105,9 +105,9 @@ Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) t
 
 1. Click **Retry Migration**. The **Summary Report** now shows that there are no errors. This means that the schema is ready to migrate to CockroachDB.
 
-       This example migrates directly to a {{ site.data.products.serverless }} cluster. {% include cockroachcloud/migration/sct-self-hosted.md %}
+       This example migrates directly to a CockroachDB {{ site.data.products.standard }} cluster. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
-1. Click [**Migrate Schema**]({% link cockroachcloud/migrations-page.md %}#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `frenchtowns`.
+1. Click [**Migrate Schema**]({% link cockroachcloud/migrations-page.md %}#migrate-the-schema) to create a new CockroachDB {{ site.data.products.standard }} cluster with the converted schema. Name the database `frenchtowns`.
 
        You can view this database on the [**Databases** page]({% link cockroachcloud/databases-page.md %}) of the {{ site.data.products.cloud }} Console.
 
@@ -142,7 +142,7 @@ By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}
        - [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
        - [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})
 
-       Cloud storage such as Amazon S3 or Google Cloud is highly recommended for hosting the data files you want to import. 
+       Cloud storage such as Amazon S3 or Google Cloud is highly recommended for hosting the data files you want to import.
 
        The dump files generated in the preceding step are already hosted on a public S3 bucket created for this example.
 
@@ -150,7 +150,7 @@ By default, [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}
 
        {% include_cached copy-clipboard.html %}
        ~~~ shell
-       cockroach sql --url "postgresql://{username}@{hostname}:{port}/frenchtowns?sslmode=verify-full" 
+       cockroach sql --url "postgresql://{username}@{hostname}:{port}/frenchtowns?sslmode=verify-full"
        ~~~
 
 1. Use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) to import each PostgreSQL dump file into the corresponding table in the `frenchtowns` database.

@@ -46,8 +46,6 @@ There are three way to use and deploy CockroachDB:
 - **CockroachDB {{ site.data.products.dedicated }}**: A single tenant CockroachDB deployment, managed by Cockroach Labs, in a single, multi-region cloud (AWS or GCP). This deployment option is good for mission-critical databases and projects that require [Enterprise features](enterprise-licensing.html).
 - **CockroachDB {{ site.data.products.core }}**: A self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions. This deployment option is good if you require complete control over the database environment and require [Enterprise features](enterprise-licensing.html).
 
-For more details, see [Choose a Deployment Option](choose-a-deployment-option.html).
-
 ## About the database
 
 ### How does CockroachDB scale?
@@ -58,11 +56,7 @@ At the key-value level, CockroachDB starts off with a single, empty range. As yo
 
 When your cluster spans multiple nodes (physical machines, virtual machines, or containers), newly split ranges are automatically rebalanced to nodes with more capacity. CockroachDB communicates opportunities for rebalancing using a peer-to-peer [gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) by which nodes exchange network addresses, store capacity, and other information.
 
-For more information about scaling a CockroachDB cluster, see the following docs:
-
-- [Plan Your Serverless Cluster - Cluster scaling](../cockroachcloud/plan-your-cluster.html#cluster-scaling)
-- [Manage Your Dedicated Cluster - Scale your cluster](../cockroachcloud/plan-your-cluster.html?filters=dedicated#cluster-scaling)
-- [`cockroach start` - Add a node to a cluster](cockroach-start.html#add-a-node-to-a-cluster)
+For more information about scaling a CockroachDB cluster, refer to [`cockroach start` - Add a node to a cluster](cockroach-start.html#add-a-node-to-a-cluster)
 
 ### How does CockroachDB survive failures?
 

@@ -25,7 +25,7 @@ A specific CockroachDB cluster's authentication behavior is configured by settin
 
 ## Currently supported authentication methods
 
-Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support  
+Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support
 -------------|------------|-----|----
 password              |      ✓              |           ✓                    |    ✓
 [SCRAM-SHA-256]({% link {{ page.version.version }}/security-reference/scram-authentication.md %})         |      ✓              |           ✓                    |    ✓
@@ -87,26 +87,26 @@ The `root` SQL user can always authenticate using username/password or certifica
 This rule is not displayed in the configuration, and cannot be overridden.
 This ensures that access to the cluster can always be recovered, but it also means that access with root credentials cannot be restricted by IP range at the authentication configuration level.
 
-CockroachDB {{ site.data.products.dedicated }} or CockroachDB {{ site.data.products.core }} customers can and should enforce network protections, preventing access attempts from any sources other than a valid ones such as application servers or a secure operations jumpbox.
+CockroachDB {{ site.data.products.advanced }} or CockroachDB {{ site.data.products.core }} customers can and should enforce network protections, preventing access attempts from any sources other than a valid ones such as application servers or a secure operations jumpbox.
 
 ## Default behavior
 
-### CockroachDB {{ site.data.products.serverless }}
+### CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }}
 
-The default authentication configuration for CockroachDB {{ site.data.products.serverless }} clusters is equivalent to the following configuration:
+The default authentication configuration for CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }} clusters is equivalent to the following configuration:
 
 ```
  # TYPE    DATABASE      USER        ADDRESS       METHOD
    host    all           all         all           password
 ```
 
-This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data. It is a best practice to [configure SQL authentication for hardened CockroachDB {{ site.data.products.serverless }} cluster security]({% link {{ page.version.version }}/security-reference/config-secure-hba.md %}).
+This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data. It is a best practice to [configure SQL authentication for hardened CockroachDB cluster security]({% link {{ page.version.version }}/security-reference/config-secure-hba.md %}).
 
-### CockroachDB {{ site.data.products.dedicated }}
+### CockroachDB {{ site.data.products.advanced }}
 
-CockroachDB {{ site.data.products.dedicated }} clusters enforce IP allow-listing, which must be configured through the CockroachDB Cloud Console.
+CockroachDB {{ site.data.products.advanced }} clusters enforce IP allow-listing, which must be configured through the CockroachDB Cloud Console.
 
-See [Managing Network Authorization for CockroachDB {{ site.data.products.dedicated }}]({% link cockroachcloud/network-authorization.md %}).
+See [Managing Network Authorization for CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/network-authorization.md %}).
 
 ### CockroachDB Self-Hosted
 
@@ -118,6 +118,3 @@ CockroachDB {{ site.data.products.core }} deploys with the following default HBA
   host    all           all         all            cert-password
   local   all           all                        password
 ```
-
-
-

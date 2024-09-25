@@ -52,12 +52,6 @@
             "urls": [
               "/${VERSION}/architecture/reads-and-writes-overview.html"
             ]
-          },
-          {
-            "title": "CockroachDB Cloud Architecture",
-            "urls": [
-              "/cockroachcloud/architecture.html"
-            ]
           }
         ]
       },
@@ -1753,12 +1747,6 @@
         "title": "CockroachDB Feature Availability",
         "urls": [
           "/${VERSION}/cockroachdb-feature-availability.html"
-        ]
-      },
-      {
-        "title": "Unsupported Features in CockroachDB Serverless",
-        "urls": [
-          "/cockroachcloud/serverless-unsupported-features.html"
         ]
       },
       {

@@ -47,7 +47,7 @@ Where `{secret_key}` is the [secret key string you stored when you created the A
 
 ## Set the API version
 
-The `Cc-Version` HTTP header specifies the version of the Cloud API to use. If you omit the `Cc-Version` header, the Cloud API will default to version `2022-03-31` (the initial release of the Cloud API). The Cloud API uses date-based versions of the form `YYYY-MM-DD`, in [ISO 8601 format](https://www.w3.org/TR/NOTE-datetime).
+The Cloud API uses date-based versions of the form `YYYY-MM-DD`, in [ISO 8601 format](https://www.w3.org/TR/NOTE-datetime). It is strongly recommended that you use the `Cc-Version` HTTP header to specify the version of the Cloud API to use. If you omit the `Cc-Version` header, the Cloud API will default to the latest version. If you don’t specify the version your application expects, breakage may occur. While we try to minimize the risk of breaking API changes, passing the version explicitly helps to mitigate against this risk and is strongly recommended.
 
 If you set an invalid version, you will get an HTTP 400 response with the message "invalid Cc-Version."
 
@@ -206,12 +206,12 @@ Where:
   - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
   - `{cluster_id}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
     {{site.data.alerts.callout_info}}
-    The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+    The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
     {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster you specified when creating the cluster.
   - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region_name}` is the zone code of the cloud infrastructure provider where the cluster is located.
-  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}). For example, `funky-skunk-123`.
+  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}). For example, `funky-skunk-123`.
   - `{server_host}` is the DNS name of the host on which the cluster is located.
 
 ## Get information about a specific cluster
@@ -233,7 +233,7 @@ Where:
 
   - `{cluster_id}` is the cluster ID returned after creating the cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
@@ -275,14 +275,14 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster you specified when creating the cluster.
   - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
   - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region_name}` is the cloud infrastructure provider region where the cluster is located.
   - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month]({% link cockroachcloud/plan-your-cluster.md %}) on this cluster.
-  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}). For example, `funky-skunk-123`.
+  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}). For example, `funky-skunk-123`.
   - `{server_host}` is the DNS name of the host on which the cluster is located.
 
 ## Get information about a cluster's nodes
@@ -305,7 +305,7 @@ Where:
 
   - `{cluster_id}` is the cluster ID returned after creating the cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
@@ -380,12 +380,31 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
   - `{spend_limit}` is the [maximum amount of money, in US cents, you want to spend per month]({% link cockroachcloud/plan-your-cluster.md %}) on this cluster.
 
 If the request was successful, the client will not receive a response payload.
+
+## Change a cluster's plan
+
+This section shows how to change a cluster's plan using the CockroachDB {{ site.data.products.cloud }} API. To use Terraform instead, refer to [Provision a cluster with Terraform]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}#change-a-clusters-plan).
+.
+To change a cluster's plan from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ site.data.products.standard }} in place:
+
+1. Edit the API command or application code that was used to create the cluster. In the JSON header, replace the contents of `serverless {}` (which may be empty) with the provisioned vCPUs for the cluster. This field is required for CockroachDB {{ site.data.products.standard }}. It is not possible to set storage limitations on CockroachDB {{ site.data.products.standard }}. Refer to [CockroachDB API: Create a Standard cluster](https://cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters) for the specification for CockroachDB {{ site.data.products.standard }}.
+1. Run the command or application code.
+
+To migrate from CockroachDB {{ site.data.products.standard }} to CockroachDB {{ site.data.products.basic }}:
+
+1. Edit the API command or application code that was used to create the cluster. In the JSON header:
+  - Replace the `serverless.usage_limits.provisioned_virtual_cpus` field with an empty value for no resource limits, or optionally values for `request_unit_limit` and `storage_mib_limit`. It is not possible to reserve compute on CockroachDB {{ site.data.products.basic }}. Refer to [CockroachDB API: Create a Standard cluster](https://cockroachlabs.com/docs/docs/api/cloud/v1.html#post-/api/v1/clusters) for the specification for CockroachDB {{ site.data.products.basic }}.
+  - Remove configurations for features that are unsupported on CockroachDB {{ site.data.products.basic }}, such as private connectivity. Otherwise, running the updated command or application code will fail.
+
+{{site.data.alerts.callout_info}}
+To change a cluster's plan between CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.standard }}, you must create and configure a new cluster, back up the existing cluster's data, and restore the backup to the new cluster. Migration in place is not supported. Refer to [Self-managed backups]({% link cockroachcloud/backup-and-restore-overview.md %}#self-managed-backups).
+{{site.data.alerts.end}}
 
 ## Delete a cluster
 
@@ -408,7 +427,7 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
@@ -538,7 +557,7 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
   - `{cluster_name}` is the name of the cluster.
   - `{cloud_provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP`, `AWS`, `AZURE`.
@@ -600,7 +619,7 @@ Where:
 
   - `{cluster_id}` is the unique ID of this cluster.
   {{site.data.alerts.callout_info}}
-  The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+  The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
   {{site.data.alerts.end}}
 
 If the request was successful, the client will receive a list of SQL users.
@@ -643,7 +662,7 @@ Where:
 
 - `{cluster_id}` is the unique ID of this cluster.
 {{site.data.alerts.callout_info}}
-The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
 {{site.data.alerts.end}}
 - `{sql_username}` is the username of the new SQL user you want to create.
 - `{password}` is the new user's password.
@@ -676,7 +695,7 @@ curl --request DELETE \
 Where:
 - `{cluster_id}` is the unique ID of this cluster.
 {{site.data.alerts.callout_info}}
-The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
 {{site.data.alerts.end}}
 - `{sql_username}` is the username of the SQL user you want to delete.
 
@@ -709,7 +728,7 @@ curl --request PUT \
 Where:
 - `{cluster_id}` is the unique ID of this cluster.
 {{site.data.alerts.callout_info}}
-The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).
+The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-a-basic-cluster.md %}).
 {{site.data.alerts.end}}
 - `{sql_username}` is the username of the SQL user whose password you want to change.
 - `{new_password}` is the new password for the SQL user.

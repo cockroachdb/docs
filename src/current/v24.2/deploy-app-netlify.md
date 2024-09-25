@@ -1,81 +1,68 @@
 ---
 title: Deploy a Netlify App Built on CockroachDB
-summary: Learn how to use Netlify and CockroachDB Serverless.
+summary: Learn how to use Netlify and CockroachDB Standard.
 toc: true
 twitter: false
 referral_id: docs_netlify
 docs_area: get_started
 ---
 
-This tutorial shows you how to deploy a [Netlify](https://www.netlify.com/) web application that communicates with a CockroachDB {{ site.data.products.serverless }} cluster.
+This tutorial shows you how to deploy a [Netlify](https://www.netlify.com/) web application that communicates with a CockroachDB {{ site.data.products.standard }} cluster.
 
-The sample app used in this tutorial simulates [a gaming leaderboard](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/). The [Netlify functions](https://www.netlify.com/products/functions/) used for the app are written in TypeScript. The functions use [Prisma](https://www.prisma.io/) to connect to CockroachDB. The app's frontend, also written in TypeScript, uses React, bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The sample app used in this tutorial simulates a [gaming leaderboard](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/) using [Netlify functions](https://www.netlify.com/products/functions/) written in TypeScript. The functions use [Prisma](https://www.prisma.io/) to connect to CockroachDB. The app's frontend, also written in TypeScript, uses React, bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-The source code for the completed app is available on GitHub at [https://github.com/cockroachdb/cockroachdb-typescript](https://github.com/cockroachdb/cockroachdb-typescript).
+You can view or download the [source code](https://github.com/cockroachdb/cockroachdb-typescript) for the example.
 
 ## Before you begin
 
-Before starting the tutorial, do the following:
+Before starting the tutorial:
 
-1. Create a [CockroachDB {{ site.data.products.cloud }}](https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}) account.
+1. Create a Starter [Netlify](https://app.netlify.com/signup) account.
+1. Install the `netlify` CLI locally and log in. Refer to [Get started with Netlify CLI](https://docs.netlify.com/cli/get-started/).
 
-1. Create a Starter [Netlify](https://app.netlify.com/signup) account. You can do this with your GitHub login credentials.
+## Step 1. Create a CockroachDB {{ site.data.products.standard }} cluster
 
-## Step 1. Create a CockroachDB {{ site.data.products.serverless }} cluster
+{% include_cached cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
-
-<a name="connection-string"></a>
-
-After the cluster is created, the **Connection info** window appears. Click the **Connection string** tab and copy the connection string to a secure location. You will use this connection string to connect to CockroachDB later in the tutorial.
-
-{{site.data.alerts.callout_info}}
-The connection string is pre-populated with your username, cluster name, and other details, including your password. Your password, in particular, will be provided only once. Save it in a secure place (we recommend a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the **SQL Users** page for the cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`.
-{{site.data.alerts.end}}
+{% include_cached cockroachcloud/connection-string-standard.md %}
 
 ## Step 2. Get the code
 
-1. Clone the code's GitHub repo:
+1. Open the code repository's [GitHub repository](https://github.com/cockroachdb/cockroachdb-typescript).
+1. Fork it by clicking **Fork** at the top. Netlify requires you to own a Netlify app's repository.
+    - Set **Owner** to your GitHub identity or an organization.
+    - Disable **Copy the master branch only**.
+    - Click **Fork**.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ git clone git@github.com:cockroachdb/cockroachdb-typescript.git
-    ~~~
+    You now have an exact copy of the code repository in the GitHub location you chose.
+1. Copy the fork's address, which you will use to clone it locally. Click **Code**, then in the **Local** tab, click **SSH** if you have added SSH keys to GitHub, or **HTTPS** if not. Click the copy symbol to copy the address.
+1. Clone your fork locally. Replace `{ADDRESS}` with the full address of your fork, which will end with `cockroachdb-typescript.git`.
 
-    The project has the following directory structure:
+The project has the following directory structure:
 
-    ~~~
-    ├── LICENSE.md
-    ├── README.md
-    ├── netlify
-    │   └── functions
-    │       ├── addScore.ts
-    │       ├── getPlayers.ts
-    │       └── getScores.ts
-    ├── package-lock.json
-    ├── package.json
-    ├── prisma
-    │   ├── schema.prisma
-    │   └── seed.ts
-    ├── public
-    ├── src
-    └── tsconfig.json
-    ~~~
+~~~
+├── LICENSE.md
+├── README.md
+├── netlify
+│   └── functions
+│       ├── addScore.ts
+│       ├── getPlayers.ts
+│       └── getScores.ts
+├── package-lock.json
+├── package.json
+├── prisma
+│   ├── schema.prisma
+│   └── seed.ts
+├── public
+├── src
+└── tsconfig.json
+~~~
 
-    In this tutorial, we focus on the files in the `netlify` and `prisma` directories.
-
-1. At the top of the repo directory, fork the repo:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ gh repo fork --remote
-    ~~~
-
-    To deploy your code to Netlify, you need to have your own repo or your own fork of the existing repo.
+This tutorial modifies the files in the `netlify` and `prisma` directories.
 
 ## Step 3. Initialize the database
 
-1. In the `.env` file in your project, set the `DATABASE_URL` environment variable to [the connection string](#connection-string) you obtained earlier from the CockroachDB {{ site.data.products.cloud }} Console:
+1. Open the project's `.env` file in a text editor set the `DATABASE_URL` environment variable to [the connection string](#connection-string) you obtained earlier from the CockroachDB {{ site.data.products.cloud }} Console:
 
     {% include_cached copy-clipboard.html %}
     ~~~ text
@@ -95,10 +82,8 @@ The connection string is pre-populated with your username, cluster name, and oth
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ npx prisma migrate dev --name init
+    npx prisma migrate dev --name init
     ~~~
-
-    You should see the following output:
 
     ~~~
     Your database is now in sync with your schema.
@@ -118,30 +103,14 @@ The connection string is pre-populated with your username, cluster name, and oth
 
 ## Step 4. Deploy the application
 
-You can deploy web applications directly from GitHub to Netlify. In this tutorial, we use the [Netlify CLI](https://docs.netlify.com/cli/get-started/) to deploy the app.
+You can deploy web applications directly from GitHub to Netlify. This tutorial uses the [Netlify CLI](https://docs.netlify.com/cli/get-started/) to deploy the app.
 
-1. Install the `netlify` CLI:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ npm install netlify-cli -g
-    ~~~
-
-1. Sign into your Netlify account:
+1. Using the Netlify CLI, start the app server locally to preview your site:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ netlify login
+    netlify dev
     ~~~
-
-1. Run the app server locally to preview your site:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ netlify dev
-    ~~~
-
-    If the local deployment succeeds, you should see the following message in your terminal:
 
     ~~~
     ┌─────────────────────────────────────────────────┐
@@ -162,10 +131,10 @@ You can deploy web applications directly from GitHub to Netlify. In this tutoria
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ netlify deploy
+    netlify deploy
     ~~~
 
-    Choose to create a new site, and then select the default options for each of the subsequent prompts. You will be required to authorize Netlify with GitHub.
+    Choose to create a new site, and then select the default options for each of the subsequent prompts. You will be required to log in to Netlify using GitHub.
 
     After the app is deployed, you should see the following message:
 
@@ -177,7 +146,7 @@ You can deploy web applications directly from GitHub to Netlify. In this tutoria
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ netlify open
+    netlify open
     ~~~
 
     From the **Site overview** page, you can manage your site. The **Site overview** page also provides you with a public URL for your site.
@@ -187,4 +156,4 @@ You can deploy web applications directly from GitHub to Netlify. In this tutoria
 - [How to build a Complete Webapp with React, TypeScript & CockroachDB](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/#deploy-the-application-to-netlify)
 - [Build a Simple CRUD Node.js App with CockroachDB and Prisma Client]({% link {{ page.version.version }}/build-a-nodejs-app-with-cockroachdb-prisma.md %})
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

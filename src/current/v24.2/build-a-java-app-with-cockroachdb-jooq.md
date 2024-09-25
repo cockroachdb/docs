@@ -269,4 +269,4 @@ SELECT id, balance FROM accounts;
 
 Read more about using [jOOQ](https://www.jooq.org/), or check out a more realistic implementation of jOOQ with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

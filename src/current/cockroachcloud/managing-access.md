@@ -16,7 +16,7 @@ See [Manage SQL users on a cluster](#manage-sql-users-on-a-cluster)
 
 ## Manage your organizations
 
-An **organization** allows you to manage your clusters under a shared [billing]({% link cockroachcloud/billing-management.md %}) account and collaborate with team members. You can belong to multiple organizations, like a personal organization, an enterprise organization for evaluating CockroachDB Cloud, and another enterprise organization with [CockroachDB Cloud credits]({% link cockroachcloud/billing-management.md %}#view-credits-balance) to map to all application clusters.
+An **organization** allows you to manage your clusters under a shared [billing]({% link cockroachcloud/billing-management.md %}) account and collaborate with team members. You can belong to multiple organizations, like a personal organization, an enterprise organization for evaluating CockroachDB Cloud, and another enterprise organization with [CockroachDB Cloud credits]({% link cockroachcloud/billing-management.md %}) to map to all application clusters.
 
 To switch to a different organization:
 
