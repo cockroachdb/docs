@@ -6,6 +6,9 @@ toc_not_nested: true
 docs_area: releases
 ---
 
+
+[CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/index.md %}) supports major versions of CockroachDB according to the schedule in the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}). On that page, select a supported version to view its feature highlights. Updates that are specific to CockroachDB {{ site.data.products.cloud }} are exclusively listed on this page.
+
 CockroachDB {{ site.data.products.cloud }} supports the latest major version of CockroachDB and the version immediately preceding it. For more information, see the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 Get future release notes emailed to you:
