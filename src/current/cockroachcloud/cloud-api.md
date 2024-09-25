@@ -542,7 +542,7 @@ For details about returned fields, refer to the [response example and schema](ht
 
 ## Change the number of provisioned vCPUs for a Standard cluster
 
-To update the provisioned vCPUs for a cluster, send a `PATCH` request to the `/v1/clusters/{cluster_id}` endpoint  with an updated `serverless.usage_limits` field.
+To update the [provisioned capacity for a Standard cluster]({% link cockroachcloud/plan-your-cluster.md %}), send a `PATCH` request to the `/v1/clusters/{cluster_id}` endpoint with an updated `serverless.usage_limits` field to provide a new number of provisioned vCPUs.
 
 {{site.data.alerts.callout_success}}
 The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
