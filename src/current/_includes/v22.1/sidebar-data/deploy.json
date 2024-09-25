@@ -6,12 +6,6 @@
       "title": "Deployment Options",
       "items": [
           {
-            "title": "Choose a Deployment Option",
-            "urls": [
-              "/${VERSION}/choose-a-deployment-option.html"
-            ]
-          },
-          {
           "title": "CockroachDB Cloud",
           "items": [
             {
@@ -28,7 +22,7 @@
                   "urls": [
                     "/cockroachcloud/plan-your-cluster-basic.html"
                   ]
-                },                                  
+                },
                 {
                   "title": "Create a CockroachDB Serverless (Basic) Cluster",
                   "urls": [

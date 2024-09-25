@@ -28,7 +28,7 @@ This page provides important recommendations for CockroachDB {{ site.data.produc
 
 ## Deployment options
 
-When planning your deployment, it is important to carefully review and choose the [deployment options]({% link {{site.current_cloud_version}}/choose-a-deployment-option.md %}) that best meet your scale, cost, security, and resiliency requirements.
+When planning your deployment, it is important to carefully review and choose the deployment options that best meet your scale, cost, security, and resiliency requirements.
 
 Make sure your cluster has sufficient storage, CPU, and memory to handle the workload. The general formula to calculate the storage requirement is as follows:
 
@@ -102,7 +102,7 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 Even with CockroachDB's various [built-in safeguards]({% link {{site.current_cloud_version}}/frequently-asked-questions.md %}#how-does-cockroachdb-survive-failures) against failure, it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
-To use the CockroachDB {{ site.data.products.cloud }} Console to monitor and set alerts on important events and metrics, refer to [Monitoring and Alerting]({% link cockroachcloud/cluster-overview-page.md %}). You can also set up monitoring with [Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) or [CloudWatch]({% link cockroachcloud/export-metrics.md %}).
+To use the CockroachDB {{ site.data.products.cloud }} Console to monitor and set alerts on important events and metrics, refer to [Monitoring and Alerting]({% link {{ site.current_cloud_version }}/monitoring-and-alerting.md %}). You can also set up monitoring with [Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) or [CloudWatch]({% link cockroachcloud/export-metrics.md %}).
 
 ## Backup and restore
 
@@ -147,4 +147,4 @@ CockroachDB {{ site.data.products.advanced }} has access to all features require
 - Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
 - [Network security]({% link cockroachcloud/network-authorization.md %})
 
-You can check the status of these features on the [**PCI ready**]({% link cockroachcloud/cluster-overview-page.md %}?filters=advanced#pci-ready-with-security-add-on) page of the CockroachDB {{ site.data.products.cloud }} Console.
+You can check the status of these features on the [**PCI ready**]({% link cockroachcloud/cluster-overview-page.md %}?filters=advanced#pci-ready) page of the CockroachDB {{ site.data.products.cloud }} Console.

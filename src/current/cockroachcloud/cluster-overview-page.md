@@ -80,6 +80,7 @@ The **Cluster configuration** panel displays the settings you chose during [clus
 | Compute   | The cluster's [compute power per node]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity).         |
 | Storage   | The cluster's [storage per node]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity).         |
 
+<a id="pci-ready"></a>
 ## PCI ready (with Security add-on)
 
 CockroachDB {{ site.data.products.advanced }} clusters with Security add-on have a **PCI ready** panel to monitor the status of security features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
