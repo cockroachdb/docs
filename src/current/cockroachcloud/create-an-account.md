@@ -28,8 +28,7 @@ To register a new account, navigate to the [CockroachDB {{ site.data.products.cl
 <p></p>
 
 <section class="filter-content" markdown="1" data-scope="github">
-
-1. Click **Sign up with...** for your chosen SSO Provider.
+1. On the [registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account), click **Sign up with...** for your chosen SSO Provider.
 1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions/) and [privacy policy](https://www.cockroachlabs.com/privacy).
 1. Log in to your account with your SSO provider and respond to the email or other notification inviting you to  **Authorize CockroachDB {{ site.data.products.cloud }} by Cockroach Labs**
 
@@ -39,17 +38,13 @@ We highly recommend enabling multi-factor authentication (MFA) with your SSO pro
 </section>
 
 <section class="filter-content" markdown="1" data-scope="email">
-1. Enter your **Email address**.
-1. Enter your **Name**.
-1. Enter a **Password**.
-1. Enter your **Organization name (optional)**.
-
-    This can be [changed](#change-your-organization-name) later.
-
-1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions/) and [privacy policy](https://www.cockroachlabs.com/privacy).
+1. On the [registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account), click **Sign up with email**.
+1. Enter your **Work email** and a unique **Password** for CockroachDB Cloud.
+1. Select the checkbox to accept the [Terms of Service](https://www.cockroachlabs.com/cloud-terms-and-conditions/) and [Privacy Policy](https://www.cockroachlabs.com/privacy).
 1. Click **Get Started**.
-
-    A confirmation email will be sent. Click **Verify email** in the email to confirm your account.
+1. Check your email for a message from Cockroach Labs. In the email, click **Verify my email** to confirm your account and continue registering on the CockroachDB Cloud site.
+1. Enter your name and company details, and then click **Next step**.
+1. Answer the onboarding survey questions and click **Finish Setup**.
 </section>
 
 ## Log in to your account

@@ -7,7 +7,7 @@ referral_id: docs_quickstart_free
 docs_area: get_started
 ---
 
-This page shows you how to deploy a CockroachDB cluster on CockroachDB {{ site.data.products.standard }} (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
+This page shows you how to use free trial credit to deploy a CockroachDB cluster on CockroachDB {{ site.data.products.standard }} (Preview), connect to it using a sample workload, and run your first query.
 
 ## Create a free trial cluster
 
