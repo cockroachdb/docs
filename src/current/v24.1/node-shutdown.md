@@ -5,9 +5,9 @@ toc: true
 docs_area: manage
 ---
 
-A node **shutdown** terminates the `cockroach` process on the node.
+A node **shutdown** terminates the `cockroach` process on the node. This page describes how node shutdown works and shows how to safely shut down a node in production or [an entire production cluster](#shut-down-a-cluster).
 
-There are two ways to handle node shutdown:
+There are two ways to shut down a node:
 
 - **Drain a node** to temporarily stop it when you plan restart it later, such as during cluster maintenance. When you drain a node:
     - Clients are disconnected, and subsequent connection requests are sent to other nodes.
@@ -24,7 +24,6 @@ This page describes:
 - How to [prepare for graceful shutdown](#prepare-for-graceful-shutdown) on CockroachDB {{ site.data.products.core }} clusters by coordinating load balancer, client application server, process manager, and cluster settings.
 - How to [perform node shutdown](#perform-node-shutdown) on CockroachDB {{ site.data.products.core }} deployments by manually draining or decommissioning a node.
 - How to handle node shutdown when CockroachDB is deployed using [Kubernetes](#decommissioning-and-draining-on-kubernetes) or in a [CockroachDB {{ site.data.products.advanced }} cluster](#decommissioning-and-draining-on-cockroachdb-advanced).
-- How to [shut down the entire cluster](#shut-down-a-cluster) temporarily or permanently.
 
 {{site.data.alerts.callout_success}}
 This guidance applies to primarily to manual deployments. For more details about graceful termination when CockroachDB is deployed using Kubernetes, refer to [Decommissioning and draining on Kubernetes](#decommissioning-and-draining-on-kubernetes). For more details about graceful termination in a CockroachDB {{ site.data.products.advanced }} cluster, refer to [Decommissioning and draining on CockroachDB {{ site.data.products.advanced }}](#decommissioning-and-draining-on-cockroachdb-advanced).
@@ -65,14 +64,14 @@ After this stage, the node is automatically drained. However, to avoid possible 
 
 An operator [initiates the draining process](#drain-the-node-and-terminate-the-node-process) on the node. Draining a node disconnects clients after active queries are completed, and transfers any [range leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [Raft leaderships]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) to other nodes, but does not move replicas or data off of the node.
 
-When draining is complete, the node must be shut down prior to any maintenance. After a 60-second wait at minimum, you can send a `SIGTERM` signal to the `cockroach` process to shut it down. {% include_cached new-in.html version="v24.2" %}The `--shutdown` flag of [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}#flags) automatically terminates the `cockroach` process after draining completes.
+When draining is complete, the node must be shut down prior to any maintenance. At minimum 60 seconds after draining is complete, you can send a `SIGTERM` signal to the `cockroach` process to shut it down. {% include_cached new-in.html version="v24.2" %}The `--shutdown` flag of [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}#flags) automatically terminates the `cockroach` process after draining completes.
 
 After you perform the required maintenance, you can restart the `cockroach` process on the node for it to rejoin the cluster.
 
-{% capture drain_early_termination_warning %}Do not terminate the `cockroach` process before all of the phases of draining are complete. Otherwise, you may experience latency spikes until the [leases]({% link {{ page.version.version }}/architecture/glossary.md %}#leaseholder) that were on that node have transitioned to other nodes. It is safe to terminate the `cockroach` process only after a node has completed the drain process. This is especially important in a containerized system, to allow all TCP connections to terminate gracefully.{% endcapture %}
+{% capture drain_early_termination_warning %}In a production cluster, do not terminate the `cockroach` process before all of the phases of draining are complete. Otherwise, you may experience latency spikes until the [leases]({% link {{ page.version.version }}/architecture/glossary.md %}#leaseholder) that were on that node have transitioned to other nodes. It is safe to terminate the `cockroach` process only after a node has completed the drain process. This is especially important in a containerized system, to allow all TCP connections to terminate gracefully.{% endcapture %}
 
 {{site.data.alerts.callout_danger}}
-{{ drain_early_termination_warning }} If necessary, adjust the [`server.shutdown.initial_wait`](#server-shutdown-initial_wait) and the [termination grace period]({% link {{ page.version.version}}/node-shutdown.md %}?filters=decommission#termination-grace-period) cluster settings and adjust your process manager or other deployment tooling to allow adequate time for the node to finish draining before it is terminated or restarted.
+{{ drain_early_termination_warning }} If necessary, before you begin draining a node, adjust the [`server.shutdown.initial_wait`](#server-shutdown-initial_wait) and the [termination grace period]({% link {{ page.version.version}}/node-shutdown.md %}?filters=decommission#termination-grace-period) settings for a production cluster and adjust your process manager or other deployment tooling to allow adequate time for the node to finish draining before it is terminated or restarted. Adjusting these settings does not require a node to restart.
 {{site.data.alerts.end}}
 
 </section>
@@ -124,7 +123,7 @@ After draining is complete:
 - If the node was drained manually because an operator issued a `cockroach node drain` command:
   - {% include_cached new-in.html version="v24.2" %}If you pass the `--shutdown` flag to [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}#flags), the `cockroach` process terminates automatically after draining completes.
   - If the node's major version is being updated, the `cockroach` process terminates automatically after draining completes.
-  - Otherwise, the `cockroach` process must be terminated manually. A minimum of 60 seconds after draining is complete, send it a `SIGTERM` signal to terminate it. Refer to [Terminate the node process](#drain-the-node-and-terminate-the-node-process).
+  - Otherwise, the `cockroach` process must be terminated manually. For a production cluster, wait at minimum 60 seconds after draining is complete, then send it a `SIGTERM` signal to terminate it. Refer to [Terminate the node process](#drain-the-node-and-terminate-the-node-process).
 
 </section>
 
@@ -148,7 +147,7 @@ CockroachDB's node shutdown behavior does not match any of the [PostgreSQL serve
 
 Each of the [node shutdown steps](#node-shutdown-sequence) is performed in order, with each step commencing once the previous step has completed. However, because some steps can be interrupted, it's best to ensure that all steps complete gracefully.
 
-Before you [perform node shutdown](#perform-node-shutdown), review the following prerequisites to graceful shutdown:
+Before you [perform node shutdown](#perform-node-shutdown) on a production cluster, review the following prerequisites to graceful shutdown:
 
 <ul>
 <li>Configure your <a href="#load-balancing">load balancer</a> to monitor node health.</li>
@@ -166,6 +165,8 @@ Your [load balancer]({% link {{ page.version.version }}/recommended-production-s
 To handle node shutdown effectively, the load balancer must be given enough time by the [`server.shutdown.initial_wait` duration](#server-shutdown-initial_wait).
 
 ### Cluster settings
+
+The following cluster settings influence how long each phase of node shutdown takes. In a production cluster, it is important to adjust these settings based on the cluster's workload so that node shutdown does not negatively impact client applications or take too long to complete.
 
 #### `server.shutdown.initial_wait`
 <a id="server-shutdown-drain_wait"></a>
@@ -337,11 +338,11 @@ If you decommission a node, the process will run successfully because the cluste
 ## Perform node shutdown
 
 <section class="filter-content" markdown="1" data-scope="drain">
-After [preparing for graceful shutdown](#prepare-for-graceful-shutdown), do the following to temporarily stop a node. This both drains the node and terminates the `cockroach` process.
+After [preparing for graceful shutdown](#prepare-for-graceful-shutdown) in production, do the following to temporarily stop a node. This both drains the node and terminates the `cockroach` process.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="decommission">
-After [preparing for graceful shutdown](#prepare-for-graceful-shutdown), do the following to permanently remove a node.
+After [preparing for graceful shutdown](#prepare-for-graceful-shutdown) in production, do the following to permanently remove a node.
 </section>
 
 {{site.data.alerts.callout_success}}
@@ -887,14 +888,14 @@ Client applications or application servers that connect to CockroachDB {{ site.d
 A cluster in CockroachDB {{ site.data.products.cloud }} cannot be shut down.
 {{site.data.alerts.end}}
 
-To shut down an entire cluster:
+To shut down an entire production cluster:
 
-1. One at a time, gracefully terminate each node except for the last node using your process manager or by sending a `SIGINT` or `SIGKILL` signal to the `cockroach` process. The node will attempt to finish pending transactions and drain client connections, which will be sent to other nodes. If a node does not shut down in the expected time, as a last resort you can send a `SIGKILL` signal to the process. It's best to avoid this because it increases load on the cluster when work in progress is sent to the other nodes, which will also be shut down shortly. It also could increase the time it takes to restart the cluster.
-1. The last node cannot shut down with a `SIGINT` or `SIGTERM` signal because it has nowhere to send pending work, and it has no quorum to write data to the cluster. Send a `SIGKILL` process to stop the node. The cluster is now stopped.
+1. One at a time, gracefully terminate each node except for the last node using your process manager or by sending a `SIGINT` signal to the `cockroach` process. The node will attempt to finish pending transactions and drain client connections, which will be sent to other nodes. If a node does not shut down in the expected time, as a last resort you can send a `SIGKILL` signal to the process. It's best to avoid this in production because it has the potential to disrupt client requests and transactions being processed on the node.
+1. When the cluster has too few online nodes to maintain quorum, the remaining nodes may not shut down with a `SIGINT` signal. At this point, it is safe to send a `SIGKILL` signal to the `cockroach` process on these nodes, because they can no longer write data to the cluster until more nodes are available. The cluster is now stopped.
 
 To restart a stopped cluster, restart each node.
 
-To permanently decommission a cluster, remove the data and the `cockroach` process from each node.
+To permanently decommission a stopped cluster, remove the data and the `cockroach` process from each node.
 
 
 ## See also
