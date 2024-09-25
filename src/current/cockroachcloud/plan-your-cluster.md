@@ -59,7 +59,8 @@ We recommend that you start with [Quickstart: Provision and adjust capacity](#qu
 
 - **Smaller workloads**: CockroachDB {{ site.data.products.standard }} is well suited for workloads that require 12 or fewer vCPUs. By contrast, 12 vCPUs (3 nodes x 4 vCPUs) is the minimum configuration for CockroachDB {{ site.data.products.advanced }}.
 
-  CockroachDB {{ site.data.products.standard }} is not recommended for:
+CockroachDB {{ site.data.products.standard }} is not recommended for:
+
 - **Analytical workloads that involve many large, complex reads**
 - **OLAP or hybrid OLTP/OLAP applications**
 
@@ -76,11 +77,12 @@ For more details to help you compare CockroachDB {{ site.data.products.cloud }} 
 ## Storage pricing
 
 Storage capacity for a CockroachDB {{ site.data.products.standard }} cluster is [priced]({% link cockroachcloud/billing-management.md %}) on demand in units of GiB-month. Storage prices vary across providers and [regions]({% link cockroachcloud/regions.md %}). Storage is charged based on the logical amount of data in the database.
-    - **3 replicas included**: CockroachDB {{ site.data.products.standard }} maintains at minimum three replicas of your data at no additional cost.
 
-    For a cluster with more than three replicas, storage for each additional replica is priced at the storage price for the region.
+- **3 replicas included**: CockroachDB {{ site.data.products.standard }} maintains at minimum three replicas of your data at no additional cost.
 
-    - **Multi-region storage**: In a multi-region cluster, storage prices vary by region. The data in each region is priced at that region's storage rate.
+  For a cluster with more than three replicas, storage for each additional replica is priced at the storage price for the region.
+
+- **Multi-region storage**: In a multi-region cluster, storage prices vary by region. The data in each region is priced at that region's storage rate.
 
 ### Single-region example
 

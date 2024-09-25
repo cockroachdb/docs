@@ -260,8 +260,10 @@
   sources: ['cloud-deployment.md']
   versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
 
-- destination: migrate-from-serverless-to-dedicated.md
-  sources: ['migrate-from-free-to-dedicated.md']
+- destination: provision-a-cluster-with-terraform.md
+  sources:
+  - 'migrate-from-free-to-dedicated.md'
+  - 'migrate-from-serverless-to-dedicated.md'
   versions: ['cockroachcloud']
 
 - destination: migration-overview.md

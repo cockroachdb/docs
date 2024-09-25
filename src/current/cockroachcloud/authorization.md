@@ -5,11 +5,11 @@ toc: true
 docs_area: manage
 ---
 
-This page covers the essential concepts related to access management (authorization) in CockroachDB {{ site.data.products.cloud }}. Procedures for managing access are covered in [Managing Users, Roles, and Service Accounts in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/managing-access.md %}). For Frequently Asked Questions, refer to [CockroachDB Cloud FAQ]({% link cockroachcloud/ccloud-faq.md %}).
+This page covers the essential concepts related to access management (authorization) in CockroachDB {{ site.data.products.cloud }}. Procedures for managing access are covered in [Managing Users, Roles, and Service Accounts in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/managing-access.md %}).
 
 ## Overview of the CockroachDB {{ site.data.products.cloud }} authorization model
 
-**The CockroachDB {{ site.data.products.cloud }} console**, found at `https://cockroachlabs.cloud/`, is a 'single pane of glass' for managing users, billing, and all functions for administering CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters. When accessing the console, users must sign in to a CockroachDB {{ site.data.products.cloud }} **organization** (or create a new one).
+**The CockroachDB {{ site.data.products.cloud }} console**, found at `https://cockroachlabs.cloud/`, is a 'single pane of glass' for managing users, billing, and all functions for administering clusters in CockroachDB {{ site.data.products.cloud }}. When accessing the console, users must sign in to a CockroachDB {{ site.data.products.cloud }} **organization** (or create a new one).
 
 You can also execute many administrative commands using the `ccloud` command-line utility and the CockroachDB {{ site.data.products.cloud }} API:
 
@@ -25,7 +25,7 @@ CockroachDB {{ site.data.products.cloud }} has a hierarchical authorization mode
 1. Folder: [roles](#organization-user-roles) can be assigned on folders. Role inheritance is transitive; a role granted on the organization or a folder is inherited by descendent resources.
 
     {{site.data.alerts.callout_success}}
-    Organizing clusters using folders is available in [Public Preview]({% link v23.1/cockroachdb-feature-availability.md %}#feature-availability-phases). To learn more, refer to [Organize {{ site.data.products.db }} Clusters Using Folders]({% link cockroachcloud/folders.md %}).
+    Organizing clusters using folders is available in [Preview]({% link v23.1/cockroachdb-feature-availability.md %}#feature-availability-phases). To learn more, refer to [Organize {{ site.data.products.db }} Clusters Using Folders]({% link cockroachcloud/folders.md %}).
     {{site.data.alerts.end}}
 
 1. Cluster: Each CockroachDB cluster defines its own set of [SQL users]({% link {{ site.current_cloud_version }}/security-reference/authorization.md %}#create-and-manage-users) and [roles]({% link {{ site.current_cloud_version }}/security-reference/authorization.md %}#roles) which manage permission to execute SQL statements on the cluster.
@@ -39,7 +39,7 @@ For the main pages covering users and roles at the SQL level within a specific d
 
 ## Organization user roles
 
-When a user is first added to an organization, they are granted the default role, **Org Member**, which grants no permission and only indicates membership in the organization. Org or Cluster Administrators may [edit the roles assigned to organization users]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role) in the CockroachDB {{ site.data.products.cloud }} console's [**Access Management** page](https://cockroachlabs.cloud/access), or using the CockroachDB {{ site.data.products.cloud }} API or Terraform Provider.
+When a user or service account is first added to an organization, they are granted the default role, **Org Member**, which grants no permission and only indicates membership in the organization. Org or Cluster Administrators may [edit the roles assigned to organization users]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role) in the CockroachDB {{ site.data.products.cloud }} console's [**Access Management** page](https://cockroachlabs.cloud/access), or using the CockroachDB {{ site.data.products.cloud }} API or Terraform Provider.
 
 {% include_cached cockroachcloud/first-org-user-roles.md %}
 
@@ -92,7 +92,7 @@ Cluster Operators can perform a variety of cluster functions:
 - *Service accounts* with this role can perform the following *API operations*:
 
   - [Read a cluster summary]({% link cockroachcloud/cloud-api.md %}#get-information-about-a-specific-cluster).
-  - [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters]({% link cockroachcloud/managing-cmek.md %})
+  - [Manage Customer-Managed Encryption Keys (CMEK) for Advanced Clusters]({% link cockroachcloud/managing-cmek.md %})
   - [Export a cluster's logs]({% link cockroachcloud/export-logs.md %}).
   - [Export a cluster's metrics]({% link cockroachcloud/export-metrics.md %}).
   - [View and configure a cluster's Egress Rules]({% link cockroachcloud/egress-perimeter-controls.md %}).

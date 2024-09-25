@@ -12,7 +12,7 @@ This page provides some examples of exporting CockroachDB {{ site.data.products.
 
 ## Export audit logs in ascending order
 
-This example requests audit logs without defining the starting timestamp, sort order, or limit. By default, the earliest 200 audit logs for your CockroachDB {{ site.data.products.cloud }} organization are returned in ascending order, starting from when the organization was created.
+This example requests audit logs without defining the starting timestamp, sort order, or limit.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -22,55 +22,7 @@ curl --request GET \
   --header 'Cc-Version: {api_version}'
 ~~~
 
-The response is truncated for readability.
-
-~~~ json
-{
-  "entries": [
-    {
-      "id": "40b15ccd-6a87-4efc-ac7b-157ba172f957",
-      "trace_id": "cfa605927086bb630ab9eb69bfda5f5f",
-      "session_id": "5e24b61f9fc7459ab2fac703b926a2622a347bf8993d32ef84e836e2f11053d3",
-      "source": "AUDIT_LOG_SOURCE_INTERNAL",
-      "user_email": "",
-      "cluster_id": "dc6360d2-b21c-451f-aa9f-b20ad6906475",
-      "cluster_name": "example-cluster",
-      "action": "AUDIT_LOG_ACTION_CREATE_CLUSTER",
-      "payload": {
-        "request": {
-          "name": "example-cluster",
-          "provider": "GCP",
-          "spec": {
-            "dedicated": {
-              "cockroachVersion": "v21.2.4",
-              "hardware": {
-                "diskIops": 450,
-                "machineSpec": {
-                  "machineType": "n1-standard-2"
-                },
-                "storageGib": 15
-              },
-              "regionNodes": {
-                "europe-west4": 1
-              }
-            }
-          }
-        }
-      },
-      "metadata": null,
-      "error": "",
-      "created_at": "2022-10-09T02:40:00.262143Z"
-    }
-  ],
-  "next_starting_from": "2022-10-09T02:40:35.054818Z"
-}
-~~~
-
-{{site.data.alerts.callout_info}}
-If you get an error, verify that the feature is enabled for your CockroachDB {{ site.data.products.cloud }} organization.
-{{site.data.alerts.end}}
-
-To export the next batch of entries, send a second request and set `starting_from` to the value of `next_starting_from`, `2022-10-09T02:40:35.054818Z`.
+By default, the earliest 200 audit logs for your CockroachDB {{ site.data.products.cloud }} organization are returned in ascending order, starting from when the organization was created. If more records are available, the response will include the field `next_starting_from` with a timestamp. To export the next batch of entries, send a second request and set `starting_from` to the value of `next_starting_from`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
