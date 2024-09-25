@@ -34,6 +34,10 @@ Refer to the [Cloud Console](#restore-a-basic-cluster) section for details on vi
 
 ### Standard and Advanced clusters
 
+{{site.data.alerts.callout_info}}
+Configuring managed backup settings is supported in CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters running v22.2 and later.
+{{site.data.alerts.end}}
+
 In {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters, you can configure the [frequency](#frequency) and [retention](#retention) of managed backups.
 
 {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters take a combination of full and incremental backups in order to meet the set frequency. The type of managed backup the cluster takes is **not** configurable. Each incremental backup is dependent on the last full backup, which has an effect on the managed backups that you can restore in the set retention period.
