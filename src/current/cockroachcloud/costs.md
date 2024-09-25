@@ -50,20 +50,20 @@ This section summarizes key details about each plan to help you make the best ch
   <tr>
     <td>[Managed backup]({% link cockroachcloud/managed-backups.md %}) storage</td>
     <td>Daily backups included in Request Unit costs</td>
-    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore).</td>
-    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore).</td>
+    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore).</td>
+    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore).</td>
   </tr>
   <tr>
     <td>[Data transfer](#data-transfer)</td>
     <td>Usage-based via Request Units</td>
-    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
-    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
+    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
+    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
   </tr>
   <tr>
     <td>[Change Data Capture]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %})</td>
     <td>Usage-based via Request Units</td>
-    <td>Usage-based.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
-    <td>Usage-based.<br /><br />Currently not charged during [Usage-based backup metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
+    <td>Usage-based.<br /><br />Currently not charged during [Usage-based metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
+    <td>Usage-based.<br /><br />Currently not charged during [Usage-based metrics Preview]({% link {{ site.current_cloud_version}}/essential-metrics-self-hosted.md %}#backup-and-restore)</td>
   </tr>
 </tbody>
 </table>
