@@ -105,7 +105,7 @@ You can either manually create a topic in your Kafka cluster before starting the
 {{site.data.alerts.callout_info}}
 You must have the Kafka cluster setting [`auto.create.topics.enable`](https://kafka.apache.org/documentation/#brokerconfigs_auto.create.topics.enable) set to `true` for automatic topic creation. This will create the topic when the changefeed sends its first message. If you create the consumer before that, you will also need the Kafka consumer configuration [`allow.auto.create.topics`](https://kafka.apache.org/documentation/#consumerconfigs_allow.auto.create.topics) to be set to `true`.
 
-For [Amazon MSK Serverless cluster](#amazon-msk), you must create topics manually. Refer to the [Stream a Changefeed to Amazon MSK Serverless]({% link {{ page.version.version }}/stream-a-changefeed-to-amazon-msk-serverless.md %}) tutorial for an example.
+For [Amazon MSK Serverless clusters](#amazon-msk), you must create topics manually. Refer to the [Stream a Changefeed to Amazon MSK Serverless]({% link {{ page.version.version }}/stream-a-changefeed-to-amazon-msk-serverless.md %}) tutorial for an example.
 {{site.data.alerts.end}}
 
 Kafka has the following topic limitations:

@@ -226,14 +226,7 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
-1. Create an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) for the MSK Serverless URI. External connections define a name for an external connection while passing the provider URI and query parameters:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    CREATE EXTERNAL CONNECTION msk_serverless AS 'kafka://boot-vab1abab.c1.kafka-serverless.us-east-1.amazonaws.com:9098/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region=us-east-1&sasl_aws_iam_role_arn=arn:aws:iam::{account ID}:role/{msk-serverless-role}&sasl_aws_iam_session_name={user-specified session name}';
-    ~~~
-
-    The URI must contain the following parameters:
+1. To connect the changefeed to the MSK Serverless cluster, the URI must contain the following parameters:
     - The MSK Serverless cluster endpoint prefixed with the `kafka://` scheme, for example: `kafka://boot-vab1abab.c1.kafka-serverless.us-east-1.amazonaws.com:9098`.
     - `tls_enabled` set to `true`.
     - `sasl_enabled` set to `true`.
@@ -242,7 +235,20 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
     - `sasl_aws_iam_role_arn` set to the ARN for the IAM role (`msk-serverless-role`) that has the permissions outlined in [Step 2.2](#step-2-create-an-iam-policy-and-role-to-access-the-msk-serverless-cluster).
     - `sasl_aws_iam_session_name` set to a string that you specify to identify the session in AWS.
 
-1. Use the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) statement to start the changefeed:
+    ~~~
+    'kafka://boot-vab1abab.c1.kafka-serverless.us-east-1.amazonaws.com:9098/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region=us-east-1&sasl_aws_iam_role_arn=arn:aws:iam::{account ID}:role/{msk-serverless-role}&sasl_aws_iam_session_name={user-specified session name}'
+    ~~~
+
+    You can either specify the Kafka URI in the `CREATE CHANGEFEED` statement directly. Or, create an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) for the MSK Serverless URI.
+
+    External connections define a name for an external connection while passing the provider URI and query parameters:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE EXTERNAL CONNECTION msk_serverless AS 'kafka://boot-vab1abab.c1.kafka-serverless.us-east-1.amazonaws.com:9098/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region=us-east-1&sasl_aws_iam_role_arn=arn:aws:iam::{account ID}:role/{msk-serverless-role}&sasl_aws_iam_session_name={user-specified session name}';
+    ~~~
+
+1. Use the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) statement to start the changefeed using either the external connection (`external://`) or full `kafka://` URI:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
