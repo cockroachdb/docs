@@ -6,6 +6,10 @@ docs_area: deploy
 cloud: true
 ---
 
+{{site.data.alerts.callout_info}}
+CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+{{site.data.alerts.end}}
+
 {% include cockroachcloud/filter-tabs/plan-your-cluster.md %}
 
 This page provides guidance for planning and estimating costs for a CockroachDB {{ site.data.products.standard }} cluster that meets your business requirements. For information on diagnosing and optimizing your resource consumption, see [Optimize your Resource Usage]({% link cockroachcloud/resource-usage.md %}).
