@@ -39,7 +39,7 @@ We highly recommend enabling multi-factor authentication (MFA) with your SSO pro
 
 <section class="filter-content" markdown="1" data-scope="email">
 1. On the [registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account), click **Sign up with email**.
-1. Enter your **Work email** and a unique **Password** for CockroachDB Cloud.
+1. Enter an email address and password for CockroachDB Cloud.
 1. Accept the [Terms of Service](https://www.cockroachlabs.com/cloud-terms-and-conditions/) and [Privacy Policy](https://www.cockroachlabs.com/privacy), then click **Get Started**.
 1. Click **Get Started**.
 1. Check your email for a message from Cockroach Labs. In the email, click **Verify my email** to confirm your account and continue registering on the CockroachDB Cloud site.
