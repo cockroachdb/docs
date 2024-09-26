@@ -4,7 +4,7 @@
 1. On the **Cloud & Regions** page, select a cloud provider (GCP or AWS) in the **Cloud provider** section.
 1. In the **Regions** section, select a region for the cluster. Refer to [CockroachDB {{ site.data.products.cloud }} Regions]({% link cockroachcloud/regions.md %}) for the regions where CockroachDB {{ site.data.products.standard }} clusters can be deployed. To create a multi-region cluster, click **Add region** and select additional regions.
 1. Click **Next: Capacity**.
-1. On the **Capacity** page, keep the [**Provisioned capacity**]({% link cockroachcloud/plan-your-cluster %}) at the default value of 2 vCPUs.
+1. On the **Capacity** page, keep the [**Provisioned capacity**]({% link cockroachcloud/plan-your-cluster.md %}) at the default value of 2 vCPUs.
 
     Click **Next: Finalize**.
 
