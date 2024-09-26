@@ -1,4 +1,4 @@
-1. [Create a CockroachDB {{ site.data.products.cloud }} account]({% link cockroachcloud/create-an-account.md %}) and learn more about your [free trial credits]({% link cockroachcloud/free-trial.md %}). 
+1. [Create a CockroachDB {{ site.data.products.cloud }} account]({% link cockroachcloud/create-an-account.md %}). If this is your first CockroachDB Cloud organization, it will be credited with $400 in [free trial credits]({% link cockroachcloud/free-trial.md %}) to get you started.
 1. On the **Get Started** page, click **Create cluster**.
 1. On the **Select a plan** page, select **Standard**.
 1. On the **Cloud & Regions** page, select a cloud provider (GCP or AWS).
@@ -8,7 +8,7 @@
 
     Click **Next: Finalize**.
 
-1. On the **Finalize** page, name your cluster. If applicable, free trial details are listed on the right pane.
+1. On the **Finalize** page, name your cluster. If an active free trial is listed in the right pane, you will not need to add a payment method, though you will need to do this [by the end of the trial]({% link cockroachcloud/free-trial#add-payment-methods %}) to further maintain your organization and its clusters.
 
     Click **Create cluster**.
 
