@@ -9,7 +9,7 @@ The **Billing** page contains an overview of your charges and the payment detail
 
 ## Set up billing for an organization
 
-Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) role can manage billing for the organization. 
+Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) role can manage billing for the organization.
 
 You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit card, or you can set up billing through [AWS Marketplace](https://aws.amazon.com/marketplace), along with other AWS charges.
 
@@ -56,7 +56,7 @@ We keep a card on file after the associated organization is deleted so we can pr
 
 ## Check trial code details
 
-If you used a CockroachDB {{ site.data.products.dedicated }} trial code while [creating a cluster]({% link cockroachcloud/create-your-cluster.md %}#step-5-enter-billing-details), you can check the trial expiration details on the **Overview** tab of the **Billing** page.
+If you used a CockroachDB {{ site.data.products.dedicated }} trial code while [creating a cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-7-enter-billing-details), you can check the trial expiration details on the **Overview** tab of the **Billing** page.
 
 {{site.data.alerts.callout_info}}
 Your credit card will be charged after the trial ends.
@@ -79,7 +79,7 @@ To subscribe to CockroachDB {{ site.data.products.cloud }} through the AWS Marke
     Organizations that are configured for invoice billing or are already linked to AWS Marketplace are not listed.
     {{site.data.alerts.end}}
 
-    
+
 1. Click **Subscribe to AWS Marketplace**.
 
 

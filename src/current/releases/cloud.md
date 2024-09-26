@@ -6,12 +6,38 @@ toc_not_nested: true
 docs_area: releases
 ---
 
+
+[CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/index.md %}) supports major versions of CockroachDB according to the schedule in the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}). On that page, select a supported version to view its feature highlights. Updates that are specific to CockroachDB {{ site.data.products.cloud }} are exclusively listed on this page.
+
 CockroachDB {{ site.data.products.cloud }} supports the latest major version of CockroachDB and the version immediately preceding it. For more information, see the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## September 25, 2024
+
+[CockroachDB {{ site.data.products.cloud }} plans]({% link cockroachcloud/index.md %}) have been updated, and existing clusters have been transitioned to the new plans. There is no impact on the functionality or availability of existing clusters.
+
+- CockroachDB Serverless clusters have been renamed to **CockroachDB {{ site.data.products.basic }}**.
+- **CockroachDB {{ site.data.products.standard }}** is a new plan in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}#features-in-preview). You can easily [switch]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}#change-a-clusters-plan) a {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place or [start a new Standard cluster]({% link cockroachcloud/create-your-cluster.md %}). New {{ site.data.products.cloud }} organizations can benefit from a free trial{% comment %}TODO link{% endcomment %}.
+
+    CockroachDB {{ site.data.products.standard }} offers the benefits of a scalable, shared architecture, along with many enterprise-ready features, including:
+
+    - [Private Connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) to AWS Privatelink, GCP VPC Peering, and GCP Private Service Connect (Preview).
+    - Customer control of [major version upgrades]({% link cockroachcloud/cluster-management.md %}#manage-cluster-upgrades).
+    - Customer-configurable [Managed Backups]({% link cockroachcloud/managed-backups.md %}).
+    - [Metrics export]({% link cockroachcloud/export-metrics.md %}) to Amazon CloudWatch, Datadog, and Prometheus.
+    - [Log export]({% link cockroachcloud/export-metrics.md %}) to Amazon CloudWatch and GCP Cloud Logging.
+- CockroachDB Dedicated clusters have been renamed to CockroachDB {{ site.data.products.advanced }}. CockroachDB Dedicated Advanced clusters are now CockroachDB Advanced clusters with [advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) enabled.
+
+For more details, refer to the [CockroachDB Blog](https://cockroachlabs.com/blog/roachfest-24-product-updates){% comment %}TODO link{% endcomment %} and learn more about [CockroachDB {{ site.data.products.cloud }} Costs across plans](https://cockroachlabs.com/pricing/).
+
+In addition, this release includes the following features:
+
+- A collection of [Metrics graphs]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page) in the Cloud Console for all plans.
+- Configurable backup frequency and retention for [Managed Backups]({% link cockroachcloud/managed-backups.md %}) on CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }} clusters, so you can meet your Disaster Recovery requirements.
+- Updates to the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}) and [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}) to support the new plans and features.
 
 ## August 12, 2024
 
@@ -567,7 +593,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 <h3 id="2023-01-09-api-changes"> Cloud API changes </h3>
 
-- The [create cluster]({% link cockroachcloud/cloud-api.md %}#create-a-new-cluster) request now exposes the `restrict-egress-traffic` boolean field to allow dedicated clusters to be created with a [deny-by-default egress traffic policy]({% link cockroachcloud/egress-perimeter-controls.md %}#use-a-deny-by-default-egress-traffic-policy). This field and the broader egress perimeter controls capability can be used only with [private dedicated clusters]({% link cockroachcloud/private-clusters.md %}), which require the `network-visibility` field to be set to `NETWORK_VISIBILITY_PRIVATE`.
+- The [create cluster]({% link cockroachcloud/cloud-api.md %}) request now exposes the `restrict-egress-traffic` boolean field to allow dedicated clusters to be created with a [deny-by-default egress traffic policy]({% link cockroachcloud/egress-perimeter-controls.md %}#use-a-deny-by-default-egress-traffic-policy). This field and the broader egress perimeter controls capability can be used only with [private dedicated clusters]({% link cockroachcloud/private-clusters.md %}), which require the `network-visibility` field to be set to `NETWORK_VISIBILITY_PRIVATE`.
 
 <h3 id="2023-01-09-bug-fixes"> Bug fixes </h3>
 

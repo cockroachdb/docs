@@ -848,6 +848,10 @@
     - 'learn-about-request-units.md'
   versions: ['cockroachcloud']
 
+- destination: index.md
+  sources:
+    - 'serverless-faqs.md'
+    - 'choose-a-deployment-option.md'
 # Cloud releases
 
 - destination: releases/cloud.md#january-22-2021
