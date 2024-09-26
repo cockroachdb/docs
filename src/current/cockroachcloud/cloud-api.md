@@ -301,7 +301,7 @@ The service account associated with the secret key must have the Cluster Adminis
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"{region_name}":3},"hardware":{"machine_spec":{"num_virtual_cpus":{num_cpus}}},"cockroach_version":"{version}"}}}'
+  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"{region_name}":3},"hardware":{"machine_spec":{"num_virtual_cpus":{num_vcpus}}},"cockroach_version":"{version}"}}}'
 ~~~
 
 </section>
@@ -321,7 +321,7 @@ curl --request POST \
       },
       "hardware": {
         "machine_spec": {
-          "num_virtual_cpus": {num_cpus}
+          "num_virtual_cpus": {num_vcpus}
         }
       },
       "cockroach_version": "{version}"
