@@ -301,7 +301,7 @@ The service account associated with the secret key must have the Cluster Adminis
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"{region_name}":3},"hardware":{"num_virtual_cpus":{num_cpus}},"cockroach_version":"{version}"}}}'
+  --json '{"name":"{cluster_name}","provider":"{cloud_provider}","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"{region_name}":3},"hardware":{"machine_spec":{"num_virtual_cpus":{num_vcpus}}},"cockroach_version":"{version}"}}}'
 ~~~
 
 </section>
@@ -320,7 +320,9 @@ curl --request POST \
         "{region_name}": 3
       },
       "hardware": {
-        "num_virtual_cpus": {num_cpus}
+        "machine_spec": {
+          "num_virtual_cpus": {num_vcpus}
+        }
       },
       "cockroach_version": "{version}"
     }
@@ -354,7 +356,7 @@ For example, to create a new Advanced cluster named `advanced-test` using AWS as
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/clusters \
   --header 'Authorization: Bearer {secret_key}' \
-  --json '{"name":"advanced-test","provider":"AWS","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"us-east-1":3},"hardware":{"num_virtual_cpus":4},"cockroach_version":"v23.1.2"}}}'
+  --json '{"name":"advanced-test","provider":"AWS","plan":"ADVANCED","spec":{"dedicated":{"region_nodes":{"us-east-1":3},"hardware":{"machine_spec":{"num_virtual_cpus":4}},"cockroach_version":"v23.1.2"}}}'
 ~~~
 
 </section>
@@ -373,7 +375,9 @@ curl --request POST \
         "us-east-1": 3
       },
       "hardware": {
-        "num_virtual_cpus": 4
+        "machine_spec": {
+          "num_virtual_cpus": 4
+        }
       },
       "cockroach_version": "v23.1.2"
     }
