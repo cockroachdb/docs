@@ -126,7 +126,6 @@ When verification completes, the output displays a summary message like the foll
 
 The following limitations are specific to MySQL:
 
-- MySQL enums and set types are not supported.
 - MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be `public`).
 
 ## See also
