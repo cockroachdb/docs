@@ -34,7 +34,7 @@ Response | Description
 ---------+------------
 `connection_name` | The user-specified name of the external connection.
 `connection_uri` | The [storage/sink]({% link {{ page.version.version }}/create-external-connection.md %}#supported-external-storage-and-sinks) URI that the external connection references.
-`connection_type` | Possible values are: <br><ul><li>`STORAGE` applies to [storage for backups and imports]({% link {{ page.version.version }}/use-cloud-storage.md %}) and [changefeed sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}).</li><li>`KMS` applies to [storage for encrypted backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).</li><li>`FOREIGNDATA`</li></ul>.
+`connection_type` | Possible values are: <br><ul><li>`STORAGE` applies to [storage for backups and imports]({% link {{ page.version.version }}/use-cloud-storage.md %}) and [changefeed sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}).</li><li>`KMS` applies to [storage for encrypted backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).</li><li>`FOREIGNDATA` applies to [`postgres://` connections for physical cluster replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connection-reference).</li></ul>.
 
 ## Examples
 

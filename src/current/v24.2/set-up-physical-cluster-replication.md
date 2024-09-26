@@ -464,6 +464,10 @@ This table outlines the connection strings you will need for this setup tutorial
 
 For additional detail on the standard CockroachDB connection parameters, refer to [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url).
 
+{{site.data.alerts.callout_success}}
+You can use an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) to define a name for connections using the `postgresql://` scheme.
+{{site.data.alerts.end}}
+
 Cluster | Virtual Cluster | Usage | URL and Parameters
 --------+-----------------+-------+-------------------
 Primary | System | Set up a replication user and view running virtual clusters. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=system&sslmode=verify-full"`<br><br><ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.

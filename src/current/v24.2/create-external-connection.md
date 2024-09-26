@@ -66,6 +66,7 @@ Storage or sink      | Operation support
 [HTTP(S)]({% link {{ page.version.version }}/changefeed-sinks.md %}) | Changefeeds
 [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) | Changefeeds
 [Nodelocal]({% link {{ page.version.version }}/use-cloud-storage.md %}) | Backups, restores, imports, exports, changefeeds
+[PostgreSQL]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connection-reference) connections | Physical cluster replication
 [Userfile]({% link {{ page.version.version }}/use-userfile-storage.md %}) | Backups, restores, imports, exports, changefeeds
 [Webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) | Changefeeds
 
