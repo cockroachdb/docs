@@ -45,7 +45,7 @@ Any feature made available in a phase prior to GA is provided without any warran
 
 ### CockroachDB Standard
 
-CockroachDB Standard is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity](% link cockroachcloud/plan-your-cluster), instant scaling capabilities, enterprise security and availability.
+CockroachDB Standard is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand]({% link cockroachcloud/plan-your-cluster.md %}), along with enterprise-level security and availability.
 
 ### Generic query plans
 
