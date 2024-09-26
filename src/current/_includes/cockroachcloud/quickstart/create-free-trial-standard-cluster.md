@@ -8,7 +8,7 @@
 
     Click **Next: Finalize**.
 
-1. On the **Finalize** page, name your cluster. If an active free trial is listed in the right pane, you will not need to add a payment method, though you will need to do this [by the end of the trial]({% link cockroachcloud/free-trial.md %}#add-payment-methods) to further maintain your organization and its clusters.
+1. On the **Finalize** page, name your cluster. If an active free trial is listed in the right pane, you will not need to add a payment method, though you will need to do this by the [end of the trial]({% link cockroachcloud/free-trial.md %}#add-payment-methods) to maintain your organization's clusters.
 
     Click **Create cluster**.
 
