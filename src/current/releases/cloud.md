@@ -32,6 +32,12 @@ Get future release notes emailed to you:
 
 For more details, refer to the [CockroachDB Blog](https://cockroachlabs.com/blog){% comment %}TODO: Update link to https://cockroachlabs.com/blog/roachfest-24-product-updates{% endcomment %} and learn more about [CockroachDB {{ site.data.products.cloud }} Costs across plans](https://cockroachlabs.com/pricing/).
 
+In addition, this release includes the following features:
+
+- A collection of [Metrics graphs]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page) in the Cloud Console for all plans.
+- Configurable backup frequency and retention for [Managed Backups]({% link cockroachcloud/managed-backups.md %}) on CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }} clusters, so you can meet your Disaster Recovery requirements.
+- Updates to the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}) and [Terraform Provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}) to support the new plans and features.
+
 ## August 12, 2024
 
 <h3 id="2024-08-12-general-updates"> General updates </h3>
@@ -586,7 +592,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 <h3 id="2023-01-09-api-changes"> Cloud API changes </h3>
 
-- The [create cluster]({% link cockroachcloud/cloud-api.md %}#create-a-cluster) request now exposes the `restrict-egress-traffic` boolean field to allow dedicated clusters to be created with a [deny-by-default egress traffic policy]({% link cockroachcloud/egress-perimeter-controls.md %}#use-a-deny-by-default-egress-traffic-policy). This field and the broader egress perimeter controls capability can be used only with [private dedicated clusters]({% link cockroachcloud/private-clusters.md %}), which require the `network-visibility` field to be set to `NETWORK_VISIBILITY_PRIVATE`.
+- The [create cluster]({% link cockroachcloud/cloud-api.md %}) request now exposes the `restrict-egress-traffic` boolean field to allow dedicated clusters to be created with a [deny-by-default egress traffic policy]({% link cockroachcloud/egress-perimeter-controls.md %}#use-a-deny-by-default-egress-traffic-policy). This field and the broader egress perimeter controls capability can be used only with [private dedicated clusters]({% link cockroachcloud/private-clusters.md %}), which require the `network-visibility` field to be set to `NETWORK_VISIBILITY_PRIVATE`.
 
 <h3 id="2023-01-09-bug-fixes"> Bug fixes </h3>
 
