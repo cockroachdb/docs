@@ -124,7 +124,7 @@ When verification completes, the output displays a summary message like the foll
 - MOLT Verify might give an error in case of schema changes on either the source or target database.
 - [Geospatial types]({% link {{site.current_cloud_version}}/spatial-data-overview.md %}#spatial-objects) cannot yet be compared.
 
-The following limitations are specific to MySQL:
+The following limitation is specific to MySQL:
 
 - MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be `public`).
 
