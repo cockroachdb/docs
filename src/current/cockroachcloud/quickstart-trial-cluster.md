@@ -1,11 +1,11 @@
 ---
-title: Quickstart with CockroachDB Dedicated
-summary: Learn how to create and use a CockroachDB Dedicated cluster.
+title: Quickstart with CockroachDB Advanced
+summary: Learn how to create and use a CockroachDB Advanced cluster.
 toc: true
 docs_area: get_started
 ---
 
-This page shows you how to deploy a CockroachDB cluster on CockroachDB {{ site.data.products.dedicated }} (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
+This page shows you how to deploy a CockroachDB cluster on CockroachDB {{ site.data.products.advanced }} (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
 
 To run CockroachDB on your local machine instead, see [Start a Local Cluster](quickstart.html?filters=local).
 
@@ -15,23 +15,18 @@ For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region
 
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>.
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachDB {{ site.data.products.cloud }} account.
-1. On the **Overview** page, click **Create Cluster**.
-1. On the **Create Cluster** page, select **Dedicated standard**.
-
-    {{site.data.alerts.callout_info}}
-    Free trials do not apply to **Dedicated advanced** clusters.
-    {{site.data.alerts.end}}
-
+1. On the **Overview** page, click **Create cluster**.
+1. On the **Create Cluster** page, select **Advanced**.
 1. For **Cloud provider**, select **Google Cloud**.
 1. For **Regions & nodes**, select `California (us-west)` region and 3 nodes.
 
     {{site.data.alerts.callout_info}}
-    You can also select 3 regions with 3 nodes per region if you want to create a [multi-region]({% link cockroachcloud/plan-your-cluster.md %}#multi-region-clusters) trial cluster.
+    To create a [multi-region]({% link cockroachcloud/plan-your-cluster-advanced.md %}#multi-region-clusters) trial cluster, you can select 3 regions with 3 nodes per region, 9 nodes in total.
     {{site.data.alerts.end}}
 
 1. For **VPC Peering**, use the default selection of **Use the default IP range**. Click **Next: Capacity**.
 
-1. On the **Capacity page**, select 2vCPU for **Compute per node** and a 35 GiB disk for **Storage per node**.
+1. On the **Capacity page**, select 4 vCPU for **Compute per node** and a 35 GiB disk for **Storage per node**.
 
     {{site.data.alerts.callout_info}}
     You can select up to 9 nodes, 4 vCPUs of compute, and 150 GiB of storage. The trial code will not apply to larger clusters.
@@ -49,7 +44,7 @@ For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region
 
 1. Click **Create cluster**.
 
-Your cluster will be created in approximately 20-30 minutes. Watch [this video](https://www.youtube.com/watch?v=XJZD1rorEQE) while you wait to get a preview of how you'll connect to your cluster.
+Your cluster will be created in approximately 20-30 minutes.
 
 Once your cluster is created, you will be redirected to the **Cluster Overview** page.
 
@@ -71,11 +66,11 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 ## Step 4. Connect to the cluster
 
-To download CockroachDB locally and configure it to connect to the cluster with the SQL user you just created, refer to [Connect to a CockroachDB Serverless cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}). Make a note of the `cockroach sql` command provided in the **Connect** dialog.
+To download CockroachDB locally and configure it to connect to the cluster with the SQL user you just created, refer to [Connect to a CockroachDB Advanced cluster]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}). Make a note of the `cockroach sql` command provided in the **Connect** dialog.
 
 ## Step 5. Use the built-in SQL client
 
-1. In your terminal, 1. Use the `cockroach sql` from [Step 4. Connect to the cluster](#step-4-connect-to-the-cluster) to connect to the cluster using the binary you just configured.
+1. In your terminal, use the `cockroach sql` command from [Step 4. Connect to the cluster](#step-4-connect-to-the-cluster) to connect to the cluster using the binary you just configured.
 
     {{site.data.alerts.callout_danger}}
     This connection string contains your password, which will be provided only once. Save it in a secure place (e.g., in a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the **SQL Users** page for the cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`.
@@ -143,6 +138,6 @@ Learn more:
 
 Before you move into production:
 
-- [Authorize the network]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network) from which your app will access the cluster.
-- Configure every machine from which you want to [connect to the cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#connect-to-your-cluster).
+- [Authorize the network]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#authorize-your-network) from which your app will access the cluster.
+- Configure every machine from which you want to [connect to the cluster]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#connect-to-your-cluster).
 - Review the [production checklist]({% link cockroachcloud/production-checklist.md %}).

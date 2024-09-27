@@ -105,7 +105,7 @@ This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency man
 `main.py` uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
 
 {{site.data.alerts.callout_info}}
-The example application uses the general connection string, which begins with `postgresql://` but modifies it so it uses the `cockroachdb://` prefix. It does this so SQLAlchemy will use the CockroachDB SQLAlchemy adapter. 
+The example application uses the general connection string, which begins with `postgresql://` but modifies it so it uses the `cockroachdb://` prefix. It does this so SQLAlchemy will use the CockroachDB SQLAlchemy adapter.
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
@@ -224,7 +224,7 @@ SQLAlchemy relies on the existence of [foreign keys]({% link {{ page.version.ver
 - The [SQLAlchemy](https://docs.sqlalchemy.org/) docs
 - [Transactions]({% link {{ page.version.version }}/transactions.md %})
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}
 
 {% comment %} Reference Links {% endcomment %}
 

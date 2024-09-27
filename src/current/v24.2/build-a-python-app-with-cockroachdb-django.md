@@ -123,7 +123,7 @@ DATABASES = {
 }
 ~~~
 
-For more information about configuration a Django connection to CockroachDB {{ site.data.products.serverless }}, see [Connect to a CockroachDB Cluster](connect-to-the-database.html?filters=python&filters=django).
+For more information about configuration a Django connection to CockroachDB {{ site.data.products.standard }}, see [Connect to a CockroachDB Cluster](connect-to-the-database.html?filters=python&filters=django).
 
 After you have configured the app's database connection, you can start building out the application.
 
@@ -239,4 +239,4 @@ This initializes the tables defined in `models.py`, in addition to some other ta
 
 Read more about writing a [Django app](https://docs.djangoproject.com/en/3.1/intro/tutorial01/).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

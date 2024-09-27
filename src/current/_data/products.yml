@@ -2,10 +2,16 @@ serverless: Serverless
 
 dedicated: Dedicated
 
-core: Self-Hosted
-
 dedicated-advanced: Dedicated advanced
+
+core: Self-Hosted
 
 enterprise: Enterprise
 
 cloud: Cloud
+
+basic: Basic
+
+standard: Standard
+
+advanced: Advanced

@@ -14,15 +14,15 @@ This document describes the rationale for restricting database access to specifi
 
 ## Why customize your authentication configuration?
 
-CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} both include industry-standard security controls at the network and infrastructure levels, and CockroachDB {{ site.data.products.core }} may be deployed with any measure of network security one cares to put in place. Nevertheless, a hardened authentication configuration offers a powerful measure of [security in depth](https://wikipedia.org/wiki/Defense_in_depth_(computing)).
+CockroachDB {{ site.data.products.cloud }} clusters include industry-standard security controls at the network and infrastructure levels, and CockroachDB {{ site.data.products.core }} may be deployed with any measure of network security one cares to put in place. Nevertheless, a hardened authentication configuration offers a powerful measure of [security in depth](https://wikipedia.org/wiki/Defense_in_depth_(computing)).
 
 Limiting allowed database connections to secure IP addresses reduces the risk that your cluster is compromised, because a potential attacker who acquires database credentials (e.g., username/password combinations or client [PKI certificates]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#certificates-signing-trust-and-authority)) cannot use those credentials without also gaining infrastructure access. Infrastructure access can and should be protected with multifactor authentication and restricted to appropriate parties using infrastructure-level IAM.
 
 ## Step 1: Provision and access your cluster
 
-[Create your own free CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}).
+[Create your own free CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}).
 
-From the CockroachDB {{ site.data.products.serverless }} Cloud Console, select your new cluster and click the **Connect** button to obtain your connection credentials from the **Connection Info** pane in the CockroachDB Cloud Console.
+From the CockroachDB Cloud Console, select your new cluster and click the **Connect** button to obtain your connection credentials from the **Connection Info** pane in the CockroachDB Cloud Console.
 
 You'll also need to download the cluster's [Certificate Authority certificate]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#certificates-signing-trust-and-authority), so that your client can authenticate the database server as it connects.
 

@@ -4,138 +4,43 @@ summary: An overview of backup and restore for CockroachDB Cloud.
 toc: true
 ---
 
-CockroachDB is built to be [fault-tolerant through automatic recovery]({% link {{site.current_cloud_version}}/demo-fault-tolerance-and-recovery.md %}), but unforeseen disasters can happen. Backup and restore is an important part of a resilient disaster recovery plan. CockroachDB Cloud clusters run routine _managed-service backups_ to Cockroach Labs' cloud storage. Additionally, you can also manually create _customer-owned backups_ using [CockroachDB's backup features](#backup-and-restore-support).
+CockroachDB is built to be [fault-tolerant through automatic recovery]({% link {{site.current_cloud_version}}/demo-fault-tolerance-and-recovery.md %}), but unforeseen disasters can happen. Backup and restore is an important part of a resilient disaster recovery plan. CockroachDB Cloud clusters run routine _managed backups_ that are stored by Cockroach Labs in cloud storage. Additionally, you can also manually create _self-managed backups_ using [CockroachDB's backup features](#get-started-with-self-managed-backups).
 
 ## CockroachDB Cloud backups
 
 CockroachDB Cloud clusters can run two types of backups:
 
-- Automated [managed-service backups](#managed-service-backups)
-- Manual [customer-owned backups](#customer-owned-backups)
+- Automated [managed backups](#managed-backups)
+- Manual [self-managed backups](#self-managed-backups)
 
-### Managed-service backups
+### Managed backups
 
-Cockroach Labs takes automated backups of CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters that are stored in Cockroach Labs' cloud storage. This table outlines how frequently CockroachDB {{ site.data.products.cloud }} clusters run automated backups and the retention period for each type of backup:
+{% include cockroachcloud/backups/managed-backup-description.md %} For details on the available settings for each cluster tier, refer to [Managed backup settings]({% link cockroachcloud/managed-backups.md %}#managed-backup-settings).
 
-{% include cockroachcloud/backups/managed-service-backups-frequency.md %}
-
-You can interact with managed-service backups through the **Backup and Restore** menu in the Cloud Console. Refer to [Use Managed-Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) for instructions on using the Cloud console to work with managed-service backups for both CockroachDB {{ site.data.products.cloud }} clusters.
+You can view and configure managed backups through the **Backup and Restore** menu in the Cloud Console and with the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}).
 
 {{site.data.alerts.callout_info}}
-Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. The retained backups are not available for restore using the Cloud Console. To restore a backup from a deleted cluster, you must contact the [Cockroach Labs Support team]({% link {{site.current_cloud_version}}/support-resources.md %}). If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
+{% include cockroachcloud/backups/retention-deleted-cluster.md %}
 {{site.data.alerts.end}}
 
-### Customer-owned backups
+### Self-managed backups
 
-You can take manual backups and store them in your [cloud storage buckets]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}) using the [`BACKUP`]({% link {{site.current_cloud_version}}/backup.md %}) statement. Customer-owned backups are supported in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}. Refer to the [Backup and restore support](#backup-and-restore-support) table for a list of the types of manual backups that are available.
+You can take manual backups and store them in your [cloud storage buckets]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}) using the [`BACKUP`]({% link {{site.current_cloud_version}}/backup.md %}) statement. Self-managed backups are supported in all CockroachDB {{ site.data.products.cloud }} products. For a list of backup features that are available, refer to the following section [Get started with self-managed backups](#get-started-with-self-managed-backups).
 
-## Backup and restore support
+## Get started with self-managed backups
 
-<table border="1">
-  <thead>
-    <tr>
-      <th>Backup / Restore</th>
-      <th>Description</th>
-      <th>CockroachDB Cloud support</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <a href="{% link {{site.current_cloud_version}}/take-full-and-incremental-backups.md %}#full-backups">Full backup</a>
-      </td>
-      <td>An un-replicated copy of your cluster, database, or table's data. A full backup is the base for any further backups.</td>
-      <td>
-        <ul>
-          <li>Managed-service backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="{% link {{site.current_cloud_version}}/take-full-and-incremental-backups.md %}#incremental-backups">Incremental backup</a>
-      </td>
-      <td>A copy of the changes in your data since the specified base backup (either a full backup or a full backup plus an incremental backup).</td>
-      <td>
-        <ul>
-          <li>Managed-service backups in CockroachDB {{ site.data.products.dedicated }}.</li>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="{% link {{site.current_cloud_version}}/manage-a-backup-schedule.md %}">Scheduled backup</a>
-      </td>
-      <td>A schedule for periodic backups.</td>
-      <td>
-        <ul>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="{% link {{site.current_cloud_version}}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}">Backups with revision history</a>
-      </td>
-      <td>A backup with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp.</td>
-      <td>
-        <ul>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="{% link {{site.current_cloud_version}}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}">Point-in-time restore</a>
-      </td>
-      <td>A restore from an arbitrary point in time within the revision history of a backup.</td>
-      <td>
-        <ul>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="{% link {{site.current_cloud_version}}/take-and-restore-encrypted-backups.md %}">Encrypted backup and restore</a>
-      </td>
-      <td>An encrypted backup using a KMS or passphrase.</td>
-      <td>
-        <ul>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="{% link {{site.current_cloud_version}}/take-and-restore-locality-aware-backups.md %}">Locality-aware backup and restore</a>
-      </td>
-      <td>A backup where each node writes files to the backup destination that matches the node locality configured at node startup.</td>
-      <td>
-        <ul>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="{% link {{site.current_cloud_version}}/take-locality-restricted-backups.md %}">Locality-restricted backup execution</a>
-      </td>
-      <td>A backup with the <code>EXECUTION LOCALITY</code> option restricts the nodes that can execute a backup job with a defined locality filter.</td>
-      <td>
-        <ul>
-          <li>Customer-owned backups in CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }}.</li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+The following sections outline some of the features and resources for taking backups to your own storage bucket. For more practical examples, refer to the [Take and Restore Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) page and the [Video demo](#video-demo).
 
-## Get started with customer-owned backups
+You can run the following types of self-managed backups:
 
-The following sections outline some of the features and resources for taking backups to your own storage bucket. For more practical examples, refer to the [Take and Restore Customer-Owned Backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) page and the [Video demo](#video-demo).
+- [Full backup]({% link {{site.current_cloud_version}}/take-full-and-incremental-backups.md %}#full-backups): An un-replicated copy of your cluster, database, or table's data. A full backup is the base for any further backups.
+- [Incremental backup]({% link {{site.current_cloud_version}}/take-full-and-incremental-backups.md %}#incremental-backups): A copy of the changes in your data since the specified base backup (either a full backup or a full backup plus an incremental backup).
+- [Scheduled backup]({% link {{site.current_cloud_version}}/manage-a-backup-schedule.md %}): A schedule for periodic backups.
+- [Backup with revision history]({% link {{site.current_cloud_version}}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}): A backup with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp.
+- [Point-in-time restore]({% link {{site.current_cloud_version}}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}): A restore from an arbitrary point in time within the revision history of a backup.
+- [Encrypted backup and restore]({% link {{site.current_cloud_version}}/take-and-restore-encrypted-backups.md %}): An encrypted backup using a KMS or passphrase.
+- [Locality-aware backup]({% link {{site.current_cloud_version}}/take-and-restore-locality-aware-backups.md %}): A backup where each node writes files to the backup destination that matches the node locality configured at node startup.
+- [Locality-restricted backup execution]({% link {{site.current_cloud_version}}/take-locality-restricted-backups.md %}): A backup with the `EXECUTION LOCALITY` option restricts the nodes that can execute a backup job with a defined locality filter.
 
 ### Scheduled backups
 
@@ -192,9 +97,11 @@ Refer to the [Backup Validation]({% link {{site.current_cloud_version}}/backup-v
 
 You can track backup jobs using metrics that cover scheduled backups, status of running jobs, and details on completed or failed jobs. Depending on your CockroachDB {{ site.data.products.cloud }} deployment, you can track these metrics with:
 
-- Prometheus: Dedicated
-- Datadog: Dedicated
-- Cloud Console Metrics page: Serverless, Dedicated
+|  | CockroachDB Standard | CockroachDB Advanced | CockroachDB Basic |
+|-----------------------------|----------------------|----------------------|------|
+| [Cloud Console Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page) | ✔ | ✔ | ✔ |
+| [Prometheus]({% link cockroachcloud/backup-and-restore-monitoring.md %}#prometheus) | ✔ | ✔  |  |
+| [Datadog]({% link cockroachcloud/backup-and-restore-monitoring.md %}#datadog) | ✔  | ✔  |  |
 
 ### Backup jobs with locality requirements
 
@@ -204,7 +111,7 @@ CockroachDB supports two backup features that use a node's locality to determine
 - [Locality-aware backup]({% link {{site.current_cloud_version}}/take-and-restore-locality-aware-backups.md %}): Partition and store backup data in a way that is optimized for locality. When you run a locality-aware backup, nodes write backup data to the [cloud storage]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}) bucket that is closest to the node locality configured at [node startup]({% link {{site.current_cloud_version}}/cockroach-start.md %}).
 
 {{site.data.alerts.callout_info}}
-{% include {{ site.current_cloud_version }}/backups/serverless-locality-aware.md %}
+{% include cockroachcloud/backups/locality-aware-multi-tenant.md %}
 {{site.data.alerts.end}}
 
 ## Video demo

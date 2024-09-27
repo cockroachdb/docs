@@ -31,10 +31,10 @@ CockroachDB was designed to meet the following goals:
 - Make life easier for humans. This means being low-touch and highly automated for [operators](../recommended-production-settings.html) and simple to reason about for [developers](../developer-guide-overview.html).
 - Offer industry-leading consistency, even on massively scaled deployments. This means enabling distributed [transactions]({% link {{ page.version.version }}/architecture/transaction-layer.md %}), as well as removing the pain of eventual consistency issues and stale reads.
 - Create an always-on database that accepts reads and writes on all nodes without generating conflicts.
-- Allow [flexible deployment]({% link {{ page.version.version }}/choose-a-deployment-option.md %}) in any environment, without tying you to any platform or vendor.
-- Support familiar tools for working with relational data (i.e., [SQL]({% link {{ page.version.version }}/architecture/sql-layer.md %})).                          
+- Allow flexible deployment in any environment, without tying you to any platform or vendor.
+- Support familiar tools for working with relational data (i.e., [SQL]({% link {{ page.version.version }}/architecture/sql-layer.md %})).
 
-With the confluence of these features, we hope that CockroachDB helps you build global, scalable, resilient [deployments]({% link {{ page.version.version }}/choose-a-deployment-option.md %}) and [applications]({% link {{ page.version.version }}/developer-guide-overview.md %}).
+With the confluence of these features, we hope that CockroachDB helps you build global, scalable, resilient deployments and [applications]({% link {{ page.version.version }}/developer-guide-overview.md %}).
 
 ## Overview
 

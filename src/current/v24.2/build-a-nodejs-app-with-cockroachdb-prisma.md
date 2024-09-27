@@ -220,4 +220,4 @@ All Customer rows deleted. { count: 10 }
 
 Read more about using [Prisma Client](https://www.prisma.io/docs/).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

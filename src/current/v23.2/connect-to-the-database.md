@@ -14,12 +14,12 @@ For a list of community-supported third-party tools, see [Third-Party Tools Supp
 ## Step 1. Select your deployment
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="serverless">CockroachDB {{ site.data.products.serverless }}</button>
-  <button class="filter-button page-level" data-scope="dedicated">CockroachDB {{ site.data.products.dedicated }}</button>
+  <button class="filter-button page-level" data-scope="shared">CockroachDB {{ site.data.products.basic }}/{{ site.data.products.standard }}</button>
+  <button class="filter-button page-level" data-scope="advanced">CockroachDB {{ site.data.products.advanced }}</button>
   <button class="filter-button page-level" data-scope="core">CockroachDB {{ site.data.products.core }}</button>
 </div>
 
-<div class="filter-content" markdown="1" data-scope="serverless dedicated">
+<div class="filter-content" markdown="1" data-scope="shared advanced">
 To connect to a CockroachDB {{ site.data.products.cloud }} cluster, you need a general connection string or connection parameters, which include the username, host, database, and port. To find these, open the **Connect** dialog for your cluster in the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) and select either **General connection string** or **Parameters only** as the option.
 </div>
 
@@ -125,7 +125,7 @@ The connection strings and parameters for your cluster are output when you [star
 
 <div class="filter-content" markdown="1" data-scope="java">
 
-<div class="filter-content" markdown="1" data-scope="serverless dedicated">
+<div class="filter-content" markdown="1" data-scope="shared advanced">
 The **Connect to cluster** dialog shows information about how to connect to your cluster.
 
 1. Select **Java** from the **Select option** dropdown.
@@ -161,7 +161,7 @@ Where `DATABASE_URL` is an environment variable set to a valid CockroachDB conne
 
 node-postgres accepts the following format for CockroachDB connection strings:
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -170,7 +170,7 @@ postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -212,7 +212,7 @@ Where `DATABASE_URL` is an environment variable set to a valid CockroachDB conne
 
 Sequelize accepts the following format for CockroachDB connection strings:
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -221,7 +221,7 @@ postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -259,9 +259,9 @@ For example, suppose that you are defining the `DataSource` for your application
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
-CockroachDB {{ site.data.products.serverless }} requires you to specify the `type`, `url`, and `ssl` properties:
+CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} requires you to specify the `type`, `url`, and `ssl` properties:
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -286,9 +286,9 @@ postgresql://<username>:<password>@<host>:<port>/<database>
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
-CockroachDB {{ site.data.products.dedicated }} requires you to specify the `type`, `url`, and `ssl` properties:
+CockroachDB {{ site.data.products.advanced }} requires you to specify the `type`, `url`, and `ssl` properties:
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -396,7 +396,7 @@ Where `DATABASE_URL` is an environment variable set to a valid CockroachDB conne
 
 Prisma accepts the following format for CockroachDB connection strings:
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -405,10 +405,10 @@ postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
-~~~ 
+~~~
 postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>
 ~~~
 
@@ -417,7 +417,7 @@ postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&
 <div class="filter-content" markdown="1" data-scope="core">
 
 {% include_cached copy-clipboard.html %}
-~~~ 
+~~~
 postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
 ~~~
 
@@ -431,7 +431,7 @@ For more information about connecting with Prisma, see the [official Prisma docu
 
 ## Connection parameters
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 Parameter | Description
 ----------|------------
@@ -443,7 +443,7 @@ Parameter | Description
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 Parameter | Description
 ----------|------------
@@ -476,10 +476,10 @@ Parameter | Description
 
 <div class="filter-content" markdown="1" data-scope="python">
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {{site.data.alerts.callout_info}}
-To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="{% link cockroachcloud/connect-to-a-serverless-cluster.md %}">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
+To connect to a CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster from a Python application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see [Connect to a CockroachDB {{ site.data.products.basic }} Cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}) or [Connect to a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 {{site.data.alerts.end}}
 
 </div>
@@ -502,7 +502,7 @@ Where `DATABASE_URL` is an environment variable set to a valid CockroachDB conne
 
 Psycopg2 accepts the following format for CockroachDB connection strings:
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -511,7 +511,7 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -554,7 +554,7 @@ Where `DATABASE_URL` is an environment variable set to a valid CockroachDB conne
 
 Psycopg accepts the following format for CockroachDB connection strings:
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -563,7 +563,7 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -606,7 +606,7 @@ Where `DATABASE_URL` is an environment variable set to a valid CockroachDB conne
 
 SQLAlchemy accepts the following format for CockroachDB connection strings:
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -615,7 +615,7 @@ cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -664,7 +664,7 @@ Django accepts the following format for CockroachDB connection information:
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -691,7 +691,7 @@ DATABASES = {
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -760,7 +760,7 @@ For more information about connecting with Django, see the [official Django docu
 
 ## Connection parameters
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 Parameter | Description
 ----------|------------
@@ -770,12 +770,9 @@ Parameter | Description
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
 
-{{site.data.alerts.callout_info}}
-Earlier connection strings or connection parameters to CockroachDB {{ site.data.products.serverless }} clusters used a routing ID to identify the cluster on the host server. For example, in the connection string the `options` query parameter had `cluster={routing-id}`. This is no longer necessary, as the cluster's routing ID is part of the `{host}` parameter.
-{{site.data.alerts.end}}
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 Parameter | Description
 ----------|------------
@@ -836,7 +833,7 @@ func main() {
 
 pgx accepts the following format for CockroachDB connection strings:
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -845,7 +842,7 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -897,7 +894,7 @@ func main() {
 
 pq accepts the following format for CockroachDB connection strings:
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -906,7 +903,7 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -958,7 +955,7 @@ func main() {
 
 GORM accepts the following format for CockroachDB connection strings:
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -967,7 +964,7 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -993,7 +990,7 @@ For more information about connecting with GORM, see the [official GORM document
 
 ## Connection parameters
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 Parameter | Description
 ----------|------------
@@ -1005,7 +1002,7 @@ Parameter | Description
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 Parameter | Description
 ----------|------------
@@ -1054,7 +1051,7 @@ Where `JDBC_DATABASE_URL` is an environment variable set to a valid JDBC-compati
 
 JDBC accepts the following format for CockroachDB connection strings:
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -1063,7 +1060,7 @@ jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-fu
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -1111,7 +1108,7 @@ Where `DATABASE_URL` is an environment variable set to a valid CockroachDB conne
 
 Hibernate accepts the following format for CockroachDB connection strings:
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -1120,7 +1117,7 @@ jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-fu
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -1150,7 +1147,7 @@ For more information about connecting with Hibernate, see the [official Hibernat
 
 ## Connection parameters
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 Parameter | Description
 ----------|------------
@@ -1162,7 +1159,7 @@ Parameter | Description
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 Parameter | Description
 ----------|------------
@@ -1196,7 +1193,7 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="ruby">
 
 {{site.data.alerts.callout_info}}
-To connect to a CockroachDB {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see <a href="{% link cockroachcloud/connect-to-a-serverless-cluster.md %}">Connect to a CockroachDB {{ site.data.products.serverless }} Cluster</a>.
+To connect to a CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster from a Ruby application, you must have a valid CA certificate located at `~/.postgresql/root.crt`.<br><br>For instructions on downloading a CA certificate from the CockroachDB {{ site.data.products.cloud }} Console, see [Connect to a CockroachDB {{ site.data.products.basic }} Cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}) or [Connect to a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 {{site.data.alerts.end}}
 
 <div class="filter-content" markdown="1" data-scope="ruby-pg">
@@ -1218,7 +1215,7 @@ Where `DATABASE_URL` is an environment variable set to a valid CockroachDB conne
 
 pg accepts the following format for CockroachDB connection strings:
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -1227,7 +1224,7 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -1271,7 +1268,7 @@ Active Record accepts the following format for CockroachDB connection strings:
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -1280,7 +1277,7 @@ cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -1310,7 +1307,7 @@ For more information about connecting with Active Record, see the [official Acti
 
 ## Connection parameters
 
-<div class="filter-content" markdown="1" data-scope="serverless">
+<div class="filter-content" markdown="1" data-scope="shared">
 
 Parameter | Description
 ----------|------------
@@ -1322,7 +1319,7 @@ Parameter | Description
 
 </div>
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
+<div class="filter-content" markdown="1" data-scope="advanced">
 
 Parameter | Description
 ----------|------------

@@ -19,10 +19,6 @@ The following MOLT (Migrate Off Legacy Technology) tools simplify migration:
 - [Schema Conversion Tool](../cockroachcloud/migrations-page.html).
 - Support for [AWS DMS](aws-dms.html).
 
-{{site.data.alerts.callout_info}}
-If you need to migrate data from a CockroachDB {{ site.data.products.serverless }} cluster to a CockroachDB {{ site.data.products.dedicated }} cluster, see [Migrate data from Serverless to Dedicated](../cockroachcloud/migrate-from-serverless-to-dedicated.html).
-{{site.data.alerts.end}}
-
 ## Step 1. Convert your schema
 
 To begin a new migration to CockroachDB, convert your database schema to an equivalent CockroachDB schema.
@@ -64,7 +60,7 @@ For more details on the CockroachDB SQL implementation, see [SQL Feature Support
 
 To migrate data from another database to CockroachDB, use the source database's tooling to extract the data to a `.sql` file. Then use one of the following methods to migrate the data:
 
-- Use [`COPY FROM`](copy-from.html) to copy the data to your CockroachDB tables. This option behaves identically to the PostgreSQL syntax and is recommended if your tables must remain **online** and accessible during a migration or continuous bulk ingestion of data. However, it is slower than using [`IMPORT INTO`](import-into.html) because the statements are executed through a single node on the cluster. 
+- Use [`COPY FROM`](copy-from.html) to copy the data to your CockroachDB tables. This option behaves identically to the PostgreSQL syntax and is recommended if your tables must remain **online** and accessible during a migration or continuous bulk ingestion of data. However, it is slower than using [`IMPORT INTO`](import-into.html) because the statements are executed through a single node on the cluster.
 - Use [`IMPORT INTO`](import-into.html) to migrate [CSV](migrate-from-csv.html) or [Avro](migrate-from-avro.html) data into pre-existing tables. This option is recommended if you can tolerate your tables being **offline**, such as during an initial migration to CockroachDB. It is faster than using [`COPY FROM`](copy-from.html) because the statements are distributed across multiple nodes.
 - Use [AWS Database Migration Service (DMS)](aws-dms.html) to migrate data from any database, such as PostgreSQL, MySQL, or Oracle, to CockroachDB. This option is recommended for near-zero downtime migrations of large data sets, either with ongoing replication or as a one-time migration of a snapshot.
 	{% include {{ page.version.version }}/misc/import-perf.md %}

@@ -260,14 +260,16 @@
   sources: ['cloud-deployment.md']
   versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
 
-- destination: migrate-from-serverless-to-dedicated.md
-  sources: ['migrate-from-free-to-dedicated.md']
+- destination: provision-a-cluster-with-terraform.md
+  sources:
+  - 'migrate-from-free-to-dedicated.md'
+  - 'migrate-from-serverless-to-dedicated.md'
   versions: ['cockroachcloud']
 
 - destination: migration-overview.md
   sources: ['import-data.md']
   versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
-    
+
 - destination: molt/molt-fetch.md
   sources: [':version/molt-fetch.md']
 
@@ -394,8 +396,8 @@
   sources: ['change-data-capture.md']
   versions: ['v20.2', 'v21.1']
 
-- destination: take-and-restore-customer-owned-backups.md
-  sources: ['run-bulk-operations.md']
+- destination: take-and-restore-self-managed-backups.md
+  sources: ['run-bulk-operations.md', 'take-and-restore-customer-owned-backups.md']
   versions: ['cockroachcloud']
 
 - destination: take-full-and-incremental-backups.md
@@ -493,8 +495,8 @@
   sources: ['use-cloud-storage-for-bulk-operations.md']
   versions: ['v22.2', 'v23.1']
 
-- destination: use-managed-service-backups.md
-  sources: ['backups-page.md']
+- destination: managed-backups.md
+  sources: ['backups-page.md', 'use-managed-service-backups.md']
   versions: ['cockroachcloud']
 
 - destination: use-userfile-storage.md
@@ -819,6 +821,37 @@
     - interleave-in-parent.md
     - stable/interleave-in-parent.md
 
+# Cloud 2.0 updates (Serverless/Dedicated to Basic/Standard/Advanced)
+
+- destination: cockroachcloud/cockroachdb-advanced-on-azure.md
+  sources: ['cockroachcloud/cockroachdb-dedicated-on-azure.md']
+
+- destination: cockroachcloud/create-a-basic-cluster.md
+  sources: ['cockroachcloud/create-a-serverless-cluster.md']
+  versions: ['cockroachcloud']
+
+- destination: cockroachcloud/basic-cluster-management.md
+  sources: ['cockroachcloud/serverless-cluster-management.md']
+  versions: ['cockroachcloud']
+
+- destination: cockroachcloud/connect-to-a-basic-cluster.md
+  sources: ['cockroachcloud/connect-to-a-serverless-cluster.md']
+
+- destination: cockroachcloud/resource-usage.md
+  sources: ['cockroachcloud/serverless-resource-usage.md']
+
+- destination: plan-your-cluster-basic.md
+  sources:
+    - 'plan-your-cluster-serverless.md'
+    - 'planning-your-serverless-cluster.md'
+    - 'learn-about-pricing.md'
+    - 'learn-about-request-units.md'
+  versions: ['cockroachcloud']
+
+- destination: index.md
+  sources:
+    - 'serverless-faqs.md'
+    - 'choose-a-deployment-option.md'
 # Cloud releases
 
 - destination: releases/cloud.md#january-22-2021

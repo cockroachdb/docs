@@ -106,7 +106,7 @@ CockroachDB supports two backup features that use a node's locality to determine
 
 When you create a [locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) job, any node in the cluster can [claim the backup job](#job-creation-phase). A successful locality-aware backup job requires that each node in the cluster has access to each storage location. This is because any node in the cluster can claim the job and become the coordinator node. Once each node informs the coordinator node that it has completed exporting the row data, the coordinator will start to write metadata, which involves writing to each locality bucket a partial manifest recording what row data was written to that [storage bucket]({% link {{ page.version.version }}/use-cloud-storage.md %}).
 
-Every node backing up a [range]({% link {{ page.version.version }}/architecture/overview.md %}#range) will back up to the storage bucket that most closely matches that node's locality. The backup job attempts to back up ranges through nodes matching the range's locality. As a result, there is no guarantee that all ranges will be backed up to their locality's storage bucket. For additional detail on locality-aware backups in the context of a CockroachDB {{ site.data.products.serverless }} cluster, refer to [Job coordination on Serverless clusters](#job-coordination-on-serverless-clusters).
+Every node backing up a [range]({% link {{ page.version.version }}/architecture/overview.md %}#range) will back up to the storage bucket that most closely matches that node's locality. The backup job attempts to back up ranges through nodes matching the range's locality. As a result, there is no guarantee that all ranges will be backed up to their locality's storage bucket. For additional detail on locality-aware backups in the context of a CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }} cluster, refer to [Job coordination on CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters](#job-coordination-on-cockroachdb-standard-and-basic-clusters).
 
 For example, in the following diagram there is a three-node cluster split across three regions. The leaseholders write the ranges to be backed up to the external storage in the same region. As **Nodes 1** and **3** complete their work, they send updates to the coordinator node (**Node 2**). The coordinator will then [write the partial manifest files](#metadata-writing-phase) containing metadata about the backup work completed on each external storage location, which is stored with the backup SST files written to that storage location.
 
@@ -114,9 +114,9 @@ During a [restore]({% link {{ page.version.version }}/restore.md %}) job, the jo
 
 <img src="{{ 'images/v24.2/locality-aware-backups.png' | relative_url }}" alt="How a locality-aware backup writes to storage buckets in each region" style="border:0px solid #eee;max-width:100%" />
 
-#### Job coordination on Serverless clusters
+#### Job coordination on CockroachDB Standard and Basic clusters
 
-{% include {{ page.version.version }}/backups/serverless-locality-aware.md %}
+{% include {{ page.version.version }}/backups/locality-aware-multi-tenant.md %}
 
 ### Job coordination using the `EXECUTION LOCALITY` option
 

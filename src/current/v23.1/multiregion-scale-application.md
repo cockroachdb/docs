@@ -68,8 +68,8 @@ Scaling application deployments in multiple regions can greatly improve latency 
 
 For guidance on connecting to CockroachDB from an application deployment, see one of the following pages:
 
-- For connecting to managed, CockroachDB {{ site.data.products.cloud }} deployments, see [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and [Connect to the Database (CockroachDB {{ site.data.products.dedicated }})]({% link {{ page.version.version }}/connect-to-the-database.md %}?filters=dedicated).
-- For connecting to a standard CockroachDB deployment, see [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) and [Connect to the Database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
+- For connecting to managed, CockroachDB {{ site.data.products.cloud }} deployments, see [Connect to a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and [Connect to a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}).
+- For connecting to other CockroachDB deployments, see [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) and [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 
 To limit the latency between the application and the database, each deployment of the application should communicate with the closest database deployment. For details on configuring database connections for individual application deployments, consult your cloud provider's documentation. For an example using Google Cloud services, see [Deploy a Global, Serverless Application]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
 
