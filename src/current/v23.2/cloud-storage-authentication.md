@@ -691,6 +691,8 @@ In this SQL statement, `AUTH=implicit` uses the workload identity service accoun
 
 <section class="filter-content" markdown="1" data-scope="azure">
 
+{% include {{ page.version.version }}/backups/azure-storage-tier-support.md %}
+
 ## Azure Blob Storage specified authentication
 
 You can authenticate to Azure with explicit credentials in the following ways:
