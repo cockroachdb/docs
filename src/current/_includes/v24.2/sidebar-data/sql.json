@@ -611,6 +611,12 @@
               ]
             },
             {
+              "title": "<code>SHOW EXTERNAL CONNECTION</code>",
+              "urls": [
+                "/${VERSION}/show-external-connection.html"
+              ]
+            },
+            {
               "title": "<code>SHOW FULL TABLE SCANS</code>",
               "urls": [
                 "/${VERSION}/show-full-table-scans.html"
