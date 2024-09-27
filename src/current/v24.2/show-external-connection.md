@@ -38,7 +38,7 @@ Response | Description
 
 ## Examples
 
-### Show all external connections
+### Show all external connections in the cluster
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
