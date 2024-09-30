@@ -5,6 +5,10 @@ toc: true
 docs_area: deploy
 ---
 
+{{site.data.alerts.callout_info}}
+CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+{{site.data.alerts.end}}
+
 {% include cockroachcloud/filter-tabs/resource-usage.md %}
 
 This page describes how to understand your CockroachDB {{ site.data.products.standard }} cluster's Request Unit (RU) consumption and tune your workload to balance performance and costs.

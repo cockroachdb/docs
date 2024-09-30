@@ -5,6 +5,10 @@ toc: true
 docs_area: deploy
 ---
 
+{{site.data.alerts.callout_info}}
+CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+{{site.data.alerts.end}}
+
 {% include cockroachcloud/filter-tabs/crdb-cloud-connection.md %}
 
 This page shows you how to connect to your CockroachDB {{ site.data.products.standard }} cluster. This includes the administrative task of configuring allowed networks to support SQL client connections, as well as the steps for connecting to the cluster with CockroachDB's [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}).

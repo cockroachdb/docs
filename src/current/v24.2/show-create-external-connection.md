@@ -10,6 +10,7 @@ You can use external connections to specify and interact with resources that are
 You can also use the following SQL statements to work with external connections:
 
 - [`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %})
+- [`SHOW EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-external-connection.md %})
 - [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %})
 
 ## Required privileges

@@ -1,13 +1,13 @@
 ---
 title: Quickstart with CockroachDB
-summary: Learn how to create and use a CockroachDB Standard cluster.
+summary: Learn how to use free trial credits to deploy a CockroachDB cluster on CockroachDB Standard (Preview) and run your first queries.
 toc: true
 cloud: true
 referral_id: docs_quickstart_free
 docs_area: get_started
 ---
 
-This page shows you how to deploy a CockroachDB cluster on CockroachDB {{ site.data.products.standard }} (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
+This page shows you how to use free trial credits to deploy a CockroachDB cluster on CockroachDB {{ site.data.products.standard }} (Preview) and use sample code to run your first queries.
 
 ## Create a free trial cluster
 
