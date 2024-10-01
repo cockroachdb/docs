@@ -77,6 +77,7 @@ Cluster Operators can perform a variety of cluster functions:
   - Manage a cluster's databases from the [Databases Page]({% link cockroachcloud/databases-page.md %}).
   - [Scale a cluster's nodes]({% link cockroachcloud/advanced-cluster-management.md %}#scale-your-cluster).
   - View and configure a cluster's authorized networks from the [Networking Page]({% link cockroachcloud/network-authorization.md %}).
+  - [Manage network authorization]({% link cockroachcloud/network-authorization.md %}) for a cluster.
   - View backups in a cluster's [Backup and Restore Page]({% link cockroachcloud/managed-backups.md %}#cloud-console).
   - [Restore a cluster from a backup]({% link cockroachcloud/managed-backups.md %}?filters=standard#restore-a-cluster).
   - View a cluster's Jobs from the [Jobs page]({% link cockroachcloud/jobs-page.md %}).
@@ -95,6 +96,7 @@ Cluster Operators can perform a variety of cluster functions:
   - [Manage Customer-Managed Encryption Keys (CMEK) for Advanced Clusters]({% link cockroachcloud/managing-cmek.md %})
   - [Export a cluster's logs]({% link cockroachcloud/export-logs.md %}).
   - [Export a cluster's metrics]({% link cockroachcloud/export-metrics.md %}).
+  - [Manage network authorization]({% link cockroachcloud/network-authorization.md %}) for a cluster.
   - [View and configure a cluster's Egress Rules]({% link cockroachcloud/egress-perimeter-controls.md %}).
   - [Configure the export of metrics to DataDog or Amazon CloudWatch]({% link cockroachcloud/export-metrics.md %}).
 
