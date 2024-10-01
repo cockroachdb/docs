@@ -26,6 +26,7 @@ MOLT Fetch/Verify 1.1.8 is [available](#installation).
 - [Fetch modes]({% link molt/molt-fetch.md %}#fetch-mode) involving replication now notify the user that only MySQL 8.0 and later are currently supported for replication.
 - [Partitioned tables]({% link molt/molt-fetch.md %}#transformations) can now be moved to CockroachDB using [`IMPORT INTO`]({% link {{ site.current_cloud_version }}/import-into.md %}).
 - Improved logging for the [Fetch]({% link molt/molt-fetch.md %}) schema check phases under the `trace` logging level, which is set with [`--logging trace`]({% link molt/molt-fetch.md %}#global-flags).
+- MOLT is now distributed under the [Cockroach Labs Product License Agreement](https://www.cockroachlabs.com/cockroachlabs-product-license-agreement/), which is bundled with the binary.
 
 ## August 26, 2024
 
