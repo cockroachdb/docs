@@ -96,7 +96,7 @@ Cluster Operators can perform a variety of cluster functions:
   - [Manage Customer-Managed Encryption Keys (CMEK) for Advanced Clusters]({% link cockroachcloud/managing-cmek.md %})
   - [Export a cluster's logs]({% link cockroachcloud/export-logs.md %}).
   - [Export a cluster's metrics]({% link cockroachcloud/export-metrics.md %}).
-  - - [Manage network authorization]({% link cockroachcloud/network-authorization.md %}) for a cluster.
+  - [Manage network authorization]({% link cockroachcloud/network-authorization.md %}) for a cluster.
   - [View and configure a cluster's Egress Rules]({% link cockroachcloud/egress-perimeter-controls.md %}).
   - [Configure the export of metrics to DataDog or Amazon CloudWatch]({% link cockroachcloud/export-metrics.md %}).
 
