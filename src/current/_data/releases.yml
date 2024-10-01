@@ -6810,7 +6810,7 @@
 
 - release_name: v24.3.0-alpha.1
   major_version: v24.3
-  release_date: 'YYYY-12-31'
+  release_date: '2024-12-31'
   release_type: Testing
   go_version: go1.22.0
   sha: 0123456789abcde0123456789abcde0123456789
