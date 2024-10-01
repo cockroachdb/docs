@@ -45,7 +45,7 @@ Any feature made available in a phase prior to GA is provided without any warran
 
 ### Usage-based billing metrics
 
-Metering for [usage-based billing]({% link cockroachcloud/costs.md %}} of data transfer, managed backup storage, and changefeeds is now in Preview for all CockroachDB Standard and Advanced clusters through November 2024. You can view your usage in the CockroachDB Cloud Console, where line items with a charge of $0 will be shown for each metric. There will be no usage-based charges associated with these metrics during the preview period. For more information, refer to [CockroachDB Cloud Costs: Usage-based billing metrics in Preview]({% link cockroachcloud/costs.md %}#usage-based-billing-metrics-in-preview) or the announcement in the release notes.
+Metering for [usage-based billing]({% link cockroachcloud/costs.md %}} of data transfer, managed backup storage, and changefeeds is now in Preview for all CockroachDB Standard and Advanced clusters through November 2024. You can view your usage in the CockroachDB Cloud Console, where line items with a charge of $0 will be shown for each metric. There will be no usage-based charges associated with these metrics during the preview period. For more information, refer to [CockroachDB Cloud Costs: Usage-based billing metrics in Preview]({% link cockroachcloud/costs.md %}#usage-based-billing-metrics-in-preview) or the [announcement]({% link releases/cloud.md %}#october-1-2024) in the release notes.
 
 ### CockroachDB Standard
 
