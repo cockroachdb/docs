@@ -45,7 +45,7 @@ You can use PCR in a disaster recovery plan to:
 
 Cockroach Labs testing has demonstrated the following results for workloads up to the outlined scale:
 
-- Initial data load: 500,000 warehouses
+- Initial data load: 30TB
 - 100,000 writes per second
 - [Replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) (steady state, no bulk changes): 20–45 seconds
 - [Cutover]({% link {{ page.version.version }}/cutover-replication.md %}): 2–5 minutes
