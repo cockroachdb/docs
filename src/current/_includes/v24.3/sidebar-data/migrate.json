@@ -1,0 +1,147 @@
+{
+  "title": "Migrate",
+  "is_top_level": true,
+  "items": [
+    {
+      "title": "Overview",
+      "urls": [
+        "/${VERSION}/migration-overview.html"
+      ]
+    },
+    {
+      "title": "MOLT Tools",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/molt/molt-overview.html"
+          ]
+        },
+        {
+          "title": "Schema Conversion Tool",
+          "urls": [
+            "/cockroachcloud/migrations-page.html"
+          ]
+        },
+        {
+          "title": "Fetch",
+          "urls": [
+            "/molt/molt-fetch.html"
+          ]
+        },
+        {
+          "title": "Verify",
+          "urls": [
+            "/molt/molt-verify.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Third-Party Migration Tools",
+      "items": [
+        {
+          "title": "AWS DMS",
+          "urls": [
+            "/${VERSION}/aws-dms.html"
+          ]
+        },
+        {
+          "title": "Qlik Replicate",
+          "urls": [
+            "/${VERSION}/qlik.html"
+          ]
+        },
+        {
+          "title": "Striim",
+          "urls": [
+            "/${VERSION}/striim.html"
+          ]
+        },
+        {
+          "title": "Oracle GoldenGate",
+          "urls": [
+            "/${VERSION}/goldengate.html"
+          ]
+        },
+        {
+          "title": "Debezium",
+          "urls": [
+            "/${VERSION}/debezium.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Migrate Data Types",
+      "items": [
+        {
+          "title": "Migrate from CSV",
+          "urls": [
+            "/${VERSION}/migrate-from-csv.html"
+          ]
+        },
+        {
+          "title": "Migrate from Avro",
+          "urls": [
+            "/${VERSION}/migrate-from-avro.html"
+          ]
+        },
+        {
+          "title": "Migrate from Shapefiles",
+          "urls": [
+            "/${VERSION}/migrate-from-shapefiles.html"
+          ]
+        },
+        {
+          "title": "Migrate from OpenStreetMap",
+          "urls": [
+            "/${VERSION}/migrate-from-openstreetmap.html"
+          ]
+        },
+        {
+          "title": "Migrate from GeoJSON",
+          "urls": [
+            "/${VERSION}/migrate-from-geojson.html"
+          ]
+        },
+        {
+          "title": "Migrate from GeoPackage",
+          "urls": [
+            "/${VERSION}/migrate-from-geopackage.html"
+          ]
+        },
+        {
+          "title": "Import Performance Best Practices",
+          "urls": [
+            "/${VERSION}/import-performance-best-practices.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Migrate from PostgreSQL",
+      "urls": [
+        "/${VERSION}/migrate-from-postgres.html"
+      ]
+    },
+    {
+      "title": "Migrate from MySQL",
+      "urls": [
+        "/${VERSION}/migrate-from-mysql.html"
+      ]
+    },
+    {
+      "title": "Migrate from Oracle",
+      "urls": [
+        "/${VERSION}/migrate-from-oracle.html"
+      ]
+    },
+    {
+      "title": "Migration Strategy: Lift and Shift",
+      "urls": [
+        "/${VERSION}/migration-strategy-lift-and-shift.html"
+      ]
+    }
+  ]
+}
