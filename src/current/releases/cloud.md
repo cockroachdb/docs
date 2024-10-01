@@ -23,9 +23,9 @@ Metering for usage-based billing of data transfer, managed backup storage, and c
 - We will share pricing for these usage-based costs by November 1, 2024.
 - On December 1, 2024, once the preview period has ended, pricing for these metrics goes into effect for new customers, and for existing customers, upon renewal. 
 
-{ site.data.alerts.callout_info }
+{{site.data.alerts.callout_info}}
 Bytes transferred for [managed backups]({% link cockroachcloud/managed-backups.md %}) on CockroachDB Standard are not yet metered under [Data Transfer]({% link cockroachcloud/costs.md %}#data-transfer) metrics. This will be implemented during the Preview period and be announced in a future release note.
-{ site.data.alerts.end }
+{{site.data.alerts.end}}
 
 ## September 25, 2024
 
