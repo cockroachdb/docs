@@ -14,6 +14,19 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## October 1, 2024
+
+Metering for usage-based billing of data transfer, managed backup storage, and changefeeds is now in [Preview]({% link {{site.current_cloud_version }}/cockroachdb-feature-availability.md %}) for all CockroachDB Cloud organizations.
+
+- [Usage metrics]({% link cockroachcloud/costs.md %}) for data transfer, managed backup storage, and changefeeds are now visible for CockroachDB Standard and Advanced clusters in the CockroachDB Cloud Console. You can view your usage across these metrics on the [Billing page](https://cockroachlabs.cloud/billing/overview) and on invoices.
+- There will be no usage-based charges associated with these metrics during the preview period, which is in effect through November 30, 2024. During this time, line items with a charge of $0 will be shown for each metric on your monthly invoice.
+- We will share pricing for these usage-based costs by November 1, 2024.
+- On December 1, 2024, once the preview has ended, pricing for these metrics goes into effect immediately for new customers and customers billed monthly, and upon contract renewal for customers billed by invoice. 
+
+{{site.data.alerts.callout_info}}
+Bytes transferred for [managed backups]({% link cockroachcloud/managed-backups.md %}) on CockroachDB Standard are not yet metered under [Data Transfer]({% link cockroachcloud/costs.md %}#data-transfer) metrics. This will be implemented during the Preview period and be announced in a future release note.
+{{site.data.alerts.end}}
+
 ## September 25, 2024
 
 [CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/index.md %}) [plans](https://cockroachlabs.com/pricing/) have been updated, and existing clusters have been transitioned to the new plans. There is no impact on the functionality or availability of existing clusters.
