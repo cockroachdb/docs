@@ -65,8 +65,8 @@ Included in this guide:
     - [Underline](#underline)
   - [Links](#links)
     - [Link capitalization](#link-capitalization)
-    - [Links to CockroachDB docs pages in the same folder](#links-to-cockroachdb-docs-pages-in-the-same-folder)
-    - [Links to CockroachDB docs pages outside of the current folder](#links-to-cockroachdb-docs-pages-outside-of-the-current-folder)
+    - [Links to CockroachDB docs pages in the same directory](#links-to-cockroachdb-docs-pages-in-the-same-directory)
+    - [Links to CockroachDB docs pages outside of the current directory](#links-to-cockroachdb-docs-pages-outside-of-the-current-directory)
     - [Links to a specific location on a page that is not a heading](#links-to-a-specific-location-on-a-page-that-is-not-a-heading)
     - [Localized external links](#localized-external-links)
     - [GitHub issues and pull requests](#github-issues-and-pull-requests)
@@ -110,7 +110,7 @@ Included in this guide:
   - [Tabs](#tabs)
     - [Linking into tabbed content](#linking-into-tabbed-content)
   - [Comments](#comments)
-- [Terminology and word usage](#terminology-and-word-usage)
+- [Word usage guidelines](#word-usage-guidelines)
 
 ## Style and tone
 
@@ -565,9 +565,9 @@ Link capitalization should match our [capitalization rules](#capitalization-rule
 - **Use sentence case** when referring to the linked doc by one of its headers (e.g., "See __Clock synchronization__ for further guidance").
 - **Use sentence case** - when referring to a linked doc without explicitly citing a page title or header (e.g., "[…] follow the __identifier rules__ when creating […]").
 
-#### Links to CockroachDB docs pages in the same folder
+#### Links to CockroachDB docs pages in the same directory
 
-To link to a page within the same folder (e.g., a page in `v23.1` to another page in `v23.1`), use the [Jekyll link syntax](https://jekyllrb.com/docs/liquid/tags/#links).
+To link to a page within the same directory (e.g., a page in `v23.1` to another page in `v23.1`), use the [Jekyll link syntax](https://jekyllrb.com/docs/liquid/tags/#links).
 
 If the page is a versioned doc, use `{{ page.version.version }}` instead of the hardcoded version. Otherwise, use the regular path (e.g., `cockroachcloud`).
 
@@ -579,13 +579,13 @@ To include a subsection, place it outside of the Liquid tag.
 
 **Example:** `[Rules for creating foreign keys]({% link {{ page.version.version }}/foreign-key.md %}#rules-for-creating-foreign-keys)`
 
-This also applies to files within a subfolder of the same folder (e.g., a link from `v23.1/abc.md` to `v23.1/architecture/xyz.md` or from `v23.1/architecture/xyz.md` to `v23.1/abc.md`).
+This also applies to files within a subdirectory of the same directory (e.g., a link from `v23.1/abc.md` to `v23.1/architecture/xyz.md` or from `v23.1/architecture/xyz.md` to `v23.1/abc.md`).
 
 **Example:** `[Multi-active availability]({% link {{ page.version.version }}/architecture/glossary.md %}#multi-active-availability)`
 
-#### Links to CockroachDB docs pages outside of the current folder
+#### Links to CockroachDB docs pages outside of the current directory
 
-To link to a page outside of the current folder (e.g., a link from `v23.1` to `cockroachcloud`), use the fully qualified production URL:
+To link to a page outside of the current directory (e.g., a link from `v23.1` to `cockroachcloud`), use the fully qualified production URL:
 
 **Example:** `[Quickstart with CockroachDB](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart)`
 
@@ -1216,7 +1216,7 @@ There are [basic](#basic-include-file-usage) and [advanced](#advanced-include-fi
 The basic method for using an include file is:
 
 1. Find (or create) a block of content that you want to make appear on two or more different pages.
-1. Create a new file in the subdirectory of the `_includes` directory associated with the product you are working on. For example, if you are working on CockroachDB Self-Hosted v22.1, the directory will be `_includes/v22.1/`. If you are working on CockroachDB Dedicated, it will be `_includes/cockroachcloud`. If the include text is not version- or product-specific, put it in the `common` folder.
+1. Create a new file in the subdirectory of the `_includes` directory associated with the product you are working on. For example, if you are working on CockroachDB Self-Hosted v22.1, the directory will be `_includes/v22.1/`. If you are working on CockroachDB Dedicated, it will be `_includes/cockroachcloud`. If the include text is not version- or product-specific, put it in the `common` directory.
 1. In the pages where you want the included content to appear, add an `include` tag like one of the following: for CockroachDB Self-Hosted, `{% include {{page.version.version}}/some/shared-file.md %}`; for CockroachDB Dedicated, `{% include cockroachcloud/some/shared-file.md %}`.
 
 The contents of `shared-file.md` will now appear on all of the pages where you added the `include` tag.
@@ -1420,7 +1420,16 @@ FIXME: Update example SQL commands
 
 Many popular code editors feature extensions that can highlight `TODO`s across the repository. One such extension is [Todo Highlight](https://marketplace.visualstudio.com/items?itemName=wayou.vscode-todo-highlight).
 
-## Terminology and word usage
+## Word usage guidelines
+
+This section logs decisions about dictionary words to use and avoid. Add specific guidelines we decide as a team to this section. Refer also to [Technical terminology](#technical-termilogy) for technical terms that may not be in a dictionary.
+
+### Directories and folders
+- Use "directory" to refer to a filesystem directory, either locally or in a VM. For example, "Compress the directory into a `zip` archive."
+- Use "folder" to refer to a folder within a UI, such as a web UI or an IDE. For example, "Create a folder in your CockroachDB Cloud organization."
+
+### Technical terminology
+This section logs decisions about software branding and terminology. In general, align third-party branding with that brand's usage. For example, the [PostgreSQL project](https://www.postgresql.org/) uses the word "PostgreSQL" with that capitalization. Add specific guidelines we decide as a team to this table.
 
 Term | Classification | Note
 --- |:---:| ---
