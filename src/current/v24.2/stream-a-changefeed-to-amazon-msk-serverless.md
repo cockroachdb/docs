@@ -4,7 +4,7 @@ summary: Learn how to connect a changefeed to stream data to an Amazon MSK Serve
 toc: true
 ---
 
-[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can stream change data to [Amazon MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless.html) (Amazon Managed Streaming for Apache Kafka), which is an Amazon MSK cluster type that automatically scales your capacity.
+{% include_cached new-in.html version="v24.2" %} [Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can stream change data to [Amazon MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless.html) (Amazon Managed Streaming for Apache Kafka), which is an Amazon MSK cluster type that automatically scales your capacity.
 
 MSK Serverless requires [IAM authentication](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html?icmpid=docs_iam_console) for the changefeed to connect to the cluster.
 
