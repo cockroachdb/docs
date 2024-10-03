@@ -10,11 +10,11 @@ cloud: true
 
 This page describes how to plan your CockroachDB {{ site.data.products.advanced }} cluster.
 
-## Planning your cluster
+Before making any changes to your cluster's configuration, review these requirements and recommendations for CockroachDB {{ site.data.products.advanced }} clusters. We recommend that you test configuration changes carefully before applying them to production clusters.
 
-Before making any changes to your cluster's configuration, review the requirements and recommendations for CockroachDB {{ site.data.products.advanced }} clusters.
+## Cluster topology
 
-### Cluster configuration
+### Single-region clusters
 
 For single-region production deployments, Cockroach Labs recommends a minimum of 3 nodes. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#example) for more information.
 
@@ -22,31 +22,53 @@ Some of a CockroachDB {{ site.data.products.advanced }} cluster's provisioned me
 
 CockroachDB {{ site.data.products.advanced }} clusters use three Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (for example, 3, 6, or 9 nodes per region).
 
-{{site.data.alerts.callout_info}}
 You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) your cluster and [restore]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) it into a new single-node cluster.
-{{site.data.alerts.end}}
 
-#### Advanced security features
+### Multi-region clusters
 
-If your cluster needs access to all features required for [PCI DSS readiness](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/security-overview), you should [configure advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) while creating your CockroachDB {{ site.data.products.advanced }} cluster.
+Multi-region CockroachDB {{ site.data.products.advanced }} clusters must contain at least three regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the [`GLOBAL`]({% link {{site.current_cloud_version}}/global-tables.md %}) table locality or the [`REGIONAL BY TABLE`]({% link {{site.current_cloud_version}}/regional-tables.md %}#regional-tables) table locality and [`REGION` survival goal]({% link {{site.current_cloud_version}}/multiregion-survival-goals.md %}#survive-region-failures).
 
-#### Multi-region clusters
-
-Multi-region CockroachDB {{ site.data.products.advanced }} clusters must contain at least three regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the [`GLOBAL`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/global-tables) table locality or the [`REGIONAL BY TABLE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/regional-tables#regional-tables) table locality and [`REGION` survival goal](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multiregion-survival-goals#survive-region-failures).
-
-Each region of a multi-region cluster must contain at least 3 nodes to ensure that data located entirely in a region can survive the loss of one node in that region. For example, this applies to tables with the [`REGIONAL BY ROW`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/regional-tables#regional-by-row-tables) table locality. We recommend you use the same number of nodes in each region of your cluster for best performance and stability.
+Each region of a multi-region cluster must contain at least 3 nodes to ensure that data located entirely in a region can survive the loss of one node in that region. For example, this applies to tables with the [`REGIONAL BY ROW`]({% link {{site.current_cloud_version}}/regional-tables.md %}#regional-by-row-tables) table locality. For best performance and stability, we recommend you use the same number of nodes in each region of your cluster.
 
 You can configure a maximum of 9 regions per cluster through the Console. If you need to add more regions, [contact your Cockroach Labs account team](https://support.cockroachlabs.com).
 
-### Cluster scaling
+{{site.data.alerts.callout_success}}
+If your cluster's workload is subject to [compliance]({% link cockroachcloud/compliance.md %}) requirements such as PCI DSS or HIPAA, or to access advanced security features such as [CMEK]({% link cockroachcloud/cmek.md %}) or [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %}), you must enable [advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) during cluster creation. This cannot be changed after the cluster is created. Advanced security features incurs additional costs. Refer to [Pricing](https://www.cockroachlabs.com/pricing/).
+{{site.data.alerts.end}}
 
-When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For example, if you have a 3 node cluster with 4 vCPUs per node, consider scaling up to 8 vCPUs before adding a fourth node. For most production applications, we recommend at minimum 8 vCPUs per node. New CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024 can no longer scale a cluster down to fewer than 4 vCPUs per node.
+## Cluster sizing and scaling
 
-We recommend you add or remove nodes from a cluster during a time when the cluster isn't experiencing heavy traffic. Adding or removing nodes incurs a non-trivial amount of load on the cluster and takes about 30 minutes per region. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times to apply node modifications. Before removing nodes from a cluster, ensure that the reduced disk space will be sufficient for the existing and anticipated data. If you remove regions from a cluster, access to the cluster from clients in those regions will no longer be as fast.
+A cluster's number of nodes and node capacity together determine the node's total compute and storage capacity.
 
-If you have changed the [replication factor](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if you attempt to scale down the cluster to 3 nodes, the decommission operation might fail. To successfully remove nodes from the cluster in this example, change the replication factor back to 3, and then remove the nodes.
+When considering your cluster's scale, we recommend that you start by planning the compute requirements per node. If a workload requires more than 16 vCPUs per node, consider adding more nodes. For example, if a 3-node cluster with 8 vCPUs per node is not adequate for your workload, consider scaling up to 16 vCPUs before adding a fourth node. For most production applications, we recommend at minimum 8 vCPUs per node.
 
-### Example
+We recommend you avoid adding or removing nodes from a cluster when its load is expected to be high. Adding or removing nodes incurs a non-trivial amount of load on the cluster and can take more than half an hour per region. Changing the cluster configuration during times of heavy traffic may negatively impact application performance, and changes may take longer to be applied.
+
+When considering scaling down a cluster's nodes, ensure that the remaining nodes have enough storage to contain the cluster's current and anticipated data.
+
+If you remove a region from a cluster, requests from that region will be served by nodes in other regions, and may be slower as a result.
+
+If you have changed the [replication factor](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) for a cluster, you might need to reduce it before you can remove nodes from the cluster. For example, suppose you have a 5-node cluster with a replication factor of 5, up from the default of 3. Before you can scale the cluster down to 3 nodes, you must change the replication factor to 3.
+
+## Storage capacity
+
+When selecting your storage capacity, consider the following factors:
+
+Factor      | Description
+------------|------------
+Capacity    | Total raw data size you expect to store without replication.
+Replication | The default replication factor for a CockroachDB {{ site.data.products.cloud }} cluster is 3.
+Buffer      | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
+Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
+
+For more details about disk performance, refer to:
+
+- **AWS**: <a href="https://aws.amazon.com/ebs/features/">Amazon EBS volume types</a>
+- **Azure**: <a href="https://learn.microsoft.com/azure/virtual-machines/disks-performance">Virtual machine and disk performance</a>
+- **GCP**: <a href="https://cloud.google.com/compute/docs/disks/performance">Configure disks to meet performance requirements</a>
+
+
+## Example
 
 Let's say you want to create a cluster to connect with an application that is running on the Google Cloud Platform in the `us-east1` region, and that the application requires 2000 transactions per second.
 
