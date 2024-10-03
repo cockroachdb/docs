@@ -62,9 +62,11 @@ Buffer      | Additional buffer (overhead data, accounting for data growth, etc.
 Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
 
 For more details about disk performance, refer to:
-- **GCP**: <a href="https://cloud.google.com/compute/docs/disks/performance">Configure disks to meet performance requirements</a>
+
 - **AWS**: <a href="https://aws.amazon.com/ebs/features/">Amazon EBS volume types</a>
 - **Azure**: <a href="https://learn.microsoft.com/azure/virtual-machines/disks-performance">Virtual machine and disk performance</a>
+- **GCP**: <a href="https://cloud.google.com/compute/docs/disks/performance">Configure disks to meet performance requirements</a>
+
 
 ## Example
 
