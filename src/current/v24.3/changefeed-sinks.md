@@ -227,12 +227,10 @@ Changefeeds can deliver messages to Amazon MSK clusters ([Amazon Managed Streami
 
 {% include_cached new-in.html version="v24.2" %} Changefeeds can deliver messages to MSK and MSK Serverless clusters using AWS IAM roles.
 
-{% comment %}will change out the links here to CRDB tutorials in a follow-up PR.{% endcomment %}
-
 For initial setup guides, refer to the AWS documentation:
 
 - [MSK clusters](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)
-- [MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless-getting-started.html)
+- [MSK Serverless clusters]({% link {{ page.version.version }}/stream-a-changefeed-to-amazon-msk-serverless.md %})
 
 Changefeeds connecting to Amazon MSK clusters use the `kafka://` scheme. The example URIs show the necessary parameters for MSK and MSK Serverless clusters depending on the authentication type:
 
