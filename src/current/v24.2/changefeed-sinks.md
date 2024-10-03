@@ -104,6 +104,8 @@ You can either manually create a topic in your Kafka cluster before starting the
 
 {{site.data.alerts.callout_info}}
 You must have the Kafka cluster setting [`auto.create.topics.enable`](https://kafka.apache.org/documentation/#brokerconfigs_auto.create.topics.enable) set to `true` for automatic topic creation. This will create the topic when the changefeed sends its first message. If you create the consumer before that, you will also need the Kafka consumer configuration [`allow.auto.create.topics`](https://kafka.apache.org/documentation/#consumerconfigs_allow.auto.create.topics) to be set to `true`.
+
+For [Amazon MSK Serverless clusters](#amazon-msk), you must create topics manually. Refer to the [Stream a Changefeed to Amazon MSK Serverless]({% link {{ page.version.version }}/stream-a-changefeed-to-amazon-msk-serverless.md %}) tutorial for an example.
 {{site.data.alerts.end}}
 
 Kafka has the following topic limitations:
@@ -227,12 +229,14 @@ Changefeeds can deliver messages to Amazon MSK clusters ([Amazon Managed Streami
 
 {% include_cached new-in.html version="v24.2" %} Changefeeds can deliver messages to MSK and MSK Serverless clusters using AWS IAM roles.
 
-{% comment %}will change out the links here to CRDB tutorials in a follow-up PR.{% endcomment %}
+For initial setup guides, refer to:
 
-For initial setup guides, refer to the AWS documentation:
+- [MSK clusters](https://aws.amazon.com/blogs/apn/how-to-unlock-real-time-data-streams-with-cockroachdb-and-amazon-msk/)
+- [MSK Serverless clusters]({% link {{ page.version.version }}/stream-a-changefeed-to-amazon-msk-serverless.md %})
 
-- [MSK clusters](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)
-- [MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless-getting-started.html)
+{{site.data.alerts.callout_info}}
+MSK Serverless clusters do not allow for custom configurations, which means that `auto.create.topics.enable` is set to `false` by default. As a result, it is necessary to create topics manually. For an example, refer to the [Stream a Changefeed to Amazon MSK Serverless]({% link {{ page.version.version }}/stream-a-changefeed-to-amazon-msk-serverless.md %}) tutorial.
+{{site.data.alerts.end}}
 
 Changefeeds connecting to Amazon MSK clusters use the `kafka://` scheme. The example URIs show the necessary parameters for MSK and MSK Serverless clusters depending on the authentication type:
 

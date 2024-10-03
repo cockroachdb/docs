@@ -82,34 +82,9 @@ If you don't want to enable VPC Peering, leave the default selection of **Use th
 
 The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster. Refer to [Plan your {{ site.data.products.advanced }} cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example).
 
-1. On the **Capacity** page, select the **Compute per node**.
+1. On the **Capacity** page, select the **Compute per node** according to the requirements of the cluster's workload  and **Storage per node** . Refer to [Cluster sizing and scaling]({% link cockroachcloud/plan-your-cluster-advanced.md %}#cluster-sizing-and-scaling).
 
-    When selecting your compute power, consider the following factors:
-
-    Factor | Description
-    ----------|------------
-    Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 4 vCPUs can handle approximately 4000 transactions per second. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, 4 vCPUs per node is the minimum supported capacity. Less powerful nodes are generally not suitable for production workloads.
-    Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For new CockroachDB {{ site.data.products.cloud }} organizations created after September 26, 2024, 4 vCPU is the minimum supported capacity when scaling down a node. For most production applications, we recommend **at least 8 vCPUs per node**.
-    Memory | Some of a node's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
-
-1. Select the **Storage per node**.
-
-    {{site.data.alerts.callout_danger}}
-    Storage space cannot be removed due to cloud provider limitations.
-    {{site.data.alerts.end}}
-
-    For optimal performance, choose up to <b>{{ cap_per_vcpu }}</b>. Refer to [Pricing](https://www.cockroachlabs.com/pricing/) for details. IOPS for Azure disks are determined by the disk size, regardless of the VM configuration. To learn more, refer to [Premium SSD size](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssd-size) in the Azure documentation.
-
-    When selecting your storage capacity, consider the following factors:
-
-    Factor | Description
-    ----------|------------
-    Capacity | Total raw data size you expect to store without replication.
-    Replication | The default replication factor for a CockroachDB {{ site.data.products.cloud }} cluster is 3.
-    Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
-    Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
-
-    For more details about disk performance, refer to: <ul><li><b>GCP</b>: <a href="https://cloud.google.com/compute/docs/disks/performance">Configure disks to meet performance requirements</a></li><li><b>AWS</b>: <a href="https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types">Amazon EBS volume types</a></li><li><b>Azure</b>: <a href="https://learn.microsoft.com/azure/virtual-machines/disks-performance">Virtual machine and disk performance</a></li></ul>
+1. Select the **Storage per node**, up to <b>{{ cap_per_vcpu }}</b>. Refer to [Storage capacity]({% link cockroachcloud/plan-your-cluster-advanced.md %}#storage-capacity) and [Pricing](https://www.cockroachlabs.com/pricing/) for details.
 
 After your cluster is created, refer to:
 - [Manage a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/cluster-management.md %})
