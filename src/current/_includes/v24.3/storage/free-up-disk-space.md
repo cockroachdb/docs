@@ -1,0 +1,1 @@
+For instructions on how to free up disk space as quickly as possible after deleting data, see [How can I free up disk space quickly?]({% link {{ page.version.version }}/operational-faqs.md %}#how-can-i-free-up-disk-space-quickly)
