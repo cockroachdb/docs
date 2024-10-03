@@ -10,14 +10,6 @@ MSK Serverless requires [IAM authentication](https://docs.aws.amazon.com/IAM/lat
 
 In this tutorial, you'll set up an MSK Serverless cluster and connect a changefeed with IAM authentication. You'll create the MSK Serverless cluster with an IAM policy and role. CockroachDB and a Kafka client will assume the IAM role in order to connect to the MSK Serverless cluster. Then you'll set up the Kafka client to consume the changefeed messages and start the changefeed on the CockroachDB cluster.
 
-An overview of the workflow involves:
-
-1. Create an MSK Serverless cluster with an IAM policy and role.
-1. Set up the IAM role configuration for the Kafka client and CockroachDB cluster.
-1. Check the authentication configuration and create the Kafka topic on the client.
-1. Prepare the changefeed on the CockroachDB cluster.
-1. Consume the changefeed messages on the Kafka client.
-
 ## Before you begin
 
 - An [AWS account](https://signin.aws.amazon.com/signup?request_type=register).

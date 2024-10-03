@@ -4,19 +4,11 @@ summary: Learn how to connect a changefeed to stream data to an Amazon MSK Serve
 toc: true
 ---
 
-{% include_cached new-in.html version="v24.2" %} [Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can stream change data to [Amazon MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless.html) (Amazon Managed Streaming for Apache Kafka), which is an Amazon MSK cluster type that automatically scales your capacity.
+[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can stream change data to [Amazon MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless.html) (Amazon Managed Streaming for Apache Kafka), which is an Amazon MSK cluster type that automatically scales your capacity.
 
 MSK Serverless requires [IAM authentication](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html?icmpid=docs_iam_console) for the changefeed to connect to the cluster.
 
 In this tutorial, you'll set up an MSK Serverless cluster and connect a changefeed with IAM authentication. You'll create the MSK Serverless cluster with an IAM policy and role. CockroachDB and a Kafka client will assume the IAM role in order to connect to the MSK Serverless cluster. Then you'll set up the Kafka client to consume the changefeed messages and start the changefeed on the CockroachDB cluster.
-
-An overview of the workflow involves:
-
-1. Create an MSK Serverless cluster with an IAM policy and role.
-1. Set up the IAM role configuration for the Kafka client and CockroachDB cluster.
-1. Check the authentication configuration and create the Kafka topic on the client.
-1. Prepare the changefeed on the CockroachDB cluster.
-1. Consume the changefeed messages on the Kafka client.
 
 ## Before you begin
 
