@@ -48,8 +48,9 @@ Complete the following items before using MOLT Fetch:
 		molt escape-password 'a$52&'
 		~~~
 
-		~~~
 		Substitute the following encoded password in your original connection url string:
+
+		~~~
 		a%2452%26
 		~~~
 
@@ -181,48 +182,49 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 
 ### Global flags
 
-|                      Flag                     |                                                                                                                                                                                                                                                                                                                                                                                                  Description                                                                                                                                                                                                                                                                                                                                                                                                  |
-|-----------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--source`                                    | (Required) Connection string for the source database. For details, see [Source and target databases](#source-and-target-databases).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `--target`                                    | (Required) Connection string for the target database. For details, see [Source and target databases](#source-and-target-databases).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `--allow-tls-mode-disable`                    | Allow insecure connections to databases. Secure SSL/TLS connections should be used by default. This should be enabled **only** if secure SSL/TLS connections to the source or target database are not possible.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `--bucket-path`                               | The path within the [cloud storage](#cloud-storage) bucket where intermediate files are written (e.g., `'s3://bucket/path'` or `'gs://bucket/path'`). Only the path is used; query parameters (e.g., credentials) are ignored.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `--cleanup`                                   | Whether to delete intermediate files after moving data using [cloud or local storage](#data-path). **Note:** Cleanup does not occur on [continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `--compression`                               | Compression method for data when using [`IMPORT INTO`](#data-movement) (`gzip`/`none`).<br><br>**Default:** `gzip`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `--continuation-file-name`                    | Restart fetch at the specified filename if the task encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `--continuation-token`                        | Restart fetch at a specific table, using the specified continuation token, if the task encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `--crdb-pts-duration`                         | The duration for which each timestamp used in data export from a CockroachDB source is protected from garbage collection. This ensures that the data snapshot remains consistent. For example, if set to `24h`, each timestamp is protected for 24 hours from the initiation of the export job. This duration is extended at regular intervals specified in `--crdb-pts-refresh-interval`.<br><br>**Default:** `24h0m0s`                                                                                                                                                                                                                                                                                                                                                                                      |
-| `--crdb-pts-refresh-interval`                 | The frequency at which the protected timestamp's validity is extended. This interval maintains protection of the data snapshot until data export from a CockroachDB source is completed. For example, if set to `10m`, the protected timestamp's expiration will be extended by the duration specified in `--crdb-pts-duration` (e.g., `24h`) every 10 minutes while export is not complete. <br><br>**Default:** `10m0s`                                                                                                                                                                                                                                                                                                                                                                                     |
-| `--direct-copy`                               | Enables [direct copy](#direct-copy), which copies data directly from source to target without using an intermediate store.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `--export-concurrency`                        | Number of shards to export at a time, each on a dedicated thread. This only applies when exporting data from the source database, not when loading data into the target database. Only tables with [primary key]({% link {{ site.current_cloud_version }}/primary-key.md %}) types of [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) can be sharded. The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`.<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. Refer to [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source |
-| `--fetch-id`                                  | Restart fetch task corresponding to the specified ID. If `--continuation-file-name` or `--continuation-token` are not specified, fetch restarts for all failed tables.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `--flush-rows`                                | Number of rows before the source data is flushed to intermediate files. **Note:** If `--flush-size` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `--flush-size`                                | Size (in bytes) before the source data is flushed to intermediate files. **Note:** If `--flush-rows` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `--import-batch-size`                         | The number of files to be imported at a time to the target database. This applies only when using [`IMPORT INTO`](#data-movement) to load data into the target. **Note:** Increasing this value can improve the performance of full-scan queries on the target database shortly after fetch completes, but very high values are not recommended. If any individual file in the import batch fails, you must [retry](#fetch-continuation) the entire batch.<br><br>**Default:** `1000`                                                                                                                                                                                                                                                                                                                         |
-| `--local-path`                                | The path within the [local file server](#local-file-server) where intermediate files are written (e.g., `data/migration/cockroach`). `--local-path-listen-addr` must be specified.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `--local-path-crdb-access-addr`               | Address of a [local file server](#local-file-server) that is **publicly accessible**. This flag is only necessary if CockroachDB cannot reach the local address specified with `--local-path-listen-addr` (e.g., when moving data to a CockroachDB {{ site.data.products.cloud }} deployment). `--local-path` and `--local-path-listen-addr` must be specified.<br><br>**Default:** Value of `--local-path-listen-addr`.                                                                                                                                                                                                                                                                                                                                                                                      |
-| `--local-path-listen-addr`                    | Write intermediate files to a [local file server](#local-file-server) at the specified address (e.g., `'localhost:3000'`). `--local-path` must be specified.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `--log-file`                                  | Write messages to the specified log filename. If no filename is provided, messages write to `fetch-{datetime}.log`. If `"stdout"` is provided, messages write to `stdout`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `--logging`                                   | Level at which to log messages (`trace`/`debug`/`info`/`warn`/`error`/`fatal`/`panic`).<br><br>**Default:** `info`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `--metrics-listen-addr`                       | Address of the Prometheus metrics endpoint, which has the path `{address}/metrics`. For details on important metrics to monitor, see [Metrics](#metrics).<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `--mode`                                      | Configure the MOLT Fetch behavior: `data-load`, `data-load-and-replication`, `replication-only`, `export-only`, or `import-only`. For details, refer to [Fetch mode](#fetch-mode).<br><br>**Default:** `data-load`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `--non-interactive`                           | Run the fetch task without interactive prompts. This is recommended **only** when running `molt fetch` in an automated process (i.e., a job or continuous integration).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `--pglogical-replication-slot-drop-if-exists` | Drop the replication slot, if specified with `--pglogical-replication-slot-name`. Otherwise, the default replication slot is not dropped.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `--pglogical-replication-slot-name`           | The name of a replication slot to create before taking a snapshot of data (e.g., `'fetch'`). **Required** in order to perform continuous [replication](#load-data-and-replicate-changes) from a source PostgreSQL database.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `--pglogical-replication-slot-plugin`         | The output plugin used for logical replication under `--pglogical-replication-slot-name`.<br><br>**Default:** `pgoutput`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `--pprof-listen-addr`                         | Address of the pprof endpoint.<br><br>**Default:** `'127.0.0.1:3031'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `--replicator-flags`                          | If continuous [replication](#load-data-and-replicate-changes) is enabled with `--mode data-load-and-replication` or `--mode replication-only`, specify replication flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override.                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `--row-batch-size`                            | Number of rows per shard to export at a time. See [Best practices](#best-practices).<br><br>**Default:** `100000`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `--schema-filter`                             | Move schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `--table-concurrency`                         | Number of tables to export at a time. The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`.<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. Refer to [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `--table-exclusion-filter`                    | Exclude tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>This value **cannot** be set to `'.*'`, which would cause every table to be excluded. <br><br>**Default:** Empty string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `--table-filter`                              | Move tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `--table-handling`                            | How tables are initialized on the target database (`none`/`drop-on-target-and-recreate`/`truncate-if-exists`). For details, see [Target table handling](#target-table-handling).<br><br>**Default:** `none`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `--transformations-file`                      | Path to a JSON file that defines transformations to be performed on the target schema during the fetch task. Refer to [Transformations](#transformations).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `--type-map-file`                             | Path to a JSON file that contains explicit type mappings for automatic schema creation, when enabled with `--table-handling drop-on-target-and-recreate`. For details on the JSON format and valid type mappings, see [type mapping](#type-mapping).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `--use-console-writer`                        | Use the console writer, which has cleaner log output but introduces more latency.<br><br>**Default:** `false` (log as structured JSON)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `--use-copy`                                  | Use [`COPY FROM`](#data-movement) to move data. This makes tables queryable during data load, but is slower than using `IMPORT INTO`. For details, refer to [Data movement](#data-movement).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `--use-implicit-auth`                         | Use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}) for [cloud storage](#cloud-storage) URIs.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|                      Flag                     |                                                                                                                                                                                                                                          Description                                                                                                                                                                                                                                          |
+|-----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--source`                                    | (Required) Connection string for the source database. For details, see [Source and target databases](#source-and-target-databases).                                                                                                                                                                                                                                                                                                                                                           |
+| `--target`                                    | (Required) Connection string for the target database. For details, see [Source and target databases](#source-and-target-databases).                                                                                                                                                                                                                                                                                                                                                           |
+| `--allow-tls-mode-disable`                    | Allow insecure connections to databases. Secure SSL/TLS connections should be used by default. This should be enabled **only** if secure SSL/TLS connections to the source or target database are not possible.                                                                                                                                                                                                                                                                               |
+| `--bucket-path`                               | The path within the [cloud storage](#cloud-storage) bucket where intermediate files are written (e.g., `'s3://bucket/path'` or `'gs://bucket/path'`). Only the path is used; query parameters (e.g., credentials) are ignored.                                                                                                                                                                                                                                                                |
+| `--changefeeds-path`                          | Path to a JSON file that contains changefeed override settings for [failback](#fail-back-to-source-database), when enabled with `--mode failback`. For details, see [Fail back to source database](#fail-back-to-source-database).                                                                                                                                                                                                                                                            |
+| `--cleanup`                                   | Whether to delete intermediate files after moving data using [cloud or local storage](#data-path). **Note:** Cleanup does not occur on [continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                   |
+| `--compression`                               | Compression method for data when using [`IMPORT INTO`](#data-movement) (`gzip`/`none`).<br><br>**Default:** `gzip`                                                                                                                                                                                                                                                                                                                                                                            |
+| `--continuation-file-name`                    | Restart fetch at the specified filename if the task encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                          |
+| `--continuation-token`                        | Restart fetch at a specific table, using the specified continuation token, if the task encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                       |
+| `--crdb-pts-duration`                         | The duration for which each timestamp used in data export from a CockroachDB source is protected from garbage collection. This ensures that the data snapshot remains consistent. For example, if set to `24h`, each timestamp is protected for 24 hours from the initiation of the export job. This duration is extended at regular intervals specified in `--crdb-pts-refresh-interval`.<br><br>**Default:** `24h0m0s`                                                                      |
+| `--crdb-pts-refresh-interval`                 | The frequency at which the protected timestamp's validity is extended. This interval maintains protection of the data snapshot until data export from a CockroachDB source is completed. For example, if set to `10m`, the protected timestamp's expiration will be extended by the duration specified in `--crdb-pts-duration` (e.g., `24h`) every 10 minutes while export is not complete. <br><br>**Default:** `10m0s`                                                                     |
+| `--direct-copy`                               | Enables [direct copy](#direct-copy), which copies data directly from source to target without using an intermediate store.                                                                                                                                                                                                                                                                                                                                                                    |
+| `--export-concurrency`                        | Number of shards to export at a time, each on a dedicated thread. This only applies when exporting data from the source database, not when loading data into the target database. The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`.<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. Refer to [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source |
+| `--fetch-id`                                  | Restart fetch task corresponding to the specified ID. If `--continuation-file-name` or `--continuation-token` are not specified, fetch restarts for all failed tables.                                                                                                                                                                                                                                                                                                                        |
+| `--flush-rows`                                | Number of rows before the source data is flushed to intermediate files. **Note:** If `--flush-size` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                  |
+| `--flush-size`                                | Size (in bytes) before the source data is flushed to intermediate files. **Note:** If `--flush-rows` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                 |
+| `--import-batch-size`                         | The number of files to be imported at a time to the target database. This applies only when using [`IMPORT INTO`](#data-movement) to load data into the target. **Note:** Increasing this value can improve the performance of full-scan queries on the target database shortly after fetch completes, but very high values are not recommended. If any individual file in the import batch fails, you must [retry](#fetch-continuation) the entire batch.<br><br>**Default:** `1000`         |
+| `--local-path`                                | The path within the [local file server](#local-file-server) where intermediate files are written (e.g., `data/migration/cockroach`). `--local-path-listen-addr` must be specified.                                                                                                                                                                                                                                                                                                            |
+| `--local-path-crdb-access-addr`               | Address of a [local file server](#local-file-server) that is **publicly accessible**. This flag is only necessary if CockroachDB cannot reach the local address specified with `--local-path-listen-addr` (e.g., when moving data to a CockroachDB {{ site.data.products.cloud }} deployment). `--local-path` and `--local-path-listen-addr` must be specified.<br><br>**Default:** Value of `--local-path-listen-addr`.                                                                      |
+| `--local-path-listen-addr`                    | Write intermediate files to a [local file server](#local-file-server) at the specified address (e.g., `'localhost:3000'`). `--local-path` must be specified.                                                                                                                                                                                                                                                                                                                                  |
+| `--log-file`                                  | Write messages to the specified log filename. If no filename is provided, messages write to `fetch-{datetime}.log`. If `"stdout"` is provided, messages write to `stdout`.                                                                                                                                                                                                                                                                                                                    |
+| `--logging`                                   | Level at which to log messages (`trace`/`debug`/`info`/`warn`/`error`/`fatal`/`panic`).<br><br>**Default:** `info`                                                                                                                                                                                                                                                                                                                                                                            |
+| `--metrics-listen-addr`                       | Address of the Prometheus metrics endpoint, which has the path `{address}/metrics`. For details on important metrics to monitor, see [Metrics](#metrics).<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                              |
+| `--mode`                                      | Configure the MOLT Fetch behavior: `data-load`, `data-load-and-replication`, `replication-only`, `export-only`, or `import-only`. For details, refer to [Fetch mode](#fetch-mode).<br><br>**Default:** `data-load`                                                                                                                                                                                                                                                                            |
+| `--non-interactive`                           | Run the fetch task without interactive prompts. This is recommended **only** when running `molt fetch` in an automated process (i.e., a job or continuous integration).                                                                                                                                                                                                                                                                                                                       |
+| `--pglogical-replication-slot-drop-if-exists` | Drop the replication slot, if specified with `--pglogical-replication-slot-name`. Otherwise, the default replication slot is not dropped.                                                                                                                                                                                                                                                                                                                                                     |
+| `--pglogical-replication-slot-name`           | The name of a replication slot to create before taking a snapshot of data (e.g., `'fetch'`). **Required** in order to perform continuous [replication](#load-data-and-replicate-changes) from a source PostgreSQL database.                                                                                                                                                                                                                                                                   |
+| `--pglogical-replication-slot-plugin`         | The output plugin used for logical replication under `--pglogical-replication-slot-name`.<br><br>**Default:** `pgoutput`                                                                                                                                                                                                                                                                                                                                                                      |
+| `--pprof-listen-addr`                         | Address of the pprof endpoint.<br><br>**Default:** `'127.0.0.1:3031'`                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `--replicator-flags`                          | If continuous [replication](#load-data-and-replicate-changes) is enabled with `--mode data-load-and-replication`, `--mode replication-only`, or `--mode failback`, specify replication flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override.                                                                                                   |
+| `--row-batch-size`                            | Number of rows per shard to export at a time. See [Best practices](#best-practices).<br><br>**Default:** `100000`                                                                                                                                                                                                                                                                                                                                                                             |
+| `--schema-filter`                             | Move schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                           |
+| `--table-concurrency`                         | Number of tables to export at a time. The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`.<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. Refer to [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source                                                                                                                                             |
+| `--table-exclusion-filter`                    | Exclude tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>This value **cannot** be set to `'.*'`, which would cause every table to be excluded. <br><br>**Default:** Empty string                                                                                                                                                                                                                                               |
+| `--table-filter`                              | Move tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                      |
+| `--table-handling`                            | How tables are initialized on the target database (`none`/`drop-on-target-and-recreate`/`truncate-if-exists`). For details, see [Target table handling](#target-table-handling).<br><br>**Default:** `none`                                                                                                                                                                                                                                                                                   |
+| `--transformations-file`                      | Path to a JSON file that defines transformations to be performed on the target schema during the fetch task. Refer to [Transformations](#transformations).                                                                                                                                                                                                                                                                                                                                    |
+| `--type-map-file`                             | Path to a JSON file that contains explicit type mappings for automatic schema creation, when enabled with `--table-handling drop-on-target-and-recreate`. For details on the JSON format and valid type mappings, see [type mapping](#type-mapping).                                                                                                                                                                                                                                          |
+| `--use-console-writer`                        | Use the console writer, which has cleaner log output but introduces more latency.<br><br>**Default:** `false` (log as structured JSON)                                                                                                                                                                                                                                                                                                                                                        |
+| `--use-copy`                                  | Use [`COPY FROM`](#data-movement) to move data. This makes tables queryable during data load, but is slower than using `IMPORT INTO`. For details, refer to [Data movement](#data-movement).                                                                                                                                                                                                                                                                                                  |
+| `--use-implicit-auth`                         | Use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}) for [cloud storage](#cloud-storage) URIs.                                                                                                                                                                                                                                                                                                                                          |
 
 ### `tokens list` flags
 
@@ -246,21 +248,21 @@ Follow the recommendations in [Connection strings](#connection-strings).
 PostgreSQL or CockroachDB: 
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --source 'postgresql://{username}:{password}@{host}:{port}/{database}'
 ~~~
 
 MySQL:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --source 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
 ~~~
 
 `--target` specifies the [CockroachDB connection string]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url):
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --target 'postgresql://{username}:{password}@{host}:{port}/{database}
 ~~~
 
@@ -272,13 +274,14 @@ MySQL:
 - [Load data and replicate changes to CockroachDB](#load-data-and-replicate-changes)
 - [Replicate changes to CockroachDB](#replicate-changes)
 - [Export the data to storage](#export-data-to-storage)
+- [Fail back to source database](#fail-back-to-source-database)
 
 #### Load data
 
 `data-load` (default) instructs MOLT Fetch to load the source data into CockroachDB. It does not replicate any subsequent changes on the source.
 
 {% include_cached copy-clipboard.html %}
-~~~ 
+~~~ shell
 --mode data-load
 ~~~
 
@@ -291,14 +294,14 @@ Before using this option, the source PostgreSQL or MySQL database **must** be co
 `data-load-and-replication` instructs MOLT Fetch to load the source data into CockroachDB, and replicate any subsequent changes on the source. 
 
 {% include_cached copy-clipboard.html %}
-~~~ 
+~~~ shell
 --mode data-load-and-replication
 ~~~
 
 If the source is a PostgreSQL database, you must also specify a replication slot name. For example, the following snippet instructs MOLT Fetch to create a slot named `replication_slot` to use for replication:
 
 {% include_cached copy-clipboard.html %}
-~~~ 
+~~~ shell
 --mode data-load-and-replication
 --pglogical-replication-slot-name 'replication_slot'
 ~~~
@@ -310,7 +313,7 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns 
 To customize the replication behavior (an advanced use case), use `--replicator-flags` to specify one or more replication-specific flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override.
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --mode data-load-and-replication
 --replicator-flags "--applyTimeout '1h' --parallelism 64"
 ~~~
@@ -333,7 +336,7 @@ Before using this option, the source PostgreSQL or MySQL database **must** be co
 	In the `molt fetch` command, specify the replication slot name using `--pglogical-replication-slot-name`. For example:
 
 	{% include_cached copy-clipboard.html %}
-	~~~ 
+	~~~ shell
 	--mode replication-only 
 	--pglogical-replication-slot-name 'replication_slot'
 	~~~
@@ -350,7 +353,7 @@ Before using this option, the source PostgreSQL or MySQL database **must** be co
 	In the `molt fetch` command, specify a GTID set using the format `source_uuid:min(interval_start)-max(interval_end)`. For example:
 
 	{% include_cached copy-clipboard.html %}
-	~~~ 
+	~~~ shell
 	--mode replication-only 
 	--replicator-flags "--defaultGTIDSet 'b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21'"
 	~~~
@@ -362,7 +365,7 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns 
 `export-only` instructs MOLT Fetch to export the source data to the specified [cloud storage](#cloud-storage) or [local file server](#local-file-server). It does not load the data into CockroachDB.
 
 {% include_cached copy-clipboard.html %}
-~~~ 
+~~~ shell
 --mode export-only
 ~~~
 
@@ -371,9 +374,70 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns 
 `import-only` instructs MOLT Fetch to load the source data in the specified [cloud storage](#cloud-storage) or [local file server](#local-file-server) into the CockroachDB target.
 
 {% include_cached copy-clipboard.html %}
-~~~ 
+~~~ shell
 --mode import-only
 ~~~
+
+#### Fail back to source database
+
+{{site.data.alerts.callout_info}}
+`failback` mode supports MySQL 8.0 and later.
+{{site.data.alerts.end}}
+
+If you encounter issues after moving data to CockroachDB, you can use `failback` to replicate changes on CockroachDB back to the initial source database. In case you need to roll back the migration, this ensures that data is consistent on the source.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+--mode failback
+~~~
+
+When running `molt fetch --mode failback`, `--source` is the CockroachDB connection string and `--target` is the connection string of the database from which you migrated. `--table-filter` specifies the tables to watch for change events. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+--source 'postgresql://{username}:{password}@{host}:{port}/{database}'
+--target 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
+--table-filter 'employees, payments'
+~~~
+
+`failback` mode creates a [CockroachDB changefeed]({% link {{ page.version.version }}/change-data-capture-overview.md %}) that passes change events from CockroachDB to a [webhook sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink). However, if there is already a running CockroachDB changefeed with the same webhook sink URL (excluding query parameters) and [watched rows]({% link {{ page.version.version }}/changefeed-sinks.md %}), the existing changefeed is used for `failback`.
+
+When creating a new `failback` changefeed, MOLT Fetch specifies the following [`CREATE CHANGEFEED` parameters]({% link {{ page.version.version }}/create-changefeed.md %}#parameters):
+
+~~~ json
+{
+    "host": "localhost",
+    "port": 30004,
+    "sink_query_parameters": "insecure_tls_skip_verify=true",
+    "resolved": "1s",
+    "min_checkpoint_frequency": "1s",
+    "initial_scan": "no",
+    "webhook_sink_config": "{\"Flush\":{\"Bytes\":1048576}}"
+}
+~~~
+
+By default, MOLT Fetch specifies a local webhook sink (`"localhost"`) and an insecure sink connection (`"insecure_tls_skip_verify=true"`). This configuration is best suited for testing. A **secure sink connection is recommended** for production environments. For an example, see [Fail back securely from CockroachDB](#fail-back-securely-from-cockroachdb).
+
+To override the default changefeed settings, create your own JSON file and include the [`--changefeeds-path` flag](#global-flags) to indicate the file path. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+--changefeeds-path 'changefeed-settings.json'
+~~~
+
+You can specify the following [`CREATE CHANGEFEED` parameters]({% link {{ page.version.version }}/create-changefeed.md %}#parameters) in the JSON:
+
+- The following [`CREATE CHANGEFEED` URI parameters]({% link {{ page.version.version }}/create-changefeed.md %}#sink-uri):
+	- `host`: The hostname or IP address of the [webhook sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) where change events are sent. The applicable certificates of the failback target (i.e., the [source database](#source-and-target-databases) from which you migrated) **must** be located on this machine.
+	- `port`: The port of the [webhook sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink).
+	- `sink_query_parameters`: A comma-separated list of [`CREATE CHANGEFEED` query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters). This includes the base64-encoded client certificate ([`client_cert`]({% link {{ page.version.version }}/create-changefeed.md %}#client-cert)), key ([`client_key`]({% link {{ page.version.version }}/create-changefeed.md %}#client-key)), and CA ([`ca_cert`]({% link {{ page.version.version }}/create-changefeed.md %}#ca-cert)) for a [secure webhook sink](#fail-back-securely-from-cockroachdb).
+- The following [`CREATE CHANGEFEED` options]({% link {{ page.version.version }}/create-changefeed.md %}#options):
+	- [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved)
+	- [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency)
+	- [`initial_scan`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan)
+	- [`webhook_sink_config`]({% link {{ page.version.version }}/create-changefeed.md %}#webhook-sink-config)
+
+For example of using `molt fetch` in `failback` mode, see [Fail back securely from CockroachDB](#fail-back-securely-from-cockroachdb).
 
 ### Data movement
 
@@ -408,14 +472,14 @@ Only the path specified in `--bucket-path` is used. Query parameters, such as cr
 Google Cloud Storage:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --bucket-path 'gs://migration/data/cockroach'
 ~~~
 
 Amazon S3:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --bucket-path 's3://migration/data/cockroach'
 ~~~
 
@@ -426,7 +490,7 @@ Cloud storage can be used to move data with either [`IMPORT INTO` or `COPY FROM`
 `--local-path` instructs MOLT Fetch to write intermediate files to a path within a [local file server]({% link {{site.current_cloud_version}}/use-a-local-file-server.md %}). `local-path-listen-addr` specifies the address of the local file server. For example:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --local-path /migration/data/cockroach
 --local-path-listen-addr 'localhost:3000'
 ~~~
@@ -436,7 +500,7 @@ In some cases, CockroachDB will not be able to use the local address specified b
 For example, if you are migrating to CockroachDB {{ site.data.products.cloud }}, such that the {{ site.data.products.cloud }} cluster is in a different physical location than the machine running `molt fetch`, then CockroachDB cannot reach an address such as `localhost:3000`. In these situations, use `--local-path-crdb-access-addr` to specify an address for the local file server that is **publicly accessible**. For example:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --local-path /migration/data/cockroach
 --local-path-listen-addr 'localhost:3000'
 --local-path-crdb-access-addr '44.55.66.77:3000'
@@ -468,14 +532,14 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 `--schema-filter` specifies a range of schema objects to move to CockroachDB, formatted as a POSIX regex string. For example, to move every table in the source database's `public` schema:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --schema-filter 'public'
 ~~~
 
 `--table-filter` and `--table-exclusion-filter` specify tables to include and exclude from the migration, respectively, formatted as POSIX regex strings. For example, to move every source table that has "user" in the table name and exclude every source table that has "temp" in the table name:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --table-filter '.*user.*' --table-exclusion-filter '.*temp.*'
 ~~~
 
@@ -486,21 +550,21 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 To load the data without changing the existing data in the tables, use `none`:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --table-handling none
 ~~~
 
 To [truncate]({% link {{site.current_cloud_version}}/truncate.md %}) tables before loading the data, use `truncate-if-exists`:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --table-handling truncate-if-exists
 ~~~
 
 To drop existing tables and create new tables before loading the data, use `drop-on-target-and-recreate`:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --table-handling drop-on-target-and-recreate
 ~~~
 
@@ -580,7 +644,7 @@ If [`drop-on-target-and-recreate`](#target-table-handling) is set, MOLT Fetch au
 `--type-map-file` specifies the path to the JSON file containing the explicit type mappings. For example:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --type-map-file 'type-mappings.json'
 ~~~
 
@@ -625,7 +689,7 @@ You can define transformation rules to be performed on the target schema during 
 Transformation rules are defined in the JSON file indicated by the `--transformations-file` flag. For example:
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --transformations-file 'transformation-rules.json'
 ~~~
 
@@ -723,7 +787,7 @@ Only one fetch ID and set of continuation tokens, each token corresponding to a 
 To retry all data starting from the continuation point, reissue the `molt fetch` command and include the `--fetch-id`.
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
 ~~~
 
@@ -734,7 +798,7 @@ This will retry only the table that corresponds to the continuation token. If th
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
 --continuation-token 011762e5-6f70-43f8-8e15-58b4de10a007
 ~~~
@@ -742,7 +806,7 @@ This will retry only the table that corresponds to the continuation token. If th
 To retry all data starting from a specific file, include both `--fetch-id` and `--continuation-file-name`. The latter flag specifies the filename of an intermediate file in [cloud or local storage](#data-path). All filenames are prepended with `part_` and have the `.csv.gz` or `.csv` extension, depending on compression type (gzip by default). For example: 
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ shell
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
 --continuation-file-name part_00000003.csv.gz
 ~~~
@@ -945,6 +1009,66 @@ molt fetch \
 ... \
 --fetch-id '87bf8dc0-803c-4e26-89d5-3352576f92a7' \
 --non-interactive
+~~~
+
+### Fail back securely from CockroachDB
+
+The following `molt fetch` command uses `failback` mode to securely replicate changes from CockroachDB back to a MySQL database. This assumes that you migrated data from MySQL to CockroachDB, and want to keep the data consistent on MySQL in case you need to roll back the migration.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt fetch \
+--source 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full' \
+--target 'mysql://root:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt' \
+--table-filter 'employees, payments' \
+--non-interactive \
+--logging debug \
+--replicator-flags "--tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key" \
+--mode failback \
+--changefeeds-path 'changefeed-settings.json'
+~~~
+
+- `--source` specifies the connection string of the CockroachDB database to which you migrated.
+- `--target` specifies the connection string of the MySQL database acting as the failback target.
+- `--table-filter` specifies that the `employees` and `payments` tables should be watched for change events.
+- `--replicator-flags` specifies the paths to the server certificate (`--tlsCertificate`) and key (`--tlsPrivateKey`) that correspond to the client certs described in the following item.
+
+	{{site.data.alerts.callout_info}}
+	The default [local, insecure changefeed configuration](#fail-back-to-source-database) requires that you issue `molt fetch` with [`--replicator-flags '--tlsSelfSigned --disableAuthentication'`](#global-flags) instead.
+	{{site.data.alerts.end}}
+
+- `--changefeeds-path` specifies the path to `changefeed-settings.json`, which contains the following setting override:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ json
+	{
+	    "sink_query_parameters": "client_cert={base64 cert}&client_key={base64 key}&ca_cert={base64 CA cert}"
+	}
+	~~~
+
+	`client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, `base64 -i ./client.crt | jq -R -r '@uri'`).
+
+	{{site.data.alerts.callout_success}}
+	For details on the default changefeed settings and how to override them, see [Fail back to source database](#fail-back-to-source-database).
+	{{site.data.alerts.end}}
+
+The preceding `molt fetch` command issues the equivalent [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) command, using the default and explicitly overriden changefeed settings:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE employees, payments 
+  INTO 'webhook-https://host.docker.internal:30004/defaultdb/public?client_cert={base64 cert}&client_key={base64 key}&ca_cert={base64 CA cert}' 
+  WITH updated, resolved = '1s', min_checkpoint_frequency = '1s', initial_scan = 'no', cursor = '2024-09-11T16:33:35Z', webhook_sink_config = '{\"Flush\":{\"Bytes\":1048576,\"Frequency\":\"1s\"}}'
+~~~
+
+This results in initial output like the following:
+
+~~~
+INFO   [Sep 11 11:03:54] Replicator starting                           -buildmode=exe -compiler=gc CGO_CFLAGS= CGO_CPPFLAGS= CGO_CXXFLAGS= CGO_ENABLED=1 CGO_LDFLAGS= GOARCH=arm64 GOOS=darwin vcs=git vcs.modified=true vcs.revision=c948b78081a37aacf37a82eac213aa91a2828f92 vcs.time="2024-08-19T13:39:37Z"
+INFO   [Sep 11 11:03:54] Server listening                              address="[::]:30004"
+DEBUG  [Sep 11 11:04:00]                                               httpRequest="&{0x14000156ea0 0 401 32 101.042µs   false false}"
+DEBUG  [Sep 11 11:04:00]                                               httpRequest="&{0x14000018b40 0 401 32 104.417µs   false false}"
+DEBUG  [Sep 11 11:04:01]                                               httpRequest="&{0x140000190e0 0 401 32 27.958µs   false false}"
 ~~~
 
 ## See also
