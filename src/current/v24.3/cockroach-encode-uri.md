@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.cli
 ---
 
-The `cockroach encode-uri` command returns the `postgres://` connection string for a cluster's `defaultdb` database from the URI of a node.
+The `cockroach encode-uri` command returns the `postgresql:/` connection string for a cluster's `defaultdb` database from the URI of a node.
 
 ## Synopsis
 
