@@ -274,7 +274,7 @@ To create certificates signed by an external certificate authority, refer to [Cr
 
 At this point, the primary and standby clusters are both running. The next step allows the standby cluster to connect to the primary cluster and begin ingesting its data. Depending on how you manage certificates, you must ensure that all nodes on the primary and the standby cluster have access to the certificate of the other cluster.
 
-You can use the `cockroach encode-uri` command to generate a connection string containing a cluster's certificate for any [PCR statements]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}#manage-replication-in-the-sql-shell) that require a connection string.
+You can use the [`cockroach encode-uri`]({% link {{ page.version.version }}/cockroach-encode-uri.md %}) command to generate a connection string containing a cluster's certificate for any [PCR statements]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}#manage-replication-in-the-sql-shell) that require a connection string.
 
 For example, in this tutorial you will need a connection string for the primary cluster when you start the replication stream from the standby.
 

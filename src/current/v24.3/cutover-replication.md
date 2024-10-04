@@ -216,7 +216,7 @@ This section illustrates the steps to cut back to the original primary cluster f
     ALTER VIRTUAL CLUSTER {cluster_a} STOP SERVICE;
     ~~~
 
-1. Open another terminal window and generate a connection string for **Cluster B** using `cockroach encode-uri`:
+1. Open another terminal window and generate a connection string for **Cluster B** using [`cockroach encode-uri`]({% link {{ page.version.version }}/cockroach-encode-uri.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
