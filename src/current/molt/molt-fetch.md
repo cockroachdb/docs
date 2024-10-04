@@ -400,9 +400,9 @@ When running `molt fetch --mode failback`, `--source` is the CockroachDB connect
 --table-filter 'employees, payments'
 ~~~
 
-`failback` mode creates a [CockroachDB changefeed]({% link {{ page.version.version }}/change-data-capture-overview.md %}) that passes change events from CockroachDB to a [webhook sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink). However, if there is already a running CockroachDB changefeed with the same webhook sink URL (excluding query parameters) and [watched rows]({% link {{ page.version.version }}/changefeed-sinks.md %}), the existing changefeed is used for `failback`.
+`failback` mode creates a [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) that passes change events from CockroachDB to a [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink). However, if there is already a running CockroachDB changefeed with the same webhook sink URL (excluding query parameters) and [watched rows]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}), the existing changefeed is used for `failback`.
 
-When creating a new `failback` changefeed, MOLT Fetch specifies the following [`CREATE CHANGEFEED` parameters]({% link {{ page.version.version }}/create-changefeed.md %}#parameters):
+When creating a new `failback` changefeed, MOLT Fetch specifies the following [`CREATE CHANGEFEED` parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#parameters):
 
 ~~~ json
 {
@@ -425,17 +425,17 @@ To override the default changefeed settings, create your own JSON file and inclu
 --changefeeds-path 'changefeed-settings.json'
 ~~~
 
-You can specify the following [`CREATE CHANGEFEED` parameters]({% link {{ page.version.version }}/create-changefeed.md %}#parameters) in the JSON:
+You can specify the following [`CREATE CHANGEFEED` parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#parameters) in the JSON:
 
-- The following [`CREATE CHANGEFEED` URI parameters]({% link {{ page.version.version }}/create-changefeed.md %}#sink-uri):
-	- `host`: The hostname or IP address of the [webhook sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) where change events are sent. The applicable certificates of the failback target (i.e., the [source database](#source-and-target-databases) from which you migrated) **must** be located on this machine.
-	- `port`: The port of the [webhook sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink).
-	- `sink_query_parameters`: A comma-separated list of [`CREATE CHANGEFEED` query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters). This includes the base64-encoded client certificate ([`client_cert`]({% link {{ page.version.version }}/create-changefeed.md %}#client-cert)), key ([`client_key`]({% link {{ page.version.version }}/create-changefeed.md %}#client-key)), and CA ([`ca_cert`]({% link {{ page.version.version }}/create-changefeed.md %}#ca-cert)) for a [secure webhook sink](#fail-back-securely-from-cockroachdb).
-- The following [`CREATE CHANGEFEED` options]({% link {{ page.version.version }}/create-changefeed.md %}#options):
-	- [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved)
-	- [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency)
-	- [`initial_scan`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan)
-	- [`webhook_sink_config`]({% link {{ page.version.version }}/create-changefeed.md %}#webhook-sink-config)
+- The following [`CREATE CHANGEFEED` URI parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#sink-uri):
+	- `host`: The hostname or IP address of the [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) where change events are sent. The applicable certificates of the failback target (i.e., the [source database](#source-and-target-databases) from which you migrated) **must** be located on this machine.
+	- `port`: The port of the [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
+	- `sink_query_parameters`: A comma-separated list of [`CREATE CHANGEFEED` query parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#query-parameters). This includes the base64-encoded client certificate ([`client_cert`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#client-cert)), key ([`client_key`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#client-key)), and CA ([`ca_cert`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#ca-cert)) for a [secure webhook sink](#fail-back-securely-from-cockroachdb).
+- The following [`CREATE CHANGEFEED` options]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#options):
+	- [`resolved`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#resolved)
+	- [`min_checkpoint_frequency`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#min-checkpoint-frequency)
+	- [`initial_scan`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#initial-scan)
+	- [`webhook_sink_config`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#webhook-sink-config)
 
 For example of using `molt fetch` in `failback` mode, see [Fail back securely from CockroachDB](#fail-back-securely-from-cockroachdb).
 
@@ -1046,13 +1046,13 @@ molt fetch \
 	}
 	~~~
 
-	`client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, `base64 -i ./client.crt | jq -R -r '@uri'`).
+	`client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, `base64 -i ./client.crt | jq -R -r '@uri'`).
 
 	{{site.data.alerts.callout_success}}
 	For details on the default changefeed settings and how to override them, see [Fail back to source database](#fail-back-to-source-database).
 	{{site.data.alerts.end}}
 
-The preceding `molt fetch` command issues the equivalent [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) command, using the default and explicitly overriden changefeed settings:
+The preceding `molt fetch` command issues the equivalent [`CREATE CHANGEFEED`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}) command, using the default and explicitly overriden changefeed settings:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
