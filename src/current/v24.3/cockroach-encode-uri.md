@@ -35,7 +35,7 @@ The `encode-uri` command supports the following flags. All flags are optional.
 
 Flag          | Description
 --------------|-----------
-`--inline`    | Whether to inline certificates for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication.md %}). Defaults to `false`.
+`--inline`    | Whether to inline certificates for [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}). Defaults to `false`.
 `--user`      | {% include_cached new-in.html version="v24.3" %}Include the specified username in the connection string. If omitted, no username is set.
 `--database`  | Include the specified database in the connection string. Defaults to `defaultdb`.
 `--cluster`   | The virtual cluster to connect to. Defaults to `system`.
