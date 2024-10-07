@@ -6838,7 +6838,7 @@
 
 - release_name: v24.3.0-alpha.1
   major_version: v24.3
-  release_date: '2024-10-08'
+  release_date: '2024-10-09'
   release_type: Testing
   go_version: go1.22.5
   sha: 2e408b09d11e5486eadf8e47a2fc29ecbd77eda9
