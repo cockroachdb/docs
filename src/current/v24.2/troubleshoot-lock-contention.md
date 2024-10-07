@@ -1,6 +1,6 @@
 ---
 title: Troubleshoot Lock Contention
-summary: This tutorial presents how to understand lock contention, how to identify waiting and blocking transactions using intelligent insights, and possible ways to remediate lock contention.
+summary: This tutorial presents how to understand lock contention, how to identify waiting and blocking transactions, and possible ways to remediate lock contention.
 toc: true
 ---
 
