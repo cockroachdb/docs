@@ -199,28 +199,44 @@ The `SELECT` statement should output the following:
 
 This section of the tutorial uses the [**Insights** page]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view) of the DB Console to identify waiting and block transactions in the demo cluster. With a CockroachDB Cloud cluster, the Cloud Console has a similar [**Insights** page]({% link cockroachcloud/insights-page.md %}#transaction-executions-view). You can also use the [`crdb_internal`]({% link {{ page.version.version }}/performance-recipes.md %}#identify-transactions-and-objects-that-experienced-lock-contention) system catalog to view tables and indexes that experienced contention.
 
-When troubleshooting lock contention in your own workloads, adapt the following steps using the DB Console or the Cloud Console.
+While this tutorial uses the data from Example 1(#example-1), when troubleshooting lock contention in your own workload, you can adapt the following steps using the DB Console or the Cloud Console.
 
 ### High Contention insight events
 
-After executing the three transactions in the previous section, open the [DB Console](#db-console) for the demo cluster. Navigate to the **Insights** page. Switch to the **Transactions Executions** view.
+After executing the three transactions in the previous section, open the [DB Console](#db-console) for the demo cluster. Navigate to the **Insights** page and select **Workload Insights** > **Transactions Executions** view.
 
-image lock-contention-transactions-executions_view.png
+<img src="{{ 'images/v24.2/troubleshoot-lock-contention-transaction-executions-view.png' | relative_url }}" alt="Transaction Executions view" style="border:1px solid #eee;max-width:100%" />
 
 Depending on when you executed the three transactions, to see Insight events, you may have to select a longer time interval, such as **Past 6 Hours**.
 
-image lock-contention-time-interval.png
+<img src="{{ 'images/v24.2/troubleshoot-lock-contention-time-interval.png' | relative_url }}" alt="Time interval" style="border:1px solid #eee;max-width:100%" />
 
-With an adequate time interval, you should see the 2 high contention events that we reproduced in Example 1.
+With an adequate time interval, two [**High Contention**]({% link {{ page.version.version }}/ui-insights-page.md %}#high-contention) events will be listed for the waiting transactions that experienced contention, **Transaction 2** and **Transaction 3** executed in Example 1.
 
-image lock-contention-high-contention.png
+<img src="{{ 'images/v24.2/troubleshoot-lock-contention-high-contention.png' | relative_url }}" alt="High Contention" style="border:1px solid #eee;max-width:100%" />
 
-Click on Latest Transaction Execution ID
-The execution ID of the latest execution with the transaction fingerprint.
+### Waiting statement
 
+To identify the exact statement in the transaction that experienced high contention, click the **Latest Transaction Execution ID**
+452da3e7-e7fa-4801-aa40-c59988d14eb6, the ID of the latest execution with the given [transaction fingerprint]({% link {{ page.version.version }}/ui-transactions-page.md %}).
 
+On the **Transaction Execution** page, navigate to the **Statement Executions** tab. In the list of statement executions, in the **Insights** column for `SELECT * FROM t where k = _`, there should be the **High Contention** event. In Example 1, Transaction 2 had one statement (other than `SHOW database`). In a transaction with multiple statements, use this page to pinpoint the exact statement that experienced high contention.
 
+<img src="{{ 'images/v24.2/troubleshoot-lock-contention-waiting-statement.png' | relative_url }}" alt="Waiting statement" style="border:1px solid #eee;max-width:100%" />
 
+### Blocking transaction
+
+To identify the transaction that blocked **Transaction 2** and caused it to experience high contention, navigate back to the **Overview** tab.
+
+<img src="{{ 'images/v24.2/troubleshoot-lock-contention-overview-tab.png' | relative_url }}" alt="Overview tab" style="border:1px solid #eee;max-width:100%" />
+
+Scroll to the bottom of the Overview tab to the **Transaction with ID 452da3e7-e7fa-4801-aa40-c59988d14eb6 waited on** section which gives information about the blocking transaction.
+
+<img src="{{ 'images/v24.2/troubleshoot-lock-contention-blocking-transaction.png' | relative_url }}" alt="Blocking transaction" style="border:1px solid #eee;max-width:100%" />
+
+For more information about the blocking transaction, click the **Transaction Fingerprint ID** 08d8b7d97f830463 to open the [**Transaction Details** page]({% link {{ page.version.version }}/ui-transactions-page.md %}#transaction-details-page).
+
+<img src="{{ 'images/v24.2/troubleshoot-lock-contention-blocking-transaction-details.png' | relative_url }}" alt="Blocking transaction details" style="border:1px solid #eee;max-width:100%" />
 
 ## Remediate lock contention
 
