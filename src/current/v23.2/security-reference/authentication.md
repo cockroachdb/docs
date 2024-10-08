@@ -34,10 +34,10 @@ username/password combination              |      ✓              |           �
 [certificate]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %})              |      &nbsp;         |           ✓                    |    ✓
 GSS                   |      &nbsp;         |           &nbsp;               |    ✓
 
-All options also support the following no-op 'authentication methods' (authentication is not actually performed):
+All options also support the following no-op 'authentication methods', which do not perform authentication:
 
 - `reject`: unconditionally rejects the connection attempt.
-- `trust`: unconditionally rejects the connection attempt.
+- `trust`: unconditionally accepts the connection attempt.
 
 ### HBA configuration syntax
 
@@ -72,8 +72,8 @@ Each rule definition contains up to 6 values.
   - `cert-password`: user may authenticate with either a certificate or a password. Additionally, the server may use a [SCRAM]({% link {{ page.version.version }}/security-reference/scram-authentication.md %}) exchange, if the cluster setting `server.user_login.cert_password_method.auto_scram_promotion.enabled` is set to `true`.
   - `cert-scram-sha-25`: user may authenticate with either a certificate or a [SCRAM]({% link {{ page.version.version }}/security-reference/scram-authentication.md %}) exchange.
   - `gss`: user may authenticate with a GSSAPI token.
-  - `reject`: server rejects connection without performing authentication.
-  - `trust`: server allows connection without performing authentication.
+  - `reject`: server unconditionally rejects connection without performing authentication.
+  - `trust`: server unconditionally allows connection without performing authentication.
 
 ## The unstated, unchangeable `root` access rule
 
@@ -100,15 +100,15 @@ The default authentication configuration for CockroachDB {{ site.data.products.s
    host    all           all         all           password
 ```
 
-This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data. It is a best practice to [configure SQL authentication for hardened CockroachDB cluster security]({% link {{ page.version.version }}/security-reference/config-secure-hba.md %}).
+This is convenient for quick usage and experimentation, but is not suitable for clusters containing production data. It is a best practice to [configure SQL authentication for hardened CockroachDB cluster security]({% link {{ page.version.version }}/security-reference/config-secure-hba.md %}).
 
 ### CockroachDB {{ site.data.products.advanced }}
 
-CockroachDB {{ site.data.products.advanced }} clusters enforce IP allow-listing, which must be configured through the CockroachDB Cloud Console.
+CockroachDB {{ site.data.products.advanced }} clusters enforce IP allowlisting. Each cluster has an allowlist, which is configured through the CockroachDB Cloud Console.
 
 See [Managing Network Authorization for CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/network-authorization.md %}).
 
-### CockroachDB Self-Hosted
+### CockroachDB {{ site.data.products.core }}
 
 CockroachDB {{ site.data.products.core }} deploys with the following default HBA configuration:
 
