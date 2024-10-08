@@ -37,7 +37,7 @@ These are Cockroach Labs recommendations for settings common to most connection 
 
 ### Set the maximum lifetime of connections
 
-The maximum lifetime of a connection should be set to between 5 and 30 minutes. {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} support 30 minutes as the maximum connection lifetime. When a node is shut down or restarted, client connections can be reset after 30 minutes, causing a disruption to applications.
+The maximum lifetime of a connection should be set to between 5 and 30 minutes. CockroachDB {{ site.data.products.cloud }} clusters support 30 minutes as the maximum connection lifetime. When a node is shut down or restarted, client connections can be reset after 30 minutes, causing a disruption to applications.
 
 Cockroach Labs recommends starting with a 5 minute maximum connection lifetime and increasing the connection lifetime if there is an impact on tail latency, normally seen when there are large numbers of connections to a cluster. Setting the connection lifetime below 5 minutes is possible, but there is little benefit, and comes at a cost of increased CPU usage for clients and servers. The maximum connection lifetime changes the [rate of new connections per second](#monitor-new-connections) (i.e., average new connections per second = total connections / maximum connection age).
 
@@ -72,8 +72,8 @@ Validating connections is typically handled automatically by the connection pool
 ## Size connection pools
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="serverless"><strong>{{ site.data.products.serverless }}</strong></button>
-  <button class="filter-button page-level" data-scope="dedicated"><strong>{{ site.data.products.dedicated }}</strong></button>
+  <button class="filter-button page-level" data-scope="shared"><strong>{{ site.data.products.basic }}/{{ site.data.products.standard }}</strong></button>
+  <button class="filter-button page-level" data-scope="advanced"><strong>{{ site.data.products.advanced }}</strong></button>
   <button class="filter-button page-level" data-scope="selfhosted"><strong>{{ site.data.products.core }}</strong></button>
 </div>
 
@@ -81,9 +81,9 @@ If your connection pool is properly configured, the total number of connections 
 
 Idle connections in CockroachDB do not consume many resources compared to PostgreSQL. Unlike PostgreSQL, which has a hard limit of 5000 connections, CockroachDB can safely support tens of thousands of connections.
 
-<section class="filter-content" markdown="1" data-scope="serverless">
+<section class="filter-content" markdown="1" data-scope="shared">
 
-The [SQL Connection Attempts graph]({% link cockroachcloud/metrics-page.md %}#identify-sql-problems) shows how many new connections are being created each second. The [SQL Open Sessions graph]({% link cockroachcloud/metrics-page.md %}#sql-open-sessions) shows the total number of SQL client connections across the cluster. To determine if your connection pool is correctly configured use the metrics from these graphs in the following formula:
+The [SQL Connection graph]({% link cockroachcloud/metrics-sql.md %}#sql-connections) shows how many new connections are being created each second. The [Open SQL Sessions graph]({% link cockroachcloud/metrics-sql.md %}#open-sql-sessions) shows the total number of SQL client connections across the cluster. To determine if your connection pool is correctly configured use the metrics from these graphs in the following formula:
 
 **SQL Connection Attempts < SQL Open Sessions/100**
 
@@ -93,11 +93,11 @@ Configure the minimum number of connections to equal to the maximum number of co
 
 Configure the maximum connection lifetime to 30 minutes.
 
-Multi-region {{ site.data.products.serverless }} clusters have the same recommendations as single-region clusters.
+Multi-region {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters have the same recommendations as single-region clusters.
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
+<section class="filter-content" markdown="1" data-scope="advanced selfhosted">
 
 Use the following formula to size the connection pool:
 
@@ -121,19 +121,19 @@ To validate that your connection pool is correctly configured, monitor the SQL c
 
 ### Monitor new connections
 
-<section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
+<section class="filter-content" markdown="1" data-scope="advanced selfhosted">
 The [`sql.new_conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [SQL Connection Rate graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-connection-rate) expose the number of new SQL connections per second.
 </section>
 
-<section class="filter-content" markdown="1" data-scope="serverless">
-The [SQL Connection Attempts graph]({% link cockroachcloud/metrics-page.md %}#identify-sql-problems) shows the number of new SQL connections per second.
+<section class="filter-content" markdown="1" data-scope="shared">
+The [SQL Connections graph]({% link cockroachcloud/metrics-sql.md %}#sql-connections) shows the number of new SQL connections per second.
 </section>
 
 A misconfigured connection pool will result in most database operations requiring a new connection to be established, which will increase query latency.
 
 ### Monitor active connections
 
-<section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
+<section class="filter-content" markdown="1" data-scope="advanced selfhosted">
 
 The [`sql.conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [Open SQL Sessions graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#open-sql-sessions) show the number of open connections on your cluster or node.
 
@@ -149,9 +149,9 @@ Reducing the number of active connections may increase overall throughput, possi
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="serverless">
+<section class="filter-content" markdown="1" data-scope="shared">
 
-The [SQL Open Sessions graph]({% link cockroachcloud/metrics-page.md %}#sql-open-sessions) shows the number of open connections on your cluster.
+The [Open SQL Sessions graph]({% link cockroachcloud/metrics-sql.md %}#open-sql-sessions) shows the number of open connections on your cluster.
 
 </section>
 
@@ -160,7 +160,7 @@ If your connection pool is properly configured, the total number of open connect
 ## Serverless functions
 
 {{site.data.alerts.callout_info}}
-"Serverless" here refers to stateless, programmatic functions deployed in a cloud environment that provides an execution framework to provision resources dynamically, such as Amazon Lambda functions. It does not refer to {{ site.data.products.serverless }} clusters. Serverless functions can be used with CockroachDB {{ site.data.products.serverless }}, {{ site.data.products.dedicated }}, and {{ site.data.products.core }} clusters.
+"Serverless" refers to stateless, programmatic functions deployed in a cloud environment that provides an execution framework to provision resources dynamically, such as Amazon Lambda functions.
 {{site.data.alerts.end}}
 
 If your application uses serverless functions to connect to CockroachDB, use a connection pool if you plan to invoke functions frequently. To ensure that the connection pool is reused across invocations of the same function instance, initialize the connection pool variable outside the scope of the serverless function definition. Set the maximum connection pool size to 1, unless your function is multi-threaded and establishes multiple concurrent requests to your database within a single function instance.

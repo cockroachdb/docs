@@ -98,7 +98,7 @@ In most cases, **it's recommended to take nightly full backups of your cluster**
 - Restore database(s) from the cluster
 - Restore a full cluster
 
-[Full cluster backups]({% link {{ page.version.version }}/backup.md %}#back-up-a-cluster) include [Enterprise license keys]({% link {{ page.version.version }}/enterprise-licensing.md %}). When you [restore]({% link {{ page.version.version }}/restore.md %}) a full cluster backup that includes Enterprise license, the Enterprise license is also restored.
+[Full cluster backups]({% link {{ page.version.version }}/backup.md %}#back-up-a-cluster) include [Enterprise license keys]({% link {{ page.version.version }}/enterprise-licensing.md %}). When you [restore]({% link {{ page.version.version }}/restore.md %}) a full cluster backup that includes an Enterprise license, the Enterprise license is also restored.
 
 {% include {{ page.version.version }}/backups/file-size-setting.md %}
 

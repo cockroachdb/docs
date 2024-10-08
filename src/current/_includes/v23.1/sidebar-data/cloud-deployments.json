@@ -15,69 +15,75 @@
         ]
     },
     {
-        "title": "Serverless Deployments",
+        "title": "Basic Deployments",
         "items": [
             {
-                "title": "Plan a Serverless Cluster",
+                "title": "Plan a Basic Cluster",
                 "urls": [
-                    "/cockroachcloud/plan-your-cluster-serverless.html"
+                    "/cockroachcloud/plan-your-cluster-basic.html"
                 ]
             },
             {
-                "title": "Create a Serverless Cluster",
+                "title": "Create a Basic Cluster",
                 "urls": [
-                    "/cockroachcloud/create-a-serverless-cluster.html"
+                    "/cockroachcloud/create-a-basic-cluster.html"
                 ]
             },
             {
-                "title": "Connect to a Serverless Cluster",
+                "title": "Connect to a Basic Cluster",
                 "urls": [
-                    "/cockroachcloud/connect-to-a-serverless-cluster.html"
+                    "/cockroachcloud/connect-to-a-basic-cluster.html"
                 ]
             },
             {
-                "title": "Understand your Serverless Resource Usage",
+                "title": "Understand your Resource Usage",
                 "urls": [
-                    "/cockroachcloud/serverless-resource-usage.html"
+                    "/cockroachcloud/resource-usage-basic.html"
                 ]
             },
             {
-            "title": "Manage a Serverless Cluster",
+            "title": "Manage a Basic Cluster",
             "urls": [
-                "/cockroachcloud/serverless-cluster-management.html"
+                "/cockroachcloud/basic-cluster-management.html"
                     ]
             },
             {
-                "title": "Provision a Serverless Cluster with Terraform",
+                "title": "Provision a Basic Cluster with Terraform",
                 "urls": [
-                    "/cockroachcloud/provision-a-cluster-with-terraform.html"
+                    "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=basic"
                 ]
             }
         ]
     },
     {
-        "title": "Dedicated Deployments",
+        "title": "Standard Deployments",
         "items": [
             {
-            "title": "Plan a Dedicated Cluster",
+            "title": "Plan a Standard Cluster",
             "urls": [
                 "/cockroachcloud/plan-your-cluster.html"
             ]
             },
             {
-            "title": "Create a Dedicated Cluster",
+            "title": "Create a Standard Cluster",
             "urls": [
                 "/cockroachcloud/create-your-cluster.html"
             ]
             },
             {
-            "title": "Connect to a Dedicated Cluster",
+            "title": "Connect to a Standard Cluster",
             "urls": [
                 "/cockroachcloud/connect-to-your-cluster.html"
             ]
             },
             {
-            "title": "Manage a Dedicated Cluster",
+                "title": "Understand your Resource Usage",
+                "urls": [
+                    "/cockroachcloud/resource-usage.html"
+                ]
+            },
+            {
+            "title": "Manage a Standard Cluster",
             "urls": [
                 "/cockroachcloud/cluster-management.html"
             ]
@@ -89,21 +95,56 @@
             ]
             },
             {
-            "title": "Provision a Dedicated Cluster with Terraform",
+            "title": "Provision a Standard Cluster with Terraform",
             "urls": [
-                "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=dedicated"
+                "/cockroachcloud/provision-a-cluster-with-terraform.html"
+            ]
+            }
+        ]
+    },
+    {
+        "title": "Advanced Deployments",
+        "items": [
+            {
+            "title": "Plan an Advanced Cluster",
+            "urls": [
+                "/cockroachcloud/plan-your-cluster-advanced.html"
             ]
             },
             {
-            "title": "CockroachDB Dedicated on Azure",
+            "title": "Create an Advanced Cluster",
             "urls": [
-                "/cockroachcloud/cockroachdb-dedicated-on-azure.html"
+                "/cockroachcloud/create-an-advanced-cluster.html"
             ]
             },
             {
-            "title": "Migrate from Serverless to Dedicated",
+            "title": "Connect to an Advanced Cluster",
             "urls": [
-                "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
+                "/cockroachcloud/connect-to-an-advanced-cluster.html"
+            ]
+            },
+            {
+            "title": "Manage an Advanced Cluster",
+            "urls": [
+                "/cockroachcloud/advanced-cluster-management.html"
+            ]
+            },
+            {
+            "title": "Move into Production",
+            "urls": [
+                "/cockroachcloud/production-checklist.html"
+            ]
+            },
+            {
+            "title": "Provision a Advanced Cluster with Terraform",
+            "urls": [
+                "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=advanced"
+            ]
+            },
+            {
+            "title": "CockroachDB Advanced on Azure",
+            "urls": [
+                "/cockroachcloud/cockroachdb-advanced-on-azure.html"
             ]
             }
         ]
@@ -128,27 +169,15 @@
             "title": "Customer-Managed Encryption Keys (CMEK)",
             "items": [
                 {
-                "title": "Manage CMEK for Dedicated",
-                "urls": [
-                    "/cockroachcloud/managing-cmek.html"
-                ]
-                },
-                {
-                "title": "Provision AWS for CMEK",
-                "urls": [
-                    "/cockroachcloud/cmek-ops-aws.html"
-                ]
-                },
-                {
-                "title": "Provision GCP for CMEK",
-                "urls": [
-                    "/cockroachcloud/cmek-ops-gcp.html"
-                ]
-                },
-                {
-                "title": "Customer-Managed Encryption Keys (CMEK) Overview",
+                "title": "Overview",
                 "urls": [
                     "/cockroachcloud/cmek.html"
+                ]
+                },
+                {
+                "title": "Manage CMEK",
+                "urls": [
+                    "/cockroachcloud/managing-cmek.html"
                 ]
                 }
             ]
@@ -157,7 +186,7 @@
             "title": "Compliance",
             "items": [
                 {
-                    "title": "Compliance in Dedicated",
+                    "title": "Compliance in Advanced",
                     "urls": [
                       "/cockroachcloud/compliance.html"
                     ]
@@ -204,9 +233,9 @@
                         ]
                     },
                     {
-                        "title": "SQL Client Certificate Authentication for Dedicated Clusters",
+                        "title": "SQL Client Certificate Authentication for Advanced Clusters",
                         "urls": [
-                        "/cockroachcloud/client-certs-dedicated.html"
+                        "/cockroachcloud/client-certs-advanced.html"
                         ]
                     }
                 ]
@@ -267,15 +296,21 @@
                         ]
                     },
                     {
-                    "title": "Export Cloud Organization Audit Logs",
-                    "urls": [
+                       "title": "Export Cloud Organization Audit Logs",
+                        "urls": [
                         "/cockroachcloud/cloud-org-audit-logs.html"
                         ]
                     },
                     {
-                        "title": "Export Logs From CockroachDB {{ site.data.products.dedicated }}",
+                        "title": "Export Logs From CockroachDB {{ site.data.products.standard }}",
                         "urls": [
                         "/cockroachcloud/export-logs.html"
+                        ]
+                    },
+                    {
+                        "title": "Export Logs From CockroachDB {{ site.data.products.advanced }}",
+                        "urls": [
+                        "/cockroachcloud/export-logs-advanced.html"
                         ]
                     }
                 ]
@@ -329,7 +364,7 @@
                   {
                     "title": "Metrics Page",
                     "urls": [
-                      "/cockroachcloud/metrics-page.html"
+                      "/cockroachcloud/metrics.html"
                     ]
                   },
                   {
@@ -380,15 +415,21 @@
                     ]
                   },
                   {
-                    "title": "Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster",
+                    "title": "Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster",
                     "urls": [
                       "/cockroachcloud/export-metrics.html"
                     ]
                   },
                   {
-                    "title": "Essential Metrics for CockroachDB {{ site.data.products.dedicated }} Deployments",
+                    "title": "Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster",
                     "urls": [
-                      "/${VERSION}/essential-metrics-dedicated.html"
+                      "/cockroachcloud/export-metrics-advanced.html"
+                    ]
+                  },
+                  {
+                    "title": "Essential Metrics for CockroachDB {{ site.data.products.advanced }} Deployments",
+                    "urls": [
+                      "/${VERSION}/essential-metrics-advanced.html"
                     ]
                   }
                 ]
@@ -399,13 +440,13 @@
                     {
                         "title": "Use Managed-Service Backups",
                         "urls": [
-                          "/cockroachcloud/use-managed-service-backups.html"
+                          "/cockroachcloud/managed-backups.html"
                         ]
                     },
                     {
                         "title": "Take and Restore Customer-Owned Backups on CockroachDB Cloud",
                         "urls": [
-                          "/cockroachcloud/take-and-restore-customer-owned-backups.html"
+                          "/cockroachcloud/take-and-restore-self-managed-backups.html"
                         ]
                     }
                 ]
@@ -426,12 +467,6 @@
                         ]
                     },
                     {
-                        "title": "Upgrade to v23.2 Pre-Production Preview",
-                        "urls": [
-                            "/cockroachcloud/upgrade-to-v23.2.html"
-                        ]
-                    },
-                    {
                         "title": "Upgrade to v23.1",
                         "urls": [
                             "/cockroachcloud/upgrade-to-v23.1.html"
@@ -447,30 +482,6 @@
                         "title": "Upgrade to v22.1",
                         "urls": [
                             "/cockroachcloud/upgrade-to-v22.1.html"
-                        ]
-                    },
-                    {
-                        "title": "Upgrade to v21.2",
-                        "urls": [
-                            "/cockroachcloud/upgrade-to-v21.2.html"
-                        ]
-                    },
-                    {
-                        "title": "Upgrade to v21.1",
-                        "urls": [
-                            "/cockroachcloud/upgrade-to-v21.1.html"
-                        ]
-                    },
-                    {
-                        "title": "Upgrade to v20.2",
-                        "urls": [
-                            "/cockroachcloud/upgrade-to-v20.2.html"
-                        ]
-                    },
-                    {
-                        "title": "Upgrade to v20.1",
-                        "urls": [
-                            "/cockroachcloud/upgrade-to-v20.1.html"
                         ]
                     }
                     ]

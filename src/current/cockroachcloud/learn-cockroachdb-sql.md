@@ -8,12 +8,12 @@ docs_area: get_started
 This tutorial walks you through some of the most important CockroachDB SQL statements. For a list of all supported SQL statements, see [SQL Statements]({% link {{site.current_cloud_version}}/sql-statements.md %}).
 
 {{site.data.alerts.callout_info}}
-This tutorial is for {{site.data.products.dedicated}} or {{site.data.products.serverless}} users.
+This tutorial requires a cluster deployed on {{ site.data.products.cloud }}.
 {{site.data.alerts.end}}
 
 ## Before you begin
 
-Make sure that you can connect the [`cockroach-sql`]({% link {{site.current_cloud_version}}/cockroach-sql-binary.md %}) client to a [{{site.data.products.serverless}}](connect-to-a-serverless-cluster.html?filters=cockroachdb-client) or [{{site.data.products.dedicated}}]({% link cockroachcloud/connect-to-your-cluster.md %}) cluster.
+Make sure that you can connect the [`cockroach-sql`]({% link {{site.current_cloud_version}}/cockroach-sql-binary.md %}) client to a {{ site.data.products.cloud }} cluster.
 
 ## Create a database
 
@@ -375,9 +375,6 @@ DROP DATABASE bank;
 - [Build a Simple CRUD Python App with CockroachDB and SQLAlchemy]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-sqlalchemy.md %})
 - [Build a Python App with CockroachDB and Django]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.md %})
 - [Build a Simple CRUD Go App with CockroachDB and the Go pgx Driver]({% link {{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.md %})
-- [Connect to a {{site.data.products.serverless}} cluster](connect-to-a-serverless-cluster.html?filters=cockroachdb-client)
-- [Connect to a {{site.data.products.dedicated}} cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
-- [Serverless FAQs]({% link cockroachcloud/serverless-faqs.md %})
-- [Dedicated FAQs]({% link cockroachcloud/frequently-asked-questions.md %})
+- [Connect to a {{site.data.products.standard}} cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
 - [SQL FAQs]({% link {{site.current_cloud_version}}/drop-database.md %})
 - [SQL Statements]({% link {{site.current_cloud_version}}/sql-statements.md %})

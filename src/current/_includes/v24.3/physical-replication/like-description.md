@@ -1,0 +1,1 @@
+Including the `LIKE template` parameter ensures that the virtual cluster on the standby is created with the correct capabilities, which manage what the virtual cluster can do. `LIKE` will refer to a virtual cluster on the CockroachDB cluster you're running the statement from.

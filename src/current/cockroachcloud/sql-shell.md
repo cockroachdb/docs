@@ -18,8 +18,8 @@ To use this feature, select a cluster from the [**Clusters** page](cluster-manag
 
 - All statements in the SQL Shell are executed within a transaction, so you cannot use the [SET CLUSTER SETTING]({% link {{ site.current_cloud_version }}/set-cluster-setting.md %}) statement to configure cluster settings.
 - The SQL Shell does not yet support sessions.
-- The SQL Shell is available to CockroachDB {{ site.data.products.cloud }} users with the [Cluster Administrator role]({% link cockroachcloud/managing-access.md %}).
-- The SQL Shell is not available by default for CockroachDB {{ site.data.products.dedicated }} advanced clusters. To get access to the SQL Shell for your CockroachDB {{ site.data.products.dedicated }} advanced cluster, [contact us](https://support.cockroachlabs.com/hc/en-us).
+- The SQL Shell is not available for CockroachDB {{ site.data.products.advanced }} clusters with [additional security add-ons configured]({% link cockroachcloud/managing-access.md %}).
+- The SQL Shell is available to CockroachDB {{ site.data.products.cloud }} users with the [Cluster Administrator role]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features).
 
 ## Overview
 
@@ -33,7 +33,7 @@ You can select any statement that you've previously run and copy it, edit it, or
 
 ## Example workflow
 
-The following examples assume you have already [created a CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) and have [access](#limitations) to the SQL Shell.
+The following examples assume you have already [created a CockroachDB {{ site.data.products.cloud }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) and have [access](#limitations) to the SQL Shell.
 
 1. In the SQL Shell, run [`CREATE TABLE`]({% link {{ site.current_cloud_version }}/create-table.md %}) followed by a table name, the column names, and the [data type]({% link {{ site.current_cloud_version }}/data-types.md %}) and [constraint]({% link {{ site.current_cloud_version }}/constraints.md %}), if any, for each column:
 
@@ -90,7 +90,7 @@ The following examples assume you have already [created a CockroachDB {{ site.da
       3  | 3 | Blue
       4  | 4 | Clifford
     ~~~
-    
+
     Note that each line of a query's results will be numbered independently of the output. This is for readability and will not be shown in any exported data.
 
 1. Click **Export results** to download a CSV file of the output.
