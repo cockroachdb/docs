@@ -4,4 +4,4 @@ destination: _site/docs
 homepage_title: CockroachDB Docs
 versions:
   stable: v24.2
-  dev: v24.2
+  dev: v24.3
