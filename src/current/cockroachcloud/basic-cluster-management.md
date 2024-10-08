@@ -22,7 +22,7 @@ The **Overview** page displays details about the selected CockroachDB {{ site.da
 ## Estimate usage cost
 
 {{site.data.alerts.callout_info}}
-This feature is not available if your organization is billed through [Credits]({% link cockroachcloud/billing-management.md %}#view-credits-balance).
+This feature is not available if your organization is billed through [Credits]({% link cockroachcloud/billing-management.md %}).
 {{site.data.alerts.end}}
 
 The monthly cost estimate is calculated using simple extrapolation that assumes your workload during the selected time frame is an accurate representation of your workload over the month. If you haven't been running a workload for at least the length of the selected time frame, your results will be inaccurate.

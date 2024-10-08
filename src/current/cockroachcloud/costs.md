@@ -50,20 +50,20 @@ This section summarizes key details about each plan to help you make the best ch
   <tr>
     <td>[Managed backup]({% link cockroachcloud/managed-backups.md %}) storage</td>
     <td>Daily backups included in Request Unit costs</td>
-    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based metrics Preview](#usage-based-metrics-in-preview).</td>
-    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based metrics Preview](#usage-based-metrics-in-preview).</td>
+    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based billing metrics Preview](#usage-based-billing-metrics-in-preview).</td>
+    <td>Usage-based, varies per cloud provider and region.<br /><br />Currently not charged during [Usage-based billing metrics Preview](#usage-based-billing-metrics-in-preview).</td>
   </tr>
   <tr>
     <td>[Data transfer](#data-transfer)</td>
     <td>Usage-based via Request Units</td>
-    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based metrics Preview](#usage-based-metrics-in-preview)</td>
-    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based metrics Preview](#usage-based-metrics-in-preview)</td>
+    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based billing metrics Preview](#usage-based-billing-metrics-in-preview)</td>
+    <td>Usage-based; cloud provider list price<br /><br />Currently not charged during [Usage-based billing metrics Preview](#usage-based-billing-metrics-in-preview)</td>
   </tr>
   <tr>
     <td>[Change Data Capture]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %})</td>
     <td>Usage-based via Request Units</td>
-    <td>Usage-based.<br /><br />Currently not charged during [Usage-based metrics Preview](#usage-based-metrics-in-preview)</td>
-    <td>Usage-based.<br /><br />Currently not charged during [Usage-based metrics Preview](#usage-based-metrics-in-preview)</td>
+    <td>Usage-based.<br /><br />Currently not charged during [Usage-based billing metrics Preview](#usage-based-billing-metrics-in-preview)</td>
+    <td>Usage-based.<br /><br />Currently not charged during [Usage-based billing metrics Preview](#usage-based-billing-metrics-in-preview)</td>
   </tr>
 </tbody>
 </table>
@@ -158,7 +158,7 @@ For CockroachDB {{ site.data.products.basic }}, data transfer is included in the
 <section class="filter-content" markdown="1" data-scope="standard">
 
 {{site.data.alerts.callout_info}}
-Customers will not be charged for data transfer for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} clusters during the current [Preview](#usage-based-metrics-in-preview) of usage-based metrics.
+Customers will not be charged for data transfer for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} clusters during the current [Preview](#usage-based-billing-metrics-in-preview) of usage-based metrics.
 {{site.data.alerts.end}}
 
 For CockroachDB Standard and Advanced, CockroachDB Cloud bills directly to customers based on their usage with a zero-dollar rate during the preview period.
@@ -184,7 +184,7 @@ This is the usage for any data leaving CockroachDB such as SQL data being sent t
 <section class="filter-content" markdown="1" data-scope="advanced">
 
 {{site.data.alerts.callout_info}}
-Customers will not be charged for data transfer for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} clusters during the current [Preview](#usage-based-metrics-in-preview) of usage-based metrics.
+Customers will not be charged for data transfer for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} clusters during the current [Preview](#usage-based-billing-metrics-in-preview) of usage-based metrics.
 {{site.data.alerts.end}}
 
 For CockroachDB Standard and Advanced, CockroachDB Cloud bills directly to customers based on their usage with a zero-dollar rate during the preview period.
@@ -221,7 +221,7 @@ In CockroachDB {{ site.data.products.basic }}, Change Data Capture (CDC) cost is
 In CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }}, CDC is billed monthly based on usage, determined by the total GiB-Month watched across all of a cluster’s changefeeds. The per-GiB unit price is tiered, based on the total watched: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
 
 {{site.data.alerts.callout_info}}
-Customers will not be charged for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} changefeed usage during the current [Preview](#usage-based-metrics-in-preview) of usage-based metrics.
+Customers will not be charged for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} changefeed usage during the current [Preview](#usage-based-billing-metrics-in-preview) of usage-based metrics.
 {{site.data.alerts.end}}
 
 </section>
@@ -231,16 +231,23 @@ Customers will not be charged for CockroachDB {{ site.data.products.standard }} 
 In CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }}, CDC is billed monthly based on usage, determined by the total GiB-Month watched across all of a cluster’s changefeeds. The per-GiB unit price is tiered, based on the total watched: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
 
 {{site.data.alerts.callout_info}}
-Customers will not be charged for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} changefeed usage during the current [Preview](#usage-based-metrics-in-preview) of usage-based metrics.
+Customers will not be charged for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} changefeed usage during the current [Preview](#usage-based-billing-metrics-in-preview) of usage-based metrics.
 {{site.data.alerts.end}}
 
 </section>
 
-## Usage-based metrics in Preview
+## Usage-based billing metrics in Preview
 
-Usage-based metrics for [data transfer](#data-transfer), [managed backup storage](#storage), and [changefeeds](#changefeeds) are in [Preview]({% link {{site.current_cloud_version }}/cockroachdb-feature-availability.md %}#features-in-preview). You can view the usage of these metrics in your invoice page under **Billing**.
+Metering for usage-based billing of data transfer, managed backup storage, and changefeeds is now in [Preview]({% link {{site.current_cloud_version }}/cockroachdb-feature-availability.md %}) for all CockroachDB Cloud organizations.
 
-There will be no additional charges for these metrics during the preview period, which is in effect until December, 2024. During this time, charges will appear as $0 on your monthly invoice.
+- [Usage metrics]({% link cockroachcloud/costs.md %}) for data transfer, managed backup storage, and changefeeds are now visible for CockroachDB Standard and Advanced clusters in the CockroachDB Cloud Console. You can view your usage across these metrics on the [Billing page](https://cockroachlabs.cloud/billing/overview) and on invoices.
+- There will be no usage-based charges associated with these metrics during the preview period, which is in effect through November 30, 2024. During this time, line items with a charge of $0 will be shown for each metric on your monthly invoice.
+- We will share pricing for these usage-based costs by November 1, 2024.
+- On December 1, 2024, once the preview has ended, pricing for these metrics goes into effect immediately for new customers and customers billed monthly, and upon contract renewal for customers billed by invoice. 
+
+{{site.data.alerts.callout_info}}
+Bytes transferred for [managed backups]({% link cockroachcloud/managed-backups.md %}) on CockroachDB Standard are not yet metered under [Data Transfer]({% link cockroachcloud/costs.md %}#data-transfer) metrics. This will be implemented during the Preview period and be announced in a future release note.
+{{site.data.alerts.end}}
 
 ## Learn more
 
