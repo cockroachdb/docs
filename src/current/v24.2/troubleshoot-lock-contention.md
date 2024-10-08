@@ -245,7 +245,30 @@ For Transaction 3, take steps similar to the above steps for Transaction 2, to i
 
 ## Remediate lock contention
 
-### Create second table
+### Background context
+
+Locking conflicts are a natural artifact when business requirements call for concurrent data changes. Realistically, locking conflicts are unavoidable. The locking conflicts, however, are resolved efficiently with regard to the underlying resource utilization. When blocked transactions are waiting on a lock, they are not consuming CPU, disk, or network resources.
+
+Remediation is required when locking conflicts are too numerous, resulting in a significant increase in response time and/or decrease in throughput. Remediation of locking conflicts is typically about giving up some functionality in exchange for a reduction in locking contention. Example 2 uses two ways of doing this: [historical queries]({% link {{ page.version.version }}/as-of-system-time.md %}) and a ["fail fast" method]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies). Use these remediations if they fit your application design. Other possible ways to reduce lock conflicts are: [column families]({% link {{ page.version.version }}/column-families.md %}) and [secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}).
+
+### Historical queries
+
+Consider the following when using [historical queries]({% link {{ page.version.version }}/as-of-system-time.md %}):
+
+- Use historical queries only if the application can use data that is 5 seconds old or older.
+- Historical queries primarily benefit read-only transactions.
+- Historical queries operate below [closed timestamps]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) and therefore have perfect concurrency characteristics - they never wait on anything and never block anything.
+- Historical queries have the best possible performance, since they are served by the nearest replica.
+
+### &quot;fail fast&quot; method
+
+Consider the following when using a ["fail fast" method]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies):
+
+- &quot;Fail fast&quot; could be a reasonable protective measure in the application to handle "hot update key" situations, for example, when an application needs to be able to handle an arbitrary large surge of updates on the same key.
+- The most direct method of "failing fast" is using pessimistic locking with [SELECT FOR UPDATE … NOWAIT]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies). It can reduce or prevent failures late in a transaction's life (e.g. at the `COMMIT` time), by returning an error early in a contention situation if a row cannot be locked immediately.
+- A more &quot;buffered fail fast&quot; approach would be to control the maximum length of a lock wait-queue that requests are willing to enter and wait in, with the cluster setting  [`kv.lock_table.maximum_lock_wait_queue_length`](https://github.com/cockroachdb/cockroach/pull/66146) (default: `0`). It can provide some level of quality-of-service with a response time predictability in a severe per-key contention. If set to a non-zero value and an existing lock wait-queue is already equal to or exceeding this length, requests will be rejected eagerly instead of entering the queue and waiting.
+
+### Initial Data for Example 2
 
 In any of the SQL shells, create a second table and insert some data:
 
@@ -266,15 +289,15 @@ Transaction 4 (blocking write)   | Transaction 5 (historical read) | Transaction
 `UPDATE t2 SET v=4014 WHERE k=4;`| `BEGIN AS OF SYSTEM TIME '-30s';`|
 lock k=4                         | `SELECT * FROM t2 WHERE k=4;`| `BEGIN;`
                                  | not waiting                  | `SELECT * FROM t2 WHERE k=4 FOR UPDATE NOWAIT;`
-                                 | k=4,v=4                      | `UPDATE t2 SET v=4034 WHERE k=4;`
-`COMMIT;`                        |                              | not waiting
-success, k=4,v=4014              |                              |
-                                 | `COMMIT;`                    | `COMMIT;`
+                                 | k=4,v=4                      | error: could not obtain lock
+`COMMIT;`                        |                              | `UPDATE t2 SET v=4034 WHERE k=4;`
+success, k=4,v=4014              |                              | not waiting
+                                 | `COMMIT;`                    | `ROLLBACK;`
                                  | success                      | failure                                 
                                  |                              | `SELECT * FROM t2 WHERE k=4;`
                                  |                              | k=4, v=4014
 
-### SQL statements
+### SQL statements for Example 2
 
 To reproduce Example 2 in CockroachDB to show how to remediate a waiting read and write experiencing lock contention, execute the following SQL statements in the given order in the specified terminal.
 
@@ -337,11 +360,11 @@ COMMIT;
 
 **Terminal 3**
 
-`COMMIT` Transaction 6 and verify that the `UPDATE` has not succeeded:
+`ROLLBACK` Transaction 6 and verify that the `UPDATE` has not succeeded:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-COMMIT;
+ROLLBACK;
 SELECT * FROM t2 WHERE k=4;
 ~~~
 
@@ -353,4 +376,3 @@ The `SELECT` statement should output the following:
   4 | 4014
 (1 row)
 ~~~
-
