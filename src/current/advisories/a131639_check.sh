@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run from within an unziped debug.zip directory.
+# Run from within an unzipped debug.zip directory.
 set -euo pipefail
 
 # Check if ripgrep is installed.
