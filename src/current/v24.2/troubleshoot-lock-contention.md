@@ -129,7 +129,6 @@ To reproduce Example 1 in CockroachDB in preparation for the next section on how
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SET application_name = 'Transaction 4';  -- to distinguish between transactions
 BEGIN;
 UPDATE t SET v=2012 WHERE k=2; -- lock k=2
 ~~~
@@ -138,7 +137,6 @@ UPDATE t SET v=2012 WHERE k=2; -- lock k=2
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SET application_name = 'Transaction 5';  -- to distinguish between transactions
 BEGIN;
 SELECT * FROM t WHERE k=2; -- waiting read
 ~~~
@@ -147,7 +145,6 @@ SELECT * FROM t WHERE k=2; -- waiting read
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SET application_name = 'Transaction 6';  -- to distinguish between transactions
 BEGIN;
 UPDATE t SET v=2032 WHERE k=2; -- waiting write
 ~~~
@@ -249,9 +246,17 @@ For Transaction 3, take steps similar to the above steps for Transaction 2, to i
 
 Locking conflicts are a natural artifact when business requirements call for concurrent data changes. Realistically, locking conflicts are unavoidable. The locking conflicts, however, are resolved efficiently with regard to the underlying resource utilization. When blocked transactions are waiting on a lock, they are not consuming CPU, disk, or network resources.
 
-Remediation is required when locking conflicts are too numerous, resulting in a significant increase in response time and/or decrease in throughput. Remediation of locking conflicts is typically about giving up some functionality in exchange for a reduction in locking contention. Example 2 uses two ways of doing this: [historical queries]({% link {{ page.version.version }}/as-of-system-time.md %}) and a ["fail fast" method]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies). Use these remediations if they fit your application design. Other possible ways to reduce lock conflicts are: [column families]({% link {{ page.version.version }}/column-families.md %}) and [secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}).
+Remediation is required when locking conflicts are too numerous, resulting in a significant increase in response time and/or decrease in throughput. Remediation of locking conflicts is typically about giving up some functionality in exchange for a reduction in locking contention. [Example 2](#example-2) uses two ways of doing this: [historical queries]({% link {{ page.version.version }}/as-of-system-time.md %}) and a ["fail fast" method]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies). Use these remediations if they fit your application design. Other possible ways to reduce lock conflicts are: [column families]({% link {{ page.version.version }}/column-families.md %}) and [secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}).
 
 ### Historical queries
+
+In this tutorial's [Example 2](#example-2), Transaction 5 uses a historical query:
+
+~~~ sql
+BEGIN AS OF SYSTEM TIME '-30s';
+SELECT * FROM t2 WHERE k=4; -- historical read
+COMMIT;
+~~~
 
 Consider the following when using [historical queries]({% link {{ page.version.version }}/as-of-system-time.md %}):
 
@@ -261,6 +266,15 @@ Consider the following when using [historical queries]({% link {{ page.version.v
 - Historical queries have the best possible performance, since they are served by the nearest replica.
 
 ### &quot;fail fast&quot; method
+
+In this tutorial's [Example 2](#example-2), Transaction 6 uses a &quot;fail fast&quot; method:
+
+~~~ sql
+BEGIN;
+SELECT * FROM t2 WHERE k=4 FOR UPDATE NOWAIT; -- fail fast write
+UPDATE t2 SET v=4034 WHERE k=4;
+COMMIT;
+~~~
 
 Consider the following when using a ["fail fast" method]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies):
 
@@ -283,7 +297,7 @@ INSERT INTO t2 VALUES (4,4), (5,5), (6,6);
 
 In this example, Transaction 4 is a write that does not block either Transaction 5, a read, or Transaction 6, a write. Transaction 4 locks key `k=4`. When Transaction 5 tries to read key `k=4`, it does not experience lock contention because it does not have to wait for the lock on the key to be released. Transaction 5 uses [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) to do a historical read. When Transaction 6 executes the [`SELECT ... FOR UPDATE NOWAIT`]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) on key `k=4`, an error is returned since the key `k=4` cannot be locked immediately. In other words, Transaction 6 "fails fast". It does not even attempt to do an `UPDATE` write to key `k=4`, so it does not experience lock contention.
 
-Transaction 4 (blocking write)   | Transaction 5 (historical read) | Transaction 6 (fail-fast write)
+Transaction 4 (blocking write)   | Transaction 5 (historical read) | Transaction 6 (fail fast write)
 ---------------------------------|------------------------------|--------------------------------
 `BEGIN;`                         |                              |
 `UPDATE t2 SET v=4014 WHERE k=4;`| `BEGIN AS OF SYSTEM TIME '-30s';`|
@@ -292,7 +306,7 @@ lock k=4                         | `SELECT * FROM t2 WHERE k=4;`| `BEGIN;`
                                  | k=4,v=4                      | error: could not obtain lock
 `COMMIT;`                        |                              | `UPDATE t2 SET v=4034 WHERE k=4;`
 success, k=4,v=4014              |                              | not waiting
-                                 | `COMMIT;`                    | `ROLLBACK;`
+                                 | `COMMIT;`                    | `COMMIT;`
                                  | success                      | failure                                 
                                  |                              | `SELECT * FROM t2 WHERE k=4;`
                                  |                              | k=4, v=4014
@@ -305,6 +319,7 @@ To reproduce Example 2 in CockroachDB to show how to remediate a waiting read an
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+SET application_name = 'Transaction 4';  -- to distinguish between transactions
 BEGIN;
 UPDATE t2 SET v=4014 WHERE k=4; -- lock k=4
 ~~~
@@ -313,6 +328,7 @@ UPDATE t2 SET v=4014 WHERE k=4; -- lock k=4
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+SET application_name = 'Transaction 5';  -- to distinguish between transactions
 BEGIN AS OF SYSTEM TIME '-30s';
 SELECT * FROM t2 WHERE k=4; -- historical read
 ~~~
@@ -330,8 +346,9 @@ Transaction 5 does a historical read and should output the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+SET application_name = 'Transaction 6';  -- to distinguish between transactions
 BEGIN;
-SELECT * FROM t2 WHERE k=4 FOR UPDATE NOWAIT; -- fast fail write
+SELECT * FROM t2 WHERE k=4 FOR UPDATE NOWAIT; -- fail fast write
 UPDATE t2 SET v=4034 WHERE k=4;
 ~~~
 
@@ -360,11 +377,11 @@ COMMIT;
 
 **Terminal 3**
 
-`ROLLBACK` Transaction 6 and verify that the `UPDATE` has not succeeded:
+`COMMIT` Transaction 6. Since the `SELECT` statement in Transaction 6 generated an error, `COMMIT` is equivalent to `ROLLBACK`, which aborts the transaction and discards the `UPDATE`. Afterward, verify that the `UPDATE` was discarded.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ROLLBACK;
+COMMIT;
 SELECT * FROM t2 WHERE k=4;
 ~~~
 
