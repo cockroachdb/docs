@@ -139,7 +139,7 @@ The following releases and their descriptions represent proposed plans that are 
 {% assign released_versions = site.data.releases | map: "major_version" | uniq | reverse %}
 {% comment %} Fetch the list of the major versions of all releases that currently exist {% endcomment %}
 
-{% assign versions = site.data.versions | where_exp: "versions", "released_versions contains versions.major_version and versions.major_version != 'v24.3'" | sort: "release_date" | reverse %}
+{% assign versions = site.data.versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
 {% comment %} Fetch all major versions (e.g., v21.2), sorted in reverse chronological order. {% endcomment %}
 
 {% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where_exp: "latest_hotfix", "latest_hotfix.withdrawn != true"  | sort: "release_date" | reverse | first %}
@@ -150,9 +150,6 @@ The following releases and their descriptions represent proposed plans that are 
 {% capture onclick_string %}onclick="{{ experimental_download_js }}"{% endcapture %}
 
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
-  {% if v.major_version == 'v24.3' %}
-    {% continue %}
-  {% endif %}
 
     {% comment %}
       Determine if the major version is LTS and the patch component of the initial LTS patch,
@@ -221,7 +218,7 @@ To learn what’s new in this release, refer to [Feature Highlights]({% link rel
 
     {% for s in sections %} {% comment %} For each major version, iterate through the sections. {% endcomment %}
 
-        {% assign releases = site.data.releases | where_exp: "releases", "releases.major_version == v.major_version and releases.major_version != 'v24.3'" | where_exp: "releases", "releases.release_type == s" | sort: "release_date" | reverse %} {% comment %} Fetch all releases for that major version based on release type (Production/Testing). {% endcomment %}
+        {% assign releases = site.data.releases | where_exp: "releases", "releases.major_version == v.major_version" | where_exp: "releases", "releases.release_type == s" | sort: "release_date" | reverse %} {% comment %} Fetch all releases for that major version based on release type (Production/Testing). {% endcomment %}
 
 {% comment %}Do a separate loop through the releases and for each release, copy some fields into some local v_ variables to use when we are not in a loop below{% endcomment %}
 
