@@ -9,12 +9,6 @@ docs_area: reference.sql
 
 For more information about creating, managing, monitoring, and restoring from a scheduled backup, see [Manage a Backup Schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}).
 
-{{site.data.alerts.callout_info}}
-Core users can only use backup scheduling for [full backups](#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups.
-
-To use the other backup features, you need an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-{{site.data.alerts.end}}
-
 ## Required privileges
 
 {% include {{ page.version.version }}/backups/updated-backup-privileges.md %}
@@ -126,9 +120,9 @@ You can also visit the [**Jobs** page]({% link {{ page.version.version }}/ui-job
 
 ## Examples
 
-### Create a schedule for full backups only (core)
+### Create a schedule for full backups only
 
-Core users can only use backup scheduling for full backups of clusters, databases, or tables. Full backups are taken with the `FULL BACKUP ALWAYS` clause, for example:
+To schedule full backups of clusters, databases, or tables, use the `FULL BACKUP ALWAYS` clause, for example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -144,8 +138,6 @@ Core users can only use backup scheduling for full backups of clusters, database
   588799238330220545 | core_schedule_label | ACTIVE | 2020-09-11 00:00:00+00:00 | @daily   | BACKUP INTO 's3://test/schedule-test-core?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH detached
 (1 row)
 ~~~
-
-To use the other backup features, you need an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
 ### Create a scheduled backup for a cluster
 

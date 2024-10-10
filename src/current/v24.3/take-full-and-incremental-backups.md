@@ -88,8 +88,6 @@ In the examples on this page, `{collectionURI}` is a placeholder for the storage
 
 ## Full backups
 
-Full backups are now available to both core and Enterprise users.
-
 Full backups contain an un-replicated copy of your data and can always be used to restore your cluster. These files are roughly the size of your data and require greater resources to produce than incremental backups. You can take full backups as of a given timestamp. Optionally, you can include the available [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}) in the backup.
 
 In most cases, **it's recommended to take nightly full backups of your cluster**. A cluster backup allows you to do the following:

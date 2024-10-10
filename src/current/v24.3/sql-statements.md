@@ -172,7 +172,7 @@ Statement | Usage
 [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) | Create disaster recovery backups of clusters, databases, and tables.
 [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) | Restore clusters, databases, and tables using your backups.
 [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) | List the contents of a backup.
-[`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) | Create a schedule for periodic backups. Core users can only use backup scheduling for full backups of clusters, databases, or tables. To use the other backup features, you need an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+[`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) | Create a schedule for periodic backups.
 [`ALTER BACKUP SCHEDULE`]({% link {{ page.version.version }}/alter-backup-schedule.md %}) | Modify an existing backup schedule.
 [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) | View information on backup schedules.
 [`PAUSE SCHEDULES`]({% link {{ page.version.version }}/pause-schedules.md %}) | Pause backup schedules.
