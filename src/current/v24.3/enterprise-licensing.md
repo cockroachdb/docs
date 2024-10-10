@@ -17,4 +17,3 @@ This page lists Enterprise features. For information on how to obtain and set tr
 
 - [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %})
 - [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %})
-- [Enterprise Trial –– Get Started]({% link {{ page.version.version }}/get-started-with-enterprise-trial.md %})
