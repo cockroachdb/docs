@@ -18,7 +18,7 @@ toc: true
         - `storage.disk-stalled`: Number of instances of disk operations taking longer than 20s 
     - **See also**: [Disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls)
 
-## Node Decommission
+## Node Decommission Stall
 
 - **Message**: `possible decommission stall detected`
 

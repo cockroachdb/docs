@@ -13,13 +13,16 @@ Output different [logging channels]({% link {{ page.version.version }}/logging.m
  - [Output to Fluentd-compatible network collectors]({% link {{ page.version.version }}/configure-logs.md %}#output-to-fluentd-compatible-network-collectors), such as Elasticsearch, Splunk.
  - [Output to HTTP network collectors]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors), such as Datadog. 
 
-## Use `json` format
+## Use `json` format with third-party tools
 
-To read logs programmatically, use [`json`]({% link {{ page.version.version }}/log-formats.md %}#format-json) format rather than parse the [`crdb_v2`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) format. The JSON object is guaranteed to not contain unescaped newlines or other special characters, and the entry as a whole is followed by a newline character. This makes the format suitable for processing over a stream unambiguously.
+With third-party tool consumption which read logs programmatically, use [`json`]({% link {{ page.version.version }}/log-formats.md %}#format-json) format rather than parse the [`crdb_v2`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) format. The JSON object is guaranteed to not contain unescaped newlines or other special characters, and the entry as a whole is followed by a newline character. This makes the format suitable for processing over a stream unambiguously.
 
 ## Prioritize logs based on severity
 
-The various [log formats]({% link {{ page.version.version }}/log-formats.md %}) are guaranteed to contain a [severity level]({% link {{ page.version.version }}/logging.md %}#logging-levels-severities) for each log event. With `json` format, if `tag-style: compact` is specified, use `sev` field, while if `tag-style: verbose`, use `severity` field.
+The various [log formats]({% link {{ page.version.version }}/log-formats.md %}) are guaranteed to contain a [severity level]({% link {{ page.version.version }}/logging.md %}#logging-levels-severities) for each log event.
+
+- With [`json`]({% link {{ page.version.version }}/log-formats.md %}#format-json) format, if `tag-style: compact` is specified, use `sev` field, while if `tag-style: verbose`, use `severity` field. 
+- With [`crdb_v2`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) format, use the first character of the prefix of each log entry. Possible values are I for INFO, W for WARNING, E for ERROR, and F for FATAL.
 
 ## Use logs for performance tuning
 
@@ -42,28 +45,39 @@ Enabling logging of events in the following [log channels]({% link {{ page.versi
 Use structured logs when you need to capture detailed, machine-readable information that can be easily parsed and analyzed. They are particularly useful for:
 
 - [Notable Events]({% link {{ page.version.version }}/eventlog.md %}): Capturing significant events in a structured format allows for easier querying and analysis. For example, job state changes or specific events like backups.
-- Audit and Compliance: Structured logs are ideal for audit trails and compliance monitoring because they provide a consistent format that can be easily searched and filtered.
-- Performance Monitoring: When tracking performance metrics, structured logs can help in identifying patterns and anomalies due to their detailed and consistent format.
+- [Audit and Compliance]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring): Structured logs are ideal for audit trails and compliance monitoring because they provide a consistent format that can be easily searched and filtered.
+- [Performance Monitoring]({% link {{ page.version.version }}/logging-use-cases.md %}#performance-tuning): When tracking performance metrics, structured logs can help in identifying patterns and anomalies due to their detailed and consistent format.
 
 ## Use unstructured logs
 
-Use unstructured logs, which are more free-form, for:
+Unstructured logs are more free-form and human-readable compared to machine-processed structured logs. Use unstructured logs for:
 
 - General Troubleshooting: They are useful for capturing a wide range of information that may not fit into a predefined structure, such as error messages or stack traces. Events not documented on [Notable Events]({% link {{ page.version.version }}/eventlog.md %}) will have an unstructured format in log messages.
 
 ## Customize buffering of log messages
 
-Use the logging YAML file to configure buffering settings to optimize log performance, refer to [Log buffering for network sinks]({% link {{ page.version.version }}/configure-logs.md %}#log-buffering-for-network-sinks). For example, modify the following options:
+Depending on the use case, a log sink can be configured to be auditable or buffered. However, there is a tradeoff between auditing requirements and performance.
 
-  - `max-staleness`: The maximum time logs can stay in the buffer before being flushed. A typical setting is `20 seconds`.
-  - `flush-trigger-size`: The size threshold that triggers a buffer flush, commonly set to `2MiB`.
-  - `max-buffer-size`: The maximum buffer size, often set to `100MiB`. If this limit is exceeded, new log messages are dropped until the buffer size falls below this value.
+### Auditable
 
-Disable buffering for specific log channels if needed. For instance, setting `buffering: NONE` for the `OPS` channel on a Fluentd-compatible log sink.
+In the case of [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring), use the logging YAML file to [configure the log sink]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) to be auditable, by setting `auditable` to `true`. This guarantees [non-repudiability](https://wikipedia.org/wiki/Non-repudiation) for any logs in the sink, but can incur a performance overhead and higher disk IOPS consumption. When `auditable` is enabled:
 
-Override default buffering settings for specific channels like `HEALTH` to ensure timely log flushing. For example, set `max-staleness` to `2 seconds` for the `HEALTH` channel.
+- `exit-on-error` is enabled which stops the Cockroach node if an error is encountered while writing to the sink. This prevents the loss of any log entries.
+- `buffered-writes` is disabled if the sink is under file-groups.
 
-For more detailed configurations and examples, refer to [Configure Logs]({% link {{ page.version.version }}/configure-logs.md %}).
+### Buffered
+
+Use the logging YAML file to configure buffering settings to optimize log performance, refer to [Log buffering for network sinks]({% link {{ page.version.version }}/configure-logs.md %}#log-buffering-for-network-sinks). For example, modify the following `buffering` options:
+
+  - `max-staleness`: The maximum time logs can stay in the buffer before being flushed.
+  - `flush-trigger-size`: The size threshold that triggers a buffer flush.
+  - `max-buffer-size`: The maximum buffer size. If this limit is exceeded, new log messages are dropped until the buffer size falls below this value.
+
+Disable buffering for specific log channels if needed, by setting `buffering: NONE` for a given channel.
+
+Override default buffering settings for specific channels to ensure timely log flushing.
+
+For detailed configurations and examples, refer to [Configure Logs]({% link {{ page.version.version }}/configure-logs.md %}).
 
 ## Use epoch timestamp
 
