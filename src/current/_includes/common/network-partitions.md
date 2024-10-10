@@ -1,4 +1,4 @@
-A network partition occurs when two or more nodes are prevented from communicating with each other in one or both directions. A network partition can be caused by a network outage or a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is torn down and rebuilt.
+A network partition occurs when two or more nodes are prevented from communicating with each other in one or both directions. A network partition can be caused by a network outage or a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is [drained and restarted]({% link {{ page.version.version }}/node-shutdown.md %}).
 
 In a **symmetric** partition, node communication is disrupted in both directions. In an **asymmetric** partition, nodes can communicate in one direction but not the other.
 
