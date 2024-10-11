@@ -8,12 +8,15 @@
 {% include releases/experimental-test-release.md version=release.release_name %}
 {% endif %}
 
-{% if release.withdrawn == true %}
-{% include releases/withdrawn.md %}
-{% elsif release.cloud_only == true %} {% comment %}Show the Cloud-first info instead of download links {% endcomment %}
+{% comment %}No downloads for Cloud-first or withdrawn releases{% endcomment %}
+{% if release.cloud_only == true %} {% comment %}Show the Cloud-first info instead of download links {% endcomment %}
 {{site.data.alerts.callout_info}}
 {{ r.cloud_only_message }}
 {{site.data.alerts.end}}
+{% elsif release.withdrawn == true % %}{% comment %}If not withdrawn and not Cloud-only, show download links{% endcomment %}
+
+  {% include releases/withdrawn.md %}
+
 {% else %}
 
 {{site.data.alerts.callout_info}}
@@ -25,7 +28,7 @@ Experimental downloads are not qualified for production use and not eligible for
   {% capture onclick_string %}onclick="{{ experimental_download_js }}"{% endcapture %}
   {% capture linux_arm_button_text_addendum %}{% if r.linux.linux_arm_experimental == true %}<br />(Experimental){% endif %}{% if r.linux.linux_arm_limited_access == true %}<br />(Limited Access){% endif %}{% endcapture %}
 
-<div><div class="os-tabs filters clearfix">
+<div><div class="clearfix">
 
 <table style="max-width: 90%;">
   <thead>
@@ -95,9 +98,9 @@ docker pull {{ release.docker.docker_image }}:{{ release.release_name }}
 
 To view or download the source code for CockroachDB {{ release.release_name }} on Github, visit <a target="_blank" rel="noopener" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ release.release_name }}">{{ release.release_name }} source tag</a>.
 
-  {% if release.previous_release %}
+{% endif %}
+
+{% if release.previous_release %}
 <h3 id="{{ release.release_name | downcase | replace: ".", "-" }}-changelog">Changelog</h3>
 View a detailed changelog on GitHub: [{{ release.previous_release }}...{{ release.release_name }}](https://github.com/cockroachdb/cockroach/compare/{{ release.previous_release }}...{{ release.release_name }})
-  {% endif %}
-
 {% endif %}
