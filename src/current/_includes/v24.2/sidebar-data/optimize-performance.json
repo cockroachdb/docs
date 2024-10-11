@@ -77,6 +77,12 @@
           "urls": [
             "/${VERSION}/apply-statement-performance-rules.html"
           ]
+        },
+        {
+          "title": "Troubleshoot Lock Contention",
+          "urls": [
+            "/${VERSION}/troubleshoot-lock-contention.html"
+          ]
         }
       ]
     }
