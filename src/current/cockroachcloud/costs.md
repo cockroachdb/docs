@@ -237,6 +237,7 @@ Customers will not be charged for CockroachDB {{ site.data.products.standard }} 
 </section>
 
 ## Usage-based billing metrics in Preview
+<a id="usage-based-costs"></a>
 
 Metering for usage-based billing of data transfer, managed backup storage, and changefeeds is now in [Preview]({% link {{site.current_cloud_version }}/cockroachdb-feature-availability.md %}) for all CockroachDB Cloud organizations.
 
