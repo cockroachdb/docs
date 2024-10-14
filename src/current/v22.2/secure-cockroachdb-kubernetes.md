@@ -28,7 +28,7 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
   <button class="filter-button" data-scope="helm">Helm</button>
 </div>
 
-{% include {{ page.version.version }}/orchestration/operator-check-namespace.md %}
+{% include common/orchestration/operator-check-namespace.md %}
 
 ## Use a custom CA
 
@@ -53,7 +53,7 @@ Replace:
 Currently, the Operator requires that the client and node secrets each contain the filenames `tls.crt` and `tls.key`.
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/orchestration/apply-custom-resource.md %}
+{% include_cached common/orchestration/apply-custom-resource.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
@@ -76,7 +76,7 @@ Replace:
 - `{node_secret_name}`: the name of the Kubernetes secret that contains the generated client certificate and key.
 - `{client_secret_name}`: the name of the Kubernetes secret that contains the generated node certificate and key.
 
-{% include {{ page.version.version }}/orchestration/apply-helm-values.md %}
+{% include common/orchestration/apply-helm-values.md %}
 </section>
 
 ### Example: Authenticate with `cockroach cert`
@@ -497,7 +497,6 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
     ~~~
 
     For each certificate, the output includes its certificate file and expiration, the key file for node and client certificates, a **Notes** column with additional details, and an **Errors** column that is empty unless there is an error.
-
 
 1. Apply the custom values to override the default Helm chart [values](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml):
 

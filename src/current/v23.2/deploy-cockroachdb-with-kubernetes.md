@@ -23,14 +23,24 @@ This page shows you how to start and stop a secure 3-node CockroachDB cluster in
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-<a id="best-practices"></a>
-## Limitations
+## Before you begin
 
-{% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
+Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
+
+- [Kubernetes terminology](#kubernetes-terminology)
+- [Best practices](#best-practices)
+
+### Kubernetes terminology
+
+{% include_cached common/orchestration/kubernetes-terminology.md %}
+
+### Best practices
+
+{% include common/orchestration/kubernetes-limitations.md %}
 
 ## Step 1. Start Kubernetes
 
-{% include {{ page.version.version }}/orchestration/start-kubernetes.md %}
+{% include common/orchestration/start-kubernetes.md %}
 
 ## Step 2. Start CockroachDB
 
@@ -49,24 +59,24 @@ The Operator does not provision or apply an Enterprise license key. To use [Ente
 </div>
 
 <section class="filter-content" markdown="1" data-scope="operator">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-operator-secure.md %}
+{% include common/orchestration/start-cockroachdb-operator-secure.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-secure.md %}
+{% include common/orchestration/start-cockroachdb-secure.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-helm-secure.md %}
+{% include common/orchestration/start-cockroachdb-helm-secure.md %}
 </section>
 
 ## Step 3. Use the built-in SQL client
 
-{% include {{ page.version.version }}/orchestration/test-cluster-secure.md %}
+{% include common/orchestration/test-cluster-secure.md %}
 
 ## Step 4. Access the DB Console
 
-{% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
+{% include common/orchestration/monitor-cluster.md %}
 
 ## Step 5. Stop the cluster
 
@@ -74,40 +84,11 @@ The Operator does not provision or apply an Enterprise license key. To use [Ente
 If you want to continue using this cluster, refer the documentation on [configuring]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes.md %}), [scaling]({% link {{ page.version.version }}/scale-cockroachdb-kubernetes.md %}), [monitoring]({% link {{ page.version.version }}/monitor-cockroachdb-kubernetes.md %}), and [upgrading]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) the cluster.
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/orchestration/kubernetes-stop-cluster.md %}
+{% include common/orchestration/kubernetes-stop-cluster.md %}
 
 ### Stop Kubernetes
 
-To delete the Kubernetes cluster:
-
-- Hosted GKE:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ gcloud container clusters delete cockroachdb --region {region-name}
-    ~~~
-- Hosted EKS:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ eksctl delete cluster --name cockroachdb
-    ~~~
-- Manual GCE:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cluster/kube-down.sh
-    ~~~
-- Manual AWS:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cluster/kube-down.sh
-    ~~~
-
-{{site.data.alerts.callout_danger}}
-If you stop Kubernetes without first deleting the persistent volumes, they will still exist in your cloud project.
-{{site.data.alerts.end}}
+{% include_cached common/orchestration/kubernetes-stop.md %}
 
 ## See also
 

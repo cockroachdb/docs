@@ -1,3 +1,3 @@
 {{site.data.alerts.callout_success}}
-To deploy a free CockroachDB {{ site.data.products.cloud }} cluster instead of running CockroachDB yourself, see the <a href="{% link cockroachcloud/quickstart.md %}">Quickstart</a>.
+To deploy a free CockroachDB Cloud cluster instead of running CockroachDB yourself, see the [Quickstart]({% link cockroachcloud/quickstart.md %}).
 {{site.data.alerts.end}}

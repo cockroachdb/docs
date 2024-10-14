@@ -24,22 +24,15 @@ To deploy CockroachDB in a single Kubernetes cluster instead, see [Kubernetes Si
 Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
 
 - [Kubernetes terminology](#kubernetes-terminology)
-- [UX differences from running in a single cluster](#ux-differences-from-running-in-a-single-cluster)
 - [Best practices](#best-practices)
 
 ### Kubernetes terminology
 
-Feature | Description
---------|------------
-[node](https://kubernetes.io/docs/concepts/architecture/nodes/) | A physical or virtual machine. In this tutorial, you'll run GKE or EKS instances and join them as worker nodes in three independent Kubernetes clusters, each in a different region.
-[pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one or more Docker containers. In this tutorial, each pod will run on a separate GKE or EKS instance and include one Docker container running a single CockroachDB node. You'll start with 3 pods in each region and grow to 4.
-[StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are considered stable as of Kubernetes version 1.9 after reaching beta in version 1.5.
-[persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
-[CSR](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/) | A CSR, or certificate signing request, is a request to have a TLS certificate verified by a certificate authority (CA). A CSR is issued for the CockroachDB node running in each pod, as well as each client as it connects to the Kubernetes cluster.
-[RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) | RBAC, or role-based access control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g., `get` or `create`) on an API resource (e.g., a `pod`), the client must have a `Role` that allows it to do so.
-[namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) | A namespace provides a scope for resources and names within a Kubernetes cluster. Names of resources must be unique within a namespace, but not across namespaces. Most Kubernetes client commands will use the `default` namespace by default, but can operate on resources in other namespaces as well. In this tutorial, CockroachDB pods will be deployed in their own namespace in each Kubernetes cluster.
-[kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) | `kubectl` is the command-line interface for running commands against Kubernetes clusters.
-[kubectl context](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-context-and-configuration) | When multiple Kubernetes clusters are deployed on your account, `kubectl` "context" specifies a cluster to connect to.
+{% include_cached common/orchestration/kubernetes-terminology.md %}
+
+### Best practices
+
+{% include common/orchestration/kubernetes-limitations.md %}
 
 ### UX differences from running in a single cluster
 
@@ -54,10 +47,6 @@ Because the CockroachDB pods run in a non-default namespace, client applications
 <section class="filter-content" markdown="1" data-scope="eks">
 To enable the pods to communicate across regions, we peer the VPCs in all 3 regions with each other and configure a CoreDNS service in each region to route DNS traffic to the appropriate pods. To make this work, we create the StatefulSets in namespaces named after the region in which each Kubernetes cluster is deployed. To run a command against one of the pods, append `--namespace <cluster-namespace>` to your commands. Alternatively, run `kubectl config set-context <context-name> --namespace <namespace-name>` to set the default namespace for a context.
 </section>
-
-### Best practices
-
-{% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 
 <section class="filter-content" markdown="1" data-scope="gke">
 #### Exposing DNS servers
