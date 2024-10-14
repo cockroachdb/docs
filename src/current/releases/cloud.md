@@ -16,7 +16,7 @@ Get future release notes emailed to you:
 
 ## October 11, 2024
 
-The new official [Cockroach Labs Okta app integration]({% link cockroachclouds/configure-cloud-org-sso.md %}#add-a-custom-authentication-method) eases the configuration of OIDC and SAML SSO authentication methods for CockroachDB {{ site.data.products.cloud }} organizations. Previously, it was required to create and maintain a custom OIDC or SAML app integration in Okta.
+The new official [Cockroach Labs Okta app integration]({% link cockroachcloud/configure-cloud-org-sso.md %}#add-a-custom-authentication-method) eases the configuration of OIDC and SAML SSO authentication methods for CockroachDB {{ site.data.products.cloud }} organizations. Previously, it was required to create and maintain a custom OIDC or SAML app integration in Okta.
 
 ## October 1, 2024
 
