@@ -163,17 +163,15 @@ Complete these steps once for each private endpoint in your AWS account that wil
 
 1. Copy the **Service Name** shown in the connection dialog.
 
-   Make a note of the availability zones where your cluster is deployed in this region.
+    Make a note of the availability zones where your cluster is deployed in this region.
 
 1. On the [Amazon VPC Console](https://console.aws.amazon.com/vpc/) in your AWS account, click **Your VPCs** in the sidebar.
 
-1. <a name="step-4"></a>Locate the VPC ID of the VPC you want to create your endpoint in.
+    Locate the VPC ID of the VPC you want to create your endpoint in, and make a note of its IPv4 CIDR.
 
     Cockroach Labs recommends that you use a VPC that has subnets in the availability zones where your cluster is deployed, and that your application or service is also deployed in the same availability zones. You can choose a different VPC for the private endpoint as long as it is peered to the VPC your application is running in and the private endpoint is configured to be DNS-accessible across the peered VPCs.
 
-1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in [step 4](#step-4).
-1. Click **Subnets** in the sidebar.
-1. Locate the subnet IDs corresponding to the VPC you chose in [step 4](#step-4).
+1. Click **Subnets** in the sidebar. Make a note of the subnet ID of each subnet that corresponds to your chosen VPC.
 1. Click **Security Groups** in the sidebar.
 1. <a name="step-8"></a>Click **Create security group** to create a security group within your VPC. The security group allows inbound access from your application or source program on Port 26257: {{ security_group_substeps }}
 
@@ -189,11 +187,11 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 1. Click **Endpoints** in the sidebar.
 1. Click **Create Endpoint**.
 1. On the **Create Endpoint** page, for the **Service Category** field, select **Find service by name**.
-1. In the **Service Name** field, enter the **Service Name** copied from the connection dialog in [Step 1](#step-1).
+1. In the **Service Name** field, enter the **Service Name** you copied from the connection dialog in [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint).
 1. Click **Verify**.
 1. In the **VPC** field, enter the ID of the VPC you want to create your endpoint in.
 1. Verify that the subnets are pre-populated.
-1. In the **Security group** section, select the security group you created in [Step 8](#step-8) and uncheck the box for **default** security group.
+1. In the **Security group** section, select the security group you created in [Step 3. Create an AWS endpoint](#step-3-create-an-aws-endpoint) and uncheck the box for **default** security group.
 1. Click **Create Endpoint**.
 
     The VPC Endpoint ID displays.
