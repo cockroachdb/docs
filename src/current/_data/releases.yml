@@ -6895,3 +6895,58 @@
     CockroachDB Cloud clusters. To request to upgrade
     a CockroachDB self-hosted cluster to this version,
     [contact support](https://support.cockroachlabs.com/hc/requests/new).
+
+- release_name: v24.3.0-alpha.2
+  major_version: v24.3
+  release_date: '2024-10-14'
+  release_type: Testing
+  go_version: go1.22.5
+  sha: 58c475d67e32b75284b4fe293bff82807c3d129d
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.3.0-alpha.1
+
+
+- release_name: v24.3.0-alpha.2
+  major_version: v24.3
+  release_date: '2024-10-14'
+  release_type: Testing
+  go_version: go1.23.2
+  sha: 45b47f90445fdb0e0c8e07df863c3bbe17daa491
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.3.0-alpha.1-218-g58c475d67e3
