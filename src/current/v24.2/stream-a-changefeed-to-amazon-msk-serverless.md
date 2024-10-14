@@ -43,27 +43,11 @@ In this step, you'll create a role, which contains the `sts:AssumeRole` permissi
 
 ## Step 4. Connect the client to the MSK Serverless cluster
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 In this step, you'll prepare the client to connect to the MSK Serverless cluster and create a Kafka topic.
 
 1. Ensure that your client can connect to the MSK Serverless cluster. This tutorial uses an EC2 instance running Kafka as the client. Navigate to the summary page for the client EC2 instance. Click on the **Actions** dropdown. Click **Security**, and then select **Modify IAM role**.
 1. On the **Modify IAM role** page, select the role you created for the MSK Serverless cluster (`msk-role`) that contains the policy created in [Step 2](#step-2-create-an-iam-policy-and-role-to-access-the-msk-serverless-cluster). Click **Update IAM role**.
 1. Open a terminal and connect to your Kafka client. Check that your `client.properties` file contains the correct SASL and security configuration, like the following:
-=======
-In this step, you'll prepare the client to connect to the MSK Serverless cluster, create a Kafka topic, and consume messages that the changefeed sends.
-
-1. Ensure that your client can connect to the MSK Serverless cluster. This tutorial uses an EC2 instance running Kafka as the client. Navigate to the summary page for the client EC2 instance. Click on the **Actions** dropdown. Click **Security**, and then select **Modify IAM role**.
-1. On the **Modify IAM role** page, select the role you created for the MSK Serverless cluster (`msk-serverless-role`) that contains the policy created in [Step 2](#step-2-create-an-iam-policy-and-role-to-access-the-msk-serverless-cluster). Click **Update IAM role**.
-1. Open a terminal and connect to your Kafka client. Check that your `client.properties` file contains the correct SASL and secuity configuration, like the following:
->>>>>>> 83a342b4e (Add tutorial for changefeed to msk serverless)
-=======
-In this step, you'll prepare the client to connect to the MSK Serverless cluster and create a Kafka topic.
-
-1. Ensure that your client can connect to the MSK Serverless cluster. This tutorial uses an EC2 instance running Kafka as the client. Navigate to the summary page for the client EC2 instance. Click on the **Actions** dropdown. Click **Security**, and then select **Modify IAM role**.
-1. On the **Modify IAM role** page, select the role you created for the MSK Serverless cluster (`msk-serverless-role`) that contains the policy created in [Step 2](#step-2-create-an-iam-policy-and-role-to-access-the-msk-serverless-cluster). Click **Update IAM role**.
-1. Open a terminal and connect to your Kafka client. Check that your `client.properties` file contains the correct SASL and security configuration, like the following:
->>>>>>> d2a4de86c (Add v24.3)
 
     ~~~
     security.protocol=SASL_SSL
@@ -135,6 +119,9 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
     ~~~
             job_id
     -----------------------
+    1002677216020987905
+    ~~~
+
     To view a changefeed job, use [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs).
 
 ## Step 6. Consume the changefeed messages on the client
