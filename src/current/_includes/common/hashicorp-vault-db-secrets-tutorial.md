@@ -360,3 +360,13 @@ This step shows how to use credentials provisioned by Vault to access a Cockroac
     SQLSTATE: 42501
     Failed running "sql"
     ~~~
+
+{% unless page.version.version contains "v22" or page.version.version contains "v23" %}
+## Speed up role management operations
+
+User/role management operations (such as [`GRANT`]({% link {{ page.version.version }}/grant.md %}) and [`REVOKE`]({% link {{ page.version.version }}/revoke.md %})) are [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}). As such, they inherit the [limitations of schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}#known-limitations).
+
+For example, schema changes wait for concurrent [transactions]({% link {{ page.version.version }}/transactions.md %}) using the same resources as the schema changes to complete. In the case of [role memberships]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) being modified inside a transaction, most transactions need access to the set of role memberships. Using the default settings, role modifications require schema leases to expire, which can take up to 5 minutes.
+
+If you want user/role management operations to finish more quickly, and do not care whether concurrent transactions will immediately see the side effects of those operations, set the [session variable]({% link {{ page.version.version }}/set-vars.md %}) `allow_role_memberships_to_change_during_transaction` to `true`. To learn more, refer to [How to speed up user / role assignment]({% link {{ page.version.version }}/hashicorp-integration.md %}#how-to-speed-up-user-role-management) and [`GRANT`]({% link {{ page.version.version }}/grant.md %}).
+{% endunless %}
