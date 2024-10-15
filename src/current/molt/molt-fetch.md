@@ -1057,7 +1057,7 @@ The preceding `molt fetch` command issues the equivalent [`CREATE CHANGEFEED`]({
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE employees, payments 
-  INTO 'webhook-https://host.docker.internal:30004/defaultdb/public?client_cert={base64 cert}&client_key={base64 key}&ca_cert={base64 CA cert}' 
+  INTO 'webhook-https://localhost:30004/defaultdb/public?client_cert={base64 cert}&client_key={base64 key}&ca_cert={base64 CA cert}' 
   WITH updated, resolved = '1s', min_checkpoint_frequency = '1s', initial_scan = 'no', cursor = '2024-09-11T16:33:35Z', webhook_sink_config = '{\"Flush\":{\"Bytes\":1048576,\"Frequency\":\"1s\"}}'
 ~~~
 
