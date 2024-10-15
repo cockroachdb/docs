@@ -5,14 +5,16 @@ toc: true
 docs_area: manage
 ---
 
+{% include_cached enterprise-feature.md %}
+
 CockroachDB clusters allow users to authenticate with Single Sign-on (SSO), both to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), and for SQL client access.
 
 Cluster single sign-on (SSO) enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or {{ site.data.products.core }}) with the full security of single sign-on (SSO), and the choice of a variety of cloud-based or customer-managed identity providers (IdPs).
 
-{{ site.data.products.advanced }} clusters can provision their users with JWTs via the DB Console. This allows users to authenticate to a cluster by signing in to their IdP (for example, Okta or Google) with a link embedded in the DB Console. This flow provisions a JWT that a user can copy out of the DB Console UI and use in a SQL connection string to authenticate to the cluster.
+{{ site.data.products.advanced }} clusters can provision their users with Java Web Tokens (JWTs) via the DB Console. This allows users to authenticate to a cluster by signing in to their IdP (for example, Okta or Google) with a link embedded in the DB Console. This flow provisions a JWT that a user can copy out of the DB Console UI and use in a SQL connection string to authenticate to the cluster.
 
 {{site.data.alerts.callout_info}}
-Cluster single sign-on for the DB Console is supported on {{ site.data.products.core }}, {{ site.data.products.enterprise }} and {{ site.data.products.advanced }} clusters. {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }} clusters do not support cluster single sign-on. However, both CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }} clusters can use [Cluster Single Sign-on (SSO) using `ccloud` and the CockroachDB Cloud Console]({% link cockroachcloud/cloud-sso-sql.md %}).
+Cluster single sign-on for the DB Console is supported on {{ site.data.products.enterprise }} and {{ site.data.products.advanced }} clusters. {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }} clusters do not support cluster single sign-on and do not have access to the DB Console. However, both CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }} clusters can use [Cluster Single Sign-on (SSO) to authenticate to the `ccloud` command-line interface and to the CockroachDB Cloud Console]({% link cockroachcloud/cloud-sso-sql.md %}).
 {{site.data.alerts.end}}
 
 The page describes how to configure a cluster for cluster single sign-on using JWTs and then how users can authenticate using the JWTs. If you're a user ready to sign in to the DB Console with JWTs, you can skip the configuration section:
