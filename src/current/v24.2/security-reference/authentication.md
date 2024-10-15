@@ -43,7 +43,7 @@ All options also support the following no-op 'authentication methods', which do 
 
 ## HBA configuration syntax
 
-Each line of an Host-based Authentication (HBA) configuration manifest defines a rule. Lines commented with `#` are ignored.
+Each line of a Host-based Authentication (HBA) configuration manifest defines a rule. Lines commented with `#` are ignored.
 
 For example, the following naive configuration has three rules:
 
