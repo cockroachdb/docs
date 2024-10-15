@@ -22,7 +22,7 @@ Learn more: [Integrate CockroachDB {{ site.data.products.advanced }} with Satori
 
 CockroachDB {{ site.data.products.core }} here refers to the situation of a user deploying and operating their own cluster.
 
-{{ site.data.products.enterprise }} refers to an ongoing license relationship with Cockroach Labs. In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs's {{ site.data.products.enterprise }} Support staff.
+{{ site.data.products.enterprise }} refers to an ongoing license relationship with Cockroach Labs. In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of Cockroach Labs' {{ site.data.products.enterprise }} Support staff.
 
 For more information, see the [licensing FAQ]({% link {{ page.version.version }}/licensing-faqs.md %})
 
