@@ -28,6 +28,10 @@ In all cases, names and other string values are scrubbed and replaced with under
 
 ## Opt out of diagnostics reporting
 
+{{site.data.alerts.callout_info}}
+Diagnostics reporting is required for [Trial or Free licenses]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license). Therefore, the cluster setting `diagnostics.reporting.enabled` is ignored on clusters with Trial or Free licenses. The following opt out methods apply to clusters with [Enterprise licenses]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
+{{site.data.alerts.end}}
+
 ### At cluster initialization
 
 To make sure that absolutely no diagnostic details are shared, you can set the environment variable `COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING=true` before starting the first node of the cluster. Note that this works only when set before starting the first node of the cluster. Once the cluster is running, you need to use the `SET CLUSTER SETTING` method described below.
