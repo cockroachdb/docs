@@ -1,5 +1,30 @@
 {{ $currentPage := . }}
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+  .navbar-nav .nav-item .nav-link {
+  font-size: 16px;   /* Adjust this value if needed */
+  color: #0A2540;    /* This is the dark blue color used on the Cockroach Labs site */
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+  color: rgb(105, 51, 255) /* This is the hover color used on the Cockroach Labs site */
+}
+
+/* For the "Start Instantly" button */
+.navbar-nav .nav-item .btn-primary {
+  font-size: 16px;   /* Adjust this value if needed */
+}
+
+/* For the dropdown items */
+.dropdown-menu a {
+  font-weight: 400;  /* Slightly less bold for dropdown items */
+  font-size: 16px;   /* Adjust this value if needed */
+  color: #0A2540;
+}
+
+.dropdown-menu a:hover {
+  color:rgb(105, 51, 255);
+}
   .navbar{
     max-height: 84px;
     padding-left: 210px;
@@ -352,7 +377,7 @@
           </li>
           <li class="nav-item d-flex justify-content-center flex-column">
             <a class="btn btn-primary rounded-pill px-3 font-family-poppins py-1 ml-2" href="https://cockroachlabs.cloud/signup" style="
-    color: #fff;">Start Instantly</a>
+    color: #fff;">Get started free</a>
           </li>
         </ul>
       </div>
