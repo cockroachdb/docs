@@ -169,7 +169,8 @@ $navbar-light-color: #000;
         font-weight: 300;
       }
       @media (max-width: 992px) {
-        max-height:400px;
+        padding-left: 20px;
+        // max-height:400px;
         height: 100%;
 	      overflow-y: scroll;
       }

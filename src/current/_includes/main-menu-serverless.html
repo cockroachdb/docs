@@ -2,6 +2,7 @@
 <style>
   .navbar{
     max-height: 84px;
+    padding-left: 210px;
   }
   @media (hover: hover) {
     .navbar .dropdown:hover .dropdown-menu {
@@ -23,7 +24,26 @@
     list-style: none !important;
   }
 }
+@media (max-width: 991.98px) {
+  #navbarSupportedContent {
+    position: fixed;
+    top: 84px; /* Adjust this value to match your navbar height */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    z-index: 1040;
+    overflow-y: auto;
+  }
 
+  .navbar-collapse.show {
+    display: block;
+  }
+
+  body.mobile-menu-open {
+    overflow: hidden;
+  }
+}
 </style>
 <script>
   function toggleDropdown(element, isOpen) {
@@ -36,12 +56,26 @@
       dropdownMenu.classList.remove('dropdown-open');
     }
   }
+
+  document.addEventListener('DOMContentLoaded', function() {
+  var navbarToggler = document.querySelector('.navbar-toggler');
+  var navbarCollapse = document.querySelector('#navbarSupportedContent');
+
+  navbarToggler.addEventListener('click', function() {
+    if (navbarCollapse.classList.contains('show')) {
+      document.body.classList.remove('mobile-menu-open');
+    } else {
+      document.body.classList.add('mobile-menu-open');
+    }
+  });
+});
   
     </script>
+
   
-<div class="shadow-sm main-nav-wrapper position-relative {% if page.navHidden %} d-none {% endif %}" >
+<div class="shadow-sm main-nav-wrapper position-relative" style="z-index: 1030;" >
 <div class="main-nav main-nav-contained-800">
-  <nav class="navbar navbar-expand-lg navbar-light py-0">
+  <nav class="navbar navbar-expand-lg navbar-light py-0 fixed-top">
     <div class="container-xl px-0">
       <a class="navbar-brand mr-0 mr-md-2 d-xl-block" href="{{ '/' | relative_url }}" style="
       padding-bottom: 10px;
@@ -68,7 +102,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
       <!-- Mobile nav -->
-      <div class="d-lg-none pt-2">
+      <div class="d-lg-none pt-2 mobile-menu-wrapper">
         <div class="accordion " id="accordionExample">
 
           <!-- Mobile product -->
@@ -277,7 +311,7 @@
           role="button"
           data-toggle="dropdown"
           aria-haspopup="true"
-          aria-expanded="false">Customer</a>
+          aria-expanded="false">Customers</a>
           <div class="dropdown-menu w-100 p-45 company" aria-labelledby="navbarDropdown">
             {% include nav-customers.html %}
           </div>
