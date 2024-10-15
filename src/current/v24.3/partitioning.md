@@ -37,24 +37,6 @@ To store partitions in specific locations (e.g., geo-partitioning), or on machin
 
 For more details about these flags, see the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) documentation.
 
-### Enterprise license
-
-You must have a valid Enterprise license to use table partitioning features. For details about requesting and setting a trial or full Enterprise license, see [Enterprise Licensing]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-
-The following features do not work with an **expired license**:
-
-- Creating new table partitions or adding new zone configurations for partitions
-- Changing the partitioning scheme on any table or index
-- Changing the zone config for a partition
-
-However, the following features continue to work even with an expired Enterprise license:
-
-- Querying a partitioned table (for example, `SELECT foo PARTITION`)
-- Inserting or updating data in a partitioned table
-- Dropping a partitioned table
-- Unpartitioning a partitioned table
-- Making non-partitioning changes to a partitioned table (for example, adding a column/index/foreign key/check constraint)
-
 ### Table creation
 
 You can define partitions and subpartitions over one or more columns of a table. During [table creation]({% link {{ page.version.version }}/create-table.md %}), you declare which values belong to each partition in one of two ways:

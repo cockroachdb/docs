@@ -12,7 +12,7 @@ The **Cluster Overview** page of the DB Console displays key metrics about your 
 - Uptime
 - Hardware usage
 
-If you have an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}), you can enable the [Node Map](#node-map-enterprise) view for a visual representation of your cluster's geographic layout.
+Enable the [Node Map](#node-map-enterprise) view for a visual representation of your cluster's geographic layout.
 
 ## Cluster Overview panel
 
@@ -104,9 +104,9 @@ You can see the full history of decommissioned nodes by clicking **View all deco
 For details about the decommissioning process, see [Node Shutdown](node-shutdown.html?filters=decommission#node-shutdown-sequence).
 {{site.data.alerts.end}}
 
-## Node Map (Enterprise)
+## Node Map
 
-The **Node Map** is an [enterprise]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature that visualizes the geographical configuration of your cluster. It requires that [`--locality` flags have been defined]({% link {{ page.version.version }}/cockroach-start.md %}#locality) for your nodes.
+The **Node Map** visualizes the geographical configuration of your cluster. It requires that [`--locality` flags have been defined]({% link {{ page.version.version }}/cockroach-start.md %}#locality) for your nodes.
 
 For guidance on enabling and configuring the node map, see [Enable the Node Map]({% link {{ page.version.version }}/enable-node-map.md %}).
 

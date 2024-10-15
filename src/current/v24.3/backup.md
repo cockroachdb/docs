@@ -32,8 +32,7 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 
 ## Considerations
 
-If you use [CockroachDB {{ site.data.products.advanced }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), it runs [full backups daily and incremental backups hourly]({% link cockroachcloud/managed-backups.md %}).
-- [Full cluster backups](#back-up-a-cluster) include [Enterprise license keys]({% link {{ page.version.version }}/enterprise-licensing.md %}). When you [restore]({% link {{ page.version.version }}/restore.md %}) a full cluster backup that includes an Enterprise license, the Enterprise license is also restored.
+- [Full cluster backups](#back-up-a-cluster) include [license keys]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license). When you [restore]({% link {{ page.version.version }}/restore.md %}) a full cluster backup that includes a license, the license is also restored.
 - [Zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore]({% link {{ page.version.version }}/restore.md %}#full-cluster) with the zone configurations from the [backed up cluster](#back-up-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
 - Exclude a table's row data from a backup using the [`exclude_data_from_backup`]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#exclude-a-tables-data-from-backups) parameter.
