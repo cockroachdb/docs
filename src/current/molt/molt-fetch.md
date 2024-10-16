@@ -85,6 +85,8 @@ Complete the following items before using MOLT Fetch:
 
 - When using [`IMPORT INTO`](#data-movement) to load tables into CockroachDB, if the fetch task terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation](#fetch-continuation), or restart the task from the beginning.
 
+- Ensure that the machine running MOLT Fetch is large enough to handle the amount of data being migrated. Fetch performance can sometimes be limited by available resources, but should always be making progress. To identify possible resource constraints, set `--logging debug` and observe the [metrics endpoint](#metrics).
+
 ## Security recommendations
 
 Cockroach Labs **strongly** recommends the following:
