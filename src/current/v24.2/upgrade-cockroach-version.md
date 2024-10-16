@@ -30,8 +30,6 @@ Because of CockroachDB's [multi-active availability]({% link {{ page.version.ver
 
 This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**{% if latest.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %}#support-types)){% endif %}.
 
-{% include latest-release-details.md %}
-
 To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
 
 ## Step 1. Verify that you can upgrade

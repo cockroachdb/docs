@@ -1,36 +1,54 @@
 ---
-title: Upgrade to CockroachDB v24.2
-summary: Learn how to upgrade your CockroachDB cluster to v24.2.
+title: Upgrade to CockroachDB v24.3
+summary: Learn how to upgrade your CockroachDB cluster to v24.3.
 toc: true
 docs_area: manage
 ---
 
-{% assign previous_version = site.data.versions | where_exp: "previous_version", "previous_version.major_version == page.version.version" | map: "previous_version" | first %}
+{% assign DEBUG = true %}
+
 {% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
 
 {% assign released = false %}
 {% assign skippable = false %}
+{% assign lts = false %}
+
 {% if rd.release_date != "N/A" and rd.maint_supp_exp_date != "N/A" %}
     {% assign released = true %}
     {% if rd.asst_supp_exp_date == "N/A" %}
         {% assign skippable = true %}
+    {% elsif rd.initial_lts_patch != "N/A" %}
+        {% assign lts = true %}
     {% endif %}
 {% endif %}
 
-{% assign earliest = site.data.releases | where_exp: "earliest", "earliest.major_version == page.version.version" | sort: "release_date" | first %}
 {% assign latest = site.data.releases | where_exp: "latest", "latest.major_version == page.version.version" | sort: "release_date" | last %}
-{% assign prior = site.data.releases | where_exp: "prior", "prior.major_version == page.version.version" | sort: "release_date" | pop | last %}
-{% assign previous_latest_prod = site.data.releases | where_exp: "previous_latest_prod", "previous_latest_prod.major_version == previous_version" | where: "release_type", "Production" | sort: "release_date" | last %}
-{% assign actual_latest_prod = site.data.releases | where: "major_version", site.versions["stable"] | where: "release_type", "Production" | sort: "release_date" | last %}
 
-{% capture previous_version_numeric %}{{ previous_version | remove_first: 'v' }}{% endcapture %}
 {% capture major_version_numeric %}{{ page.version.version | remove_first: 'v' }}{% endcapture %}
+
+{% assign upgrade_from = rd.upgrade_from | split: ";" | sort_natural %}
+{% assign upgrade_from_numeric = upgrade_from | remove: 'v' %}
+{% assign num_upgrade_from_versions = upgrade_from.size %}
+
+{% if DEBUG == true %}
+released: {{ released }}<br />
+skippable: {{ skippable }}<br />
+lts: {{ lts }}<br />
+latest: {{ latest }}<br /><br />
+major_version_numeric: {{ major_version_numeric }}<br />
+upgrade_from: {{ upgrade_from }}<br /><br />
+upgrade_from_numeric: {{ upgrade_from_numeric }}<bkr /><br />
+num_upgrade_from_versions: {{ num_upgrade_from_versions }}<br /><br />
+{% endif %}
 
 Because of CockroachDB's [multi-active availability]({% link {{ page.version.version }}/multi-active-availability.md %}) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
-This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**{% if latest.lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %}#support-types)){% endif %}.
-
-{% include latest-release-details.md %}
+This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**
+{% if released == false %}
+, which is a testing release. Testing releases are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments. Refer to [Release Support Policy]({% link releases/release-support-policy.md %}).
+{% else %}
+    {% if lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %}#support-types)).{% endif %}
+{% endif %}
 
 To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
 
@@ -40,51 +58,43 @@ To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.
 A cluster cannot be upgraded from an alpha binary of a prior release or from a binary built from the `master` branch of the CockroachDB source code.
 {{site.data.alerts.end}}
 
-{% if skippable == true %}
-CockroachDB {{ page.version.version }} is an optional [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases). If you skip it, you must upgrade to the next [Regular release]({% link releases/release-support-policy.md %}#regular-releases) when it is available to maintain support.
+{% if released == false %}
+CockroachDB {{ page.version.version }} is a testing release. Testing releases are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments. Refer to [Release Support Policy]({% link releases/release-support-policy.md %}).
 {% else %}
-CockroachDB {{ page.version.version }} is a required [Regular release]({% link releases/release-support-policy.md %}#regular-releases).
-{% endif %}{% comment %}TODO before next Regular, add logic for multiple targets to upgrade from to get to a Regular release{% endcomment %}
-
-To verify that you can upgrade:
-
-1. Run [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) against any node in the cluster to open the SQL shell. Then check your current cluster version:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > SHOW CLUSTER SETTING version;
-    ~~~
-
-To upgrade to {{ latest.release_name }}, you must be running{% if prior.release_name %} either{% endif %}:
-
-{% if prior.release_name %}
-- **Any earlier {{ page.version.version }} release:** {{ earliest.release_name }} to {{ prior.release_name }}.
+  {% if skippable == true %}
+CockroachDB {{ page.version.version }} is an optional [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases). If you skip it, you must upgrade to the next [Regular release]({% link releases/release-support-policy.md %}#regular-releases) when it is available to maintain support.
+  {% else %}
+CockroachDB {{ page.version.version }}{% if lts == true %}&nbsp;([LTS]({% link releases/release-support-policy.md %}#support-types)).{% endif %} is a required [Regular release]({% link releases/release-support-policy.md %}#regular-releases).
+  {% endif %}
 {% endif %}
-- **A {{ previous_version }} production release:** {{ previous_version }}.0 to {{ previous_latest_prod.release_name }}.
 
-If you are running any other version, take the following steps **before** continuing on this page:
+To upgrade to {{ page.version.version }}, you must be running either a previous patch in {{ page.version.version }} or a patch release in
+{% if num_upgrade_from_versions > 1 %}
+one of the following prior versions:
+<ul>{% for version in upgrade_from %}<li markdown="1">[{{ version }}]({% link releases/{{ version }}.md %})</li>{% endfor %}</ul>
+{% else %}[{{ upgrade_from }}]({% link {{ upgrade_from }}}).
+{% endif %}
 
-|                    Version                     |                                                                           Action(s) before upgrading to any {{ page.version.version }} release                                                                          |
-|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Pre-{{ page.version.version }} testing release | Upgrade to a corresponding production release, then upgrade through each subsequent major release, [ending with a {{ previous_version }} production release]({% link {{ previous_version }}/upgrade-cockroach-version.md %}). |
-| Pre-{{ previous_version }} production release  | Upgrade through each subsequent major release, [ending with a {{ previous_version }} production release]({% link {{ previous_version }}/upgrade-cockroach-version.md %}).                                                     |
-| {{ previous_version}} testing release          | [Upgrade to a {{ previous_version }} production release]({% link {{ previous_version }}/upgrade-cockroach-version.md %}).                                                                                                     |
+If you are running a version prior to {{ upgrade_from | first }}, you must [upgrade to {{ upgrade_from | first }}]({% link {{ upgrade_from | first }}/upgrade-cockroach-version.md %}) before beginning an upgrade to {{ page.version.version }}.
+
+To check your cluster's version, run [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) against any node in the cluster to open the SQL shell, then query the cluster's version:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW CLUSTER SETTING version;
+~~~
 
 When you are ready to upgrade to {{ latest.release_name }}, continue to [step 2](#step-2-prepare-to-upgrade).
 
 ## Step 2. Prepare to upgrade
 
-Before starting the upgrade, complete the following steps.
+Before beginning an upgrade, review the [{{ page.version.version }} release notes]({% link releases/{{ page.version.version }}/.md %}), which describe new features, backward-incompatible changes, deprecated features, and key cluster setting changes.
 
-### Review breaking changes
-
-
-
-Review the [backward-incompatible changes]({% link releases/{{ page.version.version }}.md %}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}), [deprecated features]({% link releases/{{ page.version.version }}.md %}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}), and [key cluster setting changes]({% link releases/{{ page.version.version }}.md %}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-cluster-settings{% endunless %}) in {{ page.version.version }}. If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
+If you are upgrading from a prior major version, complete the following steps.
 
 ### Check load balancing
 
-Make sure your cluster is behind a [load balancer]({% link {{ page.version.version }}/recommended-production-settings.md %}#load-balancing), or your clients are configured to talk to multiple nodes. If your application communicates with a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
+Make sure your cluster is behind a [load balancer]({% link {{ page.version.version }}/recommended-production-settings.md %}#load-balancing), or your clients are configured to connect to multiple nodes. If your application communicates with a single node, your cluster will be unavailable during the upgrade and connections will fail.
 
 ### Check cluster health
 
@@ -102,7 +112,7 @@ Verify the overall health of your cluster using the [DB Console]({% link {{ page
 
 ### Check decommissioned nodes
 
-If your cluster contains partially-decommissioned nodes, they will block an upgrade attempt.
+If your cluster contains partially-decommissioned nodes, they will block a major-version upgrade attempt. It's a good idea to check for partially-decommissioned nodes even before a patch upgrade, to help prevent problems with a future major-version upgrade.
 
 1. To check the status of decommissioned nodes, run  the [`cockroach node status --decommission`]({% link {{ page.version.version }}/cockroach-node.md %}#show-the-status-of-all-nodes) command:
 
@@ -118,41 +128,55 @@ If your cluster contains partially-decommissioned nodes, they will block an upgr
     1. First, reissue the [decommission command](node-shutdown.html?filters=decommission#decommission-the-node). The second command typically succeeds within a few minutes.
     1. If the second decommission command does not succeed, [recommission](node-shutdown.html?filters=decommission#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
 
+### Review breaking changes
+
+Skip this step if you are upgrading from a patch within {{ page.version.version }}.
+
+Review the [backward-incompatible changes]({% link releases/{{ page.version.version }}.md %}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}), [deprecated features]({% link releases/{{ page.version.version }}.md %}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}), and [key cluster setting changes]({% link releases/{{ page.version.version }}.md %}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-cluster-settings{% endunless %}) in {{ page.version.version }}. If necessary, make adjustments to your cluster's settings or workloads before starting a major-version rolling upgrade to {{ page.version.version }}.
+
 ### Back up cluster
 
-{% include {{page.version.version}}/backups/recommend-backups-for-upgrade.md%}
+{% include {{page.version.version}}/backups/recommend-backups-for-upgrade.md %}
+
 See our [support policy for restoring backups across versions]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}#support-for-restoring-backups-into-a-newer-version).
 
-## Step 3. Decide how the upgrade will be finalized
+## Step 3. Decide how a major-version upgrade will be finalized
 
-{{site.data.alerts.callout_info}}
-This step is relevant only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
-{{site.data.alerts.end}}
+Skip this step if you are upgrading from a patch within {{ page.version.version }}.
 
-By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain features and performance improvements introduced in {{ page.version.version }}. However, it will no longer be possible to [roll back to {{ previous_version }}](#step-5-roll-back-the-upgrade-optional) if auto-finalization is enabled. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 6](#step-6-finish-the-upgrade):
+By default, after all nodes are upgraded to {{ page.version.version }} from a prior major version, the upgrade process will be **auto-finalized**. After the upgrade is finalized, it will no longer be possible to [roll back to the previous major version](#step-5-roll-back-the-upgrade-optional). Certain features and performance improvements introduced in {{ page.version.version }} may not be available until the upgrade to {{ page.version.version }} is finalized. If applicable, these features are listed in [Features that require upgrade finalization](#features-that-require-upgrade-finalization). Finalization is always required to finish a major-version upgrade.
 
-1. [Upgrade to {{ previous_version }}]({% link {{ previous_version }}/upgrade-cockroach-version.md %}), if you haven't already.
+ To disable auto-finalization and preserve the ability to roll back to the cluster's previous version, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade. To disable auto-finalization, carefully follow all of these steps, then manually finalize the cluster upgrade to {{ page.version.version }} by following the instructions in [step 6. Finish the upgrade](#step-6-finish-the-upgrade). The upgrade is not complete until it is finalized, and the cluster will continue to report that it is on the current version.
 
 1. Start the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) shell against any node in the cluster.
 
-1. Set the `cluster.preserve_downgrade_option` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
+1. Set the `cluster.preserve_downgrade_option` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to your cluster's current version, which you found in [Step 1. Verify that you can upgrade](#step-1-verify-that-you-can-upgrade). Replace `{current_version}` with your cluster's current major version, omitting the leading `v`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SET CLUSTER SETTING cluster.preserve_downgrade_option = '{{ previous_version | slice: 1, 4 }}';
+    SET CLUSTER SETTING cluster.preserve_downgrade_option = '{current_version}';
     ~~~
 
-    It is only possible to set this setting to the current cluster version.
+    For example:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING cluster.preserve_downgrade_option = '{{ upgrade_from_numeric | first }}';
+    ~~~
+
+    Attempting to set the `preserve_downgrade_option` setting to any value other than the cluster's current version will result in an error.
 
 ### Features that require upgrade finalization
 
-When upgrading from one major version to another, certain features and performance improvements will be enabled only after finalizing the upgrade. However, when upgrading from {{ previous_version }} to {{ page.version.version }}, all features are available immediately, and no features require finalization.
+When upgrading from one major version to another, certain features and performance improvements will be enabled only after finalizing the upgrade.
 
 {{site.data.alerts.callout_info}}
-Finalization is always required to complete an upgrade.
+Finalization is always required to complete a major-version upgrade.
 {{site.data.alerts.end}}
 
-For more details about a given feature, refer to the [CockroachDB v24.2.0 release notes]({% link releases/v24.2.md %}#v24-2-0).
+{% if released == true %}
+For more details about a given feature, refer to the [CockroachDB {{ page.version.version}}.0 release notes]({% link releases/{{ page.version.version }}.md %}#{{ page.version.version | replace: '.','-' }}).
+{% endif %}
 
 ## Step 4. Perform the rolling upgrade
 
@@ -160,20 +184,15 @@ For more details about a given feature, refer to the [CockroachDB v24.2.0 releas
 Cockroach Labs recommends creating scripts to perform these steps instead of performing them manually.
 {{site.data.alerts.end}}
 
-Follow these steps to perform the rolling upgrade. To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
+Follow these steps on one node at a time to perform a rolling upgrade to {{ page.version.version }} or to upgrade from one {{ page.version.version }} patch to another. To upgrade CockroachDB on Kubernetes, refer to [single-cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes.md %}) or [multi-cluster]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster) instead.
 
-For each node in your cluster, complete the following steps. Be sure to upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.
+Be sure to upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.
 
 {{site.data.alerts.callout_danger}}
 After beginning a major-version upgrade, Cockroach Labs recommends upgrading all nodes as quickly as possible. In a cluster with nodes running different major versions of CockroachDB, a query that is sent to an upgraded node can be distributed only among other upgraded nodes. Data accesses that would otherwise be local may become remote, and the performance of these queries can suffer.
 {{site.data.alerts.end}}
 
 These steps perform an upgrade to the latest {{ page.version.version }} release, **{{ latest.release_name }}**.
-
-    <div class="filters clearfix">
-      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
-      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
-    </div>
 
 1. [Drain and shut down the node]({% link {{ page.version.version }}/node-shutdown.md %}#perform-node-shutdown).
 
@@ -199,8 +218,6 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
 
 1. Start the node so that it can rejoin the cluster.
 
-    <div class="filter-content" markdown="1" data-scope="linux">
-
     Without a process manager like `systemd`, re-run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command that you used to start the node initially, for example:
 
     {% include_cached copy-clipboard.html %}
@@ -218,22 +235,6 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
     systemctl start {systemd config filename}
     ~~~
 
-    </div>
-
-    <div class="filter-content" markdown="1" data-scope="mac">
-
-    Re-run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command that you used to start the node initially, for example:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cockroach start \
-        --certs-dir=certs \
-        --advertise-addr={node address} \
-        --join={node1 address},{node2 address},{node3 address}
-    ~~~
-
-    </div>
-
 1. Verify the node has rejoined the cluster through its output to [`stdout`]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) or through the [DB Console]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-status).
 
 1. If you use `cockroach` in your `$PATH`, you can remove the previous binary:
@@ -243,11 +244,7 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
     rm /usr/local/bin/cockroach_old
     ~~~
 
-    <div class="filter-content" markdown="1" data-scope="linux">
-
     If you leave versioned binaries on your servers, you do not need to do anything.
-
-    </div>
 
 1. After the node has rejoined the cluster, ensure that the node is ready to accept a SQL connection.
 
@@ -260,11 +257,11 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
 
     The command will automatically wait to complete until the node is ready.
 
-1. Repeat these steps for the next node.
+1. Repeat these steps for each node.
 
-## Step 5. Roll back the upgrade (optional)
+## Step 5. Roll back an upgrade (optional)
 
-If you decide to roll back to {{previous_version}}, you must do so before the upgrade has been [finalized](#step-6-finish-the-upgrade), as described in the next section. It is always possible to roll back to a previous {{ page.version.version }} version.
+If you decide to roll back after attempting a major-version upgrade, you must do so before the upgrade has been [finalized](#step-6-finish-the-upgrade), as described in the next section. It is always possible to roll back to a previous patch within {{ page.version.version }}.
 
 To roll back an upgrade, do the following on each cluster node:
 
@@ -274,30 +271,26 @@ To roll back an upgrade, do the following on each cluster node:
 
 ## Step 6. Finish the upgrade
 
-Because a finalized major-version upgrade cannot be rolled back, Cockroach Labs recommends that you monitor the stability and performance of your cluster with the upgraded binary for at least a day before deciding to finalize the upgrade.
+Skip this step if you are upgrading from a patch within {{ page.version.version }}.
 
-{{site.data.alerts.callout_info}}
-Finalization is required only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
-{{site.data.alerts.end}}
+Before finalizing a major-version upgrade, Cockroach Labs recommends that you monitor the stability and performance of your cluster with the upgraded binary for at least a day before deciding to finalize the upgrade.
 
 1. If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for at least a day. If you decide to roll back the upgrade, repeat the [rolling restart procedure](#step-4-perform-the-rolling-upgrade) with the previous binary. Otherwise, perform the following steps to re-enable upgrade finalization to complete the upgrade to {{ page.version.version }}. Cockroach Labs recommends that you either finalize or roll back a major-version upgrade within a relative short period of time; running in a partially-upgraded state is not recommended.
 
     {{site.data.alerts.callout_danger}}
-    A cluster that is not finalized on {{ previous_version }} cannot be upgraded to {{ page.version.version }} until the {{ previous_version }} upgrade is finalized.
+    A cluster that is not finalized after a major-version upgrade cannot be upgraded to a newer major version until the prior upgrade is finalized.
     {{site.data.alerts.end}}
 
-1. Once you are satisfied with the new version, run [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) against any node in the cluster to open the SQL shell.
-
-1. Re-enable auto-finalization:
+1. Once you are satisfied with the new version, run [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) against any node in the cluster to open the SQL shell, then reset the `preserve_downgrade_option` cluster setting:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
 
-    A series of migration jobs runs to enable certain types of features and changes in the new major version that cannot be rolled back. These include changes to system schemas, indexes, and descriptors, and enabling certain types of improvements and new features. Until the upgrade is finalized, these features and functions will not be available and the command `SHOW CLUSTER SETTING version` will return `{{ previous_version_numeric }}`.
+    A series of migration jobs runs to enable certain types of features and changes in the new major version that cannot be rolled back. These include changes to system schemas, indexes, and descriptors, and enabling certain types of improvements and new features. Until the upgrade is finalized, these features and functions will not be available and the command `SHOW CLUSTER SETTING version` will return the cluster's previous version rather than `{{ major_version_numeric }}`.
 
-    You can monitor the process of the migration in the DB Console [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}). Migration jobs have names in the format `{{ major_version_numeric }}-{migration-id}`. If a migration job fails or stalls, Cockroach Labs can use the migration ID to help diagnose and troubleshoot the problem. Each major version has different migration jobs with different IDs.
+    You can monitor the process of the migration in the DB Console [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}). Migration jobs have names in the format `{{ major_version_numeric }}-{migration-id}`. If you are upgrading to a Regular release and skipping the intermittent Innovation release, migrations for the skipped version are run before the migrations for {{ page.version.version }} are run. If a migration job fails or stalls, Cockroach Labs can use the migration ID to help diagnose and troubleshoot the problem. Each major version has different migration jobs with different IDs.
 
     {{site.data.alerts.callout_info}}
     All [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) jobs must reach a terminal state before finalization can complete. Finalization can therefore take as long as the longest-running schema change. Otherwise, the amount of time required for finalization depends on the amount of data in the cluster, as the process runs various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
@@ -312,9 +305,7 @@ Finalization is required only when upgrading from {{ previous_version }}.x to {{
     > SHOW CLUSTER SETTING version;
     ~~~
 
-    If the cluster continues to report that it is on the previous version, finalization has not completed. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#status-change) where decommission has stalled. In most cases, issuing the `decommission` command again resolves the issue. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc/).
-
-After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) activity due to a background migration job within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}) in the DB Console or monitor the `storage.marked-for-compaction-files` [time-series metric]({% link {{ page.version.version }}/metrics.md %}). When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
+    If the cluster does not return `{{ major_version_numeric }}`, finalization has not completed. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#status-change) where decommission has stalled. In most cases, issuing the `decommission` command again resolves the issue. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc/).
 
 {{site.data.alerts.callout_success}}
 {% include {{page.version.version}}/storage/compaction-concurrency.md %}
@@ -322,9 +313,9 @@ After the upgrade to {{ page.version.version }} is finalized, you may notice an 
 
 ## Troubleshooting
 
-After the upgrade has finalized (whether manually or automatically), it is no longer possible to downgrade to the previous release. If you are experiencing problems, we therefore recommend that you run the [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) command on any cluster node to capture your cluster's state, then [open a support request]({% link {{ page.version.version }}/support-resources.md %}) and share your debug zip.
+After a major-version upgrade has finalized (whether manually or automatically), it is no longer possible to roll back to the previous release. If you are experiencing problems, we recommend that you run the [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) command on any cluster node to capture your cluster's state, then [open a support request]({% link {{ page.version.version }}/support-resources.md %}) and share your debug zip.
 
-In the event of catastrophic failure or corruption, it may be necessary to [restore]({% link {{ page.version.version }}/restore.md %}) from a backup to a new cluster running {{ previous_version }}.
+In the event of catastrophic failure or corruption, it may be necessary to [restore]({% link {{ page.version.version }}/restore.md %}) from a backup to a new cluster running the prior version.
 
 ## See also
 
@@ -332,15 +323,4 @@ In the event of catastrophic failure or corruption, it may be necessary to [rest
 - [View Node Details]({% link {{ page.version.version }}/cockroach-node.md %})
 - [Collect Debug Information]({% link {{ page.version.version }}/cockroach-debug-zip.md %})
 - [View Version Details]({% link {{ page.version.version }}/cockroach-version.md %})
-- [Release notes for our latest version]({% link releases/{{page.version.version}}.md %})
-
-[#102961]: https://github.com/cockroachdb/cockroach/pull/102961
-[#104265]: https://github.com/cockroachdb/cockroach/pull/104265
-[#107474]: https://github.com/cockroachdb/cockroach/pull/107474
-[#106177]: https://github.com/cockroachdb/cockroach/pull/106177
-[#98308]: https://github.com/cockroachdb/cockroach/pull/98308
-[#105477]: https://github.com/cockroachdb/cockroach/pull/105477
-[#107903]: https://github.com/cockroachdb/cockroach/pull/107903
-[#108190]: https://github.com/cockroachdb/cockroach/pull/108190
-[#110649]: https://github.com/cockroachdb/cockroach/pull/110649
-[#114203]: https://github.com/cockroachdb/cockroach/pull/114203
+- [Release notes for {{ page.version.version }}]({% link releases/{{page.version.version}}.md %})

@@ -15,8 +15,6 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-{% include latest-release-details.md %}
-
 {% capture arch_note_homebrew %}<p>For CockroachDB v22.2.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>).</p><p>For previous releases, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use and not eligible for support or uptime SLA commitments.</p>{% endcapture %}
 
 {% capture arch_note_binaries %}<p>For CockroachDB v22.2.x and above, download the binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>).</p><p>For previous releases, download Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use and not eligible for support or uptime SLA commitments.</p>{% endcapture %}
