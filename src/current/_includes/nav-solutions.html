@@ -1,44 +1,48 @@
-<button class="d-none d-md-block btn-close position-absolute"></button>
-<div class="row">
-<div class="col-md-4">
-    <p class="font-size-16 lh-n semibold my-3 text-primary">By Industries</p>
-    <ul class="list-unstyled p-0">
-    {% for item in site.data.menus.solutions_industries limit:4 %}
-        <li class="border-bottom">
-            <a class="text-xs text-black d-flex pb-2 pt-3 align-items-center" href="{{ item.url }}">{{ item.name }}
-                <svg class="ml-auto" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M5.98691 0.624521L9.97887 4.61648C10.2238 4.86145 10.2238 5.25862 9.97887 5.50358L5.98691 9.49554C5.74195 9.74051 5.34478 9.74051 5.09981 9.49554C4.85485 9.25057 4.85485 8.85341 5.09981 8.60844L8.02094 5.68731H0.789873C0.443439 5.68731 0.162598 5.40647 0.162598 5.06003C0.162598 4.7136 0.443439 4.43276 0.789873 4.43276H8.02094L5.09981 1.51162C4.85485 1.26666 4.85485 0.869487 5.09981 0.624521C5.34478 0.379554 5.74195 0.379554 5.98691 0.624521Z" fill="black"/>
-                    </svg>                    
-            </a> 
-        </li>
-    {% endfor %}
-    </ul>
-</div>
-<div class="col-md-4">
-    <p class="font-size-16 lh-n semibold my-3 text-primary">&nbsp;</p>
-    <ul class="list-unstyled p-0">
-        {% for item in site.data.menus.solutions_industries offset:4 %}
-            <li class="border-bottom">
-                <a class="text-xs text-black d-flex pb-2 pt-3 align-items-center" href="{{ item.url }}">{{ item.name }}
-                    <svg class="ml-auto" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.98691 0.624521L9.97887 4.61648C10.2238 4.86145 10.2238 5.25862 9.97887 5.50358L5.98691 9.49554C5.74195 9.74051 5.34478 9.74051 5.09981 9.49554C4.85485 9.25057 4.85485 8.85341 5.09981 8.60844L8.02094 5.68731H0.789873C0.443439 5.68731 0.162598 5.40647 0.162598 5.06003C0.162598 4.7136 0.443439 4.43276 0.789873 4.43276H8.02094L5.09981 1.51162C4.85485 1.26666 4.85485 0.869487 5.09981 0.624521C5.34478 0.379554 5.74195 0.379554 5.98691 0.624521Z" fill="black"/>
-                        </svg>                    
-                </a> 
-            </li>
-        {% endfor %}
-        </ul>
-</div>
-{% for item in site.data.menus.solutions %}
-<div class="col-md-4">
-    <p class="font-size-16 lh-n semibold my-3">Customer Stories</p>
-    <div>
-        <p class="mb-4 mt-0 font-size-16 lh-n">
-            {{ item.params.text | safeHTML }}
-        </p>
-        <div class="pb-45">
-            <a class="btn btn-black rounded-pill px-4 py-2" href="https://www.cockroachlabs.com/customers/">Read case studies</a>
+<div class="container-sm width-990">
+    <div class="row">
+        <div class="col-md-3" style="position: relative;
+    top: -10px;">
+            <ul class="mt-3 mb-3 mb-md-3 list-unstyled p-0">
+            <li><a class="font-weight-semi-bold font-size-16 mb-3 d-block" href="https://www.cockroachlabs.com/mainframe-modernization/">Mainframe Modernization</a></li>
+            <li><a class="font-weight-semi-bold" href="https://www.cockroachlabs.com/architectural-simplification/">Architectural Simplification</a></li>
+            </ul>
+        </div>
+        <div class="col-md-3 pl-lg-4">
+            <p class="font-weight-semi-bold font-size-16 mb-2">By Industry</p>
+            <ul class="mt-3 mb-3 mb-md-3 list-unstyled p-0">
+                <li class="pb-2"><a class="" href="https://www.cockroachlabs.com/solutions/verticals/financialservices/">Banking & Fintech</a></li>
+                <li class="pb-2"><a class="" href="https://www.cockroachlabs.com/solutions/verticals/retail-ecommerce/">Retail & eCommerce</a></li>
+                <li class="pb-2"><a class="" href="https://www.cockroachlabs.com/solutions/verticals/saas/">Software & Tech</a></li>
+                <li class="pb-2"><a class="" href="https://www.cockroachlabs.com/solutions/verticals/media/">Media & Streaming</a></li>
+                <li class="pb-2"><a class="" href="https://www.cockroachlabs.com/solutions/verticals/gaming/">Gaming</a></li>
+                <li class="pb-2"><a class="" href="https://www.cockroachlabs.com/solutions/verticals/manufacturing-logistics/">Manufacturing & Logistics</a></li>
+                <li class="pb-2"><a class="" href="https://www.cockroachlabs.com/solutions/verticals/gambling/">Gambling</a></li>
+                <li class="pb-2"><a class="" href="https://www.cockroachlabs.com/solutions/verticals/healthcare/">Healthcare</a></li>                
+            </ul>
+            
+        </div>
+        <div class="col-md-3">
+            <p class="font-weight-semi-bold font-size-16 mb-2">By Use Case</p>
+            <ul class="mt-3 mb-3 mb-md-3 list-unstyled p-0">
+                <li class="pb-2"><a href="https://www.cockroachlabs.com/solutions/usecases/user-accounts-and-metadata/">User Metadata</a></li>
+                <li class="pb-2"><a href="https://www.cockroachlabs.com/solutions/usecases/payments/">Payments</a></li>
+                <li class="pb-2"><a href="https://www.cockroachlabs.com/solutions/usecases/identity-access-management/">Identity Access Management</a></li>
+                <li class="pb-2"><a href="https://www.cockroachlabs.com/solutions/usecases/orders-and-inventory-management/">Orders & Inventory Management</a></li>
+                <li class="pb-2"><a href="https://www.cockroachlabs.com/solutions/usecases/iot-and-device-management/">IoT & Device Management</a></li>
+                <li class="pb-2"><a href="https://www.cockroachlabs.com/solutions/usecases/banking-and-wallet/">Banking & Wallet</a></li>
+                <li class="pb-2"><a href="https://www.cockroachlabs.com/solutions/usecases/gaming-platforms/">Gaming Platform</a></li>
+                <li class="pb-2"><a href="https://www.cockroachlabs.com/solutions/usecases/routing-and-logistics/">Routing and Logistics</a></li>
+            </ul>
+
+        </div>
+        <div class="col-md-3">
+         
+            <div class="nav-img-holder">
+                <a href="https://www.cockroachlabs.com/guides/mission-critical-use-cases/">
+                    <img class="img-fluid" src="https://www.cockroachlabs.com/img/usecase.png" alt="Usecases"/>
+                </a>
+            </div>
+
         </div>
     </div>
 </div>
-{% endfor %}
-</div> 

@@ -1,9 +1,118 @@
 {{ $currentPage := . }}
-<div class="shadow-sm main-nav-wrapper position-fixed w-100" data-nosnippet>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+  .navbar-nav .nav-item .nav-link {
+  font-size: 16px;   /* Adjust this value if needed */
+  color: #0A2540;    /* This is the dark blue color used on the Cockroach Labs site */
+}
 
-<div class="container-xl main-nav main-nav-contained-800 ">
-  <nav class="navbar navbar-expand-lg navbar-light">
-    <a class="navbar-brand mr-0 mr-md-2 d-xl-block mt-auto" href="{{ '/' | relative_url }}"><img width="170" height="24" alt="Cockroach Labs" class="br0 db mb0" src="{{ '/images/cockroachlabs-logo-170.png' | relative_url }}"></a>
+.navbar-nav .nav-item .nav-link:hover {
+  color: rgb(105, 51, 255) /* This is the hover color used on the Cockroach Labs site */
+}
+
+/* For the "Start Instantly" button */
+.navbar-nav .nav-item .btn-primary {
+  font-size: 16px;   /* Adjust this value if needed */
+}
+
+/* For the dropdown items */
+.dropdown-menu a {
+  font-weight: 400;  /* Slightly less bold for dropdown items */
+  font-size: 16px;   /* Adjust this value if needed */
+  color: #0A2540;
+}
+
+.dropdown-menu a:hover {
+  color:rgb(105, 51, 255);
+}
+  .navbar{
+    max-height: 84px;
+    padding-left: 210px;
+  }
+  @media (hover: hover) {
+    .navbar .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+}
+.navbar .dropdown .dropdown-menu {
+  visibility: hidden; /* Hide dropdown */
+  opacity: 0;         /* Make dropdown transparent */
+  transition: opacity 0.5s linear; /* Animate opacity */
+}
+
+@media (hover: hover) {
+  .navbar .dropdown:hover .dropdown-menu {
+    visibility: visible; /* Show dropdown on hover */
+    opacity: 1;          /* Make dropdown fully visible */
+  }
+  .main-nav .navbar .dropdown-menu * {
+    list-style: none !important;
+  }
+}
+@media (max-width: 991.98px) {
+  #navbarSupportedContent {
+    position: fixed;
+    top: 84px; /* Adjust this value to match your navbar height */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    z-index: 1040;
+    overflow-y: auto;
+  }
+
+  .navbar-collapse.show {
+    display: block;
+  }
+
+  body.mobile-menu-open {
+    overflow: hidden;
+  }
+}
+</style>
+<script>
+  function toggleDropdown(element, isOpen) {
+    const dropdownMenu = element.querySelector('.dropdown-menu');
+    if (isOpen) {
+      element.classList.add('dropdown-open');
+      dropdownMenu.classList.add('dropdown-open');
+    } else {
+      element.classList.remove('dropdown-open');
+      dropdownMenu.classList.remove('dropdown-open');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+  var navbarToggler = document.querySelector('.navbar-toggler');
+  var navbarCollapse = document.querySelector('#navbarSupportedContent');
+
+  navbarToggler.addEventListener('click', function() {
+    if (navbarCollapse.classList.contains('show')) {
+      document.body.classList.remove('mobile-menu-open');
+    } else {
+      document.body.classList.add('mobile-menu-open');
+    }
+  });
+});
+  
+    </script>
+
+  
+<div class="shadow-sm main-nav-wrapper position-relative" style="z-index: 1030;" >
+<div class="main-nav main-nav-contained-800">
+  <nav class="navbar navbar-expand-lg navbar-light py-0 fixed-top">
+    <div class="container-xl px-0">
+      <a class="navbar-brand mr-0 mr-md-2 d-xl-block" href="{{ '/' | relative_url }}" style="
+      padding-bottom: 10px;
+  ">
+        <img 
+          width="170" 
+          height="24" 
+          alt="Cockroach Labs" 
+          class="br0 db mb0" 
+          src="{{ '/images/cockroachlabs-logo-170.png' | relative_url }}?auto=format,compress"
+        >
+      </a>
     <button
       class="navbar-toggler"
       type="button"
@@ -18,12 +127,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
       <!-- Mobile nav -->
-      <div class="d-lg-none pt-2">
+      <div class="d-lg-none pt-2 mobile-menu-wrapper">
         <div class="accordion " id="accordionExample">
 
           <!-- Mobile product -->
           <div class="card">
-            <div class="card-header bg-white" id="mobileProduct">
+            <div class="card-header bg-white py-4" id="mobileProduct">
                 <h2 class="mb-0">
                     <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse"
                         data-target="#collapseProduct" aria-expanded="false" aria-controls="mobileProduct">
@@ -32,15 +141,15 @@
                 </h2>
             </div>
             <div id="collapseProduct" class="collapse" aria-labelledby="mobileProduct" data-parent="#accordionExample">
-              <div class="card-body bg-gray-f4">
-                {% include_cached nav-product.html %}
+              <div class="card-body">
+                {% include nav-product.html %}
               </div>
             </div>
           </div>
 
           <!-- Mobile solutions -->
           <div class="card">
-            <div class="card-header bg-white" id="mobileSolutions">
+            <div class="card-header bg-white py-4" id="mobileSolutions">
                 <h2 class="mb-0">
                     <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse"
                         data-target="#collapseSolutions" aria-expanded="false" aria-controls="mobileSolutions">
@@ -49,8 +158,8 @@
                 </h2>
             </div>
             <div id="collapseSolutions" class="collapse" aria-labelledby="mobileSolutions" data-parent="#accordionExample">
-              <div class="card-body bg-gray-f4">
-                {% include_cached nav-solutions.html %}
+              <div class="card-body">
+                {% include nav-solutions.html %}
               </div>
             </div>
           </div>
@@ -58,7 +167,7 @@
           <!-- Mobile Resources -->
 
           <div class="card">
-            <div class="card-header bg-white" id="mobileResources">
+            <div class="card-header bg-white py-4" id="mobileResources">
                 <h2 class="mb-0">
                     <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse"
                         data-target="#collapseResources" aria-expanded="false" aria-controls="mobileResources">
@@ -67,8 +176,8 @@
                 </h2>
             </div>
             <div id="collapseResources" class="collapse" aria-labelledby="mobileResources" data-parent="#accordionExample">
-              <div class="card-body bg-gray-f4">
-                {% include_cached nav-resources.html %}
+              <div class="card-body">
+                {% include nav-resources.html %}
               </div>
             </div>
           </div>
@@ -76,7 +185,7 @@
           <!-- Mobile Docs -->
 
           <div class="card">
-            <div class="card-header bg-white" id="mobileDocs">
+            <div class="card-header bg-white py-4" id="mobileDocs">
                 <h2 class="mb-0">
                     <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse"
                         data-target="#collapseDocs" aria-expanded="false" aria-controls="mobileDocs">
@@ -85,16 +194,16 @@
                 </h2>
             </div>
             <div id="collapseDocs" class="collapse" aria-labelledby="mobileDocs" data-parent="#accordionExample">
-              <div class="card-body bg-gray-f4">
-                {% include_cached nav-docs.html %}
+              <div class="card-body">
+                {% include nav-docs.html %}
               </div>
             </div>
           </div>
 
           <!-- Mobile Company -->
 
-          <div class="card">
-            <div class="card-header bg-white" id="mobileCompany">
+         <div class="card">
+            <div class="card-header bg-white py-4" id="mobileCompany">
                 <h2 class="mb-0">
                     <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse"
                         data-target="#collapseCompany" aria-expanded="false" aria-controls="mobileCompany">
@@ -103,30 +212,47 @@
                 </h2>
             </div>
             <div id="collapseCompany" class="collapse" aria-labelledby="mobileCompany" data-parent="#accordionExample">
-              <div class="card-body bg-gray-f4">
-                {% include_cached nav-company.html %}
+              <div class="card-body">
+                {% include nav-company.html %}
+              </div>
+            </div>
+          </div> 
+
+          <!-- Mobile Customers -->
+
+          <div class="card">
+            <div class="card-header bg-white py-4" id="mobileCustomers">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse"
+                        data-target="#collapseCustomers" aria-expanded="false" aria-controls="mobileCustomers">
+                        Customers
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseCustomers" class="collapse" aria-labelledby="mobileCustomers" data-parent="#accordionExample">
+              <div class="card-body">
+                {% include nav-company.html %}
               </div>
             </div>
           </div>
 
-          <!-- blog -->
           <div class="card">
-            <div class="card-header bg-white" id="mobileBlog">
+            <div class="card-header bg-white py-4" id="">
                 <h2 class="mb-0">
-                    <a class="btn btn-link btn-block text-left btn-link-chevron-right d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/featured-blog/">Blog</a>
+                    <a class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/pricing/">Pricing</a>
                 </h2>
             </div>
           </div>
           <div class="card">
-            <div class="card-header bg-white" id="">
+            <div class="card-header bg-white py-4" id="">
                 <h2 class="mb-0">
-                    <a class="btn btn-link btn-block text-left btn-link-chevron-right d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/contact/">Contact Us</a>
+                    <a class="btn btn-link btn-block text-left btn-link-chevron-right d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/contact/">Contact us</a>
                 </h2>
             </div>
           </div>
 
           <div class="card">
-            <div class="card-header bg-white" id="">
+            <div class="card-header bg-white py-4" id="">
                 <h2 class="mb-0">
                     <a class="btn btn-link btn-block text-left" href="https://cockroachlabs.cloud/">Sign In</a>
                 </h2>
@@ -137,11 +263,13 @@
         </div>
       </div>
       <!-- end mobile nav -->
+       
       <!-- Desktop nav -->
       <ul class="d-none d-lg-flex navbar-nav mr-auto mb-2 mb-lg-0 mt-auto">
-        <li class="nav-item dropdown position-static">
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1" >
+
           <a
-          class="nav-link dropdown-toggle"
+          class="nav-link nav-link-border dropdown-toggle"
           href="#"
           id="navbarDropdown"
           role="button"
@@ -149,13 +277,12 @@
           aria-haspopup="true"
           aria-expanded="false">Product</a>
           <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
-            {% include_cached nav-product.html %}
+            {% include nav-product.html %}
           </div>
         </li>
 
-        <li class="nav-item dropdown position-static">
-          <a
-          class="nav-link dropdown-toggle"
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1" onmouseenter="toggleDropdown(this, true)" onmouseleave="toggleDropdown(this, false)">          <a
+          class="nav-link nav-link-border dropdown-toggle"
           href="#"
           id="navbarDropdown"
           role="button"
@@ -163,13 +290,12 @@
           aria-haspopup="true"
           aria-expanded="false">Solutions</a>
           <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
-            {% include_cached nav-solutions.html %}
+            {% include nav-solutions.html %}
           </div>
         </li>
 
-        <li class="nav-item dropdown position-static">
-          <a
-          class="nav-link dropdown-toggle"
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1" onmouseenter="toggleDropdown(this, true)" onmouseleave="toggleDropdown(this, false)">          <a
+          class="nav-link nav-link-border dropdown-toggle"
           href="#"
           id="navbarDropdown"
           role="button"
@@ -177,14 +303,13 @@
           aria-haspopup="true"
           aria-expanded="false">Resources</a>
           <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
-            {% include_cached nav-resources.html %}
+            {% include nav-resources.html %}
           </div>
         </li>
 
 
-        <li class="nav-item dropdown position-static">
-          <a
-          class="nav-link dropdown-toggle"
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1" onmouseenter="toggleDropdown(this, true)" onmouseleave="toggleDropdown(this, true)">          <a
+          class="nav-link nav-link-border dropdown-toggle"
           href="#"
           id="navbarDropdown"
           role="button"
@@ -192,13 +317,33 @@
           aria-haspopup="true"
           aria-expanded="false">Docs</a>
           <div class="dropdown-menu w-100 p-45 docs" aria-labelledby="navbarDropdown">
-            {% include_cached nav-docs.html %}
+            {% include nav-docs.html %}
           </div>
         </li>
 
-        <li class="nav-item dropdown position-static">
+        <li class="nav-item dropdown position-static py-4 mx-0 px-2">
           <a
-          class="nav-link dropdown-toggle"
+          class="nav-link nav-link-border dropdown-toggle no-chevron"
+          href="https://www.cockroachlabs.com/pricing/"
+          id="navbarDropdown"
+          >Pricing</a>
+        </li>
+
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1" onmouseenter="toggleDropdown(this, true)" onmouseleave="toggleDropdown(this, false)">          <a
+          class="nav-link nav-link-border dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false">Customers</a>
+          <div class="dropdown-menu w-100 p-45 company" aria-labelledby="navbarDropdown">
+            {% include nav-customers.html %}
+          </div>
+        </li>
+
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1" onmouseenter="toggleDropdown(this, true)" onmouseleave="toggleDropdown(this, false)">          <a
+          class="nav-link nav-link-border dropdown-toggle"
           href="#"
           id="navbarDropdown"
           role="button"
@@ -206,9 +351,10 @@
           aria-haspopup="true"
           aria-expanded="false">Company</a>
           <div class="dropdown-menu w-100 p-45 company" aria-labelledby="navbarDropdown">
-            {% include_cached nav-company.html %}
+            {% include nav-company.html %}
           </div>
         </li>
+
       </ul>
       <!-- end desktop nav -->
 
@@ -216,11 +362,11 @@
       <div class="ml-auto">
         <ul class="d-none d-lg-flex navbar-nav mr-auto mb-2 mb-lg-0 mt-auto">
           <li class="nav-item">
-            <a class="nav-link nav-text-md" href="https://www.cockroachlabs.com/contact/" role="button"> Contact Us</a>
+            <a class="nav-link" href="https://www.cockroachlabs.com/contact/" role="button"> Contact us</a>
             <a class="nav-link nav-icon-md" href="https://www.cockroachlabs.com/contact/" role="button"><img class="" width="32" src="{{ '/images/icons/icon-envelope.png' | relative_url }}" alt="Sign in"></a>
           </li>
           <li class="nav-item">
-            <a href="https://cockroachlabs.cloud/" class="nav-link nav-text-md">Sign In</a>
+            <a href="https://cockroachlabs.cloud/" class="nav-link">Sign In</a>
             <a href="https://cockroachlabs.cloud/" class="nav-link nav-icon-md">
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="11" cy="11" r="10.25" fill="white" stroke="black" stroke-width="1.5"/>
@@ -230,12 +376,15 @@
               </a>
           </li>
           <li class="nav-item d-flex justify-content-center flex-column">
-            <a class="btn btn-primary rounded-pill px-3 font-family-poppins py-1 ml-2" href="https://cockroachlabs.cloud/signup">Start Instantly</a>
+            <a class="btn btn-primary rounded-pill px-3 font-family-poppins py-1 ml-2" href="https://cockroachlabs.cloud/signup" style="
+    color: #fff;">Get started free</a>
           </li>
         </ul>
       </div>
       <!-- End right side nav -->
     </div>
+  </div>
   </nav>
 </div>
 </div>
+
