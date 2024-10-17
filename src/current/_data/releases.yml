@@ -6922,7 +6922,7 @@
   release_type: Production
   go_version: go1.23.2
   sha: 5ca308c616cee5939f4be345069d4f3849617fd3
-    has_sql_only: true
+  has_sql_only: true
   has_sha256sum: true
   mac:
     mac_arm: true
