@@ -32,8 +32,8 @@ Refer to:
 The Overview page provides a cluster overview and node list and map.
 
 - [Cluster Overview]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}) has essential metrics about the cluster and nodes, including liveness status, replication status, uptime, and hardware usage.
-- [Node List]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-map-enterprise) has a list of cluster metrics at the locality and node levels.
-- [Node Map]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-map-enterprise) displays a geographical configuration of your cluster and metrics at the locality and node levels, visualized on a map.
+- [Node List]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-map) has a list of cluster metrics at the locality and node levels.
+- [Node Map]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-map) displays a geographical configuration of your cluster and metrics at the locality and node levels, visualized on a map.
 
 ### Metrics
 

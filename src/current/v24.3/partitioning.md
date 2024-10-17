@@ -23,7 +23,6 @@ Table partitioning helps you reduce latency and cost:
 Table partitioning involves a combination of CockroachDB features:
 
 - [Node attributes](#node-attributes)
-- [Enterprise license](#enterprise-license)
 - [Table creation](#table-creation)
 - [Replication zones](#replication-zones)
 

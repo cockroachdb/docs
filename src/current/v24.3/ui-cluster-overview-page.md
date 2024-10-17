@@ -12,7 +12,7 @@ The **Cluster Overview** page of the DB Console displays key metrics about your 
 - Uptime
 - Hardware usage
 
-Enable the [Node Map](#node-map-enterprise) view for a visual representation of your cluster's geographic layout.
+Enable the [Node Map](#node-map) view for a visual representation of your cluster's geographic layout.
 
 ## Cluster Overview panel
 
@@ -28,7 +28,7 @@ Replication Status | <a name="replication-status"></a> <ul><li>The total number 
 
 ### Capacity metrics
 
-The [Cluster Overview](#cluster-overview-panel), [Node List](#node-list), and [Node Map](#node-map-enterprise) display **Capacity Usage** by the CockroachDB [store]({% link {{ page.version.version }}/architecture/storage-layer.md %}) (the directory on each node where CockroachDB reads and writes its data) as a percentage of the disk space that is **usable** on the cluster, locality, or node.
+The [Cluster Overview](#cluster-overview-panel), [Node List](#node-list), and [Node Map](#node-map) display **Capacity Usage** by the CockroachDB [store]({% link {{ page.version.version }}/architecture/storage-layer.md %}) (the directory on each node where CockroachDB reads and writes its data) as a percentage of the disk space that is **usable** on the cluster, locality, or node.
 
 Usable disk space is constrained by the following:
 
@@ -50,7 +50,7 @@ If a node is currently unavailable, the last-known capacity usage will be shown,
 The **Node List** groups nodes by locality. The lowest-level locality tier is used to organize the Node List. Hover over a locality to see all localities for the group of nodes.
 
 {{site.data.alerts.callout_success}}
-We recommend [defining `--locality` flags when starting nodes]({% link {{ page.version.version }}/cockroach-start.md %}#locality). CockroachDB uses locality to distribute replicas and mitigate [network latency]({% link {{ page.version.version }}/ui-network-latency-page.md %}). Locality is also a prerequisite for enabling the [Node Map](#node-map-enterprise).
+We recommend [defining `--locality` flags when starting nodes]({% link {{ page.version.version }}/cockroach-start.md %}#locality). CockroachDB uses locality to distribute replicas and mitigate [network latency]({% link {{ page.version.version }}/ui-network-latency-page.md %}). Locality is also a prerequisite for enabling the [Node Map](#node-map).
 {{site.data.alerts.end}}
 
 ### Node status
