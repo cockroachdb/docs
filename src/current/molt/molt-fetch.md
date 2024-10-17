@@ -188,7 +188,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--target`                                    | (Required) Connection string for the target database. For details, see [Source and target databases](#source-and-target-databases).                                                                                                                                                                                                                                                                                                                                                           |
 | `--allow-tls-mode-disable`                    | Allow insecure connections to databases. Secure SSL/TLS connections should be used by default. This should be enabled **only** if secure SSL/TLS connections to the source or target database are not possible.                                                                                                                                                                                                                                                                               |
 | `--bucket-path`                               | The path within the [cloud storage](#cloud-storage) bucket where intermediate files are written (e.g., `'s3://bucket/path'` or `'gs://bucket/path'`). Only the path is used; query parameters (e.g., credentials) are ignored.                                                                                                                                                                                                                                                                |
-| `--changefeeds-path`                          | Path to a JSON file that contains changefeed override settings for [failback](#fail-back-to-source-database), when enabled with `--mode failback`. For details, see [Fail back to source database](#fail-back-to-source-database).                                                                                                                                                                                                                                                            |
+| `--changefeeds-path`                          | Path to a JSON file that contains changefeed override settings for [failback](#fail-back-to-source-database), when enabled with `--mode failback`. If not specified, an insecure default configuration is used, and `--allow-tls-mode-disable` must be included. For details, see [Fail back to source database](#fail-back-to-source-database).                                                                                                                                              |
 | `--cleanup`                                   | Whether to delete intermediate files after moving data using [cloud or local storage](#data-path). **Note:** Cleanup does not occur on [continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                   |
 | `--compression`                               | Compression method for data when using [`IMPORT INTO`](#data-movement) (`gzip`/`none`).<br><br>**Default:** `gzip`                                                                                                                                                                                                                                                                                                                                                                            |
 | `--continuation-file-name`                    | Restart fetch at the specified filename if the task encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                          |
@@ -213,7 +213,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--pglogical-replication-slot-name`           | The name of a replication slot to create before taking a snapshot of data (e.g., `'fetch'`). **Required** in order to perform continuous [replication](#load-data-and-replicate-changes) from a source PostgreSQL database.                                                                                                                                                                                                                                                                   |
 | `--pglogical-replication-slot-plugin`         | The output plugin used for logical replication under `--pglogical-replication-slot-name`.<br><br>**Default:** `pgoutput`                                                                                                                                                                                                                                                                                                                                                                      |
 | `--pprof-listen-addr`                         | Address of the pprof endpoint.<br><br>**Default:** `'127.0.0.1:3031'`                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `--replicator-flags`                          | If continuous [replication](#load-data-and-replicate-changes) is enabled with `--mode data-load-and-replication`, `--mode replication-only`, or `--mode failback`, specify replication flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override.                                                                                                   |
+| `--replicator-flags`                          | If continuous [replication](#load-data-and-replicate-changes) is enabled with `--mode data-load-and-replication`, `--mode replication-only`, or `--mode failback`, specify replication flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override.                                                                               |
 | `--row-batch-size`                            | Number of rows per shard to export at a time. See [Best practices](#best-practices).<br><br>**Default:** `100000`                                                                                                                                                                                                                                                                                                                                                                             |
 | `--schema-filter`                             | Move schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                           |
 | `--table-concurrency`                         | Number of tables to export at a time. The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`.<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. Refer to [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source                                                                                                                                             |
@@ -400,9 +400,55 @@ When running `molt fetch --mode failback`, `--source` is the CockroachDB connect
 --table-filter 'employees, payments'
 ~~~
 
-`failback` mode creates a [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) that passes change events from CockroachDB to a [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink). However, if there is already a running CockroachDB changefeed with the same webhook sink URL (excluding query parameters) and [watched rows]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}), the existing changefeed is used for `failback`.
+`failback` mode creates a [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) and sets up a [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) to pass change events from CockroachDB to the failback target.
 
-When creating a new `failback` changefeed, MOLT Fetch specifies the following [`CREATE CHANGEFEED` parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#parameters):
+{{site.data.alerts.callout_info}}
+If there is already a running CockroachDB changefeed with the same webhook sink URL (excluding query parameters) and [watched rows]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}), the existing changefeed is used for `failback`.
+{{site.data.alerts.end}}
+
+By default, `failback` uses an insecure configuration for the CockroachDB changefeed. The [default configuration](#default-insecure-changefeed) is suited for testing only. In production, you should override the default changefeed settings with a **secure** configuration. To override the default changefeed settings, create a JSON file and include the [`--changefeeds-path` flag](#global-flags) to indicate the file path. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+--changefeeds-path 'changefeed-settings.json'
+~~~
+
+You can specify the following [`CREATE CHANGEFEED` parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#parameters) in the override JSON. If any parameter is not specified, its [default value](#default-insecure-configuration) is used.
+
+- The following [`CREATE CHANGEFEED` URI parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#sink-uri):
+	- `host`: The hostname or IP address of the [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) where change events are sent. The applicable certificates of the failback target (i.e., the [source database](#source-and-target-databases) from which you migrated) **must** be located on this machine.
+	- `port`: The port of the [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
+	- `sink_query_parameters`: A comma-separated list of [`CREATE CHANGEFEED` query parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#query-parameters). This includes the base64-encoded client certificate ([`client_cert`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#client-cert)), key ([`client_key`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#client-key)), and CA ([`ca_cert`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#ca-cert)) for a secure webhook sink.
+- The following [`CREATE CHANGEFEED` options]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#options):
+	- [`resolved`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#resolved)
+	- [`min_checkpoint_frequency`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#min-checkpoint-frequency)
+	- [`initial_scan`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#initial-scan)
+	- [`webhook_sink_config`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#webhook-sink-config)  
+
+To secure the changefeed connection, define `sink_query_parameters` in the JSON as follows:
+
+{% include_cached copy-clipboard.html %}
+~~~ json
+{
+    "sink_query_parameters": "client_cert={base64 cert}&client_key={base64 key}&ca_cert={base64 CA cert}"
+}
+~~~
+
+`client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, `base64 -i ./client.crt | jq -R -r '@uri'`).
+
+In the `molt fetch` command, also include [`--replicator-flags`](#global-flags) to specify the paths to the server certificate and key that correspond to the client certs defined in `sink_query_parameters`. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+--changefeeds-path 'changefeed-secure.json'
+--replicator-flags "--tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key"
+~~~
+
+For a complete example of using `molt fetch` in `failback` mode, see [Fail back securely from CockroachDB](#fail-back-securely-from-cockroachdb).
+
+##### Default insecure changefeed
+
+When `molt fetch --mode failback` is run without specifying `--changefeeds-path`, the following [`CREATE CHANGEFEED` parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#parameters) are used for the changefeed:
 
 ~~~ json
 {
@@ -416,28 +462,17 @@ When creating a new `failback` changefeed, MOLT Fetch specifies the following [`
 }
 ~~~
 
-By default, MOLT Fetch specifies a local webhook sink (`"localhost"`) and an insecure sink connection (`"insecure_tls_skip_verify=true"`). This configuration is best suited for testing. A **secure sink connection is recommended** for production environments. For an example, see [Fail back securely from CockroachDB](#fail-back-securely-from-cockroachdb).
-
-To override the default changefeed settings, create your own JSON file and include the [`--changefeeds-path` flag](#global-flags) to indicate the file path. For example:
+The default parameters specify a local webhook sink (`"localhost"`) and an insecure sink connection (`"insecure_tls_skip_verify=true"`), which are suited for testing only. In order to run `failback` with the default insecure configuration, you must also include the following flags:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
---changefeeds-path 'changefeed-settings.json'
+--allow-tls-mode-disable
+--replicator-flags '--tlsSelfSigned --disableAuthentication'
 ~~~
 
-You can specify the following [`CREATE CHANGEFEED` parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#parameters) in the JSON:
-
-- The following [`CREATE CHANGEFEED` URI parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#sink-uri):
-	- `host`: The hostname or IP address of the [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) where change events are sent. The applicable certificates of the failback target (i.e., the [source database](#source-and-target-databases) from which you migrated) **must** be located on this machine.
-	- `port`: The port of the [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
-	- `sink_query_parameters`: A comma-separated list of [`CREATE CHANGEFEED` query parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#query-parameters). This includes the base64-encoded client certificate ([`client_cert`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#client-cert)), key ([`client_key`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#client-key)), and CA ([`ca_cert`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#ca-cert)) for a [secure webhook sink](#fail-back-securely-from-cockroachdb).
-- The following [`CREATE CHANGEFEED` options]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#options):
-	- [`resolved`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#resolved)
-	- [`min_checkpoint_frequency`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#min-checkpoint-frequency)
-	- [`initial_scan`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#initial-scan)
-	- [`webhook_sink_config`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#webhook-sink-config)
-
-For example of using `molt fetch` in `failback` mode, see [Fail back securely from CockroachDB](#fail-back-securely-from-cockroachdb).
+{{site.data.alerts.callout_info}}
+If both `--changefeeds-path` and `--allow-tls-mode-disable` are not specified in `failback` mode, `molt fetch` will error. At least one of these flags is required. `--changefeeds-path` overrides the default changefeed configuration. `--allow-tls-mode-disable` enables the use of the default changefeed configuration, which is insecure.
+{{site.data.alerts.end}}
 
 ### Data movement
 
@@ -874,7 +909,7 @@ After successfully running MOLT Fetch, you can run [`molt verify`]({% link molt/
 
 ### Load PostgreSQL data via S3 with continuous replication
 
-The following `molt fetch` command uses `IMPORT INTO` to load a subset of tables from a PostgreSQL database to CockroachDB.
+The following `molt fetch` command uses [`IMPORT INTO`](#data-movement) to load a subset of tables from a PostgreSQL database to CockroachDB.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -917,7 +952,7 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal.
 
 ### Load MySQL data via GCP with continuous replication
 
-The following `molt fetch` command uses `COPY FROM` to load a subset of tables from a MySQL database to CockroachDB.
+The following `molt fetch` command uses [`COPY FROM`](#data-movement) to load a subset of tables from a MySQL database to CockroachDB.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -960,7 +995,7 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal.
 
 ### Load CockroachDB data via direct copy
 
-The following `molt fetch` command uses `COPY FROM` to load all tables directly from one CockroachDB database to another.
+The following `molt fetch` command uses [`COPY FROM`](#data-movement) to load all tables directly from one CockroachDB database to another.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1013,7 +1048,7 @@ molt fetch \
 
 ### Fail back securely from CockroachDB
 
-The following `molt fetch` command uses `failback` mode to securely replicate changes from CockroachDB back to a MySQL database. This assumes that you migrated data from MySQL to CockroachDB, and want to keep the data consistent on MySQL in case you need to roll back the migration.
+The following `molt fetch` command uses [`failback` mode](#fail-back-to-source-database) to securely replicate changes from CockroachDB back to a MySQL database. This assumes that you migrated data from MySQL to CockroachDB, and want to keep the data consistent on MySQL in case you need to roll back the migration.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1025,19 +1060,14 @@ molt fetch \
 --logging debug \
 --replicator-flags "--tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key" \
 --mode failback \
---changefeeds-path 'changefeed-settings.json'
+--changefeeds-path 'changefeed-secure.json'
 ~~~
 
 - `--source` specifies the connection string of the CockroachDB database to which you migrated.
 - `--target` specifies the connection string of the MySQL database acting as the failback target.
 - `--table-filter` specifies that the `employees` and `payments` tables should be watched for change events.
-- `--replicator-flags` specifies the paths to the server certificate (`--tlsCertificate`) and key (`--tlsPrivateKey`) that correspond to the client certs described in the following item.
-
-	{{site.data.alerts.callout_info}}
-	The default [local, insecure changefeed configuration](#fail-back-to-source-database) requires that you issue `molt fetch` with [`--replicator-flags '--tlsSelfSigned --disableAuthentication'`](#global-flags) instead.
-	{{site.data.alerts.end}}
-
-- `--changefeeds-path` specifies the path to `changefeed-settings.json`, which contains the following setting override:
+- `--replicator-flags` specifies the paths to the server certificate (`--tlsCertificate`) and key (`--tlsPrivateKey`) that correspond to the client certs defined by `sink_query_parameters` in the changefeed override JSON.
+- `--changefeeds-path` specifies the path to `changefeed-secure.json`, which contains the following setting override:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ json
