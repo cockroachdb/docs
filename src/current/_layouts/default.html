@@ -4,7 +4,7 @@
 {% include head.html %}
   </head>
   <body>
-{% include main-menu-serverless.html %}
+{% include_cached main-menu-serverless.html %}
 {% for hash in page.allowed_hashes %}
     <a id="{{ hash }}" style="display: none"></a>
 {% endfor %}
