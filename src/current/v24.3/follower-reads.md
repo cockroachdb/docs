@@ -199,4 +199,3 @@ For further details, see [An Epic Read on Follower Reads](https://www.cockroachl
 - [Cluster Settings Overview]({% link {{ page.version.version }}/cluster-settings.md %})
 - [Load-Based Splitting]({% link {{ page.version.version }}/load-based-splitting.md %})
 - [Network Latency Page]({% link {{ page.version.version }}/ui-network-latency-page.md %})
-- [Enterprise Features]({% link {{ page.version.version }}/enterprise-licensing.md %})

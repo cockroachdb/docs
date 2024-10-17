@@ -5,8 +5,6 @@ toc: true
 docs_area:
 ---
 
-CockroachDB distributes a single binary that contains both core and Enterprise features. You can use core features without any license key. However, to use the Enterprise features, you need either a trial or an Enterprise license key.
-
 This page lists Enterprise features. For information on how to obtain and set trial and Enterprise license keys for CockroachDB, see the [Licensing FAQs]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
 
 {{site.data.alerts.callout_info}}
