@@ -149,7 +149,7 @@ By default, the DB Console shares anonymous usage details with Cockroach Labs. F
 
 ## License expiration message
 
-If you have [set a license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) to use [enterprise features]({% link {{ page.version.version }}/enterprise-licensing.md %}), a license expiration message is displayed at the top-right of the DB Console. While the license is valid, the message will read `License expires in X days`, where `X` is the number of days. If the license is no longer valid, the message will read `License expired X days ago`. Hovering over either message displays a tooltip with the expiration date of the license.
+{% include common/license-expiration-messages.md %}
 
 ## See also
 
