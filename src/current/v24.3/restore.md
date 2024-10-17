@@ -180,7 +180,7 @@ Also, consider that:
 - When the cluster is in a mixed-version state during an [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}), a full cluster restore will fail. To perform a full cluster restore, it is necessary to first [finalize the upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-3-decide-how-the-upgrade-will-be-finalized).
 
 {{site.data.alerts.callout_info}}
-When you restore a full cluster with an {{ site.data.products.enterprise }} license, it will restore the [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) **after** the restore is complete.
+When you restore a full cluster with an {{ site.data.products.enterprise }} license, it will restore the [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) **after** the restore is complete.
 {{site.data.alerts.end}}
 
 ### Databases
