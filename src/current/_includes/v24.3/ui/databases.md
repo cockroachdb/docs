@@ -9,7 +9,7 @@ The following information is displayed for each database:
 
  Column        | Description
 ---------------|-------------
- Name          | The name of the database.
+ Name          | The name of the database. Click a database name to open the [**Database Tables**](#database-tables) page for the selected database.
  Size          | The approximate total disk size across all table replicas in the database.
  Tables        | The total number of tables in the database.
 {% if page.cloud != true  -%}
@@ -17,8 +17,6 @@ The following information is displayed for each database:
 {%- else -%}
  Regions       | Regions on which the database tables are located.
 {% endif %}
-
-Click a database name to open the [**Database Tables**](#database-tables) page.
 
 ### Search and filter databases
 
@@ -40,6 +38,6 @@ To search for specific databases, use the search field at the top right:
     The list of databases is filtered by the nodes selected.
 {% endif %}
 
-### Refresh databases data
+### Refresh data
 
 {% include_cached new-in.html version="v24.3" %} TODO
