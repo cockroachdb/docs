@@ -8,7 +8,7 @@ toc: true
 
 {% include {{ version_prefix }}/ui/admin-access-only.md %}
 
-<a href id="databases"></a>
+<a id="databases"></a>
 
 The **Databases** page of the DB Console provides details of the following:
 
