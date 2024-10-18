@@ -18,16 +18,16 @@ Regions/Nodes | Regions/Nodes on which the database tables are located. Hover on
 
 ### Search and filter databases
 
-By default, the **Databases** page shows all databases on the cluster.
+By default, the Databases List Page shows all databases on the cluster.
 
-To search for specific databases, use the search field at the top right:
+To search for specific databases, use the search field above the table:
 
 1. Enter a string in the search box.
 1. Press `Enter`.
 
     The list of databases is filtered by the string.
 
-{% include_cached new-in.html version="v24.3" %} To filter databases based on the nodes on which the database tables are located, use the nodes multi-select dropdown at the top right:
+{% include_cached new-in.html version="v24.3" %} To filter databases based on the nodes on which the database tables are located, use the nodes multi-select dropdown above the table:
 
 1. Click the dropdown arrow.
 1. Select one or more nodes. You may need to scroll down for nodes in different regions. You may also type in the beginning of the node name to narrow the list.

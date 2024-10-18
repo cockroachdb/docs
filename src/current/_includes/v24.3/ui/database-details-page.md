@@ -24,16 +24,16 @@ Stats last updated             | The last time table statistics used by the SQL 
 
 #### Search and filter tables
 
-By default, the **Database Tables** page shows all tables in a selected database.
+By default, Tables List Tab shows all tables in a selected database.
 
-To search for specific databases, use the search field at the top right:
+To search for specific databases, use the search field above the table:
 
 1. Enter a string in the search box.
 1. Press `Enter`.
 
     The list of tables is filtered by the string.
 
-{% include_cached new-in.html version="v24.3" %} To filter databases based on the nodes on which the database tables are located, use the nodes multi-select dropdown at the top right:
+{% include_cached new-in.html version="v24.3" %} To filter databases based on the nodes on which the database tables are located, use the nodes multi-select dropdown above the table:
 
 1. Click the dropdown arrow.
 1. Select one or more nodes. You may need to scroll down for nodes in different regions. You may also type in the beginning of the node name to narrow the list.
