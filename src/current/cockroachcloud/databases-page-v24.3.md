@@ -20,12 +20,12 @@ To view this page, select a cluster from the [**Clusters** page]({% link cockroa
 
 The [**Databases**](#databases) page lists the databases on the cluster. From this page, you can traverse to the following pages:
 
-- [**Database Tables**](#database-tables) - lists tables in a database
-- [**Database Grants**](#database-grants) - lists grants on a database
-- [**Table Overview**](#table-overview) - displays a table’s metadata
-- [**Table Grants**](#table-grants) - lists grants on a table
-- [**Table Indexes**](#table-indexes) - lists indexes on a table with index recommendations and possibly a Drop index button
-- [**Index**](#index) - displays an index’s metadata with index recommendations
+- [**Database Tables**](#database-tables): lists tables in a database.
+- [**Database Grants**](#database-grants): lists privileges on a database.
+- [**Table Overview**](#table-overview): displays a table’s details.
+- [**Table Grants**](#table-grants): lists privileges on a table.
+- [**Table Indexes**](#table-indexes): lists indexes on a table with possible index recommendations and actions.
+- [**Index**](#index): displays an index’s details with index recommendations.
 
 {% include {{ version_prefix }}/ui/index-recommendations.md %}
 

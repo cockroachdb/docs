@@ -7,16 +7,12 @@ The **Databases** page shows:
 
 The following information is displayed for each database:
 
- Column        | Description
----------------|-------------
- Name          | The name of the database. Click a database name to open the [**Database Tables**](#database-tables) page for the selected database.
- Size          | The approximate total disk size across all table replicas in the database.
- Tables        | The total number of tables in the database.
-{% if page.cloud != true  -%}
- Regions/Nodes | Regions/Nodes on which the database tables are located. Hover on a region for a list of nodes in that region.
-{%- else -%}
- Regions       | Regions on which the database tables are located.
-{% endif %}
+ Column       | Description
+--------------|-------------
+Name          | The name of the database. Click a database name to view the [**Database Tables**](#database-tables) page for the selected database.
+Size          | The approximate total disk size across all table replicas in the database.
+Tables        | The total number of tables in the database.
+Regions/Nodes | Regions/Nodes on which the database tables are located. Hover on a region for a list of nodes in that region.{% if page.cloud == true %}<br><br>NOTE: Not available on Standard or Basic clusters.{% endif %}
 
 ### Search and filter databases
 
@@ -29,13 +25,15 @@ To search for specific databases, use the search field at the top right:
 
     The list of databases is filtered by the string.
 
-{% if page.cloud != true  -%}
 {% include_cached new-in.html version="v24.3" %} To filter databases based on the nodes on which the database tables are located, use the nodes multi-select dropdown at the top right:
 
 1. Click the dropdown arrow.
 1. Select one or more nodes. You may need to scroll down for nodes in different regions. You may also type in the beginning of the node name to narrow the list.
 
     The list of databases is filtered by the nodes selected.
+
+{% if page.cloud == true  -%}
+NOTE: Nodes multi-select dropdown is not available on Standard or Basic clusters. 
 {% endif %}
 
 ### Refresh data
