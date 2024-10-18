@@ -180,11 +180,11 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
       <td><a href="{% link cockroachcloud/cloud-org-audit-logs.md %}">Cloud Organization Audit Logging</a></td>
     </tr>
     <tr>
-      <td><a href="{% link {{ site.current_cloud_version }}/demo-fault-tolerance-and-recovery.md %}">Availability/Resilience</a></td>
+      <td><a href="{% link {{ site.current_cloud_version }}/demo-cockroachdb-resilience.md %}">Availability/Resilience</a></td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="{% link {{ site.current_cloud_version }}/demo-fault-tolerance-and-recovery.md %}">Disaster Recovery.</a></td>
+      <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="{% link {{ site.current_cloud_version }}/demo-cockroachdb-resilience.md %}">Disaster Recovery.</a></td>
     </tr>
   </thead>
 </table>
