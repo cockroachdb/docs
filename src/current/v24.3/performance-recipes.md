@@ -285,7 +285,7 @@ If the [Overview dashboard]({% link {{ page.version.version }}/ui-overview-dashb
 
 #### Indicators that your tables have too many MVCC values
 
-In the [Databases]({% link {{ page.version.version }}/ui-databases-page.md %}#tables-view) page in the DB Console, the Tables view shows the percentage of live data for each table. For example:
+In the DB Console, the [Database Tables]({% link {{ page.version.version }}/ui-databases-page.md %}#database-tables) page for a given database shows the percentage of live data for each table. For example:
 
 <img src="{{ 'images/v24.2/ui_databases_live_data.png' | relative_url }}" alt="Table live data" style="border:1px solid #eee;max-width:100%" />
 

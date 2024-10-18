@@ -80,7 +80,7 @@ The plan table shows the following details:
 Column | Description
 -----|----
 Plan Gist | A sequence of bytes representing the flattened tree of operators and operator-specific metadata of the statement plan.
-Used Indexes | The table [indexes]({{ link_prefix }}indexes.html) used by the plan. To see [table details]({{ link_prefix }}ui-databases-page.html#table-details), click on the table name. To see [index details]({{ link_prefix }}ui-databases-page.html#index-details), click on the index name.
+Used Indexes | The table [indexes]({{ link_prefix }}indexes.html) used by the plan. To see [table details]({{ link_prefix }}ui-databases-page.html#table-overview), click on the table name. To see [index details]({{ link_prefix }}ui-databases-page.html#index), click on the index name.
 Insights | The number of [insights](#insights) for the plan. To configure when to trigger insights, see [Schema insights settings]({{ link_prefix }}ui-insights-page.html#schema-insights-settings).
 Last Execution Time | The timestamp when the statement was last executed.
 Average Execution Time | The average execution time for all the executions of the plan.
