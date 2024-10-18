@@ -13,7 +13,7 @@ Ranges                         | The number of [ranges]({% link {{ version_prefi
 Replicas                       | The number of [replicas]({% link {{ version_prefix }}/architecture/glossary.md %}#architecture-range) in the table.
 Regions/Nodes                  | Regions/Nodes on which the table's data is stored.{% if page.cloud == true %}<br><br>NOTE: Not available on Standard or Basic clusters.{% endif %}
 % of Live Data                 | The percentage of total uncompressed logical data that has not been modified (updated or deleted).
-Auto stats collections         | Automatic statistics can help improve query performance. Learn how to [manage statistics collection]({% link {{ version_prefix }}/cost-based-optimizer.md %}#control-automatic-statistics).
+Auto stats collections         | Whether automatic [table statistics]({% link {{ version_prefix }}/cost-based-optimizer.md %}#table-statistics) is enabled. Automatic statistics can help improve query performance.
 Stats last updated             | The last time table statistics used by the SQL optimizer were updated.
 
 ### Last updated

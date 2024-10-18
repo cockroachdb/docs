@@ -15,7 +15,7 @@ Columns                        | The number of columns in the table.
 Indexes                        | The number of indexes in the table.
 Regions/Nodes                  | Regions/Nodes on which the table's data is stored.{% if page.cloud == true %}<br><br>NOTE: Not available on Standard or Basic clusters.{% endif %}
 % of Live Data                 | The percentage of total uncompressed logical data that has not been modified (updated or deleted).
-Table auto stats enabled       | Automatic statistics can help improve query performance. Learn how to [manage statistics collection]({% link {{ version_prefix }}/cost-based-optimizer.md %}#control-automatic-statistics).
+Table auto stats enabled       | Whether automatic [table statistics]({% link {{ version_prefix }}/cost-based-optimizer.md %}#table-statistics) is enabled. Automatic statistics can help improve query performance.
 Stats last updated             | The last time table statistics used by the SQL optimizer were updated.
 
 ### Search and filter tables
