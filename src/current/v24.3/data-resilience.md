@@ -5,7 +5,7 @@ summary: An overview of how CockroachDB deployments can achieve resilience with 
 
 CockroachDB provides built-in [_high availability_](#high-availability) features and [_disaster recovery_](#disaster-recovery) tooling to achieve operational resiliency in various deployment topologies and use cases. To maximize uptime, high availability features ensure continuous access to data without interruption even in the presence of failures or disruptions. Disaster recovery tools allow for recovery from major incidents to minimize downtime and data loss.
 
-<image src="{{ 'images/v24.3/resilience.svg' | relative_url }}" alt="Diagram showing how high availability features and disaster recovery tools create a resilient CockroachDB deployment." style="max-width:100%" />
+<image src="{{ 'images/v24.3/resilience.svg' | relative_url }}" alt="Diagram showing how high availability features and disaster recovery tools create a resilient CockroachDB deployment." style="width:80%" />
 
 You can balance required SLAs and [recovery objectives]({% link {{ page.version.version }}/disaster-recovery-overview.md %}) with the cost and management of each of these features to build a resilient deployment.
 
