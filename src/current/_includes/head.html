@@ -1,6 +1,6 @@
 <meta charset="utf-8" prefix="og: https://ogp.me/ns#">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1 viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
 {%- assign dev_path = "/" | append: site.versions["dev"] | append: "/" -%}
@@ -120,7 +120,7 @@ var pageConfig = {
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Roboto+Mono:wght@500&family=Poppins:wght@200;300;400;500;600;700&family=Roboto+Mono:wght@100;200;400;500&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Source+Code+Pro&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Source+Code+Pro&family=Source+Sans+Pro:wght@300;400;600;700&display=swap"></noscript>
 
 
