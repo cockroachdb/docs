@@ -1,6 +1,6 @@
 ## Table Details Page
 
-To view this page, click on a table name on the [Tables List Tab](#tables-list-tab) of the [Database Details Page](#database-detail-page).
+To view this page, click on a table name on the [Tables List Tab](#tables-list-tab) of the [Database Details Page](#database-details-page).
 
 ###  Overview Tab
 

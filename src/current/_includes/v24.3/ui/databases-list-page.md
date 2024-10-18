@@ -1,5 +1,7 @@
 ## Databases List Page
 
+To view this page, click **Databases** in the left side navigation menu.
+
 The Databases List Page shows:
 
 - Whether [automatic statistics collection]({% link {{ version_prefix }}/cost-based-optimizer.md %}#table-statistics) is enabled for the cluster. The **Auto stats collection** indicator is on the top right.
