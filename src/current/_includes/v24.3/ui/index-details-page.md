@@ -1,6 +1,6 @@
-## Index
+## Index Details Page
 
-To view this page, click on a index name on the [**Table Indexes**](#table-indexes) page.
+To view this page, click on a index name on the [Indexes Tab](#indexes-tab) of the [Table Details Page](#table-details-page).
 
 The **Index** page displays the SQL statement used to [create the index]({% link {{ version_prefix }}/create-index.md %}) and an index’s details. The page also allows [admin users]({% link {{ version_prefix }}/security-reference/authorization.md %}#admin-role) to [**Reset all index stats**](#reset-all-index-statistics).
 

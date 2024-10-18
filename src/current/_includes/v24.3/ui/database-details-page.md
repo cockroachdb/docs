@@ -1,14 +1,18 @@
-## Database Tables
+## Database Details Page
 
-To view this page, click on a database name on the [**Databases**](#databases) page.
+To view this page, click on a database name on the [Databases List Page](#databases-list-page) page. The Database Details Page has two tabs: [**Tables**](#tables-list-tab) and [**Grants**](#database-grants-tab).
 
-The **Database Tables** page lists the tables in a selected database.
+You can also [refresh data](#refresh-data) that is displayed on this page and the [Databases List Page](#databases-list-page).
+
+### Tables List Tab
+
+Click on the **Tables** tab of the [Database Details Page](#database-details-page) to view a list of the tables in the selected database.
 
 The following information is displayed for each table:
 
  Column                        | Description
 -------------------------------|-------------
-Name                           | The name of the table. Click a table name to view the [**Table Overview**](#table-overview) page for the selected table.
+Name                           | The name of the table. Click a table name to view the [Table Details Page](#table-details-page) page for the selected table.
 Replication Size               | The approximate compressed total disk size across all replicas of the table.
 Ranges                         | The number of ranges in the table.
 Columns                        | The number of columns in the table.
@@ -18,7 +22,7 @@ Regions/Nodes                  | Regions/Nodes on which the table's data is stor
 Table auto stats enabled       | Whether automatic [table statistics]({% link {{ version_prefix }}/cost-based-optimizer.md %}#table-statistics) is enabled. Automatic statistics can help improve query performance.
 Stats last updated             | The last time table statistics used by the SQL optimizer were updated.
 
-### Search and filter tables
+#### Search and filter tables
 
 By default, the **Database Tables** page shows all tables in a selected database.
 
@@ -39,3 +43,16 @@ To search for specific databases, use the search field at the top right:
 {% if page.cloud == true  -%}
 NOTE: Nodes multi-select dropdown is not available on Standard or Basic clusters. 
 {% endif %}
+
+### Database Grants Tab
+
+{% include_cached new-in.html version="v24.3" %} Click on the **Grants** tab [Database Details Page](#database-details-page) to show the [privileges]({% link {{ version_prefix }}/security-reference/authorization.md %}#managing-privileges) granted to users and roles on the database.
+
+The following information is displayed for each grantee:
+
+ Column    | Description
+-----------|-------------
+Grantee    | The role or user.
+Privileges | The list of privileges for the role or user on the database.
+
+For more details about grants and privileges, refer to [`GRANT`]({% link {{ version_prefix }}/grant.md %}).
