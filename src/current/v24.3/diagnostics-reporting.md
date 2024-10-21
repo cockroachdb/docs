@@ -29,7 +29,7 @@ In all cases, names and other string values are scrubbed and replaced with under
 ## Opt out of diagnostics reporting
 
 {{site.data.alerts.callout_info}}
-Diagnostics reporting is required for [Trial or Free licenses]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license). Therefore, the cluster setting `diagnostics.reporting.enabled` is ignored on clusters with Trial or Free licenses. The following opt out methods apply to clusters with [Enterprise licenses]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
+Diagnostics reporting is required for [**Enterprise Trial** or **Enterprise Free** licenses]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses). Therefore, the cluster setting `diagnostics.reporting.enabled` is ignored on clusters with these licenses. The following opt-out methods apply only to clusters with an [**Enterprise** license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses).
 {{site.data.alerts.end}}
 
 ### At cluster initialization
