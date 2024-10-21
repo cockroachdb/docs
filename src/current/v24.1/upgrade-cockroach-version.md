@@ -115,32 +115,30 @@ See our [support policy for restoring backups across versions]({% link {{ page.v
 
 ## Step 3. Decide how the upgrade will be finalized
 
-{{site.data.alerts.callout_info}}
-This step is relevant only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
-{{site.data.alerts.end}}
+Finalization is always required to complete a major-version upgrade, but is not required for a patch upgrade within the same major version. When upgrading from one major version to another, certain features and performance improvements will be enabled only after finalizing the upgrade. {% if released == false %}CockroachDB {{ page.version.version }} is not yet Generally Available. Refer to the [Release notes]({% link releases/{{ page.version.version }}.md %}) for all Testing releases of {{ page.version.version }}.{% else %}Refer to the [Release notes]({% link releases/{{ page.version.version }}.md %}#features-that-require-upgrade-finalization).{% endif %} Even if no features require finalization, finalization is required.
 
-By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain features and performance improvements introduced in {{ page.version.version }}. However, it will no longer be possible to [roll back to {{ previous_version }}](#step-5-roll-back-the-upgrade-optional) if auto-finalization is enabled. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 6](#step-6-finish-the-upgrade):
+After a major-version upgrade is finalized, it is no longer possible to roll back to the cluster's previous major version. By default, CockroachDB **auto-finalizes** a major-version upgrade as soon as all nodes have been upgraded. In production, Cockroach Labs recommends that you disable auto-finalization so that you can roll back the upgrade if necessary. Otherwise, in the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade.
 
-1. [Upgrade to {{ previous_version }}]({% link {{ previous_version }}/upgrade-cockroach-version.md %}), if you haven't already.
+After the upgrade is complete but before it is finalized, monitor the stability and performance of the upgraded cluster before finalizing the upgrade. If auto-finalization is disabled, you will need to follow all of the subsequent directions, including the manual finalization in [step 6](#step-6-finish-the-upgrade):
+
+To disable auto-finalization:
 
 1. Start the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) shell against any node in the cluster.
+1. Find the cluster's current version:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW CLUSTER SETTING version;
+    ~~~
 
 1. Set the `cluster.preserve_downgrade_option` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SET CLUSTER SETTING cluster.preserve_downgrade_option = '{{ previous_version | slice: 1, 4 }}';
+    SET CLUSTER SETTING cluster.preserve_downgrade_option = '{CURRENT_VERSION}';
     ~~~
 
-    It is only possible to set this setting to the current cluster version.
-
-### Features that require upgrade finalization
-
-When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
-
-- {% include v24.1/finalization-required/119894.md version="v24.1" %}
-
-For more details about a given feature, refer to the [CockroachDB v24.1.0 release notes]({% link releases/v24.1.md %}#v24-1-0).
+    Replace `{CURRENT_VERSION}` with the cluster's current version. It is an error to set it to any other value.
 
 ## Step 4. Perform the rolling upgrade
 

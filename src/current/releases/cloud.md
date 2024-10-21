@@ -59,7 +59,7 @@ In addition, this release includes the following features:
 
 <h3 id="2024-08-12-general-updates"> General updates </h3>
 
-- CockroachDB v24.2 is now generally available for CockroachDB {{ site.data.products.dedicated }}. CockroachDB v24.2 is an optional [Innovation release]({% link cockroachcloud/upgrade-policy.md %}#innovation-releases). Refer to [Create a CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to v24.2]({% link cockroachcloud/upgrade-to-v24.2.md %}).
+- CockroachDB v24.2 is now generally available for CockroachDB {{ site.data.products.dedicated }}. CockroachDB v24.2 is an optional [Innovation release]({% link cockroachcloud/upgrade-policy.md %}#innovation-releases). Refer to [Create a CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to v24.2]({% link cockroachcloud/upgrade-cockroach-version.md %}).
 
 - As of v24.2, Cockroach Labs releases a major version of CockroachDB once per quarter, alternating between releases classified as a _Regular release_ or an _Innovation release_.
 
@@ -130,7 +130,7 @@ In addition, this release includes the following features:
 
 <h3 id="2024-05-20-general-updates"> General updates </h3>
 
-- CockroachDB v24.1 is now generally available for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on June 3, 2024{% comment %}Verify{% endcomment %}. For more information, refer to [Create a CockroachDB Dedicated Cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to CockroachDB v24.1]({% link cockroachcloud/upgrade-to-v24.1.md %}).
+- CockroachDB v24.1 is now generally available for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on June 3, 2024{% comment %}Verify{% endcomment %}. For more information, refer to [Create a CockroachDB Dedicated Cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to CockroachDB v24.1]({% link cockroachcloud/upgrade-cockroach-version.md %}).
 - CockroachDB {{ site.data.products.dedicated }} on AWS is now available in the `me-central-1`(United Arab Emirates) [ region]({% link cockroachcloud/regions.md %}#aws-regions).
 - CockroachDB {{ site.data.products.dedicated }} on GCP is now available in new [regions]({% link cockroachcloud/regions.md %}#gcp-regions):
     - `europe-southwest1` (Madrid)
@@ -178,7 +178,7 @@ In addition, this release includes the following features:
 
 <h3 id="2024-04-17-general-updates"> General updates </h3>
 
-- [CockroachDB v24.1.0-beta.1](https://www.cockroachlabs.com/docs/releases/v24.1#v24-1-0-beta-1) is available to CockroachDB {{ site.data.products.dedicated }} clusters as a Pre-Production Preview release for testing and experimentation. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. To learn more, refer to [Upgrade to v24.1 Pre-Production Preview]({% link cockroachcloud/upgrade-to-v24.1.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+- [CockroachDB v24.1.0-beta.1](https://www.cockroachlabs.com/docs/releases/v24.1#v24-1-0-beta-1) is available to CockroachDB {{ site.data.products.dedicated }} clusters as a Pre-Production Preview release for testing and experimentation. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. To learn more, refer to [Upgrade to v24.1 Pre-Production Preview]({% link cockroachcloud/upgrade-cockroach-version.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 ## April 9, 2024
 
@@ -234,19 +234,19 @@ In addition, this release includes the following features:
 
 <h3 id="2024-01-17-general-updates"> General updates </h3>
 
-- CockroachDB v23.2 is now generally available for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on February 5, 2024. For more information, refer to [Create a CockroachDB Dedicated Cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to CockroachDB v23.2]({% link cockroachcloud/upgrade-to-v23.2.md %}).
+- CockroachDB v23.2 is now generally available for CockroachDB {{ site.data.products.dedicated }}, and is scheduled to be made available for CockroachDB {{ site.data.products.core }} on February 5, 2024. For more information, refer to [Create a CockroachDB Dedicated Cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to CockroachDB v23.2]({% link cockroachcloud/upgrade-cockroach-version.md %}).
 
 ## December 21, 2023
 
 <h3 id="2023-12-21-general-updates"> General updates </h3>
 
-- [CockroachDB v23.2.0-rc.1](https://www.cockroachlabs.com/docs/releases/v23.2#v23-2-0-rc-1) is available to CockroachDB {{ site.data.products.dedicated }} clusters as a Pre-Production Preview release for testing and experimentation. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. For clusters previously upgraded to the v23.2.0-beta.3 Pre-Production Preview release, v23.2.0-rc.1 will be applied automatically as a patch upgrade unless you choose to manually upgrade. To learn more, refer to [Upgrade to v23.2 Pre-Production Preview]({% link cockroachcloud/upgrade-to-v23.2.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+- [CockroachDB v23.2.0-rc.1](https://www.cockroachlabs.com/docs/releases/v23.2#v23-2-0-rc-1) is available to CockroachDB {{ site.data.products.dedicated }} clusters as a Pre-Production Preview release for testing and experimentation. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. For clusters previously upgraded to the v23.2.0-beta.3 Pre-Production Preview release, v23.2.0-rc.1 will be applied automatically as a patch upgrade unless you choose to manually upgrade. To learn more, refer to [Upgrade to v23.2 Pre-Production Preview]({% link cockroachcloud/upgrade-cockroach-version.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 ## December 19, 2023
 
 <h3 id="2023-12-19-general-updates"> General updates </h3>
 
-- [CockroachDB v23.2.0-beta.3](https://www.cockroachlabs.com/docs/releases/v23.2#v23-2-0-beta-3) is available to CockroachDB {{ site.data.products.dedicated }} clusters as a Pre-Production Preview release for testing and experimentation. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. To learn more, refer to [Upgrade to v23.2 Pre-Production Preview]({% link cockroachcloud/upgrade-to-v23.2.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+- [CockroachDB v23.2.0-beta.3](https://www.cockroachlabs.com/docs/releases/v23.2#v23-2-0-beta-3) is available to CockroachDB {{ site.data.products.dedicated }} clusters as a Pre-Production Preview release for testing and experimentation. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. To learn more, refer to [Upgrade to v23.2 Pre-Production Preview]({% link cockroachcloud/upgrade-cockroach-version.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 ## December 14, 2023
 
