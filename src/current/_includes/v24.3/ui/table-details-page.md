@@ -20,11 +20,13 @@ Stats last updated             | The last time table statistics used by the SQL 
 
 #### Last updated
 
-{% include_cached new-in.html version="v24.3" %} TODO
+{% include_cached new-in.html version="v24.3" %} The **Last updated** timestamp is the actual time the [metadata was last refreshed](#refresh-data) for the selected table.
+
+When the refresh job runs to update the `system.table_metadata` table, if it encounters an error retrieving the metadata for the selected table, an error indicator will appear next to the **Last updated** timestamp and the error message will appear in the hover text.
 
 ### Table Grants Tab
 
-Click on the **Grants** tab [Table Details Page](#table-details-page) to view the [privileges]({% link {{ version_prefix }}/security-reference/authorization.md %})#managing-privileges) granted to users and roles on the table.
+Click on the **Grants** tab of the [Table Details Page](#table-details-page) to view the [privileges]({% link {{ version_prefix }}/security-reference/authorization.md %}#managing-privileges) granted to users and roles on the table.
 
 The following information is displayed for each grantee:
 
@@ -37,7 +39,7 @@ For more details about grants and privileges, refer to [`GRANT`]({% link {{ vers
 
 ### Indexes List Tab
 
-Click on the **Indexes** tab [Table Details Page](#table-details-page) to view a list of indexes on a table with index recommendations and actions.
+Click on the **Indexes** tab of the [Table Details Page](#table-details-page) to view a list of indexes on a table with index recommendations and actions.
 
 The following information is displayed for each index:
 

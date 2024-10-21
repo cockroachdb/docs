@@ -2,11 +2,11 @@
 
 To view this page, click on a database name on the [Databases List Page](#databases-list-page) page. The Database Details Page has two tabs: [**Tables**](#tables-list-tab) and [**Grants**](#database-grants-tab).
 
-You can also [refresh data](#refresh-data) that is displayed on this page and the [Databases List Page](#databases-list-page).
-
 ### Tables List Tab
 
 Click on the **Tables** tab of the [Database Details Page](#database-details-page) to view a list of the tables in the selected database.
+
+You can [refresh the data](#refresh-data) that is displayed on this page. NOTE: This also refreshes data on the [Databases List Page](#databases-list-page).
 
 The following information is displayed for each table:
 
@@ -24,7 +24,7 @@ Stats last updated             | The last time table statistics used by the SQL 
 
 #### Search and filter tables
 
-By default, Tables List Tab shows all tables in a selected database.
+By default, the Tables List Tab shows all tables in a selected database.
 
 To search for specific databases, use the search field above the table:
 

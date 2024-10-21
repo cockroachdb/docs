@@ -6,7 +6,13 @@ cloud: true
 ver: v24.3
 ---
 
-{% comment %} TODO When v24.3 is released, set version_prefex to {{site.current_cloud_version}} and remove hard-coded ver: v24.3 in frontmatter {% endcomment %}
+{% comment %} TODO When v24.3 docs are promoted to stable,
+1) set version_prefex to {{site.current_cloud_version}}
+2) remove hard-coded ver: v24.3 in frontmatter
+3) remove TODO comment
+4) delete _includes/v24.3/ui/databases-v1.md and _includes/v24.3/ui/index-details-v1.md
+5) rename cockroachcloud/databases-page-v24.3.md page to databases-page.md
+{% endcomment %}
 {% capture version_prefix %}{{ page.ver }}{% endcapture %}
 
 The **Databases** page of the CockroachDB {{ site.data.products.cloud }} Console provides details of the following:
