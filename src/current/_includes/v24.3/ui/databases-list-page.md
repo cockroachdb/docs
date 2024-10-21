@@ -11,7 +11,7 @@ The following information is displayed for each database:
 
  Column       | Description
 --------------|-------------
-Name          | The name of the database. Click a database name to view the [Database Details Page](#database-details-page) page for the selected database.
+Name          | The name of the database. Click a database name to view the [Database Details Page](#database-details-page) for the selected database.
 Size          | The approximate total disk size across all table replicas in the database.
 Tables        | The total number of tables in the database.
 Regions/Nodes | Regions/Nodes on which the database tables are located. Hover on a region for a list of nodes in that region.{% if page.cloud == true %}<br><br>NOTE: Not available on Standard or Basic clusters.{% endif %}

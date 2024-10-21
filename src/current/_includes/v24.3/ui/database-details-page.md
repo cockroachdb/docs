@@ -1,6 +1,6 @@
 ## Database Details Page
 
-To view this page, click on a database name on the [Databases List Page](#databases-list-page) page. The Database Details Page has two tabs: [**Tables**](#tables-list-tab) and [**Grants**](#database-grants-tab).
+To view this page, click on a database name on the [Databases List Page](#databases-list-page). The Database Details Page has two tabs: [**Tables**](#tables-list-tab) and [**Grants**](#database-grants-tab).
 
 ### Tables List Tab
 
@@ -12,7 +12,7 @@ The following information is displayed for each table:
 
  Column                        | Description
 -------------------------------|-------------
-Name                           | The name of the table. Click a table name to view the [Table Details Page](#table-details-page) page for the selected table.
+Name                           | The name of the table. Click a table name to view the [Table Details Page](#table-details-page) for the selected table.
 Replication Size               | The approximate compressed total disk size across all replicas of the table.
 Ranges                         | The number of ranges in the table.
 Columns                        | The number of columns in the table.
