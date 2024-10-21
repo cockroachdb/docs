@@ -35,8 +35,8 @@ Additional parameters are documented for the respective [subcommands](#subcomman
 
 Subcommand | Description |
 -----------|-------------|
-[`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for an index. ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}).) | 
-[`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition an index. ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}).)
+[`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for an index. | 
+[`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition an index.
 [`RENAME TO`](#rename-to) | Change the name of an index.
 [`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the index.
