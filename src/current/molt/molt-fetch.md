@@ -68,6 +68,8 @@ Complete the following items before using MOLT Fetch:
 	- **Maximum allowed number of connections:** MOLT Fetch can export data across multiple connections. The number of connections it will create is the number of shards ([`--export-concurrency`](#global-flags)) multiplied by the number of tables ([`--table-concurrency`](#global-flags)) being exported concurrently.
 	- **Maximum lifetime of a connection:** This is particularly important for MySQL sources, which can only use a single connection to move data. See the following note.
 
+- If a PostgreSQL database is set as a [source](#source-and-target-databases), ensure that [`idle_in_transaction_session_timeout`](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT) on PostgreSQL is either disabled or set to a value longer than the duration of data export. Otherwise, the connection will be prematurely terminated. To estimate the time needed to export the PostgreSQL tables, you can [perform a dry run](#perform-a-dry-run) and sum the value of [`molt_fetch_table_export_duration_ms`](#metrics) for all exported tables.
+
 - If a MySQL database is set as a [source](#source-and-target-databases), the [`--table-concurrency`](#global-flags) and [`--export-concurrency`](#global-flags) flags **cannot** be set above `1`. If these values are changed, MOLT Fetch returns an error. This guarantees consistency when moving data from MySQL, due to MySQL limitations. MySQL data is migrated to CockroachDB one table and shard at a time, using [`WITH CONSISTENT SNAPSHOT`](https://dev.mysql.com/doc/refman/8.0/en/commit.html) transactions.
 
 - To prevent memory outages during data export of tables with large rows, estimate the amount of memory used to export a table: 

@@ -28,7 +28,7 @@ Experimental downloads are not qualified for production use and not eligible for
   {% capture onclick_string %}onclick="{{ experimental_download_js }}"{% endcapture %}
   {% capture linux_arm_button_text_addendum %}{% if r.linux.linux_arm_experimental == true %}<br />(Experimental){% endif %}{% if r.linux.linux_arm_limited_access == true %}<br />(Limited Access){% endif %}{% endcapture %}
 
-<div><div class="clearfix">
+<div><div class="clearfix" markdown="1">
 
 <table style="max-width: 90%;">
   <thead>
