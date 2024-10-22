@@ -92,7 +92,8 @@ Cockroach Labs **strongly** recommends the following:
 ### Secure connections
 
 - Use secure connections to the source and [target CockroachDB database]({% link {{site.current_cloud_version}}/connection-parameters.md %}#additional-connection-parameters) whenever possible.
-- By default, insecure connections (i.e., `sslmode=disable` on PostgreSQL; `sslmode` not set on MySQL) are disallowed. When using an insecure connection, `molt fetch` returns an error. To override this check, you can enable the `--allow-tls-mode-disable` flag. Do this **only** for testing, or if a secure SSL/TLS connection to the source or target database is not possible.
+- When performing [failback](#fail-back-to-source-database), use a secure changefeed connection by [overriding the default configuration](#changefeed-override-settings).
+- By default, insecure connections (i.e., `sslmode=disable` on PostgreSQL; `sslmode` not set on MySQL) are disallowed. When using an insecure connection, `molt fetch` returns an error. To override this check, you can enable the `--allow-tls-mode-disable` flag. Do this **only** when testing, or if a secure SSL/TLS connection to the source or target database is not possible.
 
 ### Connection strings
 
@@ -386,7 +387,7 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns 
 
 If you encounter issues after moving data to CockroachDB, you can use `failback` mode to replicate changes on CockroachDB back to the initial source database. In case you need to roll back the migration, this ensures that data is consistent on the source.
 
-`failback` mode creates a [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) and sets up a [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) to pass change events from CockroachDB to the failback target. In production, you should **secure** the CockroachDB changefeed by specifying [override settings](#changefeed-override-settings) in a JSON file. Include the [`--changefeeds-path` flag](#global-flags) to indicate the file path.
+`failback` mode creates a [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) and sets up a [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) to pass change events from CockroachDB to the failback target. In production, you should **secure the connection** by specifying [changefeed override settings](#changefeed-override-settings) in a JSON file. Include the [`--changefeeds-path`](#global-flags) flag to indicate the file path.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -407,10 +408,6 @@ When running `molt fetch --mode failback`, `--source` is the CockroachDB connect
 
 You can specify the following [`CREATE CHANGEFEED` parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#parameters) in the override JSON. If any parameter is not specified, its [default value](#default-insecure-changefeed) is used.
 
-{{site.data.alerts.callout_info}}
-The [default changefeed configuration](#default-insecure-changefeed) is insecure and suited for testing only. 
-{{site.data.alerts.end}}
-
 - The following [`CREATE CHANGEFEED` URI parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#sink-uri):
 	- `host`: The hostname or IP address of the [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) where change events are sent. The applicable certificates of the failback target (i.e., the [source database](#source-and-target-databases) from which you migrated) **must** be located on this machine.
 	- `port`: The port of the [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
@@ -425,7 +422,7 @@ The [default changefeed configuration](#default-insecure-changefeed) is insecure
 If there is already a running CockroachDB changefeed with the same webhook sink URL (excluding query parameters) and [watched tables]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}), the existing changefeed is used for `failback`.
 {{site.data.alerts.end}}
 
-To secure the changefeed connection, define `sink_query_parameters` in the JSON as follows:
+**Use a secure changefeed connection whenever possible.** The [default insecure configuration](#default-insecure-changefeed) is **not** recommended in production. To secure the changefeed connection, define `sink_query_parameters` in the JSON as follows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ json
@@ -447,6 +444,10 @@ In the `molt fetch` command, also include [`--replicator-flags`](#global-flags) 
 For a complete example of using `molt fetch` in `failback` mode, see [Fail back securely from CockroachDB](#fail-back-securely-from-cockroachdb).
 
 ##### Default insecure changefeed
+
+{{site.data.alerts.callout_danger}}
+Insecure configurations are **not** recommended. In production, run failback with a secure changefeed connection. For details, see [Changefeed override settings](#changefeed-override-settings).
+{{site.data.alerts.end}}
 
 When `molt fetch --mode failback` is run without specifying `--changefeeds-path`, the following [`CREATE CHANGEFEED` parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#parameters) are used for the changefeed:
 
