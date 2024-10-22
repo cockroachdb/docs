@@ -21,17 +21,9 @@
     cockroach sql --insecure
     ~~~
 
-1. Set your organization name and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) key:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING cluster.organization = '<organization name>';
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING enterprise.license = '<secret>';
-    ~~~
+    {{site.data.alerts.callout_info}}
+    To set your {{ site.data.products.enterprise }} license, refer to the [Licensing FAQs]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) page.
+    {{site.data.alerts.end}}
 
 1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 

@@ -4,7 +4,7 @@ summary: Learn how to connect a changefeed to stream data to an Amazon MSK clust
 toc: true
 ---
 
-[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can stream change data to [Amazon MSK clusters](https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html) (Amazon Managed Streaming for Apache Kafka) using [AWS IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html?icmpid=docs_iam_console) or SASL/SCRAM authentication to connect to the MSK cluster.
+[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can stream change data to [Amazon MSK clusters](https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html) (Amazon Managed Streaming for Apache Kafka) using [AWS IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html?icmpid=docs_iam_console) or [SASL/SCRAM]({% link {{ page.version.version }}/security-reference/scram-authentication.md %}) authentication to connect to the MSK cluster.
 
 In this tutorial, you'll set up an MSK cluster and connect a changefeed with either IAM or SCRAM authentication:
 
@@ -17,10 +17,11 @@ CockroachDB changefeeds also support IAM authentication to MSK Serverless cluste
 
 ## Before you begin
 
+You'll need:
+
 - An [AWS account](https://signin.aws.amazon.com/signup?request_type=register).
 - A CockroachDB {{ site.data.products.core }} cluster hosted on AWS. You can set up a cluster using [Deploy CockroachDB on AWS EC2]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %}). You must create instances in the same VPC that the MSK cluster will use in order for the changefeed to authenticate successfully.
 - A Kafka client to consume the changefeed messages. You **must** ensure that your client machine is in the same VPC as the MSK cluster. This tutorial uses a client set up following the AWS [MSK guide](https://docs.aws.amazon.com/msk/latest/developerguide/create-topic.html).
-- A CockroachDB [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 - {% include {{ page.version.version }}/cdc/tutorial-privilege-check.md %}
 
 {{site.data.alerts.callout_info}}
@@ -338,3 +339,10 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
     ~~~
 
 </section>
+
+## See also
+
+For more resources, refer to the following:
+
+- [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page for details on parameters that sinks support.
+- [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) for details on monitoring the changefeed job.

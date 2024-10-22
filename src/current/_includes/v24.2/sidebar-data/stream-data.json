@@ -110,12 +110,6 @@
         ]
       },
       {
-        "title": "Stream a Changefeed to Amazon MSK Serverless",
-        "urls": [
-          "/${VERSION}/stream-a-changefeed-to-amazon-msk-serverless.html"
-        ]
-      },
-      {
         "title": "Stream a Changefeed from CockroachDB Cloud to Snowflake",
         "urls": [
           "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"

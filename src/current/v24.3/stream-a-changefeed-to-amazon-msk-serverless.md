@@ -12,10 +12,11 @@ In this tutorial, you'll set up an MSK Serverless cluster and connect a changefe
 
 ## Before you begin
 
+You'll need:
+
 - An [AWS account](https://signin.aws.amazon.com/signup?request_type=register).
 - A CockroachDB {{ site.data.products.core }} cluster hosted on AWS. You can set up a cluster using [Deploy CockroachDB on AWS EC2]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %}). You must create instances in the same VPC that the MSK Serverless cluster will use in order for the changefeed to authenticate successfully.
 - A Kafka client to consume the changefeed messages. You **must** ensure that your client machine is in the same VPC as the MSK Serverless cluster. This tutorial uses a client set up following the AWS [MSK Serverless guide](https://docs.aws.amazon.com/msk/latest/developerguide/create-serverless-cluster-client.html).
-- A CockroachDB [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 - {% include {{ page.version.version }}/cdc/tutorial-privilege-check.md %}
 
 {{site.data.alerts.callout_info}}
