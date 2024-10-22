@@ -289,7 +289,7 @@ MySQL:
 #### Load data and replicate changes
 
 {{site.data.alerts.callout_info}}
-Before using this option, the source PostgreSQL or MySQL database **must** be configured for continuous replication, as described in [Setup](#replication-setup).
+Before using this option, the source PostgreSQL or MySQL database **must** be configured for continuous replication, as described in [Setup](#replication-setup). MySQL 8.0 and later are supported.
 {{site.data.alerts.end}}
 
 `data-load-and-replication` instructs MOLT Fetch to load the source data into CockroachDB, and replicate any subsequent changes on the source. 
@@ -322,7 +322,7 @@ To customize the replication behavior (an advanced use case), use `--replicator-
 #### Replicate changes
 
 {{site.data.alerts.callout_info}}
-Before using this option, the source PostgreSQL or MySQL database **must** be configured for continuous replication, as described in [Setup](#replication-setup).
+Before using this option, the source PostgreSQL or MySQL database **must** be configured for continuous replication, as described in [Setup](#replication-setup). MySQL 8.0 and later are supported.
 {{site.data.alerts.end}}
 
 `replication-only` instructs MOLT Fetch to replicate ongoing changes on the source to CockroachDB, using the specified replication marker.
@@ -381,8 +381,8 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns 
 
 #### Fail back to source database
 
-{{site.data.alerts.callout_info}}
-`failback` mode supports MySQL 8.0 and later.
+{{site.data.alerts.callout_danger}}
+Before using `failback` mode, refer to the [technical advisory]({% link advisories/a123371.md %}) about a bug that affects changefeeds on certain CockroachDB versions.
 {{site.data.alerts.end}}
 
 If you encounter issues after moving data to CockroachDB, you can use `failback` mode to replicate changes on CockroachDB back to the initial source database. In case you need to roll back the migration, this ensures that data is consistent on the source.
@@ -403,6 +403,10 @@ When running `molt fetch --mode failback`, `--source` is the CockroachDB connect
 --target 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
 --table-filter 'employees, payments'
 ~~~
+
+{{site.data.alerts.callout_info}}
+MySQL 8.0 and later are supported as MySQL failback targets.
+{{site.data.alerts.end}}
 
 ##### Changefeed override settings
 
@@ -1048,6 +1052,10 @@ molt fetch \
 ~~~
 
 ### Fail back securely from CockroachDB
+
+{{site.data.alerts.callout_danger}}
+Before using `failback` mode, refer to the [technical advisory]({% link advisories/a123371.md %}) about a bug that affects changefeeds on certain CockroachDB versions.
+{{site.data.alerts.end}}
 
 The following `molt fetch` command uses [`failback` mode](#fail-back-to-source-database) to securely replicate changes from CockroachDB back to a MySQL database. This assumes that you migrated data from MySQL to CockroachDB, and want to keep the data consistent on MySQL in case you need to roll back the migration.
 
