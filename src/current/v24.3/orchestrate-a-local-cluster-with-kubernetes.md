@@ -91,7 +91,7 @@ Choose a way to deploy and maintain the CockroachDB cluster:
 
 ## See also
 
-Explore other core CockroachDB benefits and features:
+Explore other CockroachDB benefits and features:
 
 {% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 

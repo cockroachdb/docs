@@ -54,7 +54,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`DROP CONSTRAINT`](#drop-constraint) | Remove constraints from columns. | Yes
 [`EXPERIMENTAL_AUDIT`](#experimental_audit) | Enable per-table audit logs, for security purposes. | Yes
 [`OWNER TO`](#owner-to) |  Change the owner of the table. | No
-[`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition a table. ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}).) | Yes
+[`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition a table. | Yes
 [`RENAME COLUMN`](#rename-column) | Change the names of columns. | Yes
 [`RENAME CONSTRAINT`](#rename-constraint) | Change constraints columns. | Yes
 [`RENAME TO`](#rename-to) | Change the names of tables. | No

@@ -308,15 +308,13 @@ If you are outside of the garbage collection window, you will need to use a [bac
 
 ### Restore to a point in time
 
-- If you are a core user, use a [backup]({% link {{ page.version.version }}/backup.md %}) that was taken with [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) to restore to a specific point.
-- If you are an {{ site.data.products.enterprise }} user, use your [backup]({% link {{ page.version.version }}/backup.md %}) file to [restore to a point in time]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}) where you are certain there was no corruption. Note that the backup must have been taken with [revision history]({% link {{ page.version.version }}/backup.md %}#with-revision-history).
+- Use your [backup]({% link {{ page.version.version }}/backup.md %}) file to [restore to a point in time]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}) where you are certain there was no corruption. Note that the backup must have been taken with [revision history]({% link {{ page.version.version }}/backup.md %}#with-revision-history).
 
 ### Create a new backup
 
 If your cluster is running, you do not have a backup that encapsulates the time you want to [restore]({% link {{ page.version.version }}/restore.md %}) to, and the data you want to recover is still in the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds), there are two actions you can take:
 
-- If you are a core user, trigger a [backup]({% link {{ page.version.version }}/backup.md %}) using [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) to create a new backup that encapsulates the specific time. The `AS OF SYSTEM TIME` must be within the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds).
-- If you are an {{ site.data.products.enterprise }} user, trigger a new [backup `with_revision_history`]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}) and you will have a backup you can use to restore to the desired point in time within the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds).
+- Trigger a new [backup `with_revision_history`]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}) and you will have a backup you can use to restore to the desired point in time within the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds).
 
 ### Recover from corrupted data in a database or table
 
