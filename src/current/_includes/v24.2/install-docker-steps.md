@@ -14,15 +14,15 @@ CockroachDB's Docker images are [multi-platform images](https://docs.docker.com/
 
 Experimental images are not qualified for production use and not eligible for support or uptime SLA commitments.
 
-1. Install a container runtime, such as [Docker Desktop](https://docs.docker.com/desktop/install/).
+1. Install a container runtime, such as [Docker Desktop](https://docs.docker.com/desktop/).
 1. Verify that the runtime service is installed correctly and running in the background. Refer to the runtime's documentation. For Docker, start a terminal and run `docker version`. If you get an error, verify your installation and try again.
-1. Visit [Docker Hub](https://hub.docker.com/r/cockroachdb/cockroach) and decide which image tag to pull. CockroachDB images are published on [Docker Hub](https://hub.docker.com/r/cockroachdb/cockroach). Releases are rolled out gradually. Docker images for a new release are published when other binary artifacts are published. The following tag formats are commonly used, although other tags are available.
+1. Visit [Docker Hub](https://hub.docker.com/r/cockroachdb/cockroach) and decide which image tag to pull. Releases are rolled out gradually. Docker images for a new release are published when other binary artifacts are published. The following tag formats are commonly used, although other tags are available.
 
     <table markdown="1">
     <thead>
       <tr>
         <td>Tag</td>
-        <td>Example></td>
+        <td>Example</td>
         <td>Description</td>
       </tr>
     </thead>
@@ -40,7 +40,7 @@ Experimental images are not qualified for production use and not eligible for su
       <tr>
         <td>`latest`</td>
         <td>The latest patch within the latest major version.
-        <td>This is the default default if you do not specify a tag. It updates your cluster automatically to each new patch and major version, and is not recommended in production.</td>
+        <td>This is the default if you do not specify a tag. It updates your cluster automatically to each new patch and major version, and is not recommended in production.</td>
       </tr>
     </tbody>
     </table>
