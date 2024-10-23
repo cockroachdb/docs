@@ -9,7 +9,7 @@ docs_area: manage
 
 You can configure the following in [{{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters](#standard-and-advanced-clusters):
 
-- The frequency of the backups to meet [recovery point objective (RPO)]({% link {{site.current_cloud_version}}/disaster-recovery-overview.md %}#resilience-strategy) requirements.
+- The frequency of the backups to meet [recovery point objective (RPO)]({% link {{site.current_cloud_version}}/disaster-recovery-overview.md %}) requirements.
 - The retention of the backups to set how long Cockroach Labs retains the backups.
 
 [{{ site.data.products.basic }} clusters](#basic-clusters) have a default non-configurable schedule.
@@ -53,7 +53,7 @@ For instructions on how to view and configure managed backup settings, use:
 
 #### Frequency
 
-You can configure how frequently Cockroach Labs takes backups, which will determine the cluster's [RPO]({% link {{site.current_cloud_version}}/disaster-recovery-overview.md %}#resilience-strategy).
+You can configure how frequently Cockroach Labs takes backups, which will determine the cluster's [RPO]({% link {{site.current_cloud_version}}/disaster-recovery-overview.md %}).
 
 You can set backup frequency to one of the following options:
 

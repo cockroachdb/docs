@@ -18,9 +18,9 @@
             ]
           },
           {
-            "title": "Fault Tolerance & Recovery",
+            "title": "CockroachDB Resilience",
             "urls": [
-              "/${VERSION}/demo-fault-tolerance-and-recovery.html"
+              "/${VERSION}/demo-cockroachdb-resilience.html"
             ]
           },
           {

@@ -97,6 +97,6 @@ When you're done with your demo cluster, you can wipe the cluster by typing the 
 - [Build an app with CockroachDB]({% link {{ page.version.version }}/example-apps.md %})
 - Further explore CockroachDB capabilities like:
   - [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
-  - [Fault tolerance and automated repair]({% link {{ page.version.version }}/demo-fault-tolerance-and-recovery.md %})
+  - [Fault tolerance and automated repair]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %})
   - [Serializable transactions]({% link {{ page.version.version }}/demo-serializable.md %})
   - [JSON support]({% link {{ page.version.version }}/demo-json-support.md %})

@@ -195,6 +195,10 @@
   sources: ['create-a-free-cluster.md']
   versions: ['cockroachcloud']
 
+- destination: demo-cockroachdb-resilience.md
+  sources: ['demo-fault-tolerance-and-recovery.md']
+  versions: ['v24.2', 'v24.3']
+
 - destination: demo-low-latency-multi-region-deployment.md
   sources: ['demo-geo-partitioning.md']
   versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
