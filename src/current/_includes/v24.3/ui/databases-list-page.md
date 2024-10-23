@@ -55,6 +55,6 @@ On the [Databases List Page](#databases-list-page) and the [Database Tables Tab]
 
 The cached data can be refreshed in the following ways:
 
-- Automatically: Set the cluster setting `obs.tablemetadata.automatic_updates.enabled` to `true`. The frequency of refreshes is controlled by the cluster setting `obs.tablemetadata.data_valid_duration`.
+- Automatically: Set the cluster setting `obs.tablemetadata.automatic_updates.enabled` to `true`. The frequency of refreshes is controlled by the cluster setting `obs.tablemetadata.data_valid_duration`. Automatic updates is disabled by default to avoid unnecessarily consuming resources. However, if you want databases and tables information immediately when you visit the corresponding page, then enable automatic updates.
 - Manually: When any user clicks the **Refresh data** icon button to the right of the **Last refreshed** indicator. If a refresh job has been triggered, the **Refresh data** icon button will be disabled and the hover text will display `Data is currently refreshing`.
 - Additionally, when any user visits the [Databases List Page](#databases-list-page), the **Last refreshed** timestamp is compared to the cluster setting `obs.tablemetadata.data_valid_duration`. If the time since the **Last refreshed** timestamp exceeds the `obs.tablemetadata.data_valid_duration`, then a cache refresh is triggered.
