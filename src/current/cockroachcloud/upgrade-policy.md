@@ -101,7 +101,7 @@ Prior to the GA release of a major CockroachDB version, CockroachDB {{ site.data
 
 ### Rollback support
 
-When upgrading a CockroachDB {{ site.data.products.advanced }} or CockroachDB {{ site.data.products.standard }} cluster to a new major version, once all nodes are running the new version, the upgrade is finalized automatically in approximately 72 hours. During this window, if you see unexpected behavior, you can [trigger a rollback]({% link cockroachcloud/upgrade-cockroach-version.md %}#roll-back-the-upgrade) to the previous major version from the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud).
+When upgrading a CockroachDB {{ site.data.products.advanced }} or CockroachDB {{ site.data.products.standard }} cluster to a new major version, once all nodes are running the new version, the upgrade is finalized automatically in approximately 72 hours. During this window, if you see unexpected behavior, you can [trigger a rollback]({% link cockroachcloud/upgrade-cockroach-version.md %}) to the previous major version from the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud).
 
 {{site.data.alerts.callout_info}}
 If you choose to roll back a major version upgrade, your cluster will be rolled back to the latest patch release of the previous major version, which may differ from the patch release you were running before you initiated the upgrade.
