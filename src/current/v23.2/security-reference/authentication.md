@@ -23,31 +23,33 @@ CockroachDB's authentication behavior is configured using a domain-specific lang
 
 A specific CockroachDB cluster's authentication behavior is configured by setting its `server.host_based_authentication.configuration` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), using the [`SET CLUSTER SETTING` statement]({% link {{ page.version.version }}/set-cluster-setting.md %}), which accepts a single text field that must be a correctly formatted HBA manifest. Inspect the current setting with [`SHOW CLUSTER SETTING`.]({% link {{ page.version.version }}/show-cluster-setting.md %})
 
-## Currently supported authentication methods
+## Supported authentication methods
 
-Authentication Method | CockroachDB Cloud | Supported in CockroachDB Core | CockroachDB Enterprise Support
--------------|------------|-----|----
-password              |      ✓              |           ✓                    |    ✓
-[SCRAM-SHA-256]({% link {{ page.version.version }}/security-reference/scram-authentication.md %})         |      ✓              |           ✓                    |    ✓
-certificate              |      &nbsp;         |           ✓                    |    ✓
-username/password combination              |      ✓              |           ✓                    |    ✓
-[certificate]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %})              |      &nbsp;         |           ✓                    |    ✓
-GSS                   |      &nbsp;         |           &nbsp;               |    ✓
+Authentication Method          | CockroachDB {{ site.data.products.cloud }} | CockroachDB {{ site.data.products.core }} | CockroachDB {{ site.data.products.enterprise }}
+-------------------------------|--------------------------------------------|-------------------------------------------|------------------------------------------------
+password                       | ✓ | ✓ | ✓
+username/password combination  | ✓ | ✓ | ✓
+[SCRAM-SHA-256][SCRAM-SHA-256] | ✓ | ✓ | ✓
+[certificate][certificate]     | ✓ | ✓ | ✓
+GSS                            |   |   | ✓
 
 All options also support the following no-op 'authentication methods', which do not perform authentication:
 
 - `reject`: unconditionally rejects the connection attempt.
 - `trust`: unconditionally accepts the connection attempt.
 
-### HBA configuration syntax
+[SCRAM-SHA-256]: {% link {{ page.version.version }}/security-reference/scram-authentication.md %}
+[certificate]: {% link {{ page.version.version }}/security-reference/transport-layer-security.md %}
 
-Each line of an Authentication Configuration (HBA) manifest defines a rule. Lines commented with `#` are ignored.
+## HBA configuration syntax
 
-For example, the following silly but easy-to-understand configuration has three rules:
+Each line of a Host-based Authentication (HBA) configuration manifest defines a rule. Lines commented with `#` are ignored.
 
-- The first allows the CEO to connect to the database from their house without even using a password (they fired everyone who told them this was a bad idea).
-- The second rule ensures that a known saboteur cannot even attempt to authenticate with the database from anywhere.
-- The third rule allows all other users to authenticate using a password.
+For example, the following naive configuration has three rules:
+
+- User `ceo` can connect to the database from a known IP address without a password.
+- User `sabateur` cannot connect from anywhere.
+- All users (including `ceo` but not `sabateur`) can connect from anywhere using a password.
 
 ```
  # TYPE    DATABASE      USER           ADDRESS             METHOD

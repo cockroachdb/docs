@@ -6,7 +6,7 @@ license: true
 docs_area: 
 ---
 
-Congratulations on starting your CockroachDB Enterprise Trial! With it, you'll not only get access to CockroachDB's core capabilities like [high availability]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-does-cockroachdb-survive-failures) and [`SERIALIZABLE` isolation]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-is-cockroachdb-strongly-consistent), but also our Enterprise-only features like distributed [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) &amp; [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), [multi-region capabilities](multiregion-overview.html), and [cluster visualization](enable-node-map.html).
+Congratulations on starting your CockroachDB Enterprise Trial! With it, you'll not only get access to CockroachDB's capabilities like [high availability]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-does-cockroachdb-survive-failures) and [`SERIALIZABLE` isolation]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-is-cockroachdb-strongly-consistent), but also features like distributed [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) &amp; [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), [multi-region capabilities](multiregion-overview.html), and [cluster visualization](enable-node-map.html).
 
 ## Install CockroachDB
 
@@ -25,7 +25,7 @@ You can then use the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}
 
 ## Use Enterprise features
 
-Your cluster now has access to all of CockroachDB's Enterprise features for the length of the trial:
+Your cluster now has access to all of CockroachDB's features for the length of the trial:
 
 {% include {{ page.version.version }}/misc/enterprise-features.md %}
 

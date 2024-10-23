@@ -42,14 +42,10 @@ You can use PCR in a disaster recovery plan to:
 
 ## Performance
 
-Cockroach Labs supports PCR up to the following scale:
+Cockroach Labs testing has demonstrated the following results for workloads up to the outlined scale:
 
-- Writes: 10,000 writes per second
-- Reads: 18,000 reads per second
-
-Cockroach Labs' testing with [TPC-C]({% link {{ page.version.version }}/cockroach-workload.md %}#tpcc-workload) has demonstrated support for workloads up to the following scale:
-
-- Initial data load: 500,000 warehouses
+- Initial data load: 30TB
+- 100,000 writes per second
 - [Replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) (steady state, no bulk changes): 20–45 seconds
 - [Cutover]({% link {{ page.version.version }}/cutover-replication.md %}): 2–5 minutes
 
@@ -120,7 +116,7 @@ To connect to a virtualized cluster using the SQL shell:
     ~~~
 
 {{site.data.alerts.callout_info}}
-PCR requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary and standby clusters. You must set {{ site.data.products.enterprise }} licenses from the system virtual cluster.
+PCR requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) on the primary and standby clusters. You must set {{ site.data.products.enterprise }} licenses from the system virtual cluster.
 {{site.data.alerts.end}}
 
 To connect to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and view the **Physical Cluster Replication** dashboard, the user must have the correct privileges. Refer to [Create a user for the standby cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-user-for-the-standby-cluster).

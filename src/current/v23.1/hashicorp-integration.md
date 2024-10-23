@@ -9,15 +9,6 @@ This pages reviews the supported integrations between CockroachDB and [HashiCorp
 
 Vault is an identity-based secrets and encryption management service, which can either be self-hosted or accessed as a software as a service (SaaS) product through HashiCorp Cloud Platform (HCP). Vault's tooling can complement CockroachDB's data security capabilities to significantly bolster your organizational security posture.
 
-Cockroach Labs supports the following integrations between Vault and CockroachDB:
-
-- [Using Vault's Key Management Secrets (KMS) Engine to manage & distribute encryption keys to AWS or GCP KMS for CockroachDB {{ site.data.products.advanced }}'s customer-managed encryption key (CMEK) functionality.](#use-vaults-kms-secrets-engine-to-manage-a-cockroachdb-advanced-clusters-customer-managed-encryption-key)
-- Public Key Infrastructure (PKI):
-    - [Using Vault's PKI Secrets Engine to manage a CockroachDB {{ site.data.products.advanced }} cluster's certificate authority (CA) and client certificates](#use-vaults-pki-secrets-engine-to-manage-a-cockroachdb-advanced-clusters-certificate-authority-ca-and-client-certificates)
-    - [Using Vault's PKI Secrets Engine to manage a CockroachDB {{ site.data.products.core }} cluster's certificate authority (CA), server, and client certificates](#use-vaults-pki-secrets-engine-to-manage-a-cockroachdb-self-hosted-clusters-certificate-authority-ca-server-and-client-certificates)
-- [Using Vault's PostgreSQL Database Secrets Engine to manage CockroachDB SQL user credentials](#use-vaults-postgresql-database-secrets-engine-to-manage-cockroachdb-sql-users-and-their-credentials).
-- [Using Vault's Transit Secrets Engine to generate the store key for {{ site.data.products.enterprise }} Encryption At Rest for a CockroachDB {{ site.data.products.core }} cluster.](#use-vaults-transit-secrets-engine-to-manage-a-cockroachdb-self-hosted-clusters-enterprise-encryption-at-rest-store-key)
-
 ## Use Vault's KMS secrets engine to manage a CockroachDB {{ site.data.products.advanced }} cluster's customer-managed encryption key
 
 CockroachDB {{ site.data.products.advanced }} supports the use of customer-managed encrypted keys (CMEK) for the encryption of data at rest.

@@ -5,4 +5,4 @@ toc: false
 docs_area: manage
 ---
 
-{% include_cached common/hashicorp-vault-db-secrets-tutorial.md %}
+{% include common/hashicorp-vault-db-secrets-tutorial.md %}
