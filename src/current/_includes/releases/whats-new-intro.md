@@ -1,5 +1,6 @@
 {% assign DEBUG = false %}
 {% assign branched = false %}
+{% assign released = false %}
 {% assign old = false %}
 {% assign no_highlights = false %}
 {% assign skippable = false %}
@@ -33,6 +34,7 @@
       page.major_version == 'v22.1' or
       page.major_version == 'v22.2' %}
   {% assign branched = true %}
+  {% assign released = true %}
   {% assign no_highlights = true %}
   {% assign will_never_have_lts = true %}
 {% endif %}
@@ -58,6 +60,7 @@
 {% comment %}Is it skippable or LTS?{% endcomment %}
 
 {% if include.major_version.release_date != "N/A" %}
+  {% assign released = true %}
   {% if include.major_version.asst_supp_exp_date == "N/A" %}
     {% assign skippable = true %}
   {% elsif include.major_version.initial_lts_patch != "N/A" %}
@@ -69,6 +72,7 @@
 include.major_version: {{ include.major_version }}<br />
 page.major_version: {{ page.major_version }}<br />
 branched: {{ branched }}<br />
+released: {{ released }}<br />
 will_never_have_lts: {{ will_never_have_lts }}<br />
 lts: {{ lts }}<br />
 skippable: {{ skippable }}<br />
@@ -76,18 +80,23 @@ no_highlights: {{ no_highlights }}<br />
 <br />
 {% endif %}
 
-{% if skippable == true %}
-CockroachDB {{ page.major_version }} is an [Innovation Release]({% link releases/release-support-policy.md %}#support-types), which is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} clusters but is required for CockroachDB {{ site.data.products.serverless }}.
-{% else %}
+{% if released == false %}
+CockroachDB {{ page.major_version }} is in active development, and the following [testing releases]({% link releases/index.md %}#release-types) are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments. When CockroachDB {{ page.major_version }} is Generally Available (GA), production releases will also be announced on this page.
+{% else %}{% comment %}Begin GA-only content{% endcomment %}
+  {% if skippable == true %}
+CockroachDB {{ page.major_version }} is an [Innovation Release]({% link releases/release-support-policy.md %}#support-types), which is optional for CockroachDB {{ site.data.products.advanced }}, CockroachDB {{ site.data.products.standard }}, and CockroachDB {{ site.data.products.core }} clusters but is required for CockroachDB {{ site.data.products.basic }}.
+  {% else %}
 CockroachDB {{ page.major_version }}{% if lts == true %} [(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %} is a required [Regular Release]({% link releases/release-support-policy.md %}#support-types).
-{% endif %}
+  {% endif %}
 
 Refer to [Major release types]({% link releases/release-support-policy.md %}#support-types) before installing or upgrading for release timing and support details.{% if no_highlights == false %} To learn what’s new in this release, refer to its [Feature Highlights](#feature-highlights).{% endif %}
 
 On this page, you can read about changes and find downloads for all production and testing releases of CockroachDB {{ page.major_version }}{% if lts == true %}&nbsp;[(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %}
 
+
 {% comment %}v1.0 has no #v1-0-0 anchor, and before GA other releases also do not.{% endcomment %}
 - For key feature enhancements in {{ page.major_version }} and other upgrade considerations, refer to the notes for {% if include.major_version.release_date != 'N/A' and page.major_version != 'v1.0' %}[{{ page.major_version }}.0](#{{ page.major_version | replace: '.', '-' }}-0){% else %}{{ page.major_version }} on this page{% endif %}.
+{% endif %}{% comment %}End GA-only content{% endcomment %}
 - For details about release types, naming, and licensing, refer to the [Releases]({% link releases/index.md %}) page.
 - Be sure to also review the [Release Support Policy]({% link releases/release-support-policy.md %}).
 - {{ install_sentence | strip_newlines }}
