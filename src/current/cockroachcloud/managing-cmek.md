@@ -60,6 +60,8 @@ Follow these steps to create a cross-account IAM role and give it permission to 
 
 <section class="filter-content" markdown="1" data-scope="gcp">
 
+### Step 1. Provision the cross-tenant service account
+
 1. In CockroachDB Cloud, visit the CockroachDB {{ site.data.products.cloud }} [organization settings page](https://cockroachlabs.cloud/settings). Copy your organization ID, which you will need to create the cross-tenant service account.
 
 1. Visit the [Clusters page](https://cockroachlabs.cloud/clusters). Click on the name of your cluster to open its cluster overview page. In the URL, copy the cluster ID: `https://cockroachlabs.cloud/cluster/{YOUR_CLUSTER_ID}/overview`.
@@ -96,12 +98,12 @@ If you intend to use an existing key as the CMEK, skip this step.
 
 You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
 
-  <div class="filters clearfix">
-    <button class="filter-button" data-scope="aws-console">AWS Console</button>
-    <button class="filter-button" data-scope="hashicorp-vault">Hashicorp Vault</button>
-  </div>
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="aws-console">AWS Console</button>
+  <button class="filter-button" data-scope="aws-hashicorp-vault">Hashicorp Vault</button>
+</div>
 
-  <section class="filter-content" markdown="1" data-scope="aws-console">
+<section class="filter-content" markdown="1" data-scope="aws-console">
 
 1. In the AWS console, visit [AWS KMS](https://console.aws.amazon.com/kms/).
 1. To create the key, select **Customer managed keys** and click **Create Key**.
@@ -142,9 +144,9 @@ You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({
 
 1. Finish creating the key.
 
-  </section>
+</section>
 
-  <section class="filter-content" markdown="1" data-scope="hashicorp-vault">
+<section class="filter-content" markdown="1" data-scope="aws-hashicorp-vault">
 
 {% capture vault_client_steps %}1. [Install Vault Enterprise Edition installed locally](https://learn.hashicorp.com/tutorials/nomad/hashicorp-enterprise-license?in=vault/enterprise).
 
@@ -198,7 +200,7 @@ You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({
 1. Set the permissions policy for your key with the `crdb-cmek-kms` IAM policy provided in the [Appendix](#appendix-iam-policy-for-the-cmek-key).
 1. Save to finish creating the key.
 
-  </section>
+</section>
 
 </section>
 
@@ -206,12 +208,12 @@ You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({
 
 You can create the CMEK directly in the GCP Console or using [HashiCorp Vault]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
 
-  <div class="filters clearfix">
-    <button class="filter-button" data-scope="gcp-console">GCP Console</button>
-    <button class="filter-button" data-scope="hashicorp-vault">Hashicorp Vault</button>
-  </div>
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="gcp-console">GCP Console</button>
+  <button class="filter-button" data-scope="gcp-hashicorp-vault">Hashicorp Vault</button>
+</div>
 
-  <section class="filter-content" markdown="1" data-scope="gcp-console">
+<section class="filter-content" markdown="1" data-scope="gcp-console">
 
 1. In the GCP console, visit the [KMS page](https://console.cloud.google.com/security/kms).
 1. Click **+ CREATE KEY RING** and fill in the details to complete the key ring.
@@ -224,9 +226,9 @@ You can create the CMEK directly in the GCP Console or using [HashiCorp Vault]({
 
 Make a note of the key ring name.
 
-  </section>
+</section>
 
-  <section class="filter-content" markdown="1" data-scope="hashicorp-vault">
+<section class="filter-content" markdown="1" data-scope="gcp-hashicorp-vault">
 
 1. In the GCP Console, visit the [KMS page](https://console.cloud.google.com/security/kms) and click **+ CREATE KEY RING** to create a key ring for your encryption key. Make a note of the name of the key ring, which you will provide to Vault to create your encryption key.
 
@@ -272,7 +274,7 @@ Make a note of the key ring name.
 
     Click **SAVE**. Make a note of the key ring name.
 
-  </section>
+</section>
 </section>
 
 ### Step 3. Build your CMEK configuration manifest
