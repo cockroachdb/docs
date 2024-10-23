@@ -43,7 +43,7 @@ You must configure the [cluster settings]({% link {{ page.version.version }}/clu
 | `server.jwt_authentication.enabled` | Defaults to `false`, must be set to `true` to enable embedded JWT generation.
 | `server.jwt_authentication.jwks` | A list of public signing keys for allowed IdPs; must include your IdP's key. If `server.jwt_authentication.jwks_auto_fetch.enabled` is `true`, there is no need to set `server.jwt_authentication.jwks`.
 | `server.jwt_authentication.jwks_auto_fetch.enabled` | If `true`, public signing keys are automatically fetched from the issuer and there is no need to set `server.jwt_authentication.jwks`. Defaults to `false`.
-| `server.jwt_authentication.issuers` | A list of accepted token issuers; must include your IdP.
+| `server.jwt_authentication.issuers.configuration` | A list of accepted token issuers; must include your IdP. Can be any of the following: <ul><li>A string representing a valid issuer URL</li><li>A string that contains a JSON array of issuer URLs</li><li>A string that contains a JSON map of issuer URLs</li></ul>The format is detected automatically.
 | `server.jwt_authentication.audience` | This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
 | `server.jwt_authentication.claim` | Which JWT field will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
 | `server.oidc_authentication.generate_cluster_sso_token.enabled` | Enables token generation; must be set to `true`.
@@ -77,13 +77,13 @@ You can also view all of your cluster settings in the DB Console.
     This must match your cluster's configured value for `server.oidc_authentication.provider_url`. Refer to [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %}#cluster-settings). Issuers are expected to publish their configuration at `https://{ domain }/.well-known/openid-configuration`. For example:
 
         - CockroachDB {{ site.data.products.cloud }}'s IdP configuration can be viewed publicly at: `https://cockroachlabs.cloud/.well-known/openid-configuration`.
-        The `issuer` is `https://cockroachlabs.cloud`.
+        The issuer URI is `https://cockroachlabs.cloud`.
 
-        - For Google Cloud Platform, the `openid-configuration` can be found at `https://accounts.google.com/.well-known/openid-configuration`. The `issuer` is `https://accounts.google.com`.
+        - For Google Cloud Platform, the `openid-configuration` can be found at `https://accounts.google.com/.well-known/openid-configuration`. The issuer URI is `https://accounts.google.com`.
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    SET CLUSTER SETTING server.jwt_authentication.issuers = 'https://accounts.google.com';
+    SET CLUSTER SETTING server.jwt_authentication.issuers.configuration = 'https://accounts.google.com';
     ~~~
 
 1. `server.jwt_authentication.audience`
@@ -175,7 +175,7 @@ You can also view all of your cluster settings in the DB Console.
     }';
     ~~~
 
-1. Instead of setting `server.jwt_authentication.jwks` to a list of static signing keys, you can set `server.server.jwt_authentication.jwks_auto_fetch.enabled` to `true` to enable automatic fetching of signing keys for the issuers specified in `server.jwt_authentication.issuers`. Signing keys are fetched from the issuer's`https://{ domain }/.well-known/openid-configuration` endpoint.
+1. Instead of setting `server.jwt_authentication.jwks` to a list of static signing keys, you can set `server.server.jwt_authentication.jwks_auto_fetch.enabled` to `true` to enable automatic fetching of signing keys for the issuers specified in `server.jwt_authentication.issuers.configuration`. Signing keys are fetched from the issuer's`https://{ domain }/.well-known/openid-configuration` endpoint.
 
 1. Set your Identity Map. Refer to [Identity Map configuration](#identity-map-configuration).
 
