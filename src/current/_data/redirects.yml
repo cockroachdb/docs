@@ -666,6 +666,9 @@
 - destination: cockroachcloud/cmek.md#faq
   sources: ['cockroachcloud/cmek-faq.md']
 
+- destination: cockroachcloud/managing-cmek.md
+  sources: ['cockroachcloud/cmek-ops-*.md']
+
 - destination: cockroachcloud/connect-to-your-cluster.md
   sources: ['cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.md']
 
