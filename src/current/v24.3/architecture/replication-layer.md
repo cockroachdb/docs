@@ -146,6 +146,31 @@ A table's meta and system ranges (detailed in the [distribution layer]({% link {
 
 However, unlike table data, system ranges cannot use epoch-based leases because that would create a circular dependency: system ranges are already being used to implement epoch-based leases for table data. Therefore, system ranges use expiration-based leases instead. Expiration-based leases expire at a particular timestamp (typically after a few seconds). However, as long as a node continues proposing Raft commands, it continues to extend the expiration of its leases. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
 
+#### Leader leases
+
+{% include_cached new-in.html version="v24.3" %}
+
+CockroachDB offers an improved leasing system rebuilt atop a stronger form of [Raft](#raft) leadership that ensures that the Raft leader is **always** the range's leaseholder. This new type of lease is called a _Leader lease_, and supersedes [epoch-based leases](#epoch-based-leases-table-data) and [expiration-based leases](#expiration-based-leases-meta-and-system-ranges) leases while combining the performance of the former with the resilience of the latter.
+
+Leader leases rely on a shared, store-wide failure detection mechanism for triggering new Raft elections. [Stores]({% link {{ page.version.version }}/cockroach-start.md %}#store) participate in Raft leader elections by "fortifying" a candidate replica based on that replica's store liveness, as determined among a quorum of all the node's stores. A replica can **only** become the Raft leader if it is so fortified.
+
+After the fortified Raft leader is chosen, it is then also established as the leaseholder. Support for the lease is provided as long as the Raft leader's store liveness remains supported by a quorum of stores in the Raft group. This provides the fortified Raft leader with a guarantee that it will not lose leadership until _after_ it has lost store liveness support. This guarantee enables a number of improvements to the performance and resiliency of our Raft implementation that were prevented by the need to handle cases where Raft leadership and range leases were not colocated.
+
+Importantly, since Leader leases rely on a quorum of stores in the Raft group, they remove the need for the single point of failure (SPOF) that was the [node liveness range]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues), As a result, they are not vulnerable to the scenario possible under the previous leasing regime where a leaseholder was [partitioned]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition) from its followers (including a follower that was the Raft leader) but still heartbeating the node liveness range. Before Leader leases, this scenario would result in an indefinite outage that lasted as long as the lease was held by the partitioned node.
+
+Based on our internal testing, leader leases provide the following user-facing benefits:
+
+- Network partitions between a leaseholder and its followers heal in less than 20 seconds, since the leaseholder no longer needs to heartbeat a single node liveness range.
+- Outages caused by liveness failures last less than 1 second, since liveness is now determined by a store-level detection mechanism, not a single node liveness range.
+- Performance is equivalent (within <1%) to epoch-based leases on a 100 node cluster of 32 vCPU machines with 8 stores each.
+
+**Leader leases are not enabled by default.** To enable leader leases for testing with your workload, use the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kv.raft.leader_fortification.fraction_enabled`, which controls the fraction of ranges for which the Raft leader fortification protocol is enabled. Leader fortification is needed for a range to use a Leader lease. It can be set to `0.0` to disable leader fortification and, by extension, Leader leases. It can be set to `1.0` to enable leader fortification for all ranges and, by extension, use Leader leases for all ranges which do not require expiration-based leases. It can be set to a value between `0.0` and `1.0` to gradually roll out Leader leases across the ranges in a cluster.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING kv.raft.leader_fortification.fraction_enabled = 1.0
+~~~
+
 #### How leases are transferred from a dead node
 
 When the cluster needs to access a range on a leaseholder node that is dead, that range's lease must be transferred to a healthy node. This process is as follows:
