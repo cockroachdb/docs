@@ -127,7 +127,7 @@ Error: dial tcp 35.240.101.1:26257: connect: connection refused
 
 <h4>Solution</h4>
 
-CockroachDB {{ site.data.products.cloud }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections]({% link {{site.current_cloud_version}}/connection-pooling.md %}) and connection retry logic to ensure that connections remain current. See the [Production Checklist]({% link cockroachcloud/production-checklist.md %}) for more information.
+CockroachDB {{ site.data.products.cloud }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections]({% link {{site.current_cloud_version}}/connection-pooling.md %}) and [mitigate connection disruptions]({% link cockroachcloud/production-checklist.md %}#sql-connection-handling) to ensure that connections remain current. See the [Production Checklist]({% link cockroachcloud/production-checklist.md %}) for more information.
 
 ## Security errors
 
