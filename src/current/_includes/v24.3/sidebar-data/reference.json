@@ -107,6 +107,12 @@
             ]
           },
           {
+            "title": "<code>cockroach encode-uri</code>",
+            "urls": [
+              "/${VERSION}/cockroach-encode-uri.html"
+            ]
+          },
+          {
             "title": "<code>cockroach sql</code>",
             "urls": [
               "/${VERSION}/cockroach-sql.html"
