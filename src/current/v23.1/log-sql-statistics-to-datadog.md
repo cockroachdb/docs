@@ -71,12 +71,9 @@ Enable the [`sql.telemetry.query_sampling.enabled` cluster setting]({% link {{ p
 SET CLUSTER SETTING sql.telemetry.query_sampling.enabled = true;
 ~~~
 
-Set the `sql.telemetry.query_sampling.max_event_frequency` cluster setting to `100000` to emit query events at a higher rate per second than the default value of `8`, which is extremely conservative for the Datadog HTTP API. This cluster setting controls the max event frequency at which CockroachDB samples queries for telemetry.
+Configure the following [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to a value that is dependent on the level of granularity you require and how much performance impact from frequent logging you can tolerate:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET CLUSTER SETTING sql.telemetry.query_sampling.max_event_frequency = 100000;
-~~~
+- `sql.telemetry.query_sampling.max_event_frequency` (default `8`) is the max event frequency (events per second) at which we sample executed queries for telemetry. In practice, this means that we only sample an executed query if 1/`max_event_frequency` seconds have elapsed since the last executed query was sampled. Sampling impacts the volume of query events emitted which can have downstream impact to workload performance and third-party processing costs. Slowly increase this sampling threshold and monitor potential impact.
 
 {{site.data.alerts.callout_info}}
 The `sql.telemetry.query_sampling.max_event_frequency` cluster setting and the `buffering` options in the `logs.yaml` control how many events are emitted to Datadog and that can be potentially dropped. Adjust this setting and these options according to your workload, depending on the size of events and the queries per second (QPS) observed through monitoring.

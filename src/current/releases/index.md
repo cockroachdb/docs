@@ -28,7 +28,7 @@ indented in relation to the other Liquid. Please try to keep the indentation con
 
 This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB [releases](#downloads).
 
-A new major version of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production release, follwed by a series of patch releases.
+A new major version of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production release, followed by a series of patch releases.
 
 Releases are named in the format `vYY.R.PP`, where `YY` indicates the year, `R` indicates the major release starting with `1` each year, and `PP` indicates the patch number, starting with `0`.
 
@@ -36,7 +36,7 @@ For example, the latest production release is `{{ latest_full_production_version
 
 After choosing a version of CockroachDB, learn how to:
 
-- [Create a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/create-a-serverless-cluster.md %}).
+- [Create a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/create-your-cluster.md %}).
 - [Upgrade a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}).
 - [Install CockroachDB {{ site.data.products.core }}]({% link {{site.current_cloud_version}}/install-cockroachdb.md %})
 - [Upgrade a Self-Hosted cluster]({% link {{site.current_cloud_version}}/upgrade-cockroach-version.md %}).
@@ -47,21 +47,21 @@ Be sure to review Cockroach Labs' [Release Support Policy]({% link releases/rele
 
 #### Major releases
 
-As of 2024, every second major version is an **Innovation release**. For CockroachDB {{ site.data.products.core }} and CockroachDB {{ site.data.products.dedicated }}, these releases offer shorter support windows and can be skipped.
+As of 2024, every second major version is an **Innovation release**. For CockroachDB {{ site.data.products.core }}, CockroachDB {{ site.data.products.standard }}, and CockroachDB {{ site.data.products.advanced }}, these releases offer shorter support windows and can be skipped. Innovation releases are required for CockroachDB {{ site.data.products.basic }}.
 
-All other major versions are **Regular releases**, which are required upgrades. These versions offer longer support periods, which, for self-hosted clusters, are further extended when a patch version is announced that begins their **LTS** (Long-Term Support) release series.
+All other major versions are **Regular releases**, which are required upgrades. These versions offer longer support periods, which, for CockroachDB {{ site.data.products.core }} clusters, are further extended when a patch version is announced that begins their **LTS** (Long-Term Support) release series.
 
-For details on how this impacts support in CockroachDB {{ site.data.products.core }}, refer to [Release Support Policy]({% link releases/release-support-policy.md %}). For details on support per release type in CockroachDB Cloud, refer to [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+For details on how LTS impacts support in CockroachDB {{ site.data.products.core }}, refer to [Release Support Policy]({% link releases/release-support-policy.md %}). For details on support per release type in CockroachDB Cloud, refer to [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 | Major Release Type | Frequency | Required upgrade | LTS releases and extended support |
 | :---: | :---: | :---: | :---: |
-| Regular (e.g. v24.1) | 2x/year | on Dedicated, Serverless, Self-Hosted | Yes |
-| Innovation (e.g. v24.2) | 2x/year | on Serverless only | No<sup style="font-size: 0.9em; vertical-align: -0.3em;">*</sup> |
-<small>* Column does not apply to CockroachDB Serverless, where clusters are automatically upgraded when a new major version or a patch release is available, ensuring continuous support.</small>
+| Regular (e.g. v24.1) | 2x/year | Yes | Yes |
+| Innovation (e.g. v24.2) | 2x/year | on Basic only | No<sup style="font-size: 0.9em; vertical-align: -0.3em;">*</sup> |
+<small>* Column does not apply to CockroachDB Basic, where clusters are automatically upgraded when a new major version or a patch release is available, ensuring continuous support.</small>
 
-For a given CockroachDB {{ site.data.products.core }} or Dedicated cluster, customers may choose to exclusively install or upgrade to Regular Releases to benefit from longer testing and support lifecycles, or to also include Innovation Releases, and benefit from earlier access to new features. This choice does not apply to CockroachDB Serverless, where every major release is an automatic upgrade.
+For a given CockroachDB {{ site.data.products.core }}, CockroachDB {{ site.data.products.standard }}, or CockroachDB {{ site.data.products.advanced }} cluster, customers may choose to exclusively install or upgrade to Regular Releases to benefit from longer testing and support lifecycles, or to also include Innovation Releases, and benefit from earlier access to new features. This choice does not apply to CockroachDB {{ site.data.products.basic }}, where every major release is an automatic upgrade.
 
-CockroachDB v24.2 is an Innovation release and v24.3 is planned as a Regular release. Starting with v25.1, four major releases are expected per year, where every first and third release of the year is expected to be an Innovation release. For more details, refer to [Upcoming releases](#upcoming-releases).
+CockroachDB v24.2 is an Innovation release and v24.3 is a Regular release. Starting with v25.1, four major releases are expected per year, where every first and third release of the year is expected to be an Innovation release. For more details, refer to [Upcoming releases](#upcoming-releases).
 
 #### Patch releases
 
@@ -110,13 +110,12 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
 
 ### Recent releases
 
-{% comment %} TODO: Automate by Aug 12, 2024, or update the morning of August 12, then automate soon after. {% endcomment %}
 | Version | Release Type | GA date | Latest patch release |
 | :---: | :---: | :---: | :---: |
 | [v24.2](#v24-2) | Innovation | 2024-08-12 | v24.2.0 |
-| [v24.1](#v24-1) | Regular | 2024-05-20 | v24.1.3 |
-| [v23.2](#v23-2) | Regular | 2024-02-05 | v23.2.9 (LTS) |
-| [v23.1](#v23-1) | Regular | 2023-05-15 | v23.1.24 (LTS) |
+| [v24.1](#v24-1) | Regular | 2024-05-20 | v24.1.4 |
+| [v23.2](#v23-2) | Regular | 2024-02-05 | v23.2.10 (LTS) |
+| [v23.1](#v23-1) | Regular | 2023-05-15 | v23.1.25 (LTS) |
 
 ### Upcoming releases
 
@@ -156,29 +155,29 @@ The following releases and their descriptions represent proposed plans that are 
       Determine if the major version is LTS and the patch component of the initial LTS patch,
       or the major version is a skippable innovation release
     {% endcomment %}
+    {% assign released = false %}
     {% assign has_lts_releases = false %}
     {% assign lts_link_linux = '' %}
     {% assign lts_patch = nil %}
     {% assign in_lts = false %}
     {% assign comparison = nil %}
     {% assign skippable = false %}
-    {% if v.initial_lts_patch != "N/A" %}
-        {% assign has_lts_releases = true %}
-        {% assign lts_link = '&nbsp;(<a href="release-support-policy.html">LTS</a>)&nbsp;' %}
-        {% capture lts_patch_string %}{{ v.initial_lts_patch | split: '.' | shift | shift }}{% endcapture %}
-        {% assign lts_patch = lts_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
-    {% elsif v.release_date != "N/A" and v.maint_supp_exp_date != "N/A" and v.asst_supp_exp_date == "N/A" %}
-        {% assign skippable = true %}
+    {% if v.release_date != "N/A" and v.maint_supp_exp_date != "N/A" %}
+        {% assign released = true %}
+        {% if v.asst_supp_exp_date == "N/A" %}
+            {% assign skippable = true %}
+        {% elsif v.initial_lts_patch != "N/A" %}
+            {% assign has_lts_releases = true %}
+            {% assign lts_link = '&nbsp;(<a href="release-support-policy.html">LTS</a>)&nbsp;' %}
+            {% capture lts_patch_string %}{{ v.initial_lts_patch | split: '.' | shift | shift }}{% endcapture %}
+            {% assign lts_patch = lts_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
+        {% endif %}
     {% endif %}
 
 ### {{ v.major_version }}
 
-{% assign skippable = false %}
-{% if v.release_date != "N/A" and v.maint_supp_exp_date != "N/A" and v.asst_supp_exp_date == "N/A" %}
-    {% assign skippable = true %}
-{% endif %}
-
 {% if DEBUG == true %}
+    released: {{ released }}<br />
     has_lts_releases: {{ has_lts_releases }}<br />
     lts_patch_string: {{ lts_patch_string }}<br />
     lts_patch: {{ lts_patch }}<br />
@@ -190,7 +189,11 @@ The following releases and their descriptions represent proposed plans that are 
     skippable: {{ skippable }}<br /><br />
 {% endif %}
 
-CockroachDB {{ v.major_version }} is {% if skippable == true %}an [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases) that is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} but required for CockroachDB {{ site.data.products.serverless }}.{% else %}a required [Regular release]({% link releases/release-support-policy.md %}#regular-releases).{% endif %}{% if released == false %} It is still in development and not yet supported.{% endif %}{% unless latest_full_production_version.release_name != v.major_version %} CockroachDB {{ latest_full_production_version.release_name }} is the latest supported version.{% endunless %} To learn more, refer to [CockroachDB {{ latest.major_version }} Release Notes]({% link releases/{{ v.major_version }}.md %}).
+{% if released == false %}
+CockroachDB {{ page.major_version }} is in active development and is not yet supported. The following [testing releases]({% link releases/index.md %}#patch-releases) are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments. When CockroachDB {{ page.major_version }} is Generally Available (GA), production releases will also be announced on this page.
+{% else %}
+CockroachDB {{ v.major_version }} is {% if skippable == true %}an [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases) that is optional for CockroachDB {{ site.data.products.advanced }}, CockroachDB {{ site.data.products.standard }}, and CockroachDB {{ site.data.products.core }} but required for CockroachDB {{ site.data.products.basic }}.{% else %}a required [Regular release]({% link releases/release-support-policy.md %}#regular-releases).{% endif %}{% if released == false %} It is still in development and not yet supported.{% endif %}{% unless latest_full_production_version.release_name != v.major_version %} CockroachDB {{ latest_full_production_version.release_name }} is the latest supported version.{% endunless %} To learn more, refer to [CockroachDB {{ latest.major_version }} Release Notes]({% link releases/{{ v.major_version }}.md %}).
+{% endif %}
 
 Refer to [Major release types](#major-releases) before installing or upgrading for release support details.
 {% comment %}Some old pages don't have feature highlights and won't get LTS{% endcomment %}
@@ -205,7 +208,8 @@ Refer to [Major release types](#major-releases) before installing or upgrading f
       v.major_version == 'v21.1' or
       v.major_version == 'v21.2' or
       v.major_version == 'v22.1' or
-      v.major_version == 'v22.2' %}
+      v.major_version == 'v22.2' or
+      released == false %}
 To learn what’s new in this release, refer to [Feature Highlights]({% link releases/{{ v.major_version }}.md %}#feature-highlights).
 {% endunless %}
 
@@ -294,6 +298,7 @@ To learn what’s new in this release, refer to [Feature Highlights]({% link rel
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
                 {% if r.withdrawn == true %} {% comment %} Suppress download links for withdrawn releases. {% endcomment %}
             <td colspan="2"><span class="badge badge-gray">Withdrawn</span></td>{% comment %}covers both Intel and ARM columns {% endcomment %}
+                  {% continue %}
                 {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td colspan="2"><span>{{ r.cloud_only_message_short }}</span></td>
                   {% continue %}
@@ -351,6 +356,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
             {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td colspan="2"><span class="badge badge-gray">Withdrawn</span></td>{% comment %}covers both Intel and ARM columns {% endcomment %}
+              {% continue %}
             {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td colspan="2"><span>{{ r.cloud_only_message_short }}</span></td>
               {% continue %}
@@ -404,6 +410,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
                 {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td colspan="2"><span class="badge badge-gray">Withdrawn</span></td>{% comment %}covers both Intel and ARM columns {% endcomment %}
+                  {% continue %}
                 {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td colspan="2"><span>{{ r.cloud_only_message_short }}</span></td>
                   {% continue %}
@@ -544,6 +551,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
               {% continue %}
             {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td><span>{{ r.cloud_only_message_short }}</span></td>
+                {% continue %}
             {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
                 {% if r.source == true %}

@@ -97,11 +97,11 @@ def lambda_handler(context):
 
 </section>
 
-## Use CockroachDB {{ site.data.products.serverless }}
+## Use CockroachDB {{ site.data.products.standard }}
 
-As a database-as-a-service, CockroachDB {{ site.data.products.serverless }} abstracts away the complexity of deploying, scaling, and load-balancing your database. Additionally, idle database connections to CockroachDB use very little memory (~20-30 KiB) when compared to PostgreSQL (~2-10 MiB).
+As a database-as-a-service, CockroachDB {{ site.data.products.standard }} abstracts away the complexity of deploying, scaling, and load-balancing your database. Additionally, idle database connections to CockroachDB use very little memory (~20-30 KiB) when compared to PostgreSQL (~2-10 MiB).
 
-To create a free CockroachDB {{ site.data.products.serverless }} cluster:
+To create a free CockroachDB {{ site.data.products.standard }} cluster:
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 

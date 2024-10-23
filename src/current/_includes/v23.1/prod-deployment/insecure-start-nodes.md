@@ -14,43 +14,9 @@ For each initial node of your cluster, complete the following steps:
 After completing these steps, nodes will not yet be live. They will complete the startup process and join together to form a cluster as soon as the cluster is initialized in the next step.
 {{site.data.alerts.end}}
 
-1. SSH to the machine where you want the node to run.
+1. Visit [Releases]({% link releases/index.md %}) and download the full binary of CockroachDB to the node.
 
-1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
-    ~~~
-
-1. Copy the binary into the `PATH`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
-
-    If you get a permissions error, prefix the command with `sudo`.
-
-1. CockroachDB uses custom-built versions of the [GEOS]({% link {{ page.version.version }}/architecture/glossary.md %}#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir -p /usr/local/lib/cockroach
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/lib/libgeos.so /usr/local/lib/cockroach/
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/lib/libgeos_c.so /usr/local/lib/cockroach/
-    ~~~
-
-    If you get a permissions error, prefix the command with `sudo`.
+1. On the node, follow the instructions to [install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 
 1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 
@@ -79,7 +45,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
 	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=localhost:8080`. To set these options manually, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}).
 
-1. Repeat these steps for each additional node that you want in your cluster.
+Repeat these steps for each additional node that you want in your cluster.
 
 </section>
 

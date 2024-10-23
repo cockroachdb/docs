@@ -456,12 +456,12 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     ~~~
     ERROR: restart transaction: TransactionRetryWithProtoRefreshError: TransactionRetryError: retry txn (RETRY_SERIALIZABLE - failed preemptive refresh due to encountered recently written committed value /Table/105/1/20001/1/0 @1700513356.063385000,2): "sql txn" meta={id=10f4abbc key=/Table/105/1/20001/2/0 iso=Serializable pri=0.00167708 epo=0 ts=1700513366.194063000,2 min=1700513327.262632000,0 seq=1} lock=true stat=PENDING rts=1700513327.262632000,0 wto=false gul=1700513327.762632000,0
     SQLSTATE: 40001
-    HINT: See: https://www.cockroachlabs.com/docs/v23.2/transaction-retry-error-reference.html#retry_serializable
+    HINT: See: https://www.cockroachlabs.com/docs/{{ page.version.version }}/transaction-retry-error-reference.html#retry_serializable
     ~~~
 
     {{site.data.alerts.callout_success}}
     For this kind of error, CockroachDB recommends a [client-side transaction retry loop]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App]({% link {{ page.version.version }}/example-apps.md %}) tutorials.
-    
+
     For more information about the error message for the `RETRY_SERIALIZABLE` error type, see the [Transaction Retry Error Reference]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_serializable).
     {{site.data.alerts.end}}
 

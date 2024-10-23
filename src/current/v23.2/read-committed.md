@@ -80,7 +80,7 @@ To set all future transactions to run at `READ COMMITTED` isolation, use one of 
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
-	cockroach sql -–url='postgresql://{username}@{host}:{port}/{database}?options=-c default_transaction_isolation=read%20committed'
+	cockroach sql --url='postgresql://{username}@{host}:{port}/{database}?options=-c default_transaction_isolation=read\ committed'
 	~~~
 
 To view the default isolation level of the session:

@@ -1,165 +1,32 @@
 ---
-title: CockroachDB Cloud Docs
-summary: CockroachDB Cloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
-toc: false
+title: CockroachDB Cloud Documentation
+summary: Learn more about CockroachDB Cloud, a fully-managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
+toc: true
 contribute: false
 cta: false
-homepage: true
-docs_area:
+homepage: false
 ---
 
-<div class="home-header mb-xl-5 bg-cover bg-cover__bg-gradient-purple-blue">
-  <div class="p-2 p-md-5">
-  <h1 class="m-0 text-white">CockroachDB Cloud Docs</h1>
-  <p class="mt-0 pb-4 text-white">Get your applications to market faster with a fully managed CockroachDB instance.</p>
-    <div class="row d-lg-flex mx-0 pt-lg-5">
-      <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
-        <div class="card card-link h-100 d-flex ">
-        <a href="quickstart.html" class="h-100">
-          <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
-            <h6 class="mt-2 mt-0 text-black">Quickstart with<br>CockroachDB Cloud</h6>
-            <p class="text-black">Learn how to create and use your CockroachDB {{ site.data.products.cloud }} cluster</p>
-            <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb text-center">Learn more <img class="mt-2 mt-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
-          </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
-        <div class="card card-link h-100 d-flex ">
-        <a href="cluster-management.html" class="h-100">
-          <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
-            <h6 class="mt-2 mt-0 text-black">Manage your <br>cluster</h6>
-            <p class="text-black">Manage your cluster's schema, data, and backups</p>
-            <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb text-center">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
-          </div>
-          </a>
-        </div>
-        </div>
-      <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
-        <div class="card card-link h-100 d-flex ">
-        <a href="frequently-asked-questions.html" class="h-100">
-          <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
-            <h6 class="mt-2 mt-0 text-black">CockroachDB Cloud <br>FAQS</h6>
-            <p class="text-black">Answers to frequently asked questions</p>
-            <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb text-center">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
-          </div>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-  <div class="row pt-5 mt-5 pb-5 mb-5">
-    <div class="col-lg-12 text-center">
-      <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup?referralId=docs_cc_landing">Start a Free Serverless Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arrow left" /></a>
-    </div>
-  </div>
+<a id="overview"></a>
+## CockroachDB Cloud Overview
 
-<div class="container">
+CockroachDB {{ site.data.products.cloud }} is a fully-managed service run by Cockroach Labs, which simplifies the deployment and management of CockroachDB. This page provides an introduction to CockroachDB {{ site.data.products.cloud }} and provides an overview of each type of cluster: CockroachDB {{ site.data.products.standard }}, CockroachDB {{ site.data.products.basic }}, and CockroachDB {{ site.data.products.advanced }}.
 
-  <div class="row">
-    <div class="col-12">
-      <p class="overline">CockroachDB Cloud</p>
-      <h2 class="mt-2">Recommended articles</h2>
-    </div>
-  </div>
+To get started right away, you can [sign up for a CockroachDB {{ site.data.products.cloud }} account](https://cockroachlabs.cloud) and [create a cluster]({% link cockroachcloud/create-your-cluster.md %}) using [trial credits]({% link cockroachcloud/free-trial.md %}).
 
-  <div class="row display-flex pb-4">
-    <div class="col-6 col-lg-3">
-      <h3 class="mt-3">Get Started</h3>
-      <div class="landing-column-content">
-      <ul>
-        <li><a href="{% link cockroachcloud/quickstart.md %}">Start a Free Serverless Cluster</a></li>
-        <li><a href="{% link cockroachcloud/create-your-cluster.md %}">Start a Dedicated Cluster</a></li>
-        <li><a href="{% link cockroachcloud/connect-to-your-cluster.md %}">Connect to Your Cluster</a></li>
-        <li><a href="{% link cockroachcloud/learn-cockroachdb-sql.md %}">Learn CockroachDB SQL</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/v20.2/build-a-python-app-with-cockroachdb-django">Hello, World!</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="col-6 col-lg-3">
-      <h3 class="mt-3">Use Your Cluster</h3>
-      <div class="landing-column-content">
-      <ul>
-        <li><a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/migration-overview">Migrate Data</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview">Tune Performance</a></li>
-        <li><a href="{% link cockroachcloud/production-checklist.md %}">Move into Production</a></li>
-        <li><a href="{% link cockroachcloud/cluster-management.md %}">Manage Your Cluster</a></li>
-        <li><a href="{% link cockroachcloud/managing-access.md %}">Managing Access in CockroachDB Cloud</a></li>
-        <li><a href="{% link cockroachcloud/billing-management.md %}">Manage Billing</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="col-6 col-lg-3">
-      <h3 class="mt-3">Develop</h3>
-      <div class="landing-column-content">
-      <ul>
-        <li><a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/developer-guide-overview">Common Dev Tasks</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/example-apps">Sample Apps</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/sql-feature-support">SQL Reference</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview">SQL Best Practices</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/query-behavior-troubleshooting">SQL Troubleshooting</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="col-6 col-lg-3">
-      <h3 class="mt-3">Learn More</h3>
-      <div class="landing-column-content">
-      <ul>
-        <li><a href="{% link cockroachcloud/frequently-asked-questions.md %}">CockroachDB Cloud FAQs</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/frequently-asked-questions">CockroachDB FAQs</a></li>
-        <li><a href="{% link cockroachcloud/upgrade-policy.md %}">Upgrade Policy</a></li>
-        <li><a href="{% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %}">Deploy a Python App</a></li>
-        <li><a href="{% link cockroachcloud/stream-changefeed-to-snowflake-aws.md %}">Stream a Changefeed</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
+## Plans
 
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="card shadow position-relative alert alert-dismissable">
-        <a
-          class="close close-card position-absolute"
-          href="#"
-          data-dismiss="alert"
-          aria-label="Close"
-          ><svg
-            width="11"
-            height="11"
-            viewBox="0 0 11 11"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M1.75373 0.387174C1.37633 0.00977659 0.764449 0.00977659 0.387052 0.387174C0.00965453 0.764571 0.00965453 1.37645 0.387052 1.75385L3.73733 5.10413L0.387052 8.4544C0.00965451 8.8318 0.00965451 9.44368 0.387052 9.82108C0.764449 10.1985 1.37633 10.1985 1.75373 9.82108L5.104 6.4708L8.45428 9.82108C8.83168 10.1985 9.44356 10.1985 9.82096 9.82108C10.1984 9.44368 10.1984 8.8318 9.82096 8.4544L6.47068 5.10413L9.82096 1.75385C10.1984 1.37645 10.1984 0.764571 9.82096 0.387174C9.44356 0.00977658 8.83168 0.00977658 8.45428 0.387174L5.104 3.73745L1.75373 0.387174Z"
-              fill="black"
-            />
-          </svg>
-        </a>
-        <div class="row no-gutters p-3">
-          <div class="col-md-6 m-0">
-          <div class="embed-responsive embed-responsive-16by9">
-            <iframe src="https://www.youtube.com/embed/XJZD1rorEQE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card-body p-0 pl-4">
-              <p
-                class="d-inline-block caption-sm rounded py-1 px-3 bg-purple-transparent font-weight-bold text-purple-300 m-0"
-              >
-                CockroachDB Cloud
-              </p>
-              <h6 class="card-title font-weight-bold mt-3">
-                Connecting to Your CockroachDB Cloud Cluster
-              </h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+When you create a cluster in CockroachDB {{ site.data.products.cloud }}, you select its plan. A CockroachDB {{ site.data.products.cloud }} organization can include clusters of each plan. This section provides an overview of each plan. For a more detailed comparison, refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing) and [Understand CockroachDB Cloud Costs]({% link cockroachcloud/costs.md %}).
 
-</div>
+- **CockroachDB {{ site.data.products.basic }}**: Usage-based. CockroachDB Serverless clusters are now on CockroachDB {{ site.data.products.basic }}.
+
+- **CockroachDB {{ site.data.products.standard }}**: A new plan in [Preview]({% link {{ site.current_cloud_version}}/cockroachdb-feature-availability.md %}#features-in-preview). Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
+
+- **CockroachDB {{ site.data.products.advanced }}**: Fully pre-provisioned, with additional security and compliance features. CockroachDB Dedicated clusters are now on CockroachDB {{ site.data.products.advanced }}. CockroachDB Dedicated Advanced clusters are now on CockroachDB {{ site.data.products.advanced }} with enhanced security features enabled.
+
+## Next steps
+
+- [Understand CockroachDB Cloud Costs]({% link cockroachcloud/costs.md %})
+- [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}) and [Create a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}).
+- [Plan a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/plan-your-cluster.md %}) and [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %})
+- [Plan a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}) and [Create a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %})
