@@ -382,7 +382,7 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns 
 #### Fail back to source database
 
 {{site.data.alerts.callout_danger}}
-Before using `failback` mode, refer to the [technical advisory]({% link advisories/a123371.md %}) about a bug that affects changefeeds on certain CockroachDB versions.
+Before using `failback` mode, refer to the [technical advisory]({% link advisories/a123371.md %}) about a bug that affects changefeeds on CockroachDB v22.2, v23.1.0 to v23.1.21, v23.2.0 to v23.2.5, and testing versions of v24.1 through v24.1.0-rc.1.
 {{site.data.alerts.end}}
 
 If you encounter issues after moving data to CockroachDB, you can use `failback` mode to replicate changes on CockroachDB back to the initial source database. In case you need to roll back the migration, this ensures that data is consistent on the source.
@@ -1054,7 +1054,7 @@ molt fetch \
 ### Fail back securely from CockroachDB
 
 {{site.data.alerts.callout_danger}}
-Before using `failback` mode, refer to the [technical advisory]({% link advisories/a123371.md %}) about a bug that affects changefeeds on certain CockroachDB versions.
+Before using `failback` mode, refer to the [technical advisory]({% link advisories/a123371.md %}) about a bug that affects changefeeds on CockroachDB v22.2, v23.1.0 to v23.1.21, v23.2.0 to v23.2.5, and testing versions of v24.1 through v24.1.0-rc.1.
 {{site.data.alerts.end}}
 
 The following `molt fetch` command uses [`failback` mode](#fail-back-to-source-database) to securely replicate changes from CockroachDB back to a MySQL database. This assumes that you migrated data from MySQL to CockroachDB, and want to keep the data consistent on MySQL in case you need to roll back the migration.
