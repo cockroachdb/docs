@@ -178,7 +178,7 @@ These instructions work for Okta. If you use a different IdP, refer to its docum
 1. In **Sign-On Options**, select **OpenID Connect**. SAML is selected by default.
 1. Set **Application username format** to **Email**.
 1. Click **Done**. The app integration's details appear.
-1. Assign at least one Okta identity to the application, such as the identity you already use to sign in to CockroachDB {{ site.data.products.cloud }}. Click **Assignments**, then click **Assign to People**. Find the identity, then click **Assign**, then click Save and go back. Click Done to close the assignment dialog.
+1. Assign at least one Okta identity to the application, such as the identity you already use to sign in to CockroachDB {{ site.data.products.cloud }}. Click **Assignments**, then click **Assign to People**. Find the identity, click **Assign**, then click **Save and go back**. Click **Done** to close the assignment dialog.
 1. Click the **Sign-On** tab. Find the link for **OpenID Provider Metadata**. Right-click and copy the URL. This is your issuer URL, which you will provide to CockroachDB {{ site.data.products.cloud }}.
 1. Keep this tab open so that you can copy the Client ID and Client Secret to CockroachDB {{ site.data.products.cloud }}.
 1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role.
