@@ -249,21 +249,21 @@ Follow the recommendations in [Connection strings](#connection-strings).
 PostgreSQL or CockroachDB: 
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --source 'postgresql://{username}:{password}@{host}:{port}/{database}'
 ~~~
 
 MySQL:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --source 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
 ~~~
 
 `--target` specifies the [CockroachDB connection string]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url):
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --target 'postgresql://{username}:{password}@{host}:{port}/{database}
 ~~~
 
@@ -282,7 +282,7 @@ MySQL:
 `data-load` (default) instructs MOLT Fetch to load the source data into CockroachDB. It does not replicate any subsequent changes on the source.
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --mode data-load
 ~~~
 
@@ -295,14 +295,14 @@ Before using this option, the source PostgreSQL or MySQL database **must** be co
 `data-load-and-replication` instructs MOLT Fetch to load the source data into CockroachDB, and replicate any subsequent changes on the source. 
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --mode data-load-and-replication
 ~~~
 
 If the source is a PostgreSQL database, you must also specify a replication slot name. For example, the following snippet instructs MOLT Fetch to create a slot named `replication_slot` to use for replication:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --mode data-load-and-replication
 --pglogical-replication-slot-name 'replication_slot'
 ~~~
@@ -314,7 +314,7 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns 
 To customize the replication behavior (an advanced use case), use `--replicator-flags` to specify one or more replication-specific flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override.
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --mode data-load-and-replication
 --replicator-flags "--applyTimeout '1h' --parallelism 64"
 ~~~
@@ -337,7 +337,7 @@ Before using this option, the source PostgreSQL or MySQL database **must** be co
 	In the `molt fetch` command, specify the replication slot name using `--pglogical-replication-slot-name`. For example:
 
 	{% include_cached copy-clipboard.html %}
-	~~~ shell
+	~~~
 	--mode replication-only 
 	--pglogical-replication-slot-name 'replication_slot'
 	~~~
@@ -354,7 +354,7 @@ Before using this option, the source PostgreSQL or MySQL database **must** be co
 	In the `molt fetch` command, specify a GTID set using the format `source_uuid:min(interval_start)-max(interval_end)`. For example:
 
 	{% include_cached copy-clipboard.html %}
-	~~~ shell
+	~~~
 	--mode replication-only 
 	--replicator-flags "--defaultGTIDSet 'b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21'"
 	~~~
@@ -366,7 +366,7 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns 
 `export-only` instructs MOLT Fetch to export the source data to the specified [cloud storage](#cloud-storage) or [local file server](#local-file-server). It does not load the data into CockroachDB.
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --mode export-only
 ~~~
 
@@ -375,7 +375,7 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns 
 `import-only` instructs MOLT Fetch to load the source data in the specified [cloud storage](#cloud-storage) or [local file server](#local-file-server) into the CockroachDB target.
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --mode import-only
 ~~~
 
@@ -390,7 +390,7 @@ If you encounter issues after moving data to CockroachDB, you can use `failback`
 `failback` mode creates a [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) and sets up a [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) to pass change events from CockroachDB to the failback target. In production, you should **secure the connection** by specifying [changefeed override settings](#changefeed-override-settings) in a JSON file. Include the [`--changefeeds-path`](#global-flags) flag to indicate the file path.
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --mode failback
 --changefeeds-path 'changefeed-settings.json'
 ~~~
@@ -398,7 +398,7 @@ If you encounter issues after moving data to CockroachDB, you can use `failback`
 When running `molt fetch --mode failback`, `--source` is the CockroachDB connection string and `--target` is the connection string of the database you migrated from. `--table-filter` specifies the tables to watch for change events. For example:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --source 'postgresql://{username}:{password}@{host}:{port}/{database}'
 --target 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
 --table-filter 'employees, payments'
@@ -440,7 +440,7 @@ If there is already a running CockroachDB changefeed with the same webhook sink 
 In the `molt fetch` command, also include [`--replicator-flags`](#global-flags) to specify the paths to the server certificate and key that correspond to the client certs defined in `sink_query_parameters`. For example:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --changefeeds-path 'changefeed-secure.json'
 --replicator-flags "--tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key"
 ~~~
@@ -470,7 +470,7 @@ When `molt fetch --mode failback` is run without specifying `--changefeeds-path`
 The default parameters specify a local webhook sink (`"localhost"`) and an insecure sink connection (`"insecure_tls_skip_verify=true"`), which are suited for testing only. In order to run `failback` with the default insecure configuration, you must also include the following flags:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --allow-tls-mode-disable
 --replicator-flags '--tlsSelfSigned --disableAuthentication'
 ~~~
@@ -512,14 +512,14 @@ Only the path specified in `--bucket-path` is used. Query parameters, such as cr
 Google Cloud Storage:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --bucket-path 'gs://migration/data/cockroach'
 ~~~
 
 Amazon S3:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --bucket-path 's3://migration/data/cockroach'
 ~~~
 
@@ -530,7 +530,7 @@ Cloud storage can be used to move data with either [`IMPORT INTO` or `COPY FROM`
 `--local-path` instructs MOLT Fetch to write intermediate files to a path within a [local file server]({% link {{site.current_cloud_version}}/use-a-local-file-server.md %}). `local-path-listen-addr` specifies the address of the local file server. For example:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --local-path /migration/data/cockroach
 --local-path-listen-addr 'localhost:3000'
 ~~~
@@ -540,7 +540,7 @@ In some cases, CockroachDB will not be able to use the local address specified b
 For example, if you are migrating to CockroachDB {{ site.data.products.cloud }}, such that the {{ site.data.products.cloud }} cluster is in a different physical location than the machine running `molt fetch`, then CockroachDB cannot reach an address such as `localhost:3000`. In these situations, use `--local-path-crdb-access-addr` to specify an address for the local file server that is **publicly accessible**. For example:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --local-path /migration/data/cockroach
 --local-path-listen-addr 'localhost:3000'
 --local-path-crdb-access-addr '44.55.66.77:3000'
@@ -572,14 +572,14 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 `--schema-filter` specifies a range of schema objects to move to CockroachDB, formatted as a POSIX regex string. For example, to move every table in the source database's `public` schema:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --schema-filter 'public'
 ~~~
 
 `--table-filter` and `--table-exclusion-filter` specify tables to include and exclude from the migration, respectively, formatted as POSIX regex strings. For example, to move every source table that has "user" in the table name and exclude every source table that has "temp" in the table name:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --table-filter '.*user.*' --table-exclusion-filter '.*temp.*'
 ~~~
 
@@ -590,21 +590,21 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 To load the data without changing the existing data in the tables, use `none`:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --table-handling none
 ~~~
 
 To [truncate]({% link {{site.current_cloud_version}}/truncate.md %}) tables before loading the data, use `truncate-if-exists`:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --table-handling truncate-if-exists
 ~~~
 
 To drop existing tables and create new tables before loading the data, use `drop-on-target-and-recreate`:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --table-handling drop-on-target-and-recreate
 ~~~
 
@@ -684,7 +684,7 @@ If [`drop-on-target-and-recreate`](#target-table-handling) is set, MOLT Fetch au
 `--type-map-file` specifies the path to the JSON file containing the explicit type mappings. For example:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --type-map-file 'type-mappings.json'
 ~~~
 
@@ -729,7 +729,7 @@ You can define transformation rules to be performed on the target schema during 
 Transformation rules are defined in the JSON file indicated by the `--transformations-file` flag. For example:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --transformations-file 'transformation-rules.json'
 ~~~
 
@@ -827,7 +827,7 @@ Only one fetch ID and set of continuation tokens, each token corresponding to a 
 To retry all data starting from the continuation point, reissue the `molt fetch` command and include the `--fetch-id`.
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
 ~~~
 
@@ -838,7 +838,7 @@ This will retry only the table that corresponds to the continuation token. If th
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
 --continuation-token 011762e5-6f70-43f8-8e15-58b4de10a007
 ~~~
@@ -846,7 +846,7 @@ This will retry only the table that corresponds to the continuation token. If th
 To retry all data starting from a specific file, include both `--fetch-id` and `--continuation-file-name`. The latter flag specifies the filename of an intermediate file in [cloud or local storage](#data-path). All filenames are prepended with `part_` and have the `.csv.gz` or `.csv` extension, depending on compression type (gzip by default). For example: 
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
+~~~
 --fetch-id d44762e5-6f70-43f8-8e15-58b4de10a007
 --continuation-file-name part_00000003.csv.gz
 ~~~
