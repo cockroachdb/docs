@@ -199,17 +199,17 @@ This section of the tutorial uses the [**Insights** page]({% link {{ page.versio
 
 While this tutorial uses the data from [Example 1](#example-1), when troubleshooting lock contention in your own workload, you can adapt the following steps using the DB Console or the Cloud Console.
 
-### High Contention insight events
+### High Contention Insights
 
 After executing the three transactions in the previous section, open the [DB Console](#db-console) for the demo cluster. Navigate to the **Insights** page and select **Workload Insights** > **Transactions Executions** view.
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-transaction-executions-view.png' | relative_url }}" alt="Transaction Executions view" style="border:1px solid #eee;max-width:100%" />
 
-Depending on when you executed the three transactions, to see Insight events, you may have to select a longer time interval, such as **Past 6 Hours**.
+Depending on when you executed the three transactions, to display the transactions flagged with insights, you may have to select a longer time interval, such as **Past 6 Hours**.
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-time-interval.png' | relative_url }}" alt="Time interval" style="border:1px solid #eee;max-width:100%" />
 
-With an adequate time interval, two [**High Contention**]({% link {{ page.version.version }}/ui-insights-page.md %}#high-contention) events will be listed for the waiting transactions that experienced contention, **Transaction 2** and **Transaction 3** executed in Example 1.
+With an adequate time interval, two [**High Contention**]({% link {{ page.version.version }}/ui-insights-page.md %}#high-contention) insights will be listed for the waiting transactions that experienced contention, **Transaction 2** and **Transaction 3** executed in Example 1.
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-high-contention.png' | relative_url }}" alt="High Contention" style="border:1px solid #eee;max-width:100%" />
 
@@ -218,7 +218,7 @@ With an adequate time interval, two [**High Contention**]({% link {{ page.versio
 To identify the exact statement in the transaction that experienced high contention, click the **Latest Transaction Execution ID**
 452da3e7-e7fa-4801-aa40-c59988d14eb6, the ID of the latest execution with the given [transaction fingerprint]({% link {{ page.version.version }}/ui-transactions-page.md %}).
 
-On the **Transaction Execution** page, navigate to the **Statement Executions** tab. In the list of statement executions, in the **Insights** column for `SELECT * FROM t where k = _`, there should be the **High Contention** event. In Example 1, Transaction 2 had one statement (other than `SHOW database`). In a transaction with multiple statements, use this page to pinpoint the exact statement that experienced high contention.
+On the **Transaction Execution** page, navigate to the **Statement Executions** tab. In the list of statement executions, in the **Insights** column for `SELECT * FROM t where k = _`, there should be the **High Contention** insight. In Example 1, Transaction 2 had one statement (other than `SHOW database`). In a transaction with multiple statements, use this page to pinpoint the exact statement that experienced high contention.
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-waiting-statement.png' | relative_url }}" alt="Waiting statement" style="border:1px solid #eee;max-width:100%" />
 
