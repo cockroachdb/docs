@@ -63,7 +63,7 @@ To orchestrate CockroachDB locally using [Kubernetes](https://kubernetes.io/), e
 
 </section>
 
-<section id="use-docker-windows" markdown="1" class="install-option">
+<div id="use-docker-windows" markdown="1" class="install-option">
 <h2 id="install-docker">Use Docker</h2>
 
 This section shows how to install CockroachDB on a Windows host using Docker. On a Linux or Windows Docker host, the image creates a Linux container.

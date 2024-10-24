@@ -300,7 +300,7 @@ The reason this happens is as follows:
 
 For more information about how lease transfers work when a node dies, see [How leases are transferred from a dead node]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node).
 
-The solution is to add connection retry logic to your application.
+The solution is to [use connection pooling]({% link {{ page.version.version }}/connection-pooling.md %}).
 
 ## Clock sync issues
 
