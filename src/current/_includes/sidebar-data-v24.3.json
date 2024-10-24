@@ -16,6 +16,7 @@
   {% include_cached v24.3/sidebar-data/schema-design.json %},
   {% include_cached v24.3/sidebar-data/reads-and-writes.json %},
   {% include_cached v24.3/sidebar-data/stream-data.json %},
+  {% include_cached v24.3/sidebar-data/cross-cluster-replication.json %},
   {% include_cached v24.3/sidebar-data/multi-region-capabilities.json %},
   {% include_cached v24.3/sidebar-data/optimize-performance.json %},
   {% include_cached v24.3/sidebar-data/troubleshooting.json %},
