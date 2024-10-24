@@ -172,10 +172,10 @@ These instructions work for Okta. If you use a different IdP, refer to its docum
 
 1. Log in to Okta as a user with the Admin role.
 1. In the Admin Console, click **Applications**, then click **Browse Catalog**.
-1. Search for "Cockroach Labs", Click **Add integration**.
-1. Set **Application label** to a name for the integration. Set Entity ID and ACS URL to `none`. These fields are ignored.
+1. Search for "Cockroach Labs", then click **Add integration**.
+1. Set **Application label** to a name for the integration. Set **Entity ID** and **ACS URL** to `none`. These fields are ignored.
 1. Click **Next**.
-1. In Sign-On Options, select OpenID Connect. SAML is selected by default.
+1. In **Sign-On Options**, select **OpenID Connect**. SAML is selected by default.
 1. Set **Application username format** to **Email**.
 1. Click **Done**. The app integration's details appear.
 1. Assign at least one Okta identity to the application, such as the identity you already use to sign in to CockroachDB {{ site.data.products.cloud }}. Click **Assignments**, then click **Assign to People**. Find the identity, then click **Assign**, then click Save and go back. Click Done to close the assignment dialog.
@@ -187,7 +187,7 @@ These instructions work for Okta. If you use a different IdP, refer to its docum
 1. Set **Configuration** to **OIDC (OpenID Connect)** and provide a name for the connection. This name will appear on your custom sign-in page.
 1. Click **Submit**. The authentication method's details are displayed. Click **Edit**.
 1. Set **Issuer URL** to the issuer URL you copied from Okta, beginning with `https://` and ending with `/openid-configuration`.
-1. Copy the Client ID and Client Secret from the Okta browser tab.
+1. Copy the **Client ID** and **Client Secret** from the Okta browser tab.
 1. Test the connection. This is recommended before enabling the method. Click **Test**, then follow the prompts. If you get an error, review your configuration details, then try again. When the test is successful, the test status changes to **Verified**.
 1. Click **Save**.
 1. The authentication method has been added but is disabled. To enable it, toggle **Enable**.
@@ -207,8 +207,7 @@ These instructions work for Okta. If you use a different IdP, refer to its docum
 1. Next to **Authentication Methods**, click **Add**.
 1. Set **Configuration** to **SAML**.
 1. Set **Provider Name** to a display name for the connection.
-1. Click **Next**.
-1. The **Provider Details** page displays.
+1. Click **Next**. The **Provider Details** page opens.
 1. To edit the connection, click **Edit**. Keep this browser tab open.
 1. In a separate browser tab, log in to Okta as a user with the Admin role.
 1. In the Admin Console, click **Applications**, then click **Browse Catalog**.
@@ -223,7 +222,7 @@ These instructions work for Okta. If you use a different IdP, refer to its docum
     Close the metadata file. Keep the browser tab open.
 1. In a separate browser tab, log in to Okta as a user with the Admin role.
 1. In the Admin Console, click **Applications**, then click **Browse Catalog**.
-1. Search for "Cockroach Labs", Click **Add integration**.
+1. Search for "Cockroach Labs", then click **Add integration**.
 1. Set **Application Label** to a name for the integration.
 1. Select **SAML 2.0**.
 1. At the bottom of the page, under **Credentials Details**, set **Application username format** to **Email**.
@@ -231,7 +230,7 @@ These instructions work for Okta. If you use a different IdP, refer to its docum
 1. Next to **Sign On Certificate**, click **Download**. Do not click **Copy**. Open the downloaded file in a text editor.
 1. In the browser tab for CockroachDB {{ site.data.products.cloud }}, click **Edit**.
 1. Set **Sign-in URL** to the Sign on URL from Okta.
-1. Copy the entire contents of the certificate from your text editor into **Signing Certificate**, including the `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----` lines, and paste this into the Signing Certificate field.
+1. Copy the entire contents of the certificate from your text editor into **Signing Certificate**, including the `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----` lines, and paste it into the Signing Certificate field.
 1. Test the connection. This is recommended before enabling the method. Click **Test**, then follow the prompts. If you get an error, review your configuration details, then try again. When the test is successful, the test status changes to **Verified**.
 1. Click **Save**.
 1. The authentication method has been added but is disabled. To enable it, toggle **Enable**.
