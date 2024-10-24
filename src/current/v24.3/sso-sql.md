@@ -43,11 +43,11 @@ Cluster Setting | Description
 `server.jwt_authentication.enabled` | Defaults to `false`, must be set to `true` to enable embedded JWT generation.
 `server.jwt_authentication.jwks` | A list of public signing keys for allowed IdPs; must include your IdP's key. If `server.jwt_authentication.jwks_auto_fetch.enabled` is `true`, there is no need to set `server.jwt_authentication.jwks`.
 `server.jwt_authentication.jwks_auto_fetch.enabled` | If `true`, public signing keys are automatically fetched from the issuer and there is no need to set `server.jwt_authentication.jwks`. Defaults to `false`.
-`server.jwt_authentication.issuers.configuration` | A list of accepted token issuers; must include your IdP. Can be any of the following: <ul><li>A string representing a valid issuer URL</li><li>A string that contains a JSON array of issuer URLs</li><li>A string that contains a JSON map of issuer URLs</li></ul>The format is detected automatically.
-`server.jwt_authentication.issuer_custom_ca` | A string that contains the name of the custom root CA to use for verifying certificates when fetching JWKs from the issuer.
+`server.jwt_authentication.issuers.configuration` | A list of accepted token issuers; must include your IdP. Can be any of the following: <ul><li>A string representing a valid issuer URL</li><li>A string that contains a JSON array of issuer URLs</li><li>A string that contains a JSON map of issuer URLs to JWKS URIs</li></ul>The format is detected automatically. Refer to the [configuration examples](#configuration-examples). The previous cluster setting name `server.jwt_authentication.issuers` is aliased to this setting.
+`server.jwt_authentication.issuer_custom_ca` | A string that contains the name of the custom root CA to use for verifying certificates when fetching a JWKS from the issuer.
 `server.jwt_authentication.client.timeout` | An optional HTTP client timeout for external calls made during JWT authentication, in seconds. Defaults to `15` seconds.
 `server.jwt_authentication.audience` | This must match `server.oidc_authentication.client_id`; refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
-`server.jwt_authentication.claim` | Which JWT field will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
+`server.jwt_authentication.claim` | The JWT field that will be used to determine the user identity in CockroachDB; normally set either to `email`, or `sub` (subject).
 `server.oidc_authentication.generate_cluster_sso_token.enabled` | Enables token generation; must be set to `true`.
 `server.oidc_authentication.generate_cluster_sso_token.use_token`| Selects which part of the received OIDC credentials to display.
 `server.identity_map.configuration`| Takes an [Identity Map configuration](#identity-map-configuration).
@@ -79,9 +79,9 @@ You can also view all of your cluster settings in the DB Console.
     This must match your cluster's configured value for `server.oidc_authentication.provider_url`. Refer to [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %}#cluster-settings). Issuers are expected to publish their configuration at `https://{ domain }/.well-known/openid-configuration`. For example:
 
         - CockroachDB {{ site.data.products.cloud }}'s IdP configuration can be viewed publicly at: `https://cockroachlabs.cloud/.well-known/openid-configuration`.
-        The issuer URI is `https://cockroachlabs.cloud`.
+        The issuer URL is `https://cockroachlabs.cloud`.
 
-        - For Google Cloud Platform, the `openid-configuration` can be found at `https://accounts.google.com/.well-known/openid-configuration`. The issuer URI is `https://accounts.google.com`.
+        - For Google Cloud Platform, the `openid-configuration` can be found at `https://accounts.google.com/.well-known/openid-configuration`. The issuer URL is `https://accounts.google.com`.
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -177,7 +177,13 @@ You can also view all of your cluster settings in the DB Console.
     }';
     ~~~
 
-1. Instead of setting `server.jwt_authentication.jwks` to a list of static signing keys, you can set `server.server.jwt_authentication.jwks_auto_fetch.enabled` to `true` to enable automatic fetching of signing keys for the issuers specified in `server.jwt_authentication.issuers.configuration`. Signing keys are fetched from the issuer's`https://{ domain }/.well-known/openid-configuration` endpoint.
+1. <a id="configuration-examples"></a>Instead of setting `server.jwt_authentication.jwks` to a list of static signing keys, you can set `server.server.jwt_authentication.jwks_auto_fetch.enabled` to `true` to enable automatic fetching of signing keys for the issuers specified in `server.jwt_authentication.issuers.configuration`. Signing keys are fetched from the issuer's`https://{ domain }/.well-known/openid-configuration` endpoint.
+    Type                  | Example
+    ----------------------|--------
+    Single issuer URL     | `'https://accounts.google.com/'`
+    Array of issuer URLs  | `'["example.com/adfs","https://accounts.google.com"]'`
+    Map of issuer URLs    | `'{ "issuer_jwks_map": { "https://accounts.google.com/": "https://www.googleapis.com/oauth2/v3/certs", "example.com/adfs": "https://example.com/adfs/discovery/keys" } }'`
+
 
 1. Set your Identity Map. Refer to [Identity Map configuration](#identity-map-configuration).
 
