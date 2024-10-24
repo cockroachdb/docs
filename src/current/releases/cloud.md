@@ -14,6 +14,11 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+
+## October 23, 2024
+
+The new official [Cockroach Labs Okta app integration]({% link cockroachcloud/configure-cloud-org-sso.md %}#add-a-custom-authentication-method) eases the configuration of OIDC and SAML SSO authentication methods for CockroachDB {{ site.data.products.cloud }} organizations. Previously, a custom OIDC or SAML app integration in Okta was required.
+
 ## October 22, 2024
 
 - The deprecated `is_regex` field has been removed from the [CockroachDB {{ site.data.products.cloud }} API for Java Web Tokens (JWTs)](https://cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/jwt-issuers). The API now handles regular expressions seamlessly.
