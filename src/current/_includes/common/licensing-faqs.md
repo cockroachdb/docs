@@ -113,7 +113,7 @@ Hosting CockroachDB as a service means creating an offering that allows third pa
 
 ### What is throttling and how does it work?
 
-When a cluster is being throttled, the number of concurrent open [SQL transactions]({% link {{ page.version.version }}/transactions.md %}) limited to 5.
+When a cluster is being throttled, the number of concurrent open [SQL transactions]({% link {{ page.version.version }}/transactions.md %}) is limited to 5.
 
 This will only happen in the following cases:
 
