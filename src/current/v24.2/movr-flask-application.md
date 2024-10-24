@@ -7,9 +7,7 @@ docs_area: develop
 
 This page guides you through developing a globally-available web application. It is the fourth section of the [Develop and Deploy a Global Application]({% link {{ page.version.version }}/movr.md %}#develop-and-deploy-a-global-application) tutorial.
 
-{{site.data.alerts.callout_info}}
-This tutorial uses [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation. Client-side retry handling is **not** necessary under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation.
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/sql/serializable-tutorial.md %}
 
 ## Before you begin
 

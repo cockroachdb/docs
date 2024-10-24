@@ -28,13 +28,9 @@ To guarantee data consistency, CockroachDB [locks]({% link {{ page.version.versi
 
 #### Transaction retries
 
-In some cases, [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) is unavoidable. If a transaction fails due to contention, CockroachDB will automatically retry the transaction, or will return a [transaction retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) to the client.
+In some cases, [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) is unavoidable. If a transaction fails due to contention, CockroachDB will automatically retry the transaction. If the transaction is `SERIALIZABLE` and cannot automatically be retried without allowing [serialization]({% link {{ page.version.version }}/demo-serializable.md %}) anomalies, CockroachDB will return a [transaction retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) to the client.
 
 Most [official CockroachDB client libraries]({% link {{ page.version.version }}/install-client-drivers.md %}) include a transaction-retrying wrapper function to make writing your persistence layer easier. If your framework's client library does not include a retry wrapper, you will need to write transaction retry logic in your application. We go into more detail about transaction retries later in the guide, in [Retry Transactions]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}).
-
-{{site.data.alerts.callout_info}}
-Client-side retry handling is **not** necessary under [`READ COMMITTED`](#read-committed-isolation) isolation.
-{{site.data.alerts.end}}
 
 #### Read Committed isolation
 
