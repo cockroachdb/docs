@@ -476,7 +476,7 @@ The default parameters specify a local webhook sink (`"localhost"`) and an insec
 ~~~
 
 {{site.data.alerts.callout_info}}
-If both `--changefeeds-path` and `--allow-tls-mode-disable` are not specified in `failback` mode, `molt fetch` will error. At least one of these flags is required. `--changefeeds-path` overrides the default changefeed configuration. `--allow-tls-mode-disable` enables the use of the default changefeed configuration, which is insecure.
+Either `--changefeeds-path`, which overrides the default insecure configuration; or `--allow-tls-mode-disable`, which enables the use of the default insecure configuration, must be specified in `failback` mode. Otherwise, `molt fetch` will error.
 {{site.data.alerts.end}}
 
 ### Data movement
@@ -1100,7 +1100,7 @@ CREATE CHANGEFEED FOR TABLE employees, payments
   WITH updated, resolved = '1s', min_checkpoint_frequency = '1s', initial_scan = 'no', cursor = '2024-09-11T16:33:35Z', webhook_sink_config = '{\"Flush\":{\"Bytes\":1048576,\"Frequency\":\"1s\"}}'
 ~~~
 
-This results in initial output like the following:
+The initial output looks like the following:
 
 ~~~
 INFO   [Sep 11 11:03:54] Replicator starting                           -buildmode=exe -compiler=gc CGO_CFLAGS= CGO_CPPFLAGS= CGO_CXXFLAGS= CGO_ENABLED=1 CGO_LDFLAGS= GOARCH=arm64 GOOS=darwin vcs=git vcs.modified=true vcs.revision=c948b78081a37aacf37a82eac213aa91a2828f92 vcs.time="2024-08-19T13:39:37Z"
