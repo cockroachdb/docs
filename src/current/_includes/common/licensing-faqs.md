@@ -11,7 +11,9 @@ Type | Description
 **Enterprise Trial** <a name="enterprise-trial"></a> | A 30 day self-service trial license. Telemetry is required during the trial (with negotiated exceptions). Telemetry can be disabled once the cluster is upgraded to a paid **Enterprise** license. Support level available during trials is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
 
 {{site.data.alerts.callout_success}}
-Note that no license key is required for developers running [single-node clusters](#single-node-clusters).
+Note that:
+- Clusters with no license have a 7-day grace period before needing to install a license and start sending telemetry data.
+- No license key is required for developers running [single-node clusters](#single-node-clusters).
 {{site.data.alerts.end}}
 
 ## Obtain a license
@@ -117,10 +119,13 @@ When a cluster is being throttled, the number of concurrent open [SQL transactio
 
 This will only happen in the following cases:
 
-- The cluster has no [valid license key](#obtain-a-license).
 - The cluster is not following telemetry requirements.
-
-There is a 7 day grace period for new **Enterprise Free** clusters to start sending telemetry.
+    - There is a 7 day grace period for new **Enterprise Free** and **Enterprise Trial** clusters to start sending telemetry.
+- The cluster has an expired [license key](#obtain-a-license); depending on the type of expired license, the cluster will be throttled after the following time periods:
+    - **Enterprise**: Never throttles
+    - **Enterprise Free**: Throttles 30 days after expiration
+    - **Enterprise Trial**: Throttles 7 days after expiration
+    - No license: Throttles 7 days after cluster initialization
 
 Single node clusters for development use are [not throttled](#single-node-clusters).
 
