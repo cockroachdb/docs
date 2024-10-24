@@ -505,6 +505,9 @@
 
 # Removed Pages
 
+- destination: :version/licensing-faqs.md
+  sources: [':version/get-started-with-enterprise-trial.md']
+
 - destination: movr.md#develop-and-deploy-a-global-application
   sources: ['movr-flask-overview.md']
   versions: ['v23.1']
