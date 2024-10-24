@@ -169,6 +169,14 @@ Flag | Description
 
 {% include {{ page.version.version }}/misc/logging-defaults.md %}
 
+### `create-client`
+
+The `cockroach cert create-client` subcommand supports the following flags:
+
+Flag | Description
+-----|-----------
+`--tenant-name-scope` | Allows you to use the tenant name when creating a client certificate and key pair, in addition to the tenant ID.
+
 ## Examples
 
 ### Create the CA certificate and key pair
