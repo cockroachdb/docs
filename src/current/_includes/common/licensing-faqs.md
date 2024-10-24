@@ -8,12 +8,13 @@ Type | Description
 -------------|------------
 **Enterprise** <a name="enterprise"></a> | This paid license allows usage of all CockroachDB features with no restrictions under the terms specified in the [CockroachDB Software License][csl]. License must be renewed annually or as negotiated. Support levels available include [Enterprise][support] or [Essential][support].
 **Enterprise Free** <a name="enterprise-free"></a> | Same functionality as **Enterprise**, but free of charge for businesses with less than $10M in annual revenue, and telemetry is required except for ephemeral clusters (7 days or less). Clusters will be [throttled](#throttling) after 7 days without sending telemetry. License must be renewed annually. Support level available is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
-**Enterprise Trial** <a name="enterprise-trial"></a> | A 30 day self-service trial license. Telemetry is required during the trial (with negotiated exceptions). Telemetry can be disabled once the cluster is upgraded to a paid **Enterprise** license. Support level available during trials is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
+**Enterprise Trial** <a name="enterprise-trial"></a> | A 30 day self-service trial license. Telemetry is required during the trial. Telemetry can be disabled once the cluster is upgraded to a paid **Enterprise** license. Support level available during trials is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
 
 {{site.data.alerts.callout_success}}
 Note that:
 - Clusters with no license have a 7-day grace period before needing to install a license and start sending telemetry data.
 - No license key is required for developers running [single-node clusters](#single-node-clusters).
+- Clusters with Enterprise Free or Enterprise Trial licenses cannot disable telemetry; if such a cluster signals a telemetry sending error, it will be due to firewall configuration or a network issue.
 {{site.data.alerts.end}}
 
 ## Obtain a license
