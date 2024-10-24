@@ -520,30 +520,12 @@
                         ]
                     },
                     {
-                        "title": "Upgrade to v24.1",
+                        "title": "Upgrade a cluster",
                         "urls": [
-                            "/cockroachcloud/upgrade-to-v24.1.html"
-                        ]
-                    },
-                    {
-                        "title": "Upgrade to v23.2",
-                        "urls": [
-                            "/cockroachcloud/upgrade-to-v23.2.html"
-                        ]
-                    },
-                    {
-                        "title": "Upgrade to v23.1",
-                        "urls": [
-                            "/cockroachcloud/upgrade-to-v23.1.html"
-                        ]
-                    },
-                    {
-                        "title": "Upgrade to v22.2",
-                        "urls": [
-                            "/cockroachcloud/upgrade-to-v22.2.html"
+                            "/cockroachcloud/upgrade-cockroach-version.html"
                         ]
                     }
-                    ]
+                ]
               },
               {
                 "title": "SQL Shell",
