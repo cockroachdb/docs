@@ -637,6 +637,8 @@ With this logging configuration:
 - If at any point the accumulated message size of buffer flushes (as triggered by reaching either the configured `max-staleness` or `flush-trigger-size` value) exceeds `100MiB` (the `max-buffer-size` setting), all new incoming log messages received are dropped until the accumulated message size in the buffer once more falls below this value.
 - For the `HEALTH` [log channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) only, override the `file-defaults` value of `20s` for `max-staleness`, instead flushing messages to the log file within up to `2s`.
 
+{% include_cached new-in.html version="v24.3" %}Logs are flushed automatically upon CockroachDB startup only if CockroachDB is managed using `systemd`.
+
 Alternatively, you may explicitly disable log buffering by setting `buffering` to `NONE`. The following log configuration explicitly disables log buffering for just the `OPS` channel on a [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) log sink:
 
 ~~~ yaml
