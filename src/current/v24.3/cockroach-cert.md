@@ -175,7 +175,7 @@ The `cockroach cert create-client` subcommand supports the following flags:
 
 Flag | Description
 -----|-----------
-`--tenant-name-scope` | {{ {% include_cached new-in.html version="v24.3" %} | strip }} Allows you to use the tenant name when creating a client certificate and key pair, in addition to the tenant ID.
+`--tenant-name-scope` | Allows you to use the tenant name when creating a client certificate and key pair, in addition to the tenant ID.
 
 ## Examples
 
