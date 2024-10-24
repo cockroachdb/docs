@@ -385,9 +385,9 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns 
 Before using `failback` mode, refer to the [technical advisory]({% link advisories/a123371.md %}) about a bug that affects changefeeds on CockroachDB v22.2, v23.1.0 to v23.1.21, v23.2.0 to v23.2.5, and testing versions of v24.1 through v24.1.0-rc.1.
 {{site.data.alerts.end}}
 
-If you encounter issues after moving data to CockroachDB, you can use `failback` mode to replicate changes on CockroachDB back to the initial source database. In case you need to roll back the migration, this ensures that data is consistent on the source.
+If you encounter issues after moving data to CockroachDB, you can use `failback` mode to replicate changes on CockroachDB back to the initial source database. In case you need to roll back the migration, this ensures that data is consistent on the initial source database.
 
-`failback` mode creates a [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) and sets up a [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) to pass change events from CockroachDB to the failback target. In production, you should **secure the connection** by specifying [changefeed override settings](#changefeed-override-settings) in a JSON file. Include the [`--changefeeds-path`](#global-flags) flag to indicate the file path.
+`failback` mode creates a [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) and sets up a [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) to pass change events from CockroachDB to the failback target. In production, you should **secure the connection** by specifying [changefeed override settings](#changefeed-override-settings) in a JSON file. These settings override the [default insecure changefeed]#default-insecure-changefeed] values, which are suited for testing only. Include the [`--changefeeds-path`](#global-flags) flag to indicate the path to the JSON file.
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -412,7 +412,7 @@ MySQL 8.0 and later are supported as MySQL failback targets.
 
 You can specify the following [`CREATE CHANGEFEED` parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#parameters) in the override JSON. If any parameter is not specified, its [default value](#default-insecure-changefeed) is used.
 
-- The following [`CREATE CHANGEFEED` URI parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#sink-uri):
+- The following [`CREATE CHANGEFEED` sink URI parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#sink-uri):
 	- `host`: The hostname or IP address of the [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) where change events are sent. The applicable certificates of the failback target (i.e., the [source database](#source-and-target-databases) from which you migrated) **must** be located on this machine.
 	- `port`: The port of the [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
 	- `sink_query_parameters`: A comma-separated list of [`CREATE CHANGEFEED` query parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#query-parameters). This includes the base64-encoded client certificate ([`client_cert`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#client-cert)), key ([`client_key`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#client-key)), and CA ([`ca_cert`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#ca-cert)) for a secure webhook sink.
@@ -435,7 +435,7 @@ If there is already a running CockroachDB changefeed with the same webhook sink 
 }
 ~~~
 
-`client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, `base64 -i ./client.crt | jq -R -r '@uri'`).
+`client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, use the command `base64 -i ./client.crt | jq -R -r '@uri'`).
 
 In the `molt fetch` command, also include [`--replicator-flags`](#global-flags) to specify the paths to the server certificate and key that correspond to the client certs defined in `sink_query_parameters`. For example:
 
@@ -1075,7 +1075,7 @@ molt fetch \
 - `--source` specifies the connection string of the CockroachDB database to which you migrated.
 - `--target` specifies the connection string of the MySQL database acting as the failback target.
 - `--table-filter` specifies that the `employees` and `payments` tables should be watched for change events.
-- `--replicator-flags` specifies the paths to the server certificate (`--tlsCertificate`) and key (`--tlsPrivateKey`) that correspond to the client certs defined by `sink_query_parameters` in the changefeed override JSON.
+- `--replicator-flags` specifies the paths to the server certificate (`--tlsCertificate`) and key (`--tlsPrivateKey`) that correspond to the client certs defined by `sink_query_parameters` in the changefeed override JSON file.
 - `--changefeeds-path` specifies the path to `changefeed-secure.json`, which contains the following setting override:
 
 	{% include_cached copy-clipboard.html %}
@@ -1085,7 +1085,7 @@ molt fetch \
 	}
 	~~~
 
-	`client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, `base64 -i ./client.crt | jq -R -r '@uri'`).
+	`client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, use the command `base64 -i ./client.crt | jq -R -r '@uri'`).
 
 	{{site.data.alerts.callout_success}}
 	For details on the default changefeed settings and how to override them, see [Changefeed override settings](#changefeed-override-settings).
