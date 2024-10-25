@@ -92,58 +92,58 @@ SERVER: n/a
 - `changefeed.forwarded_resolved_messages`
 - `changefeed.frontier_updates`
 - `changefeed.internal_retry_message_count`
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- `changefeed.kafka_throttling_hist_nanos`
+- `changefeed.lagging_ranges`
+- `changefeed.max_behind_nanos`
+- `changefeed.message_size_hist`
+- `changefeed.messages.messages_pushback_nanos`
+- `changefeed.network.bytes_in`
+- `changefeed.network.bytes_out`
+- `changefeed.nprocs_consume_event_nanos`
+- `changefeed.nprocs_flush_nanos`
+- `changefeed.nprocs_in_flight_count`
+- `changefeed.parallel_io_in_flight_keys`
+- `changefeed.parallel_io_pending_rows`
+- `changefeed.parallel_io_queue_nanos`
+- `changefeed.parallel_io_result_queue_nanos`
+- `changefeed.queue_time_nanos`
+- `changefeed.running`
+- `changefeed.schema_registry.registrations`
+- `changefeed.schema_registry.retry_count`
+- `changefeed.schemafeed.table_history_scans`
+- `changefeed.schemafeed.table_metadata_nanos`
+- `changefeed.sink_batch_hist_nanos`
+- `changefeed.sink_errors`
+- `changefeed.sink_io_inflight`
+- `changefeed.size_based_flushes`
+- `changefeed.total_ranges`
+- `changefeed.usage.error_count`
+- `changefeed.usage.query_duration`
+- `changefeed.usage.table_bytes`
+- `clock-offset.meannanos`
+- `clock-offset.stddevnanos`
+- `cloud.conns_opened`
+- `cloud.conns_reused`
+- `cloud.listing_results`
+- `cloud.listings`
+- `cloud.open_readers`
+- `cloud.open_writers`
+- `cloud.read_bytes`
+- `cloud.readers_opened`
+- `cloud.tls_handshakes`
+- `cloud.write_bytes`
+- `cloud.writers_opened`
+- `cluster.preserve-downgrade-option.last-updated`
+- `distsender.batch_requests.cross_region.bytes`
+- `distsender.batch_requests.cross_zone.bytes`
+- `distsender.batch_requests.replica_addressed.bytes`
+- `distsender.batch_responses.cross_region.bytes`
+- `distsender.batch_responses.cross_zone.bytes`
+- `distsender.batch_responses.replica_addressed.bytes`
+- `distsender.batches`
+- `distsender.batches.async.sent`
+- `distsender.batches.async.throttled`
+- `distsender.batches.partial`
 - `distsender.circuit_breaker.replicas.count`
 - `distsender.circuit_breaker.replicas.probes.failure`
 - `distsender.circuit_breaker.replicas.probes.running`
