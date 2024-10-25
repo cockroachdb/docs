@@ -338,7 +338,8 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 
 - `admission.disk_bandwidth_tokens.elastic.enabled`
 - `admission.kv.enabled`
-- `physical_replication.consumer.minimum_flush_interval (alias: bulkio.stream_ingestion.minimum_flush_interval)`
+- `bulkio.stream_ingestion.minimum_flush_interval`
+- `physical_replication.consumer.minimum_flush_interval`
 - `kv.allocator.lease_rebalance_threshold`
 - `kv.allocator.load_based_lease_rebalancing.enabled`
 - `kv.allocator.load_based_rebalancing`
@@ -368,8 +369,10 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 - `server.rangelog.ttl`
 - `server.shutdown.lease_transfer_iteration.timeout (alias: server.shutdown.lease_transfer_wait)`
 - `spanconfig.bounds.enabled`
-- `spanconfig.range_coalescing.system.enabled (alias: spanconfig.storage_coalesce_adjacent.enabled)`
-- `spanconfig.range_coalescing.application.enabled (alias: spanconfig.tenant_coalesce_adjacent.enabled)`
+- `spanconfig.range_coalescing.system.enabled`
+- `spanconfig.range_coalescing.application.enabled`
+- `spanconfig.storage_coalesce_adjacent.enabled`
+- `spanconfig.tenant_coalesce_adjacent.enabled`
 - `storage.experimental.eventually_file_only_snapshots.enabled`
 - `storage.ingest_split.enabled`
 - `storage.wal_failover.unhealthy_op_threshold`
