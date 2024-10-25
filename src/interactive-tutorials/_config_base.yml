@@ -50,7 +50,7 @@ plugins:
 - jekyll-last-modified-at
 - jekyll-minifier
 sass:
-  quiet: true
+  quiet: 'true'
   sass_dir: css
   style: compressed
 site_title: CockroachDB Docs
