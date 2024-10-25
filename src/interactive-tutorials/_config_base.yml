@@ -53,4 +53,9 @@ sass:
   quiet: true
   sass_dir: css
   style: compressed
+  logger:
+    quiet_deps: true
+    quiet_deprecation: true     # Suppresses deprecation warnings
+
+
 site_title: CockroachDB Docs
