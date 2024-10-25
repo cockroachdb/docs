@@ -73,11 +73,8 @@ plugins:
 - jekyll-minifier
 - jekyll-get-json
 sass:
-  quiet_deps: true
+  quiet: true
   sass_dir: css
   style: compressed
-  logger:
-    quiet_deps: true
-    quiet_deprecation: true     # Suppresses deprecation warnings
 
 site_title: CockroachDB Docs
