@@ -55,18 +55,7 @@ For quick local testing of Enterprise features, you can [run a single-node clust
 
 ## Verify a license
 
-To verify a license, open the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) and use the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) command to check the organization name and license key:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
->  SHOW CLUSTER SETTING cluster.organization;
-~~~
-~~~
-  cluster.organization
-+----------------------+
-  Acme Company
-(1 row)
-~~~
+To verify a license, open the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) and use the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) command to check the license key:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
