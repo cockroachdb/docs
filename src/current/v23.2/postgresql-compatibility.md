@@ -11,6 +11,8 @@ CockroachDB is compatible with version 3.0 of the PostgreSQL wire protocol (pgwi
 
 However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system. This page documents the known list of differences between PostgreSQL and CockroachDB for identical input. That is, a SQL statement of the type listed here will behave differently than in PostgreSQL. Porting an existing application to CockroachDB will require changing these expressions.
 
+For a collection of Known Limitations (which may address some unsupported features), please visit the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations) page.
+
 {{site.data.alerts.callout_info}}
 This document currently only covers unsupported SQL and how to rewrite SQL expressions. It does not discuss strategies for porting applications that use <a href="sql-feature-support.html">SQL features CockroachDB does not currently support</a>.
 {{site.data.alerts.end}}
