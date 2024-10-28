@@ -76,8 +76,8 @@ For a practical guide on how CockroachDB uses Raft to replicate, distribute, and
     <td class="comparison-chart__feature">
       <b>Fault tolerance</b>
     </td>
-    <td>Zero RPO node, availability zone failures</td>
-    <td>Zero RPO node, availability zone failures, region failures</td>
+    <td>Zero RPO node, availability zone failures within a cluster</td>
+    <td>Zero RPO node, availability zone failures, region failures within a cluster</td>
     <td>Zero RPO node, availability zone within a cluster, region failures with loss up to RPO in a two-region (or two datacenter) setup</td>
   </tr>
 
