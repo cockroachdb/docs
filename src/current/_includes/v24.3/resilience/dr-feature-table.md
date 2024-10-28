@@ -18,7 +18,7 @@
       <b>RTO</b>
     </td>
     <td>Minutes to hours, depending on data size and number of nodes</td>
-    <td>Seconds to minutes, depending on cluster size</td>
+    <td>Seconds to minutes, depending on cluster size, and time of failover</td>
   </tr>
 
   <tr>
@@ -39,26 +39,18 @@
 
   <tr>
     <td class="comparison-chart__feature">
-      <b>Hardware cost</b>
-    </td>
-    <td>1x + S3-like storage & networking</td>
-    <td>2x + networking between datacenters</td>
-  </tr>
-
-  <tr>
-    <td class="comparison-chart__feature">
-      <b>Minimum regions</b>
-    </td>
-    <td>1</td>
-    <td>2</td>
-  </tr>
-
-  <tr>
-    <td class="comparison-chart__feature">
       <b>Fault tolerance</b>
     </td>
     <td>Not applicable</td>
-    <td>Zero RPO node, availability zone, region failure with loss up to RPO</td>
+    <td>Zero RPO node, availability zone within a cluster, region failures with loss up to RPO in a two-region (or two-datacenter) setup</td>
+  </tr>
+
+  <tr>
+    <td class="comparison-chart__feature">
+      <b>Minimum regions to achieve fault tolerance</b>
+    </td>
+    <td>1</td>
+    <td>2</td>
   </tr>
 
 </table>

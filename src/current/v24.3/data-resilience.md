@@ -14,18 +14,17 @@ CockroachDB provides built-in [**high availability (HA)**](#high-availability) f
 You can balance required SLAs and [recovery objectives]({% link {{ page.version.version }}/disaster-recovery-overview.md %}) with the cost and management of each of these features to build a resilient deployment.
 
 {{site.data.alerts.callout_success}}
-For a practical guide on how CockroachDB uses Raft to replicate, distribute, and rebalance data, refer to the [CockroachDB Resilience demo]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}) demo.
+For a practical guide on how CockroachDB uses Raft to replicate, distribute, and rebalance data, refer to the [CockroachDB Resilience demo]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}).
 {{site.data.alerts.end}}
 
 ## High availability
 
-- [**Raft replication**]({% link {{ page.version.version }}/architecture/replication-layer.md %}): CockroachDB's built-in Raft replication stores data safely and consistently on multiple nodes to ensure no downtime even during a temporary node outage. [Replication controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) allow you to configure the number and location of [replicas]({% link {{ page.version.version }}/architecture/glossary.md %}#replica) to suit a deployment.
-- [**Fault tolerance**]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}): Capabilities built in to CockroachDB to perform routine maintenance operations with minimal impact to foreground performance. For example, [online schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), [write-ahead log failover]({% link {{ page.version.version }}/cockroach-start.md %}#write-ahead-log-wal-failover).
-- **Logical data replication (LDR)** (Preview): A cross-cluster replication tool between multiple active CockroachDB clusters, which supports a range of topologies. LDR provides eventually consistent, table-level replication.
+- [**Multi-active availability**]({% link {{ page.version.version }}/multi-active-availability.md %}): CockroachDB's built-in [Raft replication]({% link {{ page.version.version }}/architecture/replication-layer.md %}) stores data safely and consistently on multiple nodes to ensure no downtime even during a temporary node outage. [Replication controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) allow you to configure the number and location of [replicas]({% link {{ page.version.version }}/architecture/glossary.md %}#replica) to suit a deployment.
+  - For more detail on planning for single-region or multi-region recovery, refer to [Single-region survivability planning]({% link {{ page.version.version }}/disaster-recovery-planning.md %}#single-region-survivability-planning) or [Multi-region survivability planning]({% link {{ page.version.version }}/disaster-recovery-planning.md %}#multi-region-survivability-planning).
+- [**Advanced fault tolerance**]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}): Capabilities built in to CockroachDB to perform routine maintenance operations with minimal impact to foreground performance. For example, [online schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), [write-ahead log failover]({% link {{ page.version.version }}/cockroach-start.md %}#write-ahead-log-wal-failover).
+- **Logical data replication (LDR)** (Preview): A cross-cluster replication tool between active CockroachDB clusters, which supports a range of topologies. LDR provides eventually consistent, table-level replication between the clusters. Individually, each active cluster uses CockroachDB multi-active availability to achieve low, single-region write latency with transactionally consistent writes using Raft replication.
 
 ### Choose an HA strategy
-
-CockroachDB uses synchronous, built-in Raft replication to create and distribute copies of data, ensuring consistency across the data copies. The database can tolerate nodes going offline without service interruption, whether in a single-region or [multi-region]({% link {{ page.version.version }}/multiregion-overview.md %}) cluster.
 
 <table class="comparison-chart">
   <tr>
@@ -41,7 +40,7 @@ CockroachDB uses synchronous, built-in Raft replication to create and distribute
     </td>
     <td>0 seconds</td>
     <td>0 seconds</td>
-    <td>Immediate mode 0.5 seconds<br>Transactional mode ~10s of seconds</td>
+    <td>Immediate mode 0.5 seconds</td>
   </tr>
 
   <tr>
@@ -50,7 +49,7 @@ CockroachDB uses synchronous, built-in Raft replication to create and distribute
     </td>
     <td>Zero RTO<br>Potential increased latency for 1-9 seconds</td>
     <td>Zero RTO<br>Potential increased latency for 1-9 seconds</td>
-    <td>Zero RTO<br>Add application cutover time</td>
+    <td>Zero RTO<br>Application traffic cutover time</td>
   </tr>
 
   <tr>
@@ -73,29 +72,20 @@ CockroachDB uses synchronous, built-in Raft replication to create and distribute
 
   <tr>
     <td class="comparison-chart__feature">
-      <b>Hardware cost</b>
-    </td>
-    <td>1x<br>Networking between availability zones</td>
-    <td>1x<br>Networking between datacenters</td>
-    <td>2x<br>Networking between availability zones or datacenters</td>
-  </tr>
-
-  <tr>
-    <td class="comparison-chart__feature">
-      <b>Minimum regions</b>
-    </td>
-    <td>1</td>
-    <td>3</td>
-    <td>2</td>
-  </tr>
-
-  <tr>
-    <td class="comparison-chart__feature">
       <b>Fault tolerance</b>
     </td>
     <td>Zero RPO node, availability zone failures</td>
     <td>Zero RPO node, availability zone failures, region failures</td>
-    <td>Zero RPO node, availability zone, region failures with loss up to RPO</td>
+    <td>Zero RPO node, availability zone within a cluster, region failures with loss up to RPO in a two-region (or two datacenter) setup</td>
+  </tr>
+
+  <tr>
+    <td class="comparison-chart__feature">
+      <b>Minimum regions to achieve fault tolerance</b>
+    </td>
+    <td>1</td>
+    <td>3</td>
+    <td>2</td>
   </tr>
 
 </table>
@@ -104,8 +94,8 @@ For details on designing your cluster topology for HA with replication, refer to
 
 ## Disaster recovery
 
-- [**Backup and point-in-time restore**]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}): Point-in-time backup and restore allows you to roll back to a specific point in time. Multiple supported [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) providers means that you can store backups in an alternative provider. [Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) allow you to configure backup frequency for lower [RPO]({% link {{ page.version.version }}/disaster-recovery-overview.md %}).
-- [**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}): A cross-cluster replication tool between an active primary and a passive standy CockroachDB cluster. PCR provides transactionally consistent full-cluster replication.
+- [**Backup and point-in-time restore**]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}): Point-in-time backup and restore allows you to roll back to a specific point in time. Multiple supported [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) providers means that you can store backups in your chosen provider. [Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) allow you to configure backup frequency for lower [RPO]({% link {{ page.version.version }}/disaster-recovery-overview.md %}).
+- [**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}): A cross-cluster replication tool between an active primary CockroachDB cluster and a passive standby CockroachDB cluster. PCR provides transactionally consistent full-cluster replication.
 
 ### Choose a DR strategy
 
