@@ -45,7 +45,7 @@ Nodes multi-select dropdown is not available on Standard or Basic clusters.
 {% include_cached new-in.html version="v24.3" %} The `system.table_metadata` table caches the necessary metadata of a table that populates the following:
 
 - [Databases List Page](#databases-list-page)
-- [Database Tables Tab](#tables-list-tab) of the [Database Details Page](#database-details-page)
+- [Tables List Tab](#tables-list-tab) of the [Database Details Page](#database-details-page)
 - [Overview Tab](#overview-tab) of the [Table Details Page](#table-details-page)
 
 The [cluster settings]({% link {{ version_prefix }}/cluster-settings.md %}) that control the refresh behavior for the cached data in the `system.table_metadata` table are:
@@ -53,7 +53,7 @@ The [cluster settings]({% link {{ version_prefix }}/cluster-settings.md %}) that
 - `obs.tablemetadata.automatic_updates.enabled` (default: `false`) enables automatic updates of the table metadata cache `system.table_metadata`.
 - `obs.tablemetadata.data_valid_duration` (default: `20m0s`) is the duration for which the data in `system.table_metadata` is considered valid.
 
-On the [Databases List Page](#databases-list-page) and the [Database Tables Tab](#tables-list-tab) of the [Database Details Page](#database-details-page), above the table of information, the **Last refreshed** indicator displays how long ago the cached data was last refreshed automatically (per the cluster settings) or manually.
+On the [Databases List Page](#databases-list-page) and the [Tables List Tab](#tables-list-tab) of the [Database Details Page](#database-details-page), above the table of information, the **Last refreshed** indicator displays how long ago the cached data was last refreshed automatically (per the cluster settings) or manually.
 
 The cached data can be refreshed in the following ways:
 
