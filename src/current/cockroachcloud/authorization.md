@@ -83,7 +83,7 @@ Cluster Operators can perform a variety of cluster functions:
   - View a cluster's Jobs from the [Jobs page]({% link cockroachcloud/jobs-page.md %}).
   - View a cluster's Metrics from the [Metrics page]({% link cockroachcloud/metrics.md %}#cockroachdb-cloud-console-metrics-page).
   - View a cluster's Insights from the [Insights page]({% link cockroachcloud/insights-page.md %}).
-  - [Upgrade]({% link cockroachcloud/upgrade-to-{{site.current_cloud_version}}.md %}) a cluster's CockroachDB version.
+  - [Upgrade]({% link cockroachcloud/upgrade-cockroach-version.md %}) a cluster's major version of CockroachDB.
   - View a cluster's [PCI-readiness status (Advanced clusters with Security add-on only)]({% link cockroachcloud/cluster-overview-page.md %}?filters=advanced#pci-ready-with-security-add-on).
   - Send a test alert from the [Alerts Page]({% link cockroachcloud/alerts-page.md %}).
   - Configure single sign-on (SSO) enforcement.
