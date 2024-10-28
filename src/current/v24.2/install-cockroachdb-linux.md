@@ -114,10 +114,10 @@ true
   </ul>
 </div>
 
-<div id="use-docker-linux" class="install-option">
-  <h2 id="install-docker">Use Docker</h2>
+<div id="use-docker-linux" markdown="1" class="install-option">
+<h2 id="install-docker">Use Docker</h2>
 
-  {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
+{% include {{ page.version.version }}/install-docker-steps.md %}
 
   <p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contain binaries for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.</p>
   <p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>
