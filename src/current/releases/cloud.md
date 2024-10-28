@@ -14,6 +14,12 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## October 28, 2024
+
+<h3 id="2024-10-28-general-updates"> General updates </h3>
+
+- [CockroachDB v24.3.0-beta.2]({% link releases/v24.3.md %}#v24-3-0-beta-2) is available to CockroachDB {{ site.data.products.advanced }} clusters as a Pre-Production Preview release for testing and experimentation. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.advanced }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. To learn more, refer to [Upgrade a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/upgrade-to-v24.2.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+
 ## October 22, 2024
 
 - The deprecated `is_regex` field has been removed from the [CockroachDB {{ site.data.products.cloud }} API for Java Web Tokens (JWTs)](https://cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/jwt-issuers). The API now handles regular expressions seamlessly.
