@@ -6,18 +6,18 @@ To view this page, click on a database name on the [Databases List Page](#databa
 
 Click on the **Tables** tab of the [Database Details Page](#database-details-page) to view a list of the tables in the selected database.
 
-You can [refresh the data](#refresh-data) that is displayed on this page. NOTE: This also refreshes data on the [Databases List Page](#databases-list-page).
+You can [refresh the data](#refresh-data) that is displayed on this page. **Note:** This also refreshes data on the [Databases List Page](#databases-list-page).
 
 The following information is displayed for each table:
 
  Column                        | Description
 -------------------------------|-------------
 Name                           | The name of the table. Click a table name to view the [Table Details Page](#table-details-page) for the selected table.
-Replication Size               | The approximate compressed total disk size across all replicas of the table.
-Ranges                         | The number of ranges in the table.
+Replication Size               | The approximate compressed total disk size across all [replicas]({% link {{ version_prefix }}/architecture/glossary.md %}#replica) of the table.
+Ranges                         | The number of [ranges]({% link {{ version_prefix }}/architecture/glossary.md %}#range) in the table.
 Columns                        | The number of columns in the table.
-Indexes                        | The number of indexes in the table.
-Regions/Nodes                  | Regions/Nodes on which the table's data is stored.{% if page.cloud == true %}<br><br>NOTE: Not available on Standard or Basic clusters.{% endif %}
+Indexes                        | The number of [indexes]({% link {{ version_prefix }}/indexes.md %}) in the table.
+Regions/Nodes                  | Regions/Nodes on which the table's data is stored.{% if page.cloud == true %}<br><br>**Note:** Not available on Standard or Basic clusters.{% endif %}
 % of Live Data                 | The percentage of total uncompressed logical data that has not been modified (updated or deleted).
 Table auto stats enabled       | Whether automatic [table statistics]({% link {{ version_prefix }}/cost-based-optimizer.md %}#table-statistics) is enabled. Automatic statistics can help improve query performance.
 Stats last updated             | The last time table statistics used by the SQL optimizer were updated.
@@ -41,8 +41,10 @@ To search for specific tables, use the search field above the list table:
     The list of tables is filtered by the nodes selected.
 
 {% if page.cloud == true  -%}
-NOTE: Nodes multi-select dropdown is not available on Standard or Basic clusters. 
-{% endif %}
+{{site.data.alerts.callout_info}}
+Nodes multi-select dropdown is not available on Standard or Basic clusters.
+{{site.data.alerts.end}}
+{%- endif %}
 
 ### Database Grants Tab
 

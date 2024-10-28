@@ -19,7 +19,7 @@ The **Databases** page of the DB Console provides details of the following:
 
 To view this information, [access the DB Console]({% link {{ version_prefix }}/ui-overview.md %}#db-console-access) and click **Databases** in the left side navigation menu. This will give you access to the following:
 
-- [Databases List Page](#databases-list-page): initial page which lists the databases on the cluster.
+- [Databases List Page](#databases-list-page): initial page that lists the databases on the cluster.
 - [Database Details Page](#database-details-page)
     - [Tables List Tab](#tables-list-tab): lists tables in a database.
     - [Database Grants Tab](#database-grants-tab): lists privileges on a database.

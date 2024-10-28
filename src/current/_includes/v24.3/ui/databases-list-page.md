@@ -14,7 +14,7 @@ The following information is displayed for each database:
 Name          | The name of the database. Click a database name to view the [Database Details Page](#database-details-page) for the selected database.
 Size          | The approximate total disk size across all table replicas in the database.
 Tables        | The total number of tables in the database.
-Regions/Nodes | Regions/Nodes on which the database tables are located. Hover on a region for a list of nodes in that region.{% if page.cloud == true %}<br><br>NOTE: Not available on Standard or Basic clusters.{% endif %}
+Regions/Nodes | Regions/Nodes on which the database tables are located. Hover on a region for a list of nodes in that region.{% if page.cloud == true %}<br><br>**Note:** Not available on Standard or Basic clusters.{% endif %}
 
 ### Search and filter databases
 
@@ -35,8 +35,10 @@ To search for specific databases, use the search field above the list table:
     The list of databases is filtered by the nodes selected.
 
 {% if page.cloud == true  -%}
-NOTE: Nodes multi-select dropdown is not available on Standard or Basic clusters. 
-{% endif %}
+{{site.data.alerts.callout_info}}
+Nodes multi-select dropdown is not available on Standard or Basic clusters.
+{{site.data.alerts.end}}
+{%- endif %}
 
 ### Refresh data
 
@@ -46,7 +48,7 @@ NOTE: Nodes multi-select dropdown is not available on Standard or Basic clusters
 - [Database Tables Tab](#tables-list-tab) of the [Database Details Page](#database-details-page)
 - [Overview Tab](#overview-tab) of the [Table Details Page](#table-details-page)
 
-The [cluster settings]({% link {{ version_prefix }}/cluster-settings.md %}) that control the refresh behaviour for the cached data in the `system.table_metadata` table are:
+The [cluster settings]({% link {{ version_prefix }}/cluster-settings.md %}) that control the refresh behavior for the cached data in the `system.table_metadata` table are:
 
 - `obs.tablemetadata.automatic_updates.enabled` (default: `false`) enables automatic updates of the table metadata cache `system.table_metadata`.
 - `obs.tablemetadata.data_valid_duration` (default: `20m0s`) is the duration for which the data in `system.table_metadata` is considered valid.
