@@ -16,6 +16,17 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 Limitations will be added as they are discovered.
 {{site.data.alerts.end}}
 
+### Logical data replication (LDR)
+
+
+
+- {% include {{ page.version.version }}/known-limitations/ldr-triggers.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-udfs.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-sequences.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-indexes.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-composite-primary.md %}
+
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.
