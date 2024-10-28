@@ -11,7 +11,9 @@ CockroachDB provides built-in [**high availability (HA)**](#high-availability) f
 
 <image src="{{ 'images/v24.3/resilience.svg' | relative_url }}" alt="Diagram showing how HA features and DR tools create a resilient CockroachDB deployment." style="width:80%" />
 
-You can balance required SLAs and [recovery objectives]({% link {{ page.version.version }}/disaster-recovery-overview.md %}) with the cost and management of each of these features to build a resilient deployment.
+You can balance required SLAs and recovery objectives with the cost and management of each of these features to build a resilient deployment.
+
+{% include {{page.version.version}}/resilience/recovery-objectives-definition.md %}
 
 {{site.data.alerts.callout_success}}
 For a practical guide on how CockroachDB uses Raft to replicate, distribute, and rebalance data, refer to the [CockroachDB Resilience demo]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}).

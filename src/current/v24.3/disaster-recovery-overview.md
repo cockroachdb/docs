@@ -8,10 +8,9 @@ Resilient deployments aim for continuity in database operations to protect from 
 
 As you evaluate CockroachDB's disaster recovery features, consider your organization's requirements for the amount of tolerable data loss and the acceptable length of time to recover.
 
-- Recovery Point Objective (RPO): The maximum amount of data loss (measured by time) that an organization can tolerate.
-- Recovery Time Objective (RTO): The maximum length of time it should take to restore normal operations following an outage.
+{% include {{page.version.version}}/resilience/recovery-objectives-definition.md %}
 
-For example, when you use backups RPO and RTO :
+For example, when you use backups RPO and RTO:
 
 <img src="{{ 'images/v24.2/rpo-rto.png' | relative_url }}" alt="Simulating RPO and RTO. With RPO representing the tolerable data loss, and RTO representing the tolerable time to recovery." style="border:0px solid #eee;max-width:100%" />
 
