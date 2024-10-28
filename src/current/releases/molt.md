@@ -28,7 +28,7 @@ MOLT Fetch/Verify 1.2.0 is [available](#installation).
 - [Partitioned tables]({% link molt/molt-fetch.md %}#transformations) can now be moved to CockroachDB using [`IMPORT INTO`]({% link {{ site.current_cloud_version }}/import-into.md %}).
 - Improved logging for the [Fetch]({% link molt/molt-fetch.md %}) schema check phases under the `trace` logging level, which is set with [`--logging trace`]({% link molt/molt-fetch.md %}#global-flags).
 - Added a [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) for monitoring MOLT tasks. 
-- Fetch now logs the staging database name for [replication modes]({% link molt/molt-fetch.md %}#fetch-mode). This can be used in subsequent replication runs.
+- Fetch now logs the name of the staging database used in [replication modes]({% link molt/molt-fetch.md %}#fetch-mode).
 - String [primary keys]({% link {{ site.current_cloud_version }}/primary-key.md %}) that use `C` [collations]({% link {{ site.current_cloud_version }}/collate.md %}) on PostgreSQL can now be compared to the default `en_US.utf8` on CockroachDB.
 - MOLT is now distributed under the [Cockroach Labs Product License Agreement](https://www.cockroachlabs.com/cockroach-labs-product-license-agreement/), which is bundled with the binary.
 
