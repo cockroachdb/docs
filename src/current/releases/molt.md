@@ -18,6 +18,20 @@ To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
 
+## October 29, 2024
+
+MOLT Fetch/Verify 1.2.0 is [available](#installation).
+
+- Added [`failback` mode]({% link molt/molt-fetch.md %}#fail-back-to-source-database) to MOLT Fetch, which allows the user to replicate changes on CockroachDB back to the initial source database. Failback is supported for MySQL and PostgreSQL databases.
+- The [`--pprof-list-addr` flag]({% link molt/molt-fetch.md %}#global-flags), which specifies the address of the `pprof` endpoint, is now configurable. The default value is `'127.0.0.1:3031'`.
+- [Fetch modes]({% link molt/molt-fetch.md %}#fetch-mode) involving replication now state that MySQL 8.0 and later are supported for replication between MySQL and CockroachDB.
+- [Partitioned tables]({% link molt/molt-fetch.md %}#transformations) can now be moved to CockroachDB using [`IMPORT INTO`]({% link {{ site.current_cloud_version }}/import-into.md %}).
+- Improved logging for the [Fetch]({% link molt/molt-fetch.md %}) schema check phases under the `trace` logging level, which is set with [`--logging trace`]({% link molt/molt-fetch.md %}#global-flags).
+- Added a [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) for monitoring MOLT tasks. 
+- Fetch now logs the name of the staging database in the target CockroachDB cluster used to store metadata for [replication modes]({% link molt/molt-fetch.md %}#fetch-mode).
+- String [primary keys]({% link {{ site.current_cloud_version }}/primary-key.md %}) that use `C` [collations]({% link {{ site.current_cloud_version }}/collate.md %}) on PostgreSQL can now be compared to the default `en_US.utf8` on CockroachDB.
+- MOLT is now distributed under the [Cockroach Labs Product License Agreement](https://www.cockroachlabs.com/cockroach-labs-product-license-agreement/), which is bundled with the binary.
+
 ## August 26, 2024
 
 MOLT Fetch/Verify 1.1.7 is [available](#installation).

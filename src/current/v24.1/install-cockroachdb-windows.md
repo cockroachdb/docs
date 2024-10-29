@@ -15,6 +15,8 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
+{% include latest-release-details.md %}
+
 {% include windows_warning.md %}
 
 Use one of the options below to install CockroachDB. To upgrade an existing cluster, refer to [Upgrade to {{ page.version.version }}]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
@@ -61,7 +63,7 @@ To orchestrate CockroachDB locally using [Kubernetes](https://kubernetes.io/), e
 
 </section>
 
-<section id="use-docker-windows" markdown="1" class="install-option">
+<div id="use-docker-windows" markdown="1" class="install-option">
 <h2 id="install-docker">Use Docker</h2>
 
 This section shows how to install CockroachDB on a Windows host using Docker. On a Linux or Windows Docker host, the image creates a Linux container.
