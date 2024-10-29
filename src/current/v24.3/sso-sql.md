@@ -127,7 +127,7 @@ Follow these steps to configure Cluster SSO.
     SET CLUSTER SETTING server.jwt_authentication.claim = 'email';
     ~~~
 
-1. Add your IdP's public signing key, which you found previously, to your cluster's list of acceptable signing JSON web keys (JWKS). Your cluster will reject JWTs that are not signed by a configured key. Your cluster will reject JWTs that are not signed by a signing key that is listed in `server.jwt_authentication.jwks`. If you want to [enable automatic fetching of signing keys](#configuration-examples) instead of configuring static signing keys, skip this step.
+1. Add your IdP's public signing key, which you found previously, to your cluster's list of acceptable signing JSON web keys (JWKS). Your cluster will reject JWTs that are not signed by a signing key that is listed in `server.jwt_authentication.jwks`. If you want to [enable automatic fetching of signing keys](#configuration-examples) instead of configuring static signing keys, skip this step.
 
     IdPs such as Google rotate their signing keys periodically. You must update your cluster with a new signing key before the previous one expires, or your SQL clients will be unable to connect with cluster SSO. **We recommend updating this cluster setting with the current key daily to avoid this scenario.** Alternatively, you can enable `server.jwt_authentication.jwks_auto_fetch.enabled` to automatically fetch signing keys from the issuer instead of maintaining a static list of signing keys. If `server.jwt_authentication.jwks_auto_fetch.enabled` is enabled, then `server.jwt_authentication.jwks` is ignored.
 
@@ -149,6 +149,7 @@ Follow these steps to configure Cluster SSO.
     ~~~
 
 1. <a id="configuration-examples"></a>Instead of setting `server.jwt_authentication.jwks` to a list of static signing keys, you can set `server.server.jwt_authentication.jwks_auto_fetch.enabled` to `true` to enable automatic fetching of signing keys for the issuers specified in `server.jwt_authentication.issuers.configuration`. Signing keys are fetched from the issuer's`https://{ domain }/.well-known/openid-configuration` endpoint.
+
     Type                  | Example
     ----------------------|--------
     Single issuer URL     | `'https://accounts.google.com/'`
