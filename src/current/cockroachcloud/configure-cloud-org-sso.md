@@ -144,7 +144,7 @@ Autoprovisioning allows members to sign up for an account without waiting for an
 
 Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Org Administrator** role]({% link cockroachcloud/authorization.md %}#org-administrator).
 
-If a member's identity is removed from the SSO provider, they can no longer log in to CockroachDB {{ site.data.products.cloud }}, but their account is not automatically deprovisioned. If you require automatic deprovisioning or other centralized account automation features, refer to [SCIM Pprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
+If a member's identity is removed from the SSO provider, they can no longer log in to CockroachDB {{ site.data.products.cloud }}, but their account is not automatically deprovisioned. If you require automatic deprovisioning or other centralized account automation features, refer to [SCIM Provisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
 
 Cockroach Labs does not recommend enabling both autoprovisioning and SCIM provisioning for the same authentication method.
 
@@ -162,48 +162,71 @@ You can add a custom authentication method to connect to any IdP that supports [
 
 ### OIDC
 
-To configure a custom OIDC authentication method:
+To configure a custom OIDC authentication method, you need the following information from your IdP:
 
-1. Log in to your IdP and gather the following information, which you will use to configure CockroachDB {{ site.data.products.cloud }} SSO:<ul><li>Issuer URL</li><li>Client ID</li><li>Client secret</li><li>Callback URL</li></ul>
+- Issuer URL
+- Client ID
+- Client secret
+
+These instructions work for Okta. If you use a different IdP, refer to its documentation for configuring OIDC.
+
+1. Log in to Okta as a user with the Admin role.
+1. In the Admin Console, click **Applications**, then click **Browse Catalog**.
+1. Search for "Cockroach Labs", then click **Add integration**.
+1. Set **Application label** to a name for the integration. Set **Entity ID** and **ACS URL** to `none`. These fields are ignored.
+1. Click **Next**.
+1. In **Sign-On Options**, select **OpenID Connect**. SAML is selected by default.
+1. Set **Application username format** to **Email**.
+1. Click **Done**. The app integration's details appear.
+1. Assign at least one Okta identity to the application, such as the identity you already use to sign in to CockroachDB {{ site.data.products.cloud }}. Click **Assignments**, then click **Assign to People**. Find the identity, click **Assign**, then click **Save and go back**. Click **Done** to close the assignment dialog.
+1. Click the **Sign-On** tab. Find the link for **OpenID Provider Metadata**. Right-click and copy the URL. This is your issuer URL, which you will provide to CockroachDB {{ site.data.products.cloud }}.
+1. Keep this tab open so that you can copy the Client ID and Client Secret to CockroachDB {{ site.data.products.cloud }}.
 1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role.
 1. Go to **Organization** > **Authentication**.
 1. Next to **Authentication Methods**, click **Add**.
-1. Set **Configuration** to **OIDC (OpenID Connect)**.
-1. Set **Provider Name** to a display name for the connection.
-1. Click **Next**.
-1. The **Provider Details** page displays.
-1. To edit the connection, click **Edit**.
-1. Paste the values from your IdP for the **Issuer URL**, **Client ID**, **Client Secret**, and **Callback URL**.
+1. Set **Configuration** to **OIDC (OpenID Connect)** and provide a name for the connection. This name will appear on your custom sign-in page.
+1. Click **Submit**. The authentication method's details are displayed. Click **Edit**.
+1. Set **Issuer URL** to the issuer URL you copied from Okta, beginning with `https://` and ending with `/openid-configuration`.
+1. Copy the **Client ID** and **Client Secret** from the Okta browser tab.
+1. Test the connection. This is recommended before enabling the method. Click **Test**, then follow the prompts. If you get an error, review your configuration details, then try again. When the test is successful, the test status changes to **Verified**.
 1. Click **Save**.
 1. The authentication method has been added but is disabled. To enable it, toggle **Enable**.
-1. Click **Test**. If errors are shown, edit the configuration to fix the problems and try again.
 1. Optionally, [configure advanced settings](#configure-advanced-settings) for the new authentication method.
 
 ### SAML
 
-To configure a custom SAML authentication method:
+To configure a custom SAML authentication method, you need the following information from your IdP:
 
-1. Log in to your IdP and gather the following information, which you will use to configure CockroachDB {{ site.data.products.cloud }} SSO:<ul><li>Sign-in URL</li><li>Signing certificate</li></ul>
-1. In a separate browser, log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role.
+- Sign On URL
+- Signing certificate
+
+These instructions work for Okta. If you use a different IdP, refer to its documentation for configuring SAML.
+
+1. Log in to [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) as a user with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) role.
 1. Go to **Organization** > **Authentication**.
 1. Next to **Authentication Methods**, click **Add**.
 1. Set **Configuration** to **SAML**.
 1. Set **Provider Name** to a display name for the connection.
-1. Click **Next**.
-1. The **Provider Details** page displays.
-1. To edit the connection, click **Edit**.
-1. Set **Sign-in URL** to the sign-in URL from your IdP.
-1. Next to **Signing Certificate**, paste the entire certificate from your IdP, including the lines `-begin certificate-` and `-end certificate`.
+1. Click **Next**. The **Provider Details** page opens.
+1. To edit the connection, click **Edit**. Keep this browser tab open.
+1. In a separate browser tab, log in to Okta as a user with the Admin role.
+1. In the Admin Console, click **Applications**, then click **Browse Catalog**.
+1. Search for "Cockroach Labs", Click **Add integration**.
+1. SAML is selected by default. Provide a name for the connection. This name will appear on your custom sign-in page.
+1. Click **Submit**. The authentication method's details are displayed.
+1. To download the metadata you will need to provide to Okta, click **Download**. The metadata is downloaded in XML format.
+1. Open the metadata file. Make a note of the following:
+    - Entity ID: The `entityID` attribute of the `<EntityDescriptor>` tag.
+    - ACS URL: The `location` attribute of the `<AssertionConsumerService>` tag.
+
+    Close the metadata file. Keep the browser tab open.
+1. Next to **Sign On Certificate**, click **Download**. Do not click **Copy**. Open the downloaded file in a text editor.
+1. In the browser tab for CockroachDB {{ site.data.products.cloud }}, click **Edit**.
+1. Set **Sign-in URL** to the Sign on URL from Okta.
+1. Copy the entire contents of the certificate from your text editor into **Signing Certificate**, including the `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----` lines, and paste it into the Signing Certificate field.
+1. Test the connection. This is recommended before enabling the method. Click **Test**, then follow the prompts. If you get an error, review your configuration details, then try again. When the test is successful, the test status changes to **Verified**.
 1. Click **Save**.
-1. Click **Test**. If errors are shown, edit the configuration to fix the problems and try again.
-1. Optionally, [configure advanced settings](#configure-advanced-settings) for the new authentication method.
-1. Download metadata required by your IdP. Click **Download**. Open the file and make a note of the following values:<ul><li><b>Entity ID</b>: The <code>entityID</code> attribute of the <code>&lt;EntityDescriptor&gt;</code> tag.</li><li><b>Login URL</b>: The <code>location</code> attribute of the <code>&lt;AssertionConsumerService&gt;</code> tag.</li></ul>
-1. In the browser where you are logged in to your IdP, update the authentication configuration to use the Entity ID and Login URL from the metadata file.
-1. Configure the SAML assertions that your IdP sends to CockroachDB {{ site.data.products.cloud }}.
-
-    Your IdP must send an assertion with a `name` field and a second assertion with an `email` field, each mapped to the relevant fields in your IdP. To configure the SAML assertion, refer to the documentation for your IdP.
-
-    In Okta, the SAML assertion does not include the `email` field by default, and it must be added. For detailed instructions, refer to [How to Send Attributes via the SAML Assertion](https://support.okta.com/help/s/article/Skipping-assertion-attributes-because-of-schema-mismatch) in the Okta documentation.
+1. The authentication method has been added but is disabled. To enable it, toggle **Enable**.
 1. (Optional) [Configure SCIM autoprovisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
 
 After SAML is configured, your users can sign in to the CockroachDB {{ site.data.products.cloud }} Console in two different ways:
