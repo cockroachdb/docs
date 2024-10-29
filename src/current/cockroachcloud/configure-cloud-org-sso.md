@@ -220,13 +220,6 @@ These instructions work for Okta. If you use a different IdP, refer to its docum
     - ACS URL: The `location` attribute of the `<AssertionConsumerService>` tag.
 
     Close the metadata file. Keep the browser tab open.
-1. In a separate browser tab, log in to Okta as a user with the Admin role.
-1. In the Admin Console, click **Applications**, then click **Browse Catalog**.
-1. Search for "Cockroach Labs", then click **Add integration**.
-1. Set **Application Label** to a name for the integration.
-1. Select **SAML 2.0**.
-1. At the bottom of the page, under **Credentials Details**, set **Application username format** to **Email**.
-1. Under **SAML 2.0**, click **More Details**. Make a note of the **Sign on URL**, which you will enter in CockroachDB {{ site.data.products.cloud }}.
 1. Next to **Sign On Certificate**, click **Download**. Do not click **Copy**. Open the downloaded file in a text editor.
 1. In the browser tab for CockroachDB {{ site.data.products.cloud }}, click **Edit**.
 1. Set **Sign-in URL** to the Sign on URL from Okta.
