@@ -53,7 +53,7 @@ Metering for [usage-based billing]({% link cockroachcloud/costs.md %}) of data t
 
 ### CockroachDB Standard
 
-CockroachDB Standard is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand]({% link cockroachcloud/plan-your-cluster.md %}), along with enterprise-level security and availability.
+CockroachDB {{ site.data.products.standard }} is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand]({% link cockroachcloud/plan-your-cluster.md %}), along with enterprise-level security and availability. Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
 
 ### Generic query plans
 
@@ -66,10 +66,6 @@ The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores
 ### CockroachDB Cloud Folders
 
 [Organizing CockroachDB {{ site.data.products.cloud }} clusters using folders]({% link cockroachcloud/folders.md %}) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing.
-
-### CockroachDB Standard
-
-CockroachDB Standard is a new plan for CockroachDB {{ site.data.products.cloud }} clusters and is in [Preview]({% link {{ site.current_cloud_version}}/cockroachdb-feature-availability.md %}#features-in-preview). Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
 
 ### GCP Private Service Connect for CockroachDB Advanced
 
@@ -84,6 +80,7 @@ CockroachDB Standard is a new plan for CockroachDB {{ site.data.products.cloud }
 The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.cloud }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
 
 ### Export metrics from CockroachDB {{ site.data.products.advanced }} clusters
+
 [Exporting metrics from CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/export-metrics-advanced.md %}) to [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/) using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in preview. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink.
 
 [Exporting metrics from CockroachDB {{ site.data.products.advanced }} to Prometheus]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export) using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) is in preview for clusters hosted on Azure. It is in general availability for clusters hosted on AWS and GCP.
@@ -100,7 +97,7 @@ Using the [Migrations page]({% link cockroachcloud/migrations-page.md %}) to con
 
 The [schema-conversion summary report]({% link cockroachcloud/migrations-page.md %}#summary-report) in the Migrations page is in preview. This report displays the results of the schema analysis and provides bulk actions you can apply to update the schema, is in preview.
 
-### SQL Shell
+### Cloud SQL Shell
 
 The [SQL Shell]({% link cockroachcloud/sql-shell.md %}) in the CockroachDB {{ site.data.products.cloud }} Console is in preview. The SQL Shell enables you to run [queries]({% link {{ page.version.version }}/selection-queries.md %}) on your CockroachDB {{ site.data.products.cloud }} cluster directly from your browser.
 

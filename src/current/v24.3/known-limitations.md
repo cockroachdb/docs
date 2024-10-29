@@ -1,5 +1,5 @@
 ---
-title: Known Limitations in CockroachDB v24.2
+title: Known Limitations in CockroachDB v24.3
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 keywords: limitations, known limitations, unsupported features, PostgreSQL compatibility
