@@ -70,7 +70,7 @@ Metric | Description
 
 - In the cluster view, the graph shows the number of range replicas on each store.
 
-You can [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) to set the number and location of replicas. You can monitor the configuration changes using the DB Console, as described in [Fault tolerance and recovery]({% link {{ page.version.version }}/demo-fault-tolerance-and-recovery.md %}).
+You can [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) to set the number and location of replicas. You can monitor the configuration changes using the DB Console, as described in [CockroachDB Resilience]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}).
 
 ## Replica Quiescence
 
