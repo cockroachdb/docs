@@ -22,7 +22,7 @@ There are many reasons to use CockroachDB, including:
 
 One of the key attributes of CockroachDB is its inherent distributed nature. Data is automatically replicated across multiple nodes for high availability and failover protection, ensuring your data is always accessible. Even during instances of hardware failure or maintenance, the system remains resilient and operational.
 
-For more information, refer to [Fault Tolerance & Recovery]({% link {{ page.version.version }}/demo-fault-tolerance-and-recovery.md %}).
+For more information, refer to [CockroachDB Resilience]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}).
 
 ### Scalability
 

@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-CockroachDB is built to be [fault-tolerant with automatic recovery]({% link {{ page.version.version }}/demo-fault-tolerance-and-recovery.md %}), but sometimes disasters happen. Backup and restore is an important part of a robust disaster recovery plan. CockroachDB {{ site.data.products.core }} clusters provide a range of [backup and restore features](#backup-and-restore-support).
+CockroachDB is built to be [fault-tolerant with automatic recovery]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}), but sometimes disasters happen. Backup and restore is an important part of a robust disaster recovery plan. CockroachDB {{ site.data.products.core }} clusters provide a range of [backup and restore features](#backup-and-restore-support).
 
 - [Backup and restore product support](#backup-and-restore-support)
 - [Schedules](#scheduled-backups) for periodic backups
