@@ -10,8 +10,8 @@ The **Overview** section displays the SQL statement fingerprint and execution at
 
  Attribute | Description
 -----------|-------------
-**Nodes** | The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
-**Regions** | The regions on which the statements executed. **Regions** are not displayed for CockroachDB {{ site.data.products.serverless }} clusters.
+**Nodes** | The nodes on which the statements executed. Click a node ID to view node statistics. **Nodes** are not displayed for CockroachDB {{ site.data.products.standard }} clusters.
+**Regions** | The regions on which the statements executed. **Regions** are not displayed for CockroachDB {{ site.data.products.standard }} clusters.
 **Database** | The database on which the statements executed.
 **Application Name** | The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting. Click the name to view all statements run by that application.
 **Fingerprint ID** | The ID of the statement fingerprint in hexadecimal format. It may be used to query the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#fingerprint_id-column) table.
@@ -124,7 +124,7 @@ If you click **Apply** to create the index and then execute the statement again,
 The **Diagnostics** tab allows you to activate and download diagnostics for a SQL statement fingerprint.
 
 {{site.data.alerts.callout_info}}
-The **Diagnostics** tab is not visible for roles with the `VIEWACTIVITYREDACTED` [system privilege]({{ link_prefix }}security-reference/authorization.html#supported-privileges) (or the legacy `VIEWACTIVITYREDACTED` [role option]({{ link_prefix }}security-reference/authorization.html#role-options)) defined.
+The **Diagnostics** tab is only visible to [`admin` users]({{ link_prefix }}security-reference/authorization.html#admin-role) or SQL users with the [`VIEWACTIVITY` system privilege]({{ link_prefix }}security-reference/authorization.html#viewactivity). The tab is not visible for roles with the [`VIEWACTIVITYREDACTED` system privilege]({{ link_prefix }}security-reference/authorization.html#viewactivityredacted) (or the legacy `VIEWACTIVITYREDACTED` [role option]({{ link_prefix }}security-reference/authorization.html#role-options)) defined.
 {{site.data.alerts.end}}
 
 When you activate diagnostics for a fingerprint, CockroachDB waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of [statement traces]({{ link_prefix }}show-trace.html) in various formats (including a JSON file that can be [imported to Jaeger]({{ link_prefix }}query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger)), a physical query plan, execution statistics, and other information about the query. The bundle contents are identical to those produced by [`EXPLAIN ANALYZE (DEBUG)`]({{ link_prefix }}explain-analyze.html#debug-option). You can use the information collected in the bundle to diagnose problematic SQL statements, such as [slow queries]({{ link_prefix }}query-behavior-troubleshooting.html#query-is-always-slow). We recommend that you share the diagnostics bundle with our [support team]({{ link_prefix }}support-resources.html), which can help you interpret the results.
