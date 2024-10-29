@@ -18,6 +18,12 @@
           ]
         },
         {
+          "title": "Changefeed Best Practices",
+          "urls": [
+            "/${VERSION}/changefeed-best-practices.html"
+          ]
+        },
+        {
           "title": "Changefeed Messages",
           "urls": [
             "/${VERSION}/changefeed-messages.html"
