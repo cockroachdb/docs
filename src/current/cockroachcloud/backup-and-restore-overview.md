@@ -4,7 +4,7 @@ summary: An overview of backup and restore for CockroachDB Cloud.
 toc: true
 ---
 
-CockroachDB is built to be [fault-tolerant through automatic recovery]({% link {{site.current_cloud_version}}/demo-fault-tolerance-and-recovery.md %}), but unforeseen disasters can happen. Backup and restore is an important part of a resilient disaster recovery plan. CockroachDB Cloud clusters run routine _managed backups_ that are stored by Cockroach Labs in cloud storage. Additionally, you can also manually create _self-managed backups_ using [CockroachDB's backup features](#get-started-with-self-managed-backups).
+CockroachDB is built to be [fault-tolerant through automatic recovery]({% link {{site.current_cloud_version}}/demo-cockroachdb-resilience.md %}), but unforeseen disasters can happen. Backup and restore is an important part of a resilient disaster recovery plan. CockroachDB Cloud clusters run routine _managed backups_ that are stored by Cockroach Labs in cloud storage. Additionally, you can also manually create _self-managed backups_ using [CockroachDB's backup features](#get-started-with-self-managed-backups).
 
 ## CockroachDB Cloud backups
 
