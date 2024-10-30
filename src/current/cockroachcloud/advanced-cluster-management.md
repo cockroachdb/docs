@@ -98,7 +98,7 @@ You can add up to nine regions at a time through the Console. See [Planning your
 
 1. On the **Regions** page, click **Add a region**.
 
-    If you have a GCP cluster with [VPC peering]({% link cockroachcloud/network-authorization.md %}) enabled, the IP range will be automatically populated for added regions.
+    If you have a GCP cluster with [VPC peering]({% link cockroachcloud/network-authorization.md %}) enabled, the IP range will be automatically populated for added regions. For GCP, each region requires a `/19` CIDR block.
 
 1. Select the desired new region and specify the number of nodes for it.
 1. In the sidebar, verify the hourly estimated cost for the cluster.
@@ -106,10 +106,10 @@ You can add up to nine regions at a time through the Console. See [Planning your
 
 ### Remove a region from your cluster
 
-When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-cluster-advanced.md %}#multi-region-clusters) cluster, the node in that region with the highest ordinal will be [decommissioned](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/node-shutdown?filters=decommission#decommission-the-node) first. Any ranges on that node will be [up-replicated](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-replication-dashboard#snapshot-data-received) to other nodes, and once decommission is complete that node will be shut down. This process is then repeated for every other node in the region.
+When you remove a region from a [multi-region]({% link cockroachcloud/plan-your-cluster-advanced.md %}#multi-region-clusters) cluster, the node in that region with the highest ordinal will be [decommissioned]({% link {{site.current_cloud_version}}/node-shutdown.md %}?filters=decommission#decommission-the-node) first. Any ranges on that node will be [up-replicated]({% link {{site.current_cloud_version}}/ui-replication-dashboard.md %}#snapshot-data-received) to other nodes, and once decommission is complete that node will be shut down. This process is then repeated for every other node in the region.
 
 {{site.data.alerts.callout_info}}
-If your [zone configurations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-replication-zones) are set to pin range replicas to a specific region, you cannot remove that region.
+If your [zone configurations]({% link {{site.current_cloud_version}}/configure-replication-zones.md %}) are set to pin range replicas to a specific region, you cannot remove that region.
 {{site.data.alerts.end}}
 
 To remove a region from your cluster:
