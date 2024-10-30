@@ -6,6 +6,12 @@
         "title": "Logical Data Replication",
         "items": [
             {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/logical-data-replication-overview.html"
+                ]
+            },
+            {
                 "title": "Set Up Logical Data Replication",
                 "urls": [
                   "/${VERSION}/set-up-logical-data-replication.html"
@@ -15,6 +21,12 @@
                 "title": "Manage Logical Data Replication",
                 "urls": [
                     "/${VERSION}/manage-logical-data-replication.html"
+                ]
+            },
+            {
+                "title": "Monitor Logical Data Replication",
+                "urls": [
+                    "/${VERSION}/logical-data-replication-monitoring.html"
                 ]
             }
         ]
