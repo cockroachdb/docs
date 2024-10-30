@@ -73,7 +73,7 @@ docs_area:
         <li><a href="secure-a-cluster.html">Start a Local Cluster</a></li>
         <li><a href="learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
         <li><a href="example-apps.html">Build a Sample Application</a></li>
-        <li><a href="demo-fault-tolerance-and-recovery.html">Explore Capabilities</a></li>
+        <li><a href="demo-cockroachdb-resilience.html">Explore Capabilities</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">

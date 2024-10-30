@@ -124,6 +124,8 @@ If you click **Apply** to create the index and then execute the statement again,
 The **Diagnostics** tab allows you to activate and download diagnostics for a SQL statement fingerprint.
 
 {{site.data.alerts.callout_info}}
+The **Diagnostics** tab is only visible to [`admin` users]({{ link_prefix }}security-reference/authorization.html#admin-role) or SQL users with the [`VIEWACTIVITY` system privilege]({{ link_prefix }}security-reference/authorization.html#viewactivity).
+
 The **Diagnostics** tab is not visible:
 
 - On CockroachDB {{ site.data.products.standard }} clusters.

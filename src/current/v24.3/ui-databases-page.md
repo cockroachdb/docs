@@ -1,11 +1,14 @@
 ---
 title: Databases Page
-summary: The Databases page provides details about databases configured, the tables in each database, and the grants assigned to each user.
+summary: The Databases page provides details about databases configured, the tables and indexes in each database, and the grants assigned to each role and user.
 toc: true
-docs_area: reference.db_console
 ---
 
-{% include {{ page.version.version }}/ui/admin-access-only.md %}
+{% capture version_prefix %}{{ page.version.version }}{% endcapture %}
+
+{% include {{ version_prefix }}/ui/admin-access-only.md %}
+
+<a id="databases"></a>
 
 The **Databases** page of the DB Console provides details of the following:
 
@@ -14,10 +17,31 @@ The **Databases** page of the DB Console provides details of the following:
 - The grants assigned to each role and user.
 - [Index recommendations](#index-recommendations).
 
-To view this page, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Databases** in the left-hand navigation.
+To view this information, [access the DB Console]({% link {{ version_prefix }}/ui-overview.md %}#db-console-access) and click **Databases** in the left side navigation menu. This will give you access to the following:
 
-{% include {{ page.version.version }}/ui/index-recommendations.md %}
+- [Databases List Page](#databases-list-page): initial page that lists the databases on the cluster.
+- [Database Details Page](#database-details-page)
+    - [Tables List Tab](#tables-list-tab): lists tables in a database.
+    - [Database Grants Tab](#database-grants-tab): lists privileges on a database.
+- [Table Details Page](#table-details-page)
+    - [Overview Tab](#overview-tab): displays a table’s details.
+    - [Table Grants Tab](#table-grants-tab): lists privileges on a table.
+    - [Indexes List Tab](#indexes-list-tab): lists indexes on a table with index recommendations and actions.
+- [Index Details Page](#index-details-page): displays an index’s details with index recommendations.
 
-{% include {{ page.version.version }}/ui/databases.md %}
+{% include {{ version_prefix }}/ui/index-recommendations.md %}
 
-{% include {{ page.version.version }}/ui/index-details.md %}
+{% include {{ version_prefix }}/ui/databases-list-page.md %}
+
+{% include {{ version_prefix }}/ui/database-details-page.md %}
+
+{% include {{ version_prefix }}/ui/table-details-page.md %}
+
+{% include {{ version_prefix }}/ui/index-details-page.md %}
+
+## See also
+
+- [Statements page]({% link {{ version_prefix }}/ui-statements-page.md %})
+- [Assign privileges]({% link {{ version_prefix }}/security-reference/authorization.md %}#managing-privileges)
+- [`GRANT`]({% link {{ version_prefix }}/grant.md %})
+- [Cluster API]({% link {{ version_prefix }}/monitoring-and-alerting.md %}#cluster-api)
