@@ -67,11 +67,11 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
       ```json
       {
         "id": "blahblahblah-9ebd-43d9-8f42-589c9e6fc081",
-        "name": "docs-rule",
+        "name": "crl-prod-xyz",
         "cockroach_version": "v22.1.1",
         "plan": "DEDICATED",
         "cloud_provider": "GCP",
-        "account_id": "docs-rule-123",
+        "account_id": "crl-prod-xyz",
         "state": "CREATED",
         "creator_id": "blahblahblah-3457-471c-b0cb-c2ab15834329",
         "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
@@ -87,8 +87,8 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
         "regions": [
           {
             "name": "us-east4",
-            "sql_dns": "docs-rule.gcp-us-east4.cockroachlabs.cloud",
-            "ui_dns": "docs-rule.gcp-us-east4.cockroachlabs.cloud",
+            "sql_dns": "crl-prod-xyz.gcp-us-east4.cockroachlabs.cloud",
+            "ui_dns": "crl-prod-xyz.gcp-us-east4.cockroachlabs.cloud",
             "node_count": 1
           }
         ],
