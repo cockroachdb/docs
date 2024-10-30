@@ -11,7 +11,7 @@ toc: true
 Once you have **logical data replication (LDR)** running, you will need to track and manage certain parts of the job:
 
 - [Conflict resolution](#conflict-resolution): As changes to a table replicate from the source to the destination cluster, there can be conflicts during some operations that the job will handle with conflict resolution. When LDR is started, the job creates a [_dead letter queue (DLQ)_](#dead-letter-queue-dlq) table with each replicating table. LDR will send any unresolved conflicts to the DLQ, which you should monitor as LDR continues to replicate changes between the source and destination clusters. 
-- [Schema changes](#schema-changes): The tables that are part of the LDR job may require schema changes, which need to be coordinated. There are some schema changes that are supported while LDR is active.
+- [Schema changes](#schema-changes): The tables that are part of the LDR job may require schema changes, which need to be coordinated manually. There are some schema changes that are supported while LDR is active.
 - [Jobs](#jobs-and-ldr): Other CockroachDB jobs can operate on clusters running LDR [jobs]({% link {{ page.version.version }}/show-jobs.md %}). You may want to consider where you start and how you manage [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}), and so on when you're running LDR.
 
 ## Conflict resolution
@@ -25,7 +25,7 @@ LDR uses _last write wins (LWW)_ conflict resolution based on the [MVCC timestam
 
 ### Dead letter queue (DLQ)
 
-When the LDR job starts, it will create a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ will contain the writes that LDR cannot apply after the retry period. For example, [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependendies that are not met when there are foreign key constraints in the schema.
+When the LDR job starts, it will create a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ will contain the writes that LDR cannot apply after the retry period. For example, in LDR `validated` mode, [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies that are not met when there are foreign key constraints in the schema.
 
 To manage the DLQ, you can evaluate entries in the `incoming_row` column and apply the row manually to another table with SQL statements.
 
@@ -35,6 +35,9 @@ As an example, for an LDR stream created on the `movr.public.promo_codes` table:
 ~~~ sql
 SHOW TABLES;
 ~~~
+
+The table will have a random number within its name to ensure it is unique.
+
 ~~~
     schema_name    |         table_name         | type  | owner | estimated_row_count | locality
 -------------------+----------------------------+-------+-------+---------------------+-----------

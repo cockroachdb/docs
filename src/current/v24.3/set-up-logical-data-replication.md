@@ -87,7 +87,6 @@ To create bidirectional LDR, you can complete the [optional step](#step-4-option
 In this step, you'll set up an external connection from the destination cluster to the source cluster. Depending on how you manage certificates, you must ensure that all nodes between the clusters have access to the certificate of the other cluster.
 
 You can use the `cockroach encode-uri` command to generate a connection string containing a cluster's certificate.
-LDR from the destination cluster.
 
 1. On the **source** cluster in a new terminal window, generate a connection string, by passing the replication user, node IP, and port, along with the directory to the source cluster's CA certificate:
 
