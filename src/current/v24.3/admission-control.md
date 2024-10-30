@@ -44,15 +44,16 @@ Almost all database operations that use CPU or perform storage IO are controlled
 
 - [General SQL queries]({% link {{ page.version.version }}/selection-queries.md %}) have their CPU usage subject to admission control, as well as storage IO for writes to [leaseholder replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases).
 - [Bulk data imports]({% link {{ page.version.version }}/import-into.md %}).
-- [Backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}).
-- [Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), including index and column backfills (on both the [leaseholder replica]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
 - [`COPY`]({% link {{ page.version.version }}/copy-from.md %}) statements.
 - [Deletes]({% link {{ page.version.version }}/delete-data.md %}) (including deletes initiated by [row-level TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}); the [selection queries]({% link {{ page.version.version }}/selection-queries.md %}) performed by TTL jobs are also subject to CPU admission control).
+- [Backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}).
+- [Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), including index and column backfills (on both the [leaseholder replica]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
 - [Follower replication work]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
 - [Raft log entries being written to disk]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
 - [Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}).
 - [Intent resolution]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents).
-
+- {% include_cached new-in.html version="v24.3" %} [Snapshot transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots) onto a node with a [provisioned rate]({% link {{ page.version.version }}/cockroach-start.md %}#store) configured for its store, based on disk bandwidth, to reduce the impact on foreground workloads on the node. Admission control for snapshot transfers is disabled by default. To learn more, refer to [Snapshots]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots).
+-
 The following operations are not subject to admission control:
 
 - SQL writes are not subject to admission control on [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) by default, unless those writes occur in transactions that are subject to a Quality of Service (QoS) level as described in [Set quality of service level for a session](#set-quality-of-service-level-for-a-session). In order for writes on follower replicas to be subject to admission control, the setting `default_transaction_quality_of_service=background` must be used.
@@ -68,6 +69,7 @@ Admission control is enabled by default. To enable or disable admission control,
 - `admission.kv.enabled` for work performed by the [KV layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 - `admission.sql_kv_response.enabled` for work performed in the SQL layer when receiving [KV responses]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 - `admission.sql_sql_response.enabled` for work performed in the SQL layer when receiving [DistSQL responses]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql).
+- {% include_cached new-in.html version="v24.3" %} `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` to optionally limit the disk impact of ingesting snapshots on a node.
 
 When you enable or disable admission control settings for one layer, Cockroach Labs recommends that you enable or disable them for **all layers**.
 
@@ -134,7 +136,7 @@ COMMIT;
 
 ## Considerations
 
-[Client connections]({% link {{ page.version.version }}/connection-parameters.md %}) are not managed by the admission control subsystem. Too many connections per [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) can also lead to cluster overload. 
+[Client connections]({% link {{ page.version.version }}/connection-parameters.md %}) are not managed by the admission control subsystem. Too many connections per [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) can also lead to cluster overload.
 
 {% include {{page.version.version}}/sql/server-side-connection-limit.md %}
 
