@@ -98,7 +98,7 @@ You can add up to nine regions at a time through the Console. See [Planning your
 
 1. On the **Regions** page, click **Add a region**.
 
-    If you have a GCP cluster with [VPC peering]({% link cockroachcloud/network-authorization.md %}) enabled, the IP range will be automatically populated for added regions. For GCP, each region requires a `/19` CIDR block.
+    For GCP, Each region consumes a `/19` CIDR range from the CIDR range configured during cluster creation. If you add a region a GCP cluster with [VPC peering]({% link cockroachcloud/network-authorization.md %}) enabled, the region's IP range will be automatically assigned from the cluster's CIDR range.
 
 1. Select the desired new region and specify the number of nodes for it.
 1. In the sidebar, verify the hourly estimated cost for the cluster.

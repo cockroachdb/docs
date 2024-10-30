@@ -60,7 +60,7 @@ You can use [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc
 
 VPC peering is available only for GCP clusters. For clusters deployed on AWS, you can [configure AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) after creating your cluster. [Azure Virtual Network Peering](https://learn.microsoft.com/azure/virtual-network/virtual-network-peering-overview) is not yet supported. Refer to [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
-You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network. Alternatively, you can configure the IP range. If you add regions later, the IP range will be automatically populated for added regions.
+You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network. Alternatively, you can configure the IP range. Each region consumes a `/19` CIDR range from the CIDR range configured during cluster creation. If you add a region later, the region's IP range will be automatically assigned from the cluster's CIDR range.
 
 1. In the **VPC Peering section**, select **Configure the IP range** to configure your own IP range.
 
