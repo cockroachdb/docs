@@ -5,7 +5,7 @@ toc: true
 docs_area: manage.security
 ---
 
-[Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for CockroachDB {{ site.data.products.dedicated }} advanced allows the customer to delegate responsibility for the work of encrypting their cluster data to CockroachDB {{ site.data.products.cloud }}, while maintaining the ability to completely revoke CockroachDB {{ site.data.products.cloud }}'s access.
+[Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for CockroachDB {{ site.data.products.cloud }} advanced allows the customer to delegate responsibility for the work of encrypting their cluster data to CockroachDB {{ site.data.products.cloud }}, while maintaining the ability to completely revoke CockroachDB {{ site.data.products.cloud }}'s access.
 
 This page shows how to enable [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for CockroachDB {{ site.data.products.advanced }} advanced.
 
@@ -26,6 +26,79 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
   <button class="filter-button" data-scope="aws">AWS</button>
   <button class="filter-button" data-scope="gcp">GCP</button>
 </div>
+
+### Before you begin
+
+<section class="filter-content" markdown="1" data-scope="aws">
+
+1. Make a note of your {{ site.data.products.cloud }} organization ID in the [Organization settings page](https://cockroachlabs.cloud/settings).
+1. Find your {{ site.data.products.advanced }} cluster ID. From the CockroachDB {{ site.data.products.cloud }} console [Clusters  list](https://cockroachlabs.cloud/clusters), click the name of a cluster to open its **Cluster Overview** page. From the page's URL copy the cluster ID, which is the portion of the URL before `/overview/`.
+1. Use the cluster ID to find the cluster's associated cross-account IAM role, which is managed by CockroachDB {{ site.data.products.cloud }}.
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --request GET \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{YOUR_CLUSTER_ID} \
+      --header 'Authorization: Bearer {YOUR_API_KEY}' | jq .account_id
+    ~~~
+
+    In the response, verify that the `id` field matches the cluster ID you specified, then make a note of the `account_id`, which is the ID for the cross-account IAM role.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcp">
+
+1. Make a note of your {{ site.data.products.cloud }} organization ID in the [Organization settings page](https://cockroachlabs.cloud/settings).
+1. Find your {{ site.data.products.advanced }} cluster ID. From the CockroachDB {{ site.data.products.cloud }} console [Clusters  list](https://cockroachlabs.cloud/clusters), click the name of a cluster to open its **Cluster Overview** page. From the page's URL copy the cluster ID, which is the portion of the URL before `/overview/`.
+1. Use the cluster ID to find the cluster's associated GCP Project ID, which is managed by CockroachDB {{ site.data.products.cloud }}. Query the `clusters/` endpoint of the CockroachDB {{ site.data.products.cloud }} API:
+
+    {% include_cached copy-clipboard.html %}
+    ```shell
+    CLUSTER_ID= #{ your cluster ID }
+    API_KEY= #{ your API key }
+    curl --request GET \
+      --url https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID} \
+      --header "Authorization: Bearer ${API_KEY}"
+    ```
+
+    In the response, verify that the `id` field matches the cluster ID you specified, then make a note of the following:
+      - `account_id`: the GCP project ID.
+      - `regions`/`name`: one entry for each of the cluster's regions. CMEK must be configured in each of a cluster's regions.
+
+      ```json
+      {
+        "id": "blahblahblah-9ebd-43d9-8f42-589c9e6fc081",
+        "name": "docs-rule",
+        "cockroach_version": "v22.1.1",
+        "plan": "DEDICATED",
+        "cloud_provider": "GCP",
+        "account_id": "docs-rule-123",
+        "state": "CREATED",
+        "creator_id": "blahblahblah-3457-471c-b0cb-c2ab15834329",
+        "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
+        "config": {
+          "dedicated": {
+            "machine_type": "n1-standard-2",
+            "num_virtual_cpus": 2,
+            "storage_gib": 15,
+            "memory_gib": 7.5,
+            "disk_iops": 450
+          }
+        },
+        "regions": [
+          {
+            "name": "us-east4",
+            "sql_dns": "docs-rule.gcp-us-east4.cockroachlabs.cloud",
+            "ui_dns": "docs-rule.gcp-us-east4.cockroachlabs.cloud",
+            "node_count": 1
+          }
+        ],
+        "created_at": "2022-06-16T17:24:06.262259Z",
+        "updated_at": "2022-06-16T17:43:59.189571Z",
+        "deleted_at": null
+      }
+      ```
+
+</section>
 
 <section class="filter-content" markdown="1" data-scope="aws">
 
@@ -318,7 +391,7 @@ Compile the information about the service account and key we've just created int
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    export CLUSTER_REGION= # the region of the {{ site.data.products.dedicated}}-controlled GCP project where your cluster is located
+    export CLUSTER_REGION= # the region of the {{ site.data.products.advanced}}-controlled GCP project where your cluster is located
     export GCP_PROJECT_ID= # your GCP project ID
     export KEY_LOCATION= # location of your KMS key (region or 'global')
     export KEY_RING= # your KMS key ring name
@@ -361,7 +434,7 @@ Compile the information about the service account and key we've just created int
     cat cmek_config.json | jq
     ~~~
 
-After you have built your CMEK configuration manifest with the details of your cluster and provisioned the service account and KMS key in GCP, return to [Enabling CMEK for a CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/managing-cmek.md %}#step-4-activate-cmek).
+After you have built your CMEK configuration manifest with the details of your cluster and provisioned the service account and KMS key in GCP, return to [Enabling CMEK for a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/managing-cmek.md %}#step-4-activate-cmek).
 
 ### Step 4. Activate CMEK
 
@@ -445,7 +518,7 @@ Within your KMS, **do not revoke** access to a CMEK that is in use by one or mor
 
 1. In your cloud provider's KMS platform, revoke CockroachDB {{ site.data.products.cloud }}'s access to your CMEK key at the IAM level, either by removing the authorization the cross-account IAM role or by removing the cross-account IAM role's permission to access the key.
 
-   This will **not** immediately stop your cluster from encrypting and decrypting data, which does not take effect until you update your cluster in the next step. That is because CockroachDB does not use your CMEK key to encrypt/decrypt your cluster data itself. CockroachDB {{ site.data.products.dedicated }} accesses your CMEK key to encrypt/decrypt a key encryption key (KEK). This KEK is used to encrypt a data encryption key (DEK), which is used to encrypt/decrypt your application data. Your cluster will continue to use the already-provisioned DEK until you make the Cloud API call to revoke CMEK.
+   This will **not** immediately stop your cluster from encrypting and decrypting data, which does not take effect until you update your cluster in the next step. That is because CockroachDB does not use your CMEK key to encrypt/decrypt your cluster data itself. CockroachDB {{ site.data.products.advanced }} accesses your CMEK key to encrypt/decrypt a key encryption key (KEK). This KEK is used to encrypt a data encryption key (DEK), which is used to encrypt/decrypt your application data. Your cluster will continue to use the already-provisioned DEK until you make the Cloud API call to revoke CMEK.
 
 1. Your cluster will continue to operate with the CMEK until you update it to revoke CMEK. To revoke access:
 
@@ -466,35 +539,35 @@ Within your KMS, **do not revoke** access to a CMEK that is in use by one or mor
 
 ## Appendix: IAM policy for the CMEK key
 
-This IAM policy is to be attached to the CMEK key. It grants the required KMS permissions to the cross-account IAM role to be used by CockroachDB {{ site.data.products.dedicated }}.
+This IAM policy is to be attached to the CMEK key. It grants the required KMS permissions to the cross-account IAM role to be used by CockroachDB {{ site.data.products.advanced }}.
 
 Note that this IAM policy refers to the ARN for the cross-account IAM role you created at the end of [Step 1. Provision the cross-account IAM role](#step-1-provision-the-cross-account-iam-role).
 
 {% include_cached copy-clipboard.html %}
 ~~~json
 {
-	"Version": "2012-10-17",
-	"Id": "crdb-cmek-kms",
-	"Statement": [
-	    {
-	        "Sid": "Allow use of the key for CMEK",
-	        "Effect": "Allow",
-	        "Principal": {
-	            "AWS": "{ARN_OF_CROSS_ACCOUNT_IAM_ROLE}"
-	        },
-	        "Action": [
-	            "kms:Encrypt",
-	            "kms:Decrypt",
-	            "kms:GenerateDataKey*",
-	            "kms:DescribeKey",
-	            "kms:ReEncrypt*"
-	        ],
-	        "Resource": "*"
-	    },
-	    {
-			{OTHER_POLICY_STATEMENT_FOR_ADMINISTRATING_KEY}
-	    }
-	]
+  "Version": "2012-10-17",
+  "Id": "crdb-cmek-kms",
+  "Statement": [
+      {
+          "Sid": "Allow use of the key for CMEK",
+          "Effect": "Allow",
+          "Principal": {
+              "AWS": "{ARN_OF_CROSS_ACCOUNT_IAM_ROLE}"
+          },
+          "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:GenerateDataKey*",
+              "kms:DescribeKey",
+              "kms:ReEncrypt*"
+          ],
+          "Resource": "*"
+      },
+      {
+      {OTHER_POLICY_STATEMENT_FOR_ADMINISTRATING_KEY}
+      }
+  ]
 }
 
 ~~~
