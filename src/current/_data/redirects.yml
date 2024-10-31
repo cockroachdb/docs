@@ -227,6 +227,14 @@
   sources: ['build-a-python-app-with-cockroachdb-pony.md']
   versions: ['v20.2', 'v21.1', 'v21.2', 'v22.1', 'v22.2', 'v23.1']
 
+- destination: dev/failover-replication.md
+  sources: ['cutover-replication.md']
+  versions: ['23.1', '23.2', '24.1', 'v24.2']
+
+- destination: failover-replication.md
+  sources: ['cutover-replication.md']
+  versions: ['23.1', '23.2', '24.1', 'v24.2']
+
 - destination: fips.md
   sources: ['fips-compliance.md']
   versions: ['v23.1']
