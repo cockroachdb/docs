@@ -83,7 +83,9 @@ Allowlist schema change | Exceptions
 [Zone configuration]({% link {{ page.version.version }}/show-zone-configurations.md %}) changes | N/A
 [`ALTER TABLE ... SET/RESET {TTL storage parameters}`]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) | `ttl_expire_after`
 
+{{site.data.alerts.callout_danger}}
 LDR will **not** replicate the allowlist schema changes to the destination table. Therefore, you must perform the schema change carefully on both the source and destination cluster.
+{{site.data.alerts.end}}
 
 ### Coordinate schema changes
 
@@ -107,28 +109,12 @@ To perform any other schema change on the table, you'll need to drop the LDR job
 
     If you use the `cursor` option, the LDR job will **not** perform an initial scan, it will stream any changes after the given timestamp. The LDR job will encounter an error if you specify a timestamp with `cursor` that before the configured garbage collection window for that table. {% comment %}to add links to the SQL ref page for create logical rep stream, once published {% endcomment %}
 
-## Schema validation
-
-Before you start LDR, you must ensure that all column names, types, constraints, and unique indexes on the destination table match with the source table.
-
-You cannot use LDR on a table with a schema that contains the following:
-
-- Columns with [user-defined types]({% link {{ page.version.version }}/create-type.md %})
-- [Column families]({% link {{ page.version.version }}/column-families.md %})
-- [Partial indexes]({% link {{ page.version.version }}/partial-indexes.md %})
-- Indexes with a [computed column]({% link {{ page.version.version }}/computed-columns.md %})
-- Composite types in the [primary key]({% link {{ page.version.version }}/primary-key.md %})
-
-For more details, refer to the LDR [Known limitations]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#known-limitations).
-
-When you run LDR in `immediate` mode, you cannot replicate a table with [SQL constraints]({% link {{ page.version.version }}/constraints.md %}). In `validated` mode, SQL constraints **must** match. 
-
 ## Jobs and LDR
 
 You can run any other CockroachDB [job]({% link {{ page.version.version }}/show-jobs.md %}) on any cluster that is involved in an LDR job. Both source and destination clusters in LDR are active, which means they can both serve production reads and writes as well as run [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), and so on. 
 
 {{site.data.alerts.callout_success}}
-In a hot-cold setup with unidirectional LDR streaming from the hot cluster to the cold, you may want to run jobs like changefeeds from the cold cluster to isolate these jobs from the hot cluster receiving application traffic. {% comment %} add link to ldr overview page that will describe this workload isolation topology {% endcomment %}
+In a unidirectional setup, you may want to run jobs like [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) from one cluster to isolate these jobs from the cluster receiving the principal application traffic. {% comment %} add link to ldr overview page that will describe this workload isolation topology {% endcomment %}
 {{site.data.alerts.end}}
 
 ### Changefeeds

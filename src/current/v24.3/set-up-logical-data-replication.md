@@ -19,7 +19,7 @@ In this tutorial, you will set up **logical data replication (LDR)** streaming d
 If you're setting up bidirectional LDR, both clusters will act as a source and a destination in the respective LDR jobs. The high-level steps are:
 
 1. Prepare the tables on each cluster with the prerequisites for starting LDR.
-1. Set up an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) on cluster A to hold the connection URI for cluster B.
+1. Set up an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) on cluster B to hold the connection URI for cluster A.
 1. Start LDR from cluster B with your required modes.
 1. (Optional) Run Steps 2 and 3 again with cluster B as the source and A as the destination, which starts LDR streaming from cluster B to A.
 1. Check the status of the LDR job in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}).
@@ -39,9 +39,25 @@ You'll need:
     {{site.data.alerts.end}}
 
 - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Connect from the destination to the source](#step-2-connect-from-the-destination-to-the-source).
-- If both clusters are empty, create the tables that you need to replicate with **identical** schema definitions (excluding indexes) on both clusters. If one cluster already has an existing table that you'll replicate, ensure the other cluster's table definition matches. For more details on the supported schemas, refer to [Schema Validation]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#schema-validation).
+- If both clusters are empty, create the tables that you need to replicate with **identical** schema definitions (excluding indexes) on both clusters. If one cluster already has an existing table that you'll replicate, ensure the other cluster's table definition matches. For more details on the supported schemas, refer to [Schema Validation](#schema-validation).
 
 To create bidirectional LDR, you can complete the [optional step](#step-4-optional-set-up-bidirectional-ldr) to start the second LDR job that sends writes from the table on cluster B to the table on cluster A.
+
+### Schema validation
+
+Before you start LDR, you must ensure that all column names, types, constraints, and unique indexes on the destination table match with the source table.
+
+You cannot use LDR on a table with a schema that contains the following:
+
+- Columns with [user-defined types]({% link {{ page.version.version }}/create-type.md %})
+- [Column families]({% link {{ page.version.version }}/column-families.md %})
+- [Partial indexes]({% link {{ page.version.version }}/partial-indexes.md %})
+- Indexes with a [computed column]({% link {{ page.version.version }}/computed-columns.md %})
+- Composite types in the [primary key]({% link {{ page.version.version }}/primary-key.md %})
+
+For more details, refer to the LDR [Known limitations]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#known-limitations).
+
+When you run LDR in `immediate` mode, you cannot replicate a table with [SQL constraints]({% link {{ page.version.version }}/constraints.md %}). In `validated` mode, SQL constraints **must** match. 
 
 ## Step 1. Prepare the cluster
 
@@ -129,6 +145,15 @@ If you would like to ignore TTL deletes in LDR, you can use the `discard = ttl-d
     ~~~
 
     You can change the default `mode` using the `WITH mode = validated` syntax.
+
+    If you would like to add multiple tables to the LDR job:
+
+        {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE LOGICAL REPLICATION STREAM FROM TABLES ({database.public.table_name},{database.public.table_name},...)  ON 'external://{source_external_connection}' INTO TABLES ({database.public.table_name},{database.public.table_name},...);
+    ~~~
+
+    {% include {{ page.version.version }}/ldr/multiple-tables.md %}
 
     Once LDR has started, an LDR job will start on the destination cluster. You can [pause]({% link {{ page.version.version }}/pause-job.md %}), [resume]({% link {{ page.version.version }}/resume-job.md %}), or [cancel]({% link {{ page.version.version }}/cancel-job.md %}) the LDR job with the job ID. Use `SHOW LOGICAL REPLICATION JOBS` to display the LDR job IDs:
 
