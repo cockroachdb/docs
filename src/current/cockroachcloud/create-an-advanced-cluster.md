@@ -39,6 +39,8 @@ Select the region(s) and number of nodes for your cluster:
 
     A multi-region cluster requires at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster-advanced.html?filters=advanced) for the configuration requirements and recommendations for CockroachDB {{ site.data.products.advanced }} clusters.
 
+    For clusters deployed on GCP, each region requires a `/19` CIDR block.
+
 1. Select the number of nodes:
     - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes indirectly impacts Your cluster's storage and compute capacity scale with the number of nodes. Refer to [Plan your cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example).
     - A multi-region deployment requires a minimum of 3 nodes per region. For best performance and stability, we recommend configuring  the same number of nodes in each region.
@@ -58,7 +60,7 @@ You can use [VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc
 
 VPC peering is available only for GCP clusters. For clusters deployed on AWS, you can [configure AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) after creating your cluster. [Azure Virtual Network Peering](https://learn.microsoft.com/azure/virtual-network/virtual-network-peering-overview) is not yet supported. Refer to [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
 
-You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network. Alternatively, you can configure the IP range:
+You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network. Alternatively, you can configure the IP range. Each region consumes a `/19` CIDR range from the CIDR range configured during cluster creation. If you add a region later, the region's IP range will be automatically assigned from the cluster's CIDR range.
 
 1. In the **VPC Peering section**, select **Configure the IP range** to configure your own IP range.
 
