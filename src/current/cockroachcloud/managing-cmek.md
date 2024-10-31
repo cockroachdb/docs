@@ -98,6 +98,12 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
       }
       ```
 
+1. Formulate the service account's email address, which is in the following format. Replace `{cluster_id}` with the cluster ID, and replace `{account_id}` with the GCP project ID.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ text
+    crl-kms-user-{cluster_id}@{account_id}.iam.gserviceaccount.com
+    ~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="aws">
@@ -105,10 +111,6 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
 ### Step 1. Provision the cross-account IAM role
 
 Follow these steps to create a cross-account IAM role and give it permission to access the CMEK in AWS KMS. CockroachDB Cloud will assume this role to encrypt and decrypt using the CMEK.
-
-1. In CockroachDB Cloud, visit the CockroachDB {{ site.data.products.cloud }} [organization settings page](https://cockroachlabs.cloud/settings). Copy your organization ID, which you will need to create the IAM role:
-
-1. Visit the [Clusters page](https://cockroachlabs.cloud/clusters). Click on the name of your cluster to open its cluster overview page. In the URL, copy the cluster ID: `https://cockroachlabs.cloud/cluster/{YOUR_CLUSTER_ID}/overview`.
 
 1. Use the CockroachDB Cloud API to find the ID of the AWS account managed by CockroachDB {{ site.data.products.cloud }} that is associated with your cluster (not your own AWS account):
 
@@ -123,8 +125,8 @@ Follow these steps to create a cross-account IAM role and give it permission to 
 
 1. In the AWS console, visit the [IAM page](https://console.aws.amazon.com/iam/) and select **Roles** and click **Create role**.
   - For **Trusted entity type**, select **AWS account**.
-  - Select **Another AWS account** and set **Account ID**, provide the AWS account ID for your cluster.
-  - Select **Require external ID** and set **External ID** to your CockroachDB {{ site.data.products.cloud }} organization ID.
+  - Select **Another AWS account** and set **Account ID**, provide the AWS account ID that you found in [Before you begin](#before-you-begin).
+  - Select **Require external ID** and set **External ID** to your CockroachDB {{ site.data.products.cloud }} organization ID, which you found in [Before you begin](#before-you-begin).
   - Provide a name for the role. Do not enable any permissions.
 
 1. Make a note of the Amazon Resource Name (ARN) for the new IAM role.
@@ -135,27 +137,10 @@ Follow these steps to create a cross-account IAM role and give it permission to 
 
 ### Step 1. Provision the cross-tenant service account
 
-1. In CockroachDB Cloud, visit the CockroachDB {{ site.data.products.cloud }} [organization settings page](https://cockroachlabs.cloud/settings). Copy your organization ID, which you will need to create the cross-tenant service account.
-
-1. Visit the [Clusters page](https://cockroachlabs.cloud/clusters). Click on the name of your cluster to open its cluster overview page. In the URL, copy the cluster ID: `https://cockroachlabs.cloud/cluster/{YOUR_CLUSTER_ID}/overview`.
-
-1. Use the CockroachDB Cloud API to find the ID of the AWS account managed by CockroachDB {{ site.data.products.cloud }} that is associated with your cluster (not your own GCP project):
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    CLUSTER_ID= #{ your cluster ID }
-    API_KEY= #{ your API key }
-    curl --request GET \
-      --url https://cockroachlabs.cloud/api/v1/clusters/${CLUSTER_ID} \
-      --header "Authorization: Bearer ${API_KEY}"
-    ~~~
-
-    In the response, the ID is stored in the `account_id` field.
-
 1. In the GCP Console, visit the [IAM service accounts page](https://console.cloud.google.com/iam-admin/serviceaccounts) for your project and click **+ Create service account**. Select **Cross-tenant**.
 1. Click the new service account to open its details.
 1. In **PERMISSIONS**, click **GRANT ACCESS**.
-    - For **New principals**, enter the service account ID for your cluster, which you found earlier.
+    - For **New principals**, enter the service account ID for your cluster, which you found in [Before you begin](#before-you-begin)
     - For **Role**, enter **Service Account Token Creator**.
 
   Click **SAVE**.
