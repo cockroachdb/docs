@@ -4,3 +4,7 @@ Start the [`cockroach sql` shell]({% link {{ page.version.version }}/cockroach-s
 ~~~ sql
 >  SET CLUSTER SETTING enterprise.license = 'xxxxxxxxxxxx';
 ~~~
+
+{{site.data.alerts.callout_danger}}
+You cannot apply an [**Enterprise Trial** license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) more than once to the same cluster.
+{{site.data.alerts.end}}
