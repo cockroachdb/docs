@@ -6,12 +6,23 @@ toc: true
 
 This page provides guidance and best practices for consuming CockroachDB logs for critical information. It outlines how to externalize logs. Refer to [Critical Log Messages]({% link {{ page.version.version }}/critical-log-messages.md %}) for which log messages to externalize, and how to interpret them.
 
-## Use network log sinks
+## Types of logs
 
-Output different [logging channels]({% link {{ page.version.version }}/logging.md %}#logging-channels) over the network to third-party log aggregators:
+CockroachDB has two different types of logs, structured and unstructured, that are used in the ways described below.
 
- - [Output to Fluentd-compatible network collectors]({% link {{ page.version.version }}/configure-logs.md %}#output-to-fluentd-compatible-network-collectors), such as Elasticsearch, Splunk.
- - [Output to HTTP network collectors]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors), such as Datadog. 
+### Structured logs
+
+Structured logs contain detailed, machine-readable information that can be easily parsed and analyzed. They are particularly useful for:
+
+- [Notable Events]({% link {{ page.version.version }}/eventlog.md %}): Capturing significant events in a structured format allows for easier querying and analysis. For example, job state changes or specific events like backups.
+- [Audit and Compliance]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring): Structured logs are ideal for audit trails and compliance monitoring because they provide a consistent format that can be easily searched and filtered.
+- [Performance Monitoring]({% link {{ page.version.version }}/logging-use-cases.md %}#performance-tuning): When tracking performance metrics, structured logs can help in identifying patterns and anomalies due to their detailed and consistent format.
+
+### Unstructured logs
+
+Unstructured logs are more free-form and human-readable compared to machine-processed structured logs. They are particularly useful for:
+
+- General Troubleshooting: They are useful for capturing a wide range of information that may not fit into a predefined structure, such as error messages or stack traces. Events not documented on [Notable Events]({% link {{ page.version.version }}/eventlog.md %}) will have an unstructured format in log messages.
 
 ## Use `json` format with third-party tools
 
@@ -41,19 +52,6 @@ Enabling logging of events in the following [log channels]({% link {{ page.versi
 - [`SESSIONS`]({% link {{ page.version.version }}/logging-use-cases.md %}#sessions): Logging client connection and session authentication events are enabled by the [`server.auth_log.sql_connections.enabled` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-auth-log-sql-connections-enabled) and the [`server.auth_log.sql_sessions.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-auth-log-sql-sessions-enabled) cluster setting respectively. These logs perform one disk I/O per event. Enabling each setting will impact performance.
 - [`SENSITIVE_ACCESS`]({% link {{ page.version.version }}/logging-use-cases.md %}#sensitive_access): Enabling [Table-based SQL Audit Logging]({% link {{ page.version.version }}/sql-audit-logging.md %}) or [Role-based SQL Audit Logging]({% link {{ page.version.version }}/role-based-audit-logging.md %}) can negatively impact performance. Log only what you require to limit impact to your workload. Use this channel for [security purposes](#use-logs-for-security-and-compliance) only.
 
-## Use structured logs
-Use structured logs when you need to capture detailed, machine-readable information that can be easily parsed and analyzed. They are particularly useful for:
-
-- [Notable Events]({% link {{ page.version.version }}/eventlog.md %}): Capturing significant events in a structured format allows for easier querying and analysis. For example, job state changes or specific events like backups.
-- [Audit and Compliance]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring): Structured logs are ideal for audit trails and compliance monitoring because they provide a consistent format that can be easily searched and filtered.
-- [Performance Monitoring]({% link {{ page.version.version }}/logging-use-cases.md %}#performance-tuning): When tracking performance metrics, structured logs can help in identifying patterns and anomalies due to their detailed and consistent format.
-
-## Use unstructured logs
-
-Unstructured logs are more free-form and human-readable compared to machine-processed structured logs. Use unstructured logs for:
-
-- General Troubleshooting: They are useful for capturing a wide range of information that may not fit into a predefined structure, such as error messages or stack traces. Events not documented on [Notable Events]({% link {{ page.version.version }}/eventlog.md %}) will have an unstructured format in log messages.
-
 ## Customize buffering of log messages
 
 Depending on the use case, a log sink can be configured to be auditable or buffered. However, there is a tradeoff between auditing requirements and performance.
@@ -63,7 +61,9 @@ Depending on the use case, a log sink can be configured to be auditable or buffe
 In the case of [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring), use the logging YAML file to [configure the log sink]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) to be auditable, by setting `auditable` to `true`. This guarantees [non-repudiability](https://wikipedia.org/wiki/Non-repudiation) for any logs in the sink, but can incur a performance overhead and higher disk IOPS consumption. When `auditable` is enabled:
 
 - `exit-on-error` is enabled which stops the Cockroach node if an error is encountered while writing to the sink. This prevents the loss of any log entries.
-- `buffered-writes` is disabled if the sink is under file-groups.
+- `buffered-writes` is disabled if the sink is under `file-groups`.
+
+File-based audit logging cannot coexist with the buffering configuration, so disable either `buffering` or `auditable`.
 
 ### Buffered
 
@@ -76,6 +76,8 @@ Use the logging YAML file to configure buffering settings to optimize log perfor
 Disable buffering for specific log channels if needed, by setting `buffering: NONE` for a given channel.
 
 Override default buffering settings for specific channels to ensure timely log flushing.
+
+File-based audit logging cannot coexist with the buffering configuration, so disable either `buffering` or `auditable`.
 
 For detailed configurations and examples, refer to [Configure Logs]({% link {{ page.version.version }}/configure-logs.md %}).
 
