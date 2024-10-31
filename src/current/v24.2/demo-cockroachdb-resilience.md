@@ -1,5 +1,5 @@
 ---
-title: Fault Tolerance & Recovery
+title: CockroachDB Resilience Demo
 summary: Use a local cluster to explore how CockroachDB remains available during, and recovers after, failure.
 toc: true
 docs_area: deploy

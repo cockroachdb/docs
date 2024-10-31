@@ -126,7 +126,7 @@ If nodes have shut down, this can also be caused by [insufficient storage capaci
 
 ## Memory
 
-CockroachDB is [resilient]({% link {{ page.version.version }}/demo-fault-tolerance-and-recovery.md %}) to node crashes. However, frequent node restarts caused by [out-of-memory (OOM) crashes]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) can impact cluster stability and performance.
+CockroachDB is [resilient]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}) to node crashes. However, frequent node restarts caused by [out-of-memory (OOM) crashes]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) can impact cluster stability and performance.
 
 ### Memory planning
 

@@ -37,6 +37,10 @@ Any feature made available in a phase prior to GA is provided without any warran
 ### Export metrics to Azure Monitor
 [Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics-advanced.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
+### Cluster SSO backed by LDAP
+
+[Cluster SSO]({% link {{ page.version.version }}/sso-sql.md %}) using an identity stored in LDAP is in Limited Access. The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `server.auth_log.sql_sessions.enabled`, which logs more details about cluster authentication failures, is also in Limited Access.
+
 ## Features in preview
 
 {{site.data.alerts.callout_info}}
