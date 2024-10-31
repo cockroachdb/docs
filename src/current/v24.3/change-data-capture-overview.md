@@ -26,7 +26,7 @@ CockroachDB has two implementations of changefeeds:
 <table class="comparison-chart">
   <tr>
     <th></th>
-    <th>basic changefeeds</th>
+    <th>Basic changefeeds</th>
     <th>Enterprise changefeeds</th>
   </tr>
 

@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on CockroachDB {{ site.data.products.basic }}, {{ site.data.products.standard }}, {{ site.data.products.advanced }}, and with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html) on CockroachDB {{ site.data.products.core }} clusters. basic changefeeds are available in all products.
+This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on CockroachDB {{ site.data.products.basic }}, {{ site.data.products.standard }}, {{ site.data.products.advanced }}, and with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html) on CockroachDB {{ site.data.products.core }} clusters. Basic changefeeds are available in all products.
 
 For a summary of Core and {{ site.data.products.enterprise }} changefeed features, refer to the [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page.
 
@@ -775,7 +775,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 <section class="filter-content" markdown="1" data-scope="core">
 
-basic changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
+Basic changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
 ## Create a basic changefeed
 
