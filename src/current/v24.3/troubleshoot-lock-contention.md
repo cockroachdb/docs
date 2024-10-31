@@ -4,13 +4,13 @@ summary: This tutorial presents how to understand lock contention, how to identi
 toc: true
 ---
 
-Lock contention is a type of [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) that occurs when a [transaction]({% link {{ page.version.version }}/transactions.md %}) is unable to complete due to another concurrent or recent transaction attempting to write to the same data. Lock contention may be the cause of slow SQL query performance.
+Lock contention is a type of [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) that occurs when a [transaction]({% link {{ page.version.version }}/transactions.md %}) is unable to complete due to another concurrent or recent transaction attempting to write to the same data. Lock contention may be the cause of [slow SQL query performance]({% link {{ page.version.version }}/eventlog.md %}#sql-slow-query-log).
 
-This tutorial presents
+This tutorial presents:
 
-- how to [understand lock contention](#understand-lock-contention) by reproducing a basic example,
-- how to [identify waiting and blocking transactions](#identify-waiting-and-blocking-transactions) by using the Insights page of the DB Console, and
-- possible ways to [remediate lock contention](#remediate-lock-contention).
+- How to [understand lock contention](#understand-lock-contention) by reproducing a basic example.
+- How to [identify waiting and blocking transactions](#identify-waiting-and-blocking-transactions) by using the Insights page of the DB Console.
+- Possible ways to [remediate lock contention](#remediate-lock-contention).
 
 ## Before you begin
 
@@ -18,7 +18,9 @@ This tutorial presents
 
 ### Terminal 1
 
-Use the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to start a temporary, in-memory CockroachDB cluster of one node. 
+The examples in this tutorial will use three terminals, one for each transaction.
+
+In the first terminal, use the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to start a temporary, in-memory CockroachDB cluster of one node.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -27,7 +29,7 @@ cockroach demo --no-example-database
 
 It will open an interactive SQL shell to the cluster set to an empty database called `defaultdb`. This database is used for testing and some internal databases.
 
-The examples in this tutorial will use three terminals, one for each transaction. To distinguish each terminal set the `application_name`. In the SQL shell in the first terminal, execute:  
+To distinguish each terminal set the `application_name`. In the SQL shell in the first terminal, execute:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -105,7 +107,7 @@ INSERT INTO t VALUES (1,1), (2,2), (3,3);
 
 ### Example 1
 
-In this example, Transaction 1 is a write that blocks Transaction 2, a read, and Transaction 3, a write. Transaction 1 locks key `k=2`. When Transaction 2 tries to read key `k=2`, it experiences lock contention and waits for the lock on the key to be released. Similarly, when Transaction 3 tries to write to key `k=2`, it experiences lock contention and waits for the lock on the key to be released.
+In this example, *Transaction 1* is a write that blocks both *Transaction 2* and *Transaction 3*. *Transaction 2* is a read, and *Transaction 3* is a write. *Transaction 1* locks key `k=2`. When *Transaction 2* tries to read key `k=2`, it experiences lock contention and waits for the lock on the key to be released. Similarly, when *Transaction 3* tries to write to key `k=2`, it experiences lock contention and waits for the lock on the key to be released.
 
 Transaction 1 (blocking write)   | Transaction 2 (waiting read) | Transaction 3 (waiting write)
 ---------------------------------|------------------------------|--------------------------------
@@ -123,7 +125,7 @@ success, k=2,v=2012              | k=2, v=2012                  |
 
 ### SQL statements
 
-To reproduce Example 1 in CockroachDB in preparation for the next section on how to [identify waiting and blocking transactions](#identify-waiting-and-blocking-transactions) using the Insights page of the Cloud Console or the DB Console, execute the following SQL statements in the given order in the specified terminal.
+To reproduce Example 1 in CockroachDB in preparation for the next section on how to [identify waiting and blocking transactions](#identify-waiting-and-blocking-transactions), execute the following SQL statements in the given order in the specified terminal.
 
 **Terminal 1**
 
@@ -158,7 +160,7 @@ COMMIT;
 
 **Terminal 2**
 
-When Transaction 1, releases key `k=2`, Transaction 2 should output the following:
+When *Transaction 1* releases key `k=2`, *Transaction 2* should output the following:
 
 ~~~
   k |  v
@@ -195,30 +197,32 @@ The `SELECT` statement should output the following:
 
 ## Identify waiting and blocking transactions
 
-This section of the tutorial uses the [**Insights** page]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view) of the DB Console to identify waiting and block transactions in the demo cluster. With a CockroachDB Cloud cluster, the Cloud Console has a similar [**Insights** page]({% link cockroachcloud/insights-page.md %}#transaction-executions-view). You can also use the [`crdb_internal`]({% link {{ page.version.version }}/performance-recipes.md %}#identify-transactions-and-objects-that-experienced-lock-contention) system catalog to view tables and indexes that experienced contention.
+This section of the tutorial uses the [**Insights** page]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view) of the DB Console to identify waiting and blocked transactions in the demo cluster. With a CockroachDB {{ site.data.products.cloud }} cluster, the {{ site.data.products.cloud }} Console has a similar [**Insights** page]({% link cockroachcloud/insights-page.md %}#transaction-executions-view). You can also use the [`crdb_internal`]({% link {{ page.version.version }}/performance-recipes.md %}#identify-transactions-and-objects-that-experienced-lock-contention) system catalog to view tables and indexes that experienced contention.
 
-While this tutorial uses the data from [Example 1](#example-1), when troubleshooting lock contention in your own workload, you can adapt the following steps using the DB Console or the Cloud Console.
+This section of the tutorial assumes you have already run the SQL statements from [Example 1](#example-1). When troubleshooting lock contention in your own workload, you can adapt the following steps using the DB Console or the {{ site.data.products.cloud }} Console.
 
 ### High Contention Insights
 
-After executing the three transactions in the previous section, open the [DB Console](#db-console) for the demo cluster. Navigate to the **Insights** page and select **Workload Insights** > **Transactions Executions** view.
+After executing the transactions in the [previous section](#understand-lock-contention), open the [DB Console](#db-console) for the demo cluster. Navigate to the **Insights** page and select **Workload Insights** > **Transactions Executions**.
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-transaction-executions-view.png' | relative_url }}" alt="Transaction Executions view" style="border:1px solid #eee;max-width:100%" />
 
-Depending on when you executed the three transactions, to display the transactions flagged with insights, you may have to select a longer time interval, such as **Past 6 Hours**.
+Depending on when you [executed the transactions](#example-1), to display the transactions flagged with insights, you may have to select a longer time interval, such as **Past 6 Hours**.
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-time-interval.png' | relative_url }}" alt="Time interval" style="border:1px solid #eee;max-width:100%" />
 
-With an adequate time interval, two [**High Contention**]({% link {{ page.version.version }}/ui-insights-page.md %}#high-contention) insights will be listed for the waiting transactions that experienced contention, **Transaction 2** and **Transaction 3** executed in Example 1.
+With an adequate time interval, two [**High Contention**]({% link {{ page.version.version }}/ui-insights-page.md %}#high-contention) insights will be listed for [Example 1](#example-1):
+
+- **Transaction 2**
+- **Transaction 3**
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-high-contention.png' | relative_url }}" alt="High Contention" style="border:1px solid #eee;max-width:100%" />
 
 ### Waiting statement
 
-To identify the exact statement in the transaction that experienced high contention, click the **Latest Transaction Execution ID**
-452da3e7-e7fa-4801-aa40-c59988d14eb6, the ID of the latest execution with the given [transaction fingerprint]({% link {{ page.version.version }}/ui-transactions-page.md %}).
+To identify the exact statement in the transaction that experienced high contention, click the value in the **Latest Transaction Execution ID** column that corresponds to the ID of the latest execution with the given [transaction fingerprint]({% link {{ page.version.version }}/ui-transactions-page.md %}).
 
-On the **Transaction Execution** page, navigate to the **Statement Executions** tab. In the list of statement executions, in the **Insights** column for `SELECT * FROM t where k = _`, there should be the **High Contention** insight. In Example 1, Transaction 2 had one statement (other than `SHOW database`). In a transaction with multiple statements, use this page to pinpoint the exact statement that experienced high contention.
+On the **Transaction Execution** page, navigate to the **Statement Executions** tab. In the list of statement executions, in the **Insights** column for `SELECT * FROM t where k = _`, there should be the **High Contention** insight. In [Example 1](#example-1), *Transaction 2* had one statement (other than `SHOW database`). In a transaction with multiple statements, use this page to pinpoint the exact statement that experienced high contention.
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-waiting-statement.png' | relative_url }}" alt="Waiting statement" style="border:1px solid #eee;max-width:100%" />
 
@@ -228,29 +232,29 @@ To identify the transaction that blocked **Transaction 2** and caused it to expe
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-overview-tab.png' | relative_url }}" alt="Overview tab" style="border:1px solid #eee;max-width:100%" />
 
-Scroll to the bottom of the Overview tab to the **Transaction with ID 452da3e7-e7fa-4801-aa40-c59988d14eb6 waited on** section which gives information about the blocking transaction.
+Scroll to the bottom of the Overview tab to the **Transaction with ID ... waited on** section which gives information about the blocking transaction.
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-blocking-transaction.png' | relative_url }}" alt="Blocking transaction" style="border:1px solid #eee;max-width:100%" />
 
-For more information about the blocking transaction, click the **Transaction Fingerprint ID** 08d8b7d97f830463 to open the [**Transaction Details** page]({% link {{ page.version.version }}/ui-transactions-page.md %}#transaction-details-page).
+For more information about the blocking transaction, click the **Transaction Fingerprint ID** to open the [**Transaction Details** page]({% link {{ page.version.version }}/ui-transactions-page.md %}#transaction-details-page).
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-blocking-transaction-details.png' | relative_url }}" alt="Blocking transaction details" style="border:1px solid #eee;max-width:100%" />
 
 ### Additional practice
 
-For Transaction 3, take steps similar to the above steps for Transaction 2, to identify the waiting statement that experienced high contention and the corresponding blocking transaction.
+For [*Transaction 3*](#example-1), take steps similar to the above steps for *Transaction 2*, to identify the waiting statement that experienced high contention and the corresponding blocking transaction.
 
 ## Remediate lock contention
 
 ### Background context
 
-Locking conflicts are a natural artifact when business requirements call for concurrent data changes. Realistically, locking conflicts are unavoidable. The locking conflicts, however, are resolved efficiently with regard to the underlying resource utilization. When blocked transactions are waiting on a lock, they are not consuming CPU, disk, or network resources.
+Locking conflicts are a natural artifact when business requirements call for concurrent data changes. Realistically, locking conflicts are unavoidable.
 
-Remediation is required when locking conflicts are too numerous, resulting in a significant increase in response time and/or decrease in throughput. Remediation of locking conflicts is typically about giving up some functionality in exchange for a reduction in locking contention. [Example 2](#example-2) uses two ways of doing this: [historical queries]({% link {{ page.version.version }}/as-of-system-time.md %}) and a ["fail fast" method]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies). Use these remediations if they fit your application design. Other possible ways to reduce lock conflicts are: [column families]({% link {{ page.version.version }}/column-families.md %}) and [secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}).
+Remediation is required when locking conflicts are too numerous, resulting in a significant increase in response time and/or decrease in throughput. Remediation of locking conflicts is typically about giving up some functionality in exchange for a reduction in locking contention. [Example 2](#example-2) uses two ways of doing this: [historical queries]({% link {{ page.version.version }}/as-of-system-time.md %}) and a ["fail fast" method]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies). Use these remediations if they fit your application design.
 
 ### Historical queries
 
-In this tutorial's [Example 2](#example-2), Transaction 5 uses a historical query:
+One way to reduce lock contention is to replace reads with historical reads using [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) wherever possible. Using this, your query returns data as it appeared at a distinct point in the past and will not cause conflicts with other concurrent transactions, which can increase your application's performance. An example of this method is *Transaction 5* in [Example 2](#example-2):
 
 ~~~ sql
 BEGIN AS OF SYSTEM TIME '-30s';
@@ -260,14 +264,14 @@ COMMIT;
 
 Consider the following when using [historical queries]({% link {{ page.version.version }}/as-of-system-time.md %}):
 
-- Use historical queries only if the application can use data that is 5 seconds old or older.
+- Use historical queries only if the application can use data that is [`follower_read_timestamp()`]({% link {{ page.version.version }}/as-of-system-time.md %}#parameters) old.
 - Historical queries primarily benefit read-only transactions.
 - Historical queries operate below [closed timestamps]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) and therefore have perfect concurrency characteristics - they never wait on anything and never block anything.
-- Historical queries have the best possible performance, since they are served by the nearest replica.
+- Historical queries have the best possible performance, since they are served by the nearest [replica]({% link {{ page.version.version }}/architecture/glossary.md %}#replica).
 
-### &quot;fail fast&quot; method
+### &quot;Fail fast&quot; method
 
-In this tutorial's [Example 2](#example-2), Transaction 6 uses a &quot;fail fast&quot; method:
+One way to reduce lock contention with writes is to use a "fail fast" method by using [SELECT FOR UPDATE ... NOWAIT]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) before the write. It can reduce or prevent failures late in a transaction's life (e.g. at the `COMMIT` time), by returning an error early in a contention situation if a row cannot be locked immediately. An example of this method is *Transaction 6* in [Example 2](#example-2):
 
 ~~~ sql
 BEGIN;
@@ -276,11 +280,7 @@ UPDATE t2 SET v=4034 WHERE k=4;
 COMMIT;
 ~~~
 
-Consider the following when using a ["fail fast" method]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies):
-
-- &quot;Fail fast&quot; could be a reasonable protective measure in the application to handle "hot update key" situations, for example, when an application needs to be able to handle an arbitrary large surge of updates on the same key.
-- The most direct method of "failing fast" is using pessimistic locking with [SELECT FOR UPDATE … NOWAIT]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies). It can reduce or prevent failures late in a transaction's life (e.g. at the `COMMIT` time), by returning an error early in a contention situation if a row cannot be locked immediately.
-- A more &quot;buffered fail fast&quot; approach would be to control the maximum length of a lock wait-queue that requests are willing to enter and wait in, with the cluster setting  [`kv.lock_table.maximum_lock_wait_queue_length`](https://github.com/cockroachdb/cockroach/pull/66146) (default: `0`). It can provide some level of quality-of-service with a response time predictability in a severe per-key contention. If set to a non-zero value and an existing lock wait-queue is already equal to or exceeding this length, requests will be rejected eagerly instead of entering the queue and waiting.
+&quot;Fail fast&quot; could be a reasonable protective measure in the application to handle "hot update key" situations, for example, when an application needs to be able to handle an arbitrarily large surge of updates on the same key.
 
 ### Initial Data for Example 2
 
@@ -295,7 +295,7 @@ INSERT INTO t2 VALUES (4,4), (5,5), (6,6);
 
 ### Example 2
 
-In this example, Transaction 4 is a write that does not block either Transaction 5, a read, or Transaction 6, a write. Transaction 4 locks key `k=4`. When Transaction 5 tries to read key `k=4`, it does not experience lock contention because it does not have to wait for the lock on the key to be released. Transaction 5 uses [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) to do a historical read. When Transaction 6 executes the [`SELECT ... FOR UPDATE NOWAIT`]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) on key `k=4`, an error is returned since the key `k=4` cannot be locked immediately. In other words, Transaction 6 "fails fast". It does not even attempt to do an `UPDATE` write to key `k=4`, so it does not experience lock contention.
+In this example, we will show how to do prevent lock contention by using a historical read and a "fail fast" write. *Transaction 4* is a write that does not block either *Transaction 5*, a read, or *Transaction 6*, a write. *Transaction 4* locks key `k=4`. When *Transaction 5* tries to read key `k=4`, it does not experience lock contention because it does not have to wait for the lock on the key to be released. *Transaction 5* uses [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) to do a historical read. When *Transaction 6* executes the [`SELECT ... FOR UPDATE NOWAIT`]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies) on key `k=4`, an error is returned since the key `k=4` cannot be locked immediately. In other words, *Transaction 6* "fails fast". It does not even attempt to do an `UPDATE` write to key `k=4`, so it does not experience lock contention.
 
 Transaction 4 (blocking write)   | Transaction 5 (historical read) | Transaction 6 (fail fast write)
 ---------------------------------|------------------------------|--------------------------------
@@ -313,7 +313,7 @@ success, k=4,v=4014              |                              | not waiting
 
 ### SQL statements for Example 2
 
-To reproduce Example 2 in CockroachDB to show how to remediate a waiting read and write experiencing lock contention, execute the following SQL statements in the given order in the specified terminal.
+To reproduce Example 2, execute the following SQL statements in the given order in the specified terminal.
 
 **Terminal 1**
 
@@ -333,7 +333,7 @@ BEGIN AS OF SYSTEM TIME '-30s';
 SELECT * FROM t2 WHERE k=4; -- historical read
 ~~~
 
-Transaction 5 does a historical read and should output the following:
+*Transaction 5* does a historical read and should output the following:
 
 ~~~
   k | v
@@ -377,7 +377,7 @@ COMMIT;
 
 **Terminal 3**
 
-`COMMIT` Transaction 6. Since the `SELECT` statement in Transaction 6 generated an error, `COMMIT` is equivalent to `ROLLBACK`, which aborts the transaction and discards the `UPDATE`. Afterward, verify that the `UPDATE` was discarded.
+`COMMIT` *Transaction 6*. Since the `SELECT` statement in Transaction 6 generated an error, `COMMIT` is equivalent to `ROLLBACK`, which aborts the transaction and discards the `UPDATE`. Afterward, verify that the `UPDATE` was discarded.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -393,3 +393,11 @@ The `SELECT` statement should output the following:
   4 | 4014
 (1 row)
 ~~~
+
+## See also
+
+- [Transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention)
+- [Identify transactions and objects that experienced lock contention using `crdb_internal`]({% link {{ page.version.version }}/performance-recipes.md %}#identify-transactions-and-objects-that-experienced-lock-contention)
+- [**Insights** page]({% link {{ page.version.version }}/ui-insights-page.md %})
+- [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %})
+- [`SELECT FOR UPDATE ... NOWAIT`]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies)
