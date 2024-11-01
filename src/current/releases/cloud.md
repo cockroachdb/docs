@@ -39,7 +39,7 @@ The new official [Cockroach Labs Okta app integration]({% link cockroachcloud/co
 
 ## October 1, 2024
 
-[Metering](https://www.cockroachlabs.com/docs/cockroachcloud/costs) for usage-based billing of data transfer, managed backup storage, and changefeeds is now in [Preview](#usage-based-billing-metrics-in-preview) for all CockroachDB Cloud organizations.
+[Metering](https://www.cockroachlabs.com/docs/cockroachcloud/costs) for usage-based billing of data transfer, managed backup storage, and changefeeds is now in [Preview](https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#features-in-preview) for all CockroachDB Cloud organizations.
 
 - Usage metrics for data transfer, managed backup storage, and changefeeds are now visible for CockroachDB Standard and Advanced clusters in the CockroachDB Cloud Console. You can view your usage across these metrics on the [Billing page](https://cockroachlabs.cloud/billing/overview) and on invoices.  
 - There will be no usage-based charges associated with these metrics during the Preview period, which is in effect through November 30, 2024\. During this time, line items with a charge of $0 will be shown for each metric on your monthly invoice.  
