@@ -15,6 +15,14 @@ Get future release notes emailed to you:
 {% include marketo.html formId=1083 %}
 
 
+## November 1, 2024
+
+Cockroach Labs has announced [updated pricing](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud. This new pricing model goes into effect December 1, 2024 for new customers and existing pay-as-you-go customers, and upon renewal for annual or multi-year contract customers.
+
+A [Preview](https://www.cockroachlabs.com/docs/cockroachcloud/costs#usage-based-billing-metrics-in-preview) of metering for usage-based billing of data transfer, backups, and changefeeds remains in effect through November 30, 2024. During this Preview, line items with a charge of $0 will be shown on your monthly invoice for these items. Customers with existing annual or multi-year contracts may continue to preview these line items until charges begin upon contract renewal.
+
+For more information, refer to [CockroachDB Cloud Costs](https://www.cockroachlabs.com/docs/cockroachcloud/costs) and the [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) page.
+
 ## October 29, 2024
 
 The new official [Cockroach Labs Okta app integration]({% link cockroachcloud/configure-cloud-org-sso.md %}#add-a-custom-authentication-method) eases the configuration of OIDC and SAML SSO authentication methods for CockroachDB {{ site.data.products.cloud }} organizations. Previously, a custom OIDC or SAML app integration in Okta was required.
@@ -31,16 +39,12 @@ The new official [Cockroach Labs Okta app integration]({% link cockroachcloud/co
 
 ## October 1, 2024
 
-Metering for usage-based billing of data transfer, managed backup storage, and changefeeds is now in [Preview]({% link {{site.current_cloud_version }}/cockroachdb-feature-availability.md %}) for all CockroachDB Cloud organizations.
+[Metering](https://www.cockroachlabs.com/docs/cockroachcloud/costs) for usage-based billing of data transfer, managed backup storage, and changefeeds is now in [Preview](https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability#features-in-preview) for all CockroachDB Cloud organizations.
 
-- [Usage metrics]({% link cockroachcloud/costs.md %}) for data transfer, managed backup storage, and changefeeds are now visible for CockroachDB Standard and Advanced clusters in the CockroachDB Cloud Console. You can view your usage across these metrics on the [Billing page](https://cockroachlabs.cloud/billing/overview) and on invoices.
-- There will be no usage-based charges associated with these metrics during the preview period, which is in effect through November 30, 2024. During this time, line items with a charge of $0 will be shown for each metric on your monthly invoice.
-- We will share pricing for these usage-based costs by November 1, 2024.
-- On December 1, 2024, once the preview has ended, pricing for these metrics goes into effect immediately for new customers and customers billed monthly, and upon contract renewal for customers billed by invoice.
-
-{{site.data.alerts.callout_info}}
-Bytes transferred for [managed backups]({% link cockroachcloud/managed-backups.md %}) on CockroachDB Standard are not yet metered under [Data Transfer]({% link cockroachcloud/costs.md %}#data-transfer) metrics. This will be implemented during the Preview period and be announced in a future release note.
-{{site.data.alerts.end}}
+- Usage metrics for data transfer, managed backup storage, and changefeeds are now visible for CockroachDB Standard and Advanced clusters in the CockroachDB Cloud Console. You can view your usage across these metrics on the [Billing page](https://cockroachlabs.cloud/billing/overview) and on invoices.  
+- There will be no usage-based charges associated with these metrics during the Preview period, which is in effect through November 30, 2024\. During this time, line items with a charge of $0 will be shown for each metric on your monthly invoice.  
+- We will share pricing for these usage-based costs by November 1, 2024\.  
+- On December 1, 2024, once the Preview has ended, pricing for these metrics goes into effect immediately for new customers and for existing pay-as-you-go customers (e.g. paying monthly by credit card). Customers with annual or multi-year contracts will continue to preview these line items without incurring charges for them (i.e. expending credits) through the end of their current contract term.
 
 ## September 25, 2024
 
