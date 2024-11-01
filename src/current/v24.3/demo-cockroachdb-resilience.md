@@ -1,5 +1,5 @@
 ---
-title: Fault Tolerance & Recovery
+title: CockroachDB Resilience Demo
 summary: Use a local cluster to explore how CockroachDB remains available during, and recovers after, failure.
 toc: true
 docs_area: deploy
@@ -376,6 +376,6 @@ kill -TERM {process IDs}
 
 ## What's next?
 
-Explore other core CockroachDB benefits and features:
+Explore other CockroachDB benefits and features:
 
 {% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}

@@ -67,12 +67,10 @@ sinks:
 capture-stray-errors: ... # parameters for the stray error capture system
 ~~~
 
-{{site.data.alerts.callout_info}}
 Providing a logging configuration is optional. Any fields included in the YAML payload will override the same fields in the [default logging configuration](#default-logging-configuration).
-{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-You can view your current settings by running `cockroach debug check-log-config`, which returns the YAML definitions and a URL to a visualization of the current logging configuration.
+You can view the default settings by running `cockroach debug check-log-config`, which returns the YAML definitions and a URL to a visualization of the default logging configuration.
 {{site.data.alerts.end}}
 
 ## Configure log sinks
@@ -636,6 +634,8 @@ With this logging configuration:
 - CockroachDB will hold log messages in a buffer for up to `20s` (the `max-staleness` setting), or up to a collected size of `2MiB` (the `flush-trigger-size` setting), before writing ("flushing") the buffer to the log file. When both settings are used, whichever case is met first triggers the buffer flush.
 - If at any point the accumulated message size of buffer flushes (as triggered by reaching either the configured `max-staleness` or `flush-trigger-size` value) exceeds `100MiB` (the `max-buffer-size` setting), all new incoming log messages received are dropped until the accumulated message size in the buffer once more falls below this value.
 - For the `HEALTH` [log channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) only, override the `file-defaults` value of `20s` for `max-staleness`, instead flushing messages to the log file within up to `2s`.
+
+{% include_cached new-in.html version="v24.3" %}Logs are flushed automatically upon CockroachDB startup only if CockroachDB is managed using `systemd`.
 
 Alternatively, you may explicitly disable log buffering by setting `buffering` to `NONE`. The following log configuration explicitly disables log buffering for just the `OPS` channel on a [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) log sink:
 

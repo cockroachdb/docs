@@ -9,9 +9,7 @@ This page guides you through developing a globally-available web application. It
 
 {% comment %} {% include {{ page.version.version }}/misc/movr-live-demo.md %} {% endcomment %}
 
-{{site.data.alerts.callout_info}}
-This tutorial assumes you are running under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation. Client-side retry handling is **not** necessary under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation.
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/sql/serializable-tutorial.md %}
 
 ## Before you begin
 
