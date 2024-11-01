@@ -81,7 +81,7 @@ When MVCC garbage is deleted by garbage collection, the data is still not yet ph
 
 {% include {{page.version.version}}/storage/free-up-disk-space.md %}
 
-## How can I free up disk space quickly?
+## How can I free up disk space that was used by a dropped table?
 
 If you've noticed that [your disk space is not freeing up quickly enough after deleting data](#why-is-my-disk-usage-not-decreasing-after-deleting-data), you can take the following steps to free up disk space more quickly. This example assumes a table `t`.
 
