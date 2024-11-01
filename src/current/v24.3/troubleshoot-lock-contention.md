@@ -8,17 +8,17 @@ Lock contention is a type of [transaction contention]({% link {{ page.version.ve
 
 This tutorial presents:
 
-- How to [understand lock contention](#understand-lock-contention) by reproducing a basic example.
-- How to [identify waiting and blocking transactions](#identify-waiting-and-blocking-transactions) by using the Insights page of the DB Console.
-- Possible ways to [remediate lock contention](#remediate-lock-contention).
+- How to [understand lock contention](#step-1-understand-lock-contention) by reproducing a basic example.
+- How to [identify waiting and blocking transactions](#step-2-identify-waiting-and-blocking-transactions) by using the Insights page of the DB Console.
+- Possible ways to [remediate lock contention](#step-3-remediate-lock-contention).
 
 ## Before you begin
 
 [Download]({% link releases/index.md %}) and [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}).
 
-### Terminal 1
-
 The examples in this tutorial will use three terminals, one for each transaction.
+
+### Terminal 1
 
 In the first terminal, use the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to start a temporary, in-memory CockroachDB cluster of one node.
 
@@ -29,21 +29,21 @@ cockroach demo --no-example-database
 
 It will open an interactive SQL shell to the cluster set to an empty database called `defaultdb`. This database is used for testing and some internal databases.
 
-To distinguish each terminal set the `application_name`. In the SQL shell in the first terminal, execute:
+To distinguish each terminal that you'll use in this tutorial, set the `application_name`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SET application_name = 'Transaction 1';  -- to distinguish between transactions
 ~~~
 
-To [connect additional SQL clients to the demo cluster]({% link {{ page.version.version }}/cockroach-demo.md %}#connect-an-additional-sql-client-to-the-demo-cluster), in the SQL shell use `\demo ls` to list the connection parameters in the demo cluster:
+To [connect additional SQL clients to the demo cluster]({% link {{ page.version.version }}/cockroach-demo.md %}#connect-an-additional-sql-client-to-the-demo-cluster), run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 \demo ls
 ~~~
 
-The output will be similar to:
+The output will list the connection parameters in the demo cluster:
 
 ~~~
 demo@127.0.0.1:26257/defaultdb> \demo ls
@@ -92,7 +92,9 @@ In a web browser, open the DB Console to the demo cluster using the `webui` addr
 http://127.0.0.1:8080/demologin?password=demo28806&username=demo
 ~~~
 
-## Understand lock contention
+## Step 1. Understand lock contention
+
+In this step, you'll load some initial data to prepare the table for a set of transactions that will cause lock contention.
 
 ### Initial Data
 
@@ -125,7 +127,7 @@ success, k=2,v=2012              | k=2, v=2012                  |
 
 ### SQL statements
 
-To reproduce Example 1 in CockroachDB in preparation for the next section on how to [identify waiting and blocking transactions](#identify-waiting-and-blocking-transactions), execute the following SQL statements in the given order in the specified terminal.
+To reproduce Example 1 in CockroachDB in preparation for the next section on how to [identify waiting and blocking transactions](#step-2-identify-waiting-and-blocking-transactions), execute the following SQL statements in the given order in the specified terminal.
 
 **Terminal 1**
 
@@ -195,15 +197,15 @@ The `SELECT` statement should output the following:
 (1 row)
 ~~~
 
-## Identify waiting and blocking transactions
+## Step 2. Identify waiting and blocking transactions
 
 This section of the tutorial uses the [**Insights** page]({% link {{ page.version.version }}/ui-insights-page.md %}#transaction-executions-view) of the DB Console to identify waiting and blocked transactions in the demo cluster. With a CockroachDB {{ site.data.products.cloud }} cluster, the {{ site.data.products.cloud }} Console has a similar [**Insights** page]({% link cockroachcloud/insights-page.md %}#transaction-executions-view). You can also use the [`crdb_internal`]({% link {{ page.version.version }}/performance-recipes.md %}#identify-transactions-and-objects-that-experienced-lock-contention) system catalog to view tables and indexes that experienced contention.
 
-This section of the tutorial assumes you have already run the SQL statements from [Example 1](#example-1). When troubleshooting lock contention in your own workload, you can adapt the following steps using the DB Console or the {{ site.data.products.cloud }} Console.
+This step assumes you have already run the SQL statements from [Example 1](#example-1). When troubleshooting lock contention in your own workload, you can adapt the following steps using the DB Console or the {{ site.data.products.cloud }} Console.
 
 ### High Contention Insights
 
-After executing the transactions in the [previous section](#understand-lock-contention), open the [DB Console](#db-console) for the demo cluster. Navigate to the **Insights** page and select **Workload Insights** > **Transactions Executions**.
+After executing the transactions in the [previous section](#step-1-understand-lock-contention), open the [DB Console](#db-console) for the demo cluster. Navigate to the **Insights** page and select **Workload Insights** > **Transactions Executions**.
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-transaction-executions-view.png' | relative_url }}" alt="Transaction Executions view" style="border:1px solid #eee;max-width:100%" />
 
@@ -232,7 +234,7 @@ To identify the transaction that blocked **Transaction 2** and caused it to expe
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-overview-tab.png' | relative_url }}" alt="Overview tab" style="border:1px solid #eee;max-width:100%" />
 
-Scroll to the bottom of the Overview tab to the **Transaction with ID ... waited on** section which gives information about the blocking transaction.
+Scroll to the bottom of the Overview tab to the **Transaction with ID ... waited on** section that gives information about the blocking transaction.
 
 <img src="{{ 'images/v24.3/troubleshoot-lock-contention-blocking-transaction.png' | relative_url }}" alt="Blocking transaction" style="border:1px solid #eee;max-width:100%" />
 
@@ -242,15 +244,15 @@ For more information about the blocking transaction, click the **Transaction Fin
 
 ### Additional practice
 
-For [*Transaction 3*](#example-1), take steps similar to the above steps for *Transaction 2*, to identify the waiting statement that experienced high contention and the corresponding blocking transaction.
+For [*Transaction 3*](#example-1), take steps similar to *Transaction 2* in order to identify the waiting statement that experienced high contention and the corresponding blocking transaction.
 
-## Remediate lock contention
+## Step 3. Remediate lock contention
 
 ### Background context
 
 Locking conflicts are a natural artifact when business requirements call for concurrent data changes. Realistically, locking conflicts are unavoidable.
 
-Remediation is required when locking conflicts are too numerous, resulting in a significant increase in response time and/or decrease in throughput. Remediation of locking conflicts is typically about giving up some functionality in exchange for a reduction in locking contention. [Example 2](#example-2) uses two ways of doing this: [historical queries]({% link {{ page.version.version }}/as-of-system-time.md %}) and a ["fail fast" method]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies). Use these remediations if they fit your application design.
+Remediation is required when locking conflicts are too numerous, resulting in either a significant increase in response time or decrease in throughput or both. Remediation of locking conflicts is typically about giving up some functionality in exchange for a reduction in locking contention. [Example 2](#example-2) uses two ways of doing this: [historical queries]({% link {{ page.version.version }}/as-of-system-time.md %}) and a ["fail fast" method]({% link {{ page.version.version }}/select-for-update.md %}#wait-policies). Use these remediations if they fit your application design.
 
 ### Historical queries
 
