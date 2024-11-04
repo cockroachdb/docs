@@ -5,13 +5,11 @@ toc: true
 docs_area: reference.transaction_retry_error_example
 ---
 
-When a [transaction]({% link {{ page.version.version }}/transactions.md %}) is unable to complete due to [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) with another concurrent or recent transaction attempting to write to the same data, CockroachDB will [automatically attempt to retry the failed transaction]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) without involving the client (i.e., silently). If the automatic retry is not possible or fails, a [transaction retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) is emitted to the client.
+{% include {{ page.version.version }}/sql/serializable-tutorial.md %}
+
+When a [transaction]({% link {{ page.version.version }}/transactions.md %}) is unable to complete due to [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) with another concurrent or recent transaction attempting to write to the same data, CockroachDB will [automatically attempt to retry the failed transaction]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) without involving the client (i.e., silently). An automatic retry may not always succeed if the transaction is `SERIALIZABLE`. In this case, a [transaction retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) is emitted to the client.
 
 This page presents an [example of an application's transaction retry logic](#client-side-retry-handling-example), as well as a manner by which that logic can be [tested and verified](#test-transaction-retry-logic) against your application's needs.
-
-{{site.data.alerts.callout_info}}
-Client-side retry handling is **not** necessary under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation.
-{{site.data.alerts.end}}
 
 ## Client-side retry handling example
 
