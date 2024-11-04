@@ -2,7 +2,7 @@ In a [NUMA (non-uniform memory access) architecture](https://en.wikipedia.org/wi
 
 CockroachDB is written in Go, which has no support for NUMA scheduling or pinning. To run multiple CockroachDB clusters on a NUMA architecture:
 
-- Assign no more than 32 cores to the node for each instance.
+- Assign no more than 32 cores to the node for each instance. Refer to the documentation for [`numactl --membind`](https://man7.org/linux/man-pages/man8/numactl.8.html).
 - Ensure that your orchestration framework, process manager, or startup scripts start each CockroachDB in a separate NUMA node.
-- Use the `--locality` flag to indicate when multiple CockroachDB instances are running on a given physical host.
-- Ensure that each CockroachDB cluster writes to a unique set of storage volumes (block devices).
+- If multiple CockroachDB nodes for the same CockroachDB cluster run on the same physical host, ensure that they are in the same [`--locality`]({% link {{ page.version.version }}/architecture-replication-layer.md %}#intra-locality) to ensure that data is distributed across different physical hosts.
+- Ensure that each CockroachDB node writes to a unique set of storage volumes (block devices).
