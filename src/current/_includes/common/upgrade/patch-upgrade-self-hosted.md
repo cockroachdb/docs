@@ -5,11 +5,11 @@ To upgrade from one patch release to another within the same major version, perf
 1. Verify that the node has rejoined the cluster.
 1. Ensure that the node is ready to accept a SQL connection.
 
-        Unless there are tens of thousands of ranges on the node, it's usually sufficient to wait one minute. To be certain that the node is ready, run the following command:
+    Unless there are tens of thousands of ranges on the node, it's usually sufficient to wait one minute. To be certain that the node is ready, run the following command:
 
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        cockroach sql -e 'select 1'
-        ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql -e 'select 1'
+    ~~~
 
 When all nodes are running the new patch version, the upgrade is complete.
