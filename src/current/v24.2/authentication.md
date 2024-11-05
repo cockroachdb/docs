@@ -1,5 +1,5 @@
 ---
-title: Authenticate to CockroachDB Self-Hosted Clusters
+title: Authenticate to CockroachDB self-hosted Clusters
 summary: Learn about the authentication features for secure CockroachDB clusters.
 toc: true
 docs_area: manage
