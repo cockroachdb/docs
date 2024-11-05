@@ -15,7 +15,9 @@ To view this dashboard, [access the DB Console]({% link {{ page.version.version 
 
 For monitoring CockroachDB, it is sufficient to use the [**Open SQL Sessions**](#open-sql-sessions), [**SQL Byte Traffic**](#sql-byte-traffic), [**SQL Statements**](#sql-statements), [**Service Latency**](#service-latency-sql-99th-percentile), and [**Transactions**](#transactions) graphs.
 
-The **SQL** dashboard displays the following time series graphs:
+---
+
+The **SQL** dashboard displays the following time series graphs.
 
 ## Open SQL Sessions
 
@@ -65,15 +67,15 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 - In the cluster view, the graph shows the aggregate client throughput across all nodes. There are lines for bytes in and bytes out.
 
-## SQL Statements
+## SQL Queries Per Second
 
-- In the node view, the graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` statements per second issued by SQL clients on the node.
+- In the node view, the graph shows the 10-second moving average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries issued by SQL clients and successfully executed per second on the node. `Total Queries`, a sum of all four averages, is also displayed.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current statement load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
 See the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) for more details on the cluster's SQL statements.
 
-Metrics: `sql.select.count`, `sql.update.count`, `sql.insert.count`, `sql.delete.count`
+Metrics: `sql.select.count`, `sql.update.count`, `sql.insert.count`, `sql.delete.count`, `sql.crud_query.count`
 
 The following SQL statements update the `INSERT` metric (`sql.insert.count`):
 
