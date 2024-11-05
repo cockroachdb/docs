@@ -57,7 +57,7 @@ You cannot use LDR on a table with a schema that contains the following:
 
 For more details, refer to the LDR [Known limitations]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#known-limitations).
 
-When you run LDR in `immediate` mode, you cannot replicate a table with [SQL constraints]({% link {{ page.version.version }}/constraints.md %}). In `validated` mode, SQL constraints **must** match. 
+When you run LDR in `immediate` mode, you cannot replicate a table with [foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}). In `validated` mode, foreign key constraints **must** match. 
 
 ## Step 1. Prepare the cluster
 
