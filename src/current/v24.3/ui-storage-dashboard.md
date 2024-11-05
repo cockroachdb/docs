@@ -13,6 +13,12 @@ To view this dashboard, [access the DB Console]({% link {{ page.version.version 
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
+### Per store metrics
+
+To display per [store]({% link {{ page.version.version }}/cockroach-start.md %}#store) metrics, select a specific node in the **Graph** menu. An aggregate metric for that node as well as a metric for each store of that node will be displayed for [L0 SSTable Count](#l0-sstable-count), [L0 SSTable Size](#l0-sstable-size), and some [other graphs](#other-graphs).
+
+---
+
 The **Storage** dashboard displays the following time series graphs:
 
 ## Capacity
