@@ -61,7 +61,7 @@ SHOW LOGICAL REPLICATION JOBS WITH details;
 
 ## Recommended LDR metrics to track
 
-- Replication latency: The commit-to-commit replication latency. A _commit_ is when the LDR job either adds a row to the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) or applies a row successfully to the destination cluster.
+- Replication latency: The commit-to-commit replication latency, which is tracked from when a row is committed on the source cluster, to when it is "committed" on the destination cluster. A _commit_ is when the LDR job either adds a row to the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) or applies a row successfully to the destination cluster.
     - `logical_replication.commit_latency-p50`
     - `logical_replication.commit_latency-p99`
 - Replication lag: How far behind the source cluster is from the destination cluster at a specific point in time. The replication lag is equivalent to [RPO]({% link {{ page.version.version }}/disaster-recovery-overview.md %}) during a disaster.
