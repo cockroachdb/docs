@@ -8,23 +8,26 @@ toc: true
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v24.3" %} **Logical data replication (LDR)** continuously replicates tables between active CockroachDB clusters. Application traffic can occur concurrently on both the source and destination clusters with the LDR job achieving eventual consistency in the replicating tables. The active-active setup can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Each cluster in an LDR job still benefits individually from multi-active availability with CockroachDB's built-in Raft replication providing data consistency across nodes, zones, and regions.
+{% include_cached new-in.html version="v24.3" %} **Logical data replication (LDR)** continuously replicates tables between active CockroachDB clusters. Both source and destination cluster can receive application reads and writes, with LDR enabling bidirectional replication for eventual consistency in the replicating tables. The active-active setup can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Each cluster in an LDR job still benefits individually from [multi-active availability]({% link {{ page.version.version }}/multi-active-availability.md %}) with CockroachDB's built-in [Raft replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) providing data consistency across nodes, zones, and regions.
 
 {{site.data.alerts.callout_success}}
-Cockroach Labs also has a [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) tool that continuously sends data at the byte level from a primary cluster to an independent standby cluster.
+Cockroach Labs also has a [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) tool that continuously sends data at the byte level for transactional consistency from a primary cluster to an independent standby cluster.
 {{site.data.alerts.end}}
 
 ## Use cases
 
-You can run LDR in a _unidirectional_ or _bidirectional_ setup to meet different use cases that support
+You can run LDR in a _unidirectional_ or _bidirectional_ setup to meet different use cases that support:
 
-### Bidirectional LDR
+- [High availability and single-region write latency in two-datacenter deployments](#achieve-high-availability-and-single-region-write-latency-in-two-datacenter-deployments)
+- [Workload isolation between clusters](#achieve-workload-isolation-between-clusters)
 
-Maintain high availability with a two-datacenter topology. You can run bidirectional LDR to ensure [data resilience]({% link {{ page.version.version }}/data-resilience.md %}) in your deployment, particularly in region failure. Both clusters can receive application reads and writes with low, single-region write latency. In a datacenter or cluster outage, you can redirect application traffic to the surviving cluster with [low downtime]({% link {{ page.version.version }}/data-resilience.md %}#high-availability). In the following diagram, the clusters are deployed in US East and West to provide low latency for that region. The two LDR jobs ensure that the tables on both clusters will reach eventual consistency.
+### Achieve high availability and single-region write latency in two-datacenter deployments
+
+Maintain [high availability]({% link {{ page.version.version }}/data-resilience.md %}#high-availability) with a two-datacenter topology. You can run bidirectional LDR to ensure [data resilience]({% link {{ page.version.version }}/data-resilience.md %}) in your deployment, particularly in datacenter or region failures. Both clusters can receive application reads and writes with low, single-region write latency. In a datacenter or cluster outage, you can redirect application traffic to the surviving cluster with [low downtime]({% link {{ page.version.version }}/data-resilience.md %}#high-availability). In the following diagram, the clusters are deployed in US East and West to provide low latency for that region. The two LDR jobs ensure that the tables on both clusters will reach eventual consistency.
 
 <image src="{{ 'images/v24.3/east-west-region.svg' | relative_url }}" alt="Diagram showing bidirectional LDR from cluster A to B and back again from cluster B to A." style="width:50%" />
 
-### Unidirectional LDR
+### Achieve workload isolation between clusters
 
 Isolate critical application workloads from non-critical application workloads in a unidirectional setup. For example, you may want to run jobs like [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) or [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) from one cluster to isolate these jobs from the cluster receiving the principal application traffic.
 
@@ -36,7 +39,7 @@ Isolate critical application workloads from non-critical application workloads i
 - **Last write wins conflict resolution**: LDR uses [_last write wins (LWW)_ conflict resolution]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#conflict-resolution), which will use the latest MVCC timestamp to resolve a conflict in row insertion.
 - **Dead letter queue (DLQ)**: When LDR starts, the job will create a [DLQ table]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) with each replicating table in order to track unresolved conflicts. You can interact and manage this table like any other SQL table.
 - **Replication modes**: In LDR, you can use different _modes_ to apply different configurations to the replication. The modes will allow you to configure for throughput.
-- **Monitoring**: To monitor LDR's initial progress, current status, and performance, you can metrics available in the DB Console, Prometheus, and Metrics Export.
+- **Monitoring**: To [monitor]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}) LDR's initial progress, current status, and performance, you can metrics available in the DB Console, Prometheus, and Metrics Export.
 
 ## Get started
 
