@@ -203,6 +203,12 @@
               ]
             },
             {
+              "title": "<code>CREATE LOGICAL REPLICATION STREAM</code>",
+              "urls": [
+                "/${VERSION}/create-logical-replication-stream.html"
+              ]
+            },
+            {
               "title": "<code>CREATE PROCEDURE</code>",
               "urls": [
                 "/${VERSION}/create-procedure.html"
