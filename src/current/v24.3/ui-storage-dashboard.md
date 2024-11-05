@@ -19,11 +19,9 @@ The **Storage** dashboard displays the following time series graphs:
 
 You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster]({% link {{ page.version.version }}/cockroach-start.md %})).
 
-<img src="{{ 'images/v24.2/ui_capacity.png' | relative_url }}" alt="DB Console Capacity graph" style="border:1px solid #eee;max-width:100%" />
-
 Metric | Description
 --------|--------
-**Capacity** | The maximum store size. This value may be set per node using [`--store`]({% link {{ page.version.version }}/cockroach-start.md %}#store). If a store size has not been set, this metric displays the actual disk capacity. See [Capacity metrics](#capacity-metrics).
+**Max** | The maximum store size. This value may be set per node using [`--store`]({% link {{ page.version.version }}/cockroach-start.md %}#store). If a store size has not been set, this metric displays the actual disk capacity. See [Capacity metrics](#capacity-metrics).
 **Available** | The free disk space available to CockroachDB data.
 **Used** | The disk space in use by CockroachDB data. This excludes the Cockroach binary, operating system, and other system files.
 
@@ -50,8 +48,6 @@ The disk usage of the Cockroach binary, operating system, and other system files
 
 The **Live Bytes** graph displays the amount of data that can be read by applications and CockroachDB.
 
-<img src="{{ 'images/v24.2/ui_live_bytes.png' | relative_url }}" alt="DB Console Replicas per Store" style="border:1px solid #eee;max-width:100%" />
-
 Metric | Description
 --------|--------
 **Live** | Number of logical bytes stored in live [key-value pairs]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#table-data). Live data excludes historical and deleted data.
@@ -61,9 +57,19 @@ Metric | Description
 {% include {{ page.version.version }}/ui/logical-bytes.md %}
 {{site.data.alerts.end}}
 
-## File Descriptors
+## L0 SSTable Count
 
-<img src="{{ 'images/v24.2/ui_file_descriptors.png' | relative_url }}" alt="DB Console File Descriptors" style="border:1px solid #eee;max-width:100%" />
+- In the node view, the graph shows the number of [L0 SSTables]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) in use for each store of that node.
+
+- In the cluster view, the graph shows the total number of L0 SSTables in use for each node of the cluster.
+
+## L0 SSTable Size
+
+- In the node view, the graph shows the size of all [L0 SSTables]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) in use for each store of that node.
+
+- In the cluster view, the graph shows the total size of all L0 SSTables in use for each node of the cluster.
+
+## File Descriptors
 
 - In the node view, the graph shows the number of open file descriptors for that node, compared with the file descriptor limit.
 
@@ -77,24 +83,46 @@ If you are running multiple nodes on a single machine (not recommended), the act
 
 For Windows systems, you can ignore the File Descriptors graph because the concept of file descriptors is not applicable to Windows.
 
+## Disk Write Breakdown
+
+- In the node view, the graph shows the number of bytes written to disk per second categorized according to the source for that node.
+
+- In the cluster view, the graph shows the number of bytes written to disk per second categorized according to the source for each node.
+
+Possible sources of writes with their series label are:
+
+- [WAL]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) (`pebble-wal`)
+- [Compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) (`pebble-compaction`)
+- [SSTable ingestions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) (`pebble-ingestion`)
+- [Memtable flushes]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) (`pebble-memtable-flush`)
+- [Raft snapshots]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots) (`raft-snapshot`)
+- [Encryption Registry]({% link {{ page.version.version }}/security-reference/encryption.md %}#encryption-keys-used-by-cockroachdb-self-hosted-clusters) (`encryption-registry`)
+- [Logs]({% link {{ page.version.version }}/logging-overview.md %}) (`crdb-log`)
+- SQL row spill (`sql-row-spill`), refer to [`cockroach start` command]({% link {{ page.version.version }}/cockroach-start.md %}#flags) flag `--max-disk-temp-storage`
+- [SQL columnar spill]({% link {{ page.version.version }}/vectorized-execution.md %}#disk-spilling-operations) (`sql-col-spill`)
+
+Refer to the **Hardware** dashboard [**Disk Write Bytes** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#disk-write-bytes) to view an aggregate of all disk writes.
+
 ## Other graphs
 
 The **Storage** dashboard shows other time series graphs that are important for CockroachDB developers:
 
 Graph | Description
 --------|--------
-Log Commit Latency: 99th Percentile | The 99th percentile latency for commits to the Raft log.
-Log Commit Latency: 50th Percentile | The 50th percentile latency for commits to the Raft log.
-Command Commit Latency: 99th Percentile | The 99th percentile latency for commits of Raft commands.
-Command Commit Latency: 50th Percentile | The 50th percentile latency for commits of Raft commands.
+WAL Fsync Latency | The latency for fsyncs to the storage engine's write-ahead log.
+Log Commit Latency: 99th Percentile | The 99th percentile latency for commits to the Raft log. This measures essentially an fdatasync to the storage engine's write-ahead log.
+Log Commit Latency: 50th Percentile | The 50th percentile latency for commits to the Raft log. This measures essentially an fdatasync to the storage engine's write-ahead log.
+Command Commit Latency: 99th Percentile | The 99th percentile latency for commits of Raft commands. This measures applying a batch to the storage engine (including writes to the write-ahead log), but no fsync.
+Command Commit Latency: 50th Percentile | The 50th percentile latency for commits of Raft commands.  This measures applying a batch to the storage engine (including writes to the write-ahead log), but no fsync.
 Read Amplification | The average number of real read operations executed per logical read operation across all nodes. See [Read Amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#read-amplification).
 SSTables | The number of SSTables in use across all nodes.
 Flushes | Bytes written by [memtable flushes]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) across all nodes.
+WAL Bytes Written | Bytes written to WAL files across all nodes.
 Compactions | Bytes written by [compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) across all nodes.
-Ingestions | Bytes written by SSTable injections across all nodes.
+Ingestions | Bytes written by SSTable ingestions across all nodes.
 Write Stalls | The number of intentional write stalls per second across all nodes, used to backpressure incoming writes during periods of heavy write traffic.
 Time Series Writes | The number of successfully written time-series samples, and number of errors attempting to write time series samples, per second across all nodes.
-Time Series Bytes Written | The number of bytes written by the time-series system per second across all nodes.
+Time Series Bytes Written | The number of bytes written by the time-series system per second across all nodes.<br><br>Note that this does not reflect the rate at which disk space is consumed by time series; the data is highly compressed on disk. This rate is instead intended to indicate the amount of network traffic and disk activity generated by time series writes.
 
 For monitoring CockroachDB, it is sufficient to use the [**Capacity**](#capacity) and [**File Descriptors**](#file-descriptors) graphs.
 
