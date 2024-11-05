@@ -97,8 +97,8 @@ For Windows systems, you can ignore the File Descriptors graph because the conce
 
 Possible sources of writes with their series label are:
 
-- [WAL]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) (`pebble-wal`)
-- [Compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) (`pebble-compaction`)
+- [WAL]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) (`pebble-wal`)
+- [Compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) (`pebble-compaction`)
 - [SSTable ingestions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) (`pebble-ingestion`)
 - [Memtable flushes]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) (`pebble-memtable-flush`)
 - [Raft snapshots]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots) (`raft-snapshot`)
