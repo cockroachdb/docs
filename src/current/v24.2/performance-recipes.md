@@ -30,6 +30,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
       <li>Querying the <a href="{% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events"><code>crdb_internal.transaction_contention_events</code></a> table indicates that your transactions have experienced contention.</li>
       <li>The SQL Statement Contention graph in the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/metrics-sql.md %}#sql-statement-contention) or <a href="ui-sql-dashboard.html#sql-statement-contention">DB Console</a> is showing spikes over time.</li>
       <li>The Transaction Restarts graph in the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/metrics-sql.md %}#transaction-restarts) or <a href="ui-sql-dashboard.html#transaction-restarts">DB Console</a> is showing spikes in retries over time.</li>
+      </ul>
     </td>
     <td><ul><li>Your application is experiencing <a href="{% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention">transaction contention</a>.</li></ul></td>
     <td>
@@ -76,6 +77,11 @@ This section describes how to use CockroachDB commands and dashboards to identif
     <td><ul><li>You may be scanning over large numbers of <a href="{% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc">MVCC versions</a>. This is similar to how a full table scan can be slow.</li></ul></td>
     <td><ul><li><a href="#too-many-mvcc-values">Configure CockroachDB to purge unneeded MVCC values.</a></li></ul></td>
   </tr>
+    <tr>
+      <td><ul><li>vCPU usage has plateaued (possibly around 70%) on your large cluster (<a href="">XXX</a>: DEFINE LARGE).</li></ul></td>
+      <td><ul><li><a href="architecture/distribution-layer.html#distsender">KV layer DistSender</a> batches may be getting throttled; check if the <code>distsender.batches.async.throttled</code> metric is greater than <code>0</code>.</li></ul></td>
+      <td><ul><li>Increase the <code>kv.dist_sender.concurrency_limit</code> <a href="cluster-settings.html">cluster setting</a>. (<a href="">XXX</a>: HOW MUCH? 6x as in https://github.com/cockroachdb/cockroach/pull/131226 ?)</li></ul></td>
+    </tr>
 </table>
 
 ## Solutions
@@ -296,6 +302,14 @@ A low percentage of live data can cause statements to scan more data ([MVCC valu
 #### Configure CockroachDB to purge MVCC values
 
 Reduce the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) zone configuration of the table as much as possible.
+
+### KV DistSender batches being throttled (performance impact to larger clusters)
+
+If you see values greater than `0` for the `distsender.batches.async.throttled` metric, consider increasing the [KV layer DistSender]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender) concurrency using the `kv.dist_sender.concurrency_limit` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
+
+[XXX](): How much to increase? 6x as in https://github.com/cockroachdb/cockroach/pull/131226 ?  What should we say about testing? What is a bad outcome of doing this too much?
+
+[XXX](): FILE COCKROACH ISSUE TO MAKE THIS CLUSTER SETTING PUBLIC (currently private), if we're gonna document it it should be public
 
 ## See also
 
