@@ -13,7 +13,7 @@ To view this dashboard, [access the DB Console]({% link {{ page.version.version 
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
-For monitoring CockroachDB, it is sufficient to use the [**Open SQL Sessions**](#open-sql-sessions), [**SQL Byte Traffic**](#sql-byte-traffic), [**SQL Statements**](#sql-statements), [**Service Latency**](#service-latency-sql-99th-percentile), and [**Transactions**](#transactions) graphs.
+For monitoring CockroachDB, it is sufficient to use the [**Open SQL Sessions**](#open-sql-sessions), [**SQL Byte Traffic**](#sql-byte-traffic), [**SQL Queries Per Second**](#sql-queries-per-second), [**Service Latency**](#service-latency-sql-99th-percentile), and [**Transactions**](#transactions) graphs.
 
 ---
 
@@ -69,7 +69,7 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 ## SQL Queries Per Second
 
-- In the node view, the graph shows the 10-second moving average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries issued by SQL clients and successfully executed per second on the node. `Total Queries`, a sum of all four averages, is also displayed.
+- In the node view, the graph shows the 10-second moving average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries issued by SQL clients and successfully executed per second on the node. `Total Queries`, a sum of all four averages, is also displayed as a general Queries Per Second (QPS) metric.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current statement load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 

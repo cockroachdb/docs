@@ -21,7 +21,7 @@ The **Overview** dashboard displays the following time series graphs.
 
 ## SQL Queries Per Second
 
-- In the node view, the graph shows the 10-second moving average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries issued by SQL clients and successfully executed per second on the node. `Total Queries`, a sum of all four averages, is also displayed.
+- In the node view, the graph shows the 10-second moving average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries issued by SQL clients and successfully executed per second on the node. `Total Queries`, a sum of all four averages, is also displayed as a general Queries Per Second (QPS) metric.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current query load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
