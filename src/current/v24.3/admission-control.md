@@ -52,7 +52,7 @@ Almost all database operations that use CPU or perform storage IO are controlled
 - [Raft log entries being written to disk]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
 - [Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}).
 - [Intent resolution]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents).
--
+
 The following operations are not subject to admission control:
 
 - SQL writes are not subject to admission control on [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) by default, unless those writes occur in transactions that are subject to a Quality of Service (QoS) level as described in [Set quality of service level for a session](#set-quality-of-service-level-for-a-session). In order for writes on follower replicas to be subject to admission control, the setting `default_transaction_quality_of_service=background` must be used.
@@ -68,7 +68,8 @@ Admission control is enabled by default. To enable or disable admission control,
 - `admission.kv.enabled` for work performed by the [KV layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 - `admission.sql_kv_response.enabled` for work performed in the SQL layer when receiving [KV responses]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 - `admission.sql_sql_response.enabled` for work performed in the SQL layer when receiving [DistSQL responses]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql).
-- {% include_cached new-in.html version="v24.3" %} `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` to optionally limit the disk impact of ingesting snapshots on a node.
+- {% include_cached new-in.html version="v24.3" %} `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` to optionally limit the disk impact of ingesting snapshots on a node. This cluster setting is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).
+- `kvadmission.store.provisioned_bandwidth` to optionally limit the bandwidth for a store, expressed in bytes per second. This cluster setting is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).
 
 When you enable or disable admission control settings for one layer, Cockroach Labs recommends that you enable or disable them for **all layers**.
 
