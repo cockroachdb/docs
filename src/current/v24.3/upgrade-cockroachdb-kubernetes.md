@@ -44,7 +44,7 @@ If you [deployed CockroachDB on Red Hat OpenShift]({% link {{ page.version.versi
 
 {% include common/upgrade/major-version-upgrade-kubernetes.md %}
 
-### Finalize a major-version upgrade
+### Finalize a major-version upgrade manually
 
 {% include common/upgrade/finalize-kubernetes.md %}
 

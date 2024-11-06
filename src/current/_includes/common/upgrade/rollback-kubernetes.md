@@ -27,4 +27,4 @@ To roll back to the previous major version before an upgrade is finalized:
 
     You can also check the CockroachDB version of each node in the [DB Console]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-details).
 
-1. Like a major-version upgrade, a rollback must be [finalized](#finalize-a-major-version-upgrade). When the rollback is finalized, the rollback is complete.
+1. Like a major-version upgrade, a rollback must be [finalized](#finalize-a-major-version-upgrade-manually). When the rollback is finalized, the rollback is complete.

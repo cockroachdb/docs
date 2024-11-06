@@ -1,6 +1,6 @@
 Before beginning a major-version upgrade:
 
-1. **CockroachDB {{ site.data.products.advanced }}**: Verify the overall health of your cluster using the [DB Console]({% link cockroachcloud/tools-page#access-the-db-console.md %}):
+1. **CockroachDB {{ site.data.products.advanced }}**: Verify the overall health of your cluster using the [DB Console]({% link cockroachcloud/tools-page.md %}#access-the-db-console):
     - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as `SUSPECT` or `DEAD`, identify why the nodes are offline and either restart them or [decommission]({% link {{ site.current_cloud_version }}/node-shutdown.md %}?filters=decommission#remove-nodes) them before beginning your upgrade. If there are `DEAD` and non-decommissioned nodes in your cluster, the upgrade cannot be finalized.
 
         If any node is not fully decommissioned, try the following:

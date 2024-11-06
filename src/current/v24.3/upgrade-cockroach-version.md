@@ -11,7 +11,7 @@ This page describes how major-version and patch upgrades work and shows how to u
 
 {% include common/upgrade/overview.md %}
 
-{% include_cached {{ page.version.version }}/upgrade_requirements.md %}
+{% include_cached {{ page.version.version }}/upgrade-requirements.md %}
 
 CockroachDB's [multi-active availability]({% link {{ page.version.version }}/multi-active-availability.md %}) means that your cluster remains available while you upgrade one node at a time in a rolling fashion. While a node is being upgraded, its resources are not available to the cluster.
 
@@ -33,13 +33,13 @@ CockroachDB's [multi-active availability]({% link {{ page.version.version }}/mul
 
 {% include_cached common/upgrade/major-version-upgrade-self-hosted.md %}
 
-### Finalize a major-version upgrade
+### Finalize a major-version upgrade manually
 
-{% include finalize-self-hosted.md %}
+{% include common/upgrade/finalize-self-hosted.md %}
 
 ### Roll back a major-version upgrade
 
-{% include_cached rollback-self-hosted.md %}
+{% include_cached common/upgrade/rollback-self-hosted.md %}
 
 ## Disable auto-finalization
 
@@ -51,5 +51,4 @@ CockroachDB's [multi-active availability]({% link {{ page.version.version }}/mul
 
 ## See also
 
-{% include see-also-self-hosted.md %}
-
+{% include common/upgrade/see-also-self-hosted.md %}

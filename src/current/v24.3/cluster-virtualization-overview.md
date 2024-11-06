@@ -48,7 +48,11 @@ To grant access to the system virtual cluster, you must connect to the system vi
 
 ### Upgrades
 
-To upgrade to a new major version when cluster virtualization is enabled, you must first replace the binary on each node and restart the node, [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the system virtual cluster to upgrade it, then finalize the upgrade on a virtual cluster to upgrade it. This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
+To upgrade to a new major version when cluster virtualization is enabled, you must:
+
+1. Replace the binary on each node and restart the node.
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the system virtual cluster to upgrade it (if auto-finalization is disabled).
+1. Finalize the upgrade on a virtual cluster to upgrade it (if auto-finalization is disabled). This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
 
 For details, refer to [Work with virtual clusters]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#upgrade-a-cluster).
 

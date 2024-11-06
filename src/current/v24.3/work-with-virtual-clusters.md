@@ -166,11 +166,11 @@ For more details, including the scope of each cluster setting, refer to [Cluster
 
 ## Upgrade a cluster
 
-To upgrade to a new major version when cluster virtualization is enabled , you must:
+To upgrade to a new major version when cluster virtualization is enabled, you must:
 
 1. Replace the binary on each node and restart the node.
-1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#step-6-finish-the-upgrade) the upgrade on the system virtual cluster to upgrade it, or roll back the upgrade if you decide not to finalize it. Until it is finalized, the cluster still operates in compatibility with the previous major version, and virtual clusters cannot be upgraded.
-1. After the system virtual cluster is finalized, finalize the upgrade on a virtual cluster to upgrade it, or roll back the upgrade if you decide not to finalize it. Until it is finalized, a virtual cluster still operates in compatibility with the previous major version, and some features may not be available on the virtual cluster.
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the system virtual cluster to upgrade it (if auto-finalization is disabled) or roll back the upgrade if you decide not to finalize it. Until it is finalized, the cluster still operates in compatibility with the previous major version, and virtual clusters cannot be upgraded.
+1. Finalize the upgrade on a virtual cluster to upgrade it, or roll back the upgrade if you decide not to finalize it. Until it is finalized, a virtual cluster still operates in compatibility with the previous major version, and some features may not be available on the virtual cluster.
 
 This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
 

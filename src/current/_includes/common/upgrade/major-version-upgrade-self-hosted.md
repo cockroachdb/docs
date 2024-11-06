@@ -12,4 +12,4 @@ To perform a major upgrade:
         cockroach sql -e 'select 1'
         ~~~
 1. If auto-finalization is enabled (the default), finalization begins as soon as the last node rejoins the cluster with the new binary. When finalization finishes, the upgrade is complete.
-1. If auto-finalization is disabled, follow your organization's testing procedures to decide whether to [finalize the upgrade](#finalize-a-major-version-upgrade) or [roll back](#roll-back-a-major-version-upgrade) the upgrade. After finalization begins, you can no longer roll back to the cluster's previous major version.
+1. If auto-finalization is disabled, follow your organization's testing procedures to decide whether to [finalize the upgrade](#finalize-a-major-version-upgrade-manually) or [roll back](#roll-back-a-major-version-upgrade) the upgrade. After finalization begins, you can no longer roll back to the cluster's previous major version.

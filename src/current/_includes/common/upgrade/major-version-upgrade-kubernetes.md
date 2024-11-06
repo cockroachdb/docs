@@ -29,7 +29,7 @@ To perform a major upgrade:
 
     You can also check the CockroachDB version of each node in the [DB Console]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-details).
 
-1. Before beginning a major-version upgrade, the Operator disables auto-finalization by setting the cluster setting `cluster.preserve_downgrade_option` to the cluster's current major version. Before finalizing an upgrade, follow your organization's testing procedures to decide whether to [finalize](#finalize-a-major-version-upgrade) or [roll back](#roll-back-a-major-version-upgrade) the upgrade. After finalization begins, you can no longer roll back to the cluster's previous major version.
+1. Before beginning a major-version upgrade, the Operator disables auto-finalization by setting the cluster setting `cluster.preserve_downgrade_option` to the cluster's current major version. Before finalizing an upgrade, follow your organization's testing procedures to decide whether to [finalize](#finalize-a-major-version-upgrade-manually) or [roll back](#roll-back-a-major-version-upgrade) the upgrade. After finalization begins, you can no longer roll back to the cluster's previous major version.
 
 </section>
 
@@ -124,7 +124,7 @@ To perform a major upgrade:
     ~~~
 
     You can also check the CockroachDB version of each node in the [DB Console]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-details).
-1. If auto-finalization is disabled, the upgrade is not complete until you [finalize the upgrade](#finalize-a-major-version-upgrade).
+1. If auto-finalization is disabled, the upgrade is not complete until you [finalize the upgrade](#finalize-a-major-version-upgrade-manually).
 
 </section>
 
@@ -259,6 +259,6 @@ To perform a major upgrade:
 
     You can also check the CockroachDB version of each node in the [DB Console]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-details).
 
-1. If auto-finalization is disabled, the upgrade is not complete until you [finalize the upgrade](#finalize-a-major-version-upgrade).
+1. If auto-finalization is disabled, the upgrade is not complete until you [finalize the upgrade](#finalize-a-major-version-upgrade-manually).
 
 </section>

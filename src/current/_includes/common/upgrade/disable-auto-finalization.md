@@ -1,7 +1,7 @@
 {% if page.path contains 'kubernetes' %}
 
 <section class="filter-content" markdown="1" data-scope="operator">
-For clusters managed by the Operator, auto-finalization is disabled and cannot be enabled. A major version upgrade is not complete until it is manually [finalized](#finalize-a-major-version-upgrade).
+For clusters managed by the Operator, auto-finalization is disabled and cannot be enabled. A major version upgrade is not complete until it is manually [finalized](#finalize-a-major-version-upgrade-manually).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
@@ -21,7 +21,7 @@ To disable auto-finalization:
 
 1. Set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `cluster.preserve_downgrade_option` to the cluster's current major version.
 
-Now, to complete a major-version upgrade, you must manually [finalize it](#finalize-a-major-version-upgrade) or [roll it back]({#roll-back-a-major-version-upgrade).
+Now, to complete a major-version upgrade, you must manually [finalize it](#finalize-a-major-version-upgrade-manually) or [roll it back](#roll-back-a-major-version-upgrade).
 
 {{site.data.alerts.callout_info}}
 Previously, to disable automatic finalization and preserve the ability to roll back a major-version upgrade, it was required to set the cluster setting `cluster.preserve_downgrade_option` to the cluster's current major version before beginning the major-version upgrade. This cluster setting does not persist after finalization is complete, but must be set before each major-version upgrade.
@@ -48,7 +48,7 @@ To disable auto-finalization:
 
 1. Set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `cluster.preserve_downgrade_option` to the cluster's current major version.
 
-Now, to complete a major-version upgrade, you must manually [finalize it](#finalize-a-major-version-upgrade) or [roll it back]({#roll-back-a-major-version-upgrade).
+Now, to complete a major-version upgrade, you must manually [finalize it](#finalize-a-major-version-upgrade-manually) or [roll it back](#roll-back-a-major-version-upgrade).
 
 {{site.data.alerts.callout_info}}
 Previously, to disable automatic finalization and preserve the ability to roll back a major-version upgrade, it was required to set the cluster setting `cluster.preserve_downgrade_option` to the cluster's current major version before beginning the major-version upgrade. This cluster setting does not persist after finalization is complete, but must be set before each major-version upgrade.
@@ -73,7 +73,7 @@ To disable auto-finalization:
 
 1. Set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `cluster.auto_upgrade.enabled` to `false`.
 
-Now, to complete a major-version upgrade, you must manually [finalize it](#finalize-a-major-version-upgrade) or [roll it back]({#roll-back-a-major-version-upgrade).
+Now, to complete a major-version upgrade, you must manually [finalize it](#finalize-a-major-version-upgrade-manually) or [roll it back](#roll-back-a-major-version-upgrade).
 
 {{site.data.alerts.callout_info}}
 Previously, to disable automatic finalization and preserve the ability to roll back a major-version upgrade, it was required to set the cluster setting `cluster.preserve_downgrade_option` to the cluster's current major version before beginning the major-version upgrade. This cluster setting does not persist after finalization is complete, but must be set before each major-version upgrade.

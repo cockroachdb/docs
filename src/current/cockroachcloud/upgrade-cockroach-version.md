@@ -11,7 +11,7 @@ This page describes how major-version and patch upgrades work and shows how to u
 
 {% include common/upgrade/overview.md %}
 
-{% include_cached {{ site.current_cloud_version }}/upgrade_requirements.md %}
+{% include_cached {{ site.current_cloud_version }}/upgrade-requirements.md %}
 
 {% include common/upgrade/upgrade-high-level.md %}
 
@@ -37,11 +37,11 @@ Refer to [Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 ### Finalize a major-version upgrade manually
 
-{% include_cached finalize-cloud.md %}
+{% include_cached common/upgrade/finalize-cloud.md %}
 
 ### Roll back a major-version upgrade
 
-{% include_cached rollback-cloud.md %}
+{% include_cached common/upgrade/rollback-cloud.md %}
 
 ## Troubleshooting
 
@@ -49,4 +49,4 @@ Refer to [Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 ## See also
 
-{% include see-also-cloud.md %}
+{% include common/upgrade/see-also-cloud.md %}
