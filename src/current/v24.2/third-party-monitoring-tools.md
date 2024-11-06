@@ -14,7 +14,7 @@ CockroachDB is officially integrated with the following third-party monitoring p
 
 ### Metrics
 
-| Platform | CockroachDB Standard | CockroachDB Advanced | CockroachDB Self-Hosted |
+| Platform | CockroachDB Standard | CockroachDB Advanced | CockroachDB {{ site.data.products.core }} |
 |----------|:--------------------:|:--------------------:|:-----------------------:|
 | [Amazon CloudWatch](#amazon-cloudwatch-metrics) | ✔ | ✔ |  |
 | [DataDog](#datadog) | ✔ | ✔ | ✔ |
@@ -24,7 +24,7 @@ CockroachDB is officially integrated with the following third-party monitoring p
 
 ### Logs
 
-| Platform | CockroachDB Standard | CockroachDB Advanced | CockroachDB Self-Hosted |
+| Platform | CockroachDB Standard | CockroachDB Advanced | CockroachDB {{ site.data.products.core }} |
 |----------|:--------------------:|:--------------------:|:-----------------------:|
 | [Amazon CloudWatch](#amazon-cloudwatch-logs) | ✔ | ✔ |  |
 | [GCP Logging](#gcp-logging) | ✔ | ✔ |  |
