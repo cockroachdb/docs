@@ -653,6 +653,12 @@
               ]
             },
             {
+                "title": "<code>SHOW LOGICAL REPLICATION JOBS</code>",
+                "urls": [
+                  "/${VERSION}/show-logical-replication-jobs.html"
+                ]
+              },
+            {
               "title": "<code>SHOW PARTITIONS</code> (Enterprise)",
               "urls": [
                 "/${VERSION}/show-partitions.html"
