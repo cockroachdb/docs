@@ -4,12 +4,14 @@ summary: A guide to the configuration of authentication and authorization using 
 toc: true
 ---
 
-CockroachDB Enterprise supports authentication and authorization using LDAP (Lightweight Directory Access Protocol) or Active Directory servers. This allows you to integrate your existing directory service with CockroachDB for centralized user management and access control.
+{% include enterprise-feature.md %}
+
+CockroachDB supports authentication and authorization using LDAP (Lightweight Directory Access Protocol) or Active Directory servers. This allows you to integrate your existing directory service with CockroachDB for centralized user management and access control.
 
 Q: Should we be flipping these and putting authorization before authentication?  
 Q: Can customers just use one, if they want, of LDAP authn and authz? What do we expect will be typical or recommended?  
 Q: Decide if Authz and Authn should be 2 separate pages.  
-Q: I placed this in the nav under self-hosted but is it also available for Cloud?
+Q: Is this also available for Cloud? If so, I will find another nav location (this is in a self-hosted section) and update to the Enterprise license mention.
 
 ## LDAP Authentication
 
