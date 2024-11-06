@@ -26,7 +26,7 @@ CockroachDB has two implementations of changefeeds:
 <table class="comparison-chart">
   <tr>
     <th></th>
-    <th>Core changefeeds</th>
+    <th>Basic changefeeds</th>
     <th>Enterprise changefeeds</th>
   </tr>
 
@@ -124,7 +124,7 @@ CockroachDB has two implementations of changefeeds:
 
 To get started with changefeeds in CockroachDB, refer to:
 
-- [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}): Learn about the fundamentals of using SQL statements to create and manage Enterprise and Core changefeeds.
+- [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}): Learn about the fundamentals of using SQL statements to create and manage Enterprise and basic changefeeds.
 - [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}): The downstream system to which the changefeed emits changes. Learn about the supported sinks and configuration capabilities.
 - [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}): The change events that emit from the changefeed to your sink. Learn about how messages are ordered at your sink and the options to configure and format messages.
 - [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}): Step-by-step examples for connecting to each changefeed sink.
