@@ -1,5 +1,5 @@
 ---
-title: Monitor CockroachDB self-hosted clusters with Datadog
+title: Monitor CockroachDB Self-Hosted Clusters with Datadog
 summary: The CockroachDB integration with Datadog enables data visualization and alerting on CockroachDB metrics.
 toc: true
 docs_area: manage
