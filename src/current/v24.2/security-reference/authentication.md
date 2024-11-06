@@ -74,6 +74,7 @@ Each rule definition contains up to 6 values.
   - `cert-password`: user may authenticate with either a certificate or a password. Additionally, the server may use a [SCRAM]({% link {{ page.version.version }}/security-reference/scram-authentication.md %}) exchange, if the cluster setting `server.user_login.cert_password_method.auto_scram_promotion.enabled` is set to `true`.
   - `cert-scram-sha-25`: user may authenticate with either a certificate or a [SCRAM]({% link {{ page.version.version }}/security-reference/scram-authentication.md %}) exchange.
   - `gss`: user may authenticate with a GSSAPI token.
+  - `ldap`: user may authetnciate using [LDAP](ldap.html) or Active Directory servers.
   - `reject`: server unconditionally rejects connection without performing authentication.
   - `trust`: server unconditionally allows connection without performing authentication.
 
@@ -120,3 +121,5 @@ CockroachDB {{ site.data.products.core }} deploys with the following default HBA
   host    all           all         all            cert-password
   local   all           all                        password
 ```
+
+TODO: Add coverage for https://github.com/cockroachdb/cockroach/pull/131625 & https://github.com/cockroachdb/cockroach/pull/131578 here?

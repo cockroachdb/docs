@@ -280,6 +280,11 @@
                     ]
                   },
                   {
+                    "title": "LDAP Authentication and Authorization",
+                    "urls": [
+                      "/${VERSION}/ldap.html"
+                    ]
+                  },                  {
                     "title": "GSSAPI Authentication",
                     "urls": [
                       "/${VERSION}/gssapi_authentication.html"
