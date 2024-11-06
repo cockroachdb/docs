@@ -284,7 +284,7 @@ $ rm -rf json-test
 
 ## What's next?
 
-Explore other core CockroachDB benefits and features:
+Explore other CockroachDB benefits and features:
 
 {% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 

@@ -269,4 +269,3 @@ For an example showing how to successfully perform a bounded staleness read, see
 - [Cluster Settings Overview]({% link {{ page.version.version }}/cluster-settings.md %})
 - [Load-Based Splitting]({% link {{ page.version.version }}/load-based-splitting.md %})
 - [Network Latency Page]({% link {{ page.version.version }}/ui-network-latency-page.md %})
-- [Enterprise Features]({% link {{ page.version.version }}/enterprise-licensing.md %})
