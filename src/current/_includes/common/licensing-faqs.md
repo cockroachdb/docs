@@ -37,7 +37,7 @@ To obtain an **Enterprise Free** or **Enterprise Trial** license, take the follo
     1. To create an **Enterprise Free** license:
         1. Fill in the form with the required information.
         1. Toggle the switch called **Find out if my company qualifies for an Enterprise Free license**.
-        1. Fill out the additional information. *By toggling this switch you are legally attesting to the fact that your company revenue meets the requirements of the license*.
+        1. Fill out the additional information.
         1. Click the **Continue** button.
            - Note that at this stage, you may not qualify for the **Enterprise Free** license. If so, you will be given an **Enterprise Trial** license.
         1. Select the checkbox to agree to the Terms & Conditions of the [CockroachDB Software License][csl].
@@ -112,7 +112,7 @@ To renew an expired **Enterprise Free** license, follow the steps in [Obtain a l
 
 ### Can I host CockroachDB as a service for internal use at my organization?
 
-Yes, employees and contractors can use your internal CockroachDB instance as a service, but no people outside of your organization will be able to use it without purchasing a license. Use of Enterprise features will always require a license.
+Yes, employees and contractors can use your internal CockroachDB instance as a service, but no people outside of your organization will be able to use it without purchasing a license.
 
 ### What constitutes hosting CockroachDB as a service?
 
@@ -127,7 +127,7 @@ When a cluster is being throttled, the number of concurrent open [SQL transactio
 This will happen in the following cases:
 
 - The cluster is not following telemetry requirements.
-    - There is a 7 day grace period for **Enterprise Free** and **Enterprise Trial** clusters to (re)start sending telemetry. This applies when a cluster is newly created, or any time there is an interruption in telemetry.
+    - There is a 7 day grace period for **Enterprise Free** and **Enterprise Trial** clusters to (re)start sending telemetry. This applies when the license is first [added](#set-a-license), or any time there is an interruption in telemetry.
 - The cluster has an expired [license key](#obtain-a-license); depending on the type of expired license, the cluster will be throttled after the following time periods:
     - **Enterprise**: Never throttles
     - **Enterprise Free**: Throttles 30 days after expiration
