@@ -36,6 +36,18 @@ Flag | Description
 `--from` | The oldest timestamp to include (inclusive), in the format `YYYY-MM-DD [HH:MM[:SS]]`.<br><br>**Default:** `0001-01-01 00:00:00`
 `--to` | The newest timestamp to include (inclusive), in the format `YYYY-MM-DD [HH:MM[:SS]]`.<br><br>**Default:** Current timestamp plus 29 hours
 
+#### Available resolutions
+
+A `debug tsdump` includes all the available resolutions (10s and 30m) of the raw time series values in the time range set using the `--from` and `--to` flags:
+
+- Time series values will be dumped with a 10 seconds resolution if the supplied time range is within the 10s TTL set by the  [`timeseries.storage.resolution_10s.ttl`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-timeseries-storage-resolution-10s-ttl) cluster setting (default: 10 days).
+- Time series values will be dumped with a 30 minutes resolution if the supplied time range is older than the 10s TTL back to the 30m TTL set by the [`timeseries.storage.resolution_30m.ttl`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-timeseries-storage-resolution-30m-ttl) cluster setting (default: 90 days).
+
+For example, if `--from` was set to the current timestamp and `--to` was set to 15 days before the current timestamp, the `debug tsdump` would include:
+
+- For the past 1 to 10 days, time series values with a 10 seconds resolution.
+- For the past 11 to 15 days, time series values with a 30 minutes resolution.
+
 ### Client connection
 
 Flag | Description
