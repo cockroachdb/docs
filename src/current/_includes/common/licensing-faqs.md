@@ -10,6 +10,8 @@ Type | Description
 **Enterprise Free** <a name="enterprise-free"></a> | Same functionality as **Enterprise**, but free of charge for businesses with less than $10M in annual revenue. Clusters will be [throttled](#throttling) after 7 days without sending telemetry. License must be renewed annually. Support level available is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
 **Enterprise Trial** <a name="enterprise-trial"></a> | A 30 day self-service trial license. Telemetry is required during the trial. Clusters will be [throttled](#throttling) after 7 days without sending telemetry. Telemetry can be disabled once the cluster is upgraded to a paid **Enterprise** license. Support level available during trials is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
 
+<a href="mailto:sales@cockroachlabs.com">Contact Sales</a> if you want to try CockroachDB without telemetry requirements or if you require an extended trial period.
+
 {{site.data.alerts.callout_success}}
 Note that:
 - Clusters with Enterprise Free or Enterprise Trial licenses cannot disable telemetry; if such a cluster signals a telemetry sending error, it will be due to firewall configuration or a network issue.
