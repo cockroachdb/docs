@@ -52,7 +52,6 @@ Almost all database operations that use CPU or perform storage IO are controlled
 - [Raft log entries being written to disk]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
 - [Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}).
 - [Intent resolution]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents).
-- {% include_cached new-in.html version="v24.3" %} [Snapshot transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots) onto a node with a [provisioned rate]({% link {{ page.version.version }}/cockroach-start.md %}#store) configured for its store, based on disk bandwidth, to reduce the impact on foreground workloads on the node. Admission control for snapshot transfers is disabled by default. To learn more, refer to [Snapshots]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots).
 -
 The following operations are not subject to admission control:
 
