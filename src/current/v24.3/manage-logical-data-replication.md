@@ -101,7 +101,22 @@ If you are running LDR in a unidirectional setup, follow [Coordinate schema chan
 You have a bidirectional LDR setup with a stream between cluster A to cluster B, and a stream between cluster B to cluster A.
 
 1. Redirect your application traffic to one cluster, for example, cluster A. 
-1. Wait for all traffic from cluster B to replicate to cluster A. When this has finished, your replication lag will be `0`. {% comment  %}to link to the metrics here.{% endcomment %}
+1. Wait for all traffic from cluster B to replicate to cluster A. Check this is complete with:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW LOGICAL REPLICATION JOBS WITH DETAILS;
+    ~~~
+
+    This is complete when `replicated_time` on cluster B surpasses the time at which you redirected application traffic, which indicates that all traffic from cluster B has been replicated to cluster A.
+
+    ~~~
+            job_id        |  status  |            targets             |        replicated_time        |    replication_start_time     | conflict_resolution_type |                                      description
+    ----------------------+----------+--------------------------------+-------------------------------+-------------------------------+--------------------------+-----------------------------------------------------------------------------------------
+    1010959260799270913 | running  | {movr.public.promo_codes}      | 2024-10-24 17:50:05+00        | 2024-10-10 20:04:42.196982+00 | LWW                      | LOGICAL REPLICATION STREAM into movr.public.promo_codes from external://cluster_a
+    1014047902397333505 | canceled | {defaultdb.public.office_dogs} | 2024-10-24 17:30:25+00        | 2024-10-21 17:54:20.797643+00 | LWW                      | LOGICAL REPLICATION STREAM into defaultdb.public.office_dogs from external://cluster_a
+    ~~~
+
 1. Drop the LDR job on both clusters. Canceling the LDR streams will remove the history retention job, which will cause the data to be garbage collected according to the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) setting. Use [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %}):
 
     {% include_cached copy-clipboard.html %}
@@ -111,8 +126,8 @@ You have a bidirectional LDR setup with a stream between cluster A to cluster B,
 
 1. Perform the schema change on cluster A. 
 1. Drop the table from cluster B. 
-1. Recreate table and its schema on cluster B, which includes the new schema change. 
-1. Create new LDR streams **without** a `cursor` timestamp for the table on both clusters A and B. Run `CREATE LOGICAL REPLICATION STREAM` from the **destination** cluster for each stream:
+1. Recreate the table and its new schema on cluster B. 
+1. Create new LDR streams for the table on both clusters A and B. Run `CREATE LOGICAL REPLICATION STREAM` from the **destination** cluster for each stream:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
