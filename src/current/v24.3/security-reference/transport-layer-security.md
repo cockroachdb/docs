@@ -207,7 +207,7 @@ Connections between CockroachDB nodes are always mutually TLS-authenticated. Eac
 
 Customers using CockroachDB {{ site.data.products.cloud }} need not worry about managing TLS keys for CockroachDB nodes, as cluster management is delegated to the Cockroach Labs team.
 
-### CockroachDB Self-Hosted
+### CockroachDB {{ site.data.products.core }}
 
 {{site.data.alerts.callout_info}}
 Customers who deploy and manage their own CockroachDB clusters must provision and manage certificates on each node, implementing their own PKI security. This entails ensuring that credentials are carefully controlled, monitoring for signs of compromise, and mitigating the impact of potential credential leaks. Authorization for issuing credentials is particularly critical, and this includes issuing private key/public certificate pairs for CockroachDB nodes or clients. Unmitigated compromise of either of these can have devastating business impact.
