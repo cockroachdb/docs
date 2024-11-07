@@ -6,6 +6,8 @@ toc: true
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+
+Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
 In this tutorial, you will set up **logical data replication (LDR)** streaming data from a source table to a destination table between two CockroachDB clusters. Both clusters are active and can serve traffic. You can apply the outlined steps to create _unidirectional_ LDR from a source table to a destination table (cluster A to cluster B) in one LDR job. Optionally, you can also create _bidirectional_ LDR from cluster B's table to cluster A's table by starting a second LDR job. In a bidirectional setup, each cluster operates as both a source and a destination in separate LDR jobs. 
@@ -28,7 +30,7 @@ If you're setting up bidirectional LDR, both clusters will act as a source and a
 
 You'll need:
 
-- Two separate v24.3 CockroachDB clusters with connectivity between every node in both clusters. The SQL advertise address should be the cluster node advertise address so that the LDR job can plan node-to-node connections between clusters for maximum performance.
+- Two separate v24.3 CockroachDB {{ site.data.products.core }} clusters with connectivity between every node in both clusters. The SQL advertise address should be the cluster node advertise address so that the LDR job can plan node-to-node connections between clusters for maximum performance.
     - To set up each cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}).
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
     - Both clusters can be empty.
@@ -207,6 +209,5 @@ In this step, you'll access the [DB Console]({% link {{ page.version.version }}/
 {% comment  %}
 Short-form examples that will be included on the CREATE LOGICAL REPLICATION STREAM SQL ref page
 1. Ignore ttl deletes with the workflow for TTL changefeed storage parameter
-1. Start a LDR stream where one left off (cursor)
 1. Both modes
 {% endcomment %}

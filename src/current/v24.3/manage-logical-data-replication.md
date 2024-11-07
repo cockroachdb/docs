@@ -6,6 +6,8 @@ toc: true
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+
+Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
 Once you have **logical data replication (LDR)** running, you will need to track and manage certain parts of the job:
@@ -70,18 +72,19 @@ CONSTRAINT dlq_113_public_promo_codes_pkey PRIMARY KEY (ingestion_job_id ASC, dl
 
 ## Schema changes
 
-When you start LDR on a table, the job will lock the schema, which will prevent any accidental schema changes that would cause issues for LDR. There are some [supported schema changes](#supported-schema-changes) that you can perform on a table that is part of an LDR job, otherwise it is necessary to stop LDR in order to [coordinate the schema change](#coordinate-schema-changes).
+When you start LDR on a table, the job will lock the schema, which will prevent any accidental [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) that would cause issues for LDR. There are some [supported schema changes](#supported-schema-changes) that you can perform on a replicating table, otherwise it is necessary to stop LDR in order to [coordinate the schema change](#coordinate-schema-changes).
 
 ### Supported schema changes
 
-There are some supported schema changes, which you can perform during LDR:
+There are some supported schema changes, which you can perform during LDR **without** restarting the job:
 
 Allowlist schema change | Exceptions
 -------------------+-----------
-[`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) | <ul><li>Hash-sharded indexes</li><li>Indexes with a computed column</li><li>Partial indexes</li><ul>
+[`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) | <ul><li>Hash-sharded indexes</li><li>Indexes with a computed column</li><li>Partial indexes</li></ul>
 [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}) | N/A
 [Zone configuration]({% link {{ page.version.version }}/show-zone-configurations.md %}) changes | N/A
-[`ALTER TABLE ... SET/RESET {TTL storage parameters}`]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) | `ttl_expire_after`
+[`ALTER TABLE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone) | N/A
+[`ALTER TABLE ... SET/RESET {TTL storage parameters}`]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) | <ul><li>`ALTER TABLE SET (ttl_expire_after = "")`</li><li>`ALTER TABLE RESET (ttl_expire_after = "")`</li><li>`ALTER TABLE RESET (ttl)`</li></ul>
 
 {{site.data.alerts.callout_danger}}
 LDR will **not** replicate the allowlist schema changes to the destination table. Therefore, you must perform the schema change carefully on both the source and destination cluster.
@@ -89,9 +92,38 @@ LDR will **not** replicate the allowlist schema changes to the destination table
 
 ### Coordinate schema changes
 
-To perform any other schema change on the table, you'll need to drop the LDR job, perform the schema change on the table, and then start a new LDR job. You can use the `cursor` option when you create a new LDR job in order to start from a specific point in time and stream any changes after the given timestamp.
+To perform any other schema change on the table, use the following approach to redirect application traffic to one cluster. You'll need to drop the existing LDR jobs, perform the schema change, and start new LDR jobs, which will require a full initial scan.
 
-1. Drop the LDR job using [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %}):
+If you are running LDR in a unidirectional setup, follow [Coordinate schema changes for unidirectional LDR](#coordinate-schema-changes-for-unidirectional-ldr).
+
+#### Redirect application traffic to one cluster
+
+You have a bidirectional LDR setup with a stream between cluster A to cluster B, and a stream between cluster B to cluster A.
+
+1. Redirect your application traffic to one cluster, for example, cluster A. 
+1. Wait for all traffic from cluster B to replicate to cluster A. When this has finished, your replication lag will be `0`. {% comment  %}to link to the metrics here.{% endcomment %}
+1. Drop the LDR job on both clusters. Canceling the LDR streams will remove the history retention job, which will cause the data to be garbage collected according to the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) setting. Use [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %}):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CANCEL JOB {ldr_job_id};
+    ~~~
+
+1. Perform the schema change on cluster A. 
+1. Drop the table from cluster B. 
+1. Recreate table and its schema on cluster B, which includes the new schema change. 
+1. Create new LDR streams **without** a `cursor` timestamp for the table on both clusters A and B. Run `CREATE LOGICAL REPLICATION STREAM` from the **destination** cluster for each stream:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name};
+    ~~~
+
+#### Coordinate schema changes for unidirectional LDR 
+
+If you have a unidirectional LDR setup, you should cancel the running LDR stream and redirect all application traffic to the source cluster.
+
+1. Drop the LDR job on the **destination** cluster. Canceling the LDR job will remove the history retention job, which will cause the data to be garbage collected according to the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) setting. Use [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -99,15 +131,12 @@ To perform any other schema change on the table, you'll need to drop the LDR job
     ~~~
 
 1. Once the job has `canceled`, perform the required schema change on both the source and destination tables.
-
-1. Start a new LDR job from the destination table. To start LDR from a specific point in time, you can use the `cursor` option to emit changes after the given timestamp:
+1. Start a new LDR job from the **destination** cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name} WITH cursor='{timestamp}';
+    CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name};
     ~~~
-
-    If you use the `cursor` option, the LDR job will **not** perform an initial scan, it will stream any changes after the given timestamp. The LDR job will encounter an error if you specify a timestamp with `cursor` that before the configured garbage collection window for that table. {% comment %}to add links to the SQL ref page for create logical rep stream, once published {% endcomment %}
 
 ## Jobs and LDR
 
