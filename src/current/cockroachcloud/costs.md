@@ -256,7 +256,7 @@ In CockroachDB {{ site.data.products.basic }}, Change Data Capture (CDC) cost is
 
 <section class="filter-content" markdown="1" data-scope="standard">
 
-In CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }}, CDC is billed monthly based on usage, determined by the total GiB-Month watched across all of a cluster’s changefeeds. The per-GiB unit price is tiered, based on the total watched: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
+In CockroachDB {{ site.data.products.standard }}, CDC is billed monthly based on usage, determined by the total GiB-Month watched across all of a cluster’s changefeeds. The per-GiB unit price is tiered, based on the total watched: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
 
 {{site.data.alerts.callout_info}}
 Customers will not be charged for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} changefeed usage during the current [Preview](#usage-based-billing-metrics-in-preview) of usage-based metrics.
@@ -266,7 +266,7 @@ Customers will not be charged for CockroachDB {{ site.data.products.standard }} 
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
-In CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }}, CDC is billed monthly based on usage, determined by the total GiB-Month watched across all of a cluster’s changefeeds. The per-GiB unit price is tiered, based on the total watched: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
+In CockroachDB {{ site.data.products.advanced }}, CDC is billed monthly based on usage, determined by the total GiB-Month watched across all of a cluster’s changefeeds and whether the Advanced security add-on is enabled. The per-GiB unit price is tiered, based on the total watched: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
 
 {{site.data.alerts.callout_info}}
 Customers will not be charged for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} changefeed usage during the current [Preview](#usage-based-billing-metrics-in-preview) of usage-based metrics.
