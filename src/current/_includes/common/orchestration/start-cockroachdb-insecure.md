@@ -30,7 +30,7 @@
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/performance/cockroachdb-statefulset-insecure.yaml
     ~~~
 
-   Modify the file wherever there is a `TODO` comment, then use the file to create the StatefulSet and start the cluster:
+    Modify the file wherever there is a `TODO` comment, then use the file to create the StatefulSet and start the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

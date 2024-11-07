@@ -53,7 +53,7 @@ Replace:
 Currently, the Operator requires that the client and node secrets each contain the filenames `tls.crt` and `tls.key`.
 {{site.data.alerts.end}}
 
-{% include_cached common/orchestration/apply-custom-resource.md %}
+{% include common/orchestration/apply-custom-resource.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">

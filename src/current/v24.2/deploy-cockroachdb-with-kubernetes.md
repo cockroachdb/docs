@@ -23,18 +23,7 @@ This page shows you how to start and stop a secure 3-node CockroachDB cluster in
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-## Before you begin
-
-Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
-
-- [Kubernetes terminology](#kubernetes-terminology)
-- [Best practices](#best-practices)
-
-### Kubernetes terminology
-
-{% include_cached common/orchestration/kubernetes-terminology.md %}
-
-### Best practices
+## Best practices
 
 {% include common/orchestration/kubernetes-limitations.md %}
 
@@ -49,7 +38,7 @@ Choose how you want to deploy and maintain the CockroachDB cluster.
 {{site.data.alerts.callout_info}}
 The [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) eases CockroachDB cluster creation and management on a single Kubernetes cluster.
 
-The Operator does not provision or apply an Enterprise license key. To use [Enterprise features]({% link {{ page.version.version }}/enterprise-licensing.md %}) with the Operator, [set a license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) in the SQL shell.
+The Operator does not provision or apply an Enterprise license key. To use CockroachDB with the Operator, [set a license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) in the SQL shell.
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
@@ -88,7 +77,36 @@ If you want to continue using this cluster, refer the documentation on [configur
 
 ### Stop Kubernetes
 
-{% include_cached common/orchestration/kubernetes-stop.md %}
+To delete the Kubernetes cluster:
+
+- Hosted GKE:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud container clusters delete cockroachdb --region {region-name}
+    ~~~
+- Hosted EKS:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ eksctl delete cluster --name cockroachdb
+    ~~~
+- Manual GCE:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cluster/kube-down.sh
+    ~~~
+- Manual AWS:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cluster/kube-down.sh
+    ~~~
+
+{{site.data.alerts.callout_danger}}
+If you stop Kubernetes without first deleting the persistent volumes, they will still exist in your cloud project.
+{{site.data.alerts.end}}
 
 ## See also
 

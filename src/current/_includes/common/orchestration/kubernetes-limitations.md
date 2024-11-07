@@ -4,7 +4,7 @@ To deploy CockroachDB {{page.version.version}}, Kubernetes 1.18 or higher is req
 
 #### Helm version
 
-Helm 3.0 or higher is required when using our instructions to [deploy via Helm](orchestrate-cockroachdb-with-kubernetes.html#step-2-start-cockroachdb).
+Helm 3.0 or higher is required when using our instructions to [deploy via Helm]({% link {{ page.version.version }}/orchestrate-a-local-cluster-with-kubernetes.md %}#step-2-start-cockroachdb).
 
 #### Resources
 

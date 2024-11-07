@@ -14,11 +14,11 @@ This page shows you how to start and stop a 3-node CockroachDB insecure test clu
 
 - [Helm](https://helm.sh/) package manager for Kubernetes
 
-{% include_cached {{ page.version.version }}/prod-deployment/insecure-flag.md %}
+{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
 The steps below demonstrate how to quickly deploy and interact with an insecure test cluster. To learn about authenticating, configuring, scaling, and upgrading a CockroachDB cluster on Kubernetes, see [Kubernetes Overview]({% link {{ page.version.version }}/kubernetes-overview.md %}).
 
-{% include_cached cockroachcloud/use-cockroachcloud-instead.md %}
+{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 
@@ -66,7 +66,7 @@ Choose how you want to deploy and maintain the CockroachDB cluster.
 
 ## Step 5. Simulate node failure
 
-{% include_cached common/orchestration/kubernetes-simulate-failure.md %}
+{% include common/orchestration/kubernetes-simulate-failure.md %}
 
 ## Step 6. Stop the cluster
 

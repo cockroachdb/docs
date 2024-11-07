@@ -293,7 +293,7 @@ To access the CockroachDB cluster's [DB Console]({% link {{ page.version.version
 
 1. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a> and log in with the username and password you created earlier.
 
-    {% include_cached {{ page.version.version }}/misc/chrome-localhost.md %}
+    {% include {{ page.version.version }}/misc/chrome-localhost.md %}
 
 ## Step 7. Run a sample workload
 

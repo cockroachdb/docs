@@ -15,18 +15,7 @@ This page demonstrates a basic integration with the open-source [Kubernetes](htt
 To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments]({% link {{ page.version.version }}/kubernetes-overview.md %}). To deploy a 30-day free CockroachDB {{ site.data.products.dedicated }} cluster instead of running CockroachDB yourself, see the [Quickstart]({% link cockroachcloud/quickstart.md %}).
 {{site.data.alerts.end}}
 
-## Before you begin
-
-Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.
-
-- [Kubernetes terminology](#kubernetes-terminology)
-- [Best practices](#best-practices)
-
-### Kubernetes terminology
-
-{% include_cached common/orchestration/kubernetes-terminology.md %}
-
-### Best practices
+## Best practices
 
 {% include common/orchestration/kubernetes-limitations.md %}
 
@@ -156,7 +145,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 ## See also
 
-Explore other core CockroachDB benefits and features:
+Explore other CockroachDB benefits and features:
 
 {% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 
