@@ -18,7 +18,7 @@ This page describes how to configure the following, using the [Operator](https:/
 
 These settings control how CockroachDB pods can be identified or scheduled onto worker nodes.
 
-{% include {{ page.version.version }}/orchestration/operator-check-namespace.md %}
+{% include common/orchestration/operator-check-namespace.md %}
 
 ## Enable feature gates
 
@@ -85,7 +85,7 @@ spec:
         - matchExpressions:
           - key: kubernetes.io/arch
             operator: In
-            values: 
+            values:
             - intel
             - amd64
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -162,7 +162,7 @@ In this example, CockroachDB has not yet been deployed to a running Kubernetes c
 	gke-cockroachdb-default-pool-ccd74623-dghs   Ready    <none>   3m54s   v1.20.10-gke.301
 	gke-cockroachdb-default-pool-ccd74623-p5mf   Ready    <none>   3m55s   v1.20.10-gke.301
 	~~~
-	
+
 1. Add a `node=crdb` label to 3 of the running worker nodes.
 
 	{% include_cached copy-clipboard.html %}
@@ -204,7 +204,7 @@ In this example, CockroachDB has not yet been deployed to a running Kubernetes c
 	            operator: In
 	            values:
 	            - cockroachdb
-	        topologyKey: kubernetes.io/hostname 		  	  
+	        topologyKey: kubernetes.io/hostname
 	~~~
 
 	The `nodeAffinity` rule requires CockroachDB pods to be scheduled onto worker nodes with the label `node=crdb`.	The `podAntiAffinity` rule requires CockroachDB pods not to be co-located on a worker node, as specified with `topologyKey`.
@@ -248,7 +248,7 @@ For an example, see [Evicting CockroachDB from a running worker node](#example-e
 
 ### Add a toleration
 
-Specify pod tolerations in the `tolerations` object of the Operator's custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster). 
+Specify pod tolerations in the `tolerations` object of the Operator's custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster).
 
 The following toleration matches a taint with the specified key, value, and `NoSchedule` effect, using the `Equal` operator. A toleration that uses the `Equal` operator must include a `value` field:
 
@@ -280,7 +280,7 @@ spec:
       tolerationSeconds: 3600
 ~~~
 
-A `NoExecute` taint on a node prevents pods from being scheduled onto the node, and evicts pods from the node if they are already running on the node. The matching toleration allows a pod to be scheduled onto the node, and to continue running on the node if `tolerationSeconds` is not specified. If `tolerationSeconds` is specified, the pod is evicted after this number of seconds. 
+A `NoExecute` taint on a node prevents pods from being scheduled onto the node, and evicts pods from the node if they are already running on the node. The matching toleration allows a pod to be scheduled onto the node, and to continue running on the node if `tolerationSeconds` is not specified. If `tolerationSeconds` is specified, the pod is evicted after this number of seconds.
 
 For more information on using taints and tolerations, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/). The [custom resource definition](https://raw.github.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml) details the fields supported by the Operator.
 
