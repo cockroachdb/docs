@@ -15,17 +15,19 @@ The time-series data displayed in DB Console graphs is stored within the Cockroa
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
+---
+
 The **Overview** dashboard displays the following time series graphs.
 
-## SQL Statements
+## SQL Queries Per Second
 
-- In the node view, the graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
+- In the node view, the graph shows the 10-second moving average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries issued by SQL clients and successfully executed per second on the node. `Total Queries`, a sum of all four averages, is also displayed as a general Queries Per Second (QPS) metric.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current query load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
 See the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) for more details on the cluster's SQL statements.
 
-Metrics: `sql.select.count`, `sql.update.count`, `sql.insert.count`, `sql.delete.count`
+Metrics: `sql.select.count`, `sql.update.count`, `sql.insert.count`, `sql.delete.count`, `sql.crud_query.count`
 
 The following SQL statements update the `INSERT` metric (`sql.insert.count`):
 
@@ -53,8 +55,6 @@ See the [Statements page]({% link {{ page.version.version }}/ui-statements-page.
 
 ## Replicas per Node
 
-<img src="{{ 'images/v24.2/ui_replicas_per_node.png' | relative_url }}" alt="DB Console Replicas per node graph" style="border:1px solid #eee;max-width:100%" />
-
 Ranges are subsets of your data, which are replicated to ensure survivability. Ranges are replicated to a configurable number of CockroachDB nodes.
 
 - In the node view, the graph shows the number of range replicas on the selected node.
@@ -65,13 +65,11 @@ For details about how to control the number and location of replicas, see [Repli
 
 ## Capacity
 
-<img src="{{ 'images/v24.2/ui_capacity.png' | relative_url }}" alt="DB Console Capacity graph" style="border:1px solid #eee;max-width:100%" />
-
 You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster]({% link {{ page.version.version }}/cockroach-start.md %})).
 
 Metric | Description
 --------|--------
-**Capacity** | The maximum store size. This value may be set per node using [`--store`]({% link {{ page.version.version }}/cockroach-start.md %}#store). If a store size has not been set, this metric displays the actual disk capacity. See [Capacity metrics](#capacity-metrics).
+**Max** | The maximum store size. This value may be set per node using [`--store`]({% link {{ page.version.version }}/cockroach-start.md %}#store). If a store size has not been set, this metric displays the actual disk capacity. See [Capacity metrics](#capacity-metrics).
 **Available** | The free disk space available to CockroachDB data.
 **Used** | The disk space in use by CockroachDB data. This excludes the Cockroach binary, operating system, and other system files.
 
