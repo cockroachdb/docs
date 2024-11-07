@@ -40,11 +40,11 @@ This section shows how to perform a major-version upgrade for a cluster in Cockr
 1. Check which upgrades are available to the cluster, if any.
 
     Beginning with v24.1, major versions alternate in type between Regular releases, which are required, and Innovation releases, which can be skipped.
-    
+
     From a Regular release, you can upgrade to the next major release (an Innovation release) or the subsequent major release (another Regular release). From an Innovation release, you must upgrade to the next Regular release.
-    
+
     These releases also provide different support periods.
-    
+
     For details, refer the [CockroachDB Cloud Support Policy]({% link cockroachcloud/upgrade-policy.md %}#cockroachdb-cloud-support-policy).
 
     To check whether major-version upgrades are available, click the three-dot **Action** menu. If upgrades are available, **Upgrade major version** will be enabled. Click it. In the dialog, if only one newer major version upgrade is available, it is selected automatically. If multiple upgrades are available, the latest Regular release is selected by default. If you intend to upgrade the cluster, keep this dialog open while completing the next steps. Otherwise, close the dialog.
@@ -58,3 +58,7 @@ This section shows how to perform a major-version upgrade for a cluster in Cockr
       You can monitor the process of finalization in the CockroachDB Cloud <a href="/docs/cockroachcloud/jobs-page.html"><strong>[Jobs]({% link cockroachcloud/jobs-page.md %})</strong> page. Migration jobs have names in the format `{major-version}-{migration-id}`. If a migration job fails or stalls, Cockroach Labs can use the migration ID to help diagnose and troubleshoot the problem. Each major version has a unique set of migration jobs and IDs.
 
       When finalization is complete, the **Cluster List** and **Cluster Details** page report the new version, and you can no longer roll back to the previous major version.
+
+<h2 id="expect-temporary-limitations">Features that require upgrade finalization</h2>
+
+Until a major-version upgrade has been finalized, certain new features and optimizations are not available. To learn about these features, review the release notes for that version of CockroachDB. For example, [{{ site.current_cloud_version }} Release Notes]({% link {{ site.current_cloud_version }}/{{ site.current_cloud_version}}.md %}#features-that-require-upgrade-finalization).
