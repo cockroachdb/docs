@@ -61,4 +61,4 @@ This section shows how to perform a major-version upgrade for a cluster in Cockr
 
 <h2 id="expect-temporary-limitations">Features that require upgrade finalization</h2>
 
-Until a major-version upgrade has been finalized, certain new features and optimizations are not available. To learn about these features, review the release notes for that version of CockroachDB. For example, [{{ site.current_cloud_version }} Release Notes]({% link {{ site.current_cloud_version }}/{{ site.current_cloud_version}}.md %}#features-that-require-upgrade-finalization).
+Until a major-version upgrade has been finalized, certain new features and optimizations are not available. To learn about these features, review the release notes for that version of CockroachDB. For example, [{{ site.current_cloud_version }} Release Notes]({% link releases/{{ site.current_cloud_version}}.md %}#features-that-require-upgrade-finalization).
