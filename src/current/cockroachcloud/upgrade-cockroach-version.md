@@ -17,9 +17,13 @@ This page describes how major-version and patch upgrades work and shows how to u
 
 ### Availability during an upgrade
 
-For CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }}, a cluster's resources are not impacted by an ongoing upgrade.
+For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }}, a cluster remains available during an upgrade.
 
-For CockroachDB {{ site.data.products.advanced }}, nodes are upgraded one at a time in a rolling fashion, and the cluster's resources are reduced as each node is upgraded. If you have [configured a maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}) for a CockroachDB {{ site.data.products.advanced }} cluster, automatic patch upgrades are applied during the maintenance window. Major-version upgrades must be initiated manually.
+For CockroachDB {{ site.data.products.advanced }}, nodes are upgraded one at a time in a rolling fashion. Multi-node clusters will remain available during the upgrade, but will have reduced capacity as each node restarts. Single-node clusters will be unavailable while the node restarts.
+
+### Upgrades and maintenance windows
+
+If you have [configured a maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}) for a CockroachDB {{ site.data.products.advanced }} cluster, automatic patch upgrades are applied during the maintenance window. Major-version upgrades must be initiated manually.
 
 {{site.data.alerts.callout_info}}
 Maintenance operations that are critical for cluster security or stability may be applied outside of the maintenance window, and upgrades that begin in a maintenance window may not always be completed by the end of the window.
