@@ -14,7 +14,7 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
-## November 13, 2024
+## November 7, 2024
 
 You can now [grant roles]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role) to a user after you [invite them]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization) to join your CockroachDB {{ site.data.products.cloud }} organization. Previously, a user was required to accept the invitation and create an account before roles could be granted.
 
