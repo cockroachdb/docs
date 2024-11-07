@@ -155,6 +155,26 @@ You have a bidirectional LDR setup with a stream between cluster A to cluster B,
     CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name};
     ~~~
 
+<<<<<<< HEAD
+=======
+#### Continue application traffic on both clusters independently
+
+1. Drop the LDR job on both clusters A and B. Canceling the LDR streams will remove the history retention job, which will cause the data to be garbage collected according to the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) setting. Use [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %}):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CANCEL JOB {ldr_job_id};
+    ~~~
+
+1. Perform the schema change on the table in both clusters independently. Application traffic can run to both clusters as usual.
+1. After the schema changes on both clusters have completed successfully, create new LDR streams **without** a `cursor` timestamp for the table on both clusters A and B. The LDR jobs will start a full initial scan of the source tables. Run `CREATE LOGICAL REPLICATION STREAM` from the **destination** cluster for each stream:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name};
+    ~~~
+
+>>>>>>> f838b6900 (Update schema change directions)
 #### Coordinate schema changes for unidirectional LDR 
 
 If you have a unidirectional LDR setup, you should cancel the running LDR stream and redirect all application traffic to the source cluster.
