@@ -40,7 +40,7 @@ To create a changefeed, the user must be a member of the `admin` role or have th
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. Refer to [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) for more detail.
-`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, refer to [Sink URI](#sink-uri).<br><br>**Note:** If you create a changefeed without a sink, your changefeed will run like a [core changefeed]({% link {{ page.version.version }}/changefeed-for.md %}) sending messages to the SQL client. For more detail, refer to the [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#create) page.
+`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, refer to [Sink URI](#sink-uri).<br><br>**Note:** If you create a changefeed without a sink, your changefeed will run like a [basic changefeed]({% link {{ page.version.version }}/changefeed-for.md %}) sending messages to the SQL client. For more detail, refer to the [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#create) page.
 `option` / `value` | For a list of available options and their values, refer to [Options](#options).
 
 ### CDC query parameters
