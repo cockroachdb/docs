@@ -27,7 +27,20 @@ LDR uses _last write wins (LWW)_ conflict resolution based on the [MVCC timestam
 
 ### Dead letter queue (DLQ)
 
-When the LDR job starts, it will create a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ will contain the writes that LDR cannot apply after the retry period. For example, in LDR `validated` mode, [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies that are not met when there are foreign key constraints in the schema.
+When the LDR job starts, it will create a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ will contain the writes that LDR cannot apply after the retry period, which could occur if:
+
+- The destination table was dropped.
+- The destination cluster is unavailable.
+- Tables schemas do not match.
+
+In `validated` mode, rows are also sent to the DLQ when:
+
+- [Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies are not met where there are foreign key constraints in the schema.
+- Unique indexes and other constraints are not met.
+
+{{site.data.alerts.callout_info}}
+LDR will not pause when the writes are sent to the DLQ, you must manage the DLQ manually.
+{{site.data.alerts.end}}
 
 To manage the DLQ, you can evaluate entries in the `incoming_row` column and apply the row manually to another table with SQL statements.
 
