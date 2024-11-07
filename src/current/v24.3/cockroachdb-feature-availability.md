@@ -53,7 +53,7 @@ The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %})
 
 ### Admission control to limit the bandwidth for a store
 
-The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), `kvadmission.store.provisioned_bandwidth`, which allows you to optionally limit the bandwidth for a store, expressed in bytes per second, is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).
+The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), `kvadmission.store.provisioned_bandwidth`, which allows you to optionally limit the disk bandwidth capacity of stores on the cluster. Disk bandwidth admission control paces background disk writes to keep disk bandwidth within its provisioned bandwidth, is in Preview.
 
 ### Usage-based billing metrics
 
