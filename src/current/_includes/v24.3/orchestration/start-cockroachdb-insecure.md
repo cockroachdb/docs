@@ -36,7 +36,7 @@
 
     1. Modify the file wherever there is a `TODO` comment.
 
-    1. Use the file to create the StatefulSet and start the cluster:
+    1. Use the modified file to create the StatefulSet and start the cluster:
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell

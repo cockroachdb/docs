@@ -34,26 +34,26 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
 
     Before deploying, modify some parameters in our Helm chart's [values file](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml):
 
-    1. Create a local YAML file (e.g., `my-values.yaml`) to specify your custom values. These will be used to override the defaults in `values.yaml`.
+        1. Create a local YAML file (e.g., `my-values.yaml`) to specify your custom values. These will be used to override the defaults in `values.yaml`.
 
-    1. To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you *must* set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. We recommend setting `conf.cache` and `conf.max-sql-memory` each to 1/4 of the `memory` allocation specified in `statefulset.resources.requests` and `statefulset.resources.limits`.
+        1. To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you *must* set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. We recommend setting `conf.cache` and `conf.max-sql-memory` each to 1/4 of the `memory` allocation specified in `statefulset.resources.requests` and `statefulset.resources.limits`.
 
-        {{site.data.alerts.callout_success}}
-        For example, if you are allocating 8Gi of `memory` to each CockroachDB node, allocate 2Gi to `cache` and 2Gi to `max-sql-memory`.
-        {{site.data.alerts.end}}
+            {{site.data.alerts.callout_success}}
+            For example, if you are allocating 8Gi of `memory` to each CockroachDB node, allocate 2Gi to `cache` and 2Gi to `max-sql-memory`.
+            {{site.data.alerts.end}}
 
-        {% include_cached copy-clipboard.html %}
-        ~~~ yaml
-        conf:
-          cache: "2Gi"
-          max-sql-memory: "2Gi"
-        ~~~
+            {% include_cached copy-clipboard.html %}
+            ~~~ yaml
+            conf:
+            cache: "2Gi"
+            max-sql-memory: "2Gi"
+            ~~~
 
-        The Helm chart defaults to a secure deployment by automatically setting `tls.enabled` to `true`.
+            The Helm chart defaults to a secure deployment by automatically setting `tls.enabled` to `true`.
 
-        {{site.data.alerts.callout_info}}
-        By default, the Helm chart will generate and sign 1 client and 1 node certificate to secure the cluster. To authenticate using your own CA, see [Certificate management](/docs/{{ page.version.version }}/secure-cockroachdb-kubernetes.html?filters=helm#use-a-custom-ca).
-        {{site.data.alerts.end}}
+            {{site.data.alerts.callout_info}}
+            By default, the Helm chart will generate and sign 1 client and 1 node certificate to secure the cluster. To authenticate using your own CA, see [Certificate management](/docs/{{ page.version.version }}/secure-cockroachdb-kubernetes.html?filters=helm#use-a-custom-ca).
+            {{site.data.alerts.end}}
 
     Refer to the [CockroachDB Helm chart's `values.yaml` template](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml).
 
