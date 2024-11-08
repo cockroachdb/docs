@@ -22,7 +22,7 @@ You can monitor [**logical data replication (LDR)**]({% link {{ page.version.ver
 {{site.data.alerts.end}}
 
 {% comment  %}To add to an include{% endcomment %}
-When you start LDR, one job is created on each cluster:
+When you start an LDR stream, one job is created on each cluster:
 
 - The _history retention job_ on the source cluster, which runs while the LDR job is active to protect changes in the table from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) until they have been applied to the destination cluster. The history retention job is viewable in the [DB Console](#db-console) or with [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}). Any manual changes to the history retention job could disrupt the LDR job.
 - The `logical replication` job on the destination cluster. You can view the status of this job in the SQL shell with `SHOW LOGICAL REPLICATION JOBS` and the DB Console [**Jobs** page](#jobs-page).
