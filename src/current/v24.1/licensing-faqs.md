@@ -66,7 +66,7 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups)** | | ✓ |
 **[Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups)** | | | ✓
 **[Other advanced backup features]({% link {{ page.version.version }}/backup.md %})** | | | ✓
-**[basic changefeed](create-and-configure-changefeeds.html?filters=core)** | | ✓ |
+**[Basic changefeed](create-and-configure-changefeeds.html?filters=core)** | | ✓ |
 **[{{ site.data.products.enterprise }} changefeed]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#configure-a-changefeed)** | | | ✓
 **[Table-level zone configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-levels)** | ✓ | |
 **[Multi-region capabilities]({% link {{ page.version.version }}/multiregion-overview.md %})** | | | ✓
