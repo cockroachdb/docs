@@ -29,7 +29,7 @@ Select the cluster's deployment method to continue.
 If you [deployed CockroachDB on Red Hat OpenShift]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-openshift.md %}), substitute `kubectl` with `oc` in the following commands.
 {{site.data.alerts.end}}
 
-{% include common/orchestration/operator-check-namespace.md %}
+{% include {{ page.version.version }}/orchestration/operator-check-namespace.md %}
 {% include common/upgrade/prepare-to-upgrade-self-hosted.md %}
 
 ## Perform a patch upgrade
