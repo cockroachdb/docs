@@ -43,7 +43,7 @@ A `debug tsdump` includes all the available resolutions (10s and 30m) of the raw
 - Time series values will be dumped with a 10 seconds resolution if the supplied time range is within the 10s TTL set by the  [`timeseries.storage.resolution_10s.ttl`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-timeseries-storage-resolution-10s-ttl) cluster setting (default: 10 days).
 - Time series values will be dumped with a 30 minutes resolution if the supplied time range is older than the 10s TTL back to the 30m TTL set by the [`timeseries.storage.resolution_30m.ttl`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-timeseries-storage-resolution-30m-ttl) cluster setting (default: 90 days).
 
-For example if today was `2024-11-15` and `--to` was set to the current timestamp (`2024-11-15`), and `--from` was set to 15 days before the current timestamp (`2024-11-01`), the `debug tsdump` would include:
+For example, if today was `2024-11-15` and `--to` was set to the current timestamp (`2024-11-15`), and `--from` was set to 15 days before the current timestamp (`2024-11-01`), the `debug tsdump` would include:
 
 - Time series values with a 10 seconds resolution for `2024-11-05` to `2024-11-15` (within the 10s TTL of 10 days).
 - Time series values with a 30 minutes resolution for `2024-11-01` to `2024-11-04` (outside the 10s TTL of 10 days, but within the 30s TTL of 90 days). 
