@@ -139,7 +139,7 @@ cockroach init --certs-dir=certs --host=localhost:26257
 
 - [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %})
 - [`cockroach auth-session`]({% link {{ page.version.version }}/cockroach-auth-session.md %})
-- [Authenticate to CockroachDB Self-Hosted Clusters]({% link {{ page.version.version }}/authentication.md %})
+- [Authenticate to CockroachDB {{ site.data.products.core }} clusters]({% link {{ page.version.version }}/authentication.md %})
 - [GSSAPI Authentication]({% link {{ page.version.version }}/gssapi_authentication.md %})
 - [SQL Authentication]({% link {{ page.version.version }}/security-reference/authentication.md %})
 - [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %})

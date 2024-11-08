@@ -19,9 +19,9 @@ See [Release Notes]({% link releases/{{page.version.version}}.md %}) for what's 
 
 Use one of the options below to install CockroachDB.
 
-To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-compliant build of CockroachDB]({% link {{ page.version.version }}/fips.md %}).
-
-CockroachDB on ARM is <b><a href="{% link {{page.version.version}}/cockroachdb-feature-availability.md %}#feature-availability-phases">Generally Available</a></b> in v23.2.0 and above. For limitations specific to ARM, refer to <a href="#limitations">Limitations</a>.
+- To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-compliant build of CockroachDB]({% link {{ page.version.version }}/fips.md %}) instead of this page.
+- For limitations of CockroachDB on ARM, refer to [ARM limitations](#arm).
+- For limitations of CockroachDB on a NUMA architecture, refer to [NUMA limitations](#numa).
 
 <div id="download-the-binary-linux" class="install-option">
   <h2 id="install-binary">Download the binary</h2>
@@ -163,6 +163,8 @@ true
 
 <h2 id="limitations">Limitations</h2>
 
+### ARM
+
 CockroachDB runtimes built for the ARM architecture have the following limitations:
 
 - Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation#Fused_multiply.E2.80.93add).
@@ -173,6 +175,10 @@ CockroachDB runtimes built for the ARM architecture have the following limitatio
 
 - In production, Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, CPU architecture, hardware, and software.
 - A mix of Intel and ARM nodes is supported as a temporary transitional state during the migration only. Cockroach Labs recommends that you test and validate your workload ahead of the migration to ensure that the workload and your application work as expected in a cluster with both Intel and ARM nodes, especially with respect to floating-point arithmetic.
+
+### NUMA
+
+{% include_cached common/numa_and_go.md %}
 
 <h2 id="whats-next">What&#39;s next?</h2>
 

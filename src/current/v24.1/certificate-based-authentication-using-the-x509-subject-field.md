@@ -118,7 +118,7 @@ Regardless of this setting's value, CockroachDB will verify the following during
 
 - [`ALTER ROLE ... SUBJECT`]({% link {{ page.version.version }}/alter-role.md %}#set-the-subject-role-option-for-certificate-based-authentication)
 - [`CREATE ROLE ... SUBJECT`]({% link {{ page.version.version }}/create-role.md %}#set-the-subject-role-option-for-certificate-based-authentication)
-- [Authenticate to CockroachDB Self-Hosted Clusters]({% link {{ page.version.version }}/authentication.md %})
+- [Authenticate to CockroachDB {{ site.data.products.core }} Clusters]({% link {{ page.version.version }}/authentication.md %})
 - [GSSAPI Authentication]({% link {{ page.version.version }}/gssapi_authentication.md %})
 - [SQL Authentication]({% link {{ page.version.version }}/security-reference/authentication.md %})
 - [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %})
