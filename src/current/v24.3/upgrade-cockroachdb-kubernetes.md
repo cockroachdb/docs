@@ -13,7 +13,7 @@ This page shows how to upgrade a CockroachDB cluster that is [deployed on a Kube
 
 {% include common/upgrade/overview.md %}
 
-On Kubernewtes, the upgrade is a [staged update](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) in which each pod's container image for CockroachDB is updated in a rolling fashion. The cluster remains available during the upgrade.
+On Kubernetes, the upgrade is a [staged update](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) in which each pod's container image for CockroachDB is updated in a rolling fashion. The cluster remains available during the upgrade.
 
 Select the cluster's deployment method to continue.
 
