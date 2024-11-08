@@ -13,8 +13,8 @@ Logical data replication is only supported in CockroachDB {{ site.data.products.
 Once you have **logical data replication (LDR)** running, you will need to track and manage certain parts of the job:
 
 - [Conflict resolution](#conflict-resolution): As changes to a table replicate from the source to the destination cluster, there can be conflicts during some operations that the job will handle with conflict resolution. When LDR is started, the job creates a [_dead letter queue (DLQ)_](#dead-letter-queue-dlq) table with each replicating table. LDR will send any unresolved conflicts to the DLQ, which you should monitor as LDR continues to replicate changes between the source and destination clusters. 
-- [Schema changes](#schema-changes): The tables that are part of the LDR job may require schema changes, which need to be coordinated manually. There are some schema changes that are supported while LDR is active.
-- [Jobs](#jobs-and-ldr): Other CockroachDB jobs can operate on clusters running LDR [jobs]({% link {{ page.version.version }}/show-jobs.md %}). You may want to consider where you start and how you manage [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}), and so on when you're running LDR.
+- [Schema changes](#schema-changes): The tables that are part of the LDR job may require schema changes, which need to be coordinated manually. There are some schema changes that are supported while LDR jobs are actively running.
+- [Jobs](#jobs-and-ldr): All CockroachDB jobs can operate on clusters running LDR [jobs]({% link {{ page.version.version }}/show-jobs.md %}). You may want to consider where you start and how you manage [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}), and so on when you're running LDR.
 
 ## Conflict resolution
 
@@ -23,7 +23,7 @@ Conflicts in LDR are detected when there is either:
 - An `UPDATE` operation replicated to the destination cluster.
 - A cross-cluster write occurs, which means both clusters are writing to the same key. For example, if the LDR stream attempts to apply a row to the destination cluster where the existing row on the destination was not written by the LDR stream.
 
-LDR uses _last write wins (LWW)_ conflict resolution based on the [MVCC timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) of the replicating write. LDR will resolve conflicts by inserting the row with the latest MVCC timestamp. When a conflict cannot apply, due to violating a foreign key constraint or schema constraint, it will be retried for up to a minute and then put in the [DLQ](#dead-letter-queue-dlq) if it could not be resolved. 
+LDR uses _last write wins (LWW)_ conflict resolution based on the [MVCC timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) of the replicating write. LDR will resolve conflicts by inserting the row with the latest MVCC timestamp. In `validated` mode, when a conflict cannot apply due to violating a foreign key constraint or schema constraint, it will be retried for up to a minute and then put in the [DLQ](#dead-letter-queue-dlq) if it could not be resolved. 
 
 ### Dead letter queue (DLQ)
 
@@ -85,7 +85,7 @@ CONSTRAINT dlq_113_public_promo_codes_pkey PRIMARY KEY (ingestion_job_id ASC, dl
 
 ## Schema changes
 
-When you start LDR on a table, the job will lock the schema, which will prevent any accidental [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) that would cause issues for LDR. There are some [supported schema changes](#supported-schema-changes) that you can perform on a replicating table, otherwise it is necessary to stop LDR in order to [coordinate the schema change](#coordinate-schema-changes).
+When you start LDR on a table, the job will lock the schema, which will prevent any accidental [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) that would cause issues for LDR. There are some [supported schema changes](#supported-schema-changes) that you can perform on a replicating table, otherwise it is necessary to stop LDR in order to [coordinate the schema change](#coordinate-other-schema-changes).
 
 ### Supported schema changes
 
@@ -103,7 +103,7 @@ Allowlist schema change | Exceptions
 LDR will **not** replicate the allowlist schema changes to the destination table. Therefore, you must perform the schema change carefully on both the source and destination cluster.
 {{site.data.alerts.end}}
 
-### Coordinate schema changes
+### Coordinate other schema changes
 
 To perform any other schema change on the table, use the following approach to redirect application traffic to one cluster. You'll need to drop the existing LDR jobs, perform the schema change, and start new LDR jobs, which will require a full initial scan.
 
@@ -138,7 +138,7 @@ You have a bidirectional LDR setup with a stream between cluster A to cluster B,
     ~~~
 
 1. Perform the schema change on cluster A. 
-1. Drop the table from cluster B. 
+1. Drop the existing table from cluster B. 
 1. Recreate the table and its new schema on cluster B. 
 1. Create new LDR streams for the table on both clusters A and B. Run `CREATE LOGICAL REPLICATION STREAM` from the **destination** cluster for each stream:
 
@@ -181,6 +181,10 @@ In a unidirectional setup, you may want to run jobs like [changefeeds]({% link {
 1. You create a changefeed watching the `test_table` on cluster A.
 1. You start LDR from cluster A `test_table` replicating to cluster B's `test_table`. There are writes to `test_table` happening on both clusters. At this point, the changefeed is only emitting messages for cluster A (the source of the LDR job).
 1. You start another LDR job from cluster B to cluster A to create bidirectional LDR. This second LDR job sends writes occurring on cluster B `test_table` into cluster A `test_table`. The changefeed on cluster A will now start emitting messages for both the writes occuring from application traffic in cluster A and also the writes incoming from LDR running from cluster B to cluster A.
+
+### Backups
+
+[Backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) can run on either cluster in an LDR stream. If you're backing up a table that is the destination table to which an LDR job is streaming, the backup will include writes that occur to the table from the LDR job. {% comment  %}To add: In a unidirectional setup, you may want to isolate your application workload from backup jobs (link to overview example).{% endcomment %} 
 
 ### TTL
 

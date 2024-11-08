@@ -18,8 +18,6 @@ Limitations will be added as they are discovered.
 
 ### Logical data replication (LDR)
 
-
-
 - {% include {{ page.version.version }}/known-limitations/ldr-triggers.md %}
 - {% include {{ page.version.version }}/known-limitations/ldr-udfs.md %}
 - {% include {{ page.version.version }}/known-limitations/ldr-sequences.md %}
