@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on CockroachDB {{ site.data.products.standard }}, {{ site.data.products.advanced }}, {{ site.data.products.basic }}, and with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html) on CockroachDB {{ site.data.products.core }} clusters. Core changefeeds are available in all products.
+This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on CockroachDB {{ site.data.products.standard }}, {{ site.data.products.advanced }}, {{ site.data.products.basic }}, and with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html) on CockroachDB {{ site.data.products.core }} clusters. Basic changefeeds are available in all products.
 
 For a comparative summary of all Core and {{ site.data.products.enterprise }} changefeed features, refer to the [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page.
 
@@ -17,7 +17,7 @@ Use the following filters to show usage examples for either **Enterprise** or **
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="enterprise">Enterprise changefeeds</button>
-  <button class="filter-button" data-scope="core">Core changefeeds</button>
+  <button class="filter-button" data-scope="core">Basic changefeeds</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="enterprise">
@@ -40,7 +40,7 @@ You can set up a changefeed that uses [change data capture queries]({% link {{ p
 ## Create a changefeed connected to Kafka
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-basic-changefeed).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink. The changefeed will watch two tables.
@@ -185,7 +185,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ## Create a changefeed connected to Kafka using Avro
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed-using-avro).
+[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-basic-changefeed-using-avro).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records. The changefeed will watch two tables.
@@ -485,7 +485,7 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
 ## Create a changefeed connected to a cloud storage sink
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-basic-changefeed).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. The changefeed watches two tables. Note that you can set up changefeeds for any of [these cloud storage providers]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink).
@@ -551,7 +551,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ## Create a changefeed connected to a webhook sink
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-basic-changefeed).
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/cdc/webhook-performance-setting.md %}
@@ -722,17 +722,17 @@ For different use case examples and syntax detail, refer to the [Change Data Cap
 
 <section class="filter-content" markdown="1" data-scope="core">
 
-Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed. Core changefeeds are available in all products.
+Basic changefeeds stream row-level changes to a client until the underlying SQL connection is closed. Core changefeeds are available in all products.
 
-## Create a Core changefeed
+## Create a basic changefeed
 
 {% include {{ page.version.version }}/cdc/create-core-changefeed.md %}
 
-## Create a Core changefeed using Avro
+## Create a basic changefeed using Avro
 
 {% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
 
-For further information on Core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}).
+For further information on basic changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}).
 
 </section>
 

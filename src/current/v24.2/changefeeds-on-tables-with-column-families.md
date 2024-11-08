@@ -28,7 +28,7 @@ CREATE CHANGEFEED FOR TABLE {table} FAMILY {family} INTO {sink};
 ~~~
 
 {{site.data.alerts.callout_info}}
-You can also use [Core changefeeds]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}?filters=core#create-a-core-changefeed-on-a-table-with-column-families) on tables with column families by using the [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement with `split_column_families` or the `FAMILY` keyword.
+You can also use [basic changefeeds]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}?filters=core#create-a-basic-changefeed-on-a-table-with-column-families) on tables with column families by using the [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement with `split_column_families` or the `FAMILY` keyword.
 {{site.data.alerts.end}}
 
 If a table has multiple column families, the `FAMILY` keyword will ensure the changefeed emits messages for **each** column family you define with `FAMILY` in the `CREATE CHANGEFEED` statement. If you do not specify `FAMILY`, then the changefeed will emit messages for **all** the table's column families.
@@ -83,11 +83,11 @@ The output shows the `primary` column family with `4` in the value (`{"id":4,"na
 - Creating a changefeed with [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}) is not supported on tables with more than one column family.
 - When you create a changefeed on a table with more than one column family, the changefeed will emit messages per column family in separate streams. As a result, [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}) for different column families will arrive at the [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) under separate topics. For more details, refer to [Message format](#message-format).
 
-For examples of starting changefeeds on tables with column families, see the following examples for Enterprise and Core changefeeds.
+For examples of starting changefeeds on tables with column families, see the following examples for Enterprise and basic changefeeds.
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="enterprise">Enterprise Changefeeds</button>
-  <button class="filter-button" data-scope="core">Core Changefeeds</button>
+  <button class="filter-button" data-scope="core">Basic Changefeeds</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="enterprise">
@@ -95,7 +95,7 @@ For examples of starting changefeeds on tables with column families, see the fol
 ## Create a changefeed on a table with column families
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}?filters=core#create-a-core-changefeed-on-a-table-with-column-families).
+[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}?filters=core#create-a-basic-changefeed-on-a-table-with-column-families).
 {{site.data.alerts.end}}
 
 In this example, you'll set up changefeeds on two tables that have [column families]({% link {{ page.version.version }}/column-families.md %}). You'll use a single-node cluster sending changes to a webhook sink for this example, but you can use any [changefeed sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) to work with tables that include column families.
@@ -305,9 +305,9 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
 <section class="filter-content" markdown="1" data-scope="core">
 
-## Create a Core changefeed on a table with column families
+## Create a basic changefeed on a table with column families
 
-In this example, you'll set up Core changefeeds on two tables that have [column families]({% link {{ page.version.version }}/column-families.md %}). You'll use a single-node cluster with the Core changefeed sending changes to the client.
+In this example, you'll set up basic changefeeds on two tables that have [column families]({% link {{ page.version.version }}/column-families.md %}). You'll use a single-node cluster with the basic changefeed sending changes to the client.
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
