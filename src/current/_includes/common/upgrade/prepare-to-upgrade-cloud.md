@@ -1,12 +1,5 @@
 Before beginning a major-version upgrade:
 
-1. **CockroachDB {{ site.data.products.advanced }}**: Verify the overall health of your cluster using the [DB Console]({% link cockroachcloud/tools-page.md %}#access-the-db-console):
-    - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as `SUSPECT` or `DEAD`, identify why the nodes are offline and either restart them or [decommission]({% link {{ site.current_cloud_version }}/node-shutdown.md %}?filters=decommission#remove-nodes) them before beginning your upgrade. If there are `DEAD` and non-decommissioned nodes in your cluster, the upgrade cannot be finalized.
-
-        If any node is not fully decommissioned, try the following:
-            1. First, reissue the [decommission command]({% link {{ site.current_cloud_version }}/node-shutdown.md %}?filters=decommission#decommission-the-node). The second command typically succeeds within a few minutes.
-            1. If the second decommission command does not succeed, [recommission]({% link {{ site.current_cloud_version }}/node-shutdown.md %}?filters=decommission#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
-    - Under **Replication Status**, make sure there are `0` under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
 1. Review the cluster's [Metrics page]({% link cockroachcloud/metrics.md %}) to ensure that your cluster's compute and storage capacity is within acceptable values. The cluster must be able to tolerate some increase, in case the new version uses more resources for your workload. If any of these metrics is above healthy limits, consider increasing the cluster's resources before beginning your upgrade.
 1. {% include {{ site.current_cloud_version }}/backups/recommend-backups-for-upgrade.md %}
 1. Review the [{{ site.current_cloud_version }} Release Notes]({% link releases/{{ site.current_cloud_version }}.md %}), as well as the release notes for any skipped major version. Pay careful attention to the sections for backward-incompatible changes, deprecations, changes to default cluster settings, and features that are not available until the upgrade is finalized.
