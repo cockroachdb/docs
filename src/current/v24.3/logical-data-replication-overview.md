@@ -8,10 +8,10 @@ toc: true
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v24.3" %} **Logical data replication (LDR)** continuously replicates tables between active CockroachDB clusters. Both source and destination cluster can receive application reads and writes, with LDR enabling bidirectional replication for eventual consistency in the replicating tables. The active-active setup can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Each cluster in an LDR job still benefits individually from [multi-active availability]({% link {{ page.version.version }}/multi-active-availability.md %}) with CockroachDB's built-in [Raft replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) providing data consistency across nodes, zones, and regions.
+{% include_cached new-in.html version="v24.3" %} **Logical data replication (LDR)** continuously replicates tables between active CockroachDB clusters. Both source and destination cluster can receive application reads and writes, with LDR enabling bidirectional replication for eventual consistency in the replicating tables. The active-active setup between clusters can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Each cluster in an LDR job still benefits individually from [multi-active availability]({% link {{ page.version.version }}/multi-active-availability.md %}) with CockroachDB's built-in [Raft replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) providing data consistency across nodes, zones, and regions.
 
 {{site.data.alerts.callout_success}}
-Cockroach Labs also has a [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) tool that continuously sends data at the byte level for transactional consistency from a primary cluster to an independent standby cluster.
+Cockroach Labs also has a [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) tool that continuously replicates data for transactional consistency from a primary cluster to an independent standby cluster.
 {{site.data.alerts.end}}
 
 ## Use cases
@@ -23,9 +23,9 @@ You can run LDR in a _unidirectional_ or _bidirectional_ setup to meet different
 
 ### Achieve high availability and single-region write latency in two-datacenter deployments
 
-Maintain [high availability]({% link {{ page.version.version }}/data-resilience.md %}#high-availability) with a two-datacenter topology. You can run bidirectional LDR to ensure [data resilience]({% link {{ page.version.version }}/data-resilience.md %}) in your deployment, particularly in datacenter or region failures. Both clusters can receive application reads and writes with low, single-region write latency. In a datacenter or cluster outage, you can redirect application traffic to the surviving cluster with [low downtime]({% link {{ page.version.version }}/data-resilience.md %}#high-availability). In the following diagram, the clusters are deployed in US East and West to provide low latency for that region. The two LDR jobs ensure that the tables on both clusters will reach eventual consistency.
+Maintain [high availability]({% link {{ page.version.version }}/data-resilience.md %}#high-availability) and resilience to region failures with a two-datacenter topology. You can run bidirectional LDR to ensure [data resilience]({% link {{ page.version.version }}/data-resilience.md %}) in your deployment, particularly in datacenter or region failures. If you set up two single-region clusters, in LDR, both clusters can receive application reads and writes with low, single-region write latency. Then, in a datacenter, region, or cluster outage, you can redirect application traffic to the surviving cluster with [low downtime]({% link {{ page.version.version }}/data-resilience.md %}#high-availability). In the following diagram, the two single-region clusters are deployed in US East and West to provide low latency for that region. The two LDR jobs ensure that the tables on both clusters will reach eventual consistency.
 
-<image src="{{ 'images/v24.3/east-west-region.svg' | relative_url }}" alt="Diagram showing bidirectional LDR from cluster A to B and back again from cluster B to A." style="width:50%" />
+<image src="{{ 'images/v24.3/east-west-region.svg' | relative_url }}" alt="Diagram showing bidirectional LDR from cluster A to B and back again from cluster B to A." style="width:60%" />
 
 ### Achieve workload isolation between clusters
 
