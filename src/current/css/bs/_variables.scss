@@ -1,4 +1,3 @@
-@use "sass:math";
 // Variables
 //
 // Variables should follow the `$component-state-property-size` formula for
@@ -922,7 +921,7 @@ $dropdown-border-radius:            $border-radius !default;
 $dropdown-border-width:             $border-width !default;
 $dropdown-inner-border-radius:      subtract($dropdown-border-radius, $dropdown-border-width) !default;
 $dropdown-divider-bg:               $dropdown-border-color !default;
-$dropdown-divider-margin-y:         math.div($spacer, 2) !default;
+$dropdown-divider-margin-y:         $spacer / 2 !default;
 $dropdown-box-shadow:               $box-shadow !default;
 
 $dropdown-link-color:               $gray-900 !default;
@@ -934,7 +933,7 @@ $dropdown-link-active-bg:           $component-active-bg !default;
 
 $dropdown-link-disabled-color:      $gray-600 !default;
 
-$dropdown-item-padding-y:           math.div($spacer, 4) !default;
+$dropdown-item-padding-y:           $spacer / 4 !default;
 $dropdown-item-padding-x:           $spacer !default;
 
 $dropdown-header-color:             $gray-600 !default;
