@@ -691,9 +691,9 @@
 - destination: cockroachcloud/serverless-resource-usage.md
   sources: ['cockroachcloud/serverless-benchmarking.md']
 
-- destination: cockroachcloud/upgrade-cockroach-version.md
-  sources: ['cockroachcloud/upgrade-to-v*.md']
-  versions: [cockroachcloud]
+- destination: upgrade-cockroach-version.md
+  sources: 'upgrade-to-v*.md'
+  versions: ['cockroachcloud']
 
 - destination: community-tooling.md
   sources:
