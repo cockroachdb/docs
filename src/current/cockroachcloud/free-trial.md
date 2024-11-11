@@ -9,7 +9,7 @@ When you sign up for CockroachDB Cloud, your new organization's account starts w
 
 ## Free trial credits
 
-Free trial credits are applied to the first $400 in costs for all clusters created in your organization, regardless of the plan: CockroachDB CockroachDB {{ site.data.products.standard }}, CockroachDB {{ site.data.products.advanced }}, or CockroachDB {{ site.data.products.basic }}.
+Free trial credits are applied to the first $400 in costs for all clusters created in your organization, regardless of the plan: CockroachDB {{ site.data.products.standard }}, CockroachDB {{ site.data.products.advanced }}, or CockroachDB {{ site.data.products.basic }}.
 
 Monthly billing begins when the free trial ends: on the day that the last credit is used, or upon expiration of credit, if any remains. By the end of the trial, you must provide a payment method for continued billing to prevent interruptions in service or loss of data.
 
