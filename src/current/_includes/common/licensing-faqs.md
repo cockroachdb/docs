@@ -1,12 +1,14 @@
-CockroachDB is made available under the [CockroachDB Software License][csl].
+All versions of CockroachDB released after November 18, 2024, including patch fixes for prior versions 23.1 onward, are made available under the [CockroachDB Software License][csl]. You can use the dropdown menu at the top of the page to view documentation for other versions.
 
-## Types of licenses
+<a name="types-of-licenses"></a>
+
+## License options
 
 The table of licenses below refers to options for {{ site.data.products.core }} deployments. All {{ site.data.products.cloud }} deployments automatically have a valid **Enterprise** license.
 
 Type | Description
 -------------|------------
-**Enterprise** <a name="enterprise"></a> | This paid license allows usage of all CockroachDB features with no restrictions under the terms specified in the [CockroachDB Software License][csl]. License must be renewed annually or as negotiated. Support levels available include [Enterprise][support] or [Essential][support].
+**Enterprise** <a name="enterprise"></a> | This paid license allows usage of all CockroachDB features in accordance with the terms specified in the [CockroachDB Software License][csl]. License must be renewed annually or as negotiated. Support levels available include [Enterprise][support] or [Essential][support].
 **Enterprise Free** <a name="enterprise-free"></a> | Same functionality as **Enterprise**, but free of charge for businesses with less than $10M in annual revenue. Clusters will be [throttled](#throttling) after 7 days without sending telemetry. License must be renewed annually. Support level available is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
 **Enterprise Trial** <a name="enterprise-trial"></a> | A 30 day self-service trial license. Telemetry is required during the trial. Clusters will be [throttled](#throttling) after 7 days without sending telemetry. Telemetry can be disabled once the cluster is upgraded to a paid **Enterprise** license. Support level available during trials is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
 
@@ -14,11 +16,8 @@ Type | Description
 
 {{site.data.alerts.callout_success}}
 Note that:
-- Clusters with Enterprise Free or Enterprise Trial licenses cannot disable telemetry; if such a cluster signals a telemetry sending error, it will be due to firewall configuration or a network issue.
-- Clusters with no license have a 7-day grace period before needing to install a license. This is useful for ephemeral development clusters.
+- Clusters with no license key have a 7-day grace period before requiring a license key. This is useful for ephemeral development clusters.
 - No license key is required for developers running [single-node clusters](#single-node-clusters).
-
-In general, self-hosted clusters without a license key are restricted to development purposes only. Development purposes includes non-production use in an internal development environment for design, prototype, or development purposes only. This restriction is enforced through [license terms and conditions][csl].
 {{site.data.alerts.end}}
 
 ## Obtain a license
@@ -91,7 +90,7 @@ You can monitor the time until your license expires in the following ways:
 1. [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}): The `seconds_until_enterprise_license_expiry` metric reports the number of seconds until the license on a cluster expires. It will report `0` if there is no license, and a negative number if the license has already expired. For more information, see [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %}).
 1. [DB console]({% link {{ page.version.version }}/ui-overview.md %}): Several [license expiration messages]({% link {{ page.version.version }}/ui-overview.md %}#license-expiration-message) may be displayed, depending on the status of your cluster's license.
 1. [CockroachDB {{ site.data.products.cloud }} Console][cloud-console]: If you have an **Enterprise Free** or **Enterprise Trial** cluster, you will see notifications in the **Enterprise Licenses** section, as well as receive notification emails sent to users with **Org Admin** permissions.
-1. CockroachDB emits [log messages]({% {{page.version.version}}/logging-overview.md %}) when a cluster is at risk of being [throttled](#throttling) due to license expiration or telemetry requirements. The database will also return notices to [SQL clients]({% link {{ page.version.version }}/cockroach-sql.md %}) or [applications]({% link {{ page.version.version }}/install-client-drivers.md %}) that try to execute [transactions]({% link {{ page.version.version }}/transactions.md %}).
+1. CockroachDB emits [log messages]({% link {{ page.version.version }}/logging-overview.md %}) when a cluster is at risk of being [throttled](#throttling) due to license expiration or telemetry requirements. The database will also return notices to [SQL clients]({% link {{ page.version.version }}/cockroach-sql.md %}) or [applications]({% link {{ page.version.version }}/install-client-drivers.md %}) that try to execute [transactions]({% link {{ page.version.version }}/transactions.md %}).
 
 {{site.data.alerts.callout_info}}
 During the transition to the [CockroachDB Software License][csl], expiration behavior (including [throttling](#throttling)) will work as follows depending on your version of CockroachDB.
@@ -155,7 +154,7 @@ No license key is required for developers running [single-node clusters]({% link
 
 Single node clusters are not [throttled](#throttling).
 
-In general, self-hosted clusters without a license key are restricted to development purposes only. Development purposes includes non-production use in an internal development environment for design, prototype, or development purposes only. This restriction is enforced through [license terms and conditions][csl].
+Self-hosted clusters without a license key are restricted to use for design, prototyping, testing, or development purposes in non-production, internal development environments deploying a database that runs solely on a single node.
 
 ## See also
 
