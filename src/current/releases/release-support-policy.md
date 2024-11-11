@@ -150,7 +150,7 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
   <tr>
     <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}{% if will_never_have_lts == false and v.initial_lts_patch == "N/A" %}&nbsp;<a href="#lts-tbd"><sup>*</sup></a>{% elsif skippable == true %}&nbsp;<a href="#skippable"><sup>**</sup></a>{% endif %}</td>
     <td>{% if v.last_ga_patch != "N/A" %}{{ v.major_version }}.0 - {{ v.last_ga_patch }}{% else %}{{ v.major_version }}.0+{% endif %}</td>
-    <td>GA</td>
+    <td>{% if skippable == true %}Innovation{% else %}GA{% endif %}</td>
     <td>{{ v.release_date }}</td>
     <td>{% if v.maint_supp_exp_date != "N/A" %}{{ v.maint_supp_exp_date }}{% endif %}</td>
     <td>{{ v.asst_supp_exp_date }}</td>
@@ -249,7 +249,7 @@ The following versions of CockroachDB are no longer supported.
   <tr class="eol">
     <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}{% if skippable == true %}&nbsp;<a href="#skippable-eol"><sup>*</sup>{% endif %}</a></a></td>
     <td>{% if v.last_ga_patch != "N/A" %}{{ v.major_version }}.0 - {{ v.last_ga_patch }}{% else %}{{ v.major_version }}.0+{% endif %}</td>
-    <td>GA</td>
+    <td>{% if skippable == true %}Innovation{% else %}GA{% endif %}</td>
     <td>{{ v.release_date }}</td>
     <td>{% if v.maint_supp_exp_date != "N/A" %}{{ v.maint_supp_exp_date }}{% endif %}</td>
     <td>{{ v.asst_supp_exp_date }}</td>
