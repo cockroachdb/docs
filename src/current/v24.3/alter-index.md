@@ -176,15 +176,15 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER INDEX ... VISIBLE` and `ALTER INDEX ... NOT VISIBLE` determines whether the index is visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index). 
 
-By default, indexes are visible. If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes).
+By default, indexes are visible. If `NOT VISIBLE`, the index will not read from in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes). In order to keep `NOT VISIBLE` indexes up-to-date, they will continue to be written to as data in the table is inserted or updated.
 
 This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
 
 Note the following considerations:
 
 - Primary indexes must be visible.
-- Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints]({% link {{ page.version.version }}/constraints.md %}).
-- Indexes that are not visible are still used for foreign key cascades.
+- `NOT VISIBLE`, `UNIQUE` indexes may still be read from to enforce `UNIQUE` [constraints]({% link {{ page.version.version }}/constraints.md %}).
+- `NOT VISIBLE` indexes may still be read from to perform foreign key cascades and enforce `FOREIGN KEY` [constraints]({% link {{ page.version.version }}/constraints.md %}).
 - When defining a [unique constraint]({% link {{ page.version.version }}/unique.md %}), the `NOT VISIBLE` syntax cannot be used to make the corresponding index not visible. Instead, use `ALTER INDEX ... NOT VISIBLE` after creating the unique constraint.
 
 For examples, see [Set index visibility](#set-index-visibility).

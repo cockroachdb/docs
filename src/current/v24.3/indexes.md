@@ -62,7 +62,7 @@ To maximize your indexes' performance, Cockroach Labs recommends following the [
 
 To observe the impact of an index without affecting a production workload, you can [create an index]({% link {{ page.version.version }}/create-index.md %}) using the `NOT VISIBLE` clause. The index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes). For an example, see [Set an index to be not visible]({% link {{ page.version.version }}/alter-index.md %}#set-an-index-to-be-not-visible). 
 
-Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints]({% link {{ page.version.version }}/constraints.md %}). For more considerations, see [Index visibility considerations]({% link {{ page.version.version }}/alter-index.md %}#not-visible).
+Indexes that are not visible may still be read from to enforce `UNIQUE` and `FOREIGN KEY` [constraints]({% link {{ page.version.version }}/constraints.md %}). For more considerations, see [Index visibility considerations]({% link {{ page.version.version }}/alter-index.md %}#not-visible).
 
 {{site.data.alerts.callout_danger}}
 {% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
