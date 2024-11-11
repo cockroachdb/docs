@@ -247,11 +247,11 @@ This is the usage for any data leaving CockroachDB such as SQL data being sent t
 
 ### Change Data Capture (Changefeeds)
 
-All CockroachDB {{ site.data.products.cloud }} clusters can use [Enterprise Changefeeds]({% link {{ site.current_cloud_version}}/how-does-an-enterprise-changefeed-work.md %}).
+For Change Data Capture (CDC), all CockroachDB {{ site.data.products.cloud }} clusters can use [Enterprise Changefeeds]({% link {{ site.current_cloud_version}}/how-does-an-enterprise-changefeed-work.md %}).
 
 <section class="filter-content" markdown="1" data-scope="basic">
 
-In CockroachDB {{ site.data.products.basic }}, Change Data Capture (CDC) cost is usage-based via Request Units
+In CockroachDB {{ site.data.products.basic }}, CDC cost is usage-based via Request Units.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="standard">
