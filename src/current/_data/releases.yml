@@ -7111,7 +7111,7 @@
 
 - release_name: v24.2.5
   major_version: v24.2
-  release_date: '2024-11-11'
+  release_date: '2024-11-14'
   release_type: Production
   go_version: go1.22.8
   sha: 2e9644dd47ffff1befda9f8f6051d85e16bf4182
