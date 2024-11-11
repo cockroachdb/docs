@@ -51,7 +51,7 @@ For a practical guide on how CockroachDB uses Raft to replicate, distribute, and
     </td>
     <td>Zero RTO<br>Potential increased latency for 1-9 seconds</td>
     <td>Zero RTO<br>Potential increased latency for 1-9 seconds</td>
-    <td>Zero RTO<br>Application traffic cutover time</td>
+    <td>Zero RTO<br>Application traffic failover time</td>
   </tr>
 
   <tr>
