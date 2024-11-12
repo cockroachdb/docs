@@ -69,7 +69,7 @@ Admission control is enabled by default. To enable or disable admission control,
 - `admission.sql_kv_response.enabled` for work performed in the SQL layer when receiving [KV responses]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 - `admission.sql_sql_response.enabled` for work performed in the SQL layer when receiving [DistSQL responses]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql).
 - {% include_cached new-in.html version="v24.3" %} `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` to optionally limit the disk impact of ingesting snapshots on a node. This cluster setting is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).
-- `kvadmission.store.provisioned_bandwidth` to optionally limit the bandwidth for a store, expressed in bytes per second. This cluster setting is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).
+- {% include_cached new-in.html version="v24.3" %}`kvadmission.store.provisioned_bandwidth` to optionally limit the disk bandwidth capacity of stores on the cluster. Disk bandwidth admission control paces background disk writes to keep disk bandwidth within its provisioned bandwidth. This cluster setting is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).
 
 When you enable or disable admission control settings for one layer, Cockroach Labs recommends that you enable or disable them for **all layers**.
 
