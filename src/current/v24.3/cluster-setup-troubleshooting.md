@@ -227,7 +227,7 @@ Again, firewalls or hostname issues can cause any of these steps to fail.
 
 If the DB Console
 
-- lists any suspect or dead nodes on the [**Cluster Overview** page]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}) or 
+- lists any suspect or dead nodes on the [**Cluster Overview** page]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}) or
 - indicates any suspect nodes on the [**Network** page]({% link {{ page.version.version }}/ui-network-latency-page.md %}#node-liveness-status),
 
 then you might have a network partition.
@@ -326,7 +326,7 @@ Timezone data is read from the following sources in order of preference:
 
 1. The timezone database that is embedded in Go.
 
-[Restart](node-shutdown.html) each node if:
+[Restart]({% link {{ page.version.version }}/cockroach-start.md %}) each node if:
 
 - The operating system's timezone database is updated.
 - Any node's timezone changes.
@@ -534,7 +534,7 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
 
 #### Decommissioning process hangs indefinitely
 
-If the [decommissioning process]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#remove-nodes) appears to be hung on a node, a message like the following will print to `stderr`:
+If the [decommissioning process]({% link {{ page.version.version }}/decommission-a-node.md %}) appears to be hung on a node, a message like the following will print to `stderr`:
 
 ~~~
 possible decommission stall detected
@@ -545,7 +545,7 @@ n3 still has replica id 3 for range r4
 n3 still has replica id 2 for range r5
 ~~~
 
-**Explanation:** Before decommissioning a node, you need to make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely. For more information, see [Node Shutdown]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#size-and-replication-factor).
+**Explanation:** Before decommissioning a node, you need to make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely. For more information, see [Decommission a node]({% link {{ page.version.version }}/decommission-a-node.md %}#size-and-replication-factor).
 
 **Solution:** Confirm that there are enough nodes with sufficient storage space to take over the replicas from the node you want to remove.
 
@@ -594,7 +594,7 @@ Common reasons for node liveness issues include:
 - [Insufficient CPU for the workload](#cpu-is-insufficient-for-the-workload). This can eventually cause nodes to miss their liveness heartbeats and become unresponsive.
 - [Networking issues](#networking-issues) with the node.
 
-The [DB Console][db_console] provides several ways to check for node liveness issues in your cluster:
+The [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) provides several ways to check for node liveness issues in your cluster:
 
 - [Check node heartbeat latency]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#node-heartbeat-latency)
 - [Check command commit latency]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#command-commit-latency)
@@ -617,9 +617,9 @@ In production, lease transfer upon node failure can take longer than expected. I
 
 - **Otherwise unresponsive nodes.** Internal deadlock due to faulty code, resource exhaustion, OS/hardware issues, and other arbitrary failures can make a node unresponsive. This can cause leases to become stuck in certain cases, such as when a response from the previous leaseholder is needed in order to move the lease.
 
-**Solution:** If you are experiencing intermittent network or connectivity issues, first [shut down the affected nodes]({% link {{ page.version.version }}/node-shutdown.md %}) temporarily so that nodes phasing in and out do not cause disruption.
+**Solution:** If you are experiencing intermittent network or connectivity issues, first [shut down the affected nodes]({% link {{ page.version.version }}/drain-a-node.md %}) temporarily so that nodes phasing in and out do not cause disruption.
 
-If a node has become unresponsive without returning an error, [shut down the node]({% link {{ page.version.version }}/node-shutdown.md %}) so that network requests immediately become hard errors rather than stalling.
+If a node has become unresponsive without returning an error, [drain and shut down the node]({% link {{ page.version.version }}/drain-a-node.md %}) so that network requests immediately become hard errors rather than stalling.
 
 If you are running a version of CockroachDB that is affected by an issue described here, upgrade to a version that contains the fix for the issue, as described in the preceding list.
 
@@ -648,7 +648,3 @@ If we do not have a solution here, you can try using our other [support resource
 - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
 - [Chatting with our developers on Slack](https://cockroachdb.slack.com)
-
-{% comment %} Reference Links {% endcomment %}
-
-[db_console]: ui-overview.html

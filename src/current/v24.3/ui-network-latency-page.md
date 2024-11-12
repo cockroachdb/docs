@@ -64,7 +64,7 @@ This specific information can help you understand the root cause of the connecti
 
 Hover over a node's ID in the row and column headers to show the node's liveness status, such as `healthy` or `suspect`. Node liveness status is also indicated by the colored circle next to the Node ID: green for `healthy` or red for `suspect`.
 
-If a `suspect` node stays offline for the duration set by [`server.time_until_store_dead`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-time-until-store-dead) (5 minutes by default), the [cluster considers the node "dead"]({% link {{ page.version.version }}/node-shutdown.md %}#process-termination) and the node is removed from the matrix.
+If a `suspect` node stays offline for the duration set by [`server.time_until_store_dead`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-time-until-store-dead) (5 minutes by default), the [cluster considers the node "dead"]({% link {{ page.version.version }}/node-shutdown.md %}#draining-phases) and the node is removed from the matrix.
 
 The number of `LIVE` (healthy), `SUSPECT`, `DRAINING` and `DEAD` nodes is displayed under Node Status on the [Cluster Overview page]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}).
 

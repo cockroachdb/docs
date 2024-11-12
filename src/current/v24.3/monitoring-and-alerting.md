@@ -104,7 +104,7 @@ The `/health` endpoint does not returns details about the node such as its priva
 
 The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `503 Service Unavailable` status response code with an error in the following scenarios:
 
-- The node is in the [wait phase of the node shutdown sequence]({% link {{ page.version.version }}/node-shutdown.md %}#draining). This causes load balancers and connection managers to reroute traffic to other nodes before the node is drained of SQL client connections and leases, and is a necessary check during [rolling upgrades]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
+- The node is in the [wait phase of the node shutdown sequence]({% link {{ page.version.version }}/drain-a-node.md %}). This causes load balancers and connection managers to reroute traffic to other nodes before the node is drained of SQL client connections and leases, and is a necessary check during [rolling upgrades]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
 
     {{site.data.alerts.callout_success}}
     If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.initial_wait` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) (previously named `server.shutdown.drain_wait`) to cause a node to return `503 Service Unavailable` even before it has started shutting down.
@@ -151,7 +151,7 @@ The [`cockroach node status`]({% link {{ page.version.version }}/cockroach-node.
 
 - With the `--ranges` flag, you get granular range and replica details, including unavailability and under-replication.
 - With the `--stats` flag, you get granular disk usage details.
-- With the `--decommission` flag, you get details about the [node decommissioning](node-shutdown.html?filters=decommission#cockroach-node-status) process.
+- With the `--decommission` flag, you get details about the [node decommissioning]({% link {{ page.version.version }}/drain-a-node.md %}#cockroach-node-status) process.
 - With the `--all` flag, you get all of the above.
 
 ### Prometheus endpoint
@@ -194,7 +194,7 @@ When storage of time-series metrics is disabled, the DB Console Metrics dashboar
 The critical nodes status endpoint is used to:
 
 - Check if any of your nodes are in a critical state.  A node is _critical_ if that node becoming unreachable would cause [replicas to become unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status).
-- Check if any ranges are [under-replicated or unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status). This is useful when determining whether a node is ready for [decommissioning]({% link {{ page.version.version }}/node-shutdown.md %}#decommissioning).
+- Check if any ranges are [under-replicated or unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status). This is useful when determining whether a node is ready for [decommissioning]({% link {{ page.version.version }}/decommission-a-node.md %}).
 - Check if any of your cluster's data placement constraints (set via [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) or direct [configuration of replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %})) are being violated. This is useful when implementing [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}).
 
 {{site.data.alerts.callout_info}}

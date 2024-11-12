@@ -1,7 +1,7 @@
 Before removing a node from your cluster, you must first decommission the node. This lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
 
 {{site.data.alerts.callout_danger}}
-If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Prepare for graceful shutdown](node-shutdown.html?filters=decommission#prepare-for-graceful-shutdown).
+If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Prepare to decommission a node]({% link {{ page.version.version }}/decommission-a-node.md %}#prepare-to-decommission-a-node).
 {{site.data.alerts.end}}
 
 1. Use the [`cockroach node status`]({% link {{ page.version.version }}/cockroach-node.md %}) command to get the internal IDs of nodes. For example, if you followed the steps in [Deploy CockroachDB with Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#step-3-use-the-built-in-sql-client) to launch a secure client pod, get a shell into the `cockroachdb-client-secure` pod:
@@ -12,7 +12,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     -- ./cockroach node status \
     --certs-dir=/cockroach-certs \
     --host=my-release-cockroachdb-public
-    ~~~    
+    ~~~
 
     ~~~
       id |                                     address                                     | build  |            started_at            |            updated_at            | is_available | is_live
@@ -38,14 +38,14 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     -- ./cockroach node decommission 4 \
     --certs-dir=/cockroach-certs \
     --host=my-release-cockroachdb-public
-    ~~~    
+    ~~~
 
     You'll then see the decommissioning status print to `stderr` as it changes:
 
     ~~~
       id | is_live | replicas | is_decommissioning |   membership    | is_draining
     -----+---------+----------+--------------------+-----------------+--------------
-       4 |  true   |       73 |        true        | decommissioning |    false    
+       4 |  true   |       73 |        true        | decommissioning |    false
     ~~~
 
     Once the node has been fully decommissioned, you'll see a confirmation:
@@ -53,7 +53,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     ~~~
       id | is_live | replicas | is_decommissioning |   membership    | is_draining
     -----+---------+----------+--------------------+-----------------+--------------
-       4 |  true   |        0 |        true        | decommissioning |    false    
+       4 |  true   |        0 |        true        | decommissioning |    false
     (1 row)
 
     No more data reported on target nodes. Please verify cluster health before removing the nodes.

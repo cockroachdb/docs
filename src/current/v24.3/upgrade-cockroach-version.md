@@ -90,7 +90,7 @@ Make sure your cluster is behind a [load balancer]({% link {{ page.version.versi
 
 Verify the overall health of your cluster using the [DB Console]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}):
 
-- Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as `SUSPECT` or `DEAD`, identify why the nodes are offline and either restart them or [decommission](node-shutdown.html?filters=decommission#remove-nodes) them before beginning your upgrade. If there are `DEAD` and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
+- Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as `SUSPECT` or `DEAD`, identify why the nodes are offline and either restart them or [decommission]({% link {{ page.version.version }}/decommission-a-node.md %}) them before beginning your upgrade. If there are `DEAD` and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
 
 - Under **Replication Status**, make sure there are `0` under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
 
@@ -115,8 +115,8 @@ If your cluster contains partially-decommissioned nodes, they will block an upgr
 
 1. If any node is not fully decommissioned, try the following:
 
-    1. First, reissue the [decommission command](node-shutdown.html?filters=decommission#decommission-the-node). The second command typically succeeds within a few minutes.
-    1. If the second decommission command does not succeed, [recommission](node-shutdown.html?filters=decommission#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
+    1. First, reissue the [decommission command]({% link {{ page.version.version }}/decommission-a-node.md %}. The second command typically succeeds within a few minutes.
+    1. If the second decommission command does not succeed, [recommission]({% link {{ page.version.version }}/decommission-a-node.md %}#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
 
 ### Back up cluster
 
@@ -173,7 +173,7 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
       <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
     </div>
 
-1. [Drain and shut down the node]({% link {{ page.version.version }}/node-shutdown.md %}#perform-node-shutdown).
+1. [Drain and shut down the node]({% link {{ page.version.version }}/drain-a-node.md %}).
 
 1. Visit [What's New in {{ page.version.version }}?]({% link releases/{{ page.version.version }}.md %}) and download the **CockroachDB {{ latest.release_name }} full binary** for your architecture.
 
@@ -310,7 +310,7 @@ Finalization is required only when upgrading from {{ previous_version }}.x to {{
     > SHOW CLUSTER SETTING version;
     ~~~
 
-    If the cluster continues to report that it is on the previous version, finalization has not completed. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#status-change) where decommission has stalled. In most cases, issuing the `decommission` command again resolves the issue. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc/).
+    If the cluster continues to report that it is on the previous version, finalization has not completed. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes]({% link {{ page.version.version }}/decommission-a-node.md %}) where decommission has stalled. In most cases, issuing the `decommission` command again resolves the issue. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc/).
 
 After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) activity due to a background migration job within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}) in the DB Console or monitor the `storage.marked-for-compaction-files` [time-series metric]({% link {{ page.version.version }}/metrics.md %}). When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 

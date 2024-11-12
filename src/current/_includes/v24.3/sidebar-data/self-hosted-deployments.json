@@ -751,8 +751,25 @@
               },
               {
                 "title": "Node Shutdown",
-                "urls": [
-                  "/${VERSION}/node-shutdown.html"
+                "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/node-shutdown.html"
+                    ]
+                  },
+                  {
+                    "title": "Drain a node",
+                    "urls": [
+                      "/${VERSION}/drain-a-node.html"
+                    ]
+                  },
+                  {
+                    "title": "Decommission a node",
+                    "urls": [
+                      "/${VERSION}/decommission-a-node.html"
+                    ]
+                  }
                 ]
               }
             ]

@@ -15,7 +15,7 @@ Subcommand | Usage
 `man` | Generate man pages for CockroachDB.
 `autocomplete` | Generate `bash` or `zsh` autocompletion script for CockroachDB.<br><br>**Default:** `bash`
 `example-data` | Generate example SQL datasets. You can also use the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) command to generate these sample datasets in a persistent cluster and the [`cockroach demo <dataset>`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to generate these datasets in a temporary, in-memory cluster.
-`haproxy` | Generate an HAProxy config file for a running CockroachDB cluster. The node addresses included in the config are those advertised by the nodes. Make sure hostnames are resolvable and IP addresses are routable from HAProxy.<br><br> [Decommissioned nodes](node-shutdown.html?filters=decommission) are excluded from the config file.
+`haproxy` | Generate an HAProxy config file for a running CockroachDB cluster. The node addresses included in the config are those advertised by the nodes. Make sure hostnames are resolvable and IP addresses are routable from HAProxy.<br><br> [Decommissioned nodes]({% link {{ page.version.version }}/decommission-a-node.md %}) are excluded from the config file.
 
 ## Synopsis
 
@@ -249,7 +249,7 @@ To test out CockroachDB, you can generate an example `startrek` database, which 
     ~~~
 
 1. Launch the SQL client to view it:
- 
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'

@@ -1,6 +1,6 @@
 ---
 title: Critical Log Messages
-summary: Critical logs messages to externalize and how to interpret them. 
+summary: Critical logs messages to externalize and how to interpret them.
 toc: true
 ---
 
@@ -10,12 +10,12 @@ toc: true
 
     - **Severity**: High
     - **Description**: A disk stall is any disk operation that does not terminate in a reasonable amount of time. This usually manifests as write-related system calls such as `fsync(2)` (aka `fdatasync`) taking a lot longer than expected (e.g., more than 20 seconds).
-    - **Impact**: Increased latency and eventual termination of the `cockroach` process. 
+    - **Impact**: Increased latency and eventual termination of the `cockroach` process.
     - **Action**: Restart node. Provision disk with sufficient disk bandwidth/IOPs. Review active workload and check if write throughput has increased over the recent period (weeks).
     - **Related metrics**:
         - `storage.write-stalls`: Number of instances of intentional write stalls to backpressure incoming writes
         - `storage.write-stall-nanos`: Total write stall duration in nanos
-        - `storage.disk-stalled`: Number of instances of disk operations taking longer than 20s 
+        - `storage.disk-stalled`: Number of instances of disk operations taking longer than 20s
     - **See also**: [Disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls)
 
 ## Node Decommission Stall
@@ -36,11 +36,11 @@ toc: true
     <br><br>`error releasing lease`
 
     - **Severity**: Medium
-    - **Description**: When the decommissioning process can not find another node to migrate leaseholders to, the decommission will hang. 
+    - **Description**: When the decommissioning process can not find another node to migrate leaseholders to, the decommission will hang.
     - **Impact**: Decommission is prevented.
     - **Action**: To continue the drain, re-initiate the command. A very long drain may indicate an anomaly, and you should manually inspect the server to determine what blocks the drain.
     - **Related metrics**: NONE
-    - **See also**: [Drain timeout]({% link {{ page.version.version }}/node-shutdown.md %}#drain-timeout)
+    - **See also**: [Drain timeout]({% link {{ page.version.version }}/drain-a-node.md %}#drain-timeout)
 
 ## Network
 
@@ -49,7 +49,7 @@ toc: true
     - **Severity**: Medium
     - **Description**: An attempt to heartbeat its liveness record by the node took a considerable amount of time.
     - **Impact**: The node is unlikely to be able to service requests within a desirable period of time.
-    - **Action**: Check if the node is resource constrained; the node may be overloaded, unable to connect to other nodes, CPU-constrained, or may not have sufficient disk throughput. 
+    - **Action**: Check if the node is resource constrained; the node may be overloaded, unable to connect to other nodes, CPU-constrained, or may not have sufficient disk throughput.
     - **Related metrics**:
         - `liveness.heartbeatfailures`: Number of failed node liveness heartbeats from this node
         - `liveness.heartbeatlatency`: Node liveness heartbeat latency
@@ -60,7 +60,7 @@ toc: true
 - **Message**: `unable to connect to n%d: failed to connect to n%d at ‹hostname:port›: ‹initial connection heartbeat failed›`
 
     - **Severity**: Medium
-    - **Description**: At the time of failure, there was a network-related issue that occurred in the environment that affected the listed node. 
+    - **Description**: At the time of failure, there was a network-related issue that occurred in the environment that affected the listed node.
     - **Impact**: Any leaseholders that are on the affected node will be unavailable and other nodes will need to re-elect a new leaseholder. As leaseholder election can take up to 9 seconds, the SQL service latency can increase significantly during this time, if records are accessed from a leaseholder on the impacted node.
     - **Action**: Check if the node has experienced one of the following:
         - The user has purposefully removed the node from the cluster.
@@ -77,7 +77,7 @@ toc: true
     <br><br>`failed node liveness heartbeat: ‹×›: context deadline exceeded`
 
     - **Severity**: High
-    - **Description**: Indicates a network partition. 
+    - **Description**: Indicates a network partition.
     - **Impact**: SQL service latency will likely increase. In the event of a network partition, ranges can be unavailable until an election is executed and in the extreme case there can be a cluster outage.
     - **Action**: Debug network connectivity.
     - **Related metrics**:
@@ -103,7 +103,7 @@ toc: true
     - **Description**: Every time the storage engine writes to the main `cockroach.log` file, the engine waits 20 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable).
     - **Impact**: The write to the log failed, the `cockroach` process is terminated and this message is written to `stderr` / `cockroach.log`.
     - **Action**: Provision disks with sufficient disk bandwidth/IOPs and then restart the node.
-    - **Related metrics**: 
+    - **Related metrics**:
         - `storage.write-stalls`: Number of instances of intentional write stalls to backpressure incoming writes
     - **See also**: [Disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls)
 
@@ -116,7 +116,7 @@ toc: true
     - **Impact**: Node may be unable to shutdown cleanly.
     - **Action**: Check for network issues. For Kubernetes deployments the pod will be terminated after the configured grace period. With other types of deployment, the operator may need to terminate the `cockroach` process manually.
     - **Related metrics**: NONE
-    - **See also**: [Drain timeout]({% link {{ page.version.version }}/node-shutdown.md %}#drain-timeout)
+    - **See also**: [Drain timeout]({% link {{ page.version.version }}/drain-a-node.md %}#drain-timeout)
 
 - **Message**: `WARNING: The server appears to be unable to contact the other nodes in the cluster.`
 
@@ -139,7 +139,7 @@ toc: true
     - **Severity**: Low
     - **Description**: Indicates highly variable inter-node latency.
     - **Impact**: Node is unable to join the cluster on startup.
-    - **Action**: Check for resource and network issues if latency jumps are consistently more than `10ms`. 
+    - **Action**: Check for resource and network issues if latency jumps are consistently more than `10ms`.
     - **Related metrics**: NONE
     - **See also**: NONE
 
@@ -155,7 +155,7 @@ toc: true
 - **Message**: `inbound streams timed out after 10s; propagated error throughout flow`
 
     - **Severity**: Low
-    - **Description**: Indicates a network issue or an issue with local resources (CPU, disk). 
+    - **Description**: Indicates a network issue or an issue with local resources (CPU, disk).
     - **Impact**: Some client read/write access operations may fail.
     - **Action**: Check the status of underlying infrastructure and networking between nodes.
     - **Related metrics**: NONE
@@ -196,7 +196,7 @@ toc: true
     - **Description**: A metric has crossed an alert threshold.
     - **Impact**: Various situations depending on the metric and alert.
     - **Action**: Check for details of metrics in the message.
-    - **Related metrics**: 
+    - **Related metrics**:
         - `requests.slow.latch`: Number of requests that have been stuck for a long time acquiring latches. Latches moderate access to the KV keyspace for the purpose of evaluating and replicating commands. A slow latch acquisition attempt is often caused by another request holding and not releasing its latches in a timely manner. This in turn can either be caused by a long delay in evaluation (for example, under severe system overload) or by delays at the replication layer. This gauge registering a nonzero value usually indicates a serious problem and should be investigated.
         - `requests.slow.raft`: Number of requests that have been stuck for a long time in the replication layer. An (evaluated) request has to pass through the replication layer, notably the quota pool and raft. If it fails to do so within a highly permissive duration, the gauge is incremented (and decremented again once the request is either applied or returns an error).
         - `requests.slow.lease`: Number of requests that have been stuck for a long time acquiring a lease. This gauge registering a nonzero value usually indicates range or replica unavailability, and should be investigated. Often, you may also notice `requests.slow.raft` register a nonzero value, indicating that the lease requests are not getting a timely response from the replication layer.
@@ -223,7 +223,7 @@ toc: true
     - **Description**: An individual range is unavailable for reads and writes.
     - **Impact**: A subset of the data on the cluster will be unavailable for reads and writes.
     - **Action**: Check the DB Console for unavailable ranges to assess the severity of the issue and determine where the replicas or previous leaseholder were located.
-    - **Related metrics**: 
+    - **Related metrics**:
         - `ranges.unavailable`: Number of ranges with fewer live replicas than needed for quorum
     - **See also**:
         - [KV replication]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#kv-replication)

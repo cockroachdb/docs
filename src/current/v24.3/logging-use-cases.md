@@ -49,7 +49,7 @@ The [`OPS`]({% link {{ page.version.version }}/logging.md %}#ops) channel logs o
 
 #### Example: Node decommissioning
 
-This [`node_decommissioning`]({% link {{ page.version.version }}/eventlog.md %}#node_decommissioning) event shows that a node is in the [decommissioning](node-shutdown.html?filters=decommission#decommissioning) state:
+This [`node_decommissioning`]({% link {{ page.version.version }}/eventlog.md %}#node_decommissioning) event shows that a node is in the [decommissioning]({% link {{ page.version.version }}/decommission-a-node.md %}) state:
 
 ~~~
 I210401 23:30:49.319360 5943 1@util/log/event_log.go:32 ⋮ [-] 42 ={"Timestamp":1617319848793433000,"EventType":"node_decommissioning","RequestingNodeID":1,"TargetNodeID":4}
