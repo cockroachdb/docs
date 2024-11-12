@@ -154,8 +154,6 @@ However, unlike table data, system ranges cannot use epoch-based leases because 
 
 {% include {{ page.version.version }}/leader-leases-intro.md %}
 
-CockroachDB offers an improved leasing system rebuilt atop a stronger form of [Raft](#raft) leadership that ensures that the Raft leader is **always** the range's leaseholder. This new type of lease is called a _Leader lease_, and supersedes [epoch-based leases](#epoch-based-leases-table-data) and [expiration-based leases](#expiration-based-leases-meta-and-system-ranges) leases while combining the performance of the former with the resilience of the latter.
-
 Leader leases rely on a shared, store-wide failure detection mechanism for triggering new Raft elections. [Stores]({% link {{ page.version.version }}/cockroach-start.md %}#store) participate in Raft leader elections by "fortifying" a candidate replica based on that replica's store liveness, as determined among a quorum of all the node's stores. A replica can **only** become the Raft leader if it is so fortified.
 
 After the fortified Raft leader is chosen, it is then also established as the leaseholder. Support for the lease is provided as long as the Raft leader's store liveness remains supported by a quorum of stores in the Raft group. This provides the fortified Raft leader with a guarantee that it will not lose leadership until _after_ it has lost store liveness support. This guarantee enables a number of improvements to the performance and resiliency of our Raft implementation that were prevented by the need to handle cases where Raft leadership and range leases were not colocated.
