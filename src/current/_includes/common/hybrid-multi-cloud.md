@@ -34,7 +34,7 @@ To set up a hybrid or multi-cloud deployment:
 - **There must be no overlapping IP address ranges** across the cluster. It is an error for multiple nodes to have the same IP address or to resolve to the same hostname.
 
     DNS name resolution is particularly complex in a Kubernetes deployment. On GKE, we recommend that you replace `kube-dns` with Core DNS. Refer to [Deploy CockroachDB on GKE](https://github.com/mbookham7/crdb-multi-cloud-k8s/blob/master/markdown/5-deploy-cockroach.md) for details.
-- **In a multi-region deployment, we recommend that you use manifests. Refer to [Deploy CockroachDB on GKE](https://github.com/mbookham7/crdb-multi-cloud-k8s/blob/master/markdown/5-deploy-cockroach.md) for details.
+- **In a multi-region deployment, we recommend that you use manifests**. Refer to [Deploy multi-cloud CockroachDB on GKE](https://github.com/mbookham7/crdb-multi-cloud-k8s/blob/master/markdown/5-deploy-cockroach.md) for details.
 - **Each node deployed in the same environment must share locality** to ensure that the cluster's replicas are spread across deployment environments and to prevent single points of failure or hot spots. To specify a node's locality, use the `--locality` flag, which accepts an arbitrary set of key-value pairs that describe the location of the node. For example, if nodes are deployed in both Azure and Digital Ocean, you could set each node's locality to either `--locality data-center=azure` or `--locality data-center=digital-ocean`.
 
     If nodes are deployed in multiple regions within the same cloud provider, specify the region as an additional locality, to ensure that replicas are spread across regions in each cloud provider's infrastructure.
