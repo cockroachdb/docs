@@ -53,13 +53,13 @@ If you decommission a node, the process will run successfully because the cluste
 
 ## Decommission a node
 
-Follow these steps to decommission a node and remove it from your cluster.
+Follow these steps to decommission a node and remove it from your cluster. **Decommission only one node at a time**.
 
 {{site.data.alerts.callout_success}}
 This guidance applies to manual deployments. In a Kubernetes deployment or a CockroachDB {{ site.data.products.advanced }} cluster, terminating the `cockroach` process is handled through Kubernetes. Refer to [Decommissioning on Kubernetes](#decommissioning-on-kubernetes) and [Decommissioning on CockroachDB {{ site.data.products.advanced }}](#decommissioning-on-cockroachdb-advanced).
 {{site.data.alerts.end}}
 
-1. Manually [drain the node]({% link {{ page.version.version }}/drain-a-node.md %}). When you decommission a node, it is drained automatically. However, we recommend first running [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}) to manually drain the node of active queries, SQL client connections, and leases to prevent possible disruptions in query performance.
+1. Optionally, manually [drain the node]({% link {{ page.version.version }}/drain-a-node.md %}). When you decommission a node, it is drained automatically. However, we recommend first running [`cockroach node drain`]({% link {{ page.version.version }}/cockroach-node.md %}) to manually drain the node of active queries, SQL client connections, and leases to prevent possible disruptions in query performance.
 1. Run [`cockroach node decommission`]({% link {{ page.version.version }}/cockroach-node.md %}) to decommission the node and rebalance its range replicas. For specific instructions and additional guidelines, see the [example](#remove-nodes).
 
     If the rebalancing stalls during decommissioning, replicas that have yet to move are printed to the [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) and written to the [`OPS` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) with the message `possible decommission stall detected`. [By default]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration), the `OPS` channel logs output to a `cockroach.log` file.
@@ -72,11 +72,11 @@ This guidance applies to manual deployments. In a Kubernetes deployment or a Coc
 
 1. Terminate the node process.
 
-The node is now decommissioned.
+The node is now decommissioned. If necessary, repeat these steps to decommission additional nodes, one at a time.
 
 ## Monitor shutdown progress
 
-Draining and decommissioning statuses are reflected in the [`cockroach node status --decommission`]({% link {{ page.version.version }}/cockroach-node.md %}) output:
+The status of a decommissioning operation is reflected in the [`cockroach node status --decommission`]({% link {{ page.version.version }}/cockroach-node.md %}) output:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

@@ -21,7 +21,7 @@ Review the following sections before draining a node and make adjustments as req
 
 ## Drain a node
 
-Follow these steps to temporarily stop a node. This both drains the node and terminates the `cockroach` process.
+Follow these steps to temporarily stop a node. This both drains the node and terminates the `cockroach` process. **Drain only one node at a time**.
 
 {{site.data.alerts.callout_success}}
 This guidance applies to manual deployments. In a Kubernetes deployment or a CockroachDB {{ site.data.products.advanced }} cluster, terminating the `cockroach` process is handled through Kubernetes. Refer to [Draining on Kubernetes](#draining-on-kubernetes) and [Draining on CockroachDB {{ site.data.products.advanced }}](#draining-on-cockroachdb-advanced).
@@ -33,6 +33,8 @@ This guidance applies to manual deployments. In a Kubernetes deployment or a Coc
 
 1. Perform maintenance on the node as required.
 1. Restart the `cockroach` process on the node and verify that it has rejoined the cluster.
+
+If necessary, repeat these steps to perform maintenance on additional nodes, one at a time.
 
 ## Monitor shutdown progress
 
