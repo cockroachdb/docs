@@ -34,6 +34,12 @@
                 ]
               },
               {
+                "title": "Hybrid and multi-cloud deployments",
+                "urls": [
+                  "/${VERSION}/hybrid-and-multi-cloud.html"
+                ]
+              },
+              {
                 "title": "Simulate a Multi-Region Cluster Locally",
                 "urls": [
                   "/${VERSION}/simulate-a-multi-region-cluster-on-localhost.html"
