@@ -70,6 +70,7 @@ This guidance applies to manual deployments. In a Kubernetes deployment or a Coc
 
     {% include {{page.version.version}}/prod-deployment/decommission-pre-flight-checks.md %}
 
+1. If the node's status does not change to `decommissioning`, the decommission operation may be stalled. If a node is stuck in a `decommissioning` state, a subsequent attempt to scale the cluster down or [perform a major-version cluster upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) will fail. In most cases, issuing the decommission command a second time succeeds.
 1. Terminate the node process.
 
 The node is now decommissioned. If necessary, repeat these steps to decommission additional nodes, one at a time.
