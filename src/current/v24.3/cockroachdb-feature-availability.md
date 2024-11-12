@@ -49,11 +49,11 @@ Any feature made available in a phase prior to GA is provided without any warran
 
 ### Admission control for ingesting snapshots
 
-The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled`, which allows you to to optionally limit the disk impact of ingesting snapshots on a node, is in Preview.
+The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` is in Preview. When configured, it limits the disk impact of ingesting snapshots on a node.
 
 ### Admission control to limit the bandwidth for a store
 
-The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), `kvadmission.store.provisioned_bandwidth`, which allows you to optionally limit the bandwidth for a store, expressed in bytes per second, is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).
+The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.provisioned_bandwidth` is in Preview. When configured, the store's bandwidth is limited to the configured bandwidth, expressed in bytes per second,
 
 ### Usage-based billing metrics
 
