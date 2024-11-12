@@ -5,5 +5,5 @@ When upgrading to a major release, you can optionally [take a self-managed backu
 {% else %}
 CockroachDB is designed with high fault tolerance. However, taking regular backups of your data is an operational best practice for [disaster recovery]({% link {{ page.version.version }}/disaster-recovery-planning.md %}) planning.
 
-When upgrading to a new major version, **we recommend [taking a self-managed backup]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) of your cluster** so that you can [restore the cluster to the previous version]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}#support-for-restoring-backups-into-a-newer-version) if the upgrade leads to issues.
+We recommend that you enable [managed backups]({% link cockroachcloud/managed-backups.md %}#managed-backup-settings) and confirm that the cluster is backed up before beginning a major-version upgrade. This provides an extra layer of protection in case the upgrade leads to issues.
 {% endif %}

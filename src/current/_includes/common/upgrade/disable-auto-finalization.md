@@ -11,7 +11,7 @@ Either of these settings prevents automatic finalization.
 {% if page.path contains 'kubernetes' %}
 
 <section class="filter-content" markdown="1" data-scope="operator">
-For clusters managed by the Operator, auto-finalization is disabled and cannot be enabled. A major version upgrade is not complete until it is manually [finalized](#finalize-a-major-version-upgrade-manually).
+For clusters managed by the Operator, auto-finalization is disabled and cannot be enabled. A major version upgrade is not complete until it is manually [finalized](#finalize-a-major-version-upgrade-manually). The Operator does not yet support the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `cluster.auto_upgrade.enabled`.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
@@ -52,11 +52,9 @@ To disable auto-finalization:
     --host=cockroachdb-public
     ~~~
 
-1. Set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `cluster.preserve_downgrade_option` to the cluster's current major version.
+1. Set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `cluster.preserve_downgrade_option` to the cluster's current major version. The Helm chart does not yet support the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `cluster.auto_upgrade.enabled`.
 
 Now, to complete a major-version upgrade, you must manually [finalize it](#finalize-a-major-version-upgrade-manually) or [roll it back](#roll-back-a-major-version-upgrade).
-
-{{ new_flag }}
 
 </section>
 
