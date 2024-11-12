@@ -66,7 +66,7 @@ When you run LDR in `immediate` mode, you cannot replicate a table with [foreign
     cockroach sql --url "postgresql://root@{node IP or hostname}:26257?sslmode=verify-full" --certs-dir=certs
     ~~~
 
-1. If you are setting up bidirectional LDR, on **both** clusters, enable the `kv.rangefeed.enabled` cluster setting. If you are setting up unidirectional LDR, enable this setting on the **source** cluster:
+1. Enable the `kv.rangefeed.enabled` cluster setting on the **source** cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
