@@ -449,7 +449,7 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
-- {% include {{ page.version.version }}/known-limitations/cutover-stop-application.md %}
+- {% include {{ page.version.version }}/known-limitations/failover-stop-application.md %}
 
 #### `RESTORE` limitations
 

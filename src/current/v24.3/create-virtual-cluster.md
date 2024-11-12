@@ -49,7 +49,8 @@ Parameter | Description
 
 Option | Description
 -------+-------------
-`RETENTION` | Configure a [retention window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#cutover-and-promotion-process) that will control how far in the past you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) to.<br><br>{% include {{ page.version.version }}/physical-replication/retention.md %}
+`READ VIRTUAL CLUSTER` | 
+`RETENTION` | Configure a [retention window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process) that will control how far in the past you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) to.<br><br>{% include {{ page.version.version }}/physical-replication/retention.md %}
 
 ## Connection string
 
@@ -94,14 +95,14 @@ This will create a `main` virtual cluster in the standby cluster. The standby's 
 
 ### Specify a retention window for a replication stream
 
-When you initiate a replication stream, you can specify a retention window to protect data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). The retention window controls how far in the past you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) to:
+When you initiate a replication stream, you can specify a retention window to protect data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). The retention window controls how far in the past you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) to:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connection string to primary}' WITH RETENTION '36h';
 ~~~
 
-This will initiate a replication stream from the primary cluster into the standby cluster's new `main` virtual cluster. The `RETENTION` option allows you to specify a timestamp in the past for cutover to the standby cluster. After cutover, the standby `main` virtual cluster will be transactionally consistent to any timestamp within that retention window.
+This will initiate a replication stream from the primary cluster into the standby cluster's new `main` virtual cluster. The `RETENTION` option allows you to specify a timestamp in the past for failover to the standby cluster. After failover, the standby `main` virtual cluster will be transactionally consistent to any timestamp within that retention window.
 
 {% include {{ page.version.version }}/physical-replication/retention.md %}
 
