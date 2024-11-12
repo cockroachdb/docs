@@ -73,7 +73,7 @@ Capacity metrics can be incorrect when running multiple nodes on a single machin
 
 To see which nodes are located in which regions, and to see the simulated latencies between them, go to the [**Network Diagnostics**]({% link {{ page.version.version }}/ui-network-latency-page.md %}) page at <a href="http://localhost:8080/#/reports/network/region" data-proofer-ignore>http://localhost:8080/#/reports/network/region</a>
 
-To access a variety of time series charts, including graphs of [SQL queries]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statements) and [SQL service latency]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#service-latency-sql-99th-percentile), go to the [**Metrics**]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) page at <a href="http://localhost:8080/#/metrics" data-proofer-ignore>http://localhost:8080/#/metrics</a>
+To access a variety of time series charts, including graphs of [SQL queries]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-queries-per-second) and [SQL service latency]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#service-latency-sql-99th-percentile), go to the [**Metrics**]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) page at <a href="http://localhost:8080/#/metrics" data-proofer-ignore>http://localhost:8080/#/metrics</a>
 
 You may also find the following pages useful:
 
