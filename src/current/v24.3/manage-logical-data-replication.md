@@ -18,12 +18,20 @@ Once you have **logical data replication (LDR)** running, you will need to track
 
 ## Conflict resolution
 
-Conflicts in LDR are detected when there is either:
+Conflict resolution in LDR differs depending on whether the conflict occurs at the [KV]({% link {{ page.version.version }}/architecture/storage-layer.md %}) level or the [SQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}) level.
+
+### KV level conflicts
+
+LDR uses _last write wins (LWW)_ conflict resolution based on the [MVCC timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) of the replicating write. LDR will resolve conflicts by inserting the row with the latest MVCC timestamp.
+
+Conflicts at the KV level are detected when there is either:
 
 - An `UPDATE` operation replicated to the destination cluster.
 - A cross-cluster write occurs, which means both clusters are writing to the same key. For example, if the LDR stream attempts to apply a row to the destination cluster where the existing row on the destination was not written by the LDR stream.
 
-LDR uses _last write wins (LWW)_ conflict resolution based on the [MVCC timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) of the replicating write. LDR will resolve conflicts by inserting the row with the latest MVCC timestamp. In `validated` mode, when a conflict cannot apply due to violating a foreign key constraint or schema constraint, it will be retried for up to a minute and then put in the [DLQ](#dead-letter-queue-dlq) if it could not be resolved. 
+### SQL level conflicts
+
+In `validated` mode, when a conflict cannot apply due to violating [constraints]({% link {{ page.version.version }}/constraints.md %}), for example, a foreign key constraint or schema constraint, it will be retried for up to a minute and then put in the [DLQ](#dead-letter-queue-dlq) if it could not be resolved. 
 
 ### Dead letter queue (DLQ)
 
@@ -93,7 +101,7 @@ There are some supported schema changes, which you can perform during LDR **with
 
 Allowlist schema change | Exceptions
 -------------------+-----------
-[`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) | <ul><li>Hash-sharded indexes</li><li>Indexes with a computed column</li><li>Partial indexes</li></ul>
+[`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) | <ul><li>[Hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %})</li><li>Indexes with a [computed column]({% link {{ page.version.version }}/computed-columns.md %})</li><li>[Partial indexes]({% link {{ page.version.version }}/partial-indexes.md %})</li><li>[Unique indexes]({% link {{ page.version.version }}/unique.md %})</li></ul>
 [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}) | N/A
 [Zone configuration]({% link {{ page.version.version }}/show-zone-configurations.md %}) changes | N/A
 [`ALTER TABLE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone) | N/A
@@ -168,10 +176,10 @@ If you have a unidirectional LDR setup, you should cancel the running LDR stream
 
 ## Jobs and LDR
 
-You can run any other CockroachDB [job]({% link {{ page.version.version }}/show-jobs.md %}) on any cluster that is involved in an LDR job. Both source and destination clusters in LDR are active, which means they can both serve production reads and writes as well as run [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), and so on. 
+You can run changefeed and backup CockroachDB [jobs]({% link {{ page.version.version }}/show-jobs.md %}) on any cluster that is involved in an LDR job. Both source and destination clusters in LDR are active, which means they can both serve production reads and writes as well as run [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), and so on. 
 
 {{site.data.alerts.callout_success}}
-In a unidirectional setup, you may want to run jobs like [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) from one cluster to isolate these jobs from the cluster receiving the principal application traffic. {% comment %} add link to ldr overview page that will describe this workload isolation topology {% endcomment %}
+You may want to run jobs like [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) from one cluster to isolate these jobs from the cluster receiving the principal application traffic. {% comment %} add link to ldr overview page that will describe this workload isolation topology {% endcomment %}
 {{site.data.alerts.end}}
 
 ### Changefeeds
