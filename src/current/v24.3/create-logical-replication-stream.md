@@ -47,7 +47,7 @@ Parameter | Description
 
 Option | Description
 -------+------------
-`cursor` | Emits any changes after the specified timestamp. LDR will not perform an initial backfill with the `cursor` option, it will stream any changes after the specified timestamp. The LDR job will encounter an error if you specify a `cursor` timestamp that is before the configured [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) window for that table. Use `cursor` to [Bootstrap LDR from a backup](#bootstrap-ldr-from-a-backup) to avoid the initial backfill of data onto the destination cluster from source cluster.
+`cursor` | Emits any changes after the specified timestamp. LDR will not perform an initial backfill with the `cursor` option, it will stream any changes after the specified timestamp. The LDR job will encounter an error if you specify a `cursor` timestamp that is before the configured [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) window for that table. Use `cursor` to [Bootstrap LDR from a backup](#bootstrap-ldr-from-a-backup) to avoid the initial backfill of data onto the destination cluster from source cluster. **Warning:** Apply the `cursor` option carefully to LDR streams. Using a timestamp in error could cause data loss.
 `discard` | Ignore [TTL deletes]({% link {{ page.version.version }}/row-level-ttl.md %}) in an LDR stream. Use `discard = ttl-deletes`. **Note**: To ignore row-level TTL deletes in an LDR stream, it is necessary to set the [`ttl_disable_changefeed_replication`]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) storage parameter on the source table. Refer to the [Ignore row-level TTL deletes](#ignore-row-level-ttl-deletes) example.
 `label` | Tracks LDR metrics at the job level. Add a user-specified string with `label`. Refer to [Metrics labels]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}#metrics-labels).
 `mode` | Determines how LDR replicates the data to the destination cluster. Possible values: `immediate`, `validated`. For more details refer to [LDR modes](#ldr-modes).
@@ -56,8 +56,14 @@ Option | Description
 
 _Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
 
-- `immediate` (default): Attempts to replicate the changed row directly into the destination table, without re-running constraint validations or triggers. It does not support writing into tables with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints.
+- `immediate` (default): Attempts to replicate the changed row directly into the destination table, without re-running constraint validations. It does not support writing into tables with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints.
 - `validated`: Attempts to apply the write in a similar way to a user-run query, which would re-run all constraint validations or triggers relevant to the destination table(s). It will potentially reject the change if it fails rather than writing it, which will cause the row change to enter the DLQ instead.
+
+## Bidirectional LDR
+
+_Bidirectional_ LDR consists of two clusters with two LDR jobs running in opposite directions between the clusters. If you're setting up bidirectional LDR, both clusters will act as a source and a destination in the respective LDR jobs. 
+
+LDR supports starting with two empty tables, or one non-empty table. LDR does **not** support starting with two non-empty tables. When you set up bidirectional LDR, if you're starting with one non-empty table, start the first LDR job from empty to non-empty table. Therefore, you would run `CREATE LOGICAL REPLICATION STREAM` from the destination cluster where the non-empty table exists.
 
 ## Examples
 

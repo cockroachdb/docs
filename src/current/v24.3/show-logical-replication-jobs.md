@@ -19,15 +19,13 @@ This page is a reference for the `SHOW LOGICAL REPLICATION JOBS` SQL statement, 
 You must have one of the following to run `SHOW LOGICAL REPLICATION JOBS`:
 
 - The [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
-- The [`REPLICATION` system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}).
 - The [`VIEWJOB` system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}), which can view all jobs (including `admin`-owned jobs).
-- The [`CONTROLJOB`]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) system privilege.
 
 Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT SYSTEM REPLICATION TO user;
+GRANT SYSTEM VIEWJOB TO user;
 ~~~
 
 ## Synopsis
