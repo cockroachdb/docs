@@ -154,7 +154,7 @@ No license key is required for developers running [single-node clusters]({% link
 
 Single node clusters are not [throttled](#throttling).
 
-Self-hosted clusters without a license key are restricted to use for design, prototyping, testing, or development purposes in non-production, internal development environments deploying a database that runs solely on a single node.
+Generally single node clusters used for design, prototyping, testing, or development purposes in non-production, internal development environments do not require a license key.
 
 ## See also
 
