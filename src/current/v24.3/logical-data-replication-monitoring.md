@@ -64,15 +64,11 @@ SHOW LOGICAL REPLICATION JOBS WITH details;
 - Replication latency: The commit-to-commit replication latency, which is tracked from when a row is committed on the source cluster, to when it is "committed" on the destination cluster. A _commit_ is when the LDR job either adds a row to the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) or applies a row successfully to the destination cluster.
     - `logical_replication.commit_latency-p50`
     - `logical_replication.commit_latency-p99`
-- Replication lag: How far behind the source cluster is from the destination cluster at a specific point in time. The replication lag is equivalent to [RPO]({% link {{ page.version.version }}/disaster-recovery-overview.md %}) during a disaster.
+- Replication lag: How far behind the source cluster is from the destination cluster at a specific point in time. The replication lag is equivalent to [RPO]({% link {{ page.version.version }}/disaster-recovery-overview.md %}) during a disaster. Calculate the replication lag with this metric. For example, `time.now() - replicated_time_seconds`.
     - `logical_replication.replicated_time_seconds`
 - Row updates applied: These metrics indicate whether the destination cluster is actively receiving and applying data from the source cluster.
     - `logical_replication.events_ingested`
     - `logical_replication.events_dlqed`
-- Events dead letter queued: How often the LDR job is putting writes in the DLQ because they cannot be applied successfully on the destination cluster.
-    - `logical_replication.events_dlqed_age`
-    - `logical_replication.events_dlqed_space`      
-    - `logical_replication.events_dlqed_errtype`
 
 ## DB Console
 
@@ -120,6 +116,8 @@ To view metrics at the job level, you can use the `label` option when you start 
 - `logical_replication.replicated_time_seconds`
 - `logical_replication.events_ingested`
 - `logical_replication.events_dlqed`
+- `logical_replication.scanning_ranges`
+- `logical_replication.catchup_ranges`
 
 To use metrics labels, ensure you have enabled the child metrics cluster setting:
 

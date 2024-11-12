@@ -8,7 +8,7 @@ toc: true
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v24.3" %} **Logical data replication (LDR)** continuously replicates tables between active CockroachDB clusters. Both source and destination cluster can receive application reads and writes, with LDR enabling bidirectional replication for eventual consistency in the replicating tables. The active-active setup between clusters can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Each cluster in an LDR job still benefits individually from [multi-active availability]({% link {{ page.version.version }}/multi-active-availability.md %}) with CockroachDB's built-in [Raft replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) providing data consistency across nodes, zones, and regions.
+{% include_cached new-in.html version="v24.3" %} **Logical data replication (LDR)** continuously replicates tables between an active _source_ CockroachDB cluster to an active _destination_ CockroachDB cluster. Both source and destination can receive application reads and writes, and participate in [_bidirectional_](#use-cases) LDR replication for eventual consistency in the replicating tables. The active-active setup between clusters can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Each cluster in an LDR job still benefits individually from [multi-active availability]({% link {{ page.version.version }}/multi-active-availability.md %}) with CockroachDB's built-in [Raft replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) providing data consistency across nodes, zones, and regions.
 
 {{site.data.alerts.callout_success}}
 Cockroach Labs also has a [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) tool that continuously replicates data for transactional consistency from a primary cluster to an independent standby cluster.
@@ -21,6 +21,10 @@ You can run LDR in a _unidirectional_ or _bidirectional_ setup to meet different
 - [High availability and single-region write latency in two-datacenter deployments](#achieve-high-availability-and-single-region-write-latency-in-two-datacenter-deployments)
 - [Workload isolation between clusters](#achieve-workload-isolation-between-clusters)
 
+{{site.data.alerts.callout_info}}
+For a comparison of CockroachDB high availability and resilience features and tooling, refer to the [Data Resilience]({% link {{ page.version.version }}/data-resilience.md %}) page.
+{{site.data.alerts.end}}
+
 ### Achieve high availability and single-region write latency in two-datacenter deployments
 
 Maintain [high availability]({% link {{ page.version.version }}/data-resilience.md %}#high-availability) and resilience to region failures with a two-datacenter topology. You can run bidirectional LDR to ensure [data resilience]({% link {{ page.version.version }}/data-resilience.md %}) in your deployment, particularly in datacenter or region failures. If you set up two single-region clusters, in LDR, both clusters can receive application reads and writes with low, single-region write latency. Then, in a datacenter, region, or cluster outage, you can redirect application traffic to the surviving cluster with [low downtime]({% link {{ page.version.version }}/data-resilience.md %}#high-availability). In the following diagram, the two single-region clusters are deployed in US East and West to provide low latency for that region. The two LDR jobs ensure that the tables on both clusters will reach eventual consistency.
@@ -29,7 +33,7 @@ Maintain [high availability]({% link {{ page.version.version }}/data-resilience.
 
 ### Achieve workload isolation between clusters
 
-Isolate critical application workloads from non-critical application workloads in a unidirectional setup. For example, you may want to run jobs like [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) or [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) from one cluster to isolate these jobs from the cluster receiving the principal application traffic.
+Isolate critical application workloads from non-critical application workloads. For example, you may want to run jobs like [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) or [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) from one cluster to isolate these jobs from the cluster receiving the principal application traffic.
 
 <image src="{{ 'images/v24.3/unidirectional.svg' | relative_url }}" alt="Diagram showing unidirectional LDR from a source cluster to a destination cluster with the destination cluster supporting secondary workloads plus jobs and the source cluster accepting the main application traffic." style="width:80%" />
 
