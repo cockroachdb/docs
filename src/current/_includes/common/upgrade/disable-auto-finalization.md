@@ -1,3 +1,13 @@
+{% capture new_flag %}
+{{site.data.alerts.callout_info}}
+Previously, to disable automatic finalization and preserve the ability to roll back a major-version upgrade, it was required to set the cluster setting `cluster.preserve_downgrade_option` to the cluster's current major version before beginning the major-version upgrade, and then to unset the setting to finalize the upgrade.
+
+We now recommend managing a cluster's finalization policy using the cluster setting `cluster.auto_upgrade.enabled`, which was introduced in v23.2. The setting does not need to be modified after it is initially set.
+
+Either of these settings prevents automatic finalization.
+{{site.data.alerts.end}}
+{% endcapture %}
+
 {% if page.path contains 'kubernetes' %}
 
 <section class="filter-content" markdown="1" data-scope="operator">
@@ -19,15 +29,11 @@ To disable auto-finalization:
     --host=cockroachdb-public
     ~~~
 
-1. Set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `cluster.preserve_downgrade_option` to the cluster's current major version.
+1. Set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `cluster.auto_upgrade.enabled` to `false`.
 
 Now, to complete a major-version upgrade, you must manually [finalize it](#finalize-a-major-version-upgrade-manually) or [roll it back](#roll-back-a-major-version-upgrade).
 
-{{site.data.alerts.callout_info}}
-Previously, to disable automatic finalization and preserve the ability to roll back a major-version upgrade, it was required to set the cluster setting `cluster.preserve_downgrade_option` to the cluster's current major version before beginning the major-version upgrade. This cluster setting does not persist after finalization is complete, but must be set before each major-version upgrade.
-
-We now recommend managing a cluster's finalization policy using the cluster setting `cluster.auto_upgrade.enabled`, which was introduced in v23.2 and persists after finalization is complete. Either of these settings prevents automatic finalization.
-{{site.data.alerts.end}}
+{{ new_flag }}
 
 </section>
 
@@ -50,11 +56,7 @@ To disable auto-finalization:
 
 Now, to complete a major-version upgrade, you must manually [finalize it](#finalize-a-major-version-upgrade-manually) or [roll it back](#roll-back-a-major-version-upgrade).
 
-{{site.data.alerts.callout_info}}
-Previously, to disable automatic finalization and preserve the ability to roll back a major-version upgrade, it was required to set the cluster setting `cluster.preserve_downgrade_option` to the cluster's current major version before beginning the major-version upgrade. This cluster setting does not persist after finalization is complete, but must be set before each major-version upgrade.
-
-We now recommend managing a cluster's finalization policy using the cluster setting `cluster.auto_upgrade.enabled`, which was introduced in v23.2 and persists after finalization is complete. Either of these settings prevents automatic finalization.
-{{site.data.alerts.end}}
+{{ new_flag }}
 
 </section>
 
@@ -75,9 +77,6 @@ To disable auto-finalization:
 
 Now, to complete a major-version upgrade, you must manually [finalize it](#finalize-a-major-version-upgrade-manually) or [roll it back](#roll-back-a-major-version-upgrade).
 
-{{site.data.alerts.callout_info}}
-Previously, to disable automatic finalization and preserve the ability to roll back a major-version upgrade, it was required to set the cluster setting `cluster.preserve_downgrade_option` to the cluster's current major version before beginning the major-version upgrade. This cluster setting does not persist after finalization is complete, but must be set before each major-version upgrade.
+{{ new_flag }}
 
-We now recommend managing a cluster's finalization policy using the cluster setting `cluster.auto_upgrade.enabled`, which was introduced in v23.2 and persists after finalization is complete. Either of these settings prevents automatic finalization.
-{{site.data.alerts.end}}
 {% endif %}

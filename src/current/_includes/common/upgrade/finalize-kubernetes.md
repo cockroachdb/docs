@@ -24,10 +24,6 @@ To finalize a major-version upgrade:
 
     The amount of time required for finalization depends on the amount of data in the cluster, because finalization runs various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
 
-    {{site.data.alerts.callout_info}}
-    Finalization is not complete until all [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) jobs reach a terminal state. Finalization can take as long as the longest-running schema change.
-    {{site.data.alerts.end}}
-
     When all migration jobs have completed, the upgrade is complete.
 
 1. To confirm that finalization has completed, check the cluster version:
