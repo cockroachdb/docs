@@ -10,7 +10,7 @@ A hybrid or multi-cloud deployment can help you to:
 - Power a single application with data stored across multiple clouds.
 - Use data that is created in one cloud to perform analysis in another cloud without having to move data manually.
 - Enhance the mobility of applications by being able to move them from one cloud to another.
-- Protect against a single cloud provider becoming a single point of failure (SPOF).
+- Protect against a single cloud provider outage becoming a single point of failure (SPOF).
 
 Hybrid and multi-cloud deployments are more complex to manage than a simpler deployment. Without care, this type of deployment may experience increased latency, because most cloud providers optimize their networks to minimize network latency for traffic that stays within their infrastructure. In addition, these deployments may incur additional costs for network traffic that egresses from the cloud provider's infrastructure.
 
@@ -33,9 +33,9 @@ To set up a hybrid or multi-cloud deployment:
     CockroachDB could route SQL client requests to any cluster node, regardless of where the client connection originates.
 - **There must be no overlapping IP address ranges** across the cluster. It is an error for multiple nodes to have the same IP address or to resolve to the same hostname.
 
-    DNS name resolution is particularly complex in a Kubernetes deployment. On GKE, we recommend that you replace `kube-dns` with Core DNS. Refer to [Deploy CockroachDB on GKE](https://github.com/mbookham7/crdb-multi-cloud-k8s/blob/master/markdown/5-deploy-cockroach.md) for details.
+    DNS name resolution is particularly complex in a Kubernetes deployment. We recommend that you replace `kube-dns` with Core DNS. Refer to [Deploy CockroachDB on GKE](https://github.com/mbookham7/crdb-multi-cloud-k8s/blob/master/markdown/5-deploy-cockroach.md) for details.
 - **In a multi-region deployment, we recommend that you use manifests**. Refer to [Deploy multi-cloud CockroachDB on GKE](https://github.com/mbookham7/crdb-multi-cloud-k8s/blob/master/markdown/5-deploy-cockroach.md) for details.
-- **Each node deployed in the same environment must share locality** to ensure that the cluster's replicas are spread across deployment environments and to prevent single points of failure or hot spots. To specify a node's locality, use the `--locality` flag, which accepts an arbitrary set of key-value pairs that describe the location of the node. For example, if nodes are deployed in both Azure and Digital Ocean, you could set each node's locality to either `--locality data-center=azure` or `--locality data-center=digital-ocean`.
+- **Each node deployed in the same environment must share locality** to ensure that the cluster's replicas are spread across deployment environments and to prevent single points of failure or hot spots. To specify a node's locality, pass the `--locality` flag when [starting a node]({% link {{ page.version.version }}/cockroach-start.md %). This flag accepts an arbitrary set of key-value pairs that describe the location of the node. For example, if nodes are deployed in both Azure and Digital Ocean, you could set each node's locality to either `--locality data-center=azure` or `--locality data-center=digital-ocean`.
 
     If nodes are deployed in multiple regions within the same cloud provider, specify the region as an additional locality, to ensure that replicas are spread across regions in each cloud provider's infrastructure.
 
@@ -43,9 +43,9 @@ To set up a hybrid or multi-cloud deployment:
 
 This section shows some ways to simulate an outage and validate disaster recovery procedures in a hybrid or multi-cloud deployment.
 
-- **To simulate a single-node outage**, you could down the host or VM where the node is running, or disable its network interface.
-- **To simulate a single-region cloud-provider outage**, you could shut down all hosts or VMs in that region on that cloud provider, or disable their network interfaces.
-- **To simulate a cloud-provider-wide outage**, you could shut down all hosts or VMs on that cloud provider, disable their network interfaces, or disconnect that cloud provider's network from your other nodes' networks.
+- **To simulate a single-node outage**, you could forcibly shut down the `cockroach` process on the host or VM, such as by running `kill -9`, or you could disable the host's network interface.
+- **To simulate a single-region cloud-provider outage**, you could forcibly shut down the `cockroach` process on all hosts or VMs in that region on that cloud provider, you could disable their network interfaces, adjust routing or firewall rules, or make other networking adjustments to prevent nodes in one region from connecting to the cluster.
+- **To simulate a cloud-provider-wide outage**, you could forcibly shut down the `cockroach` process all hosts or VMs running in that cloud provider, you could disable their network interfaces, adjust routing or firewall rules, or make other networking adjustments to prevent nodes in that cloud provider from connecting to the cluster.
 
 As long as the cluster has enough available nodes to achieve quorum, queries will succeed during the simulated outage.
 
