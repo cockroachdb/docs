@@ -176,7 +176,7 @@ If you have a unidirectional LDR setup, you should cancel the running LDR stream
 
 ## Jobs and LDR
 
-You can run changefeed and backup [jobs]({% link {{ page.version.version }}/show-jobs.md %}) on any cluster that is involved in an LDR job. Both source and destination clusters in LDR are active, which means they can both serve production reads and writes as well as run [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), and so on. 
+You can run changefeed and backup [jobs]({% link {{ page.version.version }}/show-jobs.md %}) on any cluster that is involved in an LDR job. Both source and destination clusters in LDR are active, which means they can both serve production reads and writes as well as run [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) and [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
 
 {{site.data.alerts.callout_success}}
 You may want to run jobs like [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) from one cluster to isolate these jobs from the cluster receiving the principal application traffic. {% comment %} add link to ldr overview page that will describe this workload isolation topology {% endcomment %}
