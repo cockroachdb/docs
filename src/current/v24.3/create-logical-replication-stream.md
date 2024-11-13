@@ -47,7 +47,7 @@ Parameter | Description
 
 Option | Description
 -------+------------
-`cursor` | Emits any changes after the specified timestamp. LDR will not perform an initial backfill with the `cursor` option, it will stream any changes after the specified timestamp. The LDR job will encounter an error if you specify a `cursor` timestamp that is before the configured [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) window for that table. Use `cursor` to [Bootstrap LDR from a backup](#bootstrap-ldr-from-a-backup) to avoid the initial backfill of data onto the destination cluster from source cluster. **Warning:** Apply the `cursor` option carefully to LDR streams. Using a timestamp in error could cause data loss.
+`cursor` | Emits any changes after the specified timestamp. LDR will not perform an initial backfill with the `cursor` option, it will stream any changes after the specified timestamp. The LDR job will encounter an error if you specify a `cursor` timestamp that is before the configured [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) window for that table. **Warning:** Apply the `cursor` option carefully to LDR streams. Using a timestamp in error could cause data loss.
 `discard` | Ignore [TTL deletes]({% link {{ page.version.version }}/row-level-ttl.md %}) in an LDR stream. Use `discard = ttl-deletes`. **Note**: To ignore row-level TTL deletes in an LDR stream, it is necessary to set the [`ttl_disable_changefeed_replication`]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) storage parameter on the source table. Refer to the [Ignore row-level TTL deletes](#ignore-row-level-ttl-deletes) example.
 `label` | Tracks LDR metrics at the job level. Add a user-specified string with `label`. Refer to [Metrics labels]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}#metrics-labels).
 `mode` | Determines how LDR replicates the data to the destination cluster. Possible values: `immediate`, `validated`. For more details refer to [LDR modes](#ldr-modes).
@@ -102,52 +102,6 @@ When you start LDR on the **destination cluster**, include the `discard = ttl-de
 ~~~ sql
 CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name} WITH discard = ttl-deletes;
 ~~~
-
-### Bootstrap LDR from a backup
-
-To start LDR from a specific point in time without an initial backfill of the destination table, you can use a backup and the `cursor` option with `CREATE LOGICAL REPLICATION STREAM`.
-
-For example, there are two clusters A and B between which you want to set up an LDR stream running from A to B. To begin, ensure there are no LDR jobs running on either cluster. Cluster B will be the destination cluster, which you'll seed with data from cluster A before starting the LDR stream.
-
-1. Get the current timestamp on **cluster A** with:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SELECT cluster_logical_timestamp();
-    ~~~
-    ~~~
-        cluster_logical_timestamp
-    ----------------------------------
-      1731100103088487282.0000000000
-    ~~~
-
-1. Run a [backup]({% link {{ page.version.version }}/backup.md %}) on **cluster A** with `AS OF SYSTEM TIME` using the timestamp from the previous step:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    BACKUP {table_name} INTO '{external://storage}' AS OF SYSTEM TIME '1731100103088487282.0000000000';
-    ~~~
-
-1. Restore the backup from cluster A into cluster B. Find the backup in the storage, and then from **cluster B** restore the backup: 
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SHOW BACKUPS IN '{external://storage}';
-    ~~~
-
-    Copy the correct path for the backup to include in the `RESTORE` statement:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    RESTORE TABLE {table_name} FROM '{backup_path}' IN '{external://storage}';
-    ~~~
-
-1. Start an LDR stream from cluster B (the destination), setting the `cursor` option as the current timestamp from the first step:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name} WITH cursor = '1731100103088487282.0000000000';
-    ~~~
 
 ## See also
 
