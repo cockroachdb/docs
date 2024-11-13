@@ -4,11 +4,11 @@ summary: Best practices for consuming CockroachDB logs for critical information.
 toc: true
 ---
 
-This page provides guidance and best practices for consuming CockroachDB logs for critical information. It outlines how to externalize logs. Refer to [Critical Log Messages]({% link {{ page.version.version }}/critical-log-messages.md %}) for which log messages to externalize, and how to interpret them.
+This page provides guidance and best practices for consuming CockroachDB logs for critical information. It outlines how to externalize logs. For details on which log messages to externalize and how to interpret them, refer to [Critical Log Messages]({% link {{ page.version.version }}/critical-log-messages.md %}).
 
 ## Types of logs
 
-CockroachDB has two different types of logs, structured and unstructured, that are used in the ways described below.
+CockroachDB has two different types of logs, [structured](#structured-logs) and [unstructured](#unstructured-logs).
 
 ### Structured logs
 
@@ -22,11 +22,11 @@ Structured logs contain detailed, machine-readable information that can be easil
 
 Unstructured logs are more free-form and human-readable compared to machine-processed structured logs. They are particularly useful for:
 
-- General Troubleshooting: They are useful for capturing a wide range of information that may not fit into a predefined structure, such as error messages or stack traces. Events not documented on [Notable Events]({% link {{ page.version.version }}/eventlog.md %}) will have an unstructured format in log messages.
+General Troubleshooting: They are useful for capturing a wide range of information that may not fit into a predefined structure, such as error messages or stack traces. Events not documented on [Notable Events]({% link {{ page.version.version }}/eventlog.md %}) will have an unstructured format in log messages.
 
 ## Use `json` format with third-party tools
 
-With third-party tool consumption which read logs programmatically, use [`json`]({% link {{ page.version.version }}/log-formats.md %}#format-json) format rather than parse the [`crdb_v2`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) format. The JSON object is guaranteed to not contain unescaped newlines or other special characters, and the entry as a whole is followed by a newline character. This makes the format suitable for processing over a stream unambiguously.
+With third-party tool consumption that read logs programmatically, use [`json`]({% link {{ page.version.version }}/log-formats.md %}#format-json) format rather than parse the [`crdb_v2`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) format. The JSON object is guaranteed to not contain unescaped newlines or other special characters, and the entry as a whole is followed by a newline character. This makes the format suitable for processing over a stream unambiguously.
 
 ## Prioritize logs based on severity
 
@@ -60,7 +60,7 @@ Depending on the use case, a log sink can be configured to be auditable or buffe
 
 In the case of [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring), use the logging YAML file to [configure the log sink]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) to be auditable, by setting `auditable` to `true`. This guarantees [non-repudiability](https://wikipedia.org/wiki/Non-repudiation) for any logs in the sink, but can incur a performance overhead and higher disk IOPS consumption. When `auditable` is enabled:
 
-- `exit-on-error` is enabled which stops the Cockroach node if an error is encountered while writing to the sink. This prevents the loss of any log entries.
+- `exit-on-error` is enabled which stops the CockroachDB node if an error is encountered while writing to the sink. This prevents the loss of any log entries.
 - `buffered-writes` is disabled if the sink is under `file-groups`.
 
 File-based audit logging cannot coexist with the buffering configuration, so disable either `buffering` or `auditable`.
@@ -86,7 +86,7 @@ For detailed configurations and examples, refer to [Configure Logs]({% link {{ p
 By default, the log output format [`json`]({% link {{ page.version.version }}/log-formats.md %}#format-json) has a `timestamp` field that contains epoch values for backward-compatibility. When sending log output to a third-party log collector, the log collector can be configured to transform the epoch values in the `timestamp` field into a human-readable format.
 When inspecting a `json` formatted log file produced by CockroachDB, you can use the command [`cockroach debug merge-logs`]({% link {{ page.version.version }}/cockroach-debug-merge-logs.md %}) to convert the log into [`crdb-v1`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v1) format which includes timestamps in the `rfc3339` format, for example "2006-01-02T15:04:05.999999999Z".
 
-There is an optional [`datetime` field for `json` format]({% link {{ page.version.version }}/configure-logs.md %}#datetime-field-for-json-format) which contains values in human-readable format. However, enabling the `datetime` field introduces CPU overhead.
+There is an optional [`datetime` field for `json` format]({% link {{ page.version.version }}/configure-logs.md %}#datetime-field-for-json-format), which contains values in human-readable format. However, enabling the `datetime` field introduces CPU overhead.
 
 ## See also
 

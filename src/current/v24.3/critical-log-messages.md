@@ -10,7 +10,7 @@ toc: true
 
     - **Severity**: High
     - **Description**: A disk stall is any disk operation that does not terminate in a reasonable amount of time. This usually manifests as write-related system calls such as `fsync(2)` (aka `fdatasync`) taking a lot longer than expected (e.g., more than 20 seconds).
-    - **Impact**: Increased latency and eventual termination of the CockroachDB process. 
+    - **Impact**: Increased latency and eventual termination of the `cockroach` process. 
     - **Action**: Restart node. Provision disk with sufficient disk bandwidth/IOPs. Review active workload and check if write throughput has increased over the recent period (weeks).
     - **Related metrics**:
         - `storage.write-stalls`: Number of instances of intentional write stalls to backpressure incoming writes
@@ -36,7 +36,7 @@ toc: true
     <br><br>`error releasing lease`
 
     - **Severity**: Medium
-    - **Description**: when the decommissioning process can not find another node to migrate leaseholders to, the decommission will hang. 
+    - **Description**: When the decommissioning process can not find another node to migrate leaseholders to, the decommission will hang. 
     - **Impact**: Decommission is prevented.
     - **Action**: To continue the drain, re-initiate the command. A very long drain may indicate an anomaly, and you should manually inspect the server to determine what blocks the drain.
     - **Related metrics**: NONE
@@ -62,11 +62,11 @@ toc: true
     - **Severity**: Medium
     - **Description**: At the time of failure, there was a network-related issue that occurred in the environment that affected the listed node. 
     - **Impact**: Any leaseholders that are on the affected node will be unavailable and other nodes will need to re-elect a new leaseholder. As leaseholder election can take up to 9 seconds, the SQL service latency can increase significantly during this time, if records are accessed from a leaseholder on the impacted node.
-    - **Action**: Check if the node:
-        - has been purposely removed from the cluster by the user,
-        - has been affected by an asymmetrical network partition,
-        - experienced resource exhaustion, such as an OOM or CPU saturation, or
-        - has had any recent hardware changes.
+    - **Action**: Check if the node has experienced one of the following:
+        - The user has purposefully removed the node from the cluster.
+        - Asymmetrical network partitioning.
+        - Resource exhaustion, such as an OOM or CPU saturation.
+        - Recent hardware changes.
     - **Related metrics**: NONE
     - **See also**: [Network partition]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition)
 
@@ -101,7 +101,7 @@ toc: true
 
     - **Severity**: High
     - **Description**: Every time the storage engine writes to the main `cockroach.log` file, the engine waits 20 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable).
-    - **Impact**: The write to the log failed, the cockroach process is terminated and this message is written to `stderr` / `cockroach.log`.
+    - **Impact**: The write to the log failed, the `cockroach` process is terminated and this message is written to `stderr` / `cockroach.log`.
     - **Action**: Provision disks with sufficient disk bandwidth/IOPs and then restart the node.
     - **Related metrics**: 
         - `storage.write-stalls`: Number of instances of intentional write stalls to backpressure incoming writes
@@ -114,7 +114,7 @@ toc: true
     - **Severity**: Medium
     - **Description**: Node is unable to acquire a lease as part of the shutdown process.
     - **Impact**: Node may be unable to shutdown cleanly.
-    - **Action**: Check for network issues. For Kubernetes deployments the pod will be terminated after the configured grace period. With other types of deployment, the operator may need to manually terminate the CockroachDB process.
+    - **Action**: Check for network issues. For Kubernetes deployments the pod will be terminated after the configured grace period. With other types of deployment, the operator may need to terminate the `cockroach` process manually.
     - **Related metrics**: NONE
     - **See also**: [Drain timeout]({% link {{ page.version.version }}/node-shutdown.md %}#drain-timeout)
 
@@ -199,8 +199,8 @@ toc: true
     - **Related metrics**: 
         - `requests.slow.latch`: Number of requests that have been stuck for a long time acquiring latches. Latches moderate access to the KV keyspace for the purpose of evaluating and replicating commands. A slow latch acquisition attempt is often caused by another request holding and not releasing its latches in a timely manner. This in turn can either be caused by a long delay in evaluation (for example, under severe system overload) or by delays at the replication layer. This gauge registering a nonzero value usually indicates a serious problem and should be investigated.
         - `requests.slow.raft`: Number of requests that have been stuck for a long time in the replication layer. An (evaluated) request has to pass through the replication layer, notably the quota pool and raft. If it fails to do so within a highly permissive duration, the gauge is incremented (and decremented again once the request is either applied or returns an error).
-        - `requests.slow.lease`: Number of requests that have been stuck for a long time acquiring a lease. This gauge registering a nonzero value usually indicates range or replica unavailability, and should be investigated. In the common case, we also expect to see 'requests.slow.raft' to register a nonzero value, indicating that the lease requests are not getting a timely response from the replication layer.
-        - `requests.slow.distsender`: "Number of range-bound RPCs currently stuck or retrying for a long time. Note that this is not a good signal for KV health. The remote side of the RPCs tracked here may experience contention, so an end user can easily cause values for this metric to be emitted by leaving a transaction open for a long time and contending with it using a second transaction."
+        - `requests.slow.lease`: Number of requests that have been stuck for a long time acquiring a lease. This gauge registering a nonzero value usually indicates range or replica unavailability, and should be investigated. Often, you may also notice `requests.slow.raft` register a nonzero value, indicating that the lease requests are not getting a timely response from the replication layer.
+        - `requests.slow.distsender`: Number of range-bound RPCs currently stuck or retrying for a long time. Note that this is not a good signal for KV health. The remote side of the RPCs tracked here may experience contention, so it is easy to cause values for this metric to emit by leaving a transaction open for a long time and contending with it using a second transaction.
         - `liveness.heartbeatfailures`: Number of failed node liveness heartbeats from this node
     - **See also**: NONE
 
@@ -209,9 +209,9 @@ toc: true
 - **Message**: `raft receive queue for r{nn} is full`
 
     - **Severity**: Medium
-    - **Description**: The RAFT receive queue for a specific range is full and can no longer queue requests.
+    - **Description**: The raft receive queue for a specific range is full and can no longer queue requests.
     - **Impact**: May cause higher latencies for operations that need to write to that range.
-    - **Action**: Identify if the range has a disproportionate amount of load and mitigate appropriately, such as split range manually or use a hash-sharded index.
+    - **Action**: Identify if the range has a disproportionate amount of load and mitigate appropriately, such as splitting ranges manually or using a hash-sharded index.
     - **Related metrics**: NONE
     - **See also**: [Hot Ranges page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %})
 
