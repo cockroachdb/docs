@@ -18,7 +18,7 @@ To drop a trigger, a user must have the `DROP` [privilege]({% link {{ page.versi
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_trigger.html %}
 </div>
 
-## Parmaeters
+## Parameters
 
 |   Parameter    |                    Description                     |
 |----------------|----------------------------------------------------|
