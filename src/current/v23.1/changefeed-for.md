@@ -5,10 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{{site.data.alerts.callout_info}}
-`EXPERIMENTAL CHANGEFEED FOR` is the core implementation of changefeeds. For the [Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) version, see [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}).
-{{site.data.alerts.end}}
-
 The `EXPERIMENTAL CHANGEFEED FOR` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new basic changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A basic changefeed can watch one table or multiple tables in a comma-separated list.
 
 For more information, see [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}).

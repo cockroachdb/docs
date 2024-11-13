@@ -94,13 +94,9 @@ For examples of starting changefeeds on tables with column families, see the fol
 
 ## Create a changefeed on a table with column families
 
-{{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}?filters=core#create-a-basic-changefeed-on-a-table-with-column-families).
-{{site.data.alerts.end}}
-
 In this example, you'll set up changefeeds on two tables that have [column families]({% link {{ page.version.version }}/column-families.md %}). You'll use a single-node cluster sending changes to a webhook sink for this example, but you can use any [changefeed sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) to work with tables that include column families.
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
@@ -116,7 +112,7 @@ In this example, you'll set up changefeeds on two tables that have [column famil
     cockroach sql --insecure
     ~~~
 
-1. Set your organization and [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}) key that you received via email:
+1. Set your organization and license key:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

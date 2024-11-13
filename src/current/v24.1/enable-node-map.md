@@ -107,7 +107,7 @@ The following page is displayed:
 
 ### Step 2. Set the Enterprise license and refresh the DB Console
 
-After [setting the Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}), the Node Map should now be displaying the highest-level localities you defined:
+The Node Map should now be displaying the highest-level localities you defined:
 
 <img src="{{ 'images/v24.1/ui-node-map-after-license.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
@@ -160,7 +160,6 @@ To navigate to Node 2, which is in datacenter `us-east-1a` in the `us-east-1` re
 
 ### Node Map not displayed
 
-- The Node Map requires an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 - All nodes in the cluster must be assigned [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality).
 - Localities must be [assigned a corresponding latitude and longitude](#step-3-set-the-latitudes-and-longitudes-for-the-localities).
 

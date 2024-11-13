@@ -5,10 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}).
-{{site.data.alerts.end}}
-
 The `CREATE CHANGEFEED` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new {{ site.data.products.enterprise }} changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), [Google Cloud Pub/Sub](https://cloud.google.com/pubsub), a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink), or a [webhook sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink)). You can [create](#examples), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), [alter]({% link {{ page.version.version }}/alter-changefeed.md %}), or [cancel](#cancel-a-changefeed) an {{ site.data.products.enterprise }} changefeed.
 
 To get started with changefeeds, refer to the [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) page for important usage considerations. For detail on how changefeeds emit messages, refer to the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}) page.
