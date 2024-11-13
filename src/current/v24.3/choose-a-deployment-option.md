@@ -31,7 +31,7 @@ Cockroach Labs offers several options for clusters: CockroachDB {{ site.data.pro
         <li><b>Resource isolation</b>: Shared CockroachDB software and infrastructure. Data is protected and not shared between deployments.</li>
         <li><b><a href="../cockroachcloud/cloud-org-sso.html">Single Sign-On (SSO)</a></b>: Authentication enforcement using a centralized identity managed by an IdP for clusters and organizations.</li>
         <li><b>Support</b>: Provided by CockroachDB <a href="https://forum.cockroachlabs.com/">community forum</a> and public <a href="https://cockroachdb.slack.com/">Slack workspace</a>.</li>
-        <li><b>Enterprise Features</b>: Enabled</li>
+        <li><b>Enterprise Features</b>: Enabled.</li>
       </ul></td>
   </tr>
   <tr>
