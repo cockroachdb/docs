@@ -369,7 +369,7 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER TABLE ... PARTITION BY` is used to partition, re-partition, or un-partition a table. After defining partitions, [`CONFIGURE ZONE`](#configure-zone) is used to control the replication and placement of partitions.
 
-{% include enterprise-feature.md %}
+
 
 For examples, see [Define partitions](#define-partitions).
 

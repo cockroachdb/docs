@@ -18,7 +18,7 @@ Subject mapping is useful if:
 
 For instructions showing how to map SQL user roles to values in the Subject field of the X.509 certificate, see the [Example](#example).
 
-{% include enterprise-feature.md %}
+
 
 ## Related functionality
 

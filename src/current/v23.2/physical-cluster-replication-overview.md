@@ -15,8 +15,6 @@ Refer to the [Known Limitations](#known-limitations) section for further detail.
 
 In a disaster recovery scenario, you can [_cut over_]({% link {{ page.version.version }}/cutover-replication.md %}) from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic.
 
-{% include enterprise-feature.md %}
-
 ## Use cases
 
 You can use physical cluster replication in a disaster recovery plan to:

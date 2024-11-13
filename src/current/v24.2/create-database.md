@@ -102,7 +102,7 @@ SQL does not generate an error, but instead responds `CREATE DATABASE` even thou
 
 ### Create a multi-region database
 
-{% include enterprise-feature.md %}
+
 
 Suppose you start a cluster with region and zone [localities specified at startup]({% link {{ page.version.version }}/cockroach-start.md %}#locality).
 
@@ -167,7 +167,7 @@ Use the following command to specify regions and survival goals at database crea
 
 ### Create a multi-region database with a secondary region
 
-{% include enterprise-feature.md %}
+
 
 You can add a [secondary region]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) to a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}) for failover purposes. If the [primary region]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region) fails, the secondary region becomes the new primary region.
 

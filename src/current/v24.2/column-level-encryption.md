@@ -15,7 +15,7 @@ Once a column is encrypted, SQL users are required to pass an encryption key whe
 The "column level encryption" feature described on this page specifically refers to symmetric-key encryption of data, **not** hashing functions operating on data.
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+
 
 ## Available Functions
 

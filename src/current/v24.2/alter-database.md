@@ -54,7 +54,7 @@ Subcommand | Description
 
 `ALTER DATABASE .. ADD REGION` adds a [region]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) to a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}). While CockroachDB processes an index modification or changing a table to or from a [`REGIONAL BY ROW` table]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables), attempting to drop a region from the database containing that `REGIONAL BY ROW` table will produce an error. Similarly, while this statement is running, all index modifications and locality changes on [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables will be blocked.
 
-{% include enterprise-feature.md %}
+
 
 {{site.data.alerts.callout_danger}}
 In order to add a region with `ADD REGION`, you must first set a primary database region with [`SET PRIMARY REGION`](#set-primary-region), or at [database creation]({% link {{ page.version.version }}/create-database.md %}). For an example showing how to add a primary region with `ALTER DATABASE`, see [Set the primary region](#set-the-primary-region).
@@ -85,7 +85,7 @@ For usage, see [Synopsis](#synopsis).
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+
 
 {% include {{page.version.version}}/sql/super-region-considerations.md %}
 
@@ -139,7 +139,7 @@ For usage, see [Synopsis](#synopsis).
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+
 
 {% include {{page.version.version}}/sql/super-region-considerations.md %}
 
@@ -191,7 +191,7 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER DATABASE .. DROP REGION` drops a [region]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) from a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}). While CockroachDB processes an index modification or changing a table to or from a [`REGIONAL BY ROW` table]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables), attempting to drop a region from the database containing that `REGIONAL BY ROW` table will produce an error. Similarly, while this statement is running, all index modifications and locality changes on [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables will be blocked.
 
-{% include enterprise-feature.md %}
+
 
 You cannot drop a region from a multi-region database if:
 
@@ -220,7 +220,7 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER DATABASE .. DROP SECONDARY REGION` unsets the [secondary region]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions) (if set) from a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}).
 
-{% include enterprise-feature.md %}
+
 
 The secondary region is used for failover purposes: if the [primary region](#set-primary-region) fails, the secondary region acts as the new primary region. For more information, see [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions).
 
@@ -241,7 +241,7 @@ To unset a secondary region on a database, the user must have one of the followi
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+
 
 {% include {{page.version.version}}/sql/super-region-considerations.md %}
 
@@ -398,7 +398,7 @@ In CockroachDB, the following are aliases for `ALTER DATABASE ... SET {session v
 
 `ALTER DATABASE .. SET PRIMARY REGION` sets the primary [region]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) of a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}).
 
-{% include enterprise-feature.md %}
+
 
 {{site.data.alerts.callout_danger}}
 If a database's [zone configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}) has been directly set with an [`ALTER DATABASE ... CONFIGURE ZONE`](#configure-zone) statement, CockroachDB will block all `ALTER DATABASE ... SET PRIMARY REGION` statements on the database.
@@ -431,7 +431,7 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER DATABASE .. SET SECONDARY REGION` adds a [secondary region]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) to a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}) for failover purposes.
 
-{% include enterprise-feature.md %}
+
 
 If the [primary region](#set-primary-region) fails, the secondary region becomes the new primary region. For more information, see [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions).
 

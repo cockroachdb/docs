@@ -509,6 +509,10 @@
 
 # Removed Pages
 
+- destination: licensing-faqs.md
+  sources: ['enterprise-licensing.md']
+  versions: ['v23.1', 'v23.2', 'v24.1', 'v24.2', 'v24.3']
+
 - destination: movr.md#develop-and-deploy-a-global-application
   sources: ['movr-flask-overview.md']
   versions: ['v23.1']
