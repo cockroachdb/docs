@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `EXPERIMENTAL CHANGEFEED FOR` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
+The `EXPERIMENTAL CHANGEFEED FOR` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new basic changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A basic changefeed can watch one table or multiple tables in a comma-separated list.
 
 For more information, see [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
 
@@ -23,7 +23,7 @@ There is continued support for the [legacy privilege model](#legacy-privilege-mo
 
 To create a changefeed with `EXPERIMENTAL CHANGEFEED FOR`, a user must have the `SELECT` privilege on the changefeed's source tables.
 
-You can [grant]({% link {{ page.version.version }}/grant.md %}#grant-privileges-on-specific-tables-in-a-database) a user the `SELECT` privilege to allow them to create core changefeeds on a specific table:
+You can [grant]({% link {{ page.version.version }}/grant.md %}#grant-privileges-on-specific-tables-in-a-database) a user the `SELECT` privilege to allow them to create basic changefeeds on a specific table:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -36,9 +36,9 @@ Changefeeds can only be created by superusers, i.e., [members of the `admin` rol
 
 ## Considerations
 
-- Because core changefeeds return results differently than other SQL statements, they require a dedicated database connection with specific settings around result buffering. In normal operation, CockroachDB improves performance by buffering results server-side before returning them to a client; however, result buffering is automatically turned off for core changefeeds. Core changefeeds also have different cancellation behavior than other queries: they can only be canceled by closing the underlying connection or issuing a [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement on a separate connection. Combined, these attributes of changefeeds mean that applications should explicitly create dedicated connections to consume changefeed data, instead of using a connection pool as most client drivers do by default.
+- Because basic changefeeds return results differently than other SQL statements, they require a dedicated database connection with specific settings around result buffering. In normal operation, CockroachDB improves performance by buffering results server-side before returning them to a client; however, result buffering is automatically turned off for basic changefeeds. Basic changefeeds also have different cancellation behavior than other queries: they can only be canceled by closing the underlying connection or issuing a [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement on a separate connection. Combined, these attributes of changefeeds mean that applications should explicitly create dedicated connections to consume changefeed data, instead of using a connection pool as most client drivers do by default.
 
-    This cancellation behavior (i.e., close the underlying connection to cancel the changefeed) also extends to client driver usage; in particular, when a client driver calls `Rows.Close()` after encountering errors for a stream of rows. The pgwire protocol requires that the rows be consumed before the connection is again usable, but in the case of a core changefeed, the rows are never consumed. It is therefore critical that you close the connection, otherwise the application will be blocked forever on `Rows.Close()`.
+    This cancellation behavior (i.e., close the underlying connection to cancel the changefeed) also extends to client driver usage; in particular, when a client driver calls `Rows.Close()` after encountering errors for a stream of rows. The pgwire protocol requires that the rows be consumed before the connection is again usable, but in the case of a basic changefeed, the rows are never consumed. It is therefore critical that you close the connection, otherwise the application will be blocked forever on `Rows.Close()`.
 
 - In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an at-least-once delivery guarantee. For more information, see [Ordering Guarantees]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-and-delivery-guarantees).
 - As of v22.1, changefeeds filter out [`VIRTUAL` computed columns]({% link {{ page.version.version }}/computed-columns.md %}) from events by default. This is a [backward-incompatible change]({% link releases/v22.1.md %}#v22-1-0-backward-incompatible-changes). To maintain the changefeed behavior in previous versions where [`NULL`]({% link {{ page.version.version }}/null-handling.md %}) values are emitted for virtual computed columns, see the [`virtual_columns`]({% link {{ page.version.version }}/changefeed-for.md %}#virtual-columns) option for more detail.
@@ -95,14 +95,14 @@ To start a changefeed:
 EXPERIMENTAL CHANGEFEED FOR cdc_test;
 ~~~
 
-In the terminal where the core changefeed is streaming, the output will appear:
+In the terminal where the basic changefeed is streaming, the output will appear:
 
 ~~~
 table,key,value
 cdc_test,[0],"{""after"": {""a"": 0}}"
 ~~~
 
-For step-by-step guidance on creating a Core changefeed, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}) page.
+For step-by-step guidance on creating a basic changefeed, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}) page.
 
 ### Create a changefeed with Avro
 
@@ -113,14 +113,14 @@ To start a changefeed in Avro format:
 EXPERIMENTAL CHANGEFEED FOR cdc_test WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
 ~~~
 
-In the terminal where the core changefeed is streaming, the output will appear:
+In the terminal where the basic changefeed is streaming, the output will appear:
 
 ~~~
 table,key,value
 cdc_test,\000\000\000\000\001\002\000,\000\000\000\000\002\002\002\000
 ~~~
 
-For step-by-step guidance on creating a Core changefeed with Avro, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}) page.
+For step-by-step guidance on creating a basic changefeed with Avro, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}) page.
 
 ### Create a changefeed on a table with column families
 
@@ -138,7 +138,7 @@ To create a changefeed on a table and output changes for each column family, use
 EXPERIMENTAL CHANGEFEED FOR TABLE cdc_test WITH split_column_families;
 ~~~
 
-For step-by-step guidance creating a Core changefeed on a table with multiple column families, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}) page.
+For step-by-step guidance creating a basic changefeed on a table with multiple column families, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}) page.
 
 ## See also
 
