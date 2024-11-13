@@ -7080,7 +7080,7 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.13
-  
+
 
 - release_name: v24.3.0-beta.3
   major_version: v24.3
