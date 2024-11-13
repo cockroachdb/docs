@@ -2,7 +2,7 @@ Start the [`cockroach sql` shell]({% link {{ page.version.version }}/cockroach-s
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
->  SET CLUSTER SETTING enterprise.license = 'xxxxxxxxxxxx';
+SET CLUSTER SETTING enterprise.license = 'xxxxxxxxxxxx';
 ~~~
 
 {{site.data.alerts.callout_danger}}
