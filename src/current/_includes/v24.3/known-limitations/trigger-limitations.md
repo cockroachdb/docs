@@ -1,0 +1,3 @@
+- A [trigger function]({% link {{ page.version.version }}/triggers.md %}#trigger-function) cannot be replaced with `CREATE OR REPLACE` syntax. This is currently disallowed because the inlined function body is not replaced within any triggers that use the trigger function. [#134555](https://github.com/cockroachdb/cockroach/issues/134555)
+- Hidden columns are not visible to triggers. [#133331](https://github.com/cockroachdb/cockroach/issues/133331)
+- {% include {{ page.version.version }}/known-limitations/drop-trigger-limitations.md %}
