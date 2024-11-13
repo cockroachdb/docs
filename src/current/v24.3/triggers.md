@@ -28,7 +28,7 @@ CREATE TRIGGER trigger_name
 	- `FOR EACH ROW` specifies a row-level trigger, which activates once for each row that is affected by the statements.
 	- `WHEN` specifies an optional boolean condition that determines whether the trigger activates for a given row.
 	- For details on the preceding behaviors, refer to [Trigger conditions](#trigger-conditions).
-- The [trigger function](#trigger-function), written in [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}), is executed each time the trigger activates. A comma-separated list of function arguments can be included.
+- The [trigger function](#trigger-function), written in [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}), is executed each time the trigger activates. A comma-separated list of constant string arguments can be included.
 
 ### Trigger conditions
 
@@ -44,7 +44,9 @@ CREATE TRIGGER check_value
 ~~~
 
 {{site.data.alerts.callout_info}}
-Triggers on `INSERT` and `UPDATE` also activate when [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statements insert or update rows, respectively. However, `UPSERT` cannot be specified in a [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %}) statement.
+`INSERT` and `UPDATE` triggers activate when [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statements insert or update rows, respectively. However, `UPSERT` cannot be specified in a [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %}) statement.
+
+`UPDATE` triggers activate when the [`ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause) clause of an `INSERT` updates rows.
 {{site.data.alerts.end}}
 
 If `BEFORE` is specified, the trigger activates before the SQL operation. `BEFORE` triggers can be used to validate or modify data before it is inserted, or to check row values before they are updated.
@@ -64,11 +66,18 @@ CREATE TRIGGER audit_address_change
   ...
 ~~~
 
-<a id="trigger-ordering"></a>
-When multiple triggers activate on the same table, they behave as follows:
+{{site.data.alerts.callout_info}}
+Only `OLD` can be referenced in the `WHEN` clause of an `UPDATE` or `DELETE` trigger, and only `NEW` in the `WHEN` clause of an `INSERT` or `UPDATE` trigger. For details, refer to [Trigger variables](#trigger-variables).
+{{site.data.alerts.end}}
 
-- The triggers activate in alphabetical order by trigger name.
-- The output of a `BEFORE` trigger is passed to the next `BEFORE` trigger. For details on values returned by triggers, refer to [Trigger function](#trigger-function).
+<a id="trigger-ordering"></a>
+When multiple triggers activate on the same table, the order is determined as follows:
+
+1. All `BEFORE` triggers activate before all `AFTER` triggers.
+1. `BEFORE INSERT` triggers activate before `BEFORE UPDATE` triggers.
+1. The triggers activate in alphabetical order by trigger name.
+
+The output of a `BEFORE` trigger is passed to the next `BEFORE` trigger. For details on values returned by triggers, refer to [Trigger function](#trigger-function).
 
 For an example, refer to [Demonstrate `BEFORE` and `AFTER` trigger ordering](#demonstrate-before-and-after-trigger-ordering).
 
@@ -83,7 +92,7 @@ A trigger executes a [function]({% link {{ page.version.version }}/user-defined-
 	- The [`NEW`](#trigger-variables) table row resulting from the SQL operation that activated the trigger. This variable applies only to `INSERT` and `UPDATE` triggers, and also allows the `BEFORE` trigger to modify the row before it is written.
 	- The [`OLD`](#trigger-variables) table row affected by the SQL operation that activated the trigger. This variable applies only to `UPDATE` and `DELETE` triggers.
 	- `NULL`, which stops the SQL operation that activated the `BEFORE` trigger.
-- The function for an [`AFTER`](#trigger-conditions) trigger should return `NULL`, because its return value will be ignored.
+- The function for an [`AFTER`](#trigger-conditions) trigger typically returns `NULL` by convention, because its return value will be ignored.
 - The function must be defined before creating the trigger.
 
 {% include_cached copy-clipboard.html %}
@@ -102,19 +111,19 @@ Refer to [Examples](#examples).
 
 The following trigger variables are automatically created for trigger functions, and can be used in the function body.
 
-|      Variable     |    Type    |                                                                                      Description                                                                                      |
-|-------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `NEW`             | `RECORD`   | New table row resulting from the SQL operation. For `INSERT` triggers, this is the row that will be inserted. For `UPDATE` triggers, this is the row containing the updated values.   |
-| `OLD`             | `RECORD`   | Old table row affected by `UPDATE` and `DELETE` operations. For `UPDATE` triggers, this is the row that will be updated. For `DELETE` triggers, this is the row that will be deleted. |
-| `TG_NAME`         | `NAME`     | Name of the trigger that was activated.                                                                                                                                               |
-| `TG_WHEN`         | `STRING`   | When the trigger is set to activate: [`BEFORE` or `AFTER`](#trigger-conditions).                                                                                                      |
-| `TG_LEVEL`        | `STRING`   | Scope of trigger behavior: [`ROW`](#trigger-conditions).                                                                                                                              |
-| `TG_OP`           | `STRING`   | SQL operation that activated the trigger: [`INSERT`, `UPDATE`, or `DELETE`](#trigger-conditions).                                                                                     |
-| `TG_RELID`        | `OID`      | [`OID`]({% link {{ page.version.version }}/oid.md %}) of the table associated with the trigger.                                                                                       |
-| `TG_TABLE_NAME`   | `NAME`     | Name of the table associated with the trigger.                                                                                                                                        |
-| `TB_TABLE_SCHEMA` | `NAME`     | Name of the table schema tassociated with the triggerk.                                                                                                                               |
-| `TG_NARGS`        | `INT`      | Number of arguments passed to the trigger function in the [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %}) definition.                                     |
-| `TG_ARGV`         | `STRING[]` | Arguments passed to the trigger function in the [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %}) definition.                                               |
+|      Variable     |    Type    |                                                                                                         Description                                                                                                          |
+|-------------------|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `NEW`             | `RECORD`   | New table row resulting from the SQL operation. For `INSERT` triggers, this is the row that will be inserted. For `UPDATE` triggers, this is the row containing the updated values. For `DELETE` triggers, this is `NULL`.   |
+| `OLD`             | `RECORD`   | Old table row affected by `UPDATE` and `DELETE` operations. For `UPDATE` triggers, this is the row that will be updated. For `DELETE` triggers, this is the row that will be deleted. For `INSERT` triggers, this is `NULL`. |
+| `TG_NAME`         | `NAME`     | Name of the trigger that was activated.                                                                                                                                                                                      |
+| `TG_WHEN`         | `STRING`   | When the trigger is set to activate: [`BEFORE` or `AFTER`](#trigger-conditions).                                                                                                                                             |
+| `TG_LEVEL`        | `STRING`   | Scope of trigger behavior: [`ROW`](#trigger-conditions).                                                                                                                                                                     |
+| `TG_OP`           | `STRING`   | SQL operation that activated the trigger: [`INSERT`, `UPDATE`, or `DELETE`](#trigger-conditions).                                                                                                                            |
+| `TG_RELID`        | `OID`      | [`OID`]({% link {{ page.version.version }}/oid.md %}) of the table associated with the trigger.                                                                                                                              |
+| `TG_TABLE_NAME`   | `NAME`     | Name of the table associated with the trigger.                                                                                                                                                                               |
+| `TB_TABLE_SCHEMA` | `NAME`     | Name of the table schema associated with the trigger.                                                                                                                                                                        |
+| `TG_NARGS`        | `INT`      | Number of arguments passed to the trigger function in the [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %}) definition.                                                                            |
+| `TG_ARGV`         | `STRING[]` | Arguments passed to the trigger function in the [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %}) definition.                                                                                      |
 
 ## Examples
 
@@ -173,6 +182,10 @@ In the following example, a trigger is used to log data changes to an "audit log
 	AFTER INSERT OR UPDATE OR DELETE ON users
 	FOR EACH ROW EXECUTE FUNCTION audit_changes();
 	~~~
+
+	{{site.data.alerts.callout_success}}
+	The `audit_changes` function can be used to audit changes on multiple tables. You can create another trigger, on a table name other than `users`, that also executes `audit_changes`.
+	{{site.data.alerts.end}}
 
 1. Test the trigger by inserting, updating, and deleting a row in the `users` table:
 
@@ -381,10 +394,10 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 	RETURNS TRIGGER AS $$
 	BEGIN
 		RAISE NOTICE 'Starting wage for employee %: %', (NEW).employee_id, (NEW).wage;
-	    IF (NEW).wage < 15 THEN
-	        RAISE EXCEPTION 'Wage cannot be below minimum';
-	    END IF;
-	    RETURN NEW;
+    IF (NEW).wage < 15 THEN
+        RAISE EXCEPTION 'Wage cannot be below minimum';
+    END IF;
+    RETURN NEW;
 	END;
 	$$ LANGUAGE PLpgSQL;
 	~~~

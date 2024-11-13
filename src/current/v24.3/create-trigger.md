@@ -26,7 +26,7 @@ To create a trigger, a user must have [`CREATE` privilege]({% link {{ page.versi
 | `table_name`          | The name of the table associated with the trigger.                                                                                                                                                          |
 | `func_name`           | The [trigger function]({% link {{ page.version.version }}/triggers.md %}#trigger-function) that is executed when the trigger activates.                                                                     |
 | `a_expr`              | Boolean condition that determines if the trigger function should execute for a given row. For details, refer to [Trigger conditions]({% link {{ page.version.version }}/triggers.md %}#trigger-conditions). |
-| `trigger_func_args`   | A comma-separated list of function arguments.                                                                                                                                                               |
+| `trigger_func_args`   | A comma-separated list of constant string arguments.                                                                                                                                                        |
 
 ## Examples
 
