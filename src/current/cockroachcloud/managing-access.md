@@ -32,25 +32,25 @@ An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administra
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a team member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 1. On the **Access Management** page, under the *Members* tab, click **Invite**.
-1. In the **Email Address** field, enter the email address of the team member you want to invite. By default, a user is assigned the [Organization member]({% link cockroachcloud/authorization.md %}#organization-member) role; this default role grants no access. After the user accepts the invitation, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can grant them additional roles.
+1. In the **Email Address** field, enter the email address of the team member you want to invite. By default, a user is assigned the [Organization member]({% link cockroachcloud/authorization.md %}#organization-member) role; this default role grants no access. After the user is invited, you will be able to [grant additional roles](#change-a-team-members-roles).
 1. If required, you could invite multiple users at the same time by adding a row per email address using **+ Add Member**.
 
 It is also possible to enable [autoprovisioning]({% link cockroachcloud/cloud-org-sso.md %}#autoprovisioning) for your organization, which removes the need to invite team members.
 
-### Change a team member's role
+<a id="change-a-team-members-role"></a>
+### Change a team member's roles
 
-1. On the **Access Management** page, locate the team member's details whose role you want to change. Note that the **Role** column lists current organization roles granted to each user. See: [Organization User Roles]({% link cockroachcloud/authorization.md %}#organization-user-roles)
+1. On the **Access Management** page, locate the team member's details whose role you want to change. The **Role** column lists current organization roles granted to each user. See: [Organization User Roles]({% link cockroachcloud/authorization.md %}#organization-user-roles)
 1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
-1. A number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
+1. A number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is one of **Organization**, the name of a particular [folder]({% link cockroachcloud/folders.md %}), or the name of a particular cluster. If the role is Cluster Administrator, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
 
     {{site.data.alerts.callout_info}}
     When editing roles for a group in the **Groups** tab, the fields for that group's inherited roles are read-only, because inherited roles cannot be edited directly. Instead, you must either remove the role from the parent group from which it is inherited, or remove the member from the parent group.
     {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can revoke that role from their own user, but cannot subsequently re-grant the administrator role to themselves.
+An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can revoke the Org Administrator role from their own user, but cannot subsequently re-grant the administrator role to themselves.
 {{site.data.alerts.end}}
-
 
 ### Remove a team member
 
@@ -66,7 +66,7 @@ An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administra
 
 ### Delete an email address
 
-This is not currently available through the Console. To remove an email address from your account, [contact Support](https://support.cockroachlabs.com).
+This is not currently available through the CockroachDB {{ site.data.products.cloud }} Console. To remove an email address from your account, [contact Support](https://support.cockroachlabs.com).
 
 ### Delete an organization
 
@@ -96,7 +96,7 @@ The access management model for service accounts is unified with the [user model
 1. Confirm creation of the service account.
 
 {{site.data.alerts.callout_info}}
-Service accounts, like users, are given only the **Org Member** role by default upon creation. This role grants no access in the organization.
+Service accounts, like users, are given only the **Org Member** role by default upon creation. This role grants no access in the organization. After it is created, you can grant additional roles to the service account.
 {{site.data.alerts.end}}
 
 ### Edit roles on a service account
@@ -106,6 +106,7 @@ Service accounts, like users, are given only the **Org Member** role by default 
 1. A number of fine-grained roles can be assigned to a given service account. These are the same [roles that can be assigned to users]({% link cockroachcloud/authorization.md %}#organization-user-roles). Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
 
     The fields for a group's inherited roles are read-only, because inherited roles cannot be edited directly. Instead, you must either remove the role from the parent group from which it is inherited, or remove the member from the parent group.
+
 ### API access
 
 Each service account can have one or more API keys. API keys are used to authenticate and authorize service accounts when using the API. All API keys created by the account are listed under **API Access**.

@@ -70,7 +70,7 @@ If CPU usage is high, check whether [workload concurrency](#workload-concurrency
 
 The number of concurrent active SQL statements should be proportionate to your provisioned CPU.
 
-- The [**SQL Statements**]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statements) graph on the Overview and SQL dashboards shows the 10-second average of `SELECT`, `UPDATE`, `INSERT`, and `DELETE` statements being executed per second on the cluster or node. The latest QPS value for the cluster is also displayed with the **Queries per second** counter on the Metrics page.
+- The [**SQL Queries Per Second**]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-queries-per-second) graph on the Overview and SQL dashboards shows the 10-second moving average of `SELECT`, `UPDATE`, `INSERT`, and `DELETE` statements being executed per second on the cluster or node, as well as `Total queries`. The latest QPS value for the cluster is also displayed with the **Queries per second** counter on the Metrics page.
 
     {% include {{ page.version.version }}/prod-deployment/healthy-workload-concurrency.md %}
 
