@@ -33,7 +33,7 @@ The high-level steps in this tutorial are:
     - To set up each cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you initialize the cluster with the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command, you **must** pass the `--virtualized` or `--virtualized-empty` flag. Refer to the cluster creation steps for the [primary cluster](#initialize-the-primary-cluster) and for the [standby cluster](#initialize-the-standby-cluster) for details.
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
 - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Manage the cluster certificates](#step-3-manage-the-cluster-certificates).
-- An [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) on the primary **and** standby clusters. You must use the system virtual cluster on the primary and standby clusters to enable your {{ site.data.products.enterprise }} license.
+- An [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) on the primary **and** standby clusters. You must use the system virtual cluster on the primary and standby clusters to enable your {{ site.data.products.enterprise }} license.
 - The primary and standby clusters **must have the same [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a multi-region primary cluster to a single-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported.
 
 {{site.data.alerts.callout_info}}
@@ -76,7 +76,7 @@ Connect to your primary cluster's system virtual cluster using [`cockroach sql`]
     You should only connect to the system virtual cluster for cluster administration. To work with databases, tables, or workloads, connect to a virtual cluster.
     {{site.data.alerts.end}}
 
-1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to the cluster:
+1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) to the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -210,7 +210,7 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
     --certs-dir "certs"
     ~~~
 
-1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to the cluster:
+1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) to the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

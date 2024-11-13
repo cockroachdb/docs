@@ -89,7 +89,7 @@ ERROR: role "root" cannot have a SUBJECT%!(EXTRA string=use the --%s CLI flag to
 SQLSTATE: 22023
 ~~~
 
-If you do not have an [enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}), the following error is signaled:
+If you do not have an [enterprise license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses), the following error is signaled:
 
 {% include_cached copy-clipboard.html %}
 ~~~

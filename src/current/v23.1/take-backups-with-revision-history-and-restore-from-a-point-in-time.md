@@ -5,10 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_info}}
-[`BACKUP`]({% link {{ page.version.version }}/backup.md %}) with revision history is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) without an Enterprise license.
-{{site.data.alerts.end}}
-
 This page provides information about how to take backups with revision history and restore from a point-in-time.
 
 You can create full or incremental backups [with revision history]({% link {{ page.version.version }}/backup.md %}#with-revision-history):

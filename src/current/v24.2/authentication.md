@@ -105,9 +105,9 @@ CockroachDB offers the following methods for client authentication:
     Enter password:
     ~~~
 
-- [**Single sign-on authentication to DB Console**]({% link {{ page.version.version }}/sso-db-console.md %}), which is available to [Enterprise users]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+- [**Single sign-on authentication to DB Console**]({% link {{ page.version.version }}/sso-db-console.md %}).
 
-- [**GSSAPI authentication**]({% link {{ page.version.version }}/gssapi_authentication.md %}), which is available to [Enterprise users]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+- [**GSSAPI authentication**]({% link {{ page.version.version }}/gssapi_authentication.md %}).
 
 ### Using `cockroach cert` or `openssl` commands
 

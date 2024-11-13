@@ -1,6 +1,6 @@
 ---
 title: Licensing FAQs
-summary: Frequently asked questions about CockroachDB Enterprise and core licensing.
+summary: Frequently asked questions about CockroachDB Enterprise licensing.
 toc: true
 docs_area: get_started
 ---
@@ -9,20 +9,7 @@ docs_area: get_started
 {% include common/license/evolving.md %}
 {{site.data.alerts.end}}
 
-CockroachDB code is primarily licensed in two ways:
-
--  [Business Source License (BSL)](#bsl)
--  [Cockroach Community License (CCL)](#ccl)
-
-CockroachDB core is free to use.  Most [core features](#feature-licensing) are licensed under the BSL, but some core features are subject to the CCL or third-party licenses.
-
-Non-CCL core features from version 19.1 and earlier are licensed under [Apache 2.0](#apache); however, some features remain under third-party licenses. Beginning in version 19.2, these non-CCL features are licensed under the BSL for three years before [converting](#license-conversion-timeline) to the Apache 2.0 license.
-
-CockroachDB [Enterprise features]({% link {{ page.version.version }}/enterprise-licensing.md %}) require a [paid license](#obtain-a-license) from Cockroach and are licensed under the Cockroach Community License.
-
-{{site.data.alerts.callout_info}}
-You can find any feature's license by checking the code's file header in the [CockroachDB repository](https://github.com/cockroachdb/cockroach).
-{{site.data.alerts.end}}
+CockroachDB is made available under the [CockroachDB Software License](https://www.cockroachlabs.com/cockroachdb-software-license/).
 
 ## Types of licenses
 
@@ -66,7 +53,7 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups)** | | ✓ |
 **[Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups)** | | | ✓
 **[Other advanced backup features]({% link {{ page.version.version }}/backup.md %})** | | | ✓
-**[Core changefeed](create-and-configure-changefeeds.html?filters=core)** | | ✓ |
+**[Basic changefeed](create-and-configure-changefeeds.html?filters=core)** | | ✓ |
 **[{{ site.data.products.enterprise }} changefeed]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#configure-a-changefeed)** | | | ✓
 **[Table-level zone configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-levels)** | ✓ | |
 **[Multi-region capabilities]({% link {{ page.version.version }}/multiregion-overview.md %})** | | | ✓
