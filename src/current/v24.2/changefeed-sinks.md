@@ -11,6 +11,8 @@ CockroachDB supports the following sinks:
 
 {% include {{ page.version.version }}/cdc/sink-list.md %}
 
+For a guide to using changefeeds with [Amazon Simple Notification Service (Amazon SNS)](https://docs.aws.amazon.com/sns/latest/dg/welcome.html), refer to [this blog](https://dev.to/cockroachlabs/from-cockroachdb-to-aws-sns-via-cdc-and-aws-api-gateway-bna) that uses the [webhook sink](#webhook-sink) with [Amazon API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html) to publish messages to Amazon SNS.
+
 The [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) page provides detail on using the SQL statement and a complete list of the [query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters) and options available when setting up a changefeed.
 
 For a step-by-step example connecting a changefeed to a sink, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}) page.
