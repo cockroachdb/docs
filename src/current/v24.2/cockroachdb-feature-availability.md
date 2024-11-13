@@ -49,7 +49,11 @@ Any feature made available in a phase prior to GA is provided without any warran
 
 ### Usage-based billing metrics
 
-Metering for [usage-based billing]({% link cockroachcloud/costs.md %}) of data transfer, managed backup storage, and changefeeds is now in Preview for all CockroachDB Standard and Advanced clusters through November 2024. You can view your usage in the CockroachDB Cloud Console, where line items with a charge of $0 will be shown for each metric. There will be no usage-based charges associated with these metrics during the preview period. For more information, refer to [CockroachDB Cloud Costs: Usage-based billing metrics in Preview]({% link cockroachcloud/costs.md %}#usage-based-billing-metrics-in-preview) or the [announcement]({% link releases/cloud.md %}#october-1-2024) in the release notes.
+Metering for [usage-based billing](https://www.cockroachlabs.com/docs/cockroachcloud/costs) of data transfer, managed backup storage, and changefeeds is in Preview for all CockroachDB Standard and Advanced clusters through November 2024\. You can view your usage in the CockroachDB Cloud Console, where line items with a charge of $0 are shown for each metric. There will be no usage-based charges associated with these metrics during the Preview period.
+
+On December 1, 2024, once the Preview has ended, pricing for these metrics goes into effect immediately for new customers and for existing pay-as-you-go customers (e.g. paying monthly by credit card). Customers with annual or multi-year contracts will continue to preview these line items without incurring charges for them (i.e. expending credits) through the end of their current contract term.
+
+For more information, refer to [CockroachDB Cloud Costs: Usage-based billing metrics in Preview](https://www.cockroachlabs.com/docs/cockroachcloud/costs#usage-based-billing-metrics-in-preview) and the announcements in the release notes published [October 1](https://www.cockroachlabs.com/docs/releases/cloud#october-1-2024) and [November 1](https://www.cockroachlabs.com/docs/releases/cloud#november-1-2024).
 
 ### CockroachDB Standard
 
