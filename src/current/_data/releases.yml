@@ -7110,7 +7110,7 @@
 
 - release_name: v24.3.0-rc.1
   major_version: v24.3
-  release_date: '2024-11-13'
+  release_date: '2024-11-14'
   release_type: Testing
   go_version: go1.22.8
   sha: 6d0a627cbefef712d05815b90b738e01805a618e
