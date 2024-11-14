@@ -34,6 +34,7 @@ Statement | Usage
 [`CREATE SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %}) | Create a new sequence.
 [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) | Create a new table in a database.
 [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}) | Create a new table in a database using the results from a [selection query]({% link {{ page.version.version }}/selection-queries.md %}).
+[`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %}) | Create a new [trigger]({% link {{ page.version.version }}/triggers.md %}) on a specified table.
 [`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %}) | Create a user-defined, [enumerated data type]({% link {{ page.version.version }}/enum.md %}).
 [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %}) | Create a new [view]({% link {{ page.version.version }}/views.md %}) in a database.
 [`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %}) | Remove a database and all its objects.
@@ -43,6 +44,7 @@ Statement | Usage
 [`DROP SCHEMA`]({% link {{ page.version.version }}/drop-schema.md %}) | Drop a user-defined schema.
 [`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %}) | Remove a sequence.
 [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}) | Remove a table.
+[`DROP TRIGGER`]({% link {{ page.version.version }}/drop-trigger.md %}) | Remove a [trigger]({% link {{ page.version.version }}/triggers.md %}).
 [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %}) | Remove a user-defined, [enumerated data type]({% link {{ page.version.version }}/enum.md %}).
 [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})| Remove a view.
 [`REFRESH`]({% link {{ page.version.version }}/refresh.md %}) | Refresh the stored query results of a [materialized view]({% link {{ page.version.version }}/views.md %}#materialized-views).
