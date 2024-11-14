@@ -18,7 +18,7 @@
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
 "node": {
         "nodeId": 12,
         "bytes": "2270774884600",
@@ -26,7 +26,7 @@
         "rangeCount": "7015",
         "uptime": "1418000"
     }
-</pre>
+</code>
   </td>
  </tr>
  <tr>
@@ -46,7 +46,7 @@
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
 "stores": [
         {
             "nodeId": 12,
@@ -60,7 +60,7 @@
             "encryptionAlgorithm": "0"
         }
     ]
-</pre>
+</code>
   </td>
  </tr>
  <tr>
@@ -73,23 +73,19 @@
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
 "sql": {
         "sqlInstanceId": 12,
         "uptime": "1418000"
     }
-  </pre>
+  </code>
   </td>
  </tr>
  <tr>
   <td>Altered cluster settings</td>
   <td>
-   <p>
       Cluster settings that have been altered from their default values.
-    </p>
-   <p>
-      Note that any values of type ‘string’ are redacted, such as the cluster organization.
-    </p>
+      Note that any values of type 'string' are redacted, such as the cluster organization.
   </td>
   <td>
    <ul>
@@ -98,22 +94,25 @@
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
 "alteredSettings": {
     "cluster.organization": "\u003credacted\u003e", "kv.lease.expiration_leases_only.enabled": "false",
     "kv.rangefeed.enabled": "true"
   }
-</pre>
+</code>
   </td>
  </tr>
  <tr>
-  <td>Zone Configurations</td>
+  <td>Zone configurations</td>
   <td>Zone configurations applied to tables or databases.</td>
-  <td>Zone ID
-Zone Configuration
-</td>
   <td>
-   <pre>
+   <ul>
+    <li>Zone ID</li>
+    <li>Zone Configuration</li>
+   </ul>
+  </td>
+  <td>
+   <code>
 "zoneConfigs": {
    "114": {
       "rangeMinBytes": null,
@@ -172,7 +171,7 @@ Zone Configuration
       ]
     }
     }
-  </pre>
+  </code>
   </td>
  </tr>
  <tr>
@@ -185,7 +184,7 @@ Zone Configuration
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
 "featureUsage": {
         "backup.duration-sec.inc-succeeded.10": 10,
         "sql.plan.builtins.gen_random_uuid() -> uuid": 100000,
@@ -196,20 +195,16 @@ Zone Configuration
         "backup.speed-mbps.inc.per-node.100": 100,
         "external-io.google_cloud": 10000
     }
-  </pre>
+  </code>
   </td>
  </tr>
  <tr>
   <td>Locality</td>
   <td>
-   <p>
-A locality is an ordered set of key/value pairs that describe the location of this node or SQL instance. This is the locality information that is passed at node start time using the <a href="cockroach-start.html#locality">
-     <code>cockroach start --locality</code>
-    </a> command.
-</p>
-   <p>
-Note that these values are not redacted. Avoid writing information about your users or customers using the <pre>--locality</pre> flag.
-</p>
+    A locality is an ordered set of key/value pairs that describe the location of this node or SQL instance. This is the locality information that is passed at node start time using the <a href="cockroach-start.html#locality">
+    <code>cockroach start --locality</code>
+   </a> command.
+    Note that these values are not redacted. Avoid writing information about your users or customers using the <code>--locality</code> flag.
   </td>
   <td>
    <ul>
@@ -217,7 +212,7 @@ Note that these values are not redacted. Avoid writing information about your us
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
  "locality": {
       "tiers": [
         {
@@ -226,14 +221,14 @@ Note that these values are not redacted. Avoid writing information about your us
         }
       ]
     }
-  </pre>
+  </code>
   </td>
  </tr>
  <tr>
   <td>SQL statistics</td>
   <td>SQL statement statistics.
 
-Note that table names, column names, and constants are redacted. The <pre>sensitiveInfo</pre> field in the output is also redacted, since it can contain error strings from SQL execution. The <pre>app</pre> field is also redacted unless it begins with <pre>$</pre> or <pre>$$</pre> which is used by CockroachDB internally.
+Note that table names, column names, and constants are redacted. The <code>sensitiveInfo</code> field in the output is also redacted, since it can contain error strings from SQL execution. The <code>app</code> field is also redacted unless it begins with <code>$</code> or <code>$$</code> which is used by CockroachDB internally.
 </td>
   <td>
    <ul>
@@ -245,7 +240,7 @@ Note that table names, column names, and constants are redacted. The <pre>sensit
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
 "sqlStats": [
         {
             "id": "50705942402975393",
@@ -428,7 +423,7 @@ Note that table names, column names, and constants are redacted. The <pre>sensit
             "aggregationInterval": "0s"
         }
     ]
-  </pre>
+  </code>
   </td>
  </tr>
  <tr>
@@ -451,7 +446,7 @@ Note that table names, column names, and constants are redacted. The <pre>sensit
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
  "build": {
       "goVersion": "go1.22.5 X:nocoverageredesign",
       "tag": "v24.2.0-alpha.2-dev-2f0b0399a5c9656bdf8a417d0ab57e4eb1ae0f64",
@@ -467,7 +462,7 @@ Note that table names, column names, and constants are redacted. The <pre>sensit
       "enabledAssertions": false,
       "dependencies": null
     }
-</pre>
+</code>
   </td>
  </tr>
  <tr>
@@ -487,7 +482,7 @@ Note that table names, column names, and constants are redacted. The <pre>sensit
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
 "cpu": {
         "numcpu": 16,
         "sockets": 16,
@@ -507,7 +502,7 @@ Note that table names, column names, and constants are redacted. The <pre>sensit
             "hypervisor"
         ]
     }  
-</pre>
+</code>
   </td>
  </tr>
  <tr>
@@ -520,12 +515,12 @@ Note that table names, column names, and constants are redacted. The <pre>sensit
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
 "mem": {
         "total": "67413340264",
         "available": "38576678952"
       }
-  </pre>
+  </code>
   </td>
  </tr>
  <tr>
@@ -542,12 +537,12 @@ Note that table names, column names, and constants are redacted. The <pre>sensit
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
 "virtualization": ""
 "loadavg15": 7.10,
 "provider": "gcp",
 "instanceClass": "n2-standard-16"
-  </pre>
+  </code>
 See also CPU Info and Memory Info
 </td>
  </tr>
@@ -562,13 +557,13 @@ See also CPU Info and Memory Info
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
  "os": {
       "family": "debian",
       "platform": "ubuntu",
       "version": "22.04"
     }
-  </pre>
+  </code>
   </td>
  </tr>
  <tr>
@@ -581,12 +576,12 @@ See also CPU Info and Memory Info
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
 "topology": {
       "provider": "gcp",
       "region": "us-east1-b"
     }
-</pre>
+</code>
   </td>
  </tr>
  <tr>
@@ -603,15 +598,15 @@ See also CPU Info and Memory Info
    </ul>
   </td>
   <td>
-   <pre>
+   <code>
 "licenseType": "Enterprise"
-  </pre>
+  </code>
 See also: Locality, Hardware Info, OS Info, Build Info, and Topology Info
 </td>
  </tr>
  <tr>
   <td>License</td>
-  <td>Details about the cluster’s license.</td>
+  <td>Details about the cluster's license.</td>
   <td>
    <ul>
     <li>Environment</li>
@@ -621,14 +616,23 @@ See also: Locality, Hardware Info, OS Info, Build Info, and Topology Info
    </ul>
   </td>
   <td>
-   <li>Environment is one of {Unspecified, Production, PreProduction, Development}</li>
-   <li>The cloud organization ID (a.k.a. OrganizationID) is populated by the self-serve licensing workflow in the <a href="https://cockroachlabs.cloud">CockroachDB Cloud Console</a> (empty for legacy licenses)</li>
-   <li>LicenseID is is populated by the self-serve licensing workflow in the <a href="https://cockroachlabs.cloud">CockroachDB Cloud Console</a> (empty for legacy licenses)</li>
+   <ul>
+    <li>Environment is one of:
+  <ul>
+      <li>Unspecified</li>
+      <li>Production</li>
+      <li>PreProduction</li>
+      <li>Development</li>
+     </ul>
+    </li>
+    <li>The cloud organization ID (a.k.a. OrganizationID) is populated by the self-serve licensing workflow in the <a href="https://cockroachlabs.cloud">CockroachDB Cloud Console</a> (empty for legacy licenses)</li>
+    <li>LicenseID is is populated by the self-serve licensing workflow in the <a href="https://cockroachlabs.cloud">CockroachDB Cloud Console</a> (empty for legacy licenses)</li>
+   </ul>
   </td>
  </tr>
  <tr>
   <td>Schema information</td>
-  <td>Details of the schema with table names and column names redacted</td>
+  <td>Details of the schema with table names and column names redacted.</td>
   <td>
    <ul>
     <li>Tables</li>
@@ -644,7 +648,7 @@ See also: Locality, Hardware Info, OS Info, Build Info, and Topology Info
   </td>
   <td>
 Example of a Table:
-<pre>
+<code>
 {
     "name": "_",
     "id": 107,
@@ -920,7 +924,7 @@ Example of a Table:
     "importType": 0,
     "external": null
 }
-</pre>
+</code>
   </td>
  </tr>
  <tr>
