@@ -30,10 +30,10 @@ If you're setting up bidirectional LDR, both clusters will act as a source and a
 
 You'll need:
 
-- Two separate v24.3 CockroachDB {{ site.data.products.core }} clusters with connectivity between every node in both clusters. That is, all nodes in cluster A must be able to contact each node in cluster B and vice versa. The SQL advertised address should be the cluster node advertise address so that the LDR job can plan node-to-node connections between clusters for maximum performance.
+- Two separate {{ page.version.version }} CockroachDB {{ site.data.products.core }} clusters with connectivity between every node in both clusters. That is, all nodes in cluster A must be able to contact each node in cluster B and vice versa. The SQL advertised address should be the cluster node advertise address so that the LDR job can plan node-to-node connections between clusters for maximum performance.
     - To set up each cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}).
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
-    - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Connect from the destination to the source](#step-2-connect-from-the-destination-to-the-source).
+    - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Step 2. Connect from the destination to the source](#step-2-connect-from-the-destination-to-the-source).
 - LDR replicates at the table level, which means clusters can contain other tables that are not part of the LDR job. If both clusters are empty, create the tables that you need to replicate with **identical** schema definitions (excluding indexes) on both clusters. If one cluster already has an existing table that you'll replicate, ensure the other cluster's table definition matches. For more details on the supported schemas, refer to [Schema Validation](#schema-validation).
 
 {% comment  %}To add later, after further dev work{{site.data.alerts.callout_info}}
@@ -120,7 +120,7 @@ In this step, you'll start the LDR job from the destination cluster. You can rep
 _Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
 
 - `immediate` (default): Attempts to replicate the changed row directly into the destination table, without re-running constraint validations. It does not support writing into tables with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints.
-- `validated`: Attempts to apply the write in a similar way to a user-run query, which would re-run all constraint validations or triggers relevant to the destination table(s). If the change violates foreign key dependencies, unique constraints, or other constraints, the row will be put in the DLQ instead.
+- `validated`: Attempts to apply the write in a similar way to a user-run query, which would re-run all constraint validations or triggers relevant to the destination table(s). If the change violates foreign key dependencies, unique constraints, or other constraints, the row will be put in the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) instead.
 
 {{site.data.alerts.callout_info}}
 If you would like to ignore TTL deletes in LDR, you can use the `discard = ttl-deletes` option in the `CREATE LOGICAL REPLICATION STREAM` statement. {% comment  %} Add link to the example for this on the create logical replication stream page + TTL once published. {% endcomment %}

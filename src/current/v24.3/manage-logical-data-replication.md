@@ -14,7 +14,7 @@ Once you have **logical data replication (LDR)** running, you will need to track
 
 - [Conflict resolution](#conflict-resolution): As changes to a table replicate from the source to the destination cluster, there can be conflicts during some operations that the job will handle with conflict resolution. When LDR is started, the job creates a [_dead letter queue (DLQ)_](#dead-letter-queue-dlq) table with each replicating table. LDR will send any unresolved conflicts to the DLQ, which you should monitor as LDR continues to replicate changes between the source and destination clusters. 
 - [Schema changes](#schema-changes): The tables that are part of the LDR job may require schema changes, which need to be coordinated manually. There are some schema changes that are supported while LDR jobs are actively running.
-- [Jobs](#jobs-and-ldr): All CockroachDB jobs can operate on clusters running LDR [jobs]({% link {{ page.version.version }}/show-jobs.md %}). You may want to consider where you start and how you manage [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}), and so on when you're running LDR.
+- [Jobs](#jobs-and-ldr): [Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) and [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) can operate on clusters running LDR [jobs]({% link {{ page.version.version }}/show-jobs.md %}). You may want to consider where you start and how you manage [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}), and so on when you're running LDR.
 
 ## Conflict resolution
 
@@ -176,7 +176,7 @@ If you have a unidirectional LDR setup, you should cancel the running LDR stream
 
 ## Jobs and LDR
 
-You can run changefeed and backup CockroachDB [jobs]({% link {{ page.version.version }}/show-jobs.md %}) on any cluster that is involved in an LDR job. Both source and destination clusters in LDR are active, which means they can both serve production reads and writes as well as run [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), and so on. 
+You can run changefeed and backup [jobs]({% link {{ page.version.version }}/show-jobs.md %}) on any cluster that is involved in an LDR job. Both source and destination clusters in LDR are active, which means they can both serve production reads and writes as well as run [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), and so on. 
 
 {{site.data.alerts.callout_success}}
 You may want to run jobs like [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) from one cluster to isolate these jobs from the cluster receiving the principal application traffic. {% comment %} add link to ldr overview page that will describe this workload isolation topology {% endcomment %}
