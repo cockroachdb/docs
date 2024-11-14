@@ -12,11 +12,10 @@ The `CREATE FUNCTION` [statement]({% link {{ page.version.version }}/sql-stateme
 
 ## Required privileges
 
-- To define a function, a user must have [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the schema of the function.
+- To create a function, a user must have [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the schema of the function. The user must also have privileges on all the objects referenced in the function body.
 - To define a function with a [user-defined type]({% link {{ page.version.version }}/create-type.md %}), a user must have `USAGE` privilege on the user-defined type.
 - To resolve a function, a user must have at least the `USAGE` privilege on the schema of the function.
-- To call a function, a user must have `EXECUTE` privilege on the function.
-- At function definition and execution time, a user must have privileges on all the objects referenced in the function body. Privileges on referenced objects can be revoked and later function calls can fail due to lack of permission.
+- To call a function, a user must have `EXECUTE` privilege on the function. By default, the user must also have privileges on all the objects referenced in the function body. However, a [`SECURITY DEFINER` function](#create-a-security-definer-function) executes with the privileges of the user that owns the function, not the user that calls it. A `SECURITY INVOKER` function executes with the privileges of the user that calls the function, thus matching the default behavior.
 
 If you grant `EXECUTE` privilege as a default privilege at the database level, newly created functions inherit that privilege from the database.
 
@@ -273,6 +272,82 @@ SELECT f(1);
 ### Create a function that uses a loop
 
 {% include {{ page.version.version }}/sql/udf-plpgsql-example.md %}
+
+### Create a `SECURITY DEFINER` function
+
+The following example defines a function using the `SECURITY DEFINER` clause. This causes the function to execute with the privileges of the function owner.
+
+Create two roles:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE ROLE owner;
+CREATE ROLE invoker;
+~~~
+
+Grant a [`SELECT` privilege]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the `user_promo_codes` table to the `owner` role.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT SELECT ON TABLE user_promo_codes TO owner;
+~~~
+
+Set your role to `owner`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET ROLE owner;
+~~~
+
+Create a simple `SECURITY DEFINER` function that reads the contents of `user_promo_codes`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE FUNCTION get_codes() 
+  RETURNS SETOF RECORD 
+  LANGUAGE SQL 
+  SECURITY DEFINER
+  AS $$
+    SELECT * FROM user_promo_codes;
+  $$;
+~~~
+
+Set your role to `invoker`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET ROLE invoker;
+~~~
+
+`invoker` does not have the privileges to read the `user_promo_codes` table directly:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM user_promo_codes;
+~~~
+
+~~~
+ERROR: user invoker does not have SELECT privilege on relation user_promo_codes
+SQLSTATE: 42501
+~~~
+
+As `invoker`, you can call the `get_codes` function, since `SECURITY DEFINER` is executed with the privileges of the `owner` role:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT get_codes();
+~~~
+
+~~~
+                                                 get_codes
+------------------------------------------------------------------------------------------------------------
+  ("new york",00000000-0000-4000-8000-000000000000,0_audience_thought_seven,"2019-01-02 03:04:05",10)
+  ("new york",051eb851-eb85-4ec0-8000-000000000001,1_assume_its_leg,"2019-01-02 03:04:05.001",0)
+  ("new york",0a3d70a3-d70a-4d80-8000-000000000002,2_popular_if_describe,"2019-01-02 03:04:05.002",16)
+  ("new york",0f5c28f5-c28f-4c00-8000-000000000003,3_environmental_myself_add,"2019-01-02 03:04:05.003",4)
+  ("new york",147ae147-ae14-4b00-8000-000000000004,4_rule_edge_career,"2019-01-02 03:04:05.004",13)
+(5 rows)
+~~~
 
 ## See also
 

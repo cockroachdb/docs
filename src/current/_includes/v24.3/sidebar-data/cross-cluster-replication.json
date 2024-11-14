@@ -1,0 +1,23 @@
+{
+    "title": "Cross-Cluster Replication",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Logical Data Replication",
+        "items": [
+            {
+                "title": "Set Up Logical Data Replication",
+                "urls": [
+                  "/${VERSION}/set-up-logical-data-replication.html"
+                ]
+            },
+            {
+                "title": "Manage Logical Data Replication",
+                "urls": [
+                    "/${VERSION}/manage-logical-data-replication.html"
+                ]
+            }
+        ]
+      }
+    ]
+}
