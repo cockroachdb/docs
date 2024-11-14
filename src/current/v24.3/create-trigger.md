@@ -132,7 +132,7 @@ Populate `stock` with three products each at `1000` count:
 INSERT INTO stock ("product_id", "quantity_on_hand") VALUES ('a', 1000), ('b', 1000), ('c', 1000);
 ~~~
 
-Create a [trigger function]({% link {{ page.version.version }}/triggers.md %}#trigger-function) that updates the `stock` table to reflect each order that is placed:
+Create a [trigger function]({% link {{ page.version.version }}/triggers.md %}#trigger-function) that updates the `stock` table to reflect the quantity on hand after each order that is placed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

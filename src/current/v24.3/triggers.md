@@ -67,7 +67,7 @@ CREATE TRIGGER audit_address_change
 ~~~
 
 {{site.data.alerts.callout_info}}
-Only `OLD` can be referenced in the `WHEN` clause of an `UPDATE` or `DELETE` trigger, and only `NEW` in the `WHEN` clause of an `INSERT` or `UPDATE` trigger. For details, refer to [Trigger variables](#trigger-variables).
+Only `OLD` can be referenced in the `WHEN` clause of a `DELETE` trigger, and only `NEW` in the `WHEN` clause of an `INSERT` trigger. `OLD` or `NEW` or both can be referenced in the `WHEN` clause of an `UPDATE` trigger. For details, refer to [Trigger variables](#trigger-variables).
 {{site.data.alerts.end}}
 
 <a id="trigger-ordering"></a>
@@ -187,7 +187,7 @@ In the following example, a trigger is used to log data changes to an "audit log
 	The `audit_changes` function can be used to audit changes on multiple tables. You can create another trigger, on a table name other than `users`, that also executes `audit_changes`.
 	{{site.data.alerts.end}}
 
-1. Test the trigger by inserting, updating, and deleting a row in the `users` table:
+1. Test the trigger by inserting, updating, and deleting a row in the `users` table of the `movr` database:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
