@@ -23,7 +23,7 @@ If you're setting up bidirectional LDR, both clusters will act as a source and a
 1. Prepare the tables on each cluster with the prerequisites for starting LDR.
 1. Set up an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) on cluster B (which will be the destination cluster initially) to hold the connection URI for cluster A.
 1. Start LDR from cluster B with your required modes.
-1. (Optional) Run Steps 2 and 3 again with cluster B as the source and A as the destination, which starts LDR streaming from cluster B to A.
+1. (Optional) Run Steps 1 to 3 again with cluster B as the source and A as the destination, which starts LDR streaming from cluster B to A.
 1. Check the status of the LDR job in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}). {% comment  %}to add link to the monitoring page once published{% endcomment %}
 
 ## Before you begin
@@ -165,10 +165,7 @@ If you would like to ignore TTL deletes in LDR, you can use the `discard = ttl-d
 
 ## Step 4. (Optional) Set up bidirectional LDR
 
-At this point, you've set up one LDR job from cluster A as the source to cluster B as the destination. To set up LDR streaming in the opposite direction, complete [Step 2](#step-2-connect-from-the-destination-to-the-source) and [Step 3](#step-3-start-ldr) again. Cluster B will now be the source, and cluster A will be the destination.
-
-    {% comment  %} TODO: Add output here when example included.
-    To verify that data at a certain point in time is correct on the destination cluster, refer to [Data verification](). 1. After the two jobs are running, you can check the number of rows on each cluster with  {% endcomment %}
+At this point, you've set up one LDR job from cluster A as the source to cluster B as the destination. To set up LDR streaming in the opposite direction, complete [Step 1](#step-1-prepare-the-cluster), [Step 2](#step-2-connect-from-the-destination-to-the-source), and [Step 3](#step-3-start-ldr) again. Cluster B will now be the source, and cluster A will be the destination.
 
 ## Step 5. Monitor the LDR jobs
 
