@@ -299,7 +299,7 @@ SET CLUSTER SETTING sql.query_cache.enabled = false;
 
 Two types of plans can be cached:
 
-- *Custom* query plans are generated for a given query structure and optimized for specific placeholder values, and are re-optimized on subsequent executions. By default, the optimizer uses custom plans. Custom plans are included in the [plan cache](#plan-cache).
+- *Custom* query plans are generated for a given query structure and optimized for specific placeholder values, and are re-optimized on subsequent executions. By default, the optimizer uses custom plans. Custom plans are included in the [plan cache](#query-plan-cache).
 - *Generic* query plans are generated and optimized once without considering specific placeholder values, and are **not** regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics](#table-statistics) and must be re-optimized. This approach eliminates most of the query latency attributed to planning. For example:
 
     ~~~ sql
