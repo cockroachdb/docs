@@ -12,9 +12,15 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
+### Generic query plans
+
+{% include {{ page.version.version }}/known-limitations/generic-query-plan-limitations.md %}
+
+{% comment %}
 {{site.data.alerts.callout_info}}
 Limitations will be added as they are discovered.
 {{site.data.alerts.end}}
+{% endcomment %}
 
 ## Limitations from {{ previous_version }} and earlier
 
@@ -328,6 +334,8 @@ Refer to [`OID` best practices]({% link {{ page.version.version }}/oid.md %}#bes
 
 - Updating subfields of composite types using dot syntax results in a syntax error. [#102984](https://github.com/cockroachdb/cockroach/issues/102984)
 
+- Tuple elements cannot be accessed without enclosing the [composite variable]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) name in parentheses. For example, `(v).x`. [#114687](https://github.com/cockroachdb/cockroach/issues/114687)
+
 #### `ALTER TYPE` limitations
 
 {% include {{ page.version.version }}/known-limitations/alter-type-limitations.md %}
@@ -491,9 +499,10 @@ The SQL optimizer has limitations under certain isolation levels:
 - The new implementation of `SELECT FOR UPDATE` is not yet the default setting under `SERIALIZABLE` isolation. It can be used under `SERIALIZABLE` isolation by setting the `optimizer_use_lock_op_for_serializable` [session setting]({% link {{ page.version.version }}/session-variables.md %}) to `true`. [#114737](https://github.com/cockroachdb/cockroach/issues/114737)
 - `SELECT FOR UPDATE` does not lock completely-`NULL` column families in multi-column-family tables. [#116836](https://github.com/cockroachdb/cockroach/issues/116836)
 
-#### Automatic statistics refresher may not refresh after upgrade
+#### Statistics limitations
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
+{% include {{ page.version.version }}/known-limitations/forecasted-stats-limitations.md %}
 
 #### Incorrect query plans for partitions with `NULL` values
 
