@@ -83,6 +83,10 @@ The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores
 
 [Connecting privately to a CockroachDB {{ site.data.products.advanced }} cluster using Azure Private Link]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link) is in preview. Azure Private Link allows you to selectively connect your cluster deployed on Azure to a virtual network within your Azure tenant.
 
+### Logical data replication (LDR) for CockroachDB {{ site.data.products.core }}
+
+**Logical data replication (LDR)** continuously replicates tables between active CockroachDB clusters. Both source and destination cluster can receive application reads and writes, with LDR enabling bidirectional replication for eventual consistency in the replicating tables. The active-active setup between clusters can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Setting up LDR between a source and destination CockroachDB {{ site.data.products.core }} cluster is in preview.
+
 ### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 
 The [**Custom Metrics Chart** page]({% link cockroachcloud/custom-metrics-chart-page.md %}) for CockroachDB {{ site.data.products.cloud }} clusters allows you to create custom charts showing the time series data for an available metric or combination of metrics.
