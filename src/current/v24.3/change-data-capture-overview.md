@@ -15,7 +15,7 @@ For example, you might want to:
 - Export a snaphot of tables to backfill new applications.
 - Send updates to data stores for machine learning models.
 
-The main feature of CockroachDB CDC is the _changefeed_, which targets an allowlist of tables, or "watched rows".
+The main feature of CockroachDB CDC is the _changefeed_, which targets an allowlist of tables, or "watched tables".
 
 ## Stream row-level changes with changefeeds
 
@@ -43,7 +43,7 @@ CockroachDB has two implementations of changefeeds:
       <b>Product availability</b>
     </td>
     <td>All products</td>
-    <td>CockroachDB {{ site.data.products.basic }}, {{ site.data.products.standard }}, {{ site.data.products.advanced }}, or with an <a href="enterprise-licensing.html">{{ site.data.products.enterprise }} license</a> in CockroachDB {{ site.data.products.core }}.</td>
+    <td>CockroachDB {{ site.data.products.basic }}, {{ site.data.products.standard }}, {{ site.data.products.advanced }}, or with an <a href="licensing-faqs.html#types-of-licenses">{{ site.data.products.enterprise }} license</a> in CockroachDB {{ site.data.products.core }}.</td>
   </tr>
 
   <tr>
