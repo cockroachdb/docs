@@ -1,5 +1,5 @@
 ---
-title: Configure LDAP Authentication and Authorization
+title: IGNORE - HAS BEEN SPLIT - WILL DELETE - Configure LDAP Authentication and Authorization (TO REMOVE - HAS BEEN SPLIT)
 summary: A guide to the configuration of authentication and authorization using LDAP or Active Directory.
 toc: true
 ---
