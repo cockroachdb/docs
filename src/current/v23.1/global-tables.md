@@ -21,7 +21,7 @@ Tables with the `GLOBAL` locality can survive zone or region failures, depending
 
 ## Before you begin
 
-{% include enterprise-feature.md %}
+
 
 ### Fundamentals
 

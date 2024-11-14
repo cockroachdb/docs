@@ -68,10 +68,6 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 Individual feature licensing may change with each release of CockroachDB. You can use the dropdown menu at the top of the page to view documentation for other versions of CockroachDB.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-See [Enterprise Features]({% link {{ page.version.version }}/enterprise-licensing.md %}) for more information.
-{{site.data.alerts.end}}
-
 ## Obtain a license
 
 All CockroachDB code is included in the same binary. No license key is required to access BSL and CCL (Free) features. To access CCL (Paid) features, users have two options:

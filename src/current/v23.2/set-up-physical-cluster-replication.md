@@ -31,8 +31,6 @@ The high-level steps in this tutorial are:
 
 ## Before you begin
 
-{% include enterprise-feature.md %}
-
 - Two separate CockroachDB clusters (primary and standby) with a minimum of three nodes each, and each using the same CockroachDB {{page.version.version}} version.
     - To set up each cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you start each node in your cluster with the `cockroach start` command, you **must** pass the `--config-profile` flag with a `replication` value. Refer to cluster creation steps for the [primary cluster](#start-the-primary-cluster) and for the [standby cluster](#start-the-standby-cluster) for details.
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).

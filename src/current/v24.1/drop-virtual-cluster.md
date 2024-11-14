@@ -9,7 +9,7 @@ docs_area: reference.sql
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+
 
 The `DROP VIRTUAL CLUSTER` statement removes virtual clusters. Virtual clusters are used only as part of the [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
 

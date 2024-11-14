@@ -2,8 +2,6 @@
 The [Cost-based Optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) can take advantage of replication zones for secondary indexes when optimizing queries.
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
-
 The [secondary indexes]({% link {{ page.version.version }}/indexes.md %}) on a table will automatically use the replication zone for the table. You can also add distinct replication zones for secondary indexes.
 
 To control replication for a specific secondary index, use the `ALTER INDEX ... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone).
