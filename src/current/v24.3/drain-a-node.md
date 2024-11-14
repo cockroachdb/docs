@@ -1,6 +1,6 @@
 ---
 title: Drain a node
-summary: Learn how to drain a node to perform maintenance.
+summary: Learn how to drain a node to perform system maintenance.
 toc: true
 docs_area: manage
 ---
