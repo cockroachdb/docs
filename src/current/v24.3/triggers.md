@@ -67,10 +67,13 @@ CREATE TRIGGER audit_address_change
 ~~~
 
 {{site.data.alerts.callout_info}}
-Only `OLD` can be referenced in the `WHEN` clause of a `DELETE` trigger, and only `NEW` in the `WHEN` clause of an `INSERT` trigger. `OLD` or `NEW` or both can be referenced in the `WHEN` clause of an `UPDATE` trigger. For details, refer to [Trigger variables](#trigger-variables).
+Due to a [known limitation]({% link {{ page.version.version }}/known-limitations.md %}#limitations-for-composite-types), `OLD` and `NEW` must be wrapped in parentheses when accessing column names.
 {{site.data.alerts.end}}
 
-<a id="trigger-ordering"></a>
+Only `OLD` can be referenced in the `WHEN` clause of a `DELETE` trigger, and only `NEW` in the `WHEN` clause of an `INSERT` trigger. `OLD` or `NEW` or both can be referenced in the `WHEN` clause of an `UPDATE` trigger. For details, refer to [Trigger variables](#trigger-variables).
+
+#### Trigger ordering
+
 When multiple triggers activate on the same table, the order is determined as follows:
 
 1. All `BEFORE` triggers activate before all `AFTER` triggers.
