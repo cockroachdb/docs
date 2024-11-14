@@ -149,11 +149,6 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 #
 # You are connected to a temporary, in-memory CockroachDB cluster of 9 nodes.
 #
-# This demo session will attempt to enable Enterprise features
-# by acquiring a temporary license from Cockroach Labs in the background.
-# To disable this behavior, set the environment variable
-# COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING=true.
-#
 # Beginning initialization of the movr dataset, please wait...
 #
 # Waiting for license acquisition to complete...
