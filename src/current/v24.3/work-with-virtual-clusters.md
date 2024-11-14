@@ -172,10 +172,15 @@ To upgrade to a new major version when cluster virtualization is enabled, you mu
 1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the system virtual cluster to upgrade it (if auto-finalization is disabled) or roll back the upgrade if you decide not to finalize it. Until it is finalized, the cluster still operates in compatibility with the previous major version, and virtual clusters cannot be upgraded.
 1. Finalize the upgrade on a virtual cluster to upgrade it, or roll back the upgrade if you decide not to finalize it. Until it is finalized, a virtual cluster still operates in compatibility with the previous major version, and some features may not be available on the virtual cluster.
 
-This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one major version ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.1 can have virtual clusters on CockroachDB v23.2.
+This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one [Regular release]({% link releases/index.md %}#release-types) ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.3 can have virtual clusters on CockroachDB v24.1 (a Regular release) or v24.2 (an Innovation release).
 
 {{site.data.alerts.callout_info}}
-The `preserve_downgrade_option` cluster setting is scoped to a virtual cluster. To prevent automatic finalization of the upgrade, you must set it to `false` both in the virtual cluster and in the system virtual cluster.
+Both the `auto_upgrade.enabled` and `preserve_downgrade_option` [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) are scoped to a virtual cluster. To prevent automatic finalization of an upgrade, you must do one of the following:
+
+- Set `auto_upgrade.enabled` to `false` before beginning an upgrade. This setting persists after an upgrade. To finalize the upgrade manually, refer to [Upgrade a cluster]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}). This is the preferred way to disable auto-upgrade.
+- Set `preserve_downgrade_option` to the cluster's current major version. This setting is reset during upgrade finalization and must be set again before the next major-version upgrade.
+
+Either setting, if enabled, disables auto-finalization.
 {{site.data.alerts.end}}
 
 To apply a patch-version upgrade, you must replace the binary on each node and restart the node. Finalization is not required.
