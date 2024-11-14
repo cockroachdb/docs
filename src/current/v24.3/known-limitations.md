@@ -16,6 +16,19 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 
 {% include {{ page.version.version }}/known-limitations/generic-query-plan-limitations.md %}
 
+### Triggers
+
+{% include {{ page.version.version }}/known-limitations/trigger-limitations.md %}
+
+### Logical data replication (LDR)
+
+- {% include {{ page.version.version }}/known-limitations/ldr-triggers.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-udfs.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-sequences.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-indexes.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-composite-primary.md %}
+
 {% comment %}
 {{site.data.alerts.callout_info}}
 Limitations will be added as they are discovered.
@@ -457,7 +470,7 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
-- {% include {{ page.version.version }}/known-limitations/cutover-stop-application.md %}
+- {% include {{ page.version.version }}/known-limitations/failover-stop-application.md %}
 
 #### `RESTORE` limitations
 

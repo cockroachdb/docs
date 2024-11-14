@@ -14,8 +14,8 @@ This page describes:
 
 ## Before you create a changefeed
 
-1. Enable rangefeeds on CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
-1. Decide on whether you will run an {{ site.data.products.enterprise }} or Core changefeed. Refer to the [Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page for a comparative capability table.
+1. Enable rangefeeds on CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
+1. Decide on whether you will run an {{ site.data.products.enterprise }} or basic changefeed. Refer to the [Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page for a comparative capability table.
 1. Plan the number of changefeeds versus the number of tables to include in a single changefeed for your cluster. {% include {{ page.version.version }}/cdc/changefeed-number-limit.md %} Refer to [System resources and running changefeeds](#system-resources-and-running-changefeeds) and [Recommendations for the number of target tables](#recommendations-for-the-number-of-target-tables).
 1. Consider whether your {{ site.data.products.enterprise }} [changefeed use case](#create) would be better served by [change data capture queries]({% link {{ page.version.version }}/cdc-queries.md %}) that can filter data on a single table. CDC queries can improve the efficiency of changefeeds because the job will not need to encode as much change data.
 1. Read the [Considerations](#considerations) section that provides information on changefeed interactions that could affect how you configure or run your changefeed.
@@ -78,7 +78,7 @@ The following Enterprise and Core sections outline how to create and configure e
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="enterprise">Enterprise Changefeeds</button>
-  <button class="filter-button" data-scope="core">Core Changefeeds</button>
+  <button class="filter-button" data-scope="core">Basic Changefeeds</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="enterprise">
@@ -170,9 +170,9 @@ For more information, refer to [`CANCEL JOB`]({% link {{ page.version.version }}
 
 ## Create a changefeed
 
-A core changefeed streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
+A basic changefeed streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
 
-To create a core changefeed:
+To create a basic changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

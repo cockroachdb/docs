@@ -227,6 +227,14 @@
   sources: ['build-a-python-app-with-cockroachdb-pony.md']
   versions: ['v20.2', 'v21.1', 'v21.2', 'v22.1', 'v22.2', 'v23.1']
 
+- destination: dev/failover-replication.md
+  sources: ['cutover-replication.md']
+  versions: ['24.3']
+
+- destination: failover-replication.md
+  sources: ['cutover-replication.md']
+  versions: ['24.3']
+
 - destination: fips.md
   sources: ['fips-compliance.md']
   versions: ['v23.1']
@@ -509,6 +517,13 @@
 
 # Removed Pages
 
+- destination: licensing-faqs.md
+  sources: ['enterprise-licensing.md']
+  versions: ['v24.3']
+
+- destination: :version/licensing-faqs.md
+  sources: [':version/get-started-with-enterprise-trial.md']
+
 - destination: movr.md#develop-and-deploy-a-global-application
   sources: ['movr-flask-overview.md']
   versions: ['v23.1']
@@ -691,9 +706,9 @@
 - destination: cockroachcloud/serverless-resource-usage.md
   sources: ['cockroachcloud/serverless-benchmarking.md']
 
-- destination: cockroachcloud/upgrade-cockroach-version.md
-  sources: ['cockroachcloud/upgrade-to-v*.md']
-  versions: [cockroachcloud]
+- destination: upgrade-cockroach-version.md
+  sources: 'upgrade-to-v*.md'
+  versions: ['cockroachcloud']
 
 - destination: community-tooling.md
   sources:

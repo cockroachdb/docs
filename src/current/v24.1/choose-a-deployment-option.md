@@ -81,7 +81,7 @@ Cockroach Labs offers several options for clusters: CockroachDB {{ site.data.pro
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td>
-      <a id="self-hosted"></a><b><a href="start-a-local-cluster.html">CockroachDB Self-Hosted</a></b>: A full featured, self-managed CockroachDB deployment.
+      <a id="self-hosted"></a><b><a href="start-a-local-cluster.html">CockroachDB {{ site.data.products.core }}</a></b>: A full featured, self-managed CockroachDB deployment.
       </td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
