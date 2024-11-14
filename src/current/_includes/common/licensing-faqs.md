@@ -1,4 +1,4 @@
-All versions of CockroachDB released after November 18, 2024, including patch fixes for prior versions 23.1 onward, are made available under the [CockroachDB Software License][csl]. You can use the dropdown menu at the top of the page to view documentation for other versions.
+All versions of CockroachDB starting from the release date of 24.3.0 onward, including patch fixes for versions 23.1-24.2 from that date onward, are made available under the [CockroachDB Software License](https://www.cockroachlabs.com/cockroachdb-software-license/). You can use the dropdown menu at the top of the page to view documentation for other versions.
 
 <a name="types-of-licenses"></a>
 
