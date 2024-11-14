@@ -4,8 +4,6 @@ summary: A guide to the configuration of authentication and authorization using 
 toc: true
 ---
 
-{% include enterprise-feature.md %}
-
 CockroachDB supports authentication and authorization using LDAP (Lightweight Directory Access Protocol) or Active Directory servers. This allows you to integrate your existing directory service with CockroachDB for centralized user management and access control.
 
 Q: Should we be flipping these and putting authorization before authentication?  

@@ -4,8 +4,6 @@ summary: Learn how to configure CockroachDB to use LDAP for user authentication 
 toc: true
 ---
 
-{% include enterprise-feature.md %}
-
 CockroachDB supports authentication and authorization using LDAP (Lightweight Directory Access Protocol) with services such as Active Directory. This allows you to integrate your existing directory service with CockroachDB for centralized user management and access control.
 
 This page describes how to configure CockroachDB user authentication using LDAP. You can also configure user authorization (role-based access control) with LDAP, to set users' CockroachDB roles based on group memberships in the directory, but this is not required.

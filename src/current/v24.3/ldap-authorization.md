@@ -1,6 +1,6 @@
 ---
 title: Configure LDAP Authorization
- summary: Learn how to configure role-based access control (authorization) using LDAP with directory services like Active Directory.
+summary: Learn how to configure role-based access control (authorization) using LDAP with directory services like Active Directory.
 toc: true
 ---
 
