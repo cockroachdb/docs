@@ -1,7 +1,7 @@
 This page provides information about hybrid and multi-cloud self-hosted deployments of CockroachDB. Each of these types of deployments can help an organization to meet its service-level and disaster recovery objectives.
 
 - In a _hybrid deployment_, a cluster's nodes are deployed in a combination of infrastructure you manage, private cloud provider infrastructure, and public cloud provider infrastructure.
-- In a _multi-cloud deployment_, a cluster's nodes are deployed in multiple cloud providers' infrastructure public or private infrastructure.
+- In a _multi-cloud deployment_, a cluster's nodes are deployed in multiple cloud providers' public or private infrastructure.
 
 Often, the two terms are used interchangeably.
 
@@ -34,14 +34,19 @@ To set up a hybrid or multi-cloud deployment:
 - **There must be no overlapping IP address ranges** across the cluster. It is an error for multiple nodes to have the same IP address or to resolve to the same hostname.
 
     DNS name resolution is particularly complex in a Kubernetes deployment. We recommend that you replace `kube-dns` with Core DNS. Refer to [Deploy CockroachDB on GKE](https://github.com/mbookham7/crdb-multi-cloud-k8s/blob/master/markdown/5-deploy-cockroach.md) for details.
-- **In a multi-region deployment, we recommend that you use manifests**. Refer to [Deploy multi-cloud CockroachDB on GKE](https://github.com/mbookham7/crdb-multi-cloud-k8s/blob/master/markdown/5-deploy-cockroach.md) for details.
-- **Each node deployed in the same environment must share locality** to ensure that the cluster's replicas are spread across deployment environments and to prevent single points of failure or hot spots. To specify a node's locality, pass the `--locality` flag when [starting a node]({% link {{ page.version.version }}/cockroach-start.md %}). This flag accepts an arbitrary set of key-value pairs that describe the location of the node. For example, if nodes are deployed in both Azure and Digital Ocean, you could set each node's locality to either `--locality data-center=azure` or `--locality data-center=digital-ocean`.
+- **In a multi-region Kubernetes deployment, we recommend that you use manifests**. Refer to [Deploy multi-cloud CockroachDB on GKE](https://github.com/mbookham7/crdb-multi-cloud-k8s/blob/master/markdown/5-deploy-cockroach.md) for details.
+- **Each node deployed in the same environment must indicate this using locality tags** to ensure that the cluster's replicas are spread across deployment environments and to prevent single points of failure or hot spots. To specify a node's locality, pass the `--locality` flag when [starting a node]({% link {{ page.version.version }}/cockroach-start.md %}). This flag accepts an arbitrary set of key-value pairs that describe the location of the node.
 
     If nodes are deployed in multiple regions within the same cloud provider, specify the region as an additional locality, to ensure that replicas are spread across regions in each cloud provider's infrastructure.
 
+    For example:
+
+    - If nodes are deployed in both Azure and Digital Ocean, you could set each node's locality to either `--locality data-center=azure` or `--locality data-center=digital-ocean`.
+    - Nodes in the same data center but different regions could use the same value for a `datacenter` locality tag but a different value for a `region` locality tag.
+
 ## Simulate an outage
 
-This section shows some ways to simulate an outage and validate disaster recovery procedures in a hybrid or multi-cloud deployment.
+This section shows some ways to simulate an outage and validate disaster recovery procedures in a hybrid or multi-cloud deployment. These tests can help you verify that you have set up the nodes' locality tags correctly.
 
 - **To simulate a single-node outage**, you could forcibly shut down the `cockroach` process on the host or VM, such as by running `kill -9`, or you could disable the host's network interface.
 - **To simulate a single-region cloud-provider outage**, you could forcibly shut down the `cockroach` process on all hosts or VMs in that region on that cloud provider, you could disable their network interfaces, adjust routing or firewall rules, or make other networking adjustments to prevent nodes in one region from connecting to the cluster.

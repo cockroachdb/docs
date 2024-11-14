@@ -34,12 +34,6 @@
                 ]
               },
               {
-                "title": "Hybrid and multi-cloud deployments",
-                "urls": [
-                  "/${VERSION}/hybrid-and-multi-cloud.html"
-                ]
-              },
-              {
                 "title": "Simulate a Multi-Region Cluster Locally",
                 "urls": [
                   "/${VERSION}/simulate-a-multi-region-cluster-on-localhost.html"
@@ -89,6 +83,12 @@
                 "urls": [
                   "/${VERSION}/deploy-cockroachdb-on-digital-ocean.html",
                   "/${VERSION}/deploy-cockroachdb-on-digital-ocean-insecure.html"
+                ]
+              },
+              {
+                "title": "Hybrid and multi-cloud deployments",
+                "urls": [
+                  "/${VERSION}/hybrid-and-multi-cloud.html"
                 ]
               }
             ]
