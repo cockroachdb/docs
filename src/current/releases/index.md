@@ -574,8 +574,8 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 
 ## Licenses
 
-All binaries available on this page released on or after November 18, 2024, including v24.3 and patch fixes for versions 23.1 onward, are made available under the [CockroachDB Software License](https://www.cockroachlabs.com/cockroachdb-software-license). 
+All binaries available on this page released on or after the day 24.3.0 is released onward, including patch fixes for versions 23.1-24.2, are made available under the [CockroachDB Software License](https://www.cockroachlabs.com/cockroachdb-software-license).
 
-All binaries available on this page released prior to November 18, 2024 are variously licensed under the Business Source License 1.1 (BSL), the CockroachDB Community License (CCL), and other licenses specified in the source code.
+All binaries available on this page released prior to the release date of 24.3.0 are variously licensed under the Business Source License 1.1 (BSL), the CockroachDB Community License (CCL), and other licenses specified in the source code.
 
-To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `Licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.
+To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.
