@@ -55,6 +55,19 @@ SHOW LOGICAL REPLICATION JOBS WITH details;
   1014047902397333505 | canceled | {defaultdb.public.office_dogs} | 2024-10-24 17:30:25+00        | 2024-10-21 17:54:20.797643+00 | LWW                      | LOGICAL REPLICATION STREAM into defaultdb.public.office_dogs from external://cluster_a
 ~~~
 
+You can also use [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) for general job details:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW JOBS;
+~~~
+~~~
+        job_id        |          job_type           |                              description                              | user_name | status  |                       running_status                       |        created         |        started         | finished |        modified        | fraction_completed | error | coordinator_id
+----------------------+-----------------------------+-----------------------------------------------------------------------+-----------+---------+------------------------------------------------------------+------------------------+------------------------+----------+------------------------+--------------------+-------+-----------------
+  1018289808808673281 | REPLICATION STREAM PRODUCER | History Retention for Logical Replication of database.public.table    | user      | running | NULL                                                       | 2024-11-05 17:29:47+00 | 2024-11-05 17:30:08+00 | NULL     | 2024-11-15 16:21:56+00 |                  0 |       |              1
+  1015174849185939457 | LOGICAL REPLICATION         | LOGICAL REPLICATION STREAM into database.public.table                 | root      | running | logical replication running: 2024-11-15 16:22:05 +0000 UTC | 2024-10-25 17:26:17+00 | 2024-10-25 17:26:51+00 | NULL     | 2024-11-15 16:22:10+00 |               NULL |       |              1
+~~~
+
 ### Responses
 
 {% include {{ page.version.version }}/ldr/show-logical-replication-responses.md %}
