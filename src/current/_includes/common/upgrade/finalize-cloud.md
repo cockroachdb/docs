@@ -1,4 +1,4 @@
-To finalize a major-version upgrade of CockroachDB {{ site.data.products.advanced }} or CockroachDB {{ site.data.products.standard }} manually,
+To finalize a major-version upgrade of CockroachDB {{ site.data.products.advanced }} or CockroachDB {{ site.data.products.standard }} manually:
 
 1. Click the cluster's name to open the **Cluster Details** page.
 1. At the top of the page, click **Finalize**.
