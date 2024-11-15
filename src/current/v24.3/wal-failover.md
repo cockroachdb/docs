@@ -206,7 +206,7 @@ nvme0n3 259:2    0   375G  0 disk /mnt/data3
 nvme0n4 259:3    0   375G  0 disk /mnt/data4
 ~~~
 
-Next, we will create scripts for stalling and unstalling the disk on this node. The script will add a line in `/sys/fs/cgroup/system.slice/cockroach-system.service/io.max` to change the [cgroup](https://en.wikipedia.org/wiki/Cgroups) settings "read bytes per second" (`rbps`) and "write bytes per second" (`wbps`) of the disk to a very low value for stalling, and a max value for unstalling.
+Create scripts for stalling and unstalling the disk on this node. The script will add a line in `/sys/fs/cgroup/system.slice/cockroach-system.service/io.max` to change the [cgroup](https://en.wikipedia.org/wiki/Cgroups) settings "read bytes per second" (`rbps`) and "write bytes per second" (`wbps`) of the disk to a very low value for stalling, and a max value for unstalling.
 
 Create a shell script that will invoke the commands to stall and unstall alternately. We will call this script `wal-flip.sh`. Create `wal-flip.sh` with the content shown below:
 
