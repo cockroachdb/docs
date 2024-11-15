@@ -25,7 +25,7 @@ In cloud environments, transient [disk stalls]({% link {{ page.version.version }
 
 When a disk stalls on a node, it could be due to complete hardware failure or it could be a transient stall. When a disk backing a [store]({% link {{ page.version.version}}/cockroach-start.md %}#store) stalls in CockroachDB, all the writes to [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) for which the node is [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder) will be blocked until the disk stall clears, or the node is crashed (after default interval defined by [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables)), moving any leaseholders on this store to other stores.
 
-WAL failover uses a secondary disk to fail over WAL writes to when transient disk stalls occur. This limits the write impact to a few hundreds of milliseconds (the [failover threshold, which is configurable]()). Note that WAL failover **only preserves availability of writes**. If reads to the underlying storage are also stalled, operations that read and do not find data in the block cache or page cache will stall.
+WAL failover uses a secondary disk to fail over WAL writes to when transient disk stalls occur. This limits the write impact to a few hundreds of milliseconds (the [failover threshold, which is configurable](#unhealthy-op-threshold)). Note that WAL failover **only preserves availability of writes**. If reads to the underlying storage are also stalled, operations that read and do not find data in the block cache or page cache will stall.
 
 ## Create and configure a cluster to be ready for WAL failover
 
@@ -419,6 +419,8 @@ SET CLUSTER SETTING storage.wal_failover.unhealthy_op_threshold = '${duration gr
 ### 7. How can I enable WAL failover during runtime in a multi-store cluster?
 
 To enable WAL failover at runtime on a [multi-store cluster](#multi-store-config), make sure to configure log buffering as described in [Enable WAL failover]({% link {{ page.version.version }}/cockroach-start.md %}#enable-wal-failover).
+
+<a name="unhealthy-op-threshold"></a>
 
 Next, make sure the value of the [`storage.wal_failover.unhealthy_op_threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-wal-failover-unhealthy-op-threshold) cluster setting is a duration less than the [`storage.max_sync_duration`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-max-sync-duration) cluster setting:
 
