@@ -104,7 +104,7 @@ Provision a 3-node cluster with 2 SSDs for each node. Deploy each node to a diff
 
 <a name="3-sidecar-configure-logs"></a>
 
-#### 3. Log Configuration for WAL Failover
+#### 3. Log configuration for WAL failover
 
 If you are logging to a file-based sink, create a `logs.yaml` file. Later on, you will pass this file to `cockroach start` when starting each node in the cluster. Not doing so will negate the positive impact of enabling WAL failover, because writes to the diagnostic logs may block indefinitely during the disk stall, effectively stalling the node.
 
