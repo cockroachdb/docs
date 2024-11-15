@@ -23,8 +23,9 @@ For PostgreSQL compatibility, CockroachDB supports the following `STRING`-relate
 
 - `VARCHAR` (and alias `CHARACTER VARYING`)
 - `CHAR` (and alias `CHARACTER`)
+- `NAME`
 
-These types are functionality identical to `STRING`.
+These types are functionally identical to `STRING`.
 
 CockroachDB also supports the single-byte `"char"` special character type. As in PostgreSQL, this special type is intended for internal use in [system catalogs]({% link {{ page.version.version }}/system-catalogs.md %}), and has a storage size of 1 byte. CockroachDB truncates all values of type `"char"` to a single character.
 

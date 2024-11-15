@@ -783,6 +783,18 @@
                 "urls": [
                   "/${VERSION}/log-sql-statistics-to-datadog.html"
                 ]
+              },
+              {
+                "title": "Logging Best Practices",
+                "urls": [
+                  "/${VERSION}/logging-best-practices.html"
+                ]
+              },
+              {
+                "title": "Critical Log Messages",
+                "urls": [
+                  "/${VERSION}/critical-log-messages.html"
+                ]
               }
             ]
           },

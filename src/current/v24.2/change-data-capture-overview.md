@@ -15,7 +15,7 @@ For example, you might want to:
 - Export a snaphot of tables to backfill new applications.
 - Send updates to data stores for machine learning models.
 
-The main feature of CockroachDB CDC is the _changefeed_, which targets an allowlist of tables, or "watched rows".
+The main feature of CockroachDB CDC is the _changefeed_, which targets an allowlist of tables, or "watched tables".
 
 ## Stream row-level changes with changefeeds
 
