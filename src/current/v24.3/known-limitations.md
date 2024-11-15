@@ -12,9 +12,13 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
-{{site.data.alerts.callout_info}}
+### Triggers
+
+{% include {{ page.version.version }}/known-limitations/trigger-limitations.md %}
+
+{% comment %}{{site.data.alerts.callout_info}}
 Limitations will be added as they are discovered.
-{{site.data.alerts.end}}
+{{site.data.alerts.end}}{% endcomment %}
 
 ### Logical data replication (LDR)
 
