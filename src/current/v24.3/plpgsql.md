@@ -260,6 +260,42 @@ WHILE condition LOOP
 
 For an example, see [Create a stored procedure that uses a `WHILE` loop]({% link {{ page.version.version }}/create-procedure.md %}#create-a-stored-procedure-that-uses-a-while-loop).
 
+`FOR ... IN` iterates a loop over a range of integer values. Specify a variable name to iterate over the minimum and maximum values of the integer range. The optional `BY` clause is used to specify an integer step value, and `REVERSE` causes the loop to subtract the step value across iterations.
+
+~~~ sql
+FOR variable_name IN [ REVERSE ] minimum .. maximum [ BY step ]
+  LOOP
+	statements;
+  END LOOP;
+~~~
+
+In the following example, the `FOR` loop iterates from `1` to `10` in steps of `2`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE PROCEDURE p() LANGUAGE PLPGSQL AS $$
+  BEGIN
+  FOR i IN 1..10 BY 2
+  LOOP
+  	RAISE NOTICE '%', i;
+  END LOOP;
+  END $$;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CALL p();
+~~~
+
+~~~
+NOTICE: 1
+NOTICE: 3
+NOTICE: 5
+NOTICE: 7
+NOTICE: 9
+CALL
+~~~
+
 ### Control execution flow
 
 #### `EXIT`
@@ -291,7 +327,7 @@ BEGIN
 If more than one PL/pgSQL block has a matching label, the innermost block is chosen.
 {{site.data.alerts.end}}
 
-In the following example, `EXIT` statement in the inner block is used to exit the stored procedure.
+In the following example, the `EXIT` statement in the inner block is used to exit the stored procedure.
 
 ~~~ sql
 CREATE PROCEDURE p() AS $$
