@@ -65,7 +65,7 @@ set [the environment variable `COCKROACH_WAL_FAILOVER=among-stores`]({% link {{ 
 
 Additionally, you must set the value of the environment variable `COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT` to `40s`. By default, CockroachDB detects prolonged stalls and crashes the node after `20s`. With WAL failover enabled, CockroachDB should be able to survive stalls of up to `40s` with minimal impact to the workload.
 
-We must also [configure logs]({% link {{ page.version.version }}/configure-logs.md %}) by passing in the `logs.yaml` file that we configured in [Step 3](#3-sidecar-configure-logs).
+You must also [configure logs]({% link {{ page.version.version }}/configure-logs.md %}) by passing in the `logs.yaml` file that you configured in [Step 3](#3-sidecar-configure-logs).
 
 Replicate the shell commands below on each node using your preferred deployment model. Be sure to edit the values of the flags passed to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) as needed for your environment.
 
