@@ -19,7 +19,7 @@ This page has detailed information about WAL failover, including:
 
 For basic information about WAL failover, see [`cockroach start` > WAL failover]({% link {{ page.version.version }}/cockroach-start.md %}#write-ahead-log-wal-failover).
 
-## Why WAL Failover?
+## Why WAL failover?
 
 In cloud environments transient [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls) are common, often lasting on the order of several seconds. This will negatively impact latency for the user-facing foreground workload. In the field, we have observed that stalls while writing to the WAL are the most impactful to foreground latencies. Most other writes, such as flushes and compactions, happen asynchronously in the background and foreground operations do not need to wait for them.
 
