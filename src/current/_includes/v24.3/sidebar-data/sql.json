@@ -203,6 +203,12 @@
               ]
             },
             {
+              "title": "<code>CREATE LOGICAL REPLICATION STREAM</code>",
+              "urls": [
+                "/${VERSION}/create-logical-replication-stream.html"
+              ]
+            },
+            {
               "title": "<code>CREATE PROCEDURE</code>",
               "urls": [
                 "/${VERSION}/create-procedure.html"
@@ -257,6 +263,12 @@
               ]
             },
             {
+              "title": "<code>CREATE TRIGGER</code>",
+              "urls": [
+                "/${VERSION}/create-trigger.html"
+              ]
+            },
+            {
               "title": "<code>CREATE TYPE</code>",
               "urls": [
                 "/${VERSION}/create-type.html"
@@ -308,6 +320,12 @@
                "title": "<code>DROP OWNED BY</code>",
                "urls": [
                  "/${VERSION}/drop-owned-by.html"
+               ]
+             },
+            {
+               "title": "<code>DROP TRIGGER</code>",
+               "urls": [
+                 "/${VERSION}/drop-trigger.html"
                ]
              },
             {
@@ -647,6 +665,12 @@
               ]
             },
             {
+                "title": "<code>SHOW LOGICAL REPLICATION JOBS</code>",
+                "urls": [
+                  "/${VERSION}/show-logical-replication-jobs.html"
+                ]
+              },
+            {
               "title": "<code>SHOW PARTITIONS</code> (Enterprise)",
               "urls": [
                 "/${VERSION}/show-partitions.html"
@@ -871,6 +895,12 @@
               "title": "Stored Procedures",
               "urls": [
                 "/${VERSION}/stored-procedures.html"
+              ]
+            },
+            {
+              "title": "Triggers",
+              "urls": [
+                "/${VERSION}/triggers.html"
               ]
             },
             {

@@ -12,7 +12,7 @@ Logical data replication is only supported in CockroachDB {{ site.data.products.
 
 In this tutorial, you will set up **logical data replication (LDR)** streaming data from a source table to a destination table between two CockroachDB clusters. Both clusters are active and can serve traffic. You can apply the outlined steps to create _unidirectional_ LDR from a source table to a destination table (cluster A to cluster B) in one LDR job. Optionally, you can also create _bidirectional_ LDR from cluster B's table to cluster A's table by starting a second LDR job. In a bidirectional setup, each cluster operates as both a source and a destination in separate LDR jobs. 
 
-{% comment  %}Will link to LDR overview when published for descriptions of use case topology here{% endcomment %}
+For more details on use cases, refer to the [Logical Data Replication Overview]({% link {{ page.version.version }}/logical-data-replication-overview.md %}).
 
 <image src="{{ 'images/v24.3/bidirectional-stream.svg' | relative_url }}" alt="Diagram showing bidirectional LDR from cluster A to B and back again from cluster B to A." style="width:70%" />
 
@@ -24,7 +24,7 @@ If you're setting up bidirectional LDR, both clusters will act as a source and a
 1. Set up an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) on cluster B (which will be the destination cluster initially) to hold the connection URI for cluster A.
 1. Start LDR from cluster B with your required modes.
 1. (Optional) Run Steps 1 to 3 again with cluster B as the source and A as the destination, which starts LDR streaming from cluster B to A.
-1. Check the status of the LDR job in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}). {% comment  %}to add link to the monitoring page once published{% endcomment %}
+1. Check the status of the LDR job in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}).
 
 ## Before you begin
 
@@ -53,7 +53,7 @@ You cannot use LDR on a table with a schema that contains the following:
 - Indexes with a [virtual computed column]({% link {{ page.version.version }}/computed-columns.md %})
 - Composite types in the [primary key]({% link {{ page.version.version }}/primary-key.md %})
 
-For more details, refer to the LDR [Known limitations]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#known-limitations).
+For more details, refer to the LDR [Known limitations]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#known-limitations).
 
 When you run LDR in `immediate` mode, you cannot replicate a table with [foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}). In `validated` mode, foreign key constraints **must** match. All constraints are enforced at the time of SQL/application write.
 
@@ -89,7 +89,7 @@ When you run LDR in `immediate` mode, you cannot replicate a table with [foreign
 
 ## Step 2. Connect from the destination to the source
 
-In this step, you'll set up an external connection from the destination cluster to the source cluster. Depending on how you manage certificates, you must ensure that all nodes between the clusters have access to the certificate of the other cluster.
+In this step, you'll set up an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) from the destination cluster to the source cluster. Depending on how you manage certificates, you must ensure that all nodes between the clusters have access to the certificate of the other cluster.
 
 You can use the `cockroach encode-uri` command to generate a connection string containing a cluster's certificate.
 
@@ -120,10 +120,10 @@ In this step, you'll start the LDR job from the destination cluster. You can rep
 _Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
 
 - `immediate` (default): Attempts to replicate the changed row directly into the destination table, without re-running constraint validations. It does not support writing into tables with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints.
-- `validated`: Attempts to apply the write in a similar way to a user-run query, which would re-run all constraint validations or triggers relevant to the destination table(s). If the change violates foreign key dependencies, unique constraints, or other constraints, the row will be put in the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) instead.
+- `validated`: Attempts to apply the write in a similar way to a user-run query, which would re-run all constraint validations relevant to the destination table(s). If the change violates foreign key dependencies, unique constraints, or other constraints, the row will be put in the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) instead.
 
 {{site.data.alerts.callout_info}}
-If you would like to ignore TTL deletes in LDR, you can use the `discard = ttl-deletes` option in the `CREATE LOGICAL REPLICATION STREAM` statement. {% comment  %} Add link to the example for this on the create logical replication stream page + TTL once published. {% endcomment %}
+If you would like to ignore TTL deletes in LDR, you can use the `discard = ttl-deletes` option in the `CREATE LOGICAL REPLICATION STREAM` statement. For an example, refer to [Ignore row-level TTL deletes]({% link {{ page.version.version }}/create-logical-replication-stream.md %}#ignore-row-level-ttl-deletes).
 {{site.data.alerts.end}}
 
 1. From the **destination** cluster, start LDR. Use the fully qualified table name for the source and destination tables:
@@ -146,7 +146,7 @@ If you would like to ignore TTL deletes in LDR, you can use the `discard = ttl-d
     {% include {{ page.version.version }}/ldr/multiple-tables.md %}
     {{site.data.alerts.end}}
 
-    Once LDR has started, an LDR job will start on the destination cluster. You can [pause]({% link {{ page.version.version }}/pause-job.md %}), [resume]({% link {{ page.version.version }}/resume-job.md %}), or [cancel]({% link {{ page.version.version }}/cancel-job.md %}) the LDR job with the job ID. Use `SHOW LOGICAL REPLICATION JOBS` to display the LDR job IDs:
+    Once LDR has started, an LDR job will start on the destination cluster. You can [pause]({% link {{ page.version.version }}/pause-job.md %}), [resume]({% link {{ page.version.version }}/resume-job.md %}), or [cancel]({% link {{ page.version.version }}/cancel-job.md %}) the LDR job with the job ID. Use [`SHOW LOGICAL REPLICATION JOBS`]({% link {{ page.version.version }}/show-logical-replication-jobs.md %}) to display the LDR job IDs:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -173,6 +173,8 @@ In this step, you'll access the [DB Console]({% link {{ page.version.version }}/
 
 {{site.data.alerts.callout_success}}
 You can use the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), the SQL shell, [Metrics Export]({% link {{ page.version.version }}/datadog.md %}#enable-metrics-collection) with Prometheus and Datadog, and [labels with some LDR metrics]({% link {{ page.version.version }}/child-metrics.md %}) to monitor the job.
+
+For a full reference on monitoring LDR, refer to [Logical Data Replication Monitoring]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}).
 {{site.data.alerts.end}}
 
 1. Access the DB Console at `http://{node IP or hostname}:8080` and enter your user's credentials.
@@ -180,24 +182,8 @@ You can use the [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 1. On the destination cluster, use the job **Type** dropdown and select **Logical Replication Ingestion**. This page will display the logical replication stream job. There will be a progress bar in the **Status** column when LDR is replicating a table with existing data. This progress bar shows the status of the initial scan, which backfills the destination table with the existing data.
 1. On the destination cluster, click on **Metrics** in the left-hand navigation menu. Use the **Dashboard** dropdown to select **Logical Data Replication**. This page shows graphs for monitoring LDR. 
 
-{% comment  %}Need to add the monitoring page here once published and more details on what to monitor, or links out.{% endcomment %}
 ## What's next
 
 - [Manage Logical Data Replication]({% link {{ page.version.version }}/manage-logical-data-replication.md %}): Manage the DLQ and schema changes for the replicating tables.
-{% comment  %}Pages to include here: Monitoring LDR, `CREATE LOGICAL REPLICATION STREAM`, LDR overview, Resilience overview page{% endcomment %}
-
-## Known limitations
-
-- {% include {{ page.version.version }}/known-limitations/ldr-triggers.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-udfs.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-sequences.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-indexes.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-column-families.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-composite-primary.md %}
-
-
-{% comment  %}
-Short-form examples that will be included on the CREATE LOGICAL REPLICATION STREAM SQL ref page
-1. Ignore ttl deletes with the workflow for TTL changefeed storage parameter
-1. Both modes
-{% endcomment %}
+- [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %})
+- [Data Resilience]({% link {{ page.version.version }}/data-resilience.md %})
