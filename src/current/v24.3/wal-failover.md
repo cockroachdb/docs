@@ -35,7 +35,7 @@ The steps to provision a cluster that has a single data store versus a multi-sto
 
 ### Provisioning a multi-store cluster for WAL failover
 
-In this section, we will explain how to provision a multi-store cluster and configure it for WAL failover.
+This section explains how to provision a multi-store cluster and configure it for WAL failover.
 
 #### 1. Create the cluster
 
