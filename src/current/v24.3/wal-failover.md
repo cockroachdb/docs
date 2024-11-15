@@ -45,9 +45,9 @@ Provision a 3-node cluster with 4 SSDs for each node. Deploy each node to a diff
 
 [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}) on each node.
 
-#### 3. Log Configuration for WAL Failover
+#### 3. Log configuration for WAL failover
 
-If you are logging to a file-based sink, create a `logs.yaml` file. Later on, you will pass this file to `cockroach start` when starting each node in the cluster. Not doing so will negate the positive impact of enabling WAL failover, because writes to the diagnostic logs may block indefinitely during the disk stall, effectively stalling the node.
+If you are logging to a [file-based sink]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files), create a `logs.yaml` file. Later on, you will pass this file to `cockroach start` when starting each node in the cluster. Not doing so will negate the positive impact of enabling WAL failover, because writes to the diagnostic logs may block indefinitely during the disk stall, effectively stalling the node.
 
 {% include {{ page.version.version }}/wal-failover-log-config.md %}
 
@@ -55,7 +55,7 @@ After creating this file, transfer it to the nodes on the cluster.
 
 For more information about how to configure CockroachDB logs, refer to [Configure logs]({% link {{ page.version.version }}/configure-logs.md %}).
 
-#### 4. Starting the multi-store cluster with WAL failover enabled
+#### 4. Start the multi-store cluster with WAL failover enabled
 
 To enable WAL failover when you start the cluster, either pass the [`--wal-failover=among-stores` to `cockroach start`]({% link {{ page.version.version }}/cockroach-start.md%}#enable-wal-failover)
 
@@ -110,20 +110,20 @@ If you are logging to a file-based sink, create a `logs.yaml` file. Later on, yo
 
 {% include {{ page.version.version }}/wal-failover-log-config.md %}
 
-Next transfer this file to the nodes on the cluster.
+After creating this file, transfer it to the nodes on the cluster.
 
-For more information about how to configure CockroachDB logs, see [Configure logs]({% link {{ page.version.version }}/configure-logs.md %}).
+For more information about how to configure CockroachDB logs, refer to [Configure logs]({% link {{ page.version.version }}/configure-logs.md %}).
 
 <a name="4-sidecar-prepare-failover-disk"></a>
 
-#### 4. Preparing the WAL Failover side disk on the cluster
+#### 4. Prepare the WAL failover side disk on the cluster
 
 To enable WAL failover on a single data store cluster with a side disk, you need to:
 
 1. Make sure that each node has an additional disk available for WAL failover before starting the cluster (as described in [Step 1](#1-sidecar-create)).
-2. Know the path to this side disk.
+1. Know the path to this side disk.
 
-To find out the path to side disk, `ssh` to one of the nodes in the cluster and use the `lsblk` command to see the path to the `data2` volume. The output should look like the following:
+To find out the path to the side disk, `ssh` to one of the nodes in the cluster and use the `lsblk` command to see the path to the `data2` volume. The output should look like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -140,7 +140,7 @@ nvme0n1 259:0    0   375G  0 disk /mnt/data1
 nvme0n2 259:1    0   375G  0 disk /mnt/data2
 ~~~
 
-Here we can see the path to `data2` volume is `/mnt/data2`. For each node, create the directory `/mnt/data2/cockroach` on the side disk volume where the WAL failover data can be written. `/mnt/data1` will be used as the single user data store for the cluster.
+The preceding output shows that the path to `data2` volume is `/mnt/data2`. For each node, create the directory `/mnt/data2/cockroach` on the side disk volume where the WAL failover data can be written. `/mnt/data1` will be used as the single store for the cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -149,17 +149,17 @@ mkdir /mnt/data2/cockroach
 
 <a name="5-sidecar-start"></a>
 
-#### 5. Starting the cluster with WAL failover enabled
+#### 5. Start the cluster with WAL failover enabled
 
-To enable WAL failover when we start the cluster,  we can either pass the [`--wal-failover=path={ path-to-my-side-disk-for-wal-failover }` to `cockroach start`]({% link {{ page.version.version }}/cockroach-start.md%}#enable-wal-failover)
+To enable WAL failover when you start the cluster, either pass the [`--wal-failover=path={ path-to-my-side-disk-for-wal-failover }` to `cockroach start`]({% link {{ page.version.version }}/cockroach-start.md%}#enable-wal-failover)
 
  *OR*
 
 set [the environment variable `COCKROACH_WAL_FAILOVER=path={ path-to-my-side-disk-for-wal-failover }`]({% link {{ page.version.version }}/cockroach-start.md%}#enable-wal-failover) before starting the cluster.
 
-Additionally, we must set the value of the environment variable `COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT` to `40s`. By default, CockroachDB detects prolonged stalls and crashes the node after `20s`. With WAL failover enabled, CockroachDB should be able to survive stalls of up to `40s` with minimal impact to the workload.
+Additionally, you must set the value of the environment variable `COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT` to `40s`. By default, CockroachDB detects prolonged stalls and crashes the node after `20s`. With WAL failover enabled, CockroachDB should be able to survive stalls of up to `40s` with minimal impact to the workload.
 
-We must also [configure logs]({% link {{ page.version.version }}/configure-logs.md %}) by passing in the `logs.yaml` file that we configured in [Step 3](#3-sidecar-configure-logs).
+You must also [configure logs]({% link {{ page.version.version }}/configure-logs.md %}) by passing in the `logs.yaml` file that you configured in [Step 3](#3-sidecar-configure-logs).
 
 Replicate the shell commands below on each node using your preferred deployment model. Be sure to edit the values of the flags passed to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) as needed for your environment.
 
@@ -174,19 +174,19 @@ Notice the flags passed to `cockroach start`:
 
 - `--wal-failover`'s value is `path=/mnt/data2/cockroach` since that is the single failover disk
 - `--log-config-file` is `logs.yaml`
-- and the data store (store 1) path in `--store` is `/mnt/data1/cockroach`
+- The data store (store 1) path in `--store` is `/mnt/data1/cockroach`
 
-## WAL Failover in action
+## WAL failover in action
 
 The instructions in this section show how to trigger WAL failover by introducing disk stalls on one of the nodes in the cluster. Note that the steps are the same for [single-store](#single-store-config) or [multi-store](#multi-store-config) clusters.
 
 ### 1. Set up a node with scripts to trigger WAL Failover
 
-We will trigger WAL Failover on a node by slowing down the read bytes per second (`rbps`) and write bytes per second (`wbps`) for a disk.
+Trigger WAL failover on a node by slowing down the read bytes per second (`rbps`) and write bytes per second (`wbps`) for a disk.
 
 `ssh` into the node whose disk you want to stall and unstall.
 
-Run the `lsblk` command, and look for `MAJ:MIN` values for `/mnt/data1` in `lsblk` output. In this case it is `259:0`; we will use this for the disk stall/unstall scripts.
+Run the `lsblk` command, and look for `MAJ:MIN` values for `/mnt/data1` in `lsblk` output. In this case it is `259:0`; you will use this for the disk stall/unstall scripts.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -208,7 +208,7 @@ nvme0n4 259:3    0   375G  0 disk /mnt/data4
 
 Create scripts for stalling and unstalling the disk on this node. The script will add a line in `/sys/fs/cgroup/system.slice/cockroach-system.service/io.max` to change the [cgroup](https://en.wikipedia.org/wiki/Cgroups) settings "read bytes per second" (`rbps`) and "write bytes per second" (`wbps`) of the disk to a very low value for stalling, and a max value for unstalling.
 
-Create a shell script that will invoke the commands to stall and unstall alternately. We will call this script `wal-flip.sh`. Create `wal-flip.sh` with the content shown below:
+Create a shell script that will invoke the commands to stall and unstall alternately. Call this script `wal-flip.sh` with the content shown below:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -253,44 +253,44 @@ chmod 777 wal-flip.sh
 
 Optionally, you can run a [workload]({% link {{ page.version.version }}/cockroach-workload.md %}) at this point, if you want to see your workload continue during WAL failover. However, the presence of the workload does not have any bearing on the operation of WAL failover.
 
-### 2. WAL Failover during transient disk stalls
+### 2. WAL failover during transient disk stalls
 
 #### Cause transient disk stall
 
-Before triggering a WAL Failover, open the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) so that we can observe WAL Failover metrics.
+Before triggering a WAL failover, open the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) so that you can observe WAL failover metrics.
 
-Next, trigger WAL Failover by introducing a transient disk stall that is shorter in duration than the value of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables). We will run the `wal-flip.sh` script that we created in [the previous step](#1-set-up-a-node-with-scripts-to-trigger-wal-failover).
+Trigger WAL failover by introducing a transient disk stall that is shorter in duration than the value of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables). To do so, run the `wal-flip.sh` script that you created in [Step 1](#1-set-up-a-node-with-scripts-to-trigger-wal-failover).
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 wal-flip.sh
 ~~~
 
-#### WAL Failover metrics
+#### WAL failover metrics
 
 {% include {{ page.version.version }}/wal-failover-metrics.md %}
 
 Whenever a WAL failover occurs on a disk, `wal.failover.switch.count` for the associated store will increment by 1.
 
-In [DB Console's Advanced Debug page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}), click on **Custom Time series chart**. On the custom chart page, add three charts: one for each of these metrics.
+In [DB Console's **Advanced Debug** page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}), click on **Custom Time series chart**. On the custom chart page, add three charts: one for each of the preceding metrics.
 
 Set the source of these metrics to be the node where you are running the disk stall/unstall script.
 
 <img src="{{ 'images/v24.3/wal-failover-metrics-chart.jpg' | relative_url }}" alt="WAL Failover Metrics Chart" style="border:1px solid #eee;max-width:100%" />
 
-Notice there is a switchover followed by each stall. The node with the stalled disk continues to perform normal operations, during and after WAL failover as the stalls are transient and shorter than the current value of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables).
+Notice there is a switchover followed by each stall. The node with the stalled disk continues to perform normal operations during and after WAL failover, as the stalls are transient and shorter than the current value of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables).
 
 You can confirm that the node is still live and available using [`cockroach node status`]({% link {{ page.version.version }}/cockroach-node.md %}#node-status).
 
-### 3. WAL Failover during long disk stalls
+### 3. WAL failover during long disk stalls
 
 #### Cause long disk stall
 
-Before triggering a WAL Failover, open the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) so that we can observe WAL Failover metrics.
+Before triggering a WAL failover, open the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) so that you can observe WAL failover metrics.
 
-Next, we will trigger WAL Failover by introducing a transient disk stall that is `100s` in duration (longer than the value of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables)).
+Trigger WAL failover by introducing a transient disk stall that is `100s` in duration (longer than the value of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables)).
 
-Create a file named `long-stall.sh` with the following content which will cause long disk stalls:
+Create a file named `long-stall.sh` with the following content, which will cause long disk stalls:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -309,21 +309,21 @@ do
 done
 ~~~
 
-Next, make the script file executable:
+Make the script file executable:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 chmod 777 wal-flip.sh
 ~~~
 
-Next, cause a long stall:
+Cause a long stall:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 long-stall.sh
 ~~~
 
-#### WAL Failover metrics
+#### WAL failover metrics
 
 {% include {{ page.version.version }}/wal-failover-metrics.md %}
 
@@ -339,18 +339,16 @@ You can confirm that the node is down (no longer live and available) using [`coc
 
 Variable | Description | Default | Recommended value with WAL failover enabled
 ---------|-------------|---------|---------------------------------------------
-`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT` | The threshold above which an observed engine sync duration triggers a fatal error. This environment variable is the default for the [`storage.max_sync_duration`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-max-sync-duration) cluster setting. If that cluster setting is explicitly set, it takes precedence over this environment variable. | `20s`   | `40s`
-`COCKROACH_LOG_MAX_SYNC_DURATION` | The maximum duration the file sink is allowed to take to write a log entry before we fatal the process for a disk stall. | `20s` | `40s`
+`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT` | The threshold above which an observed engine sync duration triggers a fatal error. This environment variable is the default for the [`storage.max_sync_duration`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-max-sync-duration) cluster setting. If that cluster setting is explicitly set, it takes precedence over this environment variable. | `20s` | `40s`
+`COCKROACH_LOG_MAX_SYNC_DURATION` | The maximum duration the file sink is allowed to take to write a log entry before the `cockroach` process is killed due to a disk stall. | `20s` | `40s`
 
 ### To enable WAL Failover
 
-[XXX](): YOU ARE HERE
-
-Setup your cluster for WAL failover with either [multiple stores](#multi-store-config) or a [side disk](#single-store-config).
+Set up your cluster for WAL failover with either [multiple stores](#multi-store-config) or a [side disk](#single-store-config).
 
 For [multiple stores](#multi-store-config), pass `--wal-failover=among-stores` to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}).
 
-For a [side disk on a single store config](#single-store-config), pass `--wal-failover={ path-to-side-drive-directory }` to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}).
+For a [side disk on a single-store config](#single-store-config), pass `--wal-failover={ path-to-side-drive-directory }` to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}).
 
 Use remote log sinks, or if you use file-based logging, enable asynchronous buffering of `file-groups` log sinks:
 
@@ -359,15 +357,13 @@ Use remote log sinks, or if you use file-based logging, enable asynchronous buff
 Change the value of `COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT` by setting it as follows:
 
 1. Before starting the cluster, set it using the [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables) environment variable.
-2. After starting the cluster, set it by changing the [`storage.max_sync_duration`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-max-sync-duration) cluster setting.
+1. After starting the cluster, set it by changing the [`storage.max_sync_duration`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-max-sync-duration) cluster setting. When WAL failover is enabled, Cockroach Labs recommends using `40s` for this setting. If WAL failover is not enabled, **do not change the default value of this setting**.
 
-When WAL failover is enabled, we recommended using `40s` for this setting. If WAL failover is not enabled, **do not change the default value of this setting**.
-
-### To monitor WAL Failover
+### To monitor WAL failover
 
 {% include {{ page.version.version }}/wal-failover-metrics.md %}
 
-### WAL Failover behavior
+### WAL failover behavior
 
 If a disk stalls for less than the duration of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables), WAL failover will trigger and the node will continue to operate normally.
 
