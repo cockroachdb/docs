@@ -1,4 +1,4 @@
-You can monitor if WAL failover occurs using the following metrics:
+You can monitor WAL failover occurrences using the following metrics:
 
 - `storage.wal.failover.secondary.duration`: Cumulative time spent (in nanoseconds) writing to the secondary WAL directory. Only populated when WAL failover is configured.
 - `storage.wal.failover.primary.duration`: Cumulative time spent (in nanoseconds) writing to the primary WAL directory. Only populated when WAL failover is configured.
