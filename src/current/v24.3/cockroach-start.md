@@ -232,7 +232,7 @@ Field | Description
 <a name="fields-ballast-size"></a> `ballast-size` | Configure the size of the automatically created emergency ballast file. Accepts the same value formats as the [`size` field](#store-size). For more details, see [Automatic ballast files]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files).<br><br>To disable automatic ballast file creation, set the value to `0`:<br><br>`--store=path=/mnt/ssd01,ballast-size=0`
 <a name="store-provisioned-rate"></a> `provisioned-rate` | A mapping of a store name to a bandwidth limit, expressed in bytes per second. This constrains the bandwidth used for [admission control]({% link {{ page.version.version }}/admission-control.md %}) for operations on the store. The disk name is separated from the bandwidth value by a colon (`:`). A value of `0` (the default) represents unlimited bandwidth. For example: <br /><br />`--store=provisioned-rate=disk-name=/mnt/ssd01:200`<br /><br />**Default:** 0<br /><br />If the bandwidth value is omitted, bandwidth is limited to the value of the  [`kv.store.admission.provisioned_bandwidth` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#settings). <strong>Modify this setting only in consultation with your <a href="https://support.cockroachlabs.com/hc/en-us">support team</a>.</strong>
 
-#### Write Ahead Log (WAL) Failover
+#### Write Ahead Log (WAL) failover
 
 {% include {{ page.version.version }}/wal-failover-intro.md %}
 
