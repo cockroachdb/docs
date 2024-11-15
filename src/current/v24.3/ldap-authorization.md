@@ -13,7 +13,7 @@ LDAP authorization allows CockroachDB to use group memberships accessed using LD
 
 ## Prerequisites
 
-- Enable LDAP Authentication
+- Enable [LDAP Authentication]({% link v24.3/ldap-authentication.md %}).
 
 ## Configuration
 

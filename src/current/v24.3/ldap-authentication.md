@@ -1,23 +1,23 @@
 ---
 title: Configure LDAP Authentication
-summary: Learn how to configure CockroachDB to use LDAP for user authentication with directory services like Active Directory.
+summary: Learn how to configure CockroachDB for user authentication using LDAP-compatible directory services such as Active Directory.
 toc: true
 ---
 
-CockroachDB supports authentication and authorization using LDAP (Lightweight Directory Access Protocol) with services such as Active Directory. This allows you to integrate your existing directory service with CockroachDB for centralized user management and access control.
+CockroachDB supports authentication and authorization using LDAP-compatible directory services, such as Active Directory and Microsoft Entra ID. This allows you to integrate your cluster with your organization's existing identity infrastructure for centralized user management and access control.
 
-This page describes how to configure CockroachDB user authentication using LDAP. You can also configure user authorization (role-based access control) with LDAP, to set users' CockroachDB roles based on group memberships in the directory, but this is not required.
+This page describes how to configure CockroachDB user authentication using LDAP. You can additionally configure CockroachDB to use the same directory service for user [authorization]({% link v24.3/ldap-authorization.md %}) (role-based access control), assigning CockroachDB roles to users based on their group memberships in the directory.
 
 ## Overview
 
-LDAP authentication in CockroachDB uses a 'search and bind' approach:
+LDAP authentication in CockroachDB uses a "search and bind" approach:
 
 1. CockroachDB first connects to the LDAP server using a service account (bind DN).
 2. It searches for the authenticating user using configurable search criteria.
 3. If found, it attempts to bind to LDAP using the user's credentials.
 4. Upon successful binding, the user is authenticated to CockroachDB.
 
-This method supports both standard LDAP servers and Active Directory, with secure LDAPS connections over TLS.
+LDAP authentication in CockroachDB works with any LDAP-compatible directory service, including Microsoft Entra ID, Active Directory, and OpenLDAP. Secure LDAPS connectivity over TLS is supported, and recommended for production environments.
 
 {{site.data.alerts.callout_info}}
 LDAP authentication cannot be used for the `root` user or other admin users. These credentials must be managed separately using password authentication to ensure continuous administrative access, especially if the LDAP service becomes unavailable.
