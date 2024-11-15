@@ -49,7 +49,7 @@ Parameter | Description
 
 Option | Description
 -------+-------------
-<span class="version-tag">New in v24.3:</span> `READ VIRTUAL CLUSTER` | Create a [read-only virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#start-up-sequence-with-read-on-stnadby) on the standby cluster, which allows reads of the standby's replicating virtual cluster. For an example, refer to [Start a PCR stream with read from standby](#start-a-pcr-stream-with-read-from-standby).
+<span class="version-tag">New in v24.3:</span> `READ VIRTUAL CLUSTER` | Create a [read-only virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#start-up-sequence-with-read-on-standby) on the standby cluster, which allows reads of the standby's replicating virtual cluster. For an example, refer to [Start a PCR stream with read from standby](#start-a-pcr-stream-with-read-from-standby).
 `RETENTION` | Configure a [retention window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process) that will control how far in the past you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) to.<br><br>{% include {{ page.version.version }}/physical-replication/retention.md %}
 
 ## Connection string
