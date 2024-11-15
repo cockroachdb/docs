@@ -53,7 +53,7 @@ If you are logging to a file-based sink, create a `logs.yaml` file. Later on, yo
 
 Next transfer this file to the nodes on the cluster.
 
-For more information about how to configure CockroachDB logs, see [Configure logs]({% link {{ page.version.version }}/configure-logs.md %}).
+For more information about how to configure CockroachDB logs, refer to [Configure logs]({% link {{ page.version.version }}/configure-logs.md %}).
 
 #### 4. Starting the multi-store cluster with WAL failover enabled
 
