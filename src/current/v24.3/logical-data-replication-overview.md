@@ -51,4 +51,11 @@ Isolate critical application workloads from non-critical application workloads. 
 - Once you've set up LDR, use the [Manage Logical Data Replication]({% link {{ page.version.version }}/manage-logical-data-replication.md %}) page to coordinate and manage different parts of the job.
 - For an overview of metrics to track and monitoring tools, refer to the [Monitor Logical Data Replication]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}) page.
 
-{% comment  %}move known limitations to here after PR 1 merges{% endcomment %}
+## Known limitations
+
+- {% include {{ page.version.version }}/known-limitations/ldr-triggers.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-udfs.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-sequences.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-indexes.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-composite-primary.md %}
