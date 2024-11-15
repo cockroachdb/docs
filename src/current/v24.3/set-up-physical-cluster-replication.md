@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-{% include enterprise-feature.md %}
+
 
 In this tutorial, you will set up [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
 
@@ -340,7 +340,7 @@ The system virtual cluster in the standby cluster initiates and controls the rep
     (2 rows)
     ~~~
 
-    The standby cluster's virtual cluster is offline while the replication stream is running. To bring it online, you must explicitly [start its service after cutover]({% link {{ page.version.version }}/cutover-replication.md %}#step-2-complete-the-cutover).
+    The standby cluster's virtual cluster is offline while the replication stream is running. To bring it online, you must explicitly [start its service after failover]({% link {{ page.version.version }}/failover-replication.md %}#step-2-complete-the-failover).
 
 1. To manage the replication stream, you can [pause and resume]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) the replication stream as well as [show]({% link {{ page.version.version }}/show-virtual-cluster.md %}) the current details for the job:
 
@@ -361,7 +361,7 @@ The system virtual cluster in the standby cluster initiates and controls the rep
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    id | name | source_tenant_name |              source_cluster_uri                        |         retained_time         |    replicated_time     | replication_lag | cutover_time |   status
+    id | name | source_tenant_name |              source_cluster_uri                        |         retained_time         |    replicated_time     | replication_lag | failover_time |   status
     ---+------+--------------------+--------------------------------------------------------+-------------------------------+------------------------+-----------------+--------------+--------------
     3  | main | main               | postgresql://user@{node IP or hostname}:{26257}?redacted | 2024-04-17 20:14:31.952783+00 | 2024-04-17 20:18:50+00 | 00:00:08.738176 |         NULL | replicating
     (1 row)
@@ -454,9 +454,9 @@ Before you begin, you will need:
 
 At this point, your replication stream will be running.
 
-To _cut over_ to the standby cluster, follow the instructions on the [Cut Over from a Primary Cluster to a Standby Cluster]({% link {{ page.version.version }}/cutover-replication.md %}) page.
+To _fail over_ to the standby cluster, follow the instructions on the [Fail Over from a Primary Cluster to a Standby Cluster]({% link {{ page.version.version }}/failover-replication.md %}) page.
 
-For details on how to _cut back_ after replicating a non-virtualized cluster, refer to [Cut back after PCR from an existing cluster]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-after-pcr-from-an-existing-cluster).
+For details on how to _fail back_ after replicating a non-virtualized cluster, refer to [Fail back after PCR from an existing cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-after-pcr-from-an-existing-cluster).
 
 ## Connection reference
 
@@ -473,12 +473,12 @@ Cluster | Virtual Cluster | Usage | URL and Parameters
 Primary | System | Set up a replication user and view running virtual clusters. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=system&sslmode=verify-full"`<br><br><ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
 Primary | Main | Add and run a workload with [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}). | `"postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=main&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"`<br><br>{% include {{ page.version.version }}/connect/cockroach-workload-parameters.md %} As a result, for the example in this tutorial, you will need:<br><br><ul><li>`options=-ccluster={virtual_cluster_name}`</li><li>`sslmode=verify-full`</li><li>`sslrootcert={path}/certs/ca.crt`</li><li>`sslcert={path}/certs/client.root.crt`</li><li>`sslkey={path}/certs/client.root.key`</li></ul>
 Standby | System | Manage the replication stream. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=system&sslmode=verify-full"`<br><br><ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
-Standby/Primary | System | Connect to the other cluster. | `"postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A"`<br><br>Generate the connection string with [`cockroach encode-uri`](#step-3-manage-the-cluster-certificates). Use the generated connection string in:<br><br><ul><li>`CREATE VIRTUAL CLUSTER` statements to [start the replication stream](#step-4-start-replication).</li><li>`ALTER VIRTUAL CLUSTER` statements to [cut back to the primary cluster]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-to-the-primary-cluster).</li></ul>
+Standby/Primary | System | Connect to the other cluster. | `"postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A"`<br><br>Generate the connection string with [`cockroach encode-uri`](#step-3-manage-the-cluster-certificates). Use the generated connection string in:<br><br><ul><li>`CREATE VIRTUAL CLUSTER` statements to [start the replication stream](#step-4-start-replication).</li><li>`ALTER VIRTUAL CLUSTER` statements to [fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-to-the-primary-cluster).</li></ul>
 
 ## What's next
 
 - [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %})
-- [Cut Over from a Primary Cluster to a Standby Cluster]({% link {{ page.version.version }}/cutover-replication.md %})
+- [Fail Over from a Primary Cluster to a Standby Cluster]({% link {{ page.version.version }}/failover-replication.md %})
 - [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %})
 - [`ALTER VIRTUAL CLUSTER`]({% link {{ page.version.version }}/alter-virtual-cluster.md %})
 - [`DROP VIRTUAL CLUSTER`]({% link {{ page.version.version }}/drop-virtual-cluster.md %})

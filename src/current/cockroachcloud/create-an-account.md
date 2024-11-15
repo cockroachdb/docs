@@ -72,12 +72,6 @@ We highly recommend enabling multi-factor authentication (MFA) with your SSO pro
 
 ## Change your account details
 
-- [Change your account name](#change-your-account-name)
-- [Change your email](#change-your-email)
-- [Change your account password](#change-your-account-password)
-- [Change your organization name](#change-your-organization-name)
-- [Change your login method](#change-your-login-method)
-
 ### Change your account name
 
 To change your account name:
