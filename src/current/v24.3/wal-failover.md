@@ -84,7 +84,7 @@ Notice the flags passed to `cockroach start`:
 
 <a name="single-store-config"></a>
 
-### Provisioning a cluster with single data store, single failover disk for WAL failover
+### Provision a single-store cluster and side disk for WAL failover
 
 When you have a cluster with a single data store and you want to configure the cluster with WAL failover, make sure that you have at least two disks on each node of the cluster: one for the data store, and one small side disk to use for WAL failover. The side disk should have the following properties:
 
