@@ -80,7 +80,7 @@ Notice the flags passed to `cockroach start`:
 
 - Multiple `--store` paths
 - `--wal-failover=among-stores` since there are multiple stores to choose from for WAL failover
-- `--log-config-file` uses the `logs.yaml` we created in [Step 3](#3-log-configuration-for-wal-failover)
+- `--log-config-file` uses the `logs.yaml` created in [Step 3](#3-log-configuration-for-wal-failover)
 
 <a name="single-store-config"></a>
 
