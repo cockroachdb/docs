@@ -25,7 +25,7 @@ In cloud environments, transient [disk stalls]({% link {{ page.version.version }
 
 When a disk stalls on a node, it could be due to complete hardware failure or it could be a transient stall. When a disk backing a [store]({% link {{ page.version.version}}/cockroach-start.md %}#store) stalls in CockroachDB, all the writes to [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) for which the node is [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder) will be blocked until the disk stall clears, or the node is crashed (after default interval defined by [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables)), moving any leaseholders on this store to other stores.
 
-WAL failover uses a secondary disk to failover WAL writes to when transient disk stalls occur. This limits the write impact to a few hundreds of milliseconds (the [failover threshold, which is configurable]()). Note that WAL failover _only preserves availability of writes_. If reads to the underlying storage are also stalled, operations that read and do not find data in the block cache or page cache will stall.
+WAL failover uses a secondary disk to fail over WAL writes to when transient disk stalls occur. This limits the write impact to a few hundreds of milliseconds (the [failover threshold, which is configurable]()). Note that WAL failover **only preserves availability of writes**. If reads to the underlying storage are also stalled, operations that read and do not find data in the block cache or page cache will stall.
 
 ## Creating and configuring a cluster to be ready for WAL Failover
 
