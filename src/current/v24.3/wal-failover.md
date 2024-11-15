@@ -33,7 +33,7 @@ The steps to provision a cluster that has a single data store versus a multi-sto
 
 <a name="multi-store-config"></a>
 
-### Provisioning a multi-store cluster for WAL failover
+### Provision a multi-store cluster for WAL failover
 
 This section explains how to provision a multi-store cluster and configure it for WAL failover.
 
