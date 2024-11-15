@@ -17,7 +17,7 @@ Statement | Usage
 [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}) | Change the default [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) for objects created by specific roles/users in the current database.
 [`ALTER FUNCTION`]({% link {{ page.version.version }}/alter-function.md %}) | Modify a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
 [`ALTER INDEX`]({% link {{ page.version.version }}/alter-index.md %}) | Apply a schema change to an index.
-[`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %}) | Configure the replication zone for a partition. [Partitioning]({% link {{ page.version.version }}/partitioning.md %}) requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+[`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %}) | Configure the replication zone for a [partition]({% link {{ page.version.version }}/partitioning.md %}).
 [`ALTER PROCEDURE`]({% link {{ page.version.version }}/alter-procedure.md %}) | Modify a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`ALTER RANGE`]({% link {{ page.version.version }}/alter-range.md %}) | Configure the replication zone for a system range.
 [`ALTER SCHEMA`]({% link {{ page.version.version }}/alter-schema.md %}) | Alter a user-defined schema.
