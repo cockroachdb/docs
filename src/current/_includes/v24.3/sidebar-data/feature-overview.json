@@ -34,12 +34,6 @@
             "urls": [
               "/${VERSION}/multi-active-availability.html"
             ]
-          },
-          {
-            "title": "Enterprise Features",
-            "urls": [
-              "/${VERSION}/enterprise-licensing.html"
-            ]
           }
         ]
       },

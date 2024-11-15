@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% include enterprise-feature.md %}
+
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}

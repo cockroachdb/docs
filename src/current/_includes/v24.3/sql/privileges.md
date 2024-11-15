@@ -19,7 +19,7 @@ Privilege | Levels | Description
 <a id="modifyclustersetting"></a>`MODIFYCLUSTERSETTING` | System | Grants the ability to modify [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}).
 `MODIFYSQLCLUSTERSETTING` | System | Grants the ability to modify SQL [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) (cluster settings prefixed with `sql.`).
 `NOSQLLOGIN` | System | Prevents roles from connecting to the SQL interface of a cluster.
-`REPLICATION` | System | Grants the ability to create a [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) stream.
+`REPLICATION` | System | Grants the ability to create a [logical data replication]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) or [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) stream.
 `RESTORE` | System, Database | Grants the ability to restore [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) at the system or database level. Refer to `RESTORE` [Required privileges]({% link {{ page.version.version }}/restore.md %}#required-privileges) for more details.
 `SELECT` | Table, Sequence | Grants the ability to run [selection queries]({% link {{ page.version.version }}/query-data.md %}) at the table or sequence level.
 `UPDATE` | Table, Sequence | Grants the ability to run [update statements]({% link {{ page.version.version }}/update-data.md %}) at the table or sequence level.
