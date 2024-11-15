@@ -94,7 +94,7 @@ When you have a cluster with a single data store and you want to configure the c
 
 #### 1. Create the cluster
 
-Provision a 3 node cluster with 2 SSDs for each node. Deploy each node to a different region (e.g. [in GCE](https://cloud.google.com/compute/docs/regions-zones), `us-east4-a`, `us-west2-b`, `us-central1-c`). Be sure to [create a separate volume for each SSD](https://cloud.google.com/compute/docs/disks).
+Provision a 3-node cluster with 2 SSDs for each node. Deploy each node to a different region (e.g. [in GCE](https://cloud.google.com/compute/docs/regions-zones), `us-east4-a`, `us-west2-b`, `us-central1-c`). Be sure to [create a separate volume for each SSD](https://cloud.google.com/compute/docs/disks).
 
 <a name="2-sidecar-stage"></a>
 
