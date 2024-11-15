@@ -150,6 +150,8 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 
 ## Functional details
 
+CockroachDB uses checksums to ensure data integrity during both the write and read processes. When data is written to disk, CockroachDB calculates and stores checksums for each block of data. The checksums are then used to verify the integrity of the data when it is read back from disk. A restore job reads each block of data from the external backup storage and verifies the checksum to ensure that the data has not been corrupted during the storage or transfer of the backup data.
+
 You can restore:
 
 - [A full cluster](#full-cluster)
