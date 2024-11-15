@@ -1,4 +1,4 @@
-To fail back to a cluster that was previously the primary cluster, use the [`ALTER VIRTUAL CLUSTER`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) syntax:
+To {% if page.name == "alter-virtual-cluster.md" %} [fail back]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-to-the-primary-cluster) {% else %} fail back {% endif %} to a cluster that was previously the primary cluster, use the {% if page.name == "alter-virtual-cluster.md" %} `ALTER VIRTUAL CLUSTER` {% else %} [`ALTER VIRTUAL CLUSTER`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) {% endif %} syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

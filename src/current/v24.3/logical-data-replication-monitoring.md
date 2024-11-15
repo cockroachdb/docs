@@ -21,7 +21,6 @@ You can monitor [**logical data replication (LDR)**]({% link {{ page.version.ver
 {% include {{ page.version.version }}/ldr/multiple-tables.md %}
 {{site.data.alerts.end}}
 
-{% comment  %}To add to an include{% endcomment %}
 When you start an LDR stream, one job is created on each cluster:
 
 - The _history retention job_ on the source cluster, which runs while the LDR job is active to protect changes in the table from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) until they have been applied to the destination cluster. The history retention job is viewable in the [DB Console](#db-console) or with [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}). Any manual changes to the history retention job could disrupt the LDR job.
@@ -54,6 +53,8 @@ SHOW LOGICAL REPLICATION JOBS WITH details;
   1010959260799270913 | running  | {movr.public.promo_codes}      | 2024-10-24 17:50:05+00        | 2024-10-10 20:04:42.196982+00 | LWW                      | LOGICAL REPLICATION STREAM into movr.public.promo_codes from external://cluster_a
   1014047902397333505 | canceled | {defaultdb.public.office_dogs} | 2024-10-24 17:30:25+00        | 2024-10-21 17:54:20.797643+00 | LWW                      | LOGICAL REPLICATION STREAM into defaultdb.public.office_dogs from external://cluster_a
 ~~~
+
+You can also use [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) for general job details.
 
 ### Responses
 
