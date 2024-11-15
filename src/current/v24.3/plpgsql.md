@@ -282,7 +282,8 @@ CREATE OR REPLACE PROCEDURE p() LANGUAGE PLPGSQL AS $$
   END $$;
 ~~~
 
-~~~
+{% include_cached copy-clipboard.html %}
+~~~ sql
 CALL p();
 ~~~
 
