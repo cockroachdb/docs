@@ -12,10 +12,6 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
-### Generic query plans
-
-{% include {{ page.version.version }}/known-limitations/generic-query-plan-limitations.md %}
-
 ### Triggers
 
 {% include {{ page.version.version }}/known-limitations/trigger-limitations.md %}
@@ -347,7 +343,7 @@ Refer to [`OID` best practices]({% link {{ page.version.version }}/oid.md %}#bes
 
 - Updating subfields of composite types using dot syntax results in a syntax error. [#102984](https://github.com/cockroachdb/cockroach/issues/102984)
 
-- Tuple elements cannot be accessed without enclosing the [composite variable]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) name in parentheses. For example, `(v).x`. [#114687](https://github.com/cockroachdb/cockroach/issues/114687)
+- Tuple elements cannot be accessed without enclosing the [composite variable]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) name in parentheses. For example, `(OLD).column` and `(NEW).column` when used in [triggers]({% link {{ page.version.version }}/triggers.md %}). [#114687](https://github.com/cockroachdb/cockroach/issues/114687)
 
 #### `ALTER TYPE` limitations
 
@@ -504,6 +500,10 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 - {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
 
 ### Performance optimization
+
+#### Generic query plan limitations
+
+{% include {{ page.version.version }}/known-limitations/generic-query-plan-limitations.md %}
 
 #### Optimizer and locking behavior
 

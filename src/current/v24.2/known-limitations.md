@@ -12,9 +12,13 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
-{{site.data.alerts.callout_info}}
+### Generic query plans
+
+{% include {{ page.version.version }}/known-limitations/generic-query-plan-limitations.md %}
+
+{% comment %}{{site.data.alerts.callout_info}}
 Limitations will be added as they are discovered.
-{{site.data.alerts.end}}
+{{site.data.alerts.end}}{% endcomment %}
 
 ## Limitations from {{ previous_version }} and earlier
 

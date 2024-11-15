@@ -310,7 +310,7 @@ Two types of plans can be cached:
     EXECUTE p; -- The query plan is reused without re-optimizing.
     ~~~
 
-    Generic plans are **not** included in the plan cache, but are cached per session. This means that they must still be re-optimized each time a session prepares a statement using a generic plan.
+    Generic plans are **not** included in the plan cache, but are cached per session. This means that they must still be re-optimized each time a session prepares a statement using a generic plan. To reuse generic query plans for maximum performance, a prepared statement should be executed multiple times instead of prepared and executed once.
 
     This feature is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}) and is subject to change.
 
