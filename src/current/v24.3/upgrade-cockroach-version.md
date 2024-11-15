@@ -21,6 +21,10 @@ CockroachDB's [multi-active availability]({% link {{ page.version.version }}/mul
 
 {% include_cached common/upgrade/prepare-to-upgrade-self-hosted.md %}
 
+### Ensure you have a valid license key
+
+{% include common/upgrade-cockroach-version-license-limitations.md %}
+
 ## Perform a patch upgrade
 
 {% include_cached common/upgrade/patch-upgrade-self-hosted.md %}

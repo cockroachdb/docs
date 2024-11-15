@@ -32,6 +32,10 @@ If you [deployed CockroachDB on Red Hat OpenShift]({% link {{ page.version.versi
 {% include {{ page.version.version }}/orchestration/operator-check-namespace.md %}
 {% include common/upgrade/prepare-to-upgrade-self-hosted.md %}
 
+### Ensure you have a valid license key
+
+{% include common/upgrade-cockroach-version-license-limitations.md %}
+
 ## Perform a patch upgrade
 
 {% include_cached common/upgrade/patch-upgrade-kubernetes.md %}
