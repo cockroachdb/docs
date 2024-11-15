@@ -7455,7 +7455,7 @@
     docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
-  previous_release: v23.2.14
+  previous_release: v23.2.15
   cloud_only: true
   cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
   cloud_only_message: >
