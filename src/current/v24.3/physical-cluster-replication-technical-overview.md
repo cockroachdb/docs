@@ -11,7 +11,7 @@ docs_area: manage
 
 This separation of concerns means that the replication stream can operate without affecting work happening in a virtual cluster.
 
-### Replication stream start-up sequence
+### PCR stream start-up sequence
 
 [Starting a physical replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) stream consists of two jobs: one each on the standby and primary cluster:
 
@@ -29,7 +29,15 @@ The stream initialization proceeds as follows:
 
 <img src="{{ 'images/v24.2/physical-rep-to.png' | relative_url }}" alt="Two virtualized clusters with system virtual cluster and application virtual cluster showing the directional stream." style="border:0px solid #eee;max-width:100%" />
 
-### During the replication stream
+#### Start-up sequence with read on standby
+
+{% include_cached new-in.html version="v24.3" %} You can start a PCR stream with the `READ VIRTUAL CLUSTER` option, which allows you to perform reads on the standby's replicating virtual cluster. When this option is specified, the following additional steps occur during the PCR stream start-up sequence:
+
+1. The system virtual cluster on the standby also creates a `readonly` virtual cluster alongside the replicating virtual cluster. The `readonly` virtual cluster will be offline initially.
+1. After the initial scan of the primary completes, the standby's replicating virtual cluster has a complete snapshot of the latest data on the primary. The PCR job will then start the `readonly` virtual cluster.
+1. When the startup completes, the `readonly` virtual cluster will be available to serve read queries. The queries will read from historial data on the replicating virtual cluster. The historical time is determined by the [`replicated_time`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) of the PCR job (the latest time at which the standby cluster has consistent data). The `replicated_time` will move forward as the PCR job continues to run.
+
+### During the PCR stream
 
 The replication happens at the byte level, which means that the job is unaware of databases, tables, row boundaries, and so on. However, when a [failover](#failover-and-promotion-process) to the standby cluster is initiated, the replication job ensures that the cluster is in a transactionally consistent state as of a certain point in time. Beyond the application data, the job will also replicate users, privileges, basic zone configuration, and schema changes.
 
@@ -49,8 +57,10 @@ _Replication lag_ is the time between the most up-to-date replicated time and th
 
 For the [failover process]({% link {{ page.version.version }}/failover-replication.md %}), the standby cluster waits until it has reached the specified failover time, which can be in the [past]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-a-point-in-time) (retained time), the [`LATEST`]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-the-most-recent-replicated-time) timestamp, or in the [future]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-a-point-in-time). Once that timestamp has been reached, the replication stream stops and any data in the standby cluster that is **above** the failover time is removed. Depending on how much data the standby needs to revert, this can affect the duration of RTO (recovery time objective).
 
+{{site.data.alerts.callout_info}}
+When a PCR stream is started with a `readonly` virtual cluster, the job will delete the `readonly` virtual cluster automatically if a failover is initiated with a [historical timestamp]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-a-point-in-time). If the failover is initiated with the [most recent replicated time]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-the-most-recent-replicated-time), the `readonly` virtual cluster will remain on the standby cluster.
+{{site.data.alerts.end}}
+
 After reverting any necessary data, the standby virtual cluster is promoted as available to serve traffic and the replication job ends.
 
-{{site.data.alerts.callout_info}}
-For detail on failing back to the primary cluster following a failover, refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-to-the-primary-cluster).
-{{site.data.alerts.end}}
+For details on failing back to the primary cluster following a failover, refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-to-the-primary-cluster).
