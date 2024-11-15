@@ -81,7 +81,7 @@ You can use either:
 - `LATEST` to specify the most recent replicated timestamp.
 
 {{site.data.alerts.callout_info}}
-If you started the PCR stream with the `READ VIRTUAL CLUSTER` option, failing over with `SYSTEM TIME` will destroy the `readonly` virtual cluster. If you fail over with `LATEST`, the `readonly` virtual cluster will remain on the original standby cluster.
+If you started the PCR stream with the `READ VIRTUAL CLUSTER` option, failing over with `SYSTEM TIME` will destroy the `readonly` virtual cluster. If you fail over with `LATEST`, the `readonly` virtual cluster will remain on the original standby cluster, but will **not** update with new writes.
 {{site.data.alerts.end}}
 
 ### Start the failback process
