@@ -5,7 +5,7 @@ CockroachDB offers the following types of upgrades:
 {% if page.path contains "cockroachcloud" %}
     As of 2024, every second major version is an[Innovation release]({% link cockroachcloud/upgrade-policy.md %}#innovation-release). For CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }},innovation releases offer shorter support windows and can be skipped. Innovation releases are required for CockroachDB {{ site.data.products.basic }}, and are applied automatically.
 {% else %}
-    As of 2024, every second major version is an [Innovation release]({% link releases/release-suppoert-policy.md %}#innovation-release). Innovation releases offer shorter support windows and can be skipped. {% if page.path contains "cockroachcloud" %}
+    As of 2024, every second major version is an [Innovation release]({% link releases/release-suppoert-policy.md %}#innovation-release). Innovation releases offer shorter support windows and can be skipped.
 {% endif %}
 - **Patch upgrades**: A [patch upgrade]({% link releases/index.md %}#patch-releases) moves a cluster from one patch to another within a major version, such as from v24.2.3 to v24.2.4. Patch upgrades do not introduce backward-incompatible changes.
 
