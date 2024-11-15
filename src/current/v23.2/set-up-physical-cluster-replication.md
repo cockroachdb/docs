@@ -86,7 +86,7 @@ Connect to your primary cluster's system virtual cluster using [`cockroach sql`]
     You should only connect to the system virtual cluster for cluster administration. To work with databases, tables, or workloads, connect to the application virtual cluster.
     {{site.data.alerts.end}}
 
-1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to the cluster:
+1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}) to the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -223,7 +223,7 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
 
     The prompt will include `system` when you are connected to the system virtual cluster.
 
-1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) to the cluster:
+1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}) to the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
