@@ -27,7 +27,7 @@ When a disk stalls on a node, it could be due to complete hardware failure or it
 
 WAL failover uses a secondary disk to fail over WAL writes to when transient disk stalls occur. This limits the write impact to a few hundreds of milliseconds (the [failover threshold, which is configurable]()). Note that WAL failover **only preserves availability of writes**. If reads to the underlying storage are also stalled, operations that read and do not find data in the block cache or page cache will stall.
 
-## Creating and configuring a cluster to be ready for WAL Failover
+## Create and configure a cluster to be ready for WAL failover
 
 The steps to provision a cluster that has a single data store versus a multi-store cluster are slightly different. In this section, we will provide high-level instructions for setting up each of these configurations. We will use [GCE](https://cloud.google.com/compute/docs) as the environment. You will need to translate these instructions into the steps used by the deployment tools in your environment.
 
