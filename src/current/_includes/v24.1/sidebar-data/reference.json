@@ -295,6 +295,12 @@
             "urls": [
               "/${VERSION}/api-support-policy.html"
             ]
+          },
+          {
+            "title": "Telemetry Collected by CockroachDB",
+            "urls": [
+              "/${VERSION}/telemetry.html"
+            ]
           }
         ]
       },
