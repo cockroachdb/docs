@@ -14,7 +14,7 @@ This page describes:
 
 ## Before you create a changefeed
 
-1. Enable rangefeeds on CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
+1. Enable rangefeeds on CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
 1. Decide on whether you will run an {{ site.data.products.enterprise }} or basic changefeed. Refer to the [Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page for a comparative capability table.
 1. Plan the number of changefeeds versus the number of tables to include in a single changefeed for your cluster. {% include {{ page.version.version }}/cdc/changefeed-number-limit.md %} Refer to [System resources and running changefeeds](#system-resources-and-running-changefeeds) and [Recommendations for the number of target tables](#recommendations-for-the-number-of-target-tables).
 1. Consider whether your {{ site.data.products.enterprise }} [changefeed use case](#create) would be better served by [change data capture queries]({% link {{ page.version.version }}/cdc-queries.md %}) that can filter data on a single table. CDC queries can improve the efficiency of changefeeds because the job will not need to encode as much change data.

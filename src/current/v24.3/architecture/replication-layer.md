@@ -72,13 +72,13 @@ Non-voting replicas can be configured via [zone configurations through `num_vote
 
 ##### Overview
 
-When individual [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) become temporarily unavailable, requests to those ranges are refused by a per-replica "circuit breaker" mechanism instead of hanging indefinitely. 
+When individual [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) become temporarily unavailable, requests to those ranges are refused by a per-replica "circuit breaker" mechanism instead of hanging indefinitely.
 
 From a user's perspective, this means that if a [SQL query]({% link {{ page.version.version }}/architecture/sql-layer.md %}) is going to ultimately fail due to accessing a temporarily unavailable range, a [replica]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica) in that range will trip its circuit breaker (after 60 seconds [by default](#per-replica-circuit-breaker-timeout)) and bubble a `ReplicaUnavailableError` error back up through the system to inform the user why their query did not succeed. These (hopefully transient) errors are also signalled as events in the DB Console's [Replication Dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}) and as "circuit breaker errors" in its [**Problem Ranges** and **Range Status** pages]({% link {{ page.version.version }}/ui-debug-pages.md %}). Meanwhile, CockroachDB continues asynchronously probing the range's availability. If the replica becomes available again, the breaker is reset so that it can go back to serving requests normally.
 
 This feature is designed to increase the availability of your CockroachDB clusters by making them more robust to transient errors.
 
-For more information about per-replica circuit breaker events happening on your cluster, see the following pages in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}): 
+For more information about per-replica circuit breaker events happening on your cluster, see the following pages in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}):
 
 - The [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}).
 - The [**Advanced Debug** page]({% link {{ page.version.version }}/ui-debug-pages.md %}). From there you can view the **Problem Ranges** page, which lists the range replicas whose circuit breakers were tripped. You can also view the **Range Status** page, which displays the circuit breaker error message for a given range.
@@ -115,6 +115,8 @@ Sending data locally using delegated snapshots has the following benefits:
 - User traffic is less likely to be negatively impacted by snapshots
 
 Delegated snapshots are managed automatically by the cluster with no need for user involvement.
+
+{% include_cached new-in.html version="v24.3" %}To limit the impact of snapshot ingestion on a node with a [provisioned rate]({% link {{ page.version.version }}/cockroach-start.md %}#store) configured for its store, you can enable [admission control]({% link {{ page.version.version }}/admission-control.md %}) for snapshot transfer, based on disk bandwidth. This allows you to limit the disk impact on foreground workloads on the node. Admission control for snapshot transfers is disabled by default; to enable it, set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` to `true`. The histogram [metric]({% link {{ page.version.version }}/metrics.md %}) `admission.wait_durations.snapshot_ingest` allows you to observe the wait times for snapshots that were impacted by admission control.
 
 ### Leases
 
