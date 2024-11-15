@@ -39,7 +39,7 @@ This section explains how to provision a multi-store cluster and configure it fo
 
 #### 1. Create the cluster
 
-Provision a 3 node cluster with 4 SSDs for each node. Deploy each node to a different region (e.g. [in GCE](https://cloud.google.com/compute/docs/regions-zones), `us-east4-a`, `us-west2-b`, `us-central1-c`). Be sure to [create a separate volume for each SSD](https://cloud.google.com/compute/docs/disks).
+Provision a 3-node cluster with 4 SSDs for each node. Deploy each node to a different region (e.g., [in GCE](https://cloud.google.com/compute/docs/regions-zones), `us-east4-a`, `us-west2-b`, `us-central1-c`). Be sure to [create a separate volume for each SSD](https://cloud.google.com/compute/docs/disks).
 
 #### 2. Stage the cluster
 
