@@ -1,4 +1,8 @@
-At a high level, a cluster upgrade involves the following steps, which are detailed in the following sections:
+{% if page.path contains "cockroachcloud" %}
+When you initiate a major-version upgrade, CockroachDB {{ site.data.products.cloud }} performs the following high-level steps, which are described in detail in the following sections.
+{% else %}
+A major-version upgrade involves the following high-level steps, which are described in detail in the following sections.
+{% endif %}
 
 1. On one node at a time:
     1. Replace the previous `cockroach` binary or container image with the new binary.
