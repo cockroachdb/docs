@@ -17,7 +17,8 @@ Statement | Usage
 [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}) | Change the default [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) for objects created by specific roles/users in the current database.
 [`ALTER FUNCTION`]({% link {{ page.version.version }}/alter-function.md %}) | Modify a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
 [`ALTER INDEX`]({% link {{ page.version.version }}/alter-index.md %}) | Apply a schema change to an index.
-[`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %}) | Configure the replication zone for a partition.
+[`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %}) | Configure the replication zone for a partition. [Partitioning]({% link {{ page.version.version }}/partitioning.md %}) requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+[`ALTER PROCEDURE`]({% link {{ page.version.version }}/alter-procedure.md %}) | Modify a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`ALTER RANGE`]({% link {{ page.version.version }}/alter-range.md %}) | Configure the replication zone for a system range.
 [`ALTER SCHEMA`]({% link {{ page.version.version }}/alter-schema.md %}) | Alter a user-defined schema.
 [`ALTER SEQUENCE`]({% link {{ page.version.version }}/alter-sequence.md %}) | Apply a schema change to a sequence.
@@ -30,6 +31,7 @@ Statement | Usage
 [`CREATE DATABASE`]({% link {{ page.version.version }}/create-database.md %}) | Create a new database.
 [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %}) | Create a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
 [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) | Create an index for a table.
+[`CREATE PROCEDURE`]({% link {{ page.version.version }}/create-procedure.md %}) | Create a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`CREATE SCHEMA`]({% link {{ page.version.version }}/create-schema.md %}) | Create a user-defined schema.
 [`CREATE SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %}) | Create a new sequence.
 [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) | Create a new table in a database.
@@ -40,6 +42,7 @@ Statement | Usage
 [`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %}) | Remove a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}) from a database.
 [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}) | Remove an index for a table.
 [`DROP OWNED BY`]({% link {{ page.version.version }}/drop-owned-by.md %}) | Drop all objects owned by and any [grants]({% link {{ page.version.version }}/grant.md %}) on objects not owned by a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles).
+[`DROP PROCEDURE`]({% link {{ page.version.version }}/drop-procedure.md %}) | Remove a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`DROP SCHEMA`]({% link {{ page.version.version }}/drop-schema.md %}) | Drop a user-defined schema.
 [`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %}) | Remove a sequence.
 [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}) | Remove a table.
@@ -69,6 +72,7 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
+[`CALL`]({% link {{ page.version.version }}/call.md %}) | Call a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}) | Create a new table in a database using the results from a [selection query]({% link {{ page.version.version }}/selection-queries.md %}).
 [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}) | Copy data from a third-party client to a CockroachDB cluster.<br>For compatibility with PostgreSQL drivers and ORMs, CockroachDB supports `COPY FROM` statements issued only from third-party clients; you cannot issue `COPY FROM` statements from the [`cockroach` SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}). To import data from files, use an [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement instead.
 [`DELETE`]({% link {{ page.version.version }}/delete.md %}) | Delete specific rows from a table.
