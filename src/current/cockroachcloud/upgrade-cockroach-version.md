@@ -29,7 +29,7 @@ If you have [configured a maintenance window]({% link cockroachcloud/advanced-cl
 Maintenance operations that are critical for cluster security or stability may be applied outside of the maintenance window, and upgrades that begin in a maintenance window may not always be completed by the end of the window.
 {{site.data.alerts.end}}
 
-Refer to [Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+For more information, refer to the [Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 ## Prepare to upgrade
 
