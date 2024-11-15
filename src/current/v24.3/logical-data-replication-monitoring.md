@@ -21,7 +21,6 @@ You can monitor [**logical data replication (LDR)**]({% link {{ page.version.ver
 {% include {{ page.version.version }}/ldr/multiple-tables.md %}
 {{site.data.alerts.end}}
 
-{% comment  %}To add to an include{% endcomment %}
 When you start an LDR stream, one job is created on each cluster:
 
 - The _history retention job_ on the source cluster, which runs while the LDR job is active to protect changes in the table from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) until they have been applied to the destination cluster. The history retention job is viewable in the [DB Console](#db-console) or with [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}). Any manual changes to the history retention job could disrupt the LDR job.
@@ -63,7 +62,7 @@ You can also use [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %
 
 ## Recommended LDR metrics to track
 
-- Replication latency: The commit-to-commit replication latency, which is tracked from when a row is committed on the source cluster, to when it is "committed" on the destination cluster. A _commit_ is when the LDR job either adds a row to the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) or applies a row successfully to the destination cluster.
+- Replication latency: The commit-to-commit replication latency, which is tracked from when a row is committed on the source cluster, to when it is applied on the destination cluster. An LDR _commit_ is when the job either applies a row successfully to the destination cluster or adds a row to the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq).
     - `logical_replication.commit_latency-p50`
     - `logical_replication.commit_latency-p99`
 - Replication lag: How far behind the source cluster is from the destination cluster at a specific point in time. The replication lag is equivalent to [RPO]({% link {{ page.version.version }}/disaster-recovery-overview.md %}) during a disaster. Calculate the replication lag with this metric. For example, `time.now() - replicated_time_seconds`.
@@ -79,11 +78,11 @@ In the DB Console, you can use:
 - The [**Metrics** dashboard]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) for LDR to view metrics for the job on the destination cluster.
 - The [**Jobs** page]({% link {{ page.version.version }}/ui-jobs-page.md %}) to view the history retention job on the source cluster and the LDR job on the destination cluster
 
-The metrics for LDR in the DB Console metrics are at the **cluster** level. This means that if there are multiple LDR jobs running on a cluster the DB Console will either show the average metrics across jobs.   
+The metrics for LDR in the DB Console metrics are at the **cluster** level. This means that if there are multiple LDR jobs running on a cluster the DB Console will show the average metrics across jobs.   
 
 ### Metrics dashboard
 
-You can use the **Logical Data Replication** dashboard of the destination cluster to monitor the following metric graphs at the **cluster** level:
+You can use the [**Logical Data Replication** dashboard]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) of the destination cluster to monitor the following metric graphs at the **cluster** level:
 
 - Replication latency
 - Replication lag
@@ -100,7 +99,7 @@ To track replicated time, ingested events, and events added to the DLQ at the **
 
 ### Jobs page
 
-On the **Jobs** page, select:
+On the [**Jobs** page]({% link {{ page.version.version }}/ui-jobs-page.md %}), select:
 
 - The **Replication Producer** in the source cluster's DB Console to view the _history retention job_.
 - The **Logical Replication Ingestion** job in the destination cluster's DB Console. When you start LDR, the **Logical Replication Ingestion** job will show a bar that tracks the initial scan progress of the source table's existing data.

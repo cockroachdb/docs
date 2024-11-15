@@ -1,4 +1,3 @@
-- Triggers. These must be implemented in your application logic.
 - Events.
 - Drop primary key.
 
