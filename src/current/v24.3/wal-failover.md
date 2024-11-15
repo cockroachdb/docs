@@ -51,7 +51,7 @@ If you are logging to a file-based sink, create a `logs.yaml` file. Later on, yo
 
 {% include {{ page.version.version }}/wal-failover-log-config.md %}
 
-Next transfer this file to the nodes on the cluster.
+After creating this file, transfer it to the nodes on the cluster.
 
 For more information about how to configure CockroachDB logs, refer to [Configure logs]({% link {{ page.version.version }}/configure-logs.md %}).
 
