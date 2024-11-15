@@ -147,7 +147,7 @@ cockroach sql --url `"postgresql://root@{node IP or hostname}:{26257}?options=-c
 You can only read data on the created `readonly` virtual cluster, other operations like `SHOW VIRTUAL CLUSTERS` must be run from the `system` virtual cluster. To connect to the `readonly` virtual cluster, refer to the [Connection Reference]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connection-reference).
 {{site.data.alerts.end}}
 
-After a [failover]({% link {{ page.version.version }}/failover-replication.md %}) to the standby cluster, the `readonly` virtual cluster will remain on the promoted standby. Use [`DROP VIRTUAL CLUSTER`]({% link {{ page.version.version }}/drop-virtual-cluster.md %}) to remove the `readonly` virtual cluster.
+{% include {{ page.version.version }}/physical-replication/failover-read-virtual-cluster.md %} Use [`DROP VIRTUAL CLUSTER`]({% link {{ page.version.version }}/drop-virtual-cluster.md %}) to remove the `readonly` virtual cluster.
 
 For details on adding a read-only virtual cluster after a failback, refer to the [`ALTER VIRTUAL CLUSTER`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) page.
 
