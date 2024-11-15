@@ -57,7 +57,7 @@ For more information about how to configure CockroachDB logs, refer to [Configur
 
 #### 4. Starting the multi-store cluster with WAL failover enabled
 
-To enable WAL failover when we start the cluster,  we can either pass the [`--wal-failover=among-stores` to `cockroach start`]({% link {{ page.version.version }}/cockroach-start.md%}#enable-wal-failover)
+To enable WAL failover when you start the cluster, either pass the [`--wal-failover=among-stores` to `cockroach start`]({% link {{ page.version.version }}/cockroach-start.md%}#enable-wal-failover)
 
  *OR*
 
