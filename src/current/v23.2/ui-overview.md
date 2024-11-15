@@ -14,6 +14,8 @@ Authorized CockroachDB {{ site.data.products.advanced }} cluster users can visit
 Refer to: [Network Authorization for CockroachDB Cloud Clusters&mdash;DB Console]({% link cockroachcloud/network-authorization.md %}#db-console)
 {{site.data.alerts.end}}
 
+<a name="license-expiration-message"></a>
+
 ## Authentication
 
 The DB Console supports username/password login and single sign-on (SSO) for ({{ site.data.products.advanced }} and {{ site.data.products.enterprise }} clusters).
