@@ -128,7 +128,7 @@ As you scale to a large number of tables, note that:
 
 - The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support. This includes columns, indexes, GIN indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact on the number of these objects that a cluster can support, while increasing the number of nodes will not have a substantial effect.
 - The number of databases or schemas on the cluster has minimal impact on the total number of tables that it can support.
-- Performance at larger numbers of tables may be affected by your use of [backup and restore]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) and [Change Data Capture]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
+- Performance at larger numbers of tables may be affected by your use of [backup and restore]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) and [Change data capture (CDC)]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
 
 See the [Hardware]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) section for additional recommendations based on your expected workloads.
 
