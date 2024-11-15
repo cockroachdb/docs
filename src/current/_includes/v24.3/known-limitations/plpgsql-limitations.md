@@ -4,7 +4,7 @@
 - PLpgSQL variable declarations cannot inherit the type of a table row or column using `%TYPE` or `%ROWTYPE` syntax. [#114676](https://github.com/cockroachdb/cockroach/issues/114676)
 - PL/pgSQL arguments cannot be referenced with ordinals (e.g., `$1`, `$2`). [#114701](https://github.com/cockroachdb/cockroach/issues/114701)
 - The following statements are not supported:
-	- `FOR` loops, including `FOR` cursor loops, `FOR` query loops, and `FOREACH` loops. [#105246](https://github.com/cockroachdb/cockroach/issues/105246)
+	- `FOR` cursor loops, `FOR` query loops, and `FOREACH` loops. [#105246](https://github.com/cockroachdb/cockroach/issues/105246)
 	- `RETURN NEXT` and `RETURN QUERY`. [#117744](https://github.com/cockroachdb/cockroach/issues/117744)
 	- `PERFORM`, `EXECUTE`, `GET DIAGNOSTICS`, and `CASE`. [#117744](https://github.com/cockroachdb/cockroach/issues/117744)
 - PL/pgSQL exception blocks cannot catch [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). [#111446](https://github.com/cockroachdb/cockroach/issues/111446)
