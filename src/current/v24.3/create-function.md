@@ -273,6 +273,23 @@ SELECT f(1);
 
 {% include {{ page.version.version }}/sql/udf-plpgsql-example.md %}
 
+### Create a trigger function
+
+A trigger function is a [function that is executed by a trigger]({% link {{ page.version.version }}/triggers.md %}#trigger-function). A trigger function must return type `TRIGGER` and is written in [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE FUNCTION change_name()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.name = 'Dear ' || (NEW).name;
+  RETURN NEW;
+END;
+$$ LANGUAGE PLpgSQL;
+~~~
+
+The preceding example modifies a given `name` value and returns the `NEW` [trigger variable]({% link {{ page.version.version }}/triggers.md %}#trigger-variables) because it is meant to be executed by a `BEFORE` trigger. For details, refer to [Triggers]({% link {{ page.version.version }}/triggers.md %}).
+
 ### Create a `SECURITY DEFINER` function
 
 The following example defines a function using the `SECURITY DEFINER` clause. This causes the function to execute with the privileges of the function owner.

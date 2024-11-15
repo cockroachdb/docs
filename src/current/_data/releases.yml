@@ -7429,3 +7429,30 @@
     CockroachDB Cloud clusters. To request to upgrade
     a CockroachDB self-hosted cluster to this version,
     [contact support](https://support.cockroachlabs.com/hc/requests/new).
+
+- release_name: v23.2.15
+  major_version: v23.2
+  release_date: '2024-11-15'
+  release_type: Production
+  go_version: go1.22.8
+  sha: 3497fb02dce0beb6fc2bbf76c1ed7ad69cc31344
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v23.2.14
