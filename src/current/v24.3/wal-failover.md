@@ -79,7 +79,7 @@ $ cockroach start --certs-dir certs --listen-addr=:26257 --http-addr=:26258 --ad
 Notice the flags passed to `cockroach start`:
 
 - Multiple `--store` paths
-- `--wal-failover=among-stores` since we have multiple stores to choose from for WAL failover
+- `--wal-failover=among-stores` since there are multiple stores to choose from for WAL failover
 - `--log-config-file` uses the `logs.yaml` we created in [Step 3](#3-log-configuration-for-wal-failover)
 
 <a name="single-store-config"></a>
