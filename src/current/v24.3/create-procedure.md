@@ -10,11 +10,14 @@ The `CREATE PROCEDURE` [statement]({% link {{ page.version.version }}/sql-statem
 
 ## Required privileges
 
-- To define a procedure, a user must have [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the schema of the procedure.
-- To define a procedure with a [user-defined type]({% link {{ page.version.version }}/create-type.md %}), a user must have [`USAGE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the user-defined type.
+- To create a procedure, a user must have [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the schema of the procedure. The user must also have privileges on all the objects referenced in the procedure body.
+- To create a procedure with a [user-defined type]({% link {{ page.version.version }}/create-type.md %}), a user must have [`USAGE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the user-defined type.
 - To resolve a procedure, a user must have at least the [`USAGE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the schema of the procedure.
-- To [call a procedure]({% link {{ page.version.version }}/call.md %}), a user must have [`EXECUTE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the procedure.
-- At procedure definition and execution time, a user must have privileges on all the objects referenced in the procedure body. Privileges on referenced objects can be revoked and later procedure calls can fail due to lack of permission.
+- To [call a procedure]({% link {{ page.version.version }}/call.md %}), a user must have [`EXECUTE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the procedure. By default, the user must also have privileges on all the objects referenced in the procedure body. However, a `SECURITY DEFINER` procedure executes with the privileges of the user that owns the procedure, not the user that calls it. A `SECURITY INVOKER` procedure executes with the privileges of the user that calls the procedure, thus matching the default behavior.
+
+  {{site.data.alerts.callout_success}}
+  For an example of `SECURITY DEFINER`, refer to [Create a `SECURITY DEFINER` function]({% link {{ page.version.version }}/create-function.md %}#create-a-security-definer-function).
+  {{site.data.alerts.end}}
 
 If you grant `EXECUTE` privilege as a default privilege at the database level, newly created procedures inherit that privilege from the database.
 
