@@ -58,18 +58,6 @@ The [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
 
-### Statistics for deleted tables in `system.table_statistics` do not get removed
-
-When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
-
-### Collection of statistics for virtual computed columns
-
-CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}).
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
-
 ### `AS OF SYSTEM TIME` does not support placeholders
 
 CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The time value must be embedded in the SQL string.
@@ -409,9 +397,12 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
 
-### Automatic statistics refresher may not refresh after upgrade
+### Statistics limitations
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
+{% include {{ page.version.version }}/known-limitations/forecasted-stats-limitations.md %}
+- When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
+- CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
 
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
