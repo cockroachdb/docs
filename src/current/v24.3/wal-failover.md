@@ -29,7 +29,7 @@ WAL failover uses a secondary disk to failover WAL writes to when transient disk
 
 ## Creating and configuring a cluster to be ready for WAL Failover
 
-The steps to provision a cluster that has single data store vs a multi-store cluster are slightly different. In this section, we will provide high-level instructions for setting up each of these configurations. We will use [GCE](https://cloud.google.com/compute/docs) as the environment. You will need to translate these instructions into the steps used by the deployment tools in your environment.
+The steps to provision a cluster that has a single data store versus a multi-store cluster are slightly different. In this section, we will provide high-level instructions for setting up each of these configurations. We will use [GCE](https://cloud.google.com/compute/docs) as the environment. You will need to translate these instructions into the steps used by the deployment tools in your environment.
 
 <a name="multi-store-config"></a>
 
