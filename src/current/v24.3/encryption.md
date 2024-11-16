@@ -70,7 +70,7 @@ The report shows encryption status for all stores on the selected node, includin
 - Active data key information.
 - The fraction of files/bytes encrypted using the active data key.
 
-CockroachDB relies on [storage layer compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force storage compaction with the `cockroach debug compact` command (the node must first be [stopped]({% link {{ page.version.version }}/node-shutdown.md %}#perform-node-shutdown)).
+CockroachDB relies on [storage layer compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force storage compaction with the `cockroach debug compact` command (the node must first be [stopped]({% link {{ page.version.version }}/drain-a-node.md %})).
 
 The fraction of files/bytes encrypted on the store may be less than 100% for the following reasons:
 

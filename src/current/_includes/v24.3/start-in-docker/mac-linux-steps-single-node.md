@@ -124,7 +124,7 @@ When you started the cluster container, you published the container's DB Console
 
 ### Step 5. Stop the cluster
 
-1. Use the `docker stop` and `docker rm` commands to stop and remove the container (and therefore the single-node cluster). By default, `docker stop` sends a `SIGTERM` signal, waits for 10 seconds, and then sends a `SIGKILL` signal. Cockroach Labs recommends that you [allow between 5 and 10 minutes]({% link {{ page.version.version }}/node-shutdown.md %}#termination-grace-period) before forcibly stopping the `cockroach` process, so this example sets the grace period to 5 minutes. If you do not plan to restart the cluster, you can omit `-t`.
+1. Use the `docker stop` and `docker rm` commands to stop and remove the container (and therefore the single-node cluster). By default, `docker stop` sends a `SIGTERM` signal, waits for 10 seconds, and then sends a `SIGKILL` signal. Cockroach Labs recommends that you [allow between 5 and 10 minutes]({% link {{ page.version.version }}/drain-a-node.md %}#termination-grace-period) before forcibly stopping the `cockroach` process, so this example sets the grace period to 5 minutes. If you do not plan to restart the cluster, you can omit `-t`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

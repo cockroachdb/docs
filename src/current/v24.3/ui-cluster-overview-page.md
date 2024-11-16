@@ -18,7 +18,7 @@ Enable the [Node Map](#node-map) view for a visual representation of your cluste
 
 Use the **Cluster Overview** panel to quickly assess the capacity and health of your cluster.
 
-<img src="{{ 'images/v24.2/ui-cluster-overview-panel.png' | relative_url }}" alt="DB Console cluster overview" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v24.3/ui-cluster-overview-panel.png' | relative_url }}" alt="DB Console cluster overview" style="border:1px solid #eee;max-width:100%" />
 
 Metric | Description
 --------|----
@@ -66,8 +66,8 @@ Node Status | Description
 -------|------------
 `LIVE` | Node is online and updating its liveness record.
 `SUSPECT` | Node has an [unavailable liveness status]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).
-`DRAINING` | Node is in the [process of draining]({% link {{ page.version.version }}/node-shutdown.md %}#draining) or has been drained.
-`DECOMMISSIONING` | Node is in the [process of decommissioning](node-shutdown.html?filters=decommission#decommissioning).
+`DRAINING` | Node is in the [process of draining]({% link {{ page.version.version }}/drain-a-node.md %}) or has been drained.
+`DECOMMISSIONING` | Node is in the [process of decommissioning]({% link {{ page.version.version }}/decommission-a-node.md %}).
 `DEAD` | Node has not [updated its liveness record]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) for 5 minutes.
 
 {{site.data.alerts.callout_info}}
@@ -80,7 +80,7 @@ The following details are also shown.
 
 Column | Description
 -------|------------
-Node Count | Number of nodes in the locality. [Decommissioned nodes](node-shutdown.html?filters=decommission) are not included in this count.
+Node Count | Number of nodes in the locality. [Decommissioned nodes]({% link {{ page.version.version }}/decommission-a-node.md %}) are not included in this count.
 Nodes | Nodes are grouped by locality and displayed with their address and node ID (the ID is the number that is prepended by `n`). Click the address to view node statistics. Hover over a row and click **Logs** to see the node's log.
 Uptime | Amount of time the node has been running.
 Replicas | Number of replicas on the node or in the locality.
@@ -91,7 +91,7 @@ Version | Build tag of the CockroachDB version installed on the node.
 
 ### Decommissioned nodes
 
-Nodes that have [completed decommissioning](node-shutdown.html?filters=decommission#status-change) are listed in the table of **Recently Decommissioned Nodes**, indicating that they are removed from the cluster.
+Nodes that have [completed decommissioning]({% link {{ page.version.version }}/decommission-a-node.md %}) are listed in the table of **Recently Decommissioned Nodes**, indicating that they are removed from the cluster.
 
 Node Status | Description
 -------|------------
@@ -100,9 +100,7 @@ Node Status | Description
 
 You can see the full history of decommissioned nodes by clicking **View all decommissioned nodes**.
 
-{{site.data.alerts.callout_info}}
-For details about the decommissioning process, see [Node Shutdown](node-shutdown.html?filters=decommission#node-shutdown-sequence).
-{{site.data.alerts.end}}
+For details about the decommissioning process, see [Decommission a node]({% link {{ page.version.version }}/decommission-a-node.md %}).
 
 ## Node Map
 
@@ -110,7 +108,7 @@ The **Node Map** visualizes the geographical configuration of your cluster. It r
 
 For guidance on enabling and configuring the node map, see [Enable the Node Map]({% link {{ page.version.version }}/enable-node-map.md %}).
 
-<img src="{{ 'images/v24.2/ui-node-map.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:90%" />
+<img src="{{ 'images/v24.3/ui-node-map.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
 The Node Map uses the longitude and latitude of each locality to position the components on the map. The map is populated with [**locality components**](#locality-component) and [**node components**](#node-component).
 
@@ -122,7 +120,7 @@ The map shows the components for the highest-level locality tier (e.g., region).
 
 For details on how **Capacity Usage** is calculated, see [Capacity metrics](#capacity-metrics).
 
-<img src="{{ 'images/v24.2/ui-region-component.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:90%" />
+<img src="{{ 'images/v24.3/ui-region-component.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
 {{site.data.alerts.callout_info}}
 On multi-core systems, the displayed CPU usage can be greater than 100%. Full utilization of 1 core is considered as 100% CPU usage. If you have _n_ cores, then CPU usage can range from 0% (indicating an idle system) to (_n_ * 100)% (indicating full utilization).
@@ -136,7 +134,7 @@ Node components are accessed by clicking on the **Node Count** of the lowest-lev
 
 For details on how **Capacity Usage** is calculated, see [Capacity metrics](#capacity-metrics).
 
-<img src="{{ 'images/v24.2/ui-node-components.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:90%" />
+<img src="{{ 'images/v24.3/ui-node-components.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:90%" />
 
 {{site.data.alerts.callout_info}}
 On multi-core systems, the displayed CPU usage can be greater than 100%. Full utilization of 1 core is considered as 100% CPU usage. If you have _n_ cores, then CPU usage can range from 0% (indicating an idle system) to (_n_ * 100)% (indicating full utilization).

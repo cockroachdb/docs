@@ -17,8 +17,8 @@ Subcommand | Usage
 `ls` | List the ID of each node in the cluster, excluding those that have been decommissioned and are offline.
 `status` | View the status of one or all nodes, excluding nodes that have been decommissioned and taken offline. Depending on flags used, this can include details about range/replicas, disk usage, and decommissioning progress.
 `decommission` | Decommission nodes for removal from the cluster. For more information, see [Decommission nodes](#decommission-nodes).
-`recommission` | Recommission nodes that are decommissioning. If the decommissioning node has already reached the [draining stage]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#draining), you may need to restart the node after it is recommissioned. For details, see [Node Shutdown]({% link {{ page.version.version }}/node-shutdown.md %}#recommission-nodes).
-`drain` | Drain nodes in preparation for process termination. Draining always occurs when sending a termination signal or decommissioning a node. The `drain` subcommand is used to drain nodes without also decommissioning or shutting them down. For details, see [Node Shutdown]({% link {{ page.version.version }}/node-shutdown.md %}).
+`recommission` | Recommission nodes that are decommissioning. If the decommissioning node has already reached the [draining stage]({% link {{ page.version.version }}/node-shutdown.md %}#draining-phases), you may need to restart the node after it is recommissioned. For details, see [Recommission a node]({% link {{ page.version.version }}/decommission-a-node.md %}#recommission-nodes).
+`drain` | Drain nodes in preparation for process termination. Draining always occurs when sending a termination signal or decommissioning a node. The `drain` subcommand is used to drain nodes without also decommissioning or shutting them down. For details, see [Drain a node]({% link {{ page.version.version }}/drain-a-node.md %}).
 
 ## Synopsis
 
@@ -121,7 +121,7 @@ The `node decommission` subcommand also supports the following general flags. Fo
 
 Flag | Description
 -----|------------
-`--checks` | <a name="decommission-checks"></a> Whether to perform a set of "decommissioning pre-flight checks". Possible values: `enabled`, `strict`, or `skip`. If `enabled`, CockroachDB will check if a node can successfully complete decommissioning given the current state of the cluster. If errors are detected that would result in the inability to complete node decommissioning, they will be printed to `STDERR` and the command will exit *without attempting to perform node decommissioning*. For more information, see [Remove nodes]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#remove-nodes).<br/><br/>**Default:** `enabled`
+`--checks` | <a name="decommission-checks"></a> Whether to perform a set of "decommissioning pre-flight checks". Possible values: `enabled`, `strict`, or `skip`. If `enabled`, CockroachDB will check if a node can successfully complete decommissioning given the current state of the cluster. If errors are detected that would result in the inability to complete node decommissioning, they will be printed to `STDERR` and the command will exit *without attempting to perform node decommissioning*. For more information, see [Remove nodes]({% link {{ page.version.version }}/decommission-a-node.md %}).<br/><br/>**Default:** `enabled`
 `--dry-run` | Performs the same decommissioning checks as the `--checks` flag, but without attempting to decommission the node. When `cockroach node decommission {nodeID} --dry-run` is executed, it runs the checks, prints the status of those checks, and exits.
 `--wait` | When to return to the client. Possible values: `all`, `none`.<br><br>If `all`, the command returns to the client only after all replicas on all specified nodes have been transferred to other nodes. If any specified nodes are offline, the command will not return to the client until those nodes are back online.<br><br>If `none`, the command does not wait for the decommissioning process to complete; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioning; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>**Default:** `all`
 `--self` | **Deprecated.** Instead, specify a node ID explicitly in addition to the `--host` flag.
@@ -190,8 +190,8 @@ Field | Description
 `is_available` | If `true`, the node is currently available.<br><br>**Required flag:** None
 `is_live` | If `true`, the node is currently live. <br><br>For unavailable clusters (with an unresponsive DB Console), running the `node status` command and monitoring the `is_live` field is the only way to identify the live nodes in the cluster. However, you need to run the `node status` command on a live node to identify the other live nodes in an unavailable cluster. Figuring out a live node to run the command is a trial-and-error process, so run the command against each node until you get one that responds. <br><br> See [Identify live nodes in an unavailable cluster](#identify-live-nodes-in-an-unavailable-cluster) for more details. <br><br>**Required flag:** None
 `gossiped_replicas` | The number of replicas on the node that are active members of a range. After the decommissioning process completes, this should be 0.<br><br>**Required flag:** `--decommission` or `--all`
-`is_decommissioning` | If `true`, the node is either undergoing or has completed the [decommissioning process]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#node-shutdown-sequence).<br><br>**Required flag:** `--decommission` or `--all`
-`is_draining` | If `true`, the node is either undergoing or has completed the [draining process]({% link {{ page.version.version }}/node-shutdown.md %}#node-shutdown-sequence).<br><br>**Required flag:** `--decommission` or `--all`
+`is_decommissioning` | If `true`, the node is either undergoing or has completed the [decommissioning process]({% link {{ page.version.version }}/decommission-a-node.md %}).<br><br>**Required flag:** `--decommission` or `--all`
+`is_draining` | If `true`, the node is either undergoing or has completed the [draining process]({% link {{ page.version.version }}/node-shutdown.md %}#draining-phases).<br><br>**Required flag:** `--decommission` or `--all`
 
 ### `node decommission`
 
@@ -200,8 +200,8 @@ Field | Description
 `id` | The ID of the node.
 `is_live` | If `true`, the node is live.
 `replicas` | The number of replicas on the node that are active members of a range. After the decommissioning process completes, this should be 0.
-`is_decommissioning` | If `true`, the node is either undergoing or has completed the [decommissioning process]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#node-shutdown-sequence).
-`is_draining` | If `true`, the node is either undergoing or has completed the [draining process]({% link {{ page.version.version }}/node-shutdown.md %}#node-shutdown-sequence).
+`is_decommissioning` | If `true`, the node is either undergoing or has completed the [decommissioning process]({% link {{ page.version.version }}/decommission-a-node.md %}).
+`is_draining` | If `true`, the node is either undergoing or has completed the [draining process]({% link {{ page.version.version }}/node-shutdown.md %}#draining-phases).
 
 If the rebalancing stalls during decommissioning, replicas that have yet to move are printed to the [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) and written to the [`OPS` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) with the message `possible decommission stall detected`. [By default]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration), the `OPS` channel logs output to a `cockroach.log` file.
 
@@ -212,8 +212,8 @@ Field | Description
 `id` | The ID of the node.
 `is_live` | If `true`, the node is live.
 `replicas` | The number of replicas on the node that are active members of a range. After the decommissioning process completes, this should be 0.
-`is_decommissioning` | If `true`, the node is either undergoing or has completed the [decommissioning process]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#node-shutdown-sequence).
-`is_draining` | If `true`, the node is either undergoing or has completed the [draining process]({% link {{ page.version.version }}/node-shutdown.md %}#node-shutdown-sequence).
+`is_decommissioning` | If `true`, the node is either undergoing or has completed the [decommissioning process]({% link {{ page.version.version }}/decommission-a-node.md %}).
+`is_draining` | If `true`, the node is either undergoing or has completed the [draining process]({% link {{ page.version.version }}/drain-a-node.md %}).
 
 ## Examples
 
@@ -314,17 +314,19 @@ You need to run the `node status` command on a live node to identify the other l
 
 ### Drain nodes
 
-See [Drain a node manually]({% link {{ page.version.version }}/node-shutdown.md %}#drain-a-node-manually).
+See [Drain a node]({% link {{ page.version.version }}/drain-a-node.md %}).
 
 ### Decommission nodes
 
-See [Remove nodes]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#remove-nodes).
+See [Decommission a node]({% link {{ page.version.version }}/decommission-a-node.md %}).
 
 ### Recommission nodes
 
-See [Recommission Nodes]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#recommission-nodes).
+See [Recommission Nodes]({% link {{ page.version.version }}/decommission-a-node.md %}#recommission-nodes).
 
 ## See also
 
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [Node Shutdown]({% link {{ page.version.version }}/node-shutdown.md %})
+- [Node Shutdown Overview]({% link {{ page.version.version }}/node-shutdown.md %})
+- [Drain a node]({% link {{ page.version.version }}/drain-a-node.md %})
+- [Decommission a node]({% link {{ page.version.version }}/decommission-a-node.md %})

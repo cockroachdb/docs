@@ -97,7 +97,7 @@ When cluster virtualization is enabled, certain low-level SQL APIs, such as (TOD
 
 ### Node draining
 
-When cluster virtualization is enabled, [draining a node]({% link {{ page.version.version }}/node-shutdown.md %}#drain-a-node-manually) can cause a temporary SQL latency spike.
+When cluster virtualization is enabled, [draining a node]({% link {{ page.version.version }}/drain-a-node.md %}) can cause a temporary SQL latency spike.
 
 ## See also
 
