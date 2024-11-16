@@ -9,7 +9,7 @@ docs_area: deploy
 
 {% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 
-This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage. 
+This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage.
 
 These settings override the defaults used when [deploying CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}).
 
@@ -20,7 +20,7 @@ These settings override the defaults used when [deploying CockroachDB on Kuberne
 </div>
 
 <section class="filter-content" markdown="1" data-scope="operator">
-{% include {{ page.version.version }}/orchestration/operator-check-namespace.md %}
+{% include common/orchestration/operator-check-namespace.md %}
 
 {{site.data.alerts.callout_success}}
 If you [deployed CockroachDB on Red Hat OpenShift]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-openshift.md %}), substitute `kubectl` with `oc` in the following commands.
@@ -35,7 +35,7 @@ Run `kubectl describe nodes` to see the available resources on the instances tha
 
 ## Memory and CPU
 
-You can set the CPU and memory resources allocated to the CockroachDB container on each pod. 
+You can set the CPU and memory resources allocated to the CockroachDB container on each pod.
 
 {{site.data.alerts.callout_info}}
 1 CPU in Kubernetes is equivalent to 1 vCPU or 1 hyperthread. For best practices on provisioning CPU and memory for CockroachDB, see the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware).
@@ -55,7 +55,7 @@ spec:
       memory: "16Gi"
 ~~~
 
-{% include {{ page.version.version }}/orchestration/apply-custom-resource.md %}
+{% include common/orchestration/apply-custom-resource.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
@@ -75,7 +75,7 @@ spec:
           memory: "16Gi"
 ~~~
 
-{% include {{ page.version.version }}/orchestration/apply-statefulset-manifest.md %}
+{% include common/orchestration/apply-statefulset-manifest.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
@@ -92,7 +92,7 @@ statefulset:
       memory: "16Gi"
 ~~~
 
-{% include {{ page.version.version }}/orchestration/apply-helm-values.md %}
+{% include common/orchestration/apply-helm-values.md %}
 </section>
 
 We recommend using identical values for `resources.requests` and `resources.limits`. When setting the new values, note that not all of a pod's resources will be available to the CockroachDB container. This is because a fraction of the CPU and memory is reserved for Kubernetes.
@@ -118,7 +118,7 @@ spec:
   maxSQLMemory: "4Gi"
 ~~~
 
-{% include {{ page.version.version }}/orchestration/apply-custom-resource.md %}
+{% include common/orchestration/apply-custom-resource.md %}
 
 {{site.data.alerts.callout_info}}
 Specifying these values is equivalent to using the `--cache` and `--max-sql-memory` flags with [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}#flags).
@@ -140,7 +140,7 @@ conf:
   max-sql-memory: "4Gi"
 ~~~
 
-{% include {{ page.version.version }}/orchestration/apply-helm-values.md %}
+{% include common/orchestration/apply-helm-values.md %}
 </section>
 
 ## Persistent storage
@@ -205,19 +205,19 @@ spec:
             storage: "100Gi"
 ~~~
 
-{% include {{ page.version.version }}/orchestration/apply-custom-resource.md %}
+{% include common/orchestration/apply-custom-resource.md %}
 
-The Operator updates the StatefulSet and triggers a rolling restart of the pods with the new storage capacity. 
+The Operator updates the StatefulSet and triggers a rolling restart of the pods with the new storage capacity.
 
 To verify that the storage capacity has been updated, run `kubectl get pvc` to view the persistent volume claims (PVCs). It will take a few minutes before the PVCs are completely updated.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-manual.md %}
+{% include common/orchestration/kubernetes-expand-disk-manual.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-helm.md %}
+{% include common/orchestration/kubernetes-expand-disk-helm.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="operator">
@@ -238,9 +238,9 @@ spec:
   sqlPort: 5432
 ~~~
 
-{% include {{ page.version.version }}/orchestration/apply-custom-resource.md %}
+{% include common/orchestration/apply-custom-resource.md %}
 
-The Operator updates the StatefulSet and triggers a rolling restart of the pods with the new port settings. 
+The Operator updates the StatefulSet and triggers a rolling restart of the pods with the new port settings.
 
 {{site.data.alerts.callout_danger}}
 Currently, only the pods are updated with new ports. To connect to the cluster, you need to ensure that the `public` service is also updated to use the new port. You can do this by deleting the service with `kubectl delete service {cluster-name}-public`. When service is recreated by the Operator, it will use the new port. This is a known limitation that will be fixed in an Operator update.

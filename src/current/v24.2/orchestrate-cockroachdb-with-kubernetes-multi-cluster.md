@@ -57,7 +57,7 @@ To enable the pods to communicate across regions, we peer the VPCs in all 3 regi
 
 ### Best practices
 
-{% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
+{% include common/orchestration/kubernetes-limitations.md %}
 
 <section class="filter-content" markdown="1" data-scope="gke">
 #### Exposing DNS servers

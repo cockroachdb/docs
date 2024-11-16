@@ -17,9 +17,9 @@ To orchestrate a physically distributed cluster in production, see [Orchestrated
 
 ## Best practices
 
-{% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
+{% include common/orchestration/kubernetes-limitations.md %}
 
-{% include {{ page.version.version }}/orchestration/local-start-kubernetes.md %}
+{% include common/orchestration/local-start-kubernetes.md %}
 
 ## Step 2. Start CockroachDB
 
@@ -31,24 +31,24 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 </div>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-local-insecure.md %}
+{% include common/orchestration/start-cockroachdb-local-insecure.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-local-helm-insecure.md %}
+{% include common/orchestration/start-cockroachdb-local-helm-insecure.md %}
 </section>
 
 ## Step 3. Use the built-in SQL client
 
-{% include {{ page.version.version }}/orchestration/test-cluster-insecure.md %}
+{% include common/orchestration/test-cluster-insecure.md %}
 
 ## Step 4. Access the DB Console
 
-{% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
+{% include common/orchestration/monitor-cluster.md %}
 
 ## Step 5. Simulate node failure
 
-{% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
+{% include common/orchestration/kubernetes-simulate-failure.md %}
 
 ## Step 6. Add nodes
 
@@ -111,7 +111,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 ## Step 7. Remove nodes
 
-{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-insecure.md %}
+{% include common/orchestration/kubernetes-remove-nodes-insecure.md %}
 
 ## Step 8. Stop the cluster
 

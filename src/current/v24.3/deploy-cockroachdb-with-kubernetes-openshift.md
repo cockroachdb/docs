@@ -213,7 +213,7 @@ spec:
 
 	Now you can run SQL commands against the cluster.
 
-{% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
+{% include common/orchestration/kubernetes-basic-sql.md %}
 
 **Note:** If you cannot access the SQL client, this may be related to your `--certs-dir` or `--host` flags.
 
