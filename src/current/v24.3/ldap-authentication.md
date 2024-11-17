@@ -6,35 +6,44 @@ toc: true
 
 CockroachDB supports authentication and authorization using LDAP-compatible directory services, such as Active Directory and Microsoft Entra ID. This allows you to integrate your cluster with your organization's existing identity infrastructure for centralized user management and access control.
 
-This page describes how to configure CockroachDB user authentication using LDAP. You can additionally configure CockroachDB to use the same directory service for user [authorization]({% link v24.3/ldap-authorization.md %}) (role-based access control), assigning CockroachDB roles to users based on their group memberships in the directory.
+This page describes how to configure CockroachDB user authentication using LDAP. You can additionally configure CockroachDB to use the same directory service for user [authorization]({% link v24.3/ldap-authorization.md %}) (role-based access control), which assigns CockroachDB roles to users based on their group memberships in the directory.
 
 ## Overview
 
-LDAP authentication in CockroachDB uses a "search and bind" approach:
+LDAP authentication in CockroachDB works with LDAP-compatible directory services, including Microsoft Entra ID, Active Directory, and OpenLDAP. Secure LDAPS connectivity over TLS is required.
 
-1. CockroachDB first connects to the LDAP server using a service account (bind DN).
-2. It searches for the authenticating user using configurable search criteria.
-3. If found, it attempts to bind to LDAP using the user's credentials.
-4. Upon successful binding, the user is authenticated to CockroachDB.
+While LDAP configuration is cluster-specific, each request to authenticate a user in CockroachDB is handled by the node that receives it. When LDAP is enabled, the node handles each authentication request  using a "search and bind" approach:
 
-LDAP authentication in CockroachDB works with any LDAP-compatible directory service, including Microsoft Entra ID, Active Directory, and OpenLDAP. Secure LDAPS connectivity over TLS is supported, and recommended for production environments.
+1. Find the user record
+  - The node connects to the LDAP server using a dedicated directory access account.
+  - The node searches the directory for a record that matches the authenticating user, using configurable search criteria.
+1. Authenticate the user
+  - If a matching record was found, the cluster attempts to verify the user's identity through another LDAP request, this time using the credentials (username and password) provided by that user.
+  - If this LDAP bind operation succeeds, the user is authenticated to the CockroachDB cluster.
+1. Authorize the user (optional)
+  - If [LDAP authorization]({% link v24.3/ldap-authorization.md %}) is also enabled, an additional request is sent to retrieve the groups to which the user is assigned, using configurable criteria.
+  - If group memberships are found, any existing CockroachDB roles that match these group names are asssigned to the user.
 
-{{site.data.alerts.callout_info}}
-LDAP authentication cannot be used for the `root` user or other admin users. These credentials must be managed separately using password authentication to ensure continuous administrative access, especially if the LDAP service becomes unavailable.
-{{site.data.alerts.end}}
+These requests use a node's existing connection to the LDAP server, if one is open. Otherwise, the node establishes a new connection. The connection remains open for handling additional LDAP requests until it is closed by the LDAP server, based on its timeout setting.
+
+Because CockroachDB maintains no more than one LDAP connection per node, for a cluster with `n` nodes, you can expect up to `n` concurrent LDAP connections. 
 
 ## Configuration
 
 ### Prerequisites
 
-1. An LDAP or Active Directory server accessible from your CockroachDB nodes.
-2. A service account (bind DN) with permissions to search the directory.
-3. Network connectivity on port 636 for LDAPS.
-4. The LDAP server's CA certificate if using LDAPS.
+- An LDAP or Active Directory server.
+- Network connectivity on port 636 for LDAPS.
+- A service account (bind DN) with permissions to search the directory for basic information about users and groups. For example, in Microsoft Entra ID, a [service principal](https://learn.microsoft.com/en-us/entra/architecture/secure-service-accounts) with the Directory Readers role.
+- The LDAP server's CA certificate, if using a custom CA not already trusted by the CockroachDB host.
 
-### Step 1: Set sensitive cluster settings to be redacted
+Before you begin, it may be useful to enable authentication logging, which can help you confirm sucessful configuration or troubleshoot issues. For details, refer to [Troubleshooting](#troubleshooting).
 
-LDAP configuration requires you to store LDAP bind credentials and the mapping of external identities to SQL users within CockroachDB cluster settings (`server.host_based_authentication.configuration`, `server.identity_map.configuration`). Prior to this configuration, ensure that your cluster is set to redact sensitive cluster settings for all users except those who are assigned the `admin` role or were granted the `MODIFYCLUSTERSETTING` privilege.
+### Step 1: Enable redaction of sensitive cluster settings
+
+You will set LDAP bind credentials for the service account that enables this integration using the cluster setting `server.host_based_authentication.configuration`. You will also configure the mapping of external identities to CockroachDB SQL users using the cluster settings `server.identity_map.configuration`.
+	
+To redact these sensitive setting values for all users except for those with the `admin` role or the `MODIFYCLUSTERSETTING` privilege, run:
 
 ~~~ sql
 SET CLUSTER SETTING server.redact_sensitive_settings.enabled = 'true';
@@ -42,9 +51,9 @@ SET CLUSTER SETTING server.redact_sensitive_settings.enabled = 'true';
 
 ### Step 2: Configure Host-Based Authentication (HBA)
 
-Set the `server.host_based_authentication.configuration` cluster setting to enable LDAP authentication.
+To enable LDAP, you will need to update the [host-based authentication (HBA)]({% link {{ page.version.version }}/security-reference/authentication.md %}#authentication-configuration) configuration specified in the cluster setting `server.host_based_authentication.configuration`.
 
-The format for HBA is `TYPE  DATABASE  USER  ADDRESS  METHOD  [OPTIONS]`. For LDAP, the method should be set to `ldap` and the option parameters that follow will be LDAP specific:
+Set the authentication method for all users and databases to `ldap` and include the LDAP-specific option parameters:
 
 - `ldapserver`: LDAP server hostname
 - `ldapport`: LDAP server port (typically 636 for LDAPS)
@@ -67,13 +76,11 @@ host    all    all    all    ldap    ldapserver=ldap.example.com
     "ldapsearchfilter=(memberof=cn=cockroachdb_users,ou=groups,dc=example,dc=com)"';
 ~~~
 
-If you also intend to [configure LDAP Authorization]({% link v24.3/ldap-authorization.md %}#configuration), you will need to include an additional LDAP parameter, `ldapgrouplistfilter`.
-
-For more information on the HBA fields and HBA in CockroachDB, generally, refer to [SQL Authentication configuration](https://www.cockroachlabs.com/docs/stable/security-reference/authentication#authentication-configuration).
+If you also intend to configure LDAP Authorization, you will need to include an additional LDAP parameter, `ldapgrouplistfilter`. For details, refer to [LDAP Authorization]({% link {{ page.version.version }}/ldap-authorization.md %}#configuration).
 
 ### Step 3: Configure TLS (Optional)
 
-If using LDAPS with a certificate signed by a custom Certificate Authority (CA) that is not in the system's trusted CA store, you'll need to configure the CA certificate. This step is only necessary when using certificates signed by your organization's private CA or other untrusted CA.
+If, for LDAPS, you are using a certificate signed by a custom Certificate Authority (CA) that is not in the system's trusted CA store, you will need to configure the CA certificate. This step is only necessary when using certificates signed by your organization's private CA or other untrusted CA.
 
 Set the custom CA certificate:
 
@@ -88,14 +95,18 @@ SET CLUSTER SETTING server.ldap_authentication.client.tls_certificate = '<PEM_EN
 SET CLUSTER SETTING server.ldap_authentication.client.tls_key = '<PEM_ENCODED_KEY>';
 ~~~
 
-### Step 4: Sync Database Users
-
-Before LDAP authentication can be used for a user, the username must be created directly in CockroachDB. You will, therefore, need to establish an automated method for keeping users in sync with the directory server, creating and dropping them as needed.
-
-For Azure AD deployments, the username typically corresponds to the `sAMAccountName` field from AD's person object, which is specified in the HBA configuration using `ldapsearchattribute=sAMAccountName`.
+### Step 4: Sync database users
 
 {{site.data.alerts.callout_info}}
-SQL usernames must comply with CockroachDB's [username requirements](https://www.cockroachlabs.com/docs/v24.2/create-user#user-names). Ensure that the values in the LDAP `sAMAccountName` field (or other mapped attribute) meet these requirements.
+LDAP authentication cannot be used for the `root` user or other [reserved identities]({% {{ page.version.version }}/security-reference/authorization.md %}#reserved-identities). Credentials for `root` must be managed separately using password authentication to ensure continuous administrative access regardless of LDAP availability.
+{{site.data.alerts.end}}
+
+Before LDAP authentication can be used for a user, the username must be created directly in CockroachDB. You will need to establish an automated method for keeping users in sync with the directory server, creating and dropping them as needed.
+
+For Active Directory deployments, the CockroachDB username can typically be set to match the `sAMAccountName` field from the `user` object. This field name would need to be specified in the HBA configuration using `ldapsearchattribute=sAMAccountName`.
+
+{{site.data.alerts.callout_info}}
+SQL usernames must comply with CockroachDB's [username requirements]({% link {{ page.version.version }}/create-user.md %}#user-names). Ensure that the values in the field you are using for `ldapsearchattribute` meet these requirements.
 {{site.data.alerts.end}}
 
 To create a single user:
@@ -107,7 +118,7 @@ CREATE ROLE username LOGIN;
 To create users in bulk:
 
 1. Export usernames from the directory server.
-1. Produce a `.sql` file with a [`CREATE ROLE`](https://www.cockroachlabs.com/docs/v24.2/create-role) statement per user, each on a separate line.
+1. Produce a `.sql` file with a [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}) statement per user, each on a separate line.
 
     ~~~ sql
     CREATE ROLE username1 LOGIN;
@@ -117,33 +128,67 @@ To create users in bulk:
 
     If you are not also enabling LDAP Authorization to manage roles and privileges, you can also include one or more `GRANT` lines for each user. For example, `GRANT developer TO username1` or `GRANT SELECT ON DATABASE orders TO username2;`.
 
-1. Run the SQL file to create the users.
+1. Run the SQL statements in the [file]({% {{ page.version.version }}/cockroach-sql.md %}#general):
 
-    ~~~ sql
+        ~~~ shell
     cockroach sql --file=create_users.sql --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
     ~~~
 
-You can similarly [`DROP`](https://www.cockroachlabs.com/docs/stable/drop-role) users as they are removed from the directory, and update roles and groups as needed, if not using LDAP authorization.
+To update users on an ongoing basis, you could script the required [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %}), or [`GRANT`]({% link {{ page.version.version }}/grant.md %}) commands to be [executed]({% {{ page.version.version }}/cockroach-sql.md %}#general) as needed. For example:
 
-### Connecting to CockroachDB
+        ~~~ shell
+    cockroach sql --execute="DROP ROLE username1" --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
+    ~~~
 
-#### SQL shell connection with LDAP authentication
+## Connect to a cluster using LDAP
 
-After LDAP authentication is configured, users can connect using their LDAP credentials:
+### SQL shell connection with LDAP authentication
 
-~~~ bash
-# Method 1: Password in connection string
-cockroach sql --url "postgresql://username:ldap_password@host:26257" --certs-dir=certs
+To connect using LDAP credentials, use your LDAP password: 
 
-# Method 2: Password in environment variable
+~~~ shell
+# Method 1: Password in environment variable
 export PGPASSWORD='ldap_password'
 cockroach sql --url "postgresql://username@host:26257" --certs-dir=certs
+
+# Method 2: Password in connection string
+cockroach sql --url "postgresql://username:ldap_password@host:26257" --certs-dir=certs
 ~~~
 
-#### DB Console connection with LDAP authentication
+### DB Console connection with LDAP authentication
 
 If LDAP authentication is configured, DB Console access will also use this configuration, allowing users to log in with their SQL username and LDAP password. During a login attempt, the system checks if LDAP authentication is configured for the user in the HBA configuration. If so, it validates the credentials against the LDAP server. If LDAP authentication fails or is not configured, the system falls back to password authentication.
 
 {{site.data.alerts.callout_info}}
 Authorization (role-based access control) is not applied when logging in to DB Console.
 {{site.data.alerts.end}}
+
+## Troubleshooting
+
+Enable [`SESSION` logging]({% {{ page.version.version }}/logging.md %}#sessions) to preserve data that will help troubleshoot LDAP issues.
+
+~~~ sql
+SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
+~~~
+
+{{site.data.alerts.callout_info}}
+Once all functionality is configured and tested successfully, we recommend disabling session logging to conserve system resources.
+{{site.data.alerts.end}}
+
+To view the logs, open `cockroach-session.log` from your [logging directory]({% {{ page.version.version }}/configure-logs.md %}#logging-directory).
+
+Potential issues to investigate may pertain to:
+
+- Network connectivity to the LDAP server.
+- Incorrect bind DN or password.
+- Search filter not matching the intended users.
+- TLS certificates.
+- Missing or mismatched role names.
+
+## Security Considerations
+
+1. Always keep a backup authentication method (like password) for administrative users.
+2. Use LDAPS (LDAP over TLS) in production environments.
+3. Use a restricted service account for directory searches.
+4. Regularly audit LDAP group memberships.
+5. Monitor authentication logs for unusual patterns.

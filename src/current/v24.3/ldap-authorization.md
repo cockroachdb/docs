@@ -1,25 +1,28 @@
 ---
 title: Configure LDAP Authorization
-summary: Learn how to configure role-based access control (authorization) using LDAP with directory services like Active Directory.
+summary: Learn how to configure role-based access control (authorization) using LDAP with directory services such as Active Directory or Microsoft Entra ID.
 toc: true
 ---
 
-LDAP authorization allows CockroachDB to use group memberships accessed using LDAP, for example, from an Active Directory server, as the source of truth for [role](https://www.cockroachlabs.com/docs/stable/security-reference/authorization#roles) assignments. When enabled:
+You can configure your cluster to assign [roles]({% link {{ page.version.version }}/ldap-authentication.md %}) based on a user's group membership in an LDAP service, such as Active Directory or Microsoft Entra ID.
 
-1. During login, CockroachDB retrieves the user's group memberships using LDAP.
-2. Groups are mapped to CockroachDB roles using the group's Common Name (CN).
-3. The user is automatically granted membership to corresponding roles.
-4. Any existing role memberships not matched to LDAP groups are revoked.
+When enabled:
+
+1. When a client connects to the cluster using LDAP, the cluster looks up the user's group membership in the LDAP service.
+1. Each LDAP group is mapped to a cluster role using the group's Common Name (CN) in the LDAP service.
+1. The user is granted each corresponding role, and roles that no longer match the user's groups are revoked.
 
 ## Prerequisites
 
-- Enable [LDAP Authentication]({% link v24.3/ldap-authentication.md %}).
+- Enable [LDAP Authentication]({% link {{ page.version.version }}/ldap-authentication.md %}).
 
 ## Configuration
 
+Before you begin, it may be useful to enable authentication logging, which can help you confirm sucessful configuration or troubleshoot issues. For details, refer to [Troubleshooting](#troubleshooting).
+
 ### Step 1: Enable LDAP Authorization
 
-Add the `ldapgrouplistfilter` parameter to your HBA configuration. The configuration includes two important LDAP filters:
+Add the `ldapgrouplistfilter` parameter to the HBA configuration that you enabled for [LDAP Authentication]({% link {{ page.version.version }}/ldap-authentication.md %}). The configuration will include two important LDAP filters:
 
 1. `ldapsearchfilter`: Determines which users can authenticate
 2. `ldapgrouplistfilter`: Defines which groups should be considered for authorization
@@ -38,9 +41,9 @@ host    all    all    all    ldap    ldapserver=ldap.example.com
     "ldapgrouplistfilter=(objectClass=groupOfNames)"';
 ~~~
 
-For more precise control, you can configure these filters to match your security requirements:
+For more precise control, you can configure these filters to match your security requirements. Refer to the examples below, and further documentation on [LDAP syntax filters](https://learn.microsoft.com/en-us/archive/technet-wiki/5392.active-directory-ldap-syntax-filters).
 
-#### Search Filter Examples
+#### Search filter examples
 
 To restrict authentication to members of specific groups:
 
@@ -49,7 +52,7 @@ To restrict authentication to members of specific groups:
 "ldapsearchfilter=(|(memberof=cn=cockroachdb_users,ou=groups,dc=example,dc=com)(memberof=cn=analytics_team,ou=groups,dc=example,dc=com))"
 ~~~
 
-#### Group List Filter Examples
+#### Group List filter examples
 
 The `ldapgrouplistfilter` configuration varies by LDAP server type:
 
@@ -72,9 +75,9 @@ For enhanced security, restrict the groups that can be mapped to CockroachDB rol
 We recommend that you explicitly specify which groups should be mapped to CockroachDB roles rather than using broader filters. This ensures that only intended groups are granted database access.
 {{site.data.alerts.end}}
 
-### Step 2: Create Matching Roles
+### Step 2: Create matching roles
 
-Create CockroachDB roles that match your LDAP group names and grant appropriate privileges to each role. Remember that role names must comply with CockroachDB's [identifier requirements](https://www.cockroachlabs.com/docs/v24.2/create-user#user-names).
+Create CockroachDB roles that match your LDAP group names and grant appropriate privileges to each role. Remember that role names must comply with CockroachDB's [identifier requirements]({% link {{ page.version.version }}/create-user.md %}#user-names).
 
 For example, if you've configured the group filter to allow `crdb_analysts` and `crdb_developers`:
 
@@ -88,15 +91,35 @@ CREATE ROLE crdb_developers;
 GRANT ALL ON DATABASE app TO crdb_developers;
 ~~~
 
+### Step 3: Confirm configuration
+
+1. On the LDAP server, set up test users with memberships in groups that should be synced to CockroachDB users.
+1. When logged in as an admin to CockroachDB, create the matching test users:
+
+    ~~~ sql
+    CREATE ROLE username1 LOGIN;
+    CREATE ROLE username2 LOGIN;
+    CREATE ROLE username3 LOGIN;
+    ~~~
+
+1. Log in to CockroachDB as each test user (refer to [Connect to a cluster using LDAP]({% {{ page.version.version }}/ldap-authentication.md %})#connect-to-a-cluster-using-ldap).
+1. Using your admin credentials, log in to the CockroachDB SQL shell and run `SHOW ROLES;` to view and verify users and their role assignments.
+
 ## Troubleshooting
 
-Enable authentication logging to troubleshoot LDAP issues:
+Enable [`SESSION` logging]({% {{ page.version.version }}/logging.md %}#sessions) to preserve data that will help troubleshoot LDAP issues:
 
 ~~~ sql
 SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~
 
-Potential issues may pertain to:
+{{site.data.alerts.callout_info}}
+Once all functionality is configured and tested successfully, we recommend disabling session logging to conserve system resources.
+{{site.data.alerts.end}}
+
+To view the logs, open `cockroach-session.log` from your [logging directory]({% {{ page.version.version }}/configure-logs.md %}#logging-directory).
+
+Potential issues to investigate may pertain to:
 
 - Network connectivity to the LDAP server.
 - Incorrect bind DN or password.
@@ -106,8 +129,8 @@ Potential issues may pertain to:
 
 ## Security Considerations
 
-1. Always keep a backup authentication method (like password) for administrative users
-2. Use LDAPS (LDAP over TLS) in production environments
-3. Use a restricted service account for directory searches
-4. Regularly audit LDAP group memberships
-5. Monitor authentication logs for unusual patterns
+1. Always keep a backup authentication method (like password) for administrative users.
+2. Use LDAPS (LDAP over TLS) in production environments.
+3. Use a restricted service account for directory searches.
+4. Regularly audit LDAP group memberships.
+5. Monitor authentication logs for unusual patterns.
