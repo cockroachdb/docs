@@ -122,4 +122,3 @@ CockroachDB {{ site.data.products.core }} deploys with the following default HBA
   local   all           all                        password
 ```
 
-TODO: Add coverage for https://github.com/cockroachdb/cockroach/pull/131625 & https://github.com/cockroachdb/cockroach/pull/131578 here?
