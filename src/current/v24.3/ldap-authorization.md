@@ -96,18 +96,19 @@ GRANT ALL ON DATABASE app TO crdb_developers;
 1. On the LDAP server, set up test users with memberships in groups that should be synced to CockroachDB users.
 1. When logged in as an admin to CockroachDB, create the matching test users:
 
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE ROLE username1 LOGIN;
     CREATE ROLE username2 LOGIN;
     CREATE ROLE username3 LOGIN;
     ~~~
 
-1. Log in to CockroachDB as each test user (refer to [Connect to a cluster using LDAP]({% {{ page.version.version }}/ldap-authentication.md %})#connect-to-a-cluster-using-ldap).
+1. Log in to CockroachDB as each test user (refer to [Connect to a cluster using LDAP]({% link {{ page.version.version }}/ldap-authentication.md %})#connect-to-a-cluster-using-ldap).
 1. Using your admin credentials, log in to the CockroachDB SQL shell and run `SHOW ROLES;` to view and verify users and their role assignments.
 
 ## Troubleshooting
 
-Enable [`SESSION` logging]({% {{ page.version.version }}/logging.md %}#sessions) to preserve data that will help troubleshoot LDAP issues:
+Enable [`SESSION` logging]({% link {{ page.version.version }}/logging.md %}#sessions) to preserve data that will help troubleshoot LDAP issues:
 
 ~~~ sql
 SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
@@ -117,7 +118,7 @@ SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 Once all functionality is configured and tested successfully, we recommend disabling session logging to conserve system resources.
 {{site.data.alerts.end}}
 
-To view the logs, open `cockroach-session.log` from your [logging directory]({% {{ page.version.version }}/configure-logs.md %}#logging-directory).
+To view the logs, open `cockroach-session.log` from your [logging directory]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory).
 
 Potential issues to investigate may pertain to:
 

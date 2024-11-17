@@ -32,7 +32,7 @@ Because CockroachDB maintains no more than one LDAP connection per node, for a c
 
 ### Prerequisites
 
-- An LDAP or Active Directory server.
+- An LDAP-compatible directory service, such as Microsoft Entra ID or Active Directory.
 - Network connectivity on port 636 for LDAPS.
 - A service account (bind DN) with permissions to search the directory for basic information about users and groups. For example, in Microsoft Entra ID, a [service principal](https://learn.microsoft.com/en-us/entra/architecture/secure-service-accounts) with the Directory Readers role.
 - The LDAP server's CA certificate, if using a custom CA not already trusted by the CockroachDB host.
@@ -45,6 +45,7 @@ You will set LDAP bind credentials for the service account that enables this int
 	
 To redact these sensitive setting values for all users except for those with the `admin` role or the `MODIFYCLUSTERSETTING` privilege, run:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.redact_sensitive_settings.enabled = 'true';
 ~~~
@@ -65,6 +66,7 @@ Set the authentication method for all users and databases to `ldap` and include 
 
 For example:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.host_based_authentication.configuration = '
 host    all    all    all    ldap    ldapserver=ldap.example.com 
@@ -84,12 +86,14 @@ If, for LDAPS, you are using a certificate signed by a custom Certificate Author
 
 Set the custom CA certificate:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.ldap_authentication.domain_ca = '<PEM_ENCODED_CA_CERT>';
 ~~~
 
 Configure a client certificate for mTLS if required:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.ldap_authentication.client.tls_certificate = '<PEM_ENCODED_CERT>';
 SET CLUSTER SETTING server.ldap_authentication.client.tls_key = '<PEM_ENCODED_KEY>';
@@ -98,7 +102,7 @@ SET CLUSTER SETTING server.ldap_authentication.client.tls_key = '<PEM_ENCODED_KE
 ### Step 4: Sync database users
 
 {{site.data.alerts.callout_info}}
-LDAP authentication cannot be used for the `root` user or other [reserved identities]({% {{ page.version.version }}/security-reference/authorization.md %}#reserved-identities). Credentials for `root` must be managed separately using password authentication to ensure continuous administrative access regardless of LDAP availability.
+LDAP authentication cannot be used for the `root` user or other [reserved identities]({% link {{ page.version.version }}/security-reference/authorization.md %}#reserved-identities). Credentials for `root` must be managed separately using password authentication to ensure continuous administrative access regardless of LDAP availability.
 {{site.data.alerts.end}}
 
 Before LDAP authentication can be used for a user, the username must be created directly in CockroachDB. You will need to establish an automated method for keeping users in sync with the directory server, creating and dropping them as needed.
@@ -111,6 +115,7 @@ SQL usernames must comply with CockroachDB's [username requirements]({% link {{ 
 
 To create a single user:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE username LOGIN;
 ~~~
@@ -120,6 +125,7 @@ To create users in bulk:
 1. Export usernames from the directory server.
 1. Produce a `.sql` file with a [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}) statement per user, each on a separate line.
 
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE ROLE username1 LOGIN;
     CREATE ROLE username2 LOGIN;
@@ -128,15 +134,17 @@ To create users in bulk:
 
     If you are not also enabling LDAP Authorization to manage roles and privileges, you can also include one or more `GRANT` lines for each user. For example, `GRANT developer TO username1` or `GRANT SELECT ON DATABASE orders TO username2;`.
 
-1. Run the SQL statements in the [file]({% {{ page.version.version }}/cockroach-sql.md %}#general):
+1. Run the SQL statements in the [file]({% link {{ page.version.version }}/cockroach-sql.md %}#general):
 
-        ~~~ shell
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
     cockroach sql --file=create_users.sql --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
     ~~~
 
-To update users on an ongoing basis, you could script the required [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %}), or [`GRANT`]({% link {{ page.version.version }}/grant.md %}) commands to be [executed]({% {{ page.version.version }}/cockroach-sql.md %}#general) as needed. For example:
+To update users on an ongoing basis, you could script the required [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %}), or [`GRANT`]({% link {{ page.version.version }}/grant.md %}) commands to be [executed]({% link {{ page.version.version }}/cockroach-sql.md %}#general) as needed. For example:
 
-        ~~~ shell
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
     cockroach sql --execute="DROP ROLE username1" --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
     ~~~
 
@@ -146,6 +154,7 @@ To update users on an ongoing basis, you could script the required [`CREATE ROLE
 
 To connect using LDAP credentials, use your LDAP password: 
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Method 1: Password in environment variable
 export PGPASSWORD='ldap_password'
@@ -165,8 +174,9 @@ Authorization (role-based access control) is not applied when logging in to DB C
 
 ## Troubleshooting
 
-Enable [`SESSION` logging]({% {{ page.version.version }}/logging.md %}#sessions) to preserve data that will help troubleshoot LDAP issues.
+Enable [`SESSION` logging]({% link {{ page.version.version }}/logging.md %}#sessions) to preserve data that will help troubleshoot LDAP issues.
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~
@@ -175,7 +185,7 @@ SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 Once all functionality is configured and tested successfully, we recommend disabling session logging to conserve system resources.
 {{site.data.alerts.end}}
 
-To view the logs, open `cockroach-session.log` from your [logging directory]({% {{ page.version.version }}/configure-logs.md %}#logging-directory).
+To view the logs, open `cockroach-session.log` from your [logging directory]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory).
 
 Potential issues to investigate may pertain to:
 
