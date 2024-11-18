@@ -77,11 +77,6 @@ This section describes how to use CockroachDB commands and dashboards to identif
     <td><ul><li>You may be scanning over large numbers of <a href="{% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc">MVCC versions</a>. This is similar to how a full table scan can be slow.</li></ul></td>
     <td><ul><li><a href="#too-many-mvcc-values">Configure CockroachDB to purge unneeded MVCC values.</a></li></ul></td>
   </tr>
-    <tr>
-      <td><ul><li>vCPU usage has plateaued (possibly around 70%) on your large cluster (<a href="">XXX</a>: DEFINE LARGE).</li></ul></td>
-      <td><ul><li><a href="architecture/distribution-layer.html#distsender">KV layer DistSender</a> batches may be getting throttled; check if the <code>distsender.batches.async.throttled</code> metric is greater than <code>0</code>.</li></ul></td>
-      <td><ul><li>Increase the <code>kv.dist_sender.concurrency_limit</code> <a href="cluster-settings.html">cluster setting</a>. (<a href="">XXX</a>: HOW MUCH? 6x as in https://github.com/cockroachdb/cockroach/pull/131226 ?)</li></ul></td>
-    </tr>
 </table>
 
 ## Solutions
@@ -302,16 +297,6 @@ A low percentage of live data can cause statements to scan more data ([MVCC valu
 #### Configure CockroachDB to purge MVCC values
 
 Reduce the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) zone configuration of the table as much as possible.
-
-### KV DistSender batches being throttled (performance impact to larger clusters)
-
-If you see `distsender.batches.async.throttled` values that aren't zero (or aren't consistently near zero), experiment with increasing the [KV layer DistSender]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender) and [KV layer Streamer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#streamer) concurrency using the `kv.streamer.concurrency_limit` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).  In 24.3, these default values were increased by 6x and 12x, respectively.  For versions older than 24.3, increasing the value by 6x and 12x would be a good starting point.
-
-To validate a successful result, you can increase this value until you see no new throttled requests AND no increase in tail latency (e.g. `p99.999`).
-
-This does increase the amount of RAM consumption per node to handle the increased concurrency, but it's proportional to the load and an individual flow's memory consumption should not be significant. Bad outcomes include increased tail latency or too much memory consumption with no decrease in the number of throttled requests. 
-
-Changing this setting can increase risk of [out of memory (OOM) errors]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) depending on the value of [`cockroach start --max-go-memory`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-max-go-memory) and/or [`GOMEMLIMIT`](https://pkg.go.dev/runtime#hdr-Environment_Variables).
 
 ## See also
 
