@@ -11,7 +11,7 @@ Role-based SQL audit logging gives you detailed information about queries being 
 {% include_cached feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+
 
 This page shows how to enable role-based SQL audit logging in CockroachDB, including:
 

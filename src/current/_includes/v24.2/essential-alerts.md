@@ -180,7 +180,7 @@ CockroachDB uses the [Pebble]({% link {{ page.version.version }}/architecture/st
 
 ### Enterprise license expiration
 
-Avoid [enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}) expiration to avoid any disruption to feature access.
+Avoid [license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) expiration to avoid any disruption to feature access.
 
 **Metric**
 <br>[`seconds.until.enterprise.license.expiry`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#seconds-until-enterprise-license-expiry)

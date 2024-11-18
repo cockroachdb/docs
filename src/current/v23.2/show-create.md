@@ -270,7 +270,7 @@ For more information, see [`COMMENT ON`]({% link {{ page.version.version }}/comm
 
 Use the `SHOW CREATE TABLE` command to view [multi-region-defined]({% link {{ page.version.version }}/multiregion-overview.md %}) table localities.
 
-{% include enterprise-feature.md %}
+
 
 To add the first region to the database, or to set an already-added region as the primary region, use a [`SET PRIMARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region) statement:
 

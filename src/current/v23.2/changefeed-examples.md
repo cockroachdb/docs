@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on CockroachDB {{ site.data.products.standard }}, {{ site.data.products.advanced }}, {{ site.data.products.basic }}, and with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html) on CockroachDB {{ site.data.products.core }} clusters. Core changefeeds are available in all products.
+This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on CockroachDB {{ site.data.products.basic }}, {{ site.data.products.standard }}, {{ site.data.products.advanced }}, and with an [{{ site.data.products.enterprise }} license](licensing-faqs.html#types-of-licenses) on CockroachDB {{ site.data.products.core }} clusters. Basic changefeeds are available in all products.
 
 For a summary of Core and {{ site.data.products.enterprise }} changefeed features, refer to the [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page.
 
@@ -24,7 +24,7 @@ Use the following filters to show usage examples for either **Enterprise** or **
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="enterprise">Enterprise Changefeeds</button>
-  <button class="filter-button" data-scope="core">Core Changefeeds</button>
+  <button class="filter-button" data-scope="core">Basic Changefeeds</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="enterprise">
@@ -37,13 +37,9 @@ Before you run the examples, verify that you have the `CHANGEFEED` privilege in 
 
 ## Create a changefeed connected to Kafka
 
-{{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
-{{site.data.alerts.end}}
-
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink. The changefeed will watch two tables.
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
@@ -182,13 +178,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Create a changefeed connected to Kafka using Avro
 
-{{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed-using-avro).
-{{site.data.alerts.end}}
-
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records. The changefeed will watch two tables.
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
@@ -493,13 +485,9 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
 
 ## Create a changefeed connected to a cloud storage sink
 
-{{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
-{{site.data.alerts.end}}
-
 In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. The changefeed watches two tables. Note that you can set up changefeeds for any of [these cloud storage providers]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink).
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
@@ -559,13 +547,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Create a changefeed connected to a webhook sink
 
-{{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
-{{site.data.alerts.end}}
-
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
@@ -648,17 +632,17 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 <section class="filter-content" markdown="1" data-scope="core">
 
-Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
+Basic changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
-## Create a Core changefeed
+## Create a basic changefeed
 
 {% include {{ page.version.version }}/cdc/create-core-changefeed.md %}
 
-## Create a Core changefeed using Avro
+## Create a basic changefeed using Avro
 
 {% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
 
-For further information on Core changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}).
+For further information on basic changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}).
 
 </section>
 
