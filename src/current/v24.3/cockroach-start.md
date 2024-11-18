@@ -232,21 +232,17 @@ Field | Description
 <a name="fields-ballast-size"></a> `ballast-size` | Configure the size of the automatically created emergency ballast file. Accepts the same value formats as the [`size` field](#store-size). For more details, see [Automatic ballast files]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files).<br><br>To disable automatic ballast file creation, set the value to `0`:<br><br>`--store=path=/mnt/ssd01,ballast-size=0`
 <a name="store-provisioned-rate"></a> `provisioned-rate` | A mapping of a store name to a bandwidth limit, expressed in bytes per second. This constrains the bandwidth used for [admission control]({% link {{ page.version.version }}/admission-control.md %}) for operations on the store. The disk name is separated from the bandwidth value by a colon (`:`). A value of `0` (the default) represents unlimited bandwidth. For example: <br /><br />`--store=provisioned-rate=disk-name=/mnt/ssd01:200`<br /><br />**Default:** 0<br /><br />If the bandwidth value is omitted, bandwidth is limited to the value of the  [`kv.store.admission.provisioned_bandwidth` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#settings). <strong>Modify this setting only in consultation with your <a href="https://support.cockroachlabs.com/hc/en-us">support team</a>.</strong>
 
-#### Write Ahead Log (WAL) Failover
+#### Write Ahead Log (WAL) failover
 
-On a CockroachDB [node]({% link {{ page.version.version }}/architecture/overview.md %}#node) with [multiple stores](#store), you can mitigate some effects of [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls) by configuring the node to failover each store's [write-ahead log (WAL)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) to another store's data directory using the `--wal-failover` flag.
-
-Failing over the WAL may allow some operations against a store to continue to complete despite temporary unavailability of the underlying storage. For example, if the node's primary store is stalled, and the node can't read from or write to it, the node can still write to the WAL on another store. This can give the node a chance to eventually catch up once the disk stall has been resolved.
-
-When WAL failover is enabled, CockroachDB will take the the following actions:
-
-- At node startup, each store is assigned another store to be its failover destination.
-- CockroachDB will begin monitoring the latency of all WAL writes. If latency to the WAL exceeds the value of the [cluster setting `storage.wal_failover.unhealthy_op_threshold`]({% link {{page.version.version}}/cluster-settings.md %}#setting-storage-wal-failover-unhealthy-op-threshold), the node will attempt to write WAL entries to a secondary store's volume.
-- CockroachDB will update the [store status endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#store-status-endpoint) at `/_status/stores` so you can monitor the store's status.
+{% include {{ page.version.version }}/wal-failover-intro.md %}
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
+
+This page has basic instructions on how to enable WAL failover, disable WAL failover, and monitor WAL failover.
+
+For more detailed instructions showing how to use, test, and monitor WAL failover, as well as descriptions of how WAL failover works in multi-store configurations, see [WAL Failover]({% link {{ page.version.version }}/wal-failover.md %}).
 
 ##### Enable WAL failover
 
@@ -265,14 +261,7 @@ Therefore, if you enable WAL failover and log to local disks, you must also upda
 1. When `buffering` is enabled, `buffered-writes` must be explicitly disabled as shown in the following example. This is necessary because `buffered-writes` does not provide true asynchronous disk access, but rather a small buffer. If the small buffer fills up, it can cause internal routines performing logging operations to hang. This will in turn cause internal routines doing other important work to hang, potentially affecting cluster stability.
 1. The recommended logging configuration for using file-based logging with WAL failover is as follows:
 
-      ~~~
-      file-defaults:
-        buffered-writes: false
-        buffering:
-          max-staleness: 1s
-          flush-trigger-size: 256KiB
-          max-buffer-size: 50MiB
-      ~~~
+    {% include {{ page.version.version }}/wal-failover-log-config.md %}
 
 As an alternative to logging to local disks, you can configure [remote log sinks]({% link {{page.version.version}}/logging-use-cases.md %}#network-logging) that are not correlated with the availability of your cluster's local disks. However, this will make troubleshooting using [`cockroach debug zip`]({% link {{ page.version.version}}/cockroach-debug-zip.md %}) more difficult, since the output of that command will not include the (remotely stored) log files.
 
@@ -285,18 +274,7 @@ To disable WAL failover, you must [restart the node]({% link {{ page.version.ver
 
 ##### Monitor WAL failover
 
-You can monitor if WAL failover occurs using the following metrics:
-
-- `storage.wal.failover.secondary.duration`: Cumulative time spent (in nanoseconds) writing to the secondary WAL directory. Only populated when WAL failover is configured.
-- `storage.wal.failover.primary.duration`: Cumulative time spent (in nanoseconds) writing to the primary WAL directory. Only populated when WAL failover is configured.
-- `storage.wal.failover.switch.count`: Count of the number of times WAL writing has switched from primary to secondary store, and vice versa.
-
-The `storage.wal.failover.secondary.duration` is the primary metric to monitor. You should expect this metric to be `0` unless a WAL failover occurs. If a WAL failover occurs, you probably care about how long it remains non-zero because it provides an indication of the health of the primary store.
-
-You can access these metrics via the following methods:
-
-- The [Custom Chart Debug Page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) in [DB Console]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}).
-- By [monitoring CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}).
+{% include {{ page.version.version }}/wal-failover-metrics.md %}
 
 ### Logging
 
