@@ -538,7 +538,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 ## What's next?
 
-Explore other core CockroachDB benefits and features:
+Explore other CockroachDB benefits and features:
 
 {% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 

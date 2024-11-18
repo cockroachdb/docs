@@ -27,7 +27,7 @@ This SSO implementation uses the [authorization code grant type](https://tools.i
 - **IdP:** You must have access to an OAuth 2.0 identity provider and client. The process of provisioning one with Google Cloud Platform is described on this page in the [Provision an OAuth client using Google Cloud Platform (GCP)](#provision-an-oauth-client-using-google-cloud-platform-gcp) section.
 
 - **CockroachDB cluster**: you must have access to one of the following:
-	- A {{ site.data.products.core }} cluster enabled with a valid [CockroachDB Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+	- A {{ site.data.products.core }} cluster enabled with a valid [CockroachDB Enterprise license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses).
 	- A [CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 
