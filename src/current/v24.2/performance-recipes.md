@@ -305,11 +305,9 @@ Reduce the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replic
 
 ### KV DistSender batches being throttled (performance impact to larger clusters)
 
-If you see values greater than `0` for the `distsender.batches.async.throttled` metric, consider increasing the [KV layer DistSender]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender) concurrency using the `kv.dist_sender.concurrency_limit` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
+If you see `distsender.batches.async.throttled` values that aren't zero (or aren't consistently near zero), experiment with increasing the [KV layer DistSender]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender) and [KV layer Streamer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#streamer) concurrency using the `kv.streamer.concurrency_limit` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).  In 24.3, these default values were increased by 6x and 12x, respectively.  For versions older than 24.3, increasing the value by 6x and 12x would be a good starting point.
 
-[XXX](): How much to increase? 6x as in https://github.com/cockroachdb/cockroach/pull/131226 ?  What should we say about testing? What is a bad outcome of doing this too much?
-
-[XXX](): FILE COCKROACH ISSUE TO MAKE THIS CLUSTER SETTING PUBLIC (currently private), if we're gonna document it it should be public
+Note that changing this setting can increase risk of [out of memory (OOM) errors]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) depending on the value of [`cockroach start --max-go-memory`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-max-go-memory) and/or [`GOMEMLIMIT`](https://pkg.go.dev/runtime#hdr-Environment_Variables).
 
 ## See also
 
