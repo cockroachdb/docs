@@ -237,7 +237,7 @@ For an Apache Pulsar setup example, refer to the [Changefeed Examples]({% link {
 
 ### Core implementation of changefeeds
 
-The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
+The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement creates a new basic changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A basic changefeed can watch one table or multiple tables in a comma-separated list.
 
 ### Multiple active portals
 

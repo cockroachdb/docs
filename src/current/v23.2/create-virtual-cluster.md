@@ -9,8 +9,6 @@ docs_area: reference.sql
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
-
 {% include_cached new-in.html version="v23.2" %} The `CREATE VIRTUAL CLUSTER` statement creates a new virtual cluster. It is supported only starting a [**physical cluster replication (PCR)** job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
