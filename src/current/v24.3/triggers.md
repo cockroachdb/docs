@@ -508,6 +508,12 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 	1. The row value fails the conditional check in `ensure_minimum_wage`, and raises an exception.
 	1. The `ERROR` message is printed and the SQL operation is aborted before the `give_bonus` function is executed.
 
+### Video demo
+
+For a deep-dive demo on triggers, play the following video:
+
+{% include_cached youtube.html video_id="OEu5Dbe7ueE" %}
+
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/trigger-limitations.md %}
