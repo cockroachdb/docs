@@ -47,6 +47,10 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
+### Triggers
+
+[Triggers]({% link {{ page.version.version }}/triggers.md %}) are in Preview. A trigger executes a function when one or more specified SQL operations is performed on a table. Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
+
 ### Admission control for ingesting snapshots
 
 The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` is in Preview. When configured, it limits the disk impact of ingesting snapshots on a node.
@@ -256,12 +260,6 @@ The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefee
 
 The multiple active portals feature of the Postgres wire protocol (pgwire) is available, with limitations.  For more information, see [Multiple active portals]({% link {{ page.version.version }}/postgresql-compatibility.md %}#multiple-active-portals).
 
-### Write Ahead Log (WAL) Failover
-
-When a CockroachDB [node]({% link {{ page.version.version }}/architecture/overview.md %}#node) is configured to run with [multiple stores]({% link {{ page.version.version }}/cockroach-start.md %}#store), you can mitigate some effects of [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls) by configuring the node to failover each store's [write-ahead log (WAL)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) to another store's data directory.
-
-For more information, see [Write Ahead Log (WAL Failover)]({% link {{ page.version.version }}/cockroach-start.md %}#write-ahead-log-wal-failover).
-
 ### Super regions
 
 [Super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) allow you to define a set of database regions such that schema objects will have all of their replicas stored _only_ in regions that are members of the super region. The primary use case for super regions is data domiciling.
@@ -279,6 +277,11 @@ Command                                     | Description
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
+### Leader leases
+
+{% include {{ page.version.version }}/leader-leases-intro.md %}
+
+For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 
 ## See Also
 

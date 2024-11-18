@@ -259,6 +259,10 @@ This section illustrates the steps to fail back to the original primary cluster 
 
     This will reset the virtual cluster on **Cluster A** back to the time at which the same virtual cluster on **Cluster B** diverged from it. **Cluster A** will check with **Cluster B** to confirm that its virtual cluster was replicated from **Cluster A** as part of the original [PCR stream]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
+    {{site.data.alerts.callout_info}}
+    If you want to start the PCR stream with a read-only virtual cluster on the standby after failing back to the original primary cluster, run the [`ALTER VIRTUAL CLUSTER`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) statement in this step with the `READ VIRTUAL CLUSTER` option.
+    {{site.data.alerts.end}}
+
 1. Check the status of the virtual cluster on **A**:
 
     {% include_cached copy-clipboard.html %}
