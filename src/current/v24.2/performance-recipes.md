@@ -307,7 +307,11 @@ Reduce the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replic
 
 If you see `distsender.batches.async.throttled` values that aren't zero (or aren't consistently near zero), experiment with increasing the [KV layer DistSender]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender) and [KV layer Streamer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#streamer) concurrency using the `kv.streamer.concurrency_limit` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).  In 24.3, these default values were increased by 6x and 12x, respectively.  For versions older than 24.3, increasing the value by 6x and 12x would be a good starting point.
 
-Note that changing this setting can increase risk of [out of memory (OOM) errors]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) depending on the value of [`cockroach start --max-go-memory`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-max-go-memory) and/or [`GOMEMLIMIT`](https://pkg.go.dev/runtime#hdr-Environment_Variables).
+To validate a successful result, you can increase this value until you see no new throttled requests AND no increase in tail latency (e.g. `p99.999`).
+
+This does increase the amount of RAM consumption per node to handle the increased concurrency, but it's proportional to the load and an individual flow's memory consumption should not be significant. Bad outcomes include increased tail latency or too much memory consumption with no decrease in the number of throttled requests. 
+
+Changing this setting can increase risk of [out of memory (OOM) errors]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) depending on the value of [`cockroach start --max-go-memory`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-max-go-memory) and/or [`GOMEMLIMIT`](https://pkg.go.dev/runtime#hdr-Environment_Variables).
 
 ## See also
 
