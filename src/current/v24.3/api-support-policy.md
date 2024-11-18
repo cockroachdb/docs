@@ -23,7 +23,7 @@ This page includes the following information:
 | Unstable | Supported for consumption by humans. Not supported for automation.        | [Backward-incompatible changes](#backward-incompatible-changes) may be introduced in new major and patch versions.                                                                                                 |
 | Reserved | Intended for use by CockroachDB developers. Not supported for public use. | N/A                                                                                                                                                                                                                |
 
-Backward-incompatible changes to **stable APIs** are highlighted in the [release notes]({% link releases/index.md %}#production-releases) for major CockroachDB versions. Users are asked to [consider backward-incompatible changes before upgrading]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#review-breaking-changes) to a new CockroachDB version.
+Backward-incompatible changes to **stable APIs** are highlighted in the [release notes]({% link releases/index.md %}) for major CockroachDB versions. Users are asked to consider backward-incompatible changes before [upgrading]({% link releases/{{ page.version.version}}.md %}) to a new CockroachDB version.
 
 ### Backward-incompatible changes
 
