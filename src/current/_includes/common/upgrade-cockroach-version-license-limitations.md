@@ -19,4 +19,4 @@ If a cluster with an **Enterprise Free** or **Enterprise Trial** license is upgr
 
 For more information, refer to the [Licensing FAQs]({% link {{ page.version.version }}/licensing-faqs.md %}).
 
-If you want to stay on the previous version, you can [roll back the upgrade before finalization]({% link {{ page.version.version }}/upgrade-cockroach-version.md%}#step-5-roll-back-the-upgrade-optional).
+If you want to stay on the previous version, you can [roll back the upgrade before finalization]({% link {{ page.version.version }}/upgrade-cockroach-version.md%}#roll-back-a-major-version-upgrade).
