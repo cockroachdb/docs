@@ -280,6 +280,18 @@
                     ]
                   },
                   {
+                    "title": "LDAP Authentication",
+                    "urls": [
+                      "/${VERSION}/ldap-authentication.html"
+                    ]
+                  },
+                  {
+                    "title": "LDAP Authorization",
+                    "urls": [
+                      "/${VERSION}/ldap-authorization.html"
+                    ]
+                  },
+                  {
                     "title": "GSSAPI Authentication",
                     "urls": [
                       "/${VERSION}/gssapi_authentication.html"
