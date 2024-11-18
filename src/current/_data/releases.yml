@@ -7387,7 +7387,7 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.28
-  cloud_only: true
+  cloud_only: false
   cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
   cloud_only_message: >
       This version is currently available only for select
