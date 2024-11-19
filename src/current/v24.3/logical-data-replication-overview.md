@@ -6,9 +6,11 @@ toc: true
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+
+Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v24.3" %} **Logical data replication (LDR)** continuously replicates tables between an active _source_ CockroachDB cluster to an active _destination_ CockroachDB cluster. Both source and destination can receive application reads and writes, and participate in [_bidirectional_](#use-cases) LDR replication for eventual consistency in the replicating tables. The active-active setup between clusters can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Each cluster in an LDR job still benefits individually from [multi-active availability]({% link {{ page.version.version }}/multi-active-availability.md %}) with CockroachDB's built-in [Raft replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) providing data consistency across nodes, zones, and regions.
+{% include_cached new-in.html version="v24.3" %} **Logical data replication (LDR)** continuously replicates tables between an active _source_ CockroachDB cluster to an active _destination_ CockroachDB cluster. Both source and destination can receive application reads and writes, and participate in [_bidirectional_](#use-cases) LDR for eventual consistency in the replicating tables. The active-active setup between clusters can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Each cluster in an LDR job still benefits individually from [multi-active availability]({% link {{ page.version.version }}/multi-active-availability.md %}) with CockroachDB's built-in [Raft replication]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) providing data consistency across nodes, zones, and regions.
 
 {{site.data.alerts.callout_success}}
 Cockroach Labs also has a [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) tool that continuously replicates data for transactional consistency from a primary cluster to an independent standby cluster.

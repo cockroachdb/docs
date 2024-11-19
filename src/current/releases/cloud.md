@@ -14,6 +14,10 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## November 18, 2024
+
+CockroachDB v24.3 is now generally available for select CockroachDB Cloud clusters. CockroachDB v24.3 is a [Regular release]({% link releases/release-support-policy.md %}#regular-releases). Refer to [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to v24.3]({% link cockroachcloud/upgrade-cockroach-version.md %}).
+
 ## November 8, 2024
 
 You can now [grant roles]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role) to a user after you [invite them]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization) to join your CockroachDB {{ site.data.products.cloud }} organization. Previously, a user was required to accept the invitation and create an account before roles could be granted.
