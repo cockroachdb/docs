@@ -7,6 +7,12 @@
             "urls": [
               "/${VERSION}/data-resilience.html"
             ]
-        }
+        },
+        {
+            "title": "Disaster Recovery",
+            "urls": [
+              "/${VERSION}/disaster-recovery-overview.html"
+            ]
+          }
     ]
 }
