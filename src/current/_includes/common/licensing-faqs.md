@@ -9,8 +9,8 @@ The table of licenses below refers to options for {{ site.data.products.core }} 
 Type | Description
 -------------|------------
 **Enterprise** <a name="enterprise"></a> | This paid license allows usage of all CockroachDB features in accordance with the terms specified in the [CockroachDB Software License][csl]. License must be renewed annually or as negotiated. Support levels available include [Enterprise][support] or [Essential][support].
-**Enterprise Free** <a name="enterprise-free"></a> | Same functionality as **Enterprise**, but free of charge for businesses with less than $10M in annual revenue. Clusters will be [throttled](#throttling) after 7 days without sending telemetry. License must be renewed annually. Support level available is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
-**Enterprise Trial** <a name="enterprise-trial"></a> | A 30 day self-service trial license. Telemetry is required during the trial. Clusters will be [throttled](#throttling) after 7 days without sending telemetry. Telemetry can be disabled once the cluster is upgraded to a paid **Enterprise** license. Support level available during trial is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
+**Enterprise Free** <a name="enterprise-free"></a> | Same functionality as **Enterprise**, but free of charge for businesses with less than $10M in annual revenue. Clusters will be [throttled](#throttling) after 7 days without sending [telemetry]({% link {{ page.version.version }}/telemetry.md %}). License must be renewed annually. Support level available is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
+**Enterprise Trial** <a name="enterprise-trial"></a> | A 30 day self-service trial license. [Telemetry]({% link {{ page.version.version }}/telemetry.md %}) is required during the trial. Clusters will be [throttled](#throttling) after 7 days without sending telemetry. Telemetry can be disabled once the cluster is upgraded to a paid **Enterprise** license. Support level available during trial is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
 
 <a href="mailto:sales@cockroachlabs.com">Contact Sales</a> if you want to try CockroachDB without telemetry requirements or if you require an extended trial period.
 
@@ -91,7 +91,7 @@ You can monitor the time until your license expires in the following ways:
 1. [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}): The `seconds_until_enterprise_license_expiry` metric reports the number of seconds until the license on a cluster expires. It will report `0` if there is no license, and a negative number if the license has already expired. For more information, see [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %}).
 1. [DB Console]({% link {{ page.version.version }}/ui-overview.md %}): Several [license expiration messages]({% link {{ page.version.version }}/ui-overview.md %}#license-expiration-message) may be displayed, depending on the status of your cluster's license.
 1. [CockroachDB {{ site.data.products.cloud }} Console][cloud-console]: If you have an **Enterprise Free** or **Enterprise Trial** cluster, you will see notifications in the **Enterprise Licenses** section, as well as receive notification emails sent to users with **Organization Admin** permissions.
-1. CockroachDB emits [log messages]({% link {{ page.version.version }}/logging-overview.md %}) when a cluster is at risk of being [throttled](#throttling) due to license expiration or telemetry requirements. The database will also return notices to [SQL clients]({% link {{ page.version.version }}/cockroach-sql.md %}) or [applications]({% link {{ page.version.version }}/install-client-drivers.md %}) that try to execute [transactions]({% link {{ page.version.version }}/transactions.md %}).
+1. CockroachDB emits [log messages]({% link {{ page.version.version }}/logging-overview.md %}) when a cluster is at risk of being [throttled](#throttling) due to license expiration or [telemetry]({% link {{ page.version.version }}/telemetry.md %}) requirements. The database will also return notices to [SQL clients]({% link {{ page.version.version }}/cockroach-sql.md %}) or [applications]({% link {{ page.version.version }}/install-client-drivers.md %}) that try to execute [transactions]({% link {{ page.version.version }}/transactions.md %}).
 
 {{site.data.alerts.callout_info}}
 During the transition to the [CockroachDB Software License][csl], expiration behavior (including [throttling](#throttling)) will work as follows depending on your version of CockroachDB.
@@ -128,7 +128,7 @@ When a cluster is being throttled, the number of concurrent open [SQL transactio
 
 This will happen in the following cases:
 
-- The cluster is not following telemetry requirements.
+- The cluster is not following [telemetry]({% link {{ page.version.version }}/telemetry.md %}) requirements.
     - There is a 7 day grace period for **Enterprise Free** and **Enterprise Trial** clusters to (re)start sending telemetry. This applies when the license is first [added](#set-a-license), or any time there is an interruption in telemetry.
 - The cluster has an expired [license key](#obtain-a-license); depending on the type of expired license, the cluster will be throttled after the following time periods:
     - **Enterprise**: Never throttles
