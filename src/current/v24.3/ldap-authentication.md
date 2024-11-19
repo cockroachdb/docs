@@ -143,10 +143,10 @@ To create users in bulk:
 
 To update users on an ongoing basis, you could script the required [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %}), or [`GRANT`]({% link {{ page.version.version }}/grant.md %}) commands to be [executed]({% link {{ page.version.version }}/cockroach-sql.md %}#general) as needed. For example:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    cockroach sql --execute="DROP ROLE username1" --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
-    ~~~
+{% include_cached copy-clipboard.html %}
+~~~ sql
+cockroach sql --execute="DROP ROLE username1" --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
+~~~
 
 ## Connect to a cluster using LDAP
 
@@ -198,7 +198,7 @@ Potential issues to investigate may pertain to:
 ## Security Considerations
 
 1. Always keep a backup authentication method (like password) for administrative users.
-2. Use LDAPS (LDAP over TLS) in production environments.
-3. Use a restricted service account for directory searches.
-4. Regularly audit LDAP group memberships.
-5. Monitor authentication logs for unusual patterns.
+1. Use LDAPS (LDAP over TLS) in production environments.
+1. Use a restricted service account for directory searches.
+1. Regularly audit LDAP group memberships.
+1. Monitor authentication logs for unusual patterns.
