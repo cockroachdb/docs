@@ -7,9 +7,9 @@ docs_area: reference.sql
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+
+Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
-
-
 
 The `CREATE VIRTUAL CLUSTER` statement creates a new virtual cluster. It is supported only starting a [**physical cluster replication (PCR)** job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
