@@ -42,7 +42,7 @@ Version | Release Type | Support period | Release date | EOS date
 
 ## Patch version upgrades
 
-Patch version [releases](https://www.cockroachlabs.com/docs/releases), or "maintenance" releases, contain stable, backward-compatible improvements to the major versions of CockroachDB. For example, {{site.current_cloud_version}} is a patch release. (for example, v23.1.12 and v23.1.13).
+Patch version [releases](https://www.cockroachlabs.com/docs/releases), or "maintenance" releases, contain stable, backward-compatible improvements to the major versions of CockroachDB. 
 
 For CockroachDB {{ site.data.products.advanced }} clusters, [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) can [set a weekly 6-hour maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) during which available maintenance and patch upgrades will be applied. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. Upgrades may not always be completed by the end of the window, and maintenance that is critical for security or stability may occur outside the window. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window). If no maintenance window is configured, CockroachDB {{ site.data.products.advanced }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
 

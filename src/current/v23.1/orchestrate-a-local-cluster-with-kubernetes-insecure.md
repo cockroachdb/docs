@@ -146,7 +146,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 ## See also
 
-Explore other core CockroachDB benefits and features:
+Explore other CockroachDB benefits and features:
 
 {% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 

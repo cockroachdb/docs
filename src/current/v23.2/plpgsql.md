@@ -5,8 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% include enterprise-feature.md %}
-
 {% include_cached new-in.html version="v23.2" %} [PL/pgSQL](https://www.postgresql.org/docs/16/plpgsql-overview.html) is a procedural language that you can use within [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) and [stored procedures]({% link {{ page.version.version }}/stored-procedures.md %}) in CockroachDB. 
 
 In contrast to [SQL statements]({% link {{ page.version.version }}/sql-statements.md %}), which are issued one-by-one from the client to the database, PL/pgSQL statements are encapsulated in a [block structure](#structure) and executed on the database side, thus reducing network latency. PL/pgSQL enables more complex functionality than standard SQL, including [conditional statements](#write-conditional-statements), [loops](#write-loops), and [exception handling](#report-messages-and-handle-exceptions).

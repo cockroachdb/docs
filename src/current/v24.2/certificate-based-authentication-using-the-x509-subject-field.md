@@ -18,7 +18,7 @@ Subject mapping is useful if:
 
 For instructions showing how to map SQL user roles to values in the Subject field of the X.509 certificate, see the [Example](#example).
 
-{% include enterprise-feature.md %}
+
 
 ## Related functionality
 
@@ -89,7 +89,7 @@ ERROR: role "root" cannot have a SUBJECT%!(EXTRA string=use the --%s CLI flag to
 SQLSTATE: 22023
 ~~~
 
-If you do not have an [enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}), the following error is signaled:
+If you do not have an [enterprise license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses), the following error is signaled:
 
 {% include_cached copy-clipboard.html %}
 ~~~

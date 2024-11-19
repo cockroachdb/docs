@@ -230,7 +230,7 @@ $ cockroach sql --user=jpointsman --insecure
 
 ### Core implementation of changefeeds
 
-The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
+The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement creates a new basic changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A basic changefeed can watch one table or multiple tables in a comma-separated list.
 
 ### Changefeed metrics labels
 
@@ -248,7 +248,7 @@ The multiple active portals feature of the Postgres wire protocol (pgwire) is av
 
 ### Physical Cluster Replication
 
-{% include_cached new-in.html version="v23.2" %}[Physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) continuously sends all data at the byte level from a primary cluster to an independent standby cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster. In a disaster recovery scenario, you can cut over from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic. Physical cluster replication is in preview for CockroachDB Self-Hosted, and is an [enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
+{% include_cached new-in.html version="v23.2" %}[Physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) continuously sends all data at the byte level from a primary cluster to an independent standby cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster. In a disaster recovery scenario, you can cut over from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic. Physical cluster replication is in preview for CockroachDB {{ site.data.products.core }} clusters.
 
 ### Super regions
 
