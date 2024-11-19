@@ -55,11 +55,11 @@ The following flags are set with [`--replicator-flags`](#global-flags) and can b
 
 The following flags are set with [`--replicator-flags`](#global-flags) and can be used in any [Fetch mode](#fetch-mode) that involves replication from a [MySQL source database](#source-and-target-databases).
 
-|           Flag           |   Type   |                                               Description                                               |
-|--------------------------|----------|---------------------------------------------------------------------------------------------------------|
-| `--defaultGTIDSet`       | `STRING` | Default GTID set, in the format `source_uuid:min(interval_start)-max(interval_end)`.                    |
-| `--fetchMetadata`        |          | Fetch column metadata explicitly, for older versions of MySQL that don't support `binlog_row_metadata`. |
-| `--replicationProcessID` | `UINT32` | The replication process ID to report to the source database.<br><br>**Default:** `10`                   |
+|           Flag           |   Type   |                                                                                                              Description                                                                                                              |
+|--------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--defaultGTIDSet`       | `STRING` | Default GTID set, in the format `source_uuid:min(interval_start)-max(interval_end)`. **Required** the first time [`--mode replication-only`](#replicate-changes) is run, as this provides a replication marker for streaming changes. |
+| `--fetchMetadata`        |          | Fetch column metadata explicitly, for older versions of MySQL that don't support `binlog_row_metadata`.                                                                                                                               |
+| `--replicationProcessID` | `UINT32` | The replication process ID to report to the source database.<br><br>**Default:** `10`                                                                                                                                                 |
 
 ##### Failback replication flags
 
