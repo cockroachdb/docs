@@ -32,7 +32,7 @@ When CMEK is enabled, the **Encryption** option appears to be disabled in the [D
 
 When selecting a deployment environment for a CockroachDB {{ site.data.products.core }} cluster, we recommend that you select a cloud provider such as Google Cloud Platform (GCP) or Amazon Web Services (AWS), which automatically provide industry-standard encryption for cloud storage resources. You can learn more about [GCP persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption) or [AWS Elastic Block Storage](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html).
 
-In addition, the [Encryption at Rest (Enterprise) feature]({% link {{ page.version.version }}/enterprise-licensing.md %}) provides transparent encryption of data on cluster disks. It allows encryption of all files on disk using [AES](https://wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key sizes allowed.
+In addition, the Encryption at Rest feature provides transparent encryption of data on cluster disks. It allows encryption of all files on disk using [AES](https://wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key sizes allowed.
 
 Encryption is performed in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) and configured per store. All files used by the store, regardless of contents, are encrypted with the desired algorithm.
 

@@ -248,7 +248,7 @@ To create your changefeed, you'll prepare your CockroachDB cluster with the `mov
     cockroach sql --url {"CONNECTION STRING"}
     ~~~
 
-1. Set your organization name and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}) key that you received via email:
+1. Set your organization name and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) key:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql

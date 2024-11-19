@@ -519,7 +519,7 @@
 
 - destination: licensing-faqs.md
   sources: ['enterprise-licensing.md']
-  versions: ['v24.3']
+  versions: ['v23.1', 'v23.2', 'v24.1', 'v24.2', 'v24.3']
 
 - destination: :version/licensing-faqs.md
   sources: [':version/get-started-with-enterprise-trial.md']

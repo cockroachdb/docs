@@ -15,7 +15,7 @@ Once a column is encrypted, SQL users are required to pass an encryption key whe
 The "column level encryption" feature described on this page specifically refers to symmetric-key encryption of data, **not** hashing functions operating on data.
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+
 
 ## Available Functions
 
@@ -28,7 +28,7 @@ For usage examples, see:
 - [Encrypt using the `encrypt` function](#encrypt-using-the-encrypt-function).
 - [Encrypt using the `encrypt_iv` function](#encrypt-using-the-encrypt_iv-function).
 
-These functions require an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}). If you do not have an Enterprise license, you will see an error message like the following if you try to use them:
+If you do not have a [license]({% link {{ page.version.version }}/licensing-faqs.md %}), you will see an error message like the following if you try to use them:
 
 ~~~
 ERROR: encrypt(): use of this cryptographic function (https://www.cockroachlabs.com/docs/stable/functions-and-operators#cryptographic-functions) requires an enterprise license. see https://cockroachlabs.com/pricing for details on how to enable enterprise features
@@ -47,7 +47,7 @@ For usage examples, see:
 - [Decrypt using the `decrypt` function](#decrypt-using-the-decrypt-function).
 - [Decrypt using the `decrypt_iv` function](#decrypt-using-the-decrypt_iv-function).
 
-These functions require an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}). If you do not have an Enterprise license, you will see an error message like the following if you try to use them:
+If you do not have a [license]({% link {{ page.version.version }}/licensing-faqs.md %}), you will see an error message like the following if you try to use them:
 
 ~~~
 ERROR: decrypt(): use of this cryptographic function (https://www.cockroachlabs.com/docs/stable/functions-and-operators#cryptographic-functions) requires an enterprise license. see https://cockroachlabs.com/pricing for details on how to enable enterprise features
