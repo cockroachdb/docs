@@ -41,7 +41,7 @@ After completing these steps, nodes will not yet be live. They will complete the
     `--cache`<br>`--max-sql-memory` | Increases the node's cache size to 25% of available system memory to improve read performance. The capacity for in-memory SQL processing defaults to 25% of system memory but can be raised, if necessary, to increase the number of simultaneous client connections allowed by the node as well as the node's capacity for in-memory processing of rows when using `ORDER BY`, `GROUP BY`, `DISTINCT`, joins, and window functions. For more details, see [Cache and SQL Memory Size]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size).
     `--background` | Starts the node in the background so you gain control of the terminal to issue more commands.
 
-    When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain [{{ site.data.products.enterprise }} features]({% link {{ page.version.version }}/enterprise-licensing.md %}). For more details, see [Locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality).
+    When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. For more details, see [Locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality).
 
 	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=<node1 address>:8080`. To set these options manually, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}).
 
@@ -141,7 +141,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     {% include {{ page.version.version }}/prod-deployment/advertise-addr-join.md %}
 
-    When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain [{{ site.data.products.enterprise }} features]({% link {{ page.version.version }}/enterprise-licensing.md %}). For more details, see [Locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality).
+    When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. For more details, see [Locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality).
 
  	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=localhost:8080`. To set these options manually, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}).
 

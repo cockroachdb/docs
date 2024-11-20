@@ -6,7 +6,7 @@ docs_area: stream
 key: cdc-transformations.html
 ---
 
-{% include enterprise-feature.md %}
+
 
 Change data capture queries allow you to define the change data emitted to your sink when you create a changefeed. The expression [syntax](#syntax) provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}).
 

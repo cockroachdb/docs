@@ -149,6 +149,8 @@ The following releases and their descriptions represent proposed plans that are 
 {% capture experimental_download_js %}{% include_cached releases/experimental_download_dialog.md %}{% endcapture %}
 {% capture onclick_string %}onclick="{{ experimental_download_js }}"{% endcapture %}
 
+{% assign is_not_downloadable_message = "No longer available for download." %}
+
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
 
     {% comment %}
@@ -252,6 +254,7 @@ To learn what’s new in this release, refer to [Feature Highlights]({% link rel
         {% endfor %}
 
         {% if releases[0] %}
+
 #### {{ s }} Releases
 
 <section class="filter-content" markdown="1" data-scope="linux">
@@ -269,6 +272,7 @@ To learn what’s new in this release, refer to [Feature Highlights]({% link rel
     </thead>
     <tbody>
             {% for r in releases %}
+
                 {% assign current_patch_string = '' %}
                 {% assign current_patch = nil %}
                 {% assign in_lts = false %}
@@ -302,6 +306,9 @@ To learn what’s new in this release, refer to [Feature Highlights]({% link rel
                 {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td colspan="2"><span>{{ r.cloud_only_message_short }}</span></td>
                   {% continue %}
+                {% elsif r.is_not_downloadable == true %} {% comment %} Suppress download links for outdated versions. {% endcomment %}
+            <td colspan="2"><span>{{ is_not_downloadable_message }}</span></td>
+                  {% continue %}
                 {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
                 <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-amd64.tgz" class="binary-link">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-amd64.tgz.sha256sum" class="binary-link">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
@@ -311,7 +318,7 @@ To learn what’s new in this release, refer to [Feature Highlights]({% link rel
                 {% endif %}
                 {% if r.linux.linux_arm == true %}
                 {% comment %}Don't print column because of previous colspan=2{% endcomment %}
-                    {% if r.withdrawn == true or r.cloud_only == true %}
+                    {% if r.withdrawn == true or r.cloud_only == true or r.is_not_downloadable == true %}
                         {% break %}
                     {% else %}
                 <td>
@@ -346,6 +353,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
+
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
                 <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
@@ -360,6 +368,9 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td colspan="2"><span>{{ r.cloud_only_message_short }}</span></td>
               {% continue %}
+            {% elsif r.is_not_downloadable == true %} {% comment %} Suppress download links for outdated versions. {% endcomment %}
+            <td colspan="2"><span>{{ is_not_downloadable_message }}</span></td>
+                  {% continue %}
             {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
                 <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-10.9-amd64.tgz" class="binary-link">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.darwin-10.9-amd64.tgz.sha256sum" class="binary-link">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
@@ -369,7 +380,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             {% endif %}
             {% if r.mac.mac_arm == true %}
                 {% comment %}Don't print column because of previous colspan=2{% endcomment %}
-                {% if r.withdrawn == true or r.cloud_only == true %}
+                {% if r.withdrawn == true or r.cloud_only == true or r.is_not_downloadable == true %}
                     {% break %}
                 {% else %}
             <td>
@@ -400,6 +411,8 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
+
+
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
                 <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
@@ -413,6 +426,9 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
                   {% continue %}
                 {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td colspan="2"><span>{{ r.cloud_only_message_short }}</span></td>
+                  {% continue %}
+                {% elsif r.is_not_downloadable == true %} {% comment %} Suppress download links for outdated versions. {% endcomment %}
+            <td colspan="2"><span>{{ is_not_downloadable_message }}</span></td>
                   {% continue %}
                 {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
@@ -461,6 +477,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
+
             {% assign current_patch_string = '' %}
             {% assign current_patch = nil %}
             {% assign in_lts = false %}
@@ -497,6 +514,9 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
                 <span class="badge badge-gray">Withdrawn</span></td>{% comment %} Suppress download links for withdrawn releases, spans Intel and ARM columns {% endcomment %}
             {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases, spans Intel and ARM columns {% endcomment %}
                 <span>{{ r.cloud_only_message_short }}</span></td>
+            {% elsif r.is_not_downloadable == true %} {% comment %} Suppress download links for outdated versions. {% endcomment %}
+                <span>{{ is_not_downloadable_message }}</span></td>
+                  {% continue %}
             {% else %}
                 {% if r.source == false %}
                 N/A
@@ -552,6 +572,9 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
             <td><span>{{ r.cloud_only_message_short }}</span></td>
                 {% continue %}
+            {% elsif r.is_not_downloadable == true %} {% comment %} Suppress download links for outdated versions. {% endcomment %}
+            <td><span>{{ is_not_downloadable_message }}</span></td>
+                {% continue %}
             {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
                 {% if r.source == true %}
@@ -574,10 +597,8 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 
 ## Licenses
 
-{{site.data.alerts.callout_info}}
-{% include common/license/evolving.md %}
-{{site.data.alerts.end}}
+All binaries available on this page released on or after the day 24.3.0 is released onward, including patch fixes for versions 23.1-24.2, are made available under the [CockroachDB Software License](https://www.cockroachlabs.com/cockroachdb-software-license).
 
-Unless otherwise noted, all binaries available on this page are variously licensed under the Business Source License 1.1 (BSL), the CockroachDB Community License (CCL), and other licenses specified in the source code. To determine whether BSL or CCL applies to a CockroachDB feature, refer to the [Licensing FAQs](https://www.cockroachlabs.com/docs/stable/licensing-faqs) page under Feature Licensing. The default license for any feature that is not listed is the CCL.
+All binaries available on this page released prior to the release date of 24.3.0 are variously licensed under the Business Source License 1.1 (BSL), the CockroachDB Community License (CCL), and other licenses specified in the source code.
 
-To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license/) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `Licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.
+To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.

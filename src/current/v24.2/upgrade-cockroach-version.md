@@ -76,6 +76,10 @@ When you are ready to upgrade to {{ latest.release_name }}, continue to [step 2]
 
 Before starting the upgrade, complete the following steps.
 
+### Ensure you have a valid license key
+
+{% include common/upgrade-cockroach-version-license-limitations.md %}
+
 ### Review breaking changes
 
 

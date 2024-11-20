@@ -11,7 +11,7 @@ To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS
 
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
-{% include enterprise-feature.md %}
+
 
 ## Synopsis
 

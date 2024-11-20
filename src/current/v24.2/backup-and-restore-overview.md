@@ -25,7 +25,6 @@ This table outlines the level of product support for backup and restore features
     <tr>
       <th>Backup / Restore</th>
       <th>Description</th>
-      <th>Self-hosted support</th>
     </tr>
   </thead>
   <tbody>
@@ -34,88 +33,48 @@ This table outlines the level of product support for backup and restore features
         <a href="{% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups">Full backup</a>
       </td>
       <td>An un-replicated copy of your cluster, database, or table's data. A full backup is the base for any further backups.</td>
-      <td>
-        <ul>
-          <li>Enterprise license not required</li>
-        </ul>
-      </td>
     </tr>
     <tr>
       <td>
         <a href="{% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups">Incremental backup</a>
       </td>
       <td>A copy of the changes in your data since the specified base backup (either a full backup or a full backup plus an incremental backup).</td>
-      <td>
-        <ul>
-          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
-        </ul>
-      </td>
     </tr>
     <tr>
       <td>
         <a href="{% link {{ page.version.version }}/manage-a-backup-schedule.md %}">Scheduled backup</a>
       </td>
       <td>A schedule for periodic backups.</td>
-      <td>
-        <ul>
-          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
-        </ul>
-      </td>
     </tr>
     <tr>
       <td>
         <a href="{% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}">Backups with revision history</a>
       </td>
       <td>A backup with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp.</td>
-      <td>
-        <ul>
-          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
-        </ul>
-      </td>
     </tr>
     <tr>
       <td>
         <a href="{% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}">Point-in-time restore</a>
       </td>
       <td>A restore from an arbitrary point in time within the revision history of a backup.</td>
-      <td>
-        <ul>
-          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
-        </ul>
-      </td>
     </tr>
     <tr>
       <td>
         <a href="{% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}">Encrypted backup and restore</a>
       </td>
       <td>An encrypted backup using a KMS or passphrase.</td>
-      <td>
-        <ul>
-          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
-        </ul>
-      </td>
     </tr>
     <tr>
       <td>
         <a href="{% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}">Locality-aware backup and restore</a>
       </td>
       <td>A backup where each node writes files to the backup destination that matches the node locality configured at node startup.</td>
-      <td>
-        <ul>
-          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
-        </ul>
-      </td>
     </tr>
     <tr>
       <td>
         <a href="{% link {{ page.version.version }}/take-locality-restricted-backups.md %}">Locality-restricted backup execution</a>
       </td>
       <td>A backup with the <code>EXECUTION LOCALITY</code> option restricts the nodes that can execute a backup job with a defined locality filter.</td>
-      <td>
-        <ul>
-          <li>Requires an Enterprise license - <a href="{% link {{ page.version.version }}/enterprise-licensing.md %}">Learn more</a></li>
-        </ul>
-      </td>
     </tr>
   </tbody>
 </table>
