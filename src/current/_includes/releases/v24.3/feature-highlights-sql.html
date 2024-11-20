@@ -17,7 +17,7 @@
    <td>
     <p class="feature-summary">User-defined functions and stored procedures support SECURITY DEFINER</p>
     <p class="feature-description">
-      You can create or alter a [user-defined function (UDF)]({% link v24.3/user-defined-functions.md %}) or [stored procedure]({% link v24.3/stored-procedures.md %}) with <code>[EXTERNAL] SECURITY DEFINER</code> instead of the default <code>[EXTERNAL] SECURITY INVOKER</code>. With <code>[SECURITY DEFINER]({% link v24.3/create-function.md %}#create-a-security-definer-function)</code>, the privileges of the owner are checked when the UDF or stored procedure is executed, rather than the privileges of the executor. The <code>EXTERNAL</code> keyword is optional and exists for SQL language conformity. 
+      You can create or alter a <a href="https://cockroachlabs.com/docs/v24.3/user-defined-functions.html">user-defined function (UDF)</a> or <a href="https://cockroachlabs.com/docs/v24.3/stored-procedures.html">stored procedure</a> with <code>[EXTERNAL] SECURITY DEFINER</code> instead of the default <code>[EXTERNAL] SECURITY INVOKER</code>. With <a href="https://cockroachlabs.com/docs/v24.3/create-function.html#create-a-security-definer-function"><code>[SECURITY DEFINER]</code></a>, the privileges of the owner are checked when the UDF or stored procedure is executed, rather than the privileges of the executor. The <code>EXTERNAL</code> keyword is optional and exists for SQL language conformity.
     </p>
    </td>
    <td>24.3</td>
@@ -28,9 +28,9 @@
   </tr>
   <tr>
     <td>
-     <p class="feature-summary">CockroachDB now supports triggers</p>
+     <p class="feature-summary">CockroachDB now supports triggers in Preview</p>
      <p class="feature-description">
-      CockroachDB now supports [triggers]({% link v24.3/triggers.md %}). Triggers allow automatic execution of specified functions in response to specified events on a particular table or view. They can be used for automating tasks, enforcing business rules, and maintaining data integrity.
+      CockroachDB now supports <a href="https://cockroachlabs.com/docs/v24.3/triggers.html">triggers</a>. Triggers allow automatic execution of specified functions in response to specified events on a particular table or view. They can be used for automating tasks, enforcing business rules, and maintaining data integrity. This feature is in Preview.
      </p>
     </td>
     <td>24.3</td>
