@@ -304,7 +304,7 @@ Reduce the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replic
 
 ### KV DistSender batches being throttled (performance impact to larger clusters)
 
-If you see `distsender.batches.async.throttled` values that aren't zero (or aren't consistently near zero), experiment with increasing the [KV layer `DistSender`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender) and `Streamer` concurrency using the `kv.streamer.concurrency_limit` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).  In v24.3, these default values were increased by 6x and 12x, respectively.  For versions prior to v24.3, increasing the value by 6x and 12x would be a good starting point.
+If you see `distsender.batches.async.throttled` values that aren't zero (or aren't consistently near zero), experiment with increasing the [KV layer `DistSender`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender) and `Streamer` concurrency using the `kv.streamer.concurrency_limit` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). In v24.3, these default values were increased by 6x and 12x, respectively. For versions prior to v24.3, increasing the value by 6x and 12x would be a good starting point.
 
 To validate a successful result, you can increase this value until you see no new throttled requests and no increase in tail latency (e.g. `p99.999`).
 
