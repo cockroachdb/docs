@@ -306,7 +306,7 @@ Reduce the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replic
 
 If you see `distsender.batches.async.throttled` values that aren't zero (or aren't consistently near zero), experiment with increasing the [KV layer `DistSender`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender) and `Streamer` concurrency using the `kv.streamer.concurrency_limit` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). In v24.3, these default values were increased by 6x and 12x, respectively. For versions prior to v24.3, increasing the value by 6x and 12x would be a good starting point.
 
-To validate a successful result, you can increase this value until you see no new throttled requests and no increase in tail latency (e.g. `p99.999`).
+To validate a successful result, you can increase this value until you see no new throttled requests and no increase in tail latency (e.g., `p99.999`).
 
 This does increase the amount of RAM consumption per node to handle the increased concurrency, but it's proportional to the load and an individual flow's memory consumption should not be significant. Bad outcomes include increased tail latency or too much memory consumption with no decrease in the number of throttled requests.
 
