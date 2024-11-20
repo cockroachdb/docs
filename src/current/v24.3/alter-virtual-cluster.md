@@ -9,9 +9,9 @@ docs_area: reference.sql
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
 
-The `ALTER VIRTUAL CLUSTER` statement initiates a cutover in a [**physical cluster replication (PCR)** job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) and manages a virtual cluster.
+
+The `ALTER VIRTUAL CLUSTER` statement initiates a failover in a [**physical cluster replication (PCR)** job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) and manages a virtual cluster.
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
@@ -42,11 +42,11 @@ Parameter | Description
 `virtual_cluster_spec` | The virtual cluster's name.
 `PAUSE REPLICATION` | Pause the replication stream.
 `RESUME REPLICATION` | Resume the replication stream.
-`COMPLETE REPLICATION TO` | Set the time to complete the replication. Use: <br><ul><li>`SYSTEM TIME` to specify a [timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}). Refer to [Cut over to a point in time]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-a-point-in-time) for an example.</li><li>`LATEST` to specify the most recent replicated timestamp. Refer to [Cut over to a point in time]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-the-most-recent-replicated-time) for an example.</li></ul>
-`SET REPLICATION RETENTION = duration` | Change the [duration]({% link {{ page.version.version }}/interval.md %}) of the retention window that will control how far in the past you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) to.<br><br>{% include {{ page.version.version }}/physical-replication/retention.md %}
-`SET REPLICATION EXPIRATION WINDOW = duration` | Override the default producer job's expiration window of 24 hours. The producer job expiration window determines how long the producer job will continue to run without a heartbeat from the consumer job. Refer to the [Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) for more details.
-`START REPLICATION OF virtual_cluster_spec ON physical_cluster` | Reset a virtual cluster to the time when the virtual cluster on the promoted standby diverged from it. To reuse as much of the existing data on the original primary cluster as possible, you can run this statement as part of the [cutback]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-to-the-primary-cluster) process. This command fails if the virtual cluster was not originally replicated from the original primary cluster.
-`START SERVICE SHARED` | Start a virtual cluster so it is ready to accept SQL connections after cutover.
+`COMPLETE REPLICATION TO` | Set the time to complete the replication. Use: <br><ul><li>`SYSTEM TIME` to specify a [timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}). Refer to [Fail over to a point in time]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-a-point-in-time) for an example.</li><li>`LATEST` to specify the most recent replicated timestamp. Refer to [Fail over to a point in time]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-the-most-recent-replicated-time) for an example.</li></ul>
+`SET REPLICATION RETENTION = duration` | Change the [duration]({% link {{ page.version.version }}/interval.md %}) of the retention window that will control how far in the past you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) to.<br><br>{% include {{ page.version.version }}/physical-replication/retention.md %}
+`SET REPLICATION EXPIRATION WINDOW = duration` | Override the default producer job's expiration window of 24 hours. The producer job expiration window determines how long the producer job will continue to run without a heartbeat from the consumer job. For more details, refer to the [Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}).
+`START REPLICATION OF virtual_cluster_spec ON physical_cluster` | Reset a virtual cluster to the time when the virtual cluster on the promoted standby diverged from it. To reuse as much of the existing data on the original primary cluster as possible, you can run this statement as part of the [failback]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-to-the-primary-cluster) process. This command fails if the virtual cluster was not originally replicated from the original primary cluster. Refer to [Options](#options) for details on how you can configure a PCR stream initiated as a failback.
+`START SERVICE SHARED` | Start a virtual cluster so it is ready to accept SQL connections after failover.
 `RENAME TO virtual_cluster_spec` | Rename a virtual cluster.
 `STOP SERVICE` | Stop the `shared` service for a virtual cluster. The virtual cluster's `data_state` will still be `ready` so that the service can be restarted.
 `GRANT ALL CAPABILITIES` | Grant a virtual cluster all [capabilities]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities).
@@ -54,15 +54,25 @@ Parameter | Description
 `GRANT CAPABILITY virtual_cluster_capability_list` | Specify a [capability]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities) to grant to a virtual cluster.
 `REVOKE CAPABILITY virtual_cluster_capability_list` | Revoke a [capability]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities) from a virtual cluster.
 
+## Options
+
+You can use the following options with `ALTER VIRTUAL CLUSTER {vc} START REPLICATION OF virtual_cluster_spec ON physical_cluster` to initiate the [failback process]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-to-the-primary-cluster).
+
+Option | Value | Description
+-------+-------+------------
+`EXPIRATION WINDOW` | Duration | Override the default producer job's expiration window of 24 hours. The producer job expiration window determines how long the producer job will continue to run without a heartbeat from the consumer job. For more details, refer to the [Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}).
+<span class="version-tag">New in v24.3:</span> `READ VIRTUAL CLUSTER` | N/A | Configure the PCR stream to allow reads from the standby cluster. **Note:** This only allows for reads on the standby's virtual cluster. You cannot perform writes or schema changes to user tables while connected to the standby virtual cluster. For more details, refer to [Start the failback process](#start-the-failback-process).
+`RETENTION` | Duration | Change the [duration]({% link {{ page.version.version }}/interval.md %}) of the retention window that will control how far in the past you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) to.<br><br>{% include {{ page.version.version }}/physical-replication/retention.md %}
+
 ## Examples
 
-### Start the cutover process
+### Start the failover process
 
-To start the [cutover]({% link {{ page.version.version }}/cutover-replication.md %}) process, use `COMPLETE REPLICATION` and provide the timestamp to restore as of:
+To start the [failover]({% link {{ page.version.version }}/failover-replication.md %}) process, use `COMPLETE REPLICATION` and provide the timestamp to restore as of:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO {cutover time specification};
+ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO {failover time specification};
 ~~~
 
 You can use either:
@@ -70,13 +80,19 @@ You can use either:
 - `SYSTEM TIME` to specify a [timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}).
 - `LATEST` to specify the most recent replicated timestamp.
 
-### Start the cutback process
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/physical-replication/failover-read-virtual-cluster.md %}
+{{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/physical-replication/fast-cutback-syntax.md %}
+### Start the failback process
+
+{% include {{ page.version.version }}/physical-replication/fast-failback-syntax.md %}
+
+{% include_cached new-in.html version="v24.3" %} Use the `READ VIRTUAL CLUSTER` option with the `ALTER VIRTUAL CLUSTER` failback syntax to start a PCR stream that also creates a read-only virtual cluster on the standby cluster.
 
 ### Set a retention window
 
-You can change the retention window to protect data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). The retention window controls how far in the past you can [cut over]({% link {{ page.version.version }}/cutover-replication.md %}) to:
+You can change the retention window to protect data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). The retention window controls how far in the past you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) to:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -87,7 +103,7 @@ ALTER VIRTUAL CLUSTER main SET REPLICATION RETENTION = '24h';
 
 ### Start a virtual cluster
 
-When a virtual cluster is [`ready`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) after initiating the cutover process, you must start the service so that the virtual cluster is ready to accept SQL connections:
+When a virtual cluster is [`ready`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) after initiating the failover process, you must start the service so that the virtual cluster is ready to accept SQL connections:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

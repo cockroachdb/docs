@@ -9,7 +9,7 @@ docs_area: reference.sql
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include enterprise-feature.md %}
+
 
 The `SHOW VIRTUAL CLUSTER` statement lists all virtual clusters running in a CockroachDB cluster. `SHOW VIRTUAL CLUSTER` supports inspecting virtual cluster status only as part of the [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
 
@@ -108,7 +108,7 @@ To show the replication status of the `main` virtual cluster:
 SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
 ~~~
 ~~~
-  id | name | source_tenant_name |              source_cluster_uri               |         retained_time         |    replicated_time     | replication_lag | cutover_time |   status
+  id | name | source_tenant_name |              source_cluster_uri               |         retained_time         |    replicated_time     | replication_lag | failover_time |   status
 -----+------+--------------------+-----------------------------------------------+-------------------------------+------------------------+-----------------+--------------+--------------
    3 | main | main               | postgresql://user@hostname or IP:26257?redacted | 2024-04-18 10:07:45.000001+00 | 2024-04-18 14:07:45+00 | 00:00:19.602682 |         NULL | replicating
 (1 row)

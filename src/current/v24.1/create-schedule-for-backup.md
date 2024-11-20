@@ -9,12 +9,6 @@ docs_area: reference.sql
 
 For more information about creating, managing, monitoring, and restoring from a scheduled backup, see [Manage a Backup Schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}).
 
-{{site.data.alerts.callout_info}}
-Core users can only use backup scheduling for [full backups](#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups.
-
-To use the other backup features, you need an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-{{site.data.alerts.end}}
-
 ## Required privileges
 
 {% include {{ page.version.version }}/backups/updated-backup-privileges.md %}
@@ -59,7 +53,7 @@ Targets:
 `location`                              | The URI where you want to store the backup. The backup files will be stored in year > month > day subdirectories. The location can be [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}), or `nodelocal`.<br><br><b>Note:</b> If you want to schedule a backup using temporary credentials, we recommend that you use `implicit` authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.
 `backup_options`                        | Control the backup behavior with a comma-separated list of [options](#backup-options).
 `RECURRING crontab`                     | Specifies when the backup should be taken. A separate schedule may be created automatically to write full backups at a regular cadence, depending on the frequency of the incremental backups. You can likewise modify this separate schedule with [`ALTER BACKUP SCHEDULE`]({% link {{ page.version.version }}/alter-backup-schedule.md %}). The schedule is specified as a [`STRING`]({% link {{ page.version.version }}/string.md %}) in [crontab format](https://wikipedia.org/wiki/Cron). All times in UTC. <br><br>Example: `'@daily'` (run daily at midnight)
-<a name="full-backup-clause"></a>`FULL BACKUP crontab` | Specifies when to take a new full backup. The schedule is specified as a [`STRING`]({% link {{ page.version.version }}/string.md %}) in [crontab format](https://wikipedia.org/wiki/Cron) or as `ALWAYS`. <br><br>If `FULL BACKUP ALWAYS` is specified, then the backups triggered by the `RECURRING` clause will always be full backups. <br>**Note:** If you do not have an Enterprise license then you can only take full backups. `ALWAYS` is the only accepted value of `FULL BACKUP`.<br><br>If the `FULL BACKUP` clause is omitted, CockroachDB will default to the following full backup schedule: <ul><li>`RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`</li><li>`RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`</li><li>Otherwise: Default to `FULL BACKUP ALWAYS`</li></ul>
+<a name="full-backup-clause"></a>`FULL BACKUP crontab` | Specifies when to take a new full backup. The schedule is specified as a [`STRING`]({% link {{ page.version.version }}/string.md %}) in [crontab format](https://wikipedia.org/wiki/Cron) or as `ALWAYS`. <br><br>If `FULL BACKUP ALWAYS` is specified, then the backups triggered by the `RECURRING` clause will always be full backups. <br>`ALWAYS` is the only accepted value of `FULL BACKUP`.<br><br>If the `FULL BACKUP` clause is omitted, CockroachDB will default to the following full backup schedule: <ul><li>`RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`</li><li>`RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`</li><li>Otherwise: Default to `FULL BACKUP ALWAYS`</li></ul>
 `WITH SCHEDULE OPTIONS schedule_option` | Control the schedule behavior with a comma-separated list of [these options](#schedule-options).
 
 {{site.data.alerts.callout_info}}
@@ -126,9 +120,9 @@ You can also visit the [**Jobs** page]({% link {{ page.version.version }}/ui-job
 
 ## Examples
 
-### Create a schedule for full backups only (core)
+### Create a schedule for full backups only
 
-Core users can only use backup scheduling for full backups of clusters, databases, or tables. Full backups are taken with the `FULL BACKUP ALWAYS` clause, for example:
+To schedule full backups of clusters, databases, or tables, use the `FULL BACKUP ALWAYS` clause, for example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -144,8 +138,6 @@ Core users can only use backup scheduling for full backups of clusters, database
   588799238330220545 | core_schedule_label | ACTIVE | 2020-09-11 00:00:00+00:00 | @daily   | BACKUP INTO 's3://test/schedule-test-core?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH detached
 (1 row)
 ~~~
-
-To use the other backup features, you need an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
 ### Create a scheduled backup for a cluster
 

@@ -31,7 +31,7 @@ Cockroach Labs offers several options for clusters: CockroachDB {{ site.data.pro
         <li><b>Resource isolation</b>: Shared CockroachDB software and infrastructure. Data is protected and not shared between deployments.</li>
         <li><b><a href="../cockroachcloud/cloud-org-sso.html">Single Sign-On (SSO)</a></b>: Authentication enforcement using a centralized identity managed by an IdP for clusters and organizations.</li>
         <li><b>Support</b>: Provided by CockroachDB <a href="https://forum.cockroachlabs.com/">community forum</a> and public <a href="https://cockroachdb.slack.com/">Slack workspace</a>.</li>
-        <li><b><a href="enterprise-licensing.html">Enterprise Features</a></b>: Enabled</li>
+        <li><b>Enterprise Features</b>: Enabled.</li>
       </ul></td>
   </tr>
   <tr>
@@ -54,7 +54,7 @@ Cockroach Labs offers several options for clusters: CockroachDB {{ site.data.pro
         <li><b><a href="../cockroachcloud/export-logs.html">Audit log</a></b>: Configurable cluster and organization log export to AWS CloudWatch or GCP Cloud Logging using the Cloud API.</li>
         <li><b><a href="../cockroachcloud/network-authorization.html">Network security</a></b>: VPC peering or AWS PrivateLink for enhanced network security and lower network latency.</li>
         <li><b>Support</b>: Enterprise grade <a href="https://support.cockroachlabs.com/">support</a> provided by Cockroach Labs.</li>
-        <li><b><a href="enterprise-licensing.html">Enterprise Features</a></b>: Enabled.</li>
+        <li><b>Enterprise Features</b>: Enabled.</li>
       </ul></td>
   </tr>
   <tr>
@@ -81,7 +81,7 @@ Cockroach Labs offers several options for clusters: CockroachDB {{ site.data.pro
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td>
-      <a id="self-hosted"></a><b><a href="start-a-local-cluster.html">CockroachDB Self-Hosted</a></b>: A full featured, self-managed CockroachDB deployment.
+      <a id="self-hosted"></a><b><a href="start-a-local-cluster.html">CockroachDB {{ site.data.products.core }}</a></b>: A full featured, self-managed CockroachDB deployment.
       </td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
@@ -90,7 +90,7 @@ Cockroach Labs offers several options for clusters: CockroachDB {{ site.data.pro
         <li><b>Cost</b>: Per hardware and infrastructure type.</li>
         <li><b>Resource isolation</b>: Dedicated, single-tenant instance of CockroachDB software.</li>
         <li><b>Support</b>: Enterprise grade <a href="https://support.cockroachlabs.com/">support</a> provided by Cockroach Labs.</li>
-        <li><b><a href="enterprise-licensing.html">Enterprise Features</a></b>: Enabled.</li>
+        <li><b>Enterprise Features</b>: Enabled.</li>
       </ul></td>
   </tr>
 </table>

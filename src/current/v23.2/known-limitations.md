@@ -384,15 +384,11 @@ CockroachDB cannot index-accelerate queries with `@@` predicates when both sides
 
 {% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
 
-### Automatic statistics refresher may not refresh after upgrade
+### Statistics limitations
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
-
-### Collection of statistics for virtual computed columns
-
-CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}).
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
+{% include {{ page.version.version }}/known-limitations/forecasted-stats-limitations.md %}
+- CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
 
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 

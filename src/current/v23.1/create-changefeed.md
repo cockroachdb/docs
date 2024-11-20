@@ -5,10 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an [{{ site.data.products.enterprise }}-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}).
-{{site.data.alerts.end}}
-
 The `CREATE CHANGEFEED` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new {{ site.data.products.enterprise }} changefeed, which targets an allowlist of tables called "watched rows". Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a [configurable sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). `CREATE CHANGEFEED` also supports [change data capture queries]({% link {{ page.version.version }}/cdc-queries.md %}) that allow you to filter and transform change data before emitting changefeed messages. You can [create](#examples), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), [alter]({% link {{ page.version.version }}/alter-changefeed.md %}), or [cancel](#cancel-a-changefeed) an {{ site.data.products.enterprise }} changefeed.
 
 To get started with changefeeds, refer to the [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) page for important usage considerations. For detail on how changefeeds emit messages, refer to the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}) page.
@@ -40,7 +36,7 @@ To create a changefeed, the user must be a member of the `admin` role or have th
 Parameter | Description
 ----------|------------
 `changefeed_target` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. Refer to [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}) for more detail.
-`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, refer to [Sink URI](#sink-uri).<br><br>**Note:** If you create a changefeed without a sink, your changefeed will run like a [core changefeed]({% link {{ page.version.version }}/changefeed-for.md %}) sending messages to the SQL client. For more detail, refer to the [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#create) page.
+`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, refer to [Sink URI](#sink-uri).<br><br>**Note:** If you create a changefeed without a sink, your changefeed will run like a [basic changefeed]({% link {{ page.version.version }}/changefeed-for.md %}) sending messages to the SQL client. For more detail, refer to the [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#create) page.
 `option` / `value` | For a list of available options and their values, refer to [Options](#options).
 
 ### Parameters for change data capture queries

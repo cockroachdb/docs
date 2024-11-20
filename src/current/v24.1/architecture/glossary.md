@@ -27,7 +27,7 @@ A logical identification of how nodes and data are clustered around [geographica
 
 A part of a data center that is considered to form a unit with regards to failures and fault tolerance. There can be multiple nodes in a single availability zone, however Cockroach Labs recommends that you to place different replicas of your data in different availability zones.
 
-#### [CockroachDB Self-Hosted]({% link {{ page.version.version }}/start-a-local-cluster.md %})
+#### [CockroachDB {{ site.data.products.core }}]({% link {{ page.version.version }}/start-a-local-cluster.md %})
 
 A full featured, self-managed CockroachDB deployment.
 

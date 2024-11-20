@@ -450,7 +450,8 @@ If you have an index named `FORCE_ZIGZAG` and use the hint `table@{FORCE_ZIGZAG}
 
 ## Known limitations
 
-* {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
+{% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
+{% include {{ page.version.version }}/known-limitations/forecasted-stats-limitations.md %}
 
 ## See also
 

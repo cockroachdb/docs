@@ -9,7 +9,7 @@ docs_area: deploy
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v23.2" %} Enable [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) in your CockroachDB cluster to set up a [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) stream. This page is a guide to working with virtual clusters.
+Enable [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) in your CockroachDB cluster to set up a [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) stream. This page is a guide to working with virtual clusters.
 
 ## Connect to a virtual cluster
 

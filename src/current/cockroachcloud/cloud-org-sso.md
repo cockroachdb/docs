@@ -90,7 +90,7 @@ A user can view their current authentication method by clicking **My Account** i
 
 No. With Basic SSO, only one authentication method can be active for each CockroachDB {{ site.data.products.cloud }} Console user. To view or update their active authentication method, a user can click **My Account** in the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud) .
 
-#### Does this change to invite users?
+#### Does this change how to invite users?
 
 The [workflow for inviting team members]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization) to your CockroachDB {{ site.data.products.cloud }} organization remains the same.
 
