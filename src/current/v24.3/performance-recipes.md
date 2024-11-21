@@ -76,6 +76,11 @@ This section describes how to use CockroachDB commands and dashboards to identif
     <td><ul><li>You may be scanning over large numbers of <a href="{% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc">MVCC versions</a>. This is similar to how a full table scan can be slow.</li></ul></td>
     <td><ul><li><a href="#too-many-mvcc-values">Configure CockroachDB to purge unneeded MVCC values.</a></li></ul></td>
   </tr>
+  <tr>
+    <td><ul><li>vCPU usage has plateaued (possibly around 70%) on your large cluster.</li></ul></td>
+    <td><ul><li><a href="architecture/distribution-layer.html#distsender">KV layer DistSender</a> batches may be getting throttled; check if the <code>distsender.batches.async.throttled</code> metric is greater than <code>0</code>.</li></ul></td>
+    <td><ul><li>Increase the <code>kv.dist_sender.concurrency_limit</code> <a href="cluster-settings.html">cluster setting</a>.</li></ul></td>
+  </tr>
 </table>
 
 ## Solutions
@@ -296,6 +301,14 @@ A low percentage of live data can cause statements to scan more data ([MVCC valu
 #### Configure CockroachDB to purge MVCC values
 
 Reduce the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) zone configuration of the table as much as possible.
+
+### KV DistSender batches being throttled (performance impact to larger clusters)
+
+If you see `distsender.batches.async.throttled` values that aren't zero (or aren't consistently near zero), experiment with increasing the [KV layer `DistSender`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender) and `Streamer` concurrency using the `kv.dist_sender.concurrency_limit` and `kv.streamer.concurrency_limit` [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}), respectively.  In v24.3, these default values were increased by 6x and 12x, respectively.  For versions prior to v24.3, increasing the values by 6x and 12x would be a good starting point.
+
+To validate a successful result, you can increase the values of these cluster settings until you see no new throttled requests and no increase in tail latency (e.g., `p99.999`).
+
+This does increase the amount of RAM consumption per node to handle the increased concurrency, but it's proportional to the load and an individual flow's memory consumption should not be significant. Bad outcomes include increased tail latency or too much memory consumption with no decrease in the number of throttled requests, in which case you should return the settings to their default values.
 
 ## See also
 

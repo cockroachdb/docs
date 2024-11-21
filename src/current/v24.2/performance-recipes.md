@@ -30,6 +30,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
       <li>Querying the <a href="{% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events"><code>crdb_internal.transaction_contention_events</code></a> table indicates that your transactions have experienced contention.</li>
       <li>The SQL Statement Contention graph in the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/metrics-sql.md %}#sql-statement-contention) or <a href="ui-sql-dashboard.html#sql-statement-contention">DB Console</a> is showing spikes over time.</li>
       <li>The Transaction Restarts graph in the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/metrics-sql.md %}#transaction-restarts) or <a href="ui-sql-dashboard.html#transaction-restarts">DB Console</a> is showing spikes in retries over time.</li>
+      </ul>
     </td>
     <td><ul><li>Your application is experiencing <a href="{% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention">transaction contention</a>.</li></ul></td>
     <td>
