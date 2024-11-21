@@ -9,8 +9,6 @@ docs_area: reference.sql
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-
-
 The `ALTER VIRTUAL CLUSTER` statement initiates a failover in a [**physical cluster replication (PCR)** job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) and manages a virtual cluster.
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
@@ -61,7 +59,7 @@ You can use the following options with `ALTER VIRTUAL CLUSTER {vc} START REPLICA
 Option | Value | Description
 -------+-------+------------
 `EXPIRATION WINDOW` | Duration | Override the default producer job's expiration window of 24 hours. The producer job expiration window determines how long the producer job will continue to run without a heartbeat from the consumer job. For more details, refer to the [Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}).
-<span class="version-tag">New in v24.3:</span> `READ VIRTUAL CLUSTER` | N/A | Configure the PCR stream to allow reads from the standby cluster. **Note:** This only allows for reads on the standby's virtual cluster. You cannot perform writes or schema changes to user tables while connected to the standby virtual cluster. For more details, refer to [Start the failback process](#start-the-failback-process).
+<span class="version-tag">New in v24.3:</span> `READ VIRTUAL CLUSTER` | N/A | ([**Preview**]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview)) Configure the PCR stream to allow reads from the standby cluster. <br>**Note:** This only allows for reads on the standby's virtual cluster. You cannot perform writes or schema changes to user tables while connected to the standby virtual cluster. For more details, refer to [Start the failback process](#start-the-failback-process).
 `RETENTION` | Duration | Change the [duration]({% link {{ page.version.version }}/interval.md %}) of the retention window that will control how far in the past you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) to.<br><br>{% include {{ page.version.version }}/physical-replication/retention.md %}
 
 ## Examples
@@ -88,7 +86,7 @@ You can use either:
 
 {% include {{ page.version.version }}/physical-replication/fast-failback-syntax.md %}
 
-{% include_cached new-in.html version="v24.3" %} Use the `READ VIRTUAL CLUSTER` option with the `ALTER VIRTUAL CLUSTER` failback syntax to start a PCR stream that also creates a read-only virtual cluster on the standby cluster.
+{% include_cached new-in.html version="v24.3" %} ([**Preview**]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview)) Use the `READ VIRTUAL CLUSTER` option with the `ALTER VIRTUAL CLUSTER` failback syntax to start a PCR stream that also creates a read-only virtual cluster on the standby cluster.
 
 ### Set a retention window
 

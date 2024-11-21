@@ -1,6 +1,6 @@
 State      | Description
 -----------+----------------
-`add` | The [`readonly` virtual cluster]({% link {{ page.version.version }}/create-virtual-cluster.md %}#start-a-pcr-stream-with-read-from-standby) is waiting for the PCR job's initial scan to complete then `readonly` will be available for read queries.
+`add` | ([**Preview**]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview)) The [`readonly` virtual cluster]({% link {{ page.version.version }}/create-virtual-cluster.md %}#start-a-pcr-stream-with-read-from-standby) is waiting for the PCR job's initial scan to complete, then `readonly` will be available for read queries.
 `initializing replication` | The replication job is completing the initial scan of data from the primary cluster before it starts replicating data in real time.
 `ready` | A virtual cluster's data is ready for use. The `readonly` virtual cluster is ready to serve read queries.
 `replicating` | The replication job has started and is replicating data.
