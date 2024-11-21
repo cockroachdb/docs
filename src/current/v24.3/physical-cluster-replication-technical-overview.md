@@ -5,6 +5,10 @@ toc: true
 docs_area: manage
 ---
 
+{{site.data.alerts.callout_info}}
+Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
+{{site.data.alerts.end}}
+
 [**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) automatically and continuously streams data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. Each cluster contains: a _system virtual cluster_ and an application [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}):
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
@@ -30,6 +34,10 @@ The stream initialization proceeds as follows:
 <img src="{{ 'images/v24.2/physical-rep-to.png' | relative_url }}" alt="Two virtualized clusters with system virtual cluster and application virtual cluster showing the directional stream." style="border:0px solid #eee;max-width:100%" />
 
 #### Start-up sequence with read on standby
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v24.3" %} You can start a PCR stream with the `READ VIRTUAL CLUSTER` option, which allows you to perform reads on the standby's replicating virtual cluster. When this option is specified, the following additional steps occur during the PCR stream start-up sequence:
 

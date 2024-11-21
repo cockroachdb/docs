@@ -9,11 +9,13 @@ docs_area: reference.sql
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-
-
 The `CREATE VIRTUAL CLUSTER` statement creates a new virtual cluster. It is supported only starting a [**physical cluster replication (PCR)** job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
+
+{{site.data.alerts.callout_info}}
+Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
+{{site.data.alerts.end}}
 
 ## Required privileges
 
@@ -49,7 +51,7 @@ Parameter | Description
 
 Option | Description
 -------+-------------
-<span class="version-tag">New in v24.3:</span> `READ VIRTUAL CLUSTER` | Create a [read-only virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#start-up-sequence-with-read-on-standby) on the standby cluster, which allows reads of the standby's replicating virtual cluster. For an example, refer to [Start a PCR stream with read from standby](#start-a-pcr-stream-with-read-from-standby).
+<span class="version-tag">New in v24.3:</span> `READ VIRTUAL CLUSTER` | ([**Preview**]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview)) Create a [read-only virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#start-up-sequence-with-read-on-standby) on the standby cluster, which allows reads of the standby's replicating virtual cluster. For an example, refer to [Start a PCR stream with read from standby](#start-a-pcr-stream-with-read-from-standby).
 `RETENTION` | Configure a [retention window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process) that will control how far in the past you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) to.<br><br>{% include {{ page.version.version }}/physical-replication/retention.md %}
 
 ## Connection string
@@ -107,6 +109,10 @@ This will initiate a PCR stream from the primary cluster into the standby cluste
 {% include {{ page.version.version }}/physical-replication/retention.md %}
 
 ### Start a PCR stream with read from standby
+
+{{site.data.alerts.callout_info}}
+While **physical cluster replication (PCR)** is generally available, using the `READ VIRTUAL CLUSTER` option to read from a standby cluster is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).
+{{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v24.3" %} Use the `READ VIRTUAL CLUSTER` option to set up a PCR stream that also creates a read-only virtual cluster on the standby cluster. You can create a PCR job as per the [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) guide and then add the option to the `CREATE VIRTUAL CLUSTER` statement:
 

@@ -7,6 +7,8 @@ docs_area: manage
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+
+Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
 You can monitor [**logical data replication (LDR)**]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) using:
@@ -145,4 +147,4 @@ You can export metrics to Datadog for LDR jobs. For steps to set up metrics expo
 ## See also
 
 - [Set Up Logical Data Replication]({% link {{ page.version.version }}/set-up-logical-data-replication.md %})
-- [Managed Logical Data Replcation]({% link {{ page.version.version }}/manage-logical-data-replication.md %})
+- [Manage Logical Data Replcation]({% link {{ page.version.version }}/manage-logical-data-replication.md %})

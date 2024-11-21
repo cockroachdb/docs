@@ -352,12 +352,12 @@ For a [side disk on a single-store config](#single-store-config), pass `--wal-fa
 
 Use remote log sinks, or if you use file-based logging, enable asynchronous buffering of `file-groups` log sinks:
 
-{% include {{ page.version.version }}/misc/logging-flags.md %}
+{% include {{ page.version.version }}/wal-failover-log-config.md %}
 
 Change the value of `COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT` by setting it as follows:
 
 1. Before starting the cluster, set it using the [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables) environment variable.
-1. After starting the cluster, set it by changing the [`storage.max_sync_duration`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-max-sync-duration) cluster setting. When WAL failover is enabled, Cockroach Labs recommends using `40s` for this setting. If WAL failover is not enabled, **do not change the default value of this setting**.
+1. After starting the cluster, set it by changing the [`storage.max_sync_duration`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-storage-max-sync-duration) cluster setting. When WAL failover is enabled, [Cockroach Labs recommends using `40s` for this setting](#4-what-is-the-best-practice-storage-max_sync_duration). If WAL failover is not enabled, **do not change the default value of this setting**.
 
 ### To monitor WAL failover
 
