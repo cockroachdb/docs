@@ -101,11 +101,11 @@ You can execute the transaction using the database contents "as of" a specified 
  To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable]({% link {{ page.version.version }}/set-vars.md %}). For example:
 
 ~~~ sql
-> SET default_transaction_priority 'high';
+SET default_transaction_priority = 'high';
 ~~~
 
 ~~~ sql
-> SHOW transaction_priority;
+SHOW transaction_priority;
 ~~~
 
 ~~~
