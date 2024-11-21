@@ -35,6 +35,10 @@ The stream initialization proceeds as follows:
 
 #### Start-up sequence with read on standby
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 {% include_cached new-in.html version="v24.3" %} You can start a PCR stream with the `READ VIRTUAL CLUSTER` option, which allows you to perform reads on the standby's replicating virtual cluster. When this option is specified, the following additional steps occur during the PCR stream start-up sequence:
 
 1. The system virtual cluster on the standby also creates a `readonly` virtual cluster alongside the replicating virtual cluster. The `readonly` virtual cluster will be offline initially.
