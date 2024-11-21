@@ -132,8 +132,6 @@ We recommend provisioning volumes with {% include {{ page.version.version }}/pro
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}
 
-- {% include {{ page.version.version }}/prod-deployment/prod-guidance-log-volume.md %}
-
 - The recommended Linux filesystems are [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page) and [XFS](https://xfs.wiki.kernel.org/).
 
 - Always keep some of your disk capacity free on production. Doing so accommodates fluctuations in routine database operations and supports continuous data growth.

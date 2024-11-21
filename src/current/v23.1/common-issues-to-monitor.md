@@ -239,7 +239,6 @@ Provision enough storage capacity for CockroachDB data, and configure your volum
     <ul>
       <li>Provision volumes with {% include {{ page.version.version }}/prod-deployment/provision-storage.md %}.</li>
       <li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}</li>
-      <li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-log-volume.md %}</li>
       <li>See additional storage recommendations in the <a href="{% link {{ page.version.version }}/recommended-production-settings.md %}#storage">Recommended Production Settings</a>.</li>
     </ul>
   </td>
