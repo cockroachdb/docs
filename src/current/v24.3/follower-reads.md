@@ -196,6 +196,21 @@ To verify that a specific query uses a follower read, use [`EXPLAIN ANALYZE`]({%
 
 1. Open a new terminal and open the SQL shell on a non-leaseholder node. For example: 
 
+    Identify the leaseholder node:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT lease_holder FROM [SHOW RANGES FROM TABLE promo_codes WITH DETAILS];
+    ~~~
+
+    ~~~
+      lease_holder
+    ----------------
+                 1
+    ~~~
+
+    Connect to a node other than node 1 (such as node 3, using the preceding output):
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url='postgresql://demo:demo37199@127.0.0.1:26259/movr?options=-ccluster%3Ddemoapp&sslmode=equire&sslrootcert=%2FUsers%2Fuser%2F.cockroach-demo%2Fca.crt'
