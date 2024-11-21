@@ -79,6 +79,7 @@ Property        | Description
 `max sql temp disk usage` | ([`DISTSQL`](#distsql-option) option only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
 `estimated RUs consumed` | The estimated number of [Request Units (RUs)]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) consumed by the statement. This property is visible only on CockroachDB {{ site.data.products.basic }} clusters.
 `isolation level` | The [isolation level]({% link {{ page.version.version }}/transactions.md %}#isolation-levels) at which this statement executed.
+`priority` | The [transaction priority level]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities) at which this statement executed.
 `quality of service` | The session's [quality of service]({% link {{ page.version.version }}/admission-control.md %}#set-quality-of-service-level-for-a-session) level at which the statement executed.
 `historical` | The timestamp and [follower read type]({% link {{ page.version.version }}/follower-reads.md %}#follower-read-types), if applicable, for [historical reads]({% link {{ page.version.version }}/as-of-system-time.md %}).
 
