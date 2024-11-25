@@ -1,4 +1,4 @@
-You can use the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}) to [view](#get-information-on-backup-settings) and [modify](#modify-backup-settings-on-a-cluster) managed backup settings in **{{ site.data.products.standard }} and {{ site.data.products.advanced }}** clusters.
+You can use the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}) to [view](#get-information-on-backup-settings) and [modify](#modify-backup-settings-on-a-cluster) managed backup settings.
 
 {{site.data.alerts.callout_info}}
 The [service account]({% link cockroachcloud/authorization.md %}#service-accounts) associated with the secret key must have the [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) role.
