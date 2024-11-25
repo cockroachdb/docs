@@ -168,6 +168,10 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
 
 The following versions of CockroachDB are no longer supported.
 
+{{ site.data.alerts.callout_info }}
+Once a major version is older than four years from its GA release date, the links to its binaries and corresponding Docker images will be unpublished.
+{{ site.data.alerts.end }}
+
 <table>
 	<thead>
 		<tr>
