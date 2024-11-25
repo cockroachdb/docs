@@ -9,6 +9,10 @@ The ways that monthly charges are incurred for a CockroachDB Cloud organization 
 
 Refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) for details on plans and rates.
 
+{{ site.data.alerts.callout_info }}
+This page applies to all pay-as-you-go customers (e.g. paying monthly by credit card) and customers with annual or multi-year contracts beginning after November 30, 2024. Prior contracts continue to be billed at earlier rates and without CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} usage-based charges for data transfer, managed backup storage, and changefeeds, until contract expiration or renewal.
+{{ site.data.alerts.end }}
+
 For details on planning or provisioning clusters, refer to:
 
 - [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %})
@@ -24,9 +28,9 @@ This table summarizes key details about how costs are calculated for each plan t
 | [Compute](#compute) | Usage-based via [Request Units]({% link cockroachcloud/create-a-basic-cluster.md %}#step-4-configure-cluster-capacity). | Provisioned; cost per hour based on plan, [vCPU quantity, cloud provider, and regions]({% link cockroachcloud/create-your-cluster.md %}#step-4-provision-cluster-capacity). | Provisioned; cost per hour per node based on plan, [vCPU quantity, cloud provider, region]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity), and whether security add-on is enabled. |
 | [Storage](#storage) | Usage-based. | Usage-based; rates vary per cloud provider and region. | Provisioned; billed per hour per node; rates vary per cloud provider, region, and whether security add-on is enabled. |
 | [IOPS](#iops) | Usage-based via Request Units. | Included in storage costs. | Provisioned based on storage and varies per cloud provider. |
-| [Backups](#backups) | Usage-based via Request Units. | Usage-based.<br><br>[Managed Backups]({% link cockroachcloud/managed-backups.md %}) storage rates vary per cloud provider, region, and backup frequency.<br><br>[Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) fee incurred per GiB transferred to your own object storage.<br><br>No charges for either backup type during the [Usage-based billing metrics Preview](#usage-based-billing-metrics-in-preview). | Usage-based.<br><br>[Managed Backups]({% link cockroachcloud/managed-backups.md %}) storage rates vary per cloud provider, region,  backup frequency, and whether security add-on is enabled.<br><br>[Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) fee incurred per GiB transferred to your own object storage. Rate varies depending on whether security add-on is enabled.<br><br>No charges for either backup type during the [Usage-based billing metrics Preview](#usage-based-billing-metrics-in-preview). |
-| [Data transfer](#data-transfer) | Usage-based via Request Units. | Usage-based; rates vary per cloud provider and data transfer type.<br><br>Currently not charged during [Usage-based billing metrics Preview](#usage-based-billing-metrics-in-preview). | Usage-based; rates vary per cloud provider and data transfer type.<br><br>Currently not charged during [Usage-based billing metrics Preview](#usage-based-billing-metrics-in-preview). |
-| [Change Data Capture](#change-data-capture-changefeeds) | Usage-based via Request Units. | Usage-based, per GiB-Hour watched across all changefeeds.<br><br>Currently not charged during [Usage-based billing metrics Preview](#usage-based-billing-metrics-in-preview). | Usage-based, per GiB-Hour watched across all changefeeds. Rates vary depending on whether security add-on is enabled.<br><br>Currently not charged during [Usage-based billing metrics Preview](#usage-based-billing-metrics-in-preview). |
+| [Backups](#backups) | Usage-based via Request Units. | Usage-based.<br><br>[Managed Backups]({% link cockroachcloud/managed-backups.md %}) storage rates vary per cloud provider, region, and backup frequency.<br><br>[Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) fee incurred per GiB transferred to your own object storage. | Usage-based.<br><br>[Managed Backups]({% link cockroachcloud/managed-backups.md %}) storage rates vary per cloud provider, region,  backup frequency, and whether security add-on is enabled.<br><br>[Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) fee incurred per GiB transferred to your own object storage. Rate varies depending on whether security add-on is enabled. |
+| [Data transfer](#data-transfer) | Usage-based via Request Units. | Usage-based; rates vary per cloud provider and data transfer type. | Usage-based; rates vary per cloud provider and data transfer type. |
+| [Change Data Capture](#change-data-capture-changefeeds) | Usage-based via Request Units. | Usage-based, per GiB-Hour watched across all changefeeds. | Usage-based, per GiB-Hour watched across all changefeeds. Rates vary depending on whether security add-on is enabled. |
 
 ## More details
 
@@ -143,10 +147,6 @@ Backups on Basic clusters are included in the Request Unit costs. Managed backup
 
 For further details, refer to CockroachDB Cloud [Pricing](https://www.cockroachlabs.com/pricing/).
 
-{{site.data.alerts.callout_info}}
-Customers will not be charged for backups for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} clusters during the current [Preview](#usage-based-billing-metrics-in-preview) of usage-based metrics.
-{{site.data.alerts.end}}
-
 </section>
 
 <section class="filter-content" markdown="1" data-scope="advanced">
@@ -156,11 +156,6 @@ Customers will not be charged for backups for CockroachDB {{ site.data.products.
 [Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to your own object storage are charged a per-GiB fee for the data transferred. The rate varies depending on whether the Advanced security add-on is enabled. Self-Managed Backups offer additional control over backup storage placement, and an advanced backup scheduler.
 
 For further details, refer to CockroachDB Cloud [Pricing](https://www.cockroachlabs.com/pricing/).
-
-{{site.data.alerts.callout_info}}
-Customers will not be charged for backups for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} clusters during the current [Preview](#usage-based-billing-metrics-in-preview) of usage-based metrics.
-{{site.data.alerts.end}}
-
 </section>
 
 ### Data transfer
@@ -171,11 +166,7 @@ For CockroachDB {{ site.data.products.basic }}, data transfer is included in the
 
 <section class="filter-content" markdown="1" data-scope="standard">
 
-{{site.data.alerts.callout_info}}
-Customers will not be charged for data transfer for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} clusters during the current [Preview](#usage-based-billing-metrics-in-preview) of usage-based metrics.
-{{site.data.alerts.end}}
-
-For CockroachDB Standard and Advanced, CockroachDB Cloud bills directly to customers based on their usage with a zero-dollar rate during the preview period.
+For CockroachDB Standard and Advanced, CockroachDB Cloud bills directly to customers based on their usage.
 
 The usage data is based on the volume of data moved (per GiB) and the cloud provider’s identified data transfer type, which CockroachDB categorizes as **Same-region data transfer**, **Cross-Region data transfer**, or **Public Internet data transfer**. Each category is reflected as a line item on your invoice. Within each data transfer category, for a given Cloud provider, rates are consistent across plans: CockroachDB Standard, Advanced, and Advanced with security add-on enabled.
 
@@ -209,11 +200,7 @@ This is the usage for any data leaving CockroachDB such as SQL data being sent t
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
-{{site.data.alerts.callout_info}}
-Customers will not be charged for data transfer for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} clusters during the current [Preview](#usage-based-billing-metrics-in-preview) of usage-based metrics.
-{{site.data.alerts.end}}
-
-For CockroachDB Standard and Advanced, CockroachDB Cloud bills directly to customers based on their usage with a zero-dollar rate during the preview period.
+For CockroachDB Standard and Advanced, CockroachDB Cloud bills directly to customers based on their usage.
 
 The usage data is based on the volume of data moved (per GiB) and the cloud provider’s identified data transfer type, which CockroachDB categorizes as **Same-region data transfer**, **Cross-Region data transfer**, or **Public Internet data transfer**. Each category is reflected as a line item on your invoice. Within each data transfer category, for a given Cloud provider, rates are consistent across plans: CockroachDB Standard, Advanced, and Advanced with security add-on enabled.
 
@@ -258,31 +245,13 @@ In CockroachDB {{ site.data.products.basic }}, CDC cost is usage-based via Reque
 
 In CockroachDB {{ site.data.products.standard }}, CDC is billed monthly based on usage, determined by the total GiB-Month watched across all of a cluster’s changefeeds. The per-GiB unit price is tiered, based on the total watched: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
 
-{{site.data.alerts.callout_info}}
-Customers will not be charged for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} changefeed usage during the current [Preview](#usage-based-billing-metrics-in-preview) of usage-based metrics.
-{{site.data.alerts.end}}
-
 </section>
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
 In CockroachDB {{ site.data.products.advanced }}, CDC is billed monthly based on usage, determined by the total GiB-Month watched across all of a cluster’s changefeeds and whether the Advanced security add-on is enabled. The per-GiB unit price is tiered, based on the total watched: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
 
-{{site.data.alerts.callout_info}}
-Customers will not be charged for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} changefeed usage during the current [Preview](#usage-based-billing-metrics-in-preview) of usage-based metrics.
-{{site.data.alerts.end}}
-
 </section>
-
-## Usage-based billing metrics in Preview
-<a id="usage-based-costs"></a>
-
-Metering for usage-based billing of data transfer, managed backup storage, and changefeeds is in [Preview]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %}) for all CockroachDB Cloud organizations.
-
-- Usage metrics for data transfer, managed backup storage, and changefeeds are now visible for CockroachDB Standard and Advanced clusters in the CockroachDB Cloud Console. You can view your usage across these metrics on the [Billing page](https://cockroachlabs.cloud/billing/overview) and on invoices.  
-- There will be no usage-based charges associated with these metrics during the Preview period, which is in effect through November 30, 2024. During this time, line items with a charge of $0 will be shown for each metric on your monthly invoice.  
-- Future pricing for these usage-based costs is available on the [Pricing](https://www.cockroachlabs.com/pricing) page.  
-- On December 1, 2024, once the Preview has ended, pricing for these metrics goes into effect immediately for new customers and for existing pay-as-you-go customers (e.g. paying monthly by credit card). Customers with annual or multi-year contracts will continue to preview these line items without incurring charges for them (i.e. expending credits) through the end of their current contract term.
 
 ## Learn more
 

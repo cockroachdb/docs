@@ -14,6 +14,14 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## December 1, 2024
+
+[Updated pricing](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud is now in effect for all pay-as-you-go customers (e.g. those paying monthly by credit card) and customers with annual or multi-year contracts beginning after November 30, 2024.
+
+Customers on prior contracts will continue to preview these new costs on their invoices.
+
+For further detail, refer to [Understand CockroachDB Cloud Costs]({% cockroachcloud/costs.md %}).
+
 ## November 18, 2024
 
 CockroachDB v24.3 is now generally available for select CockroachDB Cloud clusters. CockroachDB v24.3 is a [Regular release]({% link releases/release-support-policy.md %}#regular-releases). Refer to [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to v24.3]({% link cockroachcloud/upgrade-cockroach-version.md %}).
