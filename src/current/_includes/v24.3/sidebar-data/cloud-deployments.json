@@ -516,8 +516,25 @@
                     },
                     {
                         "title": "Managed Backups",
-                        "urls": [
-                          "/cockroachcloud/managed-backups.html"
+                        "items": [
+                            {
+                                "title": "Managed Backups for Basic Clusters",
+                                "urls": [
+                                  "/cockroachcloud/managed-backups-basic.html"
+                                ]
+                            },
+                            {
+                                "title": "Managed Backups for Standard Clusters",
+                                "urls": [
+                                  "/cockroachcloud/managed-backups.html"
+                                ]
+                            },
+                            {
+                                "title": "Managed Backups for Advanced Clusters",
+                                "urls": [
+                                  "/cockroachcloud/managed-backups-advanced.html"
+                                ]
+                            }
                         ]
                     },
                     {
