@@ -87,6 +87,21 @@ Metric | Description
 Replicas | The number of replicas.
 Quiescent | The number of replicas that haven't been accessed for a while.
 
+## Range Operations
+
+- In the node view, the graph shows the number of range operation events on the node.
+- In the cluster view, the graph shows the number of range operation events across all nodes.
+
+Metric | CockroachDB Metric Name | Description
+-------|-------------------------|-------------
+Splits | `range.splits` | Number of range splits
+Merges | `range.merges` | Number of range merges
+Adds | `range.adds` | Number of range additions
+Removes| `range.removes`         | Number of range removals
+Lease Transfers | `leases.transfers.success` | Number of successful lease transfers
+Load-based Lease Transfers | `rebalancing.lease.transfers` | Number of lease transfers motivated by store-level load imbalances
+Load-based Range Rebalances | `rebalancing.range.rebalances` | Number of range rebalance operations motivated by store-level load imbalances
+
 ## Snapshots
 
 <img src="{{ 'images/v24.2/ui_replica_snapshots.png' | relative_url }}" alt="DB Console Replica Snapshots" style="border:1px solid #eee;max-width:100%" />
@@ -232,7 +247,6 @@ The **Replication** dashboard shows other time series graphs that are important 
 
 - Leaseholders per Store
 - Average Queries per Store
-- Range Operations
 
 For monitoring CockroachDB, it is sufficient to use the [**Ranges**](#ranges), [**Replicas per Store**](#replicas-per-store), and [**Replica Quiescence**](#replica-quiescence) graphs.
 
