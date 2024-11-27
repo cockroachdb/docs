@@ -10,9 +10,7 @@ The ways that monthly charges are incurred for a CockroachDB Cloud organization 
 Refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) for details on plans and rates.
 
 {{ site.data.alerts.callout_info }}
-This page covers [recenty updated costs](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/), which apply to all pay-as-you-go customers (e.g. those paying monthly by credit card) and customers with annual or multi-year contracts beginning after November 30, 2024. 
-
-Customers with prior contracts will continue to be billed at their existing rates, without CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} usage-based charges for data transfer, backups, and changefeeds until contract expiration or renewal. For these active contracts, prior to renewal, line items with the new usage metering are shown on invoices as a preview, each with a $0 rate.
+This page reflects [updated costs](https://www.cockroachlabs.com/pricing/) recently [announced](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud, which apply to all customers except those with annual or multi-year contracts that began prior to December 1, 2024, for whom the updated pricing and new usage-based costs go into effect upon contract renewal. Prior to renewal, line items for usage of data transfer, backups, and changefeeds are displayed in the [Billing](https://cockroachlabs.cloud/billing) interface and on invoices with a $0 charge, while showing actual usage metrics to help estimate future costs.
 {{ site.data.alerts.end }}
 
 For details on planning or provisioning clusters, refer to:
