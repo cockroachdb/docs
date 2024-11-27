@@ -7,10 +7,10 @@ keywords: pricing
 
 The ways that monthly charges are incurred for a CockroachDB Cloud organization depend on the plans of its clusters: CockroachDB Basic, Standard, or Advanced. This page explains costs under each plan, specifying components that are billed based on provisioned capacity or usage.
 
-Refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) for details on plans and rates.
+Refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/new/) for details on plans and rates.
 
 {{ site.data.alerts.callout_info }}
-This page reflects [updated costs](https://www.cockroachlabs.com/pricing/) recently [announced](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud, which apply to all customers except those with annual or multi-year contracts that began prior to December 1, 2024, for whom the updated pricing and new usage-based costs go into effect upon contract renewal. Prior to renewal, line items for usage of data transfer, backups, and changefeeds are displayed in the [Billing](https://cockroachlabs.cloud/billing) interface and on invoices with a $0 charge, while showing actual usage metrics to help estimate future costs.
+This page reflects [updated costs](https://www.cockroachlabs.com/pricing/new/) recently [announced](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud. This new pricing, including new usage-based costs, now applies to all customers except those with annual or multi-year contracts that began prior to December 1, 2024, for whom the updated pricing goes into effect upon contract renewal. Prior to renewal, line items for usage of data transfer, backups, and changefeeds are displayed in the [Billing](https://cockroachlabs.cloud/billing) interface and on invoices with a $0 charge, while showing actual usage metrics to help estimate future costs.
 {{ site.data.alerts.end }}
 
 For details on planning or provisioning clusters, refer to:
@@ -60,7 +60,7 @@ In a multi-region cluster, the price of the most expensive region is applied to 
 
 For example, consider a three-region Multi-Region GCP cluster provisioned in Iowa (us-central1), St. Ghislain (europe-central1) and Jurong West (asia-southeast1) with 32 vCPUs provisioned compute capacity. The compute cost for the cluster is calculated by multiplying the number of vCPUs provisioned by the highest per vCPU-hour rate amongst Iowa ($0.100), St. Ghislain ($0.113) and Jurong West ($0.121) regions: (32 vCPU \* $0.121), which equals $3.872 per hour.
 
-**Note:** These prices are intended as examples only. For the latest pricing, refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/).
+**Note:** These prices are intended as examples only. For the latest pricing, refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/new/).
 
 </section>
 
@@ -72,7 +72,7 @@ Compute charges are calculated by multiplying the hourly rate of the provisioned
 
 For example, consider a GCP cluster provisioned in Oregon (us-west1). The cluster consists of three nodes, each with 8vCPU, 32 GiB of RAM. The compute cost for the cluster is determined by multiplying the hourly rate of 8vCPU, 32GiB RAM machine type ($1.062) and the total number of nodes (3), which equals $3.186 per hour.
 
-**Note:** These prices are intended as examples only. For the latest pricing, refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/). 
+**Note:** These prices are intended as examples only. For the latest pricing, refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/new/). 
 
 </section>
 
@@ -127,7 +127,7 @@ These charges are accumulated throughout the month to determine the total monthl
 
 For example, consider a GCP cluster provisioned in Oregon (us-west1). The cluster consists of three nodes, each with 75 GiB of storage. The storage cost for the cluster is determined by multiplying the storage size (75 GiB) by the storage rate ($0.0010338 per GiB) per node. The total storage cost is then calculated by multiplying this figure by the number of nodes: (75 GiB \* $0.0010338) \* 3, which equals $0.232605 per hour.
 
-**Note:** These prices are intended as examples only. For the latest pricing, refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/).
+**Note:** These prices are intended as examples only. For the latest pricing, refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/new/).
 
 </section>
 
@@ -145,7 +145,7 @@ Backups on Basic clusters are included in the Request Unit costs. Managed backup
 
 [Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to your own object storage are charged a per-GiB fee for the data transferred. This option provides an advanced backup scheduler and additional control over backup storage placement.
 
-For further details, refer to CockroachDB Cloud [Pricing](https://www.cockroachlabs.com/pricing/).
+For further details, refer to CockroachDB Cloud [Pricing](https://www.cockroachlabs.com/pricing/new/).
 
 </section>
 
@@ -155,7 +155,7 @@ For further details, refer to CockroachDB Cloud [Pricing](https://www.cockroachl
 
 [Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to your own object storage are charged a per-GiB fee for the data transferred. The rate varies depending on whether the Advanced security add-on is enabled. Self-Managed Backups offer additional control over backup storage placement, and an advanced backup scheduler.
 
-For further details, refer to CockroachDB Cloud [Pricing](https://www.cockroachlabs.com/pricing/).
+For further details, refer to CockroachDB Cloud [Pricing](https://www.cockroachlabs.com/pricing/new/).
 </section>
 
 ### Data transfer

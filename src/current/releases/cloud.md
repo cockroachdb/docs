@@ -16,7 +16,7 @@ Get future release notes emailed to you:
 
 ## December 1, 2024
 
-As of December 1, 2024, [updated pricing](https://www.cockroachlabs.com/pricing/) that was recently [announced](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud is now in effect for all customers except those with annual or multi-year contracts that began prior to December 1, 2024, for whom the updated pricing and new usage-based costs go into effect upon contract renewal. Prior to renewal, line items for usage of data transfer, backups, and changefeeds are displayed in the [Billing](https://cockroachlabs.cloud/billing) interface and on invoices with a $0 charge, while showing actual usage metrics to help estimate future costs.
+As of December 1, 2024, [updated pricing](https://www.cockroachlabs.com/pricing/new/) that was recently [announced](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud is now in effect for all customers except those with annual or multi-year contracts that began prior to December 1, 2024, for whom the updated pricing, including new usage-based costs, goes into effect upon contract renewal. Prior to renewal, line items for usage of data transfer, backups, and changefeeds are displayed in the [Billing](https://cockroachlabs.cloud/billing) interface and on invoices with a $0 charge, while showing actual usage metrics to help estimate future costs.
 
 For further detail, refer to [Understand CockroachDB Cloud Costs]({% link cockroachcloud/costs.md %}).
 
