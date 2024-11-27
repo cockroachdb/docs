@@ -102,7 +102,7 @@ For Advanced clusters on AWS, each node will incur charges for the provisioned I
 
 For CockroachDB Basic clusters, storage is automatically provisioned on demand, eliminating the need for manual management. Costs are based on actual usage and adjust dynamically as data is added or removed, starting from zero.
 
-Storage is billed hourly, with [rates](https://www.cockroachlabs.com/pricing) depending on the cloud provider and the region where the cluster is hosted. Basic plan clusters charge for storage per GiB-hour. These charges are accumulated throughout the month to determine the total monthly storage charges.
+Storage is billed hourly, with [rates](https://www.cockroachlabs.com/pricing/new/) depending on the cloud provider and the region where the cluster is hosted. Basic plan clusters charge for storage per GiB-hour. These charges are accumulated throughout the month to determine the total monthly storage charges.
 
 </section>
 
@@ -110,7 +110,7 @@ Storage is billed hourly, with [rates](https://www.cockroachlabs.com/pricing) de
 
 For CockroachDB Standard clusters, storage is automatically provisioned on demand, eliminating the need for manual management. Costs are based on actual usage and adjust dynamically as data is added or removed, starting from zero.
 
-Storage is billed hourly, with [rates](https://www.cockroachlabs.com/pricing) specific to each cloud provider and the region where the cluster is hosted. CockroachDB Cloud measures storage in GiB-hour. These charges are accumulated throughout the month to determine the total monthly storage charges.
+Storage is billed hourly, with [rates](https://www.cockroachlabs.com/pricing/new/) specific to each cloud provider and the region where the cluster is hosted. CockroachDB Cloud measures storage in GiB-hour. These charges are accumulated throughout the month to determine the total monthly storage charges.
 
 A CockroachDB Standard cluster maintains a minimum of three [replicas]({% link {{site.current_cloud_version}}/architecture/replication-layer.md %}) of your data. The second and third replicas are included, with no additional storage charge. If you add further replicas, each will incur a storage cost equal to that of the first replica—the logical database size.
 
