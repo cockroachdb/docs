@@ -10,7 +10,7 @@ The ways that monthly charges are incurred for a CockroachDB Cloud organization 
 Refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/new/) for details on plans and rates.
 
 {{ site.data.alerts.callout_info }}
-This page reflects [updated costs](https://www.cockroachlabs.com/pricing/new/) recently [announced](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud. This new pricing, including new usage-based costs, now applies to all customers except those with annual or multi-year contracts that began prior to December 1, 2024, for whom the updated pricing goes into effect upon contract renewal. Prior to renewal, line items for usage of data transfer, backups, and changefeeds are displayed in the [Billing](https://cockroachlabs.cloud/billing) interface and on invoices with a $0 charge, while showing actual usage metrics to help estimate future costs.
+This page reflects [updated costs](https://www.cockroachlabs.com/pricing/new/) recently [announced](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud. This new pricing, including new usage-based costs, now applies to all customers except those with annual or multi-year contracts that began prior to December 1, 2024. For those customers, the updated pricing goes into effect upon contract renewal. Prior to renewal, line items for usage of data transfer, backups, and changefeeds are displayed in the [Billing](https://cockroachlabs.cloud/billing) interface and on invoices with a $0 charge, while showing actual usage metrics to help estimate future costs.
 {{ site.data.alerts.end }}
 
 For details on planning or provisioning clusters, refer to:
@@ -23,14 +23,60 @@ For details on planning or provisioning clusters, refer to:
 
 This table summarizes key details about how costs are calculated for each plan to help you get started in choosing the one that best meets your needs for a given workload.
 
-|   | <strong>CockroachDB Basic</strong><br><br>Usage-based billing only | <strong>CockroachDB Standard</strong><br><br>Provisioned compute, usage-based storage, data transfer, backups, and Change Data Capture (CDC) | <strong>CockroachDB Advanced</strong><br><br>Provisioned compute, storage, and IOPS with usage-based billing for data transfer, backups, and CDC |
-| :---- | :---- | :---- | :---- |
-| [Compute](#compute) | Usage-based via [Request Units]({% link cockroachcloud/create-a-basic-cluster.md %}#step-4-configure-cluster-capacity). | Provisioned; cost per hour based on plan, [vCPU quantity, cloud provider, and regions]({% link cockroachcloud/create-your-cluster.md %}#step-4-provision-cluster-capacity). | Provisioned; cost per hour per node based on plan, [vCPU quantity, cloud provider, region]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity), and whether security add-on is enabled. |
-| [Storage](#storage) | Usage-based. | Usage-based; rates vary per cloud provider and region. | Provisioned; billed per hour per node; rates vary per cloud provider, region, and whether security add-on is enabled. |
-| [IOPS](#iops) | Usage-based via Request Units. | Included in storage costs. | Provisioned based on storage and varies per cloud provider. |
-| [Backups](#backups) | Usage-based via Request Units. | Usage-based.<br><br>[Managed Backups]({% link cockroachcloud/managed-backups.md %}) storage rates vary per cloud provider, region, and backup frequency.<br><br>[Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) fee incurred per GiB transferred to your own object storage. | Usage-based.<br><br>[Managed Backups]({% link cockroachcloud/managed-backups.md %}) storage rates vary per cloud provider, region,  backup frequency, and whether security add-on is enabled.<br><br>[Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) fee incurred per GiB transferred to your own object storage. Rate varies depending on whether security add-on is enabled. |
-| [Data transfer](#data-transfer) | Usage-based via Request Units. | Usage-based; rates vary per cloud provider and data transfer type. | Usage-based; rates vary per cloud provider and data transfer type. |
-| [Change Data Capture](#change-data-capture-changefeeds) | Usage-based via Request Units. | Usage-based, per GiB-Hour watched across all changefeeds. | Usage-based, per GiB-Hour watched across all changefeeds. Rates vary depending on whether security add-on is enabled. |
+<table style="table-layout: fixed; width: 100%;">
+  <colgroup>
+    <col style="width: 15%;">
+    <col style="width: 20%;">
+    <col style="width: 32.5%;">
+    <col style="width: 32.5%;">
+  </colgroup>
+  <thead>
+    <tr>
+      <th style="text-align: left"></th>
+      <th style="text-align: left; white-space: nowrap;"><strong>CockroachDB Basic</strong><br><br>Usage-based billing only</th>
+      <th style="text-align: left"><strong>CockroachDB Standard</strong><br><br>Provisioned compute, usage-based storage, data transfer, backups, and Change Data Capture (CDC)</th>
+      <th style="text-align: left"><strong>CockroachDB Advanced</strong><br><br>Provisioned compute, storage, and IOPS with usage-based billing for data transfer, backups, and CDC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><a href="#compute">Compute</a></td>
+      <td style="text-align: left">Usage-based via <a href='/docs/cockroachcloud/create-a-basic-cluster#step-4-configure-cluster-capacity'>Request Units</a>.</td>
+      <td style="text-align: left">Provisioned; cost per hour based on plan, <a href='/docs/cockroachcloud/create-your-cluster#step-4-provision-cluster-capacity'>vCPU quantity, cloud provider, and regions</a>.</td>
+      <td style="text-align: left">Provisioned; cost per hour per node based on plan, <a href='/docs/cockroachcloud/create-an-advanced-cluster#step-5-configure-cluster-capacity'>vCPU quantity, cloud provider, region</a>, and whether security add-on is enabled.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><a href="#storage">Storage</a></td>
+      <td style="text-align: left">Usage-based.</td>
+      <td style="text-align: left">Usage-based; rates vary per cloud provider and region.</td>
+      <td style="text-align: left">Provisioned; billed per hour per node; rates vary per cloud provider, region, and whether security add-on is enabled.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><a href="#iops">IOPS</a></td>
+      <td style="text-align: left">Usage-based via Request Units.</td>
+      <td style="text-align: left">Included in storage costs.</td>
+      <td style="text-align: left">Provisioned based on storage and varies per cloud provider.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><a href="#backups">Backups</a></td>
+      <td style="text-align: left">Usage-based via Request Units.</td>
+      <td style="text-align: left">Usage-based.<br><br><a href='/docs/cockroachcloud/managed-backups'>Managed Backups</a> storage rates vary per cloud provider, region, and backup frequency.<br><br><a href='/docs/cockroachcloud/take-and-restore-self-managed-backups'>Self-Managed Backups</a> fee incurred per GiB transferred to your own object storage.</td>
+      <td style="text-align: left">Usage-based.<br><br><a href='/docs/cockroachcloud/managed-backups'>Managed Backups</a> storage rates vary per cloud provider, region,  backup frequency, and whether security add-on is enabled.<br><br><a href='/docs/cockroachcloud/take-and-restore-self-managed-backups'>Self-Managed Backups</a> fee incurred per GiB transferred to your own object storage. Rate varies depending on whether security add-on is enabled.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><a href="#data-transfer">Data transfer</a></td>
+      <td style="text-align: left">Usage-based via Request Units.</td>
+      <td style="text-align: left">Usage-based; rates vary per cloud provider and data transfer type.</td>
+      <td style="text-align: left">Usage-based; rates vary per cloud provider and data transfer type.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><a href="#change-data-capture-changefeeds">Change Data Capture</a></td>
+      <td style="text-align: left">Usage-based via Request Units.</td>
+      <td style="text-align: left">Usage-based, per GiB-hour watched across all changefeeds.</td>
+      <td style="text-align: left">Usage-based, per GiB-hour watched across all changefeeds. Rates vary depending on whether security add-on is enabled.</td>
+    </tr>
+  </tbody>
+</table>
 
 ## More details
 
@@ -166,7 +212,7 @@ For CockroachDB {{ site.data.products.basic }}, data transfer is included in the
 
 <section class="filter-content" markdown="1" data-scope="standard">
 
-For CockroachDB Standard and Advanced, CockroachDB Cloud bills directly to customers based on their usage.
+For CockroachDB Standard, CockroachDB Cloud bills directly to customers based on their usage.
 
 The usage data is based on the volume of data moved (per GiB) and the cloud provider’s identified data transfer type, which CockroachDB categorizes as **Same-region data transfer**, **Cross-Region data transfer**, or **Public Internet data transfer**. Each category is reflected as a line item on your invoice. Within each data transfer category, for a given Cloud provider, rates are consistent across plans: CockroachDB Standard, Advanced, and Advanced with security add-on enabled.
 
@@ -200,7 +246,7 @@ This is the usage for any data leaving CockroachDB such as SQL data being sent t
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
-For CockroachDB Standard and Advanced, CockroachDB Cloud bills directly to customers based on their usage.
+For CockroachDB Advanced, CockroachDB Cloud bills directly to customers based on their usage.
 
 The usage data is based on the volume of data moved (per GiB) and the cloud provider’s identified data transfer type, which CockroachDB categorizes as **Same-region data transfer**, **Cross-Region data transfer**, or **Public Internet data transfer**. Each category is reflected as a line item on your invoice. Within each data transfer category, for a given Cloud provider, rates are consistent across plans: CockroachDB Standard, Advanced, and Advanced with security add-on enabled.
 
