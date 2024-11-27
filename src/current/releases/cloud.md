@@ -431,7 +431,7 @@ In addition, this release includes the following features:
 <h3 id="2023-07-10-console-changes"> Console changes </h3>
 
 - The **Add database** button on the [**Databases** page]({% link cockroachcloud/databases-page.md %}) of the Console is temporarily disabled.
-- CockroachDB {{ site.data.products.dedicated }} [restore jobs](https://www.cockroachlabs.com/docs/cockroachcloud/managed-backupsfilters=advanced#restore-data-in-advanced-clusters) now have the following more descriptive statuses: `Preparing`, `Running`, `Reverting`, `Finalizing`, `Succeeded`, and `Failed` statuses. Additionally, destination clusters of self-service restores now display a `Restoring` state during the restore.
+- CockroachDB {{ site.data.products.dedicated }} [restore jobs]({% link cockroachcloud/managed-backups-advanced.md %}#restore-data) now have the following more descriptive statuses: `Preparing`, `Running`, `Reverting`, `Finalizing`, `Succeeded`, and `Failed` statuses. Additionally, destination clusters of self-service restores now display a `Restoring` state during the restore.
 - The [**Databases** page]({% link cockroachcloud/databases-page.md %}) now includes additional statistics for clusters running [v23.1.0]({% link releases/v23.1.md %}) and later.
 - You can now set up an AWS CloudWatch integration and view its status directly from the [**Tools** page]({% link cockroachcloud/export-metrics-advanced.md %}) of the CockroachDB {{ site.data.products.cloud }} Console.
 
@@ -452,7 +452,7 @@ In addition, this release includes the following features:
 
 - Organizations that have purchased premium support will now see it included in their [invoices]({% link cockroachcloud/billing-management.md %}).
 - Cross-cluster [restores]({% link cockroachcloud/managed-backups.md %}#restore-a-cluster) are now limited to CockroachDB {{ site.data.products.dedicated }} clusters with a major version greater than or equal to the major version of the source cluster.
-- The [**Restore jobs**]({% link cockroachcloud/managed-backups.md %}?filters=advanced#restore-data-in-advanced-clusters) tab of the **Backups page** now shows more information about a restore job, such as the source and destination clusters, the restore type, the backup size, and the job's progress.
+- The [**Restore jobs**]({% link cockroachcloud/managed-backups-advanced.md %}#restore-data) tab of the **Backups page** now shows more information about a restore job, such as the source and destination clusters, the restore type, the backup size, and the job's progress.
 
 <h3 id="2023-07-05-security-changes"> Security updates </h3>
 
