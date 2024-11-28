@@ -41,9 +41,9 @@ This table summarizes key details about how costs are calculated for each plan t
   <tbody>
     <tr>
       <td style="text-align: left"><a href="#compute">Compute</a></td>
-      <td style="text-align: left">Usage-based via <a href='/docs/cockroachcloud/create-a-basic-cluster#step-4-configure-cluster-capacity'>Request Units</a>.</td>
-      <td style="text-align: left">Provisioned; cost per hour based on plan, <a href='/docs/cockroachcloud/create-your-cluster#step-4-provision-cluster-capacity'>vCPU quantity, cloud provider, and regions</a>.</td>
-      <td style="text-align: left">Provisioned; cost per hour per node based on plan, <a href='/docs/cockroachcloud/create-an-advanced-cluster#step-5-configure-cluster-capacity'>vCPU quantity, cloud provider, region</a>, and whether security add-on is enabled.</td>
+      <td style="text-align: left">Usage-based via <a href='create-a-basic-cluster#step-4-configure-cluster-capacity'>Request Units</a>.</td>
+      <td style="text-align: left">Provisioned; cost per hour based on plan, <a href='create-your-cluster#step-4-provision-cluster-capacity'>vCPU quantity, cloud provider, and regions</a>.</td>
+      <td style="text-align: left">Provisioned; cost per hour per node based on plan, <a href='create-an-advanced-cluster#step-5-configure-cluster-capacity'>vCPU quantity, cloud provider, region</a>, and whether security add-on is enabled.</td>
     </tr>
     <tr>
       <td style="text-align: left"><a href="#storage">Storage</a></td>
@@ -60,8 +60,8 @@ This table summarizes key details about how costs are calculated for each plan t
     <tr>
       <td style="text-align: left"><a href="#backups">Backups</a></td>
       <td style="text-align: left">Usage-based via Request Units.</td>
-      <td style="text-align: left">Usage-based.<br><br><a href='/docs/cockroachcloud/managed-backups'>Managed Backups</a> storage rates vary per cloud provider, region, and backup frequency.<br><br><a href='/docs/cockroachcloud/take-and-restore-self-managed-backups'>Self-Managed Backups</a> fee incurred per GiB transferred to your own object storage.</td>
-      <td style="text-align: left">Usage-based.<br><br><a href='/docs/cockroachcloud/managed-backups'>Managed Backups</a> storage rates vary per cloud provider, region,  backup frequency, and whether security add-on is enabled.<br><br><a href='/docs/cockroachcloud/take-and-restore-self-managed-backups'>Self-Managed Backups</a> fee incurred per GiB transferred to your own object storage. Rate varies depending on whether security add-on is enabled.</td>
+      <td style="text-align: left">Usage-based.<br><br><a href='managed-backups'>Managed Backups</a> storage rates vary per cloud provider, region, and backup frequency.<br><br><a href='take-and-restore-self-managed-backups'>Self-Managed Backups</a> fee incurred per GiB transferred to your own object storage.</td>
+      <td style="text-align: left">Usage-based.<br><br><a href='managed-backups'>Managed Backups</a> storage rates vary per cloud provider, region,  backup frequency, and whether security add-on is enabled.<br><br><a href='take-and-restore-self-managed-backups'>Self-Managed Backups</a> fee incurred per GiB transferred to your own object storage. Rate varies depending on whether security add-on is enabled.</td>
     </tr>
     <tr>
       <td style="text-align: left"><a href="#data-transfer">Data transfer</a></td>
