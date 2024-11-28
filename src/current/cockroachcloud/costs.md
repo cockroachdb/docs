@@ -25,17 +25,17 @@ This table summarizes key details about how costs are calculated for each plan t
 
 <table style="table-layout: fixed; width: 100%;">
   <colgroup>
-    <col style="width: 15%;">
-    <col style="width: 20%;">
+    <col style="width: 10%;">
+    <col style="width: 25%;">
     <col style="width: 32.5%;">
     <col style="width: 32.5%;">
   </colgroup>
   <thead>
     <tr>
       <th style="text-align: left"></th>
-      <th style="text-align: left; white-space: nowrap;"><strong>CockroachDB Basic</strong><br><br>Usage-based billing only</th>
-      <th style="text-align: left"><strong>CockroachDB Standard</strong><br><br>Provisioned compute, usage-based storage, data transfer, backups, and Change Data Capture (CDC)</th>
-      <th style="text-align: left"><strong>CockroachDB Advanced</strong><br><br>Provisioned compute, storage, and IOPS with usage-based billing for data transfer, backups, and CDC</th>
+      <th style="text-align: left; white-space: nowrap; vertical-align: top;"><strong>CockroachDB Basic</strong><br><br>Usage-based billing only</th>
+      <th style="text-align: left; vertical-align: top;"><strong>CockroachDB Standard</strong><br><br>Provisioned compute, usage-based storage, data transfer, backups, and Change Data Capture (CDC)</th>
+      <th style="text-align: left; vertical-align: top;"><strong>CockroachDB Advanced</strong><br><br>Provisioned compute, storage, and IOPS with usage-based billing for data transfer, backups, and CDC</th>
     </tr>
   </thead>
   <tbody>
