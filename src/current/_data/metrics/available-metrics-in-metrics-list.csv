@@ -394,7 +394,6 @@ jobs.auto_config_task.protected_record_count
 jobs.auto_create_partial_stats.currently_paused
 jobs.auto_create_partial_stats.protected_age_sec
 jobs.auto_create_partial_stats.protected_record_count
-jobs.auto_create_stats.currently_paused
 jobs.auto_create_stats.protected_age_sec
 jobs.auto_create_stats.protected_record_count
 jobs.auto_schema_telemetry.currently_paused
@@ -409,11 +408,8 @@ jobs.auto_sql_stats_compaction.protected_record_count
 jobs.auto_update_sql_activity.currently_paused
 jobs.auto_update_sql_activity.protected_age_sec
 jobs.auto_update_sql_activity.protected_record_count
-jobs.backup.currently_paused
 jobs.backup.protected_age_sec
 jobs.backup.protected_record_count
-jobs.changefeed.currently_paused
-jobs.changefeed.protected_age_sec
 jobs.changefeed.protected_record_count
 jobs.create_stats.currently_paused
 jobs.create_stats.protected_age_sec
@@ -454,7 +450,6 @@ jobs.replication_stream_producer.protected_record_count
 jobs.restore.currently_paused
 jobs.restore.protected_age_sec
 jobs.restore.protected_record_count
-jobs.row_level_ttl.currently_paused
 jobs.row_level_ttl.protected_age_sec
 jobs.row_level_ttl.protected_record_count
 jobs.schema_change.currently_paused
