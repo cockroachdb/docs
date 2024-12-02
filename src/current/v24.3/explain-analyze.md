@@ -67,24 +67,31 @@ Property        | Description
 `planning time` | The total time the planner took to create a statement plan.
 `execution time` | The time it took for the final statement plan to complete.
 `distribution` | Whether the statement was distributed or local. If `distribution` is `full`, execution of the statement is performed by multiple nodes in parallel, then the results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
+`plan type` | The plan type used by the query: `generic, re-optimized`, `generic, reused`, or `custom`. For details, refer to [Query plan type]({% link {{ page.version.version }}/cost-based-optimizer.md %}#query-plan-type).
 `vectorized` | Whether the [vectorized execution engine]({% link {{ page.version.version }}/vectorized-execution.md %}) was used in this statement.
-`rows read from KV` | The number of rows read from the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
+`rows decoded from KV` | The number of rows read from the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 `cumulative time spent in KV` | The total amount of time spent in the storage layer.
 `cumulative time spent due to contention` | The total amount of time this statement spent waiting in [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#understanding-and-avoiding-transaction-contention).
 `maximum memory usage` | The maximum amount of memory used by this statement anytime during its execution.
 `network usage` | The amount of data transferred over the network while the statement was executed. If the value is 0 B, the statement was executed on a single node and didn't use the network.
-`sql cpu time` | The total amount of time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 `regions` | The [regions]({% link {{ page.version.version }}/show-regions.md %}) where the affected nodes were located.
+`sql cpu time` | The total amount of time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 `max sql temp disk usage` | ([`DISTSQL`](#distsql-option) option only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
 `estimated RUs consumed` | The estimated number of [Request Units (RUs)]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) consumed by the statement. This property is visible only on CockroachDB {{ site.data.products.basic }} clusters.
+`isolation level` | The [isolation level]({% link {{ page.version.version }}/transactions.md %}#isolation-levels) at which this statement executed.
+`priority` | The [transaction priority level]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities) at which this statement executed.
+`quality of service` | The session's [quality of service]({% link {{ page.version.version }}/admission-control.md %}#set-quality-of-service-level-for-a-session) level at which the statement executed.
+`historical` | The timestamp and [follower read type]({% link {{ page.version.version }}/follower-reads.md %}#follower-read-types), if applicable, for [historical reads]({% link {{ page.version.version }}/as-of-system-time.md %}).
 
 ### Statement plan tree properties
 
 Statement plan tree properties | Description
 -------------------------------|------------
 `processor` | Each processor in the statement plan hierarchy has a node with details about that phase of the statement. For example, a statement with a `GROUP BY` clause has a `group` processor with details about the cluster nodes, rows, and operations related to the `GROUP BY` operation.
-`nodes` | The names of the CockroachDB cluster nodes affected by this phase of the statement.
+`sql nodes` | The names of CockroachDB SQL nodes that were chosen to perform additional manipulation (like filtering and joins) over the rows affected by this SQL statement. This always includes the gateway node.
+`kv nodes` | The names of CockroachDB nodes that had to perform reads from disk to fetch necessary data for this SQL statement.
 `regions` | The [regions]({% link {{ page.version.version }}/show-regions.md %}) where the affected nodes were located.
+`used follower read` | Whether the query used a [follower read]({% link {{ page.version.version }}/follower-reads.md %}#verify-that-cockroachdb-is-performing-follower-reads).
 `actual row count` | The actual number of rows affected by this processor during execution.
 `vectorized batch count` | When the [vectorized execution engine]({% link {{ page.version.version }}/vectorized-execution.md %}) is used, the number of batches of column data that are processed by the vectorized engine.
 `KV time` | The total time this phase of the statement was in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
@@ -206,48 +213,49 @@ EXPLAIN ANALYZE SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
-                                         info
---------------------------------------------------------------------------------------
-  planning time: 899µs
-  execution time: 8ms
+                                       info
+----------------------------------------------------------------------------------
+  planning time: 4ms
+  execution time: 5ms
   distribution: full
   vectorized: true
   plan type: custom
-  rows decoded from KV: 500 (88 KiB, 1 gRPC calls)
-  cumulative time spent in KV: 6ms
+  rows decoded from KV: 500 (87 KiB, 1 gRPC calls)
+  cumulative time spent in KV: 4ms
   maximum memory usage: 240 KiB
   network usage: 0 B (0 messages)
   regions: us-east1
-  sql cpu time: 2ms
+  sql cpu time: 443µs
   estimated RUs consumed: 0
   isolation level: serializable
   priority: normal
   quality of service: regular
 
   • group (streaming)
-  │ nodes: n1
+  │ sql nodes: n1
   │ regions: us-east1
   │ actual row count: 9
-  │ sql cpu time: 1ms
+  │ sql cpu time: 237µs
   │ estimated row count: 9
   │ group by: city
   │ ordered: +city
   │
   └── • scan
-        nodes: n1
+        sql nodes: n1
+        kv nodes: n1
         regions: us-east1
         actual row count: 500
-        KV time: 6ms
+        KV time: 4ms
         KV contention time: 0µs
         KV rows decoded: 500
-        KV bytes read: 88 KiB
+        KV bytes read: 87 KiB
         KV gRPC calls: 1
         estimated max memory allocated: 130 KiB
-        sql cpu time: 469µs
-        estimated row count: 500 (100% of the table; stats collected 35 minutes ago)
+        sql cpu time: 205µs
+        estimated row count: 500 (100% of the table; stats collected 4 days ago)
         table: rides@rides_pkey
         spans: FULL SCAN
-(38 rows)
+(40 rows)
 ~~~
 
 If you perform a join, the estimated max memory allocation is also reported for the join. For example:
@@ -257,19 +265,19 @@ If you perform a join, the estimated max memory allocation is also reported for 
 EXPLAIN ANALYZE SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles.id and rides.city = vehicles.city limit 100;
 ~~~
 ~~~
-                                           info
-------------------------------------------------------------------------------------------
-  planning time: 1ms
-  execution time: 5ms
+                                         info
+--------------------------------------------------------------------------------------
+  planning time: 2ms
+  execution time: 7ms
   distribution: local
   vectorized: true
   plan type: custom
   rows decoded from KV: 515 (90 KiB, 2 gRPC calls)
-  cumulative time spent in KV: 4ms
-  maximum memory usage: 580 KiB
+  cumulative time spent in KV: 6ms
+  maximum memory usage: 590 KiB
   network usage: 0 B (0 messages)
   regions: us-east1
-  sql cpu time: 729µs
+  sql cpu time: 511µs
   estimated RUs consumed: 0
   isolation level: serializable
   priority: normal
@@ -279,46 +287,48 @@ EXPLAIN ANALYZE SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles
   │ count: 100
   │
   └── • hash join
-      │ nodes: n1
+      │ sql nodes: n1
       │ regions: us-east1
       │ actual row count: 100
-      │ estimated max memory allocated: 310 KiB
+      │ estimated max memory allocated: 320 KiB
       │ estimated max sql temp disk usage: 0 B
-      │ sql cpu time: 223µs
+      │ sql cpu time: 214µs
       │ estimated row count: 56
       │ equality: (vehicle_id, city) = (id, city)
       │ right cols are key
       │
       ├── • scan
-      │     nodes: n1
+      │     sql nodes: n1
+      │     kv nodes: n1
       │     regions: us-east1
       │     actual row count: 500
-      │     KV time: 2ms
+      │     KV time: 3ms
       │     KV contention time: 0µs
       │     KV rows decoded: 500
-      │     KV bytes read: 88 KiB
+      │     KV bytes read: 87 KiB
       │     KV gRPC calls: 1
       │     estimated max memory allocated: 250 KiB
-      │     sql cpu time: 467µs
-      │     estimated row count: 500 (100% of the table; stats collected 36 minutes ago)
+      │     sql cpu time: 264µs
+      │     estimated row count: 500 (100% of the table; stats collected 4 days ago)
       │     table: rides@rides_pkey
       │     spans: FULL SCAN
       │
       └── • scan
-            nodes: n1
+            sql nodes: n1
+            kv nodes: n1
             regions: us-east1
             actual row count: 15
-            KV time: 2ms
+            KV time: 3ms
             KV contention time: 0µs
             KV rows decoded: 15
             KV bytes read: 2.4 KiB
             KV gRPC calls: 1
             estimated max memory allocated: 20 KiB
-            sql cpu time: 40µs
-            estimated row count: 15 (100% of the table; stats collected 36 minutes ago)
+            sql cpu time: 32µs
+            estimated row count: 15 (100% of the table; stats collected 4 days ago)
             table: vehicles@vehicles_pkey
             spans: FULL SCAN
-(58 rows)
+(61 rows)
 ~~~
 
 ### `EXPLAIN ANALYZE (VERBOSE)`
@@ -331,19 +341,19 @@ EXPLAIN ANALYZE (VERBOSE) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
-                                         info
---------------------------------------------------------------------------------------
-  planning time: 1ms
-  execution time: 5ms
+                                       info
+----------------------------------------------------------------------------------
+  planning time: 60µs
+  execution time: 4ms
   distribution: full
   vectorized: true
-  plan type: custom
-  rows decoded from KV: 500 (88 KiB, 500 KVs, 1 gRPC calls)
+  plan type: generic, reused
+  rows decoded from KV: 500 (87 KiB, 500 KVs, 1 gRPC calls)
   cumulative time spent in KV: 4ms
   maximum memory usage: 240 KiB
   network usage: 0 B (0 messages)
   regions: us-east1
-  sql cpu time: 622µs
+  sql cpu time: 275µs
   estimated RUs consumed: 0
   isolation level: serializable
   priority: normal
@@ -351,11 +361,11 @@ EXPLAIN ANALYZE (VERBOSE) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 
   • group (streaming)
   │ columns: (city, avg)
-  │ nodes: n1
+  │ sql nodes: n1
   │ regions: us-east1
   │ actual row count: 9
   │ vectorized batch count: 1
-  │ sql cpu time: 137µs
+  │ sql cpu time: 74µs
   │ estimated row count: 9
   │ aggregate 0: avg(revenue)
   │ group by: city
@@ -364,7 +374,8 @@ EXPLAIN ANALYZE (VERBOSE) SELECT city, AVG(revenue) FROM rides GROUP BY city;
   └── • scan
         columns: (city, revenue)
         ordering: +city
-        nodes: n1
+        sql nodes: n1
+        kv nodes: n1
         regions: us-east1
         actual row count: 500
         vectorized batch count: 1
@@ -372,16 +383,16 @@ EXPLAIN ANALYZE (VERBOSE) SELECT city, AVG(revenue) FROM rides GROUP BY city;
         KV contention time: 0µs
         KV rows decoded: 500
         KV pairs read: 500
-        KV bytes read: 88 KiB
+        KV bytes read: 87 KiB
         KV gRPC calls: 1
         estimated max memory allocated: 130 KiB
-        sql cpu time: 485µs
+        sql cpu time: 201µs
         MVCC step count (ext/int): 500/500
         MVCC seek count (ext/int): 9/9
-        estimated row count: 500 (100% of the table; stats collected 36 minutes ago)
+        estimated row count: 500 (100% of the table; stats collected 4 days ago)
         table: rides@rides_pkey
         spans: FULL SCAN
-(47 rows)
+(49 rows)
 ~~~
 
 ### `EXPLAIN ANALYZE (DISTSQL)`
@@ -394,50 +405,51 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
-   info
-------------------------------------------------------------------------------------
-  planning time: 822µs
+           info
+----------------------------------------------------------------------------------
+  planning time: 580µs
   execution time: 4ms
   distribution: full
   vectorized: true
   plan type: custom
-  rows decoded from KV: 500 (88 KiB, 1 gRPC calls)
-  cumulative time spent in KV: 3ms
+  rows decoded from KV: 500 (87 KiB, 1 gRPC calls)
+  cumulative time spent in KV: 4ms
   maximum memory usage: 240 KiB
   network usage: 0 B (0 messages)
   regions: us-east1
-  sql cpu time: 407µs
+  sql cpu time: 300µs
   estimated RUs consumed: 0
   isolation level: serializable
   priority: normal
   quality of service: regular
 
   • group (streaming)
-  │ nodes: n1
+  │ sql nodes: n1
   │ regions: us-east1
   │ actual row count: 9
-  │ sql cpu time: 82µs
+  │ sql cpu time: 78µs
   │ estimated row count: 9
   │ group by: city
   │ ordered: +city
   │
   └── • scan
-        nodes: n1
+        sql nodes: n1
+        kv nodes: n1
         regions: us-east1
         actual row count: 500
-        KV time: 3ms
+        KV time: 4ms
         KV contention time: 0µs
         KV rows decoded: 500
-        KV bytes read: 88 KiB
+        KV bytes read: 87 KiB
         KV gRPC calls: 1
         estimated max memory allocated: 130 KiB
-        sql cpu time: 324µs
-        estimated row count: 500 (100% of the table; stats collected 36 minutes ago)
+        sql cpu time: 222µs
+        estimated row count: 500 (100% of the table; stats collected 4 days ago)
         table: rides@rides_pkey
         spans: FULL SCAN
 
-  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJyUk99O4zoQxu...
-(40 rows)
+  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJyUU9FO6z...
+(42 rows)
 ~~~
 
 To view the [DistSQL plan diagram](#distsql-plan-diagram), open the URL following **Diagram**. For an example, see [`DISTSQL` option]({% link {{ page.version.version }}/explain.md %}#distsql-option).
@@ -473,16 +485,16 @@ EXPLAIN ANALYZE (REDACT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue
 ~~~
 
 ~~~
-                                           info
-------------------------------------------------------------------------------------------
-  planning time: 872µs
-  execution time: 6ms
+                                         info
+--------------------------------------------------------------------------------------
+  planning time: 390µs
+  execution time: 20ms
   distribution: full
   vectorized: true
   plan type: custom
-  rows decoded from KV: 500 (88 KiB, 1 gRPC calls)
-  cumulative time spent in KV: 4ms
-  maximum memory usage: 280 KiB
+  rows decoded from KV: 500 (87 KiB, 1 gRPC calls)
+  cumulative time spent in KV: 18ms
+  maximum memory usage: 290 KiB
   network usage: 0 B (0 messages)
   regions: us-east1
   sql cpu time: 2ms
@@ -492,38 +504,39 @@ EXPLAIN ANALYZE (REDACT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue
   quality of service: regular
 
   • sort
-  │ nodes: n1
+  │ sql nodes: n1
   │ regions: us-east1
-  │ actual row count: 36
-  │ estimated max memory allocated: 30 KiB
+  │ actual row count: 58
+  │ estimated max memory allocated: 40 KiB
   │ estimated max sql temp disk usage: 0 B
-  │ sql cpu time: 89µs
-  │ estimated row count: 52
+  │ sql cpu time: 827µs
+  │ estimated row count: 50
   │ order: +revenue
   │
   └── • filter
-      │ nodes: n1
+      │ sql nodes: n1
       │ regions: us-east1
-      │ actual row count: 36
-      │ sql cpu time: 1ms
-      │ estimated row count: 52
+      │ actual row count: 58
+      │ sql cpu time: 373µs
+      │ estimated row count: 50
       │ filter: revenue > ‹×›
       │
       └── • scan
-            nodes: n1
+            sql nodes: n1
+            kv nodes: n1
             regions: us-east1
             actual row count: 500
-            KV time: 4ms
+            KV time: 18ms
             KV contention time: 0µs
             KV rows decoded: 500
-            KV bytes read: 88 KiB
+            KV bytes read: 87 KiB
             KV gRPC calls: 1
             estimated max memory allocated: 250 KiB
-            sql cpu time: 653µs
-            estimated row count: 500 (100% of the table; stats collected 38 minutes ago)
+            sql cpu time: 631µs
+            estimated row count: 500 (100% of the table; stats collected 4 days ago)
             table: rides@rides_pkey
             spans: FULL SCAN
-(47 rows)
+(49 rows)
 ~~~
 
 In the preceding output, the `revenue` comparison value is redacted as `‹×›`.

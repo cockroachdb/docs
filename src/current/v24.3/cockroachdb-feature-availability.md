@@ -59,10 +59,6 @@ The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %})
 
 The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.provisioned_bandwidth` is in Preview. When configured, the store's bandwidth is limited to the configured bandwidth, expressed in bytes per second,
 
-### Usage-based billing metrics
-
-Metering for [usage-based billing]({% link cockroachcloud/costs.md %}) of data transfer, managed backup storage, and changefeeds is now in Preview for all CockroachDB Standard and Advanced clusters through November 2024. You can view your usage in the CockroachDB Cloud Console, where line items with a charge of $0 will be shown for each metric. There will be no usage-based charges associated with these metrics during the preview period. For more information, refer to [CockroachDB Cloud Costs: Usage-based billing metrics in Preview]({% link cockroachcloud/costs.md %}#usage-based-billing-metrics-in-preview) or the [announcement]({% link releases/cloud.md %}#october-1-2024) in the release notes.
-
 ### CockroachDB Standard
 
 CockroachDB {{ site.data.products.standard }} is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand]({% link cockroachcloud/plan-your-cluster.md %}), along with enterprise-level security and availability. Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
@@ -90,6 +86,10 @@ The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores
 ### Logical data replication (LDR) for CockroachDB {{ site.data.products.core }}
 
 **Logical data replication (LDR)** continuously replicates tables between active CockroachDB clusters. Both source and destination cluster can receive application reads and writes, with LDR enabling bidirectional replication for eventual consistency in the replicating tables. The active-active setup between clusters can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Setting up LDR between a source and destination CockroachDB {{ site.data.products.core }} cluster is in preview.
+
+### Read on standby cluster in physical cluster replication (PCR) for CockroachDB {{ site.data.products.core }}
+ 
+The [`READ VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}#options) option allows you to set up a PCR stream that also creates a read-only virtual cluster on the standby cluster. You can create a PCR job as per the [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) guide and then add the option to the [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) statement.
 
 ### Custom Metrics Chart page for CockroachDB {{ site.data.products.cloud }} clusters
 

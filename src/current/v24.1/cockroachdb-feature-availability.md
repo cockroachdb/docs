@@ -43,14 +43,6 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
-### Usage-based billing metrics
-
-Metering for [usage-based billing](https://www.cockroachlabs.com/docs/cockroachcloud/costs) of data transfer, managed backup storage, and changefeeds is in Preview for all CockroachDB Standard and Advanced clusters through November 2024\. You can view your usage in the CockroachDB Cloud Console, where line items with a charge of $0 are shown for each metric. There will be no usage-based charges associated with these metrics during the Preview period.
-
-On December 1, 2024, once the Preview has ended, pricing for these metrics goes into effect immediately for new customers and for existing pay-as-you-go customers (e.g. paying monthly by credit card). Customers with annual or multi-year contracts will continue to preview these line items without incurring charges for them (i.e. expending credits) through the end of their current contract term.
-
-For more information, refer to [CockroachDB Cloud Costs: Usage-based billing metrics in Preview](https://www.cockroachlabs.com/docs/cockroachcloud/costs#usage-based-billing-metrics-in-preview) and the announcements in the release notes published [October 1](https://www.cockroachlabs.com/docs/releases/cloud#october-1-2024) and [November 1](https://www.cockroachlabs.com/docs/releases/cloud#november-1-2024).
-
 ### CockroachDB Cloud Folders
 
 [Organizing CockroachDB {{ site.data.products.cloud }} clusters using folders]({% link cockroachcloud/folders.md %}) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing.

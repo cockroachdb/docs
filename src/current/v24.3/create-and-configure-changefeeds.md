@@ -19,7 +19,7 @@ This page describes:
 1. Plan the number of changefeeds versus the number of tables to include in a single changefeed for your cluster. {% include {{ page.version.version }}/cdc/changefeed-number-limit.md %} Refer to [System resources and running changefeeds]({% link {{ page.version.version }}/changefeed-best-practices.md %}#maintain-system-resources-and-running-changefeeds) and [Recommendations for the number of target tables]({% link {{ page.version.version }}/changefeed-best-practices.md %}#plan-the-number-of-watched-tables-for-a-single-changefeed).
 1. Consider whether your {{ site.data.products.enterprise }} [changefeed use case](#create) would be better served by [change data capture queries]({% link {{ page.version.version }}/cdc-queries.md %}) that can filter data on a single table. CDC queries can improve the efficiency of changefeeds because the job will not need to encode as much change data.
 1. Read the following: 
-    - The [Changefeed Best Practices] reference for details on planning changefeeds, monitoring basics, and schema changes. 
+    - The [Changefeed Best Practices]({% link {{ page.version.version }}/changefeed-best-practices.md %}) reference for details on planning changefeeds, monitoring basics, and schema changes. 
     - The [Considerations](#considerations) section that provides information on changefeed interactions that could affect how you configure or run your changefeed.
 
 ### Enable rangefeeds
