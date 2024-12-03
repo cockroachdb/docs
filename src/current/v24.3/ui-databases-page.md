@@ -6,7 +6,10 @@ toc: true
 
 {% capture version_prefix %}{{ page.version.version }}{% endcapture %}
 
-{% include {{ version_prefix }}/ui/admin-access-only.md %}
+{{site.data.alerts.callout_info}}
+On a [secure cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}), you must be an [`admin` user]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or a SQL user with the [`CONNECT`]({% link {{ page.version.version }}/security-reference/authorization.md %}#connect) privilege [granted]({% link {{ page.version.version }}/grant.md %}#grant-privileges-on-databases) on a database.
+
+{{site.data.alerts.end}}
 
 <a id="databases"></a>
 

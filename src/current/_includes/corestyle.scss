@@ -305,6 +305,8 @@ th {
 th,
 td {
   padding: map-get($spacers, 1) map-get($spacers, 2);
+  hyphens: none;
+  word-break: normal;
 }
 
 
@@ -387,7 +389,8 @@ table td:first-child {
 
 
 table tr td {
-  hyphens: auto;
+  hyphens: none;
+  word-break: normal;
 }
 
 .filter-options {

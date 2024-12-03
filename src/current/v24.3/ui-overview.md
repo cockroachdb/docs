@@ -118,7 +118,6 @@ The following areas display information from privileged HTTP endpoints that requ
 
 DB Console area | System-level privilege | Privileged information
 ----------------|------------------------|------------------------
-[Databases]({% link {{ page.version.version }}/ui-databases-page.md %}) | [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) | Stored table data
 [Statements]({% link {{ page.version.version }}/ui-statements-page.md %}) | [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) | SQL statements
 [Transactions]({% link {{ page.version.version }}/ui-transactions-page.md %}) | [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) | Transactions
 [Sessions]({% link {{ page.version.version }}/ui-sessions-page.md %}) | [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) | Sessions
