@@ -15,7 +15,6 @@ The following information is displayed for each database:
 {% endif -%}
 | Tables        | The number of tables in the database.                                                                                   |
 {% if page.cloud != true  -%}
-| Range Count   | The number of ranges across all tables in the  database.                                                                |
 | Regions/Nodes | The regions and nodes on which the tables in the database are located. This is not displayed on a single-node cluster.  |
 | Index Recommendations | The number of index recommendations for the database.                                                           |
 {%- else -%}
