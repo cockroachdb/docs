@@ -256,7 +256,7 @@ resource "cockroach_cluster" "advanced" {
   plan           = "ADVANCED"
   dedicated = {
     storage_gib  = 15
-    machine_type = "n2-standard-4"
+    num_virtual_cpus = 4
   }
   regions = [
     {
