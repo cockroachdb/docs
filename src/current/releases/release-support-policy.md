@@ -130,7 +130,7 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
     <br />
     {% endif %}
 
-  {% if will_never_have_lts == false and r_lts_eol != true %}
+  {% if r_lts_eol != true %}
     {% comment %}Only show non-EOL releases {% endcomment %}
 
       {% if v.initial_lts_patch != "N/A" %}{% comment %} For LTS releases print an LTS row first{% endcomment %}
