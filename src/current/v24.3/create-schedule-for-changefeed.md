@@ -58,6 +58,10 @@ Option | Value | Description
 `on_execution_failure` | `retry` / `reschedule` / `pause` | Determine how the schedule handles an error. <br><br>`retry`: Retry the changefeed immediately.<br><br>`reschedule`: Reschedule the changefeed based on the `RECURRING` expression.<br><br>`pause`: Pause the schedule. This requires that you [resume the schedule]({% link {{ page.version.version }}/resume-schedules.md %}) manually.<br><br>**Default:** `reschedule`
 `on_previous_running` | `start` / `skip` / `wait` | Control whether the changefeed schedule should start a changefeed if the previous scheduled changefeed is still running.<br><br>`start`: Start the new changefeed anyway, even if the previous one is running.<br><br>`skip`: Skip the new changefeed and run the next changefeed based on the `RECURRING` expression.<br><br>`wait`: Wait for the previous changefeed to complete.<br><br>**Default:** `wait`
 
+{{site.data.alerts.callout_info}}
+To avoid multiple clusters running the same schedule concurrently, changefeed schedules will [pause]({% link {{ page.version.version }}/pause-schedules.md %}) when [restored]({% link {{ page.version.version }}/restore.md %}) onto a different cluster or after [physical cluster replication]({% link {{ page.version.version }}/failover-replication.md %}) has completed.
+{{site.data.alerts.end}}
+
 ## Examples
 
 Before running any of the examples in this section, it is necessary to enable the `kv.rangefeed.enabled` cluster setting. If you are working on a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster, this cluster setting is enabled by default.

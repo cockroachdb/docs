@@ -167,17 +167,21 @@ During a replication stream, jobs running on the primary cluster will replicate 
 [Backup schedules]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}) will pause after failover on the promoted cluster. Take the following steps to resume jobs:
 
 1. Verify that there are no other schedules running backups to the same [collection of backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections), i.e., the schedule that was running on the original primary cluster.
-1. Resume the backup schedule on the promoted cluster.
+1. [Resume]({% link {{ page.version.version }}/resume-schedules.md %}) the backup schedule on the promoted cluster.
 
 {{site.data.alerts.callout_info}}
-If your backup schedule was created on a cluster in v23.1 or earlier, it will **not** pause automatically on the promoted cluster after failover. In this case, you must pause the schedule manually on the promoted cluster and then take the outlined steps.
+If your backup schedule was created on a cluster in v23.1 or earlier, it will **not** pause automatically on the promoted cluster after failover. In this case, you must [pause]({% link {{ page.version.version }}/pause-schedules.md %}) the schedule manually on the promoted cluster and then take the outlined steps.
 {{site.data.alerts.end}}
 
 ### Changefeeds
 
 [Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will fail on the promoted cluster immediately after failover to avoid two clusters running the same changefeed to one sink. We recommend that you recreate changefeeds on the promoted cluster.
 
-[Scheduled changefeeds]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) will continue on the promoted cluster. You will need to manage [pausing]({% link {{ page.version.version }}/pause-schedules.md %}) or [canceling]({% link {{ page.version.version }}/drop-schedules.md %}) the schedule on the promoted standby cluster to avoid two clusters running the same changefeed to one sink.
+To avoid multiple clusters running the same schedule concurrently, [changefeed schedules]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) will [pause]({% link {{ page.version.version }}/pause-schedules.md %}) after physical cluster replication has completed.
+
+{{site.data.alerts.callout_info}}
+If your changefeed schedule was created on a cluster in v24.1 or earlier, it will **not** pause automatically on the promoted cluster after failover. In this case, you will need to manage [pausing]({% link {{ page.version.version }}/pause-schedules.md %}) or [canceling]({% link {{ page.version.version }}/drop-schedules.md %}) the schedule on the promoted standby cluster to avoid two clusters running the same changefeed to one sink.
+{{site.data.alerts.end}}
 
 ## Fail back to the primary cluster
 
