@@ -108,7 +108,12 @@ Kafka has the following topic limitations:
 
 You can configure flushing, acknowledgments, compression, and concurrency behavior of changefeeds running to a Kafka sink with the following:
 
-- Set the [`changefeed.sink_io_workers` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a Kafka sink. When you set `changefeed.sink_io_workers`, it will not affect running changefeeds; [pause the changefeed]({% link {{ page.version.version }}/pause-job.md %}), set `changefeed.sink_io_workers`, and then [resume the changefeed]({% link {{ page.version.version }}/resume-job.md %}). Note that this cluster setting will also affect changefeeds running to [Google Cloud Pub/Sub](#google-cloud-pub-sub) sinks and [webhook sinks](#webhook-sink).
+- Set the [`changefeed.sink_io_workers` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a Kafka sink. When you set `changefeed.sink_io_workers`, it will not affect running changefeeds; [pause the changefeed]({% link {{ page.version.version }}/pause-job.md %}), set `changefeed.sink_io_workers`, and then [resume the changefeed]({% link {{ page.version.version }}/resume-job.md %}). `changefeed.sink_io_workers` will also affect changefeeds running to [Google Cloud Pub/Sub](#google-cloud-pub-sub) sinks and [webhook sinks](#webhook-sink).
+
+    {{site.data.alerts.callout_info}}
+    `changefeed.sink_io_workers` only applies to Kafka sinks created in v24.2.1+, or if the `changefeed.new_kafka_sink.enabled` cluster setting has been enabled in CockroachDB clusters running v23.2.10+ and v24.1.4+. 
+    {{site.data.alerts.end}}
+
 - The `kafka_sink_config` option allows configuration of a changefeed's message delivery, Kafka server version, and batching parameters.
 
 {{site.data.alerts.callout_danger}}
@@ -127,7 +132,7 @@ Field              | Type                | Description      | Default
 -------------------+---------------------+------------------+-------------------
 `"ClientID"` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Applies a Kafka client ID per changefeed. Configure [quotas](https://kafka.apache.org/documentation/#quotas) within your Kafka configuration that apply to a unique client ID. The `ClientID` field can only contain the characters `A-Za-z0-9._-`. For more details, refer to [`ClientID`](#clientid). | ""
 <a name="kafka-compression"></a>`"Compression"` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Sets a compression protocol that the changefeed should use when emitting events. The possible values are: `"NONE"`, `"GZIP"`, `"SNAPPY"`, `"LZ4"`, `"ZSTD"`. | `"NONE"`
-<span class="version-tag">New in v24.3:</span>`"CompressionLevel"` | [`INT`]({% link {{ page.version.version }}/int.md %}) | Sets the level of compression. This determines the level of compression ratio versus compression speed, i.e., how much the data size is reduced (better compression) and how quickly the compression process is completed. For the compression protocol ranges, refer to [`CompressionLevel`](#compressionlevel).<br><br>**Note:** If you have the `changefeed.new_kafka_sink.enabled` cluster setting disabled, `CompressionLevel` will not affect `LZ4` compression. `SNAPPY` does not support `CompressionLevel`. | `GZIP`: `-1`<br><br>`ZSTD`: `2`<br><br>`LZ4`: `0`
+<span class="version-tag">New in v24.3:</span>`"CompressionLevel"` | [`INT`]({% link {{ page.version.version }}/int.md %}) | Sets the level of compression. This determines the level of compression ratio versus compression speed, i.e., how much the data size is reduced (better compression) and how quickly the compression process is completed. For the compression protocol ranges, refer to [`CompressionLevel`](#compressionlevel).<br><br>**Note:** If you have the `changefeed.new_kafka_sink.enabled` cluster setting disabled, `CompressionLevel` will not affect `LZ4` compression. `SNAPPY` does not support `CompressionLevel`. | Refer to [`CompressionLevel`](#compressionlevel)
 `"Flush"."Bytes"`      | [`INT`]({% link {{ page.version.version }}/int.md %})   | When the total byte size of all the messages in the batch reaches this amount, it should be flushed. | `0`
 `"Flush"."Frequency"`  | [Duration string](https://pkg.go.dev/time#ParseDuration) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. For more details, refer to [`Flush`](#flush). | `"0s"`
 `"Flush"."MaxMessages"` | [`INT`]({% link {{ page.version.version }}/int.md %})  | Sets the maximum number of messages the producer can send in a single broker request. Any messages beyond the configured limit will be blocked. Increasing this value allows all messages to be sent in a batch. For more details, refer to [`Flush`](#flush). | `1000`
@@ -150,7 +155,7 @@ For details on setting quotas to client IDs, refer to the [Kafka documentation](
 
 #### `CompressionLevel`
 
-{% include_cached new-in.html version="v24.3" %} The `CompressionLevel` field allows you to implement a level of compression for your set `Compression` protocol. `CompressionLevel` determines the level of the compression ratio versus the compression speed. That is, how much the data is reduced for _better_ compression and how quickly the compression is completed for _faster_ compression. The compression protocols have the following ranges and values:
+{% include_cached new-in.html version="v24.3" %} The `CompressionLevel` field allows you to implement a level of compression for your set `Compression` protocol. `CompressionLevel` determines the level of the compression ratio versus the compression speed. That is, how much the data is reduced for _better_ compression and how quickly the compression is completed for _faster_ compression. The compression protocols support the following values:
 
 - `GZIP`:
     - `0`: No compression
@@ -161,21 +166,26 @@ For details on setting quotas to client IDs, refer to the [Kafka documentation](
     - `-2`: [Huffman-only compression](https://en.wikipedia.org/wiki/Huffman_coding)
     - `-3`: Stateless compression
     {% endcomment %}
-    The default compression level for `GZIP` is `-1`; however, the `CompressionLevel` field does not support manually set negative values. For more details, refer to [Known Limitations]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#known-limitations).
+    The default compression level for `GZIP` is `-1`; however, the `CompressionLevel` field does **not** support manually set negative values. For more details, refer to [Known Limitations]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#known-limitations).
 - `ZSTD`:
     - `1`: Fastest compression
     - `2`: Default compression
     - `3`: Better compression
     - `4`: Best compression
-- `LZ4`:
+- `LZ4`: The following list represents the supported values from fastest compression to best compression:
     - `0`: Fastest compression (Default)
-    - `1` to `9`: From fast compression to best compression
-
-`SNAPPY` does not support the `CompressionLevel` field.
-
-{{site.data.alerts.callout_info}}
-If you have the `changefeed.new_kafka_sink.enabled` cluster setting disabled, `CompressionLevel` will not affect `LZ4` compression.
-{{site.data.alerts.end}}
+    - `512`
+    - `1024`
+    - `2048`
+    - `4096`
+    - `8192`
+    - `16384`
+    - `32768`
+    - `65536`
+    - `131072`: Best compression
+    
+    If you have the `changefeed.new_kafka_sink.enabled` cluster setting disabled, `CompressionLevel` will not affect `LZ4` compression.
+- `SNAPPY` does not support the `CompressionLevel` field.
 
 #### `Flush`
 
