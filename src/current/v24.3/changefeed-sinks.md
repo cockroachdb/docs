@@ -172,7 +172,7 @@ For details on setting quotas to client IDs, refer to the [Kafka documentation](
     - `2`: Default compression
     - `3`: Better compression
     - `4`: Best compression
-- `LZ4`: The following list represents the supported values from fastest compression to best compression:
+- `LZ4`: The supported values from fastest compression to best compression:
     - `0`: Fastest compression (Default)
     - `512`
     - `1024`
