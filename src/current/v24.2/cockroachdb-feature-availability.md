@@ -47,14 +47,6 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
-### Usage-based billing metrics
-
-Metering for [usage-based billing](https://www.cockroachlabs.com/docs/cockroachcloud/costs) of data transfer, managed backup storage, and changefeeds is in Preview for all CockroachDB Standard and Advanced clusters through November 2024\. You can view your usage in the CockroachDB Cloud Console, where line items with a charge of $0 are shown for each metric. There will be no usage-based charges associated with these metrics during the Preview period.
-
-On December 1, 2024, once the Preview has ended, pricing for these metrics goes into effect immediately for new customers and for existing pay-as-you-go customers (e.g. paying monthly by credit card). Customers with annual or multi-year contracts will continue to preview these line items without incurring charges for them (i.e. expending credits) through the end of their current contract term.
-
-For more information, refer to [CockroachDB Cloud Costs: Usage-based billing metrics in Preview](https://www.cockroachlabs.com/docs/cockroachcloud/costs#usage-based-billing-metrics-in-preview) and the announcements in the release notes published [October 1](https://www.cockroachlabs.com/docs/releases/cloud#october-1-2024) and [November 1](https://www.cockroachlabs.com/docs/releases/cloud#november-1-2024).
-
 ### CockroachDB Standard
 
 CockroachDB Standard is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand]({% link cockroachcloud/plan-your-cluster.md %}), along with enterprise-level security and availability.
@@ -245,7 +237,7 @@ For an Apache Pulsar setup example, refer to the [Changefeed Examples]({% link {
 
 ### Core implementation of changefeeds
 
-The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
+The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement creates a new basic changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A basic changefeed can watch one table or multiple tables in a comma-separated list.
 
 ### Multiple active portals
 

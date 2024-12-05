@@ -39,14 +39,6 @@ Any feature made available in a phase prior to GA is provided without any warran
 
 ## Features in preview
 
-### Usage-based billing metrics
-
-Metering for [usage-based billing](https://www.cockroachlabs.com/docs/cockroachcloud/costs) of data transfer, managed backup storage, and changefeeds is in Preview for all CockroachDB Standard and Advanced clusters through November 2024\. You can view your usage in the CockroachDB Cloud Console, where line items with a charge of $0 are shown for each metric. There will be no usage-based charges associated with these metrics during the Preview period.
-
-On December 1, 2024, once the Preview has ended, pricing for these metrics goes into effect immediately for new customers and for existing pay-as-you-go customers (e.g. paying monthly by credit card). Customers with annual or multi-year contracts will continue to preview these line items without incurring charges for them (i.e. expending credits) through the end of their current contract term.
-
-For more information, refer to [CockroachDB Cloud Costs: Usage-based billing metrics in Preview](https://www.cockroachlabs.com/docs/cockroachcloud/costs#usage-based-billing-metrics-in-preview) and the announcements in the release notes published [October 1](https://www.cockroachlabs.com/docs/releases/cloud#october-1-2024) and [November 1](https://www.cockroachlabs.com/docs/releases/cloud#november-1-2024).
-
 {{site.data.alerts.callout_info}}
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
@@ -230,7 +222,7 @@ $ cockroach sql --user=jpointsman --insecure
 
 ### Core implementation of changefeeds
 
-The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
+The [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) statement creates a new basic changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A basic changefeed can watch one table or multiple tables in a comma-separated list.
 
 ### Changefeed metrics labels
 
@@ -248,7 +240,7 @@ The multiple active portals feature of the Postgres wire protocol (pgwire) is av
 
 ### Physical Cluster Replication
 
-{% include_cached new-in.html version="v23.2" %}[Physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) continuously sends all data at the byte level from a primary cluster to an independent standby cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster. In a disaster recovery scenario, you can cut over from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic. Physical cluster replication is in preview for CockroachDB Self-Hosted, and is an [enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}) feature. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
+{% include_cached new-in.html version="v23.2" %}[Physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) continuously sends all data at the byte level from a primary cluster to an independent standby cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster. In a disaster recovery scenario, you can cut over from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic. Physical cluster replication is in preview for CockroachDB {{ site.data.products.core }} clusters.
 
 ### Super regions
 

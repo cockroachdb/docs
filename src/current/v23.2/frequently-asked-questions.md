@@ -39,7 +39,7 @@ There are four ways to use and deploy CockroachDB:
 - **CockroachDB {{ site.data.products.basic }}**: A multi-tenant CockroachDB deployment, managed by Cockroach Labs. CockroachDB {{ site.data.products.basic }} provides highly available database clusters that scale instantly and automatically for small production and dev/test workloads.
 - **CockroachDB {{ site.data.products.standard }}**: A multi-tenant CockroachDB deployment, managed by Cockroach Labs. CockroachDB {{ site.data.products.standard }} allows you to consolidate a variety of production workloads while optimizing cost.
 - **CockroachDB {{ site.data.products.advanced }}**: A single tenant CockroachDB deployment, managed by Cockroach Labs. CockroachDB {{ site.data.products.advanced }} provides dedicated hardware to support stringent regulatory requirements and enhanced compliance, targeting production workloads with advanced Enterprise requirements.
-- **CockroachDB {{ site.data.products.core }}**: A self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions. This deployment option is good if you require complete control over the database environment and require [Enterprise features]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+- **CockroachDB {{ site.data.products.core }}**: A self-managed CockroachDB deployment, backed by Cockroach Labs Support, for multiple clouds and regions. This deployment option is good if you require complete control over the database environment.
 
 ## About the database
 

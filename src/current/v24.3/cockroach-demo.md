@@ -149,11 +149,6 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 #
 # You are connected to a temporary, in-memory CockroachDB cluster of 9 nodes.
 #
-# This demo session will attempt to enable Enterprise features
-# by acquiring a temporary license from Cockroach Labs in the background.
-# To disable this behavior, set the environment variable
-# COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING=true.
-#
 # Beginning initialization of the movr dataset, please wait...
 #
 # Waiting for license acquisition to complete...
@@ -414,7 +409,7 @@ $ cockroach demo ycsb
 $ cockroach demo --with-load
 ~~~
 
-This command starts a demo cluster with the `movr` database preloaded and then inserts rows into each table in the `movr` database. You can monitor the workload progress on the [DB Console]({% link {{ page.version.version }}/ui-overview-dashboard.md %}#sql-statements).
+This command starts a demo cluster with the `movr` database preloaded and then inserts rows into each table in the `movr` database. You can monitor the workload progress on the [DB Console]({% link {{ page.version.version }}/ui-overview-dashboard.md %}#sql-queries-per-second).
 
 When running a multi-node demo cluster, load is balanced across all nodes.
 

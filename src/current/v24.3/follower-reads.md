@@ -7,8 +7,6 @@ docs_area: develop
 
 A _follower read_ is performed on the [nearest replica]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica) relative to the SQL gateway that is executing the SQL statement regardless of the replica's [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder) status. Using the nearest replica can reduce read latencies and increase throughput. Applications in [multi-region deployments]({% link {{ page.version.version }}/topology-follower-reads.md %}) especially can use follower reads to get improved performance.
 
-{% include enterprise-feature.md %}
-
 ## Follower read types
 
 A _strong follower read_ is a read taken from a [Global]({% link {{ page.version.version }}/global-tables.md %}) table. Such tables are optimized for low-latency reads from every region in the database. The tradeoff is that writes will incur higher latencies from any given region, since writes have to be replicated across every region to make the global low-latency reads possible. For more information about global tables, including troubleshooting information, see [Global Tables]({% link {{ page.version.version }}/global-tables.md %}).
@@ -123,11 +121,11 @@ Name | Description
 
 This example performs a bounded staleness follower read against a [demo cluster]({% link {{ page.version.version }}/cockroach-demo.md %}) with the [MovR dataset]({% link {{ page.version.version }}/movr.md %}).
 
-1. Start the demo cluster:
+1. Start the demo cluster with 3 nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach demo
+    cockroach demo --nodes=3
     ~~~
 
 1. Issue a single-statement point query to [select]({% link {{ page.version.version }}/selection-queries.md %}) a single row from a table at a historical [timestamp]({% link {{ page.version.version }}/timestamp.md %}) by passing the output of the `with_max_staleness()` [function]({% link {{ page.version.version }}/functions-and-operators.md %}) to the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause:
@@ -175,9 +173,76 @@ This example performs a bounded staleness follower read against a [demo cluster]
     (7 rows)
     ~~~
 
-### Verify that a cluster is performing follower reads
+### Verify that CockroachDB is performing follower reads
 
-To verify that a cluster is performing follower reads, go to the [Custom Chart Debug Page in the DB Console]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) and add the metric `follower_read.success_count` to the time-series graph. The number of follower reads performed by your cluster will be shown.
+To verify that a cluster is performing follower reads, go to the [**Custom Chart** debug page in the DB Console]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) and add the metric `follower_reads.success_count` to the time-series graph. The number of follower reads performed by your cluster will be shown.
+
+To verify that a specific query uses a follower read, use [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) to see the statement plan. For example, to test the [preceding example](#run-queries-that-use-bounded-staleness-follower-reads):
+
+1. Use the `\demo ls` [shell command]({% link {{ page.version.version }}/cockroach-demo.md %}#commands) to list the connection parameters for all nodes:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    \demo ls
+    ~~~
+
+    The output will list the connection parameters for each node:
+
+    ~~~
+    node 3:
+    ...
+       (sql)      postgresql://demo:demo37199@127.0.0.1:26259/movr?options=-ccluster%3Ddemoapp&sslmode=equire&sslrootcert=%2FUsers%2Fuser%2F.cockroach-demo%2Fca.crt
+    ~~~
+
+1. Open a new terminal and open the SQL shell on a non-leaseholder node. For example: 
+
+    Identify the leaseholder node:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT lease_holder FROM [SHOW RANGES FROM TABLE promo_codes WITH DETAILS];
+    ~~~
+
+    ~~~
+      lease_holder
+    ----------------
+                 1
+    ~~~
+
+    Connect to a node other than node 1 (such as node 3, using the preceding output):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url='postgresql://demo:demo37199@127.0.0.1:26259/movr?options=-ccluster%3Ddemoapp&sslmode=equire&sslrootcert=%2FUsers%2Fuser%2F.cockroach-demo%2Fca.crt'
+    ~~~
+
+1. Issue the [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) statement on the non-leaseholder node:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN ANALYZE SELECT code FROM promo_codes AS OF SYSTEM TIME with_max_staleness('10s') where code = '0_explain_theory_something';
+    ~~~
+
+    ~~~
+                                          info
+    --------------------------------------------------------------------------------
+      planning time: 5ms
+      execution time: 1ms
+      distribution: local
+      ...
+      historical: AS OF SYSTEM TIME 2024-11-19 21:04:00.829742 (bounded staleness)
+
+      • scan
+        sql nodes: n3
+        kv nodes: n3
+        regions: us-east1
+        used follower read
+        ...
+        table: promo_codes@promo_codes_pkey
+        spans: [/'0_explain_theory_something' - /'0_explain_theory_something']
+    ~~~
+
+    In the preceding output, `used follower read` indicates that the read was served by the follower replica. `historical: AS OF SYSTEM TIME ... (bounded staleness)` shows that it was a historical, bounded staleness read.
 
 ### How stale follower reads work
 

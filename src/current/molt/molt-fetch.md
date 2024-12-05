@@ -85,6 +85,8 @@ Complete the following items before using MOLT Fetch:
 
 - When using [`IMPORT INTO`](#data-movement) to load tables into CockroachDB, if the fetch task terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation](#fetch-continuation), or restart the task from the beginning.
 
+- Ensure that the machine running MOLT Fetch is large enough to handle the amount of data being migrated. Fetch performance can sometimes be limited by available resources, but should always be making progress. To identify possible resource constraints, observe the `molt_fetch_rows_exported` [metric](#metrics) for decreases in the number of rows being processed. You can use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view metrics.
+
 ## Security recommendations
 
 Cockroach Labs **strongly** recommends the following:
@@ -214,7 +216,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--pglogical-replication-slot-name`           | The name of a replication slot to create before taking a snapshot of data (e.g., `'fetch'`). **Required** in order to perform continuous [replication](#load-data-and-replicate-changes) from a source PostgreSQL database.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `--pglogical-replication-slot-plugin`         | The output plugin used for logical replication under `--pglogical-replication-slot-name`.<br><br>**Default:** `pgoutput`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `--pprof-listen-addr`                         | Address of the pprof endpoint.<br><br>**Default:** `'127.0.0.1:3031'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `--replicator-flags`                          | If continuous [replication](#load-data-and-replicate-changes) is enabled with `--mode data-load-and-replication`, `--mode replication-only`, or `--mode failback`, specify replication flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override.                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `--replicator-flags`                          | If continuous [replication](#load-data-and-replicate-changes) is enabled with `--mode data-load-and-replication`, `--mode replication-only`, or `--mode failback`, specify [replication flags](#replication-flags) to override. For example: `--replicator-flags "--tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key"`                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `--row-batch-size`                            | Number of rows per shard to export at a time. See [Best practices](#best-practices).<br><br>**Default:** `100000`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `--schema-filter`                             | Move schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `--table-concurrency`                         | Number of tables to export at a time. The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`.<br><br>This value **cannot** be set higher than `1` when moving data from MySQL. Refer to [Best practices](#best-practices).<br><br>**Default:** `4` with a PostgreSQL source; `1` with a MySQL source                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -233,6 +235,8 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
 | `--conn-string`       | (Required) Connection string for the target database. For details, see [List active continuation tokens](#list-active-continuation-tokens). |
 | `-n`, `--num-results` | Number of results to return.                                                                                                                |
+
+{% include molt/replicator-flags.md %}
 
 ## Usage
 
@@ -311,7 +315,7 @@ Continuous replication begins once the initial load is complete, as indicated by
 
 To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`. If replication fails, a non-zero exit code is returned.
 
-To customize the replication behavior (an advanced use case), use `--replicator-flags` to specify one or more replication-specific flags ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) or [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) to override.
+To customize the replication behavior (an advanced use case), use `--replicator-flags` to specify one or more [replication-specific flags](#replication-flags).
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -351,7 +355,7 @@ Before using this option, the source PostgreSQL or MySQL database **must** be co
 	  GROUP BY source_uuid;
 	~~~
 
-	In the `molt fetch` command, specify a GTID set using the format `source_uuid:min(interval_start)-max(interval_end)`. For example:
+	In the `molt fetch` command, [specify a GTID set](#mysql-replication-flags) using the format `source_uuid:min(interval_start)-max(interval_end)`. For example:
 
 	{% include_cached copy-clipboard.html %}
 	~~~
@@ -437,7 +441,7 @@ If there is already a running CockroachDB changefeed with the same webhook sink 
 
 `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, use the command `base64 -i ./client.crt | jq -R -r '@uri'`).
 
-In the `molt fetch` command, also include [`--replicator-flags`](#global-flags) to specify the paths to the server certificate and key that correspond to the client certs defined in `sink_query_parameters`. For example:
+In the `molt fetch` command, also include [`--replicator-flags`](#failback-replication-flags) to specify the paths to the server certificate and key that correspond to the client certs defined in `sink_query_parameters`. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -899,6 +903,8 @@ Cockroach Labs recommends monitoring the following metrics:
 | `molt_fetch_rows_imported`            | Number of rows that have been imported from a table. For example:<br>`molt_fetch_rows_imported{table="public.users"}` |
 | `molt_fetch_table_export_duration_ms` | Duration (in milliseconds) of a table's export. For example:<br>`molt_fetch_table_export_duration_ms{table="public.users"}` |
 | `molt_fetch_table_import_duration_ms` | Duration (in milliseconds) of a table's import. For example:<br>`molt_fetch_table_import_duration_ms{table="public.users"}` |
+
+You can also use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view the preceding metrics.
 
 ## Docker usage
 

@@ -17,7 +17,8 @@ Statement | Usage
 [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}) | Change the default [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) for objects created by specific roles/users in the current database.
 [`ALTER FUNCTION`]({% link {{ page.version.version }}/alter-function.md %}) | Modify a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
 [`ALTER INDEX`]({% link {{ page.version.version }}/alter-index.md %}) | Apply a schema change to an index.
-[`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %}) | Configure the replication zone for a partition. [Partitioning]({% link {{ page.version.version }}/partitioning.md %}) requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+[`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %}) | Configure the replication zone for a [partition]({% link {{ page.version.version }}/partitioning.md %}).
+[`ALTER PROCEDURE`]({% link {{ page.version.version }}/alter-procedure.md %}) | Modify a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`ALTER RANGE`]({% link {{ page.version.version }}/alter-range.md %}) | Configure the replication zone for a system range.
 [`ALTER SCHEMA`]({% link {{ page.version.version }}/alter-schema.md %}) | Alter a user-defined schema.
 [`ALTER SEQUENCE`]({% link {{ page.version.version }}/alter-sequence.md %}) | Apply a schema change to a sequence.
@@ -30,6 +31,7 @@ Statement | Usage
 [`CREATE DATABASE`]({% link {{ page.version.version }}/create-database.md %}) | Create a new database.
 [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %}) | Create a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
 [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) | Create an index for a table.
+[`CREATE PROCEDURE`]({% link {{ page.version.version }}/create-procedure.md %}) | Create a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`CREATE SCHEMA`]({% link {{ page.version.version }}/create-schema.md %}) | Create a user-defined schema.
 [`CREATE SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %}) | Create a new sequence.
 [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) | Create a new table in a database.
@@ -40,6 +42,7 @@ Statement | Usage
 [`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %}) | Remove a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}) from a database.
 [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}) | Remove an index for a table.
 [`DROP OWNED BY`]({% link {{ page.version.version }}/drop-owned-by.md %}) | Drop all objects owned by and any [grants]({% link {{ page.version.version }}/grant.md %}) on objects not owned by a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles).
+[`DROP PROCEDURE`]({% link {{ page.version.version }}/drop-procedure.md %}) | Remove a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`DROP SCHEMA`]({% link {{ page.version.version }}/drop-schema.md %}) | Drop a user-defined schema.
 [`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %}) | Remove a sequence.
 [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}) | Remove a table.
@@ -54,7 +57,7 @@ Statement | Usage
 [`SHOW FULL TABLE SCANS`]({% link {{ page.version.version }}/show-full-table-scans.md %}) | List recent queries that used a full table scan.
 [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %}) | View index information for a table or database.
 [`SHOW LOCALITY`]({% link {{ page.version.version }}/show-locality.md %}) | View the locality of the current node.
-[`SHOW PARTITIONS`]({% link {{ page.version.version }}/show-partitions.md %}) | List partitions in a database. [Partitioning]({% link {{ page.version.version }}/partitioning.md %}) requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+[`SHOW PARTITIONS`]({% link {{ page.version.version }}/show-partitions.md %}) | List partitions in a database.
 [`SHOW REGIONS`]({% link {{ page.version.version }}/show-regions.md %}) | List the [cluster regions]({% link {{ page.version.version }}/multiregion-overview.md %}#cluster-regions) or [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) in a [multi-region cluster]({% link {{ page.version.version }}/multiregion-overview.md %}).
 [`SHOW SUPER REGIONS`]({% link {{ page.version.version }}/show-super-regions.md %}) | List the [super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) associated with a database in a [multi-region cluster]({% link {{ page.version.version }}/multiregion-overview.md %}).
 [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %}) | List the schemas in a database.
@@ -69,6 +72,7 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
+[`CALL`]({% link {{ page.version.version }}/call.md %}) | Call a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}) | Create a new table in a database using the results from a [selection query]({% link {{ page.version.version }}/selection-queries.md %}).
 [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}) | Copy data from a third-party client to a CockroachDB cluster.<br>For compatibility with PostgreSQL drivers and ORMs, CockroachDB supports `COPY FROM` statements issued only from third-party clients; you cannot issue `COPY FROM` statements from the [`cockroach` SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}). To import data from files, use an [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement instead.
 [`DELETE`]({% link {{ page.version.version }}/delete.md %}) | Delete specific rows from a table.
@@ -172,13 +176,13 @@ Statement | Usage
 [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) | Create disaster recovery backups of clusters, databases, and tables.
 [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) | Restore clusters, databases, and tables using your backups.
 [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) | List the contents of a backup.
-[`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) | Create a schedule for periodic backups. Core users can only use backup scheduling for full backups of clusters, databases, or tables. To use the other backup features, you need an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+[`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) | Create a schedule for periodic backups.
 [`ALTER BACKUP SCHEDULE`]({% link {{ page.version.version }}/alter-backup-schedule.md %}) | Modify an existing backup schedule.
 [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) | View information on backup schedules.
 [`PAUSE SCHEDULES`]({% link {{ page.version.version }}/pause-schedules.md %}) | Pause backup schedules.
 [`RESUME SCHEDULES`]({% link {{ page.version.version }}/resume-schedules.md %}) | Resume paused backup schedules.
 [`DROP SCHEDULES`]({% link {{ page.version.version }}/drop-schedules.md %}) | Drop backup schedules.
-[`ALTER BACKUP`]({% link {{ page.version.version }}/alter-backup.md %}) | Add a new [KMS encryption key]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#use-key-management-service) to an encrypted backup. Adding new KMS encryption keys requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+[`ALTER BACKUP`]({% link {{ page.version.version }}/alter-backup.md %}) | Add a new [KMS encryption key]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#use-key-management-service) to an encrypted backup.
 
 ## Changefeed statements
 
@@ -186,10 +190,10 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) | [({{ site.data.products.enterprise }})]({% link {{ page.version.version }}/enterprise-licensing.md %}) Create a new changefeed to stream row-level changes in a configurable format to a configurable sink (e.g, [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [cloud storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink)).
-[`CREATE SCHEDULE FOR CHANGEFEED`]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) | [({{ site.data.products.enterprise }})]({% link {{ page.version.version }}/enterprise-licensing.md %}) Create a scheduled changefeed to export data out of CockroachDB using an initial scan. to a configurable sink (e.g, [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [cloud storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink)).
+[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) | Create a new changefeed to stream row-level changes in a configurable format to a configurable sink (e.g, [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [cloud storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink)).
+[`CREATE SCHEDULE FOR CHANGEFEED`]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) | Create a scheduled changefeed to export data out of CockroachDB using an initial scan. to a configurable sink (e.g, [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [cloud storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink)).
 [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) | (Core) Create a new changefeed to stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
-[`ALTER CHANGEFEED`]({% link {{ page.version.version }}/alter-changefeed.md %}) | [({{ site.data.products.enterprise }})]({% link {{ page.version.version }}/enterprise-licensing.md %}) Modify an existing changefeed.
+[`ALTER CHANGEFEED`]({% link {{ page.version.version }}/alter-changefeed.md %}) | Modify an existing changefeed.
 
 ## External resource statements
 

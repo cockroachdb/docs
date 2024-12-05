@@ -130,7 +130,8 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
     <br />
     {% endif %}
 
-    {% if r_eol != true and r_lts_eol != true %}{% comment %}Only show non-EOL releases {% endcomment %}
+  {% if r_lts_eol != true %}
+    {% comment %}Only show non-EOL releases {% endcomment %}
 
       {% if v.initial_lts_patch != "N/A" %}{% comment %} For LTS releases print an LTS row first{% endcomment %}
   <tr>
@@ -143,19 +144,23 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
   </tr>
       {% endif %}
 
-  {% comment %} Always print a GA row.
+  {% comment %} 
     For regular releases not yet in LTS, add a link to the first footnote
     For currently supported skippable releases, add a link to the second footnote
   {% endcomment %}
+
+      {% if r_eol != true %}
   <tr>
     <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}{% if will_never_have_lts == false and v.initial_lts_patch == "N/A" %}&nbsp;<a href="#lts-tbd"><sup>*</sup></a>{% elsif skippable == true %}&nbsp;<a href="#skippable"><sup>**</sup></a>{% endif %}</td>
     <td>{% if v.last_ga_patch != "N/A" %}{{ v.major_version }}.0 - {{ v.last_ga_patch }}{% else %}{{ v.major_version }}.0+{% endif %}</td>
-    <td>GA</td>
+    <td>{% if skippable == true %}Innovation{% else %}GA{% endif %}</td>
     <td>{{ v.release_date }}</td>
     <td>{% if v.maint_supp_exp_date != "N/A" %}{{ v.maint_supp_exp_date }}{% endif %}</td>
     <td>{{ v.asst_supp_exp_date }}</td>
   </tr>
-    {% endif %}
+      {% endif %}
+
+  {% endif %}
 
   {% endfor %} {% comment %} Display each non-EOL version, its release date, its maintenance support expiration date, and its assistance support expiration date, and its LTS maintenance and assistance support dates. Also include links to the latest hotfix version. {% endcomment %}
   </tbody>
@@ -167,6 +172,10 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
 ## End-of-life (EOL) versions
 
 The following versions of CockroachDB are no longer supported.
+
+{{ site.data.alerts.callout_info }}
+Once a major version is older than four years from its GA release date, the links to its binaries and corresponding Docker images will be unpublished.
+{{ site.data.alerts.end }}
 
 <table>
 	<thead>
@@ -249,7 +258,7 @@ The following versions of CockroachDB are no longer supported.
   <tr class="eol">
     <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}{% if skippable == true %}&nbsp;<a href="#skippable-eol"><sup>*</sup>{% endif %}</a></a></td>
     <td>{% if v.last_ga_patch != "N/A" %}{{ v.major_version }}.0 - {{ v.last_ga_patch }}{% else %}{{ v.major_version }}.0+{% endif %}</td>
-    <td>GA</td>
+    <td>{% if skippable == true %}Innovation{% else %}GA{% endif %}</td>
     <td>{{ v.release_date }}</td>
     <td>{% if v.maint_supp_exp_date != "N/A" %}{{ v.maint_supp_exp_date }}{% endif %}</td>
     <td>{{ v.asst_supp_exp_date }}</td>

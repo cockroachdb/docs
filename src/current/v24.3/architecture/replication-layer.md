@@ -72,13 +72,13 @@ Non-voting replicas can be configured via [zone configurations through `num_vote
 
 ##### Overview
 
-When individual [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) become temporarily unavailable, requests to those ranges are refused by a per-replica "circuit breaker" mechanism instead of hanging indefinitely. 
+When individual [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) become temporarily unavailable, requests to those ranges are refused by a per-replica "circuit breaker" mechanism instead of hanging indefinitely.
 
 From a user's perspective, this means that if a [SQL query]({% link {{ page.version.version }}/architecture/sql-layer.md %}) is going to ultimately fail due to accessing a temporarily unavailable range, a [replica]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica) in that range will trip its circuit breaker (after 60 seconds [by default](#per-replica-circuit-breaker-timeout)) and bubble a `ReplicaUnavailableError` error back up through the system to inform the user why their query did not succeed. These (hopefully transient) errors are also signalled as events in the DB Console's [Replication Dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}) and as "circuit breaker errors" in its [**Problem Ranges** and **Range Status** pages]({% link {{ page.version.version }}/ui-debug-pages.md %}). Meanwhile, CockroachDB continues asynchronously probing the range's availability. If the replica becomes available again, the breaker is reset so that it can go back to serving requests normally.
 
 This feature is designed to increase the availability of your CockroachDB clusters by making them more robust to transient errors.
 
-For more information about per-replica circuit breaker events happening on your cluster, see the following pages in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}): 
+For more information about per-replica circuit breaker events happening on your cluster, see the following pages in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}):
 
 - The [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}).
 - The [**Advanced Debug** page]({% link {{ page.version.version }}/ui-debug-pages.md %}). From there you can view the **Problem Ranges** page, which lists the range replicas whose circuit breakers were tripped. You can also view the **Range Status** page, which displays the circuit breaker error message for a given range.
@@ -116,6 +116,8 @@ Sending data locally using delegated snapshots has the following benefits:
 
 Delegated snapshots are managed automatically by the cluster with no need for user involvement.
 
+{% include_cached new-in.html version="v24.3" %}To limit the impact of snapshot ingestion on a node with a [provisioned rate]({% link {{ page.version.version }}/cockroach-start.md %}#store) configured for its store, you can enable [admission control]({% link {{ page.version.version }}/admission-control.md %}) for snapshot transfer, based on disk bandwidth. This allows you to limit the disk impact on foreground workloads on the node. Admission control for snapshot transfers is disabled by default; to enable it, set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` to `true`. The histogram [metric]({% link {{ page.version.version }}/metrics.md %}) `admission.wait_durations.snapshot_ingest` allows you to observe the wait times for snapshots that were impacted by admission control.
+
 ### Leases
 
 A single node in the Raft group acts as the leaseholder, which is the only node that can serve reads or propose writes to the Raft group leader (both actions are received as `BatchRequests` from [`DistSender`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender)).
@@ -145,6 +147,33 @@ Because leases do not expire until a node disconnects from a cluster, leaseholde
 A table's meta and system ranges (detailed in the [distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#meta-ranges)) are treated as normal key-value data, and therefore have leases just like table data.
 
 However, unlike table data, system ranges cannot use epoch-based leases because that would create a circular dependency: system ranges are already being used to implement epoch-based leases for table data. Therefore, system ranges use expiration-based leases instead. Expiration-based leases expire at a particular timestamp (typically after a few seconds). However, as long as a node continues proposing Raft commands, it continues to extend the expiration of its leases. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
+
+#### Leader leases
+
+{% include_cached new-in.html version="v24.3" %}
+
+{% include feature-phases/preview.md %}
+
+{% include {{ page.version.version }}/leader-leases-intro.md %}
+
+Leader leases rely on a shared, store-wide failure detection mechanism for triggering new Raft elections. [Stores]({% link {{ page.version.version }}/cockroach-start.md %}#store) participate in Raft leader elections by "fortifying" a candidate replica based on that replica's _store liveness_, as determined among a quorum of all the node's stores. A replica can **only** become the Raft leader if it is so fortified.
+
+After the fortified Raft leader is chosen, it is then also established as the leaseholder. Support for the lease is provided as long as the Raft leader's store liveness remains supported by a quorum of stores in the Raft group. This provides the fortified Raft leader with a guarantee that it will not lose leadership until **after** it has lost store liveness support. This guarantee enables a number of improvements to the performance and resiliency of CockroachDB's Raft implementation that were prevented by the need to handle cases where Raft leadership and range leases were not colocated.
+
+Importantly, since Leader leases rely on a quorum of stores in the Raft group, they remove the need for the single point of failure (SPOF) that was the [node liveness range]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues), As a result, Leader leases are not vulnerable to the scenario possible under the previous leasing regime where a leaseholder was [partitioned]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition) from its followers (including a follower that was the Raft leader) but still heartbeating the node liveness range. Before Leader leases, this scenario would result in an indefinite outage that lasted as long as the lease was held by the partitioned node.
+
+Based on Cockroach Labs' internal testing, leader leases provide the following user-facing benefits:
+
+- [Network partitions]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition) between a leaseholder and its followers heal in less than 20 seconds, since the leaseholder no longer needs to heartbeat a single node liveness range.
+- Outages caused by liveness failures last less than 1 second, since liveness is now determined by a store-level detection mechanism, not a single node liveness range.
+- Performance is equivalent (within less than 1%) to epoch-based leases on a 100 node cluster of 32 vCPU machines with 8 stores each.
+
+To enable Leader leases for testing with your workload, use the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kv.raft.leader_fortification.fraction_enabled`, which controls the fraction of ranges for which the Raft leader fortification protocol is enabled. Leader fortification is needed for a range to use a Leader lease. It can be set to `0.0` to disable leader fortification and, by extension, Leader leases. It can be set to `1.0` to enable leader fortification for all ranges and, by extension, use Leader leases for all ranges that do not require expiration-based leases. It can be set to a value between `0.0` and `1.0` to gradually roll out Leader leases across the ranges in a cluster.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING kv.raft.leader_fortification.fraction_enabled = 1.0
+~~~
 
 #### How leases are transferred from a dead node
 

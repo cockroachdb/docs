@@ -1,11 +1,9 @@
 ---
-title: Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)
-summary: Overview of Cluster Single Sign-on (SSO) for CockroachDB Self-Hosted, review of authenticating users, configuring required cluster settings.
+title: Cluster Single Sign-on (SSO) using JSON Web Tokens (JWTs)
+summary: Overview of Cluster Single Sign-on (SSO) for CockroachDB self-hosted clusters, review of authenticating users, configuring required cluster settings.
 toc: true
 docs_area: manage
 ---
-
-{% include_cached enterprise-feature.md %}
 
 CockroachDB clusters allow users to authenticate with Single Sign-on (SSO), both to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), and for SQL client access.
 

@@ -280,6 +280,18 @@
                     ]
                   },
                   {
+                    "title": "LDAP Authentication",
+                    "urls": [
+                      "/${VERSION}/ldap-authentication.html"
+                    ]
+                  },
+                  {
+                    "title": "LDAP Authorization",
+                    "urls": [
+                      "/${VERSION}/ldap-authorization.html"
+                    ]
+                  },
+                  {
                     "title": "GSSAPI Authentication",
                     "urls": [
                       "/${VERSION}/gssapi_authentication.html"
@@ -550,147 +562,78 @@
                        "urls": [
                          "/${VERSION}/ui-key-visualizer.html"
                        ]
-                   }
+                      },
+                      {
+                        "title": "WAL Failover",
+                        "urls": [
+                          "/${VERSION}/wal-failover.html"
+                        ]
+                      }
                ]
           },
           {
-            "title": "Disaster Recovery",
+            "title": "Backups and Restores",
             "items": [
-              {
+                {
                 "title": "Overview",
                 "urls": [
-                  "/${VERSION}/disaster-recovery-overview.html"
+                    "/${VERSION}/backup-and-restore-overview.html"
                 ]
-              },
-              {
-                "title": "Backups and Restores",
-                "items": [
-                  {
-                    "title": "Overview",
-                    "urls": [
-                      "/${VERSION}/backup-and-restore-overview.html"
-                    ]
-                  },
-                  {
-                    "title": "Full and Incremental Backups",
-                    "urls": [
-                      "/${VERSION}/take-full-and-incremental-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Backups with Revision History and Point-in-time Restore",
-                    "urls": [
-                      "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
-                    ]
-                  },
-                  {
-                    "title": "Encrypted Backup and Restore",
-                    "urls": [
-                      "/${VERSION}/take-and-restore-encrypted-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Locality-restricted Backup Execution",
-                    "urls": [
-                      "/${VERSION}/take-locality-restricted-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Locality-aware Backup and Restore",
-                    "urls": [
-                      "/${VERSION}/take-and-restore-locality-aware-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Scheduled Backups",
-                    "urls": [
-                      "/${VERSION}/manage-a-backup-schedule.html"
-                    ]
-                  },
-                  {
-                    "title": "Backup Validation",
-                    "urls": [
-                      "/${VERSION}/backup-validation.html"
-                    ]
-                  },
-                  {
-                    "title": "Expire Past Backups",
-                    "urls": [
-                      "/${VERSION}/expire-past-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Backup and Restore Monitoring",
-                    "urls": [
-                      "/${VERSION}/backup-and-restore-monitoring.html"
-                    ]
-                  }
+                },
+                {
+                "title": "Full and Incremental Backups",
+                "urls": [
+                    "/${VERSION}/take-full-and-incremental-backups.html"
                 ]
-              },
-              {
-                "title": "Physical Cluster Replication",
-                "items": [
-                  {
-                    "title": "Overview",
-                    "urls": [
-                      "/${VERSION}/physical-cluster-replication-overview.html"
-                    ]
-                  },
-                  {
-                    "title": "Set Up Physical Cluster Replication",
-                    "urls": [
-                      "/${VERSION}/set-up-physical-cluster-replication.html"
-                    ]
-                  },
-                  {
-                    "title": "Cut Over from a Primary to a Standby Cluster",
-                    "urls": [
-                      "/${VERSION}/cutover-replication.html"
-                    ]
-                  },
-                  {
-                    "title": "Monitor a Replication Stream",
-                    "urls": [
-                      "/${VERSION}/physical-cluster-replication-monitoring.html"
-                    ]
-                  },
-                  {
-                    "title": "Technical Overview",
-                    "urls": [
-                      "/${VERSION}/physical-cluster-replication-technical-overview.html"
-                    ]
-                  },
-                  {
-                    "title": "Cluster Virtualization",
-                    "items": [
-                      {
-                        "title": "Overview",
-                        "urls": [
-                          "/${VERSION}/cluster-virtualization-overview.html"
-                        ]
-                      },
-                      {
-                        "title": "Work with Virtual Clusters",
-                        "urls": [
-                          "/${VERSION}/work-with-virtual-clusters.html"
-                        ]
-                      },
-                      {
-                        "title": "Setting Scopes",
-                        "urls": [
-                          "/${VERSION}/cluster-virtualization-setting-scopes.html"
-                        ]
-                      },
-                      {
-                        "title": "Metric Scopes",
-                        "urls": [
-                          "/${VERSION}/cluster-virtualization-metric-scopes.html"
-                        ]
-                      }
-                    ]
-                  }
+                },
+                {
+                "title": "Backups with Revision History and Point-in-time Restore",
+                "urls": [
+                    "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
                 ]
-              }
+                },
+                {
+                "title": "Encrypted Backup and Restore",
+                "urls": [
+                    "/${VERSION}/take-and-restore-encrypted-backups.html"
+                ]
+                },
+                {
+                "title": "Locality-restricted Backup Execution",
+                "urls": [
+                    "/${VERSION}/take-locality-restricted-backups.html"
+                ]
+                },
+                {
+                "title": "Locality-aware Backup and Restore",
+                "urls": [
+                    "/${VERSION}/take-and-restore-locality-aware-backups.html"
+                ]
+                },
+                {
+                "title": "Scheduled Backups",
+                "urls": [
+                    "/${VERSION}/manage-a-backup-schedule.html"
+                ]
+                },
+                {
+                "title": "Backup Validation",
+                "urls": [
+                    "/${VERSION}/backup-validation.html"
+                ]
+                },
+                {
+                "title": "Expire Past Backups",
+                "urls": [
+                    "/${VERSION}/expire-past-backups.html"
+                ]
+                },
+                {
+                "title": "Backup and Restore Monitoring",
+                "urls": [
+                    "/${VERSION}/backup-and-restore-monitoring.html"
+                ]
+                }
             ]
           },
           {
@@ -782,6 +725,18 @@
                 "title": "Log SQL Statistics to Datadog",
                 "urls": [
                   "/${VERSION}/log-sql-statistics-to-datadog.html"
+                ]
+              },
+              {
+                "title": "Logging Best Practices",
+                "urls": [
+                  "/${VERSION}/logging-best-practices.html"
+                ]
+              },
+              {
+                "title": "Critical Log Messages",
+                "urls": [
+                  "/${VERSION}/critical-log-messages.html"
                 ]
               }
             ]

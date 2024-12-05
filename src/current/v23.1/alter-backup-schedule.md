@@ -5,12 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{{site.data.alerts.callout_info}}
-Core users can only use backup scheduling for [full backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups.
-
-To use the other backup features, you need an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-{{site.data.alerts.end}}
-
 The `ALTER BACKUP SCHEDULE` statement modifies an existing [backup schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}). You can use `ALTER BACKUP SCHEDULE` to do the following:
 
 - Set a different name for a backup schedule.

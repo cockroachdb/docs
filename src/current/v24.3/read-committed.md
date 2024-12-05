@@ -5,7 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-{% include enterprise-feature.md %}
+
 
 `READ COMMITTED` is one of two [transaction isolation levels](https://wikipedia.org/wiki/Isolation_(database_systems)) supported on CockroachDB. By default, CockroachDB uses the [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation level, which is the strongest [ANSI transaction isolation level](https://wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels).
 
@@ -411,7 +411,7 @@ In this scenario:
 - A hospital has an application for doctors to manage their on-call shifts.
 - The hospital has a rule that at least one doctor must be on call at any one time.
 - Two doctors are on call for a particular shift, and both of them try to request leave for the shift in two concurrent transactions.
-- Under the `READ COMMITTED` isolation level, the [write skew anomaly](#write-skew-anomaly) anomaly can potentially result in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift. 
+- Under the `READ COMMITTED` isolation level, the [write skew anomaly](#write-skew-anomaly) can potentially result in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift. 
 
 The following examples demonstrate how to:
 

@@ -32,7 +32,7 @@ When CMEK is enabled, the **Encryption** option appears to be disabled in the [D
 
 When selecting a deployment environment for a CockroachDB {{ site.data.products.core }} cluster, we recommend that you select a cloud provider such as Google Cloud Platform (GCP) or Amazon Web Services (AWS), which automatically provide industry-standard encryption for cloud storage resources. You can learn more about [GCP persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption) or [AWS Elastic Block Storage](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html).
 
-In addition, the [Encryption at Rest (Enterprise) feature]({% link {{ page.version.version }}/enterprise-licensing.md %}) provides transparent encryption of data on cluster disks. It allows encryption of all files on disk using [AES](https://wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key sizes allowed.
+In addition, the Encryption at Rest feature provides transparent encryption of data on cluster disks. It allows encryption of all files on disk using [AES](https://wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key sizes allowed.
 
 Encryption is performed in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) and configured per store. All files used by the store, regardless of contents, are encrypted with the desired algorithm.
 
@@ -108,7 +108,7 @@ To allow arbitrary rotation schedules and ensure security of the keys, Cockroach
 
 - **Store key**: A cluster's _store key_ is a _key encryption key (KEK) that CockroachDB uses to encrypt the cluster's data keys (see below).
 
-  For CockroachDB Self-Hosted clusters, you provide the store key and give its location to CockroachDB when starting the cluster. The store key file must contain 32 bytes (the key ID) followed by the key (16, 24, or 32 bytes). The size of the key dictates the version of AES to use (AES-128, AES-192, or AES-256). For an example showing how to create a store key, see [Generating Key Files]({% link {{ page.version.version }}/encryption.md %}#generating-store-key-files).
+  For CockroachDB {{ site.data.products.core }} clusters, you provide the store key and give its location to CockroachDB when starting the cluster. The store key file must contain 32 bytes (the key ID) followed by the key (16, 24, or 32 bytes). The size of the key dictates the version of AES to use (AES-128, AES-192, or AES-256). For an example showing how to create a store key, see [Generating Key Files]({% link {{ page.version.version }}/encryption.md %}#generating-store-key-files).
 
   The store key is created automatically when the cluster is created.
 
