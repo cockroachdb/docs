@@ -28,7 +28,7 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
 
-{% include {{ page.version.version }}/backups/backup-to-deprec.md %}
+{% include {{ page.version.version }}/backups/old-syntax-removed.md %}
 
 ## Considerations
 
@@ -236,11 +236,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 If you need to limit the control specific users have over your storage buckets, see [Assume role authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for setup instructions.
 
-{{site.data.alerts.callout_info}}
-The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.
-
-Cockroach Labs recommends using the `BACKUP ... INTO {collectionURI}` syntax shown in the following examples.
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/backups/old-syntax-removed.md %}
 
 ### Back up a cluster
 
