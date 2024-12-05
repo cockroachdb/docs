@@ -29,10 +29,11 @@ Configurable managed backup settings are available in all [supported versions]({
 
 Full backups in the cluster will be deleted when they reach the set retention period. At this point, any incremental backups dependent on the deleted full backup will also be deleted. The Cloud Console will not list any backups that are beyond the set retention period, or incremental backups that cannot be restored.
 
-For instructions on how to view and configure managed backup settings, use:
+For instructions on how to view and configure managed backup settings, use one of the following:
 
-- The [Cloud Console](#cloud-console).
-- The [Cloud API](#cloud-api).
+- [Cloud Console](#cloud-console).
+- [Cloud API](#cloud-api).
+- [CockroachDB {{ site.data.products.cloud }} Terraform provider](#cockroachdb-cloud-terraform-provider).
 
 {% include cockroachcloud/backups/full-backup-setting-change.md %}
 
@@ -240,3 +241,36 @@ For each restore job, the tab will display:
 ## Cloud API
 
 {% include cockroachcloud/backups/cloud-api-get-put.md %}
+
+## CockroachDB Cloud Terraform provider
+
+You can use the [CockroachDB {{ site.data.products.cloud }} Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}) to specify managed backup settings in {{ site.data.products.advanced }} clusters.
+
+In your `main.tf` Terraform configuration file, use the `backup_config` attribute on the `cockroach_cluster` resource to modify the settings of managed backups. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ hcl
+resource "cockroach_cluster" "advanced" {
+  name           = "cockroach-advanced"
+  cloud_provider = "GCP"
+  plan           = "ADVANCED"
+  dedicated = {
+    storage_gib  = 15
+    num_virtual_cpus = 4
+  }
+  regions = [
+    {
+      name       = "us-central1"
+      node_count = 1
+    }
+  ]
+  delete_protection = true
+  backup_config = {
+    enabled           = true
+    frequency_minutes = 60
+    retention_days    = 30
+  }
+}
+~~~
+
+{% include cockroachcloud/backups/terraform-managed-backups.md %}
