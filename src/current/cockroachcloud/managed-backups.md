@@ -29,7 +29,7 @@ Configurable managed backup settings are available in all [supported versions]({
 
 Full backups in the cluster will be deleted when they reach the set retention period. At this point, any incremental backups dependent on the deleted full backup will also be deleted. The Cloud Console will not list any backups that are beyond the set retention period, or incremental backups that cannot be restored.
 
-For instructions on how to view and configure managed backup settings, use the:
+For instructions on how to view and configure managed backup settings, use one of the following:
 
 - [Cloud Console](#cloud-console).
 - [Cloud API](#cloud-api).
