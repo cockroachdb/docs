@@ -81,9 +81,13 @@ When MVCC garbage is deleted by garbage collection, the data is still not yet ph
 
 {% include {{page.version.version}}/storage/free-up-disk-space.md %}
 
-## How can I free up disk space that was used by a dropped table?
+## How can I free up disk space when dropping a table?
 
-If you've noticed that [your disk space is not freeing up quickly enough after deleting data](#why-is-my-disk-usage-not-decreasing-after-deleting-data), you can take the following steps to free up disk space more quickly. This example assumes a table `t`.
+If you've noticed that [your disk space is not freeing up quickly enough after dropping a table](#why-is-my-disk-usage-not-decreasing-after-deleting-data), you can take the following steps to free up disk space more quickly the next time you drop a table. This example assumes a table `t` exists. 
+
+{{site.data.alerts.callout_info}}
+The procedure shown here only works if you get the range IDs from the table **before** running [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}). If you are in an emergency situation due to running out of disk, see [What happens when a node runs out of disk space?](#what-happens-when-a-node-runs-out-of-disk-space)
+{{site.data.alerts.end}}
 
 1. Lower the [`gc.ttlseconds` parameter]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) to 10 minutes.
 
