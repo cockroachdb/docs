@@ -493,6 +493,7 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
 - {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
 - {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}
+- {% include {{ page.version.version }}/known-limitations/compression-level-kafka-config.md %}
 
 #### `ALTER CHANGEFEED` limitations
 
