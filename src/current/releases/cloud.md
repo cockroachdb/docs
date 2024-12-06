@@ -14,6 +14,12 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## December 1, 2024
+
+As of December 1, 2024, [updated pricing](https://www.cockroachlabs.com/pricing/new/) that was recently [announced](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud is now in effect for all customers except those with annual or multi-year contracts that began prior to December 1, 2024. For those customers, the updated pricing, including new usage-based costs, goes into effect upon contract renewal. Prior to renewal, line items for usage of data transfer, backups, and changefeeds are displayed in the [Billing](https://cockroachlabs.cloud/billing) interface and on invoices with a $0 charge, while showing actual usage metrics to help estimate future costs.
+
+For further detail, refer to [Understand CockroachDB Cloud Costs]({% link cockroachcloud/costs.md %}).
+
 ## November 18, 2024
 
 CockroachDB v24.3 is now generally available for select CockroachDB Cloud clusters. CockroachDB v24.3 is a [Regular release]({% link releases/release-support-policy.md %}#regular-releases). Refer to [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to v24.3]({% link cockroachcloud/upgrade-cockroach-version.md %}).
@@ -26,9 +32,9 @@ You can now [grant roles]({% link cockroachcloud/managing-access.md %}#change-a-
 
 Cockroach Labs has announced [updated pricing](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud. This new pricing model goes into effect December 1, 2024 for new customers and existing pay-as-you-go customers, and upon renewal for annual or multi-year contract customers.
 
-A [Preview](https://www.cockroachlabs.com/docs/cockroachcloud/costs#usage-based-billing-metrics-in-preview) of metering for usage-based billing of data transfer, backups, and changefeeds remains in effect through November 30, 2024. During this Preview, line items with a charge of $0 will be shown on your monthly invoice for these items. Customers with existing annual or multi-year contracts may continue to preview these line items until charges begin upon contract renewal.
+A Preview of metering for usage-based billing of data transfer, backups, and changefeeds remains in effect through November 30, 2024. During this Preview, line items with a charge of $0 will be shown on your monthly invoice for these items. Customers with existing annual or multi-year contracts may continue to preview these line items until charges begin upon contract renewal.
 
-For more information, refer to [CockroachDB Cloud Costs](https://www.cockroachlabs.com/docs/cockroachcloud/costs) and the [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) page.
+For more information, refer to [CockroachDB Cloud Costs]({% link cockroachcloud/costs.md %}) and the [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) page.
 
 ## October 29, 2024
 
@@ -425,7 +431,7 @@ In addition, this release includes the following features:
 <h3 id="2023-07-10-console-changes"> Console changes </h3>
 
 - The **Add database** button on the [**Databases** page]({% link cockroachcloud/databases-page.md %}) of the Console is temporarily disabled.
-- CockroachDB {{ site.data.products.dedicated }} [restore jobs](https://www.cockroachlabs.com/docs/cockroachcloud/managed-backupsfilters=advanced#restore-data-in-advanced-clusters) now have the following more descriptive statuses: `Preparing`, `Running`, `Reverting`, `Finalizing`, `Succeeded`, and `Failed` statuses. Additionally, destination clusters of self-service restores now display a `Restoring` state during the restore.
+- CockroachDB {{ site.data.products.dedicated }} [restore jobs]({% link cockroachcloud/managed-backups-advanced.md %}#restore-data) now have the following more descriptive statuses: `Preparing`, `Running`, `Reverting`, `Finalizing`, `Succeeded`, and `Failed` statuses. Additionally, destination clusters of self-service restores now display a `Restoring` state during the restore.
 - The [**Databases** page]({% link cockroachcloud/databases-page.md %}) now includes additional statistics for clusters running [v23.1.0]({% link releases/v23.1.md %}) and later.
 - You can now set up an AWS CloudWatch integration and view its status directly from the [**Tools** page]({% link cockroachcloud/export-metrics-advanced.md %}) of the CockroachDB {{ site.data.products.cloud }} Console.
 
@@ -446,7 +452,7 @@ In addition, this release includes the following features:
 
 - Organizations that have purchased premium support will now see it included in their [invoices]({% link cockroachcloud/billing-management.md %}).
 - Cross-cluster [restores]({% link cockroachcloud/managed-backups.md %}#restore-a-cluster) are now limited to CockroachDB {{ site.data.products.dedicated }} clusters with a major version greater than or equal to the major version of the source cluster.
-- The [**Restore jobs**]({% link cockroachcloud/managed-backups.md %}?filters=advanced#restore-data-in-advanced-clusters) tab of the **Backups page** now shows more information about a restore job, such as the source and destination clusters, the restore type, the backup size, and the job's progress.
+- The [**Restore jobs**]({% link cockroachcloud/managed-backups-advanced.md %}#restore-data) tab of the **Backups page** now shows more information about a restore job, such as the source and destination clusters, the restore type, the backup size, and the job's progress.
 
 <h3 id="2023-07-05-security-changes"> Security updates </h3>
 

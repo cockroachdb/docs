@@ -141,6 +141,8 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.standard }
       - Under `usage_limits`, set `provisioned_virtual_cpus` to the required maximum vCPUs for the cluster.
       - Under `regions`, add the names of one or more regions for the cluster.
       - To optionally enable [deletion protection]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection), set `delete_protection` to `true`.
+
+    {% include cockroachcloud/backups/provision-cluster-tf-managed-backups.md %}
 {{ remaining_steps }}
 
 {{site.data.alerts.callout_success}}
@@ -179,6 +181,8 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.advanced }
       - Under `dedicated`, set `storage_gib` to a value large enough to contain the cluster's expected data. Set `num_virtual_cpus` to the number of vCPUs per node.
       - Under `regions`, add the names of one or more regions for the cluster and specify the `node_count`, or the number of nodes, per region.
       - To optionally enable [deletion protection]({% link cockroachcloud/basic-cluster-management.md %}#enable-deletion-protection), set `delete_protection` to `true`.
+    
+    {% include cockroachcloud/backups/provision-cluster-tf-managed-backups.md %}
 {{ remaining_steps }}
 
 </section>
@@ -255,3 +259,4 @@ Enter `yes` when prompted to delete the cluster.
 
 - Read the [CockroachDB Cloud Terraform provider reference docs](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs) in the Terraform registry, which provide detailed information on the resources you can manage using Terraform.
 - Browse the [example recipes](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples) in the Terraform Provider's GitHub repository.
+- Refer to the [Managed Backups]({% link cockroachcloud/managed-backups.md %}#cockroachdb-cloud-terraform-provider) page to configure the managed backups for your CockroachDB {{ site.data.products.cloud }} cluster.
