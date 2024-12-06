@@ -14,7 +14,7 @@ There are two main types of backups:
 
 You can use the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) statement to efficiently back up your cluster's schemas and data to popular cloud services such as AWS S3, Google Cloud Storage, or NFS, and the [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) statement to efficiently restore schema and data as necessary. For more information, see [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %}).
 
-{% include {{ page.version.version }}/backups/backup-to-deprec.md %}
+{% include {{ page.version.version }}/backups/old-syntax-removed.md %}
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
 
