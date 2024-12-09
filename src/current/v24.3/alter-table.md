@@ -223,6 +223,8 @@ You can use *replication zones* to control the number and location of replicas f
 
 For examples, see [Replication Controls](#configure-replication-zones).
 
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
+
 #### Required privileges
 
 The user must be a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or have been granted [`CREATE`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) or [`ZONECONFIG`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privileges. To configure [`system` objects]({% link {{ page.version.version }}/configure-replication-zones.md %}#for-system-data), the user must be a member of the `admin` role.
