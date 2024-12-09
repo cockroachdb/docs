@@ -1,0 +1,1 @@
+Attempts to replicate the changed row directly into the destination table, without re-running constraint validations. It does not support writing into tables with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints.

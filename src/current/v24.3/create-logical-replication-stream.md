@@ -48,7 +48,7 @@ Parameter | Description
 Option | Description
 -------+------------
 `cursor` | Emits any changes after the specified timestamp. LDR will not perform an initial backfill with the `cursor` option, it will stream any changes after the specified timestamp. The LDR job will encounter an error if you specify a `cursor` timestamp that is before the configured [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) window for that table. **Warning:** Apply the `cursor` option carefully to LDR streams. Using a timestamp in error could cause data loss.
-`discard` | Ignore [TTL deletes]({% link {{ page.version.version }}/row-level-ttl.md %}) in an LDR stream. Use `discard = ttl-deletes`. **Note**: To ignore row-level TTL deletes in an LDR stream, it is necessary to set the [`ttl_disable_changefeed_replication`]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) storage parameter on the source table. Refer to the [Ignore row-level TTL deletes](#ignore-row-level-ttl-deletes) example.
+<a id="discard-ttl-deletes-option"></a>`discard` | (**Unidirectional LDR only**) Ignore [TTL deletes]({% link {{ page.version.version }}/row-level-ttl.md %}) in an LDR stream with `discard = ttl-deletes`. **Note**: To ignore row-level TTL deletes in an LDR stream, it is necessary to set the [`ttl_disable_changefeed_replication`]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) storage parameter on the source table. Refer to the [Ignore row-level TTL deletes](#ignore-row-level-ttl-deletes) example.
 `label` | Tracks LDR metrics at the job level. Add a user-specified string with `label`. Refer to [Metrics labels]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}#metrics-labels).
 `mode` | Determines how LDR replicates the data to the destination cluster. Possible values: `immediate`, `validated`. For more details refer to [LDR modes](#ldr-modes).
 
@@ -56,8 +56,8 @@ Option | Description
 
 _Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
 
-- `immediate` (default): Attempts to replicate the changed row directly into the destination table, without re-running constraint validations. It does not support writing into tables with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints.
-- `validated`: Attempts to apply the write in a similar way to a user-run query, which would re-run all constraint validations or triggers relevant to the destination table(s). It will potentially reject the change if it fails rather than writing it, which will cause the row change to enter the DLQ instead.
+- `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
+- `validated`: {% include {{ page.version.version }}/ldr/validated-description.md %}
 
 ## Bidirectional LDR
 
@@ -89,14 +89,14 @@ CREATE LOGICAL REPLICATION STREAM FROM TABLES ({database.public.table_name},{dat
 
 ### Ignore row-level TTL deletes
 
-If you would like to ignore [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) deletes in the LDR stream, set the [`ttl_disable_changefeed_replication` storage parameter]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) on the table. On the **source** cluster, alter the table to set the table storage parameter:
+If you would like to ignore [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) deletes in a **unidirectional** LDR stream, set the [`ttl_disable_changefeed_replication` storage parameter]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) on the table. On the **source** cluster, alter the table to set the table storage parameter:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE {table_name} SET (ttl_disable_changefeed_replication = 'true');
 ~~~
 
-When you start LDR on the **destination cluster**, include the `discard = ttl-deletes` option in the statement:
+When you start LDR on the **destination cluster**, include the [`discard = ttl-deletes` option](#discard-ttl-deletes-option) in the statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
