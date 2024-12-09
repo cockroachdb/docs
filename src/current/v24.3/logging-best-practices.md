@@ -24,6 +24,26 @@ Unstructured logs are more free-form and human-readable compared to machine-proc
 
 General Troubleshooting: They are useful for capturing a wide range of information that may not fit into a predefined structure, such as error messages or stack traces. Events not documented on [Notable Events]({% link {{ page.version.version }}/eventlog.md %}) will have an unstructured format in log messages.
 
+## Storage considerations for file sinks
+
+[Log sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) route events from specified [logging channels]({% link {{ page.version.version }}/logging.md %}#logging-channels) to destinations outside CockroachDB. These destinations currently include [file sinks]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files), network sinks ([Fluentd-compatible]({% link {{ page.version.version }}/configure-logs.md %}#output-to-fluentd-compatible-network-collectors) servers and [HTTP]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors) servers), and the [standard error stream (`stderr`)]({% link {{ page.version.version }}/configure-logs.md %}#output-to-stderr).
+
+With a file sink, when provisioning [storage]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage) for your CockroachDB cluster, decide [where the log files will be stored]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory): either the same volume as the main data store or on a separate volume from the main data store. To determine this, measure and consider the following factors:
+
+- How [IO intensive]({% link {{ page.version.version }}/recommended-production-settings.md %}#disk-i-o) is your workload.
+- How many log messages are written to files on disk.
+    - This number can be controlled or reduced by outputting logs to a network sink.
+- What is the operational overhead and cost to provision a separate volume.
+
+For greater disk resilience, consider the following:
+
+- Write logs to a network sink. However:
+    - This may not be possible due to your environment.
+    - This could create more operational overhead.
+    - This will impact troubleshooting using [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}).
+- Use the [`buffering` option]({% link {{ page.version.version }}/logging-best-practices.md %}#customize-buffering-of-log-messages) for file sink if you do not need auditing.
+- Use fine-grained auditing ([Table-based SQL Audit Logging]({% link {{ page.version.version }}/sql-audit-logging.md %}) or [Role-based SQL Audit Logging]({% link {{ page.version.version }}/role-based-audit-logging.md %})) to reduce IO and potential impact during [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls).
+
 ## Use `json` format with third-party tools
 
 With third-party tool consumption that read logs programmatically, use [`json`]({% link {{ page.version.version }}/log-formats.md %}#format-json) format rather than parse the [`crdb_v2`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) format. The JSON object is guaranteed to not contain unescaped newlines or other special characters, and the entry as a whole is followed by a newline character. This makes the format suitable for processing over a stream unambiguously.
