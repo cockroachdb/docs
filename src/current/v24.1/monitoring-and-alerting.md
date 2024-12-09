@@ -138,10 +138,12 @@ Otherwise, it returns an HTTP `200 OK` status response code with an empty body:
 ### Raw status endpoints
 
 {{site.data.alerts.callout_info}}
-These endpoints are deprecated in favor of the [Cluster API](#cluster-api).
+The JSON endpoints are deprecated in favor of the [Cluster API](#cluster-api).
+
+The `/_status/vars` metrics endpoint is in Prometheus format and is not deprecated. For more information, refer to [Prometheus endpoint](#prometheus-endpoint).
 {{site.data.alerts.end}}
 
-Several endpoints return raw status metrics in JSON at `http://<host>:<http-port>/#/debug`. Feel free to investigate and use these endpoints, but note that they are subject to change.
+Several endpoints return raw status meta information in JSON at `http://<host>:<http-port>/#/debug`. Feel free to investigate and use these endpoints, but note that they are subject to change.
 
 <img src="{{ 'images/v24.1/raw-status-endpoints.png' | relative_url }}" alt="Raw Status Endpoints" style="border:1px solid #eee;max-width:100%" />
 
@@ -158,7 +160,7 @@ The [`cockroach node status`]({% link {{ page.version.version }}/cockroach-node.
 
 Every node of a CockroachDB cluster exports granular time-series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}), an open source tool for storing, aggregating, and querying time-series data. The Prometheus format is human-readable and can be processed to work with other third-party monitoring systems such as [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd). Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), collect metrics from a cluster's Prometheus endpoint.
 
-To access the Prometheus of a cluster running on `localhost:8080`:
+To access the Prometheus endpoint of a cluster running on `localhost:8080`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
