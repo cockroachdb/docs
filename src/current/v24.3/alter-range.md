@@ -34,9 +34,11 @@ Additional parameters are documented for the respective [subcommands](#subcomman
 
 ### `CONFIGURE ZONE`
 
-`ALTER RANGE ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for a range. To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}).
+`ALTER RANGE ... CONFIGURE ZONE` is used to add, modify, reset, or remove [replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) for a range. To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}).
 
-You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
+You can use replication zones to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
+
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
 
 #### Required privileges
 
@@ -121,7 +123,7 @@ For example, to get all range IDs, leaseholder store IDs, and leaseholder locali
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-WITH user_info AS (SHOW RANGES FROM TABLE users) SELECT range_id, lease_holder, lease_holder_locality FROM user_info;
+WITH user_info AS (SHOW RANGES FROM TABLE users WITH DETAILS) SELECT range_id, lease_holder, lease_holder_locality FROM user_info;
 ~~~
 
 ~~~
@@ -163,7 +165,7 @@ To move the leases for all data in the [`movr.users`]({% link {{ page.version.ve
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER RANGE RELOCATE LEASE TO 2 FOR SELECT range_id from crdb_internal.ranges where table_name = 'users'
+ALTER RANGE RELOCATE LEASE TO 2 FOR SELECT range_id from [SHOW RANGES FROM TABLE users WITH DETAILS];
 ~~~
 
 ~~~
@@ -205,7 +207,7 @@ To move the replicas for all data in the [`movr.users`]({% link {{ page.version.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER RANGE RELOCATE FROM 2 TO 7 FOR SELECT range_id from crdb_internal.ranges where table_name = 'users';
+ALTER RANGE RELOCATE FROM 2 TO 7 FOR SELECT range_id from [SHOW RANGES FROM TABLE users WITH DETAILS];
 ~~~
 
 ~~~
@@ -231,7 +233,7 @@ To move all of a range's voting replicas from one store to another store:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER RANGE RELOCATE VOTERS FROM 7 TO 2 FOR SELECT range_id from crdb_internal.ranges where table_name = 'users';
+ALTER RANGE RELOCATE VOTERS FROM 7 TO 2 FOR SELECT range_id from [SHOW RANGES FROM TABLE users WITH DETAILS];
 ~~~
 
 ~~~
@@ -261,7 +263,7 @@ This statement will only have an effect on clusters that have non-voting replica
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER RANGE RELOCATE NONVOTERS FROM 7 TO 2 FOR SELECT range_id from crdb_internal.ranges where table_name = 'users';
+ALTER RANGE RELOCATE NONVOTERS FROM 7 TO 2 FOR SELECT range_id from [SHOW RANGES FROM TABLE users WITH DETAILS];
 ~~~
 
 ~~~
