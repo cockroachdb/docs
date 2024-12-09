@@ -715,6 +715,10 @@ You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or
 ALTER DATABASE movr CONFIGURE ZONE DISCARD;
 ~~~
 
+#### Troubleshoot replication zones
+
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
+
 ### Use Zone Config Extensions
 
 The following examples show:
@@ -1077,6 +1081,12 @@ When you discard a zone configuration, the objects it was applied to will then i
 
 However, this statement will not remove any configuration created by the [multi-region abstractions]({% link {{ page.version.version }}/multiregion-overview.md %}).
 {{site.data.alerts.end}}
+
+#### Troubleshoot Zone Config Extensions
+
+The process for troubleshooting Zone Config Extensions is the same as troubleshooting any other changes to zone configs.
+
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
 
 ### Change database owner
 

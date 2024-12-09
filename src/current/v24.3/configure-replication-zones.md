@@ -65,13 +65,41 @@ System Range | CockroachDB comes with pre-configured replication zones for impor
 
 ### Level priorities
 
+[XXX](): EDIT THIS SECTION MORE
+
 When replicating data, whether table or system, CockroachDB always uses the most granular replication zone available. For example, for a piece of user data:
 
-1. If there's a replication zone for the row, CockroachDB uses it.
-1. If there's no applicable row replication zone and the row is from a secondary index, CockroachDB uses the secondary index replication zone.
-1. If the row isn't from a secondary index or there is no applicable secondary index replication zone, CockroachDB uses the table replication zone.
-1. If there's no applicable table replication zone, CockroachDB uses the database replication zone.
-1. If there's no applicable database replication zone, CockroachDB uses the `default` cluster-wide replication zone.
+1. If there's a replication zone [for the row](#create-a-replication-zone-for-a-partition) (a.k.a. [partition]({% link {{ page.version.version }}/partitioning.md %})), CockroachDB uses it.
+1. If there's no applicable row replication zone and the row is from a secondary index, CockroachDB uses the [secondary index replication zone](#create-a-replication-zone-for-a-secondary-index).
+1. If the row isn't from a secondary index or there is no applicable secondary index replication zone, CockroachDB uses the [table replication zone](#create-a-replication-zone-for-a-table).
+1. If there's no applicable table replication zone, CockroachDB uses the [database replication zone](#create-a-replication-zone-for-a-database).
+1. If there's no applicable database replication zone, CockroachDB uses [the `default` cluster-wide replication zone](#view-the-default-replication-zone).
+
+The hierarchy of inheritance for zone configs can be visualized as follows:
+
+```
+- default
+  - database
+    - table
+      - index
+        - partition (row) A
+          - (sub)partition A.1      (DOES NOT INHERIT, SEE NOTE BELOW)
+            - (sub)partition A.1.1  (DOES NOT INHERIT)
+          - (sub)partition A.2      (DOES NOT INHERIT)
+      - ... etc.
+```
+
+Put differently, the system does a depth-first search (DFS) down the inheritance tree and always takes the most specific modified zone configuration at the current node of the tree, unless or until it finds a different modifed value for that zone configuration further down the tree. In cases where it doesn't find a modified value, it inherits from the current node's parent, which inherits from its parent, and on and on all the way back up the tree.
+
+{{site.data.alerts.callout_info}}
+The exception to the inheritance behavior described above is that sub-partitions do not inherit their values from their parent partitions (rows). Instead, they inherit their fields from the parent table. For more information, see [cockroachdb/cockroach#75862](https://github.com/cockroachdb/cockroach/issues/75862).
+{{site.data.alerts.end}}
+
+Each zone config inherits all of its initial values from its parent object. Any changes to a zone configuration's initial values are therefore supplied by the user.
+
+A zone config only stores the values that differ from its parent. CockroachDB then looks up the values for any unset fields in the parent object’s zone configuration. This continues recursively up the inheritance tree all the way to the default zone config. In practice, most values are cached to avoid performance impacts.
+
+All configurations will be modified versions of the [`default` range](#view-the-default-replication-zone).
 
 ## Manage replication zones
 
@@ -136,7 +164,7 @@ See [Cluster Topology]({% link {{ page.version.version }}/recommended-production
 
 ### Troubleshooting zone constraint violations
 
-To see if any of the data placement constraints defined in your replication zone configurations are being violated, use the `system.replication_constraint_stats` report as described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
 
 ## View replication zones
 
@@ -690,4 +718,5 @@ There's no need to make zone configuration changes; by default, the cluster is c
 - [`SHOW PARTITIONS`]({% link {{ page.version.version }}/show-partitions.md %})
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
 - [Table Partitioning]({% link {{ page.version.version }}/partitioning.md %})
-- [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %})
+- [Critical nodes endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint)
+- [Troubleshoot Replication Zone Configurations]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %})

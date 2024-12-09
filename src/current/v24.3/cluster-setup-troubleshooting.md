@@ -635,15 +635,15 @@ Even with `server.eventlog.enabled` set to `false`, notable log events are still
 
 ## Check for under-replicated or unavailable data
 
-To see if any data is under-replicated or unavailable in your cluster, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
+To see if any data is under-replicated or unavailable in your cluster, follow the steps described in [Critical nodes endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint).
 
 ## Check for replication zone constraint violations
 
-To see if any of your cluster's [data placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) are being violated, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
+To see if any of your cluster's [data placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) are being violated, follow the steps described in [Troubleshoot Replication Zone Configurations]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %}).
 
 ## Check for critical localities
 
-To see which of your [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) (if any) are critical, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
+To see which of your [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) (if any) are critical, follow the steps described in the [Critical nodes endpoint documentation]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
 
 ## Something else?
 
