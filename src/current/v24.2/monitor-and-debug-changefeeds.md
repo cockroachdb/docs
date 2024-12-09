@@ -153,6 +153,7 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `changefeed.message_size_hist` | Distribution in the size of emitted messages. | Bytes | Histogram
 `changefeed.running` | Number of currently running changefeeds, including sinkless changefeeds. | Changefeeds | Gauge
 `changefeed.sink_batch_hist_nanos` | Time messages spend batched in the sink buffer before being flushed and acknowledged. | Nanoseconds | Histogram
+<span class="version-tag">New in v24.2.4:</span> `changefeed.total_ranges` | Total number of ranges that are watched by [nodes participating in the changefeed job]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). `changefeed.total_ranges` shares the same polling interval as the [`changefeed.lagging_ranges`](#lagging-ranges-metric) metric, which is controlled by the `lagging_ranges_polling_interval` option. For more details, refer to [Lagging ranges](#lagging-ranges).
 
 ### Monitoring and measuring changefeed latency
 

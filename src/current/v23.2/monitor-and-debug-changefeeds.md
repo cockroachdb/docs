@@ -156,6 +156,7 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `error_retries` | Total retryable errors encountered by changefeeds. | Errors
 `backfill_pending_ranges` | Number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in an ongoing backfill that are yet to be fully emitted. | Ranges
 `message_size_hist` | Distribution in the size of emitted messages. | Bytes
+<span class="version-tag">New in v23.2.13:</span> `total_ranges` | Total number of ranges that are watched by [nodes participating in the changefeed job]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). `changefeed.total_ranges` shares the same polling interval as the [`changefeed.lagging_ranges`](#lagging-ranges-metric) metric, which is controlled by the `lagging_ranges_polling_interval` option. For more details, refer to [Lagging ranges](#lagging-ranges).
 
 ### Monitoring and measuring changefeed latency
 
