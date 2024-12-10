@@ -229,7 +229,7 @@ The cluster will underperform if storage is not provisioned or configured correc
 
 Provision enough storage capacity for CockroachDB data, and configure your volumes to maximize disk I/O:
 
-<table>
+<table markdown="1">
 <thead>
 <tr>
   <th>Category</th>
