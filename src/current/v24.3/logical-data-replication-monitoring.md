@@ -14,7 +14,7 @@ Logical data replication is only supported in CockroachDB {{ site.data.products.
 You can monitor [**logical data replication (LDR)**]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) using:
 
 - [`SHOW LOGICAL REPLICATION JOBS`](#sql-shell) in the SQL shell to view a list of LDR jobs on the cluster.
-- The **Logical Data Replication** dashboard on the [DB Console](#db-console) to view metrics at the cluster level. {% comment %}To add link later to dashboard page{% endcomment %}
+- The [**Logical Data Replication** dashboard]({% link {{ page.version.version }}/ui-logical-data-replication-dashboard.md %}) on the [DB Console](#db-console) to view metrics at the cluster level.
 - [Prometheus and Alertmanager](#prometheus) to track and alert on LDR metrics.
 - Metrics export with [Datadog](#datadog).
 - [Metrics labels](#metrics-labels) to view metrics at the job level.
@@ -77,25 +77,23 @@ You can also use [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %
 
 In the DB Console, you can use:
 
-- The [**Metrics** dashboard]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) for LDR to view metrics for the job on the destination cluster.
+- The [**Metrics** dashboard]({% link {{ page.version.version }}/ui-logical-data-replication-dashboard.md %}) for LDR to view metrics for the job on the destination cluster.
 - The [**Jobs** page]({% link {{ page.version.version }}/ui-jobs-page.md %}) to view the history retention job on the source cluster and the LDR job on the destination cluster
 
 The metrics for LDR in the DB Console metrics are at the **cluster** level. This means that if there are multiple LDR jobs running on a cluster the DB Console will show the average metrics across jobs.   
 
 ### Metrics dashboard
 
-You can use the [**Logical Data Replication** dashboard]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) of the destination cluster to monitor the following metric graphs at the **cluster** level:
+You can use the [**Logical Data Replication** dashboard]({% link {{ page.version.version }}/ui-logical-data-replication-dashboard.md %}) of the destination cluster to monitor the following metric graphs at the **cluster** level:
 
 - Replication latency
 - Replication lag
 - Row updates applied
-- Logical bytes reviewed
+- Logical bytes received
 - Batch application processing time: 50th percentile
 - Batch application processing time: 99th percentile
 - DLQ causes
 - Retry queue size
-
-{% comment  %}Dashboard page in the DB Console docs to be added with more information per other dashboards. Link to there from this section.{% endcomment %}
 
 To track replicated time, ingested events, and events added to the DLQ at the **job** level, refer to [Metrics labels](#metrics-labels).
 
