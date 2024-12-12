@@ -8,13 +8,13 @@ docs_area: reference.sql
 The `BEGIN` [statement]({% link {{ page.version.version }}/sql-statements.md %}) initiates a [transaction]({% link {{ page.version.version }}/transactions.md %}), which either successfully executes all of the statements it contains or none at all.
 
 {{site.data.alerts.callout_info}}
-When running under the default [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation level, your application should [use a retry loop to handle transaction retry errors]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#transaction-retry-errors) that can occur under [contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+When running under the default [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation level, your application should [use a retry loop to handle transaction retry errors]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#transaction-retry-errors) that can occur under [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
 {{site.data.alerts.end}}
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/legacy_begin.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/begin.html %}
 </div>
 
 ## Required privileges
