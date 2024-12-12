@@ -145,7 +145,7 @@ The JSON endpoints are deprecated in favor of the [Cluster API](#cluster-api).
 The `/_status/vars` metrics endpoint is in Prometheus format and is not deprecated. For more information, refer to [Prometheus endpoint](#prometheus-endpoint).
 {{site.data.alerts.end}}
 
-Several endpoints return raw status meta information in JSON at `http://<host>:<http-port>/#/debug`. Feel free to investigate and use these endpoints, but note that they are subject to change.
+Several endpoints return raw status meta information in JSON at `http://<host>:<http-port>/#/debug`. You can investigate and use these endpoints, but note that they are subject to change.
 
 <img src="{{ 'images/v23.2/raw-status-endpoints.png' | relative_url }}" alt="Raw Status Endpoints" style="border:1px solid #eee;max-width:100%" />
 
