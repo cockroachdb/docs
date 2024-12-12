@@ -28,7 +28,7 @@ You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit car
 1. In the **Edit payment method** dialog, enter the credit or debit card details.
 1. Click **Save card**.
 1. Click **Add a billing email** in the **Billing contact info** section.
-1. In the **Edit billing email*** the email address at which you want to get invoices for the organization.
+1. In the **Edit billing email*** the email address at which you want to receive invoices for the organization.
 1. Click **Submit**.
 1. Click **Add a billing address** in the **Billing contact info** section.
 1. Enter the address associated with your payment method. This address appears on your monthly invoice and should be the legal address of your home or business.
@@ -38,7 +38,7 @@ You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit car
 
 1. On the **Billing** page, select the **Payment details** tab.
 1. Click the pencil icon for the **Email** field under **Billing contact info**.
-1. Enter the new email address at which you want to get invoices for the organization.
+1. Enter the new email address at which you want to receive invoices for the organization.
 1. Click **Submit**.
 
 ## Change the payment method
