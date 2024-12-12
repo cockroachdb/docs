@@ -16,8 +16,8 @@ STORAGE,admission.admitted.elastic-cpu,Number of requests admitted,Requests,COUN
 STORAGE,admission.admitted.elastic-cpu.bulk-normal-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.elastic-cpu.normal-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.elastic-stores,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,admission.admitted.elastic-stores.bulk-low-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.elastic-stores.bulk-normal-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-STORAGE,admission.admitted.elastic-stores.ttl-low-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.kv,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.kv-stores,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.admitted.kv-stores.high-pri,Number of requests admitted,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -51,8 +51,8 @@ STORAGE,admission.errored.elastic-cpu,Number of requests not admitted due to err
 STORAGE,admission.errored.elastic-cpu.bulk-normal-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.elastic-cpu.normal-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.elastic-stores,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,admission.errored.elastic-stores.bulk-low-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.elastic-stores.bulk-normal-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-STORAGE,admission.errored.elastic-stores.ttl-low-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.kv,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.kv-stores,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.errored.kv-stores.high-pri,Number of requests not admitted due to error,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -106,8 +106,8 @@ STORAGE,admission.requested.elastic-cpu,Number of requests,Requests,COUNTER,COUN
 STORAGE,admission.requested.elastic-cpu.bulk-normal-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.elastic-cpu.normal-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.elastic-stores,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,admission.requested.elastic-stores.bulk-low-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.elastic-stores.bulk-normal-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-STORAGE,admission.requested.elastic-stores.ttl-low-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.kv,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.kv-stores,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,admission.requested.kv-stores.high-pri,Number of requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -133,8 +133,8 @@ STORAGE,admission.wait_durations.elastic-cpu,Wait time durations for requests th
 STORAGE,admission.wait_durations.elastic-cpu.bulk-normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.elastic-cpu.normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.elastic-stores,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
+STORAGE,admission.wait_durations.elastic-stores.bulk-low-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.elastic-stores.bulk-normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
-STORAGE,admission.wait_durations.elastic-stores.ttl-low-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv-stores,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv-stores.high-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
@@ -143,6 +143,7 @@ STORAGE,admission.wait_durations.kv-stores.normal-pri,Wait time durations for re
 STORAGE,admission.wait_durations.kv.high-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv.locking-normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.kv.normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
+STORAGE,admission.wait_durations.snapshot_ingest,Wait time for snapshot ingest requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.sql-kv-response,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.sql-kv-response.locking-normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,admission.wait_durations.sql-kv-response.normal-pri,Wait time durations for requests that waited,Wait time Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
@@ -159,8 +160,8 @@ STORAGE,admission.wait_queue_length.elastic-cpu,Length of wait queue,Requests,GA
 STORAGE,admission.wait_queue_length.elastic-cpu.bulk-normal-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.elastic-cpu.normal-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.elastic-stores,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
+STORAGE,admission.wait_queue_length.elastic-stores.bulk-low-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.elastic-stores.bulk-normal-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
-STORAGE,admission.wait_queue_length.elastic-stores.ttl-low-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.kv,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.kv-stores,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
 STORAGE,admission.wait_queue_length.kv-stores.high-pri,Length of wait queue,Requests,GAUGE,COUNT,AVG,NONE
@@ -283,6 +284,8 @@ STORAGE,kv.prober.write.quarantine.oldest_duration,The duration that the oldest 
 STORAGE,kv.rangefeed.budget_allocation_blocked,Number of times RangeFeed waited for budget availability,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,kv.rangefeed.budget_allocation_failed,Number of times RangeFeed failed because memory budget was exceeded,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,kv.rangefeed.catchup_scan_nanos,Time spent in RangeFeed catchup scan,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kv.rangefeed.closed_timestamp.slow_ranges,Number of ranges that have a closed timestamp lagging by more than 5x target lag. Periodically re-calculated,Ranges,GAUGE,COUNT,AVG,NONE
+STORAGE,kv.rangefeed.closed_timestamp_max_behind_nanos,Largest latency between realtime and replica max closed timestamp for replicas that have active rangeeds on them,Nanoseconds,GAUGE,NANOSECONDS,AVG,NONE
 STORAGE,kv.rangefeed.mem_shared,Memory usage by rangefeeds,Memory,GAUGE,BYTES,AVG,NONE
 STORAGE,kv.rangefeed.mem_system,Memory usage by rangefeeds on system ranges,Memory,GAUGE,BYTES,AVG,NONE
 STORAGE,kv.rangefeed.processors_goroutine,Number of active RangeFeed processors using goroutines,Processors,GAUGE,COUNT,AVG,NONE
@@ -358,9 +361,57 @@ STORAGE,kvadmission.flow_token_dispatch.pending_nodes,Number of nodes pending fl
 STORAGE,kvadmission.flow_token_dispatch.pending_regular,Number of pending regular flow token dispatches,Dispatches,GAUGE,COUNT,AVG,NONE
 STORAGE,kvadmission.flow_token_dispatch.remote_elastic,Number of remote elastic flow token dispatches,Dispatches,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,kvadmission.flow_token_dispatch.remote_regular,Number of remote regular flow token dispatches,Dispatches,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.eval_wait.elastic.duration,Latency histogram for time elastic requests spent waiting for flow tokens to evaluate,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
+STORAGE,kvflowcontrol.eval_wait.elastic.requests.admitted,Number of elastic requests admitted by the flow controller,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.eval_wait.elastic.requests.bypassed,Number of waiting elastic requests that bypassed the flow controller due the evaluating replica not being the leader,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.eval_wait.elastic.requests.errored,Number of elastic requests that errored out while waiting for flow tokens,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.eval_wait.elastic.requests.waiting,Number of elastic requests waiting for flow tokens,Requests,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.eval_wait.regular.duration,Latency histogram for time regular requests spent waiting for flow tokens to evaluate,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
+STORAGE,kvflowcontrol.eval_wait.regular.requests.admitted,Number of regular requests admitted by the flow controller,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.eval_wait.regular.requests.bypassed,Number of waiting regular requests that bypassed the flow controller due the evaluating replica not being the leader,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.eval_wait.regular.requests.errored,Number of regular requests that errored out while waiting for flow tokens,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.eval_wait.regular.requests.waiting,Number of regular requests waiting for flow tokens,Requests,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.range_controller.count,"Gauge of range flow controllers currently open, this should align with the number of leaders",Count,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.send_queue.bytes,"Byte size of all raft entries queued for sending to followers, waiting on available elastic send tokens",Bytes,GAUGE,BYTES,AVG,NONE
+STORAGE,kvflowcontrol.send_queue.count,"Count of all raft entries queued for sending to followers, waiting on available elastic send tokens",Bytes,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.send_queue.prevent.count,Counter of replication streams that were prevented from forming a send queue,Preventions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.send_queue.scheduled.deducted_bytes,Gauge of elastic send token bytes already deducted by replication streams waiting on the scheduler,Bytes,GAUGE,BYTES,AVG,NONE
+STORAGE,kvflowcontrol.send_queue.scheduled.force_flush,Gauge of replication streams scheduled to force flush their send queue,Scheduled force flushes,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.streams.eval.elastic.blocked_count,Number of eval replication streams with no flow tokens available for elastic requests,Count,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.streams.eval.elastic.total_count,Total number of eval replication streams for elastic requests,Count,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.streams.eval.regular.blocked_count,Number of eval replication streams with no flow tokens available for regular requests,Count,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.streams.eval.regular.total_count,Total number of eval replication streams for regular requests,Count,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.streams.send.elastic.blocked_count,Number of send replication streams with no flow tokens available for elastic requests,Count,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.streams.send.elastic.total_count,Total number of send replication streams for elastic requests,Count,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.streams.send.regular.blocked_count,Number of send replication streams with no flow tokens available for regular requests,Count,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.streams.send.regular.total_count,Total number of send replication streams for regular requests,Count,GAUGE,COUNT,AVG,NONE
+STORAGE,kvflowcontrol.tokens.eval.elastic.available,"Flow eval tokens available for elastic requests, across all replication streams",Bytes,GAUGE,BYTES,AVG,NONE
+STORAGE,kvflowcontrol.tokens.eval.elastic.deducted,"Flow eval tokens deducted by elastic requests, across all replication streams",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.eval.elastic.returned,"Flow eval tokens returned by elastic requests, across all replication streams",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.eval.elastic.returned.disconnect,"Flow eval tokens returned early by elastic due disconnects, across all replication stream, this is a subset of returned tokens",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.eval.elastic.unaccounted,"Flow eval tokens returned by elastic requests that were unaccounted for, across all replication streams",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.eval.regular.available,"Flow eval tokens available for regular requests, across all replication streams",Bytes,GAUGE,BYTES,AVG,NONE
+STORAGE,kvflowcontrol.tokens.eval.regular.deducted,"Flow eval tokens deducted by regular requests, across all replication streams",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.eval.regular.returned,"Flow eval tokens returned by regular requests, across all replication streams",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.eval.regular.returned.disconnect,"Flow eval tokens returned early by regular due disconnects, across all replication stream, this is a subset of returned tokens",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.eval.regular.unaccounted,"Flow eval tokens returned by regular requests that were unaccounted for, across all replication streams",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.send.elastic.available,"Flow send tokens available for elastic requests, across all replication streams",Bytes,GAUGE,BYTES,AVG,NONE
+STORAGE,kvflowcontrol.tokens.send.elastic.deducted,"Flow send tokens deducted by elastic requests, across all replication streams",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.send.elastic.deducted.force_flush_send_queue,"Flow send tokens deducted by elastic requests, across all replication streams due to force flushing the stream's send queue",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.send.elastic.deducted.prevent_send_queue,"Flow send tokens deducted by elastic requests, across all replication streams to prevent forming a send queue",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.send.elastic.returned,"Flow send tokens returned by elastic requests, across all replication streams",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.send.elastic.returned.disconnect,"Flow send tokens returned early by elastic due disconnects, across all replication stream, this is a subset of returned tokens",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.send.elastic.unaccounted,"Flow send tokens returned by elastic requests that were unaccounted for, across all replication streams",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.send.regular.available,"Flow send tokens available for regular requests, across all replication streams",Bytes,GAUGE,BYTES,AVG,NONE
+STORAGE,kvflowcontrol.tokens.send.regular.deducted,"Flow send tokens deducted by regular requests, across all replication streams",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.send.regular.deducted.prevent_send_queue,"Flow send tokens deducted by regular requests, across all replication streams to prevent forming a send queue",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.send.regular.returned,"Flow send tokens returned by regular requests, across all replication streams",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.send.regular.returned.disconnect,"Flow send tokens returned early by regular due disconnects, across all replication stream, this is a subset of returned tokens",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,kvflowcontrol.tokens.send.regular.unaccounted,"Flow send tokens returned by regular requests that were unaccounted for, across all replication streams",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,leases.epoch,Number of replica leaseholders using epoch-based leases,Replicas,GAUGE,COUNT,AVG,NONE
 STORAGE,leases.error,Number of failed lease requests,Lease Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,leases.expiration,Number of replica leaseholders using expiration-based leases,Replicas,GAUGE,COUNT,AVG,NONE
+STORAGE,leases.leader,Number of replica leaseholders using leader leases,Replicas,GAUGE,COUNT,AVG,NONE
 STORAGE,leases.liveness,Number of replica leaseholders for the liveness range(s),Replicas,GAUGE,COUNT,AVG,NONE
 STORAGE,leases.preferences.less-preferred,Number of replica leaseholders which satisfy a lease preference which is not the most preferred,Replicas,GAUGE,COUNT,AVG,NONE
 STORAGE,leases.preferences.violating,Number of replica leaseholders which violate lease preferences,Replicas,GAUGE,COUNT,AVG,NONE
@@ -581,8 +632,11 @@ STORAGE,raft.rcvd.cross_zone.bytes,"Number of bytes received by this store for c
 		regions. To ensure accurate monitoring of transmitted data, it is important
 		to set up a consistent locality configuration across nodes. Note that this
 		does not include raft snapshot received.",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,raft.rcvd.defortifyleader,Number of MsgDeFortifyLeader messages received by this store,Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,raft.rcvd.dropped,Number of incoming Raft messages dropped (due to queue length or size),Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,raft.rcvd.dropped_bytes,Bytes of dropped incoming Raft messages,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,raft.rcvd.fortifyleader,Number of MsgFortifyLeader messages received by this store,Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,raft.rcvd.fortifyleaderresp,Number of MsgFortifyLeaderResp messages received by this store,Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,raft.rcvd.heartbeat,"Number of (coalesced, if enabled) MsgHeartbeat messages received by this store",Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,raft.rcvd.heartbeatresp,"Number of (coalesced, if enabled) MsgHeartbeatResp messages received by this store",Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,raft.rcvd.prevote,Number of MsgPreVote messages received by this store,Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -768,6 +822,7 @@ STORAGE,range.splits,Number of range splits,Range Ops,COUNTER,COUNT,AVG,NON_NEGA
 STORAGE,rangekeybytes,Number of bytes taken up by range keys (e.g. MVCC range tombstones),Storage,GAUGE,BYTES,AVG,NONE
 STORAGE,rangekeycount,Count of all range keys (e.g. MVCC range tombstones),Keys,GAUGE,COUNT,AVG,NONE
 STORAGE,ranges,Number of ranges,Ranges,GAUGE,COUNT,AVG,NONE
+STORAGE,ranges.decommissioning,Number of ranges with at lease one replica on a decommissioning node,Ranges,GAUGE,COUNT,AVG,NONE
 STORAGE,ranges.overreplicated,Number of ranges with more live replicas than the replication target,Ranges,GAUGE,COUNT,AVG,NONE
 STORAGE,ranges.unavailable,Number of ranges with fewer live replicas than needed for quorum,Ranges,GAUGE,COUNT,AVG,NONE
 STORAGE,ranges.underreplicated,Number of ranges with fewer live replicas than the replication target,Ranges,GAUGE,COUNT,AVG,NONE
@@ -911,9 +966,6 @@ STORAGE,storage.batch-commit.wal-queue-wait.duration,"Cumulative time spent wait
 STORAGE,storage.batch-commit.wal-rotation.duration,"Cumulative time spent waiting for WAL rotation, for batch commit. See storage.AggregatedBatchCommitStats for details.",Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,storage.block-load.active,The number of sstable block loads currently in progress,Block loads,GAUGE,COUNT,AVG,NONE
 STORAGE,storage.block-load.queued,The cumulative number of SSTable block loads that were delayed because too many loads were active (see also: `storage.block_load.node_max_active`),Block loads,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-STORAGE,storage.category-pebble-manifest.bytes-written,Bytes written to disk,Bytes,GAUGE,BYTES,AVG,NONE
-STORAGE,storage.category-pebble-wal.bytes-written,Bytes written to disk,Bytes,GAUGE,BYTES,AVG,NONE
-STORAGE,storage.category-unspecified.bytes-written,Bytes written to disk,Bytes,GAUGE,BYTES,AVG,NONE
 STORAGE,storage.checkpoints,"The number of checkpoint directories found in storage.
 
 This is the number of directories found in the auxiliary/checkpoints directory.
@@ -970,6 +1022,24 @@ STORAGE,storage.ingest.count,Number of successful ingestions performed,Events,GA
 STORAGE,storage.iterator.block-load.bytes,Bytes loaded by storage engine iterators (possibly cached). See storage.AggregatedIteratorStats for details.,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,storage.iterator.block-load.cached-bytes,Bytes loaded by storage engine iterators from the block cache. See storage.AggregatedIteratorStats for details.,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,storage.iterator.block-load.read-duration,Cumulative time storage engine iterators spent loading blocks from durable storage. See storage.AggregatedIteratorStats for details.,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-batch-eval.block-load.bytes,Bytes loaded by storage sstable iterators (possibly cached).,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-batch-eval.block-load.cached-bytes,Bytes loaded by storage sstable iterators from the block cache,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-batch-eval.block-load.latency-sum,"Cumulative latency for loading bytes not in the block cache, by storage sstable iterators",Latency,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-crdb-unknown.block-load.bytes,Bytes loaded by storage sstable iterators (possibly cached).,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-crdb-unknown.block-load.cached-bytes,Bytes loaded by storage sstable iterators from the block cache,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-crdb-unknown.block-load.latency-sum,"Cumulative latency for loading bytes not in the block cache, by storage sstable iterators",Latency,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-mvcc-gc.block-load.bytes,Bytes loaded by storage sstable iterators (possibly cached).,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-mvcc-gc.block-load.cached-bytes,Bytes loaded by storage sstable iterators from the block cache,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-mvcc-gc.block-load.latency-sum,"Cumulative latency for loading bytes not in the block cache, by storage sstable iterators",Latency,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-rangefeed.block-load.bytes,Bytes loaded by storage sstable iterators (possibly cached).,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-rangefeed.block-load.cached-bytes,Bytes loaded by storage sstable iterators from the block cache,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-rangefeed.block-load.latency-sum,"Cumulative latency for loading bytes not in the block cache, by storage sstable iterators",Latency,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-replication.block-load.bytes,Bytes loaded by storage sstable iterators (possibly cached).,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-replication.block-load.cached-bytes,Bytes loaded by storage sstable iterators from the block cache,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-replication.block-load.latency-sum,"Cumulative latency for loading bytes not in the block cache, by storage sstable iterators",Latency,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-scan-regular.block-load.bytes,Bytes loaded by storage sstable iterators (possibly cached).,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-scan-regular.block-load.cached-bytes,Bytes loaded by storage sstable iterators from the block cache,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.iterator.category-scan-regular.block-load.latency-sum,"Cumulative latency for loading bytes not in the block cache, by storage sstable iterators",Latency,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,storage.iterator.external.seeks,Cumulative count of seeks performed on storage engine iterators. See storage.AggregatedIteratorStats for details.,Iterator Ops,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,storage.iterator.external.steps,Cumulative count of steps performed on storage engine iterators. See storage.AggregatedIteratorStats for details.,Iterator Ops,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,storage.iterator.internal.seeks,"Cumulative count of seeks performed internally within storage engine iterators.
@@ -1040,8 +1110,30 @@ STORAGE,storage.wal.failover.secondary.duration,Cumulative time spent writing to
 STORAGE,storage.wal.failover.switch.count,Count of the number of times WAL writing has switched from primary to secondary and vice versa.,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,storage.wal.failover.write_and_sync.latency,The observed latency for writing and syncing to the write ahead log. Only populated when WAL failover is configured,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 STORAGE,storage.wal.fsync.latency,The write ahead log fsync latency,Fsync Latency,HISTOGRAM,NANOSECONDS,AVG,NONE
+STORAGE,storage.write-amplification,"Running measure of write-amplification.
+
+Write amplification is measured as the ratio of bytes written to disk relative to the logical
+bytes present in sstables, over the life of a store. This metric is a running average
+of the write amplification as tracked by Pebble.",Ratio of bytes written to logical bytes,GAUGE,COUNT,AVG,NONE
 STORAGE,storage.write-stall-nanos,Total write stall duration in nanos,Nanoseconds,GAUGE,NANOSECONDS,AVG,NONE
 STORAGE,storage.write-stalls,Number of instances of intentional write stalls to backpressure incoming writes,Events,GAUGE,COUNT,AVG,NONE
+STORAGE,storeliveness.heartbeat.failures,Number of Store Liveness heartbeats that failed to be sent out by the Store Liveness Support Manager,Heartbeats,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storeliveness.heartbeat.successes,Number of Store Liveness heartbeats sent out by the Store Liveness Support Manager,Heartbeats,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storeliveness.message_handle.failures,Number of incoming Store Liveness messages that failed to be handled by the Store Liveness Support Manager,Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storeliveness.message_handle.successes,Number of incoming Store Liveness messages handled by the Store Liveness Support Manager,Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storeliveness.support_for.stores,Number of stores that the Store Liveness Support Manager has ever provided support for,Stores,GAUGE,COUNT,AVG,NONE
+STORAGE,storeliveness.support_from.stores,Number of stores that the Store Liveness Support Manager is requesting support from by sending heartbeats,Stores,GAUGE,COUNT,AVG,NONE
+STORAGE,storeliveness.support_withdraw.failures,Number of times the Store Liveness Support Manager has encountered an error while withdrawing support for another store,Support Withdrawals,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storeliveness.support_withdraw.successes,Number of times the Store Liveness Support Manager has successfully withdrawn support for another store,Support Withdrawals,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storeliveness.transport.receive-queue-bytes,Total byte size of pending incoming messages from Store Liveness Transport,Bytes,GAUGE,BYTES,AVG,NONE
+STORAGE,storeliveness.transport.receive-queue-size,Number of pending incoming messages from the Store Liveness Transport,Messages,GAUGE,COUNT,AVG,NONE
+STORAGE,storeliveness.transport.receive_dropped,Number of Store Liveness messages dropped by the Store Liveness Transport on the receiver side,Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storeliveness.transport.received,Number of Store Liveness messages received by the Store Liveness Transport,Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storeliveness.transport.send-queue-bytes,Total byte size of pending outgoing messages in all Store Liveness Transport per-store send queues,Bytes,GAUGE,BYTES,AVG,NONE
+STORAGE,storeliveness.transport.send-queue-idle,Number of Store Liveness Transport per-store send queues that have become idle due to no recently-sent messages,Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storeliveness.transport.send-queue-size,Number of pending outgoing messages in all Store Liveness Transport per-store send queues,Messages,GAUGE,COUNT,AVG,NONE
+STORAGE,storeliveness.transport.send_dropped,Number of Store Liveness messages dropped by the Store Liveness Transport on the sender side,Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storeliveness.transport.sent,Number of Store Liveness messages sent by the Store Liveness Transport,Messages,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,sysbytes,Number of bytes in system KV pairs,Storage,GAUGE,BYTES,AVG,NONE
 STORAGE,syscount,Count of system KV pairs,Keys,GAUGE,COUNT,AVG,NONE
 STORAGE,tenant.consumption.cross_region_network_ru,Total number of RUs charged for cross-region network traffic,Request Units,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -1087,6 +1179,12 @@ STORAGE,txnwaitqueue.query.wait_time,Histogram of durations spent in queue by qu
 STORAGE,txnwaitqueue.query.waiting,Number of transaction status queries waiting for an updated transaction record,Waiting Queries,GAUGE,COUNT,AVG,NONE
 STORAGE,valbytes,Number of bytes taken up by values,Storage,GAUGE,BYTES,AVG,NONE
 STORAGE,valcount,Count of all values,MVCC Values,GAUGE,COUNT,AVG,NONE
+APPLICATION,auth.cert.conn.latency,Latency to establish and authenticate a SQL connection using certificate,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,auth.gss.conn.latency,Latency to establish and authenticate a SQL connection using GSS,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,auth.jwt.conn.latency,Latency to establish and authenticate a SQL connection using JWT Token,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,auth.ldap.conn.latency,Latency to establish and authenticate a SQL connection using LDAP,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,auth.password.conn.latency,Latency to establish and authenticate a SQL connection using password,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,auth.scram.conn.latency,Latency to establish and authenticate a SQL connection using SCRAM,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,backup.last-failed-time.kms-inaccessible,The unix timestamp of the most recent failure of backup due to errKMSInaccessible by a backup specified as maintaining this metric,Jobs,GAUGE,TIMESTAMP_SEC,AVG,NONE
 APPLICATION,changefeed.admit_latency,"Event admission latency: a difference between event MVCC timestamp and the time it was admitted into changefeed pipeline; Note: this metric includes the time spent waiting until event can be processed due to backpressure or time spent resolving schema descriptors. Also note, this metric excludes latency during backfill",Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,changefeed.aggregator_progress,The earliest timestamp up to which any aggregator is guaranteed to have emitted all values for,Unix Timestamp Nanoseconds,GAUGE,TIMESTAMP_NS,AVG,NONE
@@ -1094,15 +1192,35 @@ APPLICATION,changefeed.backfill_count,Number of changefeeds currently executing 
 APPLICATION,changefeed.backfill_pending_ranges,Number of ranges in an ongoing backfill that are yet to be fully emitted,Count,GAUGE,COUNT,AVG,NONE
 APPLICATION,changefeed.batch_reduction_count,Number of times a changefeed aggregator node attempted to reduce the size of message batches it emitted to the sink,Batch Size Reductions,GAUGE,COUNT,AVG,NONE
 APPLICATION,changefeed.buffer_entries.allocated_mem,Current quota pool memory allocation,Bytes,GAUGE,BYTES,AVG,NONE
+APPLICATION,changefeed.buffer_entries.allocated_mem.aggregator,Current quota pool memory allocation - between the kvfeed and the sink,Bytes,GAUGE,BYTES,AVG,NONE
+APPLICATION,changefeed.buffer_entries.allocated_mem.rangefeed,Current quota pool memory allocation - between the rangefeed and the kvfeed,Bytes,GAUGE,BYTES,AVG,NONE
 APPLICATION,changefeed.buffer_entries.flush,Number of flush elements added to the buffer,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries.flush.aggregator,Number of flush elements added to the buffer - between the kvfeed and the sink,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries.flush.rangefeed,Number of flush elements added to the buffer - between the rangefeed and the kvfeed,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.buffer_entries.in,Total entries entering the buffer between raft and changefeed sinks,Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries.in.aggregator,Total entries entering the buffer between raft and changefeed sinks - between the kvfeed and the sink,Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries.in.rangefeed,Total entries entering the buffer between raft and changefeed sinks - between the rangefeed and the kvfeed,Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.buffer_entries.kv,Number of kv elements added to the buffer,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries.kv.aggregator,Number of kv elements added to the buffer - between the kvfeed and the sink,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries.kv.rangefeed,Number of kv elements added to the buffer - between the rangefeed and the kvfeed,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.buffer_entries.out,Total entries leaving the buffer between raft and changefeed sinks,Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries.out.aggregator,Total entries leaving the buffer between raft and changefeed sinks - between the kvfeed and the sink,Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries.out.rangefeed,Total entries leaving the buffer between raft and changefeed sinks - between the rangefeed and the kvfeed,Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.buffer_entries.released,"Total entries processed, emitted and acknowledged by the sinks",Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries.released.aggregator,"Total entries processed, emitted and acknowledged by the sinks - between the kvfeed and the sink",Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries.released.rangefeed,"Total entries processed, emitted and acknowledged by the sinks - between the rangefeed and the kvfeed",Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.buffer_entries.resolved,Number of resolved elements added to the buffer,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries.resolved.aggregator,Number of resolved elements added to the buffer - between the kvfeed and the sink,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries.resolved.rangefeed,Number of resolved elements added to the buffer - between the rangefeed and the kvfeed,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.buffer_entries_mem.acquired,Total amount of memory acquired for entries as they enter the system,Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries_mem.acquired.aggregator,Total amount of memory acquired for entries as they enter the system - between the kvfeed and the sink,Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries_mem.acquired.rangefeed,Total amount of memory acquired for entries as they enter the system - between the rangefeed and the kvfeed,Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.buffer_entries_mem.released,Total amount of memory released by the entries after they have been emitted,Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries_mem.released.aggregator,Total amount of memory released by the entries after they have been emitted - between the kvfeed and the sink,Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_entries_mem.released.rangefeed,Total amount of memory released by the entries after they have been emitted - between the rangefeed and the kvfeed,Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.buffer_pushback_nanos,Total time spent waiting while the buffer was full,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_pushback_nanos.aggregator,Total time spent waiting while the buffer was full - between the kvfeed and the sink,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.buffer_pushback_nanos.rangefeed,Total time spent waiting while the buffer was full - between the rangefeed and the kvfeed,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.bytes.messages_pushback_nanos,Total time spent throttled for bytes quota,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.checkpoint_hist_nanos,Time spent checkpointing changefeed progress,Changefeeds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,changefeed.checkpoint_progress,The earliest timestamp of any changefeed's persisted checkpoint (values prior to this timestamp will never need to be re-emitted),Unix Timestamp Nanoseconds,GAUGE,TIMESTAMP_NS,AVG,NONE
@@ -1126,6 +1244,8 @@ APPLICATION,changefeed.lagging_ranges,The number of ranges considered to be lagg
 APPLICATION,changefeed.max_behind_nanos,(Deprecated in favor of checkpoint_progress) The most any changefeed's persisted checkpoint is behind the present,Nanoseconds,GAUGE,NANOSECONDS,AVG,NONE
 APPLICATION,changefeed.message_size_hist,Message size histogram,Bytes,HISTOGRAM,BYTES,AVG,NONE
 APPLICATION,changefeed.messages.messages_pushback_nanos,Total time spent throttled for messages quota,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.network.bytes_in,The number of bytes received from the network by changefeeds,Bytes,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.network.bytes_out,The number of bytes sent over the network by changefeeds,Bytes,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.nprocs_consume_event_nanos,Total time spent waiting to add an event to the parallel consumer,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,changefeed.nprocs_flush_nanos,Total time spent idle waiting for the parallel consumer to flush,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,changefeed.nprocs_in_flight_count,Number of buffered events in the parallel consumer,Count of Events,GAUGE,COUNT,AVG,NONE
@@ -1140,8 +1260,18 @@ APPLICATION,changefeed.schema_registry.retry_count,Number of retries encountered
 APPLICATION,changefeed.schemafeed.table_history_scans,The number of table history scans during polling,Counts,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.schemafeed.table_metadata_nanos,Time blocked while verifying table metadata histories,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.sink_batch_hist_nanos,Time spent batched in the sink buffer before being flushed and acknowledged,Changefeeds,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.sink_errors,Number of changefeed errors caused by the sink,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.sink_io_inflight,The number of keys currently inflight as IO requests being sent to the sink,Messages,GAUGE,COUNT,AVG,NONE
 APPLICATION,changefeed.size_based_flushes,Total size based flushes across all feeds,Flushes,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.stage.checkpoint_job_progress.latency,Latency of the changefeed stage: checkpointing job progress,Latency,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.stage.downstream_client_send.latency,Latency of the changefeed stage: flushing messages from the sink's client to its downstream. This includes sends that failed for most but not all sinks.,Latency,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.stage.emit_row.latency,Latency of the changefeed stage: emitting row to sink,Latency,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.stage.encode.latency,Latency of the changefeed stage: encoding data,Latency,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.stage.kv_feed_buffer.latency,Latency of the changefeed stage: waiting to buffer kv events,Latency,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.stage.kv_feed_wait_for_table_event.latency,Latency of the changefeed stage: waiting for a table schema event to join to the kv event,Latency,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.stage.rangefeed_buffer_checkpoint.latency,Latency of the changefeed stage: buffering rangefeed checkpoint events,Latency,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.stage.rangefeed_buffer_value.latency,Latency of the changefeed stage: buffering rangefeed value events,Latency,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.total_ranges,The total number of ranges being watched by changefeed aggregators,Ranges,GAUGE,COUNT,AVG,NONE
 APPLICATION,changefeed.usage.error_count,Count of errors encountered while generating usage metrics for changefeeds,Errors,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.usage.query_duration,Time taken by the queries used to generate usage metrics for changefeeds,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,changefeed.usage.table_bytes,Aggregated number of bytes of data per table watched by changefeeds,Storage,GAUGE,BYTES,AVG,NONE
@@ -1803,6 +1933,18 @@ APPLICATION,jobs.auto_config_task.protected_record_count,Number of protected tim
 APPLICATION,jobs.auto_config_task.resume_completed,Number of auto_config_task jobs which successfully resumed to completion,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.auto_config_task.resume_failed,Number of auto_config_task jobs which failed with a non-retriable error,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.auto_config_task.resume_retry_error,Number of auto_config_task jobs which failed with a retriable error,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.auto_create_partial_stats.currently_idle,Number of auto_create_partial_stats jobs currently considered Idle and can be freely shut down,jobs,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.auto_create_partial_stats.currently_paused,Number of auto_create_partial_stats jobs currently considered Paused,jobs,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.auto_create_partial_stats.currently_running,Number of auto_create_partial_stats jobs currently running in Resume or OnFailOrCancel state,jobs,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.auto_create_partial_stats.expired_pts_records,Number of expired protected timestamp records owned by auto_create_partial_stats jobs,records,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.auto_create_partial_stats.fail_or_cancel_completed,Number of auto_create_partial_stats jobs which successfully completed their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.auto_create_partial_stats.fail_or_cancel_failed,Number of auto_create_partial_stats jobs which failed with a non-retriable error on their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.auto_create_partial_stats.fail_or_cancel_retry_error,Number of auto_create_partial_stats jobs which failed with a retriable error on their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.auto_create_partial_stats.protected_age_sec,The age of the oldest PTS record protected by auto_create_partial_stats jobs,seconds,GAUGE,SECONDS,AVG,NONE
+APPLICATION,jobs.auto_create_partial_stats.protected_record_count,Number of protected timestamp records held by auto_create_partial_stats jobs,records,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.auto_create_partial_stats.resume_completed,Number of auto_create_partial_stats jobs which successfully resumed to completion,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.auto_create_partial_stats.resume_failed,Number of auto_create_partial_stats jobs which failed with a non-retriable error,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.auto_create_partial_stats.resume_retry_error,Number of auto_create_partial_stats jobs which failed with a retriable error,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.auto_create_stats.currently_idle,Number of auto_create_stats jobs currently considered Idle and can be freely shut down,jobs,GAUGE,COUNT,AVG,NONE
 APPLICATION,jobs.auto_create_stats.currently_paused,Number of auto_create_stats jobs currently considered Paused,jobs,GAUGE,COUNT,AVG,NONE
 APPLICATION,jobs.auto_create_stats.currently_running,Number of auto_create_stats jobs currently running in Resume or OnFailOrCancel state,jobs,GAUGE,COUNT,AVG,NONE
@@ -2091,6 +2233,18 @@ APPLICATION,jobs.schema_change_gc.protected_record_count,Number of protected tim
 APPLICATION,jobs.schema_change_gc.resume_completed,Number of schema_change_gc jobs which successfully resumed to completion,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.schema_change_gc.resume_failed,Number of schema_change_gc jobs which failed with a non-retriable error,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.schema_change_gc.resume_retry_error,Number of schema_change_gc jobs which failed with a retriable error,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.standby_read_ts_poller.currently_idle,Number of standby_read_ts_poller jobs currently considered Idle and can be freely shut down,jobs,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.standby_read_ts_poller.currently_paused,Number of standby_read_ts_poller jobs currently considered Paused,jobs,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.standby_read_ts_poller.currently_running,Number of standby_read_ts_poller jobs currently running in Resume or OnFailOrCancel state,jobs,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.standby_read_ts_poller.expired_pts_records,Number of expired protected timestamp records owned by standby_read_ts_poller jobs,records,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.standby_read_ts_poller.fail_or_cancel_completed,Number of standby_read_ts_poller jobs which successfully completed their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.standby_read_ts_poller.fail_or_cancel_failed,Number of standby_read_ts_poller jobs which failed with a non-retriable error on their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.standby_read_ts_poller.fail_or_cancel_retry_error,Number of standby_read_ts_poller jobs which failed with a retriable error on their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.standby_read_ts_poller.protected_age_sec,The age of the oldest PTS record protected by standby_read_ts_poller jobs,seconds,GAUGE,SECONDS,AVG,NONE
+APPLICATION,jobs.standby_read_ts_poller.protected_record_count,Number of protected timestamp records held by standby_read_ts_poller jobs,records,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.standby_read_ts_poller.resume_completed,Number of standby_read_ts_poller jobs which successfully resumed to completion,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.standby_read_ts_poller.resume_failed,Number of standby_read_ts_poller jobs which failed with a non-retriable error,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.standby_read_ts_poller.resume_retry_error,Number of standby_read_ts_poller jobs which failed with a retriable error,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.typedesc_schema_change.currently_idle,Number of typedesc_schema_change jobs currently considered Idle and can be freely shut down,jobs,GAUGE,COUNT,AVG,NONE
 APPLICATION,jobs.typedesc_schema_change.currently_paused,Number of typedesc_schema_change jobs currently considered Paused,jobs,GAUGE,COUNT,AVG,NONE
 APPLICATION,jobs.typedesc_schema_change.currently_running,Number of typedesc_schema_change jobs currently running in Resume or OnFailOrCancel state,jobs,GAUGE,COUNT,AVG,NONE
@@ -2103,6 +2257,18 @@ APPLICATION,jobs.typedesc_schema_change.protected_record_count,Number of protect
 APPLICATION,jobs.typedesc_schema_change.resume_completed,Number of typedesc_schema_change jobs which successfully resumed to completion,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.typedesc_schema_change.resume_failed,Number of typedesc_schema_change jobs which failed with a non-retriable error,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.typedesc_schema_change.resume_retry_error,Number of typedesc_schema_change jobs which failed with a retriable error,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.update_table_metadata_cache.currently_idle,Number of update_table_metadata_cache jobs currently considered Idle and can be freely shut down,jobs,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.update_table_metadata_cache.currently_paused,Number of update_table_metadata_cache jobs currently considered Paused,jobs,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.update_table_metadata_cache.currently_running,Number of update_table_metadata_cache jobs currently running in Resume or OnFailOrCancel state,jobs,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.update_table_metadata_cache.expired_pts_records,Number of expired protected timestamp records owned by update_table_metadata_cache jobs,records,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.update_table_metadata_cache.fail_or_cancel_completed,Number of update_table_metadata_cache jobs which successfully completed their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.update_table_metadata_cache.fail_or_cancel_failed,Number of update_table_metadata_cache jobs which failed with a non-retriable error on their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.update_table_metadata_cache.fail_or_cancel_retry_error,Number of update_table_metadata_cache jobs which failed with a retriable error on their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.update_table_metadata_cache.protected_age_sec,The age of the oldest PTS record protected by update_table_metadata_cache jobs,seconds,GAUGE,SECONDS,AVG,NONE
+APPLICATION,jobs.update_table_metadata_cache.protected_record_count,Number of protected timestamp records held by update_table_metadata_cache jobs,records,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.update_table_metadata_cache.resume_completed,Number of update_table_metadata_cache jobs which successfully resumed to completion,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.update_table_metadata_cache.resume_failed,Number of update_table_metadata_cache jobs which failed with a non-retriable error,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,jobs.update_table_metadata_cache.resume_retry_error,Number of update_table_metadata_cache jobs which failed with a retriable error,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,kv.protectedts.reconciliation.errors,number of errors encountered during reconciliation runs on this node,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,kv.protectedts.reconciliation.num_runs,number of successful reconciliation runs on this node,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,kv.protectedts.reconciliation.records_processed,number of records processed without error during reconciliation on this node,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2112,37 +2278,38 @@ APPLICATION,logical_replication.checkpoint_events_ingested,Checkpoint events ing
 APPLICATION,logical_replication.commit_latency,"Event commit latency: a difference between event MVCC timestamp and the time it was flushed into disk. If we batch events, then the difference between the oldest event in the batch and flush is recorded",Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,logical_replication.events_dlqed,Row update events sent to DLQ,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_dlqed_age,Row update events sent to DLQ due to reaching the maximum time allowed in the retry queue,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,logical_replication.events_dlqed_by_label,Row update events sent to DLQ by label,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_dlqed_errtype,Row update events sent to DLQ due to an error not considered retryable,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_dlqed_space,Row update events sent to DLQ due to capacity of the retry queue,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_ingested,Events ingested by all replication jobs,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,logical_replication.events_ingested_by_label,Events ingested by all replication jobs by label,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_initial_failure,Failed attempts to apply an incoming row update,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_initial_success,Successful applications of an incoming row update,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_retry_failure,Failed re-attempts to apply a row update,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_retry_success,Row update events applied after one or more retries,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,logical_replication.flush_bytes,Number of bytes in a given flush,Logical bytes,HISTOGRAM,BYTES,AVG,NONE
-APPLICATION,logical_replication.flush_hist_nanos,Time spent flushing messages across all replication streams,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
-APPLICATION,logical_replication.flush_row_count,Number of rows in a given flush,Rows,HISTOGRAM,COUNT,AVG,NONE
+APPLICATION,logical_replication.kv.update_too_old,Total number of updates that were not applied because they were too old,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,logical_replication.kv.value_refreshes,Total number of batches that refreshed the previous value,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.logical_bytes,Logical bytes (sum of keys + values) received by all replication jobs,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,logical_replication.optimistic_insert_conflict_count,Total number of times the optimistic insert encountered a conflict,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.replan_count,Total number of dist sql replanning events,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,logical_replication.replicated_time_by_label,Replicated time of the logical replication stream by label,Seconds,COUNTER,SECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.replicated_time_seconds,The replicated time of the logical replication stream in seconds since the unix epoch.,Seconds,GAUGE,SECONDS,AVG,NONE
 APPLICATION,logical_replication.retry_queue_bytes,The replicated time of the logical replication stream in seconds since the unix epoch.,Bytes,GAUGE,BYTES,AVG,NONE
 APPLICATION,logical_replication.retry_queue_events,The replicated time of the logical replication stream in seconds since the unix epoch.,Events,GAUGE,COUNT,AVG,NONE
+APPLICATION,obs.tablemetadata.update_job.duration,Time spent running the update table metadata job.,Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,obs.tablemetadata.update_job.errors,The total number of errors that have been emitted from the update table metadata job.,Errors,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,obs.tablemetadata.update_job.runs,The total number of runs of the update table metadata job.,Executions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,obs.tablemetadata.update_job.table_updates,The total number of rows that have been updated in system.table_metadata,Rows Updated,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,physical_replication.admit_latency,Event admission latency: a difference between event MVCC timestamp and the time it was admitted into ingestion processor,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,physical_replication.commit_latency,"Event commit latency: a difference between event MVCC timestamp and the time it was flushed into disk. If we batch events, then the difference between the oldest event in the batch and flush is recorded",Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
-APPLICATION,physical_replication.cutover_progress,The number of ranges left to revert in order to complete an inflight cutover,Ranges,GAUGE,COUNT,AVG,NONE
 APPLICATION,physical_replication.distsql_replan_count,Total number of dist sql replanning events,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,physical_replication.earliest_data_checkpoint_span,The earliest timestamp of the last checkpoint forwarded by an ingestion data processor,Timestamp,GAUGE,TIMESTAMP_NS,AVG,NONE
 APPLICATION,physical_replication.events_ingested,Events ingested by all replication jobs,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,physical_replication.failover_progress,The number of ranges left to revert in order to complete an inflight cutover,Ranges,GAUGE,COUNT,AVG,NONE
 APPLICATION,physical_replication.flush_hist_nanos,Time spent flushing messages across all replication streams,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,physical_replication.flushes,Total flushes across all replication jobs,Flushes,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,physical_replication.job_progress_updates,Total number of updates to the ingestion job progress,Job Updates,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,physical_replication.latest_data_checkpoint_span,The latest timestamp of the last checkpoint forwarded by an ingestion data processor,Timestamp,GAUGE,TIMESTAMP_NS,AVG,NONE
 APPLICATION,physical_replication.logical_bytes,Logical bytes (sum of keys + values) ingested by all replication jobs,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,physical_replication.replicated_time_seconds,The replicated time of the physical replication stream in seconds since the unix epoch.,Seconds,GAUGE,SECONDS,AVG,NONE
 APPLICATION,physical_replication.resolved_events_ingested,Resolved events ingested by all replication jobs,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,physical_replication.running,Number of currently running replication streams,Replication Streams,GAUGE,COUNT,AVG,NONE
-APPLICATION,physical_replication.sst_bytes,SST bytes (compressed) sent to KV by all replication jobs,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,requests.slow.distsender,"Number of range-bound RPCs currently stuck or retrying for a long time.
 
 Note that this is not a good signal for KV health. The remote side of the
@@ -2159,6 +2326,8 @@ metrics such as packet loss, retransmits, etc, to conclusively diagnose network
 issues. Heartbeats are not very frequent (~seconds), so they may not capture
 rare or short-lived degradations.
 ",Round-trip time,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,rpc.client.bytes.egress,Counter of TCP bytes sent via gRPC on connections we initiated.,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,rpc.client.bytes.ingress,Counter of TCP bytes received via gRPC on connections we initiated.,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,rpc.connection.avg_round_trip_latency,"Sum of exponentially weighted moving average of round-trip latencies, as measured through a gRPC RPC.
 
 Dividing this Gauge by rpc.connection.healthy gives an approximation of average
@@ -2170,6 +2339,12 @@ these provide per-peer moving averages.
 This metric does not track failed connection. A failed connection's contribution
 is reset to zero.
 ",Latency,GAUGE,NANOSECONDS,AVG,NONE
+APPLICATION,rpc.connection.connected,"Counter of TCP level connected connections.
+
+This metric is the number of gRPC connections from the TCP level. Unlike rpc.connection.healthy
+this metric does not take into account whether the application has been able to heartbeat
+over this connection.
+",Connections,GAUGE,COUNT,AVG,NONE
 APPLICATION,rpc.connection.failures,"Counter of failed connections.
 
 This includes both the event in which a healthy connection terminates as well as
@@ -2215,6 +2390,7 @@ APPLICATION,schedules.scheduled-schema-telemetry-executor.succeeded,Number of sc
 APPLICATION,schedules.scheduled-sql-stats-compaction-executor.failed,Number of scheduled-sql-stats-compaction-executor jobs failed,Jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,schedules.scheduled-sql-stats-compaction-executor.started,Number of scheduled-sql-stats-compaction-executor jobs started,Jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,schedules.scheduled-sql-stats-compaction-executor.succeeded,Number of scheduled-sql-stats-compaction-executor jobs succeeded,Jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,server.http.request.duration.nanos,Duration of an HTTP request in nanoseconds.,Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,sql.bytesin,Number of SQL bytes received,SQL Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.bytesout,Number of SQL bytes sent,SQL Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.conn.failures,Number of SQL connection failures,Connections,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2234,6 +2410,10 @@ APPLICATION,sql.copy.nonatomic.started.count,Number of non-atomic COPY SQL state
 APPLICATION,sql.copy.nonatomic.started.count.internal,Number of non-atomic COPY SQL statements started (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.copy.started.count,Number of COPY SQL statements started,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.copy.started.count.internal,Number of COPY SQL statements started (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.crud_query.count,"Number of SQL SELECT, INSERT, UPDATE, DELETE statements successfully executed",SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.crud_query.count.internal,"Number of SQL SELECT, INSERT, UPDATE, DELETE statements successfully executed (internal queries)",SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.crud_query.started.count,"Number of SQL SELECT, INSERT, UPDATE, DELETE statements started",SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.crud_query.started.count.internal,"Number of SQL SELECT, INSERT, UPDATE, DELETE statements started (internal queries)",SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.ddl.count,Number of SQL DDL statements successfully executed,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.ddl.count.internal,Number of SQL DDL statements successfully executed (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.ddl.started.count,Number of SQL DDL statements started,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2349,10 +2529,10 @@ APPLICATION,sql.pre_serve.conn.failures,Number of SQL connection failures prior 
 APPLICATION,sql.pre_serve.mem.cur,Current memory usage for SQL connections prior to routing the connection to the target SQL server,Memory,GAUGE,BYTES,AVG,NONE
 APPLICATION,sql.pre_serve.mem.max,Memory usage for SQL connections prior to routing the connection to the target SQL server,Memory,HISTOGRAM,BYTES,AVG,NONE
 APPLICATION,sql.pre_serve.new_conns,Number of SQL connections created prior to routing the connection to the target SQL server,Connections,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,sql.query.count,Number of SQL queries executed,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,sql.query.count.internal,Number of SQL queries executed (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,sql.query.started.count,Number of SQL queries started,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,sql.query.started.count.internal,Number of SQL queries started (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.query.count,"Number of SQL operations started including queries, and transaction control statements",SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.query.count.internal,"Number of SQL operations started including queries, and transaction control statements (internal queries)",SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.query.started.count,"Number of SQL operations started including queries, and transaction control statements",SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.query.started.count.internal,"Number of SQL operations started including queries, and transaction control statements (internal queries)",SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.restart_savepoint.count,Number of `SAVEPOINT cockroach_restart` statements successfully executed,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.restart_savepoint.count.internal,Number of `SAVEPOINT cockroach_restart` statements successfully executed (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.restart_savepoint.release.count,Number of `RELEASE SAVEPOINT cockroach_restart` statements successfully executed,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2450,6 +2630,7 @@ APPLICATION,tenant.sql_usage.external_io_egress_bytes,Total number of bytes writ
 APPLICATION,tenant.sql_usage.external_io_ingress_bytes,Total number of bytes read from external services such as cloud storage providers,Bytes,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,tenant.sql_usage.kv_request_units,RU consumption attributable to KV,Request Units,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,tenant.sql_usage.pgwire_egress_bytes,Total number of bytes transferred from a SQL pod to the client,Bytes,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,tenant.sql_usage.provisioned_vcpus,Number of vcpus available to the virtual cluster,Count,GAUGE,COUNT,AVG,NONE
 APPLICATION,tenant.sql_usage.read_batches,Total number of KV read batches,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,tenant.sql_usage.read_bytes,Total number of bytes read from KV,Bytes,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,tenant.sql_usage.read_requests,Total number of KV read requests,Requests,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2485,7 +2666,6 @@ APPLICATION,txn.restarts.txnaborted,Number of restarts due to an abort by a conc
 APPLICATION,txn.restarts.txnpush,Number of restarts due to a transaction push failure,Restarted Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,txn.restarts.unknown,Number of restarts due to a unknown reasons,Restarted Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,txn.restarts.writetooold,Number of restarts due to a concurrent writer committing first,Restarted Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,txn.restarts.writetoooldmulti,Number of restarts due to multiple concurrent writers committing first,Restarted Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,txn.rollbacks.async.failed,Number of KV transaction that failed to send abort asynchronously which is not always retried,KV Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,txn.rollbacks.failed,Number of KV transaction that failed to send final abort,KV Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 SERVER,build.timestamp,Build information,Build Time,GAUGE,TIMESTAMP_SEC,AVG,NONE
