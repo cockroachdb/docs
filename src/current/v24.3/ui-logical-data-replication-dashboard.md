@@ -47,8 +47,8 @@ The graph shows the rate at which row updates are applied by all logical replica
 
 Metric | CockroachDB Metric Name | Description
 -------|-------------------------|-------------
-Row Updates Applied | `logical_replication.events_ingested` | Events ingested by all replication jobs.
-Row Updates sent to DLQ | `logical_replication.events_dlqed` | Row update events sent to DLQ.
+Row Updates Applied | `logical_replication.events_ingested` | Events ingested by all logical replication jobs.
+Row Updates sent to DLQ | `logical_replication.events_dlqed` | Row update events sent to the dead letter queue (DLQ).
 
 ## Logical Bytes Received
 
@@ -80,7 +80,7 @@ processing time | `logical_replication.batch_hist_nanos-p99` | Time spent flushi
  
 ## DLQ Causes
 
-The graph shows the reasons why events were sent to the DLQ.
+The graph shows the reasons why events were sent to the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq)
 
 Metric | CockroachDB Metric Name | Description
 -------|-------------------------|-------------
