@@ -978,6 +978,8 @@ A likely cause of having a checkpoint is that one of the ranges in this store
 had inconsistent data among its replicas. Such checkpoint directories are
 located in auxiliary/checkpoints/rN_at_M, where N is the range ID, and M is the
 Raft applied index at which this checkpoint was taken.",Directories,GAUGE,COUNT,AVG,NONE
+STORAGE,storage.compactions.cancelled.bytes,Cumulative volume of data written to sstables during compactions that were ultimately cancelled due to a conflicting operation.,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,storage.compactions.cancelled.count,Cumulative count of compactions that were cancelled before they completed due to a conflicting operation.,Compactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,storage.compactions.duration,"Cumulative sum of all compaction durations.
 
 The rate of this value provides the effective compaction concurrency of a store,
@@ -1308,6 +1310,7 @@ APPLICATION,distsender.batch_responses.cross_zone.bytes,"Total byte count of rep
 		monitor the data transmitted.",Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,distsender.batch_responses.replica_addressed.bytes,Total byte count of replica-addressed batch responses received,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,distsender.batches,Number of batches processed,Batches,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,distsender.batches.async.in_progress,Number of partial batches currently being executed asynchronously,Partial Batches,GAUGE,COUNT,AVG,NONE
 APPLICATION,distsender.batches.async.sent,Number of partial batches sent asynchronously,Partial Batches,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,distsender.batches.async.throttled,Number of partial batches not sent asynchronously due to throttling,Partial Batches,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,distsender.batches.partial,Number of partial batches processed after being divided on range boundaries,Partial Batches,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2274,6 +2277,8 @@ APPLICATION,kv.protectedts.reconciliation.num_runs,number of successful reconcil
 APPLICATION,kv.protectedts.reconciliation.records_processed,number of records processed without error during reconciliation on this node,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,kv.protectedts.reconciliation.records_removed,number of records removed during reconciliation runs on this node,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.batch_hist_nanos,Time spent flushing a batch,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,logical_replication.catchup_ranges,Source side ranges undergoing catch up scans (inaccurate with multiple LDR jobs),Ranges,GAUGE,COUNT,AVG,NONE
+APPLICATION,logical_replication.catchup_ranges_by_label,Source side ranges undergoing catch up scans,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.checkpoint_events_ingested,Checkpoint events ingested by all replication jobs,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.commit_latency,"Event commit latency: a difference between event MVCC timestamp and the time it was flushed into disk. If we batch events, then the difference between the oldest event in the batch and flush is recorded",Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,logical_replication.events_dlqed,Row update events sent to DLQ,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2295,6 +2300,8 @@ APPLICATION,logical_replication.replicated_time_by_label,Replicated time of the 
 APPLICATION,logical_replication.replicated_time_seconds,The replicated time of the logical replication stream in seconds since the unix epoch.,Seconds,GAUGE,SECONDS,AVG,NONE
 APPLICATION,logical_replication.retry_queue_bytes,The replicated time of the logical replication stream in seconds since the unix epoch.,Bytes,GAUGE,BYTES,AVG,NONE
 APPLICATION,logical_replication.retry_queue_events,The replicated time of the logical replication stream in seconds since the unix epoch.,Events,GAUGE,COUNT,AVG,NONE
+APPLICATION,logical_replication.scanning_ranges,Source side ranges undergoing an initial scan (inaccurate with multiple LDR jobs),Ranges,GAUGE,COUNT,AVG,NONE
+APPLICATION,logical_replication.scanning_ranges_by_label,Source side ranges undergoing an initial scan,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,obs.tablemetadata.update_job.duration,Time spent running the update table metadata job.,Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,obs.tablemetadata.update_job.errors,The total number of errors that have been emitted from the update table metadata job.,Errors,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,obs.tablemetadata.update_job.runs,The total number of runs of the update table metadata job.,Executions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
