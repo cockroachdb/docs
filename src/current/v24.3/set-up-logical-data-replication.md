@@ -119,12 +119,8 @@ In this step, you'll start the LDR job from the destination cluster. You can rep
 
 _Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
 
-- `immediate` (default): Attempts to replicate the changed row directly into the destination table, without re-running constraint validations. It does not support writing into tables with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints.
-- `validated`: Attempts to apply the write in a similar way to a user-run query, which would re-run all constraint validations relevant to the destination table(s). If the change violates foreign key dependencies, unique constraints, or other constraints, the row will be put in the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) instead.
-
-{{site.data.alerts.callout_info}}
-If you would like to ignore TTL deletes in LDR, you can use the `discard = ttl-deletes` option in the `CREATE LOGICAL REPLICATION STREAM` statement. For an example, refer to [Ignore row-level TTL deletes]({% link {{ page.version.version }}/create-logical-replication-stream.md %}#ignore-row-level-ttl-deletes).
-{{site.data.alerts.end}}
+- `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
+- `validated`: {% include {{ page.version.version }}/ldr/validated-description.md %}
 
 1. From the **destination** cluster, start LDR. Use the fully qualified table name for the source and destination tables:
 
