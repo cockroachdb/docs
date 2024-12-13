@@ -1,6 +1,6 @@
 ---
 title: Logical Data Replication Dashboard
-summary: The Physical Cluster Replication Dashboard lets you monitor and observe replication streams between a primary and standby cluster.
+summary: The Logical Data Replication Dashboard lets you monitor and observe logical data replication jobs on the destination cluster.
 toc: true
 docs_area: reference.db_console
 ---
