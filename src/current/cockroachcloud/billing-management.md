@@ -115,7 +115,7 @@ To subscribe to CockroachDB Cloud through the Google Cloud Marketplace:
 ## Unsubscribe from Google Cloud Marketplace
 
 {{ site.data.alerts.callout_danger }}
-After you unsubscribe your CockroachDB {{ site.data.products.cloud }} from Google Cloud Marketplace billing, clusters will be deleted and applications may be disrupted unless you add an alternate payment method within 6 hours after you unsubscribe from AWS Marketplace billing.
+After you unsubscribe your CockroachDB {{ site.data.products.cloud }} from Google Cloud Marketplace billing, clusters will be deleted and applications may be disrupted unless you add an alternate payment method within 6 hours after you unsubscribe from Google Cloud Marketplace billing.
 {{ site.data.alerts.end }}
 
 To unsubscribe from CockroachDB Cloud:
