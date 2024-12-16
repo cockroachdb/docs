@@ -11,9 +11,14 @@ This page describes how major-version and patch upgrades work and shows how to u
 
 {% include common/upgrade/overview.md %}
 
+TODO: Convert this to a tab selection and show site.current_cloud_version minus two versions.
 {% include_cached {{ site.current_cloud_version }}/upgrade-requirements.md %}
 
-{% include common/upgrade/upgrade-high-level.md %}
+TODO: toggle between
+Basic:
+Standard: 
+{% include common/upgrade/upgrade-high-level-standard.md %}
+Advanced: {% include common/upgrade/upgrade-high-level.md %}
 
 ### Availability during an upgrade
 

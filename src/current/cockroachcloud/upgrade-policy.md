@@ -19,10 +19,10 @@ A cluster running an unsupported CockroachDB version is not eligible for Cockroa
 
 All CockroachDB {{ site.data.products.basic }} clusters, and CockroachDB {{ site.data.products.standard }} clusters by default, will automatically be upgraded to the next major version while the current one is still supported, to prevent the cluster from reaching EOS.
 
-- If you [disable automatic major-version upgrades for CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/cluster-management.md %}#manage-cluster-upgrades), you are responsible for upgrading the cluster before its version reaches its EOS date to maintain uninterrupted support and SLA guarantees.
+- If you [disable automatic major-version upgrades for CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/cluster-management.md %}#manage-cluster-upgrades), you are responsible for upgrading the cluster before its version reaches its EOS date to maintain uninterrupted support and SLA guarantees. Clusters that have not upgraded for one year will be upgraded automatically.
 - You are responsible for upgrading a CockroachDB {{ site.data.products.advanced }} cluster before its current version reaches its EOS date to maintain uninterrupted support and SLA guarantees.
 
-When a CockroachDB {{ site.data.products.advanced }} cluster is nearing its EOS date, you will be reminded to upgrade the cluster at least 30 days before the EOS date to avoid losing support. {% capture who_can_upgrade %}A [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) can [upgrade a cluster]({% link cockroachcloud/upgrade-cockroach-version.md %}) directly from the CockroachDB Cloud Console. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) or [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) can grant the Cluster Administrator role.{% endcapture %}{{ who_can_upgrade }}
+When a CockroachDB {{ site.data.products.advanced }} cluster is nearing its EOS date, you will be reminded to upgrade the cluster at least 30 days before the EOS date to avoid losing support. {% capture who_can_upgrade %}A user with the Cluster Administrator or Cluster Operator [role]({% link cockroachcloud/authorization.md %}) can [upgrade a cluster]({% link cockroachcloud/upgrade-cockroach-version.md %}) directly from the CockroachDB Cloud Console. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can grant these roles.{% endcapture %}{{ who_can_upgrade }}
 
 ### Currently supported versions
 

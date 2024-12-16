@@ -3,7 +3,7 @@ CockroachDB offers the following types of upgrades:
 - **Major-version upgrades**: A [major-version upgrade]({% link releases/index.md %}#major-releases) moves a cluster from one major version of CockroachDB to another, such as from v24.2 to v24.3. A major-version upgrade may include new features, updates to cluster setting defaults, and backward-incompatible changes. Performing a major-version upgrade requires an additional step to finalize the upgrade.
 
 {% if page.path contains "cockroachcloud" %}
-    As of 2024, every second major version is an [Innovation release]({% link cockroachcloud/upgrade-policy.md %}#innovation-releases). For CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }}, innovation releases offer shorter support windows and can be skipped. Innovation releases are required for CockroachDB {{ site.data.products.basic }}, and are applied automatically.
+    As of 2024, there are four major versions per year, where every second release is an [Innovation release]({% link cockroachcloud/upgrade-policy.md %}#innovation-releases). For CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }}, innovation releases offer shorter [support windows]({% link cockroachcloud/upgrade-policy.md %}#cockroachdb-cloud-support-policy) and can be skipped. Innovation releases are required for CockroachDB {{ site.data.products.basic }}, and are applied automatically.
 {% else %}
     As of 2024, every second major version is an [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases). Innovation releases offer shorter support windows and can be skipped.
 {% endif %}
