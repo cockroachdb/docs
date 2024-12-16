@@ -44,7 +44,7 @@ To understand how costs vary per tier and begin to estimate future expenses, ref
 
 ## Add payment methods
 
-During the free trial, an Organization Admin can [add a credit card]({% link cockroachcloud/billing-management.md %}) in the CockroachDB Cloud Console or [subscribe through the AWS Marketplace]({% link cockroachcloud/billing-management.md %}?filters=marketplace) (pay as you go). You can also [contact Sales](https://cockroachlabs.com/contact-sales) during the trial to learn more about CockroachDB and consider invoice billing.
+During the free trial, an Organization Admin can [add a credit card]({% link cockroachcloud/billing-management.md %}) in the CockroachDB Cloud Console or subscribe through the [AWS Marketplace]({% link cockroachcloud/billing-management.md %}?filters=aws) or [Google Cloud Marketplace]({% link cockroachcloud/billing-management.md %}?filters=gcp) for monthly, pay-as-you-go payment. You can also [contact Sales](https://cockroachlabs.com/contact-sales) during the trial to learn more about CockroachDB and consider an initial purchse of credits as part of an annual or multi-year contract.
 
 {{site.data.alerts.callout_info}}
 Callout: To avoid service disruption and possible data loss, be sure to enter a payment method or be in communication with Sales before your free trial ends.

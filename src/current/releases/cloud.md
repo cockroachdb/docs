@@ -14,6 +14,14 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## December 16, 2024
+
+<h3 id="2024-12-16-general-updates"> General updates </h3>
+
+- CockroachDB {{ site.data.products.cloud }} is now available as a pay-as-you-go offering on the Google Cloud Marketplace. This allows Google Cloud Platform customers to pay for CockroachDB {{ site.data.products.cloud }} charges via their Google Cloud accounts, with no up-front commitments. For more detail, refer to:
+  - [CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go) on the Google Cloud Marketplace.
+  - [Subscribe through the Google Cloud Marketplace]({% link cockroachcloud/billing-management.md %}?filters=gcp#subscribe-through-aws-marketplace) in the CockroachDB {{ site.data.products.cloud }} documentation.
+
 ## December 1, 2024
 
 As of December 1, 2024, [updated pricing](https://www.cockroachlabs.com/pricing/new/) that was recently [announced](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud is now in effect for all customers except those with annual or multi-year contracts that began prior to December 1, 2024. For those customers, the updated pricing, including new usage-based costs, goes into effect upon contract renewal. Prior to renewal, line items for usage of data transfer, backups, and changefeeds are displayed in the [Billing](https://cockroachlabs.cloud/billing) interface and on invoices with a $0 charge, while showing actual usage metrics to help estimate future costs.
@@ -112,7 +120,7 @@ In addition, this release includes the following features:
 
 - CockroachDB {{ site.data.products.cloud }} is now available as a pay-as-you-go offering on the AWS Marketplace. This allows AWS customers to pay for CockroachDB Cloud charges via their AWS accounts, with no up-front commitments. For more detail, refer to:
   - [CockroachDB (pay-as-you-go)](https://aws.amazon.com/marketplace/pp/prodview-n3xpypxea63du) on AWS Marketplace.
-  - [Subscribe through AWS Marketplace]({% link cockroachcloud/billing-management.md %}?filters=marketplace#subscribe-through-aws-marketplace) in the CockroachDB {{ site.data.products.cloud }} documentation.
+  - [Subscribe through AWS Marketplace]({% link cockroachcloud/billing-management.md %}?filters=aws#subscribe-through-aws-marketplace) in the CockroachDB {{ site.data.products.cloud }} documentation.
 
 ## July 18, 2024
 

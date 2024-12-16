@@ -9,7 +9,7 @@ docs_area:
 
 {% include {{ page.version.version }}/filter-tabs/deploy-crdb-aws.md %}
 
-This page shows you how to manually deploy a secure multi-node CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load balancing service to distribute client traffic.
+This page shows you how to manually deploy a multi-node, self-hosted CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load-balancing service to distribute client traffic.
 
 After setting up the AWS network, clock synchronization, and load balancing, it should take approximately 20 minutes to complete the deployment. This is based on initializing a three-node CockroachDB cluster in a single AWS region and running our sample workload.
 
@@ -18,7 +18,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 {{site.data.alerts.callout_info}}
-You need a license to use CockroachDB; obtain a private offer link on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ph5bx6fhm4nlq) or see [CockroachDB Pricing](https://www.cockroachlabs.com/pricing/) to learn about custom pricing.
+You need a license to use CockroachDB. Refer to the [Licensing FAQ]({% link {{ page.version.version }}/licensing-faq.md }) and [CockroachDB Pricing](https://www.cockroachlabs.com/pricing). [Contact us](https://cockroachlabs.com/contact-sales) about custom pricing through AWS Marketplace.
 {{site.data.alerts.end}}
 
 ## Before you begin

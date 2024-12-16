@@ -101,7 +101,7 @@ To subscribe to CockroachDB Cloud through the Google Cloud Marketplace:
 1. From the [Google Cloud Marketplace page for CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go), click **Subscribe** to open the **Order Summary** page  
 2. **Select a billing account** and agree to **Additional Terms**, then click **Subscribe**.   
 3. Click **Go to Product Page**. You will be redirected to the [Google Cloud Marketplace page for CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go).
-4. From the product page, click **Manage on Provider**. You will be redirected to the CockroachDB Cloud console.
+4. From the product page, click **Sign up with Cockroach Labs**. You will be redirected to the CockroachDB Cloud console.
 5. [Register]({% link cockroachcloud/create-an-account.md %}#register-a-new-account) a new CockroachDB Cloud account or sign in to your existing account.
 6. If you have access to multiple CockroachDB Cloud organizations, select an organization to update its billing configuration.
     {{site.data.alerts.callout_info}}
