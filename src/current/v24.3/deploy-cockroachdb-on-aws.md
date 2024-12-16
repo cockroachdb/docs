@@ -18,7 +18,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 {{site.data.alerts.callout_info}}
-You need a license to use CockroachDB. Refer to the [Licensing FAQ]({% link {{ page.version.version }}/licensing-faq.md %}) and [CockroachDB Pricing](https://www.cockroachlabs.com/pricing). [Contact us](https://cockroachlabs.com/contact-sales) about custom pricing through AWS Marketplace.
+You need a license to use CockroachDB. Refer to the [Licensing FAQ]({% link {{ page.version.version }}/licensing-faqs.md %}) and [CockroachDB Pricing](https://www.cockroachlabs.com/pricing). [Contact us](https://cockroachlabs.com/contact-sales) about custom pricing through AWS Marketplace.
 {{site.data.alerts.end}}
 
 ## Before you begin
