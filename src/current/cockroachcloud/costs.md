@@ -291,7 +291,7 @@ In CockroachDB {{ site.data.products.basic }}, CDC cost is usage-based via Reque
 
 {% include common/define-watched-cdc.md %}
 
-In CockroachDB {{ site.data.products.standard }}, CDC is billed monthly based on usage, determined by the total GiB-Month of watched across all of a cluster’s changefeeds. The per-GiB unit price is tiered, based on the total watched: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
+In CockroachDB {{ site.data.products.standard }}, CDC is billed monthly based on the total size in GiB-Month of all of a cluster's watched tables. The per-GiB unit price is tiered, based on the size of watched data: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
 
 </section>
 
@@ -299,7 +299,7 @@ In CockroachDB {{ site.data.products.standard }}, CDC is billed monthly based on
 
 {% include common/define-watched-cdc.md %}
 
-In CockroachDB {{ site.data.products.advanced }}, CDC is billed monthly based on usage, determined by the total GiB-Month watched across all of a cluster’s changefeeds and whether the Advanced security add-on is enabled. The per-GiB unit price is tiered, based on the total watched: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
+In CockroachDB {{ site.data.products.advanced }}, CDC is billed monthly based on the total size of a cluster's watched tables and whether the {{ site.data.products.advanced }} security add-on is enabled. The per-GiB unit price is tiered, based on the size of watched data: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
 
 </section>
 
