@@ -18,11 +18,11 @@ Once you have **logical data replication (LDR)** running, you will need to track
 
 ## Conflict resolution
 
-Conflict resolution in LDR differs depending on whether the conflict occurs at the [KV]({% link {{ page.version.version }}/architecture/storage-layer.md %}) level or the [SQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}) level.
+In LDR, conflicts are detected at both the [KV]({% link {{ page.version.version }}/architecture/storage-layer.md %}) and the [SQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}) level, which determines how LDR resolves the conflict.
 
 ### KV level conflicts
 
-LDR uses _last write wins (LWW)_ conflict resolution based on the [MVCC timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) of the replicating write. LDR will resolve conflicts by inserting the row with the latest MVCC timestamp.
+LDR uses _last write wins (LWW)_ conflict resolution based on the [MVCC timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) of the replicating write. LDR will resolve conflicts by inserting the row with the latest MVCC timestamp. Conflicts at the KV level are detected in both `immediate` and `validated` mode.
 
 Conflicts at the KV level are detected when there is either:
 

@@ -7,7 +7,7 @@ Following is a list of the metrics that have child metrics:
     <thead>
         <tr>
             <td><b>CockroachDB Metric Name</b></td>
-            <td><b>Description When Aggregated</b></td>
+            <td><b>{% if feature == "ldr" %}Description{% else %}Description When Aggregated{% endif %}</b></td>
             <td><b>Type</b></td>
             <td><b>Unit</b></td>
         </tr>

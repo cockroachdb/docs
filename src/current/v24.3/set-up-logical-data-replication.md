@@ -110,7 +110,7 @@ You can use the `cockroach encode-uri` command to generate a connection string c
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{replication user}:{password}@{node IP}:26257?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded certificate}-----END+CERTIFICATE-----%0A`;
+    CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{replication user}:{password}@{node IP}:26257?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded certificate}-----END+CERTIFICATE-----%0A';
     ~~~
 
 ## Step 3. Start LDR
@@ -119,12 +119,8 @@ In this step, you'll start the LDR job from the destination cluster. You can rep
 
 _Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
 
-- `immediate` (default): Attempts to replicate the changed row directly into the destination table, without re-running constraint validations. It does not support writing into tables with [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraints.
-- `validated`: Attempts to apply the write in a similar way to a user-run query, which would re-run all constraint validations relevant to the destination table(s). If the change violates foreign key dependencies, unique constraints, or other constraints, the row will be put in the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) instead.
-
-{{site.data.alerts.callout_info}}
-If you would like to ignore TTL deletes in LDR, you can use the `discard = ttl-deletes` option in the `CREATE LOGICAL REPLICATION STREAM` statement. For an example, refer to [Ignore row-level TTL deletes]({% link {{ page.version.version }}/create-logical-replication-stream.md %}#ignore-row-level-ttl-deletes).
-{{site.data.alerts.end}}
+- `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
+- `validated`: {% include {{ page.version.version }}/ldr/validated-description.md %}
 
 1. From the **destination** cluster, start LDR. Use the fully qualified table name for the source and destination tables:
 
@@ -180,7 +176,7 @@ For a full reference on monitoring LDR, refer to [Logical Data Replication Monit
 1. Access the DB Console at `http://{node IP or hostname}:8080` and enter your user's credentials.
 1. On the source cluster, navigate to the [**Jobs** page]({% link {{ page.version.version }}/ui-jobs-page.md %}) to view a list of all jobs. Use the job **Type** dropdown and select **Replication Producer**. This will display the history retention job. This will run while the LDR job is active to protect changes to the table from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) until they have been replicated to the destination cluster.
 1. On the destination cluster, use the job **Type** dropdown and select **Logical Replication Ingestion**. This page will display the logical replication stream job. There will be a progress bar in the **Status** column when LDR is replicating a table with existing data. This progress bar shows the status of the initial scan, which backfills the destination table with the existing data.
-1. On the destination cluster, click on **Metrics** in the left-hand navigation menu. Use the **Dashboard** dropdown to select **Logical Data Replication**. This page shows graphs for monitoring LDR. 
+1. On the destination cluster, click on **Metrics** in the left-hand navigation menu. Use the **Dashboard** dropdown to select [**Logical Data Replication**]({% link {{ page.version.version }}/ui-logical-data-replication-dashboard.md %}). This page shows graphs for monitoring LDR.
 
 ## What's next
 

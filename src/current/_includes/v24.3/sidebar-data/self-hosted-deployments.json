@@ -406,87 +406,93 @@
                   "title": "Metrics Dashboards",
                   "items": [
                     {
-                      "title": "Overview Dashboard",
+                      "title": "Overview",
                       "urls": [
                         "/${VERSION}/ui-overview-dashboard.html"
                       ]
                     },
                     {
-                      "title": "Hardware Dashboard",
+                      "title": "Hardware",
                       "urls": [
                         "/${VERSION}/ui-hardware-dashboard.html"
                       ]
                     },
                     {
-                      "title": "Runtime Dashboard",
+                      "title": "Runtime",
                       "urls": [
                         "/${VERSION}/ui-runtime-dashboard.html"
                       ]
                     },
                     {
-                      "title": "Networking Dashboard",
+                      "title": "Networking",
                       "urls": [
                         "/${VERSION}/ui-networking-dashboard.html"
                       ]
                     },
                     {
-                      "title": "SQL Dashboard",
+                      "title": "SQL",
                       "urls": [
                         "/${VERSION}/ui-sql-dashboard.html"
                       ]
                     },
                     {
-                      "title": "Storage Dashboard",
+                      "title": "Storage",
                       "urls": [
                         "/${VERSION}/ui-storage-dashboard.html"
                       ]
                     },
                     {
-                      "title": "Replication Dashboard",
+                      "title": "Replication",
                       "urls": [
                         "/${VERSION}/ui-replication-dashboard.html"
                       ]
                     },
                     {
-                      "title": "Distributed Dashboard",
+                      "title": "Distributed",
                       "urls": [
                         "/${VERSION}/ui-distributed-dashboard.html"
                       ]
                     },
                     {
-                      "title": "Queues Dashboard",
+                      "title": "Queues",
                       "urls": [
                         "/${VERSION}/ui-queues-dashboard.html"
                       ]
                     },
                     {
-                      "title": "Slow Requests Dashboard",
+                      "title": "Slow Requests",
                       "urls": [
                         "/${VERSION}/ui-slow-requests-dashboard.html"
                       ]
                     },
                     {
-                      "title": "Changefeeds Dashboard",
+                      "title": "Changefeeds",
                       "urls": [
                         "/${VERSION}/ui-cdc-dashboard.html"
                       ]
                     },
                     {
-                      "title": "Overload Dashboard",
+                      "title": "Overload",
                       "urls": [
                         "/${VERSION}/ui-overload-dashboard.html"
                       ]
                     },
                     {
-                      "title": "TTL Dashboard",
+                      "title": "TTL",
                       "urls": [
                         "/${VERSION}/ui-ttl-dashboard.html"
                       ]
                     },
                     {
-                      "title": "Physical Cluster Replication Dashboard",
+                      "title": "Physical Cluster Replication",
                       "urls": [
                         "/${VERSION}/ui-physical-cluster-replication-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Logical Data Replication",
+                      "urls": [
+                        "/${VERSION}/ui-logical-data-replication-dashboard.html"
                       ]
                     },
                     {
