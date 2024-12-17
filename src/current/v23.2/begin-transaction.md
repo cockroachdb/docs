@@ -14,7 +14,7 @@ When running under the default [`SERIALIZABLE`]({% link {{ page.version.version 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/begin.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/legacy_begin.html %}
 </div>
 
 ## Required privileges
