@@ -28,21 +28,32 @@ General Troubleshooting: They are useful for capturing a wide range of informati
 
 [Log sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) route events from specified [logging channels]({% link {{ page.version.version }}/logging.md %}#logging-channels) to destinations outside CockroachDB. These destinations currently include [file sinks]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files), network sinks ([Fluentd-compatible]({% link {{ page.version.version }}/configure-logs.md %}#output-to-fluentd-compatible-network-collectors) servers and [HTTP]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors) servers), and the [standard error stream (`stderr`)]({% link {{ page.version.version }}/configure-logs.md %}#output-to-stderr).
 
-With a file sink, when provisioning [storage]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage) for your CockroachDB cluster, decide [where the log files will be stored]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory): either the same volume as the main data store or on a separate volume from the main data store. To determine this, measure and consider the following factors:
+With a file sink, when provisioning [storage]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage) for your CockroachDB cluster, decide [where the log files will be stored]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory): either the same volume as the main data store or on a [separate volume from the main data store](#provision-a-separate-volume-for-message-logging). To determine this, measure and consider the following factors:
 
-- How [IO intensive]({% link {{ page.version.version }}/recommended-production-settings.md %}#disk-i-o) is your workload.
+- How [I/O intensive]({% link {{ page.version.version }}/recommended-production-settings.md %}#disk-i-o) is your workload.
 - How many log messages are written to files on disk.
+    - This number can be managed and configured with the [logging yaml file]({% link {{ page.version.version }}/configure-logs.md %}#yaml-payload). Log and audit only what you need.
     - This number can be controlled or reduced by outputting logs to a network sink.
 - What is the operational overhead and cost to provision a separate volume.
 
 For greater disk resilience, consider the following:
 
 - Write logs to a network sink. However:
-    - This may not be possible due to your environment.
-    - This could create more operational overhead.
-    - This will impact troubleshooting using [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}).
+    - This may not be possible due to your environment. You need to have a deployed network sink (a [Fluentd-compatible]({% link {{ page.version.version }}/configure-logs.md %}#output-to-fluentd-compatible-network-collectors) or [HTTP]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors) server).
+    - This could create more operational overhead. You need to manage that network sink.
+    - This will impact troubleshooting using [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) which relies on log files written to disk. Collecting these log files is critical when submitting issues to Cockroach Labs support. There is a tradeoff of disk resilience versus observability with more collected logs.
 - Use the [`buffering` option]({% link {{ page.version.version }}/logging-best-practices.md %}#customize-buffering-of-log-messages) for file sink if you do not need auditing.
 - Use fine-grained auditing ([Table-based SQL Audit Logging]({% link {{ page.version.version }}/sql-audit-logging.md %}) or [Role-based SQL Audit Logging]({% link {{ page.version.version }}/role-based-audit-logging.md %})) to reduce IO and potential impact during [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls).
+
+CockroachDB can still hold mutexes during disk stalls when logging a message (without buffering enabled), which could impact workload stability. Therefore, reducing the frequency of writing logs to disk or enabling buffering can increase workload resilience.
+
+#### Provision a separate volume for message logging
+
+Segregating database transaction logging (the [LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#pebble) in CockroachDB) from all other I/O, particularly from the small-sized, sequential, non-stop message logging, is a standard practice for databases. Ideally, the CockroachDB LSM store should be placed on a dedicated volume to ensure that no other I/O interferes with the primary storage I/O. The I/O profile of CockroachDB LSM is significantly different from the sequential, small-size append I/O of message logging, so it is crucial to prevent the latter from interfering with the former.
+
+To achieve this, move message logging I/O to a different device. The most suitable device depends on your platform. For bare metal, the OS disk may be an appropriate location. In a cloud environment, such as AWS, you might consider using an inexpensive GP3 volume with no additional IOPS provisioned, since logging does not require much I/O. The goal is to segregate message logging not because it consumes significant I/O bandwidth, but because its I/O profile is different and could disrupt LSM I/O.
+
+Regarding the storage size for message logging, you will not need much space. The amount of message logging is strictly controlled, so it will not grow uncontrollably. Therefore, it is acceptable to use the OS disk as long as it persists through power-off events. The message log files are managed by log rotation, with configurable maximum file size and the number of files retained using `max-file-size` and `max-group-size` [file sink parameters]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files), respectively. Calculate the required space based on the default settings, or adjust the settings to fit your disk capacity. Log rotation will ensure that the space is maintained.
 
 ## Use `json` format with third-party tools
 
