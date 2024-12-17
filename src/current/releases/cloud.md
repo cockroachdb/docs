@@ -14,7 +14,7 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
-## December 16, 2024
+## December 17, 2024
 
 <h3 id="2024-12-16-general-updates"> General updates </h3>
 
