@@ -18,7 +18,7 @@ Get future release notes emailed to you:
 
 <h3 id="2024-12-16-general-updates"> General updates </h3>
 
-- CockroachDB {{ site.data.products.cloud }} is now available as a pay-as-you-go offering on the Google Cloud Marketplace. This allows Google Cloud Platform customers to pay for CockroachDB {{ site.data.products.cloud }} charges via their Google Cloud accounts, with no up-front commitments. For more detail, refer to:
+- CockroachDB {{ site.data.products.cloud }} is now available as a pay-as-you-go offering on the Google Cloud Marketplace. This allows Google Cloud customers to pay for CockroachDB {{ site.data.products.cloud }} charges via their Google Cloud accounts, with no up-front commitments. For more detail, refer to:
   - [CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go) on the Google Cloud Marketplace.
   - [Subscribe through the Google Cloud Marketplace]({% link cockroachcloud/billing-management.md %}?filters=gcp#subscribe-through-aws-marketplace) in the CockroachDB {{ site.data.products.cloud }} documentation.
 
