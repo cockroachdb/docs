@@ -17,7 +17,7 @@ You can restore:
 
 For details on restoring across versions of CockroachDB, see [Restoring Backups Across Versions]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}).
 
-{% include {{ page.version.version }}/backups/backup-to-deprec.md %}
+{% include {{ page.version.version }}/backups/old-syntax-removed.md %}
 
 ## Considerations
 

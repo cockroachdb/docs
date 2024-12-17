@@ -110,6 +110,41 @@ changefeed_error_retries{node_id="1",scope="office_dogs"} 0
 {% assign feature = "changefeed" %}
 {% include {{ page.version.version }}/child-metrics-table.md %}
 
+## Clusters with logical data replication jobs
+
+When child metrics is enabled and [logical data replication (LDR) jobs with metrics labels]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}#metrics-labels) are created on the cluster, the `logical_replication_*_by_label` metrics are exported per LDR metric label. The `label` may have the values set using the `label` option. The cardinality increases with the number of LDR metric labels.
+
+For example, when you create two LDR jobs with the metrics labels `ldr_job1` and `ldr_job2`, the metrics `logical_replication_*_by_label` export child metrics with a `label` for `ldr_job1` and `ldr_job2`.
+
+~~~
+# HELP logical_replication_replicated_time_by_label Replicated time of the logical replication stream by label
+# TYPE logical_replication_replicated_time_by_label gauge
+logical_replication_replicated_time_by_label{label="ldr_job2",node_id="2"} 1.73411035e+09
+logical_replication_replicated_time_by_label{label="ldr_job1",node_id="2"} 1.73411035e+09
+# HELP logical_replication_catchup_ranges_by_label Source side ranges undergoing catch up scans
+# TYPE logical_replication_catchup_ranges_by_label gauge
+logical_replication_catchup_ranges_by_label{label="ldr_job1",node_id="2"} 0
+logical_replication_catchup_ranges_by_label{label="ldr_job2",node_id="2"} 0
+# HELP logical_replication_scanning_ranges_by_label Source side ranges undergoing an initial scan
+# TYPE logical_replication_scanning_ranges_by_label gauge
+logical_replication_scanning_ranges_by_label{label="ldr_job1",node_id="2"} 0
+logical_replication_scanning_ranges_by_label{label="ldr_job2",node_id="2"} 0
+~~~
+
+Note that the `logical_replication_*` metrics without the `_by_label` suffix may be `inaccurate with multiple LDR jobs`.
+
+~~~
+# HELP logical_replication_catchup_ranges Source side ranges undergoing catch up scans (inaccurate with multiple LDR jobs)
+# TYPE logical_replication_catchup_ranges gauge
+logical_replication_catchup_ranges{node_id="2"} 0
+# HELP logical_replication_scanning_ranges Source side ranges undergoing an initial scan (inaccurate with multiple LDR jobs)
+# TYPE logical_replication_scanning_ranges gauge
+logical_replication_scanning_ranges{node_id="2"} 0
+~~~
+
+{% assign feature = "ldr" %}
+{% include {{ page.version.version }}/child-metrics-table.md %}
+
 ## Clusters with row-level TTL jobs
 
 When child metrics is enabled and [row-level TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}) are created on the cluster with the [`ttl_label_metrics` storage parameter enabled]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-metrics), the `jobs.row_level_ttl.*` metrics are exported per TTL job with `ttl_label_metrics` enabled with a label for `relation`. The value of the `relation` label may have the format: `{database}_{schema}_{table}_{primary key}`. The cardinality increases with the number of TTL jobs with `ttl_label_metrics` enabled. An aggregated metric is also included.
