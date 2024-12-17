@@ -7488,13 +7488,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.5
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 - release_name: v24.1.8
   major_version: v24.1
@@ -7522,13 +7515,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.7
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
       
 - release_name: v23.1.30
   major_version: v23.1
@@ -7556,13 +7542,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.29
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 - release_name: v23.2.17
   major_version: v23.2
@@ -7590,13 +7569,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.16
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 - release_name: v24.3.1
   major_version: v24.3
@@ -7624,10 +7596,3 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.0
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).

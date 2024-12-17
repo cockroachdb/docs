@@ -6,6 +6,10 @@ toc: true
 
 This page describes best practices to consider when starting changefeeds on a CockroachDB cluster. We recommend referring to this information while planning your cluster's changefeeds and following the links in each of the sections for more details on a topic.
 
+{{site.data.alerts.callout_info}}
+To help in planning your cluster's changefeeds on CockroachDB {{ site.data.products.cloud }} clusters, refer to the [Understand CockroachDB Cloud Costs]({% link cockroachcloud/costs.md %}) page for detail on how CDC is billed monthly based on usage.
+{{site.data.alerts.end}}
+
 ## Plan the number of watched tables for a single changefeed
 
 When creating a changefeed, it's important to consider the number of changefeeds versus the number of tables to include in a single changefeed:
