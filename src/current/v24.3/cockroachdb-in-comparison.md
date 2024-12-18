@@ -114,15 +114,15 @@ This page shows you how the key features of CockroachDB stack up against other d
       <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual repair RPO ~1-60 mins</span>
       <span class="support" data-dbs='["AWS Aurora"]'>Automated RPO ~1 -5 mins</span>
       <span class="support" data-dbs='["MongoDB", "Cassandra]'>Manual & automated repair RPO &lt;1 min</span>
-      <span class="support" data-dbs='["Spanner"]'>"Automated repair RPO &lt;10 sec"</span>
-      <span class="support" data-dbs='["Yugabyte"]'>"Automated repair RPO = 0 sec"</span>
+      <span class="support" data-dbs='["Spanner"]'>Automated repair RPO &lt;10 sec</span>
+      <span class="support" data-dbs='["Yugabyte"]'>Automated repair RPO = 0 sec</span>
     </td>
     <td class="comparison-chart__column-two">
           <span class="support" data-dbs='["MySQL", "PostgreSQL", "Oracle"]'>Manual repair RPO ~1-60 mins</span>
       <span class="support" data-dbs='["AWS Aurora"]'>Automated RPO ~1 -5 mins</span>
       <span class="support" data-dbs='["MongoDB", "Cassandra]'>Manual & automated repair RPO &lt;1 min</span>
-      <span class="support" data-dbs='["Spanner"]'>"Automated repair RPO &lt;10 sec"</span>
-      <span class="support" data-dbs='["Yugabyte"]'>"Automated repair RPO = 0 sec"</span>
+      <span class="support" data-dbs='["Spanner"]'>Automated repair RPO &lt;10 sec</span>
+      <span class="support" data-dbs='["Yugabyte"]'>Automated repair RPO = 0 sec</span>
     </td>
     <td>Automated repair RPO = 0 sec</td>
   </tr>
@@ -289,7 +289,7 @@ This page shows you how the key features of CockroachDB stack up against other d
       <span class="support " data-dbs='[ "Cassandra"]'>Yes, object level</span>
       <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Yes</span>
     </td>
-    <td>Yes, row level</td>
+    <td>Yes</td>
   </tr>
 
   <tr>
