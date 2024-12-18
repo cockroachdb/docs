@@ -10,7 +10,7 @@ toc: true
 Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-In this tutorial, you will set up **logical data replication (LDR)** streaming data from a source table to a destination table between two CockroachDB clusters. Both clusters are active and can serve traffic. You can apply the outlined steps to create _unidirectional_ LDR from a source table to a destination table (cluster A to cluster B) in one LDR job. Optionally, you can also create _bidirectional_ LDR from cluster B's table to cluster A's table by starting a second LDR job. In a bidirectional setup, each cluster operates as both a source and a destination in separate LDR jobs. 
+In this tutorial, you will set up [**logical data replication (LDR)**]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) streaming data from a source table to a destination table between two CockroachDB clusters. Both clusters are active and can serve traffic. You can apply the outlined steps to create _unidirectional_ LDR from a source table to a destination table (cluster A to cluster B) in one LDR job. Optionally, you can also create _bidirectional_ LDR from cluster B's table to cluster A's table by starting a second LDR job. In a bidirectional setup, each cluster operates as both a source and a destination in separate LDR jobs. 
 
 For more details on use cases, refer to the [Logical Data Replication Overview]({% link {{ page.version.version }}/logical-data-replication-overview.md %}).
 
@@ -55,7 +55,7 @@ You cannot use LDR on a table with a schema that contains the following:
 
 For more details, refer to the LDR [Known limitations]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#known-limitations).
 
-When you run LDR in `immediate` mode, you cannot replicate a table with [foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}). In `validated` mode, foreign key constraints **must** match. All constraints are enforced at the time of SQL/application write.
+When you run LDR in [`immediate` mode](#modes), you cannot replicate a table with [foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}). In [`validated` mode](#modes), foreign key constraints **must** match. All constraints are enforced at the time of SQL/application write.
 
 ## Step 1. Prepare the cluster
 
@@ -66,7 +66,7 @@ When you run LDR in `immediate` mode, you cannot replicate a table with [foreign
     cockroach sql --url "postgresql://root@{node IP or hostname}:26257?sslmode=verify-full" --certs-dir=certs
     ~~~
 
-1. Enable the `kv.rangefeed.enabled` cluster setting on the **source** cluster:
+1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) on the **source** cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -85,7 +85,7 @@ When you run LDR in `immediate` mode, you cannot replicate a table with [foreign
     GRANT SYSTEM REPLICATION TO {your username};
     ~~~
 
-    If you need to change the password later, refer to [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}). {% comment  %}Add link to https://www.cockroachlabs.com/docs/stable/ui-overview#db-console-security-considerations for secure clusters{% endcomment %}
+    If you need to change the password later, refer to [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}).
 
 ## Step 2. Connect from the destination to the source
 
@@ -117,7 +117,7 @@ You can use the `cockroach encode-uri` command to generate a connection string c
 
 In this step, you'll start the LDR job from the destination cluster. You can replicate one or multiple tables in a single LDR job. You cannot replicate system tables in LDR, which means that you must manually apply configurations and cluster settings, such as [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) and user permissions on the destination cluster.
 
-_Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
+<a id="modes"></a>_Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
 
 - `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
 - `validated`: {% include {{ page.version.version }}/ldr/validated-description.md %}

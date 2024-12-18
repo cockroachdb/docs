@@ -44,7 +44,7 @@ Isolate critical application workloads from non-critical application workloads. 
 - **Table-level replication**: When you initiate LDR, it will replicate all of the source table's existing data to the destination table. From then on, LDR will replicate the source table's data to the destination table to achieve eventual consistency.
 - **Last write wins conflict resolution**: LDR uses [_last write wins (LWW)_ conflict resolution]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#conflict-resolution), which will use the latest [MVCC]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) timestamp to resolve a conflict in row insertion.
 - **Dead letter queue (DLQ)**: When LDR starts, the job will create a [DLQ table]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) with each replicating table in order to track unresolved conflicts. You can interact and manage this table like any other SQL table.
-- **Replication modes**: LDR offers different _modes_ that apply data differently during replication, which allows you to consider optimizing for throughput or constraints during replication.
+- **Replication modes**: LDR offers different [_modes_]({% link {{ page.version.version }}/create-logical-replication-stream.md %}#ldr-modes) that apply data differently during replication, which allows you to consider optimizing for throughput or constraints during replication.
 - **Monitoring**: To [monitor]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}) LDR's initial progress, current status, and performance, you can view metrics available in the DB Console, Prometheus, and Metrics Export.
 
 ## Get started

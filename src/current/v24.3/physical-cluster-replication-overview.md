@@ -15,6 +15,10 @@ In a disaster recovery scenario, you can [_fail over_]({% link {{ page.version.v
 
 For a list of requirements for PCR, refer to the [Before you begin]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#before-you-begin) section of the [setup tutorial]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
+{{site.data.alerts.callout_success}}
+Cockroach Labs also has a [logical data replication]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) tool that continuously replicates tables between an active _source_ CockroachDB cluster to an active _destination_ CockroachDB cluster. Both source and destination can receive application reads and writes, and participate in [_bidirectional_]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#use-cases) LDR for eventual consistency in the replicating tables.
+{{site.data.alerts.end}}
+
 ## Use cases
 
 You can use PCR in a disaster recovery plan to:
