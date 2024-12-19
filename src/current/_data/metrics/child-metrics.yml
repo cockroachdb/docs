@@ -234,3 +234,19 @@
 
 - child_metric_id: rpc.connection.avg_round_trip_latency
   feature: all
+
+- child_metric_id: logical_replication.catchup_ranges_by_label
+  feature: ldr
+
+- child_metric_id: logical_replication.events_dlqed_by_label
+  feature: ldr
+
+- child_metric_id: logical_replication.events_ingested_by_label
+  feature: ldr
+
+- child_metric_id: logical_replication.replicated_time_by_label
+  feature: ldr
+
+- child_metric_id: logical_replication.scanning_ranges_by_label
+  feature: ldr
+

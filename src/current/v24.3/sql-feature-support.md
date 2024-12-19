@@ -1,18 +1,16 @@
 ---
-title: SQL Feature Support in CockroachDB v24.2
+title: SQL Feature Support in CockroachDB
 summary: Summary of CockroachDB's conformance to the SQL standard and which common extensions it supports.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 docs_area: reference.sql
 ---
 
-Making CockroachDB easy to use is a top priority for us, so we chose to implement SQL. However, even though SQL has a standard, no database implements all of it, nor do any of them have standard implementations of all features.
-
-To understand which standard SQL features we support (as well as common extensions to the standard), use the table below.
+CockroachDB {{ page.version.version }} supports the following standard SQL features and common extensions.
 
 - **Component** lists the components that are commonly considered part of SQL.
 - **Supported** shows CockroachDB's level of support for the component.
-- **Type** indicates whether the component is part of the SQL *Standard* or is an *Extension* created by ourselves or others.
+- **Type** indicates whether the component is part of the SQL *Standard* or is an *Extension* created by Cockroach Labs or others.
 - **Details** provides greater context about the component.
 
 <style>
@@ -193,7 +191,7 @@ XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XM
  Common table expressions | Partial | Common Extension | [Common Table Expressions documentation]({% link {{ page.version.version }}/common-table-expressions.md %})
  Stored procedures | Partial | Common Extension | [Stored procedures documentation]({% link {{ page.version.version }}/stored-procedures.md %})
  Cursors | Partial | Standard | [Cursors documentation]({% link {{ page.version.version }}/cursors.md %})
- Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. [GitHub issue tracking trigger support](https://github.com/cockroachdb/cockroach/issues/28296).
+ Triggers | Partial | Standard | [Triggers documentation]({% link {{ page.version.version }}/triggers.md %})
  Row-level TTL | ✓ | Common Extension | Automatically delete expired rows.  For more information, see [Batch-delete expired data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}).
  User-defined functions | Partial | Standard | [User-Defined Functions documentation]({% link {{ page.version.version }}/user-defined-functions.md %})
  `CREATE EXTENSION "uuid-ossp"` | ✓ | Common Extension | Provides access to several additional [UUID generation functions]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions). Note that these UUID functions are available without typing `CREATE EXTENSION "uuid-ossp"`. CockroachDB does not have full support for `CREATE EXTENSION`. [GitHub issue tracking `CREATE EXTENSION` support](https://github.com/cockroachdb/cockroach/issues/74777).
