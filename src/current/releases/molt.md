@@ -22,7 +22,7 @@ To download the latest MOLT Fetch/Verify binary:
 
 MOLT Fetch/Verify 1.2.1 is [available](#installation).
 
-- MOLT Fetch users now can use [`--assume-role`]({% link molt/molt-fetch.md %}#global-flags) to specify a service account for assume role authentication to cloud storage. `--assume-role` must be used with `--use-implicit-auth`, or it will be ignored. 
+- MOLT Fetch users now can use [`--assume-role`]({% link molt/molt-fetch.md %}#global-flags) to specify a service account for assume role authentication to cloud storage. `--assume-role` must be used with `--use-implicit-auth`, or the flag will be ignored. 
 - MySQL 5.7 and later are now supported with MOLT Fetch replication modes. For details on setup, refer to the [MOLT Fetch documentation]({% link molt/molt-fetch.md %}#replication-setup).
 - Fetch replication mode now defaults to a less verbose `INFO` logging level. To specify `DEBUG` logging, pass in the `--replicator-flags '-v'` setting, or `--replicator-flags '-vv'` for trace logging.
 - MySQL columns of type `BIGINT UNSIGNED` or `SERIAL` are now auto-mapped to [`DECIMAL`]({% link {{ site.current_cloud_version }}/decimal.md %}) type in CockroachDB. MySQL regular `BIGINT` types are mapped to [`INT`]({% link {{ site.current_cloud_version }}/int.md %}) type in CockroachDB.
