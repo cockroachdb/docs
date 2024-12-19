@@ -8,11 +8,9 @@ docs_area: reference.sql
 The `SHOW BACKUP` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the contents of a backup created with the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) statement.
 
 {{site.data.alerts.callout_danger}}
-The `SHOW BACKUP` syntax **without** the `IN` keyword is **deprecated** as of v22.1 and will be removed in a future release.
+The `SHOW BACKUP` syntax **without** the `IN` keyword has been removed from CockroachDB v24.3 and later.
 
-We recommend using `SHOW BACKUP FROM {subdirectory} IN {collectionURI}` to view backups in a subdirectory at a collection's URI.
-
-For guidance on the syntax for `SHOW BACKUP FROM`, see the [examples](#examples).
+For guidance on the syntax for `SHOW BACKUP FROM`, refer to the [Synopsis](#synopsis) and [examples](#examples) on this page.
 {{site.data.alerts.end}}
 
 ## Required privileges
