@@ -391,7 +391,7 @@ Before using this option, the source PostgreSQL or MySQL database **must** be co
 
 If replication is interrupted, you can [resume replication](#resume-replication).
 
-#### Resume replication
+##### Resume replication
 
 `replication-only` can be used to resume replication if it is interrupted in either `data-load-and-replication` or `replication-only` mode.
 
