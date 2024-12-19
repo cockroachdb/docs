@@ -15,6 +15,7 @@ For example, you might want to:
 - Export a snaphot of tables to backfill new applications.
 - Send updates to data stores for machine learning models.
 
+<a id="watched-table"></a>
 {% include common/define-watched-cdc.md %}
 
 ## Stream row-level changes with changefeeds
