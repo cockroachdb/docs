@@ -37,7 +37,17 @@ Complete the following items before using MOLT Fetch:
 
 	- For PostgreSQL sources, enable logical replication. In `postgresql.conf` or in the SQL shell, set [`wal_level`](https://www.postgresql.org/docs/current/runtime-config-wal.html) to `logical`.
 
-	- For MySQL **8.0 and later** sources, enable [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) consistency. In `mysql.cnf`, in the SQL shell, or as flags in the `mysql` start command, set `gtid-mode` and `enforce-gtid-consistency` to `ON` and set `binlog_row_metadata` to `full`. For MySQL **5.7** sources, in addition to the preceding settings, also set `log-bin` to `log-bin` and `server-id` to a unique integer that differs from any other MySQL server you have in your cluster (e.g., `3`).
+	- For MySQL **8.0 and later** sources, enable [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) consistency. Set the following values in `mysql.cnf`, in the SQL shell, or as flags in the `mysql` start command:
+	 	- `--enforce-gtid-consistency=ON`
+		- `--gtid-mode=ON`
+		- `--binlog-row-metadata=full`
+
+	 - For MySQL **5.7** sources, set the following values. Note that `binlog-row-image` is used instead of `binlog-row-metadata`. Set `server-id` to a unique integer that differs from any other MySQL server you have in your cluster (e.g., `3`).
+	 	- `--enforce-gtid-consistency=ON`
+		- `--gtid-mode=ON`
+		- `--binlog-row-image=full`
+		- `--server-id={ID}`
+		- `--log-bin=log-bin`
 
 - Percent-encode the connection strings for the source database and [CockroachDB]({% link {{site.current_cloud_version}}/connect-to-the-database.md %}). This ensures that the MOLT tools can parse special characters in your password.
 
@@ -330,7 +340,7 @@ If the source is a PostgreSQL database, you **must** also specify a replication 
 In case you need to rename your [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html), also include `--pglogical-publication-name` to specify the new publication name and `--pglogical-publication-and-slot-drop-and-recreate` to ensure that the publication and replication slot are created in the correct order. For details on these flags, refer to [Global flags](#global-flags).
 {{site.data.alerts.end}}
 
-Continuous replication begins once the initial load is complete, as indicated by a `fetch complete` message in the output.
+Continuous replication begins once the initial load is complete, as indicated by a `fetch complete` message in the output. If replication is interrupted, you can [resume replication](#resume-replication).
 
 To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`. If replication fails, a non-zero exit code is returned.
 
@@ -348,7 +358,7 @@ To customize the replication behavior (an advanced use case), use `--replicator-
 Before using this option, the source PostgreSQL or MySQL database **must** be configured for continuous replication, as described in [Setup](#replication-setup). MySQL 5.7 and later are supported.
 {{site.data.alerts.end}}
 
-`replication-only` instructs MOLT Fetch to replicate ongoing changes on the source to CockroachDB, using the specified replication marker. This assumes you have already run [`--mode load-data`](#load-data) to load the source data into CockroachDB.
+`replication-only` instructs MOLT Fetch to replicate ongoing changes on the source to CockroachDB, using the specified replication marker. This assumes you have already run [`--mode data-load`](#load-data) to load the source data into CockroachDB.
 
 - For a PostgreSQL source, you should have already created a replication slot when [loading data](#load-data). Specify the same replication slot name using `--pglogical-replication-slot-name`. For example:
 
@@ -359,7 +369,7 @@ Before using this option, the source PostgreSQL or MySQL database **must** be co
 	~~~
 
 	{{site.data.alerts.callout_success}}
-	In case you want to run `replication-only` without already having loaded data (e.g., for testing), also include `--pglogical-publication-name` to specify a [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) name and `--pglogical-publication-and-slot-drop-and-recreate` to ensure that the publication and replication slot are created in the correct order. For details on these flags, refer to [Global flags](#global-flags).
+	In case you want to run `replication-only` without already having loaded data (e.g., for testing), also include `--pglogical-publication-and-slot-drop-and-recreate` to ensure that the publication and replication slot are created in the correct order. For details on this flag, refer to [Global flags](#global-flags).
 	{{site.data.alerts.end}}
 
 - For a MySQL source, first get your GTID record:
@@ -379,7 +389,13 @@ Before using this option, the source PostgreSQL or MySQL database **must** be co
 	--replicator-flags "--defaultGTIDSet 'b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21'"
 	~~~
 
-If replication is interrupted, specify the staging schema with the [`--stagingSchema` replication flag](#replication-flags). MOLT Fetch outputs the schema name as `staging database name: {schema_name}` after the initial run of `--mode replication-only`.
+If replication is interrupted, you can [resume replication](#resume-replication).
+
+#### Resume replication
+
+`replication-only` can be used to resume replication if it is interrupted in either `data-load-and-replication` or `replication-only` mode.
+
+Specify the staging schema with the [`--stagingSchema` replication flag](#replication-flags). MOLT Fetch outputs the schema name as `staging database name: {schema_name}` after the initial replication run.
 
 {% include_cached copy-clipboard.html %}
 ~~~
