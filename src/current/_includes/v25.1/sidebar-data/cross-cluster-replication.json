@@ -41,58 +41,70 @@
             ]
           },
           {
-            "title": "Set Up Physical Cluster Replication",
+            "title": "Physical Cluster Replication on Advanced",
             "urls": [
-              "/${VERSION}/set-up-physical-cluster-replication.html"
+              "/cockroachcloud/physical-cluster-replication.html"
             ]
           },
           {
-            "title": "Fail Over from a Primary to a Standby Cluster",
-            "urls": [
-              "/${VERSION}/failover-replication.html"
-            ]
-          },
-          {
-            "title": "Monitor a Replication Stream",
-            "urls": [
-              "/${VERSION}/physical-cluster-replication-monitoring.html"
-            ]
-          },
-          {
-            "title": "Technical Overview",
-            "urls": [
-              "/${VERSION}/physical-cluster-replication-technical-overview.html"
-            ]
-          },
-          {
-            "title": "Cluster Virtualization",
+            "title": "Physical Cluster Replication on Self-hosted",
             "items": [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/cluster-virtualization-overview.html"
-                ]
-              },
-              {
-                "title": "Work with Virtual Clusters",
-                "urls": [
-                  "/${VERSION}/work-with-virtual-clusters.html"
-                ]
-              },
-              {
-                "title": "Setting Scopes",
-                "urls": [
-                  "/${VERSION}/cluster-virtualization-setting-scopes.html"
-                ]
-              },
-              {
-                "title": "Metric Scopes",
-                "urls": [
-                  "/${VERSION}/cluster-virtualization-metric-scopes.html"
-                ]
-              }
+                {
+                    "title": "Set Up Physical Cluster Replication",
+                    "urls": [
+                      "/${VERSION}/set-up-physical-cluster-replication.html"
+                    ]
+                  },
+                  {
+                    "title": "Fail Over from a Primary to a Standby Cluster",
+                    "urls": [
+                      "/${VERSION}/failover-replication.html"
+                    ]
+                  },
+                  {
+                    "title": "Monitor a Replication Stream",
+                    "urls": [
+                      "/${VERSION}/physical-cluster-replication-monitoring.html"
+                    ]
+                  },
+                  {
+                    "title": "Technical Overview",
+                    "urls": [
+                      "/${VERSION}/physical-cluster-replication-technical-overview.html"
+                    ]
+                  },
+                  {
+                    "title": "Cluster Virtualization",
+                    "items": [
+                      {
+                        "title": "Overview",
+                        "urls": [
+                          "/${VERSION}/cluster-virtualization-overview.html"
+                        ]
+                      },
+                      {
+                        "title": "Work with Virtual Clusters",
+                        "urls": [
+                          "/${VERSION}/work-with-virtual-clusters.html"
+                        ]
+                      },
+                      {
+                        "title": "Setting Scopes",
+                        "urls": [
+                          "/${VERSION}/cluster-virtualization-setting-scopes.html"
+                        ]
+                      },
+                      {
+                        "title": "Metric Scopes",
+                        "urls": [
+                          "/${VERSION}/cluster-virtualization-metric-scopes.html"
+                        ]
+                      }
+                    ]
+                  }
             ]
           }
+          
         ]
       }
     ]

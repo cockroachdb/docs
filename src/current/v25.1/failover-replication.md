@@ -18,6 +18,10 @@ Initiating a failover is a manual process that makes the standby cluster ready t
 
 After a failover, you may want to _fail back_ to the original primary cluster (or a different cluster) to set up the original primary cluster to once again accept application traffic. For more details, refer to [Fail back to the primary cluster](#fail-back-to-the-primary-cluster).
 
+{{site.data.alerts.callout_info}}
+**This page is a guide to PCR failover in CockroachDB self-hosted clusters**. For {{ site.data.products.advanced }} clusters, refer to the [Physical Cluster Replication]({% link cockroachcloud/physical-cluster-replication.md %}#step-4-fail-over-to-the-standby-cluster) page in CockroachDB {{ site.data.products.cloud }}.
+{{site.data.alerts.end}}
+
 ## Before you begin
 
 During a replication stream, jobs running on the primary cluster will replicate to the standby cluster. Before you fail over to the standby cluster, or fail back to the original primary cluster, consider how you will manage running (replicated) jobs between the clusters. Refer to [Job management](#job-management) for instructions.
