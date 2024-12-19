@@ -18,6 +18,18 @@ To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
 
+## December 13, 2024
+
+MOLT Fetch/Verify 1.2.1 is [available](#installation).
+
+- MOLT Fetch users now can use [`--assume-role`]({% link molt/molt-fetch.md %}#global-flags) to specify a service account for assume role authentication to cloud storage. `--assume-role` must be used with `--use-implicit-auth`, or the flag will be ignored. 
+- MySQL 5.7 and later are now supported with MOLT Fetch replication modes. For details on setup, refer to the [MOLT Fetch documentation]({% link molt/molt-fetch.md %}#replication-setup).
+- Fetch replication mode now defaults to a less verbose `INFO` logging level. To specify `DEBUG` logging, pass in the `--replicator-flags '-v'` setting, or `--replicator-flags '-vv'` for trace logging.
+- MySQL columns of type `BIGINT UNSIGNED` or `SERIAL` are now auto-mapped to [`DECIMAL`]({% link {{ site.current_cloud_version }}/decimal.md %}) type in CockroachDB. MySQL regular `BIGINT` types are mapped to [`INT`]({% link {{ site.current_cloud_version }}/int.md %}) type in CockroachDB.
+- The `pglogical` replication workflow was modified in order to enforce safer and simpler defaults for the [`data-load`]({% link molt/molt-fetch.md %}#load-data), [`data-load-and-replication`]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes), and [`replication-only`]({% link molt/molt-fetch.md %}#replicate-changes) workflows for PostgreSQL sources. Fetch now ensures that the publication is created before the slot, and that `replication-only` defaults to using publications and slots created either in previous Fetch runs or manually.
+- Fixed scan iterator query ordering for `BINARY` and `TEXT` (of same collation) PKs so that they lead to the correct queries and ordering.
+- For a MySQL source in [`replication-only`]({% link molt/molt-fetch.md %}#replicate-changes) mode, the [`--stagingSchema` replicator flag]({% link molt/molt-fetch.md %}#replication-flags) can now be used to resume streaming replication after being interrupted. Otherwise, the [`--defaultGTIDSet` replicator flag]({% link molt/molt-fetch.md %}#mysql-replication-flags) is used to start initial replication after a previous Fetch run in [`data-load`]({% link molt/molt-fetch.md %}#load-data) mode, or as an override to the current replication stream.
+
 ## October 29, 2024
 
 MOLT Fetch/Verify 1.2.0 is [available](#installation).
