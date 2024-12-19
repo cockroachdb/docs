@@ -17,6 +17,7 @@ This page describes:
 1. Enable rangefeeds on CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
 1. Decide on whether you will run an {{ site.data.products.enterprise }} or basic changefeed. Refer to the [Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page for a comparative capability table.
 1. Plan the number of changefeeds versus the number of tables to include in a single changefeed for your cluster. {% include {{ page.version.version }}/cdc/changefeed-number-limit.md %} Refer to [System resources and running changefeeds](#system-resources-and-running-changefeeds) and [Recommendations for the number of target tables](#recommendations-for-the-number-of-target-tables).
+    - {% include common/cdc-cloud-costs-link.md %}
 1. Consider whether your {{ site.data.products.enterprise }} [changefeed use case](#create) would be better served by [change data capture queries]({% link {{ page.version.version }}/cdc-queries.md %}) that can filter data on a single table. CDC queries can improve the efficiency of changefeeds because the job will not need to encode as much change data.
 1. Read the [Considerations](#considerations) section that provides information on changefeed interactions that could affect how you configure or run your changefeed.
 
@@ -68,7 +69,7 @@ To maintain a high number of changefeeds in your cluster:
 ### Considerations
 
 - If you require [`resolved`]({% link {{ page.version.version }}/create-changefeed.md %}#resolved) message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option to at least the desired `resolved` frequency.
-- Many DDL queries (including [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %}), [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed]({% link {{ page.version.version }}/create-changefeed.md %}#start-a-new-changefeed-where-another-ended). If a table is truncated that a changefeed with `on_error='pause'` is watching, you will also need to start a new changefeed. See change data capture [Known Limitations]({% link {{ page.version.version }}/change-data-capture-overview.md %}) for more detail.
+- Many DDL queries (including [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %}), [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed]({% link {{ page.version.version }}/create-changefeed.md %}#start-a-new-changefeed-where-another-ended). If a table is truncated that a changefeed with `on_error='pause'` is watching, you will also need to start a new changefeed. Refer to the change data capture [Known Limitations](#known-limitations) for more detail.
 - Partial or intermittent sink unavailability may impact changefeed stability. If a sink is unavailable, messages can't send, which means that a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables). Throughput and latency can be affected once the sink is available again. However, [ordering guarantees]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-and-delivery-guarantees) will still hold for as long as a changefeed [remains active]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#monitor-a-changefeed).
 - When an [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement is run, any current changefeed jobs targeting that table will fail.
 - After you [restore from a full-cluster backup]({% link {{ page.version.version }}/restore.md %}#full-cluster), changefeed jobs will **not** resume on the new cluster. It is necessary to manually create the changefeeds following the full-cluster restore.
@@ -186,7 +187,6 @@ For more information, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.versio
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
-- {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 - {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
 - {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
 - {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}
