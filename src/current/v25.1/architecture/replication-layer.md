@@ -150,7 +150,7 @@ However, unlike table data, system ranges cannot use epoch-based leases because 
 
 #### Leader leases
 
-
+{% include_cached new-in.html version="v25.1" %}
 
 {% include feature-phases/preview.md %}
 
