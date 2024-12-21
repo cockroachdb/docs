@@ -48,7 +48,7 @@ To install `asyncpg`, run the following command:
 $ pip3 install "asyncpg"
 ~~~
 
-For other ways to install Psycopg, see the [official documentation](https://www.psycopg.org/psycopg3/docs/basic/install.html).
+For other ways to install asyncpg, see the [official documentation](https://magicstack.github.io/asyncpg/current/installation.html).
 
 ## Step 4. Run the code
 
