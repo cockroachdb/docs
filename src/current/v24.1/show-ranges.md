@@ -114,6 +114,7 @@ The `span_stats` `JSON` object has the following keys:
 - [Show ranges for a database (with indexes)](#show-ranges-for-a-database-with-indexes)
 - [Show ranges for a database (with details)](#show-ranges-for-a-database-with-details)
 - [Show ranges for a database (with keys)](#show-ranges-for-a-database-with-keys)
+- [SQL query to get database size](#sql-query-to-get-database-size)
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -232,6 +233,21 @@ SHOW RANGES FROM DATABASE movr WITH KEYS;
 (175 rows)
 ~~~
 
+#### SQL query to get database size
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH x AS (SHOW RANGES FROM DATABASE movr WITH DETAILS)
+SELECT 'movr' AS database_name, SUM(CAST(span_stats->'live_bytes' AS INT)) AS database_size_bytes FROM x;
+~~~
+
+~~~
+  database_name | database_size_bytes
+----------------+----------------------
+  movr          |              976458
+(1 row)
+~~~
+
 ### Show ranges for a table
 
 - [Show ranges for a table (without options)](#show-ranges-for-a-table-without-options)
@@ -239,6 +255,7 @@ SHOW RANGES FROM DATABASE movr WITH KEYS;
 - [Show ranges for a table (with indexes)](#show-ranges-for-a-table-with-indexes)
 - [Show ranges for a table (with details)](#show-ranges-for-a-table-with-details)
 - [Show ranges for a table (with keys)](#show-ranges-for-a-table-with-keys)
+- [SQL query to get table size](#sql-query-to-get-table-size)
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -342,12 +359,28 @@ SHOW RANGES FROM TABLE movr.users WITH KEYS;
 (27 rows)
 ~~~
 
+#### SQL query to get table size
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH x AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS)
+SELECT 'movr.users' AS table_name, SUM(CAST(span_stats->'live_bytes' AS INT)) AS table_size_bytes FROM x;
+~~~
+
+~~~
+  table_name | table_size_bytes
+-------------+-------------------
+  movr.users |             5578
+(1 row)
+~~~
+
 ### Show ranges for an index
 
 - [Show ranges for an index (without options)](#show-ranges-for-an-index-without-options)
 - [Show ranges for an index (with keys, details)](#show-ranges-for-an-index-with-keys-details)
 - [Show ranges for an index (with details)](#show-ranges-for-an-index-with-details)
 - [Show ranges for an index (with keys)](#show-ranges-for-an-index-with-keys)
+- [SQL query to get index size](#sql-query-to-get-index-size)
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -431,6 +464,21 @@ SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS;
   ...
   …/"washington dc"/PrefixEnd                                                       | <after:/Table/107/1/"amsterdam">                                                  | \xf2891277617368696e67746f6e2064630002                                                               | \xf38912616d7374657264616d0001                                                                       |       96 | {2,4,7}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=b"}         | {2,4,7}         | {}                  | {}               | NULL
 (27 rows)
+~~~
+
+#### SQL query to get index size
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH x AS (SHOW RANGES FROM INDEX movr.users_pkey WITH DETAILS)
+SELECT 'movr.users_pkey' AS index_name, SUM(CAST(span_stats->'live_bytes' AS INT)) AS index_size_bytes FROM x;
+~~~
+
+~~~
+    index_name    | index_size_bytes
+------------------+-------------------
+  movr.users_pkey |             5578
+(1 row)
 ~~~
 
 ### Video Demo
