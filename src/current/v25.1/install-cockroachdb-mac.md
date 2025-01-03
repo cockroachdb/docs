@@ -201,4 +201,4 @@ CockroachDB runtimes built for the ARM architecture have the following limitatio
 
 {% comment %}v22.2.0+{% endcomment %}
 
-On macOS ARM systems, [spatial features]{% link {{ page.version.version }}/spatial-data-overview.md %}) are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead [run the Intel binary](#install-the-binary) or use the[Docker container image](#use-docker). Refer to [GitHub issue #93161](https://github.com/cockroachdb/cockroach/issues/93161)</a> for more information.
+On macOS ARM systems, [spatial features]({% link {{ page.version.version }}/spatial-data-overview.md %}) are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead [run the Intel binary](#install-the-binary) or use the[Docker container image](#use-docker). Refer to [GitHub issue #93161](https://github.com/cockroachdb/cockroach/issues/93161)</a> for more information.
