@@ -1,0 +1,1 @@
+CockroachDB does not currently support multiple arbiter indexes for [`INSERT ON CONFLICT DO UPDATE`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause), and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification. [#53170](https://github.com/cockroachdb/cockroach/issues/53170)
