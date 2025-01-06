@@ -1,6 +1,6 @@
 {{site.data.alerts.callout_danger}}Statement bundles can contain unredacted user data including histograms and placeholders that contain real data samples, statements that have real data which can contain PII information, and database schema that could be sensitive. Be careful when generating and sharing statement bundles.
 
-<br><br>In CockroachDB v24.3.1 and later, <code>admin</code> users or SQL users with the <code>VIEWACTIVITY</code> system privilege can chose to redact user data from the <a href="{{ link_prefix }}ui-statements-page.html#activate-diagnostics-collection-and-download-bundles"><b>Activate statement diagnostics</b></a> dialog.
+<br><br>In CockroachDB v24.3.1 and later, <code>admin</code> users or SQL users with the <code>VIEWACTIVITY</code> system privilege can choose to redact user data from the <a href="{{ link_prefix }}ui-statements-page.html#activate-diagnostics-collection-and-download-bundles"><b>Activate statement diagnostics</b></a> dialog.
 
 <br><br>To allow or disallow a role from seeing <a href="{{ link_prefix }}ui-statements-page.html#diagnostics">statements diagnostics bundles</a>, set the <code>VIEWACTIVITYREDACTED</code> <a href="{{ link_prefix }}create-role.html#role-options">role option</a>.
 
