@@ -35,6 +35,10 @@ Limitations will be added as they are discovered.
 
 {% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
 
+### Generic query plans
+
+{% include {{ page.version.version }}/known-limitations/generic-query-plan-limitations.md %}
+
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.

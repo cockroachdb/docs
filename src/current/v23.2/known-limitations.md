@@ -76,6 +76,10 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 
+### Generic query plans
+
+{% include {{ page.version.version }}/known-limitations/generic-query-plan-limitations.md %}
+
 ## Unresolved limitations
 
 ### Limitations for user-defined functions (UDFs)
