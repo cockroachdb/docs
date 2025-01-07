@@ -1,0 +1,18 @@
+---
+- major_version: v1.0
+- major_version: v1.1
+- major_version: v2.0
+- major_version: v2.1
+- major_version: v19.1
+- major_version: v19.2
+- major_version: v20.1
+- major_version: v20.2
+- major_version: v21.1
+- major_version: v21.2
+- major_version: v22.1
+- major_version: v22.2
+- major_version: v23.1
+- major_version: v23.2
+- major_version: v24.1
+- major_version: v24.2
+- major_version: v24.3

@@ -1,0 +1,1 @@
+As of 2024, CockroachDB is released under a staged delivery process. New releases are made available for select CockroachDB Cloud organizations for two weeks before binaries are published for CockroachDB {{ site.data.products.core }} downloads.
