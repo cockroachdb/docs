@@ -55,13 +55,12 @@ For details on how LTS impacts support in CockroachDB {{ site.data.products.core
 
 | Major Release Type | Frequency | Required upgrade | LTS releases and extended support |
 | :---: | :---: | :---: | :---: |
-| Regular (e.g. v24.1) | 2x/year | Yes | Yes |
-| Innovation (e.g. v24.2) | 2x/year | on Basic only | No<sup style="font-size: 0.9em; vertical-align: -0.3em;">*</sup> |
+| Regular | 2x/year | Yes | Yes |
+| Innovation | 2x/year | on Basic only | No<sup style="font-size: 0.9em; vertical-align: -0.3em;">*</sup> |
 <small>* Column does not apply to CockroachDB Basic, where clusters are automatically upgraded when a new major version or a patch release is available, ensuring continuous support.</small>
 
 For a given CockroachDB {{ site.data.products.core }}, CockroachDB {{ site.data.products.standard }}, or CockroachDB {{ site.data.products.advanced }} cluster, customers may choose to exclusively install or upgrade to Regular Releases to benefit from longer testing and support lifecycles, or to also include Innovation Releases, and benefit from earlier access to new features. This choice does not apply to CockroachDB {{ site.data.products.basic }}, where every major release is an automatic upgrade.
 
-CockroachDB v24.2 is an Innovation release and v24.3 is a Regular release. Starting with v25.1, four major releases are expected per year, where every first and third release of the year is expected to be an Innovation release. For more details, refer to [Upcoming releases](#upcoming-releases).
 
 #### Patch releases
 
@@ -89,12 +88,12 @@ A major version has two types of patch releases: a series of **testing releases*
   <tbody>
     <tr>
       <td>Production</td>
-      <td><code>vYY.R.0</code> - <code>vYY.R.n</code><br>(ex. v24.2.1)</td>
+      <td><code>vYY.R.0</code> - <code>vYY.R.n</code><br></td>
       <td>Production releases are qualified for production environments. The type and duration of support for a production release may vary depending on the major release type, according to the <a href="release-support-policy.html">Release Support Policy</a>.</td>
     </tr>
     <tr>
       <td>Testing</td>
-      <td><code>vYY.R.0-alpha.1+</code>,<br><code>vYY.R.0-beta.1+</code>,<br><code>vYY.R.0-rc.1+</code><br>(ex. v24.3.1-alpha.2)</td>
+      <td><code>vYY.R.0-alpha.1+</code>,<br><code>vYY.R.0-beta.1+</code>,<br><code>vYY.R.0-rc.1+</code><br></td>
       <td>Produced during development of a new major version, testing releases are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments.</td>
     </tr>
   </tbody>
@@ -108,26 +107,6 @@ A cluster that is upgraded to an alpha binary of CockroachDB or a binary that wa
 
 As of 2024, CockroachDB is released under a staged delivery process. New releases are made available for select CockroachDB Cloud organizations for two weeks before binaries are published for CockroachDB {{ site.data.products.core }} downloads.
 
-### Recent releases
-
-| Version | Release Type | GA date | Latest patch release |
-| :---: | :---: | :---: | :---: |
-| [v24.2](#v24-2) | Innovation | 2024-08-12 | v24.2.4 |
-| [v24.1](#v24-1) | Regular | 2024-05-20 | v24.1.6 (LTS) |
-| [v23.2](#v23-2) | Regular | 2024-02-05 | v23.2.13 (LTS) |
-| [v23.1](#v23-1) | Regular | 2023-05-15 | v23.1.28 (LTS) |
-
-### Upcoming releases
-
-The following releases and their descriptions represent proposed plans that are subject to change. Please contact your account representative with any questions.
-
-| Version | Release Type | Expected GA date |
-| :---: | :---: | :---: |
-| v24.3 | Regular    | 2024-11-18 |
-| v25.1 | Innovation | 2025 Q1    |
-| v25.2 | Regular    | 2025 Q2    |
-| v25.3 | Innovation | 2025 Q3    |
-| v25.4 | Regular    | 2025 Q4    |
 
 ## Downloads
 
