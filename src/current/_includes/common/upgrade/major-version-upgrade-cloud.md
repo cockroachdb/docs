@@ -2,7 +2,7 @@ This section shows how to perform a major-version upgrade for a cluster in Cockr
 
 1. Verify the cluster's current major version, and which versions it can be upgraded to:
     1. Sign into [CockroachDB {{ site.data.products.cloud }}](https://cockroachlabs.cloud).
-    1. From the **Clusters** page, find the cluster by name. If the cluster is in a folder, click the name of the folder to view its descendants. The cluster's major version and patch are shown in the **Version** column.
+    1. From the **Clusters** page, find the cluster by name. If the cluster is in a folder, click the name of the folder to find the cluster. The cluster's major version and patch are shown in the **Version** column.
 1. Check which upgrades are available to the cluster, if any.
 
     Beginning with v24.1, major versions alternate in type between Regular releases, which are required, and Innovation releases, which can be skipped.

@@ -11,14 +11,9 @@ This page describes how major-version and patch upgrades work and shows how to u
 
 {% include common/upgrade/overview.md %}
 
-TODO: Convert this to a tab selection and show site.current_cloud_version minus two versions.
-{% include_cached {{ site.current_cloud_version }}/upgrade-requirements.md %}
+A list of [currently supported major versions]({% link cockroachcloud/upgrade-policy.md %}#currently-supported-versions) with links to their release notes is available in the CockroachDB Cloud [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
-TODO: toggle between
-Basic:
-Standard: 
-{% include common/upgrade/upgrade-high-level-standard.md %}
-Advanced: {% include common/upgrade/upgrade-high-level.md %}
+{% include common/upgrade/upgrade-high-level.md %}
 
 ### Availability during an upgrade
 
@@ -28,7 +23,7 @@ For CockroachDB {{ site.data.products.advanced }}, nodes are upgraded one at a t
 
 ### Upgrades and maintenance windows
 
-If you have [configured a maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}) for a CockroachDB {{ site.data.products.advanced }} cluster, automatic patch upgrades are applied during the maintenance window. Major-version upgrades must be initiated manually.
+If you have [configured a maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}) for a CockroachDB {{ site.data.products.advanced }} cluster, automatic patch upgrades are applied during the maintenance window. Major-version upgrades are initiated manually.
 
 {{site.data.alerts.callout_info}}
 Maintenance operations that are critical for cluster security or stability may be applied outside of the maintenance window, and upgrades that begin in a maintenance window may not always be completed by the end of the window.
