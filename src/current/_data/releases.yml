@@ -7796,6 +7796,34 @@
       [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 
+- release_name: v25.1.0-alpha.2
+  major_version: v25.1
+  release_date: '2025-01-09'
+  release_type: Testing
+  go_version: go1.22.8
+  sha: 0a82539a44f38b6cb94c4d15d791537d3afbd200
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.1.0-alpha.1
+
+
 - release_name: v24.2.8
   major_version: v24.2
   release_date: '2025-01-09'
