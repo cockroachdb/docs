@@ -1,4 +1,4 @@
-<table>
+<table markdown="1">
  <thead>
   <tr>
    <th class="center-align" colspan="1" rowspan="2">Feature</th>
@@ -16,8 +16,7 @@
    <td>
     <p class="feature-summary">CockroachDB Changefeeds - Improved null handling usability</p>
     <p class="feature-description">
-     <a href="https://www.cockroachlabs.com/docs/v24.2/change-data-capture-overview.html">Changefeed</a> users can distinguish between JSON <code>NULL</code> values and SQL <code>NULL</code> values in changefeed messages, by using the <a href="https://www.cockroachlabs.com/docs/v24.2/changefeed-messages#json">
-      <code>encode_json_value_null_as_object</code> option</a> with <code>CREATE CHANGEFEED</code>. This enables a consumer to distinguish an unset value from a null JSON token.
+      [Changefeed]({% link v24.2/change-data-capture-overview.md %}) users can distinguish between JSON <code>NULL</code> values and SQL <code>NULL</code> values in changefeed messages, by using the [`encode_json_value_null_as_object` option]({% link v24.2/changefeed-messages.md %}#json) with <code>CREATE CHANGEFEED</code>. This enables a consumer to distinguish an unset value from a null JSON token.
     </p>
    </td>
    <td>24.2</td>
