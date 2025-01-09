@@ -20,8 +20,6 @@ To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a
 ## Considerations
 
 - The `SHOW JOBS` statement shows only long-running tasks.
-- For jobs older than 12 hours, query the `crdb_internal.jobs` table.
-- For the `SHOW JOBS` statement, jobs are deleted after 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). See [Show changefeed jobs](#show-changefeed-jobs) for changefeed job retention time.
 - While the `SHOW JOBS WHEN COMPLETE` statement is blocking, it will time out after 24 hours.
 - Garbage collection jobs are created for [dropped tables]({% link {{ page.version.version }}/drop-table.md %}) and [dropped indexes]({% link {{ page.version.version }}/drop-index.md %}), and will execute after the [GC TTL]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) has elapsed. These jobs cannot be canceled.
 -  CockroachDB automatically retries jobs that fail due to [retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) or job coordination failures, with [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff). The `jobs.registry.retry.initial_delay` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) sets the initial delay between retries and `jobs.registry.retry.max_delay` sets the maximum delay.
@@ -55,6 +53,8 @@ You must have at least one of the following to run `SHOW JOBS`:
 ## Response
 
 The output of `SHOW JOBS` lists ongoing jobs first, then completed jobs within the last 12 hours. The list of ongoing jobs is sorted by starting time, whereas the list of completed jobs is sorted by finished time.
+
+To view details for jobs older than 12 hours, you can query the [`crdb_internal.jobs`]({% link {{ page.version.version }}/crdb-internal.md %}) table. The `jobs.retention_time` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-jobs-retention-time) defines how long jobs will be retained in the `crdb_internal.jobs` table. When CockroachDB checks the jobs table, it will [garbage collect]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) jobs details for any completed job that has reached the configured retention time. The default value of `jobs.retention_time` is 14 days.
 
 The following fields are returned for each job:
 
