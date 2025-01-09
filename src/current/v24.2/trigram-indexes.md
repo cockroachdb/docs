@@ -112,6 +112,7 @@ For usage examples, see [Use a trigram index to speed up fuzzy string matching](
 
 Suppose you have a table with the following columns:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE t (a INT, w STRING);
 ~~~
@@ -119,24 +120,28 @@ CREATE TABLE t (a INT, w STRING);
 The following examples illustrate how to create various trigram indexes on column `w`.
 
 A GIN index with trigram matching enabled:
+
 {% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE INDEX ON t USING GIN (w gin_trgm_ops);
 ~~~
 
 A partial index with trigram matching enabled:
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON t USING GIN (w gin_trgm_ops) WHERE a > 0;
 ~~~
 
 A multi-column index with trigram matching enabled:
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON t USING GIN (a, w gin_trgm_ops);
 ~~~
 
 An expression index with trigram matching enabled:
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))

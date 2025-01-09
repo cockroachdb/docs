@@ -1,0 +1,43 @@
+<table>
+ <thead>
+  <tr>
+   <th class="center-align" colspan="1" rowspan="2">Feature</th>
+   <th class="center-align" colspan="5" rowspan="1">Availability</th>
+  </tr>
+  <tr>
+    <th colspan="1" rowspan="1">Ver.</th>
+    <th colspan="1" rowspan="1" style="white-space: nowrap;">Self-hosted</th>
+    <th colspan="1" rowspan="1">Advanced</th>
+    <th colspan="1" rowspan="1">Standard</th>
+    <th colspan="1" rowspan="1">Basic</th>
+   </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>
+    <p class="feature-summary">User-defined functions and stored procedures support SECURITY DEFINER</p>
+    <p class="feature-description">
+      You can create or alter a <a href="https://cockroachlabs.com/docs/v24.3/user-defined-functions.html">user-defined function (UDF)</a> or <a href="https://cockroachlabs.com/docs/v24.3/stored-procedures.html">stored procedure</a> with <code>[EXTERNAL] SECURITY DEFINER</code> instead of the default <code>[EXTERNAL] SECURITY INVOKER</code>. With <a href="https://cockroachlabs.com/docs/v24.3/create-function.html#create-a-security-definer-function"><code>[SECURITY DEFINER]</code></a>, the privileges of the owner are checked when the UDF or stored procedure is executed, rather than the privileges of the executor. The <code>EXTERNAL</code> keyword is optional and exists for SQL language conformity.
+    </p>
+   </td>
+   <td>24.3</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+    <td>
+     <p class="feature-summary">CockroachDB now supports triggers in Preview</p>
+     <p class="feature-description">
+      CockroachDB now supports <a href="https://cockroachlabs.com/docs/v24.3/triggers.html">triggers</a>. Triggers allow automatic execution of specified functions in response to specified events on a particular table or view. They can be used for automating tasks, enforcing business rules, and maintaining data integrity. This feature is in Preview.
+     </p>
+    </td>
+    <td>24.3</td>
+    <td class="icon-center">{% include icon-yes.html %}</td>
+    <td class="icon-center">{% include icon-yes.html %}</td>
+    <td class="icon-center">{% include icon-yes.html %}</td>
+    <td class="icon-center">{% include icon-yes.html %}</td>
+   </tr>
+ </tbody>
+</table>
