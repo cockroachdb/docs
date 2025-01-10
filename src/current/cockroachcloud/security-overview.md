@@ -152,7 +152,7 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
       <td>&nbsp;</td>
       <td>✓</td>
       <td>✓</td>
-      <td><a href="{% link cockroachcloud/network-authorization.md %}#gcp-private-service-connect">Private Service Connect (PSC) (Preview)</a> for GCP clusters</td>
+      <td><a href="{% link cockroachcloud/network-authorization.md %}#gcp-private-service-connect">Private Service Connect (PSC) for GCP clusters</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
