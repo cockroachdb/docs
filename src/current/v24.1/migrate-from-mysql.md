@@ -76,7 +76,9 @@ SELECT * FROM table_a ORDER BY COALESCE(array_position(ARRAY[4,1,3,2],5),999);
 
 ## Load MySQL data
 
-You can use one of the following methods to migrate MySQL data to CockroachDB:
+You can use [MOLT Fetch]({% link molt/molt-fetch.md %}) to migrate MySQL data to CockroachDB.
+
+Alternatively, you can use one of the following methods to migrate the data:
 
 - {% include {{ page.version.version }}/migration/load-data-import-into.md %}
 
