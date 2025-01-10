@@ -14,6 +14,14 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## January 10, 2025
+
+<h3 id="2025-01-10-general-updates"> General updates </h3>
+
+- GCP Private Service Connect and Azure Private Link have been promoted from Preview to [GA]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %}).
+
+    For information about these features, refer to [Network Authorization]({% link cockroachcloud/network-authorization.md %}).
+
 ## December 17, 2024
 
 <h3 id="2024-12-16-general-updates"> General updates </h3>
