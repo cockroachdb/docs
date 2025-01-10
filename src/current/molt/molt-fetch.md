@@ -215,6 +215,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--flush-rows`                                       | Number of rows before the source data is flushed to intermediate files. **Note:** If `--flush-size` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `--flush-size`                                       | Size (in bytes) before the source data is flushed to intermediate files. **Note:** If `--flush-rows` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `--import-batch-size`                                | The number of files to be imported at a time to the target database. This applies only when using [`IMPORT INTO`](#data-movement) to load data into the target. **Note:** Increasing this value can improve the performance of full-scan queries on the target database shortly after fetch completes, but very high values are not recommended. If any individual file in the import batch fails, you must [retry](#fetch-continuation) the entire batch.<br><br>**Default:** `1000`                                                                                                                                                                                                                                                                                                                            |
+| `--import-region`                                    | The region of the cloud storage bucket when using [`IMPORT INTO`](#data-movement) for data movement. This applies only to [Amazon S3 buckets](#cloud-storage).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `--local-path`                                       | The path within the [local file server](#local-file-server) where intermediate files are written (e.g., `data/migration/cockroach`). `--local-path-listen-addr` must be specified.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `--local-path-crdb-access-addr`                      | Address of a [local file server](#local-file-server) that is **publicly accessible**. This flag is only necessary if CockroachDB cannot reach the local address specified with `--local-path-listen-addr` (e.g., when moving data to a CockroachDB {{ site.data.products.cloud }} deployment). `--local-path` and `--local-path-listen-addr` must be specified.<br><br>**Default:** Value of `--local-path-listen-addr`.                                                                                                                                                                                                                                                                                                                                                                                         |
 | `--local-path-listen-addr`                           | Write intermediate files to a [local file server](#local-file-server) at the specified address (e.g., `'localhost:3000'`). `--local-path` must be specified.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
@@ -743,26 +744,23 @@ The following JSON example defines two type mappings:
     "column-type-map": [
       {
         "column": "*",
-        "type-kv": {
-          "source-type": "int",
-          "crdb-type": "INT2"
-        }
+        "source-type": "int",
+        "crdb-type": "INT2"
       },
       {
         "column": "name",
-        "type-kv": {
-          "source-type": "varbit",
-          "crdb-type": "string"
-        }
+        "source-type": "varbit",
+        "crdb-type": "string"
       }
     ]
   }
 ]
 ~~~
 
-- `table` specifies the table that will use the custom type mappings in `column-type-map`, written as `{schema}.{table}`.
-- `column` specifies the column that will use the custom type mapping in `type-kv`. If `*` is specified, then all columns in the `table` with the matching `source-type` are converted.
-- `type-kv` specifies the `source-type` that maps to the target `crdb-type`.
+- `table` specifies the table that will use the custom type mappings in `column-type-map`. The value is written as `{schema}.{table}`.
+- `column` specifies the column that will use the custom type mapping. If `*` is specified, then all columns in the `table` with the matching `source-type` are converted.
+- `source-type` specifies the source type to be mapped.
+- `crdb-type` specifies the target CockroachDB [type]({% link {{ site.current_cloud_version }}/data-types.md %}) to be mapped.
 
 ### Transformations
 
