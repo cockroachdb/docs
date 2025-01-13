@@ -122,7 +122,7 @@ Where:
 
 - `{username}` and `{password}` specify the SQL username and password that you created earlier.
 - `{host-name}` is the name of the CockroachDB {{ site.data.products.cloud }} free tier host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
-- `{routing-id}` is your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
+- `{routing-id}` is your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a multi-tenant host.
 
 </section>
 

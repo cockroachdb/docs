@@ -232,9 +232,9 @@ Again, firewalls or hostname issues can cause any of these steps to fail.
 
 If the DB Console lists any dead nodes on the [**Cluster Overview** page]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), then you might have a network partition.
 
-**Explanation:** A network partition prevents nodes from communicating with each other in one or both directions. This can be due to a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is broken in both directions. In an asymmetric partition, node communication works in one direction but not the other.
+**Explanation:** 
 
-The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) are defined. If localities are not defined, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
+{% include common/network-partitions.md %}
 
 **Solution:**
 
@@ -300,7 +300,7 @@ The reason this happens is as follows:
 
 For more information about how lease transfers work when a node dies, see [How leases are transferred from a dead node]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node).
 
-The solution is to add connection retry logic to your application.
+The solution is to [use connection pooling]({% link {{ page.version.version }}/connection-pooling.md %}).
 
 ## Clock sync issues
 

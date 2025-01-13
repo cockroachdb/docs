@@ -12,9 +12,13 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
-{{site.data.alerts.callout_info}}
+### Generic query plans
+
+{% include {{ page.version.version }}/known-limitations/generic-query-plan-limitations.md %}
+
+{% comment %}{{site.data.alerts.callout_info}}
 Limitations will be added as they are discovered.
-{{site.data.alerts.end}}
+{{site.data.alerts.end}}{% endcomment %}
 
 ## Limitations from {{ previous_version }} and earlier
 
@@ -26,9 +30,10 @@ This section describes limitations from previous CockroachDB versions that still
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. For a list of known differences in syntax and behavior between CockroachDB and PostgreSQL, see [Features that differ from PostgreSQL]({% link {{ page.version.version }}/postgresql-compatibility.md %}#features-that-differ-from-postgresql).
 
-#### `AS OF SYSTEM TIME` does not support placeholders
+#### `AS OF SYSTEM TIME` limitations
 
-CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). The time value must be embedded in the SQL string. [#30955](https://github.com/cockroachdb/cockroach/issues/30955)
+- {% include {{ page.version.version }}/known-limitations/aost-limitations.md %}
+- {% include {{ page.version.version }}/known-limitations/create-statistics-aost-limitation.md %}
 
 #### `COPY` syntax not supported by CockroachDB
 
@@ -327,6 +332,8 @@ Refer to [`OID` best practices]({% link {{ page.version.version }}/oid.md %}#bes
 
 - Updating subfields of composite types using dot syntax results in a syntax error. [#102984](https://github.com/cockroachdb/cockroach/issues/102984)
 
+- Tuple elements cannot be accessed without enclosing the [composite variable]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) name in parentheses. For example, `(v).x`. [#114687](https://github.com/cockroachdb/cockroach/issues/114687)
+
 #### `ALTER TYPE` limitations
 
 {% include {{ page.version.version }}/known-limitations/alter-type-limitations.md %}
@@ -447,9 +454,7 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 #### Physical cluster replication
 
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
-- {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 - {% include {{ page.version.version }}/known-limitations/cutover-stop-application.md %}
-- {% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
 
 #### `RESTORE` limitations
 
@@ -463,12 +468,15 @@ The [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) statemen
 
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups. [#44396](https://github.com/cockroachdb/cockroach/issues/44396)
 
+#### `SHOW BACKUP` does not support symlinks for nodelocal
+
+{% include {{page.version.version}}/known-limitations/show-backup-symlink.md %}
+
 ### Change data capture
 
 Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
-- {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
 - {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
 - {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}
@@ -477,10 +485,6 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 
 {% include {{ page.version.version }}/known-limitations/alter-changefeed-limitations.md %}
 - {% include {{ page.version.version }}/known-limitations/alter-changefeed-cdc-queries.md %}
-
-### Physical cluster replication
-
-{% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 
 ### Performance optimization
 
@@ -491,9 +495,10 @@ The SQL optimizer has limitations under certain isolation levels:
 - The new implementation of `SELECT FOR UPDATE` is not yet the default setting under `SERIALIZABLE` isolation. It can be used under `SERIALIZABLE` isolation by setting the `optimizer_use_lock_op_for_serializable` [session setting]({% link {{ page.version.version }}/session-variables.md %}) to `true`. [#114737](https://github.com/cockroachdb/cockroach/issues/114737)
 - `SELECT FOR UPDATE` does not lock completely-`NULL` column families in multi-column-family tables. [#116836](https://github.com/cockroachdb/cockroach/issues/116836)
 
-#### Automatic statistics refresher may not refresh after upgrade
+#### Statistics limitations
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
+{% include {{ page.version.version }}/known-limitations/forecasted-stats-limitations.md %}
 
 #### Incorrect query plans for partitions with `NULL` values
 

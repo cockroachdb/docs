@@ -13,7 +13,7 @@ docs_area: manage
 - [View and control a backup initiated by a schedule](#view-and-control-a-backup-initiated-by-a-schedule)
 - [Restore from a scheduled backup](#restore-from-a-scheduled-backup)
 
-{% include {{ page.version.version }}/backups/support-products.md %}
+{% include_cached {{ page.version.version }}/backups/support-products.md %}
 
 ## Considerations
 
@@ -145,7 +145,7 @@ Or nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md 
 > DROP SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
 ~~~~
 
-When `DROP SCHEDULES` removes a [full backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#create-a-schedule-for-full-backups-only-core), it removes the associated [incremental backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#incremental-backup-schedules), if it exists. For more information, see [`DROP SCHEDULES`]({% link {{ page.version.version }}/drop-schedules.md %}).
+When `DROP SCHEDULES` removes a [full backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#create-a-schedule-for-full-backups-only), it removes the associated [incremental backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#incremental-backup-schedules), if it exists. For more information, see [`DROP SCHEDULES`]({% link {{ page.version.version }}/drop-schedules.md %}).
 
 {{site.data.alerts.callout_danger}}
 `DROP SCHEDULE` does **not** cancel any in-progress jobs started by the schedule. Before you drop a schedule, [cancel any in-progress jobs]({% link {{ page.version.version }}/cancel-job.md %}) first, as you will not be able to look up the job ID once the schedule is dropped.

@@ -15,8 +15,7 @@ The following information is displayed for each database:
 {% endif -%}
 | Tables        | The number of tables in the database.                                                                                   |
 {% if page.cloud != true  -%}
-| Range Count   | The number of ranges across all tables in the  database.                                                                |
-| Regions/Nodes | The regions and nodes on which the tables in the database are located. This is not displayed on a single-node cluster.  |
+| Regions/Nodes | The regions and nodes on which the tables in the database are located. This is not displayed on a single-node cluster.<br><br>On a multi-node cluster, the display of this information is controlled by the cluster setting [`ui.database_locality_metadata.enabled`](#ui-database_locality_metadata-enabled-cluster-setting) (default `true`). |
 | Index Recommendations | The number of index recommendations for the database.                                                           |
 {%- else -%}
 | Regions | The regions where the tables in the database are located.  |
@@ -26,6 +25,11 @@ Click a **database name** to open the **Tables** page.
 
 -  Select **View: Tables** in the pulldown menu to display the [Tables view](#tables-view).
 -  Select **View: Grants** in the pulldown menu to display the [Grants view](#grants-view).
+
+{% if page.cloud != true  -%}
+### `ui.database_locality_metadata.enabled` cluster setting
+{% include_cached new-in.html version="v23.2.17" %} Retrieving extended database and table region information can cause significant CPU load on large multi-node clusters with many ranges. You can prevent the retrieval of this data and the associated CPU load by disabling the [`ui.database_locality_metadata.enabled` cluster setting]({{ link_prefix }}cluster-settings.html#setting-ui-database-locality-metadata-enabled). When set to `false`, “No data” will be displayed for region data and replica counts. If you require this data, use the SQL statement [`SHOW RANGES FROM {DATABASE|TABLE}`]({{ link_prefix }}show-ranges.html) to compute this information.
+{% endif -%}
 
 ## Search and filter
 
@@ -64,7 +68,7 @@ The following information is displayed for each table:
 | Columns                        | The number of columns in the table.                                                                      |
 | Indexes                        | The number of indexes in the table.                                                                      |
 {% if page.cloud != true -%}
-| Regions                        | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. |
+| Regions                        | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.<br><br>On a multi-node cluster, the display of this information is controlled by the cluster setting [`ui.database_locality_metadata.enabled`](#ui-database_locality_metadata-enabled-cluster-setting) (default `true`). |
 {% else -%}
 | Regions                        | The regions where the table data is stored.
 {% endif -%}
@@ -85,14 +89,14 @@ The table details include:
 
 {% if page.cloud != true %}
 - **Size**: The approximate disk size of all replicas of this table on the cluster.
-- **Replicas**: The number of [replicas]({{ link_prefix }}architecture/replication-layer.html) of this table on the cluster.
+- **Replicas**: The number of [replicas]({{ link_prefix }}architecture/replication-layer.html) of this table on the cluster. On a multi-node cluster, the display of this information is controlled by the cluster setting [`ui.database_locality_metadata.enabled`](#ui-database_locality_metadata-enabled-cluster-setting) (default `true`).
 - **Ranges**: The number of [ranges]({{ link_prefix }}architecture/glossary.html#architecture-range) in this table.
 - **% of Live Data**: Percentage of total uncompressed logical data that has not been modified (updated or deleted).
 - **Table Stats Last Updated**: The last time table statistics were created or updated.
 {% endif %}
 - **Auto Stats Collection**: Whether [automatic statistics collection]({{ link_prefix }}cost-based-optimizer.html#table-statistics) is enabled.
 {% if page.cloud != true %}
-- **Regions/Nodes**: The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
+- **Regions/Nodes**: The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. On a multi-node cluster, the display of this information is controlled by the cluster setting [`ui.database_locality_metadata.enabled`](#ui-database_locality_metadata-enabled-cluster-setting) (default `true`).
 {% else %}
 - **Regions**: The regions where the table data is stored.
 {% endif %}

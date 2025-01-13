@@ -10,7 +10,7 @@ This tutorial guides you through some of the most essential CockroachDB SQL stat
 For a complete list of supported SQL statements and related details, see [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %}).
 
 {{site.data.alerts.callout_info}}
-This tutorial is for {{site.data.products.core}} users. If you are working with {{site.data.products.dedicated}} or {{site.data.products.serverless}}, you can run this tutorial against [a cluster running in the cloud](https://www.cockroachlabs.com/docs/cockroachcloud/learn-cockroachdb-sql).
+This tutorial is for {{site.data.products.core}} users. If you are working with a cluster in CockroachDB {{ site.data.products.cloud }}, refer to [CockroachDB {{ site.data.products.cloud }}: Learn CockroachDB SQL]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
 {{site.data.alerts.end}}
 
 ## Start CockroachDB
@@ -356,4 +356,4 @@ When you no longer need a table, use [`DROP TABLE`]({% link {{ page.version.vers
 - Explore all [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
 - [Use the built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) to execute statements from a shell or directly from the command line
 - [Install the client driver]({% link {{ page.version.version }}/install-client-drivers.md %}) for your preferred language and [build an app]({% link {{ page.version.version }}/example-apps.md %})
-- [Explore core CockroachDB features]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) like automatic replication, rebalancing, and fault tolerance
+- [Explore CockroachDB features]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) like automatic replication, rebalancing, and fault tolerance

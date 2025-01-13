@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-{% include enterprise-feature.md %}
+
 
 The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to an existing chain of encrypted backups ([full]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups) and [incremental]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups)). Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
 
@@ -16,7 +16,7 @@ CockroachDB supports AWS, Azure, and Google Cloud KMS keys. For more detail on e
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/alter_backup.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_backup.html %}
 </div>
 
 ## Parameters

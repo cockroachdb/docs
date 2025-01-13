@@ -35,8 +35,8 @@ Additional parameters are documented for the respective [subcommands](#subcomman
 
 Subcommand | Description |
 -----------|-------------|
-[`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for an index. ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}).) | 
-[`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition an index. ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}).)
+[`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for an index. | 
+[`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition an index.
 [`RENAME TO`](#rename-to) | Change the name of an index.
 [`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the index.
@@ -46,7 +46,7 @@ Subcommand | Description |
 
 `ALTER INDEX ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for an index. To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}). For more information about replication zones, see [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
-{% include enterprise-feature.md %}
+
 
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
@@ -70,7 +70,7 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER INDEX ... PARTITION BY` is used to partition, re-partition, or un-partition a secondary index. After defining partitions, [`CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-partition.md %}#create-a-replication-zone-for-a-partition) is used to control the replication and placement of partitions.
 
-{% include enterprise-feature.md %}
+
 
 Similar to [indexes]({% link {{ page.version.version }}/indexes.md %}), partitions can improve query performance by limiting the numbers of rows that a query must scan. In the case of [geo-partitioned data]({% link {{ page.version.version }}/regional-tables.md %}), partitioning can limit a query scan to data in a specific region. For examples, see [Query partitions]({% link {{ page.version.version }}/partitioning.md %}#query-partitions).
 
@@ -162,20 +162,20 @@ For usage, see [Synopsis](#synopsis).
 
 ### `[NOT] VISIBLE`
 
-`ALTER INDEX ... VISIBLE` and `ALTER INDEX ... NOT VISIBLE` sets the visibility of an index. This determines whether the index is visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index). 
+`ALTER INDEX ... VISIBLE` and `ALTER INDEX ... NOT VISIBLE` determines whether the index is visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index). 
 
-By default, indexes are visible. If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes).
+By default, indexes are visible. If an index is `NOT VISIBLE`, queries will not read from the index unless it is specifically selected with an [index hint]({% link {{ page.version.version }}/indexes.md %}#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable]({% link {{ page.version.version }}/set-vars.md %}#optimizer-use-not-visible-indexes). In order to keep `NOT VISIBLE` indexes up to date, queries will still write to the index as they insert and update data in the table.
 
-This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
+This allows you to create an index and check for query plan changes without affecting production queries. For an example, refer to [Set an index to be not visible](#set-an-index-to-be-not-visible).
 
-Note the following considerations:
+Note the following considerations for index visibility:
 
 - Primary indexes must be visible.
-- Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints]({% link {{ page.version.version }}/constraints.md %}).
-- Indexes that are not visible are still used for foreign key cascades.
-- When defining a [unique constraint]({% link {{ page.version.version }}/unique.md %}), the `NOT VISIBLE` syntax cannot be used to make the corresponding index not visible. Instead, use `ALTER INDEX` after creating the unique constraint.
+- Queries may still read from `NOT VISIBLE`, [`UNIQUE`]({% link {{ page.version.version }}/create-index.md %}#unique-indexes) indexes to enforce [`UNIQUE` constraints]({% link {{ page.version.version }}/unique.md %}).
+- Queries may still read from `NOT VISIBLE` indexes to perform foreign key cascades and enforce [`FOREIGN KEY` constraints]({% link {{ page.version.version }}/foreign-key.md %}).
+- When defining a [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %}), you cannot use the `NOT VISIBLE` syntax to make the corresponding index not visible. Instead, use `ALTER INDEX ... NOT VISIBLE` after creating the `UNIQUE` constraint.
 
-For examples, see [Set index visibility](#set-index-visibility).
+For examples, refer to [Set index visibility](#set-index-visibility).
 
 #### Aliases
 

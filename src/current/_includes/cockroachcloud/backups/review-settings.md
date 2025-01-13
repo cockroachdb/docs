@@ -1,0 +1,1 @@
+Before modifying cluster backup settings, review details on backup settings for [{{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters](#managed-backup-settings).

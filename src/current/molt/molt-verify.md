@@ -70,6 +70,7 @@ Flag | Description
 `--concurrency` | Number of threads to process at a time when reading the tables. <br>**Default:** 16 <br>For faster verification, set this flag to a higher value. {% comment %}<br>Note: Table splitting by shard only works for [`INT`]({% link {{site.current_cloud_version}}/int.md %}), [`UUID`]({% link {{site.current_cloud_version}}/uuid.md %}), and [`FLOAT`]({% link {{site.current_cloud_version}}/float.md %}) data types.{% endcomment %}
 `--continuous` | Verify tables in a continuous loop. <br />**Default:** `false`
 `--live` | Retry verification on rows before emitting warnings or errors. This is useful during live data import, when temporary mismatches can occur. <br />**Default:** `false`
+`--log-file` | Write messages to the specified log filename. If no filename is provided, messages write to `verify-{datetime}.log`. If `"stdout"` is provided, messages write to `stdout`.
 `--metrics-listen-addr` | Address of the metrics endpoint, which has the path `{address}/metrics`.<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                                 |
 `--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
 `--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
@@ -123,9 +124,8 @@ When verification completes, the output displays a summary message like the foll
 - MOLT Verify might give an error in case of schema changes on either the source or target database.
 - [Geospatial types]({% link {{site.current_cloud_version}}/spatial-data-overview.md %}#spatial-objects) cannot yet be compared.
 
-The following limitations are specific to MySQL:
+The following limitation is specific to MySQL:
 
-- MySQL enums and set types are not supported.
 - MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be `public`).
 
 ## See also

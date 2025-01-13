@@ -5,12 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-{{site.data.alerts.callout_info}}
-Core users can only use backup scheduling for [full backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups.
-
-To use the other backup features, you need an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-{{site.data.alerts.end}}
-
 The `ALTER BACKUP SCHEDULE` statement modifies an existing [backup schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}). You can use `ALTER BACKUP SCHEDULE` to do the following:
 
 - Set a different name for a backup schedule.
@@ -25,7 +19,7 @@ To alter a backup schedule, you must be the owner of the backup schedule, i.e., 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/alter_backup_schedule.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_backup_schedule.html %}
 </div>
 
 ## Parameters

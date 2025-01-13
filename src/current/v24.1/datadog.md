@@ -1,17 +1,17 @@
 ---
-title: Monitor CockroachDB Self-Hosted with Datadog
+title: Monitor CockroachDB Self-Hosted Clusters with Datadog
 summary: The CockroachDB integration with Datadog enables data visualization and alerting on CockroachDB metrics.
 toc: true
 docs_area: manage
 ---
 
-[Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The CockroachDB {{ site.data.products.core }} integration with Datadog enables data collection and alerting on selected [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
+[Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The integration of your CockroachDB {{ site.data.products.core }} cluster with Datadog enables data collection and alerting on selected [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
 
 {{site.data.alerts.callout_success}}
-This tutorial explores the CockroachDB {{ site.data.products.core }} integration with Datadog. For the CockroachDB {{ site.data.products.dedicated }} integration with Datadog, refer to [Monitor CockroachDB Dedicated with Datadog](https://www.cockroachlabs.com/docs/cockroachcloud/tools-page#monitor-cockroachdb-dedicated-with-datadog) instead of this page.
+This tutorial explores the CockroachDB {{ site.data.products.core }} integration with Datadog. For the CockroachDB {{ site.data.products.cloud }} integration with Datadog, refer to [Monitor CockroachDB Dedicated with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog) instead of this page.
 {{site.data.alerts.end}}
 
-The CockroachDB {{ site.data.products.core }} integration with Datadog is powered by the [Datadog Agent](https://app.datadoghq.com/account/settings#agent), and supported by Datadog directly:
+The integration of your CockroachDB {{ site.data.products.core }} cluster with Datadog is powered by the [Datadog Agent](https://app.datadoghq.com/account/settings#agent), and supported by Datadog directly:
 
 - For more information about the integration, see the [Datadog blog post](https://www.datadoghq.com/blog/monitor-cockroachdb-performance-metrics-with-datadog/).
 - For more information about using Datadog, see the [Datadog documentation](https://docs.datadoghq.com/).
@@ -24,7 +24,7 @@ In this tutorial, you will enable the CockroachDB integration in Datadog, config
 Before you can follow the steps presented in this tutorial, you must have:
 
 - Downloaded and installed the [Datadog Agent](https://app.datadoghq.com/account/settings#agent).
-- Started a [secure CockroachDB Self-Hosted cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}).
+- Started a [secure CockroachDB {{ site.data.products.core }} cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}).
 
 ## Step 1. Enable CockroachDB integration
 

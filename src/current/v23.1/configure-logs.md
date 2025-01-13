@@ -67,12 +67,10 @@ sinks:
 capture-stray-errors: ... # parameters for the stray error capture system
 ~~~
 
-{{site.data.alerts.callout_info}}
 Providing a logging configuration is optional. Any fields included in the YAML payload will override the same fields in the [default logging configuration](#default-logging-configuration).
-{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-You can view your current settings by running `cockroach debug check-log-config`, which returns the YAML definitions and a URL to a visualization of the current logging configuration.
+You can view the default settings by running `cockroach debug check-log-config`, which returns the YAML definitions and a URL to a visualization of the default logging configuration.
 {{site.data.alerts.end}}
 
 ## Configure log sinks
@@ -276,7 +274,7 @@ sinks:
 Along with the [common sink parameters](#common-sink-parameters), `stderr` accepts the following additional parameters:
 
 {{site.data.alerts.callout_info}}
-The `format` parameter for `stderr` is set to [`crdb-v2-tty`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2-tty) and cannot be changed.
+The `format` parameter for `stderr` can be set to any one of the valid [log formats]({% link {{ page.version.version }}/log-formats.md %}). It is set to [`crdb-v2-tty`]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2-tty) by default.
 {{site.data.alerts.end}}
 
 | Parameter  | Description                                                       |

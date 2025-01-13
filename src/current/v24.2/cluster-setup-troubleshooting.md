@@ -232,9 +232,9 @@ If the DB Console
 
 then you might have a network partition.
 
-**Explanation:** A network partition occurs when two or more nodes are prevented from communicating with each other in one or both directions. A network partition can be caused by a network outage or a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is disrupted in both directions. In an asymmetric partition, nodes can communicate in one direction but not the other.
+**Explanation:**
 
-The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) are defined. If localities are not defined, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
+{% include common/network-partitions.md %}
 
 **Solution:**
 
@@ -301,7 +301,7 @@ The reason this happens is as follows:
 
 For more information about how lease transfers work when a node dies, see [How leases are transferred from a dead node]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node).
 
-The solution is to add connection retry logic to your application.
+The solution is to [use connection pooling]({% link {{ page.version.version }}/connection-pooling.md %}).
 
 ## Clock sync issues
 
@@ -567,9 +567,9 @@ To identify under-replicated/unavailable ranges:
 
 1.  [Access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access).
 
-1.  On the **Cluster Overview** page, check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
+1.  On the [**Cluster Overview** page]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
 
-1. Check for a network partition: Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page. On the Advanced Debugging page, click **Network Latency**. In the **Latencies** table, check if any cells are marked as "X". If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
+1. Check for a network partition: On the [**Network** page]({% link {{ page.version.version }}/ui-network-latency-page.md %}), if there are nodes in the network matrix with [no connections]({% link {{ page.version.version }}/ui-network-latency-page.md %}#no-connections), this may indicate a network partition. If there is no partition and still no upreplication after 5 minutes, then [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
 
 **Add nodes to the cluster:**
 
@@ -578,8 +578,7 @@ On the DB Console’s Cluster Overview page, check if any nodes are down. If the
 If you still see under-replicated/unavailable ranges on the Cluster Overview page, investigate further:
 
 1.  [Access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access)
-1.  Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
-1.  Click **Problem Ranges**.
+1.  On the [**Advanced Debug** page]({% link {{ page.version.version }}/ui-debug-pages.md %}), click **Problem Ranges**.
 1.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.
 1.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
 1. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}). Please be sure to include the full Range Report and error message when you submit the issue.

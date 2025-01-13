@@ -2,11 +2,10 @@
 title: PL/pgSQL
 summary: PL/pgSQL is a procedural language that you can use within user-defined functions and stored procedures.
 toc: true
-key: sql-expressions.html
 docs_area: reference.sql
 ---
 
-{% include enterprise-feature.md %}
+
 
 [PL/pgSQL](https://www.postgresql.org/docs/16/plpgsql-overview.html) is a procedural language that you can use within [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) and [stored procedures]({% link {{ page.version.version }}/stored-procedures.md %}) in CockroachDB. 
 

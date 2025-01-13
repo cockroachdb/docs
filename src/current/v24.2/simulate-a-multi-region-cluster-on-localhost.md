@@ -5,15 +5,15 @@ toc: true
 docs_area: deploy
 ---
 
- Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}), it's simple to simulate multi-region cluster on your local machine using [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}). This is a useful way to start playing with the [improved multi-region abstractions]({% link {{ page.version.version }}/multiregion-overview.md %}) provided by CockroachDB.
+ Once you've [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}), you can simulate multi-region cluster on your local machine using [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})to learn about CockroachDB's [multi-region abstractions]({% link {{ page.version.version }}/multiregion-overview.md %}).
 
 {{site.data.alerts.callout_info}}
-[`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) is not suitable for production deployments.  Additionally, simulating multiple geographically distributed nodes on a single host is not representative of the [performance you should expect]({% link {{ page.version.version }}/frequently-asked-questions.md %}#single-row-perf) of a production deployment. For instructions showing how to do production multi-region deployments, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}) and [Deploy a Global, Serverless Application]({% link {{ page.version.version }}/movr-flask-deployment.md %}). Also be sure to review the [Production Checklist](recommended-production-settings.html).
+[`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) is not suitable for production deployments. Additionally, simulating multiple geographically distributed nodes on a single host is not representative of the [performance you should expect]({% link {{ page.version.version }}/frequently-asked-questions.md %}#single-row-perf) in a production deployment. To learn more about production multi-region deployments, refer to [Orchestrate CockroachDB Across Multiple Kubernetes Clusters]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}) and [Deploy a Global, Serverless Application]({% link {{ page.version.version }}/movr-flask-deployment.md %}), and review the [Production Checklist](recommended-production-settings.html).
 {{site.data.alerts.end}}
 
 ## Before you begin
 
-- Make sure you have already [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+[Download]({% link releases/index.md %}) and [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 
 ## Step 1. Start the cluster
 
@@ -97,6 +97,6 @@ When you're done with your demo cluster, you can wipe the cluster by typing the 
 - [Build an app with CockroachDB]({% link {{ page.version.version }}/example-apps.md %})
 - Further explore CockroachDB capabilities like:
   - [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
-  - [Fault tolerance and automated repair]({% link {{ page.version.version }}/demo-fault-tolerance-and-recovery.md %})
+  - [Fault tolerance and automated repair]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %})
   - [Serializable transactions]({% link {{ page.version.version }}/demo-serializable.md %})
   - [JSON support]({% link {{ page.version.version }}/demo-json-support.md %})

@@ -1,0 +1,1 @@
+If you're using a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Understand CockroachDB Cloud Costs]({% link cockroachcloud/costs.md %}) for detail on how CDC is billed monthly based on usage.

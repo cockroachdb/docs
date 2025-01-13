@@ -1,0 +1,939 @@
+<table>
+ <tr>
+  <th>Category</th>
+  <th>Description</th>
+  <th>Fields</th>
+  <th>Example</th>
+ </tr>
+ <tr>
+  <td>Node information</td>
+  <td>Information about the CockroachDB node reporting diagnostics.</td>
+  <td>
+   <ul>
+    <li>Node ID</li>
+    <li>Bytes</li>
+    <li>Key Count</li>
+    <li>Range Count</li>
+    <li>Uptime</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+"node": {
+        "nodeId": 12,
+        "bytes": "2270774884600",
+        "keyCount": "27008719525",
+        "rangeCount": "7015",
+        "uptime": "1418000"
+    }
+</code>
+  </td>
+ </tr>
+ <tr>
+  <td>Store information</td>
+  <td>Information about individual stores on the CockroachDB node.</td>
+  <td>
+   <ul>
+    <li>Node ID</li>
+    <li>Store ID</li>
+    <li>Bytes</li>
+    <li>Key Count</li>
+    <li>Range Count</li>
+    <li>Capacity</li>
+    <li>Available</li>
+    <li>Used</li>
+    <li>Encryption Algorithm</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+"stores": [
+        {
+            "nodeId": 12,
+            "storeId": 39,
+            "bytes": "560732812950",
+            "keyCount": "6719249260",
+            "rangeCount": "1730",
+            "capacity": "395188764700",
+            "available": "167600533600",
+            "used": "212346898300",
+            "encryptionAlgorithm": "0"
+        }
+    ]
+</code>
+  </td>
+ </tr>
+ <tr>
+  <td>SQL instance information</td>
+  <td>Information about the SQL instance reporting diagnostics.</td>
+  <td>
+   <ul>
+    <li>SQL Instance ID</li>
+    <li>Uptime</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+"sql": {
+        "sqlInstanceId": 12,
+        "uptime": "1418000"
+    }
+  </code>
+  </td>
+ </tr>
+ <tr>
+  <td>Altered cluster settings</td>
+  <td>Cluster settings that have been altered from their default values. Note that every value of type 'string' is redacted, such as the cluster organization, as well as sensitive settings, such as OIDC authentication.
+  </td>
+  <td>
+   <ul>
+    <li>Setting Name</li>
+    <li>Setting Value</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+"alteredSettings": {
+    "cluster.organization": "\u003credacted\u003e",
+    "cluster.secret": "\u003credacted\u003e",
+    "kv.rangefeed.enabled": "true",
+    "server.oidc_authentication.client_id": "\u003credacted\u003e",
+    "server.oidc_authentication.client_secret": "\u003credacted\u003e",
+  }
+</code>
+  </td>
+ </tr>
+ <tr>
+  <td>Zone configurations</td>
+  <td>Zone configurations applied to tables or databases.</td>
+  <td>
+   <ul>
+    <li>Zone ID</li>
+    <li>Zone Configuration</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+"zoneConfigs": {
+   "114": {
+      "rangeMinBytes": null,
+      "rangeMaxBytes": null,
+      "gc": null,
+      "globalReads": null,
+      "numReplicas": 0,
+      "numVoters": null,
+      "constraints": [
+      ],
+      "voterConstraints": [
+      ],
+      "inheritedConstraints": false,
+      "nullVoterConstraintsIsEmpty": false,
+      "leasePreferences": [
+      ],
+      "inheritedLeasePreferences": false,
+      "subzones": [
+        {
+          "indexId": 1,
+          "partitionName": "f3f81b68",
+          "config": {
+            "rangeMinBytes": null,
+            "rangeMaxBytes": null,
+            "gc": null,
+            "globalReads": null,
+            "numReplicas": null,
+            "numVoters": null,
+            "constraints": [
+              {
+                "numReplicas": 0,
+                "constraints": [
+                  {
+                    "type": 1,
+                    "key": "2cd13cd0",
+                    "value": "d006156b"
+                  }
+                ]
+              }
+            ],
+            "voterConstraints": [
+            ],
+            "inheritedConstraints": false,
+            "nullVoterConstraintsIsEmpty": false,
+            "leasePreferences": [
+            ],
+            "inheritedLeasePreferences": true,
+            "subzones": [
+            ],
+            "subzoneSpans": [
+            ]
+          }
+        }
+      ],
+      "subzoneSpans": [
+      ]
+    }
+    }
+  </code>
+  </td>
+ </tr>
+ <tr>
+  <td>Feature usage</td>
+  <td>List of feature names and counters showing how often the features are used.</td>
+  <td>
+   <ul>
+    <li>Feature Name</li>
+    <li>Usage Count</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+"featureUsage": {
+        "backup.duration-sec.inc-succeeded.10": 10,
+        "sql.plan.builtins.gen_random_uuid() -> uuid": 100000,
+        "sql.plan.ops.cast.float::string": 100000,
+        "sql.query.count": 1000000000,
+        "sql.txn.commit.count": 100000000,
+        "txn.restarts.serializable": 10000,
+        "backup.speed-mbps.inc.per-node.100": 100,
+        "external-io.google_cloud": 10000
+    }
+  </code>
+  </td>
+ </tr>
+ <tr>
+  <td>Locality</td>
+  <td>
+    A locality is an ordered set of key/value pairs that describe the location of this node or SQL instance. This is the locality information that is passed at node start time using the <a href="cockroach-start.html#locality">
+    <code>cockroach start --locality</code>
+   </a> command.
+    Note that these values are not redacted. Avoid writing information about your users or customers using the <code>--locality</code> flag.
+  </td>
+  <td>
+   <ul>
+    <li>Tiers</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+ "locality": {
+      "tiers": [
+        {
+          "key": "a5a7e0e9",
+          "value": "ded62d43"
+        }
+      ]
+    }
+  </code>
+  </td>
+ </tr>
+ <tr>
+  <td>SQL statistics</td>
+  <td>SQL statement statistics.
+
+Note that table names, column names, and constants are redacted. The <code>sensitiveInfo</code> field in the output is also redacted, since it can contain error strings from SQL execution. The <code>app</code> field is also redacted unless it begins with <code>$</code> or <code>$$</code> which is used by CockroachDB internally.
+</td>
+  <td>
+   <ul>
+    <li>SQL Query</li>
+    <li>Execution Count</li>
+    <li>Latency</li>
+    <li>Rows Read</li>
+    <li>Rows Written</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+"sqlStats": [
+        {
+            "id": "50705942402975393",
+            "key": {
+                "query": "SELECT _, _, _ FROM _ WHERE _ = _",
+                "app": "$ load-job",
+                "distSQL": false,
+                "implicitTxn": false,
+                "vec": false,
+                "fullScan": false,
+                "database": "",
+                "planHash": "9668029379797421399",
+                "querySummary": "",
+                "transactionFingerprintId": "1"
+            },
+            "stats": {
+                "count": "101",
+                "firstAttemptCount": "101",
+                "maxRetries": "0",
+                "numRows": {
+                    "mean": 1,
+                    "squaredDiffs": 0
+                },
+                "idleLat": {
+                    "mean": 0,
+                    "squaredDiffs": 0
+                },
+                "parseLat": {
+                    "mean": 0,
+                    "squaredDiffs": 0
+                },
+                "planLat": {
+                    "mean": 0.00007544429020979025,
+                    "squaredDiffs": 6.78152936815595e-8
+                },
+                "runLat": {
+                    "mean": 0.001702519937062940,
+                    "squaredDiffs": 0.0012322771466382400
+                },
+                "serviceLat": {
+                    "mean": 0.0017827970734265735,
+                    "squaredDiffs": 0.0012335011910856030
+                },
+                "overheadLat": {
+                    "mean": 0.000004832846153846150,
+                    "squaredDiffs": 9.59541288048590e-10
+                },
+                "sensitiveInfo": {
+                    "lastErr": "\u003credacted\u003e",
+                    "mostRecentPlanDescription": {
+                        "name": "",
+                        "attrs": [],
+                        "children": []
+                    },
+                    "mostRecentPlanTimestamp": "0001-01-01T00:00:00Z"
+                },
+                "bytesRead": {
+                    "mean": 144.55244755244760,
+                    "squaredDiffs": 9338.713286713290
+                },
+                "rowsRead": {
+                    "mean": 1,
+                    "squaredDiffs": 0
+                },
+                "rowsWritten": {
+                    "mean": 0,
+                    "squaredDiffs": 0
+                },
+                "execStats": {
+                    "count": "11",
+                    "networkBytes": {
+                        "mean": 0,
+                        "squaredDiffs": 0
+                    },
+                    "maxMemUsage": {
+                        "mean": 20481,
+                        "squaredDiffs": 0
+                    },
+                    "contentionTime": {
+                        "mean": 0,
+                        "squaredDiffs": 0
+                    },
+                    "networkMessages": {
+                        "mean": 0,
+                        "squaredDiffs": 0
+                    },
+                    "maxDiskUsage": {
+                        "mean": 0,
+                        "squaredDiffs": 0
+                    },
+                    "cpuSqlNanos": {
+                        "mean": 27187.5,
+                        "squaredDiffs": 901303466.3
+                    },
+                    "mvccIteratorStats": {
+                        "stepCount": {
+                            "mean": 2,
+                            "squaredDiffs": 0
+                        },
+                        "stepCountInternal": {
+                            "mean": 3.8,
+                            "squaredDiffs": 2.2000000000000000
+                        },
+                        "seekCount": {
+                            "mean": 1,
+                            "squaredDiffs": 0
+                        },
+                        "seekCountInternal": {
+                            "mean": 1,
+                            "squaredDiffs": 0
+                        },
+                        "blockBytes": {
+                            "mean": 174085.8,
+                            "squaredDiffs": 50560940748.5
+                        },
+                        "blockBytesInCache": {
+                            "mean": 174085.8,
+                            "squaredDiffs": 50560940748.5
+                        },
+                        "keyBytes": {
+                            "mean": 174085.8,
+                            "squaredDiffs": 50560940748.5
+                        },
+                        "valueBytes": {
+                            "mean": 137.3,
+                            "squaredDiffs": 12595.7
+                        },
+                        "pointCount": {
+                            "mean": 3.8,
+                            "squaredDiffs": 2.2000000000000000
+                        },
+                        "pointsCoveredByRangeTombstones": {
+                            "mean": 0,
+                            "squaredDiffs": 0
+                        },
+                        "rangeKeyCount": {
+                            "mean": 0,
+                            "squaredDiffs": 0
+                        },
+                        "rangeKeyContainedPoints": {
+                            "mean": 0,
+                            "squaredDiffs": 0
+                        },
+                        "rangeKeySkippedPoints": {
+                            "mean": 0,
+                            "squaredDiffs": 0
+                        }
+                    }
+                },
+                "sqlType": "TypeDML",
+                "lastExecTimestamp": "2024-08-28T17:02:33.615409698Z",
+                "nodes": [
+                    "12"
+                ],
+                "kvNodeIds": [
+                    7,
+                    10,
+                    11
+                ],
+                "regions": [
+                    "us-east1"
+                ],
+                "planGists": [
+                    "AgEeAgBiAgAABgY="
+                ],
+                "indexRecommendations": [],
+                "indexes": [],
+                "latencyInfo": {
+                    "min": 0.0007020,
+                    "max": 0.03862220,
+                    "p50": 0,
+                    "p90": 0,
+                    "p99": 0
+                },
+                "lastErrorCode": "",
+                "failureCount": "0",
+                "usedFollowerRead": false
+            },
+            "aggregatedTs": "0001-01-01T00:00:00Z",
+            "aggregationInterval": "0s"
+        }
+    ]
+  </code>
+  </td>
+ </tr>
+ <tr>
+  <td>Build information</td>
+  <td>Build information for this CockroachDB binary.</td>
+  <td>
+   <ul>
+    <li>Go Version</li>
+    <li>Tag</li>
+    <li>Build Time</li>
+    <li>Revision</li>
+    <li>CGO Compiler</li>
+    <li>CGO Target Triple</li>
+    <li>Platform</li>
+    <li>Distribution</li>
+    <li>Build Type</li>
+    <li>Channel</li>
+    <li>Env Channel</li>
+    <li>Dependencies</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+ "build": {
+      "goVersion": "go1.22.5 X:nocoverageredesign",
+      "tag": "v24.2.0-alpha.2-dev-2f0b0399a5c9656bdf8a417d0ab57e4eb1ae0f64",
+      "time": "2024/08/12 06:03:39",
+      "revision": "2f0b0399a5c9656bdf8a417d0ab57e4eb1ae0f64",
+      "cgoCompiler": "gcc 6.5.0",
+      "cgoTargetTriple": "x86_64-pc-linux-gnu",
+      "platform": "linux amd64",
+      "distribution": "CCL",
+      "type": "development",
+      "channel": "official-binary",
+      "envChannel": "unknown",
+      "enabledAssertions": false,
+      "dependencies": null
+    }
+</code>
+  </td>
+ </tr>
+ <tr>
+  <td>CPU information</td>
+  <td>Information about the CPU on the machine hosting CockroachDB.</td>
+  <td>
+   <ul>
+    <li>Number of CPUs</li>
+    <li>Sockets</li>
+    <li>Cores</li>
+    <li>CPU Model</li>
+    <li>CPU Speed</li>
+    <li>Features</li>
+    <ul>
+     <li>CPU feature flags for first CPU</li>
+    </ul>
+   </ul>
+  </td>
+  <td>
+   <code>
+"cpu": {
+        "numcpu": 16,
+        "sockets": 16,
+        "cores": 1,
+        "model": "Intel(R) Xeon(R) CPU @ 2.60GHz",
+        "mhz": 2600.032,
+        "features": [
+            "fpu",
+            "tsc",
+            "pse",
+            "sse4_2",
+            "aes",
+            "avx",
+            "avx2",
+            "rdseed",
+            "smap",
+            "hypervisor"
+        ]
+    }  
+</code>
+  </td>
+ </tr>
+ <tr>
+  <td>Memory information</td>
+  <td>Information about the memory on the machine hosting CockroachDB.</td>
+  <td>
+   <ul>
+    <li>Total Memory</li>
+    <li>Available Memory</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+"mem": {
+        "total": "67413340264",
+        "available": "38576678952"
+      }
+  </code>
+  </td>
+ </tr>
+ <tr>
+  <td>Hardware information</td>
+  <td>Information about the hardware on the machine hosting CockroachDB.</td>
+  <td>
+   <ul>
+    <li>Virtualization Type</li>
+    <li>CPU Info</li>
+    <li>Memory Info</li>
+    <li>Load Average</li>
+    <li>Cloud Provider</li>
+    <li>Cloud Provider Instance Class</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+"virtualization": ""
+"loadavg15": 7.10,
+"provider": "gcp",
+"instanceClass": "n2-standard-16"
+  </code>
+   <br />
+See also: CPU Info and Memory Info
+</td>
+ </tr>
+ <tr>
+  <td>OS information</td>
+  <td>Information about the operating system on the machine hosting CockroachDB.</td>
+  <td>
+   <ul>
+    <li>OS Family</li>
+    <li>Platform</li>
+    <li>Version</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+ "os": {
+      "family": "debian",
+      "platform": "ubuntu",
+      "version": "22.04"
+    }
+  </code>
+  </td>
+ </tr>
+ <tr>
+  <td>Topology information</td>
+  <td>Information about the topology and/or cloud infrastructure hosting CockroachDB.</td>
+  <td>
+   <ul>
+    <li>Cloud Provider</li>
+    <li>Region</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+"topology": {
+      "provider": "gcp",
+      "region": "us-east1-b"
+    }
+</code>
+  </td>
+ </tr>
+ <tr>
+  <td>Environment</td>
+  <td>Details of the environment where the CockroachDB node or SQL instance is running.</td>
+  <td>
+   <ul>
+    <li>Locality</li>
+    <li>Hardware Info</li>
+    <li>OS Info</li>
+    <li>Build Info</li>
+    <li>License Type</li>
+    <li>Topology</li>
+   </ul>
+  </td>
+  <td>
+   <code>
+"licenseType": "Enterprise"
+  </code>
+   <br />
+See also: Locality, Hardware Info, OS Info, Build Info, and Topology Info
+</td>
+ </tr>
+ <tr>
+  <td>License</td>
+  <td>Details about the cluster's license.</td>
+  <td>
+   <ul>
+    <li>Environment</li>
+    <li>LicenseExpiry</li>
+    <li>OrganizationID</li>
+    <li>LicenseID</li>
+   </ul>
+  </td>
+  <td>
+   <ul>
+    <li>Environment is one of:
+  <ul>
+      <li>Unspecified</li>
+      <li>Production</li>
+      <li>PreProduction</li>
+      <li>Development</li>
+     </ul>
+    </li>
+    <li>The cloud organization ID (a.k.a. OrganizationID) is populated by the self-serve licensing workflow in the <a href="https://cockroachlabs.cloud">CockroachDB Cloud Console</a> (empty for legacy licenses)</li>
+    <li>LicenseID is is populated by the self-serve licensing workflow in the <a href="https://cockroachlabs.cloud">CockroachDB Cloud Console</a> (empty for legacy licenses)</li>
+   </ul>
+  </td>
+ </tr>
+ <tr>
+  <td>Schema information</td>
+  <td>Details of the schema with table names and column names redacted.</td>
+  <td>
+   <ul>
+    <li>Tables</li>
+    <li>Columns</li>
+    <li>Column Families</li>
+    <li>Primary Index</li>
+    <li>Indexes</li>
+    <li>Privileges</li>
+    <li>Mutations</li>
+    <li>Dependencies</li>
+    <li>Foreign Keys</li>
+   </ul>
+  </td>
+  <td>
+Example of a Table:
+<code>
+{
+    "name": "_",
+    "id": 107,
+    "version": "611",
+    "modificationTime": {
+        "wallTime": "1723448301138465907",
+        "logical": 1
+    },
+    "parentId": 105,
+    "unexposedParentSchemaId": 106,
+    "columns": [
+        {
+            "name": "_",
+            "id": 2,
+            "type": {
+                "family": 1,
+                "width": 65,
+                "precision": 1,
+                "arrayDimensions": [],
+                "locale": null,
+                "visibleType": 0,
+                "arrayElemType": null,
+                "tupleContents": [],
+                "tupleLabels": [],
+                "oid": 21,
+                "arrayContents": null,
+                "timePrecisionIsSet": false,
+                "intervalDurationField": null,
+                "geoMetadata": null,
+                "udtMetadata": null
+            },
+            "nullable": false,
+            "defaultExpr": null,
+            "onUpdateExpr": null,
+            "hidden": false,
+            "inaccessible": false,
+            "generatedAsIdentityType": 0,
+            "generatedAsIdentitySequenceOption": null,
+            "usesSequenceIds": [],
+            "ownsSequenceIds": [],
+            "usesFunctionIds": [],
+            "computeExpr": null,
+            "virtual": false,
+            "pgAttributeNum": 0,
+            "alterColumnTypeInProgress": false,
+            "systemColumnKind": 0
+        },
+        {
+            "name": "_",
+            "id": 3,
+            "type": {
+                "family": 7,
+                "width": 11,
+                "precision": 0,
+                "arrayDimensions": [],
+                "locale": null,
+                "visibleType": 7,
+                "arrayElemType": null,
+                "tupleContents": [],
+                "tupleLabels": [],
+                "oid": 1044,
+                "arrayContents": null,
+                "timePrecisionIsSet": false,
+                "intervalDurationField": null,
+                "geoMetadata": null,
+                "udtMetadata": null
+            },
+            "nullable": false,
+            "defaultExpr": null,
+            "onUpdateExpr": null,
+            "hidden": false,
+            "inaccessible": false,
+            "generatedAsIdentityType": 0,
+            "generatedAsIdentitySequenceOption": null,
+            "usesSequenceIds": [],
+            "ownsSequenceIds": [],
+            "usesFunctionIds": [],
+            "computeExpr": null,
+            "virtual": false,
+            "pgAttributeNum": 0,
+            "alterColumnTypeInProgress": false,
+            "systemColumnKind": 0
+        },
+        {
+            "name": "_",
+            "id": 4,
+            "type": {
+                "family": 7,
+                "width": 21,
+                "precision": 0,
+                "arrayDimensions": [],
+                "locale": null,
+                "visibleType": 7,
+                "arrayElemType": null,
+                "tupleContents": [],
+                "tupleLabels": [],
+                "oid": 1044,
+                "arrayContents": null,
+                "timePrecisionIsSet": false,
+                "intervalDurationField": null,
+                "geoMetadata": null,
+                "udtMetadata": null
+            },
+            "nullable": false,
+            "defaultExpr": null,
+            "onUpdateExpr": null,
+            "hidden": false,
+            "inaccessible": false,
+            "generatedAsIdentityType": 0,
+            "generatedAsIdentitySequenceOption": null,
+            "usesSequenceIds": [],
+            "ownsSequenceIds": [],
+            "usesFunctionIds": [],
+            "computeExpr": null,
+            "virtual": false,
+            "pgAttributeNum": 0,
+            "alterColumnTypeInProgress": false,
+            "systemColumnKind": 0
+        }
+    ],
+    "nextColumnId": 39,
+    "families": [
+        {
+            "name": "_",
+            "id": 1,
+            "columnNames": ["_", "_", "_"],
+            "columnIds": [2, 3, 4],
+            "defaultColumnId": 0
+        }
+    ],
+    "nextFamilyId": 2,
+    "primaryIndex": {
+        "name": "_",
+        "id": 137,
+        "unique": true,
+        "version": 5,
+        "keyColumnNames": ["_"],
+        "keyColumnDirections": [0],
+        "storeColumnNames": ["_", "_"],
+        "invertedColumnKinds": [],
+        "keyColumnIds": [2],
+        "keySuffixColumnIds": [],
+        "storeColumnIds": [3, 4],
+        "compositeColumnIds": [],
+        "foreignKey": {
+            "table": 0,
+            "index": 0,
+            "name": "",
+            "validity": 0,
+            "sharedPrefixLen": 0,
+            "onDelete": 0,
+            "onUpdate": 0,
+            "match": 0
+        },
+        "referencedBy": [],
+        "interleave": {
+            "ancestors": []
+        },
+        "interleavedBy": [],
+        "partitioning": {
+            "numColumns": 1,
+            "numImplicitColumns": 0,
+            "list": [],
+            "range": [
+                {"name": "_", "fromInclusive": "AwB=", "toExclusive": "A8B+"},
+                {"name": "_", "fromInclusive": "A8B+", "toExclusive": "A4C9"},
+                {"name": "_", "fromInclusive": "A4C9", "toExclusive": "A8D7AQ=="}
+            ]
+        },
+        "type": 0,
+        "createdExplicitly": true,
+        "encodingType": 1,
+        "sharded": {
+            "isSharded": false,
+            "name": "",
+            "shardBuckets": 0,
+            "columnNames": []
+        },
+        "disabled": false,
+        "geoConfig": {
+            "s2Geography": null,
+            "s2Geometry": null
+        },
+        "predicate": "",
+        "useDeletePreservingEncoding": false,
+        "createdAtNanos": "0",
+        "constraintId": 85,
+        "notVisible": false,
+        "invisibility": 0
+    },
+    "indexes": [],
+    "nextIndexId": 141,
+    "privileges": {
+        "users": [
+            {"userProto": "_", "privileges": "2", "withGrantOption": "2"},
+            {"userProto": "_", "privileges": "2", "withGrantOption": "2"}
+        ],
+        "ownerProto": "_",
+        "version": 3
+    },
+    "mutations": [],
+    "nextMutationId": 2,
+    "formatVersion": 3,
+    "state": 0,
+    "offlineReason": "",
+    "checks": [],
+    "viewQuery": "",
+    "isMaterializedView": false,
+    "refreshViewRequired": false,
+    "dependsOn": [],
+    "dependsOnTypes": [],
+    "dependsOnFunctions": [],
+    "dependedOnBy": [],
+    "mutationJobs": [],
+    "declarativeSchemaChangerState": null,
+    "sequenceOpts": null,
+    "dropTime": "0",
+    "replacementOf": {
+        "id": 0,
+        "time": {
+            "wallTime": "0",
+            "logical": 0
+        }
+    },
+    "auditMode": 0,
+    "dropJobId": "0",
+    "createQuery": "",
+    "createAsOfTime": {
+        "wallTime": "1714753049015774735",
+        "logical": 1
+    },
+    "outboundFks": [],
+    "inboundFks": [
+        {
+            "originTableId": 108,
+            "originColumnIds": [3],
+            "referencedColumnIds": [2],
+            "referencedTableId": 107,
+            "name": "_",
+            "validity": 1,
+            "onDelete": 0,
+            "onUpdate": 0,
+            "match": 0,
+            "constraintId": 3
+        },
+        {
+            "originTableId": 114,
+            "originColumnIds": [3],
+            "referencedColumnIds": [2],
+            "referencedTableId": 107,
+            "name": "_",
+            "validity": 1,
+            "onDelete": 0,
+            "onUpdate": 0,
+            "match": 0,
+            "constraintId": 3
+        }
+    ],
+    "uniqueWithoutIndexConstraints": [],
+    "temporary": false,
+    "localityConfig": null,
+    "partitionAllBy": false,
+    "rowLevelTtl": null,
+    "excludeDataFromBackup": false,
+    "nextConstraintId": 87,
+    "autoStatsSettings": null,
+    "forecastStats": null,
+    "histogramSamples": null,
+    "histogramBuckets": null,
+    "importStartWallTime": "0",
+    "schemaLocked": false,
+    "importEpoch": 0,
+    "importType": 0,
+    "external": null
+}
+</code>
+  </td>
+ </tr>
+ <tr>
+  <td>Client IP Address</td>
+  <td>IP address of the client sending telemetry.</td>
+  <td>N/A</td>
+  <td>N/A</td>
+ </tr>
+</table>

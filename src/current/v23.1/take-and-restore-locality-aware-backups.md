@@ -5,10 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_info}}
-Locality-aware [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) without an Enterprise license.
-{{site.data.alerts.end}}
-
 Locality-aware backups allow you to partition and store backup data in a way that is optimized for locality. When you run a locality-aware backup, nodes write backup data to the [cloud storage]({% link {{ page.version.version }}/use-cloud-storage.md %}) bucket that is closest to the node locality configured at [node startup]({% link {{ page.version.version }}/cockroach-start.md %}).
 
 {{site.data.alerts.callout_danger}}
@@ -23,12 +19,10 @@ A locality-aware backup is specified by a list of URIs, each of which has a `COC
 
 For a technical overview of how a locality-aware backup works, refer to [Job coordination and export of locality-aware backups]({% link {{ page.version.version }}/backup-architecture.md %}#job-coordination-and-export-of-locality-aware-backups).
 
-## Supported products
-
-Locality-aware backups are available in **CockroachDB {{ site.data.products.dedicated }}**, **CockroachDB {{ site.data.products.serverless }}**, and **CockroachDB {{ site.data.products.core }}** clusters when you are running [customer-owned backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#cockroachdb-backup-types). For a full list of features, see [Backup and restore product support]({% link {{ page.version.version }}/backup-and-restore-overview.md %}#backup-and-restore-product-support).
+{% include {{ page.version.version }}/backups/support-products.md %}
 
 {{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/backups/serverless-locality-aware.md %}
+{% include {{ page.version.version }}/backups/locality-aware-multi-tenant.md %}
 {{site.data.alerts.end}}
 
 CockroachDB also supports _locality-restricted backup execution_, which allows you to specify a set of locality filters for a backup job to restrict the nodes that can participate in the backup process to that locality. This allows only nodes to execute a backup that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket. Refer to [Take Locality-restricted Backups]({% link {{ page.version.version }}/take-locality-restricted-backups.md %}) for more detail.

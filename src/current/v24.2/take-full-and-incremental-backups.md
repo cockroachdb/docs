@@ -88,8 +88,6 @@ In the examples on this page, `{collectionURI}` is a placeholder for the storage
 
 ## Full backups
 
-Full backups are now available to both core and Enterprise users.
-
 Full backups contain an un-replicated copy of your data and can always be used to restore your cluster. These files are roughly the size of your data and require greater resources to produce than incremental backups. You can take full backups as of a given timestamp. Optionally, you can include the available [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}) in the backup.
 
 In most cases, **it's recommended to take nightly full backups of your cluster**. A cluster backup allows you to do the following:
@@ -98,7 +96,7 @@ In most cases, **it's recommended to take nightly full backups of your cluster**
 - Restore database(s) from the cluster
 - Restore a full cluster
 
-[Full cluster backups]({% link {{ page.version.version }}/backup.md %}#back-up-a-cluster) include [Enterprise license keys]({% link {{ page.version.version }}/enterprise-licensing.md %}). When you [restore]({% link {{ page.version.version }}/restore.md %}) a full cluster backup that includes Enterprise license, the Enterprise license is also restored.
+[Full cluster backups]({% link {{ page.version.version }}/backup.md %}#back-up-a-cluster) include [Enterprise license keys]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license). When you [restore]({% link {{ page.version.version }}/restore.md %}) a full cluster backup that includes Enterprise license, the Enterprise license is also restored.
 
 {% include {{ page.version.version }}/backups/file-size-setting.md %}
 
@@ -148,10 +146,6 @@ To restore a backup, use the [`RESTORE`]({% link {{ page.version.version }}/rest
 To view the available backup subdirectories, use [`SHOW BACKUPS`]({% link {{ page.version.version }}/show-backup.md %}).
 
 ## Incremental backups
-
-{{site.data.alerts.callout_info}}
-To take incremental backups, you need an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-{{site.data.alerts.end}}
 
 If your cluster grows too large for daily [full backups](#full-backups), you can take less frequent full backups (e.g., weekly) with daily incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
 
@@ -249,7 +243,7 @@ A full backup must be present in the `{collectionURI}` in order to take an incre
 
 For details on the backup directory structure when taking incremental backups with `incremental_location`, see this [incremental location directory structure](#incremental-location-structure) example.
 
-<a name="backup-earlier-behavior"></a>To take incremental backups that are [stored in the same way as v21.2](https://www.cockroachlabs.com/docs/v21.2/take-full-and-incremental-backups#backup-collections) and earlier, you can use the `incremental_location` option. You can specify the same `collectionURI` with `incremental_location` and the backup will place the incremental backups in a date-based path under the full backup, rather than in the default `/incrementals` directory:
+<a name="backup-earlier-behavior"></a>To take incremental backups that are [stored in the same way as v21.2]({% link v21.2/take-full-and-incremental-backups.md %}#backup-collections) and earlier, you can use the `incremental_location` option. You can specify the same `collectionURI` with `incremental_location` and the backup will place the incremental backups in a date-based path under the full backup, rather than in the default `/incrementals` directory:
 
 ~~~ sql
 BACKUP INTO LATEST IN '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH incremental_location = '{collectionURI}';
@@ -271,7 +265,7 @@ For details on cloud storage URLs, see [Use Cloud Storage]({% link {{ page.versi
 
 ### Scheduled backups
 
-You can use [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) to set a recurring schedule for full and incremental backups. To create a schedule that includes incremental backups, you must have an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+You can use [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) to set a recurring schedule for full and incremental backups.
 
 Include the `FULL BACKUP ALWAYS` clause for a schedule to take only full backups. For example, to create a schedule for taking full cluster backups:
 
@@ -382,10 +376,6 @@ To create a table with `exclude_data_from_backup`, see [Create a table with data
 ### Advanced examples
 
 {% include {{ page.version.version }}/backups/advanced-examples-list.md %}
-
-{{site.data.alerts.callout_info}}
-To take incremental backups, backups with revision history, locality-aware backups, and encrypted backups, you need an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
-{{site.data.alerts.end}}
 
 ## See also
 

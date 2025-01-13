@@ -224,7 +224,7 @@
                         ]
                       },
                       {
-                        "title": "Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault",
+                        "title": "Manage PKI certificates with HashiCorp Vault",
                         "urls": [
                           "/${VERSION}/manage-certs-vault.html"
                         ]
@@ -236,7 +236,7 @@
                         ]
                       },
                       {
-                        "title": "Using Online Certificate Status Protocol (OCSP) with CockroachDB",
+                        "title": "Use Online Certificate Status Protocol (OCSP)",
                         "urls": [
                           "/${VERSION}/manage-certs-revoke-ocsp.html"
                         ]
@@ -307,7 +307,7 @@
                     "title": "Security Tutorials",
                     "items": [
                         {
-                            "title": "Using Hashicorp Vault's Dynamic Secrets for Enhanced Database Credential Security",
+                            "title": "Use Hashicorp Vault's Dynamic Secrets",
                             "urls": [
                                 "/${VERSION}/vault-db-secrets-tutorial.html"
                             ]
@@ -365,6 +365,12 @@
                     "title": "Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments",
                     "urls": [
                       "/${VERSION}/essential-metrics-self-hosted.html"
+                    ]
+                  },
+                  {
+                    "title": "Essential Alerts for CockroachDB {{ site.data.products.core }} Deployments",
+                    "urls": [
+                      "/${VERSION}/essential-alerts-self-hosted.html"
                     ]
                   }
             ]
@@ -776,6 +782,18 @@
                 "title": "Log SQL Statistics to Datadog",
                 "urls": [
                   "/${VERSION}/log-sql-statistics-to-datadog.html"
+                ]
+              },
+              {
+                "title": "Logging Best Practices",
+                "urls": [
+                  "/${VERSION}/logging-best-practices.html"
+                ]
+              },
+              {
+                "title": "Critical Log Messages",
+                "urls": [
+                  "/${VERSION}/critical-log-messages.html"
                 ]
               }
             ]

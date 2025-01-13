@@ -18,7 +18,7 @@ We recommend setting up monitoring to alert when anomalies occur. You can then u
 - [`SHOW JOBS`](show-jobs.html)
 - [`SHOW BACKUP`](show-backup.html)
 
-For detail on [managed-service backups](../cockroachcloud/use-managed-service-backups.html) that Cockroach Labs stores for your CockroachDB {{ site.data.products.cloud }} cluster, see the **Backups** page in the Cloud Console.
+For detail on [managed backups](../cockroachcloud/managed-backups.html) that Cockroach Labs stores for your CockroachDB {{ site.data.products.cloud }} cluster, see the **Backups** page in the Cloud Console.
 
 {% include {{ page.version.version }}/backups/metrics-per-node.md %}
 
@@ -35,7 +35,7 @@ We recommend the following guidelines:
 - Use the `schedules_backup_last_completed_time` metric to monitor the specific backup job or jobs you would use to recover from a disaster.
 - Configure alerting on the `schedules_backup_last_completed_time` metric to watch for cases where the timestamp has not moved forward as expected.
 
-Metric | Description 
+Metric | Description
 -------+-------------
 `schedules_backup_succeeded` | The number of scheduled backup jobs that have succeeded.
 `schedules_backup_started` | The number of scheduled backup jobs that have started.
@@ -60,12 +60,12 @@ Metric | Description
 
 To use the Datadog integration with your **CockroachDB {{ site.data.products.dedicated }}** cluster, you can:
 
-- Export the following schedule backup metrics to Datadog using the [Cloud API](../cockroachcloud/cloud-api.html). To set this up, see [Export Metrics From a CockroachDB Dedicated Cluster](../cockroachcloud/export-metrics.html?filters=datadog-metrics-export).
-- Access the Cloud Console **Monitoring** page to enable the integration. To set this up, see [Monitor CockroachDB Dedicated with Datadog](../cockroachcloud/tools-page.html#monitor-cockroachdb-dedicated-with-datadog).
+- Export the following schedule backup metrics to Datadog using the [Cloud API]({% link cockroachcloud/cloud-api.md %}). To set this up, refer to [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export).
+- Access the Cloud Console **Monitoring** page to enable the integration. To set this up, refer to [Monitor CockroachDB Cloud with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-cloud-with-datadog).
 
 ### Available metrics in Datadog
 
-Metric | Description 
+Metric | Description
 -------+-------------
 `schedules_backup_succeeded` | The number of scheduled backup jobs that have succeeded.
 `schedules_backup_started` | The number of scheduled backup jobs that have started.

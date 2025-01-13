@@ -54,21 +54,9 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Low estimated Request Units are rounded to zero
 
-The [Request Units](https://www.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-serverless#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
+The [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
-
-### Statistics for deleted tables in `system.table_statistics` do not get removed
-
-When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
-
-### Collection of statistics for virtual computed columns
-
-CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}).
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
 
 ### `AS OF SYSTEM TIME` does not support placeholders
 
@@ -409,9 +397,12 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
 
-### Automatic statistics refresher may not refresh after upgrade
+### Statistics limitations
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
+{% include {{ page.version.version }}/known-limitations/forecasted-stats-limitations.md %}
+- When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
+- CockroachDB does not collect statistics for [virtual computed columns]({% link {{ page.version.version }}/computed-columns.md %}). This can prevent the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index]({% link {{ page.version.version }}/expression-indexes.md %}). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
 
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
@@ -474,6 +465,10 @@ The [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) statemen
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
+
+### `SHOW BACKUP` does not support symlinks for nodelocal
+
+{% include {{page.version.version}}/known-limitations/show-backup-symlink.md %}
 
 ### DB Console may become inaccessible for secure clusters
 

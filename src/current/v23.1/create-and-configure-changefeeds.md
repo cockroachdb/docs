@@ -14,15 +14,15 @@ This page describes:
 
 ## Before you create a changefeed
 
-1. Enable rangefeeds on CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
-1. Decide on whether you will run an {{ site.data.products.enterprise }} or Core changefeed. Refer to the [Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page for a comparative capability table.
+1. Enable rangefeeds on CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
+1. Decide on whether you will run an {{ site.data.products.enterprise }} or basic changefeed. Refer to the [Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page for a comparative capability table.
 1. Plan the number of changefeeds versus the number of tables to include in a single changefeed for your cluster. {% include {{ page.version.version }}/cdc/changefeed-number-limit.md %} Refer to [System resources and running changefeeds](#system-resources-and-running-changefeeds) and [Recommendations for the number of target tables](#recommendations-for-the-number-of-target-tables).
 1. Consider whether your {{ site.data.products.enterprise }} [changefeed use case](#create) would be better served by [change data capture queries]({% link {{ page.version.version }}/cdc-queries.md %}) that can filter data on a single table. CDC queries can improve the efficiency of changefeeds because the job will not need to encode as much change data.
 1. Read the [Considerations](#considerations) section that provides information on changefeed interactions that could affect how you configure or run your changefeed.
 
 ### Enable rangefeeds
 
-Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
+Changefeeds connect to a long-lived request called a _rangefeed_, which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
 
 **Rangefeeds must be enabled for a changefeed to work.** To [enable the cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}):
 
@@ -31,9 +31,9 @@ Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes ch
 SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
 
-{% include {{ page.version.version }}/cdc/cdc-cloud-rangefeed.md %}
+Any created changefeeds will error until this setting is enabled. If you are working on a CockroachDB Serverless cluster, the `kv.rangefeed.enabled` cluster setting is enabled by default.
 
-Any created changefeeds will error until this setting is enabled. Note that enabling rangefeeds currently has a small performance cost (about a 5-10% increase in latencies), whether or not the rangefeed is being used in a changefeed.
+Enabling rangefeeds has a small performance cost (about a 5–10% increase in write latencies), whether or not the rangefeed is being used in a changefeed. When `kv.rangefeed.enabled` is set to `true`, a small portion of the latency cost is caused by additional write event information that is sent to the [Raft log]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft-logs) and for [replication]({% link {{ page.version.version }}/architecture/replication-layer.md %}). The remainder of the latency cost is incurred once a changefeed is running; the write event information is reconstructed and sent to an active rangefeed, which will push the event to the changefeed.
 
 The `kv.closed_timestamp.target_duration` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) can be used with changefeeds. Resolved timestamps will always be behind by at least the duration configured by this setting. However, decreasing the duration leads to more transaction restarts in your cluster, which can affect performance.
 
@@ -75,7 +75,7 @@ The following Enterprise and Core sections outline how to create and configure e
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="enterprise">Enterprise Changefeeds</button>
-  <button class="filter-button" data-scope="core">Core Changefeeds</button>
+  <button class="filter-button" data-scope="core">Basic Changefeeds</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="enterprise">
@@ -193,9 +193,9 @@ For more information, refer to [`CANCEL JOB`]({% link {{ page.version.version }}
 
 ## Create a changefeed
 
-A core changefeed streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
+A basic changefeed streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
 
-To create a core changefeed:
+To create a basic changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -10,8 +10,8 @@ Replication zones give you the power to control what data goes where in your Coc
 
 - Databases
 - Tables
-- Rows ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}))
-- Indexes ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}))
+- Rows
+- Indexes
 - All data in the cluster, including internal system data ([via the default replication zone](#view-the-default-replication-zone))
 
 For each of these objects you can control:
@@ -37,7 +37,7 @@ When a cluster starts, there are two categories of replication zone:
 1. Pre-configured replication zones that apply to internal system data.
 1. A single default replication zone that applies to the rest of the cluster.
 
-You can adjust these pre-configured zones as well as add zones for individual databases, tables, rows, and secondary indexes as needed.  Note that adding zones for rows and secondary indexes is [Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+You can adjust these pre-configured zones as well as add zones for individual databases, tables, rows, and secondary indexes as needed.
 
 For example, you might rely on the [default zone](#view-the-default-replication-zone) to spread most of a cluster's data across all of your availability zones, but [create a custom replication zone for a specific database](#create-a-replication-zone-for-a-database) to make sure its data is only stored in certain availability zones and/or geographies.
 
@@ -50,8 +50,8 @@ Level | Description
 Cluster | CockroachDB comes with a pre-configured `default` replication zone that applies to all table data in the cluster not constrained by a database, table, or row-specific replication zone. This zone can be adjusted but not removed. See [View the Default Replication Zone](#view-the-default-replication-zone) and [Edit the Default Replication Zone](#edit-the-default-replication-zone) for more details.
 Database | You can add replication zones for specific databases. See [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database) for more details.
 Table | You can add replication zones for specific tables. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table).
-Index ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %})) | The [secondary indexes]({% link {{ page.version.version }}/indexes.md %}) on a table will automatically use the replication zone for the table. However, with an Enterprise license, you can add distinct replication zones for secondary indexes. See [Create a Replication Zone for a Secondary Index](#create-a-replication-zone-for-a-secondary-index) for more details.
-Row ([Enterprise-only]({% link {{ page.version.version }}/enterprise-licensing.md %})) | You can add replication zones for specific rows in a table or secondary index by [defining table partitions]({% link {{ page.version.version }}/partitioning.md %}). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-partition) for more details.
+Index | The [secondary indexes]({% link {{ page.version.version }}/indexes.md %}) on a table will automatically use the replication zone for the table. However, with an Enterprise license, you can add distinct replication zones for secondary indexes. See [Create a Replication Zone for a Secondary Index](#create-a-replication-zone-for-a-secondary-index) for more details.
+Row | You can add replication zones for specific rows in a table or secondary index by [defining table partitions]({% link {{ page.version.version }}/partitioning.md %}). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-partition) for more details.
 
 ### For system data
 

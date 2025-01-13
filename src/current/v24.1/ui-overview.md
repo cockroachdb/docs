@@ -11,12 +11,12 @@ The DB Console provides details about your cluster and database configuration, a
 {{site.data.alerts.callout_info}}
 Authorized CockroachDB {{ site.data.products.dedicated }} cluster users can visit the DB Console at a URL provisioned for the cluster.
 
-Refer to: [Network Authorization for CockroachDB Cloud Clusters&mdash;DB Console](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization#db-console)
+Refer to: [Network Authorization for CockroachDB Cloud Clusters&mdash;DB Console]({% link cockroachcloud/network-authorization.md %}#db-console)
 {{site.data.alerts.end}}
 
 ## Authentication
 
-The DB Console supports username/password login, as well single sign-on (SSO) ({{ site.data.products.dedicated }} and {{ site.data.products.core }} {{ site.data.products.enterprise }} clusters only).
+The DB Console supports username/password login and single sign-on (SSO) for {{ site.data.products.advanced }} and {{ site.data.products.enterprise }} clusters.
 
 The DB Console sign-on page can also be used to provision authentication tokens for SQL client access.
 
@@ -32,8 +32,8 @@ Refer to:
 The Overview page provides a cluster overview and node list and map.
 
 - [Cluster Overview]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}) has essential metrics about the cluster and nodes, including liveness status, replication status, uptime, and hardware usage.
-- [Node List]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-map-enterprise) has a list of cluster metrics at the locality and node levels.
-- [Node Map]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-map-enterprise) displays a geographical configuration of your cluster and metrics at the locality and node levels, visualized on a map.
+- [Node List]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-map) has a list of cluster metrics at the locality and node levels.
+- [Node Map]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-map) displays a geographical configuration of your cluster and metrics at the locality and node levels, visualized on a map.
 
 ### Metrics
 
@@ -149,7 +149,9 @@ By default, the DB Console shares anonymous usage details with Cockroach Labs. F
 
 ## License expiration message
 
-If you have [set a license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) to use [enterprise features]({% link {{ page.version.version }}/enterprise-licensing.md %}), a license expiration message is displayed at the top-right of the DB Console. While the license is valid, the message will read `License expires in X days`, where `X` is the number of days. If the license is no longer valid, the message will read `License expired X days ago`. Hovering over either message displays a tooltip with the expiration date of the license.
+If you have [set a license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license), a license expiration message is displayed at the top-right of the DB Console. While the license is valid, the message will read `License expires in X days`, where `X` is the number of days. If the license is no longer valid, the message will read `License expired X days ago`. Hovering over either message displays a tooltip with the expiration date of the license.
+
+{% include common/license-expiration-messages.md %}
 
 ## See also
 

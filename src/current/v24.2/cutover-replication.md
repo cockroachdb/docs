@@ -167,17 +167,21 @@ During a replication stream, jobs running on the primary cluster will replicate 
 [Backup schedules]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}) will pause after cutover on the promoted cluster. Take the following steps to resume jobs:
 
 1. Verify that there are no other schedules running backups to the same [collection of backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections), i.e., the schedule that was running on the original primary cluster.
-1. Resume the backup schedule on the promoted cluster.
+1. [Resume]({% link {{ page.version.version }}/resume-schedules.md %}) the backup schedule on the promoted cluster.
 
 {{site.data.alerts.callout_info}}
-If your backup schedule was created on a cluster in v23.1 or earlier, it will **not** pause automatically on the promoted cluster after cutover. In this case, you must pause the schedule manually on the promoted cluster and then take the outlined steps.
+If your backup schedule was created on a cluster in v23.1 or earlier, it will **not** pause automatically on the promoted cluster after cutover. In this case, you must [pause]({% link {{ page.version.version }}/pause-schedules.md %}) the schedule manually on the promoted cluster and then take the outlined steps.
 {{site.data.alerts.end}}
 
 ### Changefeeds
 
 [Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will fail on the promoted cluster immediately after cutover to avoid two clusters running the same changefeed to one sink. We recommend that you recreate changefeeds on the promoted cluster.
 
-[Scheduled changefeeds]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) will continue on the promoted cluster. You will need to manage [pausing]({% link {{ page.version.version }}/pause-schedules.md %}) or [canceling]({% link {{ page.version.version }}/drop-schedules.md %}) the schedule on the promoted standby cluster to avoid two clusters running the same changefeed to one sink.
+{% include_cached new-in.html version="v24.2" %} To avoid multiple clusters running the same schedule concurrently, [changefeed schedules]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) will [pause]({% link {{ page.version.version }}/pause-schedules.md %}) after physical cluster replication has completed.
+
+{{site.data.alerts.callout_info}}
+If your changefeed schedule was created on a cluster in v24.1 or earlier, it will **not** pause automatically on the promoted cluster after cutover. In this case, you will need to manage [pausing]({% link {{ page.version.version }}/pause-schedules.md %}) or [canceling]({% link {{ page.version.version }}/drop-schedules.md %}) the schedule on the promoted standby cluster to avoid two clusters running the same changefeed to one sink.
+{{site.data.alerts.end}}
 
 ## Cut back to the primary cluster
 
@@ -283,10 +287,6 @@ This section illustrates the steps to cut back to the original primary cluster f
     ALTER VIRTUAL CLUSTER {cluster_a} COMPLETE REPLICATION TO LATEST;
     ~~~
 
-    {{site.data.alerts.callout_danger}}
-    {% include {{ page.version.version }}/physical-replication/fast-cutback-latest-timestamp.md %}
-    {{site.data.alerts.end}}
-
     The `cutover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any data above this timestamp:
 
     ~~~
@@ -314,7 +314,7 @@ At this point, **Cluster A** is once again the primary and **Cluster B** is once
 
 ### Cut back after PCR from an existing cluster
 
-{% include_cached new-in.html version="v24.1" %} You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. For instructions on setting up a replication stream in this way, refer to [Set up PCR from an existing cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#set-up-pcr-from-an-existing-cluster).
+You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. For instructions on setting up a replication stream in this way, refer to [Set up PCR from an existing cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#set-up-pcr-from-an-existing-cluster).
 
 After a [cutover]({% link {{ page.version.version }}/cutover-replication.md %}) to the standby cluster, you may want to then set up a replication stream from the original standby cluster, which is now the primary, to another cluster, which will become the standby. There are couple of ways to set up a new standby, and some considerations.
 

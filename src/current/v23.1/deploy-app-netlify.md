@@ -1,13 +1,13 @@
 ---
 title: Deploy a Netlify App Built on CockroachDB
-summary: Learn how to use Netlify and CockroachDB Serverless.
+summary: Learn how to use Netlify and CockroachDB Standard.
 toc: true
 twitter: false
 referral_id: docs_netlify
 docs_area: get_started
 ---
 
-This tutorial shows you how to deploy a [Netlify](https://www.netlify.com/) web application that communicates with a CockroachDB {{ site.data.products.serverless }} cluster.
+This tutorial shows you how to deploy a [Netlify](https://www.netlify.com/) web application that communicates with a CockroachDB {{ site.data.products.standard }} cluster.
 
 The sample app used in this tutorial simulates [a gaming leaderboard](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/). The [Netlify functions](https://www.netlify.com/products/functions/) used for the app are written in TypeScript. The functions use [Prisma](https://www.prisma.io/) to connect to CockroachDB. The app's frontend, also written in TypeScript, uses React, bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -21,9 +21,9 @@ Before starting the tutorial, do the following:
 
 1. Create a Starter [Netlify](https://app.netlify.com/signup) account. You can do this with your GitHub login credentials.
 
-## Step 1. Create a CockroachDB {{ site.data.products.serverless }} cluster
+## Step 1. Create a CockroachDB {{ site.data.products.standard }} cluster
 
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+{% include cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
 <a name="connection-string"></a>
 

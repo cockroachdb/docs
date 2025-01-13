@@ -8,7 +8,7 @@ docs_area: manage
 [Kibana](https://www.elastic.co/kibana/) is a platform that visualizes data on the [Elastic Stack](https://www.elastic.co/elastic-stack/). This page shows how to use the [CockroachDB module for Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html) to collect metrics exposed by your CockroachDB {{ site.data.products.core }} cluster's [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) in Elasticsearch and how to visualize those metrics with Kibana.
 
 {{site.data.alerts.callout_success}}
-To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) instead of this page.
+To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/export-metrics.md %}) instead of this page.
 {{site.data.alerts.end}}
 
 In this tutorial, you will enable the CockroachDB module for Metricbeat and visualize the data in Kibana.
@@ -27,7 +27,7 @@ Either of the following:
 - Self-managed [Elastic Stack](https://www.elastic.co/guide/en/elastic-stack-get-started/current/get-started-elastic-stack.html) with [Metricbeat installed](https://www.elastic.co/guide/en/beats/metricbeat/7.13/metricbeat-installation-configuration.html)
 
 {{site.data.alerts.callout_info}}
-This tutorial assumes that you have [started a secure CockroachDB cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}). [CockroachDB {{ site.data.products.cloud }}](https://www.cockroachlabs.com/docs/cockroachcloud) does not expose a compatible monitoring endpoint.
+This tutorial assumes that you have [started a secure CockroachDB cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}). [CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/index.md %}) does not expose a compatible monitoring endpoint.
 {{site.data.alerts.end}}
 
 ## Step 1. Enable CockroachDB module

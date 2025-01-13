@@ -1,4 +1,4 @@
-You can rotate a CMEK key for a CockroachDB {{ site.data.products.dedicated }} cluster either by creating a new version of the existing CMEK key or by creating a new CMEK key. At a high level:
+You can rotate a CMEK key for a CockroachDB {{ site.data.products.advanced }} cluster either by creating a new version of the existing CMEK key or by creating a new CMEK key. At a high level:
 
 **To begin using a new version of an existing CMEK key**:
 

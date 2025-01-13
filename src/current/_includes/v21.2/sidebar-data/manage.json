@@ -12,9 +12,9 @@
           ]
         },
         {
-          "title": "Manage a CockroachDB Serverless Cluster",
+          "title": "Manage a CockroachDB Serverless (Basic) Cluster",
           "urls": [
-            "/cockroachcloud/serverless-cluster-management.html"
+            "/cockroachcloud/basic-cluster-management.html"
           ]
         },
         {
@@ -99,13 +99,13 @@
             {
               "title": "Take and Restore Customer-Owned Backups",
               "urls": [
-                "/cockroachcloud/take-and-restore-customer-owned-backups.html"
+                "/cockroachcloud/take-and-restore-self-managed-backups.html"
               ]
             },
             {
               "title": "Use Managed-Service Backups",
               "urls": [
-                "/cockroachcloud/use-managed-service-backups.html"
+                "/cockroachcloud/managed-backups.html"
               ]
             }
           ]
@@ -429,28 +429,10 @@
                   ]
                 },
                 {
-                  "title": "Upgrade to v21.2",
-                  "urls": [
-                     "/cockroachcloud/upgrade-to-v21.2.html"
-                  ]
-                },
-                {
-                  "title": "Upgrade to v21.1",
-                  "urls": [
-                     "/cockroachcloud/upgrade-to-v21.1.html"
-                  ]
-                },
-                {
-                  "title": "Upgrade to v20.2",
-                  "urls": [
-                     "/cockroachcloud/upgrade-to-v20.2.html"
-                  ]
-                },
-                {
-                  "title": "Upgrade to v20.1",
-                  "urls": [
-                     "/cockroachcloud/upgrade-to-v20.1.html"
-                  ]
+                    "title": "Upgrade a cluster",
+                    "urls": [
+                        "/cockroachcloud/upgrade-cockroach-version.html"
+                    ]
                 }
               ]
             },

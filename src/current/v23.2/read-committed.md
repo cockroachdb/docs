@@ -80,7 +80,7 @@ To set all future transactions to run at `READ COMMITTED` isolation, use one of 
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
-	cockroach sql -–url='postgresql://{username}@{host}:{port}/{database}?options=-c default_transaction_isolation=read%20committed'
+	cockroach sql --url='postgresql://{username}@{host}:{port}/{database}?options=-c default_transaction_isolation=read\ committed'
 	~~~
 
 To view the default isolation level of the session:
@@ -423,7 +423,7 @@ In this scenario:
 - A hospital has an application for doctors to manage their on-call shifts.
 - The hospital has a rule that at least one doctor must be on call at any one time.
 - Two doctors are on call for a particular shift, and both of them try to request leave for the shift in two concurrent transactions.
-- Under the `READ COMMITTED` isolation level, the [write skew anomaly](#write-skew-anomaly) anomaly can potentially result in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift. 
+- Under the `READ COMMITTED` isolation level, the [write skew anomaly](#write-skew-anomaly) can potentially result in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift. 
 
 The following examples demonstrate how to:
 

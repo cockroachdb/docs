@@ -293,10 +293,6 @@ Insufficient disk I/O can cause [poor SQL performance](#service-latency) and pot
 
 - The Linux tool `iostat` (part of `sysstat`) can be used to monitor IOPS. In the device status output, `avgqu-sz` corresponds to the **Disk Ops In Progress** metric. If service times persist in double digits on any node, this means that your storage device is saturated and is likely under-provisioned or misconfigured.
 
-{{site.data.alerts.callout_success}}
-Ensure that you [properly configure storage](#storage-and-disk-monitoring) to prevent I/O bottlenecks. Afterward, if service times consistently exceed 1-5 ms, you can add more devices or expand the cluster to reduce the disk latency.
-{{site.data.alerts.end}}
-
 With insufficient disk I/O, you may also see:
 
 - Degradation in [SQL response time](#service-latency).
@@ -327,4 +323,4 @@ Because each node needs to update a liveness record on disk, maxing out disk ban
 - [Troubleshoot SQL Behavior]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
 - [Admission Control]({% link {{ page.version.version }}/admission-control.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
-- [Alerts Page](https://www.cockroachlabs.com/docs/cockroachcloud/alerts-page) (CockroachDB {{ site.data.products.dedicated }})
+- [Alerts Page]({% link cockroachcloud/alerts-page.md %}) (CockroachDB {{ site.data.products.advanced }})

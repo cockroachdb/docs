@@ -18,12 +18,6 @@
             ]
           },
           {
-            "title": "Cloud Infrastructure",
-            "urls": [
-              "/cockroachcloud/architecture.html"
-            ]
-          },
-          {
             "title": "SQL Layer",
             "urls": [
               "/${VERSION}/architecture/sql-layer.html"
@@ -303,15 +297,15 @@
             ]
           },
           {
-            "title": "Unsupported Features in Serverless",
-            "urls": [
-              "/cockroachcloud/serverless-unsupported-features.html"
-            ]
-          },
-          {
             "title": "API Support Policy",
             "urls": [
               "/${VERSION}/api-support-policy.html"
+            ]
+          },
+          {
+            "title": "Telemetry Collected by CockroachDB",
+            "urls": [
+              "/${VERSION}/telemetry.html"
             ]
           }
         ]

@@ -11,8 +11,8 @@ Transaction retry errors fall into two categories:
 
 - *Serialization errors* indicate that a transaction failed because it could not be placed into a serializable ordering among all of the currently-executing transactions. 
 
-   - Under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation, these errors are generally addressed with client-side intervention, where the client [initiates a restart of the transaction](#client-side-retry-handling), and [adjusts application logic and tunes queries](#minimize-transaction-retry-errors) for greater performance.
-   - Under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation, serialization errors occur in [limited cases]({% link {{ page.version.version }}/read-committed.md %}#read-committed-abort) and can be avoided through workload changes or by increasing the [result buffer size](#result-buffer-size).
+   - [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) transactions must address these errors with client-side intervention, where the client [initiates a restart of the transaction](#client-side-retry-handling), and [adjusts application logic and tunes queries](#minimize-transaction-retry-errors) for greater performance.
+   - [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions do **not** return [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that require client-side handling.
 
 - *Internal state errors* indicate that the cluster itself is experiencing an issue, such as being [overloaded]({% link {{ page.version.version }}/ui-overload-dashboard.md %}), which prevents the transaction from completing. These errors generally require both cluster-side and client-side intervention, where an operator addresses an issue with the cluster before the client then [initiates a restart of the transaction](#client-side-retry-handling).
 
@@ -26,17 +26,13 @@ At the default `SERIALIZABLE` isolation level, CockroachDB always attempts to fi
 
 Whenever possible, CockroachDB will [auto-retry a transaction internally]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) without notifying the client. CockroachDB will only send a serialization error to the client when it cannot resolve the error automatically without client-side intervention.
 
-[`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions can transparently resolve serialization errors by [retrying individual statements]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-snapshots) rather than entire transactions. [Client-side retry handling](#client-side-retry-handling) is therefore **not** necessary under `READ COMMITTED` isolation.
+[`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions can transparently resolve serialization errors by [retrying individual statements]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-snapshots) rather than entire transactions.
 
 ## Actions to take
 
 {% include {{ page.version.version }}/performance/transaction-retry-error-actions.md %}
 
 ### Client-side retry handling
-
-{{site.data.alerts.callout_info}}
-Client-side retry handling is **not** necessary under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation.
-{{site.data.alerts.end}}
 
 When running under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation, your application should include client-side retry handling when the statements are sent individually, such as:
 
@@ -135,7 +131,7 @@ The error message for `RETRY_SERIALIZABLE` contains additional information about
 ```
 restart transaction: TransactionRetryWithProtoRefreshError: TransactionRetryError: retry txn (RETRY_SERIALIZABLE  - failed preemptive refresh due to conflicting locks on /Table/106/1/918951292305080321/0 [reason=wait_policy] - conflicting txn: meta={id=1b2bf263 key=/Table/106/1/918951292305080321/0 iso=Serializable pri=0.00065863 epo=0 ts=1700512205.521833000,2 min=1700512148.761403000,0 seq=1}): "sql txn" meta={id=07d42834 key=/Table/106/1/918951292305211393/0 iso=Serializable pri=0.01253025 epo=0 ts=1700512229.378453000,2 min=1700512130.342117000,0 seq=2} lock=true stat=PENDING rts=1700512130.342117000,0 wto=false gul=1700512130.842117000,0
 SQLSTATE: 40001
-HINT: See: https://www.cockroachlabs.com/docs/v23.2/transaction-retry-error-reference.html#retry_serializable
+HINT: See: https://www.cockroachlabs.com/docs/{{ page.version.version }}/transaction-retry-error-reference.html#retry_serializable
 ```
 
 **Error type:** Serialization error

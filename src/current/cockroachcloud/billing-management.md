@@ -9,13 +9,14 @@ The **Billing** page contains an overview of your charges and the payment detail
 
 ## Set up billing for an organization
 
-Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) role can manage billing for the organization. 
+Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) role can manage billing for the organization.
 
-You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit card, or you can set up billing through [AWS Marketplace](https://aws.amazon.com/marketplace), along with other AWS charges.
+You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit card, or you can set up billing through [AWS Marketplace](https://aws.amazon.com/marketplace) or [Google Cloud Marketplace](https://cloud.google.com/marketplace).
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="credit-card">Credit card</button>
-    <button class="filter-button page-level" data-scope="marketplace">AWS Marketplace</button>
+    <button class="filter-button page-level" data-scope="aws">AWS Marketplace</button>
+    <button class="filter-button page-level" data-scope="gcp">Google Cloud Marketplace</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="credit-card">
@@ -27,7 +28,7 @@ You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit car
 1. In the **Edit payment method** dialog, enter the credit or debit card details.
 1. Click **Save card**.
 1. Click **Add a billing email** in the **Billing contact info** section.
-1. In the **Edit billing email*** the email address at which you want to get invoices for the organization.
+1. In **Edit billing email** enter the email address at which you want to receive invoices for the organization.
 1. Click **Submit**.
 1. Click **Add a billing address** in the **Billing contact info** section.
 1. Enter the address associated with your payment method. This address appears on your monthly invoice and should be the legal address of your home or business.
@@ -37,7 +38,7 @@ You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit car
 
 1. On the **Billing** page, select the **Payment details** tab.
 1. Click the pencil icon for the **Email** field under **Billing contact info**.
-1. Enter the new email address at which you want get invoices for the organization.
+1. Enter the new email address at which you want to receive invoices for the organization.
 1. Click **Submit**.
 
 ## Change the payment method
@@ -54,17 +55,9 @@ You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit car
 
 We keep a card on file after the associated organization is deleted so we can process pending charges. You can [contact Support](https://support.cockroachlabs.com) to remove your card once your charges are settled.
 
-## Check trial code details
-
-If you used a CockroachDB {{ site.data.products.dedicated }} trial code while [creating a cluster]({% link cockroachcloud/create-your-cluster.md %}#step-6-enter-billing-details), you can check the trial expiration details on the **Overview** tab of the **Billing** page.
-
-{{site.data.alerts.callout_info}}
-Your credit card will be charged after the trial ends.
-{{site.data.alerts.end}}
-
 </section>
 
-<section class="filter-content" markdown="1" data-scope="marketplace">
+<section class="filter-content" markdown="1" data-scope="aws">
 
 ## Subscribe through AWS Marketplace
 
@@ -76,17 +69,17 @@ To subscribe to CockroachDB {{ site.data.products.cloud }} through the AWS Marke
 1. If you have access to multiple CockroachDB {{ site.data.products.cloud }} organizations, select an organization to update its billing configuration.
 
     {{site.data.alerts.callout_info}}
-    Organizations that are configured for invoice billing or are already linked to AWS Marketplace are not listed.
+    Organizations that are configured for invoice billing or are already linked to a cloud marketplace are not listed.
     {{site.data.alerts.end}}
 
-    
+
 1. Click **Subscribe to AWS Marketplace**.
 
 
 ## Unsubscribe from AWS Marketplace
 
 {{ site.data.alerts.callout_danger }}
-After you unsubscribe your CockroachDB {{ site.data.products.cloud }} from AWS Marketplace billing, clusters will be deleted and applications may be disrupted unless you [add a credit card](#add-a-credit-card) within 6 hours after you unsubscribe from AWS Marketplace billing.
+After you unsubscribe your CockroachDB {{ site.data.products.cloud }} from AWS Marketplace billing, clusters will be deleted and applications may be disrupted unless you add an alternate payment method within 6 hours after you unsubscribe from AWS Marketplace billing.
 {{ site.data.alerts.end }}
 
 
@@ -99,9 +92,44 @@ To unsubscribe from CockroachDB {{ site.data.products.cloud }}:
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="gcp">
+
+## Subscribe through Google Cloud Marketplace
+
+To subscribe to CockroachDB Cloud through the Google Cloud Marketplace:
+
+1. From the [Google Cloud Marketplace page for CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go), click **Subscribe** to open the **Order Summary** page  
+2. **Select a billing account** and agree to **Additional Terms**, then click **Subscribe**.   
+3. Click **Go to Product Page**. You will be redirected to the [Google Cloud Marketplace page for CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go).
+4. From the product page, click **Sign up with Cockroach Labs**. You will be redirected to the CockroachDB Cloud console.
+5. [Register]({% link cockroachcloud/create-an-account.md %}#register-a-new-account) a new CockroachDB Cloud account or sign in to your existing account.
+6. If you have access to multiple CockroachDB Cloud organizations, select an organization to update its billing configuration.
+    {{site.data.alerts.callout_info}}
+    Organizations that are configured for invoice billing or are already linked to a cloud marketplace are not listed.
+    {{site.data.alerts.end}}
+7. Click **Subscribe to Google Cloud Marketplace**.
+    {{site.data.alerts.callout_info}}
+    If your Google Account was previously subscribed to CockroachDB (pay-as-you-go) through the Google Cloud Marketplace and you are unable to re-subscribe, please contact our [support team](https://support.cockroachlabs.com) for assistance.
+    {{site.data.alerts.end}}   
+
+## Unsubscribe from Google Cloud Marketplace
+
+{{ site.data.alerts.callout_danger }}
+After you unsubscribe your CockroachDB {{ site.data.products.cloud }} from Google Cloud Marketplace billing, clusters will be deleted and applications may be disrupted unless you add an alternate payment method within 6 hours after you unsubscribe.
+{{ site.data.alerts.end }}
+
+To unsubscribe from CockroachDB Cloud:
+
+1. On the [Google Cloud Marketplace orders](https://console.cloud.google.com/marketplace/orders) page, **Select a billing account** from the dropdown.
+2. In the list of subscriptions, find **CockroachDB (pay-as-you-go)**.
+3. Click **Cancel Order** from the actions menu.
+4. Follow the instructions in the Cancel Order dialog, then click **Cancel Order** to unsubscribe your organization from billing through Google Cloud Marketplace.
+
+</section>
+
 ## View Credits balance
 
-If your organization has an annual contract with CockroachDB {{ site.data.products.cloud }}, the **Overview** tab of the **Billing** page will display the amount of available CockroachDB {{ site.data.products.cloud }} Credits you have remaining and the average number of Credits your organization consumes per day. At the end of each billing period, invoice payments will be deducted from your organization's Credits.
+If your organization has an annual contract with CockroachDB {{ site.data.products.cloud }}, the **Overview** tab of the **Billing** page displays the amount of available CockroachDB {{ site.data.products.cloud }} Credits you have remaining and the average number of Credits your organization consumes per day. At the end of each billing period, invoice payments are deducted from your organization's Credits.
 
 Under the **Credits** section, you can see more information about each of your organization's contracts. Contracts are listed in the order in which they will be used.
 

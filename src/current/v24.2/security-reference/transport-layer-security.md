@@ -8,21 +8,10 @@ security: true
 
 This page provides a conceptual overview of Transport Layer Security (TLS) and the related notion of Public Key Infrastructure (PKI), and sketches the security-architecture considerations in play when using CockroachDB.
 
-**Page contents:**
-
-- [What is Transport Layer Security (TLS)?](#what-is-transport-layer-security-tls)
-- [What is Public Key Infrastructure (PKI)?](#what-is-public-key-infrastructure-pki)
-- [PKI in CockroachDB](#pki-in-cockroachdb)
-- [CockroachDB's TLS support and operating modes](#cockroachdbs-tls-support-and-operating-modes)
-- [The CockroachDB certificate Trust Store](#the-cockroachdb-certificate-trust-store)
-- [TLS between CockroachDB nodes](#tls-between-cockroachdb-nodes)
-- [TLS in CockroachDB SQL client connections](#tls-in-cockroachdb-sql-client-connections)
-- [Revoking Certificates in CockroachDB](#revoking-certificates-in-cockroachdb)
-
 **Learn more:**
 
 - [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %})
-- [Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters](https://www.cockroachlabs.com/docs/cockroachcloud/client-certs-dedicated)
+- [Certificate Authentication for SQL Clients in CockroachDB Advanced Clusters]({% link cockroachcloud/client-certs-advanced.md %})
 
 ## What is Transport Layer Security (TLS)?
 
@@ -100,12 +89,12 @@ The core mechanism of PKI is the PKI certificate, also commonly known as a "secu
 
 A PKI certificate is a file containing the following:
 
-- A) A public key to be used for [encryption/decryption and to validate cryptographic signatures](#what-is-transport-layer-security-tls).
-- B) Some metadata about:
-	- the party that allegedly holds the corresponding private key and who therefore is the only one capable of decrypting messages encrypted with **A**, most importantly at least one **name**, such as a domain name in a domain name registry system (DNS). The certificate essentially functions as a badge or nametag, allowing the holder to claim to be the named party.
-	- the party signing the certificate, and the certificate authority (if any) that signed its public certificate
-	- the cryptographic signature created with the certificate authorities' private key
-- C) A list of actions the holder of the certificate's private key can be trusted to perform, if the certificate is trusted.
+- A public key to be used for [encryption/decryption and to validate cryptographic signatures](#what-is-transport-layer-security-tls).
+- Some metadata about:
+    - the party that allegedly holds the corresponding private key and who therefore is the only one capable of decrypting messages encrypted with **A**, most importantly at least one **name**, such as a domain name in a domain name registry system (DNS). The certificate essentially functions as a badge or nametag, allowing the holder to claim to be the named party.
+    - the party signing the certificate, and the certificate authority (if any) that signed its public certificate
+    - the cryptographic signature created with the certificate authorities' private key
+- A list of actions the holder of the certificate's private key can be trusted to perform, if the certificate is trusted.
 
 On its own, such a digital certificate is of no more value than a paper certificate. Perhaps less value, as it can be neither scribbled upon nor burned. However, if signed by a trusted certificate authority,  a digital certificate can then be used as an indicator that the entity with the corresponding private key is also to be trusted.
 
@@ -159,12 +148,12 @@ Refer to [Manage PKI certificates for a CockroachDB deployment with HashiCorp Va
 ## PKI in CockroachDB {{ site.data.products.cloud }}
 
 {{site.data.alerts.callout_success}}
-PKI for internode communication within CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.serverless }} clusters is managed automatically, without the need for any management by the user.
+PKI for internode communication of CockroachDB {{ site.data.products.cloud }} clusters is managed automatically, without the need for any management by the user.
 {{site.data.alerts.end}}
 
-Certificate authentication for SQL clients is available for CockroachDB {{ site.data.products.dedicated }} clusters.
+Certificate authentication for SQL clients is available for CockroachDB {{ site.data.products.advanced }} clusters.
 
-Refer to [Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters](https://www.cockroachlabs.com/docs/cockroachcloud/client-certs-dedicated) for procedural information on administering and using client certificate authentication.
+Refer to [Certificate Authentication for SQL Clients in CockroachDB Advanced]({% link cockroachcloud/client-certs-advanced.md %}) for procedural information on administering and using client certificate authentication.
 
 ## CockroachDB's TLS support and operating modes
 
@@ -218,7 +207,7 @@ Connections between CockroachDB nodes are always mutually TLS-authenticated. Eac
 
 Customers using CockroachDB {{ site.data.products.cloud }} need not worry about managing TLS keys for CockroachDB nodes, as cluster management is delegated to the Cockroach Labs team.
 
-### CockroachDB Self-Hosted
+### CockroachDB {{ site.data.products.core }}
 
 {{site.data.alerts.callout_info}}
 Customers who deploy and manage their own CockroachDB clusters must provision and manage certificates on each node, implementing their own PKI security. This entails ensuring that credentials are carefully controlled, monitoring for signs of compromise, and mitigating the impact of potential credential leaks. Authorization for issuing credentials is particularly critical, and this includes issuing private key/public certificate pairs for CockroachDB nodes or clients. Unmitigated compromise of either of these can have devastating business impact.
@@ -246,7 +235,7 @@ CockroachDB {{ site.data.products.cloud }} does not support certificate-authenti
 
 Because the server must still be TLS-authenticated, the client must know to trust the certificate authority that signed the public certificate identifying the server. The path to the CA's public certificate is passed as the `sslrootcert` parameter in a [database connection string]({% link {{ page.version.version }}/connect-to-the-database.md %}), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) CLI command.
 
-### Self-Hosted CockroachDB
+### CockroachDB {{ site.data.products.core }}
 
 {{site.data.alerts.callout_info}}
 Customers who deploy and manage their own CockroachDB clusters must provision and manage certificates on each node, implementing their own PKI security. This entails that you must ensure credentials are carefully controlled, monitoring for signs of compromise and mitigating the impact of potential credential leaks. Authorization for issuing credentials is particularly critical, and this includes issuing private key/public certificate pairs for CockroachDB nodes or clients. Unmitigated compromise of either of these can have devastating business impact.
@@ -285,9 +274,9 @@ These key files are used with the CockroachDB CLI by placing them in a directory
 
 Customers of CockroachDB {{ site.data.products.cloud }} delegate responsibility for maintaining cluster internal PKI to the Cockroach Labs team, and need not worry about securing authentication and encryption between cluster nodes.
 
-CockroachDB {{ site.data.products.cloud }} clusters do not support certificate based client authentication, but rely instead on username/password combination.
+Clusters in CockroachDB {{ site.data.products.cloud }} do not support certificate based client authentication, but rely instead on username/password combination.
 
-### CockroachDB Self-Hosted
+### CockroachDB {{ site.data.products.core }}
 
 CockroachDB does not support certificate revocation lists (CRLs). The remaining options are the Online Certificate Status Protocol (OCSP), and reliance on a rapid cycle of generating and propagating short-lived certificates.
 
