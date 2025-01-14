@@ -82,7 +82,7 @@ This section goes into detail about workload patterns which result in hotspots.
 
 **Synonyms**: golden keyspace hotspot, monotonically increasing index, a running tail, a moving tail
 
-An _index hotspot_ is a hotspot on an [index]({% link {{ page.version.version }}/indexes.md %}) where the key for writes is continually increasing. This is common with indexing by an increasing column (for example, with data type of [`SERIAL`]({% link {{ page.version.version }}/serial.md %}), [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}), or [`AUTO_INCREMENT`]({% link {{ page.version.version }}/serial.md %}auto-incrementing-is-not-always-sequential)). Index hotspots limit horizontal scaling as the index acts as a bottleneck.
+An _index hotspot_ is a hotspot on an [index]({% link {{ page.version.version }}/indexes.md %}) where the key for writes is continually increasing. This is common with indexing by an increasing column (for example, with data type of [`SERIAL`]({% link {{ page.version.version }}/serial.md %}), [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}), or [`AUTO_INCREMENT`]({% link {{ page.version.version }}/serial.md %}#auto-incrementing-is-not-always-sequential)). Index hotspots limit horizontal scaling as the index acts as a bottleneck.
 
 Consider a table `users` which contains a [primary key]({% link {{ page.version.version }}/primary-key.md %}) `user_id` that is an incrementing integer value. Each new key will be the current maximum key + 1. In this way, all writes appear at the index tail. The following image visualizes writes to the `users` table using an incrementing `INT` primary key. Note how all writes are focused at the tail of the index, represented by the red section in Range 4.
 
