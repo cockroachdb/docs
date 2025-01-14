@@ -225,6 +225,10 @@ You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or
 ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE DISCARD;
 ~~~
 
+#### Troubleshoot replication zones
+
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
+
 ### Define partitions
 
 #### Define a list partition on an index

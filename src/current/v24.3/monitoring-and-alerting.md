@@ -195,7 +195,7 @@ The critical nodes status endpoint is used to:
 
 - Check if any of your nodes are in a critical state.  A node is _critical_ if that node becoming unreachable would cause [replicas to become unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status).
 - Check if any ranges are [under-replicated or unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status). This is useful when determining whether a node is ready for [decommissioning]({% link {{ page.version.version }}/node-shutdown.md %}#decommissioning).
-- Check if any of your cluster's data placement constraints (set via [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) or direct [configuration of replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %})) are being violated. This is useful when implementing [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}).
+- Check if any of your cluster's data placement constraints (set via [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) or direct [configuration of replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %})) are being violated. This is useful when implementing [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}) or [troubleshooting zone configurations]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}) generally.
 
 {{site.data.alerts.callout_info}}
 This HTTP status endpoint supersedes the deprecated [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}) SQL API. Due to architectural changes in CockroachDB, the SQL queries described on that page will not result in correct output.
@@ -1216,3 +1216,4 @@ Currently, not all events listed have corresponding alert rule definitions avail
 - [Local Deployment]({% link {{ page.version.version }}/start-a-local-cluster.md %})
 - [Third-Party Monitoring Integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
+- [Troubleshoot Replication Zone Configurations]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %})
