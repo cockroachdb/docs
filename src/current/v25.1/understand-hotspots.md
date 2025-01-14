@@ -66,7 +66,7 @@ Write hotspots also have the unique effect of affecting more than a single node.
 
 _Pressure_ describes how close resources are to their limits and can be thought of as the force exerted on the actual resources in the system. Pressure can be directed towards disk I/O, CPU, memory, and even non-hardware resources like [locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#reading).
 
-It is especially useful when correlating pressure with activity, for example, the read pressure on Node 1 is coming from the key `/User/10`. Pressure is a useful term to describe resource limits, because it captures the ideas of [contention]]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), utilization, and throughput - all of which can be the source of a hotspot - under a single definition.
+It is especially useful when correlating pressure with activity, for example, the read pressure on Node 1 is coming from the key `/User/10`. Pressure is a useful term to describe resource limits, because it captures the ideas of [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), utilization, and throughput - all of which can be the source of a hotspot - under a single definition.
 
 ### Index Tail
 
@@ -82,53 +82,54 @@ This section goes into detail about workload patterns which result in hotspots.
 
 **Synonyms**: golden keyspace hotspot, monotonically increasing index, a running tail, a moving tail
 
-An _index hotspot_ is a hotspot on an index where the key for writes is continually increasing. This is common with indexing by an increasing column (e.g., SERIAL, TIMESTAMP, AUTO_INCREMENT). Index hotspots limit horizontal scaling as the index acts as a bottleneck.
+An _index hotspot_ is a hotspot on an [index]({% link {{ page.version.version }}/indexes.md %}) where the key for writes is continually increasing. This is common with indexing by an increasing column (for example, with data type of [`SERIAL`]({% link {{ page.version.version }}/serial.md %}), [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}), or [`AUTO_INCREMENT`]({% link {{ page.version.version }}/serial.md %}auto-incrementing-is-not-always-sequential)). Index hotspots limit horizontal scaling as the index acts as a bottleneck.
 
-Consider a table `users` which contains a primary key `user_id` that is an incrementing integer value. Each new key will be the current maximum key + 1. In this way, all writes appear at the index tail. The following image visualizes writes to the `users` table using an incrementing `INT` primary key. Note how all writes are focused at the tail of the index, represented by the red section in Range 4.
+Consider a table `users` which contains a [primary key]({% link {{ page.version.version }}/primary-key.md %}) `user_id` that is an incrementing integer value. Each new key will be the current maximum key + 1. In this way, all writes appear at the index tail. The following image visualizes writes to the `users` table using an incrementing `INT` primary key. Note how all writes are focused at the tail of the index, represented by the red section in Range 4.
 
 <img src="{{ 'images/v25.1/hotspots-figure-3.png' | relative_url }}" alt="incrementing INT primary key" style="border:1px solid #eee;max-width:100%" />
 
 If you are able to control for the performance degradation that occurs in Range 4 in this case, you do not change the fact that the system is now limited by how many writes a single range can execute. This then, in theory, limits CockroachDB to the performance of a single node, which is, by nature, antithetical to the goals of a distributed database.
 
-Index hotspots themselves are hot by write, moving hotspots which will continue to bounce around from range to range as the data grows.
+Index hotspots themselves are [hot by write](#write-hotspot), [moving hotspots](#moving-hotspot) which will continue to bounce around from range to range as the data grows.
 
 In the ideal operation of a distributed SQL database, inserts into an index should be distributed evenly in the index's span to avoid this type of hotspot. Each range responsible for storing keys receives an even share of the workload. If the ranges containing the data become hot in this mode, scaling the cluster is as easy as adding machines horizontally.
 
-Consider a table `users` which contains a primary keys `user_uuid`, a `UUID`. Because `UUID`s are pseudo random, new rows are inserted into the keyspace at random locations. The following image visualizes writes to the `users` table using a `UUID` primary key. Red lines indicate an insert into the keyspace. Note how the red lines are distributed evenly.
+Consider a table `users` which contains a primary keys `user_uuid` of type [`UUID`]({% link {{ page.version.version }}/uuid.md %}). Because `UUID`s are pseudo-random, new rows are inserted into the keyspace at random locations. The following image visualizes writes to the `users` table using a `UUID` primary key. Red lines indicate an insert into the keyspace. Note how the red lines are distributed evenly.
 
 <img src="{{ 'images/v25.1/hotspots-figure-2.png' | relative_url }}" alt="UUID primary key" style="border:1px solid #eee;max-width:100%" />
 
-Inserts are not the only way that index hotspots can occur. Consider the same table `users` which now has a secondary index on a `TIMESTAMP` column:
+Inserts are not the only way that index hotspots can occur. Consider the same table `users` which now has a [secondary index]({% link {{ page.version.version }}/schema-design-indexes.md %}) on a `TIMESTAMP` column:
 
 ~~~ sql
 # ddl
 CREATE TABLE profiles(
-   user_uuid UUID,
-   last_seen_at TIMESTAMP INDEX
+   user_uuid UUID PRIMARY KEY,
+   last_seen_at TIMESTAMP,
+   INDEX index_last_seen_at (last_seen_at)
 );
 
 # dml
-UPDATE profiles SET last_seen_at = CURRENT_TIMESTAMP WHERE user_uuid=?;
+INSERT INTO profiles (user_uuid, last_seen_at) VALUES ('d9efa555-e8fd-4793-9239-f484454980cc', CURRENT_TIMESTAMP()), ('e3fabd81-2e08-4f25-99fd-8cd7e2928bd1', CURRENT_TIMESTAMP());
+UPDATE profiles SET last_seen_at = CURRENT_TIMESTAMP() WHERE user_uuid='d9efa555-e8fd-4793-9239-f484454980cc';
 ~~~
 
-Because `CURRENT_TIMESTAMP` is a steadily increasing value, this `UPDATE` will similarly burden the range at the tail of the index. While hotspots on an index tail tend to be the most common, bottlenecks on the head are not unheard of. For example, indexing on `DESC` with the same insertion strategy will cause a hotspot.
+Because [`CURRENT_TIMESTAMP()`]({% link {{ page.version.version }}/functions-and-operators.md %}#date-and-time-functions) is a steadily increasing value, this [`UPDATE`]({% link {{ page.version.version }}/update.md %}) will similarly burden the range at the tail of the index. While hotspots on an index tail tend to be the most common, bottlenecks on the head are not unheard of. For example, indexing on [`DESC` with the same insertion strategy will cause a hotspot.
 
-In this page, the phrase _index hotspot_ will be reserved for a hot by write hotspot on an index, even though indexes can become hot due to read. This is because a hot by write index hotspot is the most common hotspot pattern that occurs now and in the future as workloads continue to be migrated from legacy single-node installations. Hot by read index hotspots are defined later on this page as _lookback hotspots_.
+In this page, the phrase _index hotspot_ will be reserved for a hot by write hotspot on an index, even though indexes can become hot due to read. This is because a hot by write index hotspot is the most common hotspot pattern that occurs now and in the future as workloads continue to be migrated from legacy single-node installations. Hot by read index hotspots are defined later on this page as [_lookback hotspots_](#lookback-hotspots).
 
 #### Resolving Index Hotspots
 
 The resolution of the index hotspot often depends on your requirements for the data. If the sequential nature of the index serves no purpose, it is recommended to change the writes into the index to be randomly distributed. Ideally, primary keys in this instance would be set to `UUID`s, if your tolerance for swapover or even downtime allows it.
 
-If inserting in sequential order is important, the index itself can be hash sharded, which means that it is still stored in order, albeit in some number of shards. Consider a `users` table, with a primary key `id INT`, which is hash sharded with 4 shards, and a hashing function of modulo 4. The following image illustrates this example:
+If inserting in sequential order is important, the index itself can be [hash sharded]({% link {{ page.version.version }}/hash-sharded-indexes.md %}), which means that it is still stored in order, albeit in some number of shards. Consider a `users` table, with a primary key `id INT`, which is hash sharded with 4 shards, and a hashing function of modulo 4. The following image illustrates this example:
 
 <img src="{{ 'images/v25.1/hotspots-figure-4.png' | relative_url }}" alt="Hash sharded example" style="border:1px solid #eee;max-width:100%" />
 
-Now the writes are distributed into the tails of the shards, rather than the tail of the whole index.
-This benefits write performance but makes reads more challenging. If you need to read a subset of the data, you will have to scan each shard of the index.
+Now the writes are distributed into the tails of the shards, rather than the tail of the whole index. This benefits write performance but makes reads more challenging. If you need to read a subset of the data, you will have to scan each shard of the index.
 
 #### Paradoxical Performance Implications
 
-A note on the index hotspot is that they paradoxically increase the efficiency of CockroachDB from the standpoint of the number of CPU cycles per write. This is primarily due to write compactions. As index hotspots continually move in a single direction, the SSTables (Sorted String Tables) generated by them have little overlap. Consequently, this results in minimal write throughput compared to a properly distributed workload.
+A note on the index hotspot is that they paradoxically increase the efficiency of CockroachDB from the standpoint of the number of CPU cycles per write. This is primarily due to [write compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction). As index hotspots continually move in a single direction, the [SST (Sorted String Table)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) files generated by them have little overlap. Consequently, this results in minimal write throughput compared to a properly distributed workload.
 
 #### Lookback Hotspots
 
@@ -141,10 +142,11 @@ For example, consider querying a `posts` table for the most recently created pos
 ~~~ sql
 CREATE TABLE posts(
    id UUID,
-   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP INDEX USING HASH
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   INDEX (created_at) USING HASH
 );
 
-SELECT MAX(created_at) FROM posts ORDER BY created_at LIMIT 1;
+SELECT MAX(created_at) FROM posts GROUP BY created_at ORDER BY created_at LIMIT 1;
 ~~~
 
 What makes lookback hotspots unique is that the cluster is not hot by write, but hot by read. Separately lookback hotspots also tend not to specify a key, which would evade systems using key requests to identify hotspots.
@@ -153,13 +155,13 @@ What makes lookback hotspots unique is that the cluster is not hot by write, but
 
 **Synonyms:** Outbox hotspot
 
-A _queuing hotspot_ is a type of index hotspot that occurs when an workload treats CockroachDB like a distributed queue. This can happen if you implement the Outbox microservice pattern.
+A _queuing hotspot_ is a type of index hotspot that occurs when an workload treats CockroachDB like a distributed queue. This can happen if you implement the [Outbox microservice pattern]({% link {{ page.version.version }}/cdc-queries.md %}#queries-and-the-outbox-pattern).
 
-Queues, such as logs, generally require data to be ordered by write, which necessitates indexing in a way that is likely to create a hotspot. An outbox where data is deleted as it is read has an additional problem: it tends to accumulate an ordered set of garbage data behind the live data. Since the system cannot determine whether any live rows exist within the garbage data, what appears to be a small table scan to the user can actually result in an unexpectedly intensive scan on the garbage data.
+Queues, such as logs, generally require data to be ordered by write, which necessitates indexing in a way that is likely to create a hotspot. An outbox where data is deleted as it is read has an additional problem: it tends to accumulate an ordered set of [garbage data]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-my-disk-usage-not-decreasing-after-deleting-data) behind the live data. Since the system cannot determine whether any live rows exist within the garbage data, what appears to be a small table scan to the user can actually result in an unexpectedly intensive scan on the garbage data.
 
 <img src="{{ 'images/v25.1/hotspots-figure-5.png' | relative_url }}" alt="Outbox hotspot example" style="border:1px solid #eee;max-width:100%" />
 
-To mitigate this issue, it is advisable to use Change Data Capture (CDC) to ensure subscription to updates instead of using Outbox tables. If using CDC is not possible, sharding the index that the outbox uses for ordering can reduce the likelihood of a hotspot within the cluster.
+To mitigate this issue, it is advisable to use [Change Data Capture (CDC)]({% link {{ page.version.version }}/cdc-queries.md %}) to ensure subscription to updates instead of using Outbox tables. If using CDC is not possible, sharding the index that the outbox uses for ordering can reduce the likelihood of a hotspot within the cluster.
 
 ### Row Hotspot
 
