@@ -1015,3 +1015,7 @@
 - destination: serverless-resource-usage.md
   sources: ['optimize-serverless-workload.md']
   versions: ['cockroachcloud']
+
+- destination: https://www.cockroachlabs.com/compare/
+  sources: ['cockroachdb-in-comparison.md']
+  versions: ['v23.1', 'v23.2', 'v24.1', 'v24.2', 'v24.3', 'v25.1']
