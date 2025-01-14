@@ -12,7 +12,7 @@ These definitions are not mutually exclusive. They can be combined to describe a
 
 ### Hotspot
 
-The word _hotspot_ describes various skewed data access patterns in a database cluster, often manifesting as higher CPU utilization on one or more nodes. Hotspots can also be based on disk I/O, memory usage, or other finite resources. Hotspots are troublesome because they are often limited to a fixed-size subset of the cluster’s resources, which puts them in a class of performance issues that cannot be solved by scaling the cluster size.
+The word _hotspot_ describes various skewed data access patterns in a database [cluster]({% link {{ page.version.version }}/architecture/overview.md %}#cluster), often manifesting as higher [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu) utilization on one or more [nodes]({% link {{ page.version.version }}/architecture/overview.md %}#node). Hotspots can also be based on [disk I/O]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#storage-and-disk-i-o), [memory]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#memory) usage, or other finite resources. Hotspots are troublesome because they are often limited to a fixed-size subset of the cluster’s resources, which puts them in a class of performance issues that cannot be solved by [scaling the cluster size]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-does-cockroachdb-scale).
 
 ### Hot Node
 
@@ -24,7 +24,7 @@ Identifying a hot node, or a node hotspot, is often part of troubleshooting hots
 
 All hotspot types described in this page will create hot nodes, as long as the cluster is not already operating at maximum capacity.
 
-The following image is a graph of CPU Percent utilization by node. Most of the nodes hover around 25%, while one hot node is around 95%. The fact that the hot node changes indicates that the hotspot is moving as the ranges containing writes fill up and split.
+The following image is a graph of [CPU Percent]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent) utilization by node. Most of the nodes hover around 25%, while one hot node is around 95%. The fact that the hot node changes indicates that the hotspot is moving as the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) containing writes fill up and split.
 
 <img src="{{ 'images/v25.1/hotspots-figure-1.png' | relative_url }}" alt="graph of CPU Percent utilization by node showing hot nodes" style="border:1px solid #eee;max-width:100%" />
 
@@ -32,23 +32,19 @@ The following image is a graph of CPU Percent utilization by node. Most of the n
 
 **Synonyms:** Range Hotspot
 
-A _hot range_ is one level down from the node hotspot. Ranges are the smallest unit of data distribution, making them critical in troubleshooting hotspots.
+A _hot range_ is one level down from the node hotspot. [Ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) are the smallest unit of data distribution, making them critical in troubleshooting hotspots.
 
 If a node is hot, it is often due to a single hot range. The system may split the hot range to redistribute the load or the range may stay hot until it fills up and splits. In the second case, the split is likely the continuation of the hotspot (as shown in the previous image). If the system is unable to identify a good splitting point for a hot range, the hot range becomes a bottleneck.
 
-Understanding which range is hot and having knowledge of the keyspace allows you to better approximate the nature of the hotspot compared to relying solely on node-level statistics.
+Understanding which range is hot and having knowledge of the [keyspace]({% link {{ page.version.version }}/architecture/overview.md %}#range) allows you to better approximate the nature of the hotspot compared to relying solely on node-level statistics.
 
 ### Moving Hotspot
 
-A _moving hotspot_ describes a hotspot that moves consistently during its life, either within the cluster  (from node to node) or the keyspace (for example, the last 10 inserted rows on table T). Moving hotspots are challenging because load balancing algorithms will not effectively partition the data to resolve them.
+A _moving hotspot_ describes a hotspot that moves consistently during its life, either within the cluster (from node to node) or the keyspace (for example, the last 10 inserted rows on table T). Moving hotspots are challenging because [load-based splitting]({% link {{ page.version.version }}/load-based-splitting.md %}) will not effectively partition the data to resolve them.
 
 ### Static Hotspot
 
-A _static hotspot_ remains fixed in the keyspace, though it may move from node to node. The underlying subject of the hotspot, whether a span or a key, remains the same.
-
-### Point Hotspot
-
-A _point hotspot_ is a hotspot that is inherently unsplittable, often referring to a single row in the system.
+A _static hotspot_ remains fixed in the keyspace, though it may move from node to node. The underlying subject of the hotspot, whether a [span]({% link {{ page.version.version }}/show-ranges.md %}#span-statistics) or a key, remains the same.
 
 ### Read Hotspot
 
@@ -64,19 +60,19 @@ While hotspots are often either hot by read or hot by write, they are seldom hot
 
 A _write hotspot_ is a hotspot caused by write throughput. Write hotspots increase the likelihood of contention within the hot node or range, therefore increasing the likelihood that the node or range can become unavailable.
 
-Write hotspots also have the unique effect of affecting more than a single node, since consensus and replication must take place, write hotspots often affect three nodes (the default replication factor) rather than just one node.
+Write hotspots also have the unique effect of affecting more than a single node. Since [consensus]({% link {{ page.version.version }}/architecture/overview.md %}#consensus) and [replication]({% link {{ page.version.version }}/architecture/overview.md %}#replication) must take place, write hotspots often affect three nodes (the default [replication factor]({% link {{ page.version.version }}/configure-replication-zones.md %})) rather than just one node.
 
 ### Read/Write Pressure
 
-_Pressure_ describes how close resources are to their limits and can be thought of as the force exerted on the actual resources in the system. Pressure can be directed towards disk I/O, CPU, memory, and even non-hardware resources like locks.
+_Pressure_ describes how close resources are to their limits and can be thought of as the force exerted on the actual resources in the system. Pressure can be directed towards disk I/O, CPU, memory, and even non-hardware resources like [locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#reading).
 
-It is especially useful when correlating pressure with activity, for example, the read pressure on Node 1 is coming from the key `/User/10`. Pressure is a useful term to describe resource limits, because it captures the ideas of contention, utilization, and throughput - all of which can be the source of a hotspot - under a single definition.
+It is especially useful when correlating pressure with activity, for example, the read pressure on Node 1 is coming from the key `/User/10`. Pressure is a useful term to describe resource limits, because it captures the ideas of [contention]]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), utilization, and throughput - all of which can be the source of a hotspot - under a single definition.
 
 ### Index Tail
 
 **Synonyms:** Index Maximum Present Key
 
-An _index tail_ is the largest existing key of an index, lexigraphically. Note that this is different from the index (such as `/Table/1/1`) or index spans (such as `[/Table/1/1, /Table/1/2)`), since these are not valid row key. An index tail instead refers to the last real key which appears in the index. For example, the head and tail of the index `/Table/1/1` are: `[/Table/1/1/aardvark, /Table/1/1/zultan]` 
+An _index tail_ is the largest existing key of an index, lexigraphically. Note that this is different from the index (such as `/Table/1/1`) or index spans (such as `[/Table/1/1, /Table/1/2)`), since these are not valid row keys. An index tail instead refers to the last real key which appears in the index. For example, the head and tail of the index `/Table/1/1` are: `[/Table/1/1/aardvark, /Table/1/1/zultan]` 
 
 ## Patterns
 
@@ -88,7 +84,7 @@ This section goes into detail about workload patterns which result in hotspots.
 
 An _index hotspot_ is a hotspot on an index where the key for writes is continually increasing. This is common with indexing by an increasing column (e.g., SERIAL, TIMESTAMP, AUTO_INCREMENT). Index hotspots limit horizontal scaling as the index acts as a bottleneck.
 
-Consider a table `users` which contains a primary key `user_id` that is an incrementing integer value. Each new key will be the current maximum key + 1. In this way, all writes appear at the index tail. The following image visualizes writes to the `users` table using an incrementing `INT` primary key. Note how all writes are focused at the tail of the index, represented by the the red section in Range 4.
+Consider a table `users` which contains a primary key `user_id` that is an incrementing integer value. Each new key will be the current maximum key + 1. In this way, all writes appear at the index tail. The following image visualizes writes to the `users` table using an incrementing `INT` primary key. Note how all writes are focused at the tail of the index, represented by the red section in Range 4.
 
 <img src="{{ 'images/v25.1/hotspots-figure-3.png' | relative_url }}" alt="incrementing INT primary key" style="border:1px solid #eee;max-width:100%" />
 
@@ -167,7 +163,7 @@ To mitigate this issue, it is advisable to use Change Data Capture (CDC) to ensu
 
 ### Row Hotspot
 
-**Synonyms:** hot key, hot row
+**Synonyms:** hot key, hot row, point hotspot
 
 A _row hotspot_ is a hotspot where an individual point in the keyspace becomes throughput limiting, often due to high activity on a single row. The word "point" illustrates the fact that the location that is hot is indivisible, and therefore cannot be rebalanced. A classic example is a social media application with a high volume of activity on certain users.
 
