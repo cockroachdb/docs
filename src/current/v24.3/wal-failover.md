@@ -27,7 +27,7 @@ When a disk stalls on a node, it could be due to complete hardware failure or it
 
 WAL failover uses a secondary disk to fail over WAL writes to when transient disk stalls occur. This limits the write impact to a few hundreds of milliseconds (the [failover threshold, which is configurable](#unhealthy-op-threshold)). Note that WAL failover **only preserves availability of writes**. If reads to the underlying storage are also stalled, operations that read and do not find data in the block cache or page cache will stall.
 
-The following diagram shows how WAL failover works at a high level. For more information about the WAL, Memtables, and SSTables, refer to the [Architecture &raquo; Storage Layer documentation]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
+The following diagram shows how WAL failover works at a high level. For more information about the WAL, memtables, and SSTables, refer to the [Architecture &raquo; Storage Layer documentation]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 
 <img src="{{ 'images/v24.3/wal-failover-overview.png' | relative_url }}" alt="WAL failover overview diagram"  style="border:1px solid #eee;max-width:100%" />
 
