@@ -169,6 +169,10 @@ For usage, see [Synopsis](#synopsis).
 If you directly change a database's zone configuration with `ALTER DATABASE ... CONFIGURE ZONE`, CockroachDB will block all [`ALTER DATABASE ... SET PRIMARY REGION`](#set-primary-region) statements on the database.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+{% include {{ page.version.version }}/zone-configs/avoid-manual-zone-configs.md %}
+{{site.data.alerts.end}}
+
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
 For examples, see [Replication Controls](#configure-replication-zones).
@@ -689,6 +693,10 @@ HINT: you must first drop super region usa before you can drop the region us-wes
 
 ### Configure replication zones
 
+{{site.data.alerts.callout_danger}}
+{% include {{ page.version.version }}/zone-configs/avoid-manual-zone-configs.md %}
+{{site.data.alerts.end}}
+
 {% include {{ page.version.version }}/sql/movr-statements-geo-partitioned-replicas.md %}
 
 #### Create a replication zone for a database
@@ -715,7 +723,7 @@ You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or
 ALTER DATABASE movr CONFIGURE ZONE DISCARD;
 ~~~
 
-#### Troubleshoot replication zones
+### Troubleshoot replication zones
 
 {% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
 
@@ -1293,3 +1301,4 @@ For more information about the region survival goal, see [Surviving region failu
 - [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Troubleshoot Replication Zone Configurations]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %})

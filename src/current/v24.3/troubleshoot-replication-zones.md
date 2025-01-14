@@ -1,16 +1,20 @@
 ---
-title: Troubleshoot Replication Zone Configurations
+title: Troubleshoot Replication Zones
 summary: Troubleshooting guide for replication zones, which control the number and location of replicas for specific sets of data.
 keywords: ttl, time to live, availability zone
 toc: true
 docs_area: manage
 ---
 
-This page has instructions showing how to troubleshoot scenarios where you believe replicas are not behaving as specified by your zone configurations.
+This page has instructions showing how to troubleshoot scenarios where you believe replicas are not behaving as specified by your [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}).
+
+{{site.data.alerts.callout_danger}}
+{% include {{ page.version.version }}/zone-configs/avoid-manual-zone-configs.md %}
+{{site.data.alerts.end}}
 
 ## Prerequisites
 
-This page assumes you have read and understood the following materials:
+This page assumes you have read and understood the following:
 
 - [Replication controls > Replication zone levels]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-levels), which describes how the hierarchy of inheritance of replication zones works. This is critical to understand for troubleshooting.
 - [Monitoring and alerting > Critical nodes endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint), which is used to monitor if any of your cluster's ranges are under-replicated, or if your data placement constraints are being violated.
@@ -18,23 +22,12 @@ This page assumes you have read and understood the following materials:
 
 ## Types of problems
 
-There are several classes of common problems users encounter when [manually configuring replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}#manage-replication-zones). Cockroach Labs does not recommend adding zone configurations manually, since it is easy to introduce logic errors. It's also difficult to do proper change management and auditing of manually tweaked zone configurations.  Most users should use [Multi-region SQL statements]({% link {{ page.version.version }}/multiregion-overview.md %}) instead; if more control is needed, [Zone config extensions]({% link {{ page.version.version }}/zone-config-extensions.md %}) can be used to augment the multi-region SQL statements.
+There are several classes of common problems users encounter when [manually configuring replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}#manage-replication-zones).
 
 Generally, the problems tend to fall into one of the following categories:
 
-- "the system isn't sending replicas where I told it to"
-- "the system isn't managing replicas how I told it to"
-
-This behavior is almost always caused by a replication zone **misconfiguration**, but it can be difficult to see what the error is or how it was introduced. Zone configurations do not have much observability beyond `SHOW ZONE CONFIGURATIONS`, nor is there much built-in validation to prevent logic errors. It's easy to put the system in a state where you've told it to do two mutually incompatible things.
-
-The most common class of logic error occurs because of the way inheritance works for replication zone configurations. As discussed in [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}#level-priorities), CockroachDB always uses the most granular replication zone available in a "bottom-up" fashion.
-
-When you manually set a field at, say, the table level, it overrides the value that was already set at the next level up, in the parent database. If you later change something at the database level and find that it isn't working as expected for all tables, it may be that the more-specific settings you applied at the table level are overriding the database-level settings. In other words, the system is doing what it was told, because it is respecting the table-level change you already applied. However, this may not be what you _intended_.
-
-As noted previously, the problems tend to fall into one of the following general categories:
-
-- "the system isn't sending replicas where I told it to"
-- "the system isn't doing what I told it to with the replica configuration"
+- "the replicas are not _where_ they should be"
+- "the replicas are not _how_ they should be"
 
 Specifically:
 
@@ -49,9 +42,13 @@ Specifically:
     - `gc.ttlseconds = 14400,`
     - `num_voters = 3,`
 
-The most common reason why "the thing isn't going where I told it to go" or "the thing isn't doing what I told it to do" is misconfiguration.
+The most common reason for these problems is misconfiguration.
 
-[XXX](): ADD THE THING ABOUT BACKUPS OVERWRITING ZONE CONFIGS ON RESTORE?  (via backup.md search for 'overwritten')
+The most common class of logic error occurs because of the way inheritance works for replication zone configurations. As discussed in [Replication Controls > Level priorities]({% link {{ page.version.version }}/configure-replication-zones.md %}#level-priorities), CockroachDB always uses the most granular replication zone available in a "bottom-up" fashion.
+
+When you manually set a field at, say, the table level, it overrides the value that was already set at the next level up, in the parent database. If you later change something at the database level and find that it isn't working as expected for all tables, it may be that the more-specific settings you applied at the table level are overriding the database-level settings. In other words, the system is doing what it was told, because it is respecting the table-level change you already applied. However, this may not be what you _intended_.
+
+It's also possible that [you restored from a backup and your zone configs were overwritten](#zone-configs-are-overwritten-during-a-cluster-restore).
 
 ## Troubleshooting steps
 
@@ -60,23 +57,33 @@ Troubleshooting zone configs is difficult because it requires running a mix of o
 - [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}) for different levels of objects in the inheritance hierarchy and checking where they differ.
 - [`SHOW ALL ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}#view-all-replication-zones) and parsing the output into a tree-like format that lets you see what has changed. ([XXX](): is this really what we want to say?)
 
-[XXX](): WRITE ME
+### confirm invalid behavior (critical nodes)
 
-### Run SQL statements
+### get range ID of ranges out of compliance
+
+### map range ID to schema object
+
+### look at schema object's zone config
 
 ## Considerations
 
-### Replication system priorities
+### Zone configs are overwritten during a cluster restore
 
-A further wrinkle is that the [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %})'s top priority is avoiding data loss, _not_ putting replicas exactly where you told it to. For more information about this limitation, see [the data domiciling docs]({% link {{ page.version.version }}/data-domiciling.md %}#known-limitations).
+{% include {{ page.version.version }}/backups/zone-configs-overwritten-during-restore.md %}
 
-That said, the replication logic takes user-supplied zone configurations into account when allocating replicas.
+For more information about how backup and restore work, see [Backup and Restore Overview]({% link {{ page.version.version }}/backup-and-restore-overview.md %}).
+
+### Replication system priorities: data placement vs data durability
+
+As noted in [Data Domiciling with CockroachDB]({% link {{ page.version.version }}/data-domiciling.md %}):
+
+> [Zone configs]({% link {{ page.version.version }}/configure-replication-zones.md %}) can be used for data placement but these features were historically built for performance, not for domiciling. The [replication system]({% link {{ page.version.version }}/architecture/replication-layer.md %})'s top priority is to prevent the loss of data and it may override the zone configurations if necessary to ensure data durability.
 
 ### Replication lag
 
-Sometimes the changes you make to a zone configuration are not reflected in the running system for a few minutes. Depending on the size of the cluster, this is expected behavior. It can take several minutes for changes to replica locality you specify in a changed zone config to propagate across a cluster. In general, the larger the cluster, the longer this process may take, due to the amount of data shuffling that occurs. In general, it's better to avoid making big changes to replica constraints on a large cluster unless you are prepared for it to take some time.
+Sometimes the changes you make to a zone configuration are not reflected in the running system for a few minutes. Depending on the size of the cluster, this is expected behavior. It can take several minutes for changes to replica locality settings to propagate across a large cluster. In general, the larger the cluster, the longer this process may take, due to the amount of data movement that occurs. There is also CPU cost, since [XXX](): LINK TO CPU BASED REBALANCING
 
-For more information about how to troubleshoot replication issues, especially under-replicated ranges, see [Troubleshoot Self-Hosted Setup > Replication issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#replication-issues).
+In general, it's better to avoid making big changes to replica constraints on a large cluster unless you are prepared for it to take some time.
 
 ## See also
 
