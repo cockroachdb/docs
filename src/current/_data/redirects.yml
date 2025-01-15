@@ -1017,5 +1017,10 @@
   versions: ['cockroachcloud']
 
 - destination: https://www.cockroachlabs.com/compare/
-  sources: ['cockroachdb-in-comparison.md']
-  versions: ['v23.1', 'v23.2', 'v24.1', 'v24.2', 'v24.3', 'v25.1']
+  sources:
+    - v23.1/cockroachdb-in-comparison.md
+    - v23.2/cockroachdb-in-comparison.md
+    - v24.1/cockroachdb-in-comparison.md
+    - v24.2/cockroachdb-in-comparison.md
+    - v24.3/cockroachdb-in-comparison.md
+    - v25.1/cockroachdb-in-comparison.md
