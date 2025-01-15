@@ -133,7 +133,6 @@ docs_area:
         <li><a href="sql-faqs.html">SQL FAQs</a></li>
         <li><a href="operational-faqs.html">Operational FAQs</a></li>
         <li><a href="licensing-faqs.html">Licensing FAQs</a></li>
-        <li><a href="cockroachdb-in-comparison.html">DB Comparisons</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">
