@@ -167,7 +167,7 @@ To mitigate this issue, it is advisable to use [Change Data Capture (CDC)]({% li
 
 **Synonyms:** hot key, hot row, point hotspot
 
-A _row hotspot_ is a hotspot where an individual point in the keyspace becomes throughput limiting, often due to high activity on a single row. The word "point" illustrates the fact that the location that is hot is indivisible, and therefore cannot be rebalanced. A classic example is a social media application with a high volume of activity on certain users.
+A _row hotspot_ is a hotspot where an individual point in the keyspace becomes throughput limiting, often due to high activity on a single row. The word "point" illustrates the fact that the location that is hot is indivisible, and therefore cannot be [split]({% link {{ page.version.version }}/load-based-splitting.md %}). A classic example is a social media application with a high volume of activity on certain users.
 
 Consider a social media application which initially consists of two tables, `users` and `follows`:
 
@@ -183,8 +183,6 @@ CREATE TABLE follows(
    followee UUID REFERENCES users(id)
 );
 ~~~
-
-Now so you don’t need to partially scan the `follows` table each time you want to know the count of followers for a given user, you can issue an UPDATE to the User table which increments the follower_count.
 
 To avoid having to partially scan the `follows` table each time you want to know the count of `followers` for a given `user`, you can issue an `UPDATE` to the `users` table to increment the `follower_count`. This way, every time a new follower is added, the `follower_count` in the `users` table is updated directly, making it easier and faster to retrieve the `follower_count` without scanning the entire `follows` table:
 
@@ -254,13 +252,13 @@ SELECT * FROM posts p JOIN countries c ON p.country_id=c.id;
 
 <img src="{{ 'images/v25.1/hotspots-figure-9.png' | relative_url }}" alt="Table hotspot example" style="border:1px solid #eee;max-width:100%" />
 
-Reads in the `posts` table may be evenly distributed, but joining the `countries` table becomes a bottleneck, since it exists in so few ranges. Splitting the `countries` table ranges can relieve pressure, but only to a theoretical limit as the indivisible points, the rows themselves, experience high throughput. Global tables and replica reads can help scaling in this case, especially when write throughput is low.
+Reads in the `posts` table may be evenly distributed, but joining the `countries` table becomes a bottleneck, since it exists in so few ranges. Splitting the `countries` table ranges can relieve pressure, but only to a theoretical limit as the indivisible points, the rows themselves, experience high throughput. [Global tables]({% link {{ page.version.version }}/global-tables.md %}) and [follower reads]({% link {{ page.version.version }}/follower-reads.md %}) can help scaling in this case, especially when write throughput is low.
 
 ### Locality Hotspot
 
 **Synonyms:** region hotspot, domicile hotspot
 
-A _locality hotspot_ is a hotspot where a workload is bottlenecked due to locality constraints. For example, consider a cluster distributed among 10 regions (e.g., `us-east-1`, `us-west-1`, `ap-east-1`, `eu-west-1`, etc.) with 5 nodes per region. Assume this 50 node cluster is for an existing application and you wish to domicile the  data on the highest throughput table, `orders`, by the region most relevant to where an order is placed.
+A _locality hotspot_ is a hotspot where a workload is bottlenecked due to [locality constraints]({% link {{ page.version.version }}/table-localities.md %}). For example, consider a cluster distributed among 10 regions (e.g., `us-east-1`, `us-west-1`, `ap-east-1`, `eu-west-1`, etc.) with 5 nodes per region. Assume this 50 node cluster is for an existing application and you wish to domicile the data on the highest throughput table, `orders`, by the region most relevant to where an order is placed.
 
 ~~~ sql
 ALTER TABLE orders ADD COLUMN region crdb_internal_region AS (
@@ -293,7 +291,7 @@ An _internal hotspot_ refers to a type of hotspot that arises from the internal 
 
 ### Load Balancing Hotspot
 
-A _load balancing hotspot_ is a hotspot caused by a load balancer misconfiguration. Although this issue is often considered an afterthought due to its low internal tracking value, it is important to note that all possible consumer groups can create uneven load on the cluster. For example, a changefeed subscription can create hotspots if a single node is responsible for exporting all row updates within the cluster.
+A _load balancing hotspot_ is a hotspot caused by a load balancer misconfiguration. Although this issue is often considered an afterthought due to its low internal tracking value, it is important to note that all possible consumer groups can create uneven load on the cluster. For example, a [changefeed]({% link {{ page.version.version }}/change-data-capture-overview.md %}) subscription can create hotspots if a single node is responsible for exporting all row updates within the cluster.
 
 ### Tenant Hotspot
 
