@@ -297,8 +297,6 @@ Two types of plans can be cached: custom and generic. Refer to [Query plan type]
 
 ### Query plan type
 
-### Query plan type
-
 Two types of plans can be cached:
 
 - *Custom* query plans are generated for a given query structure and optimized for specific placeholder values, and are re-optimized on subsequent executions. By default, the optimizer uses custom plans. Custom plans are included in the [plan cache](#query-plan-cache).
