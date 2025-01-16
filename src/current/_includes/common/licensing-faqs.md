@@ -144,6 +144,10 @@ Single-node clusters for development use are [not throttled](#single-node-cluste
 
 Cockroach Labs encourages non-commercial academic research involving CockroachDB. For such projects, [obtain an **Enterprise Free** license](#obtain-a-license).
 
+### Do government entities qualify for a CockroachDB Enterprise Free license?
+
+No, government entities do not qualify for an **Enterprise Free** license. To obtain an **Enterprise Trial** license or paid **Enterprise** license, see [Obtain a license](#obtain-a-license).
+
 <a name="single-node-clusters"></a>
 
 ### Do I need a license key for running a single node cluster?
