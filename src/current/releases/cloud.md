@@ -14,7 +14,7 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
-## January 10, 2025
+## January 16, 2025
 
 <h3 id="2025-01-10-general-updates"> General updates </h3>
 
