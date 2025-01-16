@@ -41,7 +41,7 @@ For all Cloud plans:
 {% endif %}
 ### Compatible versions
 
-A cluster may always be upgraded to the next major release. Prior to v24.1, every major release is required. As of v24.1{% if page.path contains "cockroachcloud" %}, for CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }} clusters{% endif %}: 
+A cluster may always be upgraded to the next major release after its first production patch has been made available to the cluster by CockroachDB Cloud, as indicated in the Cloud Console. Prior to v24.1, every major release is required during its support window. As of v24.1{% if page.path contains "cockroachcloud" %}, for CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }} clusters{% endif %}: 
 
 - If a cluster is running a major version that is labeled a Regular release, it can be upgraded to either the subsequent major version (an Innovation release) or the one after (the next Regular release, once it is available—skipping the Innovation release).
 
