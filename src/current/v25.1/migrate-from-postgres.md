@@ -27,7 +27,9 @@ The following PostgreSQL features do not yet exist in CockroachDB:
 
 ## Load PostgreSQL data
 
-You can use one of the following methods to migrate PostgreSQL data to CockroachDB:
+You can use [MOLT Fetch]({% link molt/molt-fetch.md %}) to migrate PostgreSQL data to CockroachDB.
+
+Alternatively, you can use one of the following methods to migrate the data:
 
 - {% include {{ page.version.version }}/migration/load-data-import-into.md %}
 
