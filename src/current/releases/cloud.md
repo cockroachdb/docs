@@ -14,6 +14,14 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## January 16, 2025
+
+<h3 id="2025-01-10-general-updates"> General updates </h3>
+
+- GCP Private Service Connect and Azure Private Link have been promoted from Preview to [GA]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %}).
+
+    For information about these features, refer to [Network Authorization]({% link cockroachcloud/network-authorization.md %}).
+
 ## December 17, 2024
 
 <h3 id="2024-12-16-general-updates"> General updates </h3>
@@ -76,7 +84,7 @@ The new official [Cockroach Labs Okta app integration]({% link cockroachcloud/co
 
     CockroachDB {{ site.data.products.standard }} offers the benefits of a scalable, shared architecture, along with many enterprise-ready features, including:
 
-    - [Private Connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) to AWS Privatelink, GCP VPC Peering, and GCP Private Service Connect (Preview).
+    - [Private Connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) to AWS Privatelink, GCP VPC Peering, and GCP Private Service Connect.
     - Customer control of [major version upgrades]({% link cockroachcloud/cluster-management.md %}#manage-cluster-upgrades).
     - Customer-configurable [Managed Backups]({% link cockroachcloud/managed-backups.md %}).
     - [Metrics export]({% link cockroachcloud/export-metrics.md %}) to Amazon CloudWatch, Datadog, and Prometheus.
