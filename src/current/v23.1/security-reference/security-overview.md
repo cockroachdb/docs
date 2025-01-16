@@ -168,7 +168,7 @@ For more information, see the [licensing FAQ]({% link {{ page.version.version }}
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td><a href="{% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect">GCP Private Service Connect (PSC) (Preview)</a> or <a href="{% link cockroachcloud/connect-to-your-cluster.md %}#vpc-peering">VPC Peering</a> for GCP clusters and <a href="{% link cockroachcloud/aws-privatelink.md %}">AWS PrivateLink</a> for AWS clusters </td>
+      <td><a href="{% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect">GCP Private Service Connect (PSC)</a> or <a href="{% link cockroachcloud/connect-to-your-cluster.md %}#vpc-peering">VPC Peering</a> for GCP clusters and <a href="{% link cockroachcloud/aws-privatelink.md %}">AWS PrivateLink</a> for AWS clusters </td>
     </tr>
     <tr>
       <td><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
