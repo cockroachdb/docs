@@ -63,10 +63,14 @@ To learn more, refer to [Plan a CockroachDB {{ site.data.products.standard }} cl
 
 ### Set major-version upgrades to automatic or manual
 
-By default, major-version and patch upgrades are automatically applied to CockroachDB {{ site.data.products.standard }} clusters. To control when a cluster is upgraded to a new major version, you can disable automatic major-version upgrades. Patch upgrades are always applied automatically.
+By default, major-version and patch upgrades are automatically applied to CockroachDB {{ site.data.products.standard }} clusters. To control when a cluster is upgraded to a new major version and be provided a window to roll back a major version upgrade, you can disable automatic major-version upgrades. Patch upgrades are always applied automatically.
+
+{{site.data.alerts.calout_info}}
+For clusters that have the default setting where automatic major version upgrades are enabled, each upgrade is finalized immediately and cannot be rolled back.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-If you disable automatic major-version upgrades for a cluster, to maintain support for the cluster, you must manually upgrade it to a later major version before its current version reaches [End of Support (EOS)]({% link cockroachcloud/upgrade-policy.md %}). If you have not upgraded a cluster's major version for more than one year, it will be upgraded automatically. 
+If you disable automatic major-version upgrades for a cluster, to maintain support for the cluster, you must manually upgrade it to a later major version before its current version reaches [End of Support (EOS)]({% link cockroachcloud/upgrade-policy.md %}). If you have not upgraded a cluster's major version for more than one year, it will be upgraded automatically.
 {{site.data.alerts.end}}
 
 To disable automatic major-version upgrades for a CockroachDB {{ site.data.products.standard }} cluster:

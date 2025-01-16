@@ -30,6 +30,10 @@ Basic | Automatic | Required
 Standard | Automatic (default) or customer-initiated | Optional
 Advanced | Customer-initiated | Optional
 
+{{site.data.alerts.calout_info}}
+For CockroachDB Basic clusters and CockroachDB Standard clusters that are set to upgrade automatically, major version upgrades are finalized immediately and cannot be rolled back.
+{{site.data.alerts.end}}
+
 For all Cloud plans:
 
 - All major versions that are Regular releases (as opposed to Innovation releases) are required upgrades during the period in which they are supported.
