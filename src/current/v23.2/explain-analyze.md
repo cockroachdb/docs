@@ -212,6 +212,7 @@ EXPLAIN ANALYZE SELECT city, AVG(revenue) FROM rides GROUP BY city;
   execution time: 8ms
   distribution: full
   vectorized: true
+  plan type: custom
   rows decoded from KV: 500 (88 KiB, 1 gRPC calls)
   cumulative time spent in KV: 6ms
   maximum memory usage: 240 KiB
@@ -262,6 +263,7 @@ EXPLAIN ANALYZE SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles
   execution time: 5ms
   distribution: local
   vectorized: true
+  plan type: custom
   rows decoded from KV: 515 (90 KiB, 2 gRPC calls)
   cumulative time spent in KV: 4ms
   maximum memory usage: 580 KiB
@@ -335,6 +337,7 @@ EXPLAIN ANALYZE (VERBOSE) SELECT city, AVG(revenue) FROM rides GROUP BY city;
   execution time: 5ms
   distribution: full
   vectorized: true
+  plan type: custom
   rows decoded from KV: 500 (88 KiB, 500 KVs, 1 gRPC calls)
   cumulative time spent in KV: 4ms
   maximum memory usage: 240 KiB
@@ -397,6 +400,7 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
   execution time: 4ms
   distribution: full
   vectorized: true
+  plan type: custom
   rows decoded from KV: 500 (88 KiB, 1 gRPC calls)
   cumulative time spent in KV: 3ms
   maximum memory usage: 240 KiB
@@ -475,6 +479,7 @@ EXPLAIN ANALYZE (REDACT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue
   execution time: 6ms
   distribution: full
   vectorized: true
+  plan type: custom
   rows decoded from KV: 500 (88 KiB, 1 gRPC calls)
   cumulative time spent in KV: 4ms
   maximum memory usage: 280 KiB
