@@ -1,8 +1,7 @@
 ---
-title: Release Support Policy
-summary: Learn about Cockroach Labs' policy for supporting major releases of CockroachDB.
+title: Unsupported versions
+summary: Versions of CockroachDB that are no longer supported
 toc: true
-toc_not_nested: true
 docs_area: releases
 ---
 
@@ -16,7 +15,7 @@ docs_area: releases
 {% assign released_versions = site.data.releases | map: "major_version" | uniq | reverse %}
 {% comment %} Fetch the list of the major versions of all releases that currently exist {% endcomment %}
 
-{% assign versions = site.data.old_versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
+{% assign versions = site.data.unsupported_versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
 {% comment %} Fetch all major versions (e.g., v21.2), sorted in reverse chronological order. {% endcomment %}
 
 {% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where_exp: "latest_hotfix", "latest_hotfix.withdrawn != true"  | sort: "release_date" | reverse | first %}

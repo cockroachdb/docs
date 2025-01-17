@@ -79,4 +79,11 @@
     ,"{{ x.url }}"
    {% endfor %}
  ]
+},
+{
+  "title": "Unsupported versions",
+  "urls": [
+    "/releases/unsupported-versions.html"
+  ]
 }
+
