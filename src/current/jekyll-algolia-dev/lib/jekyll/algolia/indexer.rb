@@ -357,6 +357,24 @@ module Jekyll
           synonyms: ['materialized view', 'material view']
         }, false)
 
+        index.save_synonym('session setting', {
+          objectID: 'session setting',
+          type: 'synonym',
+          synonyms: ['session setting', 'session variable', 'session settings', 'session variables', 'session var', 'session vars']
+        }, false)
+
+        index.save_synonym('cluster setting', {
+          objectID: 'cluster setting',
+          type: 'synonym',
+          synonyms: ['cluster setting', 'cluster variable', 'cluster settings', 'cluster variables', 'cluster var', 'cluster vars']
+        }, false)
+
+        index.save_synonym('molt', {
+          objectID: 'molt',
+          type: 'synonym',
+          synonyms: ['molt', 'migrate off legacy technology']
+        }, false)
+
         return
       end
 
