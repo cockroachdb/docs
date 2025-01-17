@@ -67,4 +67,10 @@
   "urls": [
     "/releases/kubernetes-operator.html"
   ]
+},
+{
+  "title": "Unsupported versions",
+  "urls": [
+    "/releases/unsupported-versions.html"
+  ]
 }
