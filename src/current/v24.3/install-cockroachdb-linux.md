@@ -167,12 +167,8 @@ true
 
 CockroachDB runtimes built for the ARM architecture have the following limitations:
 
-- Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation#Fused_multiply.E2.80.93add).
-
-  Validate workloads that rely on floating point operations or FMA instrincs before migrating those workloads to ARM in production.
-
-  When [building from source](#install-source) on ARM, it is not currently possible to disable FMA intrinsics in Go. To track the status of this feature request, refer to [GoLang issue #36971](https://github.com/golang/go/issues/36971).
-
+- Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation#Fused_multiply.E2.80.93add). Validate workloads that rely on floating point operations or FMA instrincs before migrating those workloads to ARM in production.
+- When [building from source](#install-source) on ARM, it is not currently possible to disable FMA intrinsics in Go. To track the status of this feature request, refer to [GoLang issue #36971](https://github.com/golang/go/issues/36971).
 - In production, Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, CPU architecture, hardware, and software.
 - A mix of Intel and ARM nodes is supported as a temporary transitional state during the migration only. Cockroach Labs recommends that you test and validate your workload ahead of the migration to ensure that the workload and your application work as expected in a cluster with both Intel and ARM nodes, especially with respect to floating-point arithmetic.
 
