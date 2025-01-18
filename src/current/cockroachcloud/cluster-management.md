@@ -61,17 +61,33 @@ To learn more, refer to [Plan a CockroachDB {{ site.data.products.standard }} cl
 
 ## Manage cluster upgrades
 
-By default, major-version and patch upgrades are automatically applied to CockroachDB {{ site.data.products.standard }} clusters. To control when a cluster is upgraded to a new major version, you can disable automatic major-version upgrades. Patch upgrades are always applied automatically.
+### Set major-version upgrades to automatic or manual
+
+By default, major-version and patch upgrades are automatically applied to CockroachDB {{ site.data.products.standard }} clusters. To control when a cluster is upgraded to a new major version and be provided a window to roll back a major version upgrade, you can disable automatic major-version upgrades. Patch upgrades are always applied automatically.
+
+{{site.data.alerts.calout_info}}
+For clusters that have the default setting where automatic major version upgrades are enabled, each upgrade is finalized immediately and cannot be rolled back.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-If you disable automatic major-version upgrades for a cluster, to maintain support for the cluster, you must manually upgrade it to a later major version before its current version reaches [End of Support (EOS)]({% link cockroachcloud/upgrade-policy.md %}).
+If you disable automatic major-version upgrades for a cluster, to maintain support for the cluster, you must manually upgrade it to a later major version before its current version reaches [End of Support (EOS)]({% link cockroachcloud/upgrade-policy.md %}). If you have not upgraded a cluster's major version for more than one year, it will be upgraded automatically.
 {{site.data.alerts.end}}
 
 To disable automatic major-version upgrades for a CockroachDB {{ site.data.products.standard }} cluster:
 
-1. On the [**Cluster Overview** page for the cluster](#view-cluster-overview), click **Action**, then select **Manual upgrade settings**.
+1. On the [**Cluster Overview** page for the cluster](#view-cluster-overview), click **Actions**, then select **Manual upgrade settings**.
 1. Read the information provided, then set **Manual upgrades** to **on**.
 1. Click **Apply**.
+
+For manual upgrades to a newer major version of CockroachDB, refer to [Upgrade a cluster in CockroachDB Cloud]({% link cockroachcloud/upgrade-cockroach-version.md %}).
+
+### Automatic major-version upgrades
+
+When Manual upgrades is set to Off, a CockroachDB {{ site.data.products.standard }} cluster will automatically upgrade to a new major version. The version will be a production patch release (likely vXX.Y.1) that is made available soon after the initial GA release (vXX.Y.0).
+
+Before an upgrade is set to occur, a banner displayed in the Console informing you of the version to which the cluster will be upgraded.
+
+When the upgrade occurs, your cluster status will be listed as `Available (Maintenance)` and will remain operational. When the upgrade is complete, the new version will be indicated in the CockroachDB Cloud Console and you will receive an email notification.  
 
 ## Restore data from a backup
 
