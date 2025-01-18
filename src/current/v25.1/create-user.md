@@ -205,8 +205,6 @@ with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 
 ### Create a user that can pause, resume, and cancel non-admin jobs
 
-The following example allows the user to cancel [queries]({% link {{ page.version.version }}/cancel-query.md %}) and [sessions]({% link {{ page.version.version }}/cancel-session.md %}) for other non-`admin` roles:
-
 The following example allows the user to [pause]({% link {{ page.version.version }}/pause-job.md %}), [resume]({% link {{ page.version.version }}/resume-job.md %}), and [cancel]({% link {{ page.version.version }}/cancel-job.md %}) jobs:
 
 ~~~ sql
