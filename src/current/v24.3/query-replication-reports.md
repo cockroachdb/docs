@@ -522,3 +522,4 @@ To give another example, let's say your cluster were similar to the one shown ab
 - [`PARTITION BY`]({% link {{ page.version.version }}/partitioning.md %})
 - [`CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone)
 - [Start a node]({% link {{ page.version.version }}/cockroach-start.md %})
+- [Troubleshoot Replication Zone Configurations]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %})

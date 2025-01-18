@@ -57,6 +57,12 @@
         ]
       },
       {
+        "title": "Troubleshoot Replication Zone Configurations",
+        "urls": [
+          "/${VERSION}/troubleshoot-replication-zones.html"
+        ]
+      },
+      {
         "title": "Benchmarking",
         "items": [
           {
