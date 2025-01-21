@@ -339,22 +339,22 @@ You can copy CSV data into CockroachDB using the following methods:
 
 ### Copy data to `stdout` in CSV format
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
+1. Start a temporary, in-memory cluster with the [`movr`]({% link {{ page.version.version }}/movr.md %}) sample dataset preloaded:
 
-Copy five rows from the `users` table to `stdout`, specifying the `CSV` [option](#options):
+1. Copy five rows from the `users` table to `stdout`, specifying the `CSV` [option](#options):
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-COPY (SELECT * FROM users LIMIT 5) TO STDOUT WITH CSV;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    COPY (SELECT * FROM users LIMIT 5) TO STDOUT WITH CSV;
+    ~~~
 
-~~~
-ae147ae1-47ae-4800-8000-000000000022,amsterdam,Christine Crosby,10563 Mcfarland Burg Apt. 34,1007823073
-b3333333-3333-4000-8000-000000000023,amsterdam,Natalie Barnes,58875 Monique Port,4777504042
-b851eb85-1eb8-4000-8000-000000000024,amsterdam,Brenda Meyer,82208 Jamie Track Suite 57,3209048436
-bd70a3d7-0a3d-4000-8000-000000000025,amsterdam,Jose Nelson,31068 Mark Mall,2715842506
-c28f5c28-f5c2-4000-8000-000000000026,amsterdam,Anna Bennett,80284 Jeffery Courts,1695553015
-~~~
+    ~~~
+    ae147ae1-47ae-4800-8000-000000000022,amsterdam,Christine Crosby,10563 Mcfarland Burg Apt. 34,1007823073
+    b3333333-3333-4000-8000-000000000023,amsterdam,Natalie Barnes,58875 Monique Port,4777504042
+    b851eb85-1eb8-4000-8000-000000000024,amsterdam,Brenda Meyer,82208 Jamie Track Suite 57,3209048436
+    bd70a3d7-0a3d-4000-8000-000000000025,amsterdam,Jose Nelson,31068 Mark Mall,2715842506
+    c28f5c28-f5c2-4000-8000-000000000026,amsterdam,Anna Bennett,80284 Jeffery Courts,1695553015
+    ~~~
 
 ## See also
 
