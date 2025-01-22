@@ -80,7 +80,7 @@ This section goes into detail about workload patterns which result in hotspots.
 
 ### Index Hotspot
 
-**Synonyms**: golden keyspace hotspot, monotonically increasing index, a running tail, a moving tail
+**Synonyms**: hot index, golden keyspace hotspot, monotonically increasing index, a running tail, a moving tail
 
 An _index hotspot_ is a hotspot on an [index]({% link {{ page.version.version }}/indexes.md %}) where the key for writes is continually increasing. This is common with indexing by an increasing column (for example, with data type of [`SERIAL`]({% link {{ page.version.version }}/serial.md %}), [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}), or [`AUTO_INCREMENT`]({% link {{ page.version.version }}/serial.md %}#auto-incrementing-is-not-always-sequential)). Index hotspots limit horizontal scaling as the index acts as a bottleneck.
 
@@ -113,7 +113,7 @@ INSERT INTO profiles (user_uuid, last_seen_at) VALUES ('d9efa555-e8fd-4793-9239-
 UPDATE profiles SET last_seen_at = CURRENT_TIMESTAMP() WHERE user_uuid='d9efa555-e8fd-4793-9239-f484454980cc';
 ~~~
 
-Because [`CURRENT_TIMESTAMP()`]({% link {{ page.version.version }}/functions-and-operators.md %}#date-and-time-functions) is a steadily increasing value, this [`UPDATE`]({% link {{ page.version.version }}/update.md %}) will similarly burden the range at the tail of the index. While hotspots on an index tail tend to be the most common, bottlenecks on the head are not unheard of. For example, indexing on [`DESC` with the same insertion strategy will cause a hotspot.
+Because [`CURRENT_TIMESTAMP()`]({% link {{ page.version.version }}/functions-and-operators.md %}#date-and-time-functions) is a steadily increasing value, this [`UPDATE`]({% link {{ page.version.version }}/update.md %}) will similarly burden the range at the tail of the index. While hotspots on an index tail tend to be the most common, bottlenecks on the head are not unheard of. For example, indexing on `DESC` with the same insertion strategy will cause a hotspot.
 
 In this page, the phrase _index hotspot_ will be reserved for a hot by write hotspot on an index, even though indexes can become hot due to read. This is because a hot by write index hotspot is the most common hotspot pattern that occurs now and in the future as workloads continue to be migrated from legacy single-node installations. Hot by read index hotspots are defined later on this page as [_lookback hotspots_](#lookback-hotspots).
 
@@ -121,9 +121,9 @@ In this page, the phrase _index hotspot_ will be reserved for a hot by write hot
 
 The resolution of the index hotspot often depends on your requirements for the data. If the sequential nature of the index serves no purpose, it is recommended to change the writes into the index to be randomly distributed. Ideally, primary keys in this instance would be set to `UUID`s, if your tolerance for swapover or even downtime allows it.
 
-If inserting in sequential order is important, the index itself can be [hash sharded]({% link {{ page.version.version }}/hash-sharded-indexes.md %}), which means that it is still stored in order, albeit in some number of shards. Consider a `users` table, with a primary key `id INT`, which is hash sharded with 4 shards, and a hashing function of modulo 4. The following image illustrates this example:
+If inserting in sequential order is important, the index itself can be [hash-sharded]({% link {{ page.version.version }}/hash-sharded-indexes.md %}), which means that it is still stored in order, albeit in some number of shards. Consider a `users` table, with a primary key `id INT`, which is hash-sharded with 4 shards, and a hashing function of modulo 4. The following image illustrates this example:
 
-<img src="{{ 'images/v25.1/hotspots-figure-4.png' | relative_url }}" alt="Hash sharded example" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.1/hotspots-figure-4.png' | relative_url }}" alt="Hash-sharded index example" style="border:1px solid #eee;max-width:100%" />
 
 Now the writes are distributed into the tails of the shards, rather than the tail of the whole index. This benefits write performance but makes reads more challenging. If you need to read a subset of the data, you will have to scan each shard of the index.
 
@@ -167,7 +167,7 @@ To mitigate this issue, it is advisable to use [Change Data Capture (CDC)]({% li
 
 **Synonyms:** hot key, hot row, point hotspot
 
-A _row hotspot_ is a hotspot where an individual point in the keyspace becomes throughput limiting, often due to high activity on a single row. The word "point" illustrates the fact that the location that is hot is indivisible, and therefore cannot be [split]({% link {{ page.version.version }}/load-based-splitting.md %}). A classic example is a social media application with a high volume of activity on certain users.
+A _row hotspot_ is a hotspot where an individual point in the keyspace becomes throughput limiting, often due to high activity on a single row. Since rows are inherently indivisible, a hotspot on a row cannot be [split]({% link {{ page.version.version }}/load-based-splitting.md %}). A classic example is a social media application with a high volume of activity on certain users.
 
 Consider a social media application which initially consists of two tables, `users` and `follows`:
 
@@ -206,25 +206,29 @@ The following image visualizes a keyspace with multiple hot rows. In a large eno
 
 ### Hot Sequence
 
-_Hot sequences_ and _hot indexes_ are distinct concepts, though they may appear similar at a glance, since a hot index often involves a sequence. However, they have different bottlenecks.
+_Hot sequences_ and [_hot indexes_](#index-hotspot) are distinct concepts, though they may appear similar at a glance, since a hot index often involves a [sequence]({% link {{ page.version.version }}/create-sequence.md %}). However, they have different bottlenecks.
 
 For example, consider the following schema:
 
 ~~~ sql
 CREATE TABLE products (
-   id SERIAL PRIMARY KEY USING HASH
+    id INT PRIMARY KEY USING HASH WITH (bucket_count = 5),
+    name STRING
 );
+CREATE SEQUENCE products_id_sequence;
+--Insert 2 million rows
+INSERT INTO products (id, name) SELECT nextval('products_id_sequence'), (1000000000000000 + generate_series(1,2000000))::STRING;
 ~~~
 
-Because the primary key index is hash sharded, rows are inserted into this table without being funneled to a single range avoiding an index hotspot. However, there is a bottleneck in how sequence values are generated. To ensure certain guarantees around sequences, they are stored in the keyspace as a single row. This makes them subject to the limitations of hot keys by write access.
+Because the primary key index is [hash-sharded]({% link {{ page.version.version }}/hash-sharded-indexes.md %}), rows are inserted into this table without being funneled to a single range avoiding an index hotspot. However, there is a bottleneck in how sequence values are generated. To ensure certain guarantees around sequences, they are stored in the keyspace as a single row. This makes them subject to the limitations of hot keys by write access.
 
-The following image visualizes writes in the `products` keyspace using hash sharded rows. With five shards, the writes are better distributed into the keyspace, but the `id` sequence row becomes the limiting factor.
+The following image visualizes writes in the `products` keyspace using hash-sharded rows. With five shards, the writes are better distributed into the keyspace, but the `id` sequence row becomes the limiting factor.
 
 <img src="{{ 'images/v25.1/hotspots-figure-8.png' | relative_url }}" alt="Multiple row hotspots example" style="border:1px solid #eee;max-width:100%" />
 
 Because sequences avoid user expressions, optimizations can be made to improve their performance, but unfortunately the write volume on the sequence is still that of the sum total of all its accesses.
 
-Sequence caching, which allows clients to cache sequence values as to reduce the burden on the target range, serves as a good mitigation for hot sequences. Alternatively, the `unique_rowid()` function generates sequential values which have strong guarantees against collision, with the drawback that its values are not a series.
+[Sequence caching]({% link {{ page.version.version }}/create-sequence.md %}#cache-sequence-values-in-memory), which allows clients to cache sequence values as to reduce the burden on the target range, serves as a good mitigation for hot sequences. Alternatively, the `unique_rowid()` function generates sequential values which have strong guarantees against collision, with the drawback that its values are not a series.
 
 ### Table Hotspot
 
