@@ -63,14 +63,27 @@ To learn more, refer to [Plan a CockroachDB {{ site.data.products.standard }} cl
 
 ### Set major-version upgrades to automatic or manual
 
-By default, major-version and patch upgrades are automatically applied to CockroachDB {{ site.data.products.standard }} clusters. To control when a cluster is upgraded to a new major version and be provided a window to roll back a major version upgrade, you can disable automatic major-version upgrades. Patch upgrades are always applied automatically.
+By default, major-version upgrades are automatically applied to CockroachDB {{ site.data.products.standard }} clusters. For each cluster, you have the option to enable manual upgrades, instead.
 
-{{site.data.alerts.calout_info}}
-For clusters that have the default setting where automatic major version upgrades are enabled, each upgrade is finalized immediately and cannot be rolled back.
+When automatic upgrades are enabled and a new major version is available for CockroachDB {{ site.data.products.standard }}:
+
+- The cluster is automatically upgraded by Cockroach Labs to an early production patch release of the new major version, for example `vXX.Y.1`.
+- Each major version, whether a Regular release or Innovation release, is included.
+- Each upgrade is finalized immediately, so it is not possible to roll back to the previous major version.
+
+When manual upgrades are enabled and a new major version is available for CockroachDB {{ site.data.products.standard }}:
+
+- You will need to [manually upgrade the cluster]({% link cockroachcloud/upgrade-cockroach-version.md %}) during its support window, to maintain support.
+- Once the initial production patch release for the new major version is made available to CockroachDB {{ site.data.products.standard }}, you can upgrade at any time to the latest available patch release for that major version.
+- You can choose to skip Innovation releases and upgrade directly to the subsequent major verison.
+- The upgrade is finalized after a 72-hour window, within which you can choose to roll back to the previous major version.
+
+{{site.data.alerts.callout_info}}
+For clusters that have the default setting to receive automatic major version upgrades, each upgrade is finalized immediately and cannot be rolled back.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-If you disable automatic major-version upgrades for a cluster, to maintain support for the cluster, you must manually upgrade it to a later major version before its current version reaches [End of Support (EOS)]({% link cockroachcloud/upgrade-policy.md %}). If you have not upgraded a cluster's major version for more than one year, it will be upgraded automatically.
+If you disable automatic major-version upgrades for a cluster, to maintain support for the cluster, you must manually upgrade it to a supported major version before its current version reaches [End of Support (EOS)]({% link cockroachcloud/upgrade-policy.md %}). If you have not upgraded a cluster's major version for more than one year, it will be upgraded automatically.
 {{site.data.alerts.end}}
 
 To disable automatic major-version upgrades for a CockroachDB {{ site.data.products.standard }} cluster:
@@ -87,7 +100,11 @@ When Manual upgrades is set to Off, a CockroachDB {{ site.data.products.standard
 
 Before an upgrade is set to occur, a banner displayed in the Console informing you of the version to which the cluster will be upgraded.
 
-When the upgrade occurs, your cluster status will be listed as `Available (Maintenance)` and will remain operational. When the upgrade is complete, the new version will be indicated in the CockroachDB Cloud Console and you will receive an email notification.  
+When the upgrade occurs, your cluster status will be listed as `Available (Maintenance)` and will remain operational. When the upgrade is complete, the new version will be indicated in the CockroachDB Cloud Console and you will receive an email notification.
+
+### Upgrade the major version manually
+
+For manual upgrades to a newer major version of CockroachDB, refer to [Upgrade a cluster in CockroachDB Cloud]({% link cockroachcloud/upgrade-cockroach-version.md %}).
 
 ## Restore data from a backup
 

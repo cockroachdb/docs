@@ -30,7 +30,7 @@ Basic | Automatic | Required
 Standard | Automatic (default) or customer-initiated | Optional
 Advanced | Customer-initiated | Optional
 
-{{site.data.alerts.calout_info}}
+{{site.data.alerts.callout_info}}
 For CockroachDB Basic clusters and CockroachDB Standard clusters that are set to upgrade automatically, major version upgrades are finalized immediately and cannot be rolled back.
 {{site.data.alerts.end}}
 
@@ -41,24 +41,12 @@ For all Cloud plans:
 {% endif %}
 ### Compatible versions
 
-A cluster may always be upgraded to the next major release after its first production patch has been made available to the cluster by CockroachDB Cloud, as indicated in the Cloud Console. Prior to v24.1, every major release is required during its support window. As of v24.1{% if page.path contains "cockroachcloud" %}, for CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }} clusters{% endif %}: 
+A cluster may always be upgraded to the next major release{% if page.path contains "cockroachcloud" %} once it is made available in CockroachDB Cloud{% endif %}. As of v24.1{% if page.path contains "cockroachcloud" %}, for CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }} clusters{% endif %}, every second major verison is an Innovation release that can be skipped: 
 
-- If a cluster is running a major version that is labeled a Regular release, it can be upgraded to either the subsequent major version (an Innovation release) or the one after (the next Regular release, once it is available—skipping the Innovation release).
+- If your cluster is running a major version that is a Regular release, it can be upgraded to either:
+  - the next major version (an Innovation release)
+  - the release that follows the next major version (the next Regular release, once it is available, skipping the Innovation release).
 
 - If a cluster is running a major version that is labeled an Innovation release, it can be upgraded only to the next Regular release.
 
-```mermaid
-graph LR
-    v241["v24.1<br/>Regular"] --> v242["v24.2<br/>Innovation"]
-    v241 --> v243["v24.3<br/>Regular"]
-    v242 --> v243
-    v243 --> v251["v25.1<br/>Innovation"]
-    v243 --> v252["v25.2<br/>Regular"]
-    v251 --> v252
-    v252 --> v253["v25.3<br/>Innovation"]
-    v252 --> v254["v25.4<br/>Regular"]
-    v253 --> v254
-    
-    %% Styling
-    classDef default fill:#fff,stroke:#333,stroke-width:2px
-```
+<img src="../images/common/version-skipping-diagram.png" alt="Diagram of CockroachDB major version upgrade availability, i.e. the ability to skip innovation releases" style="max-width: 100%;">
