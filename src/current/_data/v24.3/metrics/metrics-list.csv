@@ -563,6 +563,15 @@ STORAGE,raft.entrycache.bytes,Aggregate size of all Raft entries in the Raft ent
 STORAGE,raft.entrycache.hits,Number of successful cache lookups in the Raft entry cache,Hits,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,raft.entrycache.read_bytes,Counter of bytes in entries returned from the Raft entry cache,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,raft.entrycache.size,Number of Raft entries in the Raft entry cache,Entry Count,GAUGE,COUNT,AVG,NONE
+STORAGE,raft.flows.entered.state_probe,The number of leader->peer flows transitioned to StateProbe,Flows,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,raft.flows.entered.state_replicate,The number of leader->peer flows transitioned to StateReplicate,Flows,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,raft.flows.entered.state_snapshot,The number of of leader->peer flows transitioned to StateSnapshot,Flows,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,raft.flows.state_probe,Number of leader->peer flows in StateProbe,Flows,GAUGE,COUNT,AVG,NONE
+STORAGE,raft.flows.state_replicate,Number of leader->peer flows in StateReplicate,Flows,GAUGE,COUNT,AVG,NONE
+STORAGE,raft.flows.state_snapshot,Number of leader->peer flows in StateSnapshot,Flows,GAUGE,COUNT,AVG,NONE
+STORAGE,raft.fortification.skipped_no_support,The number of fortification requests that were skipped (not sent) due to lack of store liveness support,Skipped Fortifications,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,raft.fortification_resp.accepted,The number of accepted fortification responses. Calculated on the raft leader,Accepted Fortification Responses,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,raft.fortification_resp.rejected,The number of rejected fortification responses. Calculated on the raft leader,Rejected Fortification Responses,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,raft.heartbeats.pending,Number of pending heartbeats and responses waiting to be coalesced,Messages,GAUGE,COUNT,AVG,NONE
 STORAGE,raft.loaded_entries.bytes,Bytes allocated by raft Storage.Entries calls that are still kept in memory,Bytes,GAUGE,BYTES,AVG,NONE
 STORAGE,raft.loaded_entries.reserved.bytes,Bytes allocated by raft Storage.Entries calls that are still kept in memory,Memory,GAUGE,BYTES,AVG,NONE
@@ -1328,6 +1337,7 @@ APPLICATION,distsender.rangefeed.catchup_ranges,"Number of ranges in catchup mod
 
 This counts the number of ranges with an active rangefeed that are performing catchup scan.
 ",Ranges,GAUGE,COUNT,AVG,NONE
+APPLICATION,distsender.rangefeed.catchup_ranges_waiting_client_side,Number of ranges waiting on the client-side limiter to perform catchup scans,Ranges,GAUGE,COUNT,AVG,NONE
 APPLICATION,distsender.rangefeed.error_catchup_ranges,Number of ranges in catchup mode which experienced an error,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,distsender.rangefeed.local_ranges,Number of ranges connected to local node.,Ranges,GAUGE,COUNT,AVG,NONE
 APPLICATION,distsender.rangefeed.restart_ranges,Number of ranges that were restarted due to transient errors,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2654,6 +2664,8 @@ APPLICATION,txn.commits_read_only,Number of read only KV transaction commits,KV 
 APPLICATION,txn.condensed_intent_spans,KV transactions that have exceeded their intent tracking memory budget (kv.transaction.max_intents_bytes). See also txn.condensed_intent_spans_gauge for a gauge of such transactions currently running.,KV Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,txn.condensed_intent_spans_gauge,KV transactions currently running that have exceeded their intent tracking memory budget (kv.transaction.max_intents_bytes). See also txn.condensed_intent_spans for a perpetual counter/rate.,KV Transactions,GAUGE,COUNT,AVG,NONE
 APPLICATION,txn.condensed_intent_spans_rejected,KV transactions that have been aborted because they exceeded their intent tracking memory budget (kv.transaction.max_intents_bytes). Rejection is caused by kv.transaction.reject_over_max_intents_budget.,KV Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,txn.count_limit_on_response,KV transactions that have exceeded the count limit on a response,KV Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,txn.count_limit_rejected,KV transactions that have been aborted because they exceeded the max number of writes and locking reads allowed,KV Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,txn.durations,KV transaction durations,KV Txn Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,txn.inflight_locks_over_tracking_budget,KV transactions whose in-flight writes and locking reads have exceeded the intent tracking memory budget (kv.transaction.max_intents_bytes).,KV Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,txn.parallelcommits,Number of KV transaction parallel commits,KV Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
