@@ -4,7 +4,7 @@ summary: Learn about the terminology and patterns of hotspots in CockroachDB
 toc: true
 ---
 
-Hotspots in distributed SQL are a common topic. The term _hotspot_ is useful to describe bottlenecks in scaling a database cluster within workloads. This page defines terms and patterns to improve understanding for troubleshooting hotspots.
+Hotspots in distributed SQL are a common topic. The term _hotspot_ is useful to describe bottlenecks in scaling a cluster within workloads. This page defines terms and patterns to improve understanding for troubleshooting hotspots.
 
 These definitions are not mutually exclusive. They can be combined to describe a single incident.
 
@@ -12,7 +12,7 @@ These definitions are not mutually exclusive. They can be combined to describe a
 
 ### Hotspot
 
-The word _hotspot_ describes various skewed data access patterns in a database [cluster]({% link {{ page.version.version }}/architecture/overview.md %}#cluster), often manifesting as higher [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu) utilization on one or more [nodes]({% link {{ page.version.version }}/architecture/overview.md %}#node). Hotspots can also be based on [disk I/O]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#storage-and-disk-i-o), [memory]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#memory) usage, or other finite resources. Hotspots are troublesome because they are often limited to a fixed-size subset of the cluster’s resources, which puts them in a class of performance issues that cannot be solved by [scaling the cluster size]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-does-cockroachdb-scale).
+The word _hotspot_ describes various skewed data access patterns in a [cluster]({% link {{ page.version.version }}/architecture/overview.md %}#cluster), often manifesting as higher [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu) utilization on one or more [nodes]({% link {{ page.version.version }}/architecture/overview.md %}#node). Hotspots can also be based on [disk I/O]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#storage-and-disk-i-o), [memory]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#memory) usage, or other finite resources. Hotspots are troublesome because they are often limited to a fixed-size subset of the cluster’s resources, which puts them in a class of performance issues that cannot be solved by [scaling the cluster size]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-does-cockroachdb-scale).
 
 ### Hot Node
 
@@ -24,23 +24,28 @@ Identifying a hot node, or a node hotspot, is often part of troubleshooting hots
 
 All hotspot types described in this page will create hot nodes, as long as the cluster is not already operating at maximum capacity.
 
-The following image is a graph of [CPU Percent]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent) utilization by node. Most of the nodes hover around 25%, while one hot node is around 95%. The fact that the hot node changes indicates that the hotspot is moving as the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) containing writes fill up and split.
+The following image is a graph of [CPU Percent]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent) utilization by node. Most of the nodes hover around 25%, while one hot node is around 95%. The fact that the hot node changes indicates that the hotspot is moving as the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) containing writes fill up and split (for further explanation, see subsequent sections on [hot range](#hot-range) and [moving_hotspot](#moving-hotspot)).
 
+<a id="hotspots-figure-1"></a>
 <img src="{{ 'images/v25.1/hotspots-figure-1.png' | relative_url }}" alt="graph of CPU Percent utilization by node showing hot nodes" style="border:1px solid #eee;max-width:100%" />
 
 ### Hot Range
 
 **Synonyms:** Range Hotspot
 
-A _hot range_ is one level down from the node hotspot. [Ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) are the smallest unit of data distribution, making them critical in troubleshooting hotspots.
+A _hot range_ is one level down from the node hotspot. [Ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) are the smallest unit of data distribution, making them critical in troubleshooting hotspots. The [DB Console Hot Ranges page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) provides details about ranges receiving a high number of reads or writes. These hot ranges are an issue if they cause a [hot node](#hot-node).
 
-If a node is hot, it is often due to a single hot range. The system may split the hot range to redistribute the load or the range may stay hot until it fills up and splits. In the second case, the split is likely the continuation of the hotspot (as shown in the previous image). If the system is unable to identify a good splitting point for a hot range, the hot range becomes a bottleneck.
+If a node is hot, it is often due to a single hot range. The system may split the hot range to redistribute the load or the range may stay hot until it fills up and splits. In the second case, the split is likely the continuation of the hotspot (as shown in the [previous image](#hotspots-figure-1)). If the system is unable to identify a good splitting point for a hot range, the hot range becomes a bottleneck.
 
 Understanding which range is hot and having knowledge of the [keyspace]({% link {{ page.version.version }}/architecture/overview.md %}#range) allows you to better approximate the nature of the hotspot compared to relying solely on node-level statistics.
 
 ### Moving Hotspot
 
-A _moving hotspot_ describes a hotspot that moves consistently during its life, either within the cluster (from node to node) or the keyspace (for example, the last 10 inserted rows on table T). Moving hotspots are challenging because [load-based splitting]({% link {{ page.version.version }}/load-based-splitting.md %}) will not effectively partition the data to resolve them.
+A _moving hotspot_ describes a hotspot that moves consistently during its life, either within the cluster (from node to node) or the keyspace (for example, reading the last 10 inserted rows on table T).
+
+The [previous image](#hotspots-figure-1) of a CPU percent graph shows a hotspot moving from node to node. In this case, insertions at the tail of an index created a hot range and thus a hot node. When the [maximum size for the range]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-variables) (512 MiB default) was reached, the hot range [split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits). After a split, the cluster's rebalancing processes eventually moved one of the ranges to a different node to improve data distribution or load balancing. The continued insertions at the tail of the index moved the hotspot from range to range and correspondingly from node to node.
+
+Moving hotspots are challenging because [load-based splitting]({% link {{ page.version.version }}/load-based-splitting.md %}) will not effectively partition the data to resolve them.
 
 ### Static Hotspot
 
@@ -58,7 +63,7 @@ While hotspots are often either hot by read or hot by write, they are seldom hot
 
 **Synonyms:** Hot by Write
 
-A _write hotspot_ is a hotspot caused by write throughput. Write hotspots increase the likelihood of contention within the hot node or range, therefore increasing the likelihood that the node or range can become unavailable.
+A _write hotspot_ is a hotspot caused by write throughput. Write hotspots increase the likelihood of [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) within the hot node or range, therefore leading to potential performance issues.
 
 Write hotspots also have the unique effect of affecting more than a single node. Since [consensus]({% link {{ page.version.version }}/architecture/overview.md %}#consensus) and [replication]({% link {{ page.version.version }}/architecture/overview.md %}#replication) must take place, write hotspots often affect three nodes (the default [replication factor]({% link {{ page.version.version }}/configure-replication-zones.md %})) rather than just one node.
 
@@ -82,7 +87,7 @@ This section goes into detail about workload patterns which result in hotspots.
 
 **Synonyms**: hot index, golden keyspace hotspot, monotonically increasing index, a running tail, a moving tail
 
-An _index hotspot_ is a hotspot on an [index]({% link {{ page.version.version }}/indexes.md %}) where the key for writes is continually increasing. This is common with indexing by an increasing column (for example, with data type of [`SERIAL`]({% link {{ page.version.version }}/serial.md %}), [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}), or [`AUTO_INCREMENT`]({% link {{ page.version.version }}/serial.md %}#auto-incrementing-is-not-always-sequential)). Index hotspots limit horizontal scaling as the index acts as a bottleneck.
+An _index hotspot_ is a hotspot on an [index]({% link {{ page.version.version }}/indexes.md %}) where the key for writes is continually increasing. This is common with indexing by an increasing column. For example, the column may be of data type [`SERIAL`]({% link {{ page.version.version }}/serial.md %}), [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}), or [`AUTO_INCREMENT`]({% link {{ page.version.version }}/serial.md %}#auto-incrementing-is-not-always-sequential)). However, an index hotspot is not always determined by the data type. If sequential data generated by the application is inserted into an index, a hotspot may occur. Index hotspots limit horizontal scaling as the index acts as a bottleneck.
 
 Consider a table `users` which contains a [primary key]({% link {{ page.version.version }}/primary-key.md %}) `user_id` that is an incrementing integer value. Each new key will be the current maximum key + 1. In this way, all writes appear at the index tail. The following image visualizes writes to the `users` table using an incrementing `INT` primary key. Note how all writes are focused at the tail of the index, represented by the red section in Range 4.
 
@@ -286,12 +291,6 @@ The following image visualizes the regional breakout of data in the `orders` tab
 **Synonyms:** time-based hotspot
 
 _Temporal hotspots_ refer to increased database usage during particular windows of time. These take a variety of shapes, from event and holiday usage (such as Black Friday or the Superbowl), to synchronized job runs.
-
-### Internal Hotspot
-
-**Synonyms:** hot job, task hotspot
-
-An _internal hotspot_ refers to a type of hotspot that arises from the internal operations of CockroachDB. These hotspots are significant because, although they may be caused by operator error, they often appear in ranges within the keyspace that operators are not familiar with. Examples of internal hotspots include activities such as metrics writing/scraping and jobs such as SQL statistics generation. These internal operations can create bottlenecks and performance issues within the database cluster.
 
 ### Load Balancing Hotspot
 
