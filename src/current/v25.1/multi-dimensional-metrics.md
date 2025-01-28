@@ -44,7 +44,7 @@ rpc_connection_healthy{node_id="1",remote_node_id="3",remote_addr="crlMBP-X3HQX3
 ~~~
 
 {% assign feature = "all" %}
-{% include {{ page.version.version }}/child-metrics-table.md %}
+{% include {{ page.version.version }}/multi-dimensional-metrics-table.md %}
 
 ## Secure clusters
 
@@ -61,7 +61,7 @@ security_certificate_expiration_client{node_id="1",sql_user="root"} 1.878055014e
 ~~~
 
 {% assign feature = "secure" %}
-{% include {{ page.version.version }}/child-metrics-table.md %}
+{% include {{ page.version.version }}/multi-dimensional-metrics-table.md %}
 
 ## Virtual clusters
 
@@ -90,7 +90,7 @@ sysbytes{store="1",node_id="1",tenant_id="system"} 41476
 ~~~
 
 {% assign feature = "virtual" %}
-{% include {{ page.version.version }}/child-metrics-table.md %}
+{% include {{ page.version.version }}/multi-dimensional-metrics-table.md %}
 
 ## Clusters with changefeeds
 
@@ -108,7 +108,7 @@ changefeed_error_retries{node_id="1",scope="office_dogs"} 0
 ~~~
 
 {% assign feature = "changefeed" %}
-{% include {{ page.version.version }}/child-metrics-table.md %}
+{% include {{ page.version.version }}/multi-dimensional-metrics-table.md %}
 
 ## Clusters with logical data replication jobs
 
@@ -143,7 +143,7 @@ logical_replication_scanning_ranges{node_id="2"} 0
 ~~~
 
 {% assign feature = "ldr" %}
-{% include {{ page.version.version }}/child-metrics-table.md %}
+{% include {{ page.version.version }}/multi-dimensional-metrics-table.md %}
 
 ## Clusters with row-level TTL jobs
 
@@ -161,7 +161,7 @@ jobs_row_level_ttl_total_rows{node_id="1",relation="defaultdb_public_events_usin
 ~~~
 
 {% assign feature = "row-level-ttl" %}
-{% include {{ page.version.version }}/child-metrics-table.md %}
+{% include {{ page.version.version }}/multi-dimensional-metrics-table.md %}
 
 ## Metrics of type histogram
 
