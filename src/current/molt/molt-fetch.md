@@ -356,7 +356,10 @@ To customize the replication behavior (an advanced use case), use `--replicator-
 #### Replicate changes
 
 {{site.data.alerts.callout_info}}
-Before using this option, the source PostgreSQL or MySQL database **must** be configured for continuous replication, as described in [Setup](#replication-setup). MySQL 5.7 and later are supported.
+Before using this option: 
+
+- The source PostgreSQL or MySQL database **must** be configured for continuous replication, as described in [Setup](#replication-setup). MySQL 5.7 and later are supported.
+- The `replicator` binary **must** be located either in the same directory as `molt` or in a directory beneath `molt`.
 {{site.data.alerts.end}}
 
 `replication-only` instructs MOLT Fetch to replicate ongoing changes on the source to CockroachDB, using the specified replication marker. This assumes you have already run [`--mode data-load`](#load-data) to load the source data into CockroachDB.
