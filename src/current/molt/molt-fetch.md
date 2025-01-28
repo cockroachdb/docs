@@ -13,8 +13,8 @@ MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-in
 
 The following source databases are currently supported:
 
-- [PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %})
-- [MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
+- PostgreSQL
+- MySQL
 - CockroachDB
 
 ## Installation
@@ -38,14 +38,14 @@ Complete the following items before using MOLT Fetch:
 	- For PostgreSQL sources, enable logical replication. In `postgresql.conf` or in the SQL shell, set [`wal_level`](https://www.postgresql.org/docs/current/runtime-config-wal.html) to `logical`.
 
 	- For MySQL **8.0 and later** sources, enable [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) consistency. Set the following values in `mysql.cnf`, in the SQL shell, or as flags in the `mysql` start command:
+		- `--binlog-row-metadata=full`
 		- `--enforce-gtid-consistency=ON`
 		- `--gtid-mode=ON`
-		- `--binlog-row-metadata=full`
 
 	- For MySQL **5.7** sources, set the following values. Note that `binlog-row-image` is used instead of `binlog-row-metadata`. Set `server-id` to a unique integer that differs from any other MySQL server you have in your cluster (e.g., `3`).
+		- `--binlog-row-image=full`
 		- `--enforce-gtid-consistency=ON`
 		- `--gtid-mode=ON`
-		- `--binlog-row-image=full`
 		- `--server-id={ID}`
 		- `--log-bin=log-bin`
 
@@ -77,7 +77,7 @@ Complete the following items before using MOLT Fetch:
 - To prevent connections from terminating prematurely during data export, set the following to high values on the source database:
 
 	- **Maximum allowed number of connections:** MOLT Fetch can export data across multiple connections. The number of connections it will create is the number of shards ([`--export-concurrency`](#global-flags)) multiplied by the number of tables ([`--table-concurrency`](#global-flags)) being exported concurrently.
-	- **Maximum lifetime of a connection:** This is particularly important for MySQL sources, which can only use a single connection to move data. See the following note.
+	- **Maximum lifetime of a connection:** This is particularly important for MySQL sources, which can only use a single connection to move data.
 
 - If a PostgreSQL database is set as a [source](#source-and-target-databases), ensure that [`idle_in_transaction_session_timeout`](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT) on PostgreSQL is either disabled or set to a value longer than the duration of data export. Otherwise, the connection will be prematurely terminated. To estimate the time needed to export the PostgreSQL tables, you can [perform a dry run](#perform-a-dry-run) and sum the value of [`molt_fetch_table_export_duration_ms`](#metrics) for all exported tables.
 
@@ -448,7 +448,7 @@ When running `molt fetch --mode failback`, `--source` is the CockroachDB connect
 ~~~
 --source 'postgresql://{username}:{password}@{host}:{port}/{database}'
 --target 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
---table-filter 'employees, payments'
+--table-filter 'employees|payments'
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -554,23 +554,24 @@ MOLT Fetch can move the source data to CockroachDB via [cloud storage](#cloud-st
 Only the path specified in `--bucket-path` is used. Query parameters, such as credentials, are ignored. To authenticate cloud storage, follow the steps in [Secure cloud storage](#secure-cloud-storage).
 {{site.data.alerts.end}}
 
-`--bucket-path` instructs MOLT Fetch to write intermediate files to a path within a [Google Cloud Storage](https://cloud.google.com/storage/docs/buckets) or [Amazon S3](https://aws.amazon.com/s3/) bucket to which you have the necessary permissions. For example:
+`--bucket-path` instructs MOLT Fetch to write intermediate files to a path within a [Google Cloud Storage](https://cloud.google.com/storage/docs/buckets) or [Amazon S3](https://aws.amazon.com/s3/) bucket to which you have the necessary permissions. Use additional [flags](#global-flags), shown in the following examples, to specify authentication or region parameters as required for bucket access.
 
-Google Cloud Storage:
-
-{% include_cached copy-clipboard.html %}
-~~~
---bucket-path 'gs://migration/data/cockroach'
-~~~
-
-Amazon S3:
+The following example connects to a Google Cloud Storage bucket with [implicit authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#google-cloud-storage-implicit) and [assume role]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#set-up-google-cloud-storage-assume-role).
 
 {% include_cached copy-clipboard.html %}
 ~~~
---bucket-path 's3://migration/data/cockroach'
+--bucket-path 'gs://migration/data/cockroach/?AUTH=implicit&ASSUME_ROLE=user-test@cluster-ephemeral.iam.gserviceaccount.com
+--assume-role='user-test@cluster-ephemeral.iam.gserviceaccount.com'
+--use-implicit-auth
 ~~~
 
-Cloud storage can be used to move data with either [`IMPORT INTO` or `COPY FROM`](#data-movement).
+The following example connects to an Amazon S3 bucket and explicitly specifies the `ap_south-1` region. The `--import-region` flag enables the use of the `AWS_REGION` query parameter in the `s3` URL. When this flag is set, `IMPORT INTO` must be used for [data movement](#data-movement).
+
+{% include_cached copy-clipboard.html %}
+~~~
+--bucket-path 's3://migration/data/cockroach/?AWS_REGION=ap-south-1'
+--import-region 'ap-south-1'
+~~~
 
 #### Local file server
 
@@ -592,8 +593,6 @@ For example, if you are migrating to CockroachDB {{ site.data.products.cloud }},
 --local-path-listen-addr 'localhost:3000'
 --local-path-crdb-access-addr '44.55.66.77:3000'
 ~~~
-
-A local file server can be used to move data with either [`IMPORT INTO` or `COPY FROM`](#data-movement).
 
 {{site.data.alerts.callout_success}}
 [Cloud storage](#cloud-storage) is often preferable to a local file server, which can require considerable disk space.
@@ -1110,7 +1109,7 @@ The following `molt fetch` command uses [`failback` mode](#fail-back-to-source-d
 molt fetch \
 --source 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full' \
 --target 'mysql://root:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt' \
---table-filter 'employees, payments' \
+--table-filter 'employees|payments' \
 --non-interactive \
 --logging debug \
 --replicator-flags "--tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key" \
