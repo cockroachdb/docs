@@ -1,5 +1,5 @@
 ---
-title: Unsupported versions
+title: Unsupported Versions
 summary: Versions of CockroachDB that are no longer supported
 toc: true
 docs_area: releases
@@ -15,7 +15,7 @@ docs_area: releases
 {% assign released_versions = site.data.releases | map: "major_version" | uniq | reverse %}
 {% comment %} Fetch the list of the major versions of all releases that currently exist {% endcomment %}
 
-{% assign versions = site.data.unsupported_versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
+{% assign versions = site.data.versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
 {% comment %} Fetch all major versions (e.g., v21.2), sorted in reverse chronological order. {% endcomment %}
 
 {% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where_exp: "latest_hotfix", "latest_hotfix.withdrawn != true"  | sort: "release_date" | reverse | first %}
@@ -26,8 +26,10 @@ docs_area: releases
 {% capture onclick_string %}onclick="{{ experimental_download_js }}"{% endcapture %}
 
 {% assign is_not_downloadable_message = "No longer available for download." %}
-
+{% assign current_date = "now" | date: "%Y-%m-%d" %}
 {% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
+{% assign maint_supp_exp_date = v.maint_supp_exp_date %}
+{% assign asst_supp_exp_date = v.asst_supp_exp_date %}
 
     {% comment %}
       Determine if the major version is LTS and the patch component of the initial LTS patch,
@@ -51,7 +53,21 @@ docs_area: releases
             {% assign lts_patch = lts_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
         {% endif %}
     {% endif %}
+     {% assign valid_release_date = false %}
+    {% if v.release_date != 'N/A' %}
+    {% assign valid_release_date = true %}
+    {% endif %}
 
+    {% assign invalid_maint_date = false %}
+    {% if v.maint_supp_exp_date != 'N/A' and v.maint_supp_exp_date <= current_date %}
+    {% assign invalid_maint_date = true %}
+    {% endif %}
+
+    {% assign invalid_asst_date = false %}
+    {% if v.asst_supp_exp_date == 'N/A' or v.asst_supp_exp_date <= current_date %}
+    {% assign invalid_asst_date = true %}
+    {% endif %}
+    {% if valid_release_date and invalid_maint_date and invalid_asst_date %}
 ### {{ v.major_version }}
 
 {% if DEBUG == true %}
@@ -469,4 +485,5 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 
         {% endif %} {% comment %}if releases[0]{% endcomment %}
     {% endfor %} {% comment %}for s in sections {% endcomment %}
+    {% endif %}
 {% endfor %} {% comment %}for v in versions{% endcomment %}

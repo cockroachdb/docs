@@ -140,7 +140,7 @@ The following releases and their descriptions represent proposed plans that are 
 {% assign released_versions = site.data.releases | map: "major_version" | uniq | reverse %}
 {% comment %} Fetch the list of the major versions of all releases that currently exist {% endcomment %}
 
-{% assign versions = site.data.supported_versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
+{% assign versions = site.data.versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
 {% comment %} Fetch all major versions (e.g., v21.2), sorted in reverse chronological order. {% endcomment %}
 
 {% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where_exp: "latest_hotfix", "latest_hotfix.withdrawn != true"  | sort: "release_date" | reverse | first %}
@@ -152,7 +152,11 @@ The following releases and their descriptions represent proposed plans that are 
 
 {% assign is_not_downloadable_message = "No longer available for download." %}
 
-{% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
+{% assign current_date = "now" | date: "%Y-%m-%d" %}
+{% for v in versions %} 
+{% comment %} Iterate through all major versions {% endcomment %}
+{% assign maint_supp_exp_date = v.maint_supp_exp_date %}
+{% assign asst_supp_exp_date = v.asst_supp_exp_date %}
 
     {% comment %}
       Determine if the major version is LTS and the patch component of the initial LTS patch,
@@ -176,7 +180,21 @@ The following releases and their descriptions represent proposed plans that are 
             {% assign lts_patch = lts_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
         {% endif %}
     {% endif %}
+    {% assign valid_release_date = false %}
+    {% if v.release_date != 'N/A' %}
+    {% assign valid_release_date = true %}
+    {% endif %}
 
+    {% assign valid_maint_date = false %}
+    {% if v.maint_supp_exp_date != 'N/A' and v.maint_supp_exp_date >= current_date %}
+    {% assign valid_maint_date = true %}
+    {% endif %}
+
+    {% assign valid_asst_date = false %}
+    {% if v.asst_supp_exp_date == 'N/A' or v.asst_supp_exp_date >= current_date %}
+    {% assign valid_asst_date = true %}
+    {% endif %}
+    {% if valid_release_date and valid_maint_date and valid_asst_date %}
 ### {{ v.major_version }}
 
 {% if DEBUG == true %}
@@ -400,7 +418,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 </section>
 
 <section class="filter-content" markdown="1" data-scope="windows">
-    Windows 8 or higher is required. Windows downloads are **experimental**. Experimental downloads are not yet qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
+    Windows 8 or higher is required. Windows downloads are **experimental**. Experimental downloads are not yet qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases
 
     <table class="release-table">
     <thead>
@@ -594,6 +612,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 
         {% endif %} {% comment %}if releases[0]{% endcomment %}
     {% endfor %} {% comment %}for s in sections {% endcomment %}
+            {% endif %}
 {% endfor %} {% comment %}for v in versions{% endcomment %}
 
 ## Licenses
@@ -604,6 +623,6 @@ All binaries available on this page released prior to the release date of 24.3.0
 
 To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.
 
-## Unsupported versions 
+## Unsupported Versions 
 [Here]({% link releases/unsupported-versions.md %}) are the versions of CockroachDB that are no longer supported
 
