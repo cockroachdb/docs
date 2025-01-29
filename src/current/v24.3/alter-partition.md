@@ -9,6 +9,8 @@ docs_area: reference.sql
 
 To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}). For more information about replication zones, see [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
+
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
 
@@ -44,3 +46,11 @@ The user must have the [`CREATE`]({% link {{ page.version.version }}/grant.md %}
 ### Create a replication zone for a partition
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md hide-enterprise-warning="true" %}
+
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
+
+## See also
+
+- [Table partitioning]({% link {{page.version.version}}/partitioning.md %})
+- [`SHOW PARTITIONS`]({% link {{page.version.version}}/show-partitions.md %})
+- [Troubleshoot Replication Zones]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %})
