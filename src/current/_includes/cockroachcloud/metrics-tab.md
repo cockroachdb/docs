@@ -1,10 +1,11 @@
-{% assign graphs = site.data.metrics.metrics | where_exp: "graphs", "graphs.metric_ui_tab contains tab" | map: "metric_ui_graph" | uniq %}
+{% assign version = site.current_cloud_version | replace: ".", "" %}
+{% assign graphs = site.data[version].metrics.metrics | where_exp: "graphs", "graphs.metric_ui_tab contains tab" | map: "metric_ui_graph" | uniq %}
 
 {% for g in graphs %} {% comment %} Iterate through the graphs. {% endcomment %}
 
 ## {{ g }}
 
-{% assign metrics = site.data.metrics.metrics | where: "metric_ui_graph", g %}
+{% assign metrics = site.data[version].metrics.metrics | where: "metric_ui_graph", g %}
 {% comment %} Fetch all metrics for given metric_ui_tab. {% endcomment %}
 
 <table markdown="1">
@@ -18,7 +19,7 @@
     </thead>
     <tbody>    
     {% for m in metrics %} {% comment %} Iterate through the metrics. {% endcomment %}
-        {% assign metrics-list = site.data.metrics.metrics-list | where: "metric", m.metric_id %}
+        {% assign metrics-list = site.data[version].metrics.metrics-list | where: "metric", m.metric_id %}
         {% comment %} Get the row from the metrics-list with the given metric_id. {% endcomment %}
             <tr>
             <td>{{ m.short_name }}</td>

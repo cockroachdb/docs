@@ -63,7 +63,7 @@ We keep a card on file after the associated organization is deleted so we can pr
 
 To subscribe to CockroachDB {{ site.data.products.cloud }} through the AWS Marketplace:
 
-1. From the [AWS Marketplace page for CockroachDB (pay-as-you-go)](https://aws.amazon.com/marketplace/pp/prodview-n3xpypxea63du),  click **View purchase options**. to open the **Subscribe to CockroachDB Cloud** page
+1. From the [AWS Marketplace page for CockroachDB (pay-as-you-go)](https://aws.amazon.com/marketplace/pp/prodview-n3xpypxea63du),  click **View purchase options** to open the **Subscribe to CockroachDB Cloud** page
 1. Click **Subscribe**, then click **Set up your account**. You will be redirected to the CockroachDB {{ site.data.products.cloud }} console.
 1. [Register]({% link cockroachcloud/create-an-account.md %}#register-a-new-account) a new CockroachDB {{ site.data.products.cloud }} account or sign in to your existing account.
 1. If you have access to multiple CockroachDB {{ site.data.products.cloud }} organizations, select an organization to update its billing configuration.
