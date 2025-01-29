@@ -5,10 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_info}}
-Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
-{{site.data.alerts.end}}
-
 You can monitor a [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) stream using:
 
 - [`SHOW VIRTUAL CLUSTER ... WITH REPLICATION STATUS`](#sql-shell) in the SQL shell.
@@ -18,6 +14,10 @@ You can monitor a [**physical cluster replication (PCR)**]({% link {{ page.versi
 When you complete a [failover]({% link {{ page.version.version }}/failover-replication.md %}), there will be a gap in the primary cluster's metrics whether you are monitoring via the [DB Console](#db-console) or [Prometheus](#prometheus).
 
 The standby cluster will also require separate monitoring to ensure observability during the failover period. You can use the DB console to track the relevant metrics, or you can use a tool like [Grafana]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}#step-5-visualize-metrics-in-grafana) to create two separate dashboards, one for each cluster, or a single dashboard with data from both clusters.
+
+{{site.data.alerts.callout_info}}
+**This page is a guide to monitoring PCR in CockroachDB self-hosted clusters**. For {{ site.data.products.advanced }} clusters, refer to the [Physical Cluster Replication]({% link cockroachcloud/physical-cluster-replication.md %}#step-3-monitor-the-pcr-stream) page in CockroachDB {{ site.data.products.cloud }}.
+{{site.data.alerts.end}}
 
 ## SQL Shell
 

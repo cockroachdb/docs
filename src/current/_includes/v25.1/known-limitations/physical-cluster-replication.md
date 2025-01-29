@@ -1,5 +1,7 @@
-- Physical cluster replication is supported only on CockroachDB {{ site.data.products.core }} in new clusters on v23.2 or above. Physical Cluster Replication cannot be enabled on clusters that have been upgraded from a previous version of CockroachDB.
-- The primary and standby clusters must have the same [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}).
+- Physical cluster replication is supported on:
+    - CockroachDB self-hosted in new clusters on v23.2 or above. Physical Cluster Replication cannot be enabled on clusters that have been upgraded from a previous version of CockroachDB.
+    - CockroachDB {{ site.data.products.advanced }} in new clusters on v25.1 with the `"support_physical_cluster_replication"` field enabled.
+- The primary and standby clusters must have the same [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) in CockroachDB self-hosted.
 - Failing back to the primary cluster after a failover is a manual process. Refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-to-the-primary-cluster). In addition, after failover, to continue using physical cluster replication, you must configure it again.
 - Before failover to the standby, the standby cluster does not support running [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) or [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
 - Large data imports, such as those produced by [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) or [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}), may dramatically increase [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process).

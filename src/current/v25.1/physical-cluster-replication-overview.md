@@ -5,15 +5,16 @@ toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_info}}
-Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
-{{site.data.alerts.end}}
-
 CockroachDB **physical cluster replication (PCR)** continuously sends all data at the byte level from a _primary_ cluster to an independent _standby_ cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster.
 
 In a disaster recovery scenario, you can [_fail over_]({% link {{ page.version.version }}/failover-replication.md %}) from the unavailable primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic.
 
-For a list of requirements for PCR, refer to the [Before you begin]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#before-you-begin) section of the [setup tutorial]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+Physical cluster replication is supported in CockroachDB self-hosted and {{ site.data.products.advanced }} clusters.
+
+For a list of requirements for PCR, refer to:
+
+- Self-hosted clusters: The [Before you begin]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#before-you-begin) section of the [setup tutorial]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+- ([Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview)) {{ site.data.products.advanced }} clusters: The [Before you begin]({% link cockroachcloud/physical-cluster-replication.md %}#before-you-begin) section of the CockroachDB {{ site.data.products.cloud }} setup tutorial.
 
 {{site.data.alerts.callout_success}}
 Cockroach Labs also has a [logical data replication]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) tool that continuously replicates tables between an active _source_ CockroachDB cluster to an active _destination_ CockroachDB cluster. Both source and destination can receive application reads and writes, and participate in [_bidirectional_]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#use-cases) LDR for eventual consistency in the replicating tables.
@@ -30,12 +31,70 @@ You can use PCR in a disaster recovery plan to:
 
 ## Features
 
-- **Asynchronous byte-level replication**: When you initiate a replication stream, it will replicate byte-for-byte all of the primary cluster's existing user data and associated metadata to the standby cluster asynchronously. From then on, it will continuously replicate the primary cluster's data and metadata to the standby cluster. PCR will automatically replicate changes related to operations such as [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), user and [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) modifications, and [zone configuration]({% link {{ page.version.version }}/show-zone-configurations.md %}) updates without any manual work.
-- **Transactional consistency**: You can fail over to the standby cluster at the [`LATEST` timestamp]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-the-most-recent-replicated-time) or a [point of time]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-a-point-in-time) in the past or the future. When the failover process completes, the standby cluster will be in a transactionally consistent state as of the point in time you specified.
-- **Maintained/improved RPO and RTO**: Depending on workload and deployment configuration, [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) between the primary and standby is generally in the tens-of-seconds range. The failover process from the primary cluster to the standby should typically happen within five minutes when completing a failover to the latest replicated time using `LATEST`.
-- **Failover to a timestamp in the past or the future**: In the case of logical disasters or mistakes, you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) from the primary to the standby cluster to a timestamp in the past. This means that you can return the standby to a timestamp before the mistake was replicated to the standby. You can also configure the [`WITH RETENTION`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}#set-a-retention-window) option to control how far in the past you can fail over to. Furthermore, you can plan a failover by specifying a timestamp in the future.
-- **Read from standby cluster**: You can configure PCR to allow read queries on the standby cluster. For more details, refer to [Start a PCR stream with read from standby]({% link {{ page.version.version }}/create-virtual-cluster.md %}#start-a-pcr-stream-with-read-from-standby).
-- **Monitoring**: To monitor the replication's initial progress, current status, and performance, you can use metrics available in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}). For more details, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
+PCR is available on CockroachDB self-hosted and CockroachDB Cloud {{ site.data.products.advanced }} clusters. Review the following table for differences in feature availability:
+
+<table class="comparison-chart">
+  <tr>
+    <th></th>
+    <th>{{ site.data.products.advanced }} clusters</th>
+    <th>Self-hosted clusters</th>
+  </tr>
+
+  <tr>
+    <td class="comparison-chart__feature">
+      <b>Feature phase availability</b>
+    </td>
+    <td style="text-align: center"><a href="cockroachdb-feature-availability.html#features-in-preview">Preview</a></td>
+    <td style="text-align: center"><a href="cockroachdb-feature-availability.html">Generally available</a></td>
+  </tr>
+
+  <tr>
+    <td class="comparison-chart__feature">
+      <b>Asynchronous byte-level replication</b>
+    </td>
+    <td colspan="2">When you initiate a replication stream, it will replicate byte-for-byte all of the primary cluster's existing user data and associated metadata to the standby cluster asynchronously. From then on, it will continuously replicate the primary cluster's data and metadata to the standby cluster. PCR will automatically replicate changes related to operations such as <a href="online-schema-changes.html">schema changes</a>, user and <a href="security-reference/authorization.html#managing-privileges">privilege</a> modifications, and <a href="show-zone-configurations.html">zone configuration</a> updates without any manual work.</td>
+  </tr>
+
+  <tr>
+    <td class="comparison-chart__feature">
+      <b>Transactional consistency</b>
+    </td>
+    <td>Use the <a href="../cockroachcloud/physical-cluster-replication.html#step-4-fail-over-to-the-standby-cluster">Cloud API</a> to fail over to the standby cluster at the latest consistent timestamp or a point of time in the past or the future. When the failover process completes, the standby cluster will be in a transactionally consistent state as of the specified timestamp.</td>
+    <td>Use the <a href="failover-replication.html#fail-over-to-the-most-recent-replicated-time"><code>LATEST</code> timestamp</a> or a <a href="failover-replication.html#fail-over-to-a-point-in-time">point of time</a> in the past or the future to fail over to the standby cluster. When the failover process completes, the standby cluster will be in a transactionally consistent state as of the specified timestamp.</td>
+  </tr>
+
+  <tr>
+    <td class="comparison-chart__feature">
+      <b>Maintained/improved RPO and RTO</b>
+    </td>
+    <td colspan="2">Depending on workload and deployment configuration, <a href="physical-cluster-replication-technical-overview.html">replication lag</a> between the primary and standby is generally in the tens-of-seconds range. The failover process from the primary cluster to the standby should typically happen within five minutes when completing a failover to the latest replicated time.</td>
+  </tr>
+
+  <tr>
+    <td class="comparison-chart__feature">
+      <b>Read from standby cluster</b>
+    </td>
+    <td style="text-align: center">Not supported</td>
+    <td>Configure PCR to allow read queries on the standby cluster. For more details, refer to <a href="create-virtual-cluster.html#start-a-pcr-stream-with-read-from-standby">Start a PCR stream with read from standby</a>.</td>
+  </tr>
+
+  <tr>
+    <td class="comparison-chart__feature">
+      <b>Fail over to a timestamp in the past or the future</b>
+    </td>
+    <td><ul><li><a href="../cockroachcloud/physical-cluster-replication.html#step-4-fail-over-to-the-standby-cluster">Fail over</a> from the primary to the standby cluster to a timestamp in the past (within the <a href="../cockroachcloud/physical-cluster-replication.html#technical-reference">retained time</a>), so that you can return the standby to a timestamp before a logical mistake was replicated.</li><li>Plan a failover by specifying a timestamp up to one hour in the future.</li></ul></td>
+    <td><ul><li><a href="failover-replication.html">Fail over</a> from the primary to the standby cluster to a timestamp in the past, so that you can return the standby to a timestamp before a logical mistake was replicated.</li><li>Plan a failover by specifying a timestamp in the future.</li><li>Configure the <a href="alter-virtual-cluster.html#set-a-retention-window"><code>WITH RETENTION</code></a> option to control how far in the past you can fail over to.</li></ul></td>
+  </tr>
+
+  <tr>
+    <td class="comparison-chart__feature">
+      <b>Monitoring</b>
+    </td>
+    <td>Use metrics available in <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a> and the status with the <a href="../cockroachcloud/cloud-api.html">Cloud API</a>. For more details, refer to <a href="../cockroachcloud/physical-cluster-replication.html#step-3-monitor-the-pcr-stream">Monitor the PCR stream</a>.</td>
+    <td>Monitor the stream's initial progress, current status, and performance, use metrics available in the <a href="ui-overview.html">DB Console</a> and <a href="monitor-cockroachdb-with-prometheus.html">Prometheus</a>. For more details, refer to <a href="physical-cluster-replication-monitoring.html">Physical Cluster Replication Monitoring</a>.</td>
+  </tr>
+
+</table>
 
 {{site.data.alerts.callout_info}}
 [Failing over to a timestamp in the past]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-a-point-in-time) involves reverting data on the standby cluster. As a result, this type of failover takes longer to complete than failover to the [latest replicated time]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-the-most-recent-replicated-time). The increase in failover time will correlate to how much data you are reverting from the standby. For more detail, refer to the [Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) page for PCR.
@@ -59,9 +118,9 @@ Cockroach Labs testing has demonstrated the following results for workloads up t
 Frequent large schema changes or imports may cause a significant spike in [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}).
 {{site.data.alerts.end}}
 
-## Get started
+## Get started on self-hosted PCR
 
-This section is a quick overview of the initial requirements to start a replication stream.
+This section is a quick overview of the initial requirements to start a PCR stream on CockroachDB self-hosted.
 
 For more comprehensive guides, refer to:
 
@@ -69,6 +128,10 @@ For more comprehensive guides, refer to:
 - [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}): for a tutorial on how to start a replication stream.
 - [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}): for detail on metrics and observability into a replication stream.
 - [Fail Over from a Primary Cluster to a Standby Cluster]({% link {{ page.version.version }}/failover-replication.md %}): for a guide on how to complete a replication stream and fail over to the standby cluster.
+
+{{site.data.alerts.callout_info}}
+For details on setting up PCR on a CockroachDB {{ site.data.products.advanced }} cluster, refer to [Physical Cluster Replication]({% link cockroachcloud/physical-cluster-replication.md %}#set-up-pcr-on-cockroachdb-advanced) CockroachDB {{ site.data.products.cloud }} guide.
+{{site.data.alerts.end}}
 
 ### Start clusters
 
