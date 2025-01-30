@@ -23,21 +23,21 @@ This page includes the following information:
 | Unstable | Supported for consumption by humans. Not supported for automation.        | [Backward-incompatible changes](#backward-incompatible-changes) may be introduced in new major and patch versions.                                                                                                 |
 | Reserved | Intended for use by CockroachDB developers. Not supported for public use. | N/A                                                                                                                                                                                                                |
 
-Backward-incompatible changes to **stable APIs** are highlighted in the [release notes]({% link releases/index.md %}) for major CockroachDB versions. Users are asked to consider backward-incompatible changes before [upgrading]({% link releases/{{ page.version.version}}.md %}) to a new CockroachDB version.
+Backward-incompatible changes to **stable APIs** are highlighted in the [release notes](releases/index.md) for major CockroachDB versions. Users are asked to consider backward-incompatible changes before [upgrading](releases/{{ page.version.version}}.md) to a new CockroachDB version.
 
 ### Backward-incompatible changes
 
 A change is *backward-incompatible* when existing automation requires an update in order to continue working. These changes are also known as "breaking changes":
 
-- Removal or renaming of an endpoint, [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#built-in-functions), [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), or session variable.
+- Removal or renaming of an endpoint, [built-in function]({{ page.version.version }}/functions-and-operators.md#built-in-functions), [cluster setting]({{ page.version.version }}/cluster-settings.md), or session variable.
 - Removal or renaming of a SQL statement or syntax.
 - Addition, removal, or renaming of a mandatory command-line flag or HTTP field.
 - Removal or renaming of an optional command-line flag or HTTP field.
-- Change in behavior of a [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#built-in-functions) without fixing a bug or PostgreSQL incompatibility.
-- Removal or renaming of possible values in an `ENUM` session variable or [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
-- Change in non-interactive [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) shell input or output.
-- Change in behavior of a [structured log event]({% link {{ page.version.version }}/eventlog.md %}) type, including the [logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) it is emitted on.
-- Renaming of a [structured log event]({% link {{ page.version.version }}/eventlog.md %}) type or payload field.
+- Change in behavior of a [built-in function]({{ page.version.version }}/functions-and-operators.md#built-in-functions) without fixing a bug or PostgreSQL incompatibility.
+- Removal or renaming of possible values in an `ENUM` session variable or [cluster setting]({{ page.version.version }}/cluster-settings.md).
+- Change in non-interactive [`cockroach sql`]({{ page.version.version }}/cockroach-sql.md) shell input or output.
+- Change in behavior of a [structured log event]({{ page.version.version }}/eventlog.md) type, including the [logging channel]({{ page.version.version }}/logging-overview.md#logging-channels) it is emitted on.
+- Renaming of a [structured log event]({{ page.version.version }}/eventlog.md) type or payload field.
 
 ### Backward-compatible changes
 
@@ -50,7 +50,7 @@ The following list is not exhaustive:
 - Marking functionality as deprecated via in-line documentation, hints, or warnings without removing it altogether.
 - Addition or removal of a metric.
 - Addition of a structured log event type or payload field.
-- Addition of a new [logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels).
+- Addition of a new [logging channel]({{ page.version.version }}/logging-overview.md#logging-channels).
 
 ### Versioning
 
@@ -87,28 +87,28 @@ A *mixed* API includes both stable and unstable features.
 | [CockroachDB Cloud Console][cloud-console]       | Unstable | N/A                                      |                                                                                                                                                                                                                            | CockroachDB Cloud                                            |
 | [Advanced Debug endpoints][ui-debug-pages]       | Reserved | N/A                                      |                                                                                                                                                                                                                            | N/A                                                          |
 
-[pg-wire]: {% link {{ page.version.version }}/postgresql-compatibility.md %}
-[sql-syntax]: {% link {{ page.version.version }}/sql-feature-support.md %}
-[info-schema]: {% link {{ page.version.version }}/information-schema.md %}
-[pg-catalog]: {% link {{ page.version.version }}/pg-catalog.md %}
-[pg-extension]: {% link {{ page.version.version }}/pg-extension.md %}
-[crdb-internal]: {% link {{ page.version.version }}/crdb-internal.md %}
-[crdb-internal-subset]: {% link {{ page.version.version }}/crdb-internal.md %}#tables
-[built-in-functions]: {% link {{ page.version.version }}/functions-and-operators.md %}#built-in-functions
-[cockroach-commands]: {% link {{ page.version.version }}/cockroach-commands.md %}
-[cockroach-sql]: {% link {{ page.version.version }}/cockroach-sql.md %}
-[health-endpoints]: {% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-endpoints
-[prometheus-endpoint]: {% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint
-[cluster-api]: {% link {{ page.version.version }}/cluster-api.md %}
-[db-console]: {% link {{ page.version.version }}/ui-overview.md %}
-[logging-overview]: {% link {{ page.version.version }}/logging-overview.md %}
-[eventlog]: {% link {{ page.version.version }}/eventlog.md %}
-[ccloud-cli]: {% link cockroachcloud/ccloud-get-started.md %}
-[cloud-api]: {% link cockroachcloud/cloud-api.md %}
-[cloud-console]: {% link cockroachcloud/create-an-account.md %}#log-in-to-your-account
-[ui-debug-pages]: {% link {{ page.version.version }}/ui-debug-pages.md %}
+[pg-wire]: {{ page.version.version }}/postgresql-compatibility.md
+[sql-syntax]: {{ page.version.version }}/sql-feature-support.md
+[info-schema]: {{ page.version.version }}/information-schema.md
+[pg-catalog]: {{ page.version.version }}/pg-catalog.md
+[pg-extension]: {{ page.version.version }}/pg-extension.md
+[crdb-internal]: {{ page.version.version }}/crdb-internal.md
+[crdb-internal-subset]: {{ page.version.version }}/crdb-internal.md#tables
+[built-in-functions]: {{ page.version.version }}/functions-and-operators.md#built-in-functions
+[cockroach-commands]: {{ page.version.version }}/cockroach-commands.md
+[cockroach-sql]: {{ page.version.version }}/cockroach-sql.md
+[health-endpoints]: {{ page.version.version }}/monitoring-and-alerting.md#health-endpoints
+[prometheus-endpoint]: {{ page.version.version }}/monitoring-and-alerting.md#prometheus-endpoint
+[cluster-api]: {{ page.version.version }}/cluster-api.md
+[db-console]: {{ page.version.version }}/ui-overview.md
+[logging-overview]: {{ page.version.version }}/logging-overview.md
+[eventlog]: {{ page.version.version }}/eventlog.md
+[ccloud-cli]: cockroachcloud/ccloud-get-started.md
+[cloud-api]: cockroachcloud/cloud-api.md
+[cloud-console]: cockroachcloud/create-an-account.md#log-in-to-your-account
+[ui-debug-pages]: {{ page.version.version }}/ui-debug-pages.md
 
 ## See also
 
-- [Release Support Policy]({% link releases/release-support-policy.md %})
-- [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
+- [Release Support Policy](releases/release-support-policy.md)
+- [Monitoring and Alerting]({{ page.version.version }}/monitoring-and-alerting.md)

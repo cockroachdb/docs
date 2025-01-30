@@ -5,63 +5,60 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `UPDATE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) updates rows in a table.
+The `UPDATE` [statement]({{ page.version.version }}/sql-statements.md) updates rows in a table.
 
 {{site.data.alerts.callout_danger}}
-If you update a row that contains a column referenced by a [foreign key constraint]({% link {{ page.version.version }}/foreign-key.md %}) and has an [`ON UPDATE` action]({% link {{ page.version.version }}/foreign-key.md %}#foreign-key-actions), all of the dependent rows will also be updated.
+If you update a row that contains a column referenced by a [foreign key constraint]({{ page.version.version }}/foreign-key.md) and has an [`ON UPDATE` action]({{ page.version.version }}/foreign-key.md#foreign-key-actions), all of the dependent rows will also be updated.
 {{site.data.alerts.end}}
 
 
 ## Required privileges
 
-The user must have the `SELECT` and `UPDATE` [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
+The user must have the `SELECT` and `UPDATE` [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the table.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/update.html %}
 </div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`common_table_expr` | See [Common Table Expressions]({% link {{ page.version.version }}/common-table-expressions.md %}).
+`common_table_expr` | See [Common Table Expressions]({{ page.version.version }}/common-table-expressions.md).
 `table_name` | The name of the table that contains the rows you want to update.
 `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
 `column_name` | The name of the column whose values you want to update.
-`a_expr` | The new value you want to use, the [aggregate function]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions) you want to perform, or the [scalar expression]({% link {{ page.version.version }}/scalar-expressions.md %}) you want to use.<br><br>To fill columns with their [default values]({% link {{ page.version.version }}/default-value.md %}), use `DEFAULT VALUES` in place of `a_expr`. To fill a specific column with its default value, leave the value out of the `a_expr` or use `DEFAULT` at the appropriate position.
+`a_expr` | The new value you want to use, the [aggregate function]({{ page.version.version }}/functions-and-operators.md#aggregate-functions) you want to perform, or the [scalar expression]({{ page.version.version }}/scalar-expressions.md) you want to use.<br><br>To fill columns with their [default values]({{ page.version.version }}/default-value.md), use `DEFAULT VALUES` in place of `a_expr`. To fill a specific column with its default value, leave the value out of the `a_expr` or use `DEFAULT` at the appropriate position.
 `FROM table_ref` | Specify a table to reference, but not update, in `UPDATE` expressions, or in `RETURNING` and `WHERE` clauses. For more details, see [Reference other tables in an update](#reference-other-tables-in-an-update).
-`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}). Each value must match the [data type]({% link {{ page.version.version }}/data-types.md %}) of its column on the left side of `=`.
-`WHERE a_expr`| `a_expr` must be a [scalar expression]({% link {{ page.version.version }}/scalar-expressions.md %}) that returns Boolean values using columns (e.g., `<column> = <value>`). Update rows that return `TRUE`.<br><br/>**Without a `WHERE` clause in your statement, `UPDATE` updates all rows in the table.**
-`sort_clause` | An `ORDER BY` clause. See [Ordering Query Results]({% link {{ page.version.version }}/order-by.md %}) and [Ordering of rows in DML statements]({% link {{ page.version.version }}/order-by.md %}#ordering-rows-in-dml-statements) for more details.
-`limit_clause` | A `LIMIT` clause. See [Limit Query Results]({% link {{ page.version.version }}/limit-offset.md %}) for more details.
-`RETURNING target_list` | Return values based on rows updated, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
+`select_stmt` | A [selection query]({{ page.version.version }}/selection-queries.md). Each value must match the [data type]({{ page.version.version }}/data-types.md) of its column on the left side of `=`.
+`WHERE a_expr`| `a_expr` must be a [scalar expression]({{ page.version.version }}/scalar-expressions.md) that returns Boolean values using columns (e.g., `<column> = <value>`). Update rows that return `TRUE`.<br><br/>**Without a `WHERE` clause in your statement, `UPDATE` updates all rows in the table.**
+`sort_clause` | An `ORDER BY` clause. See [Ordering Query Results]({{ page.version.version }}/order-by.md) and [Ordering of rows in DML statements]({{ page.version.version }}/order-by.md#ordering-rows-in-dml-statements) for more details.
+`limit_clause` | A `LIMIT` clause. See [Limit Query Results]({{ page.version.version }}/limit-offset.md) for more details.
+`RETURNING target_list` | Return values based on rows updated, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions]({{ page.version.version }}/scalar-expressions.md). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
 `ONLY ... *` |  Supported for compatibility with PostgreSQL table inheritance syntax. This clause is a no-op, as CockroachDB does not currently support table inheritance.
 
 ## Force index selection for updates
 
-By using the [explicit index annotation]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) (also known as "index hinting"), you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index]({% link {{ page.version.version }}/indexes.md %}) for updating rows of a named table.
+By using the [explicit index annotation]({{ page.version.version }}/table-expressions.md#force-index-selection) (also known as "index hinting"), you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index]({{ page.version.version }}/indexes.md) for updating rows of a named table.
 
 {{site.data.alerts.callout_info}}
-Index selection can impact [performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), but does not change the result of a query.
+Index selection can impact [performance]({{ page.version.version }}/performance-best-practices-overview.md), but does not change the result of a query.
 {{site.data.alerts.end}}
 
 The syntax to force an update for a specific index is:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE table@my_idx SET ...
 ~~~
 
 This is equivalent to the longer expression:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE table@{FORCE_INDEX=my_idx} SET ...
 ~~~
 
-To view how the index hint modifies the query plan that CockroachDB follows for updating rows, use an [`EXPLAIN (OPT)`]({% link {{ page.version.version }}/explain.md %}#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`]({% link {{ page.version.version }}/show-index.md %}).
+To view how the index hint modifies the query plan that CockroachDB follows for updating rows, use an [`EXPLAIN (OPT)`]({{ page.version.version }}/explain.md#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`]({{ page.version.version }}/show-index.md).
 
 For examples, see [Update with index hints](#update-with-index-hints).
 
@@ -69,7 +66,7 @@ For examples, see [Update with index hints](#update-with-index-hints).
 
 To reference values from a table other than the table being updated, add a `FROM` clause that specifies one or more tables in the cluster. Values from tables specified in a `FROM` clause can be used in `UPDATE` expressions, and in `RETURNING` and `WHERE` clauses.
 
-When executing an `UPDATE` query with a `FROM` clause, CockroachDB [joins]({% link {{ page.version.version }}/joins.md %}) the target table (i.e., the table being updated) to the tables referenced in the `FROM` clause. The output of this join should have the same number of rows as the rows being updated in the target table, as CockroachDB uses a single row from the join output to update a given row in the target table. If the join produces more rows than the rows being updated in the target table, there is no way to predict which row from the join output will be used to update a row in the target table.
+When executing an `UPDATE` query with a `FROM` clause, CockroachDB [joins]({{ page.version.version }}/joins.md) the target table (i.e., the table being updated) to the tables referenced in the `FROM` clause. The output of this join should have the same number of rows as the rows being updated in the target table, as CockroachDB uses a single row from the join output to update a given row in the target table. If the join produces more rows than the rows being updated in the target table, there is no way to predict which row from the join output will be used to update a row in the target table.
 
 For an example, see [Update using values from a different table](#update-using-values-from-a-different-table).
 
@@ -77,15 +74,13 @@ For an example, see [Update using values from a different table](#update-using-v
 
 To update a large number of rows (i.e., tens of thousands of rows or more), we recommend iteratively updating subsets of the rows that you want to update, until all of the rows have been updated. You can write a script to do this, or you can write a loop into your application.
 
-For guidance and an example, see [Bulk-update Data]({% link {{ page.version.version }}/bulk-update-data.md %}).
+For guidance and an example, see [Bulk-update Data]({{ page.version.version }}/bulk-update-data.md).
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Update a single column in a single row
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users LIMIT 10;
 ~~~
@@ -106,12 +101,10 @@ For guidance and an example, see [Bulk-update Data]({% link {{ page.version.vers
 (10 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE users SET address = '201 E Randolph St' WHERE id = '851eb851-eb85-4000-8000-00000000001a';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users LIMIT 10;
 ~~~
@@ -134,12 +127,10 @@ For guidance and an example, see [Bulk-update Data]({% link {{ page.version.vers
 
 ### Update multiple columns in a single row
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE rides SET (end_address, revenue) = ('201 E Randolph St', 25.00) WHERE id = '851eb851-eb85-4000-8000-000000000104';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides WHERE rider_id = '851eb851-eb85-4000-8000-00000000001a';
 ~~~
@@ -155,12 +146,10 @@ For guidance and an example, see [Bulk-update Data]({% link {{ page.version.vers
 (5 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE rides SET end_address = '10000 W OHare Ave', revenue = 60.00 WHERE id = '94fdf3b6-45a1-4800-8000-000000000123';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides WHERE rider_id = '851eb851-eb85-4000-8000-00000000001a';
 ~~~
@@ -178,14 +167,12 @@ For guidance and an example, see [Bulk-update Data]({% link {{ page.version.vers
 
 ### Update using `SELECT` statement
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE rides SET (revenue, start_address) =
     (SELECT revenue, end_address FROM rides WHERE id = '94fdf3b6-45a1-4800-8000-000000000123')
      WHERE id = '851eb851-eb85-4000-8000-000000000104';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides WHERE rider_id = '851eb851-eb85-4000-8000-00000000001a';
 ~~~
@@ -203,12 +190,10 @@ For guidance and an example, see [Bulk-update Data]({% link {{ page.version.vers
 
 ### Update with default values
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE users SET address = DEFAULT WHERE id = '19999999-9999-4a00-8000-000000000005';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users LIMIT 5;
 ~~~
@@ -226,12 +211,10 @@ For guidance and an example, see [Bulk-update Data]({% link {{ page.version.vers
 
 ### Update using values from a different table
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE rides SET revenue = NULL FROM vehicles WHERE rides.rider_id=vehicles.owner_id AND rides.vehicle_id=vehicles.id;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides WHERE revenue IS NULL LIMIT 5;
 ~~~
@@ -253,10 +236,9 @@ For guidance and an example, see [Bulk-update Data]({% link {{ page.version.vers
 If you do not use the `WHERE` clause to specify the rows to be updated, the values for all rows will be updated.
 {{site.data.alerts.end}}
 {{site.data.alerts.callout_info}}
-If the [`sql_safe_updates`]({% link {{ page.version.version }}/cockroach-sql.md %}#allow-potentially-unsafe-sql-statements) session variable is set to `true`, the client will prevent the update. `sql_safe_updates` is set to `true` by default.
+If the [`sql_safe_updates`]({{ page.version.version }}/cockroach-sql.md#allow-potentially-unsafe-sql-statements) session variable is set to `true`, the client will prevent the update. `sql_safe_updates` is set to `true` by default.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE rides SET revenue = 7.00;
 ~~~
@@ -265,19 +247,16 @@ If the [`sql_safe_updates`]({% link {{ page.version.version }}/cockroach-sql.md 
 pq: rejected: UPDATE without WHERE clause (sql_safe_updates = true)
 ~~~
 
-You can use a [`SET`]({% link {{ page.version.version }}/set-vars.md %}) statement to set session variables.
+You can use a [`SET`]({{ page.version.version }}/set-vars.md) statement to set session variables.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET sql_safe_updates = false;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE rides SET revenue = 7.00;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides LIMIT 5;
 ~~~
@@ -295,7 +274,7 @@ You can use a [`SET`]({% link {{ page.version.version }}/set-vars.md %}) stateme
 
 ### Update and return values
 
-In this example, the `RETURNING` clause returns the `id` value of the row updated. The language-specific versions assume that you have installed the relevant [client drivers]({% link {{ page.version.version }}/install-client-drivers.md %}).
+In this example, the `RETURNING` clause returns the `id` value of the row updated. The language-specific versions assume that you have installed the relevant [client drivers]({{ page.version.version }}/install-client-drivers.md).
 
 {{site.data.alerts.callout_info}}When a driver provides a <code>query()</code> method for statements that return results and an <code>exec()</code> method for statements that do not (e.g., Go), it's likely necessary to use the <code>query()</code> method for <code>UPDATE</code> statements with <code>RETURNING</code>.{{site.data.alerts.end}}
 
@@ -310,7 +289,6 @@ In this example, the `RETURNING` clause returns the `id` value of the row update
 <section class="filter-content" markdown="1" data-scope="shell">
 <p></p>
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE vehicles SET status = 'available' WHERE city = 'new york' RETURNING id;
 ~~~
@@ -328,7 +306,6 @@ In this example, the `RETURNING` clause returns the `id` value of the row update
 <section class="filter-content" markdown="1" data-scope="python">
 <p></p>
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 # Import the driver.
 import psycopg2
@@ -377,7 +354,6 @@ IDs:
 <section class="filter-content" markdown="1" data-scope="ruby">
 <p></p>
 
-{% include_cached copy-clipboard.html %}
 ~~~ ruby
 # Import the driver.
 require 'pg'
@@ -420,7 +396,6 @@ IDs:
 <section class="filter-content" markdown="1" data-scope="go">
 <p></p>
 
-{% include_cached copy-clipboard.html %}
 ~~~ go
 package main
 
@@ -477,7 +452,6 @@ IDs:
 <section class="filter-content" markdown="1" data-scope="js">
 <p></p>
 
-{% include_cached copy-clipboard.html %}
 ~~~ js
 var async = require('async')
 var pg = require('pg')
@@ -542,14 +516,12 @@ IDs:
 
 Suppose that you create a multi-column index on the `users` table with the `name` and `city` columns.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name, city);
 ~~~
 
-Now suppose you want to update a couple rows in the table, based on their contents. You can use the [`EXPLAIN (OPT)`]({% link {{ page.version.version }}/explain.md %}#opt-option) command to see how the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) decides to perform the `UPDATE` statement:
+Now suppose you want to update a couple rows in the table, based on their contents. You can use the [`EXPLAIN (OPT)`]({{ page.version.version }}/explain.md#opt-option) command to see how the [cost-based optimizer]({{ page.version.version }}/cost-based-optimizer.md) decides to perform the `UPDATE` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (opt) UPDATE users SET name='Patricia Smith (there are two)' WHERE name='Patricia Smith';
 ~~~
@@ -571,7 +543,6 @@ The output of the `EXPLAIN` statement shows that the optimizer scans the newly-c
 
 Although `users_name_city_idx` is likely the most efficient index for the table scan, you may want to assess the performance difference between scanning on `users_name_city_idx` and scanning on the primary index. You can provide an index hint (i.e., force the index selection) to use the primary key of the `users` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (opt) UPDATE users@users_pkey SET name='Patricia Smith (there are two)' WHERE name='Patricia Smith';
 ~~~
@@ -591,17 +562,16 @@ Although `users_name_city_idx` is likely the most efficient index for the table 
 (9 rows)
 ~~~
 
-{% include {{page.version.version}}/sql/limit-row-size.md %}
 
 ## See also
 
-- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
-- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
-- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
-- [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %})
-- [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
-- [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
-- [`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
-- [Limit Query Results]({% link {{ page.version.version }}/limit-offset.md %})
-- [Ordering of rows in DML statements]({% link {{ page.version.version }}/order-by.md %}#ordering-rows-in-dml-statements)
+- [`DELETE`]({{ page.version.version }}/delete.md)
+- [`INSERT`]({{ page.version.version }}/insert.md)
+- [`UPSERT`]({{ page.version.version }}/upsert.md)
+- [`TRUNCATE`]({{ page.version.version }}/truncate.md)
+- [`ALTER TABLE`]({{ page.version.version }}/alter-table.md)
+- [`DROP TABLE`]({{ page.version.version }}/drop-table.md)
+- [`DROP DATABASE`]({{ page.version.version }}/drop-database.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)
+- [Limit Query Results]({{ page.version.version }}/limit-offset.md)
+- [Ordering of rows in DML statements]({{ page.version.version }}/order-by.md#ordering-rows-in-dml-statements)

@@ -6,5 +6,3 @@ contribute: false
 docs_area: develop
 cards_section: develop
 ---
-
-{% include landing-page.md %}

@@ -6,31 +6,30 @@ key: selection-clauses.html
 docs_area: reference.sql
 ---
 
-Selection queries read and process data in CockroachDB.  They are more general than [simple `SELECT` clauses]({% link {{ page.version.version }}/select-clause.md %}): they can group one or more [selection clauses](#selection-clauses) with [set operations](#set-operations) and can request a [specific ordering]({% link {{ page.version.version }}/order-by.md %}) or [row limit]({% link {{ page.version.version }}/limit-offset.md %}).
+Selection queries read and process data in CockroachDB.  They are more general than [simple `SELECT` clauses]({{ page.version.version }}/select-clause.md): they can group one or more [selection clauses](#selection-clauses) with [set operations](#set-operations) and can request a [specific ordering]({{ page.version.version }}/order-by.md) or [row limit]({{ page.version.version }}/limit-offset.md).
 
 Selection queries can occur:
 
-- At the top level of a query, like other [SQL statements]({% link {{ page.version.version }}/sql-statements.md %}).
-- Between parentheses as a [subquery]({% link {{ page.version.version }}/table-expressions.md %}#use-a-subquery).
-- As [operand to other statements](#use-selection-queries-with-other-statements) that take tabular data as input, for example [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}),  [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}), or [`ALTER ... SPLIT AT`]({% link {{ page.version.version }}/alter-table.md %}#split-at).
+- At the top level of a query, like other [SQL statements]({{ page.version.version }}/sql-statements.md).
+- Between parentheses as a [subquery]({{ page.version.version }}/table-expressions.md#use-a-subquery).
+- As [operand to other statements](#use-selection-queries-with-other-statements) that take tabular data as input, for example [`INSERT`]({{ page.version.version }}/insert.md), [`UPSERT`]({{ page.version.version }}/upsert.md),  [`CREATE TABLE AS`]({{ page.version.version }}/create-table-as.md), or [`ALTER ... SPLIT AT`]({{ page.version.version }}/alter-table.md#split-at).
 
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/select.html %}
 </div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`common_table_expr` | See [Common Table Expressions]({% link {{ page.version.version }}/common-table-expressions.md %}).
+`common_table_expr` | See [Common Table Expressions]({{ page.version.version }}/common-table-expressions.md).
 `select_clause` | A valid [selection clause](#selection-clauses), either simple or using [set operations](#set-operations).
-`sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results]({% link {{ page.version.version }}/order-by.md %}) for details.
-`limit_clause` | An optional `LIMIT` clause. See [Limit Query Results]({% link {{ page.version.version }}/limit-offset.md %}) for details.
-`offset_clause` | An optional `OFFSET` clause. See [Limit Query Results]({% link {{ page.version.version }}/limit-offset.md %}) for details.
-`for_locking_clause` |  The `FOR UPDATE` and `FOR SHARE` clauses are used to lock `SELECT` statements. For more information, see [`FOR UPDATE` and `FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}).
+`sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results]({{ page.version.version }}/order-by.md) for details.
+`limit_clause` | An optional `LIMIT` clause. See [Limit Query Results]({{ page.version.version }}/limit-offset.md) for details.
+`offset_clause` | An optional `OFFSET` clause. See [Limit Query Results]({{ page.version.version }}/limit-offset.md) for details.
+`for_locking_clause` |  The `FOR UPDATE` and `FOR SHARE` clauses are used to lock `SELECT` statements. For more information, see [`FOR UPDATE` and `FOR SHARE`]({{ page.version.version }}/select-for-update.md).
 
 The optional `LIMIT` and `OFFSET` clauses can appear in any order, but if also present, must appear **after** `ORDER BY`.
 
@@ -48,12 +47,11 @@ Form | Usage
 [`TABLE`](#table-clause) | Load tabular data from the database.
 [Set operations](#set-operations) | Combine tabular data from two or more selection clauses.
 
-{{site.data.alerts.callout_info}}To perform joins or other relational operations over selection clauses, use a <a href="{% link {{ page.version.version }}/table-expressions.md %}">table expression</a> and <a href="#composability">convert it back</a> into a selection clause with <a href="#table-clause"><code>TABLE</code></a> or <a href="#select-clause"><code>SELECT</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}To perform joins or other relational operations over selection clauses, use a <a href="{{ page.version.version }}/table-expressions.md">table expression</a> and <a href="#composability">convert it back</a> into a selection clause with <a href="#table-clause"><code>TABLE</code></a> or <a href="#select-clause"><code>SELECT</code></a>.{{site.data.alerts.end}}
 
 ### Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/select_clause.html %}
 </div>
 
 ### `VALUES` clause
@@ -61,19 +59,17 @@ Form | Usage
 #### Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/values_clause.html %}
 </div>
 
 A `VALUES` clause defines tabular data defined by the expressions
 listed within parentheses. Each parenthesis group defines a single row
 in the resulting table.
 
-The columns of the resulting table data have automatically generated names. When the `VALUES` clause is used as a [subquery]({% link {{ page.version.version }}/subqueries.md %}),
-you can modify these names with [`AS`]({% link {{ page.version.version }}/table-expressions.md %}#aliased-table-expressions).
+The columns of the resulting table data have automatically generated names. When the `VALUES` clause is used as a [subquery]({{ page.version.version }}/subqueries.md),
+you can modify these names with [`AS`]({{ page.version.version }}/table-expressions.md#aliased-table-expressions).
 
 #### Example
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > VALUES (1, 2, 3), (4, 5, 6);
 ~~~
@@ -92,7 +88,6 @@ you can modify these names with [`AS`]({% link {{ page.version.version }}/table-
 #### Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/table_clause.html %}
 </div>
 
 A `TABLE` clause reads tabular data from a specified table. The
@@ -101,11 +96,10 @@ table.
 
 `TABLE x` is equivalent to `SELECT * FROM x`.
 
-{{site.data.alerts.callout_info}}Any <a href="{% link {{ page.version.version }}/table-expressions.md %}">table expression</a> between parentheses is a valid operand for <code>TABLE</code>, not just <a href="{% link {{ page.version.version }}/table-expressions.md %}#table-and-view-names">simple table or view names</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Any <a href="{{ page.version.version }}/table-expressions.md">table expression</a> between parentheses is a valid operand for <code>TABLE</code>, not just <a href="{{ page.version.version }}/table-expressions.md#table-and-view-names">simple table or view names</a>.{{site.data.alerts.end}}
 
 #### Example
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE employee_copy AS TABLE employee;
 ~~~
@@ -118,19 +112,17 @@ will likely have a simpler schema than `employee`.
 
 Other examples:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > TABLE employee;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO employee_copy TABLE employee;
 ~~~
 
 ### `SELECT` clause
 
-See [Simple `SELECT` Clause]({% link {{ page.version.version }}/select-clause.md %}) for more
+See [Simple `SELECT` Clause]({{ page.version.version }}/select-clause.md) for more
 details.
 
 ## Set operations
@@ -142,7 +134,6 @@ set operations or as main component in a selection query.
 ### Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/set_operation.html %}
 </div>
 
 ### Set operators
@@ -159,7 +150,6 @@ By default, each of these comparisons displays only one copy of each value (simi
 
 `UNION` combines the results of two queries into one result.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -182,7 +172,6 @@ WHERE state_opened IN ('AZ', 'NY');
 
 To show duplicate rows, you can use `ALL`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -209,7 +198,6 @@ WHERE state_opened IN ('AZ', 'NY');
 
 `INTERSECT` selects only values that are present in both query operands.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -231,7 +219,6 @@ FROM mortgages;
 
 `EXCEPT` selects values that are present in the first query operand but not the second.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM mortgages
@@ -251,11 +238,10 @@ FROM accounts;
 
 ## Order results
 
-The following sections provide examples. For more details, see [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}).
+The following sections provide examples. For more details, see [`ORDER BY`]({{ page.version.version }}/order-by.md).
 
 ### Order retrieved rows by one column
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *
 FROM accounts
@@ -281,7 +267,6 @@ ORDER BY balance DESC;
 
 Columns are sorted in the order you list them in `sortby_list`. For example, `ORDER BY a, b` sorts the rows by column `a` and then sorts rows with the same `a` value by their column `b` values.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *
 FROM accounts
@@ -307,7 +292,6 @@ ORDER BY balance DESC, name ASC;
 
 You can reduce the number of results with `LIMIT`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, name
 FROM accounts
@@ -327,22 +311,20 @@ LIMIT 5;
 
 ## Row-level locking for concurrency control with `SELECT FOR UPDATE`
 
-{% include {{page.version.version}}/sql/select-for-update-overview.md %}
 
-For an example, see  [`FOR UPDATE` and `FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}).
+For an example, see  [`FOR UPDATE` and `FOR SHARE`]({{ page.version.version }}/select-for-update.md).
 
 ## Composability
 
-[Selection clauses](#selection-clauses) are defined in the context of selection queries. [Table expressions]({% link {{ page.version.version }}/table-expressions.md %}) are defined in the context of the `FROM` sub-clause of [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}). Nevertheless, you can integrate them with one another to form more complex queries or statements.
+[Selection clauses](#selection-clauses) are defined in the context of selection queries. [Table expressions]({{ page.version.version }}/table-expressions.md) are defined in the context of the `FROM` sub-clause of [`SELECT`]({{ page.version.version }}/select-clause.md). Nevertheless, you can integrate them with one another to form more complex queries or statements.
 
 ### Use a selection clause as a selection query
 
 You can use a [selection clause](#selection-clauses) as a
 selection query with no change.
 
-For example, the construct [`SELECT * FROM accounts`]({% link {{ page.version.version }}/select-clause.md %}) is a selection clause. It is also a valid selection query, and thus can be used as a stand-alone statement by appending a semicolon:
+For example, the construct [`SELECT * FROM accounts`]({{ page.version.version }}/select-clause.md) is a selection clause. It is also a valid selection query, and thus can be used as a stand-alone statement by appending a semicolon:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -360,7 +342,6 @@ For example, the construct [`SELECT * FROM accounts`]({% link {{ page.version.ve
 Likewise, the construct [`VALUES (1), (2), (3)`](#values-clause) is also a selection
 clause and thus can also be used as a selection query on its own:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > VALUES (1), (2), (3);
 ~~~
@@ -377,18 +358,16 @@ clause and thus can also be used as a selection query on its own:
 
 ### Use a table expression as selection clause
 
-You can use a [table expression]({% link {{ page.version.version }}/table-expressions.md %}) as a selection clause (and thus also a selection query) by prefixing it with `TABLE` or by using it as an operand to `SELECT * FROM`.
+You can use a [table expression]({{ page.version.version }}/table-expressions.md) as a selection clause (and thus also a selection query) by prefixing it with `TABLE` or by using it as an operand to `SELECT * FROM`.
 
-For example, the [simple table name]({% link {{ page.version.version }}/table-expressions.md %}#table-and-view-names) `customers` is a table expression, which designates all rows in that table. The expressions [`TABLE accounts`]({% link {{ page.version.version }}/selection-queries.md %}#table-clause) and [`SELECT * FROM accounts`]({% link {{ page.version.version }}/select-clause.md %}) are valid selection clauses.
+For example, the [simple table name]({{ page.version.version }}/table-expressions.md#table-and-view-names) `customers` is a table expression, which designates all rows in that table. The expressions [`TABLE accounts`]({{ page.version.version }}/selection-queries.md#table-clause) and [`SELECT * FROM accounts`]({{ page.version.version }}/select-clause.md) are valid selection clauses.
 
-Likewise, the [SQL join expression]({% link {{ page.version.version }}/joins.md %}) `customers c JOIN orders o ON c.id = o.customer_id` is a table expression. You can turn it into a valid selection clause, and thus a valid selection query as follows:
+Likewise, the [SQL join expression]({{ page.version.version }}/joins.md) `customers c JOIN orders o ON c.id = o.customer_id` is a table expression. You can turn it into a valid selection clause, and thus a valid selection query as follows:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > TABLE (customers c JOIN orders o ON c.id = o.customer_id);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers c JOIN orders o ON c.id = o.customer_id;
 ~~~
@@ -396,24 +375,21 @@ Likewise, the [SQL join expression]({% link {{ page.version.version }}/joins.md 
 ### Use a selection query as table expression
 
 You can use a selection query (or [selection clause](#selection-clauses)) as a [table
-expression]({% link {{ page.version.version }}/table-expressions.md %}) by enclosing it between parentheses, which forms a
-[subquery]({% link {{ page.version.version }}/table-expressions.md %}#use-a-subquery).
+expression]({{ page.version.version }}/table-expressions.md) by enclosing it between parentheses, which forms a
+[subquery]({{ page.version.version }}/table-expressions.md#use-a-subquery).
 
 For example, the following construct is a selection query, but is not a valid table expression:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers ORDER BY name LIMIT 5
 ~~~
 
 To make it valid as operand to `FROM` or another table expression, you can enclose it between parentheses as follows:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id FROM (SELECT * FROM customers ORDER BY name LIMIT 5);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT o.id
     FROM orders o
@@ -429,17 +405,17 @@ For example:
 
  Statement | Example using `SELECT` | Example using `VALUES` | Example using `TABLE` |
 |----------------|-----------------------------------|------------------------------------|-------------------------------
- [`INSERT`]({% link {{ page.version.version }}/insert.md %}) | `INSERT INTO foo SELECT * FROM bar` | `INSERT INTO foo VALUES (1), (2), (3)` | `INSERT INTO foo TABLE bar`
- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) | `UPSERT INTO foo SELECT * FROM bar` | `UPSERT INTO foo VALUES (1), (2), (3)` | `UPSERT INTO foo TABLE bar`
- [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}) | `CREATE TABLE foo AS SELECT * FROM bar`  `CREATE TABLE foo AS VALUES (1),(2),(3)` | `CREATE TABLE foo AS TABLE bar`
- [`ALTER ... SPLIT AT`]({% link {{ page.version.version }}/alter-table.md %}#split-at) | `ALTER TABLE foo SPLIT AT SELECT * FROM bar`  `ALTER TABLE foo SPLIT AT VALUES (1),(2),(3)` | `ALTER TABLE foo SPLIT AT TABLE bar`
- Subquery in a [table expression]({% link {{ page.version.version }}/table-expressions.md %}) | `SELECT * FROM (SELECT * FROM bar)` | `SELECT * FROM (VALUES (1),(2),(3))` | `SELECT * FROM (TABLE bar)`
- Subquery in a [scalar expression]({% link {{ page.version.version }}/scalar-expressions.md %}) | `SELECT * FROM foo WHERE x IN (SELECT * FROM bar)` | `SELECT * FROM foo WHERE x IN (VALUES (1),(2),(3))` | `SELECT * FROM foo WHERE x IN (TABLE bar)`
+ [`INSERT`]({{ page.version.version }}/insert.md) | `INSERT INTO foo SELECT * FROM bar` | `INSERT INTO foo VALUES (1), (2), (3)` | `INSERT INTO foo TABLE bar`
+ [`UPSERT`]({{ page.version.version }}/upsert.md) | `UPSERT INTO foo SELECT * FROM bar` | `UPSERT INTO foo VALUES (1), (2), (3)` | `UPSERT INTO foo TABLE bar`
+ [`CREATE TABLE AS`]({{ page.version.version }}/create-table-as.md) | `CREATE TABLE foo AS SELECT * FROM bar`  `CREATE TABLE foo AS VALUES (1),(2),(3)` | `CREATE TABLE foo AS TABLE bar`
+ [`ALTER ... SPLIT AT`]({{ page.version.version }}/alter-table.md#split-at) | `ALTER TABLE foo SPLIT AT SELECT * FROM bar`  `ALTER TABLE foo SPLIT AT VALUES (1),(2),(3)` | `ALTER TABLE foo SPLIT AT TABLE bar`
+ Subquery in a [table expression]({{ page.version.version }}/table-expressions.md) | `SELECT * FROM (SELECT * FROM bar)` | `SELECT * FROM (VALUES (1),(2),(3))` | `SELECT * FROM (TABLE bar)`
+ Subquery in a [scalar expression]({{ page.version.version }}/scalar-expressions.md) | `SELECT * FROM foo WHERE x IN (SELECT * FROM bar)` | `SELECT * FROM foo WHERE x IN (VALUES (1),(2),(3))` | `SELECT * FROM foo WHERE x IN (TABLE bar)`
 
 ## See also
 
-- [Simple `SELECT` Clause]({% link {{ page.version.version }}/select-clause.md %})
-- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %})
-- [Table Expressions]({% link {{ page.version.version }}/table-expressions.md %})
-- [Ordering Query Results]({% link {{ page.version.version }}/order-by.md %})
-- [Limit Query Results]({% link {{ page.version.version }}/limit-offset.md %})
+- [Simple `SELECT` Clause]({{ page.version.version }}/select-clause.md)
+- [`SELECT FOR UPDATE`]({{ page.version.version }}/select-for-update.md)
+- [Table Expressions]({{ page.version.version }}/table-expressions.md)
+- [Ordering Query Results]({{ page.version.version }}/order-by.md)
+- [Limit Query Results]({{ page.version.version }}/limit-offset.md)

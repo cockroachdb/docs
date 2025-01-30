@@ -2,4 +2,4 @@
 layout: none
 ---
 
-{% include_cached {{ page.sidebar_data }} %}
+{% include {{ page.sidebar_data }} %}

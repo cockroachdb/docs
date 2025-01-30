@@ -7,25 +7,21 @@ ssh-link: https://cloud.google.com/compute/docs/instances/connecting-to-instance
 docs_area:
 ---
 
-{% include {{ page.version.version }}/filter-tabs/deploy-crdb-gce.md %}
 
 This page shows you how to manually deploy a secure multi-node CockroachDB cluster on Google Cloud Platform's Compute Engine (GCE), using Google's TCP Proxy Load Balancing service to distribute client traffic.
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 
 ### Requirements
 
-{% include {{ page.version.version }}/prod-deployment/secure-requirements.md %}
 
 - This article covers the use of Linux instances with GCE. You may wish to review the instructions for [connecting to Windows instances](https://cloud.google.com/compute/docs/instances/connecting-to-instance#windows).
 
 ### Recommendations
 
-{% include {{ page.version.version }}/prod-deployment/secure-recommendations.md %}
 
 ## Step 1. Configure your network
 
@@ -54,17 +50,15 @@ Applications will not connect directly to your CockroachDB nodes. Instead, they'
 
 [Create an instance](https://cloud.google.com/compute/docs/instances/create-start-instance) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate instance for that workload.
 
-- Run at least 3 nodes to [ensure survivability]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
+- Run at least 3 nodes to [ensure survivability]({{ page.version.version }}/recommended-production-settings.md#topology).
 
-{% include {{ page.version.version }}/prod-deployment/recommended-instances-gcp.md %}
 
 - If you used a tag for your firewall rules, when you create the instance, click **Management, security, disks, networking, sole tenancy**. Under the **Networking** tab, in the **Network tags** field, enter **cockroachdb**.
 
-For more details, see [Hardware Recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) and [Cluster Topology]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
+For more details, see [Hardware Recommendations]({{ page.version.version }}/recommended-production-settings.md#hardware) and [Cluster Topology]({{ page.version.version }}/recommended-production-settings.md#topology).
 
 ## Step 3. Synchronize clocks
 
-{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 4. Set up load balancing
 
@@ -77,7 +71,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 GCE offers fully-managed [TCP Proxy Load Balancing](https://cloud.google.com/load-balancing/docs/tcp/). This service lets you use a single IP address for all users around the world, automatically routing traffic to the instances that are closest to the user.
 
 {{site.data.alerts.callout_danger}}
-When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using [Network TCP Load Balancing](https://cloud.google.com/compute/docs/load-balancing/network/) instead, but note that it cannot be used across regions. You might also consider using the HAProxy load balancer (see the [On-Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial for guidance).
+When using TCP Proxy Load Balancing, you cannot use firewall rules to control access to the load balancer. If you need such control, consider using [Network TCP Load Balancing](https://cloud.google.com/compute/docs/load-balancing/network/) instead, but note that it cannot be used across regions. You might also consider using the HAProxy load balancer (see the [On-Premises]({{ page.version.version }}/deploy-cockroachdb-on-premises.md) tutorial for guidance).
 {{site.data.alerts.end}}
 
 To use GCE's TCP Proxy Load Balancing service:
@@ -86,7 +80,7 @@ To use GCE's TCP Proxy Load Balancing service:
     - To ensure that the load balancer knows where to direct traffic, specify a port name mapping, with `tcp26257` as the **Port name** and `26257` as the **Port number**.
 1. [Add the relevant instances to each instance group](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-unmanaged-instances#addinstances).
 1. [Configure TCP Proxy Load Balancing](https://cloud.google.com/load-balancing/docs/tcp/setting-up-tcp#configure_load_balancer).
-    - During backend configuration, create a health check, setting the **Protocol** to `HTTPS`, the **Port** to `8080`, and the **Request path** to path `/health?ready=1`. This [health endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
+    - During backend configuration, create a health check, setting the **Protocol** to `HTTPS`, the **Port** to `8080`, and the **Request path** to path `/health?ready=1`. This [health endpoint]({{ page.version.version }}/monitoring-and-alerting.md#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
         - If you want to maintain long-lived SQL connections that may be idle for more than tens of seconds, increase the backend timeout setting accordingly.
     - During frontend configuration, reserve a static IP address and note the IP address and the port you select. You'll use this address and port for all client connections.
 1. [Create a firewall rule](https://cloud.google.com/load-balancing/docs/tcp/setting-up-tcp#config-hc-firewall) to allow traffic from the load balancer and health checker to your instances. This is necessary because TCP Proxy Load Balancing is implemented at the edge of the Google Cloud.
@@ -94,7 +88,6 @@ To use GCE's TCP Proxy Load Balancing service:
 
 ## Step 5. Generate certificates
 
-{% include {{ page.version.version }}/prod-deployment/secure-generate-certificates.md %}
 
 ## Step 6. Start nodes
 
@@ -102,32 +95,23 @@ To use GCE's TCP Proxy Load Balancing service:
 By default, inter-node communication uses the internal IP addresses of your GCE instances.
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/prod-deployment/secure-start-nodes.md %}
 
 ## Step 7. Initialize the cluster
 
-{% include {{ page.version.version }}/prod-deployment/secure-initialize-cluster.md %}
 
 ## Step 8. Test the cluster
 
-{% include {{ page.version.version }}/prod-deployment/secure-test-cluster.md %}
 
 ## Step 9. Run a sample workload
 
-{% include {{ page.version.version }}/prod-deployment/secure-test-load-balancing.md %}
 
 ## Step 10. Monitor the cluster
 
-{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 11. Scale the cluster
 
-{% include {{ page.version.version }}/prod-deployment/secure-scale-cluster.md %}
 
 ## Step 12. Use the database
 
-{% include {{ page.version.version }}/prod-deployment/use-cluster.md %}
 
 ## See also
-
-{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

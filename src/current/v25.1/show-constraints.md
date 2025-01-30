@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW CONSTRAINTS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists all named [constraints]({% link {{ page.version.version }}/constraints.md %}) as well as any unnamed [`CHECK`]({% link {{ page.version.version }}/check.md %}) constraints on a table.
+The `SHOW CONSTRAINTS` [statement]({{ page.version.version }}/sql-statements.md) lists all named [constraints]({{ page.version.version }}/constraints.md) as well as any unnamed [`CHECK`]({{ page.version.version }}/check.md) constraints on a table.
 
 ## Required privileges
 
-The user must have any [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the target table.
+The user must have any [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the target table.
 
 ## Aliases
 
@@ -18,7 +18,6 @@ The user must have any [privilege]({% link {{ page.version.version }}/security-r
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_constraints.html %}
 </div>
 
 ## Parameters
@@ -41,7 +40,6 @@ Field | Description
 
 ## Example
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     id INT PRIMARY KEY,
@@ -55,7 +53,6 @@ Field | Description
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM orders;
 ~~~
@@ -75,11 +72,11 @@ Field | Description
 
 ## See also
 
-- [Constraints]({% link {{ page.version.version }}/constraints.md %})
-- [`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
-- [`RENAME CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#rename-constraint)
-- [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
-- [`VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint)
-- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
-- [Information Schema]({% link {{ page.version.version }}/information-schema.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Constraints]({{ page.version.version }}/constraints.md)
+- [`ADD CONSTRAINT`]({{ page.version.version }}/alter-table.md#add-constraint)
+- [`RENAME CONSTRAINT`]({{ page.version.version }}/alter-table.md#rename-constraint)
+- [`DROP CONSTRAINT`]({{ page.version.version }}/alter-table.md#drop-constraint)
+- [`VALIDATE CONSTRAINT`]({{ page.version.version }}/alter-table.md#validate-constraint)
+- [`CREATE TABLE`]({{ page.version.version }}/create-table.md)
+- [Information Schema]({{ page.version.version }}/information-schema.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

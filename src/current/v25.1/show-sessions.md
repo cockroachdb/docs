@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW SESSIONS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists details about currently active sessions, including:
+The `SHOW SESSIONS` [statement]({{ page.version.version }}/sql-statements.md) lists details about currently active sessions, including:
 
 - The address of the client that opened the session
 - The node connected to
@@ -18,12 +18,11 @@ These details let you monitor the overall state of client connections and identi
 
 ## Required privileges
 
-All users can see their own currently active sessions. Users with the [`VIEWACTIVITY` or `VIEWACTIVITYREDACTED` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) can view see all users' currently active sessions. `VIEWACTIVITYREDACTED` causes constants in queries being executed by other users to be redacted.
+All users can see their own currently active sessions. Users with the [`VIEWACTIVITY` or `VIEWACTIVITYREDACTED` privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) can view see all users' currently active sessions. `VIEWACTIVITYREDACTED` causes constants in queries being executed by other users to be redacted.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_sessions.html %}
 </div>
 
 - To list the active sessions across all nodes of the cluster, use `SHOW SESSIONS` or `SHOW CLUSTER SESSIONS`.
@@ -40,20 +39,19 @@ Field | Description
 `status` | The session's status.
 `user_name` | The username of the connected user.
 `client_address` | The address and port of the connected client.
-`application_name` | The [application name]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) specified by the client, if any. For sessions from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), this will be `cockroach`.
+`application_name` | The [application name]({{ page.version.version }}/set-vars.md#supported-variables) specified by the client, if any. For sessions from the [built-in SQL client]({{ page.version.version }}/cockroach-sql.md), this will be `cockroach`.
 `active_queries` | The SQL queries currently active in the session.
 `last_active_query` | The most recently completed SQL query in the session.
-`session_start` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) when the session was started.
-`active_query_start` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) when the current active query in the session was started.
-`num_txns_executed` | The number of [transactions]({% link {{ page.version.version }}/transactions.md %}) that have been opened in this session. This count includes transactions that are open.
-`trace_id` | The ID of the session's active trace. It will be `0` if [tracing]({% link {{ page.version.version }}/set-vars.md %}#set-tracing) is `off`.
+`session_start` | The [`timestamptz`]({{ page.version.version }}/timestamp.md) when the session was started.
+`active_query_start` | The [`timestamptz`]({{ page.version.version }}/timestamp.md) when the current active query in the session was started.
+`num_txns_executed` | The number of [transactions]({{ page.version.version }}/transactions.md) that have been opened in this session. This count includes transactions that are open.
+`trace_id` | The ID of the session's active trace. It will be `0` if [tracing]({{ page.version.version }}/set-vars.md#set-tracing) is `off`.
 `goroutine_id` | The ID of the session's goroutine.
 
 ## Examples
 
 ### List active sessions across the cluster
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SESSIONS;
 ~~~
@@ -79,7 +77,6 @@ Alternatively, you can use `SHOW SESSIONS` to receive the same response.
 
 ### List active sessions on the local node
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW LOCAL SESSIONS;
 ~~~
@@ -98,11 +95,10 @@ Alternatively, you can use `SHOW SESSIONS` to receive the same response.
 
 ### Filter for specific sessions
 
-You can use a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statement to filter the list of currently active sessions by one or more of the [response fields](#response).
+You can use a [`SELECT`]({{ page.version.version }}/select-clause.md) statement to filter the list of currently active sessions by one or more of the [response fields](#response).
 
 #### Show sessions associated with a specific user
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CLUSTER SESSIONS) SELECT * FROM x WHERE user_name = 'mroach';
 ~~~
@@ -120,9 +116,8 @@ You can use a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})
 
 #### Exclude sessions from the built-in SQL client
 
-To exclude sessions from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), filter for sessions that do not show `cockroach` as the `application_name`:
+To exclude sessions from the [built-in SQL client]({{ page.version.version }}/cockroach-sql.md), filter for sessions that do not show `cockroach` as the `application_name`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CLUSTER SESSIONS) SELECT * FROM x
       WHERE application_name != 'cockroach';
@@ -146,7 +141,7 @@ To exclude sessions from the [built-in SQL client]({% link {{ page.version.versi
 
 ### Identify and cancel a problematic query
 
-If a session has been open for a long time and you are concerned that the oldest active SQL query may be problematic, you can use the [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}) statement to further investigate the query and then, if necessary, use the [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement to cancel it.
+If a session has been open for a long time and you are concerned that the oldest active SQL query may be problematic, you can use the [`SHOW STATEMENTS`]({{ page.version.version }}/show-statements.md) statement to further investigate the query and then, if necessary, use the [`CANCEL QUERY`]({{ page.version.version }}/cancel-query.md) statement to cancel it.
 
 For example, let's say you run `SHOW SESSIONS` and notice that the following session has been open for more than 2 hours:
 
@@ -158,9 +153,8 @@ For example, let's say you run `SHOW SESSIONS` and notice that the following ses
 +---------+-----------+--------------------+------------------+------------------------------------+--------------------|----------------------------------+----------------------------------+--------+
 ~~~
 
-Since the `oldest_query_start` timestamp is the same as the `session_start` timestamp, you are concerned that the `SELECT` query shown in `active_queries` has been running for too long and may be consuming too many resources. So you use the [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}) statement to get more information about the query, filtering based on details you already have:
+Since the `oldest_query_start` timestamp is the same as the `session_start` timestamp, you are concerned that the `SELECT` query shown in `active_queries` has been running for too long and may be consuming too many resources. So you use the [`SHOW STATEMENTS`]({{ page.version.version }}/show-statements.md) statement to get more information about the query, filtering based on details you already have:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE client_address = '192.168.0.72:56194'
@@ -176,16 +170,14 @@ Since the `oldest_query_start` timestamp is the same as the `session_start` time
 +----------------------------------+---------+-----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
 ~~~
 
-Using the `start` field, you confirm that the query has been running since the start of the session and decide that is too long. So to cancel the query, and stop it from consuming resources, you note the `query_id` and use it with the [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement:
+Using the `start` field, you confirm that the query has been running since the start of the session and decide that is too long. So to cancel the query, and stop it from consuming resources, you note the `query_id` and use it with the [`CANCEL QUERY`]({{ page.version.version }}/cancel-query.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
 ~~~
 
-Alternatively, if you know that you want to cancel the query based on the details in `SHOW SESSIONS`, you could execute a single [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement with a nested `SELECT` statement that returns the `query_id`:
+Alternatively, if you know that you want to cancel the query based on the details in `SHOW SESSIONS`, you could execute a single [`CANCEL QUERY`]({{ page.version.version }}/cancel-query.md) statement with a nested `SELECT` statement that returns the `query_id`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY (WITH x as (SHOW CLUSTER STATEMENTS) SELECT query_id FROM x
       WHERE client_address = '192.168.0.72:56194'
@@ -195,6 +187,6 @@ Alternatively, if you know that you want to cancel the query based on the detail
 
 ## See also
 
-- [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %})
-- [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [`SHOW STATEMENTS`]({{ page.version.version }}/show-statements.md)
+- [`CANCEL QUERY`]({{ page.version.version }}/cancel-query.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

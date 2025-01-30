@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `pg_extension` [system catalogs]({% link {{ page.version.version }}/system-catalogs.md %}) provides information about CockroachDB extensions.
+The `pg_extension` [system catalogs]({{ page.version.version }}/system-catalogs.md) provides information about CockroachDB extensions.
 
 ## Data exposed by `pg_extension`
 
-In CockroachDB {{ page.version.version }}, `pg_extension` contains the following tables, all of which provide information about CockroachDB's [spatial extension]({% link {{ page.version.version }}/spatial-data-overview.md %}):
+In CockroachDB {{ page.version.version }}, `pg_extension` contains the following tables, all of which provide information about CockroachDB's [spatial extension]({{ page.version.version }}/spatial-data-overview.md):
 
 - `geography_columns`
 - `geometry_columns`
@@ -19,9 +19,8 @@ In CockroachDB {{ page.version.version }}, `pg_extension` contains the following
 `pg_extension` tables are read-only.
 {{site.data.alerts.end}}
 
-To see the list of tables in `pg_extension` for the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database), use the following [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}) statement:
+To see the list of tables in `pg_extension` for the [current database]({{ page.version.version }}/sql-name-resolution.md#current-database), use the following [`SHOW TABLES`]({{ page.version.version }}/show-tables.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM pg_extension;
 ~~~
@@ -37,19 +36,18 @@ To see the list of tables in `pg_extension` for the [current database]({% link {
 
 ## Querying `pg_extension` tables
 
-You can run [`SELECT` queries]({% link {{ page.version.version }}/selection-queries.md %}) on the tables in `pg_extension`.
+You can run [`SELECT` queries]({{ page.version.version }}/selection-queries.md) on the tables in `pg_extension`.
 
 {{site.data.alerts.callout_success}}
-To ensure that you can view all of the tables in `pg_extension`, query the tables as a user with [`admin` privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
+To ensure that you can view all of the tables in `pg_extension`, query the tables as a user with [`admin` privileges]({{ page.version.version }}/security-reference/authorization.md#admin-role).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Unless specified otherwise, queries to `pg_extension` assume the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database).
+Unless specified otherwise, queries to `pg_extension` assume the [current database]({{ page.version.version }}/sql-name-resolution.md#current-database).
 {{site.data.alerts.end}}
 
 For example, to return the `pg_extension` table with additional information about indexes in the `movr` database, you can query the `pg_extension.pg_indexes` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.pg_extension.pg_indexes;
 ~~~
@@ -71,9 +69,9 @@ For example, to return the `pg_extension` table with additional information abou
 
 ## See also
 
-- [`SHOW`]({% link {{ page.version.version }}/show-vars.md %})
-- [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})
-- [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %})
-- [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
-- [SQL Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %})
-- [System Catalogs]({% link {{ page.version.version }}/system-catalogs.md %})
+- [`SHOW`]({{ page.version.version }}/show-vars.md)
+- [`SHOW DATABASES`]({{ page.version.version }}/show-databases.md)
+- [`SHOW SCHEMAS`]({{ page.version.version }}/show-schemas.md)
+- [`SHOW TABLES`]({{ page.version.version }}/show-tables.md)
+- [SQL Name Resolution]({{ page.version.version }}/sql-name-resolution.md)
+- [System Catalogs]({{ page.version.version }}/system-catalogs.md)

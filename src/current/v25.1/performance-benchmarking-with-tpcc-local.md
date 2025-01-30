@@ -7,9 +7,8 @@ key: performance-benchmarking-with-tpc-c-10-warehouses.html
 docs_area: reference.benchmarking
 ---
 
-This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results]({% link {{ page.version.version }}/performance.md %}#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results]({{ page.version.version }}/performance.md#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
-{% include {{ page.version.version }}/filter-tabs/perf-bench-tpc-c.md %}
 
 | Workload             | Cluster size                                            | Warehouses | Data size |
 |----------------------+---------------------------------------------------------+------------+-----------|
@@ -21,17 +20,15 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 
 ## Before you begin
 
-- TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. Before you get started, consider reviewing [what TPC-C is and how it is measured]({% link {{ page.version.version }}/performance.md %}#tpc-c).
+- TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. Before you get started, consider reviewing [what TPC-C is and how it is measured]({{ page.version.version }}/performance.md#tpc-c).
 
-- Make sure you have already [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+- Make sure you have already [installed CockroachDB]({{ page.version.version }}/install-cockroachdb.md).
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
-1. In separate terminal windows, use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start 3 nodes:
+1. In separate terminal windows, use the [`cockroach start`]({{ page.version.version }}/cockroach-start.md) command to start 3 nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -41,7 +38,6 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -51,7 +47,6 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -61,9 +56,8 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-1. Use the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster:
+1. Use the [`cockroach init`]({{ page.version.version }}/cockroach-init.md) command to perform a one-time initialization of the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init \
     --insecure \
@@ -72,11 +66,10 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 
 ## Step 2. Import the TPC-C dataset
 
-CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.version }}/cockroach-workload.md %}) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
+CockroachDB comes with a number of [built-in workloads]({{ page.version.version }}/cockroach-workload.md) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
-Use [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) to load the initial schema and data:
+Use [`cockroach workload`]({{ page.version.version }}/cockroach-workload.md) to load the initial schema and data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach workload fixtures import tpcc \
 --warehouses=10 \
@@ -89,7 +82,6 @@ This will load 2 GB of data for 10 "warehouses".
 
 Run the workload for ten "warehouses" of data for ten minutes:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach workload run tpcc \
 --warehouses=10 \
@@ -138,7 +130,6 @@ The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/
 
     Get the process IDs of the nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ps -ef | grep cockroach | grep -v grep
     ~~~
@@ -151,12 +142,10 @@ The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/
 
     Gracefully shut down each node, specifying its process ID:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4482
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4497
     ~~~
@@ -165,7 +154,6 @@ The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/
     For the last node, the shutdown process will take longer (about a minute) and will eventually stop the node. This is because, with only 1 of 3 nodes left, all ranges no longer have a majority of replicas available, and so the cluster is no longer operational.
     {{site.data.alerts.end}}
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 4503
     ~~~
@@ -174,7 +162,6 @@ The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/
 
     If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf tpcc-local1 tpcc-local2 tpcc-local3
     ~~~

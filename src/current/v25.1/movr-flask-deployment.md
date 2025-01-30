@@ -5,13 +5,13 @@ toc: true
 docs_area:
 ---
 
-This page guides you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Global Application]({% link {{ page.version.version }}/movr.md %}#develop-and-deploy-a-global-application) tutorial.
+This page guides you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Global Application]({{ page.version.version }}/movr.md#develop-and-deploy-a-global-application) tutorial.
 
 ## Before you begin
 
-Before you begin this section, complete the previous sections of the tutorial, ending with [Develop a Multi-Region Web Application]({% link {{ page.version.version }}/movr-flask-application.md %}). After you finish developing and debugging your multi-region application in a local development environment, you are ready to deploy the application and database in multiple regions.
+Before you begin this section, complete the previous sections of the tutorial, ending with [Develop a Multi-Region Web Application]({{ page.version.version }}/movr-flask-application.md). After you finish developing and debugging your multi-region application in a local development environment, you are ready to deploy the application and database in multiple regions.
 
-In addition to the requirements listed in [Setting Up a Virtual Environment for Developing Multi-Region Applications]({% link {{ page.version.version }}/movr-flask-setup.md %}):
+In addition to the requirements listed in [Setting Up a Virtual Environment for Developing Multi-Region Applications]({{ page.version.version }}/movr-flask-setup.md):
 
 - Log in to [Google Cloud](https://cloud.google.com/).
 - Install the [Google Cloud SDK](https://cloud.google.com/sdk/install).
@@ -19,7 +19,7 @@ In addition to the requirements listed in [Setting Up a Virtual Environment for 
 
 ## Multi-region database deployment
 
-In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/quickstart.md %}). To use CockroachDB {{ site.data.products.core }} instead, refer to [Install CockroachDB](/docs/{{ page.version.version }}/install-cockroachdb.html).
+In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [CockroachDB {{ site.data.products.standard }}](quickstart.md). To use CockroachDB {{ site.data.products.core }} instead, refer to [Install CockroachDB](/docs/{{ page.version.version }}/install-cockroachdb.html).
 
 ### Create a multi-region CockroachDB {{ site.data.products.standard }} cluster
 
@@ -105,17 +105,14 @@ We do not recommend deploying insecure web applications on public networks.
     `gcloud` is included with the [Google Cloud SDK](https://cloud.google.com/sdk) installation.
     {{site.data.alerts.end}}
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     gcloud init
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     gcloud auth login
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     gcloud auth application-default login
     ~~~
@@ -124,7 +121,7 @@ We do not recommend deploying insecure web applications on public networks.
 
 GCP Private Service Connect allows your cluster to connect to your Google Cloud project using private cloud infrastructure rather than the public internet. To set up PSC:
 
-1. Once for each cluster region, follow the instructions to [Establish private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity).
+1. Once for each cluster region, follow the instructions to [Establish private connectivity](connect-to-your-cluster.md#establish-private-connectivity).
 
 1. To obtain the private connection string your application will use to connect privately to your cluster, click **Connect** at the top-right corner of the page, then:
     - Select the **SQL User** that you created.
@@ -141,7 +138,6 @@ You now have a private connection string for each of the cluster's regions. You 
 
 1. Build the container image locally.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker build -t gcr.io/<gcp_project>/movr-app:v1 .
     ~~~
@@ -150,7 +146,6 @@ You now have a private connection string for each of the cluster's regions. You 
 
 1. Push the container image to the Google Cloud project's container registry.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker push gcr.io/<gcp_project>/movr-app:v1
     ~~~
@@ -192,13 +187,13 @@ The image can now be pulled by container runtimes with access to your Google Clo
 
 ### Develop your own application
 
-This tutorial demonstrates how to develop and deploy an example multi-region application. Most of the development instructions are specific to Python, Flask, and SQLAlchemy, and most of the deployment instructions are specific to Google Cloud Platform (GCP). CockroachDB supports [many more drivers and ORMs for development]({% link {{ page.version.version }}/example-apps.md %}), and you can deploy applications using a number of cloud provider orchestration tools and networking services. We encourage you to modify the code and deployments to fit your framework and use case.
+This tutorial demonstrates how to develop and deploy an example multi-region application. Most of the development instructions are specific to Python, Flask, and SQLAlchemy, and most of the deployment instructions are specific to Google Cloud Platform (GCP). CockroachDB supports [many more drivers and ORMs for development]({{ page.version.version }}/example-apps.md), and you can deploy applications using a number of cloud provider orchestration tools and networking services. We encourage you to modify the code and deployments to fit your framework and use case.
 
 ### Upgrade your deployment
 
-When pushing changes to update your deployment, remember that you defined the database separate from the application. If you change a data type, for example, in your application, you will also need to modify the database schema to be compatible with your application's requests. For information about making online changes to database schemas, refer to [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %}).
+When pushing changes to update your deployment, remember that you defined the database separate from the application. If you change a data type, for example, in your application, you will also need to modify the database schema to be compatible with your application's requests. For information about making online changes to database schemas, refer to [Online Schema Changes]({{ page.version.version }}/online-schema-changes.md).
 
 ## See also
 
-- [CockroachDB {{ site.data.products.cloud }} quickstart]({% link cockroachcloud/quickstart.md %})
+- [CockroachDB {{ site.data.products.cloud }} quickstart](quickstart.md)
 - [Google Cloud Platform documentation](https://cloud.google.com/docs/)

@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
- The `SHOW TRANSACTIONS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists details about currently active transactions, including:
+ The `SHOW TRANSACTIONS` [statement]({{ page.version.version }}/sql-statements.md) lists details about currently active transactions, including:
 
 - The node running the transaction
 - The application that initiated the transaction
@@ -16,7 +16,7 @@ These details let you monitor the overall state of transactions and identify tho
 
 ## Required privileges
 
-No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to execute this statement. However, note that non-`admin` users see only their own currently active transactions, whereas the `admin` users see all users' currently active transactions.
+No [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) are required to execute this statement. However, note that non-`admin` users see only their own currently active transactions, whereas the `admin` users see all users' currently active transactions.
 
 ## Syntax
 
@@ -36,7 +36,7 @@ The following fields are returned for each transaction:
 -------------------+---------------------------------------
 `node_id`          | The ID of the node running the transaction.
 `txn_id`           | The ID of the transaction.
-`application_name` | The [application name]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) specified by the client, if any. For transactions from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), this will be `$ cockroach sql`.
+`application_name` | The [application name]({{ page.version.version }}/set-vars.md#supported-variables) specified by the client, if any. For transactions from the [built-in SQL client]({{ page.version.version }}/cockroach-sql.md), this will be `$ cockroach sql`.
 `num_stmts`        | The number of statements that have been executed on the transaction.
 `num_retries`      | The number of times that the transaction was retried.
 `num_auto_retries` | The number of times that the transaction was automatically retried by the SQL executor.
@@ -45,7 +45,6 @@ The following fields are returned for each transaction:
 
 ### List active transactions across the cluster
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER TRANSACTIONS;
 ~~~
@@ -62,7 +61,6 @@ Alternatively, you can use `SHOW TRANSACTIONS` to receive the same response.
 
 ### List active transactions on the gateway node
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW LOCAL TRANSACTIONS;
 ~~~
@@ -76,11 +74,10 @@ Alternatively, you can use `SHOW TRANSACTIONS` to receive the same response.
 
 ### Filter for specific transactions
 
-You can use a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statement to filter the list of currently active transactions by one or more of the [response fields](#response).
+You can use a [`SELECT`]({{ page.version.version }}/select-clause.md) statement to filter the list of currently active transactions by one or more of the [response fields](#response).
 
 #### Show transactions associated with a specific application
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x as (SHOW CLUSTER TRANSACTIONS) SELECT * FROM x WHERE application_name = 'movr';
 
@@ -95,9 +92,8 @@ You can use a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})
 
 #### Exclude transactions from the built-in SQL client
 
-To exclude transactions from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), filter for transactions that do not show `$ cockroach sql` as the `application_name`:
+To exclude transactions from the [built-in SQL client]({{ page.version.version }}/cockroach-sql.md), filter for transactions that do not show `$ cockroach sql` as the `application_name`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CLUSTER TRANSACTIONS) SELECT * FROM x
       WHERE application_name != '$ cockroach sql';
@@ -112,5 +108,5 @@ To exclude transactions from the [built-in SQL client]({% link {{ page.version.v
 
 ## See also
 
-- [Transactions]({% link {{ page.version.version }}/transactions.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Transactions]({{ page.version.version }}/transactions.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

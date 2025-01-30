@@ -19,14 +19,12 @@ Cockroach determines which encryption algorithm to use based on the size of the 
 
 Generating a key file can be done using the `cockroach` CLI:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen encryption-key -s 128 /path/to/my/aes-128.key
 ~~~
 
 Or the equivalent [openssl](https://www.openssl.org/docs/man1.1.1/man1/openssl.html) CLI command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ openssl rand -out /path/to/my/aes-128.key 48
 ~~~
@@ -50,7 +48,6 @@ The `key` and `old-key` components must **always** be specified. They allow for 
 
 Starting a node for the first time using AES-128 encryption can be done using:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-data,key=/path/to/my/aes-128.key,old-key=plain
 ~~~
@@ -61,7 +58,7 @@ Once specified for a given store, the `--enterprise-encryption` flag must always
 
 ## Checking encryption status
 
-Encryption status can be seen on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID). For example, if you are running a [local cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}), you can see the node's stores report at `https://localhost:8080/#/reports/stores/local`.
+Encryption status can be seen on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID). For example, if you are running a [local cluster]({{ page.version.version }}/secure-a-cluster.md), you can see the node's stores report at `https://localhost:8080/#/reports/stores/local`.
 
 The report shows encryption status for all stores on the selected node, including:
 
@@ -70,19 +67,19 @@ The report shows encryption status for all stores on the selected node, includin
 - Active data key information.
 - The fraction of files/bytes encrypted using the active data key.
 
-CockroachDB relies on [storage layer compactions]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction) to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force storage compaction with the `cockroach debug compact` command (the node must first be [stopped]({% link {{ page.version.version }}/node-shutdown.md %}#perform-node-shutdown)).
+CockroachDB relies on [storage layer compactions]({{ page.version.version }}/architecture/storage-layer.md#compaction) to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force storage compaction with the `cockroach debug compact` command (the node must first be [stopped]({{ page.version.version }}/node-shutdown.md#perform-node-shutdown)).
 
 The fraction of files/bytes encrypted on the store may be less than 100% for the following reasons:
 
 - The percentage shown is the percentage encrypted with the **current** data key, which rotates at the configured [`rotation-period`](#starting-a-node-with-encryption). When a data key rotates, the percentage will drop down to zero and slowly climb up as data is compacted.
 - In some cases, it may never reach 100%. This can happen because from the point in time at which encryption is enabled, CockroachDB only encrypts **new** data written to the filesystem. Because it relies entirely on storage layer compactions, there's no mechanism by which dormant on-disk data is encrypted.
 
-Information about keys is written to [the logs]({% link {{ page.version.version }}/logging-overview.md %}), including:
+Information about keys is written to [the logs]({{ page.version.version }}/logging-overview.md), including:
 
 - Active/old key information at startup.
 - New key information after data key rotation.
 
-Alternatively, you can use the [`cockroach debug encryption-active-key`]({% link {{ page.version.version }}/cockroach-debug-encryption-active-key.md %}) command to view information about a store's encryption algorithm and store key.
+Alternatively, you can use the [`cockroach debug encryption-active-key`]({{ page.version.version }}/cockroach-debug-encryption-active-key.md) command to view information about a store's encryption algorithm and store key.
 
 ## Changing encryption algorithm or keys
 
@@ -90,7 +87,6 @@ Encryption type and keys can be changed at any time by restarting the node. To c
 
 For example, we can switch from AES-128 to AES-256 using:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-data,key=/path/to/my/aes-256.key,old-key=/path/to/my/aes-128.key
 ~~~
@@ -105,5 +101,5 @@ To rotate keys, specify `key=/path/to/my/new-aes-128.key` and `old-key=/path/to/
 
 ## See also
 
-+ [Column Level Encryption]({% link {{ page.version.version }}/column-level-encryption.md %})
-+ [Cryptographic functions]({% link {{ page.version.version }}/functions-and-operators.md %}#cryptographic-functions)
++ [Column Level Encryption]({{ page.version.version }}/column-level-encryption.md)
++ [Cryptographic functions]({{ page.version.version }}/functions-and-operators.md#cryptographic-functions)

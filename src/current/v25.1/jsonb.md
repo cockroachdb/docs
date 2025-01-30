@@ -6,9 +6,9 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-The `JSONB` [data type]({% link {{ page.version.version }}/data-types.md %}) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}).
+The `JSONB` [data type]({{ page.version.version }}/data-types.md) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [GIN indexes]({{ page.version.version }}/inverted-indexes.md).
 
-{{site.data.alerts.callout_success}}For a hands-on demonstration of storing and querying JSON data from a third-party API, see the <a href="{% link {{ page.version.version }}/demo-json-support.md %}">JSON tutorial</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For a hands-on demonstration of storing and querying JSON data from a third-party API, see the <a href="{{ page.version.version }}/demo-json-support.md">JSON tutorial</a>.{{site.data.alerts.end}}
 
 ## Alias
 
@@ -19,14 +19,14 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 
 ### Syntax
 
-The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). You can express a constant value of type `JSONB` using an [interpreted literal]({% link {{ page.version.version }}/sql-constants.md %}#interpreted-literals) or a string literal [annotated with]({% link {{ page.version.version }}/scalar-expressions.md %}#explicitly-typed-expressions) type `JSONB`.
+The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). You can express a constant value of type `JSONB` using an [interpreted literal]({{ page.version.version }}/sql-constants.md#interpreted-literals) or a string literal [annotated with]({{ page.version.version }}/scalar-expressions.md#explicitly-typed-expressions) type `JSONB`.
 
 There are six types of `JSONB` values:
 
 - `null`
 - Boolean
 - String
-- Number (i.e., [`decimal`]({% link {{ page.version.version }}/decimal.md %}), **not** the standard `int64`)
+- Number (i.e., [`decimal`]({{ page.version.version }}/decimal.md), **not** the standard `int64`)
 - Array (i.e., an ordered sequence of `JSONB` values)
 - Object (i.e., a mapping from strings to `JSONB` values)
 
@@ -41,10 +41,9 @@ Examples:
 
 ## Size
 
-The size of a `JSONB` value is variable, but we recommend that you keep values under 1 MB to ensure satisfactory performance. Above that threshold, [write amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#write-amplification) and other considerations may cause significant performance degradation.
+The size of a `JSONB` value is variable, but we recommend that you keep values under 1 MB to ensure satisfactory performance. Above that threshold, [write amplification]({{ page.version.version }}/architecture/storage-layer.md#write-amplification) and other considerations may cause significant performance degradation.
 
 {{site.data.alerts.callout_danger}}
-{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
 {{site.data.alerts.end}}
 
 ## Operators
@@ -60,9 +59,9 @@ Operator | Description | Example Query and Output |
 `?` | Does the key or element string exist within the JSONB value? | `SELECT('{"foo":1, "bar":2}'::JSONB?'bar');`<br><br>`true`
 `?&` | Do all the key or element strings exist within the JSONB value? | `SELECT('{"foo":1, "bar":2}'::JSONB?&array['foo','bar']);`<br><br>`true`
 <code>?&#124;</code> | Do any of the key or element strings exist within the JSONB value?  | <code>SELECT('{"foo":1, "bar":2}'::JSONB?&#124;array['bar']);</code><br><br><code>true</code>
-`[` ... `]` | Access a `JSONB` key, returning a `JSONB` value or object. For details, see [Subscripted expressions]({% link {{ page.version.version }}/scalar-expressions.md %}#subscripted-expressions). | `SELECT('{"foo": {"bar":1}}'::JSONB)['foo']['bar'];`<br><br>`1`
+`[` ... `]` | Access a `JSONB` key, returning a `JSONB` value or object. For details, see [Subscripted expressions]({{ page.version.version }}/scalar-expressions.md#subscripted-expressions). | `SELECT('{"foo": {"bar":1}}'::JSONB)['foo']['bar'];`<br><br>`1`
 
-For the full list of supported `JSONB` operators, see [Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#operators).
+For the full list of supported `JSONB` operators, see [Operators]({{ page.version.version }}/functions-and-operators.md#operators).
 
 ## Functions
 
@@ -75,23 +74,21 @@ Function | Description
 `jsonb_pretty(<jsonb>)` | Returns the given `JSONB` value as a `STRING` indented and with newlines. See [Retrieve formatted `JSONB` data](#retrieve-formatted-jsonb-data).
 `jsonb_set(val: jsonb, path: string[], to: jsonb)` | Returns the JSON value pointed to by the variadic arguments. See [Update an array element](#update-an-array-element).
 
-For the full list of supported `JSONB` functions, see [JSONB functions]({% link {{ page.version.version }}/functions-and-operators.md %}#jsonb-functions).
+For the full list of supported `JSONB` functions, see [JSONB functions]({{ page.version.version }}/functions-and-operators.md#jsonb-functions).
 
 ## Index `JSONB` data
 
-To [index]({% link {{ page.version.version }}/indexes.md %}) a `JSONB` column you can use a [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}#examples) or [index an expression on the column]({% link {{ page.version.version }}/expression-indexes.md %}#use-an-expression-to-index-a-field-in-a-jsonb-column).
+To [index]({{ page.version.version }}/indexes.md) a `JSONB` column you can use a [GIN index]({{ page.version.version }}/inverted-indexes.md#examples) or [index an expression on the column]({{ page.version.version }}/expression-indexes.md#use-an-expression-to-index-a-field-in-a-jsonb-column).
 
 ## Known limitations
 
-{% include {{ page.version.version }}/known-limitations/jsonb-limitations.md %}
 
 ## Examples
 
-This section shows how to create tables with `JSONB` columns and use operators and functions to access and update `JSONB` data. For the full list of operators and functions, see [Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#operators) and [JSONB functions]({% link {{ page.version.version }}/functions-and-operators.md %}#jsonb-functions).
+This section shows how to create tables with `JSONB` columns and use operators and functions to access and update `JSONB` data. For the full list of operators and functions, see [Operators]({{ page.version.version }}/functions-and-operators.md#operators) and [JSONB functions]({{ page.version.version }}/functions-and-operators.md#jsonb-functions).
 
 ### Create a table with a `JSONB` column
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE users (
     profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -100,7 +97,6 @@ CREATE TABLE users (
   );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW COLUMNS FROM users;
 ~~~
@@ -114,14 +110,12 @@ SHOW COLUMNS FROM users;
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
     ('{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM users;
 ~~~
@@ -138,7 +132,6 @@ SELECT * FROM users;
 
 To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()` function. For example, retrieve data from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT profile_id, last_updated, jsonb_pretty(user_profile) FROM users;
 ~~~
@@ -165,7 +158,6 @@ SELECT profile_id, last_updated, jsonb_pretty(user_profile) FROM users;
 
 To retrieve a specific field from `JSONB` data, use the `->` operator. For example, to retrieve a field from the table you created in [Create a table with a `JSONB` column](#create-a-table-with-a-jsonb-column), run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT user_profile->'first_name',user_profile->'location' FROM users;
 ~~~
@@ -177,9 +169,8 @@ SELECT user_profile->'first_name',user_profile->'location' FROM users;
   "Lola"   | "NYC"
 ~~~
 
-You can also use a [subscripted expression]({% link {{ page.version.version }}/scalar-expressions.md %}#subscripted-expressions) for an equivalent result:
+You can also use a [subscripted expression]({{ page.version.version }}/scalar-expressions.md#subscripted-expressions) for an equivalent result:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT (user_profile)['first_name'],(user_profile)['location'] FROM users;
 ~~~
@@ -193,7 +184,6 @@ SELECT (user_profile)['first_name'],(user_profile)['location'] FROM users;
 
 Use the `->>` operator to return `JSONB` fields as `STRING` values:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT user_profile->>'first_name', user_profile->>'location' FROM users;
 ~~~
@@ -206,7 +196,6 @@ SELECT user_profile->>'first_name', user_profile->>'location' FROM users;
 
 Use the `@>` operator to filter the values in a field in a `JSONB` column:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT user_profile->'first_name', user_profile->'location' FROM users WHERE user_profile @> '{"location":"NYC"}';
 ~~~
@@ -218,7 +207,6 @@ SELECT user_profile->'first_name', user_profile->'location' FROM users WHERE use
 
 Use the `#>>` operator with a path to return all first names:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT user_profile#>>'{first_name}' as "first name" from users;
 ~~~
@@ -233,7 +221,6 @@ SELECT user_profile#>>'{first_name}' as "first name" from users;
 
 ### Retrieve the distinct keys from a `JSONB` field
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT DISTINCT jsonb_object_keys(user_profile) AS keys FROM users;
 ~~~
@@ -252,7 +239,6 @@ SELECT DISTINCT jsonb_object_keys(user_profile) AS keys FROM users;
 
 ### Retrieve key-value pairs from a `JSONB` field
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT jsonb_each(user_profile) AS pairs FROM users;
 ~~~
@@ -277,14 +263,12 @@ To organize your `JSONB` field values, use the `GROUP BY` and `ORDER BY` clauses
 
 For this example, we will add a few more records to the existing table. This will help us see clearly how the data is grouped.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Kim", "location": "Seoul", "online": false, "friends": 600}'),
     ('{"first_name": "Parvati", "last_name": "Patil", "location": "London", "online": false, "friends": 500}');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT user_profile->>'first_name' AS first_name, user_profile->>'location' AS location FROM users;
 ~~~
@@ -300,7 +284,6 @@ SELECT user_profile->>'first_name' AS first_name, user_profile->>'location' AS l
 
 Group and order the data.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT user_profile->>'first_name' first_name, count(*) total FROM users group by user_profile->>'first_name' order by total;
 ~~~
@@ -319,7 +302,6 @@ The `->>` operator returns `STRING` and uses string comparison rules to order th
 
 To map a `JSONB` array field into rows, use the `jsonb_array_elements` function:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE commodity (id varchar(10), data jsonb);
 INSERT INTO commodity (id, data) values ('silver', '{"prices" : [ { "05/01/2022" : 100.5 } , { "06/01/2022" : 101.5 } ]}');
@@ -336,7 +318,6 @@ SELECT * FROM commodity;
 
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id as commodity, jsonb_array_elements(commodity.data->'prices') AS "price" FROM commodity;
 ~~~
@@ -355,7 +336,6 @@ SELECT id as commodity, jsonb_array_elements(commodity.data->'prices') AS "price
 
 To display the commodity prices for May, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id AS commodity, data->'prices'->0->'05/01/2022' AS "May prices" from commodity;
 ~~~
@@ -372,7 +352,6 @@ SELECT id AS commodity, data->'prices'->0->'05/01/2022' AS "May prices" from com
 
 To update a field value, use the `jsonb_set` function. For example, to update the price of `silver` on `06/01/2022` to `90.5`, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE commodity SET data = jsonb_set(data, '{prices, 1, "06/01/2022"}', '90.5') where id = 'silver';
 UPDATE 1
@@ -392,29 +371,26 @@ SELECT * FROM commodity;
 
 ### Create a table with a `JSONB` column and a computed column
 
-{% include {{ page.version.version }}/computed-columns/jsonb.md %}
 
 ### Create a table with a `JSONB` column and a virtual computed column
 
-{% include {{ page.version.version }}/computed-columns/virtual.md %}
 
 ## Supported casting and conversion
 
 This section describes how to cast and convert `JSONB` values.
 
-You can [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) all `JSONB` values to the following data type:
+You can [cast]({{ page.version.version }}/data-types.md#data-type-conversions-and-casts) all `JSONB` values to the following data type:
 
-- [`STRING`]({% link {{ page.version.version }}/string.md %})
+- [`STRING`]({{ page.version.version }}/string.md)
 
 You can cast numeric `JSONB` values to the following numeric data types:
 
-- [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %})
-- [`FLOAT`]({% link {{ page.version.version }}/float.md %})
-- [`INT`]({% link {{ page.version.version }}/int.md %})
+- [`DECIMAL`]({{ page.version.version }}/decimal.md)
+- [`FLOAT`]({{ page.version.version }}/float.md)
+- [`INT`]({{ page.version.version }}/int.md)
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT '100'::JSONB::INT;
 ~~~
@@ -426,7 +402,6 @@ SELECT '100'::JSONB::INT;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT '100000'::JSONB::FLOAT;
 ~~~
@@ -438,7 +413,6 @@ SELECT '100000'::JSONB::FLOAT;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT '100.50'::JSONB::DECIMAL;
 ~~~
@@ -450,9 +424,8 @@ SELECT '100.50'::JSONB::DECIMAL;
 (1 row)
 ~~~
 
-You can use the [`parse_timestamp` function]({% link {{ page.version.version }}/functions-and-operators.md %}) to parse strings in `TIMESTAMP` format.
+You can use the [`parse_timestamp` function]({{ page.version.version }}/functions-and-operators.md) to parse strings in `TIMESTAMP` format.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT parse_timestamp ('2022-05-28T10:53:25.160Z');
 ~~~
@@ -466,7 +439,6 @@ SELECT parse_timestamp ('2022-05-28T10:53:25.160Z');
 
 You can use the `parse_timestamp` function to retrieve string representations of timestamp data within `JSONB` columns in `TIMESTAMP` format.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE events (
   raw JSONB,
@@ -489,9 +461,9 @@ INSERT 1
 
 ## See also
 
-- [JSON tutorial]({% link {{ page.version.version }}/demo-json-support.md %})
-- [GIN Indexes]({% link {{ page.version.version }}/inverted-indexes.md %})
-- [Use an expression to index a field in a JSONB column]({% link {{ page.version.version }}/expression-indexes.md %}#use-an-expression-to-index-a-field-in-a-jsonb-column)
-- [Computed Columns]({% link {{ page.version.version }}/computed-columns.md %})
-- [Data Types]({% link {{ page.version.version }}/data-types.md %})
-- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})
+- [JSON tutorial]({{ page.version.version }}/demo-json-support.md)
+- [GIN Indexes]({{ page.version.version }}/inverted-indexes.md)
+- [Use an expression to index a field in a JSONB column]({{ page.version.version }}/expression-indexes.md#use-an-expression-to-index-a-field-in-a-jsonb-column)
+- [Computed Columns]({{ page.version.version }}/computed-columns.md)
+- [Data Types]({{ page.version.version }}/data-types.md)
+- [Functions and Operators]({{ page.version.version }}/functions-and-operators.md)

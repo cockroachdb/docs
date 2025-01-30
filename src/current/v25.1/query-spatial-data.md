@@ -9,24 +9,24 @@ This page provides information about working with spatial data in CockroachDB.
 
 ## Supported data types
 
-Supported [spatial]({% link {{ page.version.version }}/spatial-data-overview.md %}) data types include:
+Supported [spatial]({{ page.version.version }}/spatial-data-overview.md) data types include:
 
-- Geometric objects such as [points]({% link {{ page.version.version }}/point.md %}), [lines]({% link {{ page.version.version }}/linestring.md %}), and [polygons]({% link {{ page.version.version }}/polygon.md %}) in 2-dimensional space. These are projected onto the flat surface of a plane and are represented in SQL by the `GEOMETRY` data type.
+- Geometric objects such as [points]({{ page.version.version }}/point.md), [lines]({{ page.version.version }}/linestring.md), and [polygons]({{ page.version.version }}/polygon.md) in 2-dimensional space. These are projected onto the flat surface of a plane and are represented in SQL by the `GEOMETRY` data type.
 
-- Geographic objects, which are also made up of [points]({% link {{ page.version.version }}/point.md %}), [lines]({% link {{ page.version.version }}/linestring.md %}), [polygons]({% link {{ page.version.version }}/polygon.md %}), etc., in 2-dimensional space. They are projected onto the surface of a sphere and are represented in SQL by the `GEOGRAPHY` data type. (Technically, they are projected onto a spheroid: "a sphere with a bulge"). The spheroid projection means that:
+- Geographic objects, which are also made up of [points]({{ page.version.version }}/point.md), [lines]({{ page.version.version }}/linestring.md), [polygons]({{ page.version.version }}/polygon.md), etc., in 2-dimensional space. They are projected onto the surface of a sphere and are represented in SQL by the `GEOGRAPHY` data type. (Technically, they are projected onto a spheroid: "a sphere with a bulge"). The spheroid projection means that:
 
     - The X and Y coordinates of 2-dimensional points are longitude and latitude values.
     - The paths between geographic objects are not straight lines; they are curves, and so the distances between objects are calculated using [great circle math](https://wikipedia.org/wiki/Great-circle_distance).
 
 ## Compatibility
 
-Just as CockroachDB strives for [PostgreSQL compatibility]({% link {{ page.version.version }}/postgresql-compatibility.md %}), our spatial data support is designed to be as compatible as possible with the functionality provided by the [PostGIS](https://postgis.net) extension. CockroachDB is compatible with PostGIS Version 3.0 and up.
+Just as CockroachDB strives for [PostgreSQL compatibility]({{ page.version.version }}/postgresql-compatibility.md), our spatial data support is designed to be as compatible as possible with the functionality provided by the [PostGIS](https://postgis.net) extension. CockroachDB is compatible with PostGIS Version 3.0 and up.
 
-CockroachDB does not implement the full list of PostGIS built-in functions and operators. Also, [spatial indexing works differently]({% link {{ page.version.version }}/spatial-indexes.md %}) (see the [Performance](#performance) section below). For a list of the spatial functions CockroachDB supports, see [Geospatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions).
+CockroachDB does not implement the full list of PostGIS built-in functions and operators. Also, [spatial indexing works differently]({{ page.version.version }}/spatial-indexes.md) (see the [Performance](#performance) section below). For a list of the spatial functions CockroachDB supports, see [Geospatial functions]({{ page.version.version }}/functions-and-operators.md#spatial-functions).
 
 If your application needs support for functions that are not yet implemented, check the [meta-issue for built-in function support on GitHub](https://github.com/cockroachdb/cockroach/issues/49203), which describes how to find an issue for the built-in function(s) you need.
 
-For a list of other known limitations, see [Known Limitations]({% link {{ page.version.version }}/known-limitations.md %}#spatial-support-limitations).
+For a list of other known limitations, see [Known Limitations]({{ page.version.version }}/known-limitations.md#spatial-support-limitations).
 
 ### ORM compatibility
 
@@ -50,47 +50,46 @@ Most PostGIS-compatible client libraries are incompatible with CockroachDB's spa
 
 ## Troubleshooting
 
-For general CockroachDB troubleshooting information, see [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %}).
+For general CockroachDB troubleshooting information, see [Troubleshooting Overview]({{ page.version.version }}/troubleshooting-overview.md).
 
-If you need help troubleshooting an issue with our spatial support, please get in touch using our [Support resources]({% link {{ page.version.version }}/support-resources.md %}).
+If you need help troubleshooting an issue with our spatial support, please get in touch using our [Support resources]({{ page.version.version }}/support-resources.md).
 
 ## Performance
 
-In order to avoid full table scans, make sure to add [indexes]({% link {{ page.version.version }}/spatial-indexes.md %}) to any columns that are accessed as part of a predicate in the [`WHERE`]({% link {{ page.version.version }}/select-clause.md %}#filter-on-a-single-condition) clause. For geospatial columns, the index will only be used if the column is accessed using an index-accelerated geospatial function from the list below (all of these functions work on `GEOMETRY` data types; a `*` means that a function also works on `GEOGRAPHY` data types):
+In order to avoid full table scans, make sure to add [indexes]({{ page.version.version }}/spatial-indexes.md) to any columns that are accessed as part of a predicate in the [`WHERE`]({{ page.version.version }}/select-clause.md#filter-on-a-single-condition) clause. For geospatial columns, the index will only be used if the column is accessed using an index-accelerated geospatial function from the list below (all of these functions work on `GEOMETRY` data types; a `*` means that a function also works on `GEOGRAPHY` data types):
 
-- [`ST_Covers`]({% link {{ page.version.version }}/st_covers.md %}) (*)
-- [`ST_CoveredBy`]({% link {{ page.version.version }}/st_coveredby.md %}) (*)
-- [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %})
+- [`ST_Covers`]({{ page.version.version }}/st_covers.md) (*)
+- [`ST_CoveredBy`]({{ page.version.version }}/st_coveredby.md) (*)
+- [`ST_Contains`]({{ page.version.version }}/st_contains.md)
 - `ST_ContainsProperly`
 - `ST_Crosses`
 - `ST_DWithin` (*)
 - `ST_DFullyWithin`
-- [`ST_Equals`]({% link {{ page.version.version }}/st_equals.md %})
-- [`ST_Intersects`]({% link {{ page.version.version }}/st_intersects.md %}) (*)
-- [`ST_Overlaps`]({% link {{ page.version.version }}/st_overlaps.md %})
-- [`ST_Touches`]({% link {{ page.version.version }}/st_touches.md %})
-- [`ST_Within`]({% link {{ page.version.version }}/st_within.md %})
+- [`ST_Equals`]({{ page.version.version }}/st_equals.md)
+- [`ST_Intersects`]({{ page.version.version }}/st_intersects.md) (*)
+- [`ST_Overlaps`]({{ page.version.version }}/st_overlaps.md)
+- [`ST_Touches`]({{ page.version.version }}/st_touches.md)
+- [`ST_Within`]({{ page.version.version }}/st_within.md)
 
-To use a version of a function from the list above that will explicitly *not* use the index, add an underscore (`_`) to the beginning of the function name, e.g., [`_ST_Covers`]({% link {{ page.version.version }}/st_covers.md %}).
+To use a version of a function from the list above that will explicitly *not* use the index, add an underscore (`_`) to the beginning of the function name, e.g., [`_ST_Covers`]({{ page.version.version }}/st_covers.md).
 
-You can check which queries are using which indexes using the [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) statement. For more information about general query tuning (including index usage), see [Optimize Statement Performance]({% link {{ page.version.version }}/make-queries-fast.md %}).
+You can check which queries are using which indexes using the [`EXPLAIN`]({{ page.version.version }}/explain.md) statement. For more information about general query tuning (including index usage), see [Optimize Statement Performance]({{ page.version.version }}/make-queries-fast.md).
 
-The syntax for adding an [index]({% link {{ page.version.version }}/spatial-indexes.md %}) to a geometry column is `CREATE INDEX index_name ON table_name USING GIST (column_name)`.
+The syntax for adding an [index]({{ page.version.version }}/spatial-indexes.md) to a geometry column is `CREATE INDEX index_name ON table_name USING GIST (column_name)`.
 
-For example, to add an index to the `geom` column of the [sample `tornadoes` table]({% link {{ page.version.version }}/migrate-from-shapefiles.md %}):
+For example, to add an index to the `geom` column of the [sample `tornadoes` table]({{ page.version.version }}/migrate-from-shapefiles.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX tornado_geom_idx ON tornadoes USING GIST (geom);
 ~~~
 
-This creates a (spatial) [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}) on the `geom` column.
+This creates a (spatial) [GIN index]({{ page.version.version }}/inverted-indexes.md) on the `geom` column.
 
 Because CockroachDB is a scale-out, multi-node database, our spatial indexing strategy is based on a [space-filling curve](https://wikipedia.org/wiki/Space-filling_curve)/quad-tree design (also known as "divide the space"), rather than the [R-Tree](https://wikipedia.org/wiki/R-tree) data structure used by some other spatial databases (also known as "divide the objects"). Other databases that use a "divide the space" strategy include Microsoft SQL Server and MongoDB.
 
-For more detailed information about how CockroachDB's spatial indexes work, see [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %}).
+For more detailed information about how CockroachDB's spatial indexes work, see [Spatial indexes]({{ page.version.version }}/spatial-indexes.md).
 
-If you encounter behavior that you think is due to a performance issue, please get in touch using our [Support resources]({% link {{ page.version.version }}/support-resources.md %}).
+If you encounter behavior that you think is due to a performance issue, please get in touch using our [Support resources]({{ page.version.version }}/support-resources.md).
 
 ## Examples
 
@@ -108,11 +107,10 @@ CockroachDB can work with the tutorial up to Chapter 22, with the following exce
 
 #### Before you begin
 
-- Install a build of CockroachDB with support for spatial data by following the instructions at [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+- Install a build of CockroachDB with support for spatial data by following the instructions at [Install CockroachDB]({{ page.version.version }}/install-cockroachdb.md).
 
-- [Start a local insecure cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}) and connect to that cluster from a [SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+- [Start a local insecure cluster]({{ page.version.version }}/start-a-local-cluster.md) and connect to that cluster from a [SQL client]({{ page.version.version }}/cockroach-sql.md):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure --host=localhost --port=26257
     ~~~
@@ -123,14 +121,12 @@ CockroachDB can work with the tutorial up to Chapter 22, with the following exce
 
 Clone the data set:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/otan-cockroach/otan-scripts
 ~~~
 
 Load the SQL files into your CockroachDB cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cat otan-scripts/geospatial_sql/*.sql | cockroach sql --insecure --host=localhost --port=26257
 ~~~
@@ -141,22 +137,20 @@ The command above will take a few minutes to run.
 
 When the cluster is finished loading the data, open a SQL shell and start working through the [Introduction to PostGIS](https://postgis.net/workshops/postgis-intro/) tutorial:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure --host=localhost --port=26257
 ~~~
 
 ### Use a sample Shapefile dataset
 
-This page has instructions for querying spatial data imported into CockroachDB. On this page, we use a sample [Shapefile dataset]({% link {{ page.version.version }}/architecture/glossary.md %}#file-formats) from the National Oceanic and Atmospheric Administration.
+This page has instructions for querying spatial data imported into CockroachDB. On this page, we use a sample [Shapefile dataset]({{ page.version.version }}/architecture/glossary.md#file-formats) from the National Oceanic and Atmospheric Administration.
 
 #### Before you begin
 
-- Install a build of CockroachDB with support for spatial data by following the instructions at [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+- Install a build of CockroachDB with support for spatial data by following the instructions at [Install CockroachDB]({{ page.version.version }}/install-cockroachdb.md).
 
-- [Start a local insecure cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}) and connect to that cluster from a [SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+- [Start a local insecure cluster]({{ page.version.version }}/start-a-local-cluster.md) and connect to that cluster from a [SQL client]({{ page.version.version }}/cockroach-sql.md):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure --host=localhost --port=26257
     ~~~
@@ -165,11 +159,11 @@ This page has instructions for querying spatial data imported into CockroachDB. 
 
 #### Step 1. Import spatial data
 
-Import some sample spatial data into CockroachDB by following the instructions at [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %}).
+Import some sample spatial data into CockroachDB by following the instructions at [Migrate from Shapefiles]({{ page.version.version }}/migrate-from-shapefiles.md).
 
 #### Step 2. Query spatial data
 
-After you have imported [the sample tornado data into CockroachDB]({% link {{ page.version.version }}/migrate-from-shapefiles.md %}), you can query the spatial data from SQL.
+After you have imported [the sample tornado data into CockroachDB]({{ page.version.version }}/migrate-from-shapefiles.md), you can query the spatial data from SQL.
 
 For example, we may be interested in the [1999 Oklahoma tornado outbreak](https://wikipedia.org/wiki/1999_Oklahoma_tornado_outbreak), which is described by Wikipedia as:
 
@@ -179,7 +173,6 @@ According to the wiki page linked above, there were 152 tornadoes confirmed betw
 
 We can try to verify this number against the NWS's tornado data set with the following query:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT COUNT(*) FROM "1950-2018-torn-initpoint" WHERE yr = 1999 AND mo = 5 AND dy >= 02 AND dy <= 08;
 ~~~
@@ -195,7 +188,6 @@ It might be interesting to look into why these numbers are different!
 
 Next, let's get a list of starting points for all of the tornadoes in the outbreak that started in Oklahoma:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_AsText(geom) FROM "1950-2018-torn-initpoint" WHERE yr = 1999 AND st = 'OK' AND mo = 5 AND dy > 02 AND dy <= 08;
 ~~~
@@ -277,19 +269,18 @@ SELECT ST_AsText(geom) FROM "1950-2018-torn-initpoint" WHERE yr = 1999 AND st = 
 
 We can see that almost half of all of the tornadoes in this outbreak began in Oklahoma.
 
-It might be interesting to draw these points on a map. The image below shows the points from the query above drawn as a simple polygon on a map of Oklahoma. The boxes around the polygon show the [spatial index]({% link {{ page.version.version }}/spatial-indexes.md %}) coverings for the polygon.
+It might be interesting to draw these points on a map. The image below shows the points from the query above drawn as a simple polygon on a map of Oklahoma. The boxes around the polygon show the [spatial index]({{ page.version.version }}/spatial-indexes.md) coverings for the polygon.
 
-<img width="100%" src="{{ 'images/v20.2/geospatial/1999-oklahoma-tornado-outbreak-map.png' | relative_url }}" alt="1999 Oklahoma tornado outbreak map view">
 
 (Map data &copy; 2020 Google)
 
 ## See also
 
-- [Spatial Data Overview]({% link {{ page.version.version }}/spatial-data-overview.md %})
-- [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
-- [Spatial & GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
-- [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
-- [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
-- [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
-- [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
-- [Spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
+- [Spatial Data Overview]({{ page.version.version }}/spatial-data-overview.md)
+- [Spatial indexes]({{ page.version.version }}/spatial-indexes.md)
+- [Spatial & GIS Glossary of Terms]({{ page.version.version }}/architecture/glossary.md)
+- [Migrate from Shapefiles]({{ page.version.version }}/migrate-from-shapefiles.md)
+- [Migrate from GeoJSON]({{ page.version.version }}/migrate-from-geojson.md)
+- [Migrate from GeoPackage]({{ page.version.version }}/migrate-from-geopackage.md)
+- [Migrate from OpenStreetMap]({{ page.version.version }}/migrate-from-openstreetmap.md)
+- [Spatial functions]({{ page.version.version }}/functions-and-operators.md#spatial-functions)

@@ -21,14 +21,14 @@ The "column level encryption" feature described on this page specifically refers
 
 ### `encrypt` and `encrypt_iv`
 
-The `encrypt` and `encrypt_iv` functions encrypt a column's data with a given key and cipher method. For more information, see [Cryptographic functions]({% link {{ page.version.version }}/functions-and-operators.md %}#cryptographic-functions).
+The `encrypt` and `encrypt_iv` functions encrypt a column's data with a given key and cipher method. For more information, see [Cryptographic functions]({{ page.version.version }}/functions-and-operators.md#cryptographic-functions).
 
 For usage examples, see:
 
 - [Encrypt using the `encrypt` function](#encrypt-using-the-encrypt-function).
 - [Encrypt using the `encrypt_iv` function](#encrypt-using-the-encrypt_iv-function).
 
-If you do not have a [license]({% link {{ page.version.version }}/licensing-faqs.md %}), you will see an error message like the following if you try to use them:
+If you do not have a [license]({{ page.version.version }}/licensing-faqs.md), you will see an error message like the following if you try to use them:
 
 ~~~
 ERROR: encrypt(): use of this cryptographic function (https://www.cockroachlabs.com/docs/stable/functions-and-operators#cryptographic-functions) requires an enterprise license. see https://cockroachlabs.com/pricing for details on how to enable enterprise features
@@ -40,14 +40,14 @@ For more information about whether to use the `encrypt` or `encrypt_iv` variants
 
 ### `decrypt` and `decrypt_iv`
 
-The `decrypt` and `decrypt_iv` functions decrypt an encrypted column's data with a given key and cipher method. For more information, see [Cryptographic functions]({% link {{ page.version.version }}/functions-and-operators.md %}#cryptographic-functions).
+The `decrypt` and `decrypt_iv` functions decrypt an encrypted column's data with a given key and cipher method. For more information, see [Cryptographic functions]({{ page.version.version }}/functions-and-operators.md#cryptographic-functions).
 
 For usage examples, see:
 
 - [Decrypt using the `decrypt` function](#decrypt-using-the-decrypt-function).
 - [Decrypt using the `decrypt_iv` function](#decrypt-using-the-decrypt_iv-function).
 
-If you do not have a [license]({% link {{ page.version.version }}/licensing-faqs.md %}), you will see an error message like the following if you try to use them:
+If you do not have a [license]({{ page.version.version }}/licensing-faqs.md), you will see an error message like the following if you try to use them:
 
 ~~~
 ERROR: decrypt(): use of this cryptographic function (https://www.cockroachlabs.com/docs/stable/functions-and-operators#cryptographic-functions) requires an enterprise license. see https://cockroachlabs.com/pricing for details on how to enable enterprise features
@@ -94,7 +94,6 @@ Cockroach Labs measured baseline performance in a 3-node CockroachDB cluster run
 
 Without using `encrypt` or `decrypt`, the following statement generally ran in 60-80 ms:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
     a
@@ -129,7 +128,6 @@ FROM
 
 Using both `encrypt` and `decrypt`, the following statement generally ran in 80-100 ms:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
     a
@@ -175,7 +173,6 @@ FROM
 
 With `encrypt` only, the following statement generally ran in 80-100 ms:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
     a
@@ -223,10 +220,9 @@ It is important to benchmark these built-in functions on your particular Cockroa
 The examples in this section operate on the following table.
 
 {{site.data.alerts.callout_info}}
-The columns that will store the encrypted values must be of type [`BYTES`]({% link {{ page.version.version }}/bytes.md %}) as shown below.
+The columns that will store the encrypted values must be of type [`BYTES`]({{ page.version.version }}/bytes.md) as shown below.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS users (
     user_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -238,7 +234,6 @@ CREATE TABLE IF NOT EXISTS users (
 
 ### Encrypt using the `encrypt` function
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT
 INTO
@@ -256,7 +251,6 @@ VALUES
 
 ### Encrypt using the `encrypt_iv` function
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
     iv AS (SELECT gen_random_bytes(16) AS iv)
@@ -278,7 +272,6 @@ FROM
 
 ### Decrypt using the `decrypt` function
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     name,
@@ -299,7 +292,6 @@ WHERE
 
 ### Decrypt using the `decrypt_iv` function
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     name,
@@ -321,5 +313,5 @@ WHERE
 
 ## See also
 
-+ [Encryption at Rest]({% link {{ page.version.version }}/encryption.md %})
-+ [Cryptographic functions]({% link {{ page.version.version }}/functions-and-operators.md %}#cryptographic-functions)
++ [Encryption at Rest]({{ page.version.version }}/encryption.md)
++ [Cryptographic functions]({{ page.version.version }}/functions-and-operators.md#cryptographic-functions)

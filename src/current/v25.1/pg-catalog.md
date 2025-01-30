@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-For PostgreSQL compatibility, CockroachDB includes a [system catalog]({% link {{ page.version.version }}/system-catalogs.md %}) called `pg_catalog`. The tables in the `pg_catalog` schema roughly correspond to the [system catalogs in PostgreSQL](https://www.postgresql.org/docs/13/catalogs.html). `pg_catalog` tables are read-only.
+For PostgreSQL compatibility, CockroachDB includes a [system catalog]({{ page.version.version }}/system-catalogs.md) called `pg_catalog`. The tables in the `pg_catalog` schema roughly correspond to the [system catalogs in PostgreSQL](https://www.postgresql.org/docs/13/catalogs.html). `pg_catalog` tables are read-only.
 
 ## Data exposed by `pg_catalog`
 
@@ -29,7 +29,7 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_config` | `pg_config` (empty)
 `pg_constraint` | `pg_constraint`
 `pg_conversion` | `pg_conversion`
-[`pg_cursors`]({% link {{ page.version.version }}/cursors.md %}#view-all-open-cursors) | `pg_cursors`
+[`pg_cursors`]({{ page.version.version }}/cursors.md#view-all-open-cursors) | `pg_cursors`
 `pg_database` | `pg_database`
 `pg_db_role_setting` | `pg_db_role_setting`
 `pg_default_acl` | `pg_default_acl`
@@ -143,9 +143,8 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_user_mappings` | `pg_user_mappings` (empty)
 `pg_views` | `pg_views`
 
-To list the tables in `pg_catalog` for the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database), use the following [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}) statement:
+To list the tables in `pg_catalog` for the [current database]({{ page.version.version }}/sql-name-resolution.md#current-database), use the following [`SHOW TABLES`]({{ page.version.version }}/show-tables.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM pg_catalog;
 ~~~
@@ -159,24 +158,23 @@ To list the tables in `pg_catalog` for the [current database]({% link {{ page.ve
 ~~~
 
 {{site.data.alerts.callout_info}}
-To prohibit queries against empty tables, set the `stub_catalog_tables` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `off`.
+To prohibit queries against empty tables, set the `stub_catalog_tables` [session variable]({{ page.version.version }}/set-vars.md) to `off`.
 {{site.data.alerts.end}}
 
 ## Query `pg_catalog` tables
 
-You can run [`SELECT` queries]({% link {{ page.version.version }}/selection-queries.md %}) on the tables in `pg_catalog`.
+You can run [`SELECT` queries]({{ page.version.version }}/selection-queries.md) on the tables in `pg_catalog`.
 
 {{site.data.alerts.callout_success}}
-To ensure that you can view all of the tables in `pg_catalog`, query the tables as a user with [`admin` privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
+To ensure that you can view all of the tables in `pg_catalog`, query the tables as a user with [`admin` privileges]({{ page.version.version }}/security-reference/authorization.md#admin-role).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Unless specified otherwise, queries to `pg_catalog` assume the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database).
+Unless specified otherwise, queries to `pg_catalog` assume the [current database]({{ page.version.version }}/sql-name-resolution.md#current-database).
 {{site.data.alerts.end}}
 
-For example, to return the `pg_catalog` table with additional information about indexes in [`movr` database]({% link {{ page.version.version }}/movr.md %}), you can query the `pg_catalog.pg_indexes` table:
+For example, to return the `pg_catalog` table with additional information about indexes in [`movr` database]({{ page.version.version }}/movr.md), you can query the `pg_catalog.pg_indexes` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.pg_catalog.pg_indexes;
 ~~~
@@ -198,9 +196,9 @@ For example, to return the `pg_catalog` table with additional information about 
 
 ## See also
 
-- [`SHOW`]({% link {{ page.version.version }}/show-vars.md %})
-- [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})
-- [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %})
-- [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
-- [SQL Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %})
-- [System Catalogs]({% link {{ page.version.version }}/system-catalogs.md %})
+- [`SHOW`]({{ page.version.version }}/show-vars.md)
+- [`SHOW DATABASES`]({{ page.version.version }}/show-databases.md)
+- [`SHOW SCHEMAS`]({{ page.version.version }}/show-schemas.md)
+- [`SHOW TABLES`]({{ page.version.version }}/show-tables.md)
+- [SQL Name Resolution]({{ page.version.version }}/sql-name-resolution.md)
+- [System Catalogs]({{ page.version.version }}/system-catalogs.md)

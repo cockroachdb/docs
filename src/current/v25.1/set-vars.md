@@ -5,23 +5,23 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SET` [statement]({% link {{ page.version.version }}/sql-statements.md %}) can modify one of the session configuration variables. These can also be queried via [`SHOW`]({% link {{ page.version.version }}/show-vars.md %}). By default, session variable values are set for the duration of the current session.
+The `SET` [statement]({{ page.version.version }}/sql-statements.md) can modify one of the session configuration variables. These can also be queried via [`SHOW`]({{ page.version.version }}/show-vars.md). By default, session variable values are set for the duration of the current session.
 
 CockroachDB supports setting session variables for the duration of a single transaction, using [the `LOCAL` keyword](#set-local).
 
 {{site.data.alerts.callout_info}}
-The `SET` statement for session variables is unrelated to the other [`SET TRANSACTION`]({% link {{ page.version.version }}/set-transaction.md %}) and [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/cluster-settings.md %}#change-a-cluster-setting) statements.
+The `SET` statement for session variables is unrelated to the other [`SET TRANSACTION`]({{ page.version.version }}/set-transaction.md) and [`SET CLUSTER SETTING`]({{ page.version.version }}/cluster-settings.md#change-a-cluster-setting) statements.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-In some cases, client drivers can drop and restart the connection to the server. When this happens, any session configurations made with `SET` statements are lost. It is therefore more reliable to configure the session in the client's connection string. For examples in different languages, see the [Build an App with CockroachDB]({% link {{ page.version.version }}/example-apps.md %}) tutorials.
+In some cases, client drivers can drop and restart the connection to the server. When this happens, any session configurations made with `SET` statements are lost. It is therefore more reliable to configure the session in the client's connection string. For examples in different languages, see the [Build an App with CockroachDB]({{ page.version.version }}/example-apps.md) tutorials.
 {{site.data.alerts.end}}
 
 ## Required privileges
 
 To set the `role` session variable, the current user must be a member of the `admin` role, or a member of the target role.
 
-All other session variables do not require [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) to modify.
+All other session variables do not require [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) to modify.
 
 ## Synopsis
 
@@ -30,7 +30,6 @@ The `SET` statement can set a session variable for the duration of the current s
 ### SET SESSION
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/set_session.html %}
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -40,11 +39,10 @@ By default, session variables are set for the duration of the current session. A
 ### SET LOCAL
 
 <div>
-  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/set_local.html %}
 </div>
 
 {{site.data.alerts.callout_info}}
-`SET LOCAL` is compatible with [savepoints]({% link {{ page.version.version }}/savepoint.md %}). Executing a [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %}), `ROLLBACK TO SAVEPOINT`, or `RELEASE TO SAVEPOINT` statement rolls back any variables set by `SET LOCAL`.
+`SET LOCAL` is compatible with [savepoints]({{ page.version.version }}/savepoint.md). Executing a [`ROLLBACK`]({{ page.version.version }}/rollback-transaction.md), `ROLLBACK TO SAVEPOINT`, or `RELEASE TO SAVEPOINT` statement rolls back any variables set by `SET LOCAL`.
 {{site.data.alerts.end}}
 
 ## Parameters
@@ -56,7 +54,6 @@ Parameter   | Description
 
 ### Supported variables
 
-{% include {{ page.version.version }}/misc/session-vars.md %}
 
 ### Special syntax cases
 
@@ -78,12 +75,10 @@ CockroachDB supports the following syntax cases, for compatibility with common S
 
 The following examples demonstrate how to use `SET` to configure the default database for the current session:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET application_name = movr_app;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW application_name;
 ~~~
@@ -99,12 +94,10 @@ SHOW application_name;
 
 The following demonstrates how to use quoting to use values containing spaces:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET application_name = "movr app";
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW application_name;
 ~~~
@@ -120,12 +113,10 @@ SHOW application_name;
 
 The following demonstrates how to assign a list of values:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET search_path = pg_catalog,public;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW search_path;
 ~~~
@@ -140,10 +131,9 @@ SHOW search_path;
 ### Reset a variable to its default value
 
 {{site.data.alerts.callout_success}}
-You can use [`RESET`]({% link {{ page.version.version }}/reset-vars.md %}) to reset a session variable as well.
+You can use [`RESET`]({{ page.version.version }}/reset-vars.md) to reset a session variable as well.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW search_path;
 ~~~
@@ -155,12 +145,10 @@ SHOW search_path;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET search_path = DEFAULT;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW search_path;
 ~~~
@@ -176,7 +164,6 @@ SHOW search_path;
 
  To set a variable for the duration of a single transaction, use the `SET LOCAL` statement.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW application_name;
 ~~~
@@ -188,7 +175,6 @@ SHOW application_name;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 SET LOCAL application_name = demo;
@@ -202,7 +188,6 @@ SHOW application_name;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 SHOW application_name;
@@ -217,9 +202,8 @@ SHOW application_name;
 
 ### Roll back session variables set for a transaction
 
- You can roll back session variable settings to [savepoints]({% link {{ page.version.version }}/savepoint.md %}).
+ You can roll back session variable settings to [savepoints]({{ page.version.version }}/savepoint.md).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW timezone;
 ~~~
@@ -231,7 +215,6 @@ SHOW timezone;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 SET timezone = '+3';
@@ -246,7 +229,6 @@ SHOW timezone;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET LOCAL timezone = '+1';
 SHOW timezone;
@@ -259,7 +241,6 @@ SHOW timezone;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ROLLBACK TO SAVEPOINT s1;
 SHOW timezone;
@@ -272,7 +253,6 @@ SHOW timezone;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 SHOW timezone;
@@ -287,13 +267,12 @@ SHOW timezone;
 
 ### Assume another role
 
- To assume another [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) for the duration of a session, use `SET ROLE <role>`. `SET ROLE <role>` is equivalent to `SET role = <role>`.
+ To assume another [role]({{ page.version.version }}/security-reference/authorization.md#roles) for the duration of a session, use `SET ROLE <role>`. `SET ROLE <role>` is equivalent to `SET role = <role>`.
 
 {{site.data.alerts.callout_info}}
 To assume a new role, the current user must be a member of the `admin` role, or a member of the target role.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW role;
 ~~~
@@ -305,7 +284,6 @@ SHOW role;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE new_role;
 SHOW ROLES;
@@ -320,7 +298,6 @@ SHOW ROLES;
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET ROLE new_role;
 SHOW role;
@@ -333,9 +310,8 @@ SHOW role;
 (1 row)
 ~~~
 
-To reset the role of the current user, use a [`RESET`]({% link {{ page.version.version }}/reset-vars.md %}) statement. `RESET ROLE` is equivalent to `SET role = 'none'` and `SET role = current_user()`.
+To reset the role of the current user, use a [`RESET`]({{ page.version.version }}/reset-vars.md) statement. `RESET ROLE` is equivalent to `SET role = 'none'` and `SET role = current_user()`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 RESET ROLE;
 SHOW role;
@@ -350,7 +326,6 @@ SHOW role;
 
 To assume a role for the duration of a single transaction, use `SET LOCAL ROLE`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 SET LOCAL ROLE new_role;
@@ -364,7 +339,6 @@ SHOW role;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 SHOW role;
@@ -383,7 +357,7 @@ SHOW role;
 As a best practice, we recommend not using this setting and avoid setting a session time for your database. We instead recommend converting UTC values to the appropriate time zone on the client side.
 {{site.data.alerts.end}}
 
-You can control the default time zone for a session with `SET TIME ZONE`. This will apply an offset to all [`TIMESTAMPTZ`/`TIMESTAMP WITH TIME ZONE`]({% link {{ page.version.version }}/timestamp.md %}) and [`TIMETZ`/`TIME WITH TIME ZONE`]({% link {{ page.version.version }}/time.md %}) values in the session. By default, CockroachDB uses UTC as the time zone for `SET TIME ZONE` offsets.
+You can control the default time zone for a session with `SET TIME ZONE`. This will apply an offset to all [`TIMESTAMPTZ`/`TIMESTAMP WITH TIME ZONE`]({{ page.version.version }}/timestamp.md) and [`TIMETZ`/`TIME WITH TIME ZONE`]({{ page.version.version }}/time.md) values in the session. By default, CockroachDB uses UTC as the time zone for `SET TIME ZONE` offsets.
 
 ### Parameters
 
@@ -395,7 +369,6 @@ When setting a time zone, note the following:
 
 - To see a list of supported timezones, their nicknames, and their offsets, run the following query:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   SELECT * FROM pg_timezone_names;
   ~~~
@@ -406,12 +379,10 @@ When setting a time zone, note the following:
 
 ### Example: Set the default time zone via `SET TIME ZONE`
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET TIME ZONE 'EST'; -- same as SET "timezone" = 'EST'
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TIME ZONE;
 ~~~
@@ -423,12 +394,10 @@ When setting a time zone, note the following:
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET TIME ZONE DEFAULT; -- same as SET "timezone" = DEFAULT
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TIME ZONE;
 ~~~
@@ -442,27 +411,26 @@ When setting a time zone, note the following:
 
 ## `SET TRACING`
 
-`SET TRACING` changes the trace recording state of the current session. A trace recording can be inspected with the [`SHOW TRACE FOR SESSION`]({% link {{ page.version.version }}/show-trace.md %}) statement.
+`SET TRACING` changes the trace recording state of the current session. A trace recording can be inspected with the [`SHOW TRACE FOR SESSION`]({{ page.version.version }}/show-trace.md) statement.
 
  Value | Description
 -------|------------
 `off` | Trace recording is disabled.
 `cluster` | Trace recording is enabled; distributed traces are collected.
 `on`  | Same as `cluster`.
-`kv`  | Same as `cluster` except that "kv messages" are collected instead of regular trace messages. See [`SHOW TRACE FOR SESSION`]({% link {{ page.version.version }}/show-trace.md %}).
+`kv`  | Same as `cluster` except that "kv messages" are collected instead of regular trace messages. See [`SHOW TRACE FOR SESSION`]({{ page.version.version }}/show-trace.md).
 `results` | Result rows and row counts are copied to the session trace. This must be specified in order for the output of a query to be printed in the session trace.<br><br>Example: `SET tracing = kv, results;`
 
 ## Known Limitations
 
-{% include {{page.version.version}}/known-limitations/set-transaction-no-rollback.md %}
 
 ## See also
 
-- [`RESET`]({% link {{ page.version.version }}/reset-vars.md %})
-- [`SET TRANSACTION`]({% link {{ page.version.version }}/set-transaction.md %})
-- [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %})
-- [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
-- [The `TIMESTAMP` and `TIMESTAMPTZ` data types.]({% link {{ page.version.version }}/timestamp.md %})
-- [`SHOW TRACE FOR SESSION`]({% link {{ page.version.version }}/show-trace.md %})
-- [`pg_catalog`]({% link {{ page.version.version }}/pg-catalog.md %})
-- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({% link {{ page.version.version }}/show-default-session-variables-for-role.md %})
+- [`RESET`]({{ page.version.version }}/reset-vars.md)
+- [`SET TRANSACTION`]({{ page.version.version }}/set-transaction.md)
+- [`SET CLUSTER SETTING`]({{ page.version.version }}/set-cluster-setting.md)
+- [`SHOW {session variable}`]({{ page.version.version }}/show-vars.md)
+- [The `TIMESTAMP` and `TIMESTAMPTZ` data types.]({{ page.version.version }}/timestamp.md)
+- [`SHOW TRACE FOR SESSION`]({{ page.version.version }}/show-trace.md)
+- [`pg_catalog`]({{ page.version.version }}/pg-catalog.md)
+- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({{ page.version.version }}/show-default-session-variables-for-role.md)

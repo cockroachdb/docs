@@ -7,7 +7,6 @@ docs_area: develop
 
 This page has information on planning, configuring, and using connection pools when using drivers or frameworks with CockroachDB.
 
-{% include {{ page.version.version }}/prod-deployment/terminology-vcpu.md %}
 
 ## About connection pools
 
@@ -83,7 +82,7 @@ Idle connections in CockroachDB do not consume many resources compared to Postgr
 
 <section class="filter-content" markdown="1" data-scope="shared">
 
-The [SQL Connection graph]({% link cockroachcloud/metrics-sql.md %}#sql-connections) shows how many new connections are being created each second. The [Open SQL Sessions graph]({% link cockroachcloud/metrics-sql.md %}#open-sql-sessions) shows the total number of SQL client connections across the cluster. To determine if your connection pool is correctly configured use the metrics from these graphs in the following formula:
+The [SQL Connection graph](metrics-sql.md#sql-connections) shows how many new connections are being created each second. The [Open SQL Sessions graph](metrics-sql.md#open-sql-sessions) shows the total number of SQL client connections across the cluster. To determine if your connection pool is correctly configured use the metrics from these graphs in the following formula:
 
 **SQL Connection Attempts < SQL Open Sessions/100**
 
@@ -109,7 +108,6 @@ For multi-region clusters, create a connection pool per region, and size the max
 
 For example, if you have 3 regions in your cluster, and each region has 12 vCPUs, create a connection pool for each region, with each connection pool having a maximum pool size of 48 (12 [processor cores] * 4).
 
-{% include {{page.version.version}}/sql/server-side-connection-limit.md %} This may be useful in addition to your connection pool settings.
 
 </section>
 
@@ -122,11 +120,11 @@ To validate that your connection pool is correctly configured, monitor the SQL c
 ### Monitor new connections
 
 <section class="filter-content" markdown="1" data-scope="advanced selfhosted">
-The [`sql.new_conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [SQL Connection Rate graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-connection-rate) expose the number of new SQL connections per second.
+The [`sql.new_conns` metric]({{ page.version.version }}/metrics.md#available-metrics) and [SQL Connection Rate graph]({{ page.version.version }}/ui-sql-dashboard.md#sql-connection-rate) expose the number of new SQL connections per second.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="shared">
-The [SQL Connections graph]({% link cockroachcloud/metrics-sql.md %}#sql-connections) shows the number of new SQL connections per second.
+The [SQL Connections graph](metrics-sql.md#sql-connections) shows the number of new SQL connections per second.
 </section>
 
 A misconfigured connection pool will result in most database operations requiring a new connection to be established, which will increase query latency.
@@ -135,9 +133,9 @@ A misconfigured connection pool will result in most database operations requirin
 
 <section class="filter-content" markdown="1" data-scope="advanced selfhosted">
 
-The [`sql.conns` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [Open SQL Sessions graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#open-sql-sessions) show the number of open connections on your cluster or node.
+The [`sql.conns` metric]({{ page.version.version }}/metrics.md#available-metrics) and [Open SQL Sessions graph]({{ page.version.version }}/ui-sql-dashboard.md#open-sql-sessions) show the number of open connections on your cluster or node.
 
-The [`sql.statements.active` metric]({% link {{ page.version.version }}/metrics.md %}#available-metrics) and [Active SQL Statements graph]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#active-sql-statements) show the number of active connections on your cluster or node. A connection is "active" when it is actively executing a query.
+The [`sql.statements.active` metric]({{ page.version.version }}/metrics.md#available-metrics) and [Active SQL Statements graph]({{ page.version.version }}/ui-sql-dashboard.md#active-sql-statements) show the number of active connections on your cluster or node. A connection is "active" when it is actively executing a query.
 
 Using the following formula:
 
@@ -151,7 +149,7 @@ Reducing the number of active connections may increase overall throughput, possi
 
 <section class="filter-content" markdown="1" data-scope="shared">
 
-The [Open SQL Sessions graph]({% link cockroachcloud/metrics-sql.md %}#open-sql-sessions) shows the number of open connections on your cluster.
+The [Open SQL Sessions graph](metrics-sql.md#open-sql-sessions) shows the number of open connections on your cluster.
 
 </section>
 
@@ -174,7 +172,7 @@ If your application uses serverless functions to connect to CockroachDB, use a c
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-In this example, a Java application similar to the [basic JDBC example]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %}) uses the [PostgreSQL JDBC driver](https://jdbc.postgresql.org/) and [HikariCP](https://github.com/brettwooldridge/HikariCP) as the connection pool layer to connect to a CockroachDB cluster. The database is being run on 10 cores across the cluster.
+In this example, a Java application similar to the [basic JDBC example]({{ page.version.version }}/build-a-java-app-with-cockroachdb.md) uses the [PostgreSQL JDBC driver](https://jdbc.postgresql.org/) and [HikariCP](https://github.com/brettwooldridge/HikariCP) as the connection pool layer to connect to a CockroachDB cluster. The database is being run on 10 cores across the cluster.
 
 Using the connection pool formula above:
 
@@ -184,7 +182,6 @@ The connection pool size should be 40.
 
 The maximum lifetime of a connection is set to 300000 milliseconds, or 5 minutes.
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 HikariConfig config = new HikariConfig();
 config.setJdbcUrl("jdbc:postgresql://localhost:26257/bank");
@@ -207,7 +204,7 @@ Connection conn = ds.getConnection();
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-In this example, a Go application similar to the [basic pgx example]({% link {{ page.version.version }}/build-a-go-app-with-cockroachdb.md %}) uses the [pgxpool library](https://pkg.go.dev/github.com/jackc/pgx/v5/pgxpool) to create a connection pool on a CockroachDB cluster. The database is being run on 10 cores across the cluster.
+In this example, a Go application similar to the [basic pgx example]({{ page.version.version }}/build-a-go-app-with-cockroachdb.md) uses the [pgxpool library](https://pkg.go.dev/github.com/jackc/pgx/v5/pgxpool) to create a connection pool on a CockroachDB cluster. The database is being run on 10 cores across the cluster.
 
 Using the connection pool formula above:
 

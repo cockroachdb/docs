@@ -13,9 +13,7 @@ docs_area: deploy
   <a href="install-cockroachdb-windows.html"><button id="windows" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button></a>
 </div>
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-{% include latest-release-details.md %}
 
 {% capture arch_note_homebrew %}<p>For CockroachDB v22.2.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>).</p><p>For previous releases, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is <b>experimental</b> and is not yet qualified for production use and not eligible for support or uptime SLA commitments.</p>{% endcapture %}
 
@@ -25,7 +23,7 @@ docs_area: deploy
 CockroachDB on macOS is experimental and not suitable for production deployments.
 {{site.data.alerts.end}}
 
-Use one of the options below to install CockroachDB. To upgrade an existing cluster, refer to [Upgrade to {{ page.version.version }}]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}). For limitations specific to geospatial features, refer to [Limitations](#limitations).
+Use one of the options below to install CockroachDB. To upgrade an existing cluster, refer to [Upgrade to {{ page.version.version }}]({{ page.version.version }}/upgrade-cockroach-version.md). For limitations specific to geospatial features, refer to [Limitations](#limitations).
 
 <div id="use-homebrew" markdown="1" class="install-option">
 
@@ -46,17 +44,15 @@ Use one of the options below to install CockroachDB. To upgrade an existing clus
     </li>
     <li>
       <p>Keep up-to-date with CockroachDB releases and best practices:</p>
-        {% include marketo-install.html uid="1" %}
     </li>
   </ol>
 {{site.data.alerts.callout_success}}
-If you previously installed CockroachDB via Homebrew, you can [upgrade]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) the CockroachDB binary to the next major version or to a patch version using HomeBrew. After updating the binary on each node, restart the `cockroach` process on the node. When upgrading to a new major version, you must complete additional steps to [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade. If you need to upgrade through multiple major versions, you must complete each major-version upgrade separately, including finalizing the upgrade, before beginning the next one.
+If you previously installed CockroachDB via Homebrew, you can [upgrade]({{ page.version.version }}/upgrade-cockroach-version.md) the CockroachDB binary to the next major version or to a patch version using HomeBrew. After updating the binary on each node, restart the `cockroach` process on the node. When upgrading to a new major version, you must complete additional steps to [finalize]({{ page.version.version }}/upgrade-cockroach-version.md#finalize-a-major-version-upgrade-manually) the upgrade. If you need to upgrade through multiple major versions, you must complete each major-version upgrade separately, including finalizing the upgrade, before beginning the next one.
 
-Before starting the upgrade, review the [release notes]({% link releases/{{ page.version.version }}.md %}), including temporary limitations during the upgrade.
+Before starting the upgrade, review the [release notes](releases/{{ page.version.version }}.md), including temporary limitations during the upgrade.
 
 To upgrade CockroachDB via HomeBrew:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 brew update
 ~~~
@@ -68,7 +64,6 @@ brew upgrade cockroach
 </div>
 
 {% capture binary_arm_geos_unquarantine %}
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 xattr -d com.apple.quarantine lib/libgeos*
 ~~~
@@ -159,7 +154,6 @@ true
       </ol>
     <li>
       <p>Keep up-to-date with CockroachDB releases and best practices:</p>
-{% include marketo-install.html uid="2" %}
     </li>
   </ol>
 </div>
@@ -173,7 +167,6 @@ true
 <div id="use-docker" markdown="1" class="install-option">
 <h2 id="install-docker">Use Docker</h2>
 
-{% include {{ page.version.version }}/install-docker-steps.md %}
 
 </div>
 
@@ -193,12 +186,10 @@ CockroachDB runtimes built for the ARM architecture have the following limitatio
 
 <h2 id="whats-next">What&#39;s next?</h2>
 
-{% include {{ page.version.version }}/misc/install-next-steps.html %}
 
-{% include {{ page.version.version }}/misc/diagnostics-callout.html %}
 
 ## Limitations
 
 {% comment %}v22.2.0+{% endcomment %}
 
-On macOS ARM systems, [spatial features]{% link {{ page.version.version }}/spatial-data-overview.md %}) are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead [run the Intel binary](#install-the-binary) or use the[Docker container image](#use-docker). Refer to [GitHub issue #93161](https://github.com/cockroachdb/cockroach/issues/93161)</a> for more information.
+On macOS ARM systems, [spatial features]{{ page.version.version }}/spatial-data-overview.md) are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead [run the Intel binary](#install-the-binary) or use the[Docker container image](#use-docker). Refer to [GitHub issue #93161](https://github.com/cockroachdb/cockroach/issues/93161)</a> for more information.

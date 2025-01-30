@@ -28,7 +28,7 @@ Migrating with Debezium requires familiarity with Kafka. Refer to the [Debezium 
 
 Complete the following items before using Debezium:
 
-- Configure a secure [publicly-accessible]({% link cockroachcloud/network-authorization.md %}) CockroachDB cluster running the latest **{{ page.version.version }}** [production release]({% link releases/{{ page.version.version }}.md %}) with at least one [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users), make a note of the credentials for the SQL user.
+- Configure a secure [publicly-accessible](network-authorization.md) CockroachDB cluster running the latest **{{ page.version.version }}** [production release](releases/{{ page.version.version }}.md) with at least one [SQL user]({{ page.version.version }}/security-reference/authorization.md#sql-users), make a note of the credentials for the SQL user.
 - Install and configure [Debezium](https://debezium.io/), [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html), and [Kafka](https://kafka.apache.org/).
 
 ## Migrate data to CockroachDB
@@ -37,7 +37,6 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
 
 1. To write data from Kafka to CockroachDB, use the Confluent JDBC Sink Connector. First use the following `dockerfile` to create a custom image with the [JDBC driver](https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc):
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     FROM quay.io/debezium/connect:latest
     ENV KAFKA_CONNECT_JDBC_DIR=$KAFKA_CONNECT_PLUGINS_DIR/kafka-connect-jdbc
@@ -58,7 +57,6 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
 
 1. Create the JSON configuration file that you will use to add data from your [source database](https://debezium.io/documentation/reference/stable/connectors/index.html) to a Kafka topic. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     {
       "name": "pg-source",
@@ -85,7 +83,6 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
 
 1. Create the JSON configuration file that you will use to create the sink. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     {
       "name": "pg-sink",
@@ -108,7 +105,7 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
     }
     ~~~
     
-    Specify `connection.url` in [JDBC format]({% link {{ page.version.version }}/connect-to-the-database.md %}?filters=java&#step-5-connect-to-the-cluster). For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}).
+    Specify `connection.url` in [JDBC format]({{ page.version.version }}/connect-to-the-database.md?filters=java&#step-5-connect-to-the-cluster). For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({{ page.version.version }}/connect-to-the-database.md).
     
     The preceding snippet is an example configuration. For details on the configurable fields, see the [Confluent JDBC Sink Connector documentation](https://docs.confluent.io/kafka-connectors/jdbc/current/sink-connector/sink_config_options.html).
 
@@ -116,8 +113,8 @@ Once all of the [prerequisite steps](#before-you-begin) are completed, you can u
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
-- [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %})
-- [Third-Party Tools Supported by Cockroach Labs]({% link {{ page.version.version }}/third-party-database-tools.md %})
-- [Stream a Changefeed to a Confluent Cloud Kafka Cluster]({% link {{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md %})
+- [Migration Overview]({{ page.version.version }}/migration-overview.md)
+- [Schema Conversion Tool](migrations-page.md)
+- [Change Data Capture Overview]({{ page.version.version }}/change-data-capture-overview.md)
+- [Third-Party Tools Supported by Cockroach Labs]({{ page.version.version }}/third-party-database-tools.md)
+- [Stream a Changefeed to a Confluent Cloud Kafka Cluster]({{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md)

@@ -6,39 +6,30 @@ ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-key
 docs_area:
 ---
 
-{% include {{ page.version.version }}/filter-tabs/deploy-crdb-op.md %}
 
 This tutorial shows you how to manually deploy an insecure multi-node CockroachDB cluster on multiple machines, using [HAProxy](http://www.haproxy.org/) load balancers to distribute client traffic.
 
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 
 ### Requirements
 
-{% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
 ### Recommendations
 
-{% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
 ## Step 1. Synchronize clocks
 
-{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 2. Start nodes
 
-{% include {{ page.version.version }}/prod-deployment/insecure-start-nodes.md %}
 
 ## Step 3. Initialize the cluster
 
-{% include {{ page.version.version }}/prod-deployment/insecure-initialize-cluster.md %}
 
 ## Step 4. Test the cluster
 
-{% include {{ page.version.version }}/prod-deployment/insecure-test-cluster.md %}
 
 ## Step 5. Set up load balancing
 
@@ -55,14 +46,12 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 1. Install HAProxy:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ shell
   $ apt-get install haproxy
   ~~~
 
 1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
@@ -70,27 +59,23 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 1. Copy the binary into the `PATH`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
   If you get a permissions error, prefix the command with `sudo`.
 
-1. Run the [`cockroach gen haproxy`]({% link {{ page.version.version }}/cockroach-gen.md %}) command, specifying the address of any CockroachDB node:
+1. Run the [`cockroach gen haproxy`]({{ page.version.version }}/cockroach-gen.md) command, specifying the address of any CockroachDB node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen haproxy --insecure \
     --host=<address of any node> \
     --port=26257
     ~~~
 
-      {% include {{ page.version.version }}/misc/haproxy.md %}
 
 1. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ shell
   $ haproxy -f haproxy.cfg
   ~~~
@@ -99,20 +84,14 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 ## Step 6. Run a sample workload
 
-{% include {{ page.version.version }}/prod-deployment/insecure-test-load-balancing.md %}
 
 ## Step 7. Monitor the cluster
 
-{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 8. Scale the cluster
 
-{% include {{ page.version.version }}/prod-deployment/insecure-scale-cluster.md %}
 
 ## Step 9. Use the cluster
 
-{% include {{ page.version.version }}/prod-deployment/use-cluster.md %}
 
 ## See also
-
-{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

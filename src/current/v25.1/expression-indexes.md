@@ -6,9 +6,9 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
-An _expression index_ is an index created by applying an [expression]({% link {{ page.version.version }}/scalar-expressions.md %}) to a column. For example, to facilitate fast, case insensitive lookups of user names you could create an index by applying the function `lower` to the `name` column: `CREATE INDEX users_name_idx ON users (lower(name))`. The value of the expression is stored only in the expression index, not in the primary family index.
+An _expression index_ is an index created by applying an [expression]({{ page.version.version }}/scalar-expressions.md) to a column. For example, to facilitate fast, case insensitive lookups of user names you could create an index by applying the function `lower` to the `name` column: `CREATE INDEX users_name_idx ON users (lower(name))`. The value of the expression is stored only in the expression index, not in the primary family index.
 
-Both [standard indexes]({% link {{ page.version.version }}/create-index.md %}) and [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}) support expressions. You can use expressions in [unique indexes]({% link {{ page.version.version }}/create-index.md %}#unique-indexes) and [partial indexes]({% link {{ page.version.version }}/partial-indexes.md %}).
+Both [standard indexes]({{ page.version.version }}/create-index.md) and [GIN indexes]({{ page.version.version }}/inverted-indexes.md) support expressions. You can use expressions in [unique indexes]({{ page.version.version }}/create-index.md#unique-indexes) and [partial indexes]({{ page.version.version }}/partial-indexes.md).
 
 You can reference multiple columns in an expression index.
 
@@ -16,7 +16,6 @@ You can reference multiple columns in an expression index.
 
 To create an expression index, use the syntax:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE INDEX index_name ON table_name (expression(column_name));
 ~~~
@@ -25,7 +24,6 @@ CREATE INDEX index_name ON table_name (expression(column_name));
 
 To view the expression used to generate the index, run `SHOW CREATE TABLE`:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -47,7 +45,6 @@ To view the expression used to generate the index, run `SHOW CREATE TABLE`:
 ### Create various expression indexes
 
 Suppose you have a table with the following columns:
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE TABLE t (i INT, b BOOL, s STRING, j JSON);
 ~~~
@@ -55,26 +52,23 @@ CREATE TABLE t (i INT, b BOOL, s STRING, j JSON);
 The following examples illustrate how to create various types of expression indexes.
 
 A partial, multi-column index, where one column is defined with an expression:
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE INDEX ON t (lower(s), b) WHERE i > 0;
 ~~~
 
 A unique, partial, multi-column index, where one column is defined with an expression:
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE UNIQUE INDEX ON t (lower(s), b) WHERE i > 0;
 ~~~
 
 A GIN, partial, multi-column index, where one column is defined with an expression:
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE INVERTED INDEX ON t (lower(s), i, j) WHERE b;
 ~~~
 
 ### Use an expression to index a field in a `JSONB` column
 
-You can use an expression in an index definition to index a field in a JSON column. You can also use an expression to create a [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}) on a subset of the JSON column.
+You can use an expression in an index definition to index a field in a JSON column. You can also use an expression to create a [GIN index]({{ page.version.version }}/inverted-indexes.md) on a subset of the JSON column.
 
 Normally an index is used only if the cost of using the index is less than the cost of a full table scan. To disable that optimization, turn off statistics collection:
 
@@ -84,7 +78,6 @@ Normally an index is used only if the cost of using the index is less than the c
 
 Create a table of three users with a JSON object in the `user_profile` column:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > CREATE TABLE users (
   profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -100,7 +93,6 @@ Create a table of three users with a JSON object in the `user_profile` column:
 
 When you perform a query that filters on the `user_profile->'birthdate'` column:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > EXPLAIN SELECT jsonb_pretty(user_profile) FROM users WHERE user_profile->>'birthdate' = '2011-11-07';
 ~~~
@@ -130,14 +122,12 @@ Time: 2ms total (execution 1ms / network 0ms)
 
 To limit the number of rows scanned, create an expression index on the `birthdate` field:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > CREATE INDEX timestamp_idx ON users (parse_timestamp(user_profile->>'birthdate'));
 ~~~
 
 When you filter on the expression `parse_timestamp(user_profile->'birthdate')`, only the row matching the filter is scanned:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > EXPLAIN SELECT jsonb_pretty(user_profile) FROM users WHERE parse_timestamp(user_profile->>'birthdate') = '2011-11-07';
 ~~~
@@ -169,14 +159,13 @@ As shown in this example, for an expression index to be used to service a query,
 
 Expression indexes have the following limitations:
 
-{% include {{ page.version.version }}/known-limitations/expression-index-limitations.md %}
 
 ## See also
 
-- [Computed Columns]({% link {{ page.version.version }}/computed-columns.md %})
-- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
-- [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %})
-- [`ALTER INDEX ... RENAME TO`]({% link {{ page.version.version }}/alter-index.md %}#rename-to)
-- [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %})
-- [Indexes]({% link {{ page.version.version }}/indexes.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Computed Columns]({{ page.version.version }}/computed-columns.md)
+- [`CREATE INDEX`]({{ page.version.version }}/create-index.md)
+- [`DROP INDEX`]({{ page.version.version }}/drop-index.md)
+- [`ALTER INDEX ... RENAME TO`]({{ page.version.version }}/alter-index.md#rename-to)
+- [`SHOW INDEX`]({{ page.version.version }}/show-index.md)
+- [Indexes]({{ page.version.version }}/indexes.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

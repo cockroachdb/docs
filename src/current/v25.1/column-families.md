@@ -5,11 +5,11 @@ toc: true
 docs_area: develop
 ---
 
-A column family is a group of columns in a table that are stored as a single key-value pair in the [underlying key-value store]({% link {{ page.version.version }}/architecture/storage-layer.md %}). Column families reduce the number of keys stored in the key-value store, resulting in improved performance during [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), and [`DELETE`]({% link {{ page.version.version }}/delete.md %}) operations.
+A column family is a group of columns in a table that are stored as a single key-value pair in the [underlying key-value store]({{ page.version.version }}/architecture/storage-layer.md). Column families reduce the number of keys stored in the key-value store, resulting in improved performance during [`INSERT`]({{ page.version.version }}/insert.md), [`UPDATE`]({{ page.version.version }}/update.md), and [`DELETE`]({{ page.version.version }}/delete.md) operations.
 
 This page explains how CockroachDB organizes columns into families as well as cases in which you might want to manually override the default behavior.
 
- [Secondary indexes]({% link {{ page.version.version }}/indexes.md %}) respect the column family definitions applied to tables. When you define a secondary index, CockroachDB breaks the secondary index key-value pairs into column families, according to the family and stored column configurations.
+ [Secondary indexes]({{ page.version.version }}/indexes.md) respect the column family definitions applied to tables. When you define a secondary index, CockroachDB breaks the secondary index key-value pairs into column families, according to the family and stored column configurations.
 
 ## Default behavior
 
@@ -21,11 +21,10 @@ This default approach ensures efficient key-value storage and performance in mos
 
 ### Assign column families on table creation
 
-To manually assign a column family on [table creation]({% link {{ page.version.version }}/create-table.md %}), use the `FAMILY` keyword.  
+To manually assign a column family on [table creation]({{ page.version.version }}/create-table.md), use the `FAMILY` keyword.  
 
 For example, let's say we want to create a table to store an immutable blob of data (`data BYTES`) with a last accessed timestamp (`last_accessed TIMESTAMP`). Because we know that the blob of data will never get updated, we use the `FAMILY` keyword to break it into a separate column family:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE test (
     id INT PRIMARY KEY,
@@ -36,7 +35,6 @@ For example, let's say we want to create a table to store an immutable blob of d
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE test;
 ~~~
@@ -58,38 +56,34 @@ For example, let's say we want to create a table to store an immutable blob of d
 
 ### Assign column families when adding columns
 
-When using the [`ALTER TABLE .. ADD COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#add-column) statement to add a column to a table, you can assign the column to a new or existing column family.
+When using the [`ALTER TABLE .. ADD COLUMN`]({{ page.version.version }}/alter-table.md#add-column) statement to add a column to a table, you can assign the column to a new or existing column family.
 
 - Use the `CREATE FAMILY` keyword to assign a new column to a **new family**. For example, the following would add a `data2 BYTES` column to the `test` table above and assign it to a new column family:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   > ALTER TABLE test ADD COLUMN data2 BYTES CREATE FAMILY f3;
   ~~~
 
 - Use the `FAMILY` keyword to assign a new column to an **existing family**. For example, the following would add a `name STRING` column to the `test` table above and assign it to family `f1`:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   > ALTER TABLE test ADD COLUMN name STRING FAMILY f1;
   ~~~
 
 - Use the `CREATE IF NOT EXISTS FAMILY` keyword to assign a new column to an **existing family or, if the family doesn't exist, to a new family**. For example, the following would assign the new column to the existing `f1` family; if that family didn't exist, it would create a new family and assign the column to it:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   > ALTER TABLE test ADD COLUMN name STRING CREATE IF NOT EXISTS FAMILY f1;
   ~~~
 
 - If a column is added to a table and the family is not specified, it will be added to the first column family. For example, the following would add the new column to the `f1` family, since that is the first column family:
 
-  {% include_cached copy-clipboard.html %}
   ~~~ sql
   > ALTER TABLE test ADD COLUMN last_name STRING;
   ~~~
 
 ## See also
 
-- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
-- [`ADD COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#add-column)
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [`CREATE TABLE`]({{ page.version.version }}/create-table.md)
+- [`ADD COLUMN`]({{ page.version.version }}/alter-table.md#add-column)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

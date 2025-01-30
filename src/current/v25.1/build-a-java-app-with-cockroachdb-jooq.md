@@ -6,13 +6,11 @@ twitter: false
 docs_area: get_started
 ---
 
-{% include {{ page.version.version }}/filter-tabs/crud-java.md %}
 
 This tutorial shows you how build a simple Java application with CockroachDB and [jOOQ](https://www.jooq.org/).
 
 CockroachDB is supported in jOOQ [Professional and Enterprise editions](https://www.jooq.org/download/#databases).
 
-{% include {{page.version.version}}/app/java-version-note.md %}
 
 {{site.data.alerts.callout_success}}
 For another use of jOOQ with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
@@ -20,7 +18,6 @@ For another use of jOOQ with CockroachDB, see our [`examples-orms`](https://gith
 
 ## Before you begin
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
 
 ## Step 1. Install Maven
 
@@ -28,14 +25,12 @@ This tutorial uses the [Maven build tool](https://gradle.org/) to manage applica
 
 To install Maven on Mac, run the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ brew install maven
 ~~~
 
 To install Maven on a Debian-based Linux distribution like Ubuntu:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ apt-get install maven
 ~~~
@@ -48,12 +43,10 @@ Download the free trial of jOOQ Professional or Enterprise edition from [jOOQ's 
 
 To install jOOQ to your machine's local Maven repository, run the `maven-install.sh` script included in the jOOQ install folder:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ chmod +x maven-install.sh
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ./maven-install.sh
 ~~~
@@ -62,15 +55,13 @@ $ ./maven-install.sh
 
 ## Step 3. Create the `maxroach` user and `bank` database
 
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
 
 ## Step 4. Generate a certificate for the `maxroach` user
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
-The [`--also-generate-pkcs8-key` flag]({% link {{ page.version.version }}/cockroach-cert.md %}#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
+The [`--also-generate-pkcs8-key` flag]({{ page.version.version }}/cockroach-cert.md#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
 ~~~
@@ -84,7 +75,7 @@ The code below uses jOOQ to map Java methods to SQL operations. It performs the 
 1. Transfers money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)`).
 1. Prints out account balances before and after the transfer (see `Sample.getAccountBalance(long id)`).
 
-In addition, the code shows a pattern for automatically handling [transaction retries]({% link {{ page.version.version }}/transaction-retry-error-example.md %}) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+In addition, the code shows a pattern for automatically handling [transaction retries]({{ page.version.version }}/transaction-retry-error-example.md) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
 
 To run it:
 
@@ -92,26 +83,21 @@ To run it:
 1. Open `jooq-basic-sample/src/main/java/com/cockroachlabs/Sample.java`, and edit the connection string passed to `DriverManager.getConnection()` in the `Sample` class's `main()` method so that the certificate paths are fully and correctly specified.
 1. Compile and run the code using Maven:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd jooq-basic-sample
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mvn compile
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mvn exec:java -Dexec.mainClass=com.cockroachlabs.Sample
     ~~~
 
 Here are the contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/jooq-basic-sample/Sample.java), the Java file containing the main `Sample` class:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/jooq-basic-sample/Sample.java %}
 ~~~
 
 Toward the end of the output, you should see:
@@ -142,16 +128,14 @@ APP: getAccountBalance(1) --> 900
 APP: getAccountBalance(2) --> 350
 ~~~
 
-To verify that the account balances were updated successfully, start the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+To verify that the account balances were updated successfully, start the [built-in SQL client]({{ page.version.version }}/cockroach-sql.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs
 ~~~
 
 To check the account balances, issue the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id, balance FROM accounts;
 ~~~
@@ -171,7 +155,6 @@ SELECT id, balance FROM accounts;
 
 ## Step 3. Create the `maxroach` user and `bank` database
 
-{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
 
 ## Step 4. Run the Java code
 
@@ -182,33 +165,28 @@ The code below uses jOOQ to map Java methods to SQL operations. It performs the 
 1. Transfers money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)`).
 1. Prints out account balances before and after the transfer (see `Sample.getAccountBalance(long id)`).
 
-In addition, the code shows a pattern for automatically handling [transaction retries]({% link {{ page.version.version }}/transaction-retry-error-example.md %}) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+In addition, the code shows a pattern for automatically handling [transaction retries]({{ page.version.version }}/transaction-retry-error-example.md) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
 
 To run it:
 
 1. Download and unzip [jooq-basic-sample.zip](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/insecure/jooq-basic-sample/jooq-basic-sample.zip).
 1. Compile and run the code using Maven:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd jooq-basic-sample
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mvn compile
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mvn exec:java -Dexec.mainClass=com.cockroachlabs.Sample
     ~~~
 
 Here are the contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/insecure/jooq-basic-sample/Sample.java), the Java file containing the main `Sample` class:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/insecure/jooq-basic-sample/Sample.java %}
 ~~~
 
 Toward the end of the output, you should see:
@@ -239,16 +217,14 @@ APP: getAccountBalance(1) --> 900
 APP: getAccountBalance(2) --> 350
 ~~~
 
-To verify that the account balances were updated successfully, start the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+To verify that the account balances were updated successfully, start the [built-in SQL client]({{ page.version.version }}/cockroach-sql.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure
 ~~~
 
 To check the account balances, issue the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id, balance FROM accounts;
 ~~~
@@ -268,5 +244,3 @@ SELECT id, balance FROM accounts;
 ## What's next?
 
 Read more about using [jOOQ](https://www.jooq.org/), or check out a more realistic implementation of jOOQ with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
-
-{% include_cached {{page.version.version}}/app/see-also-links.md %}

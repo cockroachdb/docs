@@ -8,12 +8,12 @@ docs_area: manage
 CockroachDB generates detailed time series metrics for each node in a cluster. This page shows you how to pull these metrics into [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying time series data. It also shows you how to connect [Grafana](https://grafana.com/) and [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/) to Prometheus for flexible data visualizations and notifications.
 
 {{site.data.alerts.callout_success}}
-This tutorial explores the CockroachDB {{ site.data.products.core }} integration with Prometheus. For the CockroachDB {{ site.data.products.advanced }} integration with Prometheus, refer to [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export) instead of this page.
+This tutorial explores the CockroachDB {{ site.data.products.core }} integration with Prometheus. For the CockroachDB {{ site.data.products.advanced }} integration with Prometheus, refer to [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster](export-metrics-advanced.md?filters=prometheus-metrics-export) instead of this page.
 {{site.data.alerts.end}}
 
 ## Before you begin
 
-- Make sure you have already started a CockroachDB cluster, either [locally]({% link {{ page.version.version }}/start-a-local-cluster.md %}) or in a [production environment]({% link {{ page.version.version }}/manual-deployment.md %}).
+- Make sure you have already started a CockroachDB cluster, either [locally]({{ page.version.version }}/start-a-local-cluster.md) or in a [production environment]({{ page.version.version }}/manual-deployment.md).
 
 - Note that all files used in this tutorial can be found in the [`monitoring`](https://github.com/cockroachdb/cockroach/tree/master/monitoring) directory of the CockroachDB repository.
 
@@ -25,7 +25,6 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
 1. Make sure Prometheus installed successfully:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ prometheus --version
     ~~~
@@ -41,7 +40,6 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
 1. Download the starter [Prometheus configuration file](https://github.com/cockroachdb/cockroach/blob/master/monitoring/prometheus.yml) for CockroachDB:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o prometheus.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/prometheus.yml
     ~~~
@@ -62,22 +60,18 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
 1. Create a `rules` directory and download the [aggregation rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/aggregation.rules.yml) and [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml) for CockroachDB into it:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     mkdir rules
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd rules
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o rules/aggregation.rules.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/aggregation.rules.yml
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o rules/alerts.rules.yml https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/rules/alerts.rules.yml
     ~~~
@@ -86,7 +80,6 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
 
 1. Start the Prometheus server, with the `--config.file` flag pointing to the configuration file:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ prometheus --config.file=prometheus.yml
     ~~~
@@ -116,7 +109,6 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. Make sure Alertmanager installed successfully:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ alertmanager --version
     ~~~
@@ -130,7 +122,6 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. [Edit the Alertmanager configuration file](https://prometheus.io/docs/alerting/configuration/) that came with the binary, `alertmanager.yml`, to specify the desired receivers for notifications. For example, your configuration may resemble:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ ini
     route:
       group_by: ['alertname']
@@ -146,14 +137,13 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. Start the Alertmanager server, with the `--config.file` flag pointing to the configuration file:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ alertmanager --config.file=alertmanager.yml
     ~~~
 
 1. Point your browser to `http://<hostname of machine running alertmanager>:9093`, where you can use the Alertmanager UI to define rules for [silencing alerts](https://prometheus.io/docs/alerting/alertmanager/#silences).
 
-1. Now that Alertmanager is configured and running, you can optionally [import pre-existing rules or create your own]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#alertmanager) if you prefer.
+1. Now that Alertmanager is configured and running, you can optionally [import pre-existing rules or create your own]({{ page.version.version }}/monitoring-and-alerting.md#alertmanager) if you prefer.
 
 ## Step 5. Visualize metrics in Grafana
 
@@ -175,25 +165,21 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
 1. Download the starter [Grafana dashboards](https://github.com/cockroachdb/cockroach/tree/master/monitoring/grafana-dashboards/by-cluster) for CockroachDB:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o runtime.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/runtime.json
     # runtime dashboard: node status, including uptime, memory, and cpu.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o storage.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/storage.json
     # storage dashboard: storage availability.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o sql.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/sql.json
     # sql dashboard: sql queries/transactions.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o replication.json https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/by-cluster/replication.json
     # replicas dashboard: replica information and operations.
@@ -203,14 +189,14 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
 ## Step 6. Disable DB Console's local storage of metrics (optional)
 
-If you rely on external tools such as Prometheus for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
+If you rely on external tools such as Prometheus for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({{ page.version.version }}/operational-faqs.md#disable-time-series-storage).
 
-When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Prometheus and AlertManager based on the data Prometheus is collecting from your cluster's Prometheus endpoint.
+When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({{ page.version.version }}/monitoring-and-alerting.md#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Prometheus and AlertManager based on the data Prometheus is collecting from your cluster's Prometheus endpoint.
 
 ## See also
 
-- [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
-- [Metrics]({% link {{ page.version.version }}/metrics.md %})
-- [Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %})
-- [Essential Metrics for CockroachDB {{ site.data.products.advanced }} Deployments]({% link {{ page.version.version }}/essential-metrics-advanced.md %})
-- [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({% link {{ page.version.version }}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md %})
+- [Monitoring and Alerting]({{ page.version.version }}/monitoring-and-alerting.md)
+- [Metrics]({{ page.version.version }}/metrics.md)
+- [Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments]({{ page.version.version }}/essential-metrics-self-hosted.md)
+- [Essential Metrics for CockroachDB {{ site.data.products.advanced }} Deployments]({{ page.version.version }}/essential-metrics-advanced.md)
+- [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({{ page.version.version }}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md)

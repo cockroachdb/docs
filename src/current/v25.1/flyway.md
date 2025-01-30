@@ -9,32 +9,28 @@ This page guides you through a series of simple database schema changes using Fl
 
 ## Watch the demo
 
-{% include_cached youtube.html video_id="xz4j5tU0ZRU" %}
 
 ## Before You Begin
 
 Before you begin, do the following:
 
-1. [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}) and [start a secure cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}).    
+1. [Install CockroachDB]({{ page.version.version }}/install-cockroachdb.md) and [start a secure cluster]({{ page.version.version }}/secure-a-cluster.md).    
 1. Download the latest version of the [Flyway command-line tool](https://flywaydb.org/documentation/commandline/#download-and-installation). CockroachDB v21.1 and later are fully compatible with Flyway versions 7.1.0 and greater.
 
 ## Step 1. Configure Flyway connect to CockroachDB
 
 1. Extract the Flyway TAR file that you downloaded, and change directories to the extracted `flyway-x.x.x` folder. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ tar -xvf flyway-commandline-6.4.2-macosx-x64.tar.gz
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd flyway-6.4.2
     ~~~
 
-1. Edit the `flyway-x.x.x/conf/flyway.conf` configuration file to specify the correct [connection parameters]({% link {{ page.version.version }}/connection-parameters.md %}) for your running, secure cluster. For example:
+1. Edit the `flyway-x.x.x/conf/flyway.conf` configuration file to specify the correct [connection parameters]({{ page.version.version }}/connection-parameters.md) for your running, secure cluster. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ conf
     ...
     flyway.url=jdbc:postgresql://localhost:26257/bank?ssl=true&sslmode=require&sslrootcert=certs/ca.crt&sslkey=certs/client.max.key&sslcert=certs/client.max.crt
@@ -44,7 +40,7 @@ Before you begin, do the following:
     ~~~
 
     {{site.data.alerts.callout_info}}
-    The SSL connection parameters in the connection URL must specify the full path to the certificates that you generated when you [started the secure cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}). Also, the user that you specify (e.g., `max`) must also have [admin privileges]({% link {{ page.version.version }}/grant.md %}) on the database whose schema you want to change (e.g., `bank`).
+    The SSL connection parameters in the connection URL must specify the full path to the certificates that you generated when you [started the secure cluster]({{ page.version.version }}/secure-a-cluster.md). Also, the user that you specify (e.g., `max`) must also have [admin privileges]({{ page.version.version }}/grant.md) on the database whose schema you want to change (e.g., `bank`).
     {{site.data.alerts.end}}
 
 ## Step 2. Create a schema migration
@@ -53,14 +49,12 @@ Flyway executes SQL statements defined in `.sql` files located in the `flyway-x.
 
 1. Create a `.sql` file with a name that follows the [Flyway naming conventions](https://flywaydb.org/documentation/migrations#naming). For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch sql/V1__Add_accounts_table.sql
     ~~~
 
-1. Edit the `.sql` file, adding a [`CREATE TABLE IF NOT EXISTS`]({% link {{ page.version.version }}/create-table.md %}) statement for the table that you want to create, and a simple [`INSERT`]({% link {{ page.version.version }}/insert.md %}) statement to initialize the table with some data. For example:
+1. Edit the `.sql` file, adding a [`CREATE TABLE IF NOT EXISTS`]({{ page.version.version }}/create-table.md) statement for the table that you want to create, and a simple [`INSERT`]({{ page.version.version }}/insert.md) statement to initialize the table with some data. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     /* Create accounts table */
     CREATE TABLE IF NOT EXISTS accounts (
@@ -76,7 +70,6 @@ Flyway executes SQL statements defined in `.sql` files located in the `flyway-x.
 
 To execute the migration, run the following command from the top of the `flyway-x.x.x` directory:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ./flyway migrate
 ~~~
@@ -96,11 +89,10 @@ The schema `"bank"` is now on version 1.
 
 ## Step 4. Add additional migrations
 
-Suppose that you want to change the primary key of the `accounts` table from a simple, incrementing [integer]({% link {{ page.version.version }}/int.md %}) (in this case, `id`) to an auto-generated [UUID]({% link {{ page.version.version }}/uuid.md %}), to follow some [CockroachDB best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices). You can make these changes to the schema by creating and executing an additional migration:
+Suppose that you want to change the primary key of the `accounts` table from a simple, incrementing [integer]({{ page.version.version }}/int.md) (in this case, `id`) to an auto-generated [UUID]({{ page.version.version }}/uuid.md), to follow some [CockroachDB best practices]({{ page.version.version }}/performance-best-practices-overview.md#unique-id-best-practices). You can make these changes to the schema by creating and executing an additional migration:
 
 1. Create a second `.sql` schema migration file, and name the file following the [Flyway naming conventions](https://flywaydb.org/documentation/migrations#naming), to specify a new migration version. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch sql/V2__Alter_accounts_pk.sql
     ~~~
@@ -109,7 +101,6 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 1. Edit the `V2__Alter_accounts_pk.sql` migration file, adding some SQL statements that will add a new column to the `accounts` table, and alter the table's primary key. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     /* Add new UUID-typed column */
     ALTER TABLE accounts ADD COLUMN unique_id UUID NOT NULL DEFAULT gen_random_uuid();
@@ -120,7 +111,6 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 1. Execute the migration by running the `flyway migrate` command from the top of the `flyway-x.x.x` directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./flyway migrate
     ~~~
@@ -160,23 +150,23 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 ## Flyway and Transactions
 
-When used with most databases, [Flyway wraps the statements in a migration within a single transaction](https://flywaydb.org/documentation/migrations#transactions). When used with CockroachDB, Flyway does *not* wrap schema migrations in transactions. [Transaction boundaries]({% link {{ page.version.version }}/transactions.md %}) are instead handled by CockroachDB.
+When used with most databases, [Flyway wraps the statements in a migration within a single transaction](https://flywaydb.org/documentation/migrations#transactions). When used with CockroachDB, Flyway does *not* wrap schema migrations in transactions. [Transaction boundaries]({{ page.version.version }}/transactions.md) are instead handled by CockroachDB.
 
 ### Transaction retries
 
-When multiple, concurrent transactions or statements are issued to a single CockroachDB cluster, [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) can cause schema migrations to fail. In the event of transaction contention, CockroachDB returns a [`40001 SQLSTATE` (i.e., a serialization failure)]({% link {{ page.version.version }}/common-errors.md %}#restart-transaction), and Flyway automatically retries the migration. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries]({% link {{ page.version.version }}/transactions.md %}#transaction-retries).
+When multiple, concurrent transactions or statements are issued to a single CockroachDB cluster, [transaction contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) can cause schema migrations to fail. In the event of transaction contention, CockroachDB returns a [`40001 SQLSTATE` (i.e., a serialization failure)]({{ page.version.version }}/common-errors.md#restart-transaction), and Flyway automatically retries the migration. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries]({{ page.version.version }}/transactions.md#transaction-retries).
 
 ### Transactional schema changes
 
-Support for [transactional schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) is limited in CockroachDB. As a result, if a migration with multiple schema changes fails at any point, the partial migration could leave the database schema in an incomplete state. If this happens, manual intervention will be required to determine the state of the schema, in addition to any possible fixes.
+Support for [transactional schema changes]({{ page.version.version }}/online-schema-changes.md) is limited in CockroachDB. As a result, if a migration with multiple schema changes fails at any point, the partial migration could leave the database schema in an incomplete state. If this happens, manual intervention will be required to determine the state of the schema, in addition to any possible fixes.
 
-Note that this limitation also applies to single [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}) statements that include multiple schema changes (e.g., `ALTER TABLE ... ALTER COLUMN ... RENAME ..., ADD COLUMN ...`).
+Note that this limitation also applies to single [`ALTER TABLE`]({{ page.version.version }}/alter-table.md) statements that include multiple schema changes (e.g., `ALTER TABLE ... ALTER COLUMN ... RENAME ..., ADD COLUMN ...`).
 
 ## Report Issues with Flyway and CockroachDB
 
 If you run into problems, please file an issue on the [Flyway issue tracker](https://github.com/flyway/flyway/issues), including the following details about the environment where you encountered the issue:
 
-- CockroachDB version ([`cockroach version`]({% link {{ page.version.version }}/cockroach-version.md %}))
+- CockroachDB version ([`cockroach version`]({{ page.version.version }}/cockroach-version.md))
 - Flyway version
 - Operating system
 - Steps to reproduce the behavior
@@ -185,6 +175,6 @@ If you run into problems, please file an issue on the [Flyway issue tracker](htt
 
 + [Flyway documentation](https://flywaydb.org/documentation/)
 + [Flyway issue tracker](https://github.com/flyway/flyway/issues)
-+ [Client connection parameters]({% link {{ page.version.version }}/connection-parameters.md %})
-+ [Third-Party Database Tools]({% link {{ page.version.version }}/third-party-database-tools.md %})
-+ [Learn CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %})
++ [Client connection parameters]({{ page.version.version }}/connection-parameters.md)
++ [Third-Party Database Tools]({{ page.version.version }}/third-party-database-tools.md)
++ [Learn CockroachDB SQL]({{ page.version.version }}/learn-cockroachdb-sql.md)

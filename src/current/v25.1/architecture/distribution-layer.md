@@ -8,7 +8,7 @@ docs_area: reference.architecture
 The distribution layer of CockroachDB's architecture provides a unified view of your cluster's data.
 
 {{site.data.alerts.callout_info}}
-If you haven't already, we recommend reading the [Architecture Overview]({% link {{ page.version.version }}/architecture/overview.md %}).
+If you haven't already, we recommend reading the [Architecture Overview]({{ page.version.version }}/architecture/overview.md).
 {{site.data.alerts.end}}
 
 ## Overview
@@ -47,9 +47,9 @@ Each node caches values of the `meta2` range it has accessed before, which optim
 
 After the node's meta ranges is the KV data your cluster stores.
 
-Each table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as a range reaches [the default range size]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes), it splits into two ranges. This process continues as a table and its indexes continue growing. Once a table is split across multiple ranges, it's likely that the table and secondary indexes will be stored in separate ranges. However, a range can still contain data for both the table and a secondary index. 
+Each table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as a range reaches [the default range size]({{ page.version.version }}/configure-replication-zones.md#range-max-bytes), it splits into two ranges. This process continues as a table and its indexes continue growing. Once a table is split across multiple ranges, it's likely that the table and secondary indexes will be stored in separate ranges. However, a range can still contain data for both the table and a secondary index. 
 
-The [default range size]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes) represents a sweet spot for us between a size that's small enough to move quickly between nodes, but large enough to store a meaningfully contiguous set of data whose keys are more likely to be accessed together. These ranges are then shuffled around your cluster to ensure survivability.
+The [default range size]({{ page.version.version }}/configure-replication-zones.md#range-max-bytes) represents a sweet spot for us between a size that's small enough to move quickly between nodes, but large enough to store a meaningfully contiguous set of data whose keys are more likely to be accessed together. These ranges are then shuffled around your cluster to ensure survivability.
 
 These table ranges are replicated (in the aptly named replication layer), and have the addresses of each replica stored in the `meta2` range.
 
@@ -91,7 +91,7 @@ gRPC requires inputs and outputs to be formatted as protocol buffers (protobufs)
 
 By default, the network timeout for RPC connections between nodes is {{site.data.constants.cockroach_network_timeout}}, with a connection timeout of {{site.data.constants.cockroach_network_connection_timeout}}, in order to reduce unavailability and tail latencies during infrastructure outages. This can be changed via the environment variable `COCKROACH_NETWORK_TIMEOUT`, which defaults to {{site.data.constants.cockroach_network_timeout}}.
 
-Note that the gRPC network timeouts described above are defined from the server's point of view, not the client's (the client is any other node that is trying to make an inbound connection). From the client, we send an additional RPC ping every {{site.data.constants.cockroach_network_client_ping_interval}} to check that connections are alive. These pings have a fairly high timeout of {{site.data.constants.cockroach_network_client_ping_timeout}} (a multiple of the value of `COCKROACH_NETWORK_TIMEOUT`) because they are subject to contention with other RPC traffic; e.g., during a large [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) they can be delayed by several seconds.
+Note that the gRPC network timeouts described above are defined from the server's point of view, not the client's (the client is any other node that is trying to make an inbound connection). From the client, we send an additional RPC ping every {{site.data.constants.cockroach_network_client_ping_interval}} to check that connections are alive. These pings have a fairly high timeout of {{site.data.constants.cockroach_network_client_ping_timeout}} (a multiple of the value of `COCKROACH_NETWORK_TIMEOUT`) because they are subject to contention with other RPC traffic; e.g., during a large [`IMPORT INTO`]({{ page.version.version }}/import-into.md) they can be delayed by several seconds.
 
 For more information about gRPC, see the [official gRPC documentation](http://www.grpc.io/docs/guides/).
 
@@ -182,7 +182,7 @@ Because range descriptors comprise the key-value data of the `meta2` range, each
 
 Range descriptors are updated whenever there are:
 
-- Membership changes to a range's Raft group (discussed in more detail in the [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}#membership-changes-rebalance-repair))
+- Membership changes to a range's Raft group (discussed in more detail in the [Replication Layer]({{ page.version.version }}/architecture/replication-layer.md#membership-changes-rebalance-repair))
 - Range splits
 - Range merges
 
@@ -190,13 +190,13 @@ All of these updates to the range descriptor occur locally on the range, and the
 
 ### Range splits
 
-By default, CockroachDB attempts to keep ranges/replicas at [the default range size]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes). Once a range reaches that limit, we split it into two smaller ranges (composed of contiguous key spaces).
+By default, CockroachDB attempts to keep ranges/replicas at [the default range size]({{ page.version.version }}/configure-replication-zones.md#range-max-bytes). Once a range reaches that limit, we split it into two smaller ranges (composed of contiguous key spaces).
 
 During this range split, the node creates a new Raft group containing all of the same members as the range that was split. The fact that there are now two ranges also means that there is a transaction that updates `meta2` with the new keyspace boundaries, as well as the addresses of the nodes using the range descriptor.
 
 ### Range merges
 
-By default, CockroachDB automatically merges small ranges of data together to form fewer, larger ranges (up to [the default range size]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes)). This can improve both query latency and cluster survivability.
+By default, CockroachDB automatically merges small ranges of data together to form fewer, larger ranges (up to [the default range size]({{ page.version.version }}/configure-replication-zones.md#range-max-bytes)). This can improve both query latency and cluster survivability.
 
 #### How range merges work
 
@@ -243,4 +243,4 @@ The distribution layer routes `BatchRequests` to nodes containing ranges of data
 
 ## What's next?
 
-Learn how CockroachDB copies data and ensures consistency in the [replication layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}).
+Learn how CockroachDB copies data and ensures consistency in the [replication layer]({{ page.version.version }}/architecture/replication-layer.md).

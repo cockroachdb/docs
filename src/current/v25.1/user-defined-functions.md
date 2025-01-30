@@ -5,26 +5,25 @@ toc: true
 docs_area: reference.sql
 ---
 
-A user-defined function (UDF) is a named function defined at the database level that can be called in queries and other contexts. CockroachDB supports invoking UDFs in `SELECT`, `FROM`, and `WHERE` clauses of [DML statements]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements).
+A user-defined function (UDF) is a named function defined at the database level that can be called in queries and other contexts. CockroachDB supports invoking UDFs in `SELECT`, `FROM`, and `WHERE` clauses of [DML statements]({{ page.version.version }}/sql-statements.md#data-manipulation-statements).
 
-{% include {{ page.version.version }}/sql/udfs-vs-stored-procs.md %}
 
 ## Overview
 
 The basic components of a user-defined function are a name, list of arguments, return type, volatility, language, and function body.
 
 - An argument has a _mode_ and a _type_.
-  - CockroachDB supports the `IN` (default), `OUT`, and `INOUT` argument modes. For an example, see [Create a function that uses `OUT` and `INOUT` parameters]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-uses-out-and-inout-parameters).
-  - The type can be a built-in type, [user-defined `ENUM`]({% link {{ page.version.version }}/enum.md %}) or [composite]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) type, or implicit record type. A type can have a `DEFAULT` value.
-- The return type can be a built-in [SQL type]({% link {{ page.version.version }}/data-types.md %}), user-defined [`ENUM`]({% link {{ page.version.version }}/enum.md %}) or [composite]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) type, [`RECORD`]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-record-type), PL/pgSQL [`REFCURSOR`]({% link {{ page.version.version }}/plpgsql.md %}#declare-cursor-variables) type, implicit record type, [`TRIGGER`]({% link {{ page.version.version }}/triggers.md %}#trigger-function), or `VOID`.
-    - Preceding a type with `SETOF` indicates that a set, or multiple rows, may be returned. For an example, see [Create a function that returns a set of results]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-set-of-results).
+  - CockroachDB supports the `IN` (default), `OUT`, and `INOUT` argument modes. For an example, see [Create a function that uses `OUT` and `INOUT` parameters]({{ page.version.version }}/create-function.md#create-a-function-that-uses-out-and-inout-parameters).
+  - The type can be a built-in type, [user-defined `ENUM`]({{ page.version.version }}/enum.md) or [composite]({{ page.version.version }}/create-type.md#create-a-composite-data-type) type, or implicit record type. A type can have a `DEFAULT` value.
+- The return type can be a built-in [SQL type]({{ page.version.version }}/data-types.md), user-defined [`ENUM`]({{ page.version.version }}/enum.md) or [composite]({{ page.version.version }}/create-type.md#create-a-composite-data-type) type, [`RECORD`]({{ page.version.version }}/create-function.md#create-a-function-that-returns-a-record-type), PL/pgSQL [`REFCURSOR`]({{ page.version.version }}/plpgsql.md#declare-cursor-variables) type, implicit record type, [`TRIGGER`]({{ page.version.version }}/triggers.md#trigger-function), or `VOID`.
+    - Preceding a type with `SETOF` indicates that a set, or multiple rows, may be returned. For an example, see [Create a function that returns a set of results]({{ page.version.version }}/create-function.md#create-a-function-that-returns-a-set-of-results).
     - `VOID` indicates that there is no return type and `NULL` will always be returned. {% comment %}If the return type of the function is not `VOID`, the last statement of a UDF must be a `SELECT`.{% endcomment %}
-- The [volatility]({% link {{ page.version.version }}/functions-and-operators.md %}#function-volatility) indicates whether the function has side effects. `VOLATILE` and `NOT LEAKPROOF` are the default.
-  - Annotate a function with side effects with `VOLATILE`. This also prevents the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) from pre-evaluating the function.
+- The [volatility]({{ page.version.version }}/functions-and-operators.md#function-volatility) indicates whether the function has side effects. `VOLATILE` and `NOT LEAKPROOF` are the default.
+  - Annotate a function with side effects with `VOLATILE`. This also prevents the [cost-based optimizer]({{ page.version.version }}/cost-based-optimizer.md) from pre-evaluating the function.
   - A `STABLE` or `IMMUTABLE` function does not mutate data. You cannot create a `STABLE` or `IMMUTABLE` function that executes a mutation (`INSERT`, `UPSERT`, `UPDATE`, `DELETE`) statement.
   - `LEAKPROOF` indicates that a function has no side effects and that it communicates nothing that depends on its arguments besides the return value (i.e., it cannot throw an error that depends on the value of its arguments). You must precede `LEAKPROOF` with `IMMUTABLE`, and only `IMMUTABLE` can be set to `LEAKPROOF`. `NOT LEAKPROOF` is allowed with any other volatility.
   - Non-`VOLATILE` functions can be optimized through inlining. For more information, see [Create an inlined UDF](#create-an-inlined-udf).
-- `LANGUAGE` specifies the language of the function body. CockroachDB supports the languages `SQL` and [`PLpgSQL` (PL/pgSQL)]({% link {{ page.version.version }}/plpgsql.md %}).
+- `LANGUAGE` specifies the language of the function body. CockroachDB supports the languages `SQL` and [`PLpgSQL` (PL/pgSQL)]({{ page.version.version }}/plpgsql.md).
 - The function body:
   - Can reference arguments by name or by their ordinal in the function definition with the syntax `$1`.
   - Can be enclosed in a single line with single quotes `''` or multiple lines with `$$`.
@@ -37,7 +36,6 @@ The basic components of a user-defined function are a name, list of arguments, r
 
 The following is a UDF that returns the sum of two integers:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT a + b';
 ~~~
@@ -53,27 +51,24 @@ Where:
 
 Alternatively, you could define this function as:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT $1 + $2';
 ~~~
 
 Or as:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION add(a INT, b INT) RETURNS INT LANGUAGE SQL AS $$
   SELECT a + b;
 $$;
 ~~~
 
-For more examples of UDF creation, see [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %}).
+For more examples of UDF creation, see [`CREATE FUNCTION`]({{ page.version.version }}/create-function.md).
 
 ### View a UDF definition
 
 To view the definition for the `add()` function:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE FUNCTION add;
 ~~~
@@ -97,11 +92,10 @@ If you do not specify a schema for the function `add` when you create it, the de
 
 ### Invoke a UDF
 
-You invoke a UDF like a [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}).
+You invoke a UDF like a [built-in function]({{ page.version.version }}/functions-and-operators.md).
 
 To invoke the `add()` function:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT add(3,5) as sum;
 ~~~
@@ -115,23 +109,21 @@ SELECT add(3,5) as sum;
 
 ### Create a UDF using PL/pgSQL
 
-{% include {{ page.version.version }}/sql/udf-plpgsql-example.md %}
 
 ### Create an inlined UDF
 
-When possible, the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) will improve a function's performance by inlining the UDF within the query plan. The UDF must have the following attributes:
+When possible, the [cost-based optimizer]({{ page.version.version }}/cost-based-optimizer.md) will improve a function's performance by inlining the UDF within the query plan. The UDF must have the following attributes:
 
 - It is labeled as `IMMUTABLE`, `STABLE`, or `LEAKPROOF` (i.e., non-`VOLATILE`).
 - It has a single statement.
-- It is not a [set-returning function]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-set-of-results).
+- It is not a [set-returning function]({{ page.version.version }}/create-function.md#create-a-function-that-returns-a-set-of-results).
 - Its arguments are only variable or constant expressions.
-- It is not a [record-returning function]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-record-type).
+- It is not a [record-returning function]({{ page.version.version }}/create-function.md#create-a-function-that-returns-a-record-type).
 
 The following example demonstrates how inlining improves a UDF's performance.
 
 1. Create tables `a` and `b`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE a (
       a INT
@@ -144,7 +136,6 @@ The following example demonstrates how inlining improves a UDF's performance.
 
 1. Insert a value (`10`) into 1000 rows in `a` and 1 row in `b`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO a SELECT 10 FROM generate_series(1, 1000);
     INSERT INTO b VALUES (10);
@@ -152,7 +143,6 @@ The following example demonstrates how inlining improves a UDF's performance.
 
 1. Create a `VOLATILE` function `foo_v()` and a `STABLE` function `foo_s()`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE FUNCTION foo_v(x INT) RETURNS INT VOLATILE LANGUAGE SQL AS $$
       SELECT b FROM b WHERE b = x
@@ -167,7 +157,6 @@ The following example demonstrates how inlining improves a UDF's performance.
 
 1. View the query plan when `foo_v()` (the `VOLATILE` function) is used in a selection query to retrieve equal values from table `a`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPLAIN ANALYZE SELECT foo_v(a) FROM a WHERE a = 10;
     ~~~
@@ -215,7 +204,6 @@ The following example demonstrates how inlining improves a UDF's performance.
 
 1. View the query plan when using `foo_s()` (the `STABLE` function) instead:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPLAIN ANALYZE SELECT foo_s(a) FROM a WHERE a = 10;
     ~~~
@@ -283,28 +271,25 @@ The following example demonstrates how inlining improves a UDF's performance.
     (57 rows)
     ~~~
 
-    The query takes only `4ms` to execute because the function is inlined and transformed to a [join]({% link {{ page.version.version }}/joins.md %}) with an equality comparison `(a) = (b)`, which has much less overhead than invoking a function for each row scanned in table `a`.
+    The query takes only `4ms` to execute because the function is inlined and transformed to a [join]({{ page.version.version }}/joins.md) with an equality comparison `(a) = (b)`, which has much less overhead than invoking a function for each row scanned in table `a`.
 
 ### Video Demo
 
 For a deep-dive demo on UDFs, watch the following video:
 
-{% include_cached youtube.html video_id="glveuxrzZB4" %}
 
 ## Known limitations
 
 User-defined functions have the following limitations:
 
-{% include {{ page.version.version }}/known-limitations/udf-limitations.md %}
-{% include {{ page.version.version }}/known-limitations/routine-limitations.md %}
 
-Also refer to the [PL/pgSQL known limitations]({% link {{ page.version.version }}/plpgsql.md %}#known-limitations).
+Also refer to the [PL/pgSQL known limitations]({{ page.version.version }}/plpgsql.md#known-limitations).
 
 ## See also
 
-- [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
-- [`ALTER FUNCTION`]({% link {{ page.version.version }}/alter-function.md %})
-- [`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %})
-- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
-- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})
+- [`CREATE FUNCTION`]({{ page.version.version }}/create-function.md)
+- [`ALTER FUNCTION`]({{ page.version.version }}/alter-function.md)
+- [`DROP FUNCTION`]({{ page.version.version }}/drop-function.md)
+- [`SHOW CREATE`]({{ page.version.version }}/show-create.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)
+- [Functions and Operators]({{ page.version.version }}/functions-and-operators.md)

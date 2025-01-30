@@ -7,25 +7,21 @@ referral_id: docs_java_jdbc
 docs_area: get_started
 ---
 
-{% include {{ page.version.version }}/filter-tabs/crud-java.md %}
 
 This tutorial shows you how to build a simple CRUD Java application with CockroachDB and the Java JDBC driver.
 
-{% include {{page.version.version}}/app/java-version-note.md %}
 
 {{site.data.alerts.callout_success}}
-For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [Build a Spring App with CockroachDB and JDBC]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jdbc.md %}).
+For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [Build a Spring App with CockroachDB and JDBC]({{ page.version.version }}/build-a-spring-app-with-cockroachdb-jdbc.md).
 {{site.data.alerts.end}}
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup-jdbc.md %}
 
 ## Step 2. Get the code
 
 Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/cockroachlabs/example-app-java-jdbc/
 ~~~
@@ -53,15 +49,14 @@ The project has the following directory structure:
 
 The `BasicExample.java` file contains the code for `INSERT`, `SELECT`, and `UPDATE` SQL operations. The file also contains the `main` method of the program.
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/master/app/src/main/java/com/cockroachlabs/BasicExample.java %}
+
 ~~~
 
 The sample app uses JDBC and the [Data Access Object (DAO)](https://wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
 
 1. `BasicExample`, which is where the application logic lives.
-1. `BasicExampleDAO`, which is used by the application to access the data store (in this case CockroachDB). This class also includes a helper function (`runSql`) that runs SQL statements inside a transaction, [retrying statements]({% link {{ page.version.version }}/transactions.md %}#transaction-retries) as needed.
+1. `BasicExampleDAO`, which is used by the application to access the data store (in this case CockroachDB). This class also includes a helper function (`runSql`) that runs SQL statements inside a transaction, [retrying statements]({{ page.version.version }}/transactions.md#transaction-retries) as needed.
 
 The `main` method of the app performs the following steps which roughly correspond to method calls in the `BasicExample` class.
 
@@ -78,7 +73,6 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 1. Navigate to the `example-app-java-jdbc` directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd example-app-java-jdbc
     ~~~
@@ -87,7 +81,6 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export JDBC_DATABASE_URL=jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable&user=root
     ~~~
@@ -98,7 +91,6 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
     1. Paste in the command you copied earlier:
 
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         export JDBC_DATABASE_URL="{connection-string}"
         ~~~
@@ -111,7 +103,6 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
     1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](connect-to-the-database.html?filters=java):
 
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         cockroach convert-url --url $DATABASE_URL
         ~~~
@@ -125,7 +116,6 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
     1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
 
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         export JDBC_DATABASE_URL="{jdbc-connection-string}"
         ~~~
@@ -136,7 +126,6 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 Compile and run the code:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ./gradlew run
 ~~~
@@ -208,11 +197,10 @@ BUILD SUCCESSFUL in 8s
 
 ### Set session variables
 
-[Session variables]({% link {{ page.version.version }}/session-variables.md %}) can be set in the JDBC connection string or as properties of the JDBC data source.
+[Session variables]({{ page.version.version }}/session-variables.md) can be set in the JDBC connection string or as properties of the JDBC data source.
 
-To set the session variable in the JDBC connection string, add them to the [`options` parameter]({% link {{ page.version.version }}/connection-parameters.md %}#supported-options-parameters):
+To set the session variable in the JDBC connection string, add them to the [`options` parameter]({{ page.version.version }}/connection-parameters.md#supported-options-parameters):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 export JDBC_DATABASE_URL=jdbc:postgresql://{host}:{port}/{database}?options=-c%20{session variable name}%3D{session variable value}
 ~~~
@@ -236,7 +224,6 @@ options=-c unbounded_parallel_scans=on
 
 To set session variables as properties of the JDBC data source, set `options` using `setProperty`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 Properties props = new Properties();
 props.setProperty("options", "-c {session variable name}={session variable value}");
@@ -250,28 +237,25 @@ Where:
 
 To add more than one session variable, append additional `-c` settings:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 props.setProperty("options", "-c sql_safe_updates=true -c statement_timeout=30");
 ~~~
 
 ### Generate PKCS8 keys for user authentication
 
-{% include {{page.version.version}}/app/pkcs8-gen.md %}
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-{% include cockroachcloud/cc-no-user-certs.md %}
 
 </section>
 
 ### Use `IMPORT INTO` to read in large data sets
 
-If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement instead. It is much faster and more efficient than making a series of [`INSERT`s]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`s]({% link {{ page.version.version }}/update.md %}). It bypasses the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
+If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT INTO`]({{ page.version.version }}/import-into.md) statement instead. It is much faster and more efficient than making a series of [`INSERT`s]({{ page.version.version }}/insert.md) and [`UPDATE`s]({{ page.version.version }}/update.md). It bypasses the [SQL layer]({{ page.version.version }}/architecture/sql-layer.md) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
 
-For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}).
+For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL]({{ page.version.version }}/migrate-from-postgres.md).
 
-For more information about importing data from MySQL, see [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}).
+For more information about importing data from MySQL, see [Migrate from MySQL]({{ page.version.version }}/migrate-from-mysql.md).
 
 ### Use `reWriteBatchedInserts` for increased speed
 
@@ -291,7 +275,6 @@ Specifically, it does the following:
 1. Given an overall update size of 500 rows (for example), split it into batches of size 128 and execute each batch in turn.
 1. Finally, commit the batches of statements you've just executed.
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 int BATCH_SIZE = 128;
 connection.setAutoCommit(false);
@@ -314,7 +297,7 @@ try (PreparedStatement pstmt = connection.prepareStatement("INSERT INTO accounts
 
 ### Retrieve large data sets in chunks using cursors
 
-CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`]({% link {{ page.version.version }}/pagination.md %}).
+CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`]({{ page.version.version }}/pagination.md).
 
 For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/query/#getting-results-based-on-a-cursor) from the PGJDBC documentation.
 
@@ -322,10 +305,8 @@ Note that interleaved execution (partial execution of multiple statements within
 
 ### Connection pooling
 
-For guidance on connection pooling, with an example using JDBC and [HikariCP](https://github.com/brettwooldridge/HikariCP), see [Connection Pooling]({% link {{ page.version.version }}/connection-pooling.md %}).
+For guidance on connection pooling, with an example using JDBC and [HikariCP](https://github.com/brettwooldridge/HikariCP), see [Connection Pooling]({{ page.version.version }}/connection-pooling.md).
 
 ## What's next?
 
 Read more about using the [Java JDBC driver](https://jdbc.postgresql.org/).
-
-{% include_cached {{page.version.version}}/app/see-also-links.md %}

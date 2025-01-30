@@ -14,7 +14,6 @@ For example, given an `orders` table and a `customers` table, if you create a co
 
 To learn more about the basics of foreign keys, watch the following video:
 
-{% include_cached youtube.html video_id="5kiMg7GXAsY" %}
 
 {{site.data.alerts.callout_success}}
 To read more about how foreign keys work, see our [What is a Foreign Key? (With SQL Examples)](https://www.cockroachlabs.com/blog/what-is-a-foreign-key/) blog post.
@@ -26,20 +25,20 @@ To read more about how foreign keys work, see our [What is a Foreign Key? (With 
 
 **Foreign Key Columns**
 
-- Foreign key columns must use their referenced column's [type]({% link {{ page.version.version }}/data-types.md %}).
-- A foreign key column cannot be a virtual [computed column]({% link {{ page.version.version }}/computed-columns.md %}), but it can be a stored computed column.
+- Foreign key columns must use their referenced column's [type]({{ page.version.version }}/data-types.md).
+- A foreign key column cannot be a virtual [computed column]({{ page.version.version }}/computed-columns.md), but it can be a stored computed column.
 - A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
-- A foreign key column can reference the [`crdb_region` column]({% link {{ page.version.version }}/alter-table.md %}#crdb_region) in [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables even if the `crdb_region` column is not explicitly part of a `UNIQUE` constraint. This is possible because `crdb_region` is implicitly included in every index on `REGIONAL BY ROW` tables as the partitioning key. This applies to whichever column is used as the partitioning column, in case a different name is used via `REGIONAL BY ROW AS`.
+- A foreign key column can reference the [`crdb_region` column]({{ page.version.version }}/alter-table.md#crdb_region) in [`REGIONAL BY ROW`]({{ page.version.version }}/table-localities.md#regional-by-row-tables) tables even if the `crdb_region` column is not explicitly part of a `UNIQUE` constraint. This is possible because `crdb_region` is implicitly included in every index on `REGIONAL BY ROW` tables as the partitioning key. This applies to whichever column is used as the partitioning column, in case a different name is used via `REGIONAL BY ROW AS`.
 
         {{site.data.alerts.callout_info}}
-        A foreign key column cannot reference a table's `crdb_region` column if [auto-rehoming is enabled]({% link {{ page.version.version }}/alter-table.md %}#turn-on-auto-rehoming-for-regional-by-row-tables) for the table.
+        A foreign key column cannot reference a table's `crdb_region` column if [auto-rehoming is enabled]({{ page.version.version }}/alter-table.md#turn-on-auto-rehoming-for-regional-by-row-tables) for the table.
         {{site.data.alerts.end}}
 
 **Referenced Columns**
 
-- Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) or [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.  The order of the columns in the foreign key definition does not need to match the order of the columns in the corresponding `UNIQUE` or `PRIMARY KEY` constraint.
+- Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`]({{ page.version.version }}/unique.md) or [`PRIMARY KEY`]({{ page.version.version }}/primary-key.md) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.  The order of the columns in the foreign key definition does not need to match the order of the columns in the corresponding `UNIQUE` or `PRIMARY KEY` constraint.
 - In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the `FOREIGN KEY` constraint and the referenced table's primary key must contain the same number of columns.
--  By default, referenced columns must be in the same database as the referencing foreign key column. To enable cross-database foreign key references, set the `sql.cross_db_fks.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
+-  By default, referenced columns must be in the same database as the referencing foreign key column. To enable cross-database foreign key references, set the `sql.cross_db_fks.enabled` [cluster setting]({{ page.version.version }}/cluster-settings.md) to `true`.
 
 ### Null values
 
@@ -52,7 +51,7 @@ Multiple-column (composite) foreign keys only accept null values in the followin
 
 For more information about composite foreign keys, see the [composite foreign key matching](#composite-foreign-key-matching) section.
 
-Note that allowing null values in either your foreign key or referenced columns can degrade their referential integrity, since any key with a null value is never checked against the referenced table. To avoid this, you can use a [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %}) on foreign keys when [creating your tables]({% link {{ page.version.version }}/create-table.md %}).
+Note that allowing null values in either your foreign key or referenced columns can degrade their referential integrity, since any key with a null value is never checked against the referenced table. To avoid this, you can use a [`NOT NULL` constraint]({{ page.version.version }}/not-null.md) on foreign keys when [creating your tables]({{ page.version.version }}/create-table.md).
 
 {{site.data.alerts.callout_info}}
 A `NOT NULL` constraint cannot be added to existing tables.
@@ -107,7 +106,7 @@ Parameter | Description
 `ON DELETE RESTRICT` / `ON UPDATE RESTRICT` | `RESTRICT` and `NO ACTION` are currently equivalent until options for deferring constraint checking are added. To set an existing foreign key action to `RESTRICT`, the foreign key constraint must be dropped and recreated.
 `ON DELETE CASCADE` / `ON UPDATE CASCADE` | When a referenced foreign key is deleted or updated, all rows referencing that key are deleted or updated, respectively. If there are other alterations to the row, such as a `SET NULL` or `SET DEFAULT`, the delete will take precedence. <br><br>Note that `CASCADE` does not list objects it drops or updates, so it should be used cautiously.
 `ON DELETE SET NULL` / `ON UPDATE SET NULL` | When a referenced foreign key is deleted or updated, respectively, the columns of all rows referencing that key will be set to `NULL`. The column must allow `NULL` or this update will fail.
-`ON DELETE SET DEFAULT` / `ON UPDATE SET DEFAULT` | When a referenced foreign key is deleted or updated, the columns of all rows referencing that key are set to the default value for that column. <br/><br/> If the default value for the column is null, or if no default value is provided and the column does not have a [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraint, this will have the same effect as `ON DELETE SET NULL` or `ON UPDATE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`.
+`ON DELETE SET DEFAULT` / `ON UPDATE SET DEFAULT` | When a referenced foreign key is deleted or updated, the columns of all rows referencing that key are set to the default value for that column. <br/><br/> If the default value for the column is null, or if no default value is provided and the column does not have a [`NOT NULL`]({{ page.version.version }}/not-null.md) constraint, this will have the same effect as `ON DELETE SET NULL` or `ON UPDATE SET NULL`. The default value must still conform with all other constraints, such as `UNIQUE`.
 
 {{site.data.alerts.callout_info}}
  If a foreign key column has multiple constraints that reference the same column, the foreign key action that is specified by the first foreign key takes precedence. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
@@ -126,27 +125,25 @@ To improve query performance, we recommend doing the following:
 Foreign key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
 {{site.data.alerts.callout_info}}
-You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-the-foreign-key-constraint-with-cascade).
+You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD CONSTRAINT`]({{ page.version.version }}/alter-table.md#add-the-foreign-key-constraint-with-cascade).
 {{site.data.alerts.end}}
 
 ### Column level
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/foreign_key_column_level.html %}</div>
 
 | Parameter | Description |
 |-----------|-------------|
 | `table_name` | The name of the table you're creating. |
 | `column_name` | The name of the foreign key column. |
-| `column_type` | The foreign key column's [data type]({% link {{ page.version.version }}/data-types.md %}). |
+| `column_type` | The foreign key column's [data type]({{ page.version.version }}/data-types.md). |
 | `parent_table` | The name of the table the foreign key references. |
 | `ref_column_name` | The name of the column the foreign key references. <br/><br/>If you do not include the `ref_column_name` you want to reference from the `parent_table`, CockroachDB uses the first column of `parent_table`'s primary key.
-| `column_constraints` | Any other column-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply to this column. |
+| `column_constraints` | Any other column-level [constraints]({{ page.version.version }}/constraints.md) you want to apply to this column. |
 | `column_def` | Definitions for any other columns in the table. |
-| `table_constraints` | Any table-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply. |
+| `table_constraints` | Any table-level [constraints]({{ page.version.version }}/constraints.md) you want to apply. |
 
 **Example**
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
@@ -161,7 +158,6 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 
 ### Table level
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/foreign_key_table_level.html %}</div>
 
 | Parameter | Description |
 |-----------|-------------|
@@ -171,11 +167,10 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 | `fk_column_name` | The name of the foreign key column. |
 | `parent_table` | The name of the table the foreign key references. |
 | `ref_column_name` | The name of the column the foreign key references. <br/><br/>If you do not include the `column_name` you want to reference from the `parent_table`, CockroachDB uses the first column of `parent_table`'s primary key.
-| `table_constraints` | Any other table-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply. |
+| `table_constraints` | Any other table-level [constraints]({{ page.version.version }}/constraints.md) you want to apply. |
 
 **Example**
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE packages (
     customer INT,
@@ -197,14 +192,12 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 1. Create the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
     ~~~
 
 1. Create the referencing table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE IF NOT EXISTS orders (
         id INT PRIMARY KEY,
@@ -216,12 +209,10 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 1. Insert a record into each table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO customers VALUES (1001, 'a@co.tld'), (1234, 'info@cockroachlabs.com');
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders VALUES (1, 1002, 29.99);
     ~~~
@@ -233,12 +224,10 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 1. Insert a record into the referencing table and try to update the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders VALUES (1, 1001, 29.99);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE customers SET id = 1002 WHERE id = 1001;
     ~~~
@@ -250,12 +239,10 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 1. Update the `id`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE customers SET id = 1111 WHERE id = 1234;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers;
     ~~~
@@ -270,7 +257,6 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 1. Try to delete a referenced row:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM customers WHERE id = 1001;
     ~~~
@@ -282,12 +268,10 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 1. Delete the row:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM customers WHERE id = 1111;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers;
     ~~~
@@ -304,7 +288,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Create the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE customers_2 (
         id INT PRIMARY KEY
@@ -313,7 +296,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Create the referencing table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE orders_2 (
         id INT PRIMARY KEY,
@@ -323,26 +305,22 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Insert a few records into the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO customers_2 VALUES (1), (2), (3);
     ~~~
 
 1. Insert some records into the referencing table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders_2 VALUES (100,1), (101,2), (102,3), (103,1);
     ~~~
 
 1. Update an `id` in the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE customers_2 SET id = 23 WHERE id = 1;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers_2;
     ~~~
@@ -356,7 +334,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
     (3 rows)
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_2;
     ~~~
@@ -377,12 +354,10 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Delete `id = 23` from `customers_2`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM customers_2 WHERE id = 23;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers_2;
     ~~~
@@ -397,7 +372,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Check to make sure the rows in `orders_2` where `customers_id = 23` were also deleted:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_2;
     ~~~
@@ -416,7 +390,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Create the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE customers_3 (
         id INT PRIMARY KEY
@@ -425,7 +398,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Create the referencing table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE orders_3 (
         id INT PRIMARY KEY,
@@ -435,19 +407,16 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Insert a few records into the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO customers_3 VALUES (1), (2), (3);
     ~~~
 
 1. Insert some records into the referencing table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders_3 VALUES (100,1), (101,2), (102,3), (103,1);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_3;
     ~~~
@@ -463,12 +432,10 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Update an `id` in the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE customers_3 SET id = 23 WHERE id = 1;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers_3;
     ~~~
@@ -481,7 +448,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
     (3 rows)
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_3;
     ~~~
@@ -501,12 +467,10 @@ In this example, we'll create a table with a foreign key constraint with the [fo
     
 1. Delete `id = 2` from `customers_3`:
 
-      {% include_cached copy-clipboard.html %}
       ~~~ sql
       > DELETE FROM customers_3 WHERE id = 2;
       ~~~
 
-      {% include_cached copy-clipboard.html %}
       ~~~ sql
       > SELECT * FROM customers_3;
       ~~~
@@ -520,7 +484,6 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 1. Check to make sure the row in `orders_3` where `customers_id = 2` was updated to `NULL`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_3;
     ~~~
@@ -540,7 +503,6 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Create the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE customers_4 (
         id INT PRIMARY KEY
@@ -549,7 +511,6 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Create the referencing table with the `DEFAULT` value for `customer_id` set to `9999`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE orders_4 (
         id INT PRIMARY KEY,
@@ -559,19 +520,16 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Insert a few records into the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO customers_4 VALUES (1), (2), (3), (9999);
     ~~~
 
 1. Insert some records into the referencing table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders_4 VALUES (100,1), (101,2), (102,3), (103,1);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_4;
     ~~~
@@ -588,12 +546,10 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Update an `id` in the referenced table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE customers_4 SET id = 23 WHERE id = 1;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers_4;
     ~~~
@@ -608,7 +564,6 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
     (4 rows)
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_4;
     ~~~
@@ -629,12 +584,10 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Delete `id = 2` from `customers_4`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM customers_4 WHERE id = 2;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM customers_4;
     ~~~
@@ -649,7 +602,6 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Check to make sure the corresponding `customer_id` value to `id = 101`, was updated to the `DEFAULT` value (i.e., `9999`) in `orders_4`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_4;
     ~~~
@@ -664,11 +616,10 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
     (4 rows)
     ~~~
 
-    If the default value for the `customer_id` column is not set, and the column does not have a [`NOT NULL`]({% link {{ page.version.version }}/not-null.md %}) constraint, `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions set referenced column values to `NULL`.
+    If the default value for the `customer_id` column is not set, and the column does not have a [`NOT NULL`]({{ page.version.version }}/not-null.md) constraint, `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions set referenced column values to `NULL`.
 
 1. Create a new `customers_5` table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE customers_5 (
         id INT PRIMARY KEY
@@ -677,14 +628,12 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Insert some values:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO customers_5 VALUES (1), (2), (3), (4);
     ~~~
 
 1. Create a new `orders_5` table that references the `customers_5` table, but with no default value specified for the `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE orders_5 (
         id INT PRIMARY KEY,
@@ -694,24 +643,20 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 1. Insert some values:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders_5 VALUES (200,1), (201,2), (202,3), (203,4);
     ~~~
 
 1. Delete and update the values in the `customers_5` table to set the referenced values in `orders_5` to `NULL`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM customers_5 WHERE id = 3;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE customers_5 SET id = 0 WHERE id = 1;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM orders_5;
     ~~~
@@ -731,7 +676,6 @@ You can add more than one foreign key constraint to a single column.
 
 1. Create the following tables:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE customers (
         id INT PRIMARY KEY,
@@ -740,7 +684,6 @@ You can add more than one foreign key constraint to a single column.
     );
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE orders (
         id INT PRIMARY KEY,
@@ -751,7 +694,6 @@ You can add more than one foreign key constraint to a single column.
 
 1. Create a table with a column that references columns in both the `customers` and `orders` tables:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE shipments (
         tracking_number UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -767,17 +709,14 @@ You can add more than one foreign key constraint to a single column.
 
 1. Insert a record into each table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO customers VALUES (1001, 'Alexa', 'a@co.tld'), (1234, 'Evan', 'info@cockroachlabs.com');
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO orders VALUES (1, 1001, 25), (2, 1234, 15), (3, 2000, 5);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO shipments (carrier, status, customer_id) VALUES ('USPS', 'Out for delivery', 1001);
     ~~~
@@ -786,7 +725,6 @@ You can add more than one foreign key constraint to a single column.
 
     For instance, the following statement fulfills just one of the foreign key constraints and returns an error:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO shipments (carrier, status, customer_id) VALUES ('DHL', 'At facility', 2000);
     ~~~
@@ -799,12 +737,10 @@ You can add more than one foreign key constraint to a single column.
 
 1. Add multiple foreign key constraints on the same column, that reference the same column:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE shipments ADD CONSTRAINT fk_customers_2 FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW CONSTRAINTS FROM shipments;
     ~~~
@@ -823,7 +759,6 @@ You can add more than one foreign key constraint to a single column.
 
 1. In the event of a `DELETE` or `UPDATE` to the referenced column (`customers(id)`), the action for the first foreign key specified takes precedence. In this case, that will be the default [action](#foreign-key-actions) (`ON UPDATE NO ACTION ON DELETE NO ACTION`) on the first foreign key constraint (`fk_customers`). This means that `DELETE`s on referenced columns will fail, even though the second foreign key constraint (`fk_customer_2`) is defined with the `ON DELETE CASCADE` action.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM orders WHERE customer_id = 1001;
     ~~~
@@ -840,14 +775,12 @@ The examples in this section show how composite foreign key matching works for b
 
 1. Create a `parent` tables with a composite key:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE parent (x INT, y INT,  z INT, UNIQUE (x, y, z));
     ~~~
 
 1. Createa `full_test` table with a foreign key on `parent` that uses the `MATCH FULL` algorithm:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE full_test (
         x INT,
@@ -859,7 +792,6 @@ The examples in this section show how composite foreign key matching works for b
 
 1. Create a `simple_test` table with a foreign key on `parent` that uses the `MATCH SIMPLE` algorithm (the default):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE simple_test (
         x INT,
@@ -871,7 +803,6 @@ The examples in this section show how composite foreign key matching works for b
 
 1. Populate `parent` with some values:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT
         INTO parent
@@ -929,13 +860,13 @@ Inserting values into the table using the `MATCH FULL` algorithm (described [abo
 
 ## See also
 
-- [Constraints]({% link {{ page.version.version }}/constraints.md %})
-- [`DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
-- [`ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
-- [`CHECK` constraint]({% link {{ page.version.version }}/check.md %})
-- [`DEFAULT` constraint]({% link {{ page.version.version }}/default-value.md %})
-- [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %})
-- [`PRIMARY KEY` constraint]({% link {{ page.version.version }}/primary-key.md %})
-- [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %})
-- [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %})
+- [Constraints]({{ page.version.version }}/constraints.md)
+- [`DROP CONSTRAINT`]({{ page.version.version }}/alter-table.md#drop-constraint)
+- [`ADD CONSTRAINT`]({{ page.version.version }}/alter-table.md#add-constraint)
+- [`CHECK` constraint]({{ page.version.version }}/check.md)
+- [`DEFAULT` constraint]({{ page.version.version }}/default-value.md)
+- [`NOT NULL` constraint]({{ page.version.version }}/not-null.md)
+- [`PRIMARY KEY` constraint]({{ page.version.version }}/primary-key.md)
+- [`UNIQUE` constraint]({{ page.version.version }}/unique.md)
+- [`SHOW CONSTRAINTS`]({{ page.version.version }}/show-constraints.md)
 - [What is a Foreign Key? (With SQL Examples)](https://www.cockroachlabs.com/blog/what-is-a-foreign-key/)

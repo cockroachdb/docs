@@ -10,21 +10,17 @@ filter_sort: 1
 docs_area: get_started
 ---
 
-{% include {{ page.version.version }}/filter-tabs/crud-python.md %}
 
-{% include cockroach_u_pydev.md %}
 
 This tutorial shows you how build a simple Python application with CockroachDB and the [asyncpg](https://magicstack.github.io/asyncpg/current/index.html) driver.
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup-certs.md %}
 
 ## Step 2. Get the sample code
 
 Clone the sample code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachdb/example-app-python-asyncpg
 ~~~
@@ -32,10 +28,10 @@ $ git clone https://github.com/cockroachdb/example-app-python-asyncpg
 The sample code in `example.py` does the following:
 
 - Creates an `accounts` table and inserts some rows
-- Transfers funds between two accounts inside a [transaction]({% link {{ page.version.version }}/transactions.md %})
+- Transfers funds between two accounts inside a [transaction]({{ page.version.version }}/transactions.md)
 - Deletes the accounts from the table before exiting so you can re-run the example code
 
-To [handle transaction retry errors]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff).
+To [handle transaction retry errors]({{ page.version.version }}/query-behavior-troubleshooting.md#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff).
 
 ## Step 3. Install the asyncpg driver
 
@@ -43,7 +39,6 @@ To [handle transaction retry errors]({% link {{ page.version.version }}/query-be
 
 To install `asyncpg`, run the following command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip3 install "asyncpg"
 ~~~
@@ -56,7 +51,6 @@ For other ways to install Psycopg, see the [official documentation](https://www.
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -65,7 +59,6 @@ For other ways to install Psycopg, see the [official documentation](https://www.
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="{connection-string}"
     ~~~
@@ -78,12 +71,10 @@ For other ways to install Psycopg, see the [official documentation](https://www.
 
 1. Run the code:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-python-asyncpg
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ python3 example.py
     ~~~
@@ -100,11 +91,9 @@ For other ways to install Psycopg, see the [official documentation](https://www.
     ~~~
 
     {{site.data.alerts.callout_info}}
-    The example code sets the [`multiple_active_portals_enabled` session variable]({% link {{ page.version.version }}/postgresql-compatibility.md %}#multiple-active-portals) to `true`, a requirement for using `asyncpg` with CockroachDB.
+    The example code sets the [`multiple_active_portals_enabled` session variable]({{ page.version.version }}/postgresql-compatibility.md#multiple-active-portals) to `true`, a requirement for using `asyncpg` with CockroachDB.
     {{site.data.alerts.end}}
 
 ## What's next?
 
 Read more about using the [asyncpg](https://magicstack.github.io/asyncpg/current/usage.html).
-
-{% include_cached {{page.version.version}}/app/see-also-links.md %}

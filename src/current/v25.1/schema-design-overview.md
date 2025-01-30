@@ -14,17 +14,16 @@ The follow-up pages listed in [What's next](#whats-next) provide best practices 
 
 The following sections provide a brief overview of the logical objects that make up a database schema in CockroachDB.
 
-For detailed documentation on object name resolution, see [Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %}).
+For detailed documentation on object name resolution, see [Name Resolution]({{ page.version.version }}/sql-name-resolution.md).
 
 ### Databases
 
-Database objects make up the first level of the [CockroachDB naming hierarchy]({% link {{ page.version.version }}/sql-name-resolution.md %}#naming-hierarchy). They contain [schemas](#schemas).
+Database objects make up the first level of the [CockroachDB naming hierarchy]({{ page.version.version }}/sql-name-resolution.md#naming-hierarchy). They contain [schemas](#schemas).
 
 All CockroachDB clusters include a preloaded database named `defaultdb`. Rather than using the `defaultdb` database, we recommend creating your own database.
 
-For guidance on creating databases, see [Create a Database]({% link {{ page.version.version }}/schema-design-database.md %}).
+For guidance on creating databases, see [Create a Database]({{ page.version.version }}/schema-design-database.md).
 
-{% include {{page.version.version}}/sql/db-terms.md %}
 
 ### Schemas
 
@@ -32,35 +31,34 @@ Schemas make up the second level of the naming hierarchy. Each schema belongs to
 
 All CockroachDB clusters include a preloaded schema named `public`. CockroachDB also supports creating your own *user-defined schema*.
 
-For guidance on creating user-defined schemas, see [Create a User-defined Schema]({% link {{ page.version.version }}/schema-design-schema.md %}).
+For guidance on creating user-defined schemas, see [Create a User-defined Schema]({{ page.version.version }}/schema-design-schema.md).
 
-{% include {{page.version.version}}/sql/schema-terms.md %}
 
 ### Tables
 
 Tables belong to the third and lowest level of the naming hierarchy. Each table can belong to a single [schema](#schemas).
 
-Tables contain *rows* of data. Each value in a row of data belongs to a particular *column*. Each column allows values of data of a single data type. Columns can be further qualified with [column-level constraints]({% link {{ page.version.version }}/constraints.md %}), or computed with [scalar expressions]({% link {{ page.version.version }}/computed-columns.md %}).
+Tables contain *rows* of data. Each value in a row of data belongs to a particular *column*. Each column allows values of data of a single data type. Columns can be further qualified with [column-level constraints]({{ page.version.version }}/constraints.md), or computed with [scalar expressions]({{ page.version.version }}/computed-columns.md).
 
-For guidance on defining tables, see [Tables]({% link {{ page.version.version }}/schema-design-table.md %}).
+For guidance on defining tables, see [Tables]({{ page.version.version }}/schema-design-table.md).
 
 ### Indexes
 
 An _index_ is a copy of the rows in a single table, sorted by a column or set of columns. CockroachDB queries use indexes to find data more efficiently in a table, given the values of a particular column. Each index belongs to a single table.
 
-The two main types of indexes are the primary index, an index on the row-identifying [primary key columns]({% link {{ page.version.version }}/primary-key.md %}), and the secondary index, an index created on non-primary-key columns of your choice.
+The two main types of indexes are the primary index, an index on the row-identifying [primary key columns]({{ page.version.version }}/primary-key.md), and the secondary index, an index created on non-primary-key columns of your choice.
 
-For guidance on defining primary keys, see [Select primary key columns]({% link {{ page.version.version }}/schema-design-table.md %}#select-primary-key-columns). For guidance on defining secondary indexes, see [Secondary Indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}).
+For guidance on defining primary keys, see [Select primary key columns]({{ page.version.version }}/schema-design-table.md#select-primary-key-columns). For guidance on defining secondary indexes, see [Secondary Indexes]({{ page.version.version }}/schema-design-indexes.md).
 
 #### Specialized indexes
 
 CockroachDB supports some specialized types of indexes, designed to improve query performance in specific use cases. For guidance on specialized indexes, see the following pages:
 
-- [Index a Subset of Rows]({% link {{ page.version.version }}/partial-indexes.md %})
-- [Index Sequential Keys]({% link {{ page.version.version }}/hash-sharded-indexes.md %})
-- [Index JSON and Array Data]({% link {{ page.version.version }}/inverted-indexes.md %})
-- [Index Expressions]({% link {{ page.version.version }}/expression-indexes.md %})
-- [Index Spatial Data]({% link {{ page.version.version }}/spatial-indexes.md %})
+- [Index a Subset of Rows]({{ page.version.version }}/partial-indexes.md)
+- [Index Sequential Keys]({{ page.version.version }}/hash-sharded-indexes.md)
+- [Index JSON and Array Data]({{ page.version.version }}/inverted-indexes.md)
+- [Index Expressions]({{ page.version.version }}/expression-indexes.md)
+- [Index Spatial Data]({{ page.version.version }}/spatial-indexes.md)
 
 ### Other objects
 
@@ -70,27 +68,27 @@ CockroachDB supports several other objects at the third level of the naming hier
 
 A _view_ is a stored and named selection query.
 
-For guidance on using views, see [Views]({% link {{ page.version.version }}/views.md %}).
+For guidance on using views, see [Views]({{ page.version.version }}/views.md).
 
 #### Sequences
 
 A _sequence_ creates and stores sequential data.
 
-For guidance on using sequences, see [the `CREATE SEQUENCE` syntax page]({% link {{ page.version.version }}/create-sequence.md %}).
+For guidance on using sequences, see [the `CREATE SEQUENCE` syntax page]({{ page.version.version }}/create-sequence.md).
 
 #### Temporary objects
 
 A _temporary object_ is an object, such as a table, view, or sequence, that is not stored to persistent memory.
 
-For guidance on using temporary objects, see [Temporary Tables]({% link {{ page.version.version }}/temporary-tables.md %}).
+For guidance on using temporary objects, see [Temporary Tables]({{ page.version.version }}/temporary-tables.md).
 
 ## Control access to objects
 
-CockroachDB supports both user-based and role-based access control. With roles, or with direct assignment, you can grant a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) the [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) required to view, modify, and delete database schema objects.
+CockroachDB supports both user-based and role-based access control. With roles, or with direct assignment, you can grant a [SQL user]({{ page.version.version }}/security-reference/authorization.md#sql-users) the [privileges]({{ page.version.version }}/security-reference/authorization.md#privileges) required to view, modify, and delete database schema objects.
 
-By default, the user that creates an object is that object's *owner*. [Object owners]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) have all privileges required to view, modify, or delete that object and the data stored within it.
+By default, the user that creates an object is that object's *owner*. [Object owners]({{ page.version.version }}/security-reference/authorization.md#object-ownership) have all privileges required to view, modify, or delete that object and the data stored within it.
 
-For more information about ownership, privileges, and authorization, see [Authorization]({% link {{ page.version.version }}/authorization.md %}).
+For more information about ownership, privileges, and authorization, see [Authorization]({{ page.version.version }}/authorization.md).
 
 ## Executing database schema changes
 
@@ -98,11 +96,11 @@ We do not recommend using client drivers or ORM frameworks to execute database s
 
 - Use a database schema migration tool.
 
-    CockroachDB is compatible with most PostgreSQL database schema migration tools, including [Flyway](https://flywaydb.org/) and [Liquibase](https://www.liquibase.com). For a tutorial on performing database schema changes using Liquibase, see our [Liquibase tutorial]({% link {{ page.version.version }}/liquibase.md %}). For a tutorial on performing schema changes with Flyway, see our [Flyway tutorial]({% link {{ page.version.version }}/flyway.md %}).
+    CockroachDB is compatible with most PostgreSQL database schema migration tools, including [Flyway](https://flywaydb.org/) and [Liquibase](https://www.liquibase.com). For a tutorial on performing database schema changes using Liquibase, see our [Liquibase tutorial]({{ page.version.version }}/liquibase.md). For a tutorial on performing schema changes with Flyway, see our [Flyway tutorial]({{ page.version.version }}/flyway.md).
 
-- Use the [CockroachDB SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}#execute-sql-statements-from-a-file).
+- Use the [CockroachDB SQL client]({{ page.version.version }}/cockroach-sql.md#execute-sql-statements-from-a-file).
 
-    The CockroachDB SQL client allows you to execute commands from the command line, or through the [CockroachDB SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}#sql-shell) interface. From the command line, you can pass a string to the client for execution, or you can pass a `.sql` file populated with SQL commands. From the SQL shell, you can execute SQL commands directly. Throughout the guide, we pass a `.sql` file to the SQL client to perform most database schema changes.
+    The CockroachDB SQL client allows you to execute commands from the command line, or through the [CockroachDB SQL shell]({{ page.version.version }}/cockroach-sql.md#sql-shell) interface. From the command line, you can pass a string to the client for execution, or you can pass a `.sql` file populated with SQL commands. From the SQL shell, you can execute SQL commands directly. Throughout the guide, we pass a `.sql` file to the SQL client to perform most database schema changes.
 
 ## Object size and scaling considerations
 
@@ -114,8 +112,8 @@ The following table lists specific limits imposed by CockroachDB.
 
 | Object | Limit | Comments |
 | ------ | ----- | -------- |
-| Role names | 63 bytes | Other [restrictions]({% link {{ page.version.version }}/create-role.md %}#considerations) apply. |
-| User names | 63 bytes | These are [equivalent]({% link {{ page.version.version }}/create-user.md %}) to role names. |
+| Role names | 63 bytes | Other [restrictions]({{ page.version.version }}/create-role.md#considerations) apply. |
+| User names | 63 bytes | These are [equivalent]({{ page.version.version }}/create-user.md) to role names. |
 | Identifier length | 128 bytes | This limit is specified in the `max_identifier_length` variable for compatibility with other databases, but is not enforced. It may be enforced in future versions of CockroachDB, so we recommended remaining within this limit. |
 
 ### Quantity of tables and other schema objects
@@ -128,22 +126,22 @@ As you scale to a large number of tables, note that:
 
 - The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support. This includes columns, indexes, GIN indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact on the number of these objects that a cluster can support, while increasing the number of nodes will not have a substantial effect.
 - The number of databases or schemas on the cluster has minimal impact on the total number of tables that it can support.
-- Performance at larger numbers of tables may be affected by your use of [backup and restore]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) and [Change data capture (CDC)]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
+- Performance at larger numbers of tables may be affected by your use of [backup and restore]({{ page.version.version }}/backup-and-restore-overview.md) and [Change data capture (CDC)]({{ page.version.version }}/change-data-capture-overview.md).
 
-See the [Hardware]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) section for additional recommendations based on your expected workloads.
+See the [Hardware]({{ page.version.version }}/recommended-production-settings.md#hardware) section for additional recommendations based on your expected workloads.
 
 ### Quantity of rows
 
-CockroachDB can support any number of rows by adding additional nodes and [storage]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage).
+CockroachDB can support any number of rows by adding additional nodes and [storage]({{ page.version.version }}/recommended-production-settings.md#storage).
 
 ## What's next?
 
-- [Create a Database]({% link {{ page.version.version }}/schema-design-database.md %})
-- [Create a User-defined Schema]({% link {{ page.version.version }}/schema-design-database.md %})
+- [Create a Database]({{ page.version.version }}/schema-design-database.md)
+- [Create a User-defined Schema]({{ page.version.version }}/schema-design-database.md)
 
 You might also be interested in the following pages:
 
-- [CockroachDB naming hierarchy]({% link {{ page.version.version }}/sql-name-resolution.md %}#naming-hierarchy)
-- [Authorization]({% link {{ page.version.version }}/authorization.md %})
-- [Liquibase]({% link {{ page.version.version }}/liquibase.md %})
-- [Flyway]({% link {{ page.version.version }}/flyway.md %})
+- [CockroachDB naming hierarchy]({{ page.version.version }}/sql-name-resolution.md#naming-hierarchy)
+- [Authorization]({{ page.version.version }}/authorization.md)
+- [Liquibase]({{ page.version.version }}/liquibase.md)
+- [Flyway]({{ page.version.version }}/flyway.md)

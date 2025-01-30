@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: deploy
 ---
 
-This page guides you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) data from a third-party API, as well as how a [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}) can optimize your queries.
+This page guides you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`]({{ page.version.version }}/jsonb.md) data from a third-party API, as well as how a [GIN index]({{ page.version.version }}/inverted-indexes.md) can optimize your queries.
 
 <div class="clearfix">
   <a class="btn btn-outline-primary" href="https://www.cockroachlabs.com/docs/tutorials/demo-json-support-interactive" target="_blank" rel="noopener">Run this in your browser &rarr;</a>
@@ -20,22 +20,21 @@ This page guides you through a simple demonstration of how CockroachDB can store
 </div>
 
 <div class="filter-content" markdown="1" data-scope="go">
-- Install the latest version of [CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+- Install the latest version of [CockroachDB]({{ page.version.version }}/install-cockroachdb.md).
 - Install the latest version of [Go](https://golang.org/dl/): `brew install go`
 - Install the [PostgreSQL driver](https://github.com/lib/pq): `go get github.com/lib/pq`
 </div>
 
 <div class="filter-content" markdown="1" data-scope="python">
-- Install the latest version of [CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+- Install the latest version of [CockroachDB]({{ page.version.version }}/install-cockroachdb.md).
 - Install the [Python psycopg2 driver](http://initd.org/psycopg/docs/install.html): `pip install psycopg2`
 - Install the [Python Requests library](https://requests.readthedocs.io/): `pip install requests`
 </div>
 
 ## Step 2. Start a single-node cluster
 
-For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode, so use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command in the foreground:
+For the purpose of this tutorial, you need only one CockroachDB node running in insecure mode, so use the [`cockroach start-single-node`]({{ page.version.version }}/cockroach-start-single-node.md) command in the foreground:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start-single-node \
 --insecure \
@@ -46,14 +45,12 @@ $ cockroach start-single-node \
 
 ## Step 3. Create a user
 
-In a new terminal window, open the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) and create a new SQL user, `maxroach`:
+In a new terminal window, open the [built-in SQL shell]({{ page.version.version }}/cockroach-sql.md) and create a new SQL user, `maxroach`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=localhost:26257
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER maxroach;
 ~~~
@@ -62,21 +59,18 @@ $ cockroach sql --insecure --host=localhost:26257
 
 Next, create a database called `jsonb_test`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE jsonb_test;
 ~~~
 
 Set the database as the default:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET DATABASE = jsonb_test;
 ~~~
 
-Then [grant privileges]({% link {{ page.version.version }}/grant.md %}) to the `maxroach` user:
+Then [grant privileges]({{ page.version.version }}/grant.md) to the `maxroach` user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON DATABASE jsonb_test TO maxroach;
 ~~~
@@ -85,7 +79,6 @@ Then [grant privileges]({% link {{ page.version.version }}/grant.md %}) to the `
 
 Still in the SQL shell, create a table called `programming`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE programming (
     id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
@@ -93,7 +86,6 @@ Still in the SQL shell, create a table called `programming`:
   );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE programming;
 ~~~
@@ -122,14 +114,11 @@ Now that you have a database, a SQL user, and a table, let's run code to insert 
 <section class="filter-content" markdown="1" data-scope="go">
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/json/json-sample.go" download><code>json-sample.go</code></a> file, or create the file yourself and copy the code into it:
 
-{% include_cached copy-clipboard.html %}
 ~~~ go
-{% include {{ page.version.version }}/json/json-sample.go %}
 ~~~
 
 In a new terminal window, navigate to your sample code file and run it:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go run json-sample.go
 ~~~
@@ -144,14 +133,11 @@ The code queries the [Reddit API](https://www.reddit.com/dev/api/) for posts in 
 <section class="filter-content" markdown="1" data-scope="python">
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/json/json-sample.py" download><code>json-sample.py</code></a> file, or create the file yourself and copy the code into it:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
-{% include {{ page.version.version }}/json/json-sample.py %}
 ~~~
 
 In a new terminal window, navigate to your sample code file and run it:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python json-sample.py
 ~~~
@@ -170,7 +156,6 @@ The program will loop through that 40 times, but you can start querying the data
 
 Back in the terminal where the SQL shell is running, verify that rows of data are being inserted into your table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT count(*) FROM programming;
 ~~~
@@ -182,7 +167,6 @@ Back in the terminal where the SQL shell is running, verify that rows of data ar
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT count(*) FROM programming;
 ~~~
@@ -198,7 +182,6 @@ You should see the count increasing. Keep checking until you see 1000 rows.
 
 Now, retrieve all the current entries where the link is pointing to somewhere on GitHub:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id FROM programming \
 WHERE posts @> '{"data": {"domain": "github.com"}}';
@@ -229,9 +212,8 @@ Since you are querying live data, your results for this and the following steps 
 
 ## Step 8. Create a GIN index to optimize performance
 
-The query in the previous step took 103.748ms. To optimize the performance of queries that filter on the `JSONB` column, let's create a [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}) on the column:
+The query in the previous step took 103.748ms. To optimize the performance of queries that filter on the `JSONB` column, let's create a [GIN index]({{ page.version.version }}/inverted-indexes.md) on the column:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INVERTED INDEX ON programming(posts);
 ~~~
@@ -240,7 +222,6 @@ The query in the previous step took 103.748ms. To optimize the performance of qu
 
 Now that there is a GIN index, the same query will run much faster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id FROM programming \
 WHERE posts @> '{"data": {"domain": "github.com"}}';
@@ -259,7 +240,6 @@ If the program is still running, press `ctrl-c` to terminate it.
 
 Get the process ID of the node:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ps -ef | grep cockroach | grep -v grep
 ~~~
@@ -270,14 +250,12 @@ ps -ef | grep cockroach | grep -v grep
 
 Then gracefully shut down the node, specifying its process ID:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 kill -TERM 8099
 ~~~
 
 If you do not plan to restart the cluster, remove the node's data store:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ rm -rf json-test
 ~~~
@@ -286,6 +264,5 @@ $ rm -rf json-test
 
 Explore other CockroachDB benefits and features:
 
-{% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 
-You may also want to learn more about the [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) data type and [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}).
+You may also want to learn more about the [`JSONB`]({{ page.version.version }}/jsonb.md) data type and [GIN indexes]({{ page.version.version }}/inverted-indexes.md).

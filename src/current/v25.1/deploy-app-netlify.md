@@ -22,9 +22,7 @@ Before starting the tutorial:
 
 ## Step 1. Create a CockroachDB {{ site.data.products.standard }} cluster
 
-{% include_cached cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
-{% include_cached cockroachcloud/connection-string-standard.md %}
 
 ## Step 2. Get the code
 
@@ -64,7 +62,6 @@ This tutorial modifies the files in the `netlify` and `prisma` directories.
 
 1. Open the project's `.env` file in a text editor set the `DATABASE_URL` environment variable to [the connection string](#connection-string) you obtained earlier from the CockroachDB {{ site.data.products.cloud }} Console:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ text
     DATABASE_URL=<connection-string>
     ~~~
@@ -73,14 +70,12 @@ This tutorial modifies the files in the `netlify` and `prisma` directories.
 
 1. Install Prisma:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     npm install prisma --save-dev
     ~~~
 
 1. Run [Prisma Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate) to initialize the database with the schema defined in `prisma/prisma.schema`.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     npx prisma migrate dev --name init
     ~~~
@@ -107,7 +102,6 @@ You can deploy web applications directly from GitHub to Netlify. This tutorial u
 
 1. Using the Netlify CLI, start the app server locally to preview your site:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     netlify dev
     ~~~
@@ -122,14 +116,13 @@ You can deploy web applications directly from GitHub to Netlify. This tutorial u
 
     For a preview of the site, visit [http://localhost:8888](http://localhost:8888).
 
-    Interacting with the site triggers the Netlify functions defined in the `netlify/functions` directory. These functions use Prisma Client to run [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) and [`INSERT`]({% link {{ page.version.version }}/insert.md %}) queries against the database:
+    Interacting with the site triggers the Netlify functions defined in the `netlify/functions` directory. These functions use Prisma Client to run [`SELECT`]({{ page.version.version }}/selection-queries.md) and [`INSERT`]({{ page.version.version }}/insert.md) queries against the database:
     - [`getScores.ts`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/getScores.ts) reads all rows from the `player_scores` table and returns values in the `id`, `name`, and `score` columns.
     - [`getPlayers.ts`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/getPlayers.ts) reads and returns all rows from the `players` table.
     - [`addScore.ts`](https://raw.githubusercontent.com/cockroachdb/cockroachdb-typescript/master/netlify/functions/addScore.ts) writes new scores to the `player_scores` table.
 
 1. Deploy your app with the Netlify CLI:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     netlify deploy
     ~~~
@@ -144,7 +137,6 @@ You can deploy web applications directly from GitHub to Netlify. This tutorial u
 
 1. Navigate to the admin URL for your site:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     netlify open
     ~~~
@@ -154,6 +146,4 @@ You can deploy web applications directly from GitHub to Netlify. This tutorial u
 ## See also
 
 - [How to build a Complete Webapp with React, TypeScript & CockroachDB](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/#deploy-the-application-to-netlify)
-- [Build a Simple CRUD Node.js App with CockroachDB and Prisma Client]({% link {{ page.version.version }}/build-a-nodejs-app-with-cockroachdb-prisma.md %})
-
-{% include_cached {{page.version.version}}/app/see-also-links.md %}
+- [Build a Simple CRUD Node.js App with CockroachDB and Prisma Client]({{ page.version.version }}/build-a-nodejs-app-with-cockroachdb-prisma.md)

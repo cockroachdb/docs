@@ -7,7 +7,6 @@ referral_id: docs_go_gorm
 docs_area: get_started
 ---
 
-{% include {{ page.version.version }}/filter-tabs/crud-go.md %}
 
 This tutorial shows you how build a simple CRUD Go application with CockroachDB and the [GORM ORM](https://gorm.io/index.html).
 
@@ -17,13 +16,11 @@ For another use of GORM with CockroachDB, see our [`examples-orms`](https://gith
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup.md %}
 
 ## Step 2. Get the code
 
 Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-go-gorm
 ~~~
@@ -37,20 +34,18 @@ The project has the following directory structure:
 
 The `main.go` file defines an `Account` struct that maps to a new `accounts` table. The file also contains some read and write database operations that are executed in the `main` method of the program.
 
-{% include_cached copy-clipboard.html %}
 ~~~ go
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-gorm/master/main.go %}
+
 ~~~
 
 {{site.data.alerts.callout_info}}
-CockroachDB may require the [client to retry a transaction]({% link {{ page.version.version }}/transactions.md %}#transaction-retries) in the case of read/write [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). The [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go) includes a generic **retry function** (`ExecuteTx()`) that runs inside a transaction and retries it as needed. The code sample shows how you can use this function to wrap SQL statements.
+CockroachDB may require the [client to retry a transaction]({{ page.version.version }}/transactions.md#transaction-retries) in the case of read/write [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention). The [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go) includes a generic **retry function** (`ExecuteTx()`) that runs inside a transaction and retries it as needed. The code sample shows how you can use this function to wrap SQL statements.
 {{site.data.alerts.end}}
 
 ## Step 3. Initialize the database
 
 1. Navigate to the `example-app-go-gorm` directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-go-gorm
     ~~~
@@ -59,7 +54,6 @@ CockroachDB may require the [client to retry a transaction]({% link {{ page.vers
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -68,7 +62,6 @@ CockroachDB may require the [client to retry a transaction]({% link {{ page.vers
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export DATABASE_URL="{connection-string}"
     ~~~
@@ -79,19 +72,16 @@ CockroachDB may require the [client to retry a transaction]({% link {{ page.vers
 
 1. Initialize the module:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-go-gorm
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ go mod init basic-sample && go mod tidy
     ~~~
 
 1. Run the code:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ go run main.go
     ~~~
@@ -130,5 +120,3 @@ CockroachDB may require the [client to retry a transaction]({% link {{ page.vers
 ## What's next?
 
 Read more about using the [GORM ORM](http://gorm.io), or check out a more realistic implementation of GORM with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
-
-{% include {{ page.version.version }}/app/see-also-links.md %}

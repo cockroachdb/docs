@@ -8,7 +8,7 @@ docs_area: reference.architecture
 The storage layer of CockroachDB's architecture reads and writes data to disk.
 
 {{site.data.alerts.callout_info}}
-If you haven't already, we recommend reading the [Architecture Overview]({% link {{ page.version.version }}/architecture/overview.md %}).
+If you haven't already, we recommend reading the [Architecture Overview]({{ page.version.version }}/architecture/overview.md).
 {{site.data.alerts.end}}
 
 
@@ -18,7 +18,7 @@ Each CockroachDB node contains at least one `store`, specified when the node sta
 
 This data is stored as key-value pairs on disk using the storage engine, which is treated primarily as a black-box API.
 
-[CockroachDB uses the Pebble storage engine]({% link {{ page.version.version }}/cockroach-start.md %}#storage-engine). Pebble is inspired by RocksDB, but differs in that it:
+[CockroachDB uses the Pebble storage engine]({{ page.version.version }}/cockroach-start.md#storage-engine). Pebble is inspired by RocksDB, but differs in that it:
 
 - Is written in Go and implements a subset of RocksDB's large feature set.
 - Contains optimizations that benefit CockroachDB.
@@ -40,7 +40,7 @@ In relationship to other layers in CockroachDB, the storage layer:
 
 ### Pebble
 
- CockroachDB uses [Pebble]({% link {{ page.version.version }}/cockroach-start.md %}#storage-engine)––an embedded key-value store inspired by RocksDB, and developed by Cockroach Labs––to read and write data to disk.
+ CockroachDB uses [Pebble]({{ page.version.version }}/cockroach-start.md#storage-engine)––an embedded key-value store inspired by RocksDB, and developed by Cockroach Labs––to read and write data to disk.
 
 Pebble integrates well with CockroachDB for a number of reasons:
 
@@ -63,22 +63,22 @@ Pebble uses a Log-structured Merge-tree (hereafter _LSM tree_ or _LSM_) to manag
 
 SSTs are an on-disk representation of sorted lists of key-value pairs. Conceptually, they look something like this (intentionally simplified) diagram:
 
-<img src="{{ 'images/v21.2/sst.png' | relative_url }}" alt="Structure of an SST file" style="max-width:100%" />
+![Structure of an SST file](/images/v21.2/sst.png)
 
 SST files are immutable; they are never modified, even during the [compaction process](#compaction).
 
 ##### LSM levels
 
-The levels of the LSM are organized from L0 to L6. L0 is the top-most level. L6 is the bottom-most level. New data is added into L0 (e.g., using [`INSERT`]({% link {{ page.version.version }}/insert.md %}) or [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})) and then merged down into lower levels over time.
+The levels of the LSM are organized from L0 to L6. L0 is the top-most level. L6 is the bottom-most level. New data is added into L0 (e.g., using [`INSERT`]({{ page.version.version }}/insert.md) or [`IMPORT INTO`]({{ page.version.version }}/import-into.md)) and then merged down into lower levels over time.
 
 The diagram below shows what an LSM looks like at a high level. Each level is associated with a set of SSTs. Each SST is immutable and has a unique, monotonically increasing number.
 
 The SSTs within each level are guaranteed to be non-overlapping: for example, if one SST contains the keys `[A-F)` (noninclusive), the next will contain keys `[F-R)`, and so on. The L0 level is a special case: it is the only level of the tree that is allowed to contain SSTs with overlapping keys. This exception to the rule is necessary for the following reasons:
 
-- To allow LSM-based storage engines like Pebble to support ingesting large amounts of data, such as when using the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement.
+- To allow LSM-based storage engines like Pebble to support ingesting large amounts of data, such as when using the [`IMPORT INTO`]({{ page.version.version }}/import-into.md) statement.
 - To allow for easier and more efficient flushes of [memtables](#memtable-and-write-ahead-log).
 
-<img src="{{ 'images/v21.2/lsm-with-ssts.png' | relative_url }}" alt="LSM tree with SST files" style="max-width:100%" />
+![LSM tree with SST files](/images/v21.2/lsm-with-ssts.png)
 
 ##### Compaction
 
@@ -91,7 +91,6 @@ SST files are never modified during the compaction process. Instead, new SSTs ar
 The process of compaction works like this: if two SST files _A_ and _B_ need to be merged, their contents (key-value pairs) are read into memory. From there, the contents are sorted and merged together in memory, and a new file _C_ is opened and written to disk with the new, larger sorted list of key-value pairs. This step is conceptually similar to a [merge sort](https://wikipedia.org/wiki/Merge_sort). Finally, the old files _A_ and _B_ are deleted.
 
 {{site.data.alerts.callout_success}}
-{% include {{page.version.version}}/storage/compaction-concurrency.md %}
 {{site.data.alerts.end}}
 
 ##### Inverted LSMs
@@ -106,9 +105,9 @@ An inverted LSM will have degraded read performance.
 
 Read amplification is high when the LSM is inverted. In the inverted LSM state, reads need to start in higher levels and "look down" through a lot of SSTs to read a key's correct (freshest) value. When the storage engine needs to read from multiple SST files in order to service a single logical read, this state is known as _read amplification_.
 
-Read amplification can be especially bad if a large [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) is overloading the cluster (due to insufficient CPU and/or IOPS) and the storage engine has to consult many small SSTs in L0 to determine the most up-to-date value of the keys being read (e.g., using a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})).
+Read amplification can be especially bad if a large [`IMPORT INTO`]({{ page.version.version }}/import-into.md) is overloading the cluster (due to insufficient CPU and/or IOPS) and the storage engine has to consult many small SSTs in L0 to determine the most up-to-date value of the keys being read (e.g., using a [`SELECT`]({{ page.version.version }}/select-clause.md)).
 
-A certain amount of read amplification is expected in a normally functioning CockroachDB cluster. For example, a read amplification factor less than 10 as shown in the [**Read Amplification** graph on the **Storage** dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}#other-graphs) is considered healthy.
+A certain amount of read amplification is expected in a normally functioning CockroachDB cluster. For example, a read amplification factor less than 10 as shown in the [**Read Amplification** graph on the **Storage** dashboard]({{ page.version.version }}/ui-storage-dashboard.md#other-graphs) is considered healthy.
 
 <a name="write-amplification"></a>
 
@@ -118,17 +117,17 @@ Read amplification and write amplification are key metrics for LSM performance. 
 
 Inverted LSMs also have excessive compaction debt. In this state, the storage engine has a large backlog of [compactions](#compaction) to do to return the inverted LSM to a normal, non-inverted state.
 
-For instructions showing how to monitor your cluster's LSM health, see [LSM Health]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#lsm-health). To monitor your cluster's LSM L0 health, see [IO Overload]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#io-overload).
+For instructions showing how to monitor your cluster's LSM health, see [LSM Health]({{ page.version.version }}/common-issues-to-monitor.md#lsm-health). To monitor your cluster's LSM L0 health, see [IO Overload]({{ page.version.version }}/ui-overload-dashboard.md#io-overload).
 
 ##### Memtable and write-ahead log
 
 To facilitate managing the LSM tree structure, the storage engine maintains an in-memory representation of the LSM known as the _memtable_; periodically, data from the memtable is flushed to SST files on disk.
 
-Another file on disk called the write-ahead log (hereafter _WAL_) is associated with each memtable to ensure durability in case of power loss or other failures. The WAL is where the freshest updates issued to the storage engine by the [replication layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}) are stored on disk. Each WAL has a 1 to 1 correspondence with a memtable; they are kept in sync, and updates from the WAL and memtable are written to SSTs periodically as part of the storage engine's normal operation.
+Another file on disk called the write-ahead log (hereafter _WAL_) is associated with each memtable to ensure durability in case of power loss or other failures. The WAL is where the freshest updates issued to the storage engine by the [replication layer]({{ page.version.version }}/architecture/replication-layer.md) are stored on disk. Each WAL has a 1 to 1 correspondence with a memtable; they are kept in sync, and updates from the WAL and memtable are written to SSTs periodically as part of the storage engine's normal operation.
 
 The relationship between the memtable, the WAL, and the SST files is shown in the diagram below. New values are written to the WAL at the same time as they are written to the memtable. From the memtable they are eventually written to SST files on disk for longer-term storage.
 
-<img src="{{ 'images/v21.2/memtable-wal-sst.png' | relative_url }}" alt="Relationship between memtable, WAL, and SSTs" style="max-width:100%" />
+![Relationship between memtable, WAL, and SSTs](/images/v21.2/memtable-wal-sst.png)
 
 ##### LSM design tradeoffs
 
@@ -138,13 +137,12 @@ The tradeoffs in the LSM design are meant to take advantage of the way modern di
 
 ### MVCC
 
-CockroachDB relies heavily on [multi-version concurrency control (MVCC)](https://wikipedia.org/wiki/Multiversion_concurrency_control) to process concurrent requests and guarantee consistency. Much of this work is done by using [hybrid logical clock (HLC) timestamps]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#time-and-hybrid-logical-clocks) to differentiate between versions of data, track commit timestamps, and identify a value's garbage collection expiration. All of this MVCC data is then stored in Pebble.
+CockroachDB relies heavily on [multi-version concurrency control (MVCC)](https://wikipedia.org/wiki/Multiversion_concurrency_control) to process concurrent requests and guarantee consistency. Much of this work is done by using [hybrid logical clock (HLC) timestamps]({{ page.version.version }}/architecture/transaction-layer.md#time-and-hybrid-logical-clocks) to differentiate between versions of data, track commit timestamps, and identify a value's garbage collection expiration. All of this MVCC data is then stored in Pebble.
 
-Despite being implemented in the storage layer, MVCC values are widely used to enforce consistency in the [transaction layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %}). For example, CockroachDB maintains a [timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache), which stores the timestamp of the last time that the key was read. If a write operation occurs at a lower timestamp than the largest value in the read timestamp cache, it signifies that there is a potential anomaly. Under the default [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}), the transaction must be restarted at a later timestamp.
+Despite being implemented in the storage layer, MVCC values are widely used to enforce consistency in the [transaction layer]({{ page.version.version }}/architecture/transaction-layer.md). For example, CockroachDB maintains a [timestamp cache]({{ page.version.version }}/architecture/transaction-layer.md#timestamp-cache), which stores the timestamp of the last time that the key was read. If a write operation occurs at a lower timestamp than the largest value in the read timestamp cache, it signifies that there is a potential anomaly. Under the default [`SERIALIZABLE` isolation level]({{ page.version.version }}/demo-serializable.md), the transaction must be restarted at a later timestamp.
 
 For a demo of MVCC and garbage collection in CockroachDB, watch the following video:
 
-{% include_cached youtube.html video_id="Ctp5WQdbEd4" %}
 
 #### Time-travel
 
@@ -156,16 +154,16 @@ Using these tools, you can get consistent data from your database as far back as
 
 ### Garbage collection
 
-CockroachDB regularly garbage collects MVCC values to reduce the size of data stored on disk. To do this, we compact old MVCC values when there is a newer MVCC value with a timestamp that's older than the garbage collection period. The garbage collection period can be set at the cluster, database, or table level by configuring the [`gc.ttlseconds` replication zone variable]({% link {{ page.version.version}}/configure-replication-zones.md %}#gc-ttlseconds). For more information about replication zones, see [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}).
+CockroachDB regularly garbage collects MVCC values to reduce the size of data stored on disk. To do this, we compact old MVCC values when there is a newer MVCC value with a timestamp that's older than the garbage collection period. The garbage collection period can be set at the cluster, database, or table level by configuring the [`gc.ttlseconds` replication zone variable]({{ page.version.version}}/configure-replication-zones.md#gc-ttlseconds). For more information about replication zones, see [Replication Controls]({{ page.version.version }}/configure-replication-zones.md).
 
 #### Protected timestamps
 
 Garbage collection can only run on MVCC values which are not covered by a *protected timestamp*. The protected timestamp subsystem exists to ensure the safety of operations that rely on historical data, such as:
 
-- [Backups]({% link {{ page.version.version }}/create-schedule-for-backup.md %}#protected-timestamps-and-scheduled-backups)
-- [Changefeeds]({% link {{ page.version.version }}/protect-changefeed-data.md %})
+- [Backups]({{ page.version.version }}/create-schedule-for-backup.md#protected-timestamps-and-scheduled-backups)
+- [Changefeeds]({{ page.version.version }}/protect-changefeed-data.md)
 
-Protected timestamps ensure the safety of historical data while also enabling shorter [GC TTLs]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds). A shorter GC TTL means that fewer previous MVCC values are kept around. This can help lower query execution costs for workloads which update rows frequently throughout the day, since [the SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}) has to scan over previous MVCC values to find the current value of a row.
+Protected timestamps ensure the safety of historical data while also enabling shorter [GC TTLs]({{ page.version.version }}/configure-replication-zones.md#gc-ttlseconds). A shorter GC TTL means that fewer previous MVCC values are kept around. This can help lower query execution costs for workloads which update rows frequently throughout the day, since [the SQL layer]({{ page.version.version }}/architecture/sql-layer.md) has to scan over previous MVCC values to find the current value of a row.
 
 ##### How protected timestamps work
 
@@ -183,4 +181,4 @@ The storage layer commits writes from the Raft log to disk, as well as returns r
 
 ## What's next?
 
-Now that you've learned about our architecture, [start up a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/quickstart.md %}) or [local cluster]({% link {{ page.version.version }}/install-cockroachdb.md %}) and start [building an app with CockroachDB]({% link {{ page.version.version}}/example-apps.md %}).
+Now that you've learned about our architecture, [start up a CockroachDB {{ site.data.products.standard }} cluster](quickstart.md) or [local cluster]({{ page.version.version }}/install-cockroachdb.md) and start [building an app with CockroachDB]({{ page.version.version}}/example-apps.md).

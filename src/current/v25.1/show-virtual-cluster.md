@@ -6,25 +6,22 @@ docs_area: reference.sql
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 
 
-The `SHOW VIRTUAL CLUSTER` statement lists all virtual clusters running in a CockroachDB cluster. `SHOW VIRTUAL CLUSTER` supports inspecting virtual cluster status only as part of the [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
+The `SHOW VIRTUAL CLUSTER` statement lists all virtual clusters running in a CockroachDB cluster. `SHOW VIRTUAL CLUSTER` supports inspecting virtual cluster status only as part of the [**physical cluster replication (PCR)**]({{ page.version.version }}/physical-cluster-replication-overview.md) workflow.
 
-{% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
 ## Required privileges
 
 `SHOW VIRTUAL CLUSTER` requires either:
 
 - The `admin` role.
-- The `MANAGEVIRTUALCLUSTER` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges).
+- The `MANAGEVIRTUALCLUSTER` [system privilege]({{ page.version.version }}/security-reference/authorization.md#privileges).
 
-Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement:
+Use the [`GRANT SYSTEM`]({{ page.version.version }}/grant.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
 ~~~
@@ -32,7 +29,6 @@ GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/physical-replication/show-virtual-cluster-diagram.html %}
 </div>
 
 ## Parameters
@@ -41,18 +37,16 @@ Parameter | Description
 ----------+------------
 `virtual_cluster_spec` | The name of the virtual cluster.
 `REPLICATION STATUS` | Display the details of a replication stream.
-`CAPABILITIES` | Display the [capabilities]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities) of a virtual cluster.
+`CAPABILITIES` | Display the [capabilities]({{ page.version.version }}/create-virtual-cluster.md#capabilities) of a virtual cluster.
 
 ## Responses
 
 This table lists all possible responses from the different `SHOW VIRTUAL CLUSTER` statements:
 
-{% include {{ page.version.version }}/physical-replication/show-virtual-cluster-responses.md %}
 
 {{site.data.alerts.callout_success}}
-To find the job ID for the replication stream, use the [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) statement. For example:
+To find the job ID for the replication stream, use the [`SHOW JOBS`]({{ page.version.version }}/show-jobs.md) statement. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM [SHOW JOBS] WHERE job_type = 'REPLICATION STREAM INGESTION';
 ~~~
@@ -62,7 +56,6 @@ SELECT * FROM [SHOW JOBS] WHERE job_type = 'REPLICATION STREAM INGESTION';
 
 The `data_state` and `status` fields show the current state of a virtual cluster's data and progress of the replication stream job.
 
-{% include {{ page.version.version }}/physical-replication/show-virtual-cluster-data-state.md %}
 
 ## Examples
 
@@ -70,7 +63,6 @@ The `data_state` and `status` fields show the current state of a virtual cluster
 
 List all virtual clusters:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW VIRTUAL CLUSTERS;
 ~~~
@@ -79,12 +71,10 @@ SHOW VIRTUAL CLUSTERS;
 
 To show more details about the `main` virtual cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW VIRTUAL CLUSTER main;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~
   id | name | data_state  | service_mode
 -----+------+-------------+---------------
@@ -96,14 +86,12 @@ SHOW VIRTUAL CLUSTER main;
 
 To show the replication status of all virtual clusters:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW VIRTUAL CLUSTERS WITH REPLICATION STATUS;
 ~~~
 
 To show the replication status of the `main` virtual cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
 ~~~
@@ -116,6 +104,6 @@ SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
 
 ## See also
 
-- [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %})
-- [Physical Cluster Replication Overview]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %})
-- [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %})
+- [Physical Cluster Replication Monitoring]({{ page.version.version }}/physical-cluster-replication-monitoring.md)
+- [Physical Cluster Replication Overview]({{ page.version.version }}/physical-cluster-replication-overview.md)
+- [Set Up Physical Cluster Replication]({{ page.version.version }}/set-up-physical-cluster-replication.md)

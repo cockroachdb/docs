@@ -13,7 +13,7 @@ the values from the `price` column.
 
 _Scalar expressions_ produce values suitable to store in a single table
 cell (one column of one row). They can be contrasted with
-[_table expressions_]({% link {{ page.version.version }}/table-expressions.md %}) and [_selection queries_]({% link {{ page.version.version }}/selection-queries.md %}),
+[_table expressions_]({{ page.version.version }}/table-expressions.md) and [_selection queries_]({{ page.version.version }}/selection-queries.md),
 which produce results structured as a table.
 
 The following sections describe how to construct scalar expressions.
@@ -21,7 +21,7 @@ The following sections describe how to construct scalar expressions.
 ## Constants
 
 Constant expressions represent a simple value that doesn't change.
-They are described further in section [SQL Constants]({% link {{ page.version.version }}/sql-constants.md %}).
+They are described further in section [SQL Constants]({{ page.version.version }}/sql-constants.md).
 
 ## Column references
 
@@ -30,7 +30,7 @@ An expression in a query can refer to columns in the current data source in two 
 - The name of the column, e.g., `price` in `SELECT price FROM
   items`.
 
-  - If the name of a column is also a [SQL keyword]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#keywords), the name
+  - If the name of a column is also a [SQL keyword]({{ page.version.version }}/keywords-and-identifiers.md#keywords), the name
   must be appropriately quoted. For example: `SELECT "Default" FROM configuration`.
 
   - If the name is ambiguous (e.g., when joining across multiple tables), it is possible to disambiguate by prefixing the column
@@ -52,7 +52,7 @@ An expression prefixed by a unary operator, or two expressions
 separated by a binary operator, form a new expression.
 
 For a full list of CockroachDB operators, with details about their order of precedence and which
-data types are valid operands for each operator, see [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#operators).
+data types are valid operands for each operator, see [Functions and Operators]({{ page.version.version }}/functions-and-operators.md#operators).
 
 ### Value comparisons
 
@@ -63,7 +63,7 @@ single data type, as well as some pairs of values from different data
 types.
 
 See also [this section over which data types are valid operands
-for each operator]({% link {{ page.version.version }}/functions-and-operators.md %}#operators).
+for each operator]({{ page.version.version }}/functions-and-operators.md#operators).
 
 The following special rules apply:
 
@@ -72,7 +72,7 @@ The following special rules apply:
   whether a value is `NULL`, use the `IS` operator or the conditional
   expression `IFNULL(...)`.
 
-See also [NULLs and Ternary Logic]({% link {{ page.version.version }}/null-handling.md %}#nulls-and-ternary-logic).
+See also [NULLs and Ternary Logic]({{ page.version.version }}/null-handling.md#nulls-and-ternary-logic).
 
 #### Typing rule
 
@@ -81,7 +81,7 @@ All comparisons accept any combination of argument types and result in type `BOO
 #### Comparison with `NaN`
 
 CockroachDB recognizes the special value `NaN` ([Not-a-Number](https://wikipedia.org/wiki/NaN)) for scalars of
-type [`FLOAT`]({% link {{ page.version.version }}/float.md %}) or [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}).
+type [`FLOAT`]({{ page.version.version }}/float.md) or [`DECIMAL`]({{ page.version.version }}/decimal.md).
 
 As per the [IEEE 754](https://wikipedia.org/wiki/IEEE_754)
 standard, `NaN` is considered to be different from every other numeric
@@ -101,7 +101,6 @@ clauses and indexes.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT FLOAT 'NaN' < 1, 1 < FLOAT 'NaN', FLOAT 'NaN' < FLOAT 'NaN';
 ~~~
@@ -113,7 +112,6 @@ For example:
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT FLOAT 'NaN' = FLOAT 'NaN' AS result;
 ~~~
@@ -125,7 +123,6 @@ For example:
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT FLOAT 'NaN' < FLOAT '-INFINITY' AS result;
 ~~~
@@ -154,7 +151,7 @@ multiple values on the right.
 
 This is done by combining the operator using the keywords `ANY`/`SOME` or `ALL`.
 
-The right operand can be either an array, a tuple or [subquery]({% link {{ page.version.version }}/subqueries.md %}).
+The right operand can be either an array, a tuple or [subquery]({{ page.version.version }}/subqueries.md).
 
 The result of the comparison is true if and only if:
 
@@ -165,7 +162,6 @@ The result of the comparison is true if and only if:
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 12 = ANY (10, 12, 13);
 ~~~
@@ -177,7 +173,6 @@ For example:
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 12 = ALL (10, 12, 13);
 ~~~
@@ -189,7 +184,6 @@ For example:
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 1 = ANY ARRAY[2, 3, 1];
 ~~~
@@ -221,26 +215,23 @@ Syntax:
 
 Returns `TRUE` if and only if the value of the left operand is part of
 the result of evaluating the right operand. In the subquery form, any
-[selection query]({% link {{ page.version.version }}/selection-queries.md %}) can be used.
+[selection query]({{ page.version.version }}/selection-queries.md) can be used.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT a IN (1, 2, 3) FROM sometable;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT a IN (SELECT * FROM allowedvalues) FROM sometable;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ('x', 123) IN (SELECT * FROM rows);
 ~~~
 
-{{site.data.alerts.callout_info}}See <a href="{% link {{ page.version.version }}/subqueries.md %}">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}See <a href="{{ page.version.version }}/subqueries.md">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
 
 #### Typing rule
 
@@ -268,7 +259,6 @@ character, or `%` to match any sequence of zero or more characters.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT 'monday' LIKE '%day' AS a, 'tuesday' LIKE 'tue_day' AS b, 'wednesday' ILIKE 'W%' AS c;
 ~~~
@@ -308,7 +298,6 @@ The pattern is expressed using [POSIX regular expression syntax](https://wikiped
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT 'monday' ~ 'onday' AS a, 'tuEsday' ~ 't[uU][eE]sday' AS b, 'wednesday' ~* 'W.*y' AS c;
 ~~~
@@ -347,7 +336,6 @@ This is a mix of SQL `LIKE` patterns and POSIX regular expressions:
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT 'monday' SIMILAR TO '_onday' AS a, 'tuEsday' SIMILAR TO 't[uU][eE]sday' AS b, 'wednesday' SIMILAR TO 'w%y' AS c;
 ~~~
@@ -377,14 +365,13 @@ parenthesis.
 
 This applies the named function to the arguments between
 parentheses. When the function's namespace is not prefixed, the
-[name resolution rules]({% link {{ page.version.version }}/sql-name-resolution.md %}) determine which
+[name resolution rules]({{ page.version.version }}/sql-name-resolution.md) determine which
 function is called.
 
-See also [supported built-in functions]({% link {{ page.version.version }}/functions-and-operators.md %}).
+See also [supported built-in functions]({{ page.version.version }}/functions-and-operators.md).
 
 In addition, the following SQL special forms are also supported:
 
-{% include {{ page.version.version }}/sql/function-special-forms.md %}
 
 #### Typing rule
 
@@ -397,7 +384,7 @@ SQL supports function overloading. See [Revisiting SQL Typing in CockroachDB](ht
 
 ## Subscripted expressions
 
-You can use the `[` ... `]` operator to access one item in an [`ARRAY`]({% link {{ page.version.version }}/array.md %}) or [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) value. For example:
+You can use the `[` ... `]` operator to access one item in an [`ARRAY`]({{ page.version.version }}/array.md) or [`JSONB`]({{ page.version.version }}/jsonb.md) value. For example:
 
 - If the name `a` refers to an `ARRAY` of 10 values, `a[3]` will retrieve the third value. `ARRAY` values use 1-based indexing, so the first value has index `1`.
 - If the name `j` refers to a `JSONB` array of 10 values, `j[3]` will retrieve the fourth value. `JSONB` arrays use zero-based indexing, so the first value has index `0`.
@@ -557,7 +544,7 @@ only the other operand.
 
 {{site.data.alerts.callout_info}}This is different from the left-to-right "short-circuit logic" found in other programming languages. When it is essential to force evaluation order, use <a href="#conditional-expressions">a conditional expression</a>.{{site.data.alerts.end}}
 
-See also [NULLs and Ternary Logic]({% link {{ page.version.version }}/null-handling.md %}#nulls-and-ternary-logic).
+See also [NULLs and Ternary Logic]({{ page.version.version }}/null-handling.md#nulls-and-ternary-logic).
 
 #### Typing rule
 
@@ -574,9 +561,9 @@ COUNT ( * )
 ~~~
 
 The difference between aggregate expressions and function calls is
-that the former use [aggregate functions]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions)
+that the former use [aggregate functions]({{ page.version.version }}/functions-and-operators.md#aggregate-functions)
 and can only appear in the list of rendered expressions in a
-[`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}).
+[`SELECT` clause]({{ page.version.version }}/select-clause.md).
 
 An aggregate expression computes a combined value, depending on
 which aggregate function is used, across all the rows currently
@@ -658,7 +645,6 @@ Evaluates to an array containing the specified values.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ARRAY[1,2,3] AS a;
 ~~~
@@ -677,7 +663,6 @@ If there are no expressions specified (empty array), or
 all the values are `NULL`, then the type of the array must be
 specified explicitly using a type annotation. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ARRAY[]:::int[];
 ~~~
@@ -706,7 +691,6 @@ Evaluates to a tuple containing the values of the provided expressions.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ('x', 123, 12.3) AS a;
 ~~~
@@ -723,7 +707,6 @@ Each position in a tuple can have a distinct data type.
 
 CockroachDB supports accessing the `Nth` element in a tuple as a single table cell using the syntax `(...).@N`. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (t).@2 FROM (SELECT (1,'b',2.3) AS t);
 ~~~
@@ -737,7 +720,6 @@ CockroachDB supports accessing the `Nth` element in a tuple as a single table ce
 
 CockroachDB also supports expanding all elements of a tuple as a single row in a table with the `(<tuple>).*` notation. This notation works as the inverse of the tuple-creating notation `(<table>.*)`. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH tuples AS (SELECT (t.*) AS tuple FROM (SELECT 1,'b',2.3) AS t(x,y,z))  -- Build the tuples, with labels
    SELECT (tuple).* FROM tuples;  -- Expands the tuples and restore the column labels
@@ -772,7 +754,6 @@ error is returned.
 Type annotations are specially useful to guide the arithmetic on
 numeric values. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (1 / 5):::INT;
 ~~~
@@ -782,7 +763,6 @@ ERROR: unsupported binary operator: <int> / <int> (desired <int>)
 SQLSTATE: 22023
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (1 / 5);
 ~~~
@@ -794,7 +774,6 @@ SQLSTATE: 22023
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (1 / 5)::INT;
   int8
@@ -819,9 +798,9 @@ The result has the given type.
 
 ## Subquery expressions
 
-See [Subqueries]({% link {{ page.version.version }}/subqueries.md %}) for more details and performance best practices.
+See [Subqueries]({{ page.version.version }}/subqueries.md) for more details and performance best practices.
 
-You can use any [selection query]({% link {{ page.version.version }}/selection-queries.md %}) as subquery.
+You can use any [selection query]({{ page.version.version }}/selection-queries.md) as subquery.
 
 ### Scalar subqueries
 
@@ -837,7 +816,6 @@ and then evaluates to the value of that single cell.
 For example, the following query returns `TRUE` if there are more rows in table `users` than in table
 `admins`:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT (SELECT COUNT(*) FROM users) > (SELECT COUNT(*) FROM admins);
 ~~~
@@ -878,9 +856,9 @@ To convert a list of scalar expressions to an array, use [`ARRAY[...]`](#array-c
 
 ## See also
 
-- [Constants]({% link {{ page.version.version }}/sql-constants.md %})
-- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
-- [Table Expressions]({% link {{ page.version.version }}/table-expressions.md %})
-- [Data Types]({% link {{ page.version.version }}/data-types.md %})
-- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})
-- [Subqueries]({% link {{ page.version.version }}/subqueries.md %})
+- [Constants]({{ page.version.version }}/sql-constants.md)
+- [Selection Queries]({{ page.version.version }}/selection-queries.md)
+- [Table Expressions]({{ page.version.version }}/table-expressions.md)
+- [Data Types]({{ page.version.version }}/data-types.md)
+- [Functions and Operators]({{ page.version.version }}/functions-and-operators.md)
+- [Subqueries]({{ page.version.version }}/subqueries.md)

@@ -5,36 +5,35 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DELETE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) deletes rows from a table.
+The `DELETE` [statement]({{ page.version.version }}/sql-statements.md) deletes rows from a table.
 
 {{site.data.alerts.callout_danger}}If you delete a row that is referenced by a <a href="foreign-key.html">foreign key constraint</a> and has an <a href="foreign-key.html#foreign-key-actions"><code>ON DELETE</code> action</a>, all of the dependent rows will also be deleted or updated.{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-To delete columns, see [`ALTER TABLE ... DROP COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#drop-column).
+To delete columns, see [`ALTER TABLE ... DROP COLUMN`]({{ page.version.version }}/alter-table.md#drop-column).
 {{site.data.alerts.end}}
 
 ## Required privileges
 
-The user must have the `DELETE` and `SELECT` [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
+The user must have the `DELETE` and `SELECT` [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the table.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/delete.html %}
 </div>
 
 ## Parameters
 
  Parameter | Description
 -----------|-------------
-`common_table_expr` | See [Common Table Expressions]({% link {{ page.version.version }}/common-table-expressions.md %}).
+`common_table_expr` | See [Common Table Expressions]({{ page.version.version }}/common-table-expressions.md).
 `table_name` | The name of the table that contains the rows you want to update.
 `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
-`USING table_ref` | Delete rows based on a table [join]({% link {{ page.version.version }}/joins.md %}), where `table_ref` specifies another table or tables to reference.
-`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table. To delete all rows in a table, we recommend using [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %}) instead of `DELETE`.
-`sort_clause` | An `ORDER BY` clause. <br /><br />See [Ordering of rows in DML statements]({% link {{ page.version.version }}/order-by.md %}#ordering-rows-in-dml-statements) for more details.
-`limit_clause` | A `LIMIT` clause. See [Limit Query Results]({% link {{ page.version.version }}/limit-offset.md %}) for more details.
-`RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
+`USING table_ref` | Delete rows based on a table [join]({{ page.version.version }}/joins.md), where `table_ref` specifies another table or tables to reference.
+`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table. To delete all rows in a table, we recommend using [`TRUNCATE`]({{ page.version.version }}/truncate.md) instead of `DELETE`.
+`sort_clause` | An `ORDER BY` clause. <br /><br />See [Ordering of rows in DML statements]({{ page.version.version }}/order-by.md#ordering-rows-in-dml-statements) for more details.
+`limit_clause` | A `LIMIT` clause. See [Limit Query Results]({{ page.version.version }}/limit-offset.md) for more details.
+`RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions]({{ page.version.version }}/scalar-expressions.md). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
 `ONLY ... *` |  Supported for compatibility with PostgreSQL table inheritance syntax. This clause is a no-op, as CockroachDB does not currently support table inheritance.
 
 ## Success responses
@@ -53,12 +52,11 @@ due to the fact that CockroachDB retains [the ability to query tables
 historically](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/).
 
 If disk usage is a concern, the solution is to
-[reduce the time-to-live]({% link {{ page.version.version }}/configure-replication-zones.md %}) (TTL) for
+[reduce the time-to-live]({{ page.version.version }}/configure-replication-zones.md) (TTL) for
 the zone by setting `gc.ttlseconds` to a lower value, which will cause
 garbage collection to clean up deleted objects (rows, tables) more
 frequently.
 
-{% include {{page.version.version}}/storage/free-up-disk-space.md %}
 
 ## Select performance on deleted rows
 
@@ -66,40 +64,37 @@ Queries that scan across tables that have lots of deleted rows will
 have to scan over deletions that have not yet been garbage
 collected. Certain database usage patterns that frequently scan over
 and delete lots of rows will want to reduce the
-[time-to-live]({% link {{ page.version.version }}/configure-replication-zones.md %}) values to clean up
+[time-to-live]({{ page.version.version }}/configure-replication-zones.md) values to clean up
 deleted rows more frequently.
 
 ## Sorting the output of deletes
 
-{% include {{page.version.version}}/misc/sorting-delete-output.md %}
 
 For more information about ordering query results in general, see
-[Ordering Query Results]({% link {{ page.version.version }}/order-by.md %}) and [Ordering of rows in
-DML statements]({% link {{ page.version.version }}/order-by.md %}#ordering-rows-in-dml-statements).
+[Ordering Query Results]({{ page.version.version }}/order-by.md) and [Ordering of rows in
+DML statements]({{ page.version.version }}/order-by.md#ordering-rows-in-dml-statements).
 
 ## Force index selection for deletes
 
-By using the explicit index annotation (also known as "index hinting"), you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index]({% link {{ page.version.version }}/indexes.md %}) for deleting rows of a named table.
+By using the explicit index annotation (also known as "index hinting"), you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/) and use a specific [index]({{ page.version.version }}/indexes.md) for deleting rows of a named table.
 
 {{site.data.alerts.callout_info}}
-Index selection can impact [performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), but does not change the result of a query.
+Index selection can impact [performance]({{ page.version.version }}/performance-best-practices-overview.md), but does not change the result of a query.
 {{site.data.alerts.end}}
 
 The syntax to force a specific index for a delete is:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM table@my_idx;
 ~~~
 
 This is equivalent to the longer expression:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM table@{FORCE_INDEX=my_idx};
 ~~~
 
-To view how the index hint modifies the query plan that CockroachDB follows for deleting rows, use an [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`]({% link {{ page.version.version }}/show-index.md %}).
+To view how the index hint modifies the query plan that CockroachDB follows for deleting rows, use an [`EXPLAIN`]({{ page.version.version }}/explain.md#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`]({{ page.version.version }}/show-index.md).
 
 For examples, see [Delete with index hints](#delete-with-index-hints).
 
@@ -107,27 +102,25 @@ You can use the `@primary` alias to use the table's primary key in your query if
 
 ### Preserving `DELETE` performance over time
 
-CockroachDB relies on [multi-version concurrency control (MVCC)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) to process concurrent requests while guaranteeing [strong consistency]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-is-cockroachdb-strongly-consistent). As such, when you delete a row, it is not immediately removed from disk. The MVCC values for the row will remain until the garbage collection period defined by the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) variable in the applicable [zone configuration]({% link {{ page.version.version }}/show-zone-configurations.md %}) has passed.
+CockroachDB relies on [multi-version concurrency control (MVCC)]({{ page.version.version }}/architecture/storage-layer.md#mvcc) to process concurrent requests while guaranteeing [strong consistency]({{ page.version.version }}/frequently-asked-questions.md#how-is-cockroachdb-strongly-consistent). As such, when you delete a row, it is not immediately removed from disk. The MVCC values for the row will remain until the garbage collection period defined by the [`gc.ttlseconds`]({{ page.version.version }}/configure-replication-zones.md#gc-ttlseconds) variable in the applicable [zone configuration]({{ page.version.version }}/show-zone-configurations.md) has passed.
 
-This means that with the default settings, each iteration of your `DELETE` statement must scan over all of the rows previously marked for deletion within [the defined GC TTL window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds). If you try to delete 10,000 rows 10 times within the GC TTL window, the 10th command will have to scan over the 90,000 rows previously marked for deletion.
+This means that with the default settings, each iteration of your `DELETE` statement must scan over all of the rows previously marked for deletion within [the defined GC TTL window]({{ page.version.version }}/configure-replication-zones.md#gc-ttlseconds). If you try to delete 10,000 rows 10 times within the GC TTL window, the 10th command will have to scan over the 90,000 rows previously marked for deletion.
 
 To preserve performance over iterative `DELETE` queries, we recommend taking one of the following approaches:
 
-- At each iteration, update the `WHERE` clause to filter only the rows that have not yet been marked for deletion. For an example, see [Batch-delete on an indexed filter]({% link {{ page.version.version }}/bulk-delete-data.md %}).
-- At each iteration, first use a `SELECT` statement to return primary key values on rows that are not yet deleted. Rows marked for deletion will not be returned. Then, use a nested `DELETE` loop over a smaller batch size, filtering on the primary key values. For an example, see [Batch delete on a non-indexed column]({% link {{ page.version.version }}/bulk-delete-data.md %}).
-- To iteratively delete rows in constant time, using a simple `DELETE` loop, you can [alter your zone configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}#overview) and change `gc.ttlseconds` to a low value like 5 minutes (i.e., `300`), and then run your `DELETE` statement once per GC interval.
+- At each iteration, update the `WHERE` clause to filter only the rows that have not yet been marked for deletion. For an example, see [Batch-delete on an indexed filter]({{ page.version.version }}/bulk-delete-data.md).
+- At each iteration, first use a `SELECT` statement to return primary key values on rows that are not yet deleted. Rows marked for deletion will not be returned. Then, use a nested `DELETE` loop over a smaller batch size, filtering on the primary key values. For an example, see [Batch delete on a non-indexed column]({{ page.version.version }}/bulk-delete-data.md).
+- To iteratively delete rows in constant time, using a simple `DELETE` loop, you can [alter your zone configuration]({{ page.version.version }}/configure-replication-zones.md#overview) and change `gc.ttlseconds` to a low value like 5 minutes (i.e., `300`), and then run your `DELETE` statement once per GC interval.
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Delete rows using Primary Key/unique columns
 
-Using columns with the [Primary Key]({% link {{ page.version.version }}/primary-key.md %}) or [Unique]({% link {{ page.version.version }}/unique.md %}) constraints to delete rows ensures your statement is unambiguous&mdash;no two rows contain the same column value, so it's less likely to delete data unintentionally.
+Using columns with the [Primary Key]({{ page.version.version }}/primary-key.md) or [Unique]({{ page.version.version }}/unique.md) constraints to delete rows ensures your statement is unambiguous&mdash;no two rows contain the same column value, so it's less likely to delete data unintentionally.
 
 In this example, `code` is our primary key and we want to delete the row where the code equals "about_stuff_city". Because we're positive no other rows have that value in the `code` column, there's no risk of accidentally removing another row.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM promo_codes WHERE code = 'about_stuff_city';
 ~~~
@@ -139,7 +132,6 @@ DELETE 1
 
 Deleting rows using non-unique columns removes _every_ row that returns `TRUE` for the `WHERE` clause's `a_expr`. This can easily result in deleting data you didn't intend to.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM promo_codes WHERE creation_time > '2019-01-30 00:00:00+00:00';
 ~~~
@@ -151,11 +143,10 @@ The example statement deleted four rows, which might be unexpected.
 
 ### Delete rows using a table join
 
-You can delete rows based on a table [join]({% link {{ page.version.version }}/joins.md %}). Use the `USING` clause to specify another table.
+You can delete rows based on a table [join]({{ page.version.version }}/joins.md). Use the `USING` clause to specify another table.
 
 The following example deletes all codes from `promo_codes` that are present in `user_promo_codes`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM promo_codes USING user_promo_codes WHERE user_promo_codes.code = promo_codes.code;
 ~~~
@@ -175,7 +166,6 @@ By specifying `*`, you retrieve all columns of the delete rows.
 
 To retrieve specific columns, name them in the `RETURNING` clause.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM promo_codes WHERE creation_time > '2019-01-29 00:00:00+00:00' RETURNING code, rules;
 ~~~
@@ -195,7 +185,6 @@ DELETE FROM promo_codes WHERE creation_time > '2019-01-29 00:00:00+00:00' RETURN
 
 When `RETURNING` specific columns, you can change their labels using `AS`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM promo_codes WHERE creation_time > '2019-01-28 00:00:00+00:00' RETURNING code, rules AS discount;
 ~~~
@@ -211,7 +200,6 @@ DELETE FROM promo_codes WHERE creation_time > '2019-01-28 00:00:00+00:00' RETURN
 
 To sort and return deleted rows, use a statement like the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH a AS (DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00:00' RETURNING *)
   SELECT * FROM a ORDER BY expiration_time;
@@ -232,14 +220,12 @@ WITH a AS (DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00
 
 Suppose you create a multi-column index on the `users` table with the `name` and `city` columns.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON users (name, city);
 ~~~
 
-Now suppose you want to delete the two users named "Jon Snow". You can use the [`EXPLAIN (OPT)`]({% link {{ page.version.version }}/explain.md %}#opt-option) command to see how the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) decides to perform the delete:
+Now suppose you want to delete the two users named "Jon Snow". You can use the [`EXPLAIN (OPT)`]({{ page.version.version }}/explain.md#opt-option) command to see how the [cost-based optimizer]({{ page.version.version }}/cost-based-optimizer.md) decides to perform the delete:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (OPT) DELETE FROM users WHERE name='Jon Snow';
 ~~~
@@ -270,7 +256,6 @@ The output of the `EXPLAIN` statement shows that the optimizer scans the newly-c
 
 Now suppose that instead you want to perform a delete, but using the `id` column instead.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (OPT) DELETE FROM users WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
 ~~~
@@ -309,7 +294,6 @@ The optimizer still scans the newly-created `users_name_city_idx` index when per
 
 If you provide an index hint (i.e., force the index selection) to use the primary index on the column instead, the CockroachDB will scan the users table using the primary index, on `city`, and `id`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN (OPT) DELETE FROM users@users_pkey WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
 ~~~
@@ -347,15 +331,15 @@ EXPLAIN (OPT) DELETE FROM users@users_pkey WHERE id IN ('70a3d70a-3d70-4400-8000
 
 ## See also
 
-- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
-- [`UPDATE`]({% link {{ page.version.version }}/update.md %})
-- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
-- [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %})
-- [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
-- [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
-- [`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
-- [Limit Query Results]({% link {{ page.version.version }}/limit-offset.md %})
-- [Delete Data]({% link {{ page.version.version }}/delete-data.md %})
-- [Bulk-delete data]({% link {{ page.version.version }}/bulk-delete-data.md %})
-- [Batch Delete Expired Data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %})
+- [`INSERT`]({{ page.version.version }}/insert.md)
+- [`UPDATE`]({{ page.version.version }}/update.md)
+- [`UPSERT`]({{ page.version.version }}/upsert.md)
+- [`TRUNCATE`]({{ page.version.version }}/truncate.md)
+- [`ALTER TABLE`]({{ page.version.version }}/alter-table.md)
+- [`DROP TABLE`]({{ page.version.version }}/drop-table.md)
+- [`DROP DATABASE`]({{ page.version.version }}/drop-database.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)
+- [Limit Query Results]({{ page.version.version }}/limit-offset.md)
+- [Delete Data]({{ page.version.version }}/delete-data.md)
+- [Bulk-delete data]({{ page.version.version }}/bulk-delete-data.md)
+- [Batch Delete Expired Data with Row-Level TTL]({{ page.version.version }}/row-level-ttl.md)

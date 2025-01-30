@@ -5,17 +5,16 @@ toc: true
 docs_area: reference.db_console
 ---
 
-The **Changefeeds** dashboard in the DB Console lets you monitor the [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) created across your cluster.
+The **Changefeeds** dashboard in the DB Console lets you monitor the [changefeeds]({{ page.version.version }}/change-data-capture-overview.md) created across your cluster.
 
-To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
+To view this dashboard, [access the DB Console]({{ page.version.version }}/ui-overview.md#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
 
 {{site.data.alerts.callout_success}}
-For more general recommendations on metrics and tooling options for change data capture monitoring, refer to the [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) page.
+For more general recommendations on metrics and tooling options for change data capture monitoring, refer to the [Monitor and Debug Changefeeds]({{ page.version.version }}/monitor-and-debug-changefeeds.md) page.
 {{site.data.alerts.end}}
 
 ## Dashboard navigation
 
-{% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 The **Changefeeds** dashboard displays the following time series graphs:
 
@@ -23,35 +22,35 @@ The **Changefeeds** dashboard displays the following time series graphs:
 
 This graph displays the status of all running changefeeds.
 
-<img src="{{ 'images/v24.2/ui-changefeed-status.png' | relative_url }}" alt="DB Console Changefeed Status graph showing running, paused, and failed changefeeds." style="border:1px solid #eee;max-width:100%" />
+![DB Console Changefeed Status graph showing running, paused, and failed changefeeds.](/images/v24.2/ui-changefeed-status.png)
 
 Metric | Description
 --------|----
 **Running** | The number of changefeeds running.
-**Paused** | The number of [paused]({% link {{ page.version.version }}/pause-job.md %}) changefeeds.
+**Paused** | The number of [paused]({{ page.version.version }}/pause-job.md) changefeeds.
 **Failed** | The number of changefeeds that have failed.
 
-Refer to [`RESUME JOB`]({% link {{ page.version.version }}/resume-job.md %}) and [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %}) to manage a changefeed.
+Refer to [`RESUME JOB`]({{ page.version.version }}/resume-job.md) and [`PAUSE JOB`]({{ page.version.version }}/pause-job.md) to manage a changefeed.
 
-In the case of a failed changefeed, you may want to use the [`cursor`]({% link {{ page.version.version }}/create-changefeed.md %}#cursor) option to restart the changefeed. Refer to the [Start a new changefeed where the previous failed]({% link {{ page.version.version }}/create-changefeed.md %}#start-a-new-changefeed-where-another-ended) example.
+In the case of a failed changefeed, you may want to use the [`cursor`]({{ page.version.version }}/create-changefeed.md#cursor) option to restart the changefeed. Refer to the [Start a new changefeed where the previous failed]({{ page.version.version }}/create-changefeed.md#start-a-new-changefeed-where-another-ended) example.
 
 ## Commit Latency
 
-This graph displays the 99th, 90th, and 50th percentile of commit latency for running changefeeds. This is the difference between an event's MVCC timestamp and the time it was acknowledged as received by the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
+This graph displays the 99th, 90th, and 50th percentile of commit latency for running changefeeds. This is the difference between an event's MVCC timestamp and the time it was acknowledged as received by the [downstream sink]({{ page.version.version }}/changefeed-sinks.md).
 
-<img src="{{ 'images/v24.2/ui-commit-latency.png' | relative_url }}" alt="DB Console Commit Latency graph showing the 99th, 90th, and 50th percentile of commit latency." style="border:1px solid #eee;max-width:100%" />
+![DB Console Commit Latency graph showing the 99th, 90th, and 50th percentile of commit latency.](/images/v24.2/ui-commit-latency.png)
 
 If the sink batches events, then the difference between the oldest event in the batch and acknowledgement is recorded. Latency during backfill is excluded.
 
 ## Emitted Bytes
 
-This graph shows the number of bytes emitted by CockroachDB into the changefeed's [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
+This graph shows the number of bytes emitted by CockroachDB into the changefeed's [downstream sink]({{ page.version.version }}/changefeed-sinks.md).
 
 {{site.data.alerts.callout_info}}
-In v23.1 and earlier, the **Emitted Bytes** graph was named **Sink Byte Traffic**. If you want to customize charts, including how metrics are named, use the [**Custom Chart** debug page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}).
+In v23.1 and earlier, the **Emitted Bytes** graph was named **Sink Byte Traffic**. If you want to customize charts, including how metrics are named, use the [**Custom Chart** debug page]({{ page.version.version }}/ui-custom-chart-debug-page.md).
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/v24.2/ui-emitted-bytes.png' | relative_url }}" alt="DB Console Emitted Bytes Graph showing the time and emitted bites" style="border:1px solid #eee;max-width:100%" />
+![DB Console Emitted Bytes Graph showing the time and emitted bites](/images/v24.2/ui-emitted-bytes.png)
 
 Metric | Description
 --------|----
@@ -64,7 +63,7 @@ This graph displays data relating to the number of messages and flushes at the c
 - The number of messages that CockroachDB sent to the sink.
 - The number of flushes that the sink performed for changefeeds.
 
-<img src="{{ 'images/v24.2/ui-sink-counts.png' | relative_url }}" alt="DB Console Sink Counts graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console Sink Counts graph](/images/v24.2/ui-sink-counts.png)
 
 Metric | Description
 --------|----
@@ -73,23 +72,23 @@ Metric | Description
 
 ## Max Checkpoint Latency
 
-This graph displays the most any changefeed's persisted [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) is behind the present time. Larger values indicate issues with successfully ingesting or emitting changes. If errors cause a changefeed to restart, or the changefeed is [paused]({% link {{ page.version.version }}/pause-job.md %}) and unpaused, emitted data up to the last checkpoint may be re-emitted.
+This graph displays the most any changefeed's persisted [checkpoint]({{ page.version.version }}/how-does-an-enterprise-changefeed-work.md) is behind the present time. Larger values indicate issues with successfully ingesting or emitting changes. If errors cause a changefeed to restart, or the changefeed is [paused]({{ page.version.version }}/pause-job.md) and unpaused, emitted data up to the last checkpoint may be re-emitted.
 
 {{site.data.alerts.callout_info}}
-In v23.1 and earlier, the **Max Checkpoint Latency** graph was named **Max Changefeed Latency**. If you want to customize charts, including how metrics are named, use the [**Custom Chart** debug page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}).
+In v23.1 and earlier, the **Max Checkpoint Latency** graph was named **Max Changefeed Latency**. If you want to customize charts, including how metrics are named, use the [**Custom Chart** debug page]({{ page.version.version }}/ui-custom-chart-debug-page.md).
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/v24.2/ui-max-checkpoint-latency.png' | relative_url }}" alt="DB Console Max Checkpoint Latency graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console Max Checkpoint Latency graph](/images/v24.2/ui-max-checkpoint-latency.png)
 
 {{site.data.alerts.callout_info}}
-The maximum checkpoint latency is distinct from, and slower than, the commit latency for individual change messages. For more information about resolved timestamps, refer to the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}#resolved-messages) page.
+The maximum checkpoint latency is distinct from, and slower than, the commit latency for individual change messages. For more information about resolved timestamps, refer to the [Changefeed Messages]({{ page.version.version }}/changefeed-messages.md#resolved-messages) page.
 {{site.data.alerts.end}}
 
 ## Changefeed Restarts
 
-This graph displays the number of times changefeeds restarted due to [retryable errors]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#changefeed-retry-errors).
+This graph displays the number of times changefeeds restarted due to [retryable errors]({{ page.version.version }}/monitor-and-debug-changefeeds.md#changefeed-retry-errors).
 
-<img src="{{ 'images/v24.2/ui-changefeed-restarts.png' | relative_url }}" alt="DB Console Changefeed Restarts graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console Changefeed Restarts graph](/images/v24.2/ui-changefeed-restarts.png)
 
 Metric | Description
 --------|----
@@ -97,19 +96,19 @@ Metric | Description
 
 ## Oldest Protected Timestamp
 
-This graph displays the oldest [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) of any running changefeed on the cluster.
+This graph displays the oldest [protected timestamp]({{ page.version.version }}/architecture/storage-layer.md#protected-timestamps) of any running changefeed on the cluster.
 
-<img src="{{ 'images/v24.2/ui-oldest-protected-timestamp.png' | relative_url }}" alt="DB Console Oldest Protected Timestamp graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console Oldest Protected Timestamp graph](/images/v24.2/ui-oldest-protected-timestamp.png)
 
 Metric | Description
 --------|----
-**Protected Timestamp Age** | The age of the oldest protected timestamp (of any changefeed) that is protecting data from being [garbage collected]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection).
+**Protected Timestamp Age** | The age of the oldest protected timestamp (of any changefeed) that is protecting data from being [garbage collected]({{ page.version.version }}/architecture/storage-layer.md#garbage-collection).
 
 ## Backfill Pending Ranges
 
-This graph displays the number of ranges being backfilled that are yet to enter the changefeed pipeline. An [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) or [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) can cause a backfill.
+This graph displays the number of ranges being backfilled that are yet to enter the changefeed pipeline. An [initial scan]({{ page.version.version }}/create-changefeed.md#initial-scan) or [schema change]({{ page.version.version }}/online-schema-changes.md) can cause a backfill.
 
-<img src="{{ 'images/v24.2/ui-backfill-pending-ranges.png' | relative_url }}" alt="DB Console Backfill Pending Ranges graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console Backfill Pending Ranges graph](/images/v24.2/ui-backfill-pending-ranges.png)
 
 Metric | Description
 --------|----
@@ -117,9 +116,9 @@ Metric | Description
 
 ## Schema Registry Registrations
 
-This graph displays the rate of schema registration requests made by CockroachDB nodes to a configured schema registry endpoint. For example, a [Kafka sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) pointing to a [Confluent Schema Registry]({% link {{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md %}).
+This graph displays the rate of schema registration requests made by CockroachDB nodes to a configured schema registry endpoint. For example, a [Kafka sink]({{ page.version.version }}/changefeed-sinks.md#kafka) pointing to a [Confluent Schema Registry]({{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md).
 
-<img src="{{ 'images/v24.2/ui-schema-registry-registrations.png' | relative_url }}" alt="DB Console Schema Registry Registrations graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console Schema Registry Registrations graph](/images/v24.2/ui-schema-registry-registrations.png)
 
 Metric | Description
 --------|----
@@ -127,9 +126,9 @@ Metric | Description
 
 ## Ranges in catchup mode
 
-This graph displays the total number of ranges with an active [rangefeed]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) that is performing a catchup scan.
+This graph displays the total number of ranges with an active [rangefeed]({{ page.version.version }}/create-and-configure-changefeeds.md#enable-rangefeeds) that is performing a catchup scan.
 
-<img src="{{ 'images/v24.2/ui-ranges-in-catchup-mode.png' | relative_url }}" alt="DB Console Ranges in Catchup Mode graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console Ranges in Catchup Mode graph](/images/v24.2/ui-ranges-in-catchup-mode.png)
 
 Metric | Description
 --------|----
@@ -139,17 +138,16 @@ Metric | Description
 
 This graph displays the duration of catchup scans that changefeeds are performing.
 
-<img src="{{ 'images/v24.2/ui-rangefeed-catchup-scans-duration.png' | relative_url }}" alt="DB Console Rangefeed Catchup Scans Duration graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console Rangefeed Catchup Scans Duration graph](/images/v24.2/ui-rangefeed-catchup-scans-duration.png)
 
 Metric | Description
 --------|----
 **(Node Hostname)** | The duration of the catchup scan displayed per node.
 
-{% include {{ page.version.version }}/ui/ui-summary-events.md %}
 
 ## See also
 
-- [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %})
-- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
-- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
-- [Raw Status Endpoints]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#raw-status-endpoints)
+- [Change Data Capture Overview]({{ page.version.version }}/change-data-capture-overview.md)
+- [Troubleshooting Overview]({{ page.version.version }}/troubleshooting-overview.md)
+- [Support Resources]({{ page.version.version }}/support-resources.md)
+- [Raw Status Endpoints]({{ page.version.version }}/monitoring-and-alerting.md#raw-status-endpoints)

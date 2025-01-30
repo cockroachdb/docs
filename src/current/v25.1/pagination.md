@@ -7,17 +7,16 @@ docs_area: develop
 
 To iterate through a table one "page" of results at a time (also known as pagination) there are several options:
 
-- [`LIMIT` / `OFFSET`]({% link {{ page.version.version }}/limit-offset.md %}) pagination (slow, not recommended)
+- [`LIMIT` / `OFFSET`]({{ page.version.version }}/limit-offset.md) pagination (slow, not recommended)
 - Keyset pagination (**fast, recommended**)
-- [Cursors]({% link {{ page.version.version }}/cursors.md %}) (it depends, see [Differences between keyset pagination and cursors](#differences-between-keyset-pagination-and-cursors))
+- [Cursors]({{ page.version.version }}/cursors.md) (it depends, see [Differences between keyset pagination and cursors](#differences-between-keyset-pagination-and-cursors))
 
 ## Keyset pagination
 
-Keyset pagination (also known as the "seek method") is used to fetch a subset of records from a table quickly. It does this by restricting the set of records returned with a combination of `WHERE` and [`LIMIT`]({% link {{ page.version.version }}/limit-offset.md %}) clauses. To get the next page, you check the value of the column in the `WHERE` clause against the last row returned in the previous page of results.
+Keyset pagination (also known as the "seek method") is used to fetch a subset of records from a table quickly. It does this by restricting the set of records returned with a combination of `WHERE` and [`LIMIT`]({{ page.version.version }}/limit-offset.md) clauses. To get the next page, you check the value of the column in the `WHERE` clause against the last row returned in the previous page of results.
 
 The general pattern for keyset pagination queries is:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM t AS OF SYSTEM TIME ${time}
   WHERE key > ${value}
@@ -25,17 +24,16 @@ SELECT * FROM t AS OF SYSTEM TIME ${time}
   LIMIT ${amount}
 ~~~
 
-This is faster than using `LIMIT`/`OFFSET` because, instead of doing a full table scan up to the value of the `OFFSET`, a keyset pagination query looks at a fixed-size set of records for each iteration. This can be done quickly provided that the key used in the `WHERE` clause to implement the pagination is [indexed]({% link {{ page.version.version }}/indexes.md %}#best-practices) and [unique]({% link {{ page.version.version }}/unique.md %}). A [primary key]({% link {{ page.version.version }}/primary-key.md %}) meets both of these criteria.
+This is faster than using `LIMIT`/`OFFSET` because, instead of doing a full table scan up to the value of the `OFFSET`, a keyset pagination query looks at a fixed-size set of records for each iteration. This can be done quickly provided that the key used in the `WHERE` clause to implement the pagination is [indexed]({{ page.version.version }}/indexes.md#best-practices) and [unique]({{ page.version.version }}/unique.md). A [primary key]({{ page.version.version }}/primary-key.md) meets both of these criteria.
 
 ## Examples
 
 The examples in this section use the [employees data set](https://github.com/datacharmer/test_db). 
 
-You will need to write a [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) statement that matches the schema of the table data you're importing.
+You will need to write a [`CREATE TABLE`]({{ page.version.version }}/create-table.md) statement that matches the schema of the table data you're importing.
 
 For example, to import the data from `employees.csv` into an `employees` table, issue the following statement to create the table:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE TABLE employees (
   emp_no INT PRIMARY KEY,
@@ -47,9 +45,8 @@ CREATE TABLE employees (
       );
 ~~~
 
-Next, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) to import the data into the new table:
+Next, use [`IMPORT INTO`]({{ page.version.version }}/import-into.md) to import the data into the new table:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date)
      CSV DATA (
@@ -66,7 +63,6 @@ IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_d
 
 To get the first page of results using keyset pagination, run the statement below.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM employees AS OF SYSTEM TIME '-1m' WHERE emp_no > 10000 ORDER BY emp_no LIMIT 25;
 ~~~
@@ -89,12 +85,11 @@ When writing your own queries of this type, use a known minimum value for the ke
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-We use [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) in these examples to ensure that we are operating on a consistent snapshot of the database as of the specified timestamp. This reduces the chance that there will be any concurrent updates to the data the query is accessing, and thus no missing or duplicated rows during the pagination. It also reduces the risk of [client-side transaction retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) due to concurrent data access. The value of `-1m` passed to `AS OF SYSTEM TIME` may need to be updated depending on your application's data access patterns.
+We use [`AS OF SYSTEM TIME`]({{ page.version.version }}/as-of-system-time.md) in these examples to ensure that we are operating on a consistent snapshot of the database as of the specified timestamp. This reduces the chance that there will be any concurrent updates to the data the query is accessing, and thus no missing or duplicated rows during the pagination. It also reduces the risk of [client-side transaction retries]({{ page.version.version }}/transaction-retry-error-reference.md#client-side-retry-handling) due to concurrent data access. The value of `-1m` passed to `AS OF SYSTEM TIME` may need to be updated depending on your application's data access patterns.
 {{site.data.alerts.end}}
 
 To get the second page of results, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM employees AS OF SYSTEM TIME '-1m' WHERE emp_no > 10025 ORDER BY emp_no LIMIT 25;
 ~~~
@@ -114,7 +109,6 @@ Time: 2ms total (execution 1ms / network 1ms)
 
 To get an arbitrary page of results showing employees whose IDs (`emp_no`) are in a much higher range, run the following query. Note that it takes about the same amount of time to run as the previous queries.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM employees AS OF SYSTEM TIME '-1m' WHERE emp_no > 300025 ORDER BY emp_no LIMIT 25;
 ~~~
@@ -135,7 +129,6 @@ Time: 2ms total (execution 1ms / network 0ms)
 
 Compare the execution speed of the previous keyset pagination queries with the query below that uses `LIMIT` / `OFFSET` to get the same page of results:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM employees AS OF SYSTEM TIME '-1m' LIMIT 25 OFFSET 200024;
 ~~~
@@ -153,9 +146,8 @@ SELECT * FROM employees AS OF SYSTEM TIME '-1m' LIMIT 25 OFFSET 200024;
 Time: 158ms total (execution 156ms / network 1ms)
 ~~~
 
-The query using `LIMIT`/`OFFSET` for pagination is almost 100 times slower. To see why, let's use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}).
+The query using `LIMIT`/`OFFSET` for pagination is almost 100 times slower. To see why, let's use [`EXPLAIN`]({{ page.version.version }}/explain.md).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM employees LIMIT 25 OFFSET 200024;
 ~~~
@@ -182,9 +174,8 @@ Time: 4ms total (execution 3ms / network 0ms)
 
 The culprit is this: because we used `LIMIT`/`OFFSET`, we are performing a limited scan of the entire table (see `spans: LIMITED SCAN` above) from the first record all the way up to the value of the offset. In other words, we are iterating over a big array of rows from 1 to *n*, where *n* is 200049. The `estimated row count` row shows this.
 
-Meanwhile, the keyset pagination queries are looking at a much smaller range of table spans, which is much faster (see `spans: [/300026 - ]` and `limit: 25` below). Because [there is an index on every column in the `WHERE` clause]({% link {{ page.version.version }}/indexes.md %}#best-practices), these queries are doing an index lookup to jump to the start of the page of results, and then getting an additional 25 rows from there. This is much faster.
+Meanwhile, the keyset pagination queries are looking at a much smaller range of table spans, which is much faster (see `spans: [/300026 - ]` and `limit: 25` below). Because [there is an index on every column in the `WHERE` clause]({{ page.version.version }}/indexes.md#best-practices), these queries are doing an index lookup to jump to the start of the page of results, and then getting an additional 25 rows from there. This is much faster.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM employees WHERE emp_no > 300025 ORDER BY emp_no LIMIT 25;
 ~~~
@@ -208,14 +199,13 @@ Time: 1ms total (execution 1ms / network 0ms)
 As shown by the `estimated row count` row, this query scans only 25 rows, far fewer than the 200049 scanned by the `LIMIT`/`OFFSET` query.
 
 {{site.data.alerts.callout_danger}}
-Using a sequential (i.e., non-[UUID]({% link {{ page.version.version }}/uuid.md %})) primary key creates hot spots in the database for write-heavy workloads, since concurrent [`INSERT`]({% link {{ page.version.version }}/insert.md %})s to the table will attempt to write to the same (or nearby) underlying [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range). This can be mitigated by designing your schema with [multi-column primary keys which include a monotonically increasing column]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-multi-column-primary-keys).
+Using a sequential (i.e., non-[UUID]({{ page.version.version }}/uuid.md)) primary key creates hot spots in the database for write-heavy workloads, since concurrent [`INSERT`]({{ page.version.version }}/insert.md)s to the table will attempt to write to the same (or nearby) underlying [ranges]({{ page.version.version }}/architecture/overview.md#architecture-range). This can be mitigated by designing your schema with [multi-column primary keys which include a monotonically increasing column]({{ page.version.version }}/performance-best-practices-overview.md#use-multi-column-primary-keys).
 {{site.data.alerts.end}}
 
 ## Differences between keyset pagination and cursors
 
-{% include {{page.version.version}}/sql/cursors-vs-keyset-pagination.md %}
 
 ## See also
 
-- [Cursors]({% link {{ page.version.version }}/cursors.md %})
-- [`LIMIT` / `OFFSET`]({% link {{ page.version.version }}/limit-offset.md %}) pagination (slow, not recommended)
+- [Cursors]({{ page.version.version }}/cursors.md)
+- [`LIMIT` / `OFFSET`]({{ page.version.version }}/limit-offset.md) pagination (slow, not recommended)

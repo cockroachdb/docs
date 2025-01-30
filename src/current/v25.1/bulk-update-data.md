@@ -5,38 +5,38 @@ toc: true
 docs_area: develop
 ---
 
-To update multiple rows in a table, you can use a single [`UPDATE` statement]({% link {{ page.version.version }}/update.md %}), with a `WHERE` clause that filters the rows you want to update.
+To update multiple rows in a table, you can use a single [`UPDATE` statement]({{ page.version.version }}/update.md), with a `WHERE` clause that filters the rows you want to update.
 
 To update a large number of rows (i.e., tens of thousands of rows or more), we recommend iteratively updating subsets of the rows that you want to update, until all of the rows have been updated. You can write a script to do this, or you can write a loop into your application.
 
 This page provides guidance on writing batch-update loops with a pattern that executes `SELECT` and `UPDATE` statements at different levels of a nested loop.
 
 {{site.data.alerts.callout_danger}}
-Exercise caution when batch-updating rows from tables with foreign key constraints and explicit [`ON UPDATE` foreign key actions]({% link {{ page.version.version }}/foreign-key.md %}#foreign-key-actions). To preserve `UPDATE` performance on tables with foreign key actions, we recommend using smaller batch sizes, as additional rows updated due to `ON UPDATE` actions can make batch loops significantly slower.
+Exercise caution when batch-updating rows from tables with foreign key constraints and explicit [`ON UPDATE` foreign key actions]({{ page.version.version }}/foreign-key.md#foreign-key-actions). To preserve `UPDATE` performance on tables with foreign key actions, we recommend using smaller batch sizes, as additional rows updated due to `ON UPDATE` actions can make batch loops significantly slower.
 {{site.data.alerts.end}}
 
 ## Before you begin
 
 Before reading this page, do the following:
 
-- [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
-- [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %}).
+- [Create a CockroachDB {{ site.data.products.standard }} cluster](quickstart.md) or [start a local cluster](quickstart.md?filters=local).
+- [Install a Driver or ORM Framework]({{ page.version.version }}/install-client-drivers.md).
 
     For the example on this page, we use the `psycopg2` Python driver.
-- [Connect to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
-- [Insert data]({% link {{ page.version.version }}/insert-data.md %}) that you now want to update.
+- [Connect to the database]({{ page.version.version }}/connect-to-the-database.md).
+- [Insert data]({{ page.version.version }}/insert-data.md) that you now want to update.
 
-    For the example on this page, we load a cluster with the `movr` database and data from [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}).
+    For the example on this page, we load a cluster with the `movr` database and data from [`cockroach workload`]({{ page.version.version }}/cockroach-workload.md).
 
 ## Write a batch-update loop
 
-1. At the top level of a loop in your application, or in a script, execute a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) query that returns a large batch of primary key values for the rows that you want to update. When defining the `SELECT` query:
+1. At the top level of a loop in your application, or in a script, execute a [`SELECT`]({{ page.version.version }}/selection-queries.md) query that returns a large batch of primary key values for the rows that you want to update. When defining the `SELECT` query:
     - Use a `WHERE` clause to filter on columns that identify the rows that you want to update. This clause should also filter out the rows that have been updated by previous iterations of the nested `UPDATE` loop:
         - For optimal performance, the first condition of the filter should evaluate the last primary key value returned by the last `UPDATE` query that was executed. This narrows each `SELECT` query's scan to the fewest rows possible, and preserves the performance of the row updates over time.
-        - Another condition of the filter should evaluate column values persisted to the database that signal whether or not a row has been updated. This prevents rows from being updated more than once, in the event that the application or script crashes and needs to be restarted. If there is no way to distinguish between an updated row and a row that has not yet been updated, you might need to [add a new column to the table]({% link {{ page.version.version }}/alter-table.md %}#add-column) (e.g., `ALTER TABLE ... ADD COLUMN updated BOOL;`).
-    - Add an [`AS OF SYSTEM TIME` clause]({% link {{ page.version.version }}/as-of-system-time.md %}) to the end of the selection subquery, or run the selection query in a separate, read-only transaction with [`SET TRANSACTION AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}#use-as-of-system-time-in-transactions). This helps to reduce [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-    - Use a [`LIMIT`]({% link {{ page.version.version }}/limit-offset.md %}) clause to limit the number of rows queried to a subset of the rows that you want to update. To determine the optimal `SELECT` batch size, try out different sizes (10,000 rows, 20,000 rows, etc.), and monitor the change in performance. Note that this `SELECT` batch size can be much larger than the batch size of rows that are updated in the subsequent `UPDATE` query.
-    - To ensure that rows are efficiently scanned in the subsequent `UPDATE` query, include an [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}) clause on the primary key.
+        - Another condition of the filter should evaluate column values persisted to the database that signal whether or not a row has been updated. This prevents rows from being updated more than once, in the event that the application or script crashes and needs to be restarted. If there is no way to distinguish between an updated row and a row that has not yet been updated, you might need to [add a new column to the table]({{ page.version.version }}/alter-table.md#add-column) (e.g., `ALTER TABLE ... ADD COLUMN updated BOOL;`).
+    - Add an [`AS OF SYSTEM TIME` clause]({{ page.version.version }}/as-of-system-time.md) to the end of the selection subquery, or run the selection query in a separate, read-only transaction with [`SET TRANSACTION AS OF SYSTEM TIME`]({{ page.version.version }}/as-of-system-time.md#use-as-of-system-time-in-transactions). This helps to reduce [transaction contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+    - Use a [`LIMIT`]({{ page.version.version }}/limit-offset.md) clause to limit the number of rows queried to a subset of the rows that you want to update. To determine the optimal `SELECT` batch size, try out different sizes (10,000 rows, 20,000 rows, etc.), and monitor the change in performance. Note that this `SELECT` batch size can be much larger than the batch size of rows that are updated in the subsequent `UPDATE` query.
+    - To ensure that rows are efficiently scanned in the subsequent `UPDATE` query, include an [`ORDER BY`]({{ page.version.version }}/order-by.md) clause on the primary key.
 
 1. Under the `SELECT` query, write a nested loop that executes `UPDATE` queries over the primary key values returned by the `SELECT` query, in batches smaller than the initial `SELECT` batch size. When defining the `UPDATE` query:
     - Use a `WHERE` clause that filters on a subset of the primary key values returned by the top-level `SELECT` query. To determine the optimal `UPDATE` batch size, try out different sizes (1,000 rows, 2,000 rows, etc.), and monitor the change in performance.
@@ -46,24 +46,21 @@ Before reading this page, do the following:
 
 ## Example
 
-Suppose that over the past year, you've recorded hundreds of thousands of [MovR]({% link {{ page.version.version }}/movr.md %}) rides in a cluster loaded with the [`movr`]({% link {{ page.version.version }}/cockroach-workload.md %}) database. And suppose that, for the last week of December, you applied a 10% discount to all ride charges billed to users, but you didn't update the `rides` table to reflect the discounts.
+Suppose that over the past year, you've recorded hundreds of thousands of [MovR]({{ page.version.version }}/movr.md) rides in a cluster loaded with the [`movr`]({{ page.version.version }}/cockroach-workload.md) database. And suppose that, for the last week of December, you applied a 10% discount to all ride charges billed to users, but you didn't update the `rides` table to reflect the discounts.
 
 To get the `rides` table up-to-date, you can create a loop that updates the relevant rows of the `rides` table in batches, following the query guidance provided [above](#write-a-batch-update-loop).
 
 In this case, you will also need to add a new column to the `rides` table that signals whether or not a row has been updated. Using this column, the top-level `SELECT` query can filter out rows that have already been updated, which will prevent rows from being updated more than once if the script crashes.
 
-For example, you could create a column named `discounted`, of data type [`BOOL`]({% link {{ page.version.version }}/bool.md %}):
+For example, you could create a column named `discounted`, of data type [`BOOL`]({{ page.version.version }}/bool.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE rides ADD COLUMN discounted BOOL DEFAULT false;
 ~~~
 
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 In Python, a batch-update script might look similar to the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -110,5 +107,5 @@ Note that the last iteration of the nested loop assigns the primary key value of
 
 ## See also
 
-- [Update data]({% link {{ page.version.version }}/update-data.md %})
-- [`UPDATE`]({% link {{ page.version.version }}/update.md %})
+- [Update data]({{ page.version.version }}/update-data.md)
+- [`UPDATE`]({{ page.version.version }}/update.md)

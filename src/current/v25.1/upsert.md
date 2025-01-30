@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `UPSERT` [statement]({% link {{ page.version.version }}/sql-statements.md %}) inserts rows in cases where specified values do not violate uniqueness constraints and updates rows in cases where values do violate uniqueness constraints. `UPSERT` considers uniqueness only for [primary key]({% link {{ page.version.version }}/primary-key.md %}) columns.
+The `UPSERT` [statement]({{ page.version.version }}/sql-statements.md) inserts rows in cases where specified values do not violate uniqueness constraints and updates rows in cases where values do violate uniqueness constraints. `UPSERT` considers uniqueness only for [primary key]({{ page.version.version }}/primary-key.md) columns.
 
 {{site.data.alerts.callout_success}}
 To read more about upserts, see our [Upsert in SQL: What is an Upsert, and When Should You Use One?](https://www.cockroachlabs.com/blog/sql-upsert/) blog post.
@@ -13,14 +13,12 @@ To read more about upserts, see our [Upsert in SQL: What is an Upsert, and When 
 
 ## `UPSERT` vs. `INSERT ON CONFLICT`
 
-Assuming that columns `a` and `b` are the primary key, the following `UPSERT` and [`INSERT ... ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause) statements are equivalent:
+Assuming that columns `a` and `b` are the primary key, the following `UPSERT` and [`INSERT ... ON CONFLICT`]({{ page.version.version }}/insert.md#on-conflict-clause) statements are equivalent:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO t (a, b, c)
   VALUES (1, 2, 3)
@@ -28,9 +26,8 @@ INSERT INTO t (a, b, c)
   DO UPDATE SET c = excluded.c;
 ~~~
 
-However, `UPSERT` does not let you specify columns to infer a unique constraint as an arbiter. An arbiter is a [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) constraint used to check for conflicts during execution of `INSERT ... ON CONFLICT`. `UPSERT` always uses the primary key as the arbiter. You must therefore use `INSERT ... ON CONFLICT ... DO UPDATE` if your statement considers uniqueness for columns other than primary key columns. For an example, see [Upsert that fails (conflict on non-primary key)](#upsert-that-fails-conflict-on-non-primary-key).
+However, `UPSERT` does not let you specify columns to infer a unique constraint as an arbiter. An arbiter is a [`UNIQUE`]({{ page.version.version }}/unique.md) constraint used to check for conflicts during execution of `INSERT ... ON CONFLICT`. `UPSERT` always uses the primary key as the arbiter. You must therefore use `INSERT ... ON CONFLICT ... DO UPDATE` if your statement considers uniqueness for columns other than primary key columns. For an example, see [Upsert that fails (conflict on non-primary key)](#upsert-that-fails-conflict-on-non-primary-key).
 
-{% include {{page.version.version}}/sql/insert-vs-upsert.md %}
 
 To learn more about how to perform and when to use an upsert in CockroachDB, PostgreSQL, and MySQL, see [Upsert in SQL: What is an Upsert, and When Should You Use One?](https://www.cockroachlabs.com/blog/sql-upsert/).
 
@@ -49,25 +46,24 @@ To learn more about how to perform and when to use an upsert in CockroachDB, Pos
 
 ## Required privileges
 
-The user must have the `INSERT`, `SELECT`, and `UPDATE` [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
+The user must have the `INSERT`, `SELECT`, and `UPDATE` [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the table.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/upsert.html %}
 </div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`common_table_expr` | See [Common Table Expressions]({% link {{ page.version.version }}/common-table-expressions.md %}).
+`common_table_expr` | See [Common Table Expressions]({{ page.version.version }}/common-table-expressions.md).
 `table_name` | The name of the table.
 `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
 `column_name` | The name of a column to populate during the insert.
-`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}). Each value must match the [data type]({% link {{ page.version.version }}/data-types.md %}) of its column. Also, if column names are listed after `INTO`, values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
-`DEFAULT VALUES` | To fill all columns with their [default values]({% link {{ page.version.version }}/default-value.md %}), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position.
-`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}).<br><br>Within a [transaction]({% link {{ page.version.version }}/transactions.md %}), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
+`select_stmt` | A [selection query]({{ page.version.version }}/selection-queries.md). Each value must match the [data type]({{ page.version.version }}/data-types.md) of its column. Also, if column names are listed after `INTO`, values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
+`DEFAULT VALUES` | To fill all columns with their [default values]({{ page.version.version }}/default-value.md), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position.
+`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions]({{ page.version.version }}/scalar-expressions.md).<br><br>Within a [transaction]({{ page.version.version }}/transactions.md), use `RETURNING NOTHING` to return nothing in the response, not even the number of rows affected.
 
 ## Examples
 
@@ -75,7 +71,6 @@ Parameter | Description
 
 In this example, the `id` column is the primary key. Because the inserted `id` value does not conflict with the `id` value of any existing row, the `UPSERT` statement inserts a new row into the table.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -89,12 +84,10 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (3, 6325.20);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -113,7 +106,6 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 
 In this example, the `UPSERT` statement inserts multiple rows into the table.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -128,12 +120,10 @@ In this example, the `UPSERT` statement inserts multiple rows into the table.
 +----+----------+
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (4, 1970.4), (5, 2532.9), (6, 4473.0);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -155,7 +145,6 @@ In this example, the `UPSERT` statement inserts multiple rows into the table.
 
 In this example, the `id` column is the primary key. Because the inserted `id` value is not unique, the `UPSERT` statement updates the row with the new `balance`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -173,12 +162,10 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (3, 7500.83);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -198,9 +185,8 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 
 ### Upsert that fails (conflict on non-primary key)
 
-`UPSERT` will not update rows when the uniqueness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %}). Because the inserted `b` value is not unique, the `UPSERT` fails.
+`UPSERT` will not update rows when the uniqueness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [`UNIQUE` constraint]({{ page.version.version }}/unique.md). Because the inserted `b` value is not unique, the `UPSERT` fails.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM unique_test;
 ~~~
@@ -215,7 +201,6 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +---+---+
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO unique_test VALUES (4, 1);
 ~~~
@@ -224,14 +209,12 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 pq: duplicate key value (b)=(1) violates unique constraint "unique_test_b_key"
 ~~~
 
-In such a case, you would need to use the [`INSERT ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}) statement to specify the `b` column as the column with the `UNIQUE` constraint.
+In such a case, you would need to use the [`INSERT ON CONFLICT`]({{ page.version.version }}/insert.md) statement to specify the `b` column as the column with the `UNIQUE` constraint.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO unique_test VALUES (4, 1) ON CONFLICT (b) DO UPDATE SET a = excluded.a;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM unique_test;
 ~~~
@@ -256,7 +239,6 @@ In such a case, you would need to use the [`INSERT ON CONFLICT`]({% link {{ page
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (id, name, balance) VALUES
     (1, 'a1', 10000.5),
@@ -264,7 +246,6 @@ In such a case, you would need to use the [`INSERT ON CONFLICT`]({% link {{ page
     (3, 'c1',  6325.2);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -281,7 +262,6 @@ In such a case, you would need to use the [`INSERT ON CONFLICT`]({% link {{ page
 
 Upserting a proper subset of columns without specifying the column names will write the default values of the unspecified columns when there is a conflict on the primary key. The account with `id` of `1` has a balance of `0` (the column's default value) after the `UPSERT`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts VALUES (1, 'a2');
 
@@ -300,7 +280,6 @@ Upserting a proper subset of columns without specifying the column names will wr
 
 If the target column names are included in the `UPSERT`, then the subset of columns without values will not change when there is a conflict on the primary key. The `balance` of the account with `id` of `2` is unchanged after the `UPSERT`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, name) VALUES (2, 'b2');
 
@@ -320,12 +299,11 @@ If the target column names are included in the `UPSERT`, then the subset of colu
 ### Import data containing duplicate rows using `DISTINCT ON`
 
 If the input data to insert or update contains duplicate rows, you must
-use [`DISTINCT ON`]({% link {{ page.version.version }}/select-clause.md %}#eliminate-duplicate-rows) to
+use [`DISTINCT ON`]({{ page.version.version }}/select-clause.md#eliminate-duplicate-rows) to
 ensure there is only one row for each value of the primary key.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH
     -- the following data contains duplicates on the conflict column "id":
@@ -339,7 +317,6 @@ The `DISTINCT ON` clause does not guarantee which of the duplicates is
 considered. To force the selection of a particular duplicate, use an
 `ORDER BY` clause:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH
     -- the following data contains duplicates on the conflict column "id":
@@ -356,17 +333,16 @@ Using `DISTINCT ON` incurs a performance cost to search and eliminate duplicates
 For best performance, avoid using it when the input is known to not contain duplicates.
 {{site.data.alerts.end}}
 
-{% include {{page.version.version}}/sql/limit-row-size.md %}
 
 ## See also
 
-- [Ordering rows in DML statements]({% link {{ page.version.version }}/order-by.md %}#ordering-rows-in-dml-statements)
-- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
-- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
-- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
-- [`UPDATE`]({% link {{ page.version.version }}/update.md %})
-- [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %})
-- [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
-- [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
-- [`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Ordering rows in DML statements]({{ page.version.version }}/order-by.md#ordering-rows-in-dml-statements)
+- [Selection Queries]({{ page.version.version }}/selection-queries.md)
+- [`DELETE`]({{ page.version.version }}/delete.md)
+- [`INSERT`]({{ page.version.version }}/insert.md)
+- [`UPDATE`]({{ page.version.version }}/update.md)
+- [`TRUNCATE`]({{ page.version.version }}/truncate.md)
+- [`ALTER TABLE`]({{ page.version.version }}/alter-table.md)
+- [`DROP TABLE`]({{ page.version.version }}/drop-table.md)
+- [`DROP DATABASE`]({{ page.version.version }}/drop-database.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

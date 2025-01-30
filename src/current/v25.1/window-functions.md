@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 CockroachDB supports the application of a function over a subset of the rows returned by a [selection query][selection-query]. Such a function is known as a _window function_, and it allows you to compute values by operating on more than one row at a time. The subset of rows a window function operates on is known as a _window frame_.
 
-For a complete list of supported window functions, see [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#window-functions).
+For a complete list of supported window functions, see [Functions and Operators]({{ page.version.version }}/functions-and-operators.md#window-functions).
 
 {{site.data.alerts.callout_success}}
 All [aggregate functions][aggregate-functions] can also be used as [window functions][window-functions]. For more information, see the [Examples](#examples) below.
@@ -15,7 +15,7 @@ All [aggregate functions][aggregate-functions] can also be used as [window funct
 
 ## Window definitions
 
-Window frames are defined in [`OVER` clauses]({% link {{ page.version.version }}/sql-grammar.md %}#over_clause) or [`WINDOW` clauses]({% link {{ page.version.version }}/sql-grammar.md %}#window_clause).
+Window frames are defined in [`OVER` clauses]({{ page.version.version }}/sql-grammar.md#over_clause) or [`WINDOW` clauses]({{ page.version.version }}/sql-grammar.md#window_clause).
 
 ### Syntax
 
@@ -29,7 +29,6 @@ Window frames are defined in [`OVER` clauses]({% link {{ page.version.version }}
 <div class="filter-content" markdown="1" data-scope="basic">
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/window_definition.html %}
 </div>
 
 ### Parameters
@@ -39,7 +38,7 @@ Parameter | Description
 `window_name` | The name of the new window frame.
 `opt_existing_window_name` | An optional name of an existing window frame, defined in a different window definition.
 `opt_partition_clause`  | An optional `PARTITION BY` clause.
-`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results]({% link {{ page.version.version }}/order-by.md %}) for details.
+`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results]({{ page.version.version }}/order-by.md) for details.
 `opt_frame_clause`  | An optional frame clause, which contains a frame boundary and/or an `EXCLUDE` clause.
 
 </div>
@@ -47,13 +46,11 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/window_definition.html %}
 </div>
 
 **opt_frame_clause ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/opt_frame_clause.html %}
 </div>
 
 ### Parameters
@@ -63,7 +60,7 @@ Parameter | Description
 `window_name` | The name of the new window frame.
 `opt_existing_window_name` | An optional name of an existing window frame, defined in a different window definition.
 `opt_partition_clause`  | An optional `PARTITION BY` clause.
-`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results]({% link {{ page.version.version }}/order-by.md %}) for details.
+`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results]({{ page.version.version }}/order-by.md) for details.
 `frame_bound` | An optional frame boundary.<br>Valid start boundaries include `UNBOUNDED PRECEDING`, `<offset> PRECEDING`, and `CURRENT ROW`.<br>Valid end boundaries include `UNBOUNDED FOLLOWING`, `<offset> FOLLOWING`, and `CURRENT ROW`.
 `opt_frame_exclusion` | An optional frame `EXCLUDE` clause.<br>Valid exclusions include `CURRENT ROW`, `GROUP`, `TIES`, and `NO OTHERS`.
 
@@ -74,12 +71,11 @@ Parameter | Description
 At a high level, window functions work by:
 
 1. Creating a "virtual table" using a [selection query][selection-query].
-1. Splitting that table into window frames with [window definitions](#window-definitions). You can define window frames in an [`OVER` clause]({% link {{ page.version.version }}/sql-grammar.md %}#over_clause), directly after the window function, or in a [`WINDOW` clause]({% link {{ page.version.version }}/sql-grammar.md %}#window_clause), as a part of the selection query.
+1. Splitting that table into window frames with [window definitions](#window-definitions). You can define window frames in an [`OVER` clause]({{ page.version.version }}/sql-grammar.md#over_clause), directly after the window function, or in a [`WINDOW` clause]({{ page.version.version }}/sql-grammar.md#window_clause), as a part of the selection query.
 1. Applying the window function to each of the window frames.
 
 For example, consider a query where the window frames are defined for each window function call:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT(city),
              SUM(revenue) OVER () AS total_revenue,
@@ -92,9 +88,9 @@ Its operation can be described as follows (numbered steps listed here correspond
 
 1. The outer `SELECT DISTINCT(city) ... FROM rides` creates a "virtual table" on which the window functions will operate.
 1. The window function `SUM(revenue) OVER ()` operates on a window frame containing all rows of the query output.
-1. The window function `SUM(revenue) OVER (PARTITION BY city)` operates on several window frames in turn; each frame contains the `revenue` columns for a different city [partition]({% link {{ page.version.version }}/partitioning.md %}) (Amsterdam, Boston, L.A., etc.).
+1. The window function `SUM(revenue) OVER (PARTITION BY city)` operates on several window frames in turn; each frame contains the `revenue` columns for a different city [partition]({{ page.version.version }}/partitioning.md) (Amsterdam, Boston, L.A., etc.).
 
-<img src="{{ 'images/v24.2/window-functions.png' | relative_url }}" alt="Window function diagram" style="border:1px solid #eee;max-width:100%" />
+![Window function diagram](/images/v24.2/window-functions.png)
 
 ### Caveats
 
@@ -116,13 +112,11 @@ If you are running separate window functions over the same window frame, you can
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements-geo-partitioned-replicas.md %}
 
 ### Customers taking the most rides
 
 To see which customers have taken the most rides, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM
     (SELECT distinct(name) as "name",
@@ -151,7 +145,6 @@ To see which customers have taken the most rides, run:
 
 To see which customers have generated the most revenue, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT name,
     SUM(revenue) OVER (PARTITION BY name) AS "total rider revenue"
@@ -180,7 +173,6 @@ To see which customers have generated the most revenue, run:
 
 To add row numbers to the output, kick the previous query down into a subquery and run the `row_number()` window function.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT row_number() OVER (), *
   FROM (
@@ -215,7 +207,6 @@ To add row numbers to the output, kick the previous query down into a subquery a
 
 To see which customers have taken the most rides while generating the most revenue, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM (
     SELECT DISTINCT name,
@@ -251,7 +242,6 @@ Note that in the query above, a `WINDOW` clause defines the window frame, and th
 
 To see which customers have the highest average revenue per ride, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT name,
     COUNT(*)     OVER w AS "number of rides",
@@ -282,7 +272,6 @@ To see which customers have the highest average revenue per ride, run:
 
 To see which customers have the highest average revenue per ride, given that they have taken at least 10 rides, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM (
     SELECT DISTINCT name,
@@ -316,7 +305,6 @@ To see which customers have the highest average revenue per ride, given that the
 
 To find out the total number of riders and total revenue generated thus far by the app, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
     COUNT("id") AS "total # of riders",
@@ -336,7 +324,6 @@ To find out the total number of riders and total revenue generated thus far by t
 
 ### How many vehicles of each type
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT type, COUNT(*) OVER (PARTITION BY type) AS cnt FROM vehicles ORDER BY cnt DESC;
 ~~~
@@ -352,7 +339,6 @@ To find out the total number of riders and total revenue generated thus far by t
 
 ### How much revenue per city
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT(city), SUM(revenue) OVER (PARTITION BY city) AS city_revenue FROM rides ORDER BY city_revenue DESC;
 ~~~
@@ -386,4 +372,4 @@ To find out the total number of riders and total revenue generated thus far by t
 [demo]: https://www.youtube.com/watch?v=v2QK5VgLx6E
 [simple-select]: select-clause.html
 [selection-query]: selection-queries.html
-[window-functions]: {% link {{ page.version.version }}/functions-and-operators.md %}#window-functions
+[window-functions]: {{ page.version.version }}/functions-and-operators.md#window-functions

@@ -8,7 +8,7 @@ docs_area:
 
 This page has instructions for configuring [GeoServer](http://geoserver.org) to use CockroachDB as the underlying database.
 
-The instructions here reuse parts of the data set described in the [Spatial Data tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %}), specifically the `tutorial.roads` table, which contains the [U.S. National Atlas data set](https://www.sciencebase.gov/catalog/file/get/581d052be4b08da350d524ce?f=__disk__60%2F6b%2F4e%2F606b4e564884da8cca57ffeb229cd817006616e0&transform=1&allowOpen=true).
+The instructions here reuse parts of the data set described in the [Spatial Data tutorial]({{ page.version.version }}/spatial-tutorial.md), specifically the `tutorial.roads` table, which contains the [U.S. National Atlas data set](https://www.sciencebase.gov/catalog/file/get/581d052be4b08da350d524ce?f=__disk__60%2F6b%2F4e%2F606b4e564884da8cca57ffeb229cd817006616e0&transform=1&allowOpen=true).
 
 Many of the instructions on this page come from the following GeoServer documentation pages:
 
@@ -19,7 +19,7 @@ Many of the instructions on this page come from the following GeoServer document
 
 You must have the following set up before proceeding with this tutorial:
 
-- CockroachDB [installed on the local machine]({% link {{ page.version.version }}/install-cockroachdb.md %})
+- CockroachDB [installed on the local machine]({{ page.version.version }}/install-cockroachdb.md)
 - GeoServer [installed on the local machine](https://docs.geoserver.org/stable/en/user/installation/index.html#installation).
     {{site.data.alerts.callout_success}}
     Mac users who use [Homebrew](https://brew.sh) can install GeoServer by typing `brew install geoserver`.
@@ -29,36 +29,32 @@ These instructions assume you are running on a UNIX-like system.
 
 ## Step 1. Start CockroachDB and connect to your cluster
 
-Start a CockroachDB cluster by following the instructions in [Start a Local Cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}).
+Start a CockroachDB cluster by following the instructions in [Start a Local Cluster]({{ page.version.version }}/start-a-local-cluster.md).
 
 ## Step 2. Load spatial data
 
-Connect to the running cluster from the [SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) and enter the statements below.
+Connect to the running cluster from the [SQL client]({{ page.version.version }}/cockroach-sql.md) and enter the statements below.
 
-1. [Create]({% link {{ page.version.version }}/create-database.md %}) the `tutorial` database:
+1. [Create]({{ page.version.version }}/create-database.md) the `tutorial` database:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE DATABASE tutorial;
     ~~~
 
 1. Switch to the `tutorial` database:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     USE tutorial;
     ~~~
 
 1. In a separate terminal, download the spatial data set:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o bookstores-and-roads.sql https://spatial-tutorial.s3.us-east-2.amazonaws.com/bookstores-and-roads-20210125.sql
     ~~~
 
-1. Pipe the data set directly into [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %}), specifying the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) of your local cluster:
+1. Pipe the data set directly into [cockroach sql]({{ page.version.version }}/cockroach-sql.md), specifying the [connection string]({{ page.version.version }}/connection-parameters.md#connect-using-a-url) of your local cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url {"CONNECTION STRING"} < bookstores-and-roads.sql
     ~~~
@@ -67,9 +63,8 @@ Connect to the running cluster from the [SQL client]({% link {{ page.version.ver
 
 ## Step 3. Turn on CockroachDB's experimental box comparison operators
 
-CockroachDB's support for GeoServer is still in development. To use CockroachDB with GeoServer, you will need to enable the use of certain experimental box2d comparison operators by changing the following [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
+CockroachDB's support for GeoServer is still in development. To use CockroachDB with GeoServer, you will need to enable the use of certain experimental box2d comparison operators by changing the following [cluster setting]({{ page.version.version }}/cluster-settings.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.spatial.experimental_box2d_comparison_operators.enabled = ON;
 ~~~
@@ -77,7 +72,7 @@ SET CLUSTER SETTING sql.spatial.experimental_box2d_comparison_operators.enabled 
 The reasons the box2d comparison operators are experimental in CockroachDB are as follows:
 
 - PostGIS uses the `&&`, `~`, and `@` operators to do bounding box comparisons. These comparisons can always be index-accelerated by PostgreSQL since it uses [R-tree based indexing](https://wikipedia.org/wiki/R-tree) to generate its coverings.
-- CockroachDB [uses a different indexing strategy based on space-filling curves]({% link {{ page.version.version }}/spatial-indexes.md %}) since this is necessary for [scaling horizontally]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-does-cockroachdb-scale).
+- CockroachDB [uses a different indexing strategy based on space-filling curves]({{ page.version.version }}/spatial-indexes.md) since this is necessary for [scaling horizontally]({{ page.version.version }}/frequently-asked-questions.md#how-does-cockroachdb-scale).
   - This means that the coverings generated by CockroachDB's `&&`, `~`, and `@` operators for index-accelerated lookups are not the same as the bounding box coverings generated by PostGIS.
   - In practice, CockroachDB may return a smaller set of results for the same query, as the space-filling curve covering is often more exact than a bounding box covering, and will exclude from the result set any geometries that have an intersecting bounding box but where no part of the geometry hits the actual bounding box.
   - Note that the behavior described above only applies to index-accelerated lookups.
@@ -88,14 +83,12 @@ The easiest place to create the GeoServer data directory is in your user's home 
 
 1. In the UNIX shell, run the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     mkdir -p $HOME/geoserver
     ~~~
 
 1. Start GeoServer by running the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     geoserver $HOME/geoserver
     ~~~
@@ -125,7 +118,7 @@ In the left-hand navigation menu, click **Data > Workspaces**. The **Workspaces*
 On the **New Workspace** page, enter the following information:
 
 - In the **Name** field, enter the text "spatial-tutorial".
-- In the **Namespace URI** field, enter the URL for the spatial tutorial where this data set is used: `{% link {{ page.version.version }}/spatial-tutorial.md %}`.
+- In the **Namespace URI** field, enter the URL for the spatial tutorial where this data set is used: `{{ page.version.version }}/spatial-tutorial.md`.
 
 Press the **Save** button.
 
@@ -174,41 +167,41 @@ In the row for the `roads` layer, click the **OpenLayers** button under the **Co
 
 Your browser should open a new tab with the title **OpenLayers map preview**. It should show a map view that looks like the following:
 
-<img src="{{ 'images/v24.2/geospatial/geoserver-us-atlas-00.png' | relative_url }}" alt="GeoServer U.S. National Atlas preview" style="border:1px solid #eee;max-width:100%" />
+![GeoServer U.S. National Atlas preview](/images/v24.2/geospatial/geoserver-us-atlas-00.png)
 
 ## See also
 
-- [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %})
-- [Spatial Data Overview]({% link {{ page.version.version }}/spatial-data-overview.md %})
-- [Spatial Indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
-- [Spatial & GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
-- [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
-- [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
-- [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
-- [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
-- [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
-- [Spatial Functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
-- [POINT]({% link {{ page.version.version }}/point.md %})
-- [LINESTRING]({% link {{ page.version.version }}/linestring.md %})
-- [POLYGON]({% link {{ page.version.version }}/polygon.md %})
-- [MULTIPOINT]({% link {{ page.version.version }}/multipoint.md %})
-- [MULTILINESTRING]({% link {{ page.version.version }}/multilinestring.md %})
-- [MULTIPOLYGON]({% link {{ page.version.version }}/multipolygon.md %})
-- [GEOMETRYCOLLECTION]({% link {{ page.version.version }}/geometrycollection.md %})
-- [Well Known Text]({% link {{ page.version.version }}/well-known-text.md %})
-- [Well Known Binary]({% link {{ page.version.version }}/well-known-binary.md %})
-- [GeoJSON]({% link {{ page.version.version }}/geojson.md %})
-- [SRID 4326 - Longitude and Latitude]({% link {{ page.version.version }}/srid-4326.md %})
-- [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %})
-- [`ST_ConvexHull`]({% link {{ page.version.version }}/st_convexhull.md %})
-- [`ST_CoveredBy`]({% link {{ page.version.version }}/st_coveredby.md %})
-- [`ST_Covers`]({% link {{ page.version.version }}/st_covers.md %})
-- [`ST_Disjoint`]({% link {{ page.version.version }}/st_disjoint.md %})
-- [`ST_Equals`]({% link {{ page.version.version }}/st_equals.md %})
-- [`ST_Intersects`]({% link {{ page.version.version }}/st_intersects.md %})
-- [`ST_Overlaps`]({% link {{ page.version.version }}/st_overlaps.md %})
-- [`ST_Touches`]({% link {{ page.version.version }}/st_touches.md %})
-- [`ST_Union`]({% link {{ page.version.version }}/st_union.md %})
-- [`ST_Within`]({% link {{ page.version.version }}/st_within.md %})
-- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
-- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
+- [Install CockroachDB]({{ page.version.version }}/install-cockroachdb.md)
+- [Spatial Data Overview]({{ page.version.version }}/spatial-data-overview.md)
+- [Spatial Indexes]({{ page.version.version }}/spatial-indexes.md)
+- [Spatial & GIS Glossary of Terms]({{ page.version.version }}/architecture/glossary.md)
+- [Export Spatial Data]({{ page.version.version }}/export-spatial-data.md)
+- [Migrate from Shapefiles]({{ page.version.version }}/migrate-from-shapefiles.md)
+- [Migrate from GeoJSON]({{ page.version.version }}/migrate-from-geojson.md)
+- [Migrate from GeoPackage]({{ page.version.version }}/migrate-from-geopackage.md)
+- [Migrate from OpenStreetMap]({{ page.version.version }}/migrate-from-openstreetmap.md)
+- [Spatial Functions]({{ page.version.version }}/functions-and-operators.md#spatial-functions)
+- [POINT]({{ page.version.version }}/point.md)
+- [LINESTRING]({{ page.version.version }}/linestring.md)
+- [POLYGON]({{ page.version.version }}/polygon.md)
+- [MULTIPOINT]({{ page.version.version }}/multipoint.md)
+- [MULTILINESTRING]({{ page.version.version }}/multilinestring.md)
+- [MULTIPOLYGON]({{ page.version.version }}/multipolygon.md)
+- [GEOMETRYCOLLECTION]({{ page.version.version }}/geometrycollection.md)
+- [Well Known Text]({{ page.version.version }}/well-known-text.md)
+- [Well Known Binary]({{ page.version.version }}/well-known-binary.md)
+- [GeoJSON]({{ page.version.version }}/geojson.md)
+- [SRID 4326 - Longitude and Latitude]({{ page.version.version }}/srid-4326.md)
+- [`ST_Contains`]({{ page.version.version }}/st_contains.md)
+- [`ST_ConvexHull`]({{ page.version.version }}/st_convexhull.md)
+- [`ST_CoveredBy`]({{ page.version.version }}/st_coveredby.md)
+- [`ST_Covers`]({{ page.version.version }}/st_covers.md)
+- [`ST_Disjoint`]({{ page.version.version }}/st_disjoint.md)
+- [`ST_Equals`]({{ page.version.version }}/st_equals.md)
+- [`ST_Intersects`]({{ page.version.version }}/st_intersects.md)
+- [`ST_Overlaps`]({{ page.version.version }}/st_overlaps.md)
+- [`ST_Touches`]({{ page.version.version }}/st_touches.md)
+- [`ST_Union`]({{ page.version.version }}/st_union.md)
+- [`ST_Within`]({{ page.version.version }}/st_within.md)
+- [Troubleshooting Overview]({{ page.version.version }}/troubleshooting-overview.md)
+- [Support Resources]({{ page.version.version }}/support-resources.md)

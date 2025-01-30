@@ -5,10 +5,10 @@ toc: true
 docs_area: manage
 ---
 
-[Kibana](https://www.elastic.co/kibana/) is a platform that visualizes data on the [Elastic Stack](https://www.elastic.co/elastic-stack/). This page shows how to use the [CockroachDB module for Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html) to collect metrics exposed by your CockroachDB {{ site.data.products.core }} cluster's [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) in Elasticsearch and how to visualize those metrics with Kibana.
+[Kibana](https://www.elastic.co/kibana/) is a platform that visualizes data on the [Elastic Stack](https://www.elastic.co/elastic-stack/). This page shows how to use the [CockroachDB module for Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html) to collect metrics exposed by your CockroachDB {{ site.data.products.core }} cluster's [Prometheus endpoint]({{ page.version.version }}/monitoring-and-alerting.md#prometheus-endpoint) in Elasticsearch and how to visualize those metrics with Kibana.
 
 {{site.data.alerts.callout_success}}
-To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/export-metrics.md %}) instead of this page.
+To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster](export-metrics.md) instead of this page.
 {{site.data.alerts.end}}
 
 In this tutorial, you will enable the CockroachDB module for Metricbeat and visualize the data in Kibana.
@@ -27,14 +27,13 @@ Either of the following:
 - Self-managed [Elastic Stack](https://www.elastic.co/guide/en/elastic-stack-get-started/current/get-started-elastic-stack.html) with [Metricbeat installed](https://www.elastic.co/guide/en/beats/metricbeat/7.13/metricbeat-installation-configuration.html)
 
 {{site.data.alerts.callout_info}}
-This tutorial assumes that you have [started a secure CockroachDB cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}). [CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/index.md %}) does not expose a compatible monitoring endpoint.
+This tutorial assumes that you have [started a secure CockroachDB cluster]({{ page.version.version }}/secure-a-cluster.md). [CockroachDB {{ site.data.products.cloud }}](index.md) does not expose a compatible monitoring endpoint.
 {{site.data.alerts.end}}
 
 ## Step 1. Enable CockroachDB module
 
 From your Metricbeat installation directory, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ./metricbeat modules enable cockroachdb
 ~~~
@@ -45,7 +44,7 @@ Open `modules.d/cockroachdb.yml` in your Metricbeat installation directory.
 
 Follow the steps in the [Elastic documentation](https://www.elastic.co/guide/en/beats/metricbeat/current/configuration-ssl.html) to enable SSL on the CockroachDB module.
 
-For example, if you used [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %}) to [secure your cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}#step-1-generate-certificates), the YAML should look like:
+For example, if you used [`cockroach cert`]({{ page.version.version }}/cockroach-cert.md) to [secure your cluster]({{ page.version.version }}/secure-a-cluster.md#step-1-generate-certificates), the YAML should look like:
 
 ~~~ yaml
 - module: cockroachdb
@@ -65,14 +64,12 @@ For example, if you used [`cockroach cert`]({% link {{ page.version.version }}/c
 
 Load the Kibana dashboards (this may take a few moments):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ./metricbeat setup
 ~~~
 
 Launch Metricbeat:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 ./metricbeat -e
 ~~~
@@ -83,42 +80,40 @@ Open the Kibana web interface and click **Dashboard**.
 
 Search for the CockroachDB dashboard:
 
-<img src="{{ 'images/v24.2/kibana-crdb-dashboard-selection.png' | relative_url }}" alt="CockroachDB dashboard selection for Metricbeat" style="border:1px solid #eee;max-width:100%" />
+![CockroachDB dashboard selection for Metricbeat](/images/v24.2/kibana-crdb-dashboard-selection.png)
 
 Click the dashboard title to open the dashboard, which presents metrics on replicas and query performance:
 
-<img src="{{ 'images/v24.2/kibana-crdb-dashboard.png' | relative_url }}" alt="CockroachDB Overview dashboard for Metricbeat" style="border:1px solid #eee;max-width:100%" />
+![CockroachDB Overview dashboard for Metricbeat](/images/v24.2/kibana-crdb-dashboard.png)
 
 ## Step 4. Run a sample workload
 
-To test the dashboard functionality, use [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) to run a sample workload on the cluster.
+To test the dashboard functionality, use [`cockroach workload`]({{ page.version.version }}/cockroach-workload.md) to run a sample workload on the cluster.
 
 Initialize the workload for MovR, a fictional vehicle-sharing company:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach workload init movr 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
 ~~~
 
 Run the MovR workload for 5 minutes:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach workload run movr --duration=5m 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
 ~~~
 
 Click **Refresh**. The query metrics will appear on the dashboard:
 
-<img src="{{ 'images/v24.2/kibana-crdb-dashboard-sql.png' | relative_url }}" alt="CockroachDB Overview dashboard for Metricbeat with SQL metrics" style="border:1px solid #eee;max-width:100%" />
+![CockroachDB Overview dashboard for Metricbeat with SQL metrics](/images/v24.2/kibana-crdb-dashboard-sql.png)
 
 ## Step 5. Disable DB Console's local storage of metrics (optional)
 
-If you rely on external tools such as Kibana for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
+If you rely on external tools such as Kibana for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({{ page.version.version }}/operational-faqs.md#disable-time-series-storage).
 
-When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Kibana based on the data it is collecting from your cluster's Prometheus endpoint.
+When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({{ page.version.version }}/monitoring-and-alerting.md#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Kibana based on the data it is collecting from your cluster's Prometheus endpoint.
 
 ## See also
 
-- [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
-- [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
-- [Logging Overview]({% link {{ page.version.version }}/logging-overview.md %})
+- [Monitoring and Alerting]({{ page.version.version }}/monitoring-and-alerting.md)
+- [DB Console Overview]({{ page.version.version }}/ui-overview.md)
+- [Logging Overview]({{ page.version.version }}/logging-overview.md)

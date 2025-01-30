@@ -7,31 +7,26 @@ referral_id: docs_node_prisma
 docs_area: get_started
 ---
 
-{% include {{ page.version.version }}/filter-tabs/crud-js.md %}
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and [Prisma](https://www.prisma.io).
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup.md %}
 
 ## Step 2. Get the code
 
 1. Clone the code's GitHub repo:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ git clone https://github.com/cockroachlabs/example-app-node-prisma
     ~~~
 
 1. Install the application dependencies:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-node-prisma
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ npm install
     ~~~
@@ -42,7 +37,6 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
     <div class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ echo "DATABASE_URL=<connection-string>" >> .env
     ~~~
@@ -53,7 +47,6 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
     <div class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ echo "DATABASE_URL=postgresql://root@localhost:26257/defaultdb?sslmode=disable" >> .env
     ~~~
@@ -68,7 +61,6 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 1. Run [Prisma Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate) to initialize the database with the schema defined in `prisma/prisma.schema`.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ node_modules/.bin/prisma migrate dev --name init
     ~~~
@@ -87,18 +79,16 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 The `index.js` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations:
 
-{% include_cached copy-clipboard.html %}
 ~~~ js
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-prisma/main/index.js %}
+
 ~~~
 
 {{site.data.alerts.callout_info}}
-In [production]({% link {{ page.version.version }}/recommended-production-settings.md %}#transaction-retries), we recommend implementing [client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) for all database operations.
+In [production]({{ page.version.version }}/recommended-production-settings.md#transaction-retries), we recommend implementing [client-side retry handling]({{ page.version.version }}/transaction-retry-error-reference.md#client-side-retry-handling) for all database operations.
 {{site.data.alerts.end}}
 
 Run the application code:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ node index.js
 ~~~
@@ -219,5 +209,3 @@ All Customer rows deleted. { count: 10 }
 ## What's next?
 
 Read more about using [Prisma Client](https://www.prisma.io/docs/).
-
-{% include_cached {{page.version.version}}/app/see-also-links.md %}

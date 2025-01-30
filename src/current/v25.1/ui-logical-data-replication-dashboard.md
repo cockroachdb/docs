@@ -5,17 +5,16 @@ toc: true
 docs_area: reference.db_console
 ---
 
-The **Logical Data Replication** dashboard in the DB Console lets you monitor metrics related to the [logical data replication]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) (LDR) jobs on the destination cluster. These metrics are at the **cluster** level. This means that if there are multiple LDR jobs running on a cluster the DB Console will show the average metrics across jobs.
+The **Logical Data Replication** dashboard in the DB Console lets you monitor metrics related to the [logical data replication]({{ page.version.version }}/logical-data-replication-overview.md) (LDR) jobs on the destination cluster. These metrics are at the **cluster** level. This means that if there are multiple LDR jobs running on a cluster the DB Console will show the average metrics across jobs.
 
-To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) for the destination cluster, click **Metrics** on the left-hand navigation bar, and select **Logical Data Replication** from the **Dashboard** dropdown.
+To view this dashboard, [access the DB Console]({{ page.version.version }}/ui-overview.md#db-console-access) for the destination cluster, click **Metrics** on the left-hand navigation bar, and select **Logical Data Replication** from the **Dashboard** dropdown.
 
 {{site.data.alerts.callout_info}}
-The **Logical Data Replication** dashboard is distinct from the [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}), which tracks metrics related to how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
+The **Logical Data Replication** dashboard is distinct from the [**Replication** dashboard]({{ page.version.version }}/ui-replication-dashboard.md), which tracks metrics related to how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
 {{site.data.alerts.end}}
 
 ## Dashboard navigation
 
-{% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 ---
 
@@ -80,7 +79,7 @@ processing time | `logical_replication.batch_hist_nanos-p99` | Time spent flushi
  
 ## DLQ Causes
 
-The graph shows the reasons why events were sent to the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq)
+The graph shows the reasons why events were sent to the [dead letter queue (DLQ)]({{ page.version.version }}/manage-logical-data-replication.md#dead-letter-queue-dlq)
 
 Metric | CockroachDB Metric Name | Description
 -------|-------------------------|-------------
@@ -97,11 +96,10 @@ Metric | CockroachDB Metric Name | Description
 -------|-------------------------|-------------
 retry queue bytes | `logical_replication.retry_queue_bytes` | The size of the retry queue of the logical replication stream.
 
-{% include {{ page.version.version }}/ui/ui-summary-events.md %}
 
 ## See also
 
-- [Logical Data Replication Overview]({% link {{ page.version.version }}/logical-data-replication-overview.md %})
-- [Logical Data Replication Monitoring]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %})
-- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
-- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
+- [Logical Data Replication Overview]({{ page.version.version }}/logical-data-replication-overview.md)
+- [Logical Data Replication Monitoring]({{ page.version.version }}/logical-data-replication-monitoring.md)
+- [Troubleshooting Overview]({{ page.version.version }}/troubleshooting-overview.md)
+- [Support Resources]({{ page.version.version }}/support-resources.md)

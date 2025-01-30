@@ -10,8 +10,8 @@ This page provides a conceptual overview of Transport Layer Security (TLS) and t
 
 **Learn more:**
 
-- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %})
-- [Certificate Authentication for SQL Clients in CockroachDB Advanced Clusters]({% link cockroachcloud/client-certs-advanced.md %})
+- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({{ page.version.version }}/manage-certs-vault.md)
+- [Certificate Authentication for SQL Clients in CockroachDB Advanced Clusters](client-certs-advanced.md)
 
 ## What is Transport Layer Security (TLS)?
 
@@ -143,7 +143,7 @@ If the client is to use mutual authentication the client must have a private key
 
 CockroachDB {{ site.data.products.core }} customers must provision PKI certificates for both internode and client-cluster communication.
 
-Refer to [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %}) for procedural information on administering and using client certificate authentication.
+Refer to [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({{ page.version.version }}/manage-certs-vault.md) for procedural information on administering and using client certificate authentication.
 
 ## PKI in CockroachDB {{ site.data.products.cloud }}
 
@@ -153,7 +153,7 @@ PKI for internode communication of CockroachDB {{ site.data.products.cloud }} cl
 
 Certificate authentication for SQL clients is available for CockroachDB {{ site.data.products.advanced }} clusters.
 
-Refer to [Certificate Authentication for SQL Clients in CockroachDB Advanced]({% link cockroachcloud/client-certs-advanced.md %}) for procedural information on administering and using client certificate authentication.
+Refer to [Certificate Authentication for SQL Clients in CockroachDB Advanced](client-certs-advanced.md) for procedural information on administering and using client certificate authentication.
 
 ## CockroachDB's TLS support and operating modes
 
@@ -175,7 +175,6 @@ If the connection is mutually TLS-authenticated (i.e., if the client authenticat
 ### `--accept-sql-without-tls` mode
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 CockroachDB clusters can be started with this option in order to allow clients to opt out of TLS server authentication.
@@ -195,7 +194,7 @@ Note that client connections must also be made insecurely, or the connection req
 
 ## The CockroachDB certificate Trust Store
 
-A node's [**trust store**](#public-and-private-pkis) is the set of CA public certificates contained in the directory specified by the `--certs-dir` argument when the node is started using [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}). For each CA public certificate in the trust store, the node will accept **all valid certificates signed by the CA or any CA subordinate to it**.
+A node's [**trust store**](#public-and-private-pkis) is the set of CA public certificates contained in the directory specified by the `--certs-dir` argument when the node is started using [`cockroach start`]({{ page.version.version }}/cockroach-start.md). For each CA public certificate in the trust store, the node will accept **all valid certificates signed by the CA or any CA subordinate to it**.
 
 CockroachDB ignores operating system certificate trust stores.
 
@@ -214,8 +213,8 @@ Customers who deploy and manage their own CockroachDB clusters must provision an
 
 Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
 
-- Learn about [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %}).
-- Review our [breakdown of security features by offering]({% link {{ page.version.version }}/security-reference/security-overview.md %}).
+- Learn about [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({{ page.version.version }}/manage-certs-vault.md).
+- Review our [breakdown of security features by offering]({{ page.version.version }}/security-reference/security-overview.md).
 - Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
 {{site.data.alerts.end}}
 
@@ -225,7 +224,7 @@ The node must also have a trust store containing the public certificate of at le
 
 ## TLS in CockroachDB SQL client connections
 
-CockroachDB provides a number of SQL clients, including a [CLI]({% link {{ page.version.version }}/cockroach-sql.md %}#start-a-sql-shell), and a number of [drivers and object-relational mapping (ORM) tools]({% link {{ page.version.version }}/install-client-drivers.md %}). Regardless of which client you are using, how you are able to authenticate to a CockroachDB cluster depends on that cluster's [authentication configuration]({% link {{ page.version.version }}/security-reference/authentication.md %}), specifically whether that configuration requires the user to authenticate with username/password combination, certificate or another method.
+CockroachDB provides a number of SQL clients, including a [CLI]({{ page.version.version }}/cockroach-sql.md#start-a-sql-shell), and a number of [drivers and object-relational mapping (ORM) tools]({{ page.version.version }}/install-client-drivers.md). Regardless of which client you are using, how you are able to authenticate to a CockroachDB cluster depends on that cluster's [authentication configuration]({{ page.version.version }}/security-reference/authentication.md), specifically whether that configuration requires the user to authenticate with username/password combination, certificate or another method.
 
 In turn, which authentication methods are available depends on the sort of environment in which a CockroachDB cluster is deployed, as described in the following subsections.
 
@@ -233,7 +232,7 @@ In turn, which authentication methods are available depends on the sort of envir
 
 CockroachDB {{ site.data.products.cloud }} does not support certificate-authenticated client requests. TLS is used to authenticate the server and encrypt all traffic, but the user must authenticate to the database with a username/password combination.
 
-Because the server must still be TLS-authenticated, the client must know to trust the certificate authority that signed the public certificate identifying the server. The path to the CA's public certificate is passed as the `sslrootcert` parameter in a [database connection string]({% link {{ page.version.version }}/connect-to-the-database.md %}), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) CLI command.
+Because the server must still be TLS-authenticated, the client must know to trust the certificate authority that signed the public certificate identifying the server. The path to the CA's public certificate is passed as the `sslrootcert` parameter in a [database connection string]({{ page.version.version }}/connect-to-the-database.md), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`]({{ page.version.version }}/cockroach-sql.md) CLI command.
 
 ### CockroachDB {{ site.data.products.core }}
 
@@ -242,8 +241,8 @@ Customers who deploy and manage their own CockroachDB clusters must provision an
 
 Choosing a strategy for maintaining solid private PKI is important and complex, and depends on your total system requirements, total security threat model, and available resources.
 
-- Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %}).
-- Review our [breakdown of security features by offering]({% link {{ page.version.version }}/security-reference/security-overview.md %}).
+- Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({{ page.version.version }}/manage-certs-vault.md).
+- Review our [breakdown of security features by offering]({{ page.version.version }}/security-reference/security-overview.md).
 - Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
 {{site.data.alerts.end}}
 
@@ -251,7 +250,7 @@ CockroachDB {{ site.data.products.core }} clusters support TLS authentication fo
 
 #### Non-TLS client authentication
 
-When using a non-TLS client authentication method, such as username/password or GSSAPI/Kerberos (Enterprise only), the server must still be TLS-authenticated. Therefore, the client must know to trust the certificate authority that signed the public certificate identifying the server. Therefore, the root CA certificate, called `ca.crt`, must be provided to client authentication attempts. This can be passed as the `sslrootcert` parameter in a [database connection string]({% link {{ page.version.version }}/connect-to-the-database.md %}), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) CLI command.
+When using a non-TLS client authentication method, such as username/password or GSSAPI/Kerberos (Enterprise only), the server must still be TLS-authenticated. Therefore, the client must know to trust the certificate authority that signed the public certificate identifying the server. Therefore, the root CA certificate, called `ca.crt`, must be provided to client authentication attempts. This can be passed as the `sslrootcert` parameter in a [database connection string]({{ page.version.version }}/connect-to-the-database.md), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`]({{ page.version.version }}/cockroach-sql.md) CLI command.
 
 #### TLS client authentication
 
@@ -265,7 +264,6 @@ For a SQL client to authenticate using TLS, that client must be provisioned with
 These key files are used with the CockroachDB CLI by placing them in a directory and  `--certs-dir`
 
 {{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
 {{site.data.alerts.end}}
 
 ## Revoking Certificates in CockroachDB
@@ -284,7 +282,7 @@ CockroachDB does not support certificate revocation lists (CRLs). The remaining 
 
 Securely operating an OCSP responder is a significant task, and it would not be recommended to undertake this solely for the purposes of securing a CockroachDB cluster.
 
-CockroachDB can be [configured to check an OCSP responder]({% link {{ page.version.version }}/manage-certs-revoke-ocsp.md %}).
+CockroachDB can be [configured to check an OCSP responder]({{ page.version.version }}/manage-certs-revoke-ocsp.md).
 
 #### Short-lived certificates
 
@@ -295,4 +293,4 @@ To maintain connection to a network secured by short-lived credentials, a would-
 
 The trade-off with short-lived certificates (or requiring any low-latency revocation system), is that it can become a single point of failure for service availability. If network connections depend on hourly propagation of fresh credentials, then a leaked credential only offers an attacker a one hour window of exploitation, but taking the credential automation offline for more than an hour can take the entire system offline. Fine tuning the validity duration to meet your threat model and available resources is an important component of designing a minimally secure private PKI without using another revocation mechanism.
 
-See: [Managing security certificates with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %})
+See: [Managing security certificates with HashiCorp Vault]({{ page.version.version }}/manage-certs-vault.md)

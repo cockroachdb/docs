@@ -5,16 +5,13 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DROP TYPE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) drops a specified [enumerated data type]({% link {{ page.version.version }}/enum.md %}) from the current database.
+The `DROP TYPE` [statement]({{ page.version.version }}/sql-statements.md) drops a specified [enumerated data type]({{ page.version.version }}/enum.md) from the current database.
 
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
-{% include {{ page.version.version }}/misc/declarative-schema-changer-note.md %}
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_type.html %}
 </div>
 
 ## Parameters
@@ -37,12 +34,10 @@ The user must be the owner of the type.
 
 ### Drop a single type
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE IF NOT EXISTS status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -54,7 +49,6 @@ The user must be the owner of the type.
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -63,7 +57,6 @@ The user must be the owner of the type.
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- sqlchecker: ignore
 > DROP TYPE status;
@@ -74,17 +67,14 @@ ERROR: cannot drop type "status" because other objects ([bank.public.accounts]) 
 SQLSTATE: 2BP01
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE accounts;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TYPE status;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -97,17 +87,14 @@ SQLSTATE: 2BP01
 
 ### Drop multiple types
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE weekday AS ENUM ('monday', 'tuesday', 'wednesday', 'thursday', 'friday');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE weekend AS ENUM ('sunday', 'saturday');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -121,12 +108,10 @@ SQLSTATE: 2BP01
 ~~~
 
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TYPE weekday, weekend;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -139,8 +124,8 @@ SQLSTATE: 2BP01
 
 ## See also
 
-- [`ENUM`]({% link {{ page.version.version }}/enum.md %})
-- [Data types]({% link {{ page.version.version }}/data-types.md %})
-- [`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %})
-- [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %})
-- [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %})
+- [`ENUM`]({{ page.version.version }}/enum.md)
+- [Data types]({{ page.version.version }}/data-types.md)
+- [`CREATE TYPE`]({{ page.version.version }}/create-type.md)
+- [`ALTER TYPE`]({{ page.version.version }}/alter-type.md)
+- [`SHOW ENUMS`]({{ page.version.version }}/show-enums.md)

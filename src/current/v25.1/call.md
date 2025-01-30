@@ -6,16 +6,15 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `CALL` [statement]({% link {{ page.version.version }}/sql-statements.md %}) invokes a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
+The `CALL` [statement]({{ page.version.version }}/sql-statements.md) invokes a [stored procedure]({{ page.version.version }}/stored-procedures.md).
 
 ## Required privileges
 
-To call a procedure, a user must have [`EXECUTE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the procedure.
+To call a procedure, a user must have [`EXECUTE` privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) on the procedure.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/call.html %}
 </div>
 
 ## Parameters
@@ -29,9 +28,8 @@ To call a procedure, a user must have [`EXECUTE` privilege]({% link {{ page.vers
 
 ### Call a stored procedure
 
-The following statement calls the [`delete_earliest_histories` example procedure]({% link {{ page.version.version }}/stored-procedures.md %}#create-a-stored-procedure-using-pl-pgsql), specifying 5 rows to delete and a `rides_left` cursor name:
+The following statement calls the [`delete_earliest_histories` example procedure]({{ page.version.version }}/stored-procedures.md#create-a-stored-procedure-using-pl-pgsql), specifying 5 rows to delete and a `rides_left` cursor name:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL delete_earliest_histories (5, 'rides_left');
 ~~~
@@ -47,8 +45,8 @@ CALL
 
 ## See also
 
-- [Stored Procedures]({% link {{ page.version.version }}/stored-procedures.md %})
-- [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %})
-- [`CREATE PROCEDURE`]({% link {{ page.version.version }}/create-procedure.md %})
-- [`ALTER PROCEDURE`]({% link {{ page.version.version }}/alter-procedure.md %})
-- [`DROP PROCEDURE`]({% link {{ page.version.version }}/drop-procedure.md %})
+- [Stored Procedures]({{ page.version.version }}/stored-procedures.md)
+- [PL/pgSQL]({{ page.version.version }}/plpgsql.md)
+- [`CREATE PROCEDURE`]({{ page.version.version }}/create-procedure.md)
+- [`ALTER PROCEDURE`]({{ page.version.version }}/alter-procedure.md)
+- [`DROP PROCEDURE`]({{ page.version.version }}/drop-procedure.md)

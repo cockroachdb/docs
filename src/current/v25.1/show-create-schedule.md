@@ -5,24 +5,23 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW CREATE SCHEDULE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) displays the `CREATE` statement for an existing scheduled job, which can be used to recreate a schedule.
+The `SHOW CREATE SCHEDULE` [statement]({{ page.version.version }}/sql-statements.md) displays the `CREATE` statement for an existing scheduled job, which can be used to recreate a schedule.
 
 ## Required privileges
 
-Only members of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) can show a [`CREATE SCHEDULE`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) statement. By default, the [`root`]({% link {{ page.version.version }}/security-reference/authorization.md %}#root-user) user belongs to the `admin` role.
+Only members of the [`admin` role]({{ page.version.version }}/security-reference/authorization.md#admin-role) can show a [`CREATE SCHEDULE`]({{ page.version.version }}/create-schedule-for-backup.md) statement. By default, the [`root`]({{ page.version.version }}/security-reference/authorization.md#root-user) user belongs to the `admin` role.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_create_schedules.html %}
 </div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`schedule_id` | Use the schedule `id` to show the [`CREATE SCHEDULE`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) for a particular schedule.
-`ALL` |  Use to show the `CREATE SCHEDULE` statements for all _existing_ schedules. This includes [paused]({% link {{ page.version.version }}/pause-schedules.md %}) schedules.
+`schedule_id` | Use the schedule `id` to show the [`CREATE SCHEDULE`]({{ page.version.version }}/create-schedule-for-backup.md) for a particular schedule.
+`ALL` |  Use to show the `CREATE SCHEDULE` statements for all _existing_ schedules. This includes [paused]({{ page.version.version }}/pause-schedules.md) schedules.
 
 ## Response
 
@@ -39,7 +38,6 @@ Field | Description
 
 Use the schedule `id` for a particular schedule to view its `CREATE` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE SCHEDULE 702856921622544385;
 ~~~
@@ -51,11 +49,10 @@ schedule_id        |                                                            
 (1 row)
 ~~~
 
-To list all the currently active schedules, use [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}).
+To list all the currently active schedules, use [`SHOW SCHEDULES`]({{ page.version.version }}/show-schedules.md).
 
 ### Show the `CREATE SCHEDULE` statement for all schedules
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE ALL SCHEDULES;
 ~~~
@@ -72,10 +69,10 @@ schedule_id        |                                                            
 
 ## See also
 
-* [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %})
-* [`PAUSE SCHEDULES`]({% link {{ page.version.version }}/pause-schedules.md %})
-* [`RESUME SCHEDULES`]({% link {{ page.version.version }}/resume-schedules.md %})
-* [`DROP SCHEDULES`]({% link {{ page.version.version }}/drop-schedules.md %})
-* [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
-* [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
-* [Manage a Backup Schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %})
+* [`CREATE SCHEDULE FOR BACKUP`]({{ page.version.version }}/create-schedule-for-backup.md)
+* [`PAUSE SCHEDULES`]({{ page.version.version }}/pause-schedules.md)
+* [`RESUME SCHEDULES`]({{ page.version.version }}/resume-schedules.md)
+* [`DROP SCHEDULES`]({{ page.version.version }}/drop-schedules.md)
+* [`BACKUP`]({{ page.version.version }}/backup.md)
+* [`RESTORE`]({{ page.version.version }}/restore.md)
+* [Manage a Backup Schedule]({{ page.version.version }}/manage-a-backup-schedule.md)

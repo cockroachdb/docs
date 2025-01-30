@@ -6,13 +6,13 @@ docs_area: manage.security
 ---
 
 
-The CockroachDB CLI's [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %}) command allows you to generate [private key/public certificate pairs for TLS authentication and encryption]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}) in communication between CockroachDB nodes, and from SQL clients to the cluster.
+The CockroachDB CLI's [`cockroach cert`]({{ page.version.version }}/cockroach-cert.md) command allows you to generate [private key/public certificate pairs for TLS authentication and encryption]({{ page.version.version }}/security-reference/transport-layer-security.md) in communication between CockroachDB nodes, and from SQL clients to the cluster.
 
 {{site.data.alerts.callout_info}}
 
 The ability to rapidly and locally generate private key/public certificate pairs is important for development, but careful management of security certificates is an essential component of cluster security. We recommend that you use a cloud-native tool, such as Google Cloud Platform's Certificate Authority Service (CAS), to manage security certificates.
 
-Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %}).
+Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({{ page.version.version }}/manage-certs-vault.md).
 
 
 {{site.data.alerts.end}}
@@ -22,12 +22,10 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
 
 1. Create two directories:
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     $ mkdir my-safe-directory
     ~~~
@@ -36,14 +34,12 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
 
 1. Generate the CA certificate and key:
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -57,7 +53,6 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
 
 1. Generate the certificate and key for the first node:
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     node1.example.com \
@@ -67,7 +62,6 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -81,13 +75,11 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
 
 1. Upload certificates to the first node:
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh <username>@<node1 address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
@@ -98,7 +90,6 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
 
 1. Delete the local copy of the first node's certificate and key:
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     $ rm certs/node.crt certs/node.key
     ~~~
@@ -107,7 +98,6 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
 
 1. Create the certificate and key for the second node:
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     node2.example.com \
@@ -116,7 +106,6 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -130,13 +119,11 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
 
 1. Upload certificates to the second node:
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh <username>@<node2 address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
@@ -150,7 +137,6 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
 ## Create the certificate and key pair for a client
 To create a certificate and a key pair for a client, use the `create-client` subcommand.
 
-{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client \
 maxroach \
@@ -158,7 +144,6 @@ maxroach \
 --ca-key=my-safe-directory/ca.key
 ~~~
 
-{% include copy-clipboard.html %}
 ~~~ shell
 $ ls -l certs
 ~~~
@@ -176,7 +161,6 @@ total 40
 
 To list the certificates and keys in a directory, use the `create-client` subcommand.
 
-{% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert list \
 --certs-dir=certs
@@ -196,11 +180,11 @@ Certificate directory: certs
 
 ## See also
 
-- [Security overview]({% link {{ page.version.version }}/security-reference/security-overview.md %})
-- [Authentication]({% link {{ page.version.version }}/authentication.md %})
-- [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
-- [Rotate Security Certificates]({% link {{ page.version.version }}/rotate-certificates.md %})
-- [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %})
-- [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
-- [Local Deployment]({% link {{ page.version.version }}/secure-a-cluster.md %})
-- [Other Cockroach Commands]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [Security overview]({{ page.version.version }}/security-reference/security-overview.md)
+- [Authentication]({{ page.version.version }}/authentication.md)
+- [Client Connection Parameters]({{ page.version.version }}/connection-parameters.md)
+- [Rotate Security Certificates]({{ page.version.version }}/rotate-certificates.md)
+- [Manual Deployment]({{ page.version.version }}/manual-deployment.md)
+- [Orchestrated Deployment]({{ page.version.version }}/kubernetes-overview.md)
+- [Local Deployment]({{ page.version.version }}/secure-a-cluster.md)
+- [Other Cockroach Commands]({{ page.version.version }}/cockroach-commands.md)

@@ -20,9 +20,7 @@ Before starting the tutorial, create a [Vercel](https://vercel.com/signup) accou
 
 ## Step 1. Create a CockroachDB {{ site.data.products.standard }} cluster
 
-{% include_cached cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
-{% include_cached cockroachcloud/connection-string-standard.md %}
 
 ## Step 2. Get the code
 
@@ -80,7 +78,6 @@ Before starting the tutorial, create a [Vercel](https://vercel.com/signup) accou
 
 1. Save [the connection string](#connection-string) you obtained earlier from the CockroachDB {{ site.data.products.cloud }} Console to the `DATABASE_URL` environment variable in an `.env` file in your project:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     echo "DATABASE_URL=<connection-string>" >> .env
     ~~~
@@ -89,7 +86,6 @@ Before starting the tutorial, create a [Vercel](https://vercel.com/signup) accou
 
 1. Run [Prisma Migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate) to initialize the database with the schema defined in `prisma/prisma.schema`.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     prisma migrate dev --name init
     ~~~
@@ -108,7 +104,6 @@ Before starting the tutorial, create a [Vercel](https://vercel.com/signup) accou
 
 1. (Optional) Run the app server locally to preview your site:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     npm run dev
     ~~~
@@ -121,7 +116,6 @@ Before starting the tutorial, create a [Vercel](https://vercel.com/signup) accou
 
 1. Run the `vercel` command to start deploying the app:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     vercel deploy --confirm
     ~~~
@@ -150,6 +144,4 @@ Before starting the tutorial, create a [Vercel](https://vercel.com/signup) accou
 
 - [Vercel's official How to Build a Fullstack App with Next.js, Prisma, and PostgreSQL guide](https://vercel.com/guides/nextjs-prisma-postgres)
 - [How to build a Complete Webapp with React, TypeScript & CockroachDB](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/#deploy-the-application-to-netlify)
-- [Build a Simple CRUD Node.js App with CockroachDB and Prisma Client]({% link {{ page.version.version }}/build-a-nodejs-app-with-cockroachdb-prisma.md %})
-
-{% include_cached {{page.version.version}}/app/see-also-links.md %}
+- [Build a Simple CRUD Node.js App with CockroachDB and Prisma Client]({{ page.version.version }}/build-a-nodejs-app-with-cockroachdb-prisma.md)

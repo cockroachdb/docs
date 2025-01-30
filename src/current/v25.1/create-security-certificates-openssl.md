@@ -5,18 +5,17 @@ toc: true
 docs_area:
 ---
 
-This tutorial shows how to provision a [public key infrastructure (PKI) certificate authority (CA)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}) for a CockroachDB {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
+This tutorial shows how to provision a [public key infrastructure (PKI) certificate authority (CA)]({{ page.version.version }}/security-reference/transport-layer-security.md) for a CockroachDB {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
 
 See also:
 
-- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %})
-- [Use the CockroachDB CLI to provision a development cluster]({% link {{ page.version.version }}/manage-certs-cli.md %}).
-- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %}).
+- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)]({{ page.version.version }}/security-reference/transport-layer-security.md)
+- [Use the CockroachDB CLI to provision a development cluster]({{ page.version.version }}/manage-certs-cli.md).
+- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({{ page.version.version }}/manage-certs-vault.md).
 
-To create these certificates and keys, use the `cockroach cert` [commands]({% link {{ page.version.version }}/cockroach-commands.md %}) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA]({% link {{ page.version.version }}/create-security-certificates-custom-ca.md %}) (for example, a public CA or your organizational CA).
+To create these certificates and keys, use the `cockroach cert` [commands]({{ page.version.version }}/cockroach-commands.md) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA]({{ page.version.version }}/create-security-certificates-custom-ca.md) (for example, a public CA or your organizational CA).
 
 {{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
 {{site.data.alerts.end}}
 
 ## Subcommands
@@ -65,7 +64,7 @@ Note the following:
 
 - The CA key should not be uploaded to the nodes and clients, so it should be created in a separate directory.
 
-- Keys (files ending in `.key`) must meet the [permission requirements check]({% link {{ page.version.version }}/cockroach-cert.md %}#key-file-permissions) on macOS, Linux, and other UNIX-like systems.
+- Keys (files ending in `.key`) must meet the [permission requirements check]({{ page.version.version }}/cockroach-cert.md#key-file-permissions) on macOS, Linux, and other UNIX-like systems.
 
 ## Examples
 
@@ -73,7 +72,6 @@ Note the following:
 
 1. Create two directories:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
@@ -84,7 +82,6 @@ Note the following:
 
     You can set the CA certificate expiration period using the `default_days` parameter. We recommend using the CockroachDB default value of the CA certificate expiration period, which is 365 days.
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     # OpenSSL CA configuration file
     [ ca ]
@@ -134,18 +131,15 @@ Note the following:
 
 1. Create the CA key using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl genrsa -out my-safe-directory/ca.key 2048
     ~~~
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chmod 400 my-safe-directory/ca.key
     ~~~
 
 1. Create the CA certificate using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl req \
     -new \
@@ -159,15 +153,12 @@ Note the following:
 
 1. Reset database and index files:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -f index.txt serial.txt
     ~~~
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch index.txt
     ~~~
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ echo '01' > serial.txt
     ~~~
@@ -178,7 +169,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Create the `node.cnf` file for the first node and copy the following configuration into it:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     # OpenSSL node configuration file
     [ req ]
@@ -199,18 +189,15 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Create the key for the first node using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl genrsa -out certs/node.key 2048
     ~~~
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chmod 400 certs/node.key
     ~~~
 
 1. Create the CSR for the first node using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl req \
     -new \
@@ -222,7 +209,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Sign the node CSR to create the node certificate for the first node using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl ca \
     -config ca.cnf \
@@ -238,7 +224,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Verify the values in the `Subject Alternative Name` field in the certificate:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl x509 -in certs/node.crt -text | grep "X509v3 Subject Alternative Name" -A 1
     ~~~
@@ -256,7 +241,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Create the `client.cnf` file for the first user and copy the following configuration into it:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     [ req ]
     prompt=no
@@ -277,18 +261,15 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl genrsa -out certs/client.<username_1>.key 2048
     ~~~
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chmod 400 certs/client.<username_1>.key
     ~~~
 
 1. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl req \
     -new \
@@ -300,7 +281,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl ca \
     -config ca.cnf \
@@ -316,7 +296,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Verify the values in the `CN` field in the certificate:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl x509 -in certs/client.<username_1>.crt -text | grep CN=
     ~~~
@@ -332,28 +311,24 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Start a single-node cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start-single-node --certs-dir=certs --cert-principal-map=<node-domain>:node,<username_1>:root
     ~~~
 
 1. In a new terminal window, connect to the cluster using a connection URL:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --url='postgres://<hostname>:26257/?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.<username_1>.crt&sslkey=certs/client.<username_1>.key&sslmode=verify-full'
     ~~~
 
 1. Create a new SQL user:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > create user <username_2>;
     ~~~
 
 1. Exit the SQL shell:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -364,7 +339,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Edit the `client.cnf` file for the client and copy the following configuration into it:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     [ req ]
     prompt=no
@@ -380,18 +354,15 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl genrsa -out certs/client.<username_2>.key 2048
     ~~~
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chmod 400 certs/client.<username_2>.key
     ~~~
 
 1. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl req \
     -new \
@@ -403,7 +374,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl ca \
     -config ca.cnf \
@@ -419,7 +389,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Verify the values in the `CN` field in the certificate:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl x509 -in certs/client.<username_2>.crt -text | grep CN=
     ~~~
@@ -433,7 +402,6 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Connect to the SQL client using the client certificate:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --url='postgres://<username_2>@<hostname>:26257/?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.<username_2>.crt&sslkey=certs/client.<username_2>.key&sslmode=verify-full'
     ~~~
@@ -444,6 +412,6 @@ After you have uploaded all the keys and certificates to the corresponding nodes
 
 ## See also
 
-- [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}): Learn about starting a multi-node secure cluster and accessing it from a client.
-- [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}): Learn more about the flags you pass when adding a node to a secure cluster
-- [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [Manual Deployment]({{ page.version.version }}/manual-deployment.md): Learn about starting a multi-node secure cluster and accessing it from a client.
+- [Start a Node]({{ page.version.version }}/cockroach-start.md): Learn more about the flags you pass when adding a node to a secure cluster
+- [Client Connection Parameters]({{ page.version.version }}/connection-parameters.md)

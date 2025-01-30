@@ -7,23 +7,18 @@ ssh-link: https://www.digitalocean.com/community/tutorials/how-to-connect-to-you
 docs_area:
 ---
 
-{% include {{ page.version.version }}/filter-tabs/deploy-crdb-do.md %}
 
 This page shows you how to deploy an insecure multi-node CockroachDB cluster on Digital Ocean, using Digital Ocean's managed load balancing service to distribute client traffic.
 
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 
 ### Requirements
 
-{% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
 ### Recommendations
 
-{% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
 - If all of your CockroachDB nodes and clients will run on Droplets in a single region, consider using [private networking](https://docs.digitalocean.com/products/networking/vpc/how-to/create/).
 
@@ -31,15 +26,14 @@ This page shows you how to deploy an insecure multi-node CockroachDB cluster on 
 
 [Create Droplets](https://www.digitalocean.com/community/tutorials/how-to-create-your-first-digitalocean-droplet) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate droplet for that workload.
 
-- Run at least 3 nodes to [ensure survivability]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
+- Run at least 3 nodes to [ensure survivability]({{ page.version.version }}/recommended-production-settings.md#topology).
 
 - Use any [droplets](https://www.digitalocean.com/pricing/) except standard droplets with only 1 GB of RAM, which is below our minimum requirement. All Digital Ocean droplets use SSD storage.
 
-For more details, see [Hardware Recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) and [Cluster Topology]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
+For more details, see [Hardware Recommendations]({{ page.version.version }}/recommended-production-settings.md#hardware) and [Cluster Topology]({{ page.version.version }}/recommended-production-settings.md#topology).
 
 ## Step 2. Synchronize clocks
 
-{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 3. Set up load balancing
 
@@ -53,7 +47,7 @@ Digital Ocean offers fully-managed load balancers to distribute traffic between 
 
 1. [Create a Digital Ocean Load Balancer](https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean-load-balancers). Be sure to:
 	- Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the node Droplets.
-	- Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
+	- Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint]({{ page.version.version }}/monitoring-and-alerting.md#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
 1. Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
 
 {{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Digital Ocean's managed load balancing, see the <a href="deploy-cockroachdb-on-premises-insecure.html">On-Premises</a> tutorial for guidance.{{site.data.alerts.end}}
@@ -75,36 +69,28 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 
 ## Step 5. Start nodes
 
-{% include {{ page.version.version }}/prod-deployment/insecure-start-nodes.md %}
 
 ## Step 6. Initialize the cluster
 
-{% include {{ page.version.version }}/prod-deployment/insecure-initialize-cluster.md %}
 
 ## Step 7. Test the cluster
 
-{% include {{ page.version.version }}/prod-deployment/insecure-test-cluster.md %}
 
 ## Step 8. Run a sample workload
 
-{% include {{ page.version.version }}/prod-deployment/insecure-test-load-balancing.md %}
 
 ## Step 9. Monitor the cluster
 
-{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 10. Scale the cluster
 
-{% include {{ page.version.version }}/prod-deployment/insecure-scale-cluster.md %}
 
 ## Step 11. Use the cluster
 
 Now that your deployment is working, you can:
 
-1. [Implement your data model]({% link {{ page.version.version }}/sql-statements.md %}).
-1. [Create users]({% link {{ page.version.version }}/authorization.md %}) and [grant them privileges]({% link {{ page.version.version }}/grant.md %}).
-1. [Connect your application]({% link {{ page.version.version }}/install-client-drivers.md %}). Be sure to connect your application to the Digital Ocean Load Balancer, not to a CockroachDB node.
+1. [Implement your data model]({{ page.version.version }}/sql-statements.md).
+1. [Create users]({{ page.version.version }}/authorization.md) and [grant them privileges]({{ page.version.version }}/grant.md).
+1. [Connect your application]({{ page.version.version }}/install-client-drivers.md). Be sure to connect your application to the Digital Ocean Load Balancer, not to a CockroachDB node.
 
 ## See also
-
-{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

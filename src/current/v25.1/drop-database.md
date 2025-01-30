@@ -5,44 +5,38 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DROP DATABASE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) removes a database and all its objects from a CockroachDB cluster.
+The `DROP DATABASE` [statement]({{ page.version.version }}/sql-statements.md) removes a database and all its objects from a CockroachDB cluster.
 
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
-{% include {{ page.version.version }}/misc/declarative-schema-changer-note.md %}
 
 ## Required privileges
 
-The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the database and on all tables in the database.
+The user must have the `DROP` [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the database and on all tables in the database.
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_database.html %}</div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
 `IF EXISTS`   | Drop the database if it exists; if it does not exist, do not return an error.
-`name`  | The name of the database you want to drop. You cannot drop a database if it is set as the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database) or if [`sql_safe_updates = true`]({% link {{ page.version.version }}/set-vars.md %}).
-`CASCADE` | _(Default)_ Drop all tables and views in the database as well as all objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and [views]({% link {{ page.version.version }}/views.md %})) that depend on those tables.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
-`RESTRICT` | Do not drop the database if it contains any [tables]({% link {{ page.version.version }}/create-table.md %}) or [views]({% link {{ page.version.version }}/create-view.md %}).
+`name`  | The name of the database you want to drop. You cannot drop a database if it is set as the [current database]({{ page.version.version }}/sql-name-resolution.md#current-database) or if [`sql_safe_updates = true`]({{ page.version.version }}/set-vars.md).
+`CASCADE` | _(Default)_ Drop all tables and views in the database as well as all objects (such as [constraints]({{ page.version.version }}/constraints.md) and [views]({{ page.version.version }}/views.md)) that depend on those tables.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
+`RESTRICT` | Do not drop the database if it contains any [tables]({{ page.version.version }}/create-table.md) or [views]({{ page.version.version }}/create-view.md).
 
 ## Viewing schema changes
 
-{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Drop a database and its objects (`CASCADE`)
 
-For non-interactive sessions (e.g., client applications), `DROP DATABASE` applies the `CASCADE` option by default, which drops all tables and views in the database as well as all objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and [views]({% link {{ page.version.version }}/views.md %})) that depend on those tables.
+For non-interactive sessions (e.g., client applications), `DROP DATABASE` applies the `CASCADE` option by default, which drops all tables and views in the database as well as all objects (such as [constraints]({{ page.version.version }}/constraints.md) and [views]({{ page.version.version }}/views.md)) that depend on those tables.
 
-For interactive sessions from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), either the `CASCADE` option must be set explicitly or the `--unsafe-updates` flag must be set when starting the shell.
+For interactive sessions from the [built-in SQL client]({{ page.version.version }}/cockroach-sql.md), either the `CASCADE` option must be set explicitly or the `--unsafe-updates` flag must be set when starting the shell.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -59,7 +53,6 @@ For interactive sessions from the [built-in SQL client]({% link {{ page.version.
 (6 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr;
 ~~~
@@ -69,12 +62,10 @@ ERROR: rejected (sql_safe_updates = true): DROP DATABASE on current database
 SQLSTATE: 01000
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE defaultdb;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr;
 ~~~
@@ -84,12 +75,10 @@ ERROR: rejected (sql_safe_updates = true): DROP DATABASE on non-empty database w
 SQLSTATE: 01000
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr CASCADE;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -103,7 +92,6 @@ SQLSTATE: 3F000
 
 When a database is not empty, the `RESTRICT` option prevents the database from being dropped:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -120,12 +108,10 @@ When a database is not empty, the `RESTRICT` option prevents the database from b
 (6 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE defaultdb;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE movr RESTRICT;
 ~~~
@@ -137,10 +123,10 @@ SQLSTATE: 2BP01
 
 ## See also
 
-- [`CREATE DATABASE`]({% link {{ page.version.version }}/create-database.md %})
-- [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})
-- [`ALTER DATABASE ... RENAME TO`]({% link {{ page.version.version }}/alter-database.md %}#rename-to)
-- [`SET DATABASE`]({% link {{ page.version.version }}/set-vars.md %})
-- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
-- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [`CREATE DATABASE`]({{ page.version.version }}/create-database.md)
+- [`SHOW DATABASES`]({{ page.version.version }}/show-databases.md)
+- [`ALTER DATABASE ... RENAME TO`]({{ page.version.version }}/alter-database.md#rename-to)
+- [`SET DATABASE`]({{ page.version.version }}/set-vars.md)
+- [`SHOW JOBS`]({{ page.version.version }}/show-jobs.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)
+- [Online Schema Changes]({{ page.version.version }}/online-schema-changes.md)

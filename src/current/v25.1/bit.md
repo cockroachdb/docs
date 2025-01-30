@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `BIT` and `VARBIT` [data types]({% link {{ page.version.version }}/data-types.md %}) stores bit arrays.
+The `BIT` and `VARBIT` [data types]({{ page.version.version }}/data-types.md) stores bit arrays.
 With `BIT`, the length is fixed; with `VARBIT`, the length can be variable.
 
 ## Aliases
@@ -16,7 +16,7 @@ The name `BIT VARYING` is an alias for `VARBIT`.
 
 Bit array constants are expressed as literals. For example, `B'100101'` denotes an array of 6 bits.
 
-For more information about bit array constants, see the [constants documentation on bit array literals]({% link {{ page.version.version }}/sql-constants.md %}#bit-array-literals).
+For more information about bit array constants, see the [constants documentation on bit array literals]({{ page.version.version }}/sql-constants.md#bit-array-literals).
 
 For usage, see the [Example](#example) below.
 
@@ -44,12 +44,10 @@ other considerations may cause significant performance degradation.
 
 ## Example
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE b (x BIT, y BIT(3), z VARBIT, w VARBIT(3));
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM b;
 ~~~
@@ -64,12 +62,10 @@ other considerations may cause significant performance degradation.
   rowid       | INT       |    false    | unique_rowid() |                       | {primary} |   true
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO b(x, y, z, w) VALUES (B'1', B'101', B'1', B'1');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM b;
 ~~~
@@ -82,7 +78,6 @@ other considerations may cause significant performance degradation.
 
 For type `BIT`, the value must match exactly the specified size:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO b(x) VALUES (B'101');
 ~~~
@@ -91,7 +86,6 @@ For type `BIT`, the value must match exactly the specified size:
 pq: bit string length 3 does not match type BIT
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO b(y) VALUES (B'10');
 ~~~
@@ -102,7 +96,6 @@ pq: bit string length 2 does not match type BIT(3)
 
 For type `VARBIT`, the value must not be larger than the specified maximum size:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO b(w) VALUES (B'1010');
 ~~~
@@ -113,7 +106,7 @@ pq: bit string length 4 too large for type VARBIT(3)
 
 ## Supported casting and conversion
 
-`BIT` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to any of the following data types:
+`BIT` values can be [cast]({{ page.version.version }}/data-types.md#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|---------
@@ -122,4 +115,4 @@ Type | Details
 
 ## See also
 
-[Data Types]({% link {{ page.version.version }}/data-types.md %})
+[Data Types]({{ page.version.version }}/data-types.md)

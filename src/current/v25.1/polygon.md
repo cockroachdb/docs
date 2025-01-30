@@ -7,17 +7,15 @@ docs_area: reference.sql
 
 A `POLYGON` is a shape with a closed exterior that is made up of lines. Polygons can also contain holes.  Polygons are often used to represent areas such as countries, states, or municipalities.
 
-The coordinates of each Point and line that make up the Polygon are translated according to the current [spatial reference system]({% link {{ page.version.version }}/architecture/glossary.md %}#spatial-reference-system) (denoted by an [SRID]({% link {{ page.version.version }}/architecture/glossary.md %}#srid)) to determine what the point "is", or what it "means" relative to the [other spatial objects]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects) (if any) in the data set.
+The coordinates of each Point and line that make up the Polygon are translated according to the current [spatial reference system]({{ page.version.version }}/architecture/glossary.md#spatial-reference-system) (denoted by an [SRID]({{ page.version.version }}/architecture/glossary.md#srid)) to determine what the point "is", or what it "means" relative to the [other spatial objects]({{ page.version.version }}/spatial-data-overview.md#spatial-objects) (if any) in the data set.
 
-{% include {{page.version.version}}/spatial/zmcoords.md %}
 
 ## Examples
 
 ### Well known text
 
-A Polygon can be created from SQL by calling the `st_geomfromtext` function on a LineString definition expressed in the [Well Known Text (WKT)]({% link {{ page.version.version }}/architecture/glossary.md %}#wkt) format as shown below.
+A Polygon can be created from SQL by calling the `st_geomfromtext` function on a LineString definition expressed in the [Well Known Text (WKT)]({{ page.version.version }}/architecture/glossary.md#wkt) format as shown below.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_GeomFromText('POLYGON((0 0, 0 1024, 1024 1024, 1024 0, 0 0))');
 ~~~
@@ -31,9 +29,8 @@ SELECT ST_GeomFromText('POLYGON((0 0, 0 1024, 1024 1024, 1024 0, 0 0))');
 
 ### Polygons with holes
 
-To represent a polygon with holes in [WKT]({% link {{ page.version.version }}/architecture/glossary.md %}#wkt), add one or more additional lists of coordinates that define the boundaries of the holes as shown below:
+To represent a polygon with holes in [WKT]({{ page.version.version }}/architecture/glossary.md#wkt), add one or more additional lists of coordinates that define the boundaries of the holes as shown below:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_GeomFromText('POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902), (-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832))');
 ~~~
@@ -49,7 +46,6 @@ SELECT ST_GeomFromText('POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75
 
 You can also use the `st_makepolygon` function on a LineString that defines the outer boundary of the Polygon, e.g.:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_MakePolygon('LINESTRING(0 0, 0 1024, 1024 1024, 1024 0, 0 0)');
 ~~~
@@ -62,12 +58,12 @@ SELECT ST_MakePolygon('LINESTRING(0 0, 0 1024, 1024 1024, 1024 0, 0 0)');
 
 ## See also
 
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
-- [Spatial objects]({% link {{ page.version.version }}/spatial-data-overview.md %}#spatial-objects)
-- [POINT]({% link {{ page.version.version }}/point.md %})
-- [LINESTRING]({% link {{ page.version.version }}/linestring.md %})
-- [MULTIPOINT]({% link {{ page.version.version }}/multipoint.md %})
-- [MULTILINESTRING]({% link {{ page.version.version }}/multilinestring.md %})
-- [MULTIPOLYGON]({% link {{ page.version.version }}/multipolygon.md %})
-- [GEOMETRYCOLLECTION]({% link {{ page.version.version }}/geometrycollection.md %})
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})
+- [Spatial tutorial]({{ page.version.version }}/spatial-tutorial.md)
+- [Spatial objects]({{ page.version.version }}/spatial-data-overview.md#spatial-objects)
+- [POINT]({{ page.version.version }}/point.md)
+- [LINESTRING]({{ page.version.version }}/linestring.md)
+- [MULTIPOINT]({{ page.version.version }}/multipoint.md)
+- [MULTILINESTRING]({{ page.version.version }}/multilinestring.md)
+- [MULTIPOLYGON]({{ page.version.version }}/multipolygon.md)
+- [GEOMETRYCOLLECTION]({{ page.version.version }}/geometrycollection.md)
+- [Using GeoServer with CockroachDB]({{ page.version.version }}/geoserver.md)

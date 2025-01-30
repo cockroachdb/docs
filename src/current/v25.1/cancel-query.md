@@ -5,46 +5,45 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CANCEL QUERY` [statement]({% link {{ page.version.version }}/sql-statements.md %}) cancels a running SQL query.
+The `CANCEL QUERY` [statement]({{ page.version.version }}/sql-statements.md) cancels a running SQL query.
 
 ## Considerations
 
 - Schema changes are treated differently than other SQL queries. You can use <a href="show-jobs.html"><code>SHOW JOBS</code></a> to monitor the progress of schema changes and <a href="cancel-job.html"><code>CANCEL JOB</code></a> to cancel schema changes that are taking longer than expected.
 - In rare cases where a query is close to completion when a cancellation request is issued, the query may run to completion.
-- In addition to the `CANCEL QUERY` statement, CockroachDB also supports query cancellation by [client drivers and ORMs]({% link {{ page.version.version }}/install-client-drivers.md %}) using the PostgreSQL wire protocol (pgwire). This allows CockroachDB to stop executing queries that your application is no longer waiting for, thereby reducing load on the cluster. pgwire query cancellation differs from the `CANCEL QUERY` statement in the following ways:
+- In addition to the `CANCEL QUERY` statement, CockroachDB also supports query cancellation by [client drivers and ORMs]({{ page.version.version }}/install-client-drivers.md) using the PostgreSQL wire protocol (pgwire). This allows CockroachDB to stop executing queries that your application is no longer waiting for, thereby reducing load on the cluster. pgwire query cancellation differs from the `CANCEL QUERY` statement in the following ways:
   - It is how most client drivers and ORMS implement query cancellation. For example, it is [used by PGJDBC](https://github.com/pgjdbc/pgjdbc/blob/3a54d28e0b416a84353d85e73a23180a6719435e/pgjdbc/src/main/java/org/postgresql/core/QueryExecutorBase.java#L171) to implement the [`setQueryTimeout` method](https://jdbc.postgresql.org/documentation/publicapi/org/postgresql/jdbc/PgStatement.html#setQueryTimeout-int-).
   - The cancellation request is sent over a different network connection than is used by SQL connections.
   - If there are too many unsuccessful cancellation attempts, CockroachDB will start rejecting pgwire cancellations.
 
 ## Required privileges
 
-Members of the `admin` role (including `root`, which belongs to `admin` by default) can cancel any currently active queries. User that are not members of the `admin` role can cancel only their own currently active queries. To view and cancel another non-admin user's query, the user must be a member of the `admin` role or must have the `VIEWACTIVITY` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy [`VIEWACTIVITY`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) and the `CANCELQUERY` [system privilege]({{ link_prefix }}security-reference/authorization.html#supported-privileges) (or the legacy [`CANCELQUERY`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) defined.
+Members of the `admin` role (including `root`, which belongs to `admin` by default) can cancel any currently active queries. User that are not members of the `admin` role can cancel only their own currently active queries. To view and cancel another non-admin user's query, the user must be a member of the `admin` role or must have the `VIEWACTIVITY` [system privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) (or the legacy [`VIEWACTIVITY`]({{ page.version.version }}/create-user.md#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option]({{ page.version.version }}/security-reference/authorization.md#role-options)) and the `CANCELQUERY` [system privilege]({{ link_prefix }}security-reference/authorization.html#supported-privileges) (or the legacy [`CANCELQUERY`]({{ page.version.version }}/create-user.md#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option]({{ page.version.version }}/security-reference/authorization.md#role-options)) defined.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/cancel_query.html %}
 </div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`query_id` | A [scalar expression]({% link {{ page.version.version }}/scalar-expressions.md %}) that produces the ID of the query to cancel.<br><br>`CANCEL QUERY` accepts a single query ID. If a subquery is used and returns multiple IDs, the `CANCEL QUERY` statement will fail. To cancel multiple queries, use `CANCEL QUERIES`.
-`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) whose result you want to cancel.
+`query_id` | A [scalar expression]({{ page.version.version }}/scalar-expressions.md) that produces the ID of the query to cancel.<br><br>`CANCEL QUERY` accepts a single query ID. If a subquery is used and returns multiple IDs, the `CANCEL QUERY` statement will fail. To cancel multiple queries, use `CANCEL QUERIES`.
+`select_stmt` | A [selection query]({{ page.version.version }}/selection-queries.md) whose result you want to cancel.
 
 ## Response
 
 When a query is successfully cancelled, CockroachDB sends a `query execution canceled` error to the client that issued the query.
 
 - If the canceled query was a single, stand-alone statement, no further action is required by the client.
-- If the canceled query was part of a larger, multi-statement [transaction]({% link {{ page.version.version }}/transactions.md %}), the client should then issue a [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %}) statement.
+- If the canceled query was part of a larger, multi-statement [transaction]({{ page.version.version }}/transactions.md), the client should then issue a [`ROLLBACK`]({{ page.version.version }}/rollback-transaction.md) statement.
 
 ## Examples
 
 ### Cancel a query via the query ID
 
-In this example, we use the [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %}) statement to get the ID of a query and then pass the ID into the `CANCEL QUERY` statement:
+In this example, we use the [`SHOW STATEMENTS`]({{ page.version.version }}/show-statements.md) statement to get the ID of a query and then pass the ID into the `CANCEL QUERY` statement:
 
 ~~~ sql
 > SHOW STATEMENTS;
@@ -64,7 +63,7 @@ In this example, we use the [`SHOW STATEMENTS`]({% link {{ page.version.version 
 
 ### Cancel a query via a subquery
 
-In this example, we nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves the ID of a query inside the `CANCEL QUERY` statement:
+In this example, we nest a [`SELECT` clause]({{ page.version.version }}/select-clause.md) that retrieves the ID of a query inside the `CANCEL QUERY` statement:
 
 ~~~ sql
 > CANCEL QUERY (WITH x AS (SHOW CLUSTER STATEMENTS) SELECT query_id FROM x
@@ -81,7 +80,7 @@ CANCEL QUERIES 1
 
 ## See also
 
-- [Manage Long-Running Queries]({% link {{ page.version.version }}/manage-long-running-queries.md %})
-- [`SHOW STATEMENTS`]({% link {{ page.version.version }}/show-statements.md %})
-- [`CANCEL SESSION`]({% link {{ page.version.version }}/cancel-session.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Manage Long-Running Queries]({{ page.version.version }}/manage-long-running-queries.md)
+- [`SHOW STATEMENTS`]({{ page.version.version }}/show-statements.md)
+- [`CANCEL SESSION`]({{ page.version.version }}/cancel-session.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

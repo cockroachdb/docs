@@ -5,19 +5,19 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SERIAL` pseudo [data type]({% link {{ page.version.version }}/data-types.md %}) is a keyword that can be used *in lieu* of a real data type when defining table columns. It is approximately equivalent to using an [integer type]({% link {{ page.version.version }}/int.md %}) with a [`DEFAULT` expression]({% link {{ page.version.version }}/default-value.md %}) that generates different values every time it is evaluated. This default expression in turn ensures that inserts that do not specify this column will receive an automatically generated value instead of `NULL`.
+The `SERIAL` pseudo [data type]({{ page.version.version }}/data-types.md) is a keyword that can be used *in lieu* of a real data type when defining table columns. It is approximately equivalent to using an [integer type]({{ page.version.version }}/int.md) with a [`DEFAULT` expression]({{ page.version.version }}/default-value.md) that generates different values every time it is evaluated. This default expression in turn ensures that inserts that do not specify this column will receive an automatically generated value instead of `NULL`.
 
 {{site.data.alerts.callout_info}}
 `SERIAL` is provided only for compatibility with PostgreSQL. New applications should use real data types and a suitable `DEFAULT` expression.
 
-In most cases, we recommend using the [`UUID`]({% link {{ page.version.version }}/uuid.md %}) data type with the `gen_random_uuid()` function as the default value, which generates 128-bit values (larger than `SERIAL`'s maximum of 64 bits) and more uniformly scatters them across all of a table's underlying key-value ranges. UUIDs ensure more effectively that multiple nodes share the insert load when a UUID column is used in an index or primary key.
+In most cases, we recommend using the [`UUID`]({{ page.version.version }}/uuid.md) data type with the `gen_random_uuid()` function as the default value, which generates 128-bit values (larger than `SERIAL`'s maximum of 64 bits) and more uniformly scatters them across all of a table's underlying key-value ranges. UUIDs ensure more effectively that multiple nodes share the insert load when a UUID column is used in an index or primary key.
 
-See [this FAQ entry]({% link {{ page.version.version }}/sql-faqs.md %}#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) for more details.
+See [this FAQ entry]({{ page.version.version }}/sql-faqs.md#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) for more details.
 {{site.data.alerts.end}}
 
 ## Modes of operation
 
-The keyword `SERIAL` is recognized in `CREATE TABLE` and is automatically translated to a real data type and a [`DEFAULT` expression]({% link {{ page.version.version }}/default-value.md %}) during table creation. The result of this translation is then used internally by CockroachDB, and can be observed using [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}).
+The keyword `SERIAL` is recognized in `CREATE TABLE` and is automatically translated to a real data type and a [`DEFAULT` expression]({{ page.version.version }}/default-value.md) during table creation. The result of this translation is then used internally by CockroachDB, and can be observed using [`SHOW CREATE`]({{ page.version.version }}/show-create.md).
 
 The chosen `DEFAULT` expression ensures that different values are automatically generated for the column during row insertion.  These are not guaranteed to increase monotonically, see [this section below](#auto-incrementing-is-not-always-sequential) for details.
 
@@ -25,35 +25,34 @@ There are five possible translation modes for `SERIAL`:
 
  Mode                 | Description
 ----------------------|------------------
- `rowid` (default)    | `SERIAL` implies `DEFAULT unique_rowid()`. The real data type is always `INT8`, regardless of the `default_int_size` [session variable]({% link {{ page.version.version }}/set-vars.md %}) or `sql.defaults.default_int_size` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
- `unordered_rowid`    | `SERIAL` implies `DEFAULT unordered_unique_rowid()`. The real data type is always `INT8`, regardless of the `default_int_size` [session variable]({% link {{ page.version.version }}/set-vars.md %}) or `sql.defaults.default_int_size` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
+ `rowid` (default)    | `SERIAL` implies `DEFAULT unique_rowid()`. The real data type is always `INT8`, regardless of the `default_int_size` [session variable]({{ page.version.version }}/set-vars.md) or `sql.defaults.default_int_size` [cluster setting]({{ page.version.version }}/cluster-settings.md).
+ `unordered_rowid`    | `SERIAL` implies `DEFAULT unordered_unique_rowid()`. The real data type is always `INT8`, regardless of the `default_int_size` [session variable]({{ page.version.version }}/set-vars.md) or `sql.defaults.default_int_size` [cluster setting]({{ page.version.version }}/cluster-settings.md).
  `virtual_sequence`   | `SERIAL` creates a virtual sequence and implies `DEFAULT nextval(<seqname>)`.  The real data type is always `INT8`, regardless of the `default_int_size` session variable or `sql.defaults.default_int_size` cluster setting.
  `sql_sequence`       | `SERIAL` creates a regular SQL sequence and implies `DEFAULT nextval(<seqname>)`. The real data type depends on `SERIAL` variant.
- `sql_sequence_cached`| `SERIAL` creates a regular SQL sequence and implies `DEFAULT nextval(<seqname>)`, caching the results for reuse in the current session. The real data type depends on `SERIAL` variant. When the cache is empty, the underlying sequence will only be incremented once to populate the cache.<br>When this mode is set, the `sql.defaults.serial_sequences_cache_size` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) controls the number of values to cache in a user's session, with a default of 256.
+ `sql_sequence_cached`| `SERIAL` creates a regular SQL sequence and implies `DEFAULT nextval(<seqname>)`, caching the results for reuse in the current session. The real data type depends on `SERIAL` variant. When the cache is empty, the underlying sequence will only be incremented once to populate the cache.<br>When this mode is set, the `sql.defaults.serial_sequences_cache_size` [cluster setting]({{ page.version.version }}/cluster-settings.md) controls the number of values to cache in a user's session, with a default of 256.
 
-These modes can be configured with the [session variable]({% link {{ page.version.version }}/set-vars.md %}) `serial_normalization`.
+These modes can be configured with the [session variable]({{ page.version.version }}/set-vars.md) `serial_normalization`.
 
 {{site.data.alerts.callout_info}}
 The particular choice of `DEFAULT` expression when clients use the `SERIAL` keyword is subject to change in future versions of CockroachDB. Applications that wish to use `unique_rowid()` specifically must use the full explicit syntax `INT DEFAULT unique_rowid()` and avoid `SERIAL` altogether.
 {{site.data.alerts.end}}
 
-{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 ### Generated values for modes `rowid` and `virtual_sequence`
 
-In both modes `rowid` and `virtual_sequence`, a value is automatically generated using the `unique_rowid()` function. The difference between `rowid` and `virtual_sequence` is that the latter setting also creates a virtual (pseudo) sequence in the database. However, in both cases the `unique_rowid()` function is ultimately used to generate new values. This function produces a 64-bit integer (i.e., [`INT8`]({% link {{ page.version.version }}/int.md %})) from the current timestamp and ID of the node executing the [`INSERT`]({% link {{ page.version.version }}/insert.md %}) or [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) operation. This behavior is statistically likely to be globally unique except in extreme cases (see [this FAQ entry]({% link {{ page.version.version }}/sql-faqs.md %}#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) for more details).
+In both modes `rowid` and `virtual_sequence`, a value is automatically generated using the `unique_rowid()` function. The difference between `rowid` and `virtual_sequence` is that the latter setting also creates a virtual (pseudo) sequence in the database. However, in both cases the `unique_rowid()` function is ultimately used to generate new values. This function produces a 64-bit integer (i.e., [`INT8`]({{ page.version.version }}/int.md)) from the current timestamp and ID of the node executing the [`INSERT`]({{ page.version.version }}/insert.md) or [`UPSERT`]({{ page.version.version }}/upsert.md) operation. This behavior is statistically likely to be globally unique except in extreme cases (see [this FAQ entry]({{ page.version.version }}/sql-faqs.md#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) for more details).
 
 The `unique_rowid()` function creates a unique integer composed of the current time at a 10-microsecond granularity and the `instance-id`. The `instance-id` is stored in the lower 15 bits of the returned value and the timestamp is stored in the upper 48 bits. The top-most bit is left empty so that negative values are not returned. The 48-bit timestamp field provides for 89 years of timestamps. CockroachDB uses a custom epoch (Jan 1, 2015) in order to utilize the entire timestamp range.
 
 Also, because value generation using `unique_rowid()` does not require inter-node coordination, it is much faster than the other mode [`sql_sequence`](#generated-values-for-mode-sql_sequence-and-sql_sequence_cached) discussed below when multiple SQL clients are writing to the table from different nodes.
 
 {{site.data.alerts.callout_info}}
-Values generated by the `unique_rowid()` function do not respect the `default_int_size` [session variable]({% link {{ page.version.version }}/set-vars.md %}) or `sql.defaults.default_int_size` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
+Values generated by the `unique_rowid()` function do not respect the `default_int_size` [session variable]({{ page.version.version }}/set-vars.md) or `sql.defaults.default_int_size` [cluster setting]({{ page.version.version }}/cluster-settings.md).
 {{site.data.alerts.end}}
 
 ### Generated values for mode `sql_sequence` and `sql_sequence_cached`
 
-In both modes, a regular [SQL sequence]({% link {{ page.version.version }}/create-sequence.md %}) is automatically created alongside the table where `SERIAL` is specified.
+In both modes, a regular [SQL sequence]({{ page.version.version }}/create-sequence.md) is automatically created alongside the table where `SERIAL` is specified.
 
 The actual data type is determined as follows:
 
@@ -66,9 +65,9 @@ The actual data type is determined as follows:
 
 Every insert or upsert into the table will then use `nextval()` to increment the sequence and produce increasing values.
 
-Because SQL sequences persist the current sequence value in the database, inter-node coordination is required when multiple clients use the sequence concurrently via different nodes. This can cause [contention]({% link {{ page.version.version }}/sql-faqs.md %}#what-is-transaction-contention) and impact performance negatively.
+Because SQL sequences persist the current sequence value in the database, inter-node coordination is required when multiple clients use the sequence concurrently via different nodes. This can cause [contention]({{ page.version.version }}/sql-faqs.md#what-is-transaction-contention) and impact performance negatively.
 
-Therefore, applications should consider using `unique_rowid()` or `gen_random_uuid()` as discussed in [this FAQ entry]({% link {{ page.version.version }}/sql-faqs.md %}#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) instead of sequences when possible.
+Therefore, applications should consider using `unique_rowid()` or `gen_random_uuid()` as discussed in [this FAQ entry]({{ page.version.version }}/sql-faqs.md#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) instead of sequences when possible.
 
 {{site.data.alerts.callout_info}}
 Note that `sql_sequence_cached` will perform fewer distributed calls to increment sequences, resulting in better performance than `sql_sequence`. However, cached sequences may result in large gaps between serial sequence numbers if a session terminates before using all the values in its cache.
@@ -76,7 +75,7 @@ Note that `sql_sequence_cached` will perform fewer distributed calls to incremen
 
 ### Generated values for mode `unordered_rowid`
 
-In this mode, a value is generated using the `unordered_unique_rowid()` [function]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions). This function is similar to the [`rowid` mode](#generated-values-for-modes-rowid-and-virtual_sequence) but does not guarantee ordering.
+In this mode, a value is generated using the `unordered_unique_rowid()` [function]({{ page.version.version }}/functions-and-operators.md#id-generation-functions). This function is similar to the [`rowid` mode](#generated-values-for-modes-rowid-and-virtual_sequence) but does not guarantee ordering.
 
 ## Auto-incrementing is not always sequential
 
@@ -91,35 +90,30 @@ To experience this for yourself, run through the following example in PostgreSQL
 
 1. Create a table with a `SERIAL` column:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE increment (a SERIAL PRIMARY KEY);
     ~~~
 
 1. Run four transactions for inserting rows:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     > INSERT INTO increment DEFAULT VALUES;
     > ROLLBACK;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     > INSERT INTO increment DEFAULT VALUES;
     > COMMIT;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     > INSERT INTO increment DEFAULT VALUES;
     > ROLLBACK;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     > INSERT INTO increment DEFAULT VALUES;
@@ -128,7 +122,6 @@ To experience this for yourself, run through the following example in PostgreSQL
 
 1. View the rows created:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * from increment;
     ~~~
@@ -143,7 +136,7 @@ To experience this for yourself, run through the following example in PostgreSQL
 
     Since each insert increased the sequence in column `a` by one, the first committed insert got the value `645994218934534145`, and the second committed insert got the value `645994218978082817`. As you can see, the values aren't strictly sequential, and the last value doesn't give an accurate count of rows in the table.
 
-In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCREMENT` type in MySQL, all behave the same in that they do not create strict sequences. CockroachDB will likely create more gaps than these other databases, but will generate these values much faster. An alternative is to use [`SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %}).
+In summary, the `SERIAL` type in PostgreSQL and CockroachDB, and the `AUTO_INCREMENT` type in MySQL, all behave the same in that they do not create strict sequences. CockroachDB will likely create more gaps than these other databases, but will generate these values much faster. An alternative is to use [`SEQUENCE`]({{ page.version.version }}/create-sequence.md).
 
 ### Additional scenarios
 
@@ -190,14 +183,12 @@ If this happens, CockroachDB cannot guarantee whether `x < y` or `x > y`. Even t
 
 In this example, we create a table with the `SERIAL` column as the primary key so we can auto-generate unique IDs on insert.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE serial (a SERIAL PRIMARY KEY, b STRING, c BOOL);
 ~~~
 
-The [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %}) statement shows that the `SERIAL` type is just an alias for `INT` with `unique_rowid()` as the default.
+The [`SHOW COLUMNS`]({{ page.version.version }}/show-columns.md) statement shows that the `SERIAL` type is just an alias for `INT` with `unique_rowid()` as the default.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM serial;
 ~~~
@@ -213,17 +204,14 @@ The [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %}) stat
 
 When we insert rows without values in column `a` and display the new rows, we see that each row has defaulted to a unique value in column `a`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO serial (b,c) VALUES ('red', true), ('yellow', false), ('pink', true);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO serial (a,b,c) VALUES (123, 'white', false);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM serial;
 ~~~
@@ -240,5 +228,5 @@ When we insert rows without values in column `a` and display the new rows, we se
 
 ## See also
 
-- [FAQ: How do I auto-generate unique row IDs in CockroachDB?]({% link {{ page.version.version }}/sql-faqs.md %}#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
-- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [FAQ: How do I auto-generate unique row IDs in CockroachDB?]({{ page.version.version }}/sql-faqs.md#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
+- [Data Types]({{ page.version.version }}/data-types.md)

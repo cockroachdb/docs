@@ -5,25 +5,23 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
 
 Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-The `SHOW LOGICAL REPLICATION JOBS` statement shows details of [**logical data replication (LDR)**]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) jobs on a cluster.
+The `SHOW LOGICAL REPLICATION JOBS` statement shows details of [**logical data replication (LDR)**]({{ page.version.version }}/logical-data-replication-overview.md) jobs on a cluster.
 
-This page is a reference for the `SHOW LOGICAL REPLICATION JOBS` SQL statement, which includes information on its parameters and possible options. For more details on monitoring LDR, refer to the [Monitor Logical Data Replication]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}) page.
+This page is a reference for the `SHOW LOGICAL REPLICATION JOBS` SQL statement, which includes information on its parameters and possible options. For more details on monitoring LDR, refer to the [Monitor Logical Data Replication]({{ page.version.version }}/logical-data-replication-monitoring.md) page.
 
 ## Required privileges
 
 You must have one of the following to run `SHOW LOGICAL REPLICATION JOBS`:
 
-- The [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
-- The [`VIEWJOB` system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}), which can view all jobs (including `admin`-owned jobs).
+- The [`admin` role]({{ page.version.version }}/security-reference/authorization.md#admin-role).
+- The [`VIEWJOB` system privilege]({{ page.version.version }}/security-reference/authorization.md), which can view all jobs (including `admin`-owned jobs).
 
-Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement:
+Use the [`GRANT SYSTEM`]({{ page.version.version }}/grant.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT SYSTEM VIEWJOB TO user;
 ~~~
@@ -31,7 +29,6 @@ GRANT SYSTEM VIEWJOB TO user;
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/ldr/show_logical_replication_jobs_stmt.html %}
 </div>
 
 ### Parameters
@@ -48,13 +45,11 @@ Option | Description
 
 ## Responses
 
-{% include {{ page.version.version }}/ldr/show-logical-replication-responses.md %}
 
 ## Example
 
 In the destination cluster's SQL shell, you can query `SHOW LOGICAL REPLICATION JOBS` to view the LDR jobs running on the cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW LOGICAL REPLICATION JOBS;
 ~~~
@@ -67,7 +62,6 @@ SHOW LOGICAL REPLICATION JOBS;
 
 For additional detail on each LDR job, use the `WITH details` option:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW LOGICAL REPLICATION JOBS WITH details;
 ~~~
@@ -80,5 +74,5 @@ SHOW LOGICAL REPLICATION JOBS WITH details;
 
 ## See also
 
-- [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %})
-- [Set Up Logical Data Replication]({% link {{ page.version.version }}/set-up-logical-data-replication.md %})
+- [`CREATE LOGICAL REPLICATION STREAM`]({{ page.version.version }}/create-logical-replication-stream.md)
+- [Set Up Logical Data Replication]({{ page.version.version }}/set-up-logical-data-replication.md)

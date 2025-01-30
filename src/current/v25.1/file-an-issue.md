@@ -5,7 +5,7 @@ toc: false
 docs_area: manage
 ---
 
-If you've tried to [troubleshoot]({% link {{ page.version.version }}/troubleshooting-overview.md %}) an issue yourself, have [reached out for help]({% link {{ page.version.version }}/support-resources.md %}), and are still stumped, you can file an issue in GitHub.
+If you've tried to [troubleshoot]({{ page.version.version }}/troubleshooting-overview.md) an issue yourself, have [reached out for help]({{ page.version.version }}/support-resources.md), and are still stumped, you can file an issue in GitHub.
 
 To file an issue in GitHub, we need the following information:
 
@@ -19,7 +19,6 @@ To file an issue in GitHub, we need the following information:
 
 1. The first few lines of the log file from each node in the cluster in a timeframe as close as possible to reproducing the issue. On most Unix-based systems running with defaults, you can get this information using the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ grep -F '[config]' cockroach-data/logs/cockroach.log
     ~~~

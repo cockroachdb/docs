@@ -6,13 +6,13 @@ toc_not_nested: true
 docs_area: deploy
 ---
 
-In this tutorial, you will plan a vacation from New York City to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State to do some birdwatching while visiting local independent bookstores. In the process, you will explore several of CockroachDB's [spatial capabilities]({% link {{ page.version.version }}/spatial-data-overview.md %}):
+In this tutorial, you will plan a vacation from New York City to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State to do some birdwatching while visiting local independent bookstores. In the process, you will explore several of CockroachDB's [spatial capabilities]({{ page.version.version }}/spatial-data-overview.md):
 
 + Importing spatial data from SQL files (including how to build spatial geometries from data in CSV files).
 + Putting together separate spatial data sets to ask and answer potentially interesting questions.
-+ Using various [built-in functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions) for operating on spatial data.
-+ Creating [indexes]({% link {{ page.version.version }}/spatial-indexes.md %}) on spatial data.
-+ Performing [joins]({% link {{ page.version.version }}/joins.md %}) on spatial data, and using [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) to make sure indexes are effective.
++ Using various [built-in functions]({{ page.version.version }}/functions-and-operators.md#spatial-functions) for operating on spatial data.
++ Creating [indexes]({{ page.version.version }}/spatial-indexes.md) on spatial data.
++ Performing [joins]({{ page.version.version }}/joins.md) on spatial data, and using [`EXPLAIN`]({{ page.version.version }}/explain.md) to make sure indexes are effective.
 + Visualizing the output of your queries using free tools like <https://geojson.io>
 
 <div class="clearfix">
@@ -42,16 +42,15 @@ For more information about how this data set is put together, see the [Data set 
 
 ## Step 2. Start CockroachDB
 
-This tutorial can be accomplished in any CockroachDB cluster running [v20.2]({% link releases/v20.2.md %}#v20-2-0) or later.
+This tutorial can be accomplished in any CockroachDB cluster running [v20.2](releases/v20.2.md#v20-2-0) or later.
 
-The simplest way to get up and running is with [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}), which starts a temporary, in-memory CockroachDB cluster and opens an interactive SQL shell:
+The simplest way to get up and running is with [`cockroach demo`]({{ page.version.version }}/cockroach-demo.md), which starts a temporary, in-memory CockroachDB cluster and opens an interactive SQL shell:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo
 ~~~
 
-You will see a [SQL client prompt]({% link {{ page.version.version }}/cockroach-sql.md %}) that looks like the one shown below. You will use this prompt for the rest of the tutorial.
+You will see a [SQL client prompt]({{ page.version.version }}/cockroach-sql.md) that looks like the one shown below. You will use this prompt for the rest of the tutorial.
 
 ~~~
 root@127.0.0.1:34839/movr>
@@ -61,7 +60,6 @@ root@127.0.0.1:34839/movr>
 
 1. Create a `tutorial` database, and use it.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE DATABASE tutorial;
     USE tutorial;
@@ -69,14 +67,12 @@ root@127.0.0.1:34839/movr>
 
 1. In a separate terminal, download the parts of [the data set](#data-set-description) that live in the `tutorial` database:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o bookstores-and-roads.sql https://spatial-tutorial.s3.us-east-2.amazonaws.com/bookstores-and-roads-20210125.sql
     ~~~
 
-1. Pipe the data set directly into [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %}), specifying the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) of your local cluster:
+1. Pipe the data set directly into [cockroach sql]({{ page.version.version }}/cockroach-sql.md), specifying the [connection string]({{ page.version.version }}/connection-parameters.md#connect-using-a-url) of your local cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url {"CONNECTION STRING"} < bookstores-and-roads.sql
     ~~~
@@ -85,7 +81,6 @@ root@127.0.0.1:34839/movr>
 
 1. Back in the SQL shell, create a `birds` database, and use it.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE DATABASE birds;
     USE birds;
@@ -93,14 +88,12 @@ root@127.0.0.1:34839/movr>
 
 1. In a separate terminal, download the parts of [the data set](#data-set-description) that live in the `birds` database:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -o birds.sql https://spatial-tutorial.s3.us-east-2.amazonaws.com/birds-20210125.sql
     ~~~
 
-1. Pipe the data set directly into [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %}), specifying the [connection string]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) of your local cluster:
+1. Pipe the data set directly into [cockroach sql]({{ page.version.version }}/cockroach-sql.md), specifying the [connection string]({{ page.version.version }}/connection-parameters.md#connect-using-a-url) of your local cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url {"CONNECTION STRING"} < birds.sql
     ~~~
@@ -109,7 +102,6 @@ root@127.0.0.1:34839/movr>
 
 1. Switch back to the `tutorial` database. All of the queries in this tutorial assume you are in the `tutorial` database.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     USE tutorial;
     ~~~
@@ -120,7 +112,7 @@ root@127.0.0.1:34839/movr>
 
 As a first step, you'd like to know where exactly the Common Loon has been sighted in New York State. You know that many of the loon sightings will have taken place in the Adirondacks (our overall destination) due to the nature of the loon's preferred habitat of northern lakes and ponds, but it will be useful to know the precise locations for trip planning, and for asking further related questions about other bird habitats as well as nearby bookstores you'd like to visit.
 
-Because of the structure of [the `birds` database](#the-birds-database), you will wrap the results of a [subquery]({% link {{ page.version.version }}/subqueries.md %}) against the `birds` database in a [common table expression (CTE)]({% link {{ page.version.version }}/common-table-expressions.md %}) to provide a shorthand name for referring to this data. This step will be necessary every time you want to get information about bird sightings. Therefore, the general pattern for many of these queries will be something like:
+Because of the structure of [the `birds` database](#the-birds-database), you will wrap the results of a [subquery]({{ page.version.version }}/subqueries.md) against the `birds` database in a [common table expression (CTE)]({{ page.version.version }}/common-table-expressions.md) to provide a shorthand name for referring to this data. This step will be necessary every time you want to get information about bird sightings. Therefore, the general pattern for many of these queries will be something like:
 
 1. Get bird information (usually including location data) and store the results in a named CTE.
 1. Using the named CTE, perform additional processing against the results of the CTE combined with other data you have (e.g., bookstores, roads). Depending on the complexity of the questions asked, you may even need to create multiple CTEs.
@@ -128,10 +120,9 @@ Because of the structure of [the `birds` database](#the-birds-database), you wil
 In the query below, to answer the question "where are the loons?", take the following steps:
 
 1. Join `birds.birds`, `birds.routes`, and `birds.observations` on the bird ID and route IDs where the bird name is "Common Loon".
-1. Collect the resulting birdwatcher route geometries (`routes.geom`) into one geometry (a [MultiPoint]({% link {{ page.version.version }}/multipoint.md %})).
-1. Give the resulting table a name, `loon_sightings`, and query against it. In this case the query is rather simple: since the geometries have been collected into one in step 2 above, output the geometry as [GeoJSON]({% link {{ page.version.version }}/geojson.md %}) so the result can be pasted into <https://geojson.io> to generate a map of the sightings.
+1. Collect the resulting birdwatcher route geometries (`routes.geom`) into one geometry (a [MultiPoint]({{ page.version.version }}/multipoint.md)).
+1. Give the resulting table a name, `loon_sightings`, and query against it. In this case the query is rather simple: since the geometries have been collected into one in step 2 above, output the geometry as [GeoJSON]({{ page.version.version }}/geojson.md) so the result can be pasted into <https://geojson.io> to generate a map of the sightings.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_sightings
@@ -162,7 +153,7 @@ FROM
 
 Paste the result above into <https://geojson.io> and you should see the following map, with gray markers for each loon sighting from the bird survey.
 
-<img src="{{ 'images/v24.2/geospatial/tutorial/query-01.png' | relative_url }}" alt="Common Loon sightings in the years 2000-2019 in NY state" style="max-width:100%" />
+![Common Loon sightings in the years 2000-2019 in NY state](/images/v24.2/geospatial/tutorial/query-01.png)
 
 ### (2) What is the total area of Loon sightings?
 
@@ -171,10 +162,9 @@ Now that you have some sense of how loon sightings are distributed across the st
 To find the answer:
 
 1. Collect the geometries of all loon sightings together in a CTE as one geometry.
-1. Get the area of the [convex hull]({% link {{ page.version.version }}/st_convexhull.md %}) of the resulting geometry.
-1. Because the `birds.routes` data uses [SRID 4326]({% link {{ page.version.version }}/srid-4326.md %}), the resulting area is measured in degrees, which can be converted to square miles by casting the data to a `GEOGRAPHY` type and dividing by 1609 (the number of meters in a mile) squared.
+1. Get the area of the [convex hull]({{ page.version.version }}/st_convexhull.md) of the resulting geometry.
+1. Because the `birds.routes` data uses [SRID 4326]({{ page.version.version }}/srid-4326.md), the resulting area is measured in degrees, which can be converted to square miles by casting the data to a `GEOGRAPHY` type and dividing by 1609 (the number of meters in a mile) squared.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_sightings
@@ -214,7 +204,6 @@ To find the answer:
 1. Join `birds.birds` and `birds.observations` on the bird ID where the bird name is "Common Loon".
 1. Sum all of the sightings; the `GROUP BY` on bird names is necessary due to the use of the `sum` aggregate function.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 	birds.name, sum(observations.count) AS sightings
@@ -240,7 +229,6 @@ You might like to get a sense of how many of the loon sightings were more recent
 
 To determine how many sightings there were in NY state in 2019, re-use the query from [#3][q_03], with the additional constraint that the observation year is 2019.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 	birds.name, sum(observations.count) AS sightings
@@ -270,9 +258,8 @@ Since you are planning to do some hiking back into the woods to find the actual 
 To answer this question:
 
 1. Build a CTE that returns both the convex hull of loon habitat, as well as the sum of all loon observations in NY.
-1. Query the result table of the CTE from step 1 to divide the number of sightings by the area of the loon's habitat (the convex hull). As in [#2][q_02], do some arithmetic to convert from the unit of degrees returned by [SRID 4326]({% link {{ page.version.version }}/srid-4326.md %}) to square miles.
+1. Query the result table of the CTE from step 1 to divide the number of sightings by the area of the loon's habitat (the convex hull). As in [#2][q_02], do some arithmetic to convert from the unit of degrees returned by [SRID 4326]({{ page.version.version }}/srid-4326.md) to square miles.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_habitat
@@ -321,10 +308,9 @@ A natural question that arises is: given that you are looking for loon habitat, 
 
 To answer this question:
 
-1. Build a CTE that returns the [convex hull]({% link {{ page.version.version }}/st_convexhull.md %}) of Common Loon habitat.
-1. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained]({% link {{ page.version.version }}/st_contains.md %}) by the loon habitat. Note that the query below [orders by]({% link {{ page.version.version }}/order-by.md %}) the store geometries so that stores in the list are clustered by location. This ordering may be useful if you want to travel between nearby stores. For more information about how this ordering is calculated, see [How CockroachDB's spatial indexing works]({% link {{ page.version.version }}/spatial-indexes.md %}#how-cockroachdbs-spatial-indexing-works).
+1. Build a CTE that returns the [convex hull]({{ page.version.version }}/st_convexhull.md) of Common Loon habitat.
+1. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained]({{ page.version.version }}/st_contains.md) by the loon habitat. Note that the query below [orders by]({{ page.version.version }}/order-by.md) the store geometries so that stores in the list are clustered by location. This ordering may be useful if you want to travel between nearby stores. For more information about how this ordering is calculated, see [How CockroachDB's spatial indexing works]({{ page.version.version }}/spatial-indexes.md#how-cockroachdbs-spatial-indexing-works).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_sightings
@@ -378,10 +364,9 @@ To answer this question:
 1. Join the results of the above CTEs and query the count of birds whose habitats contain the location of the bookstore.
 
 {{site.data.alerts.callout_info}}
-The final [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) in the query below is doing a join that will not benefit from [spatial indexing]({% link {{ page.version.version }}/spatial-indexes.md %}), since both sides of the join are the results of [CTEs]({% link {{ page.version.version }}/common-table-expressions.md %}), and are therefore not indexed.
+The final [`SELECT`]({{ page.version.version }}/selection-queries.md) in the query below is doing a join that will not benefit from [spatial indexing]({{ page.version.version }}/spatial-indexes.md), since both sides of the join are the results of [CTEs]({{ page.version.version }}/common-table-expressions.md), and are therefore not indexed.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	the_book_nook
@@ -428,7 +413,6 @@ This is encouraging; there are over 120 species of birds for you to choose from 
 
 You can verify the results by checking how many bird species have been sighted by the bird survey overall; you should expect that this number will be much larger than 124, and indeed it is:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT COUNT(name) FROM birds.birds;
 ~~~
@@ -450,10 +434,9 @@ To answer this question:
 1. Join the results of the above CTE and a query against the `birds` database that lists the names and observation totals (sums) of birds whose habitats are within 10 miles of the location of the bookstore.
 
 {{site.data.alerts.callout_info}}
-The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function]({% link {{ page.version.version }}/query-spatial-data.md %}#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) output for details).
+The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function]({{ page.version.version }}/query-spatial-data.md#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`]({{ page.version.version }}/explain.md) output for details).
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	the_book_nook
@@ -527,11 +510,10 @@ You [already discovered which bookstores are located within loon habitat][q_06].
 
 To answer this question:
 
-1. Build a CTE that returns the [convex hull]({% link {{ page.version.version }}/st_convexhull.md %}) of Common Loon habitat.
-1. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained]({% link {{ page.version.version }}/st_contains.md %}) by the loon habitat.
-1. Collect the geometries that result from the step above into a single geometry, calculate its convex hull, and return the results as [GeoJSON]({% link {{ page.version.version }}/geojson.md %}).
+1. Build a CTE that returns the [convex hull]({{ page.version.version }}/st_convexhull.md) of Common Loon habitat.
+1. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained]({{ page.version.version }}/st_contains.md) by the loon habitat.
+1. Collect the geometries that result from the step above into a single geometry, calculate its convex hull, and return the results as [GeoJSON]({{ page.version.version }}/geojson.md).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_habitat
@@ -565,7 +547,7 @@ WHERE
 
 Paste the result above into <https://geojson.io> and you should see the following map:
 
-<img src="{{ 'images/v24.2/geospatial/tutorial/query-09.png' | relative_url }}" alt="Convex hull of bookstore locations within Common Loon habitat" style="max-width:100%" />
+![Convex hull of bookstore locations within Common Loon habitat](/images/v24.2/geospatial/tutorial/query-09.png)
 
 ### (10) What is the area of the shape of all bookstore locations that are in the Loon's habitat range within NY state?
 
@@ -573,12 +555,11 @@ You have already [visualized the convex hull][q_09], but now you would like to c
 
 To answer this question:
 
-1. Build a CTE that returns the [convex hull]({% link {{ page.version.version }}/st_convexhull.md %}) of Common Loon habitat.
-1. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained]({% link {{ page.version.version }}/st_contains.md %}) by the loon habitat.
-1. Get the area of the [convex hull]({% link {{ page.version.version }}/st_convexhull.md %}) of the resulting geometry.
-1. Collect the geometries that result from the step above into a single geometry, calculate its convex hull, and calculate the area of the hull. As in previous examples, note that because the `birds.routes` data uses [SRID 4326]({% link {{ page.version.version }}/srid-4326.md %}), the resulting area is measured in degrees, which is converted to square miles by casting the data to a `GEOGRAPHY` type and dividing by 1609 (the number of meters in a mile) squared.
+1. Build a CTE that returns the [convex hull]({{ page.version.version }}/st_convexhull.md) of Common Loon habitat.
+1. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained]({{ page.version.version }}/st_contains.md) by the loon habitat.
+1. Get the area of the [convex hull]({{ page.version.version }}/st_convexhull.md) of the resulting geometry.
+1. Collect the geometries that result from the step above into a single geometry, calculate its convex hull, and calculate the area of the hull. As in previous examples, note that because the `birds.routes` data uses [SRID 4326]({{ page.version.version }}/srid-4326.md), the resulting area is measured in degrees, which is converted to square miles by casting the data to a `GEOGRAPHY` type and dividing by 1609 (the number of meters in a mile) squared.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_habitat
@@ -626,7 +607,6 @@ To answer this question:
 1. Issue subqueries that find the IDs of two of the bookstores you'd like to travel between, as start and end points.
 1. Measure the length of the geometry that corresponds to those start and end IDs. Note that because the `bookstore_routes.geom` column has a SRID of 0 (which it inherited from the `roads` database from which it was created), you can convert to miles by casting the data to a `GEOGRAPHY` type, which uses meters, and then dividing by 1609 (the number of meters in a mile).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 	st_length(geom::GEOGRAPHY) / 1609
@@ -668,7 +648,6 @@ You have [determined how long the drive between these two stores will be][q_11],
 
 To find this out, you can re-use the query from the previous question, using `ST_AsGeoJSON` instead of `ST_Length`, and skipping the distance math to generate output in miles.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 	st_asgeojson(geom)
@@ -706,7 +685,7 @@ The result is a very large chunk of JSON:
 
 Paste the result above into <https://geojson.io> and you should see the following map:
 
-<img src="{{ 'images/v24.2/geospatial/tutorial/query-12.png' | relative_url }}" alt="What does the route from Mysteries on Main Street in Johnstown, NY to The Book Nook in Saranac Lake, NY look like?" style="max-width:100%" />
+![What does the route from Mysteries on Main Street in Johnstown, NY to The Book Nook in Saranac Lake, NY look like?](/images/v24.2/geospatial/tutorial/query-12.png)
 
 ### (13) What were the 25 most-commonly-sighted birds in 2019 within 10 miles of the route between Mysteries on Main Street in Johnstown, NY and The Bookstore Plus in Lake Placid, NY?
 
@@ -718,10 +697,9 @@ To answer this question:
 1. Join the results of the above CTE with a query against [the `birds` database](#the-birds-database) that checks whether the distance between the route geometry and the location of the bird observation (`birds.routes.geom`) bookstore's location is less than the desired length of 10 miles. Note that because the call to `ST_Distance` is operating on shapes cast to `GEOGRAPHY` data type, the results are in meters, which then have to be converted to miles by dividing the result by 1609 (the number of meters in a mile).
 
 {{site.data.alerts.callout_info}}
-The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function]({% link {{ page.version.version }}/query-spatial-data.md %}#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) output for details).
+The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function]({{ page.version.version }}/query-spatial-data.md#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`]({{ page.version.version }}/explain.md) output for details).
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	bookstore_trip
@@ -814,10 +792,9 @@ Since you are already looking for loons, you would like to know if there are oth
 
 To answer this question:
 
-1. Build a CTE that returns the [convex hull]({% link {{ page.version.version }}/st_convexhull.md %}) of Common Loon habitat.
+1. Build a CTE that returns the [convex hull]({{ page.version.version }}/st_convexhull.md) of Common Loon habitat.
 1. Join the results of the above CTE and a query against [the `birds` database](#the-birds-database) that lists the names and observation totals (sums) of birds whose habitats are contained within the convex hull of loon habitat.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_habitat
@@ -897,14 +874,13 @@ Specifically, you would like to know: What are the 10 roads that are closest to 
 To answer this question:
 
 1. Build a CTE called `loon_habitat` that collects all of the Common Loon sightings into a single geometry.
-1. Build another CTE called `nearby_roads` that joins the results of the subquery above with [the `roads` table](#the-roads-table) and pulls out the roads in NY state that are within a degree (about 60 nautical miles). Order the roads returned by their distance from a loon sighting. This will return some duplicate roads (since loons can be sighted multiple times along a single road), which is why you need to `LIMIT` to 20 here so you can get the list down to 10 later. Because the data in the `roads` table has an SRID of 0, you need to use `ST_SetSRID` to set its SRID to [4326]({% link {{ page.version.version }}/srid-4326.md %}). This step is necessary because `ST_Distance` cannot operate on geometries with differing SRIDs.
+1. Build another CTE called `nearby_roads` that joins the results of the subquery above with [the `roads` table](#the-roads-table) and pulls out the roads in NY state that are within a degree (about 60 nautical miles). Order the roads returned by their distance from a loon sighting. This will return some duplicate roads (since loons can be sighted multiple times along a single road), which is why you need to `LIMIT` to 20 here so you can get the list down to 10 later. Because the data in the `roads` table has an SRID of 0, you need to use `ST_SetSRID` to set its SRID to [4326]({{ page.version.version }}/srid-4326.md). This step is necessary because `ST_Distance` cannot operate on geometries with differing SRIDs.
 1. Finally, query the results of the `nearby_roads` subquery to get a list of 10 distinct road names that you can plan to visit.
 
 {{site.data.alerts.callout_info}}
-The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function]({% link {{ page.version.version }}/query-spatial-data.md %}#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) output for details).
+The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function]({{ page.version.version }}/query-spatial-data.md#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`]({{ page.version.version }}/explain.md) output for details).
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_habitat
@@ -967,19 +943,17 @@ LIMIT
 Time: 1.447s total (execution 1.446s / network 0.000s)
 ~~~
 
-Unfortunately, this query is a bit slower than you would like: about 1.5 seconds on a single-node [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster on a laptop. There are several reasons for this:
+Unfortunately, this query is a bit slower than you would like: about 1.5 seconds on a single-node [`cockroach demo`]({{ page.version.version }}/cockroach-demo.md) cluster on a laptop. There are several reasons for this:
 
-1. You haven't created any indexes at all yet. The query is likely to be doing full table scans, which you will need to hunt down with [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}).
+1. You haven't created any indexes at all yet. The query is likely to be doing full table scans, which you will need to hunt down with [`EXPLAIN`]({{ page.version.version }}/explain.md).
 1. CockroachDB does not yet have built-in support for index-based nearest neighbor queries. If this feature is important to you, please comment with some information about your use case on [cockroachdb/cockroach#55227](https://github.com/cockroachdb/cockroach/issues/55227).
 
 Let's look at the `EXPLAIN` output to see if there is something that can be done to improve this query's performance:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN WITH loon_habitat AS (SELECT st_collect(routes.geom) AS geom FROM birds.birds, birds.observations, birds.routes WHERE birds.name = 'Common Loon' AND birds.id = observations.bird_id AND observations.route_id = routes.id), nearby_roads AS (SELECT roads.prime_name AS road_name FROM roads, loon_habitat WHERE st_distance(loon_habitat.geom, st_setsrid(roads.geom, 4326)) < 1 ORDER BY st_distance(loon_habitat.geom, st_setsrid(roads.geom, 4326)) ASC LIMIT 20) SELECT DISTINCT road_name FROM nearby_roads LIMIT 10;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~
                                 tree                               |        field        |                      description
 -------------------------------------------------------------------+---------------------+---------------------------------------------------------
@@ -1028,49 +1002,43 @@ EXPLAIN WITH loon_habitat AS (SELECT st_collect(routes.geom) AS geom FROM birds.
 
 As you can see above, there are several full table scans being performed (see `FULL SCAN`). For each table, you have a hypothesis on what is causing the scan; usually the hypothesis is that the table is missing an index.
 
-- For [the `roads` table](#the-roads-table), there is no [spatial index]({% link {{ page.version.version }}/spatial-indexes.md %}) on the `road.geom` column. This is probably the worst performance offender of the bunch, since this table has almost a quarter of a million rows. It makes sense that it's quite large, since it represents a road map of the entire United States.
-  - In addition to adding an index to `roads.geom`, you will need to update the SRID of the `roads.geom` column to use [SRID 4326]({% link {{ page.version.version }}/srid-4326.md %}) so it matches the SRID of the loon habitat geometry. Updating the SRID to match will allow you to stop using `ST_SetSRID` on `roads.geom` as shown above, which will keep CockroachDB from taking advantage of the spatial index on that column.
+- For [the `roads` table](#the-roads-table), there is no [spatial index]({{ page.version.version }}/spatial-indexes.md) on the `road.geom` column. This is probably the worst performance offender of the bunch, since this table has almost a quarter of a million rows. It makes sense that it's quite large, since it represents a road map of the entire United States.
+  - In addition to adding an index to `roads.geom`, you will need to update the SRID of the `roads.geom` column to use [SRID 4326]({{ page.version.version }}/srid-4326.md) so it matches the SRID of the loon habitat geometry. Updating the SRID to match will allow you to stop using `ST_SetSRID` on `roads.geom` as shown above, which will keep CockroachDB from taking advantage of the spatial index on that column.
 - On [the `birds.observations` table](#the-birds-database), there is no index on the `birds.observations.route_id` or `birds.observations.bird_id` columns, which are used for all bird information lookups.
 - On the [`birds.birds` table](#the-birds-database), there is no index on the `birds.birds.name` column which you're filtering on (this is also used by almost all of your other bird-related queries).
 
 Based on these hypotheses, you take the following steps:
 
-1. Add an index to the `roads.geom` column. Note that creating the index on `roads.geom` takes about a minute on a single-node [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster, since the table is relatively large.
+1. Add an index to the `roads.geom` column. Note that creating the index on `roads.geom` takes about a minute on a single-node [`cockroach demo`]({{ page.version.version }}/cockroach-demo.md) cluster, since the table is relatively large.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE INDEX ON roads USING GIST(geom);
     ~~~
 
-1. Update the SRID of the `roads.geom` column from 0 to [4326]({% link {{ page.version.version }}/srid-4326.md %}). This will take a few seconds.
+1. Update the SRID of the `roads.geom` column from 0 to [4326]({{ page.version.version }}/srid-4326.md). This will take a few seconds.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     UPDATE roads SET geom = st_transform(st_setsrid(geom, 4326), 4326) WHERE gid IS NOT NULL RETURNING NOTHING;
     ~~~
 
 1. Add indexes on the `birds.observations.route_id` and `birds.observations.bird_id` columns:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE INDEX ON birds.observations(bird_id);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE INDEX ON birds.observations(route_id);
     ~~~
 
 1. Add an index on the `birds.birds.name` column:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE INDEX ON birds.birds(name);
     ~~~
 
 Did adding all of these indexes and updating the road geometry SRIDs make this query any faster?  Let's check. Note that the query below has been modified to no longer use the `ST_SetSRID` function.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_habitat
@@ -1129,9 +1097,8 @@ It looks like the answer is yes; you have sped up this query by about 30%:
 Time: 998ms total (execution 998ms / network 0ms)
 ~~~
 
-To see why, look at the [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) output:
+To see why, look at the [`EXPLAIN`]({{ page.version.version }}/explain.md) output:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN WITH loon_habitat AS (SELECT st_collect(routes.geom) AS geom FROM birds.birds, birds.observations, birds.routes WHERE birds.name = 'Common Loon' AND birds.id = observations.bird_id AND observations.route_id = routes.ID), nearby_roads AS (SELECT roads.prime_name AS road_name FROM roads, loon_habitat WHERE st_distance(loon_habitat.geom, roads.geom) < 1 ORDER BY st_distance(loon_habitat.geom, roads.geom) ASC LIMIT 20) SELECT DISTINCT road_name FROM nearby_roads LIMIT 10;
 ~~~
@@ -1183,7 +1150,7 @@ EXPLAIN WITH loon_habitat AS (SELECT st_collect(routes.geom) AS geom FROM birds.
 
 Based on the output above, you notice the following improvements:
 
-- The [spatial index]({% link {{ page.version.version }}/spatial-indexes.md %}) on `roads.geom` is being used by the join between that column and the loon habitat geometry. This is the biggest reason for improved performance, since [the `roads` table](#the-roads-table) has ~225,000 rows.
+- The [spatial index]({{ page.version.version }}/spatial-indexes.md) on `roads.geom` is being used by the join between that column and the loon habitat geometry. This is the biggest reason for improved performance, since [the `roads` table](#the-roads-table) has ~225,000 rows.
 - You no longer appear to be scanning all ~85,000 rows of [the `birds.observations` table](#the-birds-database) thanks to the index on the `birds.observations.bird_id` column.
 - You are probably getting a small speedup from the index on [`birds.birds.name`](#the-birds-database) (although that table is not very large, only about 750 rows).
 
@@ -1193,14 +1160,13 @@ It may not be immediately relevant to your birdwatching or book-buying travels, 
 
 To answer this:
 
-1. Build a CTE that returns the [convex hull]({% link {{ page.version.version }}/st_convexhull.md %}) of Common Loon habitat.
+1. Build a CTE that returns the [convex hull]({{ page.version.version }}/st_convexhull.md) of Common Loon habitat.
 1. Join the results of the above CTE and a query against [the `roads` table](#the-roads-table) that sums the mileage of all roads that are contained within the convex hull of loon habitat.
 
 {{site.data.alerts.callout_info}}
 Because you are using `ST_Contains`, the query below only sums the road mileages of roads whose geometries lie entirely within the loon habitat.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_habitat
@@ -1244,11 +1210,10 @@ As you are driving around the Adirondacks, searching for loons as well as your n
 
 To answer this question:
 
-1. Build a CTE that returns the [convex hull]({% link {{ page.version.version }}/st_convexhull.md %}) of Common Loon habitat.
+1. Build a CTE that returns the [convex hull]({{ page.version.version }}/st_convexhull.md) of Common Loon habitat.
 1. Build a CTE that joins [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) and the results of the above subquery to generate a set of bookstores inside the loon's habitat area.
 1. Finally, generate a query that joins the results of the above subquery against [the `roads` table](#the-roads-table) based on which roads are within a 10 mile radius. This generates a list of bookstores and the number of miles of nearby roads, sorted in order of which store has the fewest miles of road nearby.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_habitat
@@ -1317,7 +1282,6 @@ Time: 6.214s total (execution 6.214s / network 0.000s)
 
 Let's look at the `EXPLAIN` output to see if there is something that can be done to improve this query's performance:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN WITH loon_habitat AS (SELECT st_convexhull(st_collect(routes.geom)) AS geom FROM birds.birds, birds.observations, birds.routes WHERE birds.name = 'Common Loon' AND birds.id = observations.bird_id AND observations.route_id = routes.id), loon_bookstores AS (SELECT bookstores.name, address, bookstores.geom AS geom FROM bookstores, loon_habitat WHERE st_contains(loon_habitat.geom, bookstores.geom)) SELECT loon_bookstores.name, address, sum(roads.miles)::INT AS nearby_road_miles FROM roads, loon_bookstores WHERE st_distance(loon_bookstores.geom, roads.geom) < (10 / 69) GROUP BY loon_bookstores.name, address ORDER BY nearby_road_miles ASC;
 ~~~
@@ -1371,19 +1335,17 @@ EXPLAIN WITH loon_habitat AS (SELECT st_convexhull(st_collect(routes.geom)) AS g
 Looking at these results from the bottom up, you can see that:
 
 1. There is a full table scan happening on the `birds.birds.routes` table. Since it's so small (129 rows), let's move on for now.
-1. There is a full table scan on the `bookstores` table. Since the predicate is [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %}), you probably need to add a [spatial index]({% link {{ page.version.version }}/spatial-indexes.md %}) on `bookstores.geom`.
+1. There is a full table scan on the `bookstores` table. Since the predicate is [`ST_Contains`]({{ page.version.version }}/st_contains.md), you probably need to add a [spatial index]({{ page.version.version }}/spatial-indexes.md) on `bookstores.geom`.
 1. There is a full table scan happening on the `roads` table. This is a serious problem due to the size of that table: ~225,000 rows. You already have an index on the `roads.geom` column for the `ST_DWithin` predicate to use, so you need to find another way to reduce the number of rows scanned. You can do what you did in [query 16][q_16] and add a check that the `roads.state = 'NY'`, since you are only looking at roads inside New York State.
 
 Based on these observations, you add an index to the `bookstores.geom` column:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON bookstores USING GIST(geom);
 ~~~
 
 After adding the index, you modify your query as shown below to filter on `roads.state`.  This looks only at roads in New York (as in [query 16][q_16]):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_habitat
@@ -1453,7 +1415,6 @@ Time: 376ms total (execution 376ms / network 0ms)
 
 When you look at `EXPLAIN` for the modified query, you see why: the filter on `roads.state='NY'` means you are scanning far fewer columns of the `roads` table (~8,900), and the index on `bookstores.geom` means you are using that index now as well:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN WITH loon_habitat AS (SELECT st_convexhull(st_collect(routes.geom)) AS geom FROM birds.birds, birds.observations, birds.routes WHERE birds.name = 'Common Loon' AND birds.id = observations.bird_id AND observations.route_id = routes.id), loon_bookstores AS (SELECT bookstores.name, address, bookstores.geom AS geom FROM bookstores, loon_habitat WHERE st_contains(loon_habitat.geom, bookstores.geom)) SELECT loon_bookstores.name, address, sum(roads.miles)::INT8 AS nearby_road_miles FROM roads, loon_bookstores WHERE roads.state = 'NY' AND st_distance(roads.geom, loon_bookstores.geom) < (10 / 69) GROUP BY loon_bookstores.name, address ORDER BY nearby_road_miles ASC;
 ~~~
@@ -1516,13 +1477,12 @@ Due to your long birdwatching experience, you recall that hawks are in the famil
 
 To answer this question:
 
-1. Build a CTE that returns the [convex hull]({% link {{ page.version.version }}/st_convexhull.md %}) of Common Loon habitat.
+1. Build a CTE that returns the [convex hull]({{ page.version.version }}/st_convexhull.md) of Common Loon habitat.
 1. Join the results of the above subquery with [the `birds` database](#the-birds-database) to find the names and observation counts of the birds that:
   1. Are in the family "Accipitridae".
   1. Have sighting locations whose geometry is contained by the hull describing the Common Loon's habitat.
 1. Order the birds in the list by how frequently they are sighted, since you may want to look for the most common hawks first.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_habitat
@@ -1579,13 +1539,12 @@ If you are a fan of owls as well as hawks, you can make several updates to [the 
 
 To answer this question:
 
-1. Build a CTE that returns the [convex hull]({% link {{ page.version.version }}/st_convexhull.md %}) of Common Loon habitat.
+1. Build a CTE that returns the [convex hull]({{ page.version.version }}/st_convexhull.md) of Common Loon habitat.
 1. Join the results of the above subquery with [the `birds` database](#the-birds-database) to find the names and observation counts of the birds that:
   1. Are in the family "Accipitridae" (hawks) _or_ the family "Strigidae" (owls).
   1. Have sighting locations whose geometry is contained by the hull describing the Common Loon's habitat.
 1. Group the birds by name and family, and within each grouping order the birds by how frequently they are sighted, since you may want to look for the most common hawks or owls first.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH
 	loon_habitat
@@ -1647,11 +1606,11 @@ ORDER BY
 
 Now that you are familiar with writing and tuning spatial queries, you are ready for the following steps:
 
-- Learn more details about the [spatial features]({% link {{ page.version.version }}/spatial-data-overview.md %}) supported by CockroachDB.
+- Learn more details about the [spatial features]({{ page.version.version }}/spatial-data-overview.md) supported by CockroachDB.
 
-- Learn how to migrate spatial data from [shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %}), [GeoPackages]({% link {{ page.version.version }}/migrate-from-geopackage.md %}), [GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %}), or [OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %}) into CockroachDB.
+- Learn how to migrate spatial data from [shapefiles]({{ page.version.version }}/migrate-from-shapefiles.md), [GeoPackages]({{ page.version.version }}/migrate-from-geopackage.md), [GeoJSON]({{ page.version.version }}/migrate-from-geojson.md), or [OpenStreetMap]({{ page.version.version }}/migrate-from-openstreetmap.md) into CockroachDB.
 
-- Learn how CockroachDB's [spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %}) work.
+- Learn how CockroachDB's [spatial indexes]({{ page.version.version }}/spatial-indexes.md) work.
 
 ## Appendix
 
@@ -1659,15 +1618,15 @@ Now that you are familiar with writing and tuning spatial queries, you are ready
 
 The queries are presented above in a "narrative order" that corresponds roughly to the order in which you might ask questions about bookstores and loon habitat as you plan for your vacation.
 
-However, you may just want to see what queries are exercising a specific [spatial feature]({% link {{ page.version.version }}/spatial-data-overview.md %}) supported by CockroachDB. The table below provides a mapping from a feature (such as 'spatial indexing' or 'spatial joins') to the queries that use that feature.
+However, you may just want to see what queries are exercising a specific [spatial feature]({{ page.version.version }}/spatial-data-overview.md) supported by CockroachDB. The table below provides a mapping from a feature (such as 'spatial indexing' or 'spatial joins') to the queries that use that feature.
 
 | Feature                      | Queries                                                                                                                                                | Description(s)                                                                                                                                                            |
 |------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Spatial data set preparation | N/A                                                                                                                                                    | For information about how this data set was prepared, see the relevant portions of the [Data set description](#data-set-description).                                     |
 | Loading spatial data         | N/A                                                                                                                                                    | For loading instructions on loading the data set, see [Loading the data set](#step-3-load-the-data-set).                                                                      |
-| Spatial joins                | [#6][q_06], [#7][q_07], [#8][q_08], [#9][q_09], [#10][q_10], [#13][q_13], [#14][q_14], [#15][q_15], [#16][q_16], [#17][q_17], [#18][q_18], [#19][q_19] | Joins that involve comparing spatial features from two or more tables, usually with a predicate such as [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %}).                                |
+| Spatial joins                | [#6][q_06], [#7][q_07], [#8][q_08], [#9][q_09], [#10][q_10], [#13][q_13], [#14][q_14], [#15][q_15], [#16][q_16], [#17][q_17], [#18][q_18], [#19][q_19] | Joins that involve comparing spatial features from two or more tables, usually with a predicate such as [`ST_Contains`]({{ page.version.version }}/st_contains.md).                                |
 | Spatial indexing             | [#15][q_15], [#17][q_17]                                                                                                                               | These queries show explicit spatial index creation; many of the spatial join queries listed above could use these indexes, once created.                                  |
-| Spatial relationships        | [#6][q_06], [#7][q_07], [#8][q_08], [#9][q_09], [#10][q_10], [#13][q_13], [#14][q_14], [#15][q_15], [#16][q_16], [#17][q_17], [#18][q_18], [#19][q_19] | Comparing spatial relationships with predicates such as [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %}) and `ST_DWithin`.                                                               |
+| Spatial relationships        | [#6][q_06], [#7][q_07], [#8][q_08], [#9][q_09], [#10][q_10], [#13][q_13], [#14][q_14], [#15][q_15], [#16][q_16], [#17][q_17], [#18][q_18], [#19][q_19] | Comparing spatial relationships with predicates such as [`ST_Contains`]({{ page.version.version }}/st_contains.md) and `ST_DWithin`.                                                               |
 | Nearest-neighbor searching   | [#15][q_15]                                                                                                                                            | This query shows how to execute a nearest-neighbor search using CockroachDB. |
 
 ### Data set description
@@ -1689,13 +1648,12 @@ The `tutorial` database contains the following tables:
 
 ##### The `bookstores` and `bookstore_routes` tables
 
-Below is an entity-relationship diagram showing the `bookstores` and `bookstore_routes` tables (generated using [DBeaver]({% link {{ page.version.version }}/dbeaver.md %})):
+Below is an entity-relationship diagram showing the `bookstores` and `bookstore_routes` tables (generated using [DBeaver]({{ page.version.version }}/dbeaver.md)):
 
-<img src="{{ 'images/v24.2/geospatial/tutorial/er-bookstores.png' | relative_url }}" alt="tutorial.bookstores and tutorial.bookstore_routes ER diagrams" style="max-width:100%" />
+![tutorial.bookstores and tutorial.bookstore_routes ER diagrams](/images/v24.2/geospatial/tutorial/er-bookstores.png)
 
 As mentioned above, the `bookstores` table was created by scraping web data from the [American Booksellers Association website's member directory](https://bookweb.org/member_directory/search/ABAmember). In addition, the `geom` column was constructed by doing some [address geocoding](https://wikipedia.org/wiki/Address_geocoding) that converted each bookstore's address to a lon/lat pair and converted to a spatial object using `ST_MakePoint`. For each bookstore, the script did a bit of parsing and geocoding and ran essentially the following query:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- sqlchecker: ignore
 INSERT
@@ -1734,7 +1692,7 @@ VALUES
 	);
 ~~~
 
-Similarly, the paths (specifically [MultiLinestrings]({% link {{ page.version.version }}/multilinestring.md %})) between bookstores in the `bookstore_routes` table were also calculated using a script that made use of a simple greedy algorithm to find paths between the bookstores using the `roads` table (described below). The algorithm always looks for the next road that will bring you closer to the destination. It is fine for this small use case, but it is not robust enough for any kind of production use, since it does not perform any backtracking when it gets stuck in a local optimum. The algorithm works as follows, and assumes a starting bookstore _A_ and an ending bookstore _B_:
+Similarly, the paths (specifically [MultiLinestrings]({{ page.version.version }}/multilinestring.md)) between bookstores in the `bookstore_routes` table were also calculated using a script that made use of a simple greedy algorithm to find paths between the bookstores using the `roads` table (described below). The algorithm always looks for the next road that will bring you closer to the destination. It is fine for this small use case, but it is not robust enough for any kind of production use, since it does not perform any backtracking when it gets stuck in a local optimum. The algorithm works as follows, and assumes a starting bookstore _A_ and an ending bookstore _B_:
 
 1. (Start) Find the road nearest _A_; call this road _R_<sub>A</sub>.
 1. Find the road nearest the destination _B_; call this road _R_<sub>B</sub>.
@@ -1755,29 +1713,28 @@ There are multiple ways to do geocoding. You can use REST API-based services or 
 
 Meanwhile, the `roads` table has many columns; the most important ones used in this tutorial are `state`, `geom`, `miles`, and `prime_name` (the human-readable name of the road).
 
-<img src="{{ 'images/v24.2/geospatial/tutorial/er-roads.png' | relative_url }}" alt="tutorial.roads ER diagrams" style="max-width:100%" />
+![tutorial.roads ER diagrams](/images/v24.2/geospatial/tutorial/er-roads.png)
 
 For more information about what the other columns in `roads` mean, see the [full data set description](https://www.sciencebase.gov/catalog/file/get/581d052be4b08da350d524ce?f=__disk__60%2F6b%2F4e%2F606b4e564884da8cca57ffeb229cd817006616e0&transform=1&allowOpen=true).
 
 {{site.data.alerts.callout_info}}
-The `roads` table was imported from a [shapefile](https://prd-tnm.s3.amazonaws.com/StagedProducts/Small-scale/data/Transportation/roadtrl010g.shp_nt00920.tar.gz) using the method described in [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %}).
+The `roads` table was imported from a [shapefile](https://prd-tnm.s3.amazonaws.com/StagedProducts/Small-scale/data/Transportation/roadtrl010g.shp_nt00920.tar.gz) using the method described in [Migrate from Shapefiles]({{ page.version.version }}/migrate-from-shapefiles.md).
 {{site.data.alerts.end}}
 
 #### The `birds` database
 
-The `birds` database contains several tables that you will have to [join]({% link {{ page.version.version }}/joins.md %}) together in most of the queries shown elsewhere on this page. The multi-table design reflects [the schema of the actual data set](https://www.sciencebase.gov/catalog/file/get/5ea04e9a82cefae35a129d65?f=__disk__b4%2F2f%2Fcf%2Fb42fcfe28a799db6e8c97200829ea1ebaccbf8ea&transform=1&allowOpen=true), which is split across files that map to these tables.
+The `birds` database contains several tables that you will have to [join]({{ page.version.version }}/joins.md) together in most of the queries shown elsewhere on this page. The multi-table design reflects [the schema of the actual data set](https://www.sciencebase.gov/catalog/file/get/5ea04e9a82cefae35a129d65?f=__disk__b4%2F2f%2Fcf%2Fb42fcfe28a799db6e8c97200829ea1ebaccbf8ea&transform=1&allowOpen=true), which is split across files that map to these tables.
 
 The tables in the `birds` database are diagrammed below:
 
 - `birds` is a list of ~750 bird species. Most queries will use the `name` column.
-- `routes` is a list of ~130 prescribed locations that the birdwatchers helping with the survey visit each year. The `geom` associated with each route is a [Point]({% link {{ page.version.version }}/point.md %}) marking the latitude and longitude of the route's starting point. For details, see the [schema](https://www.sciencebase.gov/catalog/file/get/5ea04e9a82cefae35a129d65?f=__disk__b4%2F2f%2Fcf%2Fb42fcfe28a799db6e8c97200829ea1ebaccbf8ea&transform=1&allowOpen=true) (search for the text "routes.csv").
-- `observations` describes the ~85,000 times and places in which birds of various species were actually seen. The `bird_id` is a [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) to the ID in the `birds` table, and the `route_id` points to the ID of the `routes` table.
+- `routes` is a list of ~130 prescribed locations that the birdwatchers helping with the survey visit each year. The `geom` associated with each route is a [Point]({{ page.version.version }}/point.md) marking the latitude and longitude of the route's starting point. For details, see the [schema](https://www.sciencebase.gov/catalog/file/get/5ea04e9a82cefae35a129d65?f=__disk__b4%2F2f%2Fcf%2Fb42fcfe28a799db6e8c97200829ea1ebaccbf8ea&transform=1&allowOpen=true) (search for the text "routes.csv").
+- `observations` describes the ~85,000 times and places in which birds of various species were actually seen. The `bird_id` is a [foreign key]({{ page.version.version }}/foreign-key.md) to the ID in the `birds` table, and the `route_id` points to the ID of the `routes` table.
 
-<img src="{{ 'images/v24.2/geospatial/tutorial/er-birds.png' | relative_url }}" alt="birds.birds, birds.routes, and birds.observations ER diagrams" style="max-width:100%" />
+![birds.birds, birds.routes, and birds.observations ER diagrams](/images/v24.2/geospatial/tutorial/er-birds.png)
 
-Each of these tables were populated using a script that parsed [the CSV files available for download](https://www.sciencebase.gov/catalog/item/52b1dfa8e4b0d9b325230cd9) and added the data using [`INSERT`]({% link {{ page.version.version }}/insert.md %}) statements. For the `routes` table, once again the `ST_MakePoint` function was used to create a geometry from the lon/lat values in the CSV as follows:
+Each of these tables were populated using a script that parsed [the CSV files available for download](https://www.sciencebase.gov/catalog/item/52b1dfa8e4b0d9b325230cd9) and added the data using [`INSERT`]({{ page.version.version }}/insert.md) statements. For the `routes` table, once again the `ST_MakePoint` function was used to create a geometry from the lon/lat values in the CSV as follows:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- sqlchecker: ignore
 INSERT
@@ -1805,40 +1762,40 @@ This data is stored in a separate `birds` database due to the fact that it is sp
 
 ## See also
 
-- [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %})
-- [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
-- [Spatial Data Overview]({% link {{ page.version.version }}/spatial-data-overview.md %})
-- [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
-- [Spatial & GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
-- [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
-- [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
-- [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
-- [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
-- [Spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
-- [POINT]({% link {{ page.version.version }}/point.md %})
-- [LINESTRING]({% link {{ page.version.version }}/linestring.md %})
-- [POLYGON]({% link {{ page.version.version }}/polygon.md %})
-- [MULTIPOINT]({% link {{ page.version.version }}/multipoint.md %})
-- [MULTILINESTRING]({% link {{ page.version.version }}/multilinestring.md %})
-- [MULTIPOLYGON]({% link {{ page.version.version }}/multipolygon.md %})
-- [GEOMETRYCOLLECTION]({% link {{ page.version.version }}/geometrycollection.md %})
-- [Well known text]({% link {{ page.version.version }}/well-known-text.md %})
-- [Well known binary]({% link {{ page.version.version }}/well-known-binary.md %})
-- [GeoJSON]({% link {{ page.version.version }}/geojson.md %})
-- [SRID 4326 - longitude and latitude]({% link {{ page.version.version }}/srid-4326.md %})
-- [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %})
-- [`ST_ConvexHull`]({% link {{ page.version.version }}/st_convexhull.md %})
-- [`ST_CoveredBy`]({% link {{ page.version.version }}/st_coveredby.md %})
-- [`ST_Covers`]({% link {{ page.version.version }}/st_covers.md %})
-- [`ST_Disjoint`]({% link {{ page.version.version }}/st_disjoint.md %})
-- [`ST_Equals`]({% link {{ page.version.version }}/st_equals.md %})
-- [`ST_Intersects`]({% link {{ page.version.version }}/st_intersects.md %})
-- [`ST_Overlaps`]({% link {{ page.version.version }}/st_overlaps.md %})
-- [`ST_Touches`]({% link {{ page.version.version }}/st_touches.md %})
-- [`ST_Union`]({% link {{ page.version.version }}/st_union.md %})
-- [`ST_Within`]({% link {{ page.version.version }}/st_within.md %})
-- [Troubleshooting overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
-- [Support resources]({% link {{ page.version.version }}/support-resources.md %})
+- [Install CockroachDB]({{ page.version.version }}/install-cockroachdb.md)
+- [Export Spatial Data]({{ page.version.version }}/export-spatial-data.md)
+- [Spatial Data Overview]({{ page.version.version }}/spatial-data-overview.md)
+- [Spatial indexes]({{ page.version.version }}/spatial-indexes.md)
+- [Spatial & GIS Glossary of Terms]({{ page.version.version }}/architecture/glossary.md)
+- [Migrate from Shapefiles]({{ page.version.version }}/migrate-from-shapefiles.md)
+- [Migrate from GeoJSON]({{ page.version.version }}/migrate-from-geojson.md)
+- [Migrate from GeoPackage]({{ page.version.version }}/migrate-from-geopackage.md)
+- [Migrate from OpenStreetMap]({{ page.version.version }}/migrate-from-openstreetmap.md)
+- [Spatial functions]({{ page.version.version }}/functions-and-operators.md#spatial-functions)
+- [POINT]({{ page.version.version }}/point.md)
+- [LINESTRING]({{ page.version.version }}/linestring.md)
+- [POLYGON]({{ page.version.version }}/polygon.md)
+- [MULTIPOINT]({{ page.version.version }}/multipoint.md)
+- [MULTILINESTRING]({{ page.version.version }}/multilinestring.md)
+- [MULTIPOLYGON]({{ page.version.version }}/multipolygon.md)
+- [GEOMETRYCOLLECTION]({{ page.version.version }}/geometrycollection.md)
+- [Well known text]({{ page.version.version }}/well-known-text.md)
+- [Well known binary]({{ page.version.version }}/well-known-binary.md)
+- [GeoJSON]({{ page.version.version }}/geojson.md)
+- [SRID 4326 - longitude and latitude]({{ page.version.version }}/srid-4326.md)
+- [`ST_Contains`]({{ page.version.version }}/st_contains.md)
+- [`ST_ConvexHull`]({{ page.version.version }}/st_convexhull.md)
+- [`ST_CoveredBy`]({{ page.version.version }}/st_coveredby.md)
+- [`ST_Covers`]({{ page.version.version }}/st_covers.md)
+- [`ST_Disjoint`]({{ page.version.version }}/st_disjoint.md)
+- [`ST_Equals`]({{ page.version.version }}/st_equals.md)
+- [`ST_Intersects`]({{ page.version.version }}/st_intersects.md)
+- [`ST_Overlaps`]({{ page.version.version }}/st_overlaps.md)
+- [`ST_Touches`]({{ page.version.version }}/st_touches.md)
+- [`ST_Union`]({{ page.version.version }}/st_union.md)
+- [`ST_Within`]({{ page.version.version }}/st_within.md)
+- [Troubleshooting overview]({{ page.version.version }}/troubleshooting-overview.md)
+- [Support resources]({{ page.version.version }}/support-resources.md)
 
 {% comment %} Reference links {% endcomment %}
 

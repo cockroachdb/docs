@@ -9,20 +9,19 @@ You can use external connections to specify and interact with resources that are
 
 You can also use the following SQL statements to work with external connections:
 
-- [`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %})
-- [`SHOW EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-external-connection.md %})
-- [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %})
+- [`CREATE EXTERNAL CONNECTION`]({{ page.version.version }}/create-external-connection.md)
+- [`SHOW EXTERNAL CONNECTION`]({{ page.version.version }}/show-external-connection.md)
+- [`DROP EXTERNAL CONNECTION`]({{ page.version.version }}/drop-external-connection.md)
 
 ## Required privileges
 
 Without the `admin` role, users can only view the external connections that they own. Users own external connections that they have created with `CREATE EXTERNAL CONNECTION`.
 
-Users with the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) can view all external connections with `SHOW CREATE EXTERNAL CONNECTION`.
+Users with the [`admin` role]({{ page.version.version }}/security-reference/authorization.md#admin-role) can view all external connections with `SHOW CREATE EXTERNAL CONNECTION`.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_create_external_connections.html %}
 </div>
 
 ### Parameters
@@ -35,7 +34,6 @@ Parameter | Description
 
 ### Show all external connection create statements
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SHOW CREATE ALL EXTERNAL CONNECTIONS;
 ~~~
@@ -55,7 +53,6 @@ kafka             | CREATE EXTERNAL CONNECTION 'kafka' AS 'kafka://broker.addres
 
 To display the `CREATE` statement for a specific external connection, pass the name of the connection similar to the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SHOW CREATE EXTERNAL CONNECTION backup_bucket_1;
 ~~~
@@ -67,5 +64,5 @@ backup_bucket_1   | CREATE EXTERNAL CONNECTION 'backup_bucket' AS 's3://bucket_n
 
 ## See also
 
-- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
-- [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %})
+- [Use Cloud Storage]({{ page.version.version }}/use-cloud-storage.md)
+- [Changefeed Sinks]({{ page.version.version }}/changefeed-sinks.md)

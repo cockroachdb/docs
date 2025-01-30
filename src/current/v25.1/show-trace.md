@@ -5,19 +5,19 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW TRACE FOR SESSION` [statement]({% link {{ page.version.version }}/sql-statements.md %}) returns details about how CockroachDB executed a statement or series of statements recorded during a session. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
+The `SHOW TRACE FOR SESSION` [statement]({{ page.version.version }}/sql-statements.md) returns details about how CockroachDB executed a statement or series of statements recorded during a session. These details include messages and timing information from all nodes involved in the execution, providing visibility into the actions taken by CockroachDB across all of its software layers.
 
 You can use `SHOW TRACE FOR SESSION` to debug why a query is not performing as expected, to add more information to bug reports, or to generally learn more about how CockroachDB works.
 
-A [statement diagnostics bundle]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) contains statement traces in plaintext, JSON, and [Jaeger-compatible]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#visualize-statement-traces-in-jaeger) format.
+A [statement diagnostics bundle]({{ page.version.version }}/ui-statements-page.md#diagnostics) contains statement traces in plaintext, JSON, and [Jaeger-compatible]({{ page.version.version }}/query-behavior-troubleshooting.md#visualize-statement-traces-in-jaeger) format.
 
 ## Usage overview
 
 `SHOW TRACE FOR SESSION` returns [statement traces](#trace-description) for the most recently executed statements.
 
-To start recording statement traces during a session, enable the `tracing` session variable via [`SET tracing = on;`]({% link {{ page.version.version }}/set-vars.md %}#set-tracing). To stop recording statement traces during a session, disable the `tracing` session variable via [`SET tracing = off;`]({% link {{ page.version.version }}/set-vars.md %}#set-tracing).
+To start recording statement traces during a session, enable the `tracing` session variable via [`SET tracing = on;`]({{ page.version.version }}/set-vars.md#set-tracing). To stop recording statement traces during a session, disable the `tracing` session variable via [`SET tracing = off;`]({{ page.version.version }}/set-vars.md#set-tracing).
 
-Recording statement traces during a session does not effect the logical execution of the statements. This means that errors encountered by statements during a recording are returned to clients. CockroachDB will [automatically retry]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) individual statements (considered implicit transactions) and multi-statement transactions sent as a single batch when [retry errors]({% link {{ page.version.version }}/transactions.md %}#error-handling) are encountered due to [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). Also, clients will receive retry errors required to handle [client-side transaction retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling). As a result, traces of all transaction retries will be captured during a recording.
+Recording statement traces during a session does not effect the logical execution of the statements. This means that errors encountered by statements during a recording are returned to clients. CockroachDB will [automatically retry]({{ page.version.version }}/transactions.md#automatic-retries) individual statements (considered implicit transactions) and multi-statement transactions sent as a single batch when [retry errors]({{ page.version.version }}/transactions.md#error-handling) are encountered due to [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention). Also, clients will receive retry errors required to handle [client-side transaction retries]({{ page.version.version }}/transaction-retry-error-reference.md#client-side-retry-handling). As a result, traces of all transaction retries will be captured during a recording.
 
 ## Required privileges
 
@@ -26,7 +26,6 @@ For `SHOW TRACE FOR SESSION`, no privileges are required.
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_trace.html %}
 </div>
 
 ## Parameters
@@ -34,21 +33,21 @@ For `SHOW TRACE FOR SESSION`, no privileges are required.
 Parameter | Description
 ----------|------------
 `COMPACT` | If specified, fewer columns are returned in each trace. See [Response](#response) for more details.
-`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underlying key-value [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
+`KV` | If specified, the returned messages are restricted to those describing requests to and responses from the underlying key-value [storage layer]({{ page.version.version }}/architecture/storage-layer.md), including per-result-row messages.<br><br>For `SHOW KV TRACE FOR SESSION`, per-result-row messages are included only if the session was/is recording with `SET tracing = kv;`.
 
 ## Trace description
 
-CockroachDB uses [OpenTelemetry](https://opentelemetry.io/docs/concepts/data-sources/) libraries for tracing, which also means that it can be easily integrated with OpenTelemetry-compatible [trace collectors]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#configure-cockroachdb-to-send-traces-to-a-third-party-trace-collector). CockroachDB traces map to OpenTelemetry trace and span concepts as follows:
+CockroachDB uses [OpenTelemetry](https://opentelemetry.io/docs/concepts/data-sources/) libraries for tracing, which also means that it can be easily integrated with OpenTelemetry-compatible [trace collectors]({{ page.version.version }}/query-behavior-troubleshooting.md#configure-cockroachdb-to-send-traces-to-a-third-party-trace-collector). CockroachDB traces map to OpenTelemetry trace and span concepts as follows:
 
 Concept         | Description
 ----------------|------------
 **trace**       | Information about the sub-operations performed as part of a high-level operation (a query or a transaction). This information is internally represented as a tree of "spans", with a special "root span" representing a whole SQL transaction in the case of `SHOW TRACE FOR SESSION`.
 **span**        | A named, timed operation that describes a contiguous segment of work in a trace. Each span links to "child spans", representing sub-operations; their children would be sub-sub-operations of the grandparent span, etc.<br><br>Different spans can represent (sub-)operations that executed either sequentially or in parallel with respect to each other. (This possibly-parallel nature of execution is one of the important things that a trace is supposed to describe.) \The operations described by a trace may be _distributed_, that is, different spans may describe operations executed by different nodes.
-**message**     | A string with timing information. Each span can contain a list of these. They are produced by CockroachDB's logging infrastructure and are the same messages that can be found in node [log files]({% link {{ page.version.version }}/logging-overview.md %}) except that a trace contains message across all severity levels, whereas log files, by default, do not. Thus, a trace is much more verbose than logs but only contains messages produced in the context of one particular traced operation.
+**message**     | A string with timing information. Each span can contain a list of these. They are produced by CockroachDB's logging infrastructure and are the same messages that can be found in node [log files]({{ page.version.version }}/logging-overview.md) except that a trace contains message across all severity levels, whereas log files, by default, do not. Thus, a trace is much more verbose than logs but only contains messages produced in the context of one particular traced operation.
 
-Consider a visualization of a trace for one statement as [visualized by Jaeger]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#visualize-statement-traces-in-jaeger). The image shows spans and log messages. You can see names of operations and sub-operations, along with parent-child relationships and timing information, and it's easy to see which operations are executed in parallel.
+Consider a visualization of a trace for one statement as [visualized by Jaeger]({{ page.version.version }}/query-behavior-troubleshooting.md#visualize-statement-traces-in-jaeger). The image shows spans and log messages. You can see names of operations and sub-operations, along with parent-child relationships and timing information, and it's easy to see which operations are executed in parallel.
 
-<img src="{{ 'images/v24.2/jaeger-trace-log-messages.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
+![Jaeger Trace Log Messages](/images/v24.2/jaeger-trace-log-messages.png)
 
 ## Response
 
@@ -94,7 +93,6 @@ If you specify the `COMPACT` parameter, only the `age`, `message`, `tag`, and `o
 
 ### Trace a session
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET tracing = on;
 ~~~
@@ -103,7 +101,6 @@ If you specify the `COMPACT` parameter, only the `age`, `message`, `tag`, and `o
 SET TRACING
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TRACE FOR SESSION;
 ~~~
@@ -126,19 +123,16 @@ This example uses two terminals concurrently to generate conflicting transaction
 
 1. In terminal 1, create a table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE t (k INT);
     ~~~
 
 1. In terminal 1, open a transaction and perform a write without closing the transaction:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO t VALUES (1);
     ~~~
@@ -147,14 +141,12 @@ This example uses two terminals concurrently to generate conflicting transaction
 
 1. In terminal 2, turn tracing on:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET tracing = on;
     ~~~
 
 1.  In terminal 2, execute a conflicting read:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM t;
     ~~~
@@ -163,7 +155,6 @@ This example uses two terminals concurrently to generate conflicting transaction
 
 1. In terminal 1, finish the transaction:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
@@ -179,12 +170,10 @@ This example uses two terminals concurrently to generate conflicting transaction
 
 1. In terminal 2, stop tracing and then view the completed trace:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET tracing = off;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TRACE FOR SESSION;
     ~~~
@@ -204,5 +193,5 @@ This example uses two terminals concurrently to generate conflicting transaction
 
 ## See also
 
-- [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %})
-- [`SET (session settings)`]({% link {{ page.version.version }}/set-vars.md %})
+- [`EXPLAIN`]({{ page.version.version }}/explain.md)
+- [`SET (session settings)`]({{ page.version.version }}/set-vars.md)

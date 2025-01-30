@@ -7,7 +7,7 @@ toc: true
 {% capture version_prefix %}{{ page.version.version }}{% endcapture %}
 
 {{site.data.alerts.callout_info}}
-On a [secure cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}), you must be an [`admin` user]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or a SQL user with the [`CONNECT`]({% link {{ page.version.version }}/security-reference/authorization.md %}#connect) privilege [granted]({% link {{ page.version.version }}/grant.md %}#grant-privileges-on-databases) on a database.
+On a [secure cluster]({{ page.version.version }}/secure-a-cluster.md), you must be an [`admin` user]({{ page.version.version }}/security-reference/authorization.md#admin-role) or a SQL user with the [`CONNECT`]({{ page.version.version }}/security-reference/authorization.md#connect) privilege [granted]({{ page.version.version }}/grant.md#grant-privileges-on-databases) on a database.
 
 {{site.data.alerts.end}}
 
@@ -20,7 +20,7 @@ The **Databases** page of the DB Console provides details of the following:
 - The grants assigned to each role and user.
 - [Index recommendations](#index-recommendations).
 
-To view this information, [access the DB Console]({% link {{ version_prefix }}/ui-overview.md %}#db-console-access) and click **Databases** in the left side navigation menu. This will give you access to the following:
+To view this information, [access the DB Console]({{ version_prefix }}/ui-overview.md#db-console-access) and click **Databases** in the left side navigation menu. This will give you access to the following:
 
 - [Databases List Page](#databases-list-page): initial page that lists the databases on the cluster.
 - [Database Details Page](#database-details-page)
@@ -32,19 +32,14 @@ To view this information, [access the DB Console]({% link {{ version_prefix }}/u
     - [Indexes List Tab](#indexes-list-tab): lists indexes on a table with index recommendations and actions.
 - [Index Details Page](#index-details-page): displays an index’s details with index recommendations.
 
-{% include {{ version_prefix }}/ui/index-recommendations.md %}
 
-{% include {{ version_prefix }}/ui/databases-list-page.md %}
 
-{% include {{ version_prefix }}/ui/database-details-page.md %}
 
-{% include {{ version_prefix }}/ui/table-details-page.md %}
 
-{% include {{ version_prefix }}/ui/index-details-page.md %}
 
 ## See also
 
-- [Statements page]({% link {{ version_prefix }}/ui-statements-page.md %})
-- [Assign privileges]({% link {{ version_prefix }}/security-reference/authorization.md %}#managing-privileges)
-- [`GRANT`]({% link {{ version_prefix }}/grant.md %})
-- [Cluster API]({% link {{ version_prefix }}/monitoring-and-alerting.md %}#cluster-api)
+- [Statements page]({{ version_prefix }}/ui-statements-page.md)
+- [Assign privileges]({{ version_prefix }}/security-reference/authorization.md#managing-privileges)
+- [`GRANT`]({{ version_prefix }}/grant.md)
+- [Cluster API]({{ version_prefix }}/monitoring-and-alerting.md#cluster-api)

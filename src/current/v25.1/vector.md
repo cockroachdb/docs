@@ -8,12 +8,11 @@ docs_area: reference.sql
 
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 The `VECTOR` data type stores fixed-length arrays of floating-point numbers, which represent data points in multi-dimensional space. Vector search is often used in AI applications such as Large Language Models (LLMs) that rely on vector representations. 
 
-For details on valid `VECTOR` comparison operators, refer to [Syntax](#syntax). For the list of supported `VECTOR` functions, refer to [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#pgvector-functions).
+For details on valid `VECTOR` comparison operators, refer to [Syntax](#syntax). For the list of supported `VECTOR` functions, refer to [Functions and Operators]({{ page.version.version }}/functions-and-operators.md#pgvector-functions).
 
 {{site.data.alerts.callout_info}}
 `VECTOR` functionality is compatible with the [`pgvector`](https://github.com/pgvector/pgvector) extension for PostgreSQL. Vector indexing is **not** supported at this time.
@@ -21,7 +20,7 @@ For details on valid `VECTOR` comparison operators, refer to [Syntax](#syntax). 
 
 ## Syntax
 
-A `VECTOR` value is expressed as an [array]({% link {{ page.version.version }}/array.md %}) of [floating-point numbers]({% link {{ page.version.version }}/float.md %}). The array size corresponds to the number of `VECTOR` dimensions. For example, the following `VECTOR` has 3 dimensions:
+A `VECTOR` value is expressed as an [array]({{ page.version.version }}/array.md) of [floating-point numbers]({{ page.version.version }}/float.md). The array size corresponds to the number of `VECTOR` dimensions. For example, the following `VECTOR` has 3 dimensions:
 
 ~~~
 [1.0, 0.0, 0.0]
@@ -43,17 +42,16 @@ The following `VECTOR` comparison operators are valid:
 
 ## Size
 
-The size of a `VECTOR` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#write-amplification) and other considerations may cause significant performance degradation.  
+The size of a `VECTOR` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification]({{ page.version.version }}/architecture/storage-layer.md#write-amplification) and other considerations may cause significant performance degradation.  
 
 ## Functions
 
-For the list of supported `VECTOR` functions, refer to [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#pgvector-functions).
+For the list of supported `VECTOR` functions, refer to [Functions and Operators]({{ page.version.version }}/functions-and-operators.md#pgvector-functions).
 
 ## Example
 
 Create a table with a `VECTOR` column, specifying `3` dimensions:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE items (
     category STRING,
@@ -64,7 +62,6 @@ CREATE TABLE items (
 
 Insert some sample data into the table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO items (category, vector) VALUES
 	('electronics', '[1.0, 0.0, 0.0]'),
@@ -76,7 +73,6 @@ INSERT INTO items (category, vector) VALUES
 
 Use the [`<->` operator](#syntax) to sort values with the `electronics` category by their similarity to `[1.0, 0.0, 0.0]`, based on geographic distance.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT category, vector FROM items WHERE category = 'electronics' ORDER BY vector <-> '[1.0, 0.0, 0.0]' LIMIT 5;
 ~~~
@@ -90,5 +86,5 @@ SELECT category, vector FROM items WHERE category = 'electronics' ORDER BY vecto
 
 ## See also
 
-- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#pgvector-functions)
-- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [Functions and Operators]({{ page.version.version }}/functions-and-operators.md#pgvector-functions)
+- [Data Types]({{ page.version.version }}/data-types.md)

@@ -31,13 +31,13 @@ This page describes the Striim functionality at a high level. For detailed infor
 
 Complete the following items before using Striim:
 
-- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release]({% link releases/{{ page.version.version }}.md %}), and have created a [SQL user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users) that you can use to configure your Striim target.
+- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](releases/{{ page.version.version }}.md), and have created a [SQL user]({{ page.version.version }}/security-reference/authorization.md#sql-users) that you can use to configure your Striim target.
 
 - Manually create all schema objects in the target CockroachDB cluster. Although Striim offers a feature called Auto Schema Conversion, we recommend converting and importing your schema before running Striim to ensure that the data populates successfully.
-    - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**]({% link cockroachcloud/migrations-page.md %}) to convert and export your schema. Ensure that any schema changes are also reflected on your tables.
+    - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**](migrations-page.md) to convert and export your schema. Ensure that any schema changes are also reflected on your tables.
 
     {{site.data.alerts.callout_info}}
-    All tables must have an explicitly defined primary key. For more guidance, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#schema-design-best-practices).
+    All tables must have an explicitly defined primary key. For more guidance, see the [Migration Overview]({{ page.version.version }}/migration-overview.md#schema-design-best-practices).
     {{site.data.alerts.end}}
 
 ## Migrate and replicate data to CockroachDB
@@ -46,9 +46,9 @@ You can use Striim to migrate tables from a source database to CockroachDB. This
 
 ### Initial load
 
-To perform the initial load, create a Striim application and configure the source database using one of the **Initial Load** sources. Configure CockroachDB as a **PostgreSQL** target. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}). Do the following before deploying the application:
+To perform the initial load, create a Striim application and configure the source database using one of the **Initial Load** sources. Configure CockroachDB as a **PostgreSQL** target. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({{ page.version.version }}/connect-to-the-database.md). Do the following before deploying the application:
 
-- Specify the **Connection URL** in [JDBC format]({% link {{ page.version.version }}/connect-to-the-database.md %}?filters=java&#step-5-connect-to-the-cluster) while appending the `reWriteBatchedInserts=true` property, and without specifying the username. For example:
+- Specify the **Connection URL** in [JDBC format]({{ page.version.version }}/connect-to-the-database.md?filters=java&#step-5-connect-to-the-cluster) while appending the `reWriteBatchedInserts=true` property, and without specifying the username. For example:
 
 	~~~
 	jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-full&reWriteBatchedInserts=true
@@ -86,7 +86,7 @@ Deploy this application to perform the initial load of data to CockroachDB. Reme
 
 ### Continuous replication
 
-To perform continuous replication of ongoing changes, create another Striim application and configure the source database using one of the **CDC** sources. Configure CockroachDB as a **PostgreSQL** target. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}). Do the following before deploying the application:
+To perform continuous replication of ongoing changes, create another Striim application and configure the source database using one of the **CDC** sources. Configure CockroachDB as a **PostgreSQL** target. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({{ page.version.version }}/connect-to-the-database.md). Do the following before deploying the application:
 
 - Configure the CDC reader as described in the [Striim documentation](https://www.striim.com/docs/en/switching-from-initial-load-to-continuous-replication.html).
 
@@ -94,7 +94,7 @@ To perform continuous replication of ongoing changes, create another Striim appl
 
 - Repeat the guidance for creating the [initial load](#initial-load) application:
 
-	- When configuring CockroachDB as a target, specify the **Connection URL** in [JDBC format]({% link {{ page.version.version }}/connect-to-the-database.md %}?filters=java&#step-5-connect-to-the-cluster) while appending the `reWriteBatchedInserts=true` property, and without specifying the username.
+	- When configuring CockroachDB as a target, specify the **Connection URL** in [JDBC format]({{ page.version.version }}/connect-to-the-database.md?filters=java&#step-5-connect-to-the-cluster) while appending the `reWriteBatchedInserts=true` property, and without specifying the username.
 
 	- After creating the target, [export the application](https://www.striim.com/docs/platform/en/hands-on-quick-tour.html#UUID-a846e232-87e4-d88b-eb77-fa80691bbdf7) and add the field `_h_ConnectionRetryCode: '40001'` to the TQL file. Then [import the modified TQL file](https://www.striim.com/docs/platform/en/creating-apps-by-importing-tql.html) to create a new application.
 
@@ -103,14 +103,14 @@ Deploy this application once the [initial load](#initial-load) application has f
 {% comment %}
 ## Replicate data from CockroachDB to a secondary source
 
-You can use Striim to replicate ongoing changes from CockroachDB to a secondary source. This may include a [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) such as Kafka or cloud storage for purposes such as reporting, caching, or full-text indexing. For a list of targets, see the [Striim documentation](https://www.striim.com/docs/en/targets.html).
+You can use Striim to replicate ongoing changes from CockroachDB to a secondary source. This may include a [downstream sink]({{ page.version.version }}/changefeed-sinks.md) such as Kafka or cloud storage for purposes such as reporting, caching, or full-text indexing. For a list of targets, see the [Striim documentation](https://www.striim.com/docs/en/targets.html).
 
-To perform continuous replication of ongoing changes, create a Striim application, configure CockroachDB as a **PostgreSQL CDC** source, and select an appropriate downstream target. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}).
+To perform continuous replication of ongoing changes, create a Striim application, configure CockroachDB as a **PostgreSQL CDC** source, and select an appropriate downstream target. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster]({{ page.version.version }}/connect-to-the-database.md).
 {% endcomment %}
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
-- [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %})
-- [Third-Party Tools Supported by Cockroach Labs]({% link {{ page.version.version }}/third-party-database-tools.md %})
+- [Migration Overview]({{ page.version.version }}/migration-overview.md)
+- [Schema Conversion Tool](migrations-page.md)
+- [Change Data Capture Overview]({{ page.version.version }}/change-data-capture-overview.md)
+- [Third-Party Tools Supported by Cockroach Labs]({{ page.version.version }}/third-party-database-tools.md)

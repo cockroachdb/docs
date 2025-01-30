@@ -5,18 +5,17 @@ toc: true
 docs_area: reference.cli
 ---
 
- CockroachDB automatically creates an emergency ballast file at startup time.  The `cockroach debug ballast` command is still available but deprecated.  For more information about how automatic ballast file creation works, see [automatic ballast files]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#automatic-ballast-files).
+ CockroachDB automatically creates an emergency ballast file at startup time.  The `cockroach debug ballast` command is still available but deprecated.  For more information about how automatic ballast file creation works, see [automatic ballast files]({{ page.version.version }}/cluster-setup-troubleshooting.md#automatic-ballast-files).
 
-The `cockroach debug ballast` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) creates a large, unused file that you can place in a node's storage directory. In the case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
+The `cockroach debug ballast` [command]({{ page.version.version }}/cockroach-commands.md) creates a large, unused file that you can place in a node's storage directory. In the case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
 
 - Do not run `cockroach debug ballast` with a unix `root` user. Doing so brings the risk of mistakenly affecting system directories or files.
 -  `cockroach debug ballast` now refuses to overwrite the target ballast file if it already exists. This change is intended to prevent mistaken uses of the `ballast` command. Consider adding an `rm` command to scripts that integrate `cockroach debug ballast`, or provide a new file name every time and then remove the old file.
-- In addition to placing a ballast file in each node's storage directory, it is important to actively [monitor remaining disk space]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#node-is-running-low-on-disk-space).
+- In addition to placing a ballast file in each node's storage directory, it is important to actively [monitor remaining disk space]({{ page.version.version }}/monitoring-and-alerting.md#node-is-running-low-on-disk-space).
 - Ballast files may be created in many ways, including the standard `dd` command. `cockroach debug ballast` uses the `fallocate` system call when available, so it will be faster than `dd`.
 
 ## Subcommands
 
-{% include {{ page.version.version }}/misc/debug-subcommands.md %}
 
 ## Synopsis
 
@@ -42,20 +41,18 @@ Flag | Description
 
 ### Create a 1GB ballast file (default)
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug ballast cockroach-data/ballast.txt
 ~~~
 
 ### Create a ballast file of a different size
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug ballast cockroach-data/ballast.txt --size=2GB
 ~~~
 
 ## See also
 
-- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
-- [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %})
+- [`cockroach` Commands Overview]({{ page.version.version }}/cockroach-commands.md)
+- [Troubleshooting Overview]({{ page.version.version }}/troubleshooting-overview.md)
+- [Production Checklist]({{ page.version.version }}/recommended-production-settings.md)

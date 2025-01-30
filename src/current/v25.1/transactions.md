@@ -15,26 +15,25 @@ The following SQL statements control transactions.
 
 |                                        Statement                                         |                                                                                                 Description                                                                                                  |
 |------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %})                    | Initiate a transaction and optionally set its [priority](#transaction-priorities), access mode, "as of" timestamp, or [isolation level](#isolation-levels).                                                                |
-| [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %})                  | Commit a regular transaction, or clear the connection after committing a transaction using the [advanced retry protocol]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}). |
-| [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %})        | Commit a [nested transaction](#nested-transactions); also used for [retryable transactions]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}).                              |
-| [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %})              | Abort a transaction and roll the database back to its state before the transaction began.                                                                                                                    |
-| [`ROLLBACK TO SAVEPOINT`]({% link {{ page.version.version }}/rollback-transaction.md %}) | Roll back a [nested transaction](#nested-transactions); also used to handle [retryable transaction errors]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}).               |
-| [`SAVEPOINT`]({% link {{ page.version.version }}/savepoint.md %})                        | Used for [nested transactions](#nested-transactions); also used to implement [advanced client-side transaction retries]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}).  |
-| [`SET TRANSACTION`]({% link {{ page.version.version }}/set-transaction.md %})            | Set a transaction's [priority](#transaction-priorities), access mode, "as of" timestamp, or [isolation level](#isolation-levels).                                                                                          |
-| [`SHOW`]({% link {{ page.version.version }}/show-vars.md %})                             | Display the current transaction settings.                                                                                                                                                                    |
+| [`BEGIN`]({{ page.version.version }}/begin-transaction.md)                    | Initiate a transaction and optionally set its [priority](#transaction-priorities), access mode, "as of" timestamp, or [isolation level](#isolation-levels).                                                                |
+| [`COMMIT`]({{ page.version.version }}/commit-transaction.md)                  | Commit a regular transaction, or clear the connection after committing a transaction using the [advanced retry protocol]({{ page.version.version }}/advanced-client-side-transaction-retries.md). |
+| [`RELEASE SAVEPOINT`]({{ page.version.version }}/release-savepoint.md)        | Commit a [nested transaction](#nested-transactions); also used for [retryable transactions]({{ page.version.version }}/advanced-client-side-transaction-retries.md).                              |
+| [`ROLLBACK`]({{ page.version.version }}/rollback-transaction.md)              | Abort a transaction and roll the database back to its state before the transaction began.                                                                                                                    |
+| [`ROLLBACK TO SAVEPOINT`]({{ page.version.version }}/rollback-transaction.md) | Roll back a [nested transaction](#nested-transactions); also used to handle [retryable transaction errors]({{ page.version.version }}/advanced-client-side-transaction-retries.md).               |
+| [`SAVEPOINT`]({{ page.version.version }}/savepoint.md)                        | Used for [nested transactions](#nested-transactions); also used to implement [advanced client-side transaction retries]({{ page.version.version }}/advanced-client-side-transaction-retries.md).  |
+| [`SET TRANSACTION`]({{ page.version.version }}/set-transaction.md)            | Set a transaction's [priority](#transaction-priorities), access mode, "as of" timestamp, or [isolation level](#isolation-levels).                                                                                          |
+| [`SHOW`]({{ page.version.version }}/show-vars.md)                             | Display the current transaction settings.                                                                                                                                                                    |
 
 {{site.data.alerts.callout_info}}
-If you are using a framework or library that does not have [advanced retry logic]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}) built in, you should implement an application-level retry loop with exponential backoff. See [Client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
+If you are using a framework or library that does not have [advanced retry logic]({{ page.version.version }}/advanced-client-side-transaction-retries.md) built in, you should implement an application-level retry loop with exponential backoff. See [Client-side retry handling]({{ page.version.version }}/transaction-retry-error-reference.md#client-side-retry-handling).
 {{site.data.alerts.end}}
 
 ## Syntax
 
-In CockroachDB, a transaction is set up by surrounding SQL statements with the [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) and [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) statements.
+In CockroachDB, a transaction is set up by surrounding SQL statements with the [`BEGIN`]({{ page.version.version }}/begin-transaction.md) and [`COMMIT`]({{ page.version.version }}/commit-transaction.md) statements.
 
-To use [advanced client-side transaction retries]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}), you should also include the [`SAVEPOINT`]({% link {{ page.version.version }}/savepoint.md %}), [`ROLLBACK TO SAVEPOINT`]({% link {{ page.version.version }}/rollback-transaction.md %}) and [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %}) statements.
+To use [advanced client-side transaction retries]({{ page.version.version }}/advanced-client-side-transaction-retries.md), you should also include the [`SAVEPOINT`]({{ page.version.version }}/savepoint.md), [`ROLLBACK TO SAVEPOINT`]({{ page.version.version }}/rollback-transaction.md) and [`RELEASE SAVEPOINT`]({{ page.version.version }}/release-savepoint.md) statements.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 
@@ -47,7 +46,7 @@ To use [advanced client-side transaction retries]({% link {{ page.version.versio
 > COMMIT;
 ~~~
 
-At any time before it's committed, you can abort the transaction by executing the [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %}) statement.
+At any time before it's committed, you can abort the transaction by executing the [`ROLLBACK`]({{ page.version.version }}/rollback-transaction.md) statement.
 
 Clients using transactions must also include logic to handle [retries](#transaction-retries).
 
@@ -57,30 +56,28 @@ To handle errors in transactions, you should check for the following types of se
 
 Type | Description
 -----|------------
-**Transaction Retry Errors** | Errors with the code `40001` and string `restart transaction`, which indicate that a transaction failed because it could not be placed in a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}) of transactions by CockroachDB. This occurs under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) isolation and only rarely under [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation. For details on transaction retry errors and how to resolve them, see the [Transaction Retry Error Reference]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#actions-to-take).
-**Ambiguous Errors** | Errors with the code `40003` which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity. For information about how to handle ambiguous errors, see [here]({% link {{ page.version.version }}/common-errors.md %}#result-is-ambiguous).
-**SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates a `23505` error. After encountering these errors, you can either issue a [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) or [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %}) to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
+**Transaction Retry Errors** | Errors with the code `40001` and string `restart transaction`, which indicate that a transaction failed because it could not be placed in a [serializable ordering]({{ page.version.version }}/demo-serializable.md) of transactions by CockroachDB. This occurs under [`SERIALIZABLE`]({{ page.version.version }}/demo-serializable.md) isolation and only rarely under [`READ COMMITTED`]({{ page.version.version }}/read-committed.md) isolation. For details on transaction retry errors and how to resolve them, see the [Transaction Retry Error Reference]({{ page.version.version }}/transaction-retry-error-reference.md#actions-to-take).
+**Ambiguous Errors** | Errors with the code `40003` which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity. For information about how to handle ambiguous errors, see [here]({{ page.version.version }}/common-errors.md#result-is-ambiguous).
+**SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates a `23505` error. After encountering these errors, you can either issue a [`COMMIT`]({{ page.version.version }}/commit-transaction.md) or [`ROLLBACK`]({{ page.version.version }}/rollback-transaction.md) to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
 ## Transaction retries
 
-Transactions may require retries due to [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#understanding-and-avoiding-transaction-contention) with another concurrent or recent transaction attempting to write to the same data.
+Transactions may require retries due to [contention]({{ page.version.version }}/performance-best-practices-overview.md#understanding-and-avoiding-transaction-contention) with another concurrent or recent transaction attempting to write to the same data.
 
 There are two cases in which transaction retries can occur:
 
 - [Automatic retries](#automatic-retries), which CockroachDB silently processes for you.
-- [Client-side retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling), which your application must handle after receiving a [*transaction retry error*]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) under `SERIALIZABLE` isolation. Client-side retry handling is not necessary for [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transactions. 
+- [Client-side retries]({{ page.version.version }}/transaction-retry-error-reference.md#client-side-retry-handling), which your application must handle after receiving a [*transaction retry error*]({{ page.version.version }}/transaction-retry-error-reference.md) under `SERIALIZABLE` isolation. Client-side retry handling is not necessary for [`READ COMMITTED`]({{ page.version.version }}/read-committed.md) transactions. 
 
-To reduce the need for transaction retries, see [Reduce transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#reduce-transaction-contention).
+To reduce the need for transaction retries, see [Reduce transaction contention]({{ page.version.version }}/performance-best-practices-overview.md#reduce-transaction-contention).
 
 ### Automatic retries
 
 CockroachDB automatically retries individual statements (implicit transactions) and [transactions sent from the client as a single batch](#batched-statements), as long as the size of the results being produced for the client, including protocol overhead, is less than 16KiB by default. Once that buffer overflows, CockroachDB starts streaming results back to the client, at which point automatic retries cannot be performed any more. As long as the results of a single statement or batch of statements are known to stay clear of this limit, the client does not need to worry about transaction retries.
 
-You can increase the occurrence of automatic retries as a way to [minimize transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#minimize-transaction-retry-errors):
+You can increase the occurrence of automatic retries as a way to [minimize transaction retry errors]({{ page.version.version }}/transaction-retry-error-reference.md#minimize-transaction-retry-errors):
 
-{% include {{ page.version.version }}/performance/increase-server-side-retries.md %}
 
-{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 #### Individual statements
 
@@ -125,30 +122,30 @@ cannot retry, say, statement 2 in isolation. Since results for statement 1 have
 already been delivered to the client by the time statement 2 is forcing the
 transaction to retry, the client needs to be involved in retrying the whole
 transaction and so you should write your transactions to use
-[client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
+[client-side retry handling]({{ page.version.version }}/transaction-retry-error-reference.md#client-side-retry-handling).
 
-The [`enable_implicit_transaction_for_batch_statements` session variable]({% link {{ page.version.version }}/set-vars.md %}#enable-implicit-transaction-for-batch-statements) defaults to `true`. This means that any batch of statements is treated as an implicit transaction, so the `BEGIN`/`COMMIT` commands are not needed to group all the statements in one transaction.
+The [`enable_implicit_transaction_for_batch_statements` session variable]({{ page.version.version }}/set-vars.md#enable-implicit-transaction-for-batch-statements) defaults to `true`. This means that any batch of statements is treated as an implicit transaction, so the `BEGIN`/`COMMIT` commands are not needed to group all the statements in one transaction.
 
 #### Bounded staleness reads
 
-In the event [bounded staleness reads]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads) are used along with either the [`with_min_timestamp` function or the `with_max_staleness` function]({% link {{ page.version.version }}/functions-and-operators.md %}#date-and-time-functions) and the `nearest_only` parameter is set to `true`, the query will throw an error if it can't be served by a nearby replica.
+In the event [bounded staleness reads]({{ page.version.version }}/follower-reads.md#bounded-staleness-reads) are used along with either the [`with_min_timestamp` function or the `with_max_staleness` function]({{ page.version.version }}/functions-and-operators.md#date-and-time-functions) and the `nearest_only` parameter is set to `true`, the query will throw an error if it can't be served by a nearby replica.
 
 ## Nested transactions
 
-CockroachDB supports the nesting of transactions using [savepoints]({% link {{ page.version.version }}/savepoint.md %}).  These nested transactions are also known as sub-transactions.  Nested transactions can be rolled back without discarding the state of the entire surrounding transaction.
+CockroachDB supports the nesting of transactions using [savepoints]({{ page.version.version }}/savepoint.md).  These nested transactions are also known as sub-transactions.  Nested transactions can be rolled back without discarding the state of the entire surrounding transaction.
 
-This can be useful in applications that abstract database access using an application development framework or [ORM]({% link {{ page.version.version }}/install-client-drivers.md %}).  Different components of the application can operate on different sub-transactions without having to know about each others' internal operations, while trusting that the database will maintain isolation between sub-transactions and preserve data integrity.
+This can be useful in applications that abstract database access using an application development framework or [ORM]({{ page.version.version }}/install-client-drivers.md).  Different components of the application can operate on different sub-transactions without having to know about each others' internal operations, while trusting that the database will maintain isolation between sub-transactions and preserve data integrity.
 
-Just as [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) and [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %}) are used to commit and discard entire transactions, respectively, [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %}) and [`ROLLBACK TO SAVEPOINT`]({% link {{ page.version.version }}/rollback-transaction.md %}#rollback-a-nested-transaction) are used to commit and discard nested transactions.  This relationship is shown in the following table:
+Just as [`COMMIT`]({{ page.version.version }}/commit-transaction.md) and [`ROLLBACK`]({{ page.version.version }}/rollback-transaction.md) are used to commit and discard entire transactions, respectively, [`RELEASE SAVEPOINT`]({{ page.version.version }}/release-savepoint.md) and [`ROLLBACK TO SAVEPOINT`]({{ page.version.version }}/rollback-transaction.md#rollback-a-nested-transaction) are used to commit and discard nested transactions.  This relationship is shown in the following table:
 
 | Statement                                                                          | Effect                                                |
 |------------------------------------------------------------------------------------+-------------------------------------------------------|
-| [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %})                                                | Commit an entire transaction.                         |
-| [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %})                                            | Discard an entire transaction.                        |
-| [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %})                                      | Commit (really, forget) the named nested transaction. |
-| [`ROLLBACK TO SAVEPOINT`]({% link {{ page.version.version }}/rollback-transaction.md %}#rollback-a-nested-transaction) | Discard the changes in the named nested transaction.  |
+| [`COMMIT`]({{ page.version.version }}/commit-transaction.md)                                                | Commit an entire transaction.                         |
+| [`ROLLBACK`]({{ page.version.version }}/rollback-transaction.md)                                            | Discard an entire transaction.                        |
+| [`RELEASE SAVEPOINT`]({{ page.version.version }}/release-savepoint.md)                                      | Commit (really, forget) the named nested transaction. |
+| [`ROLLBACK TO SAVEPOINT`]({{ page.version.version }}/rollback-transaction.md#rollback-a-nested-transaction) | Discard the changes in the named nested transaction.  |
 
-For more information, including examples showing how to use savepoints to create nested transactions, see [the savepoints documentation]({% link {{ page.version.version }}/savepoint.md %}#examples).
+For more information, including examples showing how to use savepoints to create nested transactions, see [the savepoints documentation]({{ page.version.version }}/savepoint.md#examples).
 
 ## Transaction priorities
 
@@ -156,9 +153,8 @@ Every transaction in CockroachDB is assigned an initial **priority**. By default
 
 ### Set transaction priority
 
-{% include {{ page.version.version }}/sql/use-the-default-transaction-priority.md %}
 
-For transactions that you are absolutely sure should be given higher or lower priority, you can set the priority in the [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) statement:
+For transactions that you are absolutely sure should be given higher or lower priority, you can set the priority in the [`BEGIN`]({{ page.version.version }}/begin-transaction.md) statement:
 
 ~~~ sql
 > BEGIN PRIORITY <LOW | NORMAL | HIGH>;
@@ -170,7 +166,7 @@ You can also set the priority immediately after a transaction is started:
 > SET TRANSACTION PRIORITY <LOW | NORMAL | HIGH>;
 ~~~
 
-To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable]({% link {{ page.version.version }}/set-vars.md %}). For example:
+To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable]({{ page.version.version }}/set-vars.md). For example:
 
 ~~~ sql
 > SET default_transaction_priority = 'low';
@@ -178,9 +174,9 @@ To set the default transaction priority for all transactions in a session, use t
 
 ### View transaction priority
 
-`transaction_priority` is a read-only [session variable]({% link {{ page.version.version }}/show-vars.md %}).
+`transaction_priority` is a read-only [session variable]({{ page.version.version }}/show-vars.md).
 
-To view the current priority of a transaction, use `SHOW transaction_priority` or [`SHOW TRANSACTION PRIORITY`]({% link {{ page.version.version }}/show-vars.md %}):
+To view the current priority of a transaction, use `SHOW transaction_priority` or [`SHOW TRANSACTION PRIORITY`]({{ page.version.version }}/show-vars.md):
 
 ~~~ sql
 > SHOW transaction_priority;
@@ -204,7 +200,6 @@ To view the current priority of a transaction, use `SHOW transaction_priority` o
 
 ## Isolation levels
 
-{% include {{ page.version.version }}/sql/isolation-levels.md %}
 
 ### Comparison to ANSI SQL isolation levels
 
@@ -216,13 +211,13 @@ CockroachDB uses slightly different isolation levels than [ANSI SQL isolation le
 
 `READ UNCOMMITTED` is an alias for `READ COMMITTED`.
 
-If `READ COMMITTED` isolation is disabled using the `sql.txn.read_committed_isolation.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-txn-read-committed-isolation-enabled), `READ COMMITTED` and `READ UNCOMMITTED` become aliases for `SERIALIZABLE`.
+If `READ COMMITTED` isolation is disabled using the `sql.txn.read_committed_isolation.enabled` [cluster setting]({{ page.version.version }}/cluster-settings.md#setting-sql-txn-read-committed-isolation-enabled), `READ COMMITTED` and `READ UNCOMMITTED` become aliases for `SERIALIZABLE`.
 
 #### Comparison
 
 The CockroachDB `SERIALIZABLE` isolation level is stronger than the ANSI SQL `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` levels and equivalent to the ANSI SQL `SERIALIZABLE` level.
 
-The CockroachDB `READ COMMITTED` isolation level is stronger than the PostgreSQL `READ COMMITTED` isolation level, and is the strongest isolation level that does not experience [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that require [client-side handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
+The CockroachDB `READ COMMITTED` isolation level is stronger than the PostgreSQL `READ COMMITTED` isolation level, and is the strongest isolation level that does not experience [serialization errors]({{ page.version.version }}/transaction-retry-error-reference.md) that require [client-side handling]({{ page.version.version }}/transaction-retry-error-reference.md#client-side-retry-handling).
 
 For more information about the relationship between these levels, see [A Critique of ANSI SQL Isolation Levels](https://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
 
@@ -230,7 +225,6 @@ For more information about the relationship between these levels, see [A Critiqu
 
 You can limit the number of rows written or read in a transaction at the cluster or session level. This allows you configure CockroachDB to log or reject statements that could destabilize a cluster or violate application best practices.
 
-{% include {{ page.version.version }}/sql/transactions-limit-rows.md %}
 
 The limits are enforced after each statement of a transaction has been fully executed. The "write" limits apply to `INSERT`, `INSERT INTO SELECT FROM`, `INSERT ON CONFLICT`, `UPSERT`, `UPDATE`, and `DELETE` SQL statements. The "read" limits apply to the `SELECT` statement in addition to the statements subject to the "write" limits. The limits **do not** apply to `CREATE TABLE AS`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE`, `BACKUP`, `RESTORE`, or `CREATE STATISTICS` statements.
 
@@ -240,13 +234,13 @@ Enabling `transaction_rows_read_err` disables a performance optimization for mut
 
 ## See also
 
-- [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %})
-- [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %})
-- [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %})
-- [`SAVEPOINT`]({% link {{ page.version.version }}/savepoint.md %})
-- [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %})
-- [`SHOW`]({% link {{ page.version.version }}/show-vars.md %})
-- [Retryable transaction example code in Java using JDBC]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %})
-- [DB Console Transactions Page]({% link {{ page.version.version }}/ui-transactions-page.md %})
-- [CockroachDB Architecture: Transaction Layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %})
-- [Transaction retry error reference]({% link {{ page.version.version }}/transaction-retry-error-reference.md %})
+- [`BEGIN`]({{ page.version.version }}/begin-transaction.md)
+- [`COMMIT`]({{ page.version.version }}/commit-transaction.md)
+- [`ROLLBACK`]({{ page.version.version }}/rollback-transaction.md)
+- [`SAVEPOINT`]({{ page.version.version }}/savepoint.md)
+- [`RELEASE SAVEPOINT`]({{ page.version.version }}/release-savepoint.md)
+- [`SHOW`]({{ page.version.version }}/show-vars.md)
+- [Retryable transaction example code in Java using JDBC]({{ page.version.version }}/build-a-java-app-with-cockroachdb.md)
+- [DB Console Transactions Page]({{ page.version.version }}/ui-transactions-page.md)
+- [CockroachDB Architecture: Transaction Layer]({{ page.version.version }}/architecture/transaction-layer.md)
+- [Transaction retry error reference]({{ page.version.version }}/transaction-retry-error-reference.md)

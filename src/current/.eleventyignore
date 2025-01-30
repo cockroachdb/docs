@@ -1,0 +1,8 @@
+__tests__/
+build/
+scripts/
+vendor/
+jekyll-algolia-dev/
+archived/
+package.json
+package-lock.json

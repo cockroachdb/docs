@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `COLLATE` feature lets you sort [`STRING`]({% link {{ page.version.version }}/string.md %}) values according to language- and country-specific rules, known as collations.
+The `COLLATE` feature lets you sort [`STRING`]({{ page.version.version }}/string.md) values according to language- and country-specific rules, known as collations.
 
 Collated strings are important because different languages have [different rules for alphabetic order](https://wikipedia.org/wiki/Alphabetical_order#Language-specific_conventions), especially with respect to accented letters. For example, in German accented letters are sorted with their unaccented counterparts, while in Swedish they are placed at the end of the alphabet. A collation is a set of rules used for ordering and usually corresponds to a language, though some languages have multiple collations with different rules for sorting; for example Portuguese has separate collations for Brazilian and European dialects (`pt-BR` and `pt-PT` respectively).
 
@@ -20,7 +20,6 @@ Collated strings are important because different languages have [different rules
 - Collated strings that are indexed require additional disk space as compared to uncollated strings. In case of indexed collated strings, collation keys must be stored in addition to the strings from which they are derived, creating a constant factor overhead.
 
 {{site.data.alerts.callout_danger}}
-{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
 {{site.data.alerts.end}}
 
 ## Supported collations
@@ -33,7 +32,6 @@ If a hyphen is used in a SQL query, the collation name must be enclosed in doubl
 
 A list of supported collations can be found in the `pg_catalog.pg_collation` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT collname from pg_catalog.pg_collation;
 ~~~
@@ -67,7 +65,7 @@ For more details on locale extensions, see the [Unicode Collation Algorithm](htt
 
 ## Collation versioning
 
-While changes to collations are rare, they are possible, especially in languages with a large numbers of characters (e.g., Simplified and Traditional Chinese). CockroachDB updates its support with new versions of the Unicode standard every year, but there is currently no way to specify the version of Unicode to use. As a result, it is possible for a collation change to invalidate existing collated string data. To prevent collated data from being invalidated by Unicode changes, we recommend storing data in columns with an uncollated string type, and then using a [computed column]({% link {{ page.version.version }}/computed-columns.md %}) for the desired collation. In the event that a collation change produces undesired effects, the computed column can be dropped and recreated.
+While changes to collations are rare, they are possible, especially in languages with a large numbers of characters (e.g., Simplified and Traditional Chinese). CockroachDB updates its support with new versions of the Unicode standard every year, but there is currently no way to specify the version of Unicode to use. As a result, it is possible for a collation change to invalidate existing collated string data. To prevent collated data from being invalidated by Unicode changes, we recommend storing data in columns with an uncollated string type, and then using a [computed column]({{ page.version.version }}/computed-columns.md) for the desired collation. In the event that a collation change produces undesired effects, the computed column can be dropped and recreated.
 
 ## SQL syntax
 
@@ -75,16 +73,14 @@ Collated strings are used as normal strings in SQL, but have a `COLLATE` clause 
 
 - **Column syntax**: `STRING COLLATE <collation>`. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE foo (a STRING COLLATE en PRIMARY KEY);
     ~~~
 
-    {{site.data.alerts.callout_info}}You can also use any of the <a href="{% link {{ page.version.version }}/string.md %}#aliases">aliases for <code>STRING</code></a>.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}You can also use any of the <a href="{{ page.version.version }}/string.md#aliases">aliases for <code>STRING</code></a>.{{site.data.alerts.end}}
 
 - **Value syntax**: `<STRING value> COLLATE <collation>`. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO foo VALUES ('dog' COLLATE en);
     ~~~
@@ -97,21 +93,18 @@ You can set a default collation for all values in a `STRING` column.
 
 For example, you can set a column's default collation to German (`de`):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE de_names (name STRING COLLATE de PRIMARY KEY);
 ~~~
 
 When inserting values into this column, you must specify the collation for every value:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO de_names VALUES ('Backhaus' COLLATE de), ('Bär' COLLATE de), ('Baz' COLLATE de);
 ~~~
 
 The sort will now honor the `de` collation that treats *ä* as *a* in alphabetic sorting:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM de_names ORDER BY name;
 ~~~
@@ -126,17 +119,14 @@ The sort will now honor the `de` collation that treats *ä* as *a* in alphabetic
 
 ### Specify collations with locale extensions
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE nocase_strings (greeting STRING COLLATE "en-US-u-ks-level2");
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO nocase_strings VALUES ('Hello, friend.' COLLATE "en-US-u-ks-level2"), ('Hi. My name is Petee.' COLLATE "en-US-u-ks-level2");
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM nocase_strings WHERE greeting = ('hi. my name is petee.' COLLATE "en-US-u-ks-level2");
 ~~~
@@ -154,7 +144,6 @@ You can sort a column using a specific collation instead of its default.
 
 For example, you receive different results if you order results by German (`de`) and Swedish (`sv`) collations:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM de_names ORDER BY name COLLATE sv;
 ~~~
@@ -171,7 +160,6 @@ For example, you receive different results if you order results by German (`de`)
 
 You can cast any string into a collation on the fly.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'A' COLLATE de < 'Ä' COLLATE de;
 ~~~
@@ -184,7 +172,6 @@ You can cast any string into a collation on the fly.
 
 However, you cannot compare values with different collations:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'Ä' COLLATE sv < 'Ä' COLLATE de;
 ~~~
@@ -194,7 +181,6 @@ pq: unsupported comparison operator: <collatedstring{sv}> < <collatedstring{de}>
 
 You can also use casting to remove collations from values.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT CAST(name AS STRING) FROM de_names ORDER BY name;
 ~~~
@@ -209,11 +195,10 @@ You can also use casting to remove collations from values.
 
 ### Show collation for strings
 
-You can use the `pg_collation_for` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#string-and-byte-functions), or its alternative [syntax form]({% link {{ page.version.version }}/functions-and-operators.md %}#special-syntax-forms) `COLLATION FOR`, to return the locale name of a collated string.
+You can use the `pg_collation_for` [built-in function]({{ page.version.version }}/functions-and-operators.md#string-and-byte-functions), or its alternative [syntax form]({{ page.version.version }}/functions-and-operators.md#special-syntax-forms) `COLLATION FOR`, to return the locale name of a collated string.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT pg_collation_for('Bär' COLLATE de);
 ~~~
@@ -227,7 +212,6 @@ For example:
 
 This is equivalent to:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT COLLATION FOR ('Bär' COLLATE de);
 ~~~
@@ -241,4 +225,4 @@ This is equivalent to:
 
 ## See also
 
-[Data Types]({% link {{ page.version.version }}/data-types.md %})
+[Data Types]({{ page.version.version }}/data-types.md)

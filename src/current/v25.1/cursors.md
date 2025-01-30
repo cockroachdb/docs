@@ -7,49 +7,44 @@ toc: true
 A cursor is a placeholder into a selection query that allows you to iterate over subsets of the rows returned by that query.
 
 {{site.data.alerts.callout_success}}
-This document describes cursor usage within SQL transactions. For information about using cursors in PL/pgSQL functions and procedures, see [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}#declare-cursor-variables).
+This document describes cursor usage within SQL transactions. For information about using cursors in PL/pgSQL functions and procedures, see [PL/pgSQL]({{ page.version.version }}/plpgsql.md#declare-cursor-variables).
 {{site.data.alerts.end}}
 
-Cursors differ from [keyset pagination]({% link {{ page.version.version }}/pagination.md %}) and [`LIMIT`/`OFFSET`]({% link {{ page.version.version }}/limit-offset.md %}) in that:
+Cursors differ from [keyset pagination]({{ page.version.version }}/pagination.md) and [`LIMIT`/`OFFSET`]({{ page.version.version }}/limit-offset.md) in that:
 
 - Each cursor is a stateful SQL object that is referred to by a unique name.
-- Each cursor requires holding open its own dedicated (read-only) [transaction]({% link {{ page.version.version }}/transactions.md %}).
+- Each cursor requires holding open its own dedicated (read-only) [transaction]({{ page.version.version }}/transactions.md).
 - Each cursor operates on a snapshot of the database at the moment that cursor is opened.
 
 ## Synopsis
 
 Cursors are declared and used with the following keywords:
 
-- [`DECLARE`]({% link {{ page.version.version }}/sql-grammar.md %}#declare_cursor_stmt)
-- [`FETCH`]({% link {{ page.version.version }}/sql-grammar.md %}#fetch_cursor_stmt)
-- [`CLOSE`]({% link {{ page.version.version }}/sql-grammar.md %}#close_cursor_stmt)
+- [`DECLARE`]({{ page.version.version }}/sql-grammar.md#declare_cursor_stmt)
+- [`FETCH`]({{ page.version.version }}/sql-grammar.md#fetch_cursor_stmt)
+- [`CLOSE`]({{ page.version.version }}/sql-grammar.md#close_cursor_stmt)
 
 <div>
-  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/declare_cursor.html %}
 </div>
 
 <div>
-  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/fetch_cursor.html %}
 </div>
 
 <div>
-  {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/close_cursor.html %}
 </div>
 
 ## Examples
 
-These examples assume the presence of the [MovR data set]({% link {{ page.version.version }}/movr.md %}).
+These examples assume the presence of the [MovR data set]({{ page.version.version }}/movr.md).
 
 ### Use a cursor
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 DECLARE rides_cursor CURSOR FOR SELECT * FROM movr.rides;
 ~~~
 
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 FETCH FORWARD 5 FROM rides_cursor;
 ~~~
@@ -65,19 +60,16 @@ FETCH FORWARD 5 FROM rides_cursor;
 (5 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CLOSE rides_cursor;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 ~~~
 
 ### View all open cursors
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM pg_cursors;
 ~~~
@@ -91,13 +83,11 @@ SELECT * FROM pg_cursors;
 
 ## Known limitations
 
-{% include {{page.version.version}}/known-limitations/sql-cursors.md %}
 
 ## Differences between cursors and keyset pagination
 
-{% include {{page.version.version}}/sql/cursors-vs-keyset-pagination.md %}
 
 ## See also
 
-- [Keyset pagination]({% link {{ page.version.version }}/pagination.md %})
-- [`LIMIT`/`OFFSET`]({% link {{ page.version.version }}/limit-offset.md %})
+- [Keyset pagination]({{ page.version.version }}/pagination.md)
+- [`LIMIT`/`OFFSET`]({{ page.version.version }}/limit-offset.md)

@@ -11,12 +11,11 @@ This page has instructions for making SQL [selection queries][selection] against
 
 Before reading this page, do the following:
 
-- [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
-- [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %}).
-- [Connect to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
-- [Insert data]({% link {{ page.version.version }}/insert-data.md %}) that you now want to run queries against.
+- [Create a CockroachDB {{ site.data.products.standard }} cluster](quickstart.md) or [start a local cluster](quickstart.md?filters=local).
+- [Install a Driver or ORM Framework]({{ page.version.version }}/install-client-drivers.md).
+- [Connect to the database]({{ page.version.version }}/connect-to-the-database.md).
+- [Insert data]({{ page.version.version }}/insert-data.md) that you now want to run queries against.
 
-{% include {{page.version.version}}/app/retry-errors.md %}
 
 ## Simple selects
 
@@ -29,18 +28,16 @@ Before reading this page, do the following:
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id, balance from accounts;
 ~~~
 
-For more information about how to use the built-in SQL client, see the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) reference docs.
+For more information about how to use the built-in SQL client, see the [`cockroach sql`]({{ page.version.version }}/cockroach-sql.md) reference docs.
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include_cached copy-clipboard.html %}
 ~~~ go
 // 'db' is an open database connection
 
@@ -59,13 +56,11 @@ for rows.Next() {
 }
 ~~~
 
-{% include {{page.version.version}}/app/for-a-complete-example-go.md %}
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
@@ -86,13 +81,11 @@ try (Connection connection = ds.getConnection()) {
 }
 ~~~
 
-{% include {{page.version.version}}/app/for-a-complete-example-java.md %}
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 # conn is a psycopg2 connection
 
@@ -103,7 +96,6 @@ with conn.cursor() as cur:
         print([str(cell) for cell in row])
 ~~~
 
-{% include {{page.version.version}}/app/for-a-complete-example-python.md %}
 
 </section>
 
@@ -113,7 +105,6 @@ To order the results of a query, use an `ORDER BY` clause.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM bank ORDER BY balance;
 ~~~
@@ -129,7 +120,7 @@ SELECT * FROM bank ORDER BY balance;
 (5 rows)
 ~~~
 
-For reference documentation and more examples, see the [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}) syntax page.
+For reference documentation and more examples, see the [`ORDER BY`]({{ page.version.version }}/order-by.md) syntax page.
 
 ## Limit results
 
@@ -137,7 +128,6 @@ To limit the results of a query, use a `LIMIT` clause.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM bank LIMIT 5;
 ~~~
@@ -153,13 +143,12 @@ SELECT * FROM bank LIMIT 5;
 (5 rows)
 ~~~
 
-For reference documentation and more examples, see the [`LIMIT`/`OFFSET`]({% link {{ page.version.version }}/limit-offset.md %}) syntax page.
+For reference documentation and more examples, see the [`LIMIT`/`OFFSET`]({{ page.version.version }}/limit-offset.md) syntax page.
 
 ## Joins
 
 The syntax for a [selection query][selection] with a two-way [join][joins] is shown below.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 	a.col1, b.col1
@@ -184,21 +173,21 @@ Join performance can be a big factor in your application's performance.  For mor
 Reference information related to this task:
 
 - [Selection queries][selection]
-- [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})
+- [`SELECT`]({{ page.version.version }}/select-clause.md)
 - [Joins][joins]
 - [Paginate through limited results][paginate]
-- [Transaction Contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention)
+- [Transaction Contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention)
 
 Other common tasks:
 
-- [Connect to the Database]({% link {{ page.version.version }}/connect-to-the-database.md %})
-- [Insert Data]({% link {{ page.version.version }}/insert-data.md %})
-- [Update Data]({% link {{ page.version.version }}/update-data.md %})
-- [Delete Data]({% link {{ page.version.version }}/delete-data.md %})
-- [Run Multi-Statement Transactions]({% link {{ page.version.version }}/run-multi-statement-transactions.md %})
-- [Troubleshoot SQL Statements]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
+- [Connect to the Database]({{ page.version.version }}/connect-to-the-database.md)
+- [Insert Data]({{ page.version.version }}/insert-data.md)
+- [Update Data]({{ page.version.version }}/update-data.md)
+- [Delete Data]({{ page.version.version }}/delete-data.md)
+- [Run Multi-Statement Transactions]({{ page.version.version }}/run-multi-statement-transactions.md)
+- [Troubleshoot SQL Statements]({{ page.version.version }}/query-behavior-troubleshooting.md)
 - [Optimize Statement Performance][fast]
-- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
+- [Example Apps]({{ page.version.version }}/example-apps.md)
 
 {% comment %} Reference Links {% endcomment %}
 

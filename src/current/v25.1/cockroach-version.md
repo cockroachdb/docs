@@ -6,9 +6,8 @@ key: view-version-details.html
 docs_area: reference.cli
 ---
 
-To view version details for a specific `cockroach` binary, run the `cockroach version` [command]({% link {{ page.version.version }}/cockroach-commands.md %}), or run `cockroach --version`:
+To view version details for a specific `cockroach` binary, run the `cockroach version` [command]({{ page.version.version }}/cockroach-commands.md), or run `cockroach --version`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach version
 ~~~
@@ -32,7 +31,7 @@ Field | Description
 ------|------------
 `Build Tag` | The CockroachDB version.<br><br> To return just the build tag, use `cockroach version --build-tag`.
 `Build Time` | The date and time when the binary was built.
-`Distribution` | The scope of the binary. If `CCL`, the binary contains functionality covered by both the CockroachDB Community License (CCL) and the Business Source License (BSL). If `OSS`, the binary contains only functionality covered by the Apache 2.0 license. The v19.2 release converts to Apache 2.0 as of Oct 1, 2022, at which time you can use the `make buildoss` command to build a pure open-source binary. For more details about licensing, see the [Licensing FAQs]({% link {{ page.version.version }}/licensing-faqs.md %}).
+`Distribution` | The scope of the binary. If `CCL`, the binary contains functionality covered by both the CockroachDB Community License (CCL) and the Business Source License (BSL). If `OSS`, the binary contains only functionality covered by the Apache 2.0 license. The v19.2 release converts to Apache 2.0 as of Oct 1, 2022, at which time you can use the `make buildoss` command to build a pure open-source binary. For more details about licensing, see the [Licensing FAQs]({{ page.version.version }}/licensing-faqs.md).
 `Platform` | The platform that the binary can run on.
 `Go Version` | The version of Go in which the source code is written.
 `C Compiler` | The C compiler used to build the binary.
@@ -41,5 +40,5 @@ Field | Description
 
 ## See also
 
-- [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %})
-- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [Install CockroachDB]({{ page.version.version }}/install-cockroachdb.md)
+- [`cockroach` Commands Overview]({{ page.version.version }}/cockroach-commands.md)

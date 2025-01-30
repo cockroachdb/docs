@@ -10,14 +10,14 @@ By default, the DB Console and each node of a CockroachDB cluster share anonymou
 This page summarizes the details that get shared, how to view the details yourself, and how to opt out of sharing.
 
 {{site.data.alerts.callout_success}}
-For insights into your cluster's performance and health, use the built-in [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) or a third-party monitoring tool like [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}).
+For insights into your cluster's performance and health, use the built-in [DB Console]({{ page.version.version }}/ui-overview.md) or a third-party monitoring tool like [Prometheus]({{ page.version.version }}/monitor-cockroachdb-with-prometheus.md).
 {{site.data.alerts.end}}
 
 ## What gets shared
 
 When diagnostics reporting is on, each node of a CockroachDB cluster shares anonymized details on an hourly basis, including (but not limited to):
 
-- Deployment and configuration characteristics, such as size of hardware, [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) that have been altered from defaults, number of [replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}) configured, etc.
+- Deployment and configuration characteristics, such as size of hardware, [cluster settings]({{ page.version.version }}/cluster-settings.md) that have been altered from defaults, number of [replication zones]({{ page.version.version }}/configure-replication-zones.md) configured, etc.
 - Usage and cluster health details, such as crashes, unexpected errors, attempts to use unsupported features, types of queries run and their execution characteristics as well as types of schemas used, etc.
 
 To view the full diagnostics details that a node reports to Cockroach Labs, use the `http://<node-address>:<http-port>/_status/diagnostics/local` JSON endpoint.
@@ -29,7 +29,7 @@ In all cases, names and other string values are scrubbed and replaced with under
 ## Opt out of diagnostics reporting
 
 {{site.data.alerts.callout_info}}
-Diagnostics reporting is required for [**Enterprise Trial** or **Enterprise Free** licenses]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses). Therefore, the cluster setting `diagnostics.reporting.enabled` is ignored on clusters with these licenses. The following opt-out methods apply only to clusters with an [**Enterprise** license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses).
+Diagnostics reporting is required for [**Enterprise Trial** or **Enterprise Free** licenses]({{ page.version.version }}/licensing-faqs.md#types-of-licenses). Therefore, the cluster setting `diagnostics.reporting.enabled` is ignored on clusters with these licenses. The following opt-out methods apply only to clusters with an [**Enterprise** license]({{ page.version.version }}/licensing-faqs.md#types-of-licenses).
 {{site.data.alerts.end}}
 
 ### At cluster initialization
@@ -38,9 +38,8 @@ To make sure that absolutely no diagnostic details are shared, you can set the e
 
 ### After cluster initialization
 
-To stop sending diagnostic details to Cockroach Labs once a cluster is running, [use the built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) to execute the following [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement, which switches the `diagnostics.reporting.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `false`:
+To stop sending diagnostic details to Cockroach Labs once a cluster is running, [use the built-in SQL client]({{ page.version.version }}/cockroach-sql.md) to execute the following [`SET CLUSTER SETTING`]({{ page.version.version }}/set-cluster-setting.md) statement, which switches the `diagnostics.reporting.enabled` [cluster setting]({{ page.version.version }}/cluster-settings.md) to `false`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING diagnostics.reporting.enabled = false;
 ~~~
@@ -49,9 +48,8 @@ This change will not be instantaneous, as it must be propagated to other nodes i
 
 ## Check the state of diagnostics reporting
 
-To check the state of diagnostics reporting, [use the built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) to execute the following [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) statement:
+To check the state of diagnostics reporting, [use the built-in SQL client]({{ page.version.version }}/cockroach-sql.md) to execute the following [`SHOW CLUSTER SETTING`]({{ page.version.version }}/show-cluster-setting.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING diagnostics.reporting.enabled;
 ~~~
@@ -67,5 +65,5 @@ If the setting is `false`, diagnostics reporting is off; if the setting is `true
 
 ## See also
 
-- [Cluster Settings]({% link {{ page.version.version }}/cluster-settings.md %})
-- [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %})
+- [Cluster Settings]({{ page.version.version }}/cluster-settings.md)
+- [Start a Node]({{ page.version.version }}/cockroach-start.md)

@@ -5,13 +5,13 @@ toc: true
 docs_area: manage
 ---
 
-The CockroachDB Cluster API is a REST API that provides information about a cluster and its nodes. The API offers programmatic access to much of the information available in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) user interface, enabling you to monitor and troubleshoot your cluster using your choice of tooling.
+The CockroachDB Cluster API is a REST API that provides information about a cluster and its nodes. The API offers programmatic access to much of the information available in the [DB Console]({{ page.version.version }}/ui-overview.md) user interface, enabling you to monitor and troubleshoot your cluster using your choice of tooling.
 
 The Cluster API is hosted by all nodes of your cluster and provides information about all nodes. The API is available on the same port that is listening for HTTP connections to the DB Console. This defaults to `8080` and can be specified using `--http-addr={server}:{port}` when configuring your node.
 
 ## Resources
 
-The following endpoints are available as URLs under the `/api/v2` base path (for example, `https://localhost:8080/api/v2/health/`). For more information about the support policies for endpoints, see [API Support Policy]({% link {{ page.version.version }}/api-support-policy.md %}).
+The following endpoints are available as URLs under the `/api/v2` base path (for example, `https://localhost:8080/api/v2/health/`). For more information about the support policies for endpoints, see [API Support Policy]({{ page.version.version }}/api-support-policy.md).
 
 Each listed endpoint links to its full [API reference documentation](https://cockroachlabs.com/docs/api/cluster/v2.html).
 
@@ -30,14 +30,14 @@ Endpoint | Name | Description | Support
 [`/ranges/{range_id}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listRange) | Get range details | Get detailed technical information on a range. Typically used by Cockroach Labs engineers. | Unstable
 [`/sessions`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listSessions) | List sessions | Get SQL session details of all current users or a specified user. | Unstable
 [`/users`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listUsers) | List users | List all SQL users on the cluster. | Stable
-[`/login`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/login) | Log in | Authenticate as a [SQL role]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-log-in-to-the-database) that is a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) to retrieve a session token to use with further API calls. | Stable
+[`/login`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/login) | Log in | Authenticate as a [SQL role]({{ page.version.version }}/create-role.md#create-a-role-that-can-log-in-to-the-database) that is a member of the [`admin` role]({{ page.version.version }}/security-reference/authorization.md#admin-role) to retrieve a session token to use with further API calls. | Stable
 [`/logout`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/logout) | Log out | Invalidate the session token. | Stable
 
 ## Requirements
 
 All endpoints except `/health` and `/login` require authentication using a session token. To obtain a session token, you will need:
 
-* A [SQL role]({% link {{ page.version.version }}/create-role.md %}) that is a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) and has login permissions and a password.
+* A [SQL role]({{ page.version.version }}/create-role.md) that is a member of the [`admin` role]({{ page.version.version }}/security-reference/authorization.md#admin-role) and has login permissions and a password.
 
 To connect with the API on a secure cluster, you will need:
 
@@ -45,13 +45,12 @@ To connect with the API on a secure cluster, you will need:
 
 ## Authentication
 
-To create and manage web sessions and authentication tokens to the Cluster API from the command line, use the [`cockroach auth-session`]({% link {{ page.version.version }}/cockroach-auth-session.md %}) CLI command.
+To create and manage web sessions and authentication tokens to the Cluster API from the command line, use the [`cockroach auth-session`]({{ page.version.version }}/cockroach-auth-session.md) CLI command.
 
 Alternatively, you may also request a token directly from the `/login` endpoint using the following instructions:
 
 1. Request a session token using the `/login` endpoint. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -d "username=user&password=pass" \
     -H 'Content-Type: application/x-www-form-urlencoded' \
@@ -60,14 +59,12 @@ Alternatively, you may also request a token directly from the `/login` endpoint 
 
 1. Record the token (`session` value) that is returned.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     {"session":"CIGAiPis4fj3CBIQ3u0rRQJ3tD8yIqee4hipow=="}
     ~~~
 
 1. Pass the token with each call using the `X-Cockroach-API-Session` header. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -H "X-Cockroach-API-Session: CIGAiPis4fj3CBIQ3u0rRQJ3tD8yIqee4hipow==" \
     https://localhost:8080/api/v2/nodes/
@@ -79,4 +76,4 @@ The Cluster API version is defined in the request path. For example: `<cluster>/
 
 Future versions of CockroachDB may provide multiple API versions and will continue to provide access to this v2.0 API until it is deprecated.
 
-All endpoint paths and payloads will remain available within a major API version number (`v2.x`). Patch versions could add new endpoints but will not remove existing endpoints. For more information, see [API Support Policy]({% link {{ page.version.version }}/api-support-policy.md %}).
+All endpoint paths and payloads will remain available within a major API version number (`v2.x`). Patch versions could add new endpoints but will not remove existing endpoints. For more information, see [API Support Policy]({{ page.version.version }}/api-support-policy.md).

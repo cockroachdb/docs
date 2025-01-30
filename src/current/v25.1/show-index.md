@@ -5,12 +5,12 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW INDEX` [statement]({% link {{ page.version.version }}/sql-statements.md %}) returns index information for a table or database.
+The `SHOW INDEX` [statement]({{ page.version.version }}/sql-statements.md) returns index information for a table or database.
 
 
 ## Required privileges
 
-The user must have any [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the target table or database.
+The user must have any [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the target table or database.
 
 ## Aliases
 
@@ -22,7 +22,6 @@ In CockroachDB, the following are aliases for `SHOW INDEX`:
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_indexes.html %}
 </div>
 
 ## Parameters
@@ -44,24 +43,21 @@ Field | Description
 `seq_in_index` | The position of the column in the index, starting with `1`.
 `column_name` | The indexed column.
 `direction` | How the column is sorted in the index. Possible values: `ASC` or `DESC` for indexed columns; `N/A` for stored columns.
-`storing` | Whether the `STORING` clause was used to index the column during [index creation]({% link {{ page.version.version }}/create-index.md %}). Possible values: `true` or `false`.
-`implicit` | Whether the column is part of the index despite not being explicitly included during [index creation]({% link {{ page.version.version }}/create-index.md %}). Possible values: `true` or `false`<br><br>[Primary key]({% link {{ page.version.version }}/primary-key.md %}) columns are the only columns implicitly included in secondary indexes. The inclusion of primary key columns improves performance when retrieving columns not in the index.
-`visible` | Whether the index is visible to the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-whether-the-optimizer-uses-an-index).
+`storing` | Whether the `STORING` clause was used to index the column during [index creation]({{ page.version.version }}/create-index.md). Possible values: `true` or `false`.
+`implicit` | Whether the column is part of the index despite not being explicitly included during [index creation]({{ page.version.version }}/create-index.md). Possible values: `true` or `false`<br><br>[Primary key]({{ page.version.version }}/primary-key.md) columns are the only columns implicitly included in secondary indexes. The inclusion of primary key columns improves performance when retrieving columns not in the index.
+`visible` | Whether the index is visible to the [cost-based optimizer]({{ page.version.version }}/cost-based-optimizer.md#control-whether-the-optimizer-uses-an-index).
 
 A column is in the primary key if the value of the `index_name` column is `{tbl}_pkey` and value of the `storing` column is `false`.
 
 ## Example
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Show indexes for a table
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM users;
 ~~~
@@ -84,7 +80,6 @@ In this example, the columns where the value of the `index_name` column is `us
 
 ### Show indexes for a database
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM DATABASE movr;
 ~~~
@@ -148,9 +143,9 @@ In this example, the columns where the value of the `index_name` column is `us
 
 ## See also
 
-- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
-- [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %})
-- [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %})
-- [`ALTER INDEX ... RENAME TO`]({% link {{ page.version.version }}/alter-index.md %}#rename-to)
-- [Information Schema]({% link {{ page.version.version }}/information-schema.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [`CREATE INDEX`]({{ page.version.version }}/create-index.md)
+- [`COMMENT ON`]({{ page.version.version }}/comment-on.md)
+- [`DROP INDEX`]({{ page.version.version }}/drop-index.md)
+- [`ALTER INDEX ... RENAME TO`]({{ page.version.version }}/alter-index.md#rename-to)
+- [Information Schema]({{ page.version.version }}/information-schema.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

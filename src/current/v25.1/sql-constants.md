@@ -60,7 +60,6 @@ enclosed between single quotes (`'`), for example, `'hello world'`.
 To include a single quote in the string, use a double single quote.
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'hello' as a, 'it''s a beautiful day' as b;
 ~~~
@@ -78,7 +77,6 @@ the following special syntax: two simple string literals separated by
 a newline character are automatically concatenated together to form a
 single constant. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'hello'
 ' world!' as a;
@@ -133,7 +131,6 @@ Dollar-quoted strings have the form: `$` + (optional) tag + `$` + arbitrary text
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT char_length($MyCoolString$
 You can put anything you want in this string -- for example, here's a Windows filesystem pathname: 'C:\Users\foo\Downloads\file.zip'
@@ -198,7 +195,7 @@ binary digits (bits) enclosed in single quotes.
 For example: `B'1001010101'`
 
 Bit array literals are acceptable both when values of types
-[`BIT`]({% link {{ page.version.version }}/bit.md %}) or [`VARBIT`]({% link {{ page.version.version }}/bit.md %}) (`BIT VARYING`) are
+[`BIT`]({{ page.version.version }}/bit.md) or [`VARBIT`]({{ page.version.version }}/bit.md) (`BIT VARYING`) are
 expected.
 
 The number of bits is arbitrary. An empty bit array is denoted `B''`;
@@ -264,12 +261,12 @@ BOOL 'FALSE'
 Additionally, for compatibility with PostgreSQL, the notation
 `'string'::type` and `CAST('string' AS type)` is also recognized as an
 interpreted literal. These are special cases of
-[cast expressions]({% link {{ page.version.version }}/scalar-expressions.md %}).
+[cast expressions]({{ page.version.version }}/scalar-expressions.md).
 
 For more information about the allowable format of interpreted
 literals, refer to the "Syntax" section of the respective data types:
-[`DATE`]({% link {{ page.version.version }}/date.md %}#syntax), [`INET`]({% link {{ page.version.version }}/inet.md %}#syntax), [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}#syntax), [`TIME`]({% link {{ page.version.version }}/time.md %}#syntax),
-[`TIMESTAMP`/`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}#syntax).
+[`DATE`]({{ page.version.version }}/date.md#syntax), [`INET`]({{ page.version.version }}/inet.md#syntax), [`INTERVAL`]({{ page.version.version }}/interval.md#syntax), [`TIME`]({{ page.version.version }}/time.md#syntax),
+[`TIMESTAMP`/`TIMESTAMPTZ`]({{ page.version.version }}/timestamp.md#syntax).
 
 ## Named constants
 
@@ -283,5 +280,5 @@ type during expression evaluation is determined based on context.
 
 ## See also
 
-- [Scalar Expressions]({% link {{ page.version.version }}/scalar-expressions.md %})
-- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [Scalar Expressions]({{ page.version.version }}/scalar-expressions.md)
+- [Data Types]({{ page.version.version }}/data-types.md)

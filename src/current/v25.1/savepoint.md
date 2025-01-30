@@ -5,41 +5,36 @@ toc: true
 docs_area: reference.sql
 ---
 
-A savepoint is a marker that defines the beginning of a [nested transaction]({% link {{ page.version.version }}/transactions.md %}#nested-transactions). This marker can be later used to commit or roll back just the effects of the nested transaction without affecting the progress of the enclosing transaction.
+A savepoint is a marker that defines the beginning of a [nested transaction]({{ page.version.version }}/transactions.md#nested-transactions). This marker can be later used to commit or roll back just the effects of the nested transaction without affecting the progress of the enclosing transaction.
 
 CockroachDB supports [general purpose savepoints for nested transactions](#savepoints-for-nested-transactions), in addition to continued support for [special-purpose retry savepoints](#savepoints-for-client-side-transaction-retries).
 
-{% include {{page.version.version}}/sql/savepoint-ddl-rollbacks.md %}
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/savepoint.html %}
 </div>
 
 ## Required privileges
 
-No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to create a savepoint. However, privileges are required for each statement within a transaction.
+No [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) are required to create a savepoint. However, privileges are required for each statement within a transaction.
 
 ## Parameters
 
 Parameter | Description
 --------- | -----------
-name      | The name of the savepoint.  [Nested transactions]({% link {{ page.version.version }}/savepoint.md %}#savepoints-for-nested-transactions) can use any name for the savepoint. [Retry savepoints]({% link {{ page.version.version }}/savepoint.md %}#savepoints-for-client-side-transaction-retries) default to using the name `cockroach_restart`, but this can be customized using a session variable.  For more information, see [Customizing the retry savepoint name]({% link {{ page.version.version }}/savepoint.md %}#customizing-the-retry-savepoint-name).
+name      | The name of the savepoint.  [Nested transactions]({{ page.version.version }}/savepoint.md#savepoints-for-nested-transactions) can use any name for the savepoint. [Retry savepoints]({{ page.version.version }}/savepoint.md#savepoints-for-client-side-transaction-retries) default to using the name `cockroach_restart`, but this can be customized using a session variable.  For more information, see [Customizing the retry savepoint name]({{ page.version.version }}/savepoint.md#customizing-the-retry-savepoint-name).
 
 ## Savepoints and row locks
 
-{% include {{page.version.version}}/sql/savepoints-and-row-locks.md %}
 
 ## Savepoints and high priority transactions
 
-{% include {{page.version.version}}/sql/savepoints-and-high-priority-transactions.md %}
 
 ## Examples
 
 The examples below use the following table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 ~~~
@@ -48,32 +43,28 @@ The examples below use the following table:
 
 To establish a savepoint inside a transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SAVEPOINT foo;
 ~~~
 
 {{site.data.alerts.callout_info}}
-Due to the [rules for identifiers in our SQL grammar]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers), `SAVEPOINT foo` and `SAVEPOINT Foo` define the same savepoint, whereas `SAVEPOINT "Foo"` defines another.
+Due to the [rules for identifiers in our SQL grammar]({{ page.version.version }}/keywords-and-identifiers.md#identifiers), `SAVEPOINT foo` and `SAVEPOINT Foo` define the same savepoint, whereas `SAVEPOINT "Foo"` defines another.
 {{site.data.alerts.end}}
 
 To roll back a transaction partially to a previously established savepoint:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ROLLBACK TO SAVEPOINT foo;
 ~~~
 
-To forget a savepoint, and keep the effects of statements executed after the savepoint was established, use [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %}):
+To forget a savepoint, and keep the effects of statements executed after the savepoint was established, use [`RELEASE SAVEPOINT`]({{ page.version.version }}/release-savepoint.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RELEASE SAVEPOINT foo;
 ~~~
 
 For example, the transaction below will insert the values `(1,1)` and `(3,3)` into the table, but not `(2,2)`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 INSERT INTO kv VALUES (1,1);
@@ -86,13 +77,13 @@ COMMIT;
 
 ### Savepoints for nested transactions
 
-Transactions can be nested using named savepoints.  [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %}) and [`ROLLBACK TO SAVEPOINT`]({% link {{ page.version.version }}/rollback-transaction.md %}) can both refer to a savepoint "higher" in the nesting hierarchy. When this occurs, all of the savepoints "under" the nesting are automatically released / rolled back too.  Specifically:
+Transactions can be nested using named savepoints.  [`RELEASE SAVEPOINT`]({{ page.version.version }}/release-savepoint.md) and [`ROLLBACK TO SAVEPOINT`]({{ page.version.version }}/rollback-transaction.md) can both refer to a savepoint "higher" in the nesting hierarchy. When this occurs, all of the savepoints "under" the nesting are automatically released / rolled back too.  Specifically:
 
 - When a previous savepoint is rolled back, the statements entered after that savepoint are also rolled back.
 
 - When a previous savepoint is released, it commits; the statements entered after that savepoint are also committed.
 
-For more information about nested transactions, see [Nested transactions]({% link {{ page.version.version }}/transactions.md %}#nested-transactions).
+For more information about nested transactions, see [Nested transactions]({{ page.version.version }}/transactions.md#nested-transactions).
 
 ### Multi-level rollback with `ROLLBACK TO SAVEPOINT`
 
@@ -100,7 +91,6 @@ Savepoints can be arbitrarily nested, and rolled back to the outermost level so 
 
 For example, this transaction does not insert anything into the table.  Both `INSERT`s are rolled back:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT foo;
@@ -117,7 +107,6 @@ Changes committed by releasing a savepoint commit all of the statements entered 
 
 For example, the following transaction inserts both `(2,2)` and `(4,4)` into the table when it releases the outermost savepoint:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT foo;
@@ -134,7 +123,6 @@ Changes partially committed by a savepoint release can be rolled back by an oute
 
 For example, the following transaction inserts only value `(5, 5)`. The values `(6,6)` and `(7,7)` are rolled back.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 INSERT INTO kv VALUES (5,5);
@@ -161,7 +149,6 @@ In addition, you can check the status of a nested transaction using the `SHOW TR
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT error1;
@@ -173,7 +160,6 @@ ERROR: duplicate key value (k)=(5) violates unique constraint "primary"
 SQLSTATE: 23505
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW TRANSACTION STATUS;
 ~~~
@@ -185,7 +171,6 @@ SHOW TRANSACTION STATUS;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ROLLBACK TO SAVEPOINT error1;
 INSERT INTO kv VALUES (6,6);
@@ -198,7 +183,6 @@ The name of a savepoint that was rolled back over is no longer visible afterward
 
 For example, in the transaction below, the name "bar" is not visible after it was rolled back over:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT foo;
@@ -213,9 +197,8 @@ ERROR: savepoint bar does not exist
 SQLSTATE: 3B001
 ~~~
 
-The [SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) prompt will now display an error state, which you can clear by entering [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %}):
+The [SQL client]({{ page.version.version }}/cockroach-sql.md) prompt will now display an error state, which you can clear by entering [`ROLLBACK`]({{ page.version.version }}/rollback-transaction.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ? ERROR> ROLLBACK;
 ~~~
@@ -228,7 +211,6 @@ ROLLBACK
 
 Prepared statements (`PREPARE` / `EXECUTE`) are not transactional.  Therefore, prepared statements are not invalidated upon savepoint rollback.  As a result, the prepared statement was saved and executed inside the transaction, despite the rollback to the prior savepoint:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT foo;
@@ -247,11 +229,9 @@ COMMIT;
 
 ### Savepoints for client-side transaction retries
 
-{% include {{page.version.version}}/sql/retry-savepoints.md %}
 
 The example below shows basic usage of a retry savepoint.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT cockroach_restart;
@@ -261,19 +241,17 @@ RELEASE SAVEPOINT cockroach_restart;
 COMMIT;
 ~~~
 
-Applications using `SAVEPOINT` for client-side transaction retries must also include functions to execute retries with [`ROLLBACK TO SAVEPOINT `]({% link {{ page.version.version }}/rollback-transaction.md %}#retry-a-transaction).
+Applications using `SAVEPOINT` for client-side transaction retries must also include functions to execute retries with [`ROLLBACK TO SAVEPOINT `]({{ page.version.version }}/rollback-transaction.md#retry-a-transaction).
 
 Note that you can [customize the retry savepoint name](#customizing-the-retry-savepoint-name) to something other than `cockroach_restart` with a session variable if you need to.
 
 #### Customizing the retry savepoint name
 
-{% include {{page.version.version}}/misc/customizing-the-savepoint-name.md %}
 
 ### Showing savepoint status
 
-Use the [`SHOW SAVEPOINT STATUS`]({% link {{ page.version.version }}/show-savepoint-status.md %}) statement to see how many savepoints are active in the current transaction:
+Use the [`SHOW SAVEPOINT STATUS`]({{ page.version.version }}/show-savepoint-status.md) statement to see how many savepoints are active in the current transaction:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SAVEPOINT STATUS;
 ~~~
@@ -291,11 +269,11 @@ Note that the `is_initial_savepoint` column will be true if the savepoint is the
 
 ## See also
 
-- [`SHOW SAVEPOINT STATUS`]({% link {{ page.version.version }}/show-savepoint-status.md %})
-- [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %})
-- [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %})
-- [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %})
-- [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %})
-- [Transactions]({% link {{ page.version.version }}/transactions.md %})
-- [Retryable transaction example code in Java using JDBC]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %})
-- [CockroachDB Architecture: Transaction Layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %})
+- [`SHOW SAVEPOINT STATUS`]({{ page.version.version }}/show-savepoint-status.md)
+- [`RELEASE SAVEPOINT`]({{ page.version.version }}/release-savepoint.md)
+- [`ROLLBACK`]({{ page.version.version }}/rollback-transaction.md)
+- [`BEGIN`]({{ page.version.version }}/begin-transaction.md)
+- [`COMMIT`]({{ page.version.version }}/commit-transaction.md)
+- [Transactions]({{ page.version.version }}/transactions.md)
+- [Retryable transaction example code in Java using JDBC]({{ page.version.version }}/build-a-java-app-with-cockroachdb.md)
+- [CockroachDB Architecture: Transaction Layer]({{ page.version.version }}/architecture/transaction-layer.md)

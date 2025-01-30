@@ -6,11 +6,11 @@ toc: true
 docs_area: manage
 ---
 
-This feature automatically captures CPU profiles, which can make it easier to investigate and troubleshoot spikes in CPU usage or erratic CPU load on certain nodes. A CPU profile shows the functions that use the most CPU time, sampled over a window of time. You can collect a CPU Profile manually on the [Advanced Debug page]({% link {{ page.version.version }}/ui-debug-pages.md %}). However, it may be difficult to manually capture a profile of a short CPU spike at the right point in time. Automatic CPU profile capture enables the investigation of CPU load in this and other cases, such as periodic high CPU.
+This feature automatically captures CPU profiles, which can make it easier to investigate and troubleshoot spikes in CPU usage or erratic CPU load on certain nodes. A CPU profile shows the functions that use the most CPU time, sampled over a window of time. You can collect a CPU Profile manually on the [Advanced Debug page]({{ page.version.version }}/ui-debug-pages.md). However, it may be difficult to manually capture a profile of a short CPU spike at the right point in time. Automatic CPU profile capture enables the investigation of CPU load in this and other cases, such as periodic high CPU.
 
 ## Configuration
 
-You can configure automatic CPU profile capture with the following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}):
+You can configure automatic CPU profile capture with the following [cluster settings]({{ page.version.version }}/cluster-settings.md):
 
 Cluster Setting | Description | Default Value
 ----------------|-------------|---------------
@@ -33,15 +33,15 @@ The Automatic CPU Profiler uses the configuration options to determine the high-
 
 ## Accessing CPU profiles
 
-- The Automatic CPU Profiler saves the captured CPU profiles to disk on each node's file system in the [logging directory]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory). The default path is `cockroach-data/logs/pprof_dump`.
+- The Automatic CPU Profiler saves the captured CPU profiles to disk on each node's file system in the [logging directory]({{ page.version.version }}/configure-logs.md#logging-directory). The default path is `cockroach-data/logs/pprof_dump`.
 - The only way to get these CPU profiles is to access the node file system.
-- Enabling the Automatic CPU Profiler does **not** add CPU profiles to [debug zips]({% link {{ page.version.version }}/cockroach-debug-zip.md %}).
+- Enabling the Automatic CPU Profiler does **not** add CPU profiles to [debug zips]({{ page.version.version }}/cockroach-debug-zip.md).
 
 ## Overhead
 
 Enabling the automatic CPU profile capture on a cluster will add overhead to the cluster in the form of potential increases in latency and CPU usage.
 
 - Monitor the following metrics:
-  - [P99 latency]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#service-latency-sql-99th-percentile)
-  - P50 latency by creating a [custom chart]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) for the `sql.exec.latency-p50` metric
-  - [CPU usage]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent)
+  - [P99 latency]({{ page.version.version }}/ui-sql-dashboard.md#service-latency-sql-99th-percentile)
+  - P50 latency by creating a [custom chart]({{ page.version.version }}/ui-custom-chart-debug-page.md) for the `sql.exec.latency-p50` metric
+  - [CPU usage]({{ page.version.version }}/ui-hardware-dashboard.md#cpu-percent)

@@ -21,7 +21,7 @@ This tutorial will show you how to configure a Hasura project with a CockroachDB
 
 Before you start this tutorial, you need:
 
-- An existing [CockroachDB Cloud]({% link cockroachcloud/quickstart.md %}) cluster, running CockroachDB v22.2 or later.
+- An existing [CockroachDB Cloud](quickstart.md) cluster, running CockroachDB v22.2 or later.
 - A [Hasura Cloud account](https://hasura.io/docs/latest/getting-started/getting-started-cloud/).
 
 ## Create a new project in Hasura Cloud
@@ -48,7 +48,6 @@ Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
 
     For example, on Mac you can copy the contents of the CA certificate in a terminal using `pbcopy`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     pbcopy < $HOME/.postgresql/root.crt
     ~~~
@@ -65,14 +64,13 @@ Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
 
     For example, on Mac you can copy the contents of the CA certificate in a terminal using `pbcopy`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     pbcopy < $HOME/Library/CockroachCloud/certs/fake-puppy-ca.crt
     ~~~
 
 1. Paste the contents of the CA certificate file under **Value**.
 
-    <img src="{{ 'images/v22.2/hasura-ca-cert.png' | relative_url }}" alt="Adding the SSL_ROOT_CERT environment variable to the Hasura project" style="border:1px solid #eee;max-width:50%" />
+    ![Adding the SSL_ROOT_CERT environment variable to the Hasura project](/images/v22.2/hasura-ca-cert.png)
 1. Click **Add**.
 
 </section>
@@ -108,7 +106,7 @@ Create a `CRDB_URL` environment variable to store the connection string.
     1. Under **Database Display Name** type a name for your connection. Your cluster name is a good option. For example, `fake-puppy`.
     1. Set **Data Source Driver** to **CockroachDB**.
     1. Select **Environment Variable**, then enter `CRDB_URL` in the **Environment Variable** input box.
-        <img src="{{ 'images/v22.2/hasura-data-source.png' | relative_url }}" alt="Adding the connection string to the Hasura Data Manager" style="border:1px solid #eee;max-width:100%" />
+        ![Adding the connection string to the Hasura Data Manager](/images/v22.2/hasura-data-source.png)
 1. Expand **Connection Settings**, then expand **SSL Certificates Settings** and set **SSL Mode** to `verify-full`.
 1. Enter `SSL_ROOT_CERT` under **SSL Root Certificate**, the environment variable you configured earlier.
 1. Click **Connect Database**.
@@ -117,11 +115,11 @@ Create a `CRDB_URL` environment variable to store the connection string.
 
 ## Add the Hasura Cloud network to your cluster allowlist
 
-Your CockroachDB {{ site.data.products.standard }} cluster needs to be configured to [allow incoming client connections]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting) from Hasura Cloud.
+Your CockroachDB {{ site.data.products.standard }} cluster needs to be configured to [allow incoming client connections](network-authorization.md#ip-allowlisting) from Hasura Cloud.
 
 1. In the Hasura Cloud overview page select **Projects**, then click the **Config** icon for your project.
 
-    <img src="{{ 'images/v22.2/hasura-project-config.png' | relative_url }}" alt="Click the project Config icon" style="border:1px solid #eee;max-width:100%" />
+    ![Click the project Config icon](/images/v22.2/hasura-project-config.png)
 1. In the **General** section, copy the IP address listed under **Hasura Cloud IP**.
 1. In the CockroachDB Cloud console select your cluster, click **Networking**, then **Add Network**.
 1. In the **Add Network** dialog, set **Network name** to `Hasura Cloud`.
@@ -134,7 +132,6 @@ Your CockroachDB {{ site.data.products.standard }} cluster needs to be configure
 
 1. Connect to your cluster using the SQL client.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url "{connection string}"
     ~~~
@@ -143,7 +140,6 @@ Your CockroachDB {{ site.data.products.standard }} cluster needs to be configure
 
 1. In the SQL client, create an `accounts` table.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE IF NOT EXISTS accounts (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -153,7 +149,6 @@ Your CockroachDB {{ site.data.products.standard }} cluster needs to be configure
 
 1. Insert some data into the `accounts` table.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     UPSERT INTO accounts (balance) VALUES (1000), (250);
     ~~~
@@ -179,7 +174,6 @@ For example, to create a query that finds all accounts with balances greater tha
 
 This creates the following GraphQL query:
 
-{% include_cached copy-clipboard.html %}
 ~~~ graphql
 query GetLargeAccounts {
   accounts(where: {balance: {_gte: "500"}}) {
@@ -204,7 +198,7 @@ Click the **Execute Query** button to run the `GetLargeAccounts` GraphQL query. 
 }
 ~~~
 
-<img src="{{ 'images/v22.2/hasura-execute-query.png' | relative_url }}" alt="Executing the GraphQL query in the Hasura Cloud API Explorer" style="border:1px solid #eee;max-width:100%" />
+![Executing the GraphQL query in the Hasura Cloud API Explorer](/images/v22.2/hasura-execute-query.png)
 
 ## Next steps
 

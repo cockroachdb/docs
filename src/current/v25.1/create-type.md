@@ -5,49 +5,45 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CREATE TYPE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new type in a [database]({% link {{ page.version.version }}/create-database.md %}). After the type is created, it can only be referenced from the database that contains the type.
+The `CREATE TYPE` [statement]({{ page.version.version }}/sql-statements.md) creates a new type in a [database]({{ page.version.version }}/create-database.md). After the type is created, it can only be referenced from the database that contains the type.
 
 The following user-defined data types can be created with this statement:
 
 - [Enumerated data type](#create-an-enumerated-data-type)
 - [Composite data type](#create-a-composite-data-type)
 
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_type.html %}
 </div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`type_name` | The name of the type. You can qualify the name with a [database and schema name]({% link {{ page.version.version }}/sql-name-resolution.md %}) (e.g., `db.typename`), but after the type is created, it can only be referenced from the database that contains the type.
+`type_name` | The name of the type. You can qualify the name with a [database and schema name]({{ page.version.version }}/sql-name-resolution.md) (e.g., `db.typename`), but after the type is created, it can only be referenced from the database that contains the type.
 `IF NOT EXISTS` |  Create a new type only if a type of the same name does not already exist in the database; if one does exist, do not return an error.
 `opt_enum_val_list` | A list of values that make up the type's [enumerated set](#create-an-enumerated-data-type).
 `opt_composite_type_list` | A list of values that make up the set of types that make up a [composite type](#create-a-composite-data-type).
 
 ## Required privileges
 
-- To create a type, the user must have [the `CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the parent database and the schema in which the type is being created.
-- To use a user-defined type in a table (e.g., when defining a column's type), the user must have [the `USAGE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the type.
+- To create a type, the user must have [the `CREATE` privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) on the parent database and the schema in which the type is being created.
+- To use a user-defined type in a table (e.g., when defining a column's type), the user must have [the `USAGE` privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) on the type.
 
 ## Example
 
 ### Create an enumerated data type
 
-Use the statements below to create an [`ENUM`]({% link {{ page.version.version }}/enum.md %}) data type.
+Use the statements below to create an [`ENUM`]({{ page.version.version }}/enum.md) data type.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE IF NOT EXISTS status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
-To see all user-defined data types, use [`SHOW TYPES`]({% link {{ page.version.version }}/show-types.md %}):
+To see all user-defined data types, use [`SHOW TYPES`]({{ page.version.version }}/show-types.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TYPES;
 ~~~
@@ -59,9 +55,8 @@ To see all user-defined data types, use [`SHOW TYPES`]({% link {{ page.version.v
 (1 row)
 ~~~
 
-To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.version }}/enum.md %}) data type, use [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %}):
+To see the values accepted by the underlying [`ENUM`]({{ page.version.version }}/enum.md) data type, use [`SHOW ENUMS`]({{ page.version.version }}/show-enums.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -74,7 +69,6 @@ To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.ve
 ~~~
 
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -83,12 +77,10 @@ To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.ve
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts(balance,status) VALUES (500.50,'open'), (0.00,'closed'), (1.25,'inactive');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -102,7 +94,6 @@ To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.ve
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE accounts;
 ~~~
@@ -119,7 +110,6 @@ To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.ve
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts WHERE status='open';
 ~~~
@@ -135,12 +125,10 @@ To see the values accepted by the underlying [`ENUM`]({% link {{ page.version.ve
 
 Use the statements below to create a composite data type:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TYPE IF NOT EXISTS my_point AS (x INT, y INT);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS points (
     id UUID DEFAULT gen_random_uuid(), p my_point,
@@ -153,12 +141,10 @@ CREATE TABLE IF NOT EXISTS points (
 
 Insert 10,000 randomly generated values of type `mypoint`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO points (p) SELECT (floor(random()*10000),floor(random()*10000))::MY_POINT FROM generate_series(1,10000);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM points ORDER BY ((p).x) ASC LIMIT 25;
 ~~~
@@ -196,10 +182,10 @@ SELECT * FROM points ORDER BY ((p).x) ASC LIMIT 25;
 
 ## See also
 
-- [Data types]({% link {{ page.version.version }}/data-types.md %})
-- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
-- [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %})
-- [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})
-- [`SHOW TYPES`]({% link {{ page.version.version }}/show-types.md %})
-- [`ENUM`]({% link {{ page.version.version }}/enum.md %})
-- [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %})
+- [Data types]({{ page.version.version }}/data-types.md)
+- [Online Schema Changes]({{ page.version.version }}/online-schema-changes.md)
+- [`ALTER TYPE`]({{ page.version.version }}/alter-type.md)
+- [`DROP TYPE`]({{ page.version.version }}/drop-type.md)
+- [`SHOW TYPES`]({{ page.version.version }}/show-types.md)
+- [`ENUM`]({{ page.version.version }}/enum.md)
+- [`SHOW ENUMS`]({{ page.version.version }}/show-enums.md)

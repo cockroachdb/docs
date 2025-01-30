@@ -6,13 +6,13 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
-Partial indexes allow you to specify a subset of rows and columns to add to an [index]({% link {{ page.version.version }}/indexes.md %}). Partial indexes include the subset of rows in a table that evaluate to true on a boolean *predicate expression* (i.e., a `WHERE` filter) defined at [index creation](#creation).
+Partial indexes allow you to specify a subset of rows and columns to add to an [index]({{ page.version.version }}/indexes.md). Partial indexes include the subset of rows in a table that evaluate to true on a boolean *predicate expression* (i.e., a `WHERE` filter) defined at [index creation](#creation).
 
 ## How do partial indexes work?
 
 When you create a partial index, CockroachDB "indexes" the columns and rows that evaluate to true on the index's boolean predicate expression, creating a sorted copy of the subset of row values, without modifying the values in the table itself.
 
-CockroachDB can use a partial index to efficiently execute queries on any subset of rows implied by the partial index. When possible, the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) creates a plan that limits table scans on rows implied by the partial index to just the rows in the index. It also limits index rewrites to fewer rows.
+CockroachDB can use a partial index to efficiently execute queries on any subset of rows implied by the partial index. When possible, the [cost-based optimizer]({{ page.version.version }}/cost-based-optimizer.md) creates a plan that limits table scans on rows implied by the partial index to just the rows in the index. It also limits index rewrites to fewer rows.
 
 Partial indexes can improve cluster performance in a number of ways:
 
@@ -21,12 +21,12 @@ Partial indexes can improve cluster performance in a number of ways:
 - Write queries on tables with a partial index only perform an index write when the rows inserted satisfy the partial index predicate. This contrasts with write queries on tables with full indexes, which incur the overhead of a full index write when the rows inserted modify an indexed column.
 
 {{site.data.alerts.callout_info}}
-When a query on a table with a partial index has a filter expression, the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) attempts to prove that the filter implies the partial index predicate. It is not guaranteed that the optimizer can prove the implication of arbitrarily complex expressions. Although unlikely, it is possible that a filter implies a predicate, but the optimizer cannot prove the implication.
+When a query on a table with a partial index has a filter expression, the [cost-based optimizer]({{ page.version.version }}/cost-based-optimizer.md) attempts to prove that the filter implies the partial index predicate. It is not guaranteed that the optimizer can prove the implication of arbitrarily complex expressions. Although unlikely, it is possible that a filter implies a predicate, but the optimizer cannot prove the implication.
 {{site.data.alerts.end}}
 
 ## Creation
 
-To create a partial index, use a [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) statement, with a standard `WHERE` clause defining a predicate expression.
+To create a partial index, use a [`CREATE INDEX`]({{ page.version.version }}/create-index.md) statement, with a standard `WHERE` clause defining a predicate expression.
 
 For example, to define a partial index on columns `a` and `b` of table `t`, filtering on rows in column `c` greater than 5:
 
@@ -56,13 +56,13 @@ The following queries do *not* use the partial index:
 
 When defining the predicate expression, note that:
 
-- The predicate expression must result in a [boolean]({% link {{ page.version.version }}/bool.md %}).
+- The predicate expression must result in a [boolean]({{ page.version.version }}/bool.md).
 - The predicate expression can only refer to columns in the table being indexed.
-- [Functions]({% link {{ page.version.version }}/functions-and-operators.md %}) used in predicates must be immutable. For example, the `now()` function is not allowed in predicates because its value depends on more than its arguments.
+- [Functions]({{ page.version.version }}/functions-and-operators.md) used in predicates must be immutable. For example, the `now()` function is not allowed in predicates because its value depends on more than its arguments.
 
 ## Unique partial indexes
 
-You can enforce [uniqueness]({% link {{ page.version.version }}/unique.md %}) on a subset of rows with `CREATE UNIQUE INDEX ... WHERE ...`.
+You can enforce [uniqueness]({{ page.version.version }}/unique.md) on a subset of rows with `CREATE UNIQUE INDEX ... WHERE ...`.
 
 For example, to define a unique partial index on columns `a` and `b` for table `t`, filtering on rows in column `d` equal to `'x'`:
 
@@ -75,30 +75,28 @@ This creates a partial index and a `UNIQUE` constraint on the subset of rows whe
 For another example, see [Create a partial index that enforces uniqueness on a subset of rows](#create-a-partial-index-that-enforces-uniqueness-on-a-subset-of-rows).
 
 {{site.data.alerts.callout_success}}
-When [inserted values]({% link {{ page.version.version }}/insert.md %}) conflict with a `UNIQUE` constraint on one or more columns, CockroachDB normally returns an error. We recommend adding an [`ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause) clause to all `INSERT` statements that might conflict with rows in the unique index.
+When [inserted values]({{ page.version.version }}/insert.md) conflict with a `UNIQUE` constraint on one or more columns, CockroachDB normally returns an error. We recommend adding an [`ON CONFLICT`]({{ page.version.version }}/insert.md#on-conflict-clause) clause to all `INSERT` statements that might conflict with rows in the unique index.
 {{site.data.alerts.end}}
 
 ## Partial GIN indexes
 
- You can create partial [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}#partial-gin-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
+ You can create partial [GIN indexes]({{ page.version.version }}/inverted-indexes.md#partial-gin-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
 
 ## Index hints
 
-You can force queries [to use a specific partial index]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) (also known as "index hinting"), like you can with full indexes. However, unlike full indexes, partial indexes cannot be used to satisfy all queries. If a query's filter implies the partial index predicate expression, the partial index will be used in the query plan. If not, an error will be returned.
+You can force queries [to use a specific partial index]({{ page.version.version }}/table-expressions.md#force-index-selection) (also known as "index hinting"), like you can with full indexes. However, unlike full indexes, partial indexes cannot be used to satisfy all queries. If a query's filter implies the partial index predicate expression, the partial index will be used in the query plan. If not, an error will be returned.
 
 ## Examples
 
 ### Setup
 
-The following examples use the [`movr` example dataset]({% link {{ page.version.version }}/cockroach-demo.md %}#datasets).
+The following examples use the [`movr` example dataset]({{ page.version.version }}/cockroach-demo.md#datasets).
 
-{% include {{ page.version.version }}/demo_movr.md %}
 
 ### Create an index on a subset of rows
 
 Suppose that you want to query the subset of `rides` with a `revenue` greater than 90.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW TABLES) SELECT * FROM x WHERE table_name='rides';
 ~~~
@@ -112,9 +110,8 @@ Suppose that you want to query the subset of `rides` with a `revenue` greater th
 Time: 21ms total (execution 21ms / network 0ms)
 ~~~
 
-Without a partial index, querying the `rides` table with a `WHERE revenue > 90` clause will scan the entire table. To see the plan for such a query, you can use an [`EXPLAIN` statement]({% link {{ page.version.version }}/explain.md %}):
+Without a partial index, querying the `rides` table with a `WHERE revenue > 90` clause will scan the entire table. To see the plan for such a query, you can use an [`EXPLAIN` statement]({{ page.version.version }}/explain.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM rides WHERE revenue > 90;
 ~~~
@@ -138,16 +135,14 @@ Without a partial index, querying the `rides` table with a `WHERE revenue > 90` 
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-The `estimated row count` in the scan node lists the number of rows that the query plan will scan (in this case, the entire table row count of 125,000). The `table` property lists the index used in the scan (in this case, the [primary key index]({% link {{ page.version.version }}/primary-key.md %})).
+The `estimated row count` in the scan node lists the number of rows that the query plan will scan (in this case, the entire table row count of 125,000). The `table` property lists the index used in the scan (in this case, the [primary key index]({{ page.version.version }}/primary-key.md)).
 
 To limit the number of rows scanned to just the rows that you are querying, you can create a partial index:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON rides (city, revenue) WHERE revenue > 90;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM rides;
 ~~~
@@ -183,7 +178,6 @@ Time: 15ms total (execution 14ms / network 1ms)
 
 Another `EXPLAIN` statement shows that the number of rows scanned by the original query decreases significantly with a partial index on the `rides` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM rides WHERE revenue > 90;
 ~~~
@@ -211,7 +205,6 @@ Note that the query's `SELECT` statement queries all columns in the `rides` tabl
 
 Querying only the columns in the index will make the query more efficient by removing the index join from the query plan:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT city, revenue FROM rides WHERE revenue > 90;
 ~~~
@@ -233,7 +226,6 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 Querying a subset of the rows implied by the partial index predicate expression (in this case, `revenue > 90`) will also use the partial index:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT city, revenue FROM rides WHERE revenue > 95;
 ~~~
@@ -261,7 +253,6 @@ The number of rows scanned is the same, and an additional filter is applied to t
 
 So far, all the query scans in this example have spanned the entire partial index (i.e., performed a `FULL SCAN` of the index). This is because the `WHERE` clause does not filter on the first column in the index prefix (`city`). Filtering the query on both columns in the partial index will limit the scan to just the rows that match the filter:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT city, revenue FROM rides WHERE city = 'new york' AND revenue > 90;
 ~~~
@@ -283,7 +274,6 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 Refining the `revenue` filter expression to match just a subset of the partial index will lower the scanned row count even more:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT city, revenue FROM rides WHERE city = 'new york' AND revenue >= 90 AND revenue < 95;
 ~~~
@@ -311,9 +301,8 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 Suppose that you have a number of rows in a table with values that you regularly filter out of selection queries (e.g., `NULL` values).
 
-A selection query on these values will require a full table scan, using the primary index, as shown by the [`EXPLAIN` statement]({% link {{ page.version.version }}/explain.md %}) below:
+A selection query on these values will require a full table scan, using the primary index, as shown by the [`EXPLAIN` statement]({{ page.version.version }}/explain.md) below:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM rides WHERE end_time IS NOT NULL;
 ~~~
@@ -339,12 +328,10 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 You can create a partial index that excludes these rows, making queries that filter out the non-`NULL` values more efficient.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON rides (city, revenue) WHERE end_time IS NOT NULL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM rides;
 ~~~
@@ -381,7 +368,6 @@ You can create a partial index that excludes these rows, making queries that fil
 Time: 12ms total (execution 12ms / network 1ms)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT (city, revenue) FROM rides WHERE end_time IS NOT NULL;
 ~~~
@@ -411,14 +397,12 @@ Suppose that you want to constrain a subset of the rows in a table, such that al
 
 You can do this efficiently with a [unique partial index](#unique-partial-indexes):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE UNIQUE INDEX ON users (name) WHERE city='new york';
 ~~~
 
-This creates a partial index and a [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %}) on just the subset of rows where `city='new york'`.
+This creates a partial index and a [`UNIQUE` constraint]({{ page.version.version }}/unique.md) on just the subset of rows where `city='new york'`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, name FROM users WHERE city='new york' LIMIT 3;
 ~~~
@@ -432,7 +416,6 @@ This creates a partial index and a [`UNIQUE` constraint]({% link {{ page.version
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users(id, city, name) VALUES (gen_random_uuid(), 'new york', 'Andre Sanchez');
 ~~~
@@ -444,7 +427,6 @@ SQLSTATE: 23505
 
 Because the unique partial index predicate only implies the rows where `city='new york'`, the `UNIQUE` constraint does not apply to all rows in the table.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users(id, city, name) VALUES (gen_random_uuid(), 'seattle', 'Andre Sanchez');
 ~~~
@@ -455,14 +437,12 @@ INSERT 1
 
 ## Known limitations
 
-- {% include {{ page.version.version }}/known-limitations/drop-column-partial-index.md %}
-- {% include {{ page.version.version }}/known-limitations/multiple-arbiter-indexes.md %}
 
 ## See also
 
-- [Indexes]({% link {{ page.version.version }}/indexes.md %})
-- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
-- [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %})
-- [`ALTER INDEX ... RENAME TO`]({% link {{ page.version.version }}/alter-index.md %}#rename-to)
-- [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Indexes]({{ page.version.version }}/indexes.md)
+- [`CREATE INDEX`]({{ page.version.version }}/create-index.md)
+- [`DROP INDEX`]({{ page.version.version }}/drop-index.md)
+- [`ALTER INDEX ... RENAME TO`]({{ page.version.version }}/alter-index.md#rename-to)
+- [`SHOW INDEX`]({{ page.version.version }}/show-index.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

@@ -7,22 +7,22 @@ key: demo-geo-partitioning.html
 docs_area:
 ---
 
-CockroachDB multi-region capabilities make it easier to run global applications. For an overview of these capabilities, see [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %}).
+CockroachDB multi-region capabilities make it easier to run global applications. For an overview of these capabilities, see [Multi-Region Capabilities Overview]({{ page.version.version }}/multiregion-overview.md).
 
-In multi-region clusters, the distribution of data becomes a performance consideration. This makes it important to think about the [survival goals]({% link {{ page.version.version }}/multiregion-overview.md %}#survival-goals) of each database. Then, for each table in the database, use the right [table locality]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality) to locate data for optimal performance.
+In multi-region clusters, the distribution of data becomes a performance consideration. This makes it important to think about the [survival goals]({{ page.version.version }}/multiregion-overview.md#survival-goals) of each database. Then, for each table in the database, use the right [table locality]({{ page.version.version }}/multiregion-overview.md#table-locality) to locate data for optimal performance.
 
 In this tutorial, you will:
 
 1. Simulate a multi-region CockroachDB cluster on your local machine.
-1. Run a workload on the cluster using our fictional vehicle-sharing application called [MovR]({% link {{ page.version.version }}/movr.md %}).
+1. Run a workload on the cluster using our fictional vehicle-sharing application called [MovR]({{ page.version.version }}/movr.md).
 1. See the effects of network latency on SQL query performance in the default (non-multi-region) configuration.
-1. Configure the cluster for good multi-region performance by issuing SQL statements that choose the right [survival goals]({% link {{ page.version.version }}/multiregion-overview.md %}#survival-goals) and [table localities]({% link {{ page.version.version }}/multiregion-overview.md %}#table-locality).
+1. Configure the cluster for good multi-region performance by issuing SQL statements that choose the right [survival goals]({{ page.version.version }}/multiregion-overview.md#survival-goals) and [table localities]({{ page.version.version }}/multiregion-overview.md#table-locality).
 
 ## Considerations
 
-This page describes a demo cluster; it does not show best practices for a production deployment. For more information about production deployments of multi-region applications, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}) and the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
+This page describes a demo cluster; it does not show best practices for a production deployment. For more information about production deployments of multi-region applications, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters]({{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md) and the [Production Checklist]({{ page.version.version }}/recommended-production-settings.md).
 
-Because the instructions on this page describe how to simulate a multi-region cluster on a single machine, the absolute performance numbers described below are not reflective of [the performance you can expect of single-point reads and writes against CockroachDB in a production setting]({% link {{ page.version.version }}/frequently-asked-questions.md %}#single-row-perf). Instead, the instructions are designed with the following goals:
+Because the instructions on this page describe how to simulate a multi-region cluster on a single machine, the absolute performance numbers described below are not reflective of [the performance you can expect of single-point reads and writes against CockroachDB in a production setting]({{ page.version.version }}/frequently-asked-questions.md#single-row-perf). Instead, the instructions are designed with the following goals:
 
 - To show the _relative_ magnitude of the performance improvements to expect when you configure a multi-region cluster correctly.
 - To be as easy to try as possible with minimal configuration and setup.
@@ -36,7 +36,7 @@ Make sure you have:
 
 ### A basic understanding of the MovR application
 
-The workload you'll run against the cluster is our open-source, fictional, peer-to-peer vehicle-sharing app, [MovR]({% link {{ page.version.version }}/movr.md %}). Each instance represents users in a specific region:
+The workload you'll run against the cluster is our open-source, fictional, peer-to-peer vehicle-sharing app, [MovR]({{ page.version.version }}/movr.md). Each instance represents users in a specific region:
 
 - `europe-west1`, covering the cities of Amsterdam, Paris, and Rome.
 - `us-east1`, covering the cities of New York, Boston, and Washington, D.C.
@@ -44,19 +44,17 @@ The workload you'll run against the cluster is our open-source, fictional, peer-
 
 #### The MovR schema
 
-{% include {{ page.version.version }}/misc/movr-schema.md %}
 
-All of the tables except `promo_codes` have a composite primary key of `city` and `id`, in that order. This means that the rows in these tables are ordered by their geography. These tables are read from and written to very frequently. To keep read and write latency low, you'll use the [`REGIONAL BY ROW` table locality pattern]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) for these tables.
+All of the tables except `promo_codes` have a composite primary key of `city` and `id`, in that order. This means that the rows in these tables are ordered by their geography. These tables are read from and written to very frequently. To keep read and write latency low, you'll use the [`REGIONAL BY ROW` table locality pattern]({{ page.version.version }}/table-localities.md#regional-by-row-tables) for these tables.
 
-The data in the `promo_codes` table is different: it is not tied to geography, and it is rarely updated. This type of table is often referred to as a "reference table" or "lookup table". In this case, you'll use the [Global table locality pattern]({% link {{ page.version.version }}/table-localities.md %}#global-tables) to keep read latencies low.
+The data in the `promo_codes` table is different: it is not tied to geography, and it is rarely updated. This type of table is often referred to as a "reference table" or "lookup table". In this case, you'll use the [Global table locality pattern]({{ page.version.version }}/table-localities.md#global-tables) to keep read latencies low.
 
-For a description of the sequence of SQL statements issued by the MovR application in response to user actions, see [How the MovR application works]({% link {{ page.version.version }}/movr.md %}#how-the-movr-application-works).
+For a description of the sequence of SQL statements issued by the MovR application in response to user actions, see [How the MovR application works]({{ page.version.version }}/movr.md#how-the-movr-application-works).
 
 ## Step 1. Simulate a multi-region cluster
 
-{% include {{page.version.version}}/sql/start-a-multi-region-demo-cluster.md %}
 
-To verify that the simulated latencies are working as expected, check the [Network Latency Page]({% link {{ page.version.version }}/ui-network-latency-page.md %}) in the DB Console. Round trip times between  `us-west1` and `europe-west1` should be in the 150 ms range.
+To verify that the simulated latencies are working as expected, check the [Network Latency Page]({{ page.version.version }}/ui-network-latency-page.md) in the DB Console. Round trip times between  `us-west1` and `europe-west1` should be in the 150 ms range.
 
 ## Step 2. Determine node locations
 
@@ -67,7 +65,6 @@ To determine which nodes are in which regions, you will need to refer to two (2)
 
 Here is the output of `\demo ls` from the SQL shell.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \demo ls
 ~~~
@@ -121,7 +118,7 @@ node 9:
 
 And here is the view on the **Network Latency Page**, which shows which nodes are in which cluster regions:
 
-<img src="{{ 'images/v24.2/geo-partitioning-network-latency.png' | relative_url }}" alt="Geo-partitioning network latency" style="max-width:100%" />
+![Geo-partitioning network latency](/images/v24.2/geo-partitioning-network-latency.png)
 
 You can see by referring back and forth between `\demo ls` and the **Network Latency Page** that the cluster has the following region/node/port correspondences, which we can use to determine how to connect MovR from various regions:
 
@@ -143,14 +140,12 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 1. In the SQL shell, create the `movr` database:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE DATABASE movr;
     ~~~
 
 1. Open a second terminal and run the command below to populate the MovR data set. The options are mostly self-explanatory. We limit the application to 1 thread because using multiple threads quickly overloads this small demo cluster's ability to ingest data. As a result, loading the data takes about 90 seconds on a fast laptop.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
         docker run -it --rm cockroachdb/movr:20.11.1 \
             --app-name "movr-load" \
@@ -185,7 +180,6 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 1. In the same terminal window, run the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -it --rm cockroachdb/movr:20.11.1 \
         --app-name "movr-us-east" \
@@ -206,7 +200,6 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 1. Open a third terminal and run the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -it --rm cockroachdb/movr:20.11.1 \
         --app-name "movr-us-west" \
@@ -226,7 +219,6 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 1. Open a fourth terminal and run the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -it --rm cockroachdb/movr:20.11.1 \
        --app-name "movr-eu-west" \
@@ -249,15 +241,15 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 Now that you have load hitting the cluster from different regions, check how the service latencies look before you do any multi-region configuration from SQL. This is the "before" case in the "before and after".
 
-In the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) at <a data-proofer-ignore href="http://127.0.0.1:8080">http://127.0.0.1:8080</a>, click [**Metrics**]({% link {{ page.version.version }}/ui-overview-dashboard.md %}) on the left and hover over the [**Service Latency: SQL, 99th percentile**]({% link {{ page.version.version }}/ui-overview-dashboard.md %}#service-latency-sql-99th-percentile) timeseries graph. You should see the effects of network latency on this workload.
+In the [DB Console]({{ page.version.version }}/ui-overview.md) at <a data-proofer-ignore href="http://127.0.0.1:8080">http://127.0.0.1:8080</a>, click [**Metrics**]({{ page.version.version }}/ui-overview-dashboard.md) on the left and hover over the [**Service Latency: SQL, 99th percentile**]({{ page.version.version }}/ui-overview-dashboard.md#service-latency-sql-99th-percentile) timeseries graph. You should see the effects of network latency on this workload.
 
-<img src="{{ 'images/v24.2/geo-partitioning-sql-latency-before.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
+![Geo-partitioning SQL latency](/images/v24.2/geo-partitioning-sql-latency-before.png)
 
 For each of the 3 nodes that you are pointing the movr workload at, the max latency of 99% of queries are in the 1-2 seconds range. The SQL latency is high because of the network latency between regions.
 
-To see the network latency between any two nodes in the cluster, click [**Network Latency**]({% link {{ page.version.version }}/ui-network-latency-page.md %}) in the left-hand navigation.
+To see the network latency between any two nodes in the cluster, click [**Network Latency**]({{ page.version.version }}/ui-network-latency-page.md) in the left-hand navigation.
 
-<img src="{{ 'images/v24.2/geo-partitioning-network-latency.png' | relative_url }}" alt="Geo-partitioning network latency" style="max-width:100%" />
+![Geo-partitioning network latency](/images/v24.2/geo-partitioning-network-latency.png)
 
 Within a single region, round-trip latency is under 6 ms (milliseconds). Across regions, round-trip latency is significantly higher.
 
@@ -273,7 +265,7 @@ The following SQL statements will configure:
 - [The database's available regions](#configure-database-regions).
 - [Which data should be optimized for access from which region](#configure-table-localities).
 
-This information is necessary so that CockroachDB can move data around to optimize access to particular data from particular regions. The main focus is reducing latency in a global deployment. For more information about how this works at a high level, see the [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %}).
+This information is necessary so that CockroachDB can move data around to optimize access to particular data from particular regions. The main focus is reducing latency in a global deployment. For more information about how this works at a high level, see the [Multi-Region Capabilities Overview]({{ page.version.version }}/multiregion-overview.md).
 
 {{site.data.alerts.callout_info}}
 The following `ALTER` statements will take some seconds to run, since the cluster is under load.
@@ -283,12 +275,10 @@ The following `ALTER` statements will take some seconds to run, since the cluste
 
 Back in the SQL shell, switch to the `movr` database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 USE movr;
 ~~~
 
-{% include {{page.version.version}}/sql/multiregion-movr-add-regions.md %}
 
 ### Configure table localities
 
@@ -296,11 +286,9 @@ USE movr;
 
 As mentioned earlier, all of the tables except `promo_codes` are geographically specific.
 
-{% include {{page.version.version}}/sql/multiregion-movr-global.md %}
 
 #### Configure REGIONAL BY ROW tables
 
-{% include {{page.version.version}}/sql/multiregion-movr-regional-by-row.md %}
 
 ## Step 6. Re-check service latency
 
@@ -311,20 +299,20 @@ As the multi-region schema changes complete, you should see changes to the follo
 - **Replicas per Node**: This will increase, since the data needs to be spread across more nodes in order to service the multi-region workload appropriately. There is nothing you need to do about this, except to note that it happens, and is required for CockroachDB's improved multi-region performance features to work.
 
 {{site.data.alerts.callout_info}}
-The small demo cluster used in this example is essentially in a state of overload from the start. The performance numbers shown here only reflect the direction of the performance improvements. You should expect to see much better absolute performance numbers than those described here [in a production deployment]({% link {{ page.version.version }}/recommended-production-settings.md %}).
+The small demo cluster used in this example is essentially in a state of overload from the start. The performance numbers shown here only reflect the direction of the performance improvements. You should expect to see much better absolute performance numbers than those described here [in a production deployment]({{ page.version.version }}/recommended-production-settings.md).
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/v24.2/geo-partitioning-sql-latency-after-1.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
+![Geo-partitioning SQL latency](/images/v24.2/geo-partitioning-sql-latency-after-1.png)
 
 ## See also
 
-- [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %})
-- [How to Choose a Multi-Region Configuration]({% link {{ page.version.version }}/choosing-a-multi-region-configuration.md %})
-- [When to Use `ZONE` vs. `REGION` Survival Goals]({% link {{ page.version.version }}/multiregion-survival-goals.md %}#when-to-use-zone-vs-region-survival-goals)
-- [When to Use `REGIONAL` vs. `GLOBAL` Tables]({% link {{ page.version.version }}/table-localities.md %}#when-to-use-regional-vs-global-tables)
-- [Migrate to Multi-Region SQL]({% link {{ page.version.version }}/migrate-to-multiregion-sql.md %})
-- [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions)
-- [`SET SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-secondary-region)
-- [`DROP SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#drop-secondary-region)
-- [Reads and Writes in CockroachDB]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %})
-- [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %})
+- [Multi-Region Capabilities Overview]({{ page.version.version }}/multiregion-overview.md)
+- [How to Choose a Multi-Region Configuration]({{ page.version.version }}/choosing-a-multi-region-configuration.md)
+- [When to Use `ZONE` vs. `REGION` Survival Goals]({{ page.version.version }}/multiregion-survival-goals.md#when-to-use-zone-vs-region-survival-goals)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables]({{ page.version.version }}/table-localities.md#when-to-use-regional-vs-global-tables)
+- [Migrate to Multi-Region SQL]({{ page.version.version }}/migrate-to-multiregion-sql.md)
+- [Secondary regions]({{ page.version.version }}/multiregion-overview.md#secondary-regions)
+- [`SET SECONDARY REGION`]({{ page.version.version }}/alter-database.md#set-secondary-region)
+- [`DROP SECONDARY REGION`]({{ page.version.version }}/alter-database.md#drop-secondary-region)
+- [Reads and Writes in CockroachDB]({{ page.version.version }}/architecture/reads-and-writes-overview.md)
+- [Install CockroachDB]({{ page.version.version }}/install-cockroachdb.md)

@@ -6,32 +6,30 @@ docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-Enable [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) in your CockroachDB cluster to set up a [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) stream. This page is a guide to working with virtual clusters.
+Enable [cluster virtualization]({{ page.version.version }}/cluster-virtualization-overview.md) in your CockroachDB cluster to set up a [**physical cluster replication (PCR)**]({{ page.version.version }}/physical-cluster-replication-overview.md) stream. This page is a guide to working with virtual clusters.
 
 ## Connect to a virtual cluster
 
 This section shows how to use [SQL clients](#sql-clients) or the [DB Console](#db-console) to connect to a virtual cluster.
 
 {% capture pcr_application_cluster_note %}
-When [PCR]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the virtual cluster is named `main`.
+When [PCR]({{ page.version.version }}/physical-cluster-replication-overview.md) is enabled, the virtual cluster is named `main`.
 {% endcapture %}
 
 {{ pcr_application_cluster_note }}
 
 ### SQL clients
 
-This section shows how to connect using [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) when cluster virtualization is enabled.
+This section shows how to connect using [`cockroach sql`]({{ page.version.version }}/cockroach-sql.md) when cluster virtualization is enabled.
 
-Unless you specify which virtual cluster to connect to, when you connect using a SQL client, you are logged into the default virtual cluster. When [PCR]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `main`.
+Unless you specify which virtual cluster to connect to, when you connect using a SQL client, you are logged into the default virtual cluster. When [PCR]({{ page.version.version }}/physical-cluster-replication-overview.md) is enabled, the default virtual cluster is named `main`.
 
 To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the connection URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster. You must use `--url` rather than `--host`.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --url \
 "postgresql://root@{node IP or hostname}:26257?options=-ccluster={virtual_cluster_name}&sslmode=verify-full" \
@@ -55,7 +53,6 @@ To connect to the system virtual cluster, pass the `options=-ccluster=system` pa
 
 For example, to connect to the system virtual cluster using the `cockroach sql` command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --url \
 "postgresql://root@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full" \
@@ -64,9 +61,9 @@ cockroach sql --url \
 
 ### DB Console
 
-This section shows how to connect using the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) when cluster virtualization is enabled.
+This section shows how to connect using the [DB Console]({{ page.version.version }}/ui-overview.md) when cluster virtualization is enabled.
 
-Unless you specify which virtual cluster to connect to, when you connect using the DB Console, you are logged into the default virtual cluster. When [PCR]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, the default virtual cluster is named `main`. In order to view metrics on [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) for a PCR job, connect to the standby cluster's DB Console.
+Unless you specify which virtual cluster to connect to, when you connect using the DB Console, you are logged into the default virtual cluster. When [PCR]({{ page.version.version }}/physical-cluster-replication-overview.md) is enabled, the default virtual cluster is named `main`. In order to view metrics on [replication lag]({{ page.version.version }}/physical-cluster-replication-technical-overview.md) for a PCR job, connect to the standby cluster's DB Console.
 
 To connect to a specific virtual cluster, add the `GET` URL parameter `options=-ccluster={virtual_cluster_name}` to the DB Console URL. Replace `{virtual_cluster_name}` with the name of the virtual cluster.
 
@@ -82,10 +79,10 @@ To connect to the system virtual cluster using the DB Console, add the `GET` URL
 
 ## Grant access to the system virtual cluster
 
-To [grant]({% link {{ page.version.version }}/grant.md %}) access to the system virtual cluster, you must connect to the system virtual cluster as a user with the `admin` role, then grant either of the following to the SQL user:
+To [grant]({{ page.version.version }}/grant.md) access to the system virtual cluster, you must connect to the system virtual cluster as a user with the `admin` role, then grant either of the following to the SQL user:
 
-- The `admin` [role]({% link {{page.version.version}}/security-reference/authorization.md %}#admin-role) grants the ability to read and modify system tables and cluster settings on any virtual cluster, including the system virtual cluster.
-- The `VIEWSYSTEMDATA` [system privilege]({% link {{page.version.version}}/security-reference/authorization.md %}#supported-privileges) grants the ability to read system tables and cluster settings on any virtual cluster, including the system virtual cluster.
+- The `admin` [role]({{page.version.version}}/security-reference/authorization.md#admin-role) grants the ability to read and modify system tables and cluster settings on any virtual cluster, including the system virtual cluster.
+- The `VIEWSYSTEMDATA` [system privilege]({{page.version.version}}/security-reference/authorization.md#supported-privileges) grants the ability to read system tables and cluster settings on any virtual cluster, including the system virtual cluster.
 
 To prevent unauthorized access, you should limit the users with access to the system virtual cluster.
 
@@ -116,14 +113,14 @@ When connected to a virtual cluster from the DB Console, metrics which measure S
 
 ## Disaster recovery
 
-When cluster virtualization is enabled, [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}) commands are scoped to the virtual cluster by default.
+When cluster virtualization is enabled, [backup]({{ page.version.version }}/backup.md) and [restore]({{ page.version.version }}/restore.md) commands are scoped to the virtual cluster by default.
 
 ### Back up a virtual cluster
 
 To back up a virtual cluster:
 
 1. [Connect to the virtual cluster](#connect-to-a-virtual-cluster) you want to back up as a user with the `admin` role on the virtual cluster.
-1. [Back up the cluster]({% link {{ page.version.version }}/backup.md %}). Only the virtual cluster's data and settings are included in the backup, and data and settings for other virtual clusters or for the system virtual cluster is omitted.
+1. [Back up the cluster]({{ page.version.version }}/backup.md). Only the virtual cluster's data and settings are included in the backup, and data and settings for other virtual clusters or for the system virtual cluster is omitted.
 
 For details about restoring a backup of a virtual cluster, refer to [Restore a virtual cluster](#restore-a-virtual-cluster).
 
@@ -132,7 +129,7 @@ For details about restoring a backup of a virtual cluster, refer to [Restore a v
 To back up the entire CockroachDB cluster, including all virtual clusters and the system virtual cluster:
 
 1. [Connect to the system virtual cluster](#connect-to-the-system-virtual-cluster) as a user with the `admin` role on the system virtual cluster.
-1. [Back up the cluster]({% link {{ page.version.version }}/backup.md %}), and include the `INCLUDE_ALL_SECONDARY_TENANTS` flag in the `BACKUP` command. All virtual clusters and the system virtual cluster are included in the backup.
+1. [Back up the cluster]({{ page.version.version }}/backup.md), and include the `INCLUDE_ALL_SECONDARY_TENANTS` flag in the `BACKUP` command. All virtual clusters and the system virtual cluster are included in the backup.
 
 ### Restore a virtual cluster
 
@@ -145,39 +142,39 @@ You can restore a backup of a virtual cluster to:
 To restore only a virtual cluster:
 
 1. [Connect to the destination virtual cluster](#connect-to-a-virtual-cluster) as a user with the `admin` role on the virtual cluster.
-1. [Restore the cluster]({% link {{ page.version.version }}/restore.md %}). Only the virtual cluster's data and settings are restored.
+1. [Restore the cluster]({{ page.version.version }}/restore.md). Only the virtual cluster's data and settings are restored.
 
 ### Restore the entire cluster
 
 To restore the entire CockroachDB cluster, including all virtual clusters and the system virtual cluster:
 
 1. [Connect to the destination system virtual cluster](#connect-to-the-system-virtual-cluster) as a user with the `admin` role on the system virtual cluster.
-1. [Restore the cluster]({% link {{ page.version.version }}/restore.md %}) from a backup that included the the `INCLUDE_ALL_SECONDARY_VIRTUAL_CLUSTERS` flag. All virtual clusters and the system virtual cluster are restored.
+1. [Restore the cluster]({{ page.version.version }}/restore.md) from a backup that included the the `INCLUDE_ALL_SECONDARY_VIRTUAL_CLUSTERS` flag. All virtual clusters and the system virtual cluster are restored.
 
 ## Configure cluster settings
 
-When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is scoped to either a virtual cluster or the system virtual cluster.
+When [cluster virtualization]({{ page.version.version }}/cluster-virtualization-overview.md) is enabled, each [cluster setting]({{ page.version.version }}/cluster-settings.md) is scoped to either a virtual cluster or the system virtual cluster.
 
 - When a cluster setting is scoped to a virtual cluster, it affects only the virtual cluster and not the system virtual cluster. To configure a cluster setting that is scoped to a virtual cluster, you must have the `admin` role on the virtual cluster, and you must connect to the virtual cluster before configuring the setting. The majority of cluster settings are scoped to a virtual cluster and are visible only when connected to it.
 - When a cluster setting is scoped to the system virtual cluster, it affects the entire CockroachDB cluster. To configure a cluster setting that is scoped to the system virtual cluster, you must have the `admin` role on the system virtual cluster, and you must connect to the system virtual cluster before configuring the setting.
 - When a cluster setting is system-visible, it can be set only from the system virtual cluster but can be queried from any virtual cluster. For example, a virtual cluster can query a system-visible cluster setting's value to help adapt to the CockroachDB cluster's configuration.
 
-For more details, including the scope of each cluster setting, refer to [Cluster Setting Scopes with Cluster Virtualization enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %}).
+For more details, including the scope of each cluster setting, refer to [Cluster Setting Scopes with Cluster Virtualization enabled]({{ page.version.version }}/cluster-virtualization-setting-scopes.md).
 
 ## Upgrade a cluster
 
 To upgrade to a new major version when cluster virtualization is enabled, you must:
 
 1. Replace the binary on each node and restart the node.
-1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the system virtual cluster to upgrade it (if auto-finalization is disabled) or roll back the upgrade if you decide not to finalize it. Until it is finalized, the cluster still operates in compatibility with the previous major version, and virtual clusters cannot be upgraded.
+1. [Finalize]({{ page.version.version }}/upgrade-cockroach-version.md#finalize-a-major-version-upgrade-manually) the upgrade on the system virtual cluster to upgrade it (if auto-finalization is disabled) or roll back the upgrade if you decide not to finalize it. Until it is finalized, the cluster still operates in compatibility with the previous major version, and virtual clusters cannot be upgraded.
 1. Finalize the upgrade on a virtual cluster to upgrade it, or roll back the upgrade if you decide not to finalize it. Until it is finalized, a virtual cluster still operates in compatibility with the previous major version, and some features may not be available on the virtual cluster.
 
-This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one [Regular release]({% link releases/index.md %}#release-types) ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.3 can have virtual clusters on CockroachDB v24.1 (a Regular release) or v24.2 (an Innovation release).
+This allows you to roll back an upgrade of the system virtual cluster without impacting schemas or data in virtual clusters. The system virtual cluster can be at most one [Regular release](releases/index.md#release-types) ahead of virtual clusters. For example, a system virtual cluster on CockroachDB v24.3 can have virtual clusters on CockroachDB v24.1 (a Regular release) or v24.2 (an Innovation release).
 
 {{site.data.alerts.callout_info}}
-Both the `auto_upgrade.enabled` and `preserve_downgrade_option` [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) are scoped to a virtual cluster. To prevent automatic finalization of an upgrade, you must do one of the following:
+Both the `auto_upgrade.enabled` and `preserve_downgrade_option` [cluster settings]({{ page.version.version }}/cluster-settings.md) are scoped to a virtual cluster. To prevent automatic finalization of an upgrade, you must do one of the following:
 
-- Set `auto_upgrade.enabled` to `false` before beginning an upgrade. This setting persists after an upgrade. To finalize the upgrade manually, refer to [Upgrade a cluster]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}). This is the preferred way to disable auto-upgrade.
+- Set `auto_upgrade.enabled` to `false` before beginning an upgrade. This setting persists after an upgrade. To finalize the upgrade manually, refer to [Upgrade a cluster]({{ page.version.version }}/upgrade-cockroach-version.md). This is the preferred way to disable auto-upgrade.
 - Set `preserve_downgrade_option` to the cluster's current major version. This setting is reset during upgrade finalization and must be set again before the next major-version upgrade.
 
 Either setting, if enabled, disables auto-finalization.
@@ -187,7 +184,7 @@ To apply a patch-version upgrade, you must replace the binary on each node and r
 
 ## See also
 
-- [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %})
-- [Cluster Setting Scopes]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %})
-- [Cluster Metric Scopes]({% link {{ page.version.version }}/cluster-virtualization-metric-scopes.md %})
-- [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %})
+- [Cluster Virtualization Overview]({{ page.version.version }}/cluster-virtualization-overview.md)
+- [Cluster Setting Scopes]({{ page.version.version }}/cluster-virtualization-setting-scopes.md)
+- [Cluster Metric Scopes]({{ page.version.version }}/cluster-virtualization-metric-scopes.md)
+- [Physical Cluster Replication]({{ page.version.version }}/physical-cluster-replication-overview.md)

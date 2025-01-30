@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DECIMAL` [data type]({% link {{ page.version.version }}/data-types.md %}) stores exact, fixed-point numbers. This type is used when it is important to preserve exact precision, for example, with monetary data.
+The `DECIMAL` [data type]({{ page.version.version }}/data-types.md) stores exact, fixed-point numbers. This type is used when it is important to preserve exact precision, for example, with monetary data.
 
 ## Aliases
 
@@ -27,14 +27,14 @@ When inserting a decimal value:
 
 ## Syntax
 
-A constant value of type `DECIMAL` can be entered as a [numeric literal]({% link {{ page.version.version }}/sql-constants.md %}#numeric-literals).
+A constant value of type `DECIMAL` can be entered as a [numeric literal]({{ page.version.version }}/sql-constants.md#numeric-literals).
 For example: `1.414` or `-1234`.
 
 The special IEEE754 values for positive infinity, negative infinity
 and [NaN (Not-a-Number)](https://wikipedia.org/wiki/NaN) cannot be
 entered using numeric literals directly and must be converted using an
-[interpreted literal]({% link {{ page.version.version }}/sql-constants.md %}#interpreted-literals) or an
-[explicit conversion]({% link {{ page.version.version }}/scalar-expressions.md %}#explicit-type-coercions)
+[interpreted literal]({{ page.version.version }}/sql-constants.md#interpreted-literals) or an
+[explicit conversion]({{ page.version.version }}/scalar-expressions.md#explicit-type-coercions)
 from a string literal instead.
 
 The following values are recognized:
@@ -53,16 +53,14 @@ For example:
 
 ## Size
 
-The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#write-amplification) and other considerations may cause significant performance degradation.
+The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended to keep values under 64 kilobytes to ensure performance. Above that threshold, [write amplification]({{ page.version.version }}/architecture/storage-layer.md#write-amplification) and other considerations may cause significant performance degradation.
 
 ## Examples
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE decimals (a DECIMAL PRIMARY KEY, b DECIMAL(10,5), c NUMERIC);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM decimals;
 ~~~
@@ -76,12 +74,10 @@ The size of a `DECIMAL` value is variable, starting at 9 bytes. It's recommended
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO decimals VALUES (1.01234567890123456789, 1.01234567890123456789, 1.01234567890123456789);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM decimals;
 ~~~
@@ -97,7 +93,7 @@ The value in column `a` matches what was inserted exactly. The value in column `
 
 ## Supported casting and conversion
 
-`DECIMAL` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to any of the following data types:
+`DECIMAL` values can be [cast]({{ page.version.version }}/data-types.md#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------
@@ -108,4 +104,4 @@ Type | Details
 
 ## See also
 
-[Data Types]({% link {{ page.version.version }}/data-types.md %})
+[Data Types]({{ page.version.version }}/data-types.md)

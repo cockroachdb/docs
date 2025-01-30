@@ -5,32 +5,29 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW FULL TABLE SCANS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists recent queries for which CockroachDB performed a full table scan during query execution.
+The `SHOW FULL TABLE SCANS` [statement]({{ page.version.version }}/sql-statements.md) lists recent queries for which CockroachDB performed a full table scan during query execution.
 
-Limiting the number of queries that require full table scans can help you optimize query execution performance. For more information on query performance optimization, see [Optimize Statement Performance]({% link {{ page.version.version }}/make-queries-fast.md %}) and [SQL Tuning with `EXPLAIN`]({% link {{ page.version.version }}/sql-tuning-with-explain.md %}).
+Limiting the number of queries that require full table scans can help you optimize query execution performance. For more information on query performance optimization, see [Optimize Statement Performance]({{ page.version.version }}/make-queries-fast.md) and [SQL Tuning with `EXPLAIN`]({{ page.version.version }}/sql-tuning-with-explain.md).
 
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_full_scans.html %}
 </div>
 
 ## Required privileges
 
-The [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) is required to run `SHOW FULL TABLE SCANS`.
+The [`admin` role]({{ page.version.version }}/security-reference/authorization.md#admin-role) is required to run `SHOW FULL TABLE SCANS`.
 
 ## Examples
 
-To follow along, run [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) to start a temporary, in-memory cluster with the sample [`movr` dataset]({% link {{ page.version.version }}/movr.md %}) preloaded:
+To follow along, run [`cockroach demo`]({{ page.version.version }}/cockroach-demo.md) to start a temporary, in-memory cluster with the sample [`movr` dataset]({{ page.version.version }}/movr.md) preloaded:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo
 ~~~
 
 Now, suppose that you want to query the `rides` table for all rides that cost above 90 (i.e., `WHERE revenue > 90`):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides WHERE revenue > 90;
 ~~~
@@ -49,7 +46,6 @@ Now, suppose that you want to query the `rides` table for all rides that cost ab
 
 This `SELECT` statement requires a full table scan at execution. As a result, the query will show up in the `SHOW FULL TABLE SCANS` output, with all of the other queries that performed full table scans:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW FULL TABLE SCANS) SELECT * FROM x WHERE query LIKE 'SELECT * FROM rides WHERE revenue > %';
 ~~~
@@ -63,14 +59,12 @@ This `SELECT` statement requires a full table scan at execution. As a result, th
 
 To limit the number of rows scanned by `SELECT` queries that filter on the `revenue` column, you can add a secondary index to the `rides` table, on the `revenue` column:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON rides (revenue);
 ~~~
 
 Now, if you execute a similar query, the query will not perform a full table scan.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides WHERE revenue < 10;
 ~~~
@@ -84,7 +78,6 @@ Now, if you execute a similar query, the query will not perform a full table sca
 (32 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW FULL TABLE SCANS) SELECT * FROM x WHERE query LIKE 'SELECT * FROM rides WHERE revenue < %';
 ~~~
@@ -97,6 +90,6 @@ Now, if you execute a similar query, the query will not perform a full table sca
 
 ## See also
 
-- [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %})
-- [Statement Tuning with `EXPLAIN`]({% link {{ page.version.version }}/sql-tuning-with-explain.md %})
-- [Selection queries]({% link {{ page.version.version }}/selection-queries.md %})
+- [`EXPLAIN`]({{ page.version.version }}/explain.md)
+- [Statement Tuning with `EXPLAIN`]({{ page.version.version }}/sql-tuning-with-explain.md)
+- [Selection queries]({{ page.version.version }}/selection-queries.md)

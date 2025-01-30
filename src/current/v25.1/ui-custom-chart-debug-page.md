@@ -9,11 +9,11 @@ The **Custom Chart** debug page in the DB Console lets you create one or multipl
 
 The definition of the customized dashboard is encoded in the URL. To share the dashboard with someone, send them the URL. Like any other URL, it can be bookmarked, sit in a pinned tab in your browser, etc.
 
-To view the Custom Chart page, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}), click **Advanced Debug** In the left-hand navigation bar, and in the **Reports** section select **Custom Time Series Chart**.
+To view the Custom Chart page, [access the DB Console]({{ page.version.version }}/ui-overview.md), click **Advanced Debug** In the left-hand navigation bar, and in the **Reports** section select **Custom Time Series Chart**.
 
 ## Use the Custom Chart page
 
-<img src="{{ 'images/v24.2/ui-custom-chart-debug-00.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+![DB Console](/images/v24.2/ui-custom-chart-debug-00.png)
 
 On the **Custom Chart** page, you can set the time span for all charts, add new custom charts, and customize each chart:
 
@@ -22,13 +22,12 @@ On the **Custom Chart** page, you can set the time span for all charts, add new 
 - To add a chart, click **Add Chart** and customize the new chart.
 
 - To customize each chart, use the **Units** dropdown menu to set the units to display. Then use the table below the chart to select the metrics being queried, and how they'll be combined and displayed. Options include:
-{% include {{page.version.version}}/ui-custom-chart-debug-page-00.html %}
 
 ## Examples
 
 ### Query user and system CPU usage
 
-<img src="{{ 'images/v24.2/ui-custom-chart-debug-01.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+![DB Console](/images/v24.2/ui-custom-chart-debug-01.png)
 
 To compare system vs. userspace CPU usage, select the following values under **Metric Name**:
 
@@ -43,19 +42,18 @@ Checking **Per Node** displays statistics for each node, which could show whethe
 
 For important metrics to visualize in a custom dashboard, refer to:
 
-- [Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %})
-- [Essential Metrics for CockroachDB {{ site.data.products.advanced }} Deployments]({% link {{ page.version.version }}/essential-metrics-advanced.md %})
+- [Essential Metrics for CockroachDB {{ site.data.products.core }} Deployments]({{ page.version.version }}/essential-metrics-self-hosted.md)
+- [Essential Metrics for CockroachDB {{ site.data.products.advanced }} Deployments]({{ page.version.version }}/essential-metrics-advanced.md)
 
 ## Available metrics
 
 {{site.data.alerts.callout_info}}
-Some of the metrics listed below are already visible in other areas of the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}).
+Some of the metrics listed below are already visible in other areas of the [DB Console]({{ page.version.version }}/ui-overview.md).
 {{site.data.alerts.end}}
 
-{% include {{page.version.version}}/metric-names.md %}
 
 ## See also
 
-- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
-- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
-- [Raw Status Endpoints]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#raw-status-endpoints)
+- [Troubleshooting Overview]({{ page.version.version }}/troubleshooting-overview.md)
+- [Support Resources]({{ page.version.version }}/support-resources.md)
+- [Raw Status Endpoints]({{ page.version.version }}/monitoring-and-alerting.md#raw-status-endpoints)

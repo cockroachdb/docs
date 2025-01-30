@@ -5,16 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `REVOKE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) revokes [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) from [users and/or roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles). For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`]({% link {{ page.version.version }}/grant.md %}).
+The `REVOKE` [statement]({{ page.version.version }}/sql-statements.md) revokes [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) from [users and/or roles]({{ page.version.version }}/security-reference/authorization.md#users-and-roles). For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`]({{ page.version.version }}/grant.md).
 
 You can use `REVOKE` to directly revoke privileges from a role or user, or you can revoke membership to an existing role, which effectively revokes that role's privileges.
 
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/revoke.html %}
 </div>
 
 ### Parameters
@@ -22,24 +20,23 @@ You can use `REVOKE` to directly revoke privileges from a role or user, or you c
 Parameter                   | Description
 ----------------------------|------------
 `ALL`<br>`ALL PRIVILEGES`   | Revoke all [privileges](#supported-privileges).
-`privilege_list`            | A comma-separated list of [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) to revoke.
+`privilege_list`            | A comma-separated list of [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) to revoke.
 `grant_targets`             | A comma-separated list of database, table, sequence, or function names. The list should be preceded by the object type (e.g., `DATABASE mydatabase`). If the object type is not specified, all names are interpreted as table or sequence names.
-`target_types`              | A comma-separated list of [user-defined types]({% link {{ page.version.version }}/create-type.md %}).
+`target_types`              | A comma-separated list of [user-defined types]({{ page.version.version }}/create-type.md).
 `ALL SEQUENCES IN SCHEMA`   | Revoke [privileges](#supported-privileges) on all sequences in a schema or list of schemas.
 `ALL TABLES IN SCHEMA`      | Revoke [privileges](#supported-privileges) on all tables and sequences in a schema or list of schemas.
-`ALL FUNCTIONS IN SCHEMA`.  | Revoke [privileges](#supported-privileges) on all [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) in a schema or list of schemas.
-`schema_name_list`          | A comma-separated list of [schemas]({% link {{ page.version.version }}/create-schema.md %}).
-`role_spec_list`            | A comma-separated list of [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles).
+`ALL FUNCTIONS IN SCHEMA`.  | Revoke [privileges](#supported-privileges) on all [user-defined functions]({{ page.version.version }}/user-defined-functions.md) in a schema or list of schemas.
+`schema_name_list`          | A comma-separated list of [schemas]({{ page.version.version }}/create-schema.md).
+`role_spec_list`            | A comma-separated list of [roles]({{ page.version.version }}/security-reference/authorization.md#users-and-roles).
 
 ## Supported privileges
 
 The following privileges can be revoked:
 
-{% include {{ page.version.version }}/sql/privileges.md %}
 
 ## Required privileges
 
-- To revoke privileges, user revoking privileges must have the `GRANT` privilege on the target [database]({% link {{ page.version.version }}/create-database.md %}), [schema]({% link {{ page.version.version }}/create-schema.md %}), [table]({% link {{ page.version.version }}/create-table.md %}), or [user-defined type]({% link {{ page.version.version }}/enum.md %}). In addition to the `GRANT` privilege, the user revoking privileges must have the privilege being revoked on the target object. For example, a user revoking the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
+- To revoke privileges, user revoking privileges must have the `GRANT` privilege on the target [database]({{ page.version.version }}/create-database.md), [schema]({{ page.version.version }}/create-schema.md), [table]({{ page.version.version }}/create-table.md), or [user-defined type]({{ page.version.version }}/enum.md). In addition to the `GRANT` privilege, the user revoking privileges must have the privilege being revoked on the target object. For example, a user revoking the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
 
 - To revoke role membership, the user revoking role membership must be a role admin (i.e., members with the `WITH ADMIN OPTION`) or a member of the `admin` role. To remove membership to the `admin` role, the user must have `WITH ADMIN OPTION` on the `admin` role.
 
@@ -49,25 +46,20 @@ The following privileges can be revoked:
 
 ## Known limitations
 
-{% include {{page.version.version}}/known-limitations/grant-revoke-schema-changes.md %}
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Revoke privileges on databases
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE USER max WITH PASSWORD 'roach';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT CREATE ON DATABASE movr TO max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON DATABASE movr;
 ~~~
@@ -81,12 +73,10 @@ SHOW GRANTS ON DATABASE movr;
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 REVOKE CREATE ON DATABASE movr FROM max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON DATABASE movr;
 ~~~
@@ -105,12 +95,10 @@ Any tables that previously inherited the database-level privileges retain the pr
 
 ### Revoke privileges on specific tables in a database
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL ON TABLE rides TO max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE rides;
 ~~~
@@ -124,12 +112,10 @@ SHOW GRANTS ON TABLE rides;
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 REVOKE ALL ON TABLE rides FROM max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE rides;
 ~~~
@@ -144,12 +130,10 @@ SHOW GRANTS ON TABLE rides;
 
 ### Revoke privileges on all tables in a database or schema
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL ON TABLE rides, users TO max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE movr.*;
 ~~~
@@ -177,19 +161,16 @@ SHOW GRANTS ON TABLE movr.*;
 (17 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 REVOKE ALL ON ALL TABLES IN SCHEMA public FROM max;
 ~~~
 
 This is equivalent to the following syntax:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 REVOKE ALL ON movr.public.* FROM max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE movr.*;
 ~~~
@@ -217,30 +198,26 @@ SHOW GRANTS ON TABLE movr.*;
 
 ### Revoke system-level privileges on the entire cluster
 
-[System-level privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) live above the database level and apply to the entire cluster.
+[System-level privileges]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) live above the database level and apply to the entire cluster.
 
-`root` and [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) users have system-level privileges by default, and are capable of revoking it from other users and roles using the `REVOKE` statement.
+`root` and [`admin`]({{ page.version.version }}/security-reference/authorization.md#admin-role) users have system-level privileges by default, and are capable of revoking it from other users and roles using the `REVOKE` statement.
 
-For example, the following statement removes the ability to use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement from the user `maxroach` by revoking the `MODIFYCLUSTERSETTING` system privilege:
+For example, the following statement removes the ability to use the [`SET CLUSTER SETTING`]({{ page.version.version }}/set-cluster-setting.md) statement from the user `maxroach` by revoking the `MODIFYCLUSTERSETTING` system privilege:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 REVOKE SYSTEM MODIFYCLUSTERSETTING FROM max;
 ~~~
 
 ### Revoke privileges on schemas
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE SCHEMA cockroach_labs;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL ON SCHEMA cockroach_labs TO max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
@@ -254,12 +231,10 @@ SHOW GRANTS ON SCHEMA cockroach_labs;
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 REVOKE CREATE ON SCHEMA cockroach_labs FROM max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
@@ -275,19 +250,16 @@ SHOW GRANTS ON SCHEMA cockroach_labs;
 
 ### Revoke privileges on user-defined types
 
-To revoke privileges on [user-defined types]({% link {{ page.version.version }}/create-type.md %}), use the following statements.
+To revoke privileges on [user-defined types]({{ page.version.version }}/create-type.md), use the following statements.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TYPE status AS ENUM ('available', 'unavailable');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL ON TYPE status TO max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TYPE status;
 ~~~
@@ -304,22 +276,18 @@ SHOW GRANTS ON TYPE status;
 
 ### Revoke role membership
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE developer WITH CREATEDB;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE USER abbey WITH PASSWORD 'lincoln';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT developer TO abbey;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON ROLE developer;
 ~~~
@@ -331,12 +299,10 @@ SHOW GRANTS ON ROLE developer;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 REVOKE developer FROM abbey;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON ROLE developer;
 ~~~
@@ -347,12 +313,10 @@ SHOW GRANTS ON ROLE 0
 
 ### Revoke the admin option
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT developer TO abbey WITH ADMIN OPTION;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON ROLE developer;
 ~~~
@@ -364,12 +328,10 @@ SHOW GRANTS ON ROLE developer;
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 REVOKE ADMIN OPTION FOR developer FROM abbey;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON ROLE developer;
 ~~~
@@ -383,10 +345,10 @@ SHOW GRANTS ON ROLE developer;
 
 ## See also
 
-- [Authorization]({% link {{ page.version.version }}/authorization.md %})
-- [`GRANT`]({% link {{ page.version.version }}/grant.md %})
-- [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})
-- [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %})
-- [`CREATE USER`]({% link {{ page.version.version }}/create-user.md %})
-- [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Authorization]({{ page.version.version }}/authorization.md)
+- [`GRANT`]({{ page.version.version }}/grant.md)
+- [`SHOW GRANTS`]({{ page.version.version }}/show-grants.md)
+- [`SHOW ROLES`]({{ page.version.version }}/show-roles.md)
+- [`CREATE USER`]({{ page.version.version }}/create-user.md)
+- [`DROP USER`]({{ page.version.version }}/drop-user.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

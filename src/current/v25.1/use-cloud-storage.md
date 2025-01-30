@@ -8,13 +8,12 @@ docs_area: manage
 
 CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to one of the following statements:
 
-- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
-- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
-- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
-- [`EXPORT`]({% link {{ page.version.version }}/export.md %})
-- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
+- [`BACKUP`]({{ page.version.version }}/backup.md)
+- [`RESTORE`]({{ page.version.version }}/restore.md)
+- [`IMPORT INTO`]({{ page.version.version }}/import-into.md)
+- [`EXPORT`]({{ page.version.version }}/export.md)
+- [`CREATE CHANGEFEED`]({{ page.version.version }}/create-changefeed.md)
 
-{% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
 
 {{site.data.alerts.callout_success}}
 We strongly recommend using cloud/remote storage.
@@ -28,38 +27,36 @@ URLs for the files you want to import must use the format shown below. For examp
 [scheme]://[host]/[path]?[parameters]
 ~~~
 
-{% include {{ page.version.version }}/misc/external-connection-note.md %}
 
-The following table provides a list of the parameters supported by each storage scheme. For detail on authenticating to each cloud storage provider, see the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page.
+The following table provides a list of the parameters supported by each storage scheme. For detail on authenticating to each cloud storage provider, see the [Cloud Storage Authentication]({{ page.version.version }}/cloud-storage-authentication.md) page.
 
 Location                                                    | Scheme      | Host                                             | Parameters
 ------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
-Amazon S3 | `s3` | Bucket name | [`AUTH`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#amazon-s3-specified): `implicit` or `specified` (default: `specified`). When using `specified` pass user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.<br><br>[`ASSUME_ROLE`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#set-up-amazon-s3-assume-role) (optional): Pass the [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.<br><br>[`AWS_SESSION_TOKEN`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) (optional): For more information, see Amazon's guide on [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). <br><br>[`S3_STORAGE_CLASS`](#amazon-s3-storage-classes) (optional): Specify the Amazon S3 storage class for created objects. Note that Glacier Flexible Retrieval and Glacier Deep Archive are not compatible with incremental backups. **Default**: `STANDARD`.
-Azure Blob Storage | `azure-blob` / `azure` | Storage container | `AZURE_ACCOUNT_NAME`: The name of your Azure account.<br><br>`AZURE_ACCOUNT_KEY`: Your Azure account key. You must [url encode](https://wikipedia.org/wiki/Percent-encoding) your Azure account key before authenticating to Azure Storage. For more information, see [Authentication - Azure Storage]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#azure-blob-storage-specified-authentication).<br><br>`AZURE_ENVIRONMENT`: (optional) {% include {{ page.version.version }}/misc/azure-env-param.md %}<br><br>`AZURE_CLIENT_ID`: Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).<br><br>`AZURE_CLIENT_SECRET`: Client credentials secret generated for your App Registration.<br><br>`AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.<br><br>{% include {{ page.version.version }}/backups/azure-storage-tier-support.md %}<br><br>**Note:** {% include {{ page.version.version }}/misc/azure-blob.md %}
-Google Cloud Storage | `gs` | Bucket name | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS`<br><br>[`ASSUME_ROLE`]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#set-up-google-cloud-storage-assume-role) (optional): Pass the [service account name](https://cloud.google.com/iam/docs/understanding-service-accounts) of the service account to assume. <br><br>For more information, see [Authentication - Google Cloud Storage]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#google-cloud-storage-specified).
-HTTP | `file-http(s)` / `http(s)` | Remote host | N/A<br><br>**Note:** Using `http(s)` without the `file-` prefix is deprecated as a [changefeed sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) scheme. There is continued support for `http(s)`, but it will be removed in a future release. We recommend implementing the `file-http(s)` scheme for changefeed messages.<br><br>For more information, refer to [Authentication - HTTP]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#http-authentication).
+Amazon S3 | `s3` | Bucket name | [`AUTH`]({{ page.version.version }}/cloud-storage-authentication.md#amazon-s3-specified): `implicit` or `specified` (default: `specified`). When using `specified` pass user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.<br><br>[`ASSUME_ROLE`]({{ page.version.version }}/cloud-storage-authentication.md#set-up-amazon-s3-assume-role) (optional): Pass the [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.<br><br>[`AWS_SESSION_TOKEN`]({{ page.version.version }}/cloud-storage-authentication.md) (optional): For more information, see Amazon's guide on [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). <br><br>[`S3_STORAGE_CLASS`](#amazon-s3-storage-classes) (optional): Specify the Amazon S3 storage class for created objects. Note that Glacier Flexible Retrieval and Glacier Deep Archive are not compatible with incremental backups. **Default**: `STANDARD`.
+Google Cloud Storage | `gs` | Bucket name | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS`<br><br>[`ASSUME_ROLE`]({{ page.version.version }}/cloud-storage-authentication.md#set-up-google-cloud-storage-assume-role) (optional): Pass the [service account name](https://cloud.google.com/iam/docs/understanding-service-accounts) of the service account to assume. <br><br>For more information, see [Authentication - Google Cloud Storage]({{ page.version.version }}/cloud-storage-authentication.md#google-cloud-storage-specified).
+HTTP | `file-http(s)` / `http(s)` | Remote host | N/A<br><br>**Note:** Using `http(s)` without the `file-` prefix is deprecated as a [changefeed sink]({{ page.version.version }}/changefeed-sinks.md) scheme. There is continued support for `http(s)`, but it will be removed in a future release. We recommend implementing the `file-http(s)` scheme for changefeed messages.<br><br>For more information, refer to [Authentication - HTTP]({{ page.version.version }}/cloud-storage-authentication.md#http-authentication).
 NFS/Local&nbsp;[<sup>1</sup>](#considerations) | `nodelocal` | `nodeID` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
-S3-compatible services  | `s3`  | Bucket name | {{site.data.alerts.callout_danger}} While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test S3-compatible services (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).{{site.data.alerts.end}}<br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#s3-compatible-services-authentication).
+S3-compatible services  | `s3`  | Bucket name | {{site.data.alerts.callout_danger}} While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test S3-compatible services (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).{{site.data.alerts.end}}<br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services]({{ page.version.version }}/cloud-storage-authentication.md#s3-compatible-services-authentication).
 
 {{site.data.alerts.callout_success}}
 The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-You can disable the use of implicit credentials when accessing external cloud storage services for various operations by using the [`--external-io-disable-implicit-credentials` flag]({% link {{ page.version.version }}/cockroach-start.md %}#security).
+You can disable the use of implicit credentials when accessing external cloud storage services for various operations by using the [`--external-io-disable-implicit-credentials` flag]({{ page.version.version }}/cockroach-start.md#security).
 {{site.data.alerts.end}}
 
 <a name="considerations"></a>
 
-<sup>1</sup> The file system backup location on the NFS drive is relative to the path specified by the [`--external-io-dir`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-external-io-dir) flag set while [starting the node]({% link {{ page.version.version }}/cockroach-start.md %}). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled.
+<sup>1</sup> The file system backup location on the NFS drive is relative to the path specified by the [`--external-io-dir`]({{ page.version.version }}/cockroach-start.md#flags-external-io-dir) flag set while [starting the node]({{ page.version.version }}/cockroach-start.md). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled.
 
-<sup>2</sup>   Using a `nodeID` is required and the data files will be in the `extern` directory of the specified node. In most cases (including single-node clusters), using `nodelocal://1/<path>` is sufficient. If every node has the [`--external-io-dir`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-external-io-dir) flag pointed to a common NFS mount, or other form of network-backed, shared, or synchronized storage, you can use the word `self` instead of a node ID to indicate that each node should write individual data files to its own `extern` directory.
+<sup>2</sup>   Using a `nodeID` is required and the data files will be in the `extern` directory of the specified node. In most cases (including single-node clusters), using `nodelocal://1/<path>` is sufficient. If every node has the [`--external-io-dir`]({{ page.version.version }}/cockroach-start.md#flags-external-io-dir) flag pointed to a common NFS mount, or other form of network-backed, shared, or synchronized storage, you can use the word `self` instead of a node ID to indicate that each node should write individual data files to its own `extern` directory.
 
 <sup>3</sup> The `AWS_REGION` parameter is optional since it is not a required parameter for most S3-compatible services. Specify the parameter only if your S3-compatible service requires it.
 
 ### Example file URLs
 
-Example URLs for [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), [`RESTORE`]({% link {{ page.version.version }}/restore.md %}),  or [`EXPORT`]({% link {{ page.version.version }}/export.md %}) given a bucket or container name of `acme-co` and an `employees` subdirectory:
+Example URLs for [`BACKUP`]({{ page.version.version }}/backup.md), [`RESTORE`]({{ page.version.version }}/restore.md),  or [`EXPORT`]({{ page.version.version }}/export.md) given a bucket or container name of `acme-co` and an `employees` subdirectory:
 
 Location     | Example
 -------------+----------------------------------------------------------------------------------
@@ -68,9 +65,9 @@ Azure Blob Storage | `azure-blob://acme-co/employees?AUTH=specified&AZURE_ACCOUN
 Google Cloud Storage | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`
 NFS/Local | `nodelocal://1/path/employees`
 
-For detail on forming the URLs and the different authentication methods, refer to the [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page.
+For detail on forming the URLs and the different authentication methods, refer to the [Cloud Storage Authentication]({{ page.version.version }}/cloud-storage-authentication.md) page.
 
-Example URLs for [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) and given a bucket or container name of `acme-co` and a filename of `employees`:
+Example URLs for [`IMPORT INTO`]({{ page.version.version }}/import-into.md) and given a bucket or container name of `acme-co` and a filename of `employees`:
 
 Location     | Example
 -------------+----------------------------------------------------------------------------------
@@ -80,12 +77,11 @@ Google Cloud Storage | `gs://acme-co/employees.sql?AUTH=specified&CREDENTIALS=en
 HTTP | `http://localhost:8080/employees.sql`
 NFS/Local | `nodelocal://1/path/employees`
 
-Example URLs for [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}):
+Example URLs for [`CREATE CHANGEFEED`]({{ page.version.version }}/create-changefeed.md):
 
-{% include {{ page.version.version }}/cdc/list-cloud-changefeed-uris.md %}
 
 {{site.data.alerts.callout_info}}
-HTTP storage can only be used for [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) and [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}).
+HTTP storage can only be used for [`IMPORT INTO`]({{ page.version.version }}/import-into.md) and [`CREATE CHANGEFEED`]({{ page.version.version }}/create-changefeed.md).
 {{site.data.alerts.end}}
 
 ## Encryption
@@ -98,7 +94,7 @@ For encryption at rest, if your cloud provider offers transparent data encryptio
 * [Azure Blob Storage](https://docs.microsoft.com/azure/storage/common/storage-service-encryption#about-azure-storage-encryption)
 * [Google Cloud Storage](https://cloud.google.com/storage/docs/encryption)
 
-CockroachDB also provides client-side encryption of backup data, for more information, see [Take and Restore Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).
+CockroachDB also provides client-side encryption of backup data, for more information, see [Take and Restore Encrypted Backups]({{ page.version.version }}/take-and-restore-encrypted-backups.md).
 
 ## Storage permissions
 
@@ -231,7 +227,7 @@ For guidance on adding a user to a bucket's policy, see [Add a principal to a bu
 
 ### Immutable storage
 
-To complete a backup successfully, `BACKUP` requires [read and write permissions]({% link {{ page.version.version }}/backup.md %}#required-privileges) to cloud storage buckets. Delete and overwrite permissions are **not** required. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion, encryption or modification to the objects once written.
+To complete a backup successfully, `BACKUP` requires [read and write permissions]({{ page.version.version }}/backup.md#required-privileges) to cloud storage buckets. Delete and overwrite permissions are **not** required. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion, encryption or modification to the objects once written.
 
 {{site.data.alerts.callout_info}}
 We recommend enabling object locking in cloud storage buckets to protect the validity of a backup for restores.
@@ -245,7 +241,7 @@ For specific cloud-storage provider documentation, see the following:
 
 ### Amazon S3 storage classes
 
-When storing objects in Amazon S3 buckets during [backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}), [exports]({% link {{ page.version.version }}/export.md %}), and [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), you can specify the `S3_STORAGE_CLASS={class}` parameter in the URI to configure a storage class type.
+When storing objects in Amazon S3 buckets during [backups]({{ page.version.version }}/take-full-and-incremental-backups.md), [exports]({{ page.version.version }}/export.md), and [changefeeds]({{ page.version.version }}/change-data-capture-overview.md), you can specify the `S3_STORAGE_CLASS={class}` parameter in the URI to configure a storage class type.
 
 The following S3 connection URI uses the `INTELLIGENT_TIERING` storage class:
 
@@ -257,13 +253,13 @@ While Cockroach Labs supports configuring an AWS storage class, we only test aga
 
 #### Incremental backups and archive storage classes
 
-[Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) are **not** compatible with the [S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide//storage-class-intro.html#sc-glacier). Incremental backups require the reading of previous backups on an ad-hoc basis, which is not possible with backup files already in Glacier Flexible Retrieval or Glacier Deep Archive. This is because these storage classes do not allow immediate access to an S3 object without first restoring the archived object to its S3 bucket.
+[Incremental backups]({{ page.version.version }}/take-full-and-incremental-backups.md#incremental-backups) are **not** compatible with the [S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide//storage-class-intro.html#sc-glacier). Incremental backups require the reading of previous backups on an ad-hoc basis, which is not possible with backup files already in Glacier Flexible Retrieval or Glacier Deep Archive. This is because these storage classes do not allow immediate access to an S3 object without first restoring the archived object to its S3 bucket.
 
 Refer to the AWS documentation on [Restoring an archived object](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html) for steps.
 
-When you are restoring archived backup files from Glacier Flexible Retrieval or Glacier Deep Archive back to an S3 bucket, you must restore both the full backup and incremental backup layers for that backup. By default, CockroachDB stores the incremental backup layers in a separate top-level directory at the backup's storage location. Refer to [Backup collections]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections) for detail on the backup directory structure at its storage location.
+When you are restoring archived backup files from Glacier Flexible Retrieval or Glacier Deep Archive back to an S3 bucket, you must restore both the full backup and incremental backup layers for that backup. By default, CockroachDB stores the incremental backup layers in a separate top-level directory at the backup's storage location. Refer to [Backup collections]({{ page.version.version }}/take-full-and-incremental-backups.md#backup-collections) for detail on the backup directory structure at its storage location.
 
-Once you have restored all layers of a backup's archived files back to its S3 bucket, you can then [restore]({% link {{ page.version.version }}/restore.md %}) the backup to your CockroachDB cluster.
+Once you have restored all layers of a backup's archived files back to its S3 bucket, you can then [restore]({{ page.version.version }}/restore.md) the backup to your CockroachDB cluster.
 
 #### Supported storage classes
 
@@ -308,15 +304,15 @@ users-7.ndjson",
 
 For a specific operation, see the following examples:
 
-- [Back up with an S3 storage class]({% link {{ page.version.version }}/backup.md %}#back-up-with-an-s3-storage-class)
-- [Create a changefeed with an S3 storage class]({% link {{ page.version.version }}/create-changefeed.md %}#create-a-changefeed-with-an-s3-storage-class)
-- [Export tabular data with an S3 storage class]({% link {{ page.version.version }}/export.md %}#export-tabular-data-with-an-s3-storage-class)
+- [Back up with an S3 storage class]({{ page.version.version }}/backup.md#back-up-with-an-s3-storage-class)
+- [Create a changefeed with an S3 storage class]({{ page.version.version }}/create-changefeed.md#create-a-changefeed-with-an-s3-storage-class)
+- [Export tabular data with an S3 storage class]({{ page.version.version }}/export.md#export-tabular-data-with-an-s3-storage-class)
 
 ## See also
 
-- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
-- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
-- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
-- [`EXPORT`]({% link {{ page.version.version }}/export.md %})
-- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
-- [Cluster Settings]({% link {{ page.version.version }}/cluster-settings.md %})
+- [`BACKUP`]({{ page.version.version }}/backup.md)
+- [`RESTORE`]({{ page.version.version }}/restore.md)
+- [`IMPORT INTO`]({{ page.version.version }}/import-into.md)
+- [`EXPORT`]({{ page.version.version }}/export.md)
+- [`CREATE CHANGEFEED`]({{ page.version.version }}/create-changefeed.md)
+- [Cluster Settings]({{ page.version.version }}/cluster-settings.md)

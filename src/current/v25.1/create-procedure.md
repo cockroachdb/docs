@@ -6,17 +6,17 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `CREATE PROCEDURE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) defines a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
+The `CREATE PROCEDURE` [statement]({{ page.version.version }}/sql-statements.md) defines a [stored procedure]({{ page.version.version }}/stored-procedures.md).
 
 ## Required privileges
 
-- To create a procedure, a user must have [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the schema of the procedure. The user must also have privileges on all the objects referenced in the procedure body.
-- To create a procedure with a [user-defined type]({% link {{ page.version.version }}/create-type.md %}), a user must have [`USAGE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the user-defined type.
-- To resolve a procedure, a user must have at least the [`USAGE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the schema of the procedure.
-- To [call a procedure]({% link {{ page.version.version }}/call.md %}), a user must have [`EXECUTE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the procedure. By default, the user must also have privileges on all the objects referenced in the procedure body. However, a `SECURITY DEFINER` procedure executes with the privileges of the user that owns the procedure, not the user that calls it. A `SECURITY INVOKER` procedure executes with the privileges of the user that calls the procedure, thus matching the default behavior.
+- To create a procedure, a user must have [`CREATE` privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) on the schema of the procedure. The user must also have privileges on all the objects referenced in the procedure body.
+- To create a procedure with a [user-defined type]({{ page.version.version }}/create-type.md), a user must have [`USAGE` privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) on the user-defined type.
+- To resolve a procedure, a user must have at least the [`USAGE` privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) on the schema of the procedure.
+- To [call a procedure]({{ page.version.version }}/call.md), a user must have [`EXECUTE` privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) on the procedure. By default, the user must also have privileges on all the objects referenced in the procedure body. However, a `SECURITY DEFINER` procedure executes with the privileges of the user that owns the procedure, not the user that calls it. A `SECURITY INVOKER` procedure executes with the privileges of the user that calls the procedure, thus matching the default behavior.
 
   {{site.data.alerts.callout_success}}
-  For an example of `SECURITY DEFINER`, refer to [Create a `SECURITY DEFINER` function]({% link {{ page.version.version }}/create-function.md %}#create-a-security-definer-function).
+  For an example of `SECURITY DEFINER`, refer to [Create a `SECURITY DEFINER` function]({{ page.version.version }}/create-function.md#create-a-security-definer-function).
   {{site.data.alerts.end}}
 
 If you grant `EXECUTE` privilege as a default privilege at the database level, newly created procedures inherit that privilege from the database.
@@ -24,7 +24,6 @@ If you grant `EXECUTE` privilege as a default privilege at the database level, n
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_proc.html %}
 </div>
 
 ## Parameters
@@ -33,24 +32,22 @@ If you grant `EXECUTE` privilege as a default privilege at the database level, n
 |-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | `routine_create_name` | The name of the procedure.                                                                                                                      |
 | `routine_param`       | A comma-separated list of procedure parameters, specifying the mode, name, and type.                                                            |
-| `routine_body_str`    | The body of the procedure. For allowed contents, see [Stored Procedures]({% link {{ page.version.version }}/stored-procedures.md %}#structure). |
+| `routine_body_str`    | The body of the procedure. For allowed contents, see [Stored Procedures]({{ page.version.version }}/stored-procedures.md#structure). |
 
 ## Examples
 
-The following are examples of basic stored procedures. For a more detailed example of a stored procedure, see [Create a stored procedure using PL/pgSQL]({% link {{ page.version.version }}/stored-procedures.md %}#create-a-stored-procedure-using-pl-pgsql).
+The following are examples of basic stored procedures. For a more detailed example of a stored procedure, see [Create a stored procedure using PL/pgSQL]({{ page.version.version }}/stored-procedures.md#create-a-stored-procedure-using-pl-pgsql).
 
 ### Create a stored procedure that uses a composite-type variable
 
-Create a [composite variable]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type):
+Create a [composite variable]({{ page.version.version }}/create-type.md#create-a-composite-data-type):
 
-{% include_cached copy-clipboard.html %}
 ~~~
 CREATE TYPE comp AS (x INT, y STRING);
 ~~~
 
 Create the procedure, declaring the `comp` variable you created:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE proc() LANGUAGE PLpgSQL AS $$
   DECLARE
@@ -61,7 +58,6 @@ CREATE OR REPLACE PROCEDURE proc() LANGUAGE PLpgSQL AS $$
   $$;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL proc();
 ~~~
@@ -75,7 +71,6 @@ CALL
 
 The following example uses a combination of `OUT` and `INOUT` parameters to modify a provided value and output the result. An `OUT` parameter returns a value, while an `INOUT` parameter passes an input value and returns a value.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE double_triple(INOUT double INT, OUT triple INT) AS
   $$
@@ -88,7 +83,6 @@ CREATE OR REPLACE PROCEDURE double_triple(INOUT double INT, OUT triple INT) AS
 
 When calling a procedure, you need to supply placeholder values for any `OUT` parameters. A `NULL` value is commonly used. When [calling a procedure from another routine](#create-a-stored-procedure-that-calls-a-procedure), you should declare variables that will store the results of the `OUT` parameters.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL double_triple(1, NULL);
 ~~~
@@ -104,10 +98,9 @@ CALL double_triple(1, NULL);
 The following example defines a procedure that calls the [`double_triple` example procedure](#create-a-stored-procedure-that-uses-out-and-inout-parameters). The `triple_result` variable is assigned the result of the `OUT` parameter, while the `double_input` variable both provides the input and stores the result of the `INOUT` parameter.
 
 {{site.data.alerts.callout_info}}
-A procedure with `OUT` parameters can only be [called from a PL/pgSQL routine]({% link {{ page.version.version }}/plpgsql.md %}#call-a-procedure). 
+A procedure with `OUT` parameters can only be [called from a PL/pgSQL routine]({{ page.version.version }}/plpgsql.md#call-a-procedure). 
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE p(double_input INT) AS
   $$
@@ -121,7 +114,6 @@ CREATE OR REPLACE PROCEDURE p(double_input INT) AS
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL p(1);
 ~~~
@@ -134,9 +126,8 @@ CALL
 
 ### Create a stored procedure that uses conditional logic
 
-The following example uses [PL/pgSQL conditional statements]({% link {{ page.version.version }}/plpgsql.md %}#write-conditional-statements):
+The following example uses [PL/pgSQL conditional statements]({{ page.version.version }}/plpgsql.md#write-conditional-statements):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE proc(a INT, b INT) AS 
   $$
@@ -152,7 +143,6 @@ CREATE OR REPLACE PROCEDURE proc(a INT, b INT) AS
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL proc(1, 2);
 ~~~
@@ -164,9 +154,8 @@ CALL
 
 ### Create a stored procedure that uses a `WHILE` loop
 
-The following example uses [PL/pgSQL loop statements]({% link {{ page.version.version }}/plpgsql.md %}#write-loops):
+The following example uses [PL/pgSQL loop statements]({{ page.version.version }}/plpgsql.md#write-loops):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE arr_var() AS 
   $$
@@ -184,7 +173,6 @@ CREATE OR REPLACE PROCEDURE arr_var() AS
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CALL arr_var();
 ~~~
@@ -199,8 +187,8 @@ NOTICE: 5: 5
 
 ## See also
 
-- [Stored Procedures]({% link {{ page.version.version }}/stored-procedures.md %})
-- [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %})
-- [`CALL`]({% link {{ page.version.version }}/call.md %})
-- [`ALTER PROCEDURE`]({% link {{ page.version.version }}/alter-procedure.md %})
-- [`DROP PROCEDURE`]({% link {{ page.version.version }}/drop-procedure.md %})
+- [Stored Procedures]({{ page.version.version }}/stored-procedures.md)
+- [PL/pgSQL]({{ page.version.version }}/plpgsql.md)
+- [`CALL`]({{ page.version.version }}/call.md)
+- [`ALTER PROCEDURE`]({{ page.version.version }}/alter-procedure.md)
+- [`DROP PROCEDURE`]({{ page.version.version }}/drop-procedure.md)

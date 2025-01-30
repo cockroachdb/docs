@@ -25,32 +25,31 @@ For information on using DBeaver with CockroachDB {{ site.data.products.cloud }}
 
 To work through this tutorial, take the following steps:
 
-- [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}) and [start a secure cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}).
+- [Install CockroachDB]({{ page.version.version }}/install-cockroachdb.md) and [start a secure cluster]({{ page.version.version }}/secure-a-cluster.md).
 - Download a copy of [DBeaver](https://dbeaver.io/download/) version 5.2.3 or greater.
 
 ## Step 1. Start DBeaver and connect to CockroachDB
 
 1. Start DBeaver, and select **Database > New Connection** from the menu. In the dialog that appears, select **CockroachDB** from the list.
 
-    <img src="{{ 'images/v24.2/dbeaver-01-select-cockroachdb.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
+    ![DBeaver - Select CockroachDB](/images/v24.2/dbeaver-01-select-cockroachdb.png)
 
 1. Click **Next**. The **Connection Settings** dialog displays.
 
 1. In the **Database** field, enter `movr`.
 
-    <img src="{{ 'images/v24.2/dbeaver-02-cockroachdb-connection-settings.png' | relative_url }}" alt="DBeaver - CockroachDB connection settings" style="border:1px solid #eee;max-width:100%" />
+    ![DBeaver - CockroachDB connection settings](/images/v24.2/dbeaver-02-cockroachdb-connection-settings.png)
 
 ## Step 2. Update the connection settings
 
 1. Click the **SSL** tab.
 
-    <img src="{{ 'images/v24.2/dbeaver-03-ssl-tab.png' | relative_url }}" alt="DBeaver - SSL tab" style="border:1px solid #eee;max-width:100%" />
+    ![DBeaver - SSL tab](/images/v24.2/dbeaver-03-ssl-tab.png)
 
 1. Check the **Use SSL** checkbox as shown, and fill in the text areas as follows:
     - **Root certificate**: Use the `ca.crt` file you generated for your secure cluster.
     - **SSL certificate**: Use a client certificate generated from your cluster's root certificate. For the root user, this will be named `client.root.crt`. For additional security, you may want to create a new database user and client certificate just for use with DBeaver.
     - **SSL certificate key**: Because DBeaver is a Java application, you will need to transform your key file to the `*.pk8` format using an [OpenSSL command](https://wiki.openssl.org/index.php/Command_Line_Utilities#pkcs8_.2F_pkcs5) like the one shown in the following snippet. Once you have created the file, enter its location here. In this example, the filename is `client.root.pk8`.
-        {% include_cached copy-clipboard.html %}
         ~~~ console
         $ openssl pkcs8 -topk8 -inform PEM -outform DER -in client.root.key -out client.root.pk8 -nocrypt
         ~~~
@@ -61,13 +60,13 @@ To work through this tutorial, take the following steps:
 
 1. Click **Test Connection ...**. If you need a driver, the following dialog displays:
 
-    <img src="{{ 'images/v24.2/dbeaver-06-download-driver.png' | relative_url }}" alt="DBeaver - download driver dialog" style="border:1px solid #eee;max-width:100%" />
+    ![DBeaver - download driver dialog](/images/v24.2/dbeaver-06-download-driver.png)
 
 1. Click **Download**.
 
     After the driver downloads, if the connection was successful, you will see a **Connected** dialog.
 
-    <img src="{{ 'images/v24.2/dbeaver-04-connection-success-dialog.png' | relative_url }}" alt="DBeaver - connection success dialog" style="border:1px solid #eee;max-width:100%" />
+    ![DBeaver - connection success dialog](/images/v24.2/dbeaver-04-connection-success-dialog.png)
 
 1. Click **OK** to dismiss the dialog.
 
@@ -75,7 +74,7 @@ To work through this tutorial, take the following steps:
 
 Expand the **movr** database node and navigate to the **rides** table.
 
-<img src="{{ 'images/v24.2/dbeaver-05-movr.png' | relative_url }}" alt="DBeaver - CockroachDB with the movr database" style="max-width:100%" />
+![DBeaver - CockroachDB with the movr database](/images/v24.2/dbeaver-05-movr.png)
 
 For more information about using DBeaver, see the [DBeaver documentation](https://dbeaver.io/docs/).
 
@@ -83,19 +82,19 @@ For more information about using DBeaver, see the [DBeaver documentation](https:
 
 If you run into problems, please file an issue on the [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues), including the following details about the environment where you encountered the issue:
 
-- CockroachDB version ([`cockroach version`]({% link {{ page.version.version }}/cockroach-version.md %}))
+- CockroachDB version ([`cockroach version`]({{ page.version.version }}/cockroach-version.md))
 - DBeaver version
 - Operating system
 - Steps to reproduce the behavior
-- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [SQL query logging]({% link {{ page.version.version }}/logging-use-cases.md %}#sql_exec).
+- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [SQL query logging]({{ page.version.version }}/logging-use-cases.md#sql_exec).
 
 ## See Also
 
 + [DBeaver documentation](https://dbeaver.io/docs/)
 + [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues)
-+ [Client connection parameters]({% link {{ page.version.version }}/connection-parameters.md %})
-+ [Third-Party Database Tools]({% link {{ page.version.version }}/third-party-database-tools.md %})
-+ [Learn CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %})
++ [Client connection parameters]({{ page.version.version }}/connection-parameters.md)
++ [Third-Party Database Tools]({{ page.version.version }}/third-party-database-tools.md)
++ [Learn CockroachDB SQL]({{ page.version.version }}/learn-cockroachdb-sql.md)
 
 {% comment %} Reference Links {% endcomment %}
 

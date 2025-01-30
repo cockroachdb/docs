@@ -7,19 +7,16 @@ referral_id: docs_node_sequelize
 docs_area: get_started
 ---
 
-{% include {{ page.version.version }}/filter-tabs/crud-js.md %}
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and the [Sequelize](https://sequelize.org/) ORM.
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup.md %}
 
 ## Step 2. Get the code
 
 Clone the sample code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-node-sequelize
 ~~~
@@ -34,7 +31,6 @@ To start the app:
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -43,7 +39,6 @@ To start the app:
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="<connection-string>"
     ~~~
@@ -56,19 +51,16 @@ To start the app:
 
 1. Install the app dependencies:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-node-sequelize
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ npm install
     ~~~
 
 1. Run the code:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ node app.js
     ~~~
@@ -91,5 +83,3 @@ To start the app:
 ## What's next?
 
 Read more about using the [Sequelize ORM](https://sequelize.org/), or check out a more realistic implementation of Sequelize with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
-
-{% include {{ page.version.version }}/app/see-also-links.md %}

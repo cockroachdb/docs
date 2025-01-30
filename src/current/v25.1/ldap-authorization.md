@@ -4,7 +4,7 @@ summary: Learn how to configure role-based access control (authorization) using 
 toc: true
 ---
 
-You can configure your cluster to assign [roles]({% link {{ page.version.version }}/ldap-authentication.md %}) based on a user's group membership in an LDAP service, such as Active Directory or Microsoft Entra ID.
+You can configure your cluster to assign [roles]({{ page.version.version }}/ldap-authentication.md) based on a user's group membership in an LDAP service, such as Active Directory or Microsoft Entra ID.
 
 When enabled:
 
@@ -14,7 +14,7 @@ When enabled:
 
 ## Prerequisites
 
-- Enable [LDAP Authentication]({% link {{ page.version.version }}/ldap-authentication.md %}).
+- Enable [LDAP Authentication]({{ page.version.version }}/ldap-authentication.md).
 
 ## Configuration
 
@@ -22,7 +22,7 @@ Before you begin, it may be useful to enable authentication logging, which can h
 
 ### Step 1: Enable LDAP Authorization
 
-Add the `ldapgrouplistfilter` parameter to the HBA configuration that you enabled for [LDAP Authentication]({% link {{ page.version.version }}/ldap-authentication.md %}). The configuration will include two important LDAP filters:
+Add the `ldapgrouplistfilter` parameter to the HBA configuration that you enabled for [LDAP Authentication]({{ page.version.version }}/ldap-authentication.md). The configuration will include two important LDAP filters:
 
 1. `ldapsearchfilter`: Determines which users can authenticate
 2. `ldapgrouplistfilter`: Defines which groups should be considered for authorization
@@ -77,7 +77,7 @@ We recommend that you explicitly specify which groups should be mapped to Cockro
 
 ### Step 2: Create matching roles
 
-Create CockroachDB roles that match your LDAP group names and grant appropriate privileges to each role. Remember that role names must comply with CockroachDB's [identifier requirements]({% link {{ page.version.version }}/create-user.md %}#user-names).
+Create CockroachDB roles that match your LDAP group names and grant appropriate privileges to each role. Remember that role names must comply with CockroachDB's [identifier requirements]({{ page.version.version }}/create-user.md#user-names).
 
 For example, if you've configured the group filter to allow `crdb_analysts` and `crdb_developers`:
 
@@ -96,19 +96,18 @@ GRANT ALL ON DATABASE app TO crdb_developers;
 1. On the LDAP server, set up test users with memberships in groups that should be synced to CockroachDB users.
 1. When logged in as an admin to CockroachDB, create the matching test users:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE ROLE username1 LOGIN;
     CREATE ROLE username2 LOGIN;
     CREATE ROLE username3 LOGIN;
     ~~~
 
-1. Log in to CockroachDB as each test user (refer to [Connect to a cluster using LDAP]({% link {{ page.version.version }}/ldap-authentication.md %})#connect-to-a-cluster-using-ldap).
+1. Log in to CockroachDB as each test user (refer to [Connect to a cluster using LDAP]({{ page.version.version }}/ldap-authentication.md)#connect-to-a-cluster-using-ldap).
 1. Using your admin credentials, log in to the CockroachDB SQL shell and run `SHOW ROLES;` to view and verify users and their role assignments.
 
 ## Troubleshooting
 
-Enable [`SESSION` logging]({% link {{ page.version.version }}/logging.md %}#sessions) to preserve data that will help troubleshoot LDAP issues:
+Enable [`SESSION` logging]({{ page.version.version }}/logging.md#sessions) to preserve data that will help troubleshoot LDAP issues:
 
 ~~~ sql
 SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
@@ -118,7 +117,7 @@ SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 Once all functionality is configured and tested successfully, we recommend disabling session logging to conserve system resources.
 {{site.data.alerts.end}}
 
-To view the logs, open `cockroach-session.log` from your [logging directory]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory).
+To view the logs, open `cockroach-session.log` from your [logging directory]({{ page.version.version }}/configure-logs.md#logging-directory).
 
 Potential issues to investigate may pertain to:
 

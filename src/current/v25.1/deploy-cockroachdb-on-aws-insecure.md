@@ -7,23 +7,18 @@ ssh-link: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 docs_area:
 ---
 
-{% include {{ page.version.version }}/filter-tabs/deploy-crdb-aws.md %}
 
 This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load balancing service to distribute client traffic.
 
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 
 ### Requirements
 
-{% include {{ page.version.version }}/prod-deployment/insecure-requirements.md %}
 
 ### Recommendations
 
-{% include {{ page.version.version }}/prod-deployment/insecure-recommendations.md %}
 
 - All Amazon EC2 instances running CockroachDB should be members of the same [security group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html).
 
@@ -45,7 +40,7 @@ Open the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) and [launch a
 
 	- If you are creating a new security group, add the [inbound rules](#step-2-configure-your-network) from the next step. Otherwise note the ID of the security group.
 
-For more details, see [Hardware Recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) and [Cluster Topology]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
+For more details, see [Hardware Recommendations]({{ page.version.version }}/recommended-production-settings.md#hardware) and [Cluster Topology]({{ page.version.version }}/recommended-production-settings.md#topology).
 
 ## Step 2. Configure your network
 
@@ -54,11 +49,9 @@ For more details, see [Hardware Recommendations]({% link {{ page.version.version
 - `26257` for inter-node and client-node communication. This enables the nodes to work as a cluster, the load balancer to route traffic to the nodes, and applications to connect to the load balancer.
 - `8080` for exposing the DB Console to the user, and for routing the load balancer to the health check endpoint.
 
-{% include {{ page.version.version }}/prod-deployment/aws-inbound-rules.md %}
 
 ## Step 3. Synchronize clocks
 
-{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 4. Set up load balancing
 
@@ -75,7 +68,7 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 	- Select the VPC and *all* availability zones of your instances. This is important, as you cannot change the availability zones once the load balancer is created. The availability zone of an instance is determined by its subnet, found by inspecting the instance in the Amazon EC2 Console.
 	- Set the load balancer port to **26257**.
     - Create a new target group that uses TCP port **26257**. Traffic from your load balancer is routed to this target group, which contains your instances.
-    - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
+    - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint]({{ page.version.version }}/monitoring-and-alerting.md#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
     - Register your instances with the target group you created, specifying port **26257**. You can add and remove instances later.
 1. To test load balancing and connect your application to the cluster, you will need the provisioned internal (private) **IP address** for the load balancer. To find this, open the Network Interfaces section of the Amazon EC2 console and look up the load balancer by its name.
 
@@ -83,40 +76,32 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 
 ## Step 5. Start nodes
 
-{% include {{ page.version.version }}/prod-deployment/insecure-start-nodes.md %}
 
 ## Step 6. Initialize the cluster
 
-{% include {{ page.version.version }}/prod-deployment/insecure-initialize-cluster.md %}
 
 ## Step 7. Test the cluster
 
-{% include {{ page.version.version }}/prod-deployment/insecure-test-cluster.md %}
 
 ## Step 8. Run a sample workload
 
-{% include {{ page.version.version }}/prod-deployment/insecure-test-load-balancing.md %}
 
 ## Step 9. Monitor the cluster
 
 In the Target Groups section of the Amazon EC2 console, [check the health](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/target-group-health-checks.html) of your instances by inspecting your target group and opening the Targets tab.
 
-{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 10. Scale the cluster
 
 Before adding a new node, [create a new instance](#step-1-create-instances) as you did earlier.
 
-{% include {{ page.version.version }}/prod-deployment/insecure-scale-cluster.md %}
 
 ## Step 11. Use the cluster
 
 Now that your deployment is working, you can:
 
-1. [Implement your data model]({% link {{ page.version.version }}/sql-statements.md %}).
-1. [Create users]({% link {{ page.version.version }}/authorization.md %}) and [grant them privileges]({% link {{ page.version.version }}/grant.md %}).
-1. [Connect your application]({% link {{ page.version.version }}/install-client-drivers.md %}). Be sure to connect your application to the AWS load balancer, not to a CockroachDB node.
+1. [Implement your data model]({{ page.version.version }}/sql-statements.md).
+1. [Create users]({{ page.version.version }}/authorization.md) and [grant them privileges]({{ page.version.version }}/grant.md).
+1. [Connect your application]({{ page.version.version }}/install-client-drivers.md). Be sure to connect your application to the AWS load balancer, not to a CockroachDB node.
 
 ## See also
-
-{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

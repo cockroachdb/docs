@@ -7,21 +7,17 @@ referral_id: docs_node_postgres
 docs_area: get_started
 ---
 
-{% include {{ page.version.version }}/filter-tabs/crud-js.md %}
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and the [node-postgres driver](https://node-postgres.com/).
 
-{% include {{ page.version.version }}/sql/serializable-tutorial.md %}
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup.md %}
 
 ## Step 2. Get the code
 
 Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-node-postgres
 ~~~
@@ -37,43 +33,37 @@ The project has the following directory structure:
 
 The `dbinit.sql` file initializes the database schema that the application uses:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-postgres/main/dbinit.sql %}
+
 ~~~
 
 The `app.js` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations:
 
-{% include_cached copy-clipboard.html %}
 ~~~ js
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-postgres/main/app.js %}
+
 ~~~
 
-All of the database operations are wrapped in a helper function named `retryTxn`. This function attempts to commit statements in the context of an explicit transaction. If a [retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) is thrown, the wrapper will retry committing the transaction, with [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
+All of the database operations are wrapped in a helper function named `retryTxn`. This function attempts to commit statements in the context of an explicit transaction. If a [retry error]({{ page.version.version }}/transaction-retry-error-reference.md) is thrown, the wrapper will retry committing the transaction, with [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
 
 ## Step 3. Initialize the database
 
 1. Navigate to the `example-app-node-postgres` directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd example-app-node-postgres
     ~~~
 
-{% include {{ page.version.version }}/setup/init-bank-sample.md %}
 
 ## Step 4. Run the code
 
 1. Install the app requirements:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ npm install
     ~~~
 
 1. Run the app:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ node app.js
     ~~~
@@ -102,5 +92,3 @@ All of the database operations are wrapped in a helper function named `retryTxn`
 ## What's next?
 
 Read more about using the [node-postgres driver](https://www.npmjs.com/package/pg).
-
-{% include_cached {{page.version.version}}/app/see-also-links.md %}

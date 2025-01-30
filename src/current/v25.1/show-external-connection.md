@@ -8,20 +8,19 @@ You can use external connections to specify and interact with resources that are
 
 You can also use the following SQL statements to work with external connections:
 
-- [`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %})
-- [`SHOW CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-create-external-connection.md %})
-- [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %})
+- [`CREATE EXTERNAL CONNECTION`]({{ page.version.version }}/create-external-connection.md)
+- [`SHOW CREATE EXTERNAL CONNECTION`]({{ page.version.version }}/show-create-external-connection.md)
+- [`DROP EXTERNAL CONNECTION`]({{ page.version.version }}/drop-external-connection.md)
 
 ## Required privileges
 
-Users with the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) can view all external connections with `SHOW EXTERNAL CONNECTION`.
+Users with the [`admin` role]({{ page.version.version }}/security-reference/authorization.md#admin-role) can view all external connections with `SHOW EXTERNAL CONNECTION`.
 
 Without the `admin` role, users can view the external connections that they own. Users own external connections that they have created with `CREATE EXTERNAL CONNECTION`.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_external_connections.html %}
 </div>
 
 ### Parameters
@@ -33,14 +32,13 @@ Without the `admin` role, users can view the external connections that they own.
 Response | Description
 ---------+------------
 `connection_name` | The user-specified name of the external connection.
-`connection_uri` | The [storage/sink]({% link {{ page.version.version }}/create-external-connection.md %}#supported-external-storage-and-sinks) URI that the external connection references.
-`connection_type` | Possible values are: <br><ul><li>`STORAGE` applies to [storage for backups and imports]({% link {{ page.version.version }}/use-cloud-storage.md %}) and [changefeed sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}).</li><li>`KMS` applies to [storage for encrypted backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).</li><li>`FOREIGNDATA` applies to [`postgres://` connections for physical cluster replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connection-reference).</li></ul>.
+`connection_uri` | The [storage/sink]({{ page.version.version }}/create-external-connection.md#supported-external-storage-and-sinks) URI that the external connection references.
+`connection_type` | Possible values are: <br><ul><li>`STORAGE` applies to [storage for backups and imports]({{ page.version.version }}/use-cloud-storage.md) and [changefeed sinks]({{ page.version.version }}/changefeed-sinks.md).</li><li>`KMS` applies to [storage for encrypted backups]({{ page.version.version }}/take-and-restore-encrypted-backups.md).</li><li>`FOREIGNDATA` applies to [`postgres://` connections for physical cluster replication]({{ page.version.version }}/set-up-physical-cluster-replication.md#connection-reference).</li></ul>.
 
 ## Examples
 
 ### Show all external connections in the cluster
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW EXTERNAL CONNECTIONS;
 ~~~
@@ -53,7 +51,6 @@ SHOW EXTERNAL CONNECTIONS;
 
 ### Show an external connection
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW EXTERNAL CONNECTION s3_bucket;
 ~~~
@@ -66,5 +63,5 @@ SHOW EXTERNAL CONNECTION s3_bucket;
 
 ## See also
 
-- [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %})
-- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
+- [Changefeed Sinks]({{ page.version.version }}/changefeed-sinks.md)
+- [Use Cloud Storage]({{ page.version.version }}/use-cloud-storage.md)

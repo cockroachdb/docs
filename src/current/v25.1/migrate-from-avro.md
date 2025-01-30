@@ -5,9 +5,8 @@ toc: true
 docs_area: migrate
 ---
 
-This page has instructions for migrating data from Avro files into CockroachDB using [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
+This page has instructions for migrating data from Avro files into CockroachDB using [`IMPORT INTO`]({{ page.version.version }}/import-into.md).
 
-{% include {{ page.version.version }}/misc/import-perf.md %}
 
 ## Step 1. Export data to Avro
 
@@ -26,20 +25,20 @@ Use the table below for data type mappings:
 
  Avro Data Type | CockroachDB Data Type
 ----------------+------------------------------------------------
-`BOOL`          | [`BOOL`]({% link {{ page.version.version }}/bool.md %}), [`STRING`]({% link {{ page.version.version }}/string.md %})
-`INT`           | [`INT`]({% link {{ page.version.version }}/int.md %}), [`STRING`]({% link {{ page.version.version }}/string.md %})
-`FLOAT`         | [`FLOAT`]({% link {{ page.version.version }}/float.md %}), [`STRING`]({% link {{ page.version.version }}/string.md %})
-`STRING`        | [`STRING`]({% link {{ page.version.version }}/string.md %})
-`BYTES`         | [`BYTES`]({% link {{ page.version.version }}/bytes.md %}), [`STRING`]({% link {{ page.version.version }}/string.md %})
-`ARRAY`         | [`ARRAY`]({% link {{ page.version.version }}/array.md %}), [`STRING`]({% link {{ page.version.version }}/string.md %})
-`UUID`          | [`STRING`]({% link {{ page.version.version }}/string.md %})
-`DATE`          | [`STRING`]({% link {{ page.version.version }}/string.md %})
-`TIME`          | [`STRING`]({% link {{ page.version.version }}/string.md %})
-`INTERVAL`      | [`STRING`]({% link {{ page.version.version }}/string.md %})
-`TIMESTAMP`     | [`STRING`]({% link {{ page.version.version }}/string.md %})
-`JSON`          | [`STRING`]({% link {{ page.version.version }}/string.md %})
-`BIT`           | [`STRING`]({% link {{ page.version.version }}/string.md %})
-`DECIMAL`       | [`STRING`]({% link {{ page.version.version }}/string.md %})
+`BOOL`          | [`BOOL`]({{ page.version.version }}/bool.md), [`STRING`]({{ page.version.version }}/string.md)
+`INT`           | [`INT`]({{ page.version.version }}/int.md), [`STRING`]({{ page.version.version }}/string.md)
+`FLOAT`         | [`FLOAT`]({{ page.version.version }}/float.md), [`STRING`]({{ page.version.version }}/string.md)
+`STRING`        | [`STRING`]({{ page.version.version }}/string.md)
+`BYTES`         | [`BYTES`]({{ page.version.version }}/bytes.md), [`STRING`]({{ page.version.version }}/string.md)
+`ARRAY`         | [`ARRAY`]({{ page.version.version }}/array.md), [`STRING`]({{ page.version.version }}/string.md)
+`UUID`          | [`STRING`]({{ page.version.version }}/string.md)
+`DATE`          | [`STRING`]({{ page.version.version }}/string.md)
+`TIME`          | [`STRING`]({{ page.version.version }}/string.md)
+`INTERVAL`      | [`STRING`]({{ page.version.version }}/string.md)
+`TIMESTAMP`     | [`STRING`]({{ page.version.version }}/string.md)
+`JSON`          | [`STRING`]({{ page.version.version }}/string.md)
+`BIT`           | [`STRING`]({{ page.version.version }}/string.md)
+`DECIMAL`       | [`STRING`]({{ page.version.version }}/string.md)
 
 {{site.data.alerts.callout_info}}
 CockroachDB will attempt to convert the Avro data type to the CockroachDB data type; otherwise, it will report an error.
@@ -47,10 +46,10 @@ CockroachDB will attempt to convert the Avro data type to the CockroachDB data t
 
 ## Step 2. Host the files where the cluster can access them
 
-Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) can pull from, see the following:
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT INTO`]({{ page.version.version }}/import-into.md) can pull from, see the following:
 
-- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
-- [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})
+- [Use Cloud Storage]({{ page.version.version }}/use-cloud-storage.md)
+- [Use a Local File Server]({{ page.version.version }}/use-a-local-file-server.md)
 
 {{site.data.alerts.callout_success}}
 We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.
@@ -71,9 +70,8 @@ An [object container file (OCF)](https://avro.apache.org/docs/current/spec.html#
 The following example uses [sample data from Teradata](https://github.com/Teradata/kylo/tree/master/samples/sample-data/avro).
 {{site.data.alerts.end}}
 
-For example, to import the data from `userdata1.avro` into an `employees` table, issue the following [`IMPORT`]({% link {{ page.version.version }}/import-into.md %}) statement:
+For example, to import the data from `userdata1.avro` into an `employees` table, issue the following [`IMPORT`]({{ page.version.version }}/import-into.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE TABLE employees (
     registration_dttm STRING,
@@ -94,7 +92,6 @@ CREATE TABLE employees (
 
 Next, use `IMPORT INTO` to import the data into the new table:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 IMPORT INTO employees (
     registration_dttm,
@@ -121,7 +118,6 @@ IMPORT INTO employees (
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM employees LIMIT 5;
 ~~~
@@ -140,7 +136,7 @@ IMPORT INTO employees (
 Repeat this process for each OCF you want to import.
 
 {{site.data.alerts.callout_info}}
-You will need to run [`ALTER TABLE ... ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint) to add any foreign key relationships.
+You will need to run [`ALTER TABLE ... ADD CONSTRAINT`]({{ page.version.version }}/alter-table.md#add-constraint) to add any foreign key relationships.
 {{site.data.alerts.end}}
 
 ### Import binary or JSON records
@@ -164,9 +160,8 @@ There are additional import [options][option] you can use when importing binary 
 The following example uses sample data generated by [Avro tools](https://github.com/cockroachdb/cockroach/tree/master/pkg/sql/importer/testdata/avro).
 {{site.data.alerts.end}}
 
-For example, to import the data from `simple-schema.json` into a `simple` table, first [create the table]({% link {{ page.version.version }}/create-table.md %}) to import into. Then run `IMPORT INTO` with the following options:
+For example, to import the data from `simple-schema.json` into a `simple` table, first [create the table]({{ page.version.version }}/create-table.md) to import into. Then run `IMPORT INTO` with the following options:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 IMPORT INTO simple
     AVRO DATA ('s3://[bucket-placeholder]/simple-sorted.json?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
@@ -208,24 +203,24 @@ IMPORT INTO simple
 Repeat this process for each binary or JSON file you want to import.
 
 {{site.data.alerts.callout_info}}
-You will need to run [`ALTER TABLE ... ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint) to add any foreign key relationships.
+You will need to run [`ALTER TABLE ... ADD CONSTRAINT`]({{ page.version.version }}/alter-table.md#add-constraint) to add any foreign key relationships.
 {{site.data.alerts.end}}
 
 ## See also
 
-- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
-- [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
+- [`IMPORT INTO`]({{ page.version.version }}/import-into.md)
+- [Import Performance Best Practices]({{ page.version.version }}/import-performance-best-practices.md)
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
 - [Migrate from PostgreSQL][postgres]
-- [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
-- [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
-- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [Back Up and Restore Data]({{ page.version.version }}/take-full-and-incremental-backups.md)
+- [Use the Built-in SQL Client]({{ page.version.version }}/cockroach-sql.md)
+- [`cockroach` Commands Overview]({{ page.version.version }}/cockroach-commands.md)
 
 {% comment %} Reference Links {% endcomment %}
 
 [csv]: migrate-from-csv.html
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
-[option]: {% link {{ page.version.version }}/import-into.md %}#import-options
+[option]: {{ page.version.version }}/import-into.md#import-options
 [datatypes]: migrate-from-avro.html#data-type-mapping

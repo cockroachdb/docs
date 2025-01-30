@@ -6,12 +6,11 @@ docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
 
-Refer to the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}#known-limitations) for further detail.
+Refer to the [Cluster Virtualization Overview]({{ page.version.version }}/cluster-virtualization-overview.md#known-limitations) for further detail.
 {{site.data.alerts.end}}
 
-When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each cluster setting has a scope, which may be a virtual cluster or the system virtual cluster. This page categorizes each public cluster setting by scope. For descriptions and details about each public cluster setting, refer to [Cluster Settings]({% link {{ page.version.version }}/cluster-settings.md %}).
+When [cluster virtualization]({{ page.version.version }}/cluster-virtualization-overview.md) is enabled, each cluster setting has a scope, which may be a virtual cluster or the system virtual cluster. This page categorizes each public cluster setting by scope. For descriptions and details about each public cluster setting, refer to [Cluster Settings]({{ page.version.version }}/cluster-settings.md).
 
 - When a cluster setting is scoped to a virtual cluster, it affects only a virtual cluster and not the system virtual cluster. To configure a cluster setting that is scoped to a virtual cluster, you must have the `admin` role on it, and you must connect to it before configuring the setting. The majority of cluster settings are scoped to a virtual cluster and are visible only when connected to it.
 - When a cluster setting is scoped to the system virtual cluster, it affects the entire CockroachDB cluster. To configure a cluster setting that is scoped to the system virtual cluster, you must have the `admin` role on the system virtual cluster, and you must connect to the system virtual cluster before configuring the setting. For example, the cluster setting `admission.disk_bandwidth_tokens.elastic.enabled` is scoped to the system virtual cluster.
@@ -407,6 +406,6 @@ system-visible: Can be set / modified only from the system virtual cluster, but 
 
 ## See also
 
-- [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %})
-- [Cluster Metric Scopes with Cluster Virtualization Enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %})
-- [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %})
+- [Cluster Virtualization Overview]({{ page.version.version }}/cluster-virtualization-overview.md)
+- [Cluster Metric Scopes with Cluster Virtualization Enabled]({{ page.version.version }}/cluster-virtualization-setting-scopes.md)
+- [Physical Cluster Replication]({{ page.version.version }}/physical-cluster-replication-overview.md)

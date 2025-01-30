@@ -6,32 +6,30 @@ has_prefixed_variant: false
 docs_area: reference.sql
 ---
 
-Given a shape _A_, `ST_ConvexHull(A)` returns another shape _B_ that is the [convex hull](https://wikipedia.org/wiki/Convex_hull) of _A_.  The convex hull of a shape is the smallest [convex set](https://wikipedia.org/wiki/Convex_set) of points that [contains]({% link {{ page.version.version }}/st_contains.md %}) every point in the set that comprises that shape.
+Given a shape _A_, `ST_ConvexHull(A)` returns another shape _B_ that is the [convex hull](https://wikipedia.org/wiki/Convex_hull) of _A_.  The convex hull of a shape is the smallest [convex set](https://wikipedia.org/wiki/Convex_set) of points that [contains]({{ page.version.version }}/st_contains.md) every point in the set that comprises that shape.
 
 In other words, given a set of points _A_ in the plane, the convex hull is the shape _B_ created by stretching an imaginary rubber band around the outermost points in _A_.
 
 `ST_ConvexHull` works on the following data types:
 
-- [`GEOMETRY`]({% link {{ page.version.version }}/architecture/glossary.md %}#geometry)
+- [`GEOMETRY`]({{ page.version.version }}/architecture/glossary.md#geometry)
 
 {{site.data.alerts.callout_info}}
-`ST_ConvexHull` is not an aggregate function.  It operates on a single `GEOMETRY` object.  This means that in practice it is most often used in combination with an aggregate function such as [`ST_Union`]({% link {{ page.version.version }}/st_union.md %}).
+`ST_ConvexHull` is not an aggregate function.  It operates on a single `GEOMETRY` object.  This means that in practice it is most often used in combination with an aggregate function such as [`ST_Union`]({{ page.version.version }}/st_union.md).
 {{site.data.alerts.end}}
 
 ## Examples
 
-In this example, we will generate the convex hull of a single geometry.  The geometry is made from many individual points using [`ST_Union`]({% link {{ page.version.version }}/st_union.md %}).
+In this example, we will generate the convex hull of a single geometry.  The geometry is made from many individual points using [`ST_Union`]({{ page.version.version }}/st_union.md).
 
-1. Create a temporary table to hold all the points, which will be in [Well Known Text (WKT)]({% link {{ page.version.version }}/architecture/glossary.md %}#wkt) format:
+1. Create a temporary table to hold all the points, which will be in [Well Known Text (WKT)]({{ page.version.version }}/architecture/glossary.md#wkt) format:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE tmp (ID UUID DEFAULT gen_random_uuid(), geom_text STRING);
     ~~~
 
 1. Insert the points with the following statement:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO tmp (geom_text) VALUES
     ('POINT (-73.962090000000003 40.609226)'),
@@ -211,9 +209,8 @@ In this example, we will generate the convex hull of a single geometry.  The geo
     ('POINT (-73.957583 41.417974999999998)');
     ~~~
 
-1. Run the query below, which gathers the points into a single geometry using [`ST_Union`]({% link {{ page.version.version }}/st_union.md %}) that can be operated on by `ST_ConvexHull`, and converts the output to [GeoJSON]({% link {{ page.version.version }}/architecture/glossary.md %}#geojson) so that we can view it with [geojson.io](http://geojson.io):
+1. Run the query below, which gathers the points into a single geometry using [`ST_Union`]({{ page.version.version }}/st_union.md) that can be operated on by `ST_ConvexHull`, and converts the output to [GeoJSON]({{ page.version.version }}/architecture/glossary.md#geojson) so that we can view it with [geojson.io](http://geojson.io):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     WITH
         the_geoms_table
@@ -235,11 +232,10 @@ In this example, we will generate the convex hull of a single geometry.  The geo
 
 1. Paste the JSON emitted in the previous step into [geojson.io](http://geojson.io) and you should see an image like the following, which shows the convex hull surrounding the locations of [most of the independent bookstores in New York State](https://www.bookweb.org/member_directory/search/ABAmember/results/0/0/ny/0):
 
-    <img src="{{ 'images/v24.2/geospatial/st_convexhull.png' | relative_url }}" alt="ST_ConvexHull example" style="border:1px solid #eee;max-width:100%" />
+    ![ST_ConvexHull example](/images/v24.2/geospatial/st_convexhull.png)
 
 1. Finally, drop the temporary table if you no longer need it:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     DROP TABLE tmp;
     ~~~
@@ -247,25 +243,25 @@ In this example, we will generate the convex hull of a single geometry.  The geo
 ## See also
 
 - [Export Spatial Data](export-spatial-data.html)
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
-- [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
-- [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
-- [Spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
-- [`ST_Covers`]({% link {{ page.version.version }}/st_covers.md %})
-- [`ST_CoveredBy`]({% link {{ page.version.version }}/st_coveredby.md %})
-- [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %})
-- [`ST_Within`]({% link {{ page.version.version }}/st_within.md %})
-- [`ST_Intersects`]({% link {{ page.version.version }}/st_intersects.md %})
-- [`ST_CoveredBy`]({% link {{ page.version.version }}/st_coveredby.md %})
-- [`ST_Covers`]({% link {{ page.version.version }}/st_covers.md %})
-- [`ST_Disjoint`]({% link {{ page.version.version }}/st_disjoint.md %})
-- [`ST_Equals`]({% link {{ page.version.version }}/st_equals.md %})
-- [`ST_Overlaps`]({% link {{ page.version.version }}/st_overlaps.md %})
-- [`ST_Touches`]({% link {{ page.version.version }}/st_touches.md %})
-- [`ST_Union`]({% link {{ page.version.version }}/st_union.md %})
-- [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
-- [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
-- [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
-- [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
+- [Spatial tutorial]({{ page.version.version }}/spatial-tutorial.md)
+- [Spatial and GIS Glossary of Terms]({{ page.version.version }}/architecture/glossary.md)
+- [Spatial indexes]({{ page.version.version }}/spatial-indexes.md)
+- [Spatial functions]({{ page.version.version }}/functions-and-operators.md#spatial-functions)
+- [`ST_Covers`]({{ page.version.version }}/st_covers.md)
+- [`ST_CoveredBy`]({{ page.version.version }}/st_coveredby.md)
+- [`ST_Contains`]({{ page.version.version }}/st_contains.md)
+- [`ST_Within`]({{ page.version.version }}/st_within.md)
+- [`ST_Intersects`]({{ page.version.version }}/st_intersects.md)
+- [`ST_CoveredBy`]({{ page.version.version }}/st_coveredby.md)
+- [`ST_Covers`]({{ page.version.version }}/st_covers.md)
+- [`ST_Disjoint`]({{ page.version.version }}/st_disjoint.md)
+- [`ST_Equals`]({{ page.version.version }}/st_equals.md)
+- [`ST_Overlaps`]({{ page.version.version }}/st_overlaps.md)
+- [`ST_Touches`]({{ page.version.version }}/st_touches.md)
+- [`ST_Union`]({{ page.version.version }}/st_union.md)
+- [Migrate from Shapefiles]({{ page.version.version }}/migrate-from-shapefiles.md)
+- [Migrate from GeoJSON]({{ page.version.version }}/migrate-from-geojson.md)
+- [Migrate from GeoPackage]({{ page.version.version }}/migrate-from-geopackage.md)
+- [Migrate from OpenStreetMap]({{ page.version.version }}/migrate-from-openstreetmap.md)
 - [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})
+- [Using GeoServer with CockroachDB]({{ page.version.version }}/geoserver.md)

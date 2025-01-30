@@ -5,39 +5,37 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `INSERT` [statement]({% link {{ page.version.version }}/sql-statements.md %}) inserts one or more rows into a table. In cases where inserted values conflict with uniqueness constraints, the `ON CONFLICT` clause can be used to update rather than insert rows.
+The `INSERT` [statement]({{ page.version.version }}/sql-statements.md) inserts one or more rows into a table. In cases where inserted values conflict with uniqueness constraints, the `ON CONFLICT` clause can be used to update rather than insert rows.
 
 ## Required privileges
 
-The user must have the `INSERT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table.
+The user must have the `INSERT` [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the table.
 To use `ON CONFLICT`, the user must also have the `SELECT` privilege on the table.
 To use `ON CONFLICT DO UPDATE`, the user must additionally have the `UPDATE` privilege on the table.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/insert.html %}
 </div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`common_table_expr` | See [Common Table Expressions]({% link {{ page.version.version }}/common-table-expressions.md %}).
+`common_table_expr` | See [Common Table Expressions]({{ page.version.version }}/common-table-expressions.md).
 `table_name` | The table into which data is written.
 `AS table_alias_name` | An alias for the table name. When you provide an alias, it completely hides the actual table name.
 `column_name` | The name of a column to populate during the insert.
-`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}). Each value must match the [data type]({% link {{ page.version.version }}/data-types.md %}) of its column. Also, if column names are listed after `INTO`, values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
-`DEFAULT VALUES` | To fill all columns with their [default values]({% link {{ page.version.version }}/default-value.md %}), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position. See the [Insert Default Values](#insert-default-values) examples below.
-`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}). See the [Insert and Return Values](#insert-and-return-values) example below.
+`select_stmt` | A [selection query]({{ page.version.version }}/selection-queries.md). Each value must match the [data type]({{ page.version.version }}/data-types.md) of its column. Also, if column names are listed after `INTO`, values must be in corresponding order; otherwise, they must follow the declared order of the columns in the table.
+`DEFAULT VALUES` | To fill all columns with their [default values]({{ page.version.version }}/default-value.md), use `DEFAULT VALUES` in place of `select_stmt`. To fill a specific column with its default value, leave the value out of the `select_stmt` or use `DEFAULT` at the appropriate position. See the [Insert Default Values](#insert-default-values) examples below.
+`RETURNING target_list` | Return values based on rows inserted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions]({{ page.version.version }}/scalar-expressions.md). See the [Insert and Return Values](#insert-and-return-values) example below.
 
 ### `ON CONFLICT` clause
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/on_conflict.html %}
 </div>
 
-Normally, when inserted values conflict with a `UNIQUE` constraint on one or more columns, CockroachDB returns an error. To update the affected rows instead, use an `ON CONFLICT` clause containing the column(s) with the unique constraint and the `DO UPDATE SET` expression set to the column(s) to be updated (any `SET` expression supported by the [`UPDATE`]({% link {{ page.version.version }}/update.md %}) statement is also supported here, including those with `WHERE` clauses). To prevent the affected rows from updating while allowing new rows to be inserted, set `ON CONFLICT` to `DO NOTHING`. See the [Update values `ON CONFLICT`](#update-values-on-conflict) and [Do not update values `ON CONFLICT`](#do-not-update-values-on-conflict) examples.
+Normally, when inserted values conflict with a `UNIQUE` constraint on one or more columns, CockroachDB returns an error. To update the affected rows instead, use an `ON CONFLICT` clause containing the column(s) with the unique constraint and the `DO UPDATE SET` expression set to the column(s) to be updated (any `SET` expression supported by the [`UPDATE`]({{ page.version.version }}/update.md) statement is also supported here, including those with `WHERE` clauses). To prevent the affected rows from updating while allowing new rows to be inserted, set `ON CONFLICT` to `DO NOTHING`. See the [Update values `ON CONFLICT`](#update-values-on-conflict) and [Do not update values `ON CONFLICT`](#do-not-update-values-on-conflict) examples.
 
 If the values in the `SET` expression cause uniqueness conflicts,
 CockroachDB will return an error.
@@ -47,9 +45,8 @@ rather than inferring one using a column list, which is the default behavior.
 
 ### `INSERT ON CONFLICT` vs. `UPSERT`
 
-As an alternative to `INSERT ... ON CONFLICT ... DO UPDATE`, you can use the [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement. For example, the following statements are equivalent:
+As an alternative to `INSERT ... ON CONFLICT ... DO UPDATE`, you can use the [`UPSERT`]({{ page.version.version }}/upsert.md) statement. For example, the following statements are equivalent:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 INSERT INTO t (a, b, ..., n)
 VALUES ('1', '2', ..., 'n')
@@ -60,15 +57,13 @@ ON CONFLICT DO UPDATE SET
   n = 'n';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPSERT INTO t (a, b, ..., n)
 VALUES ('1', '2', ..., 'n');
 ~~~
 
-However, `UPSERT` does not let you specify columns to infer a unique constraint as an arbiter. An arbiter is a [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}) constraint used to check for conflicts during execution of `INSERT ... ON CONFLICT`. `UPSERT` always uses the primary key as the arbiter. You must therefore use `INSERT ... ON CONFLICT ... DO UPDATE` if your statement considers uniqueness for columns other than primary key columns. For an example, see [Upsert that fails (conflict on non-primary key)]({% link {{ page.version.version }}/upsert.md %}#upsert-that-fails-conflict-on-non-primary-key).
+However, `UPSERT` does not let you specify columns to infer a unique constraint as an arbiter. An arbiter is a [`UNIQUE`]({{ page.version.version }}/unique.md) constraint used to check for conflicts during execution of `INSERT ... ON CONFLICT`. `UPSERT` always uses the primary key as the arbiter. You must therefore use `INSERT ... ON CONFLICT ... DO UPDATE` if your statement considers uniqueness for columns other than primary key columns. For an example, see [Upsert that fails (conflict on non-primary key)]({{ page.version.version }}/upsert.md#upsert-that-fails-conflict-on-non-primary-key).
 
-{% include {{page.version.version}}/sql/insert-vs-upsert.md %}
 
 ## Performance best practices
 
@@ -78,27 +73,24 @@ When generating and retrieving unique IDs, use the `RETURNING` clause with `INSE
 
 - **Existing table**
 
-    - Perform a [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) in one statement in an [implicit transaction]({% link {{ page.version.version }}/transactions.md %}#individual-statements).
+    - Perform a [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) in one statement in an [implicit transaction]({{ page.version.version }}/transactions.md#individual-statements).
 
-    - Do not use large batches of 100,000 rows or more, which can lead to long-running transactions that result in [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). If a multi-row `INSERT` results in an error code [`40001` with the message `"transaction deadline exceeded"`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#retry_commit_deadline_exceeded), Cockroach Labs recommends that you break up the `INSERT` into smaller batches.
+    - Do not use large batches of 100,000 rows or more, which can lead to long-running transactions that result in [transaction retry errors]({{ page.version.version }}/transaction-retry-error-reference.md). If a multi-row `INSERT` results in an error code [`40001` with the message `"transaction deadline exceeded"`]({{ page.version.version }}/transaction-retry-error-reference.md#retry_commit_deadline_exceeded), Cockroach Labs recommends that you break up the `INSERT` into smaller batches.
 
         Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (1, 10, 100, 1000) rows in an implicit transaction. In some cases, for example, when a table has no secondary indexes, single row `INSERT`s may perform best in terms of total system throughput.
 
-    - You can also use the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement to bulk-insert CSV data.
+    - You can also use the [`IMPORT INTO`]({{ page.version.version }}/import-into.md) statement to bulk-insert CSV data.
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Insert a single row
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (id, city, name, address, credit_card) VALUES
     ('c28f5c28-f5c2-4000-8000-000000000026', 'new york', 'Petee', '101 5th Ave', '1234567890');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE city='new york';
 ~~~
@@ -117,7 +109,6 @@ When generating and retrieving unique IDs, use the `RETURNING` clause with `INSE
 
 If you do not list column names, the statement will use the columns of the table in their declared order:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -133,13 +124,11 @@ If you do not list column names, the statement will use the columns of the table
 (5 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users VALUES
     ('1eb851eb-851e-4800-8000-000000000006', 'chicago', 'Adam Driver', '201 E Randolph St', '2468013579');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE city IN ('chicago', 'new york');
 ~~~
@@ -167,14 +156,12 @@ If you do not list column names, the statement will use the columns of the table
 
 See [bulk inserts](#bulk-inserts) for best practices.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (id, city, name, address, credit_card) VALUES
     ('8a3d70a3-d70a-4000-8000-00000000001b', 'seattle', 'Eric', '400 Broad St', '0987654321'),
     ('9eb851eb-851e-4800-8000-00000000001f', 'new york', 'Harry Potter', '214 W 43rd St', '5678901234');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users WHERE city IN ('seattle', 'new york');
 ~~~
@@ -201,7 +188,6 @@ See [bulk inserts](#bulk-inserts) for best practices.
 
 Suppose that you want MovR to offer ride-sharing services, in addition to vehicle-sharing services. You can create a `drivers` table from a subset of the `users` table.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE drivers (
     id UUID DEFAULT gen_random_uuid(),
@@ -213,14 +199,12 @@ Suppose that you want MovR to offer ride-sharing services, in addition to vehicl
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (id, city, name, address)
     SELECT id, city, name, address FROM users
     WHERE name IN ('Anita Atkinson', 'Devin Jordan');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM drivers;
 ~~~
@@ -235,9 +219,8 @@ Suppose that you want MovR to offer ride-sharing services, in addition to vehicl
 
 ### Insert default values
 
-To check the [default values]({% link {{ page.version.version }}/default-value.md %}) for columns in a table, use the [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %}) statement:
+To check the [default values]({{ page.version.version }}/default-value.md) for columns in a table, use the [`SHOW CREATE TABLE`]({{ page.version.version }}/show-create.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE drivers;
 ~~~
@@ -261,17 +244,14 @@ To check the [default values]({% link {{ page.version.version }}/default-value.m
 
 If the `DEFAULT` value constraint is not specified and an explicit value is not given, a value of `NULL` is assigned to the column.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (city, name) VALUES ('seattle', 'Bobby');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (city, name, id) VALUES ('chicago', 'Terry', DEFAULT);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM drivers WHERE name in ('Bobby', 'Terry');
 ~~~
@@ -286,7 +266,6 @@ If the `DEFAULT` value constraint is not specified and an explicit value is not 
 
 To create a new row with only default values, use `INSERT INTO <table> DEFAULT VALUES`. Running this command on the `drivers` table results in an error because the `city` column in `drivers` cannot be `NULL`, and has no default value specified.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers DEFAULT VALUES;
 ~~~
@@ -297,7 +276,7 @@ pq: null value in column "city" violates not-null constraint
 
 ### Insert and return values
 
-In this example, the `RETURNING` clause returns the `id` values of the rows inserted, which are generated server-side by the `gen_random_uuid()` function. The language-specific versions assume that you have installed the relevant [client drivers]({% link {{ page.version.version }}/install-client-drivers.md %}).
+In this example, the `RETURNING` clause returns the `id` values of the rows inserted, which are generated server-side by the `gen_random_uuid()` function. The language-specific versions assume that you have installed the relevant [client drivers]({{ page.version.version }}/install-client-drivers.md).
 
 {{site.data.alerts.callout_success}}This use of <code>RETURNING</code> mirrors the behavior of MySQL's <code>last_insert_id()</code> function.{{site.data.alerts.end}}
 
@@ -313,7 +292,6 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 
 <section class="filter-content" markdown="1" data-scope="shell">
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO drivers (id, city)
   VALUES (DEFAULT, 'seattle'), (DEFAULT, 'chicago')
@@ -332,7 +310,6 @@ In this example, the `RETURNING` clause returns the `id` values of the rows inse
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 # Import the driver.
 import psycopg2
@@ -382,7 +359,6 @@ IDs:
 
 <section class="filter-content" markdown="1" data-scope="ruby">
 
-{% include_cached copy-clipboard.html %}
 ~~~ ruby
 # Import the driver.
 require 'pg'
@@ -426,7 +402,6 @@ IDs:
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include_cached copy-clipboard.html %}
 ~~~ go
 package main
 
@@ -484,7 +459,6 @@ cdd379e3-2d0b-4622-8ba8-4f0a1edfbc8e
 
 <section class="filter-content" markdown="1" data-scope="js">
 
-{% include_cached copy-clipboard.html %}
 ~~~ js
 var async = require('async')
 var pg = require('pg')
@@ -554,7 +528,6 @@ IDs:
 
 When a uniqueness conflict on columns `(city, user_id, code)` is detected, CockroachDB stores the rows proposed for insertion in a temporary table called `excluded`. This example demonstrates how you use the columns in the temporary `excluded` table to apply updates on conflict.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1)
@@ -562,7 +535,6 @@ When a uniqueness conflict on columns `(city, user_id, code)` is detected, Cockr
     DO UPDATE SET usage_count = excluded.usage_count;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
@@ -576,7 +548,6 @@ When a uniqueness conflict on columns `(city, user_id, code)` is detected, Cockr
 
 You can also update the row using an existing value:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1)
@@ -584,7 +555,6 @@ You can also update the row using an existing value:
     DO UPDATE SET ("timestamp", usage_count) = (now(), user_promo_codes.usage_count + excluded.usage_count);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
@@ -598,7 +568,6 @@ You can also update the row using an existing value:
 
 You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression conditionally:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 3)
@@ -607,7 +576,6 @@ You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression condit
     WHERE excluded.usage_count = 1;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
@@ -622,7 +590,6 @@ You can also use a `WHERE` clause to apply the `DO UPDATE SET` expression condit
 
 This example uses the `ON CONSTRAINT` clause to explicitly specify the index `user_promo_codes_pkey` on which there is a conflict:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1)
@@ -630,7 +597,6 @@ This example uses the `ON CONSTRAINT` clause to explicitly specify the index `us
     DO UPDATE SET usage_count =  user_promo_codes.usage_count + excluded.usage_count;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
@@ -646,7 +612,6 @@ This example uses the `ON CONSTRAINT` clause to explicitly specify the index `us
 
 In this example, we get an error from a uniqueness conflict.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1);
@@ -658,7 +623,6 @@ pq: duplicate key value violates unique constraint "user_promo_codes_pkey"
 
 This example uses `ON CONFLICT DO NOTHING` to ignore the uniqueness error and prevent the affected row from being updated:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1)
@@ -666,7 +630,6 @@ This example uses `ON CONFLICT DO NOTHING` to ignore the uniqueness error and pr
     DO NOTHING;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_promo_codes WHERE code = 'promo_code';
 ~~~
@@ -680,7 +643,6 @@ This example uses `ON CONFLICT DO NOTHING` to ignore the uniqueness error and pr
 
 In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating while allowing the second row to be inserted:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
     VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1), ('new york', '147ae147-ae14-4b00-8000-000000000004', 'new_promo', now(), 1)
@@ -688,7 +650,6 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
     DO NOTHING;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_promo_codes WHERE code in ('promo_code', 'new_promo');
 ~~~
@@ -704,12 +665,11 @@ In this example, `ON CONFLICT DO NOTHING` prevents the first row from updating w
 ### Import data containing duplicate rows using `ON CONFLICT` and `DISTINCT ON`
 
 If the input data for `INSERT ON CONFLICT` contains duplicate rows,
-you must use [`DISTINCT ON`]({% link {{ page.version.version }}/select-clause.md %}#eliminate-duplicate-rows) to remove these
+you must use [`DISTINCT ON`]({{ page.version.version }}/select-clause.md#eliminate-duplicate-rows) to remove these
 duplicates.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH inputrows (city, user_id, code, "timestamp", usage_count)
     AS (VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004'::uuid, 'promo_code', now()::timestamp, 0), ('new york', '147ae147-ae14-4b00-8000-000000000004'::uuid, 'new_promo', now()::timestamp, 2))
@@ -723,7 +683,6 @@ The `DISTINCT ON` clause does not guarantee which of the duplicates is
 considered. To force the selection of a particular duplicate, use an
 `ORDER BY` clause:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH inputrows (city, user_id, code, "timestamp", usage_count)
     AS (VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004'::uuid, 'promo_code', now()::timestamp, 0), ('new york', '147ae147-ae14-4b00-8000-000000000004'::uuid, 'new_promo', now()::timestamp, 2))
@@ -740,13 +699,13 @@ For best performance, avoid using it when the input is known to not contain dupl
 
 ## See also
 
-- [Ordering of rows in DML statements]({% link {{ page.version.version }}/order-by.md %}#ordering-rows-in-dml-statements)
-- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
-- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
-- [`UPDATE`]({% link {{ page.version.version }}/update.md %})
-- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
-- [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %})
-- [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
-- [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
-- [`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Ordering of rows in DML statements]({{ page.version.version }}/order-by.md#ordering-rows-in-dml-statements)
+- [Selection Queries]({{ page.version.version }}/selection-queries.md)
+- [`DELETE`]({{ page.version.version }}/delete.md)
+- [`UPDATE`]({{ page.version.version }}/update.md)
+- [`UPSERT`]({{ page.version.version }}/upsert.md)
+- [`TRUNCATE`]({{ page.version.version }}/truncate.md)
+- [`ALTER TABLE`]({{ page.version.version }}/alter-table.md)
+- [`DROP TABLE`]({{ page.version.version }}/drop-table.md)
+- [`DROP DATABASE`]({{ page.version.version }}/drop-database.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `information_schema` [system catalog]({% link {{ page.version.version }}/system-catalogs.md %}) contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
+The `information_schema` [system catalog]({{ page.version.version }}/system-catalogs.md) contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
 
 ## Data exposed by `information_schema`
 
@@ -13,24 +13,24 @@ To perform introspection on objects, you can either read from the related `infor
 
 Object | `information_schema` Table | Corresponding `SHOW` Statement
 -------|--------------|--------
-Columns | [`columns`](#columns) | [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %})
-Constraints | [`check_constraints`](#check_constraints), [`key_column_usage`](#key_column_usage), [`referential_constraints`](#referential_constraints), [`table_constraints`](#table_constraints)| [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %})
-Databases | [`schemata`](#schemata)| [`SHOW DATABASE`]({% link {{ page.version.version }}/show-vars.md %})
-Indexes | [`statistics`](#statistics)| [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %})
-Privileges | [`schema_privileges`](#schema_privileges), [`table_privileges`](#table_privileges)| [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})
-Roles | [`role_table_grants`](#role_table_grants) | [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %})
-Sequences | [`sequences`](#sequences) | [`SHOW CREATE SEQUENCE`]({% link {{ page.version.version }}/show-create.md %})
-Tables | [`tables`](#tables)| [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
-Views | [`tables`](#tables), [`views`](#views)| [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
+Columns | [`columns`](#columns) | [`SHOW COLUMNS`]({{ page.version.version }}/show-columns.md)
+Constraints | [`check_constraints`](#check_constraints), [`key_column_usage`](#key_column_usage), [`referential_constraints`](#referential_constraints), [`table_constraints`](#table_constraints)| [`SHOW CONSTRAINTS`]({{ page.version.version }}/show-constraints.md)
+Databases | [`schemata`](#schemata)| [`SHOW DATABASE`]({{ page.version.version }}/show-vars.md)
+Indexes | [`statistics`](#statistics)| [`SHOW INDEX`]({{ page.version.version }}/show-index.md)
+Privileges | [`schema_privileges`](#schema_privileges), [`table_privileges`](#table_privileges)| [`SHOW GRANTS`]({{ page.version.version }}/show-grants.md)
+Roles | [`role_table_grants`](#role_table_grants) | [`SHOW ROLES`]({{ page.version.version }}/show-roles.md)
+Sequences | [`sequences`](#sequences) | [`SHOW CREATE SEQUENCE`]({{ page.version.version }}/show-create.md)
+Tables | [`tables`](#tables)| [`SHOW TABLES`]({{ page.version.version }}/show-tables.md)
+Views | [`tables`](#tables), [`views`](#views)| [`SHOW CREATE`]({{ page.version.version }}/show-create.md)
 
 ## Tables in `information_schema`
 
 The virtual schema `information_schema` contains virtual tables, also called "system views," representing the database's objects, each of which is detailed below.
 
-These differ from regular [SQL views]({% link {{ page.version.version }}/views.md %}) in that they do not show data created from the content of other tables. Instead, CockroachDB generates the data for virtual tables when they are accessed.
+These differ from regular [SQL views]({{ page.version.version }}/views.md) in that they do not show data created from the content of other tables. Instead, CockroachDB generates the data for virtual tables when they are accessed.
 
 {{site.data.alerts.callout_info}}
-A query can specify a table name without a database name (e.g., `SELECT * FROM information_schema.sequences`). See [Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %}) for more information.
+A query can specify a table name without a database name (e.g., `SELECT * FROM information_schema.sequences`). See [Name Resolution]({{ page.version.version }}/sql-name-resolution.md) for more information.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
@@ -74,7 +74,7 @@ Column | Description
 
 ### check_constraints
 
-`check_constraints` contains information about the [`CHECK`]({% link {{ page.version.version }}/check.md %}) constraints applied to columns in a database.
+`check_constraints` contains information about the [`CHECK`]({{ page.version.version }}/check.md) constraints applied to columns in a database.
 
 Column | Description
 -------|-----------
@@ -120,16 +120,16 @@ Column | Description
 `column_comment` | Comment on the column.
 `ordinal_position` | Ordinal position of the column in the table (begins at 1).
 `column_default` | Default value for the column.
-`is_nullable` | `YES` if the column accepts `NULL` values; `NO` if it doesn't (e.g., it has the [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %})).
-`data_type` | [Data type]({% link {{ page.version.version }}/data-types.md %}) of the column.
+`is_nullable` | `YES` if the column accepts `NULL` values; `NO` if it doesn't (e.g., it has the [`NOT NULL` constraint]({{ page.version.version }}/not-null.md)).
+`data_type` | [Data type]({{ page.version.version }}/data-types.md) of the column.
 `character_maximum_length` |  If `data_type` is `STRING`, the maximum length in characters of a value; otherwise `NULL`.
 `character_octet_length` | If `data_type` is `STRING`, the maximum length in octets (bytes) of a value; otherwise `NULL`.
 `numeric_precision` | If `data_type` is numeric, the declared or implicit precision (i.e., number of significant digits); otherwise `NULL`.
 `numeric_precision_radix` | If `data_type` identifies a numeric type, the base in which the values in the columns `numeric_precision` and `numeric_scale` are expressed (either `2` or `10`). For all other data types, column is `NULL`.
 `numeric_scale` | If `data_type` is an exact numeric type, the scale (i.e., number of digits to the right of the decimal point); otherwise `NULL`.
-`datetime_precision` | The precision level of columns with data type [`TIME`/`TIMETZ`]({% link {{ page.version.version }}/time.md %}), [`TIMESTAMP`/`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}), or [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}). For all other data types, this column is `NULL`.
-`interval_type` | If `data_type` is [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}), the specified fields (e.g., `YEAR TO MONTH`); otherwise `NULL`.
-`interval_precision` | If `data_type` is [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}), the declared or implicit precision (i.e., number of significant digits); otherwise `NULL`.
+`datetime_precision` | The precision level of columns with data type [`TIME`/`TIMETZ`]({{ page.version.version }}/time.md), [`TIMESTAMP`/`TIMESTAMPTZ`]({{ page.version.version }}/timestamp.md), or [`INTERVAL`]({{ page.version.version }}/interval.md). For all other data types, this column is `NULL`.
+`interval_type` | If `data_type` is [`INTERVAL`]({{ page.version.version }}/interval.md), the specified fields (e.g., `YEAR TO MONTH`); otherwise `NULL`.
+`interval_precision` | If `data_type` is [`INTERVAL`]({{ page.version.version }}/interval.md), the declared or implicit precision (i.e., number of significant digits); otherwise `NULL`.
 `character_set_catalog` | Always `NULL` (unsupported by CockroachDB).
 `character_set_schema` | Always `NULL` (unsupported by CockroachDB).
 `character_set_name` | Always `NULL` (unsupported by CockroachDB).
@@ -155,11 +155,11 @@ Column | Description
 `identity_maximum` | If the column is an identity column, then the maximum value of the internal sequence, else `NULL`.
 `identity_minimum` | If the column is an identity column, then the minimum value of the internal sequence, else `NULL`.
 `identity_cycle` | If the column is an identity column, then `YES` if the internal sequence cycles or `NO` if it does not; otherwise `NULL`.
-`is_generated` | Whether or not the column is generated (i.e., a [computed column]({% link {{ page.version.version }}/computed-columns.md %})). Possible values: `YES` or `NO`.
+`is_generated` | Whether or not the column is generated (i.e., a [computed column]({{ page.version.version }}/computed-columns.md)). Possible values: `YES` or `NO`.
 `generation_expression` | The expression used for computing the column value in a computed column.
 `is_updatable` | Whether or not the column is able to be updated. Possible values: `YES` or `NO`.
 `is_hidden` | Whether or not the column is hidden. Possible values: `YES` or `NO`.
-`crdb_sql_type` | [Data type]({% link {{ page.version.version }}/data-types.md %}) of the column.
+`crdb_sql_type` | [Data type]({{ page.version.version }}/data-types.md) of the column.
 
 ### column_privileges
 
@@ -173,7 +173,7 @@ Column | Description
 `table_schema` | Name of the schema containing the table that contains the column.
 `table_name` | Name of the table.
 `column_name` | Name of the column.
-`privilege_type` | Name of the [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges).
+`privilege_type` | Name of the [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
 ### column_udt_usage
@@ -192,7 +192,7 @@ Column | Description
 
 ### constraint_column_usage
 
-`constraint_column_usage` identifies all columns in a database that are used by some [constraint]({% link {{ page.version.version }}/constraints.md %}).
+`constraint_column_usage` identifies all columns in a database that are used by some [constraint]({{ page.version.version }}/constraints.md).
 
 Column | Description
 -------|-----------
@@ -214,7 +214,7 @@ Column | Description
 
 ### key_column_usage
 
-`key_column_usage` identifies columns with [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}), [`UNIQUE`]({% link {{ page.version.version }}/unique.md %}), or [foreign key / `REFERENCES`]({% link {{ page.version.version }}/foreign-key.md %}) constraints.
+`key_column_usage` identifies columns with [`PRIMARY KEY`]({{ page.version.version }}/primary-key.md), [`UNIQUE`]({{ page.version.version }}/unique.md), or [foreign key / `REFERENCES`]({{ page.version.version }}/foreign-key.md) constraints.
 
 Column | Description
 -------|-----------
@@ -230,7 +230,7 @@ Column | Description
 
 ### referential_constraints
 
-`referential_constraints` identifies all referential ([foreign key]({% link {{ page.version.version }}/foreign-key.md %})) constraints.
+`referential_constraints` identifies all referential ([foreign key]({{ page.version.version }}/foreign-key.md)) constraints.
 
 Column | Description
 -------|-----------
@@ -248,7 +248,7 @@ Column | Description
 
 ### role_table_grants
 
-`role_table_grants` identifies which [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) have been granted on tables or views where the grantor
+`role_table_grants` identifies which [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) have been granted on tables or views where the grantor
 or grantee is a currently enabled role. This table is identical to [`table_privileges`](#table_privileges).
 
 Column | Description
@@ -258,20 +258,20 @@ Column | Description
 `table_catalog` | Name of the database containing the table.
 `table_schema` | Name of the schema containing the table.
 `table_name` | Name of the table.
-`privilege_type` | Name of the [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges).
+`privilege_type` | Name of the [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges).
 `is_grantable` | `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### schema_privileges
 
-`schema_privileges` identifies which [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) have been granted to each user at the database level.
+`schema_privileges` identifies which [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) have been granted to each user at the database level.
 
 Column | Description
 -------|-----------
 `grantee` | Username of user with grant.
 `table_catalog` | Name of the database containing the constrained table.
 `table_schema` | Name of the schema containing the constrained table.
-`privilege_type` | Name of the [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges).
+`privilege_type` | Name of the [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
 ### schemata
@@ -287,7 +287,7 @@ Column | Description
 
 ### sequences
 
-`sequences` identifies [sequences]({% link {{ page.version.version }}/create-sequence.md %}) defined in a database.
+`sequences` identifies [sequences]({{ page.version.version }}/create-sequence.md) defined in a database.
 
 Column | Description
 -------|-----------
@@ -306,15 +306,14 @@ Column | Description
 
 ### session_variables
 
- `session_variables` contains information about the [session variable settings]({% link {{ page.version.version }}/set-vars.md %}) for your session. `session_variables` contains a `variable` column and a `value` column. The `value` column corresponds to the output of the [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %}) statement.
+ `session_variables` contains information about the [session variable settings]({{ page.version.version }}/set-vars.md) for your session. `session_variables` contains a `variable` column and a `value` column. The `value` column corresponds to the output of the [`SHOW {session variable}`]({{ page.version.version }}/show-vars.md) statement.
 
-For a list of the session variables, see [supported variables]({% link {{ page.version.version }}/show-vars.md %}#supported-variables).
+For a list of the session variables, see [supported variables]({{ page.version.version }}/show-vars.md#supported-variables).
 
-{% include {{page.version.version}}/sql/show-default-session-variables-for-role.md %}
 
 ### statistics
 
-`statistics` identifies table [indexes]({% link {{ page.version.version }}/indexes.md %}).
+`statistics` identifies table [indexes]({{ page.version.version }}/indexes.md).
 
 Column | Description
 -------|-----------
@@ -329,12 +328,12 @@ Column | Description
 `collation` | Always `NULL` (unsupported by CockroachDB).
 `cardinality` | Always `NULL` (unsupported by CockroachDB).
 `direction` | `ASC` (ascending) or `DESC` (descending) order.
-`storing` | `YES` if column is [stored]({% link {{ page.version.version }}/create-index.md %}#store-columns); `NO` if it's indexed or implicit.
+`storing` | `YES` if column is [stored]({{ page.version.version }}/create-index.md#store-columns); `NO` if it's indexed or implicit.
 `implicit` | `YES` if column is implicit (i.e., it is not specified in the index and not stored); `NO` if it's indexed or stored.
 
 ### table_constraints
 
-`table_constraints` identifies [constraints]({% link {{ page.version.version }}/constraints.md %}) applied to tables.
+`table_constraints` identifies [constraints]({{ page.version.version }}/constraints.md) applied to tables.
 
 Column | Description
 -------|-----------
@@ -344,13 +343,13 @@ Column | Description
 `table_catalog` | Name of the database containing the constrained table.
 `table_schema` | Name of the schema containing the constrained table.
 `table_name` | Name of the constrained table.
-`constraint_type` | Type of [constraint]({% link {{ page.version.version }}/constraints.md %}): `CHECK`, `FOREIGN KEY`, `PRIMARY KEY`, or `UNIQUE`.<br>`NOT NULL` constraints appear as `CHECK` constraints in this column.
+`constraint_type` | Type of [constraint]({{ page.version.version }}/constraints.md): `CHECK`, `FOREIGN KEY`, `PRIMARY KEY`, or `UNIQUE`.<br>`NOT NULL` constraints appear as `CHECK` constraints in this column.
 `is_deferrable` | `YES` if the constraint can be deferred; `NO` if not.
 `initially_deferred` | `YES` if the constraint is deferrable and initially deferred; `NO` if not.
 
 ### table_privileges
 
-`table_privileges` identifies which [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) have been granted to each user at the table level.
+`table_privileges` identifies which [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) have been granted to each user at the table level.
 
 Column | Description
 -------|-----------
@@ -359,7 +358,7 @@ Column | Description
 `table_catalog` | Name of the database that the grant applies to.
 `table_schema` | Name of the schema that the grant applies to.
 `table_name` | Name of the table that the grant applies to.
-`privilege_type` | Type of [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
+`privilege_type` | Type of [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
 `is_grantable` | `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
@@ -385,29 +384,29 @@ Column | Description
 `type_catalog` | Name of the database that contains the type (always the current database).
 `type_schema` | Name of the schema that contains the type.
 `type_name` | Name of the type.
-`privilege_type` | Type of [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges).
+`privilege_type` | Type of [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges).
 
 ### user_privileges
 
-`user_privileges` identifies global [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges).
+`user_privileges` identifies global [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges).
 
 Column | Description
 -------|-----------
 `grantee` | Username of user with grant.
 `table_catalog` | Name of the database that the privilege applies to.
-`privilege_type` | Type of [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges).
+`privilege_type` | Type of [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
 ### views
 
-`views` identifies [views]({% link {{ page.version.version }}/views.md %}) in the database.
+`views` identifies [views]({{ page.version.version }}/views.md) in the database.
 
 Column | Description
 -------|-----------
 `table_catalog` | Name of the database that contains the view.
 `table_schema` | Name of the schema that contains the view.
 `table_name` | Name of the view.
-`view_definition` | `AS` clause used to [create the view]({% link {{ page.version.version }}/views.md %}#creating-views).
+`view_definition` | `AS` clause used to [create the view]({{ page.version.version }}/views.md#creating-views).
 `check_option` | Always `NULL` (unsupported by CockroachDB).
 `is_updatable` | Always `NULL` (unsupported by CockroachDB).
 `is_insertable_into` | Always `NULL` (unsupported by CockroachDB).
@@ -484,19 +483,18 @@ Column | Description
 
 ## Querying `information_schema` tables
 
-You can run [`SELECT` queries]({% link {{ page.version.version }}/selection-queries.md %}) on the tables in `information_schema`.
+You can run [`SELECT` queries]({{ page.version.version }}/selection-queries.md) on the tables in `information_schema`.
 
 {{site.data.alerts.callout_success}}
-The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as a user with [`admin` privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
+The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as a user with [`admin` privileges]({{ page.version.version }}/security-reference/authorization.md#admin-role).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Unless specified otherwise, queries to `information_schema` assume the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database).
+Unless specified otherwise, queries to `information_schema` assume the [current database]({{ page.version.version }}/sql-name-resolution.md#current-database).
 {{site.data.alerts.end}}
 
 For example, to retrieve all columns from the `table_constraints` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.information_schema.table_constraints;
 ~~~
@@ -514,7 +512,6 @@ For example, to retrieve all columns from the `table_constraints` table:
 
 And to retrieve specific columns from the `table_constraints` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT table_name, constraint_name FROM movr.information_schema.table_constraints;
 ~~~
@@ -532,12 +529,12 @@ And to retrieve specific columns from the `table_constraints` table:
 
 ## See also
 
-- [System Catalogs]({% link {{ page.version.version }}/system-catalogs.md %})
-- [`SHOW`]({% link {{ page.version.version }}/show-vars.md %})
-- [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %})
-- [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %})
-- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
-- [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})
-- [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})
-- [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %})
-- [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
+- [System Catalogs]({{ page.version.version }}/system-catalogs.md)
+- [`SHOW`]({{ page.version.version }}/show-vars.md)
+- [`SHOW COLUMNS`]({{ page.version.version }}/show-columns.md)
+- [`SHOW CONSTRAINTS`]({{ page.version.version }}/show-constraints.md)
+- [`SHOW CREATE`]({{ page.version.version }}/show-create.md)
+- [`SHOW DATABASES`]({{ page.version.version }}/show-databases.md)
+- [`SHOW GRANTS`]({{ page.version.version }}/show-grants.md)
+- [`SHOW INDEX`]({{ page.version.version }}/show-index.md)
+- [`SHOW TABLES`]({{ page.version.version }}/show-tables.md)

@@ -8,10 +8,10 @@ docs_area: reference.benchmarking
 
 CockroachDB delivers predictable throughput and latency at all scales on commodity hardware. This page provides an overview of the performance profiles you can expect, based on Cockroach Labs's extensive testing using the TPC-C industry-standard benchmark.
 
-For instructions to reproduce the TPC-C results listed here, see [Performance Benchmarking with TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-large.md %}). If you fail to achieve similar results, there is likely a problem in either the hardware, workload, or test design.
+For instructions to reproduce the TPC-C results listed here, see [Performance Benchmarking with TPC-C]({{ page.version.version }}/performance-benchmarking-with-tpcc-large.md). If you fail to achieve similar results, there is likely a problem in either the hardware, workload, or test design.
 
 {{site.data.alerts.callout_success}}
-This document is about CockroachDB performance on benchmarks. For guidance on tuning real workloads, see [SQL Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), and for guidance on data location techniques to minimize network latency, see [Topology Patterns]({% link {{ page.version.version }}/topology-patterns.md %}).
+This document is about CockroachDB performance on benchmarks. For guidance on tuning real workloads, see [SQL Best Practices]({{ page.version.version }}/performance-best-practices-overview.md), and for guidance on data location techniques to minimize network latency, see [Topology Patterns]({{ page.version.version }}/topology-patterns.md).
 {{site.data.alerts.end}}
 
 ## Scale
@@ -20,9 +20,9 @@ TPC-C provides the most realistic and objective measure for OLTP performance at 
 
 For a refresher on what exactly TPC-C is and how it is measured, see [Benchmark details](#benchmark-details).
 
-CockroachDB achieves this performance in [`SERIALIZABLE` isolation]({% link {{ page.version.version }}/demo-serializable.md %}), the strongest isolation level in the SQL standard.
+CockroachDB achieves this performance in [`SERIALIZABLE` isolation]({{ page.version.version }}/demo-serializable.md), the strongest isolation level in the SQL standard.
 
-<img src="{{ 'images/v24.2/tpcc140k.png' | relative_url }}" alt="TPC-C 140,000" style="border:1px solid #eee;max-width:100%" />
+![TPC-C 140,000](/images/v24.2/tpcc140k.png)
 
 | Metric                                          | CockroachDB 19.2 | CockroachDB 21.1 |
 |-------------------------------------------------+------------------+------------------|
@@ -37,7 +37,7 @@ CockroachDB achieves this performance in [`SERIALIZABLE` isolation]({% link {{ p
 
 CockroachDB has **no theoretical scaling limit** and, in practice, can achieve near-linear performance at 256 nodes. Because the TPC-C results reflect leaps in scale, to test linear scaling, Cockroach Labs ran a simple benchmark named KV 95 (95% point reads, 5% point writes, all uniformly distributed) on AWS `c5d.4xlarge` machines:
 
-<img src="{{ 'images/v24.2/linearscale.png' | relative_url }}" alt="CRDB Linear Scale" style="max-width:100%" />
+![CRDB Linear Scale](/images/v24.2/linearscale.png)
 
 This chart shows that adding nodes increases throughput linearly while holding p50 and p99 latency constant. The concurrency for each scale was chosen to optimize throughput while maintaining an acceptable latency and can be observed in the following table.
 
@@ -59,7 +59,7 @@ CockroachDB returns single-row **reads in 1 ms** and processes single-row **writ
 
 For benchmarking latency, again, Cockroach Labs believes TPC-C provides the most realistic and objective measure, since it encompasses the latency distribution, including tail performance.
 
-CockroachDB provides a number of important tuning practices for both single-region and multi-region deployments, including [secondary indexes]({% link {{ page.version.version }}/indexes.md %}) and various [data topologies]({% link {{ page.version.version }}/topology-patterns.md %}) to achieve low latency.
+CockroachDB provides a number of important tuning practices for both single-region and multi-region deployments, including [secondary indexes]({{ page.version.version }}/indexes.md) and various [data topologies]({{ page.version.version }}/topology-patterns.md) to achieve low latency.
 
 ## Benchmark details
 
@@ -69,7 +69,7 @@ Cockroach Labs measures performance through many diverse tests, including the [i
 
 >“…involves a mix of five concurrent transactions of different types and complexity either executed on-line or queued for deferred execution. The database is comprised of nine types of tables with a wide range of record and population sizes. While the benchmark portrays the activity of a wholesale supplier, TPC-C is not limited to the activity of any particular business segment, but, rather represents any industry that must manage, sell, or distribute a product or service.”
 
-As a result, TPC-C includes create, read, update, and delete (e.g., CRUD) queries, basic joins, and other SQL statements used to administer mission-critical transactional workloads. It includes detailed specifications for concurrency and workload [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
+As a result, TPC-C includes create, read, update, and delete (e.g., CRUD) queries, basic joins, and other SQL statements used to administer mission-critical transactional workloads. It includes detailed specifications for concurrency and workload [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
 
 #### How TPC-C works
 
@@ -87,14 +87,13 @@ CockroachDB has no theoretical limitations to scaling, throughput, latency, or c
 
 - Hardware
 
-    CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware).
+    CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist]({{ page.version.version }}/recommended-production-settings.md#hardware).
 
-    {% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
 
 - Performance tuning
 
-    For guidance on tuning a real workload's performance, see [SQL Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %}).
+    For guidance on tuning a real workload's performance, see [SQL Best Practices]({{ page.version.version }}/performance-best-practices-overview.md), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview]({{ page.version.version }}/multiregion-overview.md).
 
 - TPC-C replication instructions
 
-    For instructions showing how to replicate the TPC-C results described in this page, see [Performance Benchmarking with TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-large.md %}).
+    For instructions showing how to replicate the TPC-C results described in this page, see [Performance Benchmarking with TPC-C]({{ page.version.version }}/performance-benchmarking-with-tpcc-large.md).

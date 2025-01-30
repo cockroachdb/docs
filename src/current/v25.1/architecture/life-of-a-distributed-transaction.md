@@ -7,9 +7,9 @@ docs_area: reference.architecture
 
 Because CockroachDB is a distributed transactional database, the path queries take is dramatically different from many other database architectures. To help familiarize you with CockroachDB's internals, this guide covers what that path actually is.
 
-If you've already read the [CockroachDB architecture documentation]({% link {{ page.version.version }}/architecture/overview.md %}), this guide serves as another way to conceptualize how the database works. This time, instead of focusing on the layers of CockroachDB's architecture, we're going to focus on the linear path that a query takes through the system (and then back out again).
+If you've already read the [CockroachDB architecture documentation]({{ page.version.version }}/architecture/overview.md), this guide serves as another way to conceptualize how the database works. This time, instead of focusing on the layers of CockroachDB's architecture, we're going to focus on the linear path that a query takes through the system (and then back out again).
 
-To get the most out of this guide, we recommend beginning with the architecture documentation's [overview]({% link {{ page.version.version }}/architecture/overview.md %}) and progressing through all of the following sections. This guide provides brief descriptions of each component's function and links  to other documentation where appropriate, but assumes the reader has a basic understanding of the architecture in the first place.
+To get the most out of this guide, we recommend beginning with the architecture documentation's [overview]({{ page.version.version }}/architecture/overview.md) and progressing through all of the following sections. This guide provides brief descriptions of each component's function and links  to other documentation where appropriate, but assumes the reader has a basic understanding of the architecture in the first place.
 
 ## Overview
 
@@ -45,7 +45,7 @@ The gateway node handles the connection with the client, both receiving and resp
 
 ### SQL parsing & planning
 
-The gateway node first [parses]({% link {{ page.version.version }}/architecture/sql-layer.md %}#sql-parser-planner-executor) the client's SQL statement to ensure it's valid according to the CockroachDB dialect of SQL, and uses that information to [generate a logical SQL plan]({% link {{ page.version.version }}/architecture/sql-layer.md %}#logical-planning).
+The gateway node first [parses]({{ page.version.version }}/architecture/sql-layer.md#sql-parser-planner-executor) the client's SQL statement to ensure it's valid according to the CockroachDB dialect of SQL, and uses that information to [generate a logical SQL plan]({{ page.version.version }}/architecture/sql-layer.md#logical-planning).
 
 Given that CockroachDB is a distributed database, though, it's also important to take a cluster's topology into account, so the logical plan is then converted into a physical plan&mdash;this means sometimes pushing operations onto the physical machines that contain the data.
 
@@ -64,7 +64,7 @@ On its back end, the `TxnCoordSender` performs a large amount of the accounting 
 
 ### DistSender
 
-The gateway node's `DistSender` receives `BatchRequests` from the `TxnCoordSender`. It dismantles the initial `BatchRequest` by taking each operation and finding which physical machine should receive the request for the range&mdash;known as the range's leaseholder. The address of the range's current leaseholder is readily available in both local caches, as well as in the [cluster's `meta` ranges]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#meta-range-kv-structure).
+The gateway node's `DistSender` receives `BatchRequests` from the `TxnCoordSender`. It dismantles the initial `BatchRequest` by taking each operation and finding which physical machine should receive the request for the range&mdash;known as the range's leaseholder. The address of the range's current leaseholder is readily available in both local caches, as well as in the [cluster's `meta` ranges]({{ page.version.version }}/architecture/distribution-layer.md#meta-range-kv-structure).
 
 These dismantled `BatchRequests` are reassembled into new `BatchRequests` containing the address of the range's leaseholder.
 
@@ -76,7 +76,7 @@ The `DistSender` then waits to receive acknowledgments for all of its write oper
 
 ## Leaseholder node
 
-The gateway node's `DistSender` tries to send its `BatchRequests` to the replica identified as the range's [leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases), which is a single replica that serves all reads for a range, as well as coordinates all writes. Leaseholders play a crucial role in CockroachDB's architecture, so it's a good topic to make sure you're familiar with.
+The gateway node's `DistSender` tries to send its `BatchRequests` to the replica identified as the range's [leaseholder]({{ page.version.version }}/architecture/replication-layer.md#leases), which is a single replica that serves all reads for a range, as well as coordinates all writes. Leaseholders play a crucial role in CockroachDB's architecture, so it's a good topic to make sure you're familiar with.
 
 ### Request response
 
@@ -92,7 +92,7 @@ Upon receipt of this response, the `DistSender` will update the header of the `B
 
 If a node doesn't have a replica for the requested range, it denies the request without providing any further information.
 
-In this case, the `DistSender` must look up the current leaseholder using the [cluster's `meta` ranges]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#meta-range-kv-structure).
+In this case, the `DistSender` must look up the current leaseholder using the [cluster's `meta` ranges]({{ page.version.version }}/architecture/distribution-layer.md#meta-range-kv-structure).
 
 ##### Success
 
@@ -116,13 +116,13 @@ The batch evaluator ensures that write operations are valid. Our architecture ma
 
 If the write operation is valid according to the evaluator, the leaseholder sends a provisional acknowledgment to the gateway node's `DistSender`; this lets the `DistSender` begin to send its subsequent `BatchRequests` for this range.
 
-Importantly, this feature is entirely built for transactional optimization (known as [transaction pipelining]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-pipelining)). There are no issues if an operation passes the evaluator but doesn't end up committing.
+Importantly, this feature is entirely built for transactional optimization (known as [transaction pipelining]({{ page.version.version }}/architecture/transaction-layer.md#transaction-pipelining)). There are no issues if an operation passes the evaluator but doesn't end up committing.
 
 ### Reads from the storage layer
 
-All operations (including writes) begin by reading from the local instance of the [storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}) to check for write intents for the operation's key. We talk much more about [write intents in the transaction layer of the CockroachDB architecture]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents), which is worth reading, but a simplified explanation is that these are provisional, uncommitted writes that express that some other concurrent transaction plans to write a value to the key.
+All operations (including writes) begin by reading from the local instance of the [storage engine]({{ page.version.version }}/architecture/storage-layer.md) to check for write intents for the operation's key. We talk much more about [write intents in the transaction layer of the CockroachDB architecture]({{ page.version.version }}/architecture/transaction-layer.md#write-intents), which is worth reading, but a simplified explanation is that these are provisional, uncommitted writes that express that some other concurrent transaction plans to write a value to the key.
 
-What we detail below is a simplified version of the CockroachDB transaction model. For more detail, check out [the transaction architecture documentation]({% link {{ page.version.version }}/architecture/transaction-layer.md %}).
+What we detail below is a simplified version of the CockroachDB transaction model. For more detail, check out [the transaction architecture documentation]({{ page.version.version }}/architecture/transaction-layer.md).
 
 #### Resolving Write Intents
 
@@ -132,14 +132,14 @@ If an operation encounters a write intent for a key, it attempts to "resolve" th
 - `ABORTED`, this operation discards the write intent and reads the next-most-recent value from the storage engine.
 - `PENDING`, the new transaction attempts to "push" the write intent's transaction by moving that transaction's timestamp forward (i.e.,  ahead of this transaction's timestamp); however, this only succeeds if the write intent's transaction has become inactive.
   	- If the push succeeds, the operation continues.
-  	- If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#txnwaitqueue) on this node. The incoming transaction can only continue once the blocking transaction completes (i.e., commits or aborts).
+  	- If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`]({{ page.version.version }}/architecture/transaction-layer.md#txnwaitqueue) on this node. The incoming transaction can only continue once the blocking transaction completes (i.e., commits or aborts).
 - `MISSING`, the resolver consults the write intent's timestamp.
 	- If it was created within the transaction liveness threshold, it treats the transaction record as exhibiting the `PENDING` behavior, with the addition of tracking the push in the range's timestamp cache, which will inform the transaction that its timestamp was pushed once the transaction record gets created.
 	- If the write intent is older than the transaction liveness threshold, the resolution exhibits the `ABORTED` behavior.
 
-    Note that transaction records might be missing because we've avoided writing the record until the transaction commits. For more information, see [Transaction Layer: Transaction records]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-records).
+    Note that transaction records might be missing because we've avoided writing the record until the transaction commits. For more information, see [Transaction Layer: Transaction records]({{ page.version.version }}/architecture/transaction-layer.md#transaction-records).
 
-Check out our architecture documentation for more information about [CockroachDB's transactional model]({% link {{ page.version.version }}/architecture/transaction-layer.md %}).
+Check out our architecture documentation for more information about [CockroachDB's transactional model]({{ page.version.version }}/architecture/transaction-layer.md).
 
 #### Read Operations
 
@@ -151,13 +151,13 @@ As we mentioned before, each read operation also updates the timestamp cache.
 
 ### Write Operations
 
-After guaranteeing that there are no existing write intents for the keys, `BatchRequest`'s key-value operations are converted to [Raft operations]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) and have their values converted into write intents.
+After guaranteeing that there are no existing write intents for the keys, `BatchRequest`'s key-value operations are converted to [Raft operations]({{ page.version.version }}/architecture/replication-layer.md#raft) and have their values converted into write intents.
 
 The leaseholder then proposes these Raft operations to the Raft group leader. The leaseholder and the Raft leader are almost always the same node, but there are situations where the roles might drift to different nodes. However, when the two roles are not collocated on the same physical machine, CockroachDB will attempt to relocate them on the same node at the next opportunity.
 
 ## Raft Leader
 
-CockroachDB leverages Raft as its consensus protocol. If you aren't familiar with it, we recommend checking out the details about [how CockroachDB leverages Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft), as well as [learning more about how the protocol works at large](http://thesecretlivesofdata.com/raft/).
+CockroachDB leverages Raft as its consensus protocol. If you aren't familiar with it, we recommend checking out the details about [how CockroachDB leverages Raft]({{ page.version.version }}/architecture/replication-layer.md#raft), as well as [learning more about how the protocol works at large](http://thesecretlivesofdata.com/raft/).
 
 In terms of executing transactions, the Raft leader receives proposed Raft commands from the leaseholder. Each Raft command is a write that is used to represent an atomic state change of the underlying key-value pairs stored in the storage engine.
 
@@ -179,7 +179,7 @@ Now that we have followed an operation all the way down from the SQL client to t
  it sends an commit acknowledgment to the gateway node's `DistSender`, which was waiting for this signal (having already received the provisional acknowledgment from the leaseholder's evaluator).
 1. The gateway node's `DistSender` aggregates commit acknowledgments from all of the write operations in the `BatchRequest`, as well as any values from read operations that should be returned to the client.
 1. Once all operations have successfully completed (i.e., reads have returned values and write intents have been committed), the `DistSender` tries to record the transaction's success in the transaction record (which provides a durable mechanism of tracking the transaction's state), which can cause a few situations to arise:
-    - It checks the timestamp cache of the range where the first write occurred to see if its timestamp got pushed forward. If it did, the transaction performs a [read refresh]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#read-refreshing) to see if any values it needed have been changed. If the read refresh is successful, the transaction can commit at the pushed timestamp. If the read refresh fails, the transaction must be restarted.
+    - It checks the timestamp cache of the range where the first write occurred to see if its timestamp got pushed forward. If it did, the transaction performs a [read refresh]({{ page.version.version }}/architecture/transaction-layer.md#read-refreshing) to see if any values it needed have been changed. If the read refresh is successful, the transaction can commit at the pushed timestamp. If the read refresh fails, the transaction must be restarted.
 	- If the transaction is in an `ABORTED` state, the `DistSender` sends a response indicating as much, which ends up back at the SQL interface.
 
 	Upon passing these checks the transaction record is either written for the first time with the `COMMITTED` state, or if it was in a `PENDING` state, it is moved to `COMMITTED`. Only at this point is the transaction considered committed.

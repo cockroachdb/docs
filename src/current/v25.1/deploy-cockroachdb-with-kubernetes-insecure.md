@@ -6,7 +6,6 @@ toc_not_nested: true
 docs_area:
 ---
 
-{% include {{ page.version.version }}/filter-tabs/crdb-single-kubernetes.md %}
 
 This page shows you how to start and stop a 3-node CockroachDB insecure test cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using one of the following:
 
@@ -14,11 +13,9 @@ This page shows you how to start and stop a 3-node CockroachDB insecure test clu
 
 - [Helm](https://helm.sh/) package manager for Kubernetes
 
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
-The steps below demonstrate how to quickly deploy and interact with an insecure test cluster. To learn about authenticating, configuring, scaling, and upgrading a CockroachDB cluster on Kubernetes, see [Kubernetes Overview]({% link {{ page.version.version }}/kubernetes-overview.md %}).
+The steps below demonstrate how to quickly deploy and interact with an insecure test cluster. To learn about authenticating, configuring, scaling, and upgrading a CockroachDB cluster on Kubernetes, see [Kubernetes Overview]({{ page.version.version }}/kubernetes-overview.md).
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 
@@ -38,11 +35,9 @@ Feature | Description
 
 ### Best practices
 
-{% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 
 ## Step 1. Start Kubernetes
 
-{% include {{ page.version.version }}/orchestration/start-kubernetes.md %}
 
 ## Step 2. Start CockroachDB
 
@@ -54,24 +49,19 @@ Choose how you want to deploy and maintain the CockroachDB cluster.
 </div>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-insecure.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-helm-insecure.md %}
 </section>
 
 ## Step 3. Use the built-in SQL client
 
-{% include {{ page.version.version }}/orchestration/test-cluster-insecure.md %}
 
 ## Step 4. Access the DB Console
 
-{% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
 
 ## Step 5. Simulate node failure
 
-{% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
 
 ## Step 6. Stop the cluster
 
@@ -85,7 +75,6 @@ Do **not** use the `--all` flag to `kubectl delete`, to avoid the risk of uninte
 
 This command is very long; you may need to scroll your browser to read all of it.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 kubectl delete \
   pods,statefulsets,services,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor \
@@ -115,7 +104,6 @@ servicemonitor "cockroachdb" deleted
 
 <section class="filter-content" markdown="1" data-scope="helm">
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ helm uninstall my-release
 ~~~
@@ -142,34 +130,30 @@ To delete the Kubernetes cluster:
 
 - Hosted GKE:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters delete cockroachdb
     ~~~
 - Hosted EKS:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl delete cluster --name cockroachdb
     ~~~
 - Manual GCE:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cluster/kube-down.sh
     ~~~
 - Manual AWS:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cluster/kube-down.sh
     ~~~
 
 ## See also
 
-- [Kubernetes Overview]({% link {{ page.version.version }}/kubernetes-overview.md %})
-- [Deploy CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %})
-- [Cluster monitoring]({% link {{ page.version.version }}/monitor-cockroachdb-kubernetes.md %})
-- [Kubernetes Multi-Cluster Deployment]({% link {{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %})
-- [Kubernetes Performance Guide]({% link {{ page.version.version }}/kubernetes-performance.md %})
-- [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %})
+- [Kubernetes Overview]({{ page.version.version }}/kubernetes-overview.md)
+- [Deploy CockroachDB on Kubernetes]({{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md)
+- [Cluster monitoring]({{ page.version.version }}/monitor-cockroachdb-kubernetes.md)
+- [Kubernetes Multi-Cluster Deployment]({{ page.version.version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md)
+- [Kubernetes Performance Guide]({{ page.version.version }}/kubernetes-performance.md)
+- [Production Checklist]({{ page.version.version }}/recommended-production-settings.md)

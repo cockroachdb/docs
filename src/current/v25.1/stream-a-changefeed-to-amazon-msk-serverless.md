@@ -4,7 +4,7 @@ summary: Learn how to connect a changefeed to stream data to an Amazon MSK Serve
 toc: true
 ---
 
-[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can stream change data to [Amazon MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless.html) (Amazon Managed Streaming for Apache Kafka), which is an Amazon MSK cluster type that automatically scales your capacity.
+[Changefeeds]({{ page.version.version }}/change-data-capture-overview.md) can stream change data to [Amazon MSK Serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless.html) (Amazon Managed Streaming for Apache Kafka), which is an Amazon MSK cluster type that automatically scales your capacity.
 
 MSK Serverless requires [IAM authentication](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html?icmpid=docs_iam_console) for the changefeed to connect to the cluster.
 
@@ -15,12 +15,10 @@ In this tutorial, you'll set up an MSK Serverless cluster and connect a changefe
 You'll need:
 
 - An [AWS account](https://signin.aws.amazon.com/signup?request_type=register).
-- A CockroachDB {{ site.data.products.core }} cluster hosted on AWS. You can set up a cluster using [Deploy CockroachDB on AWS EC2]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %}). You must create instances in the same VPC that the MSK Serverless cluster will use in order for the changefeed to authenticate successfully.
+- A CockroachDB {{ site.data.products.core }} cluster hosted on AWS. You can set up a cluster using [Deploy CockroachDB on AWS EC2]({{ page.version.version }}/deploy-cockroachdb-on-aws.md). You must create instances in the same VPC that the MSK Serverless cluster will use in order for the changefeed to authenticate successfully.
 - A Kafka client to consume the changefeed messages. You **must** ensure that your client machine is in the same VPC as the MSK Serverless cluster. This tutorial uses a client set up following the AWS [MSK Serverless guide](https://docs.aws.amazon.com/msk/latest/developerguide/create-serverless-cluster-client.html).
-- {% include {{ page.version.version }}/cdc/tutorial-privilege-check.md %}
 
 {{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/cdc/msk-dedicated-support.md %}
 {{site.data.alerts.end}}
 
 ## Step 1. Create an MSK Serverless cluster
@@ -34,13 +32,11 @@ You'll need:
 
 MSK Serverless clusters only support IAM authentication. In this step, you'll create an IAM policy that contains the permissions to interact with the MSK Serverless cluster. Then, you'll create an IAM role, which you'll associate with the IAM policy. In a later step, both the CockroachDB cluster and Kafka client machine will use this role to work with the MSK Serverless cluster.
 
-{% include {{ page.version.version }}/cdc/msk-iam-policy-role-step.md %}
 
 ## Step 3. Set up the CockroachDB cluster role
 
 In this step, you'll create a role, which contains the `sts:AssumeRole` permission, for the EC2 instance that is running your CockroachDB cluster. The `sts:AssumeRole` permission will allow the EC2 instance to obtain temporary security credentials to access the MSK Serverless cluster according to the `msk-policy` permissions. To achieve this, you'll add the EC2 role to the trust relationship of the `msk-role` you created in the [previous step](#step-2-create-an-iam-policy-and-role-to-access-the-msk-serverless-cluster).
 
-{% include {{ page.version.version }}/cdc/cluster-iam-role-step.md %}
 
 ## Step 4. Connect the client to the MSK Serverless cluster
 
@@ -60,14 +56,12 @@ In this step, you'll prepare the client to connect to the MSK Serverless cluster
     If you need further detail on setting up the Kafka client, refer to the [AWS setup guide](https://docs.aws.amazon.com/msk/latest/developerguide/create-serverless-cluster-client.html).
 1. Move to the directory of your Kafka installation:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd kafka_2.12-2.8.1/bin
     ~~~
 
 1. It is necessary to create topics manually for MSK Serverless clusters. To create a topic, run the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ~/kafka_2.12-2.8.1/bin/kafka-topics.sh --bootstrap-server {msk serverless endpoint} --command-config client.properties --create --topic {users} --partitions {1}
     ~~~
@@ -87,7 +81,6 @@ In this step, you'll prepare the client to connect to the MSK Serverless cluster
 
 In this step, you'll prepare your CockroachDB cluster to start the changefeed.
 
-{% include {{ page.version.version }}/cdc/msk-tutorial-crdb-setup.md %}
 
 1. To connect the changefeed to the MSK Serverless cluster, the URI must contain the following parameters:
     - The MSK Serverless cluster endpoint prefixed with the `kafka://` scheme, for example: `kafka://boot-vab1abab.c1.kafka-serverless.us-east-1.amazonaws.com:9098`.
@@ -102,18 +95,16 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
     'kafka://boot-vab1abab.c1.kafka-serverless.us-east-1.amazonaws.com:9098/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region=us-east-1&sasl_aws_iam_role_arn=arn:aws:iam::{account ID}:role/{msk-role}&sasl_aws_iam_session_name={user-specified session name}'
     ~~~
 
-    You can either specify the Kafka URI in the `CREATE CHANGEFEED` statement directly. Or, create an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) for the MSK Serverless URI.
+    You can either specify the Kafka URI in the `CREATE CHANGEFEED` statement directly. Or, create an [external connection]({{ page.version.version }}/create-external-connection.md) for the MSK Serverless URI.
 
     External connections define a name for an external connection while passing the provider URI and query parameters:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION msk_serverless AS 'kafka://boot-vab1abab.c1.kafka-serverless.us-east-1.amazonaws.com:9098/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region=us-east-1&sasl_aws_iam_role_arn=arn:aws:iam::{account ID}:role/{msk-role}&sasl_aws_iam_session_name={user-specified session name}';
     ~~~
 
-1. Use the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) statement to start the changefeed using either the external connection (`external://`) or full `kafka://` URI:
+1. Use the [`CREATE CHANGEFEED`]({{ page.version.version }}/create-changefeed.md) statement to start the changefeed using either the external connection (`external://`) or full `kafka://` URI:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE movr.users INTO `external://msk_serverless` WITH resolved;
     ~~~
@@ -123,20 +114,18 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
     1002677216020987905
     ~~~
 
-    To view a changefeed job, use [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs).
+    To view a changefeed job, use [`SHOW CHANGEFEED JOBS`]({{ page.version.version }}/show-jobs.md#show-changefeed-jobs).
 
 ## Step 6. Consume the changefeed messages on the client
 
 1. Return to the terminal that is running the Kafka client. Move to the Kafka installation directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd kafka_2.12-2.8.1/bin
     ~~~
 
 1. Run the following command to start a consumer. Set `--topic` to the topic you created in [Step 4.5](#step-4-connect-the-client-to-the-msk-serverless-cluster):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ~/kafka_2.12-2.8.1/bin/kafka-console-consumer.sh --bootstrap-server {msk serverless endpoint} --consumer.config client.properties --topic users --from-beginning
     ~~~
@@ -159,7 +148,7 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
 
 For more resources, refer to the following:
 
-- [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page for details on parameters that sinks support.
+- [Changefeed Sinks]({{ page.version.version }}/changefeed-sinks.md) page for details on parameters that sinks support.
 - [Configuration for serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless-config.html) in the AWS documentation for details on topic-level configuration options.
 - [Monitoring serverless clusters](https://docs.aws.amazon.com/msk/latest/developerguide/serverless-monitoring.html) in the AWS documentation for details on monitoring the MSK Serverless cluster.
-- [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) for details on monitoring the changefeed job.
+- [Monitor and Debug Changefeeds]({{ page.version.version }}/monitor-and-debug-changefeeds.md) for details on monitoring the changefeed job.

@@ -10,7 +10,7 @@ This page provides best practices for optimizing the performance of serverless f
 
 ## Use connection pools that persist across function invocations
 
-Use [connection pools]({% link {{ page.version.version }}/connection-pooling.md %}) to manage the lifecycle of database connections established by serverless functions. Connection pools check connection health and re-establish broken connections in the event of a communication error.
+Use [connection pools]({{ page.version.version }}/connection-pooling.md) to manage the lifecycle of database connections established by serverless functions. Connection pools check connection health and re-establish broken connections in the event of a communication error.
 
 When creating connection pools in serverless functions:
 
@@ -20,7 +20,7 @@ When creating connection pools in serverless functions:
 
 If you plan to invoke a serverless function frequently, configure the function to persist connection pools across function invocations. This helps to limit the number of new connection attempts to the cluster. One way to do this is to initialize the connection pool variable outside the scope of the serverless function definition.
 
-For example if an AWS Lambda function uses [`INSERT`]({% link {{ page.version.version }}/insert.md %}) to add data to a table and runs every few seconds, initialize the connection pool variable outside of the [handler function](https://docs.aws.amazon.com/lambda/latest/dg/foundation-progmodel.html) definition, then define the connection pool in the handler only if the pool does not already exist.
+For example if an AWS Lambda function uses [`INSERT`]({{ page.version.version }}/insert.md) to add data to a table and runs every few seconds, initialize the connection pool variable outside of the [handler function](https://docs.aws.amazon.com/lambda/latest/dg/foundation-progmodel.html) definition, then define the connection pool in the handler only if the pool does not already exist.
 
 Select either node.js or Python to continue.
 
@@ -33,7 +33,6 @@ Select either node.js or Python to continue.
 
 The following node.js code implements this pattern:
 
-{% include_cached copy-clipboard.html %}
 ~~~ js
 const { Pool } = require('pg')
 
@@ -69,7 +68,6 @@ exports.handler = async (context) => {
 
 The following Python code implements this pattern:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 from psycopg2.pool import SimpleConnectionPool
 
@@ -101,7 +99,6 @@ As a database-as-a-service, CockroachDB {{ site.data.products.standard }} abstra
 
 To create a free CockroachDB {{ site.data.products.standard }} cluster:
 
-{% include_cached cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
 
 ## Deploy serverless functions in the same region as your cluster
 
@@ -109,5 +106,5 @@ To minimize network latency, you should deploy your serverless functions in the 
 
 ## See also
 
-- [Create and Deploy an AWS Lambda Function Built on CockroachDB]({% link {{ page.version.version }}/deploy-lambda-function.md %})
-- [Connect to your Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %})
+- [Create and Deploy an AWS Lambda Function Built on CockroachDB]({{ page.version.version }}/deploy-lambda-function.md)
+- [Connect to your Cluster]({{ page.version.version }}/connect-to-the-database.md)

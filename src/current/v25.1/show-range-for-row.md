@@ -5,14 +5,13 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW RANGE ... FOR ROW` [statement]({% link {{ page.version.version }}/sql-statements.md %}) shows information about a [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
+The `SHOW RANGE ... FOR ROW` [statement]({{ page.version.version }}/sql-statements.md) shows information about a [range]({{ page.version.version }}/architecture/overview.md#architecture-range) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-To show information about the ranges for all data in a table, index, or database, use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement.
+To show information about the ranges for all data in a table, index, or database, use the [`SHOW RANGES`]({{ page.version.version }}/show-ranges.md) statement.
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -24,7 +23,7 @@ SHOW RANGE FROM INDEX [ <tablename> @ ] <indexname> FOR ROW (value1, value2, ...
 
 ## Required privileges
 
-The user must have the `SELECT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the target table.
+The user must have the `SELECT` [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the target table.
 
 ## Parameters
 
@@ -43,20 +42,18 @@ Field | Description
 `start_key` | The start key for the range.
 `end_key` | The end key for the range.
 `range_id` | The range ID.
-`lease_holder` | The node that contains the range's [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range).
-`lease_holder_locality` | The [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) of the leaseholder.
-`replicas` | The nodes that contain the range [replicas]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range).
-`replica_localities` | The [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) of the range.
+`lease_holder` | The node that contains the range's [leaseholder]({{ page.version.version }}/architecture/overview.md#architecture-range).
+`lease_holder_locality` | The [locality]({{ page.version.version }}/cockroach-start.md#locality) of the leaseholder.
+`replicas` | The nodes that contain the range [replicas]({{ page.version.version }}/architecture/overview.md#architecture-range).
+`replica_localities` | The [locality]({{ page.version.version }}/cockroach-start.md#locality) of the range.
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Show range information for a row in a table
 
 To show information about a row in a table, you must know the values of the columns in the row's primary key:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM vehicles;
 ~~~
@@ -78,7 +75,6 @@ To show information about a row in a table, you must know the values of the colu
 (11 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, id FROM vehicles LIMIT 5;
 ~~~
@@ -94,7 +90,6 @@ To show information about a row in a table, you must know the values of the colu
 (5 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGE FROM TABLE vehicles FOR ROW (
     'boston',
@@ -113,7 +108,6 @@ To show information about a row in a table, you must know the values of the colu
 
 To show information about a row in a secondary index, you must know the values of the indexed columns:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM vehicles;
 ~~~
@@ -135,7 +129,6 @@ To show information about a row in a secondary index, you must know the values o
 (11 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, owner_id, id FROM vehicles@vehicles_auto_index_fk_city_ref_users LIMIT 5;
 ~~~
@@ -151,7 +144,6 @@ To show information about a row in a secondary index, you must know the values o
 (5 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGE FROM INDEX vehicles@vehicles_auto_index_fk_city_ref_users FOR ROW (
     'boston',
@@ -168,11 +160,11 @@ To show information about a row in a secondary index, you must know the values o
 
 ## See also
 
-- [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %})
-- [`ALTER TABLE ... SPLIT AT`]({% link {{ page.version.version }}/alter-table.md %}#split-at)
-- [`ALTER INDEX ... SPLIT AT`]({% link {{ page.version.version }}/alter-index.md %}#split-at)
-- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
-- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
-- [Indexes]({% link {{ page.version.version }}/indexes.md %})
-- [Partitioning tables]({% link {{ page.version.version }}/partitioning.md %})
-- [Architecture Overview]({% link {{ page.version.version }}/architecture/overview.md %})
+- [`SHOW RANGES`]({{ page.version.version }}/show-ranges.md)
+- [`ALTER TABLE ... SPLIT AT`]({{ page.version.version }}/alter-table.md#split-at)
+- [`ALTER INDEX ... SPLIT AT`]({{ page.version.version }}/alter-index.md#split-at)
+- [`CREATE TABLE`]({{ page.version.version }}/create-table.md)
+- [`CREATE INDEX`]({{ page.version.version }}/create-index.md)
+- [Indexes]({{ page.version.version }}/indexes.md)
+- [Partitioning tables]({{ page.version.version }}/partitioning.md)
+- [Architecture Overview]({{ page.version.version }}/architecture/overview.md)

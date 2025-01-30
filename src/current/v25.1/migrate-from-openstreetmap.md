@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
- CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}).
+ CockroachDB supports efficiently storing and querying [spatial data]({{ page.version.version }}/export-spatial-data.md).
 
 This page has instructions for migrating data from [OpenStreetMap](https://www.openstreetmap.org) `.pbf` data files into CockroachDB using [`osm2pgsql`](https://github.com/openstreetmap/osm2pgsql/).
 
@@ -15,28 +15,25 @@ In the example below we will import the [OSM data for Australia](https://downloa
 
 To follow along with the example below, you will need the following prerequisites:
 
-- CockroachDB [installed]({% link {{ page.version.version }}/install-cockroachdb.md %}) and [running]({% link {{ page.version.version }}/start-a-local-cluster.md %})
+- CockroachDB [installed]({{ page.version.version }}/install-cockroachdb.md) and [running]({{ page.version.version }}/start-a-local-cluster.md)
 - [`osm2pgsql`](https://github.com/openstreetmap/osm2pgsql/)
 
 ## Step 1. Download the OpenStreetMap data
 
 First, download the OSM data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 curl -o australia-latest.osm.pbf https://download.geofabrik.de/australia-oceania/australia-latest.osm.pbf
 ~~~
 
 ## Step 2. Prepare the database
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure
 ~~~
 
 Next, create a database to hold the Australia map data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS australia;
 USE australia;
@@ -44,9 +41,8 @@ USE australia;
 
 ## Step 3. Import the OpenStreetMap data
 
-Run the `osm2pgsql` command shown below to convert the OSM data and import it into the `australia` database. The arguments to `osm2pgsql` shown below assume a [locally running insecure cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}) and may need to be changed depending on your system. You may also need to tweak the cache setting (`-C`) depending on your system's hardware.
+Run the `osm2pgsql` command shown below to convert the OSM data and import it into the `australia` database. The arguments to `osm2pgsql` shown below assume a [locally running insecure cluster]({{ page.version.version }}/start-a-local-cluster.md) and may need to be changed depending on your system. You may also need to tweak the cache setting (`-C`) depending on your system's hardware.
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 osm2pgsql -C 2048 -d australia -U root -H localhost -P 26257 australia-latest.osm.pbf
 ~~~
@@ -122,19 +118,19 @@ Osm2pgsql took 2879s overall
 
 ## See also
 
-- [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
-- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
-- [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
-- [Migrate from GeoPackages]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
-- [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
-- [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Export Spatial Data]({{ page.version.version }}/export-spatial-data.md)
+- [Spatial tutorial]({{ page.version.version }}/spatial-tutorial.md)
+- [Spatial indexes]({{ page.version.version }}/spatial-indexes.md)
+- [Migrate from GeoPackages]({{ page.version.version }}/migrate-from-geopackage.md)
+- [Migrate from GeoJSON]({{ page.version.version }}/migrate-from-geojson.md)
+- [Migrate from Shapefiles]({{ page.version.version }}/migrate-from-shapefiles.md)
+- [Migration Overview]({{ page.version.version }}/migration-overview.md)
 - [Migrate from MySQL][mysql]
 - [Migrate from PostgreSQL][postgres]
-- [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
-- [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
-- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})
+- [Back Up and Restore Data]({{ page.version.version }}/take-full-and-incremental-backups.md)
+- [Use the Built-in SQL Client]({{ page.version.version }}/cockroach-sql.md)
+- [`cockroach` Commands Overview]({{ page.version.version }}/cockroach-commands.md)
+- [Using GeoServer with CockroachDB]({{ page.version.version }}/geoserver.md)
 
 {% comment %} Reference Links {% endcomment %}
 

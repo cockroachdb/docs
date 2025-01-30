@@ -11,38 +11,37 @@ existing data.
 
 When used as a stand-alone statement, the simple `SELECT` clause is
 also called "the `SELECT` statement". However, it is also a
-[selection clause]({% link {{ page.version.version }}/selection-queries.md %}#selection-clauses) that can be combined
-with other constructs to form more complex [selection queries]({% link {{ page.version.version }}/selection-queries.md %}).
+[selection clause]({{ page.version.version }}/selection-queries.md#selection-clauses) that can be combined
+with other constructs to form more complex [selection queries]({{ page.version.version }}/selection-queries.md).
 
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/simple_select_clause.html %}
 </div>
 
 
 {{site.data.alerts.callout_success}}
-The simple `SELECT` clause also has other applications not covered here, such as executing [functions]({% link {{ page.version.version }}/functions-and-operators.md %}) like `SELECT current_timestamp();`.
+The simple `SELECT` clause also has other applications not covered here, such as executing [functions]({{ page.version.version }}/functions-and-operators.md) like `SELECT current_timestamp();`.
 {{site.data.alerts.end}}
 
 ## Required privileges
 
-The user must have the `SELECT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the tables used as operands.
+The user must have the `SELECT` [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the tables used as operands.
 
 ## Parameters
 
 Parameter | Description
 ----------|-------------
 `DISTINCT` or `ALL` | See [Eliminate Duplicate Rows](#eliminate-duplicate-rows).
-`DISTINCT ON ( a_expr [, ...] )` | `DISTINCT ON` followed by a list of [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}) within parentheses. See [Eliminate Duplicate Rows](#eliminate-duplicate-rows).
-`target_elem` | A [scalar expression]({% link {{ page.version.version }}/scalar-expressions.md %}) to compute a column in each result row.<br><br>`*` automatically retrieves all columns. If a column has the [`NOT VISIBLE` property]({% link {{ page.version.version }}/create-table.md %}#not-visible-property), it is not returned with `*`.<br><br>If `target_elem` contains an [aggregate function]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions), a `GROUP BY` clause can be used to further control the aggregation.
-`table_ref` | The [table expression]({% link {{ page.version.version }}/table-expressions.md %}) you want to retrieve data from.<br><br>Using two or more table expressions in the `FROM` sub-clause, separated with a comma, is equivalent to a [`CROSS JOIN`]({% link {{ page.version.version }}/joins.md %}) expression.
-`AS OF SYSTEM TIME timestamp` | Retrieve data as it existed [as of `timestamp`]({% link {{ page.version.version }}/as-of-system-time.md %}). <br><br>**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
-`WHERE a_expr` | <a name="where-clause"></a> Only retrieve rows that return `TRUE` for `a_expr`, which must be a [scalar expression]({% link {{ page.version.version }}/scalar-expressions.md %}) that returns Boolean values using columns (e.g., `<column> = <value>`).
-`GROUP BY a_expr` | Group results on one or more columns.<br><br>When an [aggregate function]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions) follows `SELECT` as a `target_elem`, or `HAVING` as an `a_expr`, you can [create aggregate groups](#create-aggregate-groups) on column groupings listed after `GROUP BY`.<br> You can group columns by an alias (i.e., a label assigned to the column with an `AS` clause) rather than the column name.<br> If aggregate groups are created on a full primary key, any column in the table can be selected as a `target_elem`, or specified in a `HAVING` clause.<br> If a selected column is in a [subquery]({% link {{ page.version.version }}/subqueries.md %}), and the column references a higher scope, the column does not need to be included in the `GROUP BY` clause (if one exists).<br><br>Using a `GROUP BY` clause in a statement without an aggregate function is equivalent to using a [`DISTINCT ON`](#eliminate-duplicate-rows) clause on the grouping columns.
-`HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be a [scalar expression]({% link {{ page.version.version }}/scalar-expressions.md %}) that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions.
-`WINDOW window_definition_list` | A list of [window definitions]({% link {{ page.version.version }}/window-functions.md %}#window-definitions).
+`DISTINCT ON ( a_expr [, ...] )` | `DISTINCT ON` followed by a list of [scalar expressions]({{ page.version.version }}/scalar-expressions.md) within parentheses. See [Eliminate Duplicate Rows](#eliminate-duplicate-rows).
+`target_elem` | A [scalar expression]({{ page.version.version }}/scalar-expressions.md) to compute a column in each result row.<br><br>`*` automatically retrieves all columns. If a column has the [`NOT VISIBLE` property]({{ page.version.version }}/create-table.md#not-visible-property), it is not returned with `*`.<br><br>If `target_elem` contains an [aggregate function]({{ page.version.version }}/functions-and-operators.md#aggregate-functions), a `GROUP BY` clause can be used to further control the aggregation.
+`table_ref` | The [table expression]({{ page.version.version }}/table-expressions.md) you want to retrieve data from.<br><br>Using two or more table expressions in the `FROM` sub-clause, separated with a comma, is equivalent to a [`CROSS JOIN`]({{ page.version.version }}/joins.md) expression.
+`AS OF SYSTEM TIME timestamp` | Retrieve data as it existed [as of `timestamp`]({{ page.version.version }}/as-of-system-time.md). <br><br>**Note**: Because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
+`WHERE a_expr` | <a name="where-clause"></a> Only retrieve rows that return `TRUE` for `a_expr`, which must be a [scalar expression]({{ page.version.version }}/scalar-expressions.md) that returns Boolean values using columns (e.g., `<column> = <value>`).
+`GROUP BY a_expr` | Group results on one or more columns.<br><br>When an [aggregate function]({{ page.version.version }}/functions-and-operators.md#aggregate-functions) follows `SELECT` as a `target_elem`, or `HAVING` as an `a_expr`, you can [create aggregate groups](#create-aggregate-groups) on column groupings listed after `GROUP BY`.<br> You can group columns by an alias (i.e., a label assigned to the column with an `AS` clause) rather than the column name.<br> If aggregate groups are created on a full primary key, any column in the table can be selected as a `target_elem`, or specified in a `HAVING` clause.<br> If a selected column is in a [subquery]({{ page.version.version }}/subqueries.md), and the column references a higher scope, the column does not need to be included in the `GROUP BY` clause (if one exists).<br><br>Using a `GROUP BY` clause in a statement without an aggregate function is equivalent to using a [`DISTINCT ON`](#eliminate-duplicate-rows) clause on the grouping columns.
+`HAVING a_expr` | Only retrieve aggregate function groups that return `TRUE` for `a_expr`, which must be a [scalar expression]({{ page.version.version }}/scalar-expressions.md) that returns Boolean values using an aggregate function (e.g., `<aggregate function> = <value>`). <br/><br/>`HAVING` works like the `WHERE` clause, but for aggregate functions.
+`WINDOW window_definition_list` | A list of [window definitions]({{ page.version.version }}/window-functions.md#window-definitions).
 
 ## Eliminate duplicate rows
 
@@ -56,11 +55,10 @@ Without `ON`, two rows are considered duplicates if they are equal on
 all the results computed by `SELECT`.
 
 With `ON`, two rows are considered duplicates if they are equal only
-using the [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}) listed with `ON`. When two rows are considered duplicates according to `DISTINCT ON`, the values from the first `FROM` row in the order specified by [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}) are used to compute the remaining target expressions. If `ORDER BY` is not specified, CockroachDB will pick any one of the duplicate rows as first row, non-deterministically.
+using the [scalar expressions]({{ page.version.version }}/scalar-expressions.md) listed with `ON`. When two rows are considered duplicates according to `DISTINCT ON`, the values from the first `FROM` row in the order specified by [`ORDER BY`]({{ page.version.version }}/order-by.md) are used to compute the remaining target expressions. If `ORDER BY` is not specified, CockroachDB will pick any one of the duplicate rows as first row, non-deterministically.
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Choose columns
 
@@ -68,7 +66,6 @@ using the [scalar expressions]({% link {{ page.version.version }}/scalar-express
 
 Retrieve specific columns by naming them in a comma-separated list:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, city, name FROM users LIMIT 10;
 ~~~
@@ -93,7 +90,6 @@ Retrieve specific columns by naming them in a comma-separated list:
 
 Retrieve all columns by using `*`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users LIMIT 10;
 ~~~
@@ -120,7 +116,6 @@ Retrieve all columns by using `*`:
 
 Filter rows with expressions that use columns and return Boolean values in the `WHERE` clause:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name, id FROM users WHERE city='seattle';
 ~~~
@@ -139,7 +134,6 @@ Filter rows with expressions that use columns and return Boolean values in the `
 
 To use multiple `WHERE` filters join them with `AND` or `OR`. You can also create negative filters with `NOT`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM vehicles WHERE city = 'seattle' AND status = 'available';
 ~~~
@@ -155,7 +149,6 @@ To use multiple `WHERE` filters join them with `AND` or `OR`. You can also creat
 
 Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` search for listed values in the specified column:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name, id FROM users WHERE city IN ('new york', 'chicago', 'seattle');
 ~~~
@@ -182,9 +175,8 @@ Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` se
 
 #### Select distinct rows
 
-Columns without the [Primary Key]({% link {{ page.version.version }}/primary-key.md %}) or [Unique]({% link {{ page.version.version }}/unique.md %}) constraints can have multiple instances of the same value:
+Columns without the [Primary Key]({{ page.version.version }}/primary-key.md) or [Unique]({{ page.version.version }}/unique.md) constraints can have multiple instances of the same value:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name FROM users WHERE city in ('los angeles', 'washington dc');
 ~~~
@@ -205,7 +197,6 @@ Columns without the [Primary Key]({% link {{ page.version.version }}/primary-key
 
 Using `DISTINCT`, you can remove all but one instance of duplicate values from your retrieved data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT name FROM users WHERE city in ('los angeles', 'washington dc');
 ~~~
@@ -227,7 +218,6 @@ Using `DISTINCT`, you can remove all but one instance of duplicate values from y
 
 Instead of outputting a column's name in the retrieved table, you can change its label using `AS`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT current_location AS ny_address, id, type, status FROM vehicles WHERE city = 'new york';
 ~~~
@@ -240,18 +230,17 @@ Instead of outputting a column's name in the retrieved table, you can change its
 (2 rows)
 ~~~
 
-This *does not* change the name of the column in the table. To do that, use [`RENAME COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#rename-column).
+This *does not* change the name of the column in the table. To do that, use [`RENAME COLUMN`]({{ page.version.version }}/alter-table.md#rename-column).
 
 ### Search for string values
 
-Search for partial [string]({% link {{ page.version.version }}/string.md %}) matches in columns using `LIKE`, which supports the following wildcard operators:
+Search for partial [string]({{ page.version.version }}/string.md) matches in columns using `LIKE`, which supports the following wildcard operators:
 
 - `%` matches 0 or more characters.
 - `_` matches exactly 1 character.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, status, id FROM vehicles WHERE type LIKE 'scoot%';
 ~~~
@@ -271,13 +260,12 @@ For example:
 
 ### Aggregate functions
 
-[Aggregate functions]({% link {{ page.version.version }}/functions-and-operators.md %}#aggregate-functions) perform calculations on retrieved rows.
+[Aggregate functions]({{ page.version.version }}/functions-and-operators.md#aggregate-functions) perform calculations on retrieved rows.
 
 #### Perform aggregate function on entire column
 
 By using an aggregate function as a `target_elem`, you can perform the calculation on the entire column.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT MIN(revenue) FROM rides;
 ~~~
@@ -291,7 +279,6 @@ By using an aggregate function as a `target_elem`, you can perform the calculati
 
 You can also use the retrieved value as part of an expression. For example, you can use the result in the `WHERE` clause to select additional rows that were not part of the aggregate function itself:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, city, vehicle_id, rider_id
 FROM rides
@@ -320,7 +307,6 @@ WHERE revenue = (
 
 By filtering the statement, you can perform the calculation only on retrieved rows:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT SUM(revenue) FROM rides WHERE city IN ('new york', 'chicago');
 ~~~
@@ -336,7 +322,6 @@ By filtering the statement, you can perform the calculation only on retrieved ro
 
 You can use `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter which rows are processed by an aggregate function; those that return `FALSE` or `NULL` for the `FILTER` clause's Boolean expression are not fed into the aggregate function:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT count(*) AS unfiltered, count(*) FILTER (WHERE revenue > 50) AS filtered FROM rides;
 ~~~
@@ -356,7 +341,6 @@ When creating aggregate groups, each column selected as a `target_elem` must be 
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, SUM(revenue) AS city_revenue FROM rides
 WHERE city IN ('new york', 'chicago', 'seattle') GROUP BY city;
@@ -372,7 +356,7 @@ WHERE city IN ('new york', 'chicago', 'seattle') GROUP BY city;
 ~~~
 
 {{site.data.alerts.callout_info}}
- If the group is created on a primary key column, any column in the table can be selected as a `target_elem`. If a selected column is in a [subquery]({% link {{ page.version.version }}/subqueries.md %}) that references a higher scope, a `GROUP BY` clause is not needed.
+ If the group is created on a primary key column, any column in the table can be selected as a `target_elem`. If a selected column is in a [subquery]({{ page.version.version }}/subqueries.md) that references a higher scope, a `GROUP BY` clause is not needed.
 {{site.data.alerts.end}}
 
 #### Filter aggregate groups
@@ -381,7 +365,6 @@ To filter aggregate groups, use `HAVING`, which is the equivalent of the `WHERE`
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, AVG(revenue) as avg FROM rides GROUP BY city
 HAVING AVG(revenue) BETWEEN 50 AND 60;
@@ -404,7 +387,6 @@ Aggregate functions can also be used in the `HAVING` clause without needing to b
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT vehicle_id, city FROM rides WHERE city IN ('new york', 'chicago', 'seattle')
 GROUP BY vehicle_id, city HAVING COUNT(vehicle_id) > 20;
@@ -421,11 +403,10 @@ GROUP BY vehicle_id, city HAVING COUNT(vehicle_id) > 20;
 
 #### Order aggregate function input rows by column
 
-Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding `SELECT` clause. To specify the order in which input rows are processed, you can add an [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}) clause within the function argument list.
+Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding `SELECT` clause. To specify the order in which input rows are processed, you can add an [`ORDER BY`]({{ page.version.version }}/order-by.md) clause within the function argument list.
 
 For example, suppose you want to create an array of `name` values, ordered alphabetically, and grouped by `city`. You can use the following statement to do so:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, array_agg(name ORDER BY name) AS users FROM users WHERE city IN ('new york', 'chicago', 'seattle') GROUP BY city;
 ~~~
@@ -441,7 +422,6 @@ For example, suppose you want to create an array of `name` values, ordered alpha
 
 You can also order input rows using a column different than the input row column. The following statement returns an array of `revenue` values from high-revenue rides, ordered by ride `end_time`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, array_agg(revenue ORDER BY end_time) as revenues FROM rides WHERE revenue > 80 GROUP BY city;
 ~~~
@@ -466,7 +446,6 @@ You can also order input rows using a column different than the input row column
 
 If you include multiple aggregate functions in a single `SELECT` clause, you can order the input rows of the multiple functions on different columns. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, array_agg(revenue ORDER BY revenue) as revenues_by_revenue, array_agg(revenue ORDER BY end_time) as revenues_by_end_time FROM rides WHERE revenue > 90 GROUP BY city;
 ~~~
@@ -492,7 +471,6 @@ If you include multiple aggregate functions in a single `SELECT` clause, you can
 
  If a query includes an alias (i.e., a [label assigned to the column with an `AS` clause](#rename-columns-in-output)), you can group the aggregations in the query by the alias rather than by the column name. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city AS c, SUM(revenue) AS c_rev FROM rides GROUP BY c;
 ~~~
@@ -513,33 +491,32 @@ If you include multiple aggregate functions in a single `SELECT` clause, you can
 
 ### Select from a specific index
 
-{% include {{page.version.version}}/misc/force-index-selection.md %}
 
 ### Select historical data (time-travel)
 
 CockroachDB lets you find data as it was stored at a given point in
 time using `AS OF SYSTEM TIME` with various [supported
-formats]({% link {{ page.version.version }}/as-of-system-time.md %}). This can be also advantageous for
+formats]({{ page.version.version }}/as-of-system-time.md). This can be also advantageous for
 performance. For more details, see [`AS OF SYSTEM
-TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
+TIME`]({{ page.version.version }}/as-of-system-time.md).
 
 ## Advanced uses of `SELECT` clauses
 
 CockroachDB supports numerous ways to combine results from `SELECT`
 clauses together.
 
-See [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %}) for
+See [Selection Queries]({{ page.version.version }}/selection-queries.md) for
 details. A few examples follow.
 
 ### Sorting and limiting query results
 
 To order the results of a `SELECT` clause or limit the number of rows
 in the result, you can combine it with `ORDER BY` or `LIMIT` /
-`OFFSET` to form a [selection query]({% link {{ page.version.version }}/selection-queries.md %}) or
-[subquery]({% link {{ page.version.version }}/table-expressions.md %}#use-a-subquery).
+`OFFSET` to form a [selection query]({{ page.version.version }}/selection-queries.md) or
+[subquery]({{ page.version.version }}/table-expressions.md#use-a-subquery).
 
-See [Ordering Query Results]({% link {{ page.version.version }}/order-by.md %}) and [Limiting Query
-Results]({% link {{ page.version.version }}/limit-offset.md %}) for more details.
+See [Ordering Query Results]({{ page.version.version }}/order-by.md) and [Limiting Query
+Results]({{ page.version.version }}/limit-offset.md) for more details.
 
 {{site.data.alerts.callout_info}}When <code>ORDER BY</code> is not included in a query, rows are not sorted by any consistent criteria. Instead, CockroachDB returns them as the coordinating node receives them.<br><br>Also, CockroachDB sorts <a href="null-handling.html#nulls-and-sorting"><code>NULL</code> values</a> first with <code>ASC</code> and last with <code>DESC</code>. This differs from PostgreSQL, which sorts <code>NULL</code> values last with <code>ASC</code> and first with <code>DESC</code>.{{site.data.alerts.end}}
 
@@ -547,24 +524,23 @@ Results]({% link {{ page.version.version }}/limit-offset.md %}) for more details
 
 Results from two or more queries can be combined together as follows:
 
-- Using [`JOIN` expressions]({% link {{ page.version.version }}/joins.md %}) to combine rows
+- Using [`JOIN` expressions]({{ page.version.version }}/joins.md) to combine rows
   according to conditions on specific columns.
-- Using [set operations]({% link {{ page.version.version }}/selection-queries.md %}#set-operations) to combine rows
+- Using [set operations]({{ page.version.version }}/selection-queries.md#set-operations) to combine rows
   using inclusion/exclusion rules.
 
 ### Row-level locking for concurrency control with `SELECT FOR UPDATE`
 
-{% include {{page.version.version}}/sql/select-for-update-overview.md %}
 
-For an example, see  [`FOR UPDATE` and `FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}).
+For an example, see  [`FOR UPDATE` and `FOR SHARE`]({{ page.version.version }}/select-for-update.md).
 
 ## See also
 
-- [Scalar Expressions]({% link {{ page.version.version }}/scalar-expressions.md %})
-- [Selection Clauses]({% link {{ page.version.version }}/selection-queries.md %}#selection-clauses)
-- [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %})
-- [Set Operations]({% link {{ page.version.version }}/selection-queries.md %}#set-operations)
-- [Table Expressions]({% link {{ page.version.version }}/table-expressions.md %})
-- [Ordering Query Results]({% link {{ page.version.version }}/order-by.md %})
-- [Limit Query Results]({% link {{ page.version.version }}/limit-offset.md %})
-- [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %})
+- [Scalar Expressions]({{ page.version.version }}/scalar-expressions.md)
+- [Selection Clauses]({{ page.version.version }}/selection-queries.md#selection-clauses)
+- [`SELECT FOR UPDATE`]({{ page.version.version }}/select-for-update.md)
+- [Set Operations]({{ page.version.version }}/selection-queries.md#set-operations)
+- [Table Expressions]({{ page.version.version }}/table-expressions.md)
+- [Ordering Query Results]({{ page.version.version }}/order-by.md)
+- [Limit Query Results]({{ page.version.version }}/limit-offset.md)
+- [SQL Performance Best Practices]({{ page.version.version }}/performance-best-practices-overview.md)

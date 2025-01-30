@@ -5,12 +5,12 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW CLUSTER SETTING` [statement]({% link {{ page.version.version }}/sql-statements.md %}) displays the values of [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}).
+The `SHOW CLUSTER SETTING` [statement]({{ page.version.version }}/sql-statements.md) displays the values of [cluster settings]({{ page.version.version }}/cluster-settings.md).
 
-To configure cluster settings, use [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}).
+To configure cluster settings, use [`SET CLUSTER SETTING`]({{ page.version.version }}/set-cluster-setting.md).
 
 {{site.data.alerts.callout_info}}
-The `SHOW` statement for cluster settings is unrelated to the other `SHOW` statements: <a href="{% link {{ page.version.version }}/show-vars.md %}"><code>SHOW {session variable}</code></a>, <a href="{% link {{ page.version.version }}/show-create.md %}"><code>SHOW CREATE</code></a>, <a href="{% link {{ page.version.version }}/show-users.md %}"><code>SHOW USERS</code></a>, <a href="{% link {{ page.version.version }}/show-databases.md %}"><code>SHOW DATABASES</code></a>, <a href="{% link {{ page.version.version }}/show-columns.md %}"><code>SHOW COLUMNS</code></a>, <a href="{% link {{ page.version.version }}/show-grants.md %}"><code>SHOW GRANTS</code></a>, and <a href="{% link {{ page.version.version }}/show-constraints.md %}"><code>SHOW CONSTRAINTS</code></a>.
+The `SHOW` statement for cluster settings is unrelated to the other `SHOW` statements: <a href="{{ page.version.version }}/show-vars.md"><code>SHOW {session variable}</code></a>, <a href="{{ page.version.version }}/show-create.md"><code>SHOW CREATE</code></a>, <a href="{{ page.version.version }}/show-users.md"><code>SHOW USERS</code></a>, <a href="{{ page.version.version }}/show-databases.md"><code>SHOW DATABASES</code></a>, <a href="{{ page.version.version }}/show-columns.md"><code>SHOW COLUMNS</code></a>, <a href="{{ page.version.version }}/show-grants.md"><code>SHOW GRANTS</code></a>, and <a href="{{ page.version.version }}/show-constraints.md"><code>SHOW CONSTRAINTS</code></a>.
 {{site.data.alerts.end}}
 
 ## Details
@@ -46,21 +46,20 @@ The `SHOW` statement for cluster settings is unrelated to the other `SHOW` state
 To use the `SHOW CLUSTER SETTING` statement, a user must have one of the following attributes:
 
 - Be a member of the `admin` role (the `root` user belongs to the `admin` role by default).
-- Have the `MODIFYCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) granted.
-- Have the `VIEWCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy `VIEWCLUSTERSETTING` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) defined.
-- Have the `MODIFYSQLCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) granted. Users with this privilege are allowed to view only [`sql.defaults.*` cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-cost-scans-with-default-col-size-enabled), not all cluster settings.
+- Have the `MODIFYCLUSTERSETTING` [system-level privilege]({{ page.version.version }}/security-reference/authorization.md#privileges) granted.
+- Have the `VIEWCLUSTERSETTING` [system-level privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) (or the legacy `VIEWCLUSTERSETTING` [role option]({{ page.version.version }}/security-reference/authorization.md#role-options)) defined.
+- Have the `MODIFYSQLCLUSTERSETTING` [system-level privilege]({{ page.version.version }}/security-reference/authorization.md#privileges) granted. Users with this privilege are allowed to view only [`sql.defaults.*` cluster settings]({{ page.version.version }}/cluster-settings.md#setting-sql-defaults-cost-scans-with-default-col-size-enabled), not all cluster settings.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_cluster_setting.html %}
 </div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`var_name` | The name of the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) (case-insensitive).
+`var_name` | The name of the [cluster setting]({{ page.version.version }}/cluster-settings.md) (case-insensitive).
 `ALL` | Display all cluster settings.
 `PUBLIC` | Display only the public cluster settings.<br>By default, only public settings are listed by `SHOW CLUSTER SETTINGS`. `SHOW PUBLIC CLUSTER SETTINGS` and `SHOW CLUSTER SETTINGS` are equivalent.
 
@@ -82,7 +81,6 @@ Field | Description
 
 ### Show the value of a single cluster setting
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING diagnostics.reporting.enabled;
 ~~~
@@ -96,7 +94,6 @@ Field | Description
 
 ### Show the values of all public cluster settings
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTINGS;
 ~~~
@@ -113,7 +110,6 @@ Field | Description
 
 ### Show the values of all cluster settings
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ALL CLUSTER SETTINGS;
 ~~~
@@ -130,15 +126,15 @@ Field | Description
 
 ## See also
 
-- [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %})
-- [`RESET CLUSTER SETTING`]({% link {{ page.version.version }}/reset-cluster-setting.md %})
-- [Cluster settings]({% link {{ page.version.version }}/cluster-settings.md %})
-- [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
-- [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %})
-- [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %})
-- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
-- [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})
-- [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})
-- [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %})
-- [`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %})
-- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({% link {{ page.version.version }}/show-default-session-variables-for-role.md %})
+- [`SET CLUSTER SETTING`]({{ page.version.version }}/set-cluster-setting.md)
+- [`RESET CLUSTER SETTING`]({{ page.version.version }}/reset-cluster-setting.md)
+- [Cluster settings]({{ page.version.version }}/cluster-settings.md)
+- [`SHOW {session variable}`]({{ page.version.version }}/show-vars.md)
+- [`SHOW COLUMNS`]({{ page.version.version }}/show-columns.md)
+- [`SHOW CONSTRAINTS`]({{ page.version.version }}/show-constraints.md)
+- [`SHOW CREATE`]({{ page.version.version }}/show-create.md)
+- [`SHOW DATABASES`]({{ page.version.version }}/show-databases.md)
+- [`SHOW GRANTS`]({{ page.version.version }}/show-grants.md)
+- [`SHOW INDEX`]({{ page.version.version }}/show-index.md)
+- [`SHOW USERS`]({{ page.version.version }}/show-users.md)
+- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({{ page.version.version }}/show-default-session-variables-for-role.md)

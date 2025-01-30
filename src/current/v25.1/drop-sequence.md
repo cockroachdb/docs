@@ -5,17 +5,15 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DROP SEQUENCE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) removes a sequence from a database.
+The `DROP SEQUENCE` [statement]({{ page.version.version }}/sql-statements.md) removes a sequence from a database.
 
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the specified sequence(s).
+The user must have the `DROP` [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the specified sequence(s).
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_sequence.html %}</div>
 
 ## Parameters
 
@@ -23,10 +21,10 @@ The user must have the `DROP` [privilege]({% link {{ page.version.version }}/sec
 -----------|------------
 `IF EXISTS` |  Drop the sequence only if it exists; if it does not exist, do not return an error.
 `sequence_name_list` | A comma-separated list of sequence names. Find the sequence name with `SHOW CREATE` on the table that uses the sequence.
-`RESTRICT` | _(Default)_ Do not drop the sequence if any objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and tables) use it.
+`RESTRICT` | _(Default)_ Do not drop the sequence if any objects (such as [constraints]({{ page.version.version }}/constraints.md) and tables) use it.
 `CASCADE` | Not implemented. You can drop a sequence only if nothing depends on it.
 
-{% comment %} `CASCADE` > Drop all objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and tables) that depend on the sequence.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. {% endcomment %}
+{% comment %} `CASCADE` > Drop all objects (such as [constraints]({{ page.version.version }}/constraints.md) and tables) that depend on the sequence.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. {% endcomment %}
 
 ## Examples
 
@@ -34,12 +32,10 @@ The user must have the `DROP` [privilege]({% link {{ page.version.version }}/sec
 
 In this example, other objects do not depend on the sequence being dropped.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE even_numbers INCREMENT 2 START 2;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -51,12 +47,10 @@ In this example, other objects do not depend on the sequence being dropped.
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SEQUENCE even_numbers;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -81,9 +75,9 @@ DROP SEQUENCE
 ~~~ {% endcomment %}
 
 ## See also
-- [`CREATE SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %})
-- [`ALTER SEQUENCE`]({% link {{ page.version.version }}/alter-sequence.md %})
-- [`SHOW SEQUENCES`]({% link {{ page.version.version }}/show-sequences.md %})
-- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
-- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [`CREATE SEQUENCE`]({{ page.version.version }}/create-sequence.md)
+- [`ALTER SEQUENCE`]({{ page.version.version }}/alter-sequence.md)
+- [`SHOW SEQUENCES`]({{ page.version.version }}/show-sequences.md)
+- [Functions and Operators]({{ page.version.version }}/functions-and-operators.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)
+- [Online Schema Changes]({{ page.version.version }}/online-schema-changes.md)

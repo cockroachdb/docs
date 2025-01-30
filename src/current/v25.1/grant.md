@@ -5,21 +5,19 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `GRANT` [statement]({% link {{ page.version.version }}/sql-statements.md %}) controls each [role or user's]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles) [SQL privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) for interacting with specific [databases]({% link {{ page.version.version }}/create-database.md %}), [schemas]({% link {{ page.version.version }}/create-schema.md %}), [tables]({% link {{ page.version.version }}/create-table.md %}), or [user-defined types]({% link {{ page.version.version }}/enum.md %}). For privileges required by specific statements, see the documentation for the respective [SQL statement]({% link {{ page.version.version }}/sql-statements.md %}).
+The `GRANT` [statement]({{ page.version.version }}/sql-statements.md) controls each [role or user's]({{ page.version.version }}/security-reference/authorization.md#users-and-roles) [SQL privileges]({{ page.version.version }}/security-reference/authorization.md#privileges) for interacting with specific [databases]({{ page.version.version }}/create-database.md), [schemas]({{ page.version.version }}/create-schema.md), [tables]({{ page.version.version }}/create-table.md), or [user-defined types]({{ page.version.version }}/enum.md). For privileges required by specific statements, see the documentation for the respective [SQL statement]({{ page.version.version }}/sql-statements.md).
 
 You can use `GRANT` to directly grant privileges to a role or user, or you can grant membership to an existing role, which grants that role's privileges to the grantee. Users granted a privilege with `WITH GRANT OPTION` can in turn grant that privilege to others. The owner of an object implicitly has the `GRANT OPTION` for all privileges, and the `GRANT OPTION` is inherited through role memberships.
 
-For new databases, users with the following roles are automatically granted the [`ALL` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges):
+For new databases, users with the following roles are automatically granted the [`ALL` privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges):
 
-- Every user who is part of [the `admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) (including [the `root` user]({% link {{ page.version.version }}/security-reference/authorization.md %}#root-user)).
-- Every user who is part of [the `owner` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) for the new database.
+- Every user who is part of [the `admin` role]({{ page.version.version }}/security-reference/authorization.md#admin-role) (including [the `root` user]({{ page.version.version }}/security-reference/authorization.md#root-user)).
+- Every user who is part of [the `owner` role]({{ page.version.version }}/security-reference/authorization.md#admin-role) for the new database.
 
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/grant.html %}
 </div>
 
 ### Parameters
@@ -27,22 +25,21 @@ For new databases, users with the following roles are automatically granted the 
 Parameter                 | Description
 --------------------------|------------
 `ALL`<br>`ALL PRIVILEGES` | Grant all [privileges](#supported-privileges).
-`privilege_list`          | A comma-separated list of [privileges](#supported-privileges) to grant. For guidelines, see [Managing privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges).
+`privilege_list`          | A comma-separated list of [privileges](#supported-privileges) to grant. For guidelines, see [Managing privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges).
 `grant_targets`           | A comma-separated list of database, table, sequence, or function names. The list should be preceded by the object type (e.g., `DATABASE mydatabase`). If the object type is not specified, all names are interpreted as table or sequence names.
-`target_types`            | A comma-separated list of [user-defined types]({% link {{ page.version.version }}/create-type.md %}).
+`target_types`            | A comma-separated list of [user-defined types]({{ page.version.version }}/create-type.md).
 `ALL SEQUENCES IN SCHEMA` | Grant [privileges](#supported-privileges) on all sequences in a schema or list of schemas.
 `ALL TABLES IN SCHEMA`    | Grant [privileges](#supported-privileges) on all tables and sequences in a schema or list of schemas.
-`ALL FUNCTIONS IN SCHEMA` | Grant [privileges](#supported-privileges) on all [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) in a schema or list of schemas.
-`schema_name_list`        | A comma-separated list of [schemas]({% link {{ page.version.version }}/create-schema.md %}).
-`role_spec_list`          | A comma-separated list of [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles).
-`WITH ADMIN OPTION`       | Designate the user as a role admin. Role admins can grant or [revoke]({% link {{ page.version.version }}/revoke.md %}) membership for the specified role.
+`ALL FUNCTIONS IN SCHEMA` | Grant [privileges](#supported-privileges) on all [user-defined functions]({{ page.version.version }}/user-defined-functions.md) in a schema or list of schemas.
+`schema_name_list`        | A comma-separated list of [schemas]({{ page.version.version }}/create-schema.md).
+`role_spec_list`          | A comma-separated list of [roles]({{ page.version.version }}/security-reference/authorization.md#users-and-roles).
+`WITH ADMIN OPTION`       | Designate the user as a role admin. Role admins can grant or [revoke]({{ page.version.version }}/revoke.md) membership for the specified role.
 `WITH GRANT OPTION`       | Allow the user to grant the specified privilege to others.
 
 ## Supported privileges
 
 Roles and users can be granted the following privileges:
 
-{% include {{ page.version.version }}/sql/privileges.md %}
 
 ## Required privileges
 
@@ -56,7 +53,7 @@ Roles and users can be granted the following privileges:
 
 When a role or user is granted privileges for a table, the privileges are limited to the table. The user does _not_ automatically get privileges to new or existing tables in the database. To grant privileges to a user on all new and/or existing tables in a database, see [Grant privileges on all tables in a database](#grant-privileges-on-all-tables-in-a-database-or-schema).
 
-For privileges required by specific statements, see the documentation for the respective [SQL statement]({% link {{ page.version.version }}/sql-statements.md %}).
+For privileges required by specific statements, see the documentation for the respective [SQL statement]({{ page.version.version }}/sql-statements.md).
 
 ### Granting roles
 
@@ -67,25 +64,20 @@ For privileges required by specific statements, see the documentation for the re
 
 ## Known limitations
 
-{% include {{page.version.version}}/known-limitations/grant-revoke-schema-changes.md %}
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Grant privileges on databases
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE USER IF NOT EXISTS max WITH PASSWORD 'roach';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL ON DATABASE movr TO max WITH GRANT OPTION;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON DATABASE movr;
 ~~~
@@ -102,12 +94,10 @@ SHOW GRANTS ON DATABASE movr;
 
 ### Grant privileges on specific tables in a database
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT DELETE ON TABLE rides TO max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE rides;
 ~~~
@@ -125,12 +115,10 @@ SHOW GRANTS ON TABLE rides;
 
 To grant all the privileges on existing tables to a user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL ON * TO max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE movr.public.*;
 ~~~
@@ -159,23 +147,20 @@ SHOW GRANTS ON TABLE movr.public.*;
 (18 rows)
 ~~~
 
-To ensure that anytime a new table is created, all the privileges on that table are granted to a user, use [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}):
+To ensure that anytime a new table is created, all the privileges on that table are granted to a user, use [`ALTER DEFAULT PRIVILEGES`]({{ page.version.version }}/alter-default-privileges.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DEFAULT PRIVILEGES FOR ALL ROLES GRANT ALL ON TABLES TO max;
 ~~~
 
-To check that this is working as expected, [create a table]({% link {{ page.version.version }}/create-table.md %}):
+To check that this is working as expected, [create a table]({{ page.version.version }}/create-table.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS usertable(x INT);
 ~~~
 
-Then, check that the all privileges on the newly created table are granted to the user you specified using [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}):
+Then, check that the all privileges on the newly created table are granted to the user you specified using [`SHOW GRANTS`]({{ page.version.version }}/show-grants.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE usertable;
 ~~~
@@ -191,25 +176,22 @@ SHOW GRANTS ON TABLE usertable;
 
 ### Grant system-level privileges on the entire cluster
 
-[System-level privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) live above the database level and apply to the entire cluster.
+[System-level privileges]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) live above the database level and apply to the entire cluster.
 
-`root` and [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) users have system-level privileges by default, and are capable of granting it to other users and roles using the `GRANT` statement.
+`root` and [`admin`]({{ page.version.version }}/security-reference/authorization.md#admin-role) users have system-level privileges by default, and are capable of granting it to other users and roles using the `GRANT` statement.
 
-For example, the following statement allows the user `max` (created in a [previous example](#grant-privileges-on-databases)) to use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement by assigning the `MODIFYCLUSTERSETTING` system privilege:
+For example, the following statement allows the user `max` (created in a [previous example](#grant-privileges-on-databases)) to use the [`SET CLUSTER SETTING`]({{ page.version.version }}/set-cluster-setting.md) statement by assigning the `MODIFYCLUSTERSETTING` system privilege:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT SYSTEM MODIFYCLUSTERSETTING TO max;
 ~~~
 
 ### Make a table readable to every user in the system
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT SELECT ON TABLE vehicles TO public;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE vehicles;
 ~~~
@@ -226,17 +208,14 @@ SHOW GRANTS ON TABLE vehicles;
 
 ### Grant privileges on schemas
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL ON SCHEMA cockroach_labs TO max WITH GRANT OPTION;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
@@ -252,19 +231,16 @@ SHOW GRANTS ON SCHEMA cockroach_labs;
 
 ### Grant privileges on user-defined types
 
-To grant privileges on [user-defined types]({% link {{ page.version.version }}/create-type.md %}), use the following statements.
+To grant privileges on [user-defined types]({{ page.version.version }}/create-type.md), use the following statements.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TYPE IF NOT EXISTS status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ALL ON TYPE status TO max WITH GRANT OPTION;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TYPE status;
 ~~~
@@ -281,31 +257,26 @@ SHOW GRANTS ON TYPE status;
 
 ### Grant the privilege to manage the replication zones for a database or table
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT ZONECONFIG ON TABLE rides TO max;
 ~~~
 
-The user `max` can then use the [`CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone) statement to add, modify, reset, or remove replication zones for the table `rides`.
+The user `max` can then use the [`CONFIGURE ZONE`]({{ page.version.version }}/alter-table.md#configure-zone) statement to add, modify, reset, or remove replication zones for the table `rides`.
 
 ### Grant role membership
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE IF NOT EXISTS developer WITH CREATEDB;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE USER IF NOT EXISTS abbey WITH PASSWORD 'lincoln';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT developer TO abbey;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON ROLE developer;
 ~~~
@@ -319,12 +290,10 @@ SHOW GRANTS ON ROLE developer;
 
 ### Grant the admin option
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT developer TO abbey WITH ADMIN OPTION;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON ROLE developer;
 ~~~
@@ -338,12 +307,10 @@ SHOW GRANTS ON ROLE developer;
 
 ### Grant privileges with the option to grant to others
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT UPDATE ON TABLE rides TO max WITH GRANT OPTION;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW GRANTS ON TABLE rides;
 ~~~
@@ -360,9 +327,9 @@ SHOW GRANTS ON TABLE rides;
 
 ## See also
 
-- [Authorization]({% link {{ page.version.version }}/authorization.md %})
-- [`REVOKE`]({% link {{ page.version.version }}/revoke.md %})
-- [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})
-- [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %})
-- [`CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone)
-- [Manage Users]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users)
+- [Authorization]({{ page.version.version }}/authorization.md)
+- [`REVOKE`]({{ page.version.version }}/revoke.md)
+- [`SHOW GRANTS`]({{ page.version.version }}/show-grants.md)
+- [`SHOW ROLES`]({{ page.version.version }}/show-roles.md)
+- [`CONFIGURE ZONE`]({{ page.version.version }}/alter-table.md#configure-zone)
+- [Manage Users]({{ page.version.version }}/security-reference/authorization.md#create-and-manage-users)

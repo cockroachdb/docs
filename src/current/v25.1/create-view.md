@@ -5,49 +5,46 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CREATE VIEW` statement creates a new [view]({% link {{ page.version.version }}/views.md %}), which is a stored query represented as a virtual table.
+The `CREATE VIEW` statement creates a new [view]({{ page.version.version }}/views.md), which is a stored query represented as a virtual table.
 
 {{site.data.alerts.callout_info}}
- By default, views created in a database cannot reference objects in a different database. To enable cross-database references for views, set the `sql.cross_db_views.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
+ By default, views created in a database cannot reference objects in a different database. To enable cross-database references for views, set the `sql.cross_db_views.enabled` [cluster setting]({{ page.version.version }}/cluster-settings.md) to `true`.
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the parent database and the `SELECT` privilege on any table(s) referenced by the view.
+The user must have the `CREATE` [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the parent database and the `SELECT` privilege on any table(s) referenced by the view.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_view.html %}
 </div>
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`MATERIALIZED` |  Create a [materialized view]({% link {{ page.version.version }}/views.md %}#materialized-views).
+`MATERIALIZED` |  Create a [materialized view]({{ page.version.version }}/views.md#materialized-views).
 `IF NOT EXISTS` |  Create a new view only if a view of the same name does not already exist. If one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the view name only. It does not check if an existing view has the same columns as the new view.
 `OR REPLACE`  |   Create a new view if a view of the same name does not already exist. If a view of the same name already exists, replace that view.<br><br>In order to replace an existing view, the new view must have the same columns as the existing view, or more. If the new view has additional columns, the old columns must be a prefix of the new columns. For example, if the existing view has columns `a, b`, the new view can have an additional column `c`, but must have columns `a, b` as a prefix. In this case, `CREATE OR REPLACE VIEW myview (a, b, c)` would be allowed, but `CREATE OR REPLACE VIEW myview (b, a, c)` would not.
-`view_name` | The name of the view to create, which must be unique within its database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
+`view_name` | The name of the view to create, which must be unique within its database and follow these [identifier rules]({{ page.version.version }}/keywords-and-identifiers.md#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
 `name_list` | An optional, comma-separated list of column names for the view. If specified, these names will be used in the response instead of the columns specified in `AS select_stmt`.
-`AS select_stmt` | The [selection query]({% link {{ page.version.version }}/selection-queries.md %}) to execute when the view is requested.<br><br>Note that it is not currently possible to use `*` to select all columns from a referenced table or view; instead, you must specify specific columns.
-`opt_temp` |  Defines the view as a session-scoped temporary view. For more information, see [Temporary Views]({% link {{ page.version.version }}/views.md %}#temporary-views).<br><br>**Support for temporary views is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#temporary-objects)**.
+`AS select_stmt` | The [selection query]({{ page.version.version }}/selection-queries.md) to execute when the view is requested.<br><br>Note that it is not currently possible to use `*` to select all columns from a referenced table or view; instead, you must specify specific columns.
+`opt_temp` |  Defines the view as a session-scoped temporary view. For more information, see [Temporary Views]({{ page.version.version }}/views.md#temporary-views).<br><br>**Support for temporary views is [in preview]({{ page.version.version }}/cockroachdb-feature-availability.md#temporary-objects)**.
 
 ## Example
 
 {{site.data.alerts.callout_success}}
-This example highlights one key benefit to using views: simplifying complex queries. For additional benefits and examples, see [Views]({% link {{ page.version.version }}/views.md %}).
+This example highlights one key benefit to using views: simplifying complex queries. For additional benefits and examples, see [Views]({{ page.version.version }}/views.md).
 {{site.data.alerts.end}}
 
 ### Setup
 
-The following examples use the [`startrek` demo database schema]({% link {{ page.version.version }}/cockroach-demo.md %}#datasets).
+The following examples use the [`startrek` demo database schema]({{ page.version.version }}/cockroach-demo.md#datasets).
 
-To follow along, run [`cockroach demo startrek`]({% link {{ page.version.version }}/cockroach-demo.md %}) to start a temporary, in-memory cluster with the `startrek` schema and dataset preloaded:
+To follow along, run [`cockroach demo startrek`]({{ page.version.version }}/cockroach-demo.md) to start a temporary, in-memory cluster with the `startrek` schema and dataset preloaded:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo startrek
 ~~~
@@ -56,7 +53,6 @@ $ cockroach demo startrek
 
 The sample `startrek` database contains two tables, `episodes` and `quotes`. The table also contains a foreign key constraint, between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following join:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT startrek.episodes.season, count(*)
   FROM startrek.quotes
@@ -76,7 +72,6 @@ The sample `startrek` database contains two tables, `episodes` and `quotes`. The
 
 Alternatively, to make it much easier to run this complex query, you could create a view:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW startrek.quotes_per_season (season, quotes)
   AS SELECT startrek.episodes.season, count(*)
@@ -88,7 +83,6 @@ Alternatively, to make it much easier to run this complex query, you could creat
 
 The view is then represented as a virtual table alongside other tables in the database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM startrek;
 ~~~
@@ -104,7 +98,6 @@ The view is then represented as a virtual table alongside other tables in the da
 
 Executing the query is as easy as `SELECT`ing from the view, as you would from a standard table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM startrek.quotes_per_season;
 ~~~
@@ -122,7 +115,6 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 
  You can create a new view, or replace an existing view, with `CREATE OR REPLACE VIEW`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE OR REPLACE VIEW startrek.quotes_per_season (season, quotes)
   AS SELECT startrek.episodes.season, count(*)
@@ -133,7 +125,6 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
   ORDER BY startrek.episodes.season;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM startrek.quotes_per_season;
 ~~~
@@ -149,9 +140,9 @@ Executing the query is as easy as `SELECT`ing from the view, as you would from a
 
 ## See also
 
-- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
-- [Views]({% link {{ page.version.version }}/views.md %})
-- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
-- [`ALTER VIEW`]({% link {{ page.version.version }}/alter-view.md %})
-- [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})
-- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [Selection Queries]({{ page.version.version }}/selection-queries.md)
+- [Views]({{ page.version.version }}/views.md)
+- [`SHOW CREATE`]({{ page.version.version }}/show-create.md)
+- [`ALTER VIEW`]({{ page.version.version }}/alter-view.md)
+- [`DROP VIEW`]({{ page.version.version }}/drop-view.md)
+- [Online Schema Changes]({{ page.version.version }}/online-schema-changes.md)

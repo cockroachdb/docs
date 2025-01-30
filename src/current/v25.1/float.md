@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-CockroachDB supports various inexact, floating-point number [data types]({% link {{ page.version.version }}/data-types.md %}) with up to 17 digits of decimal precision.
+CockroachDB supports various inexact, floating-point number [data types]({{ page.version.version }}/data-types.md) with up to 17 digits of decimal precision.
 
 They are handled internally using the [standard double-precision (64-bit binary-encoded) IEEE754 format](https://wikipedia.org/wiki/IEEE_floating_point).
 
@@ -20,14 +20,14 @@ Name | Aliases
 
 ## Syntax
 
-A constant value of type `FLOAT` can be entered as a [numeric literal]({% link {{ page.version.version }}/sql-constants.md %}#numeric-literals).
+A constant value of type `FLOAT` can be entered as a [numeric literal]({{ page.version.version }}/sql-constants.md#numeric-literals).
 For example: `1.414` or `-1234`.
 
 The special IEEE754 values for positive infinity, negative infinity
 and [NaN (Not-a-Number)](https://wikipedia.org/wiki/NaN) cannot be
 entered using numeric literals directly and must be converted using an
-[interpreted literal]({% link {{ page.version.version }}/sql-constants.md %}#interpreted-literals) or an
-[explicit conversion]({% link {{ page.version.version }}/scalar-expressions.md %}#explicit-type-coercions)
+[interpreted literal]({{ page.version.version }}/sql-constants.md#interpreted-literals) or an
+[explicit conversion]({{ page.version.version }}/scalar-expressions.md#explicit-type-coercions)
 from a string literal instead.
 
 The following values are recognized:
@@ -50,12 +50,10 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 
 ## Examples
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE floats (a FLOAT PRIMARY KEY, b REAL, c DOUBLE PRECISION);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM floats;
 ~~~
@@ -69,12 +67,10 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO floats VALUES (1.012345678901, 2.01234567890123456789, CAST('+Inf' AS FLOAT));
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM floats;
 ~~~
@@ -91,7 +87,7 @@ A `FLOAT` column supports values up to 8 bytes in width, but the total storage s
 
 ## Supported casting and conversion
 
-`FLOAT` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to any of the following data types:
+`FLOAT` values can be [cast]({{ page.version.version }}/data-types.md#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------
@@ -106,7 +102,6 @@ If you cast a float to an integer, it is rounded to the nearest integer. If it i
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT f::INT FROM (VALUES (-1.5::FLOAT), (-0.5::FLOAT), (0.5::FLOAT), (1.5::FLOAT)) v(f);
 ~~~
@@ -122,4 +117,4 @@ SELECT f::INT FROM (VALUES (-1.5::FLOAT), (-0.5::FLOAT), (0.5::FLOAT), (1.5::FLO
 
 ## See also
 
-[Data Types]({% link {{ page.version.version }}/data-types.md %})
+[Data Types]({{ page.version.version }}/data-types.md)

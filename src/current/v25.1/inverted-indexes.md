@@ -6,21 +6,21 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
-Generalized inverted indexes, or GIN indexes, store mappings from values within a container column (such as a [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) document) to the row that holds that value. They are used to speed up containment searches, e.g., "show me all of the rows from this table which have a JSON column that contains the key-value pair `{"location":"NYC"}`". GIN indexes are commonly used in [document retrieval systems](https://wikipedia.org/wiki/Document_retrieval).
+Generalized inverted indexes, or GIN indexes, store mappings from values within a container column (such as a [`JSONB`]({{ page.version.version }}/jsonb.md) document) to the row that holds that value. They are used to speed up containment searches, e.g., "show me all of the rows from this table which have a JSON column that contains the key-value pair `{"location":"NYC"}`". GIN indexes are commonly used in [document retrieval systems](https://wikipedia.org/wiki/Document_retrieval).
 
 CockroachDB stores the contents of the following data types in GIN indexes:
 
-- [`JSONB`]({% link {{ page.version.version }}/jsonb.md %})
-- [`ARRAY`]({% link {{ page.version.version }}/array.md %})
-- [Spatial data (`GEOMETRY` and `GEOGRAPHY` types)]({% link {{ page.version.version }}/spatial-indexes.md %})
-- [`TSVECTOR` (for full-text search)]({% link {{ page.version.version }}/tsvector.md %})
-- [`STRING` (using trigram indexes)]({% link {{ page.version.version }}/trigram-indexes.md %})
+- [`JSONB`]({{ page.version.version }}/jsonb.md)
+- [`ARRAY`]({{ page.version.version }}/array.md)
+- [Spatial data (`GEOMETRY` and `GEOGRAPHY` types)]({{ page.version.version }}/spatial-indexes.md)
+- [`TSVECTOR` (for full-text search)]({{ page.version.version }}/tsvector.md)
+- [`STRING` (using trigram indexes)]({{ page.version.version }}/trigram-indexes.md)
 
 {{site.data.alerts.callout_success}}For a hands-on demonstration of using GIN indexes to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
 ## How do GIN indexes work?
 
-Standard [indexes]({% link {{ page.version.version }}/indexes.md %}) work well for searches based on prefixes of sorted data. However, data types like [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) or [arrays]({% link {{ page.version.version }}/array.md %}) cannot be queried without a full table scan, since they do not adhere to ordinary value prefix comparison operators. `JSONB` in particular needs to be indexed in a more detailed way than what a standard index provides. This is where GIN indexes prove useful.
+Standard [indexes]({{ page.version.version }}/indexes.md) work well for searches based on prefixes of sorted data. However, data types like [`JSONB`]({{ page.version.version }}/jsonb.md) or [arrays]({{ page.version.version }}/array.md) cannot be queried without a full table scan, since they do not adhere to ordinary value prefix comparison operators. `JSONB` in particular needs to be indexed in a more detailed way than what a standard index provides. This is where GIN indexes prove useful.
 
 GIN indexes filter on components of tokenizable data. The `JSONB` data type is built on two structures that can be tokenized:
 
@@ -61,15 +61,15 @@ This lets you search based on subcomponents.
 
 ### Creation
 
-You can use GIN indexes to improve the performance of queries using [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}), [`ARRAY`]({% link {{ page.version.version }}/array.md %}), [`TSVECTOR`]({% link {{ page.version.version }}/tsvector.md %}) columns (for [full-text searches]({% link {{ page.version.version }}/full-text-search.md %})), or [`STRING`]({% link {{ page.version.version }}/string.md %}) (for [fuzzy searches using trigrams]({% link {{ page.version.version }}/trigram-indexes.md %})). You can create them:
+You can use GIN indexes to improve the performance of queries using [`JSONB`]({{ page.version.version }}/jsonb.md), [`ARRAY`]({{ page.version.version }}/array.md), [`TSVECTOR`]({{ page.version.version }}/tsvector.md) columns (for [full-text searches]({{ page.version.version }}/full-text-search.md)), or [`STRING`]({{ page.version.version }}/string.md) (for [fuzzy searches using trigrams]({{ page.version.version }}/trigram-indexes.md)). You can create them:
 
-- Using the PostgreSQL-compatible syntax [`CREATE INDEX ... USING GIN`]({% link {{ page.version.version }}/create-index.md %}):
+- Using the PostgreSQL-compatible syntax [`CREATE INDEX ... USING GIN`]({{ page.version.version }}/create-index.md):
 
     ~~~ sql
     CREATE INDEX {optional name} ON {table} USING GIN ({column});
     ~~~
 
-    Also specify an opclass when [creating a trigram index]({% link {{ page.version.version }}/trigram-indexes.md %}#creation):
+    Also specify an opclass when [creating a trigram index]({{ page.version.version }}/trigram-indexes.md#creation):
 
     ~~~ sql
     CREATE INDEX {optional name} ON {table} USING GIN ({column} {opclass});
@@ -79,13 +79,13 @@ You can use GIN indexes to improve the performance of queries using [`JSONB`]({%
     You can also use the preceding syntax to specify the `jsonb_ops` or `array_ops` opclass (for `JSONB` and `ARRAY` columns, respectively).
     {{site.data.alerts.end}}
 
-- While creating the table, using the syntax [`CREATE INVERTED INDEX`]({% link {{ page.version.version }}/create-table.md %}#create-a-table-with-secondary-and-gin-indexes):
+- While creating the table, using the syntax [`CREATE INVERTED INDEX`]({{ page.version.version }}/create-table.md#create-a-table-with-secondary-and-gin-indexes):
 
     ~~~ sql
     CREATE INVERTED INDEX {optional name} ON {table} ({column});
     ~~~
 
-    Also specify an opclass when [creating a trigram index]({% link {{ page.version.version }}/trigram-indexes.md %}#creation):
+    Also specify an opclass when [creating a trigram index]({{ page.version.version }}/trigram-indexes.md#creation):
 
     ~~~ sql
     CREATE INVERTED INDEX {optional name} ON {table} ({column} {opclass});
@@ -95,9 +95,9 @@ You can use GIN indexes to improve the performance of queries using [`JSONB`]({%
 
 If a query contains a filter against an indexed `JSONB` or `ARRAY` column that uses any of the [supported operators](#comparisons), the GIN index is added to the set of index candidates.
 
-In most cases CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). Cases where CockroachDB will use multiple indexes include certain queries that use disjunctions (i.e., predicates with `OR`), as well as [zigzag joins]({% link {{ page.version.version }}/cost-based-optimizer.md %}#zigzag-joins) for some other queries. To learn how to use the [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) statement for your query to see which index is being used, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+In most cases CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). Cases where CockroachDB will use multiple indexes include certain queries that use disjunctions (i.e., predicates with `OR`), as well as [zigzag joins]({{ page.version.version }}/cost-based-optimizer.md#zigzag-joins) for some other queries. To learn how to use the [`EXPLAIN`]({{ page.version.version }}/explain.md) statement for your query to see which index is being used, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
-To override CockroachDB's index selection, you can use an index hint to force a query to use [a specific index]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection), including [inverted indexes]({% link {{ page.version.version }}/table-expressions.md %}#force-inverted-index-scan) and [partial GIN indexes]({% link {{ page.version.version }}/table-expressions.md %}#force-partial-gin-index-scan); or use [an inverted join hint]({% link {{ page.version.version }}/cost-based-optimizer.md %}#supported-join-algorithms).
+To override CockroachDB's index selection, you can use an index hint to force a query to use [a specific index]({{ page.version.version }}/table-expressions.md#force-index-selection), including [inverted indexes]({{ page.version.version }}/table-expressions.md#force-inverted-index-scan) and [partial GIN indexes]({{ page.version.version }}/table-expressions.md#force-partial-gin-index-scan); or use [an inverted join hint]({{ page.version.version }}/cost-based-optimizer.md#supported-join-algorithms).
 
 ### Storage
 
@@ -119,27 +119,24 @@ This section describes how to perform comparisons on `JSONB` and `ARRAY` columns
 
 GIN indexes on `JSONB` columns support the following comparison operators:
 
-- **is contained by**: [`<@`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators)
-- **contains**: [`@>`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators)
-- **equals**: [`=`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators). To use `=`, you must also reach into the JSON document with the [`->`]({% link {{ page.version.version }}/functions-and-operators.md %}#supported-operations) operator. For example:
+- **is contained by**: [`<@`]({{ page.version.version }}/functions-and-operators.md#operators)
+- **contains**: [`@>`]({{ page.version.version }}/functions-and-operators.md#operators)
+- **equals**: [`=`]({{ page.version.version }}/functions-and-operators.md#operators). To use `=`, you must also reach into the JSON document with the [`->`]({{ page.version.version }}/functions-and-operators.md#supported-operations) operator. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM a WHERE j ->'foo' = '"1"';
     ~~~
 
     This is equivalent to using `@>`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM a WHERE j @> '{"foo": "1"}';
     ~~~
 
-If you require comparisons using [`<`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators), [`<=`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators), etc., you can create an index on a [computed column]({% link {{ page.version.version }}/computed-columns.md %}) using your JSON payload, and then create a standard index on that. To write a query where the value of `foo` is greater than three:
+If you require comparisons using [`<`]({{ page.version.version }}/functions-and-operators.md#operators), [`<=`]({{ page.version.version }}/functions-and-operators.md#operators), etc., you can create an index on a [computed column]({{ page.version.version }}/computed-columns.md) using your JSON payload, and then create a standard index on that. To write a query where the value of `foo` is greater than three:
 
 1. Create a table with a computed column:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE test (
         id INT,
@@ -150,30 +147,27 @@ If you require comparisons using [`<`]({% link {{ page.version.version }}/functi
 
 1. Create an index on the computed column:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX test_idx ON test (foo);
     ~~~
 
 1. Execute the query with the comparison:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM test where foo > 3;
     ~~~
 
 #### Arrays
 
-GIN indexes on [`ARRAY`]({% link {{ page.version.version }}/array.md %}) columns support the following comparison operators:
+GIN indexes on [`ARRAY`]({{ page.version.version }}/array.md) columns support the following comparison operators:
 
-- **is contained by**: [`<@`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators)
-- **contains**: [`@>`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators)
+- **is contained by**: [`<@`]({{ page.version.version }}/functions-and-operators.md#operators)
+- **contains**: [`@>`]({{ page.version.version }}/functions-and-operators.md#operators)
 
 ## Partial GIN indexes
 
-You can create a [partial]({% link {{ page.version.version }}/partial-indexes.md %}) GIN index, a GIN index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container data types, you create a partial GIN index by including a clause, like a `WHERE` clause, that evaluates to `true` on a boolean predicate.
+You can create a [partial]({{ page.version.version }}/partial-indexes.md) GIN index, a GIN index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container data types, you create a partial GIN index by including a clause, like a `WHERE` clause, that evaluates to `true` on a boolean predicate.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE test (
   id INT,
@@ -184,15 +178,13 @@ CREATE TABLE test (
 
 ## GIN indexes on `REGIONAL BY ROW` tables in multi-region databases
 
-{% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
-For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table]({% link {{ page.version.version }}/alter-table.md %}#add-a-unique-index-to-a-regional-by-row-table).
+For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table]({{ page.version.version }}/alter-table.md#add-a-unique-index-to-a-regional-by-row-table).
 
 ## Multi-column GIN indexes
 
 You can create a GIN index with multiple columns. The last indexed column must be one of the inverted types such as `JSON`, `ARRAY`, `GEOMETRY`, and `GEOGRAPHY`. All preceding columns must have types that are indexable. These indexes may be used for queries that constrain all index columns.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE users (
   profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -208,7 +200,6 @@ CREATE TABLE users (
 
 In this example, let's create a table with a `JSONB` column and a GIN index:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
     profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -220,7 +211,6 @@ In this example, let's create a table with a `JSONB` column and a GIN index:
 
 Then, insert a few rows of data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
@@ -229,7 +219,6 @@ Then, insert a few rows of data:
   );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *, jsonb_pretty(user_profile) FROM users;
 ~~~
@@ -264,7 +253,6 @@ Then, insert a few rows of data:
 
 Now, run a query that filters on the `JSONB` column:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users where user_profile @> '{"location":"NYC"}';
 ~~~
@@ -284,7 +272,6 @@ Now, run a query that filters on the `JSONB` column:
 
 In this example, let's create a table with an `ARRAY` column first, and add the GIN index later:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
     student_id  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -294,7 +281,6 @@ In this example, let's create a table with an `ARRAY` column first, and add the 
 
 Insert a few rows of data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO students (marks) VALUES
     (ARRAY[10,20,50]),
@@ -303,7 +289,6 @@ Insert a few rows of data:
   );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM students;
 ~~~
@@ -324,12 +309,10 @@ Insert a few rows of data:
 
 Now, let’s add a GIN index to the table and run a query that filters on the `ARRAY`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INVERTED INDEX student_marks ON students (marks);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM students where marks @> ARRAY[100];
 ~~~
@@ -350,12 +333,10 @@ Now, let’s add a GIN index to the table and run a query that filters on the `A
 
 In the same `users` table from [Create a table with GIN index on a JSONB column](#create-a-table-with-gin-index-on-a-jsonb-column), create a partial GIN index for online users.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INVERTED INDEX idx_online_users ON users(user_profile) WHERE user_profile -> 'online' = 'true';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM users WHERE user_profile -> 'online' = 'true';
 ~~~
@@ -382,24 +363,23 @@ SELECT * FROM users@idx_online_users WHERE user_profile->'online' = 'true' AND u
 
 ### Create a trigram index on a `STRING` column
 
-For an example showing how to create a trigram index on a [`STRING`]({% link {{ page.version.version }}/string.md %}) column, see [Trigram Indexes]({% link {{ page.version.version }}/trigram-indexes.md %}#examples).
+For an example showing how to create a trigram index on a [`STRING`]({{ page.version.version }}/string.md) column, see [Trigram Indexes]({{ page.version.version }}/trigram-indexes.md#examples).
 
 ### Create a full-text index on a `TSVECTOR` column
 
-For an example showing how to create a full-text index on a [`TSVECTOR`]({% link {{ page.version.version }}/tsvector.md %}) column, see [Full-Text Search]({% link {{ page.version.version }}/full-text-search.md %}#examples).
+For an example showing how to create a full-text index on a [`TSVECTOR`]({{ page.version.version }}/tsvector.md) column, see [Full-Text Search]({{ page.version.version }}/full-text-search.md#examples).
 
 ### Inverted join examples
 
-{% include {{ page.version.version }}/sql/inverted-joins.md %}
 
 ## See also
 
-- [Indexes]({% link {{ page.version.version }}/indexes.md %})
-- [Trigram Indexes]({% link {{ page.version.version }}/trigram-indexes.md %})
-- [`JSONB`]({% link {{ page.version.version }}/jsonb.md %})
-- [Arrays]({% link {{ page.version.version }}/array.md %})
-- [Spatial data (`GEOMETRY` and `GEOGRAPHY` types)]({% link {{ page.version.version }}/spatial-indexes.md %})
-- [`STRING`]({% link {{ page.version.version }}/string.md %})
-- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
-- [Computed Columns]({% link {{ page.version.version }}/computed-columns.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Indexes]({{ page.version.version }}/indexes.md)
+- [Trigram Indexes]({{ page.version.version }}/trigram-indexes.md)
+- [`JSONB`]({{ page.version.version }}/jsonb.md)
+- [Arrays]({{ page.version.version }}/array.md)
+- [Spatial data (`GEOMETRY` and `GEOGRAPHY` types)]({{ page.version.version }}/spatial-indexes.md)
+- [`STRING`]({{ page.version.version }}/string.md)
+- [`CREATE INDEX`]({{ page.version.version }}/create-index.md)
+- [Computed Columns]({{ page.version.version }}/computed-columns.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

@@ -9,36 +9,33 @@ This page defines terms that you will encounter throughout the documentation.
 
 ## Database terms
 
-{% include {{ page.version.version }}/misc/database-terms.md %}
 
 ## CockroachDB architecture terms
 
-{% include {{ page.version.version }}/misc/basic-terms.md %}
 
-For more information on CockroachDB architecture, see [Architecture Overview]({% link {{ page.version.version }}/architecture/overview.md %}#overview).
+For more information on CockroachDB architecture, see [Architecture Overview]({{ page.version.version }}/architecture/overview.md#overview).
 
 ## CockroachDB deployment terms
 
 #### Region
 
-A logical identification of how nodes and data are clustered around [geographical locations]({% link {{ page.version.version }}/multiregion-overview.md %}). A _cluster region_ is the set of locations where cluster nodes are running. A _database region_ is the subset of cluster regions database data should be restricted to.
+A logical identification of how nodes and data are clustered around [geographical locations]({{ page.version.version }}/multiregion-overview.md). A _cluster region_ is the set of locations where cluster nodes are running. A _database region_ is the subset of cluster regions database data should be restricted to.
 
 #### Availability zone
 
 A part of a data center that is considered to form a unit with regards to failures and fault tolerance. There can be multiple nodes in a single availability zone, however Cockroach Labs recommends that you to place different replicas of your data in different availability zones.
 
-#### [CockroachDB {{ site.data.products.core }}]({% link {{ page.version.version }}/start-a-local-cluster.md %})
+#### [CockroachDB {{ site.data.products.core }}]({{ page.version.version }}/start-a-local-cluster.md)
 
 A full featured, self-managed CockroachDB deployment.
 
-{% include common/basic-terms.md %}
 
 ## Spatial and GIS terms
 
 This section contains a glossary of terms common to spatial databases and geographic information systems (GIS). Where possible, we provide links to further information.
 
 {{site.data.alerts.callout_info}}
-This section is provided for reference purposes only. The inclusion of a term in this glossary does not imply that CockroachDB has support for any feature(s) related to that term. For more information about the specific spatial and GIS features supported by CockroachDB, see [Working with Spatial Data]({% link {{ page.version.version }}/query-spatial-data.md %}).
+This section is provided for reference purposes only. The inclusion of a term in this glossary does not imply that CockroachDB has support for any feature(s) related to that term. For more information about the specific spatial and GIS features supported by CockroachDB, see [Working with Spatial Data]({{ page.version.version }}/query-spatial-data.md).
 {{site.data.alerts.end}}
 
 ### Geometry terms
@@ -69,7 +66,7 @@ Given a starting point on a map and a set of search criteria, find the specified
 
 #### SRID
 
-The Spatial Referencing System Identifier (a.k.a. SRID) is used to tell which spatial reference system will be used to interpret each spatial object. A [commonly used SRID is 4326]({% link {{ page.version.version }}/srid-4326.md %}), which represents spatial data using longitude and latitude coordinates on the Earth's surface as defined in the [WGS84](#wgs84) standard.
+The Spatial Referencing System Identifier (a.k.a. SRID) is used to tell which spatial reference system will be used to interpret each spatial object. A [commonly used SRID is 4326]({{ page.version.version }}/srid-4326.md), which represents spatial data using longitude and latitude coordinates on the Earth's surface as defined in the [WGS84](#wgs84) standard.
 
 #### Spatial reference system
 
@@ -80,13 +77,13 @@ Used to define what a spatial object "means". For example, a spatial object coul
 #### `GEOMETRY`
 
 Used to represent shapes relative to 2-, 3-, or higher-dimensional plane geometry.  For more information about the spatial objects used to represent geometries, see:
-  - [`POINT`]({% link {{ page.version.version }}/point.md %})
-  - [`LINESTRING`]({% link {{ page.version.version }}/linestring.md %})
-  - [`POLYGON`]({% link {{ page.version.version }}/polygon.md %})
-  - [`MULTIPOINT`]({% link {{ page.version.version }}/multipoint.md %})
-  - [`MULTILINESTRING`]({% link {{ page.version.version }}/multilinestring.md %})
-  - [`MULTIPOLYGON`]({% link {{ page.version.version }}/multipolygon.md %})
-  - [`GEOMETRYCOLLECTION`]({% link {{ page.version.version }}/geometrycollection.md %})
+  - [`POINT`]({{ page.version.version }}/point.md)
+  - [`LINESTRING`]({{ page.version.version }}/linestring.md)
+  - [`POLYGON`]({{ page.version.version }}/polygon.md)
+  - [`MULTIPOINT`]({{ page.version.version }}/multipoint.md)
+  - [`MULTILINESTRING`]({{ page.version.version }}/multilinestring.md)
+  - [`MULTIPOLYGON`]({{ page.version.version }}/multipolygon.md)
+  - [`GEOMETRYCOLLECTION`]({{ page.version.version }}/geometrycollection.md)
 
 #### `GEOGRAPHY`
 
@@ -96,19 +93,19 @@ Used to represent shapes relative to locations on the Earth's [spheroidal](#sphe
 
 #### WKT
 
-The "Well Known Text" data format is a convenient human-readable notation for representing [spatial objects](#spatial-objects). For example a 2-dimensional point object with x- and y-coordinates is represented in WKT as `POINT(123,456)`. This format is defined by the [OGC](#ogc). For more information, see the [Well Known Text]({% link {{ page.version.version }}/well-known-text.md %}) documentation.
+The "Well Known Text" data format is a convenient human-readable notation for representing [spatial objects](#spatial-objects). For example a 2-dimensional point object with x- and y-coordinates is represented in WKT as `POINT(123,456)`. This format is defined by the [OGC](#ogc). For more information, see the [Well Known Text]({{ page.version.version }}/well-known-text.md) documentation.
 
 #### EWKT
 
-The "Extended Well Known Text" data format extends [WKT](#wkt) by prepending an [SRID](#srid) to the shape's description.  For more information, see the [Well Known Text]({% link {{ page.version.version }}/well-known-text.md %}#ewkt) documentation.
+The "Extended Well Known Text" data format extends [WKT](#wkt) by prepending an [SRID](#srid) to the shape's description.  For more information, see the [Well Known Text]({{ page.version.version }}/well-known-text.md#ewkt) documentation.
 
 #### WKB
 
-The "Well Known Binary" data format is a convenient machine-readable binary representation for [spatial objects](#spatial-objects). For efficiency, an application may choose to use this data format, but humans may prefer to read [WKT](#wkt). This format is defined by the [OGC](#ogc).  For more information, see [Well Known Binary]({% link {{ page.version.version }}/well-known-binary.md %}).
+The "Well Known Binary" data format is a convenient machine-readable binary representation for [spatial objects](#spatial-objects). For efficiency, an application may choose to use this data format, but humans may prefer to read [WKT](#wkt). This format is defined by the [OGC](#ogc).  For more information, see [Well Known Binary]({{ page.version.version }}/well-known-binary.md).
 
 #### EWKB
 
-The "Extended Well Known Binary" data format extends [WKB](#wkb) by prepending [SRID](#srid) information to the shape's description.  For more information, see [Well Known Binary]({% link {{ page.version.version }}/well-known-binary.md %}#ewkb).
+The "Extended Well Known Binary" data format extends [WKB](#wkb) by prepending [SRID](#srid) information to the shape's description.  For more information, see [Well Known Binary]({{ page.version.version }}/well-known-binary.md#ewkb).
 
 ### Organizations
 
@@ -158,13 +155,13 @@ A file format that uses a non-scalable, pixel-based representation for geospatia
 
 #### GeoJSON
 
-A format for encoding geometric and geographic data as [JSON](https://www.json.org). For more information, see [GeoJSON]({% link {{ page.version.version }}/geojson.md %}).
+A format for encoding geometric and geographic data as [JSON](https://www.json.org). For more information, see [GeoJSON]({{ page.version.version }}/geojson.md).
 
 ### Software and Code Libraries
 
 #### GIS
 
-A "Geographic Information System" (or GIS) is used to store geographic information in a computer for processing and interaction by humans and/or other software. Some systems provide graphical "point and click" user interfaces, and some are embedded in programming languages or data query languages like SQL. For example, CockroachDB versions 20.2 and later provide support for [executing spatial queries from SQL]({% link {{ page.version.version }}/query-spatial-data.md %}).
+A "Geographic Information System" (or GIS) is used to store geographic information in a computer for processing and interaction by humans and/or other software. Some systems provide graphical "point and click" user interfaces, and some are embedded in programming languages or data query languages like SQL. For example, CockroachDB versions 20.2 and later provide support for [executing spatial queries from SQL]({{ page.version.version }}/query-spatial-data.md).
 
 #### ArcGIS
 

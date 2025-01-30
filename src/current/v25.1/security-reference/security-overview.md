@@ -14,9 +14,8 @@ CockroachDB {{ site.data.products.advanced }} offers a single-tenant cluster run
 
 [Sign up for a CockroachDB Cloud account!](https://www.cockroachlabs.com/get-started-cockroachdb/)
 
-{% include {{ page.version.version }}/dedicated-pci-compliance.md %}
 
-Learn more: [Integrate CockroachDB {{ site.data.products.advanced }} with Satori]({% link {{ page.version.version }}/satori-integration.md %})
+Learn more: [Integrate CockroachDB {{ site.data.products.advanced }} with Satori]({{ page.version.version }}/satori-integration.md)
 
 ### Self-Hosted
 
@@ -24,7 +23,7 @@ CockroachDB {{ site.data.products.core }} here refers to the situation of a user
 
 {{ site.data.products.enterprise }} refers to an ongoing license relationship with Cockroach Labs. In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of Cockroach Labs' {{ site.data.products.enterprise }} Support staff.
 
-For more information, see the [licensing FAQ]({% link {{ page.version.version }}/licensing-faqs.md %})
+For more information, see the [licensing FAQ]({{ page.version.version }}/licensing-faqs.md)
 
 ## Comparison of security features
 
@@ -74,14 +73,14 @@ For more information, see the [licensing FAQ]({% link {{ page.version.version }}
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td>Web console authentication with third-party <a href="{% link {{ page.version.version }}/sso-db-console.md %}">Single Sign-on (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
+      <td>Web console authentication with third-party <a href="{{ page.version.version }}/sso-db-console.md">Single Sign-on (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>✓</td>
-      <td>Client identity authentication with <a href="{% link {{ page.version.version }}/gssapi_authentication.md %}">GSSAPI and Kerberos</a></td>
+      <td>Client identity authentication with <a href="{{ page.version.version }}/gssapi_authentication.md">GSSAPI and Kerberos</a></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -168,7 +167,7 @@ For more information, see the [licensing FAQ]({% link {{ page.version.version }}
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td><a href="{% link cockroachcloud/connect-to-your-cluster.md %}#gcp-private-service-connect">GCP Private Service Connect (PSC) (Preview)</a> or <a href="{% link cockroachcloud/connect-to-your-cluster.md %}#vpc-peering">VPC Peering</a> for GCP clusters and <a href="{% link cockroachcloud/aws-privatelink.md %}">AWS PrivateLink</a> for AWS clusters </td>
+      <td><a href="cockroachcloud/connect-to-your-cluster.md#gcp-private-service-connect">GCP Private Service Connect (PSC) (Preview)</a> or <a href="cockroachcloud/connect-to-your-cluster.md#vpc-peering">VPC Peering</a> for GCP clusters and <a href="cockroachcloud/aws-privatelink.md">AWS PrivateLink</a> for AWS clusters </td>
     </tr>
     <tr>
       <td><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
@@ -176,15 +175,15 @@ For more information, see the [licensing FAQ]({% link {{ page.version.version }}
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td><a href="{% link {{ page.version.version }}/sql-audit-logging.md %}">SQL Audit Logging</a></td>
+      <td><a href="{{ page.version.version }}/sql-audit-logging.md">SQL Audit Logging</a></td>
     </tr>
     <tr>
-      <td><a href="{% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}">Availability/Resilience</a></td>
+      <td><a href="{{ page.version.version }}/demo-cockroachdb-resilience.md">Availability/Resilience</a></td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="{% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}">Disaster Recovery.</a></td>
+      <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="{{ page.version.version }}/demo-cockroachdb-resilience.md">Disaster Recovery.</a></td>
     </tr>
   </tbody>
 </table>

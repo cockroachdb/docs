@@ -5,7 +5,6 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
 
 Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
@@ -14,15 +13,15 @@ Once you have **logical data replication (LDR)** running, you will need to track
 
 - [Conflict resolution](#conflict-resolution): As changes to a table replicate from the source to the destination cluster, there can be conflicts during some operations that the job will handle with conflict resolution. When LDR is started, the job creates a [_dead letter queue (DLQ)_](#dead-letter-queue-dlq) table with each replicating table. LDR will send any unresolved conflicts to the DLQ, which you should monitor as LDR continues to replicate changes between the source and destination clusters. 
 - [Schema changes](#schema-changes): The tables that are part of the LDR job may require schema changes, which need to be coordinated manually. There are some schema changes that are supported while LDR jobs are actively running.
-- [Jobs](#jobs-and-ldr): [Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) and [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) can operate on clusters running LDR [jobs]({% link {{ page.version.version }}/show-jobs.md %}). You may want to consider where you start and how you manage [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}), [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}), [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}), and so on when you're running LDR.
+- [Jobs](#jobs-and-ldr): [Changefeeds]({{ page.version.version }}/change-data-capture-overview.md) and [backups]({{ page.version.version }}/backup-and-restore-overview.md) can operate on clusters running LDR [jobs]({{ page.version.version }}/show-jobs.md). You may want to consider where you start and how you manage [backups]({{ page.version.version }}/backup-and-restore-overview.md), [changefeeds]({{ page.version.version }}/change-data-capture-overview.md), [row-level TTL]({{ page.version.version }}/row-level-ttl.md), and so on when you're running LDR.
 
 ## Conflict resolution
 
-In LDR, conflicts are detected at both the [KV]({% link {{ page.version.version }}/architecture/storage-layer.md %}) and the [SQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}) level, which determines how LDR resolves the conflict.
+In LDR, conflicts are detected at both the [KV]({{ page.version.version }}/architecture/storage-layer.md) and the [SQL]({{ page.version.version }}/architecture/sql-layer.md) level, which determines how LDR resolves the conflict.
 
 ### KV level conflicts
 
-LDR uses _last write wins (LWW)_ conflict resolution based on the [MVCC timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) of the replicating write. LDR will resolve conflicts by inserting the row with the latest MVCC timestamp. Conflicts at the KV level are detected in both `immediate` and `validated` mode.
+LDR uses _last write wins (LWW)_ conflict resolution based on the [MVCC timestamp]({{ page.version.version }}/architecture/storage-layer.md#mvcc) of the replicating write. LDR will resolve conflicts by inserting the row with the latest MVCC timestamp. Conflicts at the KV level are detected in both `immediate` and `validated` mode.
 
 Conflicts at the KV level are detected when there is either:
 
@@ -31,7 +30,7 @@ Conflicts at the KV level are detected when there is either:
 
 ### SQL level conflicts
 
-In `validated` mode, when a conflict cannot apply due to violating [constraints]({% link {{ page.version.version }}/constraints.md %}), for example, a foreign key constraint or schema constraint, it will be retried for up to a minute and then put in the [DLQ](#dead-letter-queue-dlq) if it could not be resolved. 
+In `validated` mode, when a conflict cannot apply due to violating [constraints]({{ page.version.version }}/constraints.md), for example, a foreign key constraint or schema constraint, it will be retried for up to a minute and then put in the [DLQ](#dead-letter-queue-dlq) if it could not be resolved. 
 
 ### Dead letter queue (DLQ)
 
@@ -43,7 +42,7 @@ When the LDR job starts, it will create a DLQ table with each replicating table 
 
 In `validated` mode, rows are also sent to the DLQ when:
 
-- [Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies are not met where there are foreign key constraints in the schema.
+- [Foreign key]({{ page.version.version }}/foreign-key.md) dependencies are not met where there are foreign key constraints in the schema.
 - Unique indexes and other constraints are not met.
 
 {{site.data.alerts.callout_info}}
@@ -54,7 +53,6 @@ To manage the DLQ, you can evaluate entries in the `incoming_row` column and app
 
 As an example, for an LDR stream created on the `movr.public.promo_codes` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW TABLES;
 ~~~
@@ -93,7 +91,7 @@ CONSTRAINT dlq_113_public_promo_codes_pkey PRIMARY KEY (ingestion_job_id ASC, dl
 
 ## Schema changes
 
-When you start LDR on a table, the job will lock the schema, which will prevent any accidental [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) that would cause issues for LDR. There are some [supported schema changes](#supported-schema-changes) that you can perform on a replicating table, otherwise it is necessary to stop LDR in order to [coordinate the schema change](#coordinate-other-schema-changes).
+When you start LDR on a table, the job will lock the schema, which will prevent any accidental [schema changes]({{ page.version.version }}/online-schema-changes.md) that would cause issues for LDR. There are some [supported schema changes](#supported-schema-changes) that you can perform on a replicating table, otherwise it is necessary to stop LDR in order to [coordinate the schema change](#coordinate-other-schema-changes).
 
 ### Supported schema changes
 
@@ -101,11 +99,11 @@ There are some supported schema changes, which you can perform during LDR **with
 
 Allowlist schema change | Exceptions
 -------------------+-----------
-[`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) | <ul><li>[Hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %})</li><li>Indexes with a [computed column]({% link {{ page.version.version }}/computed-columns.md %})</li><li>[Partial indexes]({% link {{ page.version.version }}/partial-indexes.md %})</li><li>[Unique indexes]({% link {{ page.version.version }}/unique.md %})</li></ul>
-[`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}) | N/A
-[Zone configuration]({% link {{ page.version.version }}/show-zone-configurations.md %}) changes | N/A
-[`ALTER TABLE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone) | N/A
-[`ALTER TABLE ... SET/RESET {TTL storage parameters}`]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) | <ul><li>`ALTER TABLE SET (ttl_expire_after = "")`</li><li>`ALTER TABLE RESET (ttl_expire_after = "")`</li><li>`ALTER TABLE RESET (ttl)`</li></ul>
+[`CREATE INDEX`]({{ page.version.version }}/create-index.md) | <ul><li>[Hash-sharded indexes]({{ page.version.version }}/hash-sharded-indexes.md)</li><li>Indexes with a [computed column]({{ page.version.version }}/computed-columns.md)</li><li>[Partial indexes]({{ page.version.version }}/partial-indexes.md)</li><li>[Unique indexes]({{ page.version.version }}/unique.md)</li></ul>
+[`DROP INDEX`]({{ page.version.version }}/drop-index.md) | N/A
+[Zone configuration]({{ page.version.version }}/show-zone-configurations.md) changes | N/A
+[`ALTER TABLE ... CONFIGURE ZONE`]({{ page.version.version }}/alter-table.md#configure-zone) | N/A
+[`ALTER TABLE ... SET/RESET {TTL storage parameters}`]({{ page.version.version }}/row-level-ttl.md#ttl-storage-parameters) | <ul><li>`ALTER TABLE SET (ttl_expire_after = "")`</li><li>`ALTER TABLE RESET (ttl_expire_after = "")`</li><li>`ALTER TABLE RESET (ttl)`</li></ul>
 
 {{site.data.alerts.callout_danger}}
 LDR will **not** replicate the allowlist schema changes to the destination table. Therefore, you must perform the schema change carefully on both the source and destination cluster.
@@ -124,7 +122,6 @@ You have a bidirectional LDR setup with a stream between cluster A to cluster B,
 1. Redirect your application traffic to one cluster, for example, cluster A. 
 1. Wait for all traffic from cluster B to replicate to cluster A. Check this is complete with:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SHOW LOGICAL REPLICATION JOBS WITH DETAILS;
     ~~~
@@ -138,9 +135,8 @@ You have a bidirectional LDR setup with a stream between cluster A to cluster B,
     1014047902397333505 | canceled | {defaultdb.public.office_dogs} | 2024-10-24 17:30:25+00        | 2024-10-21 17:54:20.797643+00 | LWW                      | LOGICAL REPLICATION STREAM into defaultdb.public.office_dogs from external://cluster_a
     ~~~
 
-1. Drop the LDR job on both clusters. Canceling the LDR streams will remove the history retention job, which will cause the data to be garbage collected according to the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) setting. Use [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %}):
+1. Drop the LDR job on both clusters. Canceling the LDR streams will remove the history retention job, which will cause the data to be garbage collected according to the [`gc.ttlseconds`]({{ page.version.version }}/configure-replication-zones.md#gc-ttlseconds) setting. Use [`CANCEL JOB`]({{ page.version.version }}/cancel-job.md):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CANCEL JOB {ldr_job_id};
     ~~~
@@ -150,7 +146,6 @@ You have a bidirectional LDR setup with a stream between cluster A to cluster B,
 1. Recreate the table and its new schema on cluster B. 
 1. Create new LDR streams for the table on both clusters A and B. Run `CREATE LOGICAL REPLICATION STREAM` from the **destination** cluster for each stream:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name};
     ~~~
@@ -159,9 +154,8 @@ You have a bidirectional LDR setup with a stream between cluster A to cluster B,
 
 If you have a unidirectional LDR setup, you should cancel the running LDR stream and redirect all application traffic to the source cluster.
 
-1. Drop the LDR job on the **destination** cluster. Canceling the LDR job will remove the history retention job, which will cause the data to be garbage collected according to the [`gc.ttlseconds`]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) setting. Use [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %}):
+1. Drop the LDR job on the **destination** cluster. Canceling the LDR job will remove the history retention job, which will cause the data to be garbage collected according to the [`gc.ttlseconds`]({{ page.version.version }}/configure-replication-zones.md#gc-ttlseconds) setting. Use [`CANCEL JOB`]({{ page.version.version }}/cancel-job.md):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CANCEL JOB {ldr_job_id};
     ~~~
@@ -169,22 +163,21 @@ If you have a unidirectional LDR setup, you should cancel the running LDR stream
 1. Once the job has `canceled`, perform the required schema change on both the source and destination tables.
 1. Start a new LDR job from the **destination** cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name};
     ~~~
 
 ## Jobs and LDR
 
-You can run changefeed and backup [jobs]({% link {{ page.version.version }}/show-jobs.md %}) on any cluster that is involved in an LDR job. Both source and destination clusters in LDR are active, which means they can both serve production reads and writes as well as run [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) and [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
+You can run changefeed and backup [jobs]({{ page.version.version }}/show-jobs.md) on any cluster that is involved in an LDR job. Both source and destination clusters in LDR are active, which means they can both serve production reads and writes as well as run [backups]({{ page.version.version }}/backup-and-restore-overview.md) and [changefeeds]({{ page.version.version }}/change-data-capture-overview.md).
 
 {{site.data.alerts.callout_success}}
-You may want to run jobs like [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) from one cluster to isolate these jobs from the cluster receiving the principal application traffic. {% comment %} add link to ldr overview page that will describe this workload isolation topology {% endcomment %}
+You may want to run jobs like [changefeeds]({{ page.version.version }}/change-data-capture-overview.md) from one cluster to isolate these jobs from the cluster receiving the principal application traffic. {% comment %} add link to ldr overview page that will describe this workload isolation topology {% endcomment %}
 {{site.data.alerts.end}}
 
 ### Changefeeds
 
-[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will emit [messages]({% link {{ page.version.version }}/changefeed-messages.md %}) for the writes that occur to the watched table. If the watched table is also the destination to which LDR is streaming, the changefeed will additionally emit messages for the writes from the LDR job. For example:
+[Changefeeds]({{ page.version.version }}/change-data-capture-overview.md) will emit [messages]({{ page.version.version }}/changefeed-messages.md) for the writes that occur to the watched table. If the watched table is also the destination to which LDR is streaming, the changefeed will additionally emit messages for the writes from the LDR job. For example:
 
 1. You create a changefeed watching the `test_table` on cluster A.
 1. You start LDR from cluster A `test_table` replicating to cluster B's `test_table`. There are writes to `test_table` happening on both clusters. At this point, the changefeed is only emitting messages for cluster A (the source of the LDR job).
@@ -192,16 +185,16 @@ You may want to run jobs like [changefeeds]({% link {{ page.version.version }}/c
 
 ### Backups
 
-[Backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) can run on either cluster in an LDR stream. If you're backing up a table that is the destination table to which an LDR job is streaming, the backup will include writes that occur to the table from the LDR job. {% comment  %}To add: In a unidirectional setup, you may want to isolate your application workload from backup jobs (link to overview example).{% endcomment %} 
+[Backups]({{ page.version.version }}/backup-and-restore-overview.md) can run on either cluster in an LDR stream. If you're backing up a table that is the destination table to which an LDR job is streaming, the backup will include writes that occur to the table from the LDR job. {% comment  %}To add: In a unidirectional setup, you may want to isolate your application workload from backup jobs (link to overview example).{% endcomment %} 
 
 ### TTL
 
-If you're running [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) jobs, you may not want to include these deletes in LDR. You can ignore row-level TTL deletes in LDR with the [`ttl_disable_changefeed_replication` storage parameter]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) set on the table in the source cluster. If you would like to ignore TTL deletes in LDR, you can use the `discard = ttl-deletes` option in the [`CREATE LOGICAL REPLICATION STREAM` statement]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#step-3-start-ldr).
+If you're running [row-level TTL]({{ page.version.version }}/row-level-ttl.md) jobs, you may not want to include these deletes in LDR. You can ignore row-level TTL deletes in LDR with the [`ttl_disable_changefeed_replication` storage parameter]({{ page.version.version }}/row-level-ttl.md#ttl-storage-parameters) set on the table in the source cluster. If you would like to ignore TTL deletes in LDR, you can use the `discard = ttl-deletes` option in the [`CREATE LOGICAL REPLICATION STREAM` statement]({{ page.version.version }}/set-up-logical-data-replication.md#step-3-start-ldr).
 
 {% comment  %} Add link to the example for this on the create logical replication stream page once published. {% endcomment %}
 
 ## See also
 
-- [Set Up Logical Data Replication]({% link {{ page.version.version }}/set-up-logical-data-replication.md %})
+- [Set Up Logical Data Replication]({{ page.version.version }}/set-up-logical-data-replication.md)
 
 {% comment  %}Add more links as pages publish{% endcomment %}

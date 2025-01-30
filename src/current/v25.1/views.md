@@ -5,12 +5,12 @@ toc: true
 docs_area: develop
 ---
 
-A view is a stored and named [selection query]({% link {{ page.version.version }}/selection-queries.md %}). By default, CockroachDB's views are **dematerialized**: they do not store the results of the underlying queries. Instead, the underlying query is executed anew every time the view is used.
+A view is a stored and named [selection query]({{ page.version.version }}/selection-queries.md). By default, CockroachDB's views are **dematerialized**: they do not store the results of the underlying queries. Instead, the underlying query is executed anew every time the view is used.
 
  CockroachDB also supports [**materialized views**](#materialized-views). Materialized views are views that store their selection query results.
 
 {{site.data.alerts.callout_info}}
- By default, views created in a database cannot reference objects in a different database. To enable cross-database references for views, set the `sql.cross_db_views.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
+ By default, views created in a database cannot reference objects in a different database. To enable cross-database references for views, set the `sql.cross_db_views.enabled` [cluster setting]({{ page.version.version }}/cluster-settings.md) to `true`.
 {{site.data.alerts.end}}
 
 ## Why use views?
@@ -26,16 +26,14 @@ When you have a complex query that, for example, joins several tables, or perfor
 
 #### Example
 
-Let's say you're using our [sample `startrek` database]({% link {{ page.version.version }}/cockroach-gen.md %}#generate-example-data), which contains two tables, `episodes` and `quotes`.
+Let's say you're using our [sample `startrek` database]({{ page.version.version }}/cockroach-gen.md#generate-example-data), which contains two tables, `episodes` and `quotes`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE startrek;
 ~~~
 
 There's a foreign key constraint between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following join:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT episodes.season, count(*)
   FROM quotes
@@ -55,7 +53,6 @@ There's a foreign key constraint between the `episodes.id` column and the `quote
 
 Alternatively, to make it much easier to run this complex query, you could create a view:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW quotes_per_season (season, quotes)
   AS SELECT episodes.season, count(*)
@@ -68,7 +65,6 @@ Alternatively, to make it much easier to run this complex query, you could creat
 
 Then, executing the query is as easy as `SELECT`ing from the view:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM quotes_per_season;
 ~~~
@@ -90,12 +86,10 @@ When you do not want to grant a user access to all the data in one or more stand
 
 Let's say you have a `bank` database containing an `accounts` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE bank;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -113,7 +107,6 @@ Let's say you have a `bank` database containing an `accounts` table:
 
 You want a particular user, `bob`, to be able to see the types of accounts each user has without seeing the balance in each account, so you create a view to expose just the `type` and `email` columns:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW user_accounts
   AS SELECT type, email
@@ -122,7 +115,6 @@ You want a particular user, `bob`, to be able to see the types of accounts each 
 
 You then make sure `bob` does not have privileges on the underlying `accounts` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON accounts;
 ~~~
@@ -137,14 +129,12 @@ You then make sure `bob` does not have privileges on the underlying `accounts` t
 
 Finally, you grant `bob` privileges on the `user_accounts` view:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT ON user_accounts TO bob;
 ~~~
 
 Now, `bob` will get a permissions error when trying to access the underlying `accounts` table but will be allowed to query the `user_accounts` view:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -153,7 +143,6 @@ Now, `bob` will get a permissions error when trying to access the underlying `ac
 pq: user bob does not have SELECT privilege on table accounts
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM user_accounts;
 ~~~
@@ -173,9 +162,8 @@ pq: user bob does not have SELECT privilege on table accounts
 
 ### Creating views
 
-To create a view, use the [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %}) statement:
+To create a view, use the [`CREATE VIEW`]({{ page.version.version }}/create-view.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW quotes_per_season (season, quotes)
   AS SELECT episodes.season, count(*)
@@ -187,14 +175,13 @@ To create a view, use the [`CREATE VIEW`]({% link {{ page.version.version }}/cre
 ~~~
 
 {{site.data.alerts.callout_info}}
-Any [selection query]({% link {{ page.version.version }}/selection-queries.md %}) is valid as operand to `CREATE VIEW`, not just [simple `SELECT` clauses]({% link {{ page.version.version }}/select-clause.md %}).
+Any [selection query]({{ page.version.version }}/selection-queries.md) is valid as operand to `CREATE VIEW`, not just [simple `SELECT` clauses]({{ page.version.version }}/select-clause.md).
 {{site.data.alerts.end}}
 
 ### Listing views
 
 Once created, views are listed alongside regular tables in the database:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM startrek;
 ~~~
@@ -208,9 +195,8 @@ Once created, views are listed alongside regular tables in the database:
 (3 rows)
 ~~~
 
-To list just views, you can query the `views` table in the [Information Schema]({% link {{ page.version.version }}/information-schema.md %}):
+To list just views, you can query the `views` table in the [Information Schema]({{ page.version.version }}/information-schema.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.views;
 ~~~
@@ -224,9 +210,8 @@ To list just views, you can query the `views` table in the [Information Schema](
 
 ### Query a view
 
-To query a view, target it with a [table expression]({% link {{ page.version.version }}/table-expressions.md %}#table-and-view-names), for example using a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}), just as you would with a stored table:
+To query a view, target it with a [table expression]({{ page.version.version }}/table-expressions.md#table-and-view-names), for example using a [`SELECT` clause]({{ page.version.version }}/select-clause.md), just as you would with a stored table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM quotes_per_season;
 ~~~
@@ -240,9 +225,8 @@ To query a view, target it with a [table expression]({% link {{ page.version.ver
 (3 rows)
 ~~~
 
-`SELECT`ing a view executes the view's stored `SELECT` statement, which returns the relevant data from the underlying table(s). To inspect the `SELECT` statement executed by the view, use the [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}) statement:
+`SELECT`ing a view executes the view's stored `SELECT` statement, which returns the relevant data from the underlying table(s). To inspect the `SELECT` statement executed by the view, use the [`SHOW CREATE`]({{ page.version.version }}/show-create.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE quotes_per_season;
 ~~~
@@ -254,9 +238,8 @@ To query a view, target it with a [table expression]({% link {{ page.version.ver
 (1 row)
 ~~~
 
-You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the [Information Schema]({% link {{ page.version.version }}/information-schema.md %}):
+You can also inspect the `SELECT` statement executed by a view by querying the `views` table in the [Information Schema]({{ page.version.version }}/information-schema.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT view_definition FROM information_schema.views WHERE table_name = 'quotes_per_season';
 ~~~
@@ -270,9 +253,8 @@ You can also inspect the `SELECT` statement executed by a view by querying the `
 
 ### View dependencies
 
-A view depends on the objects targeted by its underlying query. Attempting to [rename an object]({% link {{ page.version.version }}/alter-table.md %}#rename-to) referenced in a view's stored query therefore results in an error:
+A view depends on the objects targeted by its underlying query. Attempting to [rename an object]({{ page.version.version }}/alter-table.md#rename-to) referenced in a view's stored query therefore results in an error:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE quotes RENAME TO sayings;
 ~~~
@@ -283,9 +265,8 @@ SQLSTATE: 2BP01
 HINT: you can drop quotes_per_season instead.
 ~~~
 
-Likewise, attempting to [drop an object]({% link {{ page.version.version }}/drop-table.md %}) referenced in a view's stored query results in an error:
+Likewise, attempting to [drop an object]({{ page.version.version }}/drop-table.md) referenced in a view's stored query results in an error:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE quotes;
 ~~~
@@ -296,7 +277,6 @@ SQLSTATE: 2BP01
 HINT: you can drop quotes_per_season instead.
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE episodes DROP COLUMN season;
 ~~~
@@ -307,26 +287,22 @@ SQLSTATE: 2BP01
 HINT: you can drop quotes_per_season instead.
 ~~~
 
- You can [drop]({% link {{ page.version.version }}/alter-table.md %}#drop-column) or [rename columns]({% link {{ page.version.version }}/alter-table.md %}#rename-column) from a table on which a view is dependent, as long as the view does not depend on that column of the table. For example, because there is no view that depends on the `num` column of the `episodes` table, you can rename it to `number`:
+ You can [drop]({{ page.version.version }}/alter-table.md#drop-column) or [rename columns]({{ page.version.version }}/alter-table.md#rename-column) from a table on which a view is dependent, as long as the view does not depend on that column of the table. For example, because there is no view that depends on the `num` column of the `episodes` table, you can rename it to `number`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE startrek.episodes RENAME COLUMN num TO number;
 ~~~
 
 Similarly, because no view depends on the `title` column of the `episodes` table, you can drop it. Note that to drop a column with data in it, you must first set `sql_safe_updates = false`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET sql_safe_updates = false;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE startrek.episodes DROP COLUMN title;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM startrek.episodes;
 ~~~
@@ -341,9 +317,8 @@ Similarly, because no view depends on the `title` column of the `episodes` table
 (4 rows)
 ~~~
 
-When [dropping a table]({% link {{ page.version.version }}/drop-table.md %}) or [dropping a view]({% link {{ page.version.version }}/drop-view.md %}), you can use the `CASCADE` keyword to drop all dependent objects as well:
+When [dropping a table]({{ page.version.version }}/drop-table.md) or [dropping a view]({{ page.version.version }}/drop-view.md), you can use the `CASCADE` keyword to drop all dependent objects as well:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE quotes CASCADE;
 ~~~
@@ -358,9 +333,8 @@ DROP TABLE
 
 ### Renaming views
 
-To rename a view, use the [`ALTER VIEW`]({% link {{ page.version.version }}/alter-view.md %}) statement:
+To rename a view, use the [`ALTER VIEW`]({{ page.version.version }}/alter-view.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER VIEW quotes_per_season RENAME TO quotes_count;
 ~~~
@@ -373,9 +347,8 @@ It is not possible to change the stored query executed by the view. Instead, you
 
 ### Replace a view
 
- To replace a view, use [`CREATE OR REPLACE VIEW`]({% link {{ page.version.version }}/create-view.md %}):
+ To replace a view, use [`CREATE OR REPLACE VIEW`]({{ page.version.version }}/create-view.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE OR REPLACE VIEW quotes_count (season, quotes, stardate)
   AS SELECT episodes.season, count(*), episodes.stardate
@@ -385,7 +358,6 @@ It is not possible to change the stored query executed by the view. Instead, you
   GROUP BY episodes.season, episodes.stardate;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM quotes_count LIMIT 10;
 ~~~
@@ -408,9 +380,8 @@ It is not possible to change the stored query executed by the view. Instead, you
 
 ### Remove a view
 
-To remove a view, use the [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %}) statement:
+To remove a view, use the [`DROP VIEW`]({{ page.version.version }}/drop-view.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP VIEW quotes_count;
 ~~~
@@ -423,19 +394,18 @@ DROP VIEW
 
 CockroachDB supports [materialized views](https://wikipedia.org/wiki/Materialized_view). A _materialized view_ is a view that stores the results of its underlying query.
 
-When you [select]({% link {{ page.version.version }}/selection-queries.md %}) from a materialized view, the stored query data that is returned might be out-of-date. This contrasts with a standard (i.e., "dematerialized") view, which runs its underlying query every time it is used, returning the latest results. In order to get the latest results from a materialized view, you must [refresh the view]({% link {{ page.version.version }}/refresh.md %}), and then select from it.
+When you [select]({{ page.version.version }}/selection-queries.md) from a materialized view, the stored query data that is returned might be out-of-date. This contrasts with a standard (i.e., "dematerialized") view, which runs its underlying query every time it is used, returning the latest results. In order to get the latest results from a materialized view, you must [refresh the view]({{ page.version.version }}/refresh.md), and then select from it.
 
 Because materialized views store query results, they offer better performance than standard views, at the expense of the additional storage required to store query results and the guarantee that the results are up-to-date.
 
 ### Usage
 
-Materialized views and standard views share similar syntax for [creating]({% link {{ page.version.version }}/create-view.md %}), [showing]({% link {{ page.version.version }}/show-tables.md %}), [renaming]({% link {{ page.version.version }}/alter-view.md %}), and [dropping]({% link {{ page.version.version }}/drop-view.md %}).
+Materialized views and standard views share similar syntax for [creating]({{ page.version.version }}/create-view.md), [showing]({{ page.version.version }}/show-tables.md), [renaming]({{ page.version.version }}/alter-view.md), and [dropping]({{ page.version.version }}/drop-view.md).
 
-To create a materialized view, use a [`CREATE MATERIALIZED VIEW`]({% link {{ page.version.version }}/create-view.md %}) statement.
+To create a materialized view, use a [`CREATE MATERIALIZED VIEW`]({{ page.version.version }}/create-view.md) statement.
 
-For example, suppose that you have the [sample `bank` database]({% link {{ page.version.version }}/cockroach-workload.md %}#bank-workload) loaded to a CockroachDB cluster, and populated with some workload values:
+For example, suppose that you have the [sample `bank` database]({{ page.version.version }}/cockroach-workload.md#bank-workload) loaded to a CockroachDB cluster, and populated with some workload values:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE MATERIALIZED VIEW overdrawn_accounts
   AS SELECT id, balance
@@ -443,7 +413,6 @@ For example, suppose that you have the [sample `bank` database]({% link {{ page.
   WHERE balance < 0;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM overdrawn_accounts;
 ~~~
@@ -458,9 +427,8 @@ For example, suppose that you have the [sample `bank` database]({% link {{ page.
 (402 rows)
 ~~~
 
-To show existing materialized views, use a [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}) statement:
+To show existing materialized views, use a [`SHOW TABLES`]({{ page.version.version }}/show-tables.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -475,7 +443,6 @@ To show existing materialized views, use a [`SHOW TABLES`]({% link {{ page.versi
 
 Now suppose you update the `balance` values of the `bank` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE bank SET balance = 0 WHERE balance < 0;
 ~~~
@@ -486,7 +453,6 @@ UPDATE 402
 
 The changes can be seen in the table with a simple `SELECT` statement against the table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance
 FROM bank
@@ -501,7 +467,6 @@ WHERE balance < 0;
 
 Recall that materialized views do not automatically update their stored results. Selecting from `overdrawn_accounts` returns stored results, which are outdated:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM overdrawn_accounts;
 ~~~
@@ -516,14 +481,12 @@ Recall that materialized views do not automatically update their stored results.
 (402 rows)
 ~~~
 
-To update the materialized view's results, use a [`REFRESH`]({% link {{ page.version.version }}/refresh.md %}) statement:
+To update the materialized view's results, use a [`REFRESH`]({{ page.version.version }}/refresh.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REFRESH MATERIALIZED VIEW overdrawn_accounts;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM overdrawn_accounts;
 ~~~
@@ -534,9 +497,8 @@ To update the materialized view's results, use a [`REFRESH`]({% link {{ page.ver
 (0 rows)
 ~~~
 
-To rename the materialized view, use [`ALTER MATERIALIZED VIEW`]({% link {{ page.version.version }}/alter-view.md %}):
+To rename the materialized view, use [`ALTER MATERIALIZED VIEW`]({{ page.version.version }}/alter-view.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER MATERIALIZED VIEW overdrawn_accounts RENAME TO forgiven_accounts;
 ~~~
@@ -545,9 +507,8 @@ To rename the materialized view, use [`ALTER MATERIALIZED VIEW`]({% link {{ page
 RENAME VIEW
 ~~~
 
-To remove the materialized view, use [`DROP MATERIALIZED VIEW`]({% link {{ page.version.version }}/drop-view.md %}):
+To remove the materialized view, use [`DROP MATERIALIZED VIEW`]({{ page.version.version }}/drop-view.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP MATERIALIZED VIEW forgiven_accounts;
 ~~~
@@ -558,18 +519,16 @@ DROP VIEW
 
 ### Add an index to a materialized view
 
-To speed up queries on materialized views, you can add an [index]({% link {{ page.version.version }}/schema-design-indexes.md %}) to the view.
+To speed up queries on materialized views, you can add an [index]({{ page.version.version }}/schema-design-indexes.md) to the view.
 
-1. Create a materialized view of the [MovR]({% link {{ page.version.version }}/movr.md %}) rides table where the revenue is less than $20.00:
+1. Create a materialized view of the [MovR]({{ page.version.version }}/movr.md) rides table where the revenue is less than $20.00:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE MATERIALIZED VIEW low_rev_rides AS SELECT city, vehicle_id, revenue from rides WHERE revenue < 20.00;
     ~~~
 
 1. To see the plan for a select on this view, run:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPLAIN SELECT vehicle_id, revenue FROM low_rev_rides WHERE city = 'seattle';
     ~~~
@@ -598,14 +557,12 @@ To speed up queries on materialized views, you can add an [index]({% link {{ pag
 
 1. Create an index on the `city` column:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE INDEX ON low_rev_rides (city) STORING (vehicle_id, revenue);
     ~~~
 
 1. To see the change in the plan after adding the index, run:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPLAIN SELECT vehicle_id, revenue FROM low_rev_rides@low_rev_rides_city_idx WHERE city = 'seattle';
     ~~~
@@ -625,20 +582,17 @@ To speed up queries on materialized views, you can add an [index]({% link {{ pag
 
 ### Known limitations
 
-{% include {{page.version.version}}/known-limitations/materialized-views-no-stats.md %}
 
-{% include {{page.version.version}}/known-limitations/cannot-refresh-materialized-views-inside-transactions.md %}
 
 ## Temporary views
 
-CockroachDB supports session-scoped temporary views. Unlike persistent views, temporary views can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary views on both persistent tables and [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}).
+CockroachDB supports session-scoped temporary views. Unlike persistent views, temporary views can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary views on both persistent tables and [temporary tables]({{ page.version.version }}/temporary-tables.md).
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %} For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Temporary tables must be enabled in order to use temporary views. By default, temporary tables are disabled in CockroachDB. To enable temporary tables, set the `experimental_enable_temp_tables` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `on`.
+Temporary tables must be enabled in order to use temporary views. By default, temporary tables are disabled in CockroachDB. To enable temporary tables, set the `experimental_enable_temp_tables` [session variable]({{ page.version.version }}/set-vars.md) to `on`.
 {{site.data.alerts.end}}
 
 ### Details
@@ -647,20 +601,19 @@ Temporary tables must be enabled in order to use temporary views. By default, te
 - A temporary view can only be accessed from the session in which it was created.
 - Temporary views persist across transactions in the same session.
 - Temporary views cannot be converted to persistent views.
-- Temporary views can be created on both persistent tables and [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}).
+- Temporary views can be created on both persistent tables and [temporary tables]({{ page.version.version }}/temporary-tables.md).
 - When you create a view on a temporary table, the view automatically becomes temporary.
 
 {{site.data.alerts.callout_info}}
-Like [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}), temporary views are not in the `public` schema. Instead, when you create the first temporary table, view, or sequence for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temporary objects in the current session for a database.
+Like [temporary tables]({{ page.version.version }}/temporary-tables.md), temporary views are not in the `public` schema. Instead, when you create the first temporary table, view, or sequence for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temporary objects in the current session for a database.
 {{site.data.alerts.end}}
 
 ### Usage
 
-To create a temporary view, add [`TEMP`/`TEMPORARY`]({% link {{ page.version.version }}/sql-grammar.md %}#opt_temp) to a [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %}) statement.
+To create a temporary view, add [`TEMP`/`TEMPORARY`]({{ page.version.version }}/sql-grammar.md#opt_temp) to a [`CREATE VIEW`]({{ page.version.version }}/create-view.md) statement.
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TEMP VIEW temp_view (season, quotes)
   AS SELECT episodes.season, count(*)
@@ -670,7 +623,6 @@ For example:
   GROUP BY episodes.season;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM temp_view;
 ~~~
@@ -686,10 +638,10 @@ For example:
 
 ## See also
 
-- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
-- [Simple `SELECT` Clauses]({% link {{ page.version.version }}/select-clause.md %})
-- [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %})
-- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
-- [`GRANT`]({% link {{ page.version.version }}/grant.md %})
-- [`ALTER VIEW`]({% link {{ page.version.version }}/alter-view.md %})
-- [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})
+- [Selection Queries]({{ page.version.version }}/selection-queries.md)
+- [Simple `SELECT` Clauses]({{ page.version.version }}/select-clause.md)
+- [`CREATE VIEW`]({{ page.version.version }}/create-view.md)
+- [`SHOW CREATE`]({{ page.version.version }}/show-create.md)
+- [`GRANT`]({{ page.version.version }}/grant.md)
+- [`ALTER VIEW`]({{ page.version.version }}/alter-view.md)
+- [`DROP VIEW`]({{ page.version.version }}/drop-view.md)

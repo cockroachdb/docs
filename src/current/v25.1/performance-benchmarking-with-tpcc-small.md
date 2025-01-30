@@ -7,9 +7,8 @@ key: performance-benchmarking-with-tpc-c-1k-warehouses.html
 docs_area: reference.benchmarking
 ---
 
-This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results]({% link {{ page.version.version }}/performance.md %}#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results]({{ page.version.version }}/performance.md#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
-{% include {{ page.version.version }}/filter-tabs/perf-bench-tpc-c.md %}
 
 | Workload             | Cluster size                                            | Warehouses | Data size |
 |----------------------+---------------------------------------------------------+------------+-----------|
@@ -23,7 +22,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 
 ### Review TPC-C concepts
 
-TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. Before you get started, consider reviewing [what TPC-C is and how it is measured]({% link {{ page.version.version }}/performance.md %}#tpc-c).
+TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. Before you get started, consider reviewing [what TPC-C is and how it is measured]({{ page.version.version }}/performance.md#tpc-c).
 
 ## Step 1. Set up the environment
 
@@ -40,7 +39,7 @@ TPC-C provides the most realistic and objective measure for OLTP performance at 
 1. Note the internal IP address of each instance. You'll need these addresses when starting the CockroachDB nodes.
 
 {{site.data.alerts.callout_danger}}
-This configuration is intended for performance benchmarking only. For production deployments, there are other important considerations, such as security, load balancing, and data location techniques to minimize network latency. For more details, see the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
+This configuration is intended for performance benchmarking only. For production deployments, there are other important considerations, such as security, load balancing, and data location techniques to minimize network latency. For more details, see the [Production Checklist]({{ page.version.version }}/recommended-production-settings.md).
 {{site.data.alerts.end}}
 
 ### Configure your network
@@ -72,17 +71,15 @@ CockroachDB requires TCP communication on two ports:
 
 ## Step 2. Start CockroachDB
 
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
 1. SSH to the first VM where you want to run a CockroachDB node.
 
-1. Visit [Releases]({% link releases/index.md %}?filters=windows) to download and CockroachDB for Linux. Select the architecture of the VM, either Intel or ARM. Releases are rolled out gradually, so the latest version may not yet be available.
+1. Visit [Releases](releases/index.md?filters=windows) to download and CockroachDB for Linux. Select the architecture of the VM, either Intel or ARM. Releases are rolled out gradually, so the latest version may not yet be available.
 
 1. Extract the binary you downloaded, then optionally copy it into a location in your `PATH`. If you choose to copy it into a system directory, you may need to use `sudo`.
 
-1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
+1. Run the [`cockroach start`]({{ page.version.version }}/cockroach-start.md) command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach start \
     --insecure \
@@ -93,28 +90,25 @@ CockroachDB requires TCP communication on two ports:
 
 1. Repeat steps 1 - 3 for the other 2 VMs for CockroachDB nodes. Each time, be sure to adjust the `--advertise-addr` flag.
 
-1. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to join the first nodes into a cluster:
+1. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`]({{ page.version.version }}/cockroach-init.md) command to join the first nodes into a cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach init --insecure --host=<address of any node on --join list>
     ~~~
 
 ## Step 3. Import the TPC-C dataset
 
-CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.version }}/cockroach-workload.md %}) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
+CockroachDB comes with a number of [built-in workloads]({{ page.version.version }}/cockroach-workload.md) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
 1. SSH to the VM where you want to run TPC-C.
 
 1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -123,7 +117,6 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
 
 1. Import the TPC-C dataset:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload fixtures import tpcc \
     --warehouses=2500 \
@@ -132,7 +125,7 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
 
     This will load 200 GB of data for 2500 "warehouses". This can take a while to complete.
 
-    You can monitor progress on the **Jobs** screen of the DB Console. Open the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+    You can monitor progress on the **Jobs** screen of the DB Console. Open the [DB Console]({{ page.version.version }}/ui-overview.md) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
 ## Step 4. Run the benchmark
 
@@ -144,7 +137,6 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
 
 1. Run TPC-C for 30 minutes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run tpcc \
     --warehouses=2500 \
@@ -164,14 +156,13 @@ _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
 
 ## See also
 
-- [Performance Overview]({% link {{ page.version.version }}/performance.md %})
+- [Performance Overview]({{ page.version.version }}/performance.md)
 
 - Hardware
 
-    CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware).
+    CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist]({{ page.version.version }}/recommended-production-settings.md#hardware).
 
-    {% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
 
 - Performance Tuning
 
-    For guidance on tuning a real workload's performance, see [SQL Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %}).
+    For guidance on tuning a real workload's performance, see [SQL Best Practices]({{ page.version.version }}/performance-best-practices-overview.md), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview]({{ page.version.version }}/multiregion-overview.md).

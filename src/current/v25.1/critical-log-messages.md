@@ -16,7 +16,7 @@ toc: true
         - `storage.write-stalls`: Number of instances of intentional write stalls to backpressure incoming writes
         - `storage.write-stall-nanos`: Total write stall duration in nanos
         - `storage.disk-stalled`: Number of instances of disk operations taking longer than 20s 
-    - **See also**: [Disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls)
+    - **See also**: [Disk stalls]({{ page.version.version }}/cluster-setup-troubleshooting.md#disk-stalls)
 
 ## Node Decommission Stall
 
@@ -28,8 +28,8 @@ toc: true
     - **Action**: Provide sufficient extra node capacity and ensure nodes are available in the desired localities before decommission.
     - **Related metrics**: NONE
     - **See also**:
-        - [Node decommission]({% link {{ page.version.version }}/cockroach-node.md %}#node-decommission)
-        - [Decommissioning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#decommissioning-issues)
+        - [Node decommission]({{ page.version.version }}/cockroach-node.md#node-decommission)
+        - [Decommissioning issues]({{ page.version.version }}/cluster-setup-troubleshooting.md#decommissioning-issues)
 
 - **Message**: One or more of the following:
     <br><br>`ERROR: drain timeout`
@@ -40,7 +40,7 @@ toc: true
     - **Impact**: Decommission is prevented.
     - **Action**: To continue the drain, re-initiate the command. A very long drain may indicate an anomaly, and you should manually inspect the server to determine what blocks the drain.
     - **Related metrics**: NONE
-    - **See also**: [Drain timeout]({% link {{ page.version.version }}/node-shutdown.md %}#drain-timeout)
+    - **See also**: [Drain timeout]({{ page.version.version }}/node-shutdown.md#drain-timeout)
 
 ## Network
 
@@ -54,8 +54,8 @@ toc: true
         - `liveness.heartbeatfailures`: Number of failed node liveness heartbeats from this node
         - `liveness.heartbeatlatency`: Node liveness heartbeat latency
     - **See also**:
-        - [Node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues)
-        - [`context deadline exceeded`]({% link {{ page.version.version }}/common-errors.md %}#context-deadline-exceeded)
+        - [Node liveness issues]({{ page.version.version }}/cluster-setup-troubleshooting.md#node-liveness-issues)
+        - [`context deadline exceeded`]({{ page.version.version }}/common-errors.md#context-deadline-exceeded)
 
 - **Message**: `unable to connect to n%d: failed to connect to n%d at ‹hostname:port›: ‹initial connection heartbeat failed›`
 
@@ -68,7 +68,7 @@ toc: true
         - Resource exhaustion, such as an OOM or CPU saturation.
         - Recent hardware changes.
     - **Related metrics**: NONE
-    - **See also**: [Network partition]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition)
+    - **See also**: [Network partition]({{ page.version.version }}/cluster-setup-troubleshooting.md#network-partition)
 
 - **Message**: One or more of the following:
     <br><br>`slow range RPC: have been waiting  %.2fs (%d attempts) for RPC Scan`
@@ -83,7 +83,7 @@ toc: true
     - **Related metrics**:
         - `liveness.heartbeatfailures`: Number of failed node liveness heartbeats from this node
         - `liveness.heartbeatlatency`: Node liveness heartbeat latency
-    - **See also**: [Network partition]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition)
+    - **See also**: [Network partition]({{ page.version.version }}/cluster-setup-troubleshooting.md#network-partition)
 
 ## Infrastructure
 
@@ -95,7 +95,7 @@ toc: true
     - **Action**: Ensure that clocks are synchronized using the NTP/PTP time protocols within a high frequency in a second.
     - **Related metrics**:
         - `clock-offset.meannanos`: Mean clock offset with other nodes
-    - **See also**: [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`]({% link {{ page.version.version }}/common-errors.md %}#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)
+    - **See also**: [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`]({{ page.version.version }}/common-errors.md#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)
 
 - **Message**: `file write stall detected: %s`
 
@@ -105,7 +105,7 @@ toc: true
     - **Action**: Provision disks with sufficient disk bandwidth/IOPs and then restart the node.
     - **Related metrics**: 
         - `storage.write-stalls`: Number of instances of intentional write stalls to backpressure incoming writes
-    - **See also**: [Disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls)
+    - **See also**: [Disk stalls]({{ page.version.version }}/cluster-setup-troubleshooting.md#disk-stalls)
 
 ## Cluster/Node Availability
 
@@ -116,7 +116,7 @@ toc: true
     - **Impact**: Node may be unable to shutdown cleanly.
     - **Action**: Check for network issues. For Kubernetes deployments the pod will be terminated after the configured grace period. With other types of deployment, the operator may need to terminate the `cockroach` process manually.
     - **Related metrics**: NONE
-    - **See also**: [Drain timeout]({% link {{ page.version.version }}/node-shutdown.md %}#drain-timeout)
+    - **See also**: [Drain timeout]({{ page.version.version }}/node-shutdown.md#drain-timeout)
 
 - **Message**: `WARNING: The server appears to be unable to contact the other nodes in the cluster.`
 
@@ -132,7 +132,7 @@ toc: true
         - `security.certificate.expiration.ca`: Expiration for the CA certificate. 0 means no certificate or error
         - `security.certificate.expiration.node`: Expiration for the node certificate. 0 means no certificate or error
         - `security.certificate.expiration.node-client`: Expiration for the node's client certificate. 0 means no certificate or error
-    - **See also**: [Troubleshoot Self-Hosted Setup]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %})
+    - **See also**: [Troubleshoot Self-Hosted Setup]({{ page.version.version }}/cluster-setup-troubleshooting.md)
 
 - **Message**: `latency jump (prev avg {XXX}ms, current {YYY}ms)`
 
@@ -213,7 +213,7 @@ toc: true
     - **Impact**: May cause higher latencies for operations that need to write to that range.
     - **Action**: Identify if the range has a disproportionate amount of load and mitigate appropriately, such as splitting ranges manually or using a hash-sharded index.
     - **Related metrics**: NONE
-    - **See also**: [Hot Ranges page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %})
+    - **See also**: [Hot Ranges page]({{ page.version.version }}/ui-hot-ranges-page.md)
 
 ## Data Availability
 
@@ -226,12 +226,12 @@ toc: true
     - **Related metrics**: 
         - `ranges.unavailable`: Number of ranges with fewer live replicas than needed for quorum
     - **See also**:
-        - [KV replication]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#kv-replication)
-        - [Replication issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#replication-issues)
+        - [KV replication]({{ page.version.version }}/essential-metrics-self-hosted.md#kv-replication)
+        - [Replication issues]({{ page.version.version }}/cluster-setup-troubleshooting.md#replication-issues)
 
 ## See also
 
-- [Logging Best Practices]({% link {{ page.version.version }}/logging-best-practices.md %})
-- [Troubleshoot Self-Hosted Setup]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %})
-- [Common Errors and Solutions]({% link {{ page.version.version }}/common-errors.md %})
-- [Essential Metrics for CockroachDB Self-Hosted Deployments]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %})
+- [Logging Best Practices]({{ page.version.version }}/logging-best-practices.md)
+- [Troubleshoot Self-Hosted Setup]({{ page.version.version }}/cluster-setup-troubleshooting.md)
+- [Common Errors and Solutions]({{ page.version.version }}/common-errors.md)
+- [Essential Metrics for CockroachDB Self-Hosted Deployments]({{ page.version.version }}/essential-metrics-self-hosted.md)

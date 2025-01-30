@@ -9,13 +9,12 @@ This page guides you through a simple demonstration of how CockroachDB remains a
 
 ## Before you begin
 
-Make sure you have already [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+Make sure you have already [installed CockroachDB]({{ page.version.version }}/install-cockroachdb.md).
 
 ## Step 1. Start a 6-node cluster
 
-1. In separate terminal windows, use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start six nodes:
+1. In separate terminal windows, use the [`cockroach start`]({{ page.version.version }}/cockroach-start.md) command to start six nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -25,7 +24,6 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -35,7 +33,6 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -45,7 +42,6 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -55,7 +51,6 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -65,7 +60,6 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -75,16 +69,15 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-1. Use the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster:
+1. Use the [`cockroach init`]({{ page.version.version }}/cockroach-init.md) command to perform a one-time initialization of the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=localhost:26257
     ~~~
 
 ## Step 2. Set up load balancing
 
-In this tutorial, you run a sample workload to simulate multiple client connections. Each node is an equally suitable SQL gateway for the load, but it's always recommended to [spread requests evenly across nodes]({% link {{ page.version.version }}/recommended-production-settings.md %}#load-balancing). This section shows how to set up the open-source [HAProxy](http://www.haproxy.org/) load balancer.
+In this tutorial, you run a sample workload to simulate multiple client connections. Each node is an equally suitable SQL gateway for the load, but it's always recommended to [spread requests evenly across nodes]({{ page.version.version }}/recommended-production-settings.md#load-balancing). This section shows how to set up the open-source [HAProxy](http://www.haproxy.org/) load balancer.
 
 1. Install HAProxy.
 
@@ -96,7 +89,6 @@ In this tutorial, you run a sample workload to simulate multiple client connecti
 
     <div class="filter-content" markdown="1" data-scope="mac">
     If you're on a Mac and use Homebrew, run:
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ brew install haproxy
     ~~~
@@ -104,15 +96,13 @@ In this tutorial, you run a sample workload to simulate multiple client connecti
 
     <div class="filter-content" markdown="1" data-scope="linux">
     If you're using Linux and use apt-get, run:
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo apt-get install haproxy
     ~~~
     </div>
 
-1. Run the [`cockroach gen haproxy`]({% link {{ page.version.version }}/cockroach-gen.md %}) command, specifying the port of any node:
+1. Run the [`cockroach gen haproxy`]({{ page.version.version }}/cockroach-gen.md) command, specifying the port of any node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen haproxy --insecure --host=localhost --port=26257
     ~~~
@@ -121,25 +111,22 @@ In this tutorial, you run a sample workload to simulate multiple client connecti
 
 1. In `haproxy.cfg`, change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     sed -i.saved 's/^    bind :26257/    bind :26000/' haproxy.cfg
     ~~~
 
 1. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ haproxy -f haproxy.cfg &
     ~~~
 
 ## Step 3. Run a sample workload
 
-Use the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) command to run CockroachDB's built-in version of the YCSB benchmark, simulating multiple client connections, each performing mixed read/write operations.
+Use the [`cockroach workload`]({{ page.version.version }}/cockroach-workload.md) command to run CockroachDB's built-in version of the YCSB benchmark, simulating multiple client connections, each performing mixed read/write operations.
 
 1. Load the initial `ycsb` schema and data, pointing it at HAProxy's port:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init ycsb --splits=50 'postgresql://root@localhost:26000?sslmode=disable'
     ~~~
@@ -148,7 +135,6 @@ Use the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-work
 
 1. Run the `ycsb` workload, pointing it at HAProxy's port:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run ycsb \
     --duration=20m \
@@ -187,33 +173,32 @@ Initially, the workload creates a new database called `ycsb`, creates the table 
 
 1. To check the SQL queries getting executed, click **Metrics** on the left, and hover over the **SQL Statements** graph at the top:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-1.png' | relative_url }}" alt="DB Console SQL Statements" style="border:1px solid #eee;max-width:100%" />
+    ![DB Console SQL Statements](/images/v24.2/fault-tolerance-1.png)
 
 1. To check the client connections from the load generator, select the **SQL** dashboard and hover over the **Open SQL Sessions** graph:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-2.png' | relative_url }}" alt="DB Console Open Sessions" style="border:1px solid #eee;max-width:100%" />
+    ![DB Console Open Sessions](/images/v24.2/fault-tolerance-2.png)
 
     You'll notice 3 client connections from the load generator. If you want to check that HAProxy balanced each connection to a different node, you can change the **Graph** dropdown from **Cluster** to specific nodes.
 
 1. To see more details about the `ycsb` database and the `public.usertable` table, click **Databases** in the upper left and click **ycsb**:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-3.png' | relative_url }}" alt="DB Console Databases" style="border:1px solid #eee;max-width:100%" />
+    ![DB Console Databases](/images/v24.2/fault-tolerance-3.png)
 
     You can also view the schema and other table details of `public.usertable` by clicking the table name:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-4.png' | relative_url }}" alt="DB Console usertable" style="border:1px solid #eee;max-width:100%" />
+    ![DB Console usertable](/images/v24.2/fault-tolerance-4.png)
 
 1. By default, CockroachDB replicates all data 3 times and balances it across all nodes. To see this balance, click **Overview** and check the replica count across all nodes:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-6.png' | relative_url }}" alt="DB Console Overview" style="border:1px solid #eee;max-width:100%" />
+    ![DB Console Overview](/images/v24.2/fault-tolerance-6.png)
 
 ## Step 5. Simulate a single node failure
 
 When a node fails, the cluster waits for the node to remain offline for 5 minutes by default before considering it dead, at which point the cluster automatically repairs itself by re-replicating any of the replicas on the down nodes to other available nodes.
 
-1. In a new terminal, [edit the default replication zone]({% link {{ page.version.version }}/configure-replication-zones.md %}#edit-the-default-replication-zone) to reduce the amount of time the cluster waits before considering a node dead to the minimum allowed of 1 minute and 15 seconds:
+1. In a new terminal, [edit the default replication zone]({{ page.version.version }}/configure-replication-zones.md#edit-the-default-replication-zone) to reduce the amount of time the cluster waits before considering a node dead to the minimum allowed of 1 minute and 15 seconds:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26000 \
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m15s';"
@@ -221,7 +206,6 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
 1. Get the process IDs of the nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ps -ef | grep cockroach | grep -v grep
     ~~~
@@ -237,7 +221,6 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
 1. Gracefully shut down the node stored in `fault-node5`, specifying its process ID (in this example, `53708`):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM 53708
     ~~~
@@ -246,7 +229,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
 Go back to the DB Console, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite one of the nodes being unavailable and marked as **Suspect**:
 
-<img src="{{ 'images/v24.2/fault-tolerance-7.png' | relative_url }}" alt="DB Console Suspect Node" style="border:1px solid #eee;max-width:100%" />
+![DB Console Suspect Node](/images/v24.2/fault-tolerance-7.png)
 
 This shows that when all ranges are replicated 3 times (the default), the cluster can tolerate a single node failure because the surviving nodes have a majority of each range's replicas (2/3).
 
@@ -254,19 +237,18 @@ This shows that when all ranges are replicated 3 times (the default), the cluste
 
 Click **Overview** on the left:
 
-<img src="{{ 'images/v24.2/fault-tolerance-5.png' | relative_url }}" alt="DB Console Cluster Repair" style="border:1px solid #eee;max-width:100%" />
+![DB Console Cluster Repair](/images/v24.2/fault-tolerance-5.png)
 
 Because you reduced the time it takes for the cluster to consider the down node dead, after 1 minute or so, the cluster will consider the down node "dead", and you'll see the replica count on the remaining nodes increase and the number of under-replicated ranges decrease to 0. This shows the cluster repairing itself by re-replicating missing replicas.
 
 ## Step 8. Prepare for two simultaneous node failures
 
-At this point, the cluster has recovered and is ready to handle another failure. However, the cluster cannot handle two _near-simultaneous_ failures in this configuration. Failures are "near-simultaneous" if they are closer together than the `server.time_until_store_dead` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) plus the time taken for the number of replicas on the dead node to drop to zero. If two failures occurred in this configuration, some ranges would become unavailable until one of the nodes recovers.
+At this point, the cluster has recovered and is ready to handle another failure. However, the cluster cannot handle two _near-simultaneous_ failures in this configuration. Failures are "near-simultaneous" if they are closer together than the `server.time_until_store_dead` [cluster setting]({{ page.version.version }}/cluster-settings.md) plus the time taken for the number of replicas on the dead node to drop to zero. If two failures occurred in this configuration, some ranges would become unavailable until one of the nodes recovers.
 
 To be able to tolerate 2 of 5 nodes failing simultaneously without any service interruption, ranges must be replicated 5 times.
 
 1. In the terminal window where you started `fault-node5` initially, start it again using the same command you used to [start the node initially](#step-1-start-a-6-node-cluster):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -276,9 +258,8 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-1. Use the [`ALTER RANGE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-range.md %}#configure-zone) command to change the cluster's `default` replication factor to 5:
+1. Use the [`ALTER RANGE ... CONFIGURE ZONE`]({{ page.version.version }}/alter-range.md#configure-zone) command to change the cluster's `default` replication factor to 5:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26000 \
     --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;"
@@ -286,7 +267,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 1. In the DB Console **Overview** dashboard, watch the replica count increase and even out across all 6 nodes:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-8.png' | relative_url }}" alt="DB Console Cluster Restore" style="border:1px solid #eee;max-width:100%" />
+    ![DB Console Cluster Restore](/images/v24.2/fault-tolerance-8.png)
 
     This shows the cluster up-replicating so that each range has 5 replicas, one on each node.
 
@@ -294,7 +275,6 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 Gracefully shut down **2 nodes**, specifying the [process IDs you retrieved earlier](#step-5-simulate-a-single-node-failure):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 kill -TERM {process IDs}
 ~~~
@@ -303,12 +283,11 @@ kill -TERM {process IDs}
 
 1. Click **Overview** on the left, and verify the state of the cluster:
 
-    <img src="{{ 'images/v24.2/fault-tolerance-9.png' | relative_url }}" alt="DB Console Cluster Health" style="border:1px solid #eee;max-width:100%" />
+    ![DB Console Cluster Health](/images/v24.2/fault-tolerance-9.png)
 
 1. To verify that the cluster still serves data, use the `cockroach sql` command to interact with the cluster.
 
     Count the number of rows in the `ycsb.public.usertable` table to see that it serves reads:
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257 \
     --execute="SELECT count(*) FROM ycsb.public.usertable;"
@@ -322,13 +301,11 @@ kill -TERM {process IDs}
     ~~~
 
     Insert data to see that it serves writes:
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257 \
     --execute="INSERT INTO ycsb.public.usertable VALUES ('asdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);"
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257 \
     --execute="SELECT count(*) FROM ycsb.public.usertable;"
@@ -349,14 +326,12 @@ kill -TERM {process IDs}
 
 1. Terminate HAProxy:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill haproxy
     ~~~
 
 1. Gracefully shut down the remaining **4 nodes**, specifying the [process IDs you retrieved earlier](#step-5-simulate-a-single-node-failure) and the new process ID for the node stored in `fault-node5`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kill -TERM {process IDs}
     ~~~
@@ -369,7 +344,6 @@ kill -TERM {process IDs}
 
 1. If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config files:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf fault-node1 fault-node2 fault-node3 fault-node4 fault-node5 fault-node6 haproxy.cfg haproxy.cfg.saved
     ~~~
@@ -377,5 +351,3 @@ kill -TERM {process IDs}
 ## What's next?
 
 Explore other CockroachDB benefits and features:
-
-{% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}

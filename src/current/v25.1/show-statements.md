@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW STATEMENTS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists details about currently active SQL queries, including:
+The `SHOW STATEMENTS` [statement]({{ page.version.version }}/sql-statements.md) lists details about currently active SQL queries, including:
 
 - The internal ID of the query
 - The node executing the query
@@ -14,10 +14,10 @@ The `SHOW STATEMENTS` [statement]({% link {{ page.version.version }}/sql-stateme
 - The client address, application name, and user that issued the query
 -  The ID for the current session
 
-These details let you monitor the progress of active queries and, if necessary, identify those that may need to be [cancelled]({% link {{ page.version.version }}/cancel-query.md %}) to prevent unwanted resource consumption.
+These details let you monitor the progress of active queries and, if necessary, identify those that may need to be [cancelled]({{ page.version.version }}/cancel-query.md) to prevent unwanted resource consumption.
 
 {{site.data.alerts.callout_info}}
-Schema changes and [`BACKUP`]({% link {{ page.version.version }}/backup.md %})/[`RESTORE`]({% link {{ page.version.version }}/restore.md %}) statements are not executed as queries internally and so are not listed by `SHOW STATEMENTS`. To monitor such statements, use [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) instead.
+Schema changes and [`BACKUP`]({{ page.version.version }}/backup.md)/[`RESTORE`]({{ page.version.version }}/restore.md) statements are not executed as queries internally and so are not listed by `SHOW STATEMENTS`. To monitor such statements, use [`SHOW JOBS`]({{ page.version.version }}/show-jobs.md) instead.
 {{site.data.alerts.end}}
 
 ## Aliases
@@ -28,12 +28,11 @@ In CockroachDB, the following are aliases for `SHOW STATEMENTS`:
 
 ## Required privileges
 
-All users can see their own currently active queries. Users with the [`VIEWACTIVITY` or `VIEWACTIVITYREDACTED` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) can view see all users' currently active queries. `VIEWACTIVITYREDACTED` causes constants in queries being executed by other users to be redacted.
+All users can see their own currently active queries. Users with the [`VIEWACTIVITY` or `VIEWACTIVITYREDACTED` privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) can view see all users' currently active queries. `VIEWACTIVITYREDACTED` causes constants in queries being executed by other users to be redacted.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_statements.html %}
 </div>
 
 - To list the active queries across all nodes of the cluster, use `SHOW STATEMENTS` or `SHOW CLUSTER STATEMENTS`.
@@ -49,10 +48,10 @@ Field | Description
 `node_id` | The ID of the node.
 `session_id` | The ID of the session.
 `user_name` | The username of the connected user.
-`start` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) at which the query started.
+`start` | The [`timestamptz`]({{ page.version.version }}/timestamp.md) at which the query started.
 `query` | The SQL query.
 `client_address` | The address and port of the client that issued the SQL query.
-`application_name` | The [application name]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) specified by the client, if any. For queries from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), this will be `$ cockroach sql`.
+`application_name` | The [application name]({{ page.version.version }}/set-vars.md#supported-variables) specified by the client, if any. For queries from the [built-in SQL client]({{ page.version.version }}/cockroach-sql.md), this will be `$ cockroach sql`.
 `distributed` | If `true`, the query is being executed by the Distributed SQL (DistSQL) engine. If `false`, the query is being executed by the standard "local" SQL engine. If `NULL`, the query is being prepared and it's not yet known which execution engine will be used.
 `phase` | The phase of the query's execution. If `preparing`, the statement is being parsed and planned. If `executing`, the statement is being executed.
 
@@ -60,7 +59,6 @@ Field | Description
 
 ### List queries across the cluster
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER STATEMENTS;
 ~~~
@@ -78,7 +76,6 @@ Alternatively, you can use `SHOW STATEMENTS` to receive the same response.
 
 ### List queries on the local node
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW LOCAL STATEMENTS;
 ~~~
@@ -93,11 +90,10 @@ Alternatively, you can use `SHOW STATEMENTS` to receive the same response.
 
 ### Filter for specific queries
 
-You can use a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statement to filter the list of active queries by one or more of the [response fields](#response).
+You can use a [`SELECT`]({{ page.version.version }}/select-clause.md) statement to filter the list of active queries by one or more of the [response fields](#response).
 
 #### Show all queries on node 2
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x as (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE node_id = 2;
@@ -112,7 +108,6 @@ You can use a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})
 
 #### Show all queries from a specific address and user
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x as (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE client_address = '127.0.0.1:65196' AND user_name = 'maxroach';
@@ -127,9 +122,8 @@ You can use a [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})
 
 #### Exclude queries from the built-in SQL client
 
-To exclude queries from the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), filter for queries that do not show `$ cockroach sql` as the `application_name`:
+To exclude queries from the [built-in SQL client]({{ page.version.version }}/cockroach-sql.md), filter for queries that do not show `$ cockroach sql` as the `application_name`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x as (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE application_name != '$ cockroach sql';
@@ -146,11 +140,10 @@ To exclude queries from the [built-in SQL client]({% link {{ page.version.versio
 
 ### Cancel a query
 
-When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) statement to end it.
+When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`]({{ page.version.version }}/cancel-query.md) statement to end it.
 
 For example, let's say you use `SHOW CLUSTER STATEMENTS` to find queries that have been running for more than 3 hours:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x as (SHOW CLUSTER STATEMENTS) SELECT * FROM x
       WHERE start < (now() - INTERVAL '3 hours');
@@ -165,15 +158,14 @@ For example, let's say you use `SHOW CLUSTER STATEMENTS` to find queries that ha
 
 To cancel this long-running query, and stop it from consuming resources, you note the `query_id` and use it with the `CANCEL QUERY` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL QUERY '15f92c745fe203600000000000000001';
 ~~~
 
 ## See also
 
-- [Manage Long-Running Queries]({% link {{ page.version.version }}/manage-long-running-queries.md %})
-- [`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %})
-- [`SHOW SESSIONS`]({% link {{ page.version.version }}/show-sessions.md %})
-- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Manage Long-Running Queries]({{ page.version.version }}/manage-long-running-queries.md)
+- [`CANCEL QUERY`]({{ page.version.version }}/cancel-query.md)
+- [`SHOW SESSIONS`]({{ page.version.version }}/show-sessions.md)
+- [`SHOW JOBS`]({{ page.version.version }}/show-jobs.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

@@ -9,20 +9,18 @@ This page guides you through a simple demonstration of how CockroachDB replicate
 
 ## Before you begin
 
-Make sure you have already [installed CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+Make sure you have already [installed CockroachDB]({{ page.version.version }}/install-cockroachdb.md).
 
 ## Step 1. Generate certificates
 
 1. Create two directories:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
 
 1. Create the CA (Certificate Authority) certificate and key pair:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -31,7 +29,6 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
 
 1. Create the certificate and key pair for your nodes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     localhost \
@@ -44,7 +41,6 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
 
 1. Create a client certificate and key pair for the `root` user:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -54,9 +50,8 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
 
 ## Step 2. Start a 3-node cluster
 
-1. Use the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command to start node 1:
+1. Use the [`cockroach start`]({{ page.version.version }}/cockroach-start.md) command to start node 1:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -68,7 +63,6 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
 
 1. In a new terminal, start node 2:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -80,7 +74,6 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
 
 1. In a new terminal, start node 3:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -90,9 +83,8 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-1. In a new terminal, use the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
+1. In a new terminal, use the [`cockroach init`]({{ page.version.version }}/cockroach-init.md) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --certs-dir=certs --host=localhost:26257
     ~~~
@@ -103,15 +95,14 @@ Make sure you have already [installed CockroachDB]({% link {{ page.version.versi
     Cluster successfully initialized
     ~~~
 
-    At this point, each node also prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log.
+    At this point, each node also prints helpful [startup details]({{ page.version.version }}/cockroach-start.md#standard-output) to its log.
 
 ## Step 3. Create a SQL user
 
 You'll use a non-`root` user for running a client workload and accessing the DB Console.
 
-1. In the same terminal, as the `root` user, open the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) against any node:
+1. In the same terminal, as the `root` user, open the [built-in SQL shell]({{ page.version.version }}/cockroach-sql.md) against any node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --certs-dir=certs \
@@ -120,32 +111,28 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 1. Create the `maxroach` user with a password:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER maxroach WITH PASSWORD '<your password>';
     ~~~
 
 1. Assign the `maxroach` user to the `admin` role:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT admin TO maxroach;
     ~~~
 
-    This role assignment is for convenience for this tutorial; it gives the user access to all data without the need for additional privileges. For more details, see [Authorization]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
+    This role assignment is for convenience for this tutorial; it gives the user access to all data without the need for additional privileges. For more details, see [Authorization]({{ page.version.version }}/security-reference/authorization.md#admin-role).
 
 1. Exit the SQL shell:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
 ## Step 4. Write data
 
-1. In the same terminal, run the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) command to generate an example `intro` database. In the connection string, replace `<password>` with the password you created earlier for `maxroach`:
+1. In the same terminal, run the [`cockroach workload`]({{ page.version.version }}/cockroach-workload.md) command to generate an example `intro` database. In the connection string, replace `<password>` with the password you created earlier for `maxroach`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init intro \
     'postgres://maxroach:<password>@localhost:26257?sslmode=verify-full&sslrootcert=certs/ca.crt'
@@ -157,7 +144,6 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 1. Re-open the SQL shell, this time as the `maxroach` user:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --user=maxroach \
@@ -169,7 +155,6 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 1. Verify that the new `intro` database was added with one table, `mytable`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW DATABASES;
     ~~~
@@ -184,7 +169,6 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
     (4 rows)
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES FROM intro;
     ~~~
@@ -196,7 +180,6 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
     (1 row)    
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM intro.mytable WHERE (l % 2) = 0;
     ~~~
@@ -230,19 +213,18 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 1. Exit the SQL shell:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
 ## Step 5. Verify replication
 
-1. To understand replication in CockroachDB, it's important to review a few concepts from the [architecture]({% link {{ page.version.version }}/architecture/overview.md %}):
+1. To understand replication in CockroachDB, it's important to review a few concepts from the [architecture]({{ page.version.version }}/architecture/overview.md):
 
 
     Concept | Description
     --------|------------
-    **Range** | CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.<br><br>From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as that range reaches [the maximum range size]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes), it [splits into two ranges]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits). This process continues for these new ranges as the table and its indexes continue growing.
+    **Range** | CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.<br><br>From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as that range reaches [the maximum range size]({{ page.version.version }}/configure-replication-zones.md#range-max-bytes), it [splits into two ranges]({{ page.version.version }}/architecture/distribution-layer.md#range-splits). This process continues for these new ranges as the table and its indexes continue growing.
     **Replica** | CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
 
 1. With those concepts in mind, open the DB Console at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and log in with the `maxroach` user.
@@ -256,7 +238,6 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 1. Back in the terminal, add a fourth node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -268,7 +249,6 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 1. In a new terminal, add a fifth node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -296,7 +276,6 @@ At first, the replica count will be lower for nodes 4 and 5. Very soon, however,
 
     If you do not plan to restart the cluster, you may want to remove the cluster's certificates and data stores:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf certs my-safe-directory rep-node1 rep-node2 rep-node3 rep-node4 rep-node5
     ~~~
@@ -304,5 +283,3 @@ At first, the replica count will be lower for nodes 4 and 5. Very soon, however,
 ## What's next?
 
 Explore other CockroachDB benefits and features:
-
-{% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}

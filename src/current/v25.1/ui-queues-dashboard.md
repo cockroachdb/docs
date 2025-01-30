@@ -7,11 +7,10 @@ docs_area: reference.db_console
 
 The **Queues** dashboard lets you monitor the health and performance of various queueing systems in CockroachDB.
 
-To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Metrics** on the left-hand navigation, and then select **Dashboard** > **Queues**.
+To view this dashboard, [access the DB Console]({{ page.version.version }}/ui-overview.md#db-console-access) and click **Metrics** on the left-hand navigation, and then select **Dashboard** > **Queues**.
 
 ## Dashboard navigation
 
-{% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 {{site.data.alerts.callout_info}}
 All timestamps in the DB Console are shown in Coordinated Universal Time (UTC).
@@ -21,7 +20,7 @@ The **Queues** dashboard displays the following time series graphs:
 
 ## Queue Processing Failures
 
-<img src="{{ 'images/v22.1/ui_queue_failures.png' | relative_url }}" alt="DB Console queue failures graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console queue failures graph](/images/v22.1/ui_queue_failures.png)
 
 The **Queue Processing Failures** graph displays processing failures experienced across various queuing systems.
 
@@ -40,7 +39,7 @@ Time Series Maintenance | The number of replicas which failed processing in the 
 
 ## Queue Processing Times
 
-<img src="{{ 'images/v22.1/ui_queue_time.png' | relative_url }}" alt="DB Console queue processing time graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console queue processing time graph](/images/v22.1/ui_queue_time.png)
 
 The **Queue Processing Times** graph displays the processing rate across various queue systems.
 
@@ -59,7 +58,7 @@ Time Series Maintenance | The processing rate for the time series maintenance qu
 
 ## Replica GC Queue
 
-<img src="{{ 'images/v22.1/ui_replicagc_queue.png' | relative_url }}" alt="DB Console replica GC queue graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console replica GC queue graph](/images/v22.1/ui_replicagc_queue.png)
 
 The **Replica GC Queue** graph displays various details about the health and performance of the replica garbage collection queue.
 
@@ -73,7 +72,7 @@ Replicas Removed | The number of replica removals attempted in the replica garba
 
 ## Replication Queue
 
-<img src="{{ 'images/v22.1/ui_replication_queue.png' | relative_url }}" alt="DB Console replication queue graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console replication queue graph](/images/v22.1/ui_replication_queue.png)
 
 The **Replication Queue** graph displays various details about the health and performance of the replication queue.
 
@@ -93,7 +92,7 @@ Replicas in Purgatory | The number of replicas in the replication queue's purgat
 
 ## Split Queue
 
-<img src="{{ 'images/v22.1/ui_split_queue.png' | relative_url }}" alt="DB Console split queue graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console split queue graph](/images/v22.1/ui_split_queue.png)
 
 The **Split Queue** graph displays various details about the health and performance of the split queue.
 
@@ -106,7 +105,7 @@ Pending Actions | The number of pending replicas in the split queue, as tracked 
 
 ## Merge Queue
 
-<img src="{{ 'images/v22.1/ui_merge_queue.png' | relative_url }}" alt="DB Console merge queue graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console merge queue graph](/images/v22.1/ui_merge_queue.png)
 
 The **Merge Queue** graph displays various details about the health and performance of the merge queue.
 
@@ -119,7 +118,7 @@ Pending Actions | The number of pending replicas in the merge queue, as tracked 
 
 ## Raft Log Queue
 
-<img src="{{ 'images/v22.1/ui_raftlog_queue.png' | relative_url }}" alt="DB Console Raft log queue graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console Raft log queue graph](/images/v22.1/ui_raftlog_queue.png)
 
 The **Raft Log Queue** graph displays various details about the health and performance of the Raft log queue.
 
@@ -132,7 +131,7 @@ Pending Actions | The number of pending replicas in the Raft log queue, as track
 
 ## Raft Snapshot Queue
 
-<img src="{{ 'images/v22.1/ui_raftsnapshot_queue.png' | relative_url }}" alt="DB Console Raft snapshot queue graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console Raft snapshot queue graph](/images/v22.1/ui_raftsnapshot_queue.png)
 
 The **Raft Snapshot Queue** graph displays various details about the health and performance of the Raft repair queue.
 
@@ -145,7 +144,7 @@ Pending Actions | The number of pending replicas in the Raft repair queue, as tr
 
 ## Consistency Checker Queue
 
-<img src="{{ 'images/v22.1/ui_consistencychecker_queue.png' | relative_url }}" alt="DB Console consistency checker queue graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console consistency checker queue graph](/images/v22.1/ui_consistencychecker_queue.png)
 
 The **Consistency Checker Queue** graph displays various details about the health and performance of the consistency checker queue.
 
@@ -158,7 +157,7 @@ Pending Actions | The number of pending replicas in the consistency checker queu
 
 ## Time Series Maintenance Queue
 
-<img src="{{ 'images/v22.1/ui_tsmaintenance_queue.png' | relative_url }}" alt="DB Console time series maintenance queue graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console time series maintenance queue graph](/images/v22.1/ui_tsmaintenance_queue.png)
 
 The **Time Series Maintenance Queue** graph displays various details about the health and performance of the time series maintenance queue.
 
@@ -171,27 +170,26 @@ Pending Actions | The number of pending replicas in the time series maintenance 
 
 ## MVCC GC Queue
 
-<img src="{{ 'images/v24.2/ui_mvcc_gc_queue.png' | relative_url }}" alt="DB Console GC queue graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console GC queue graph](/images/v24.2/ui_mvcc_gc_queue.png)
 
-The **MVCC GC Queue** graph displays various details about the health and performance of the [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) queue.
+The **MVCC GC Queue** graph displays various details about the health and performance of the [garbage collection]({{ page.version.version }}/architecture/storage-layer.md#garbage-collection) queue.
 
 Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
-Successful Actions | The number of replicas successfully processed by the [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) queue, as tracked by the `queue.gc.process.success` metric.
-Pending Actions | The number of pending replicas in the [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) queue, as tracked by the `queue.gc.pending` metric.
+Successful Actions | The number of replicas successfully processed by the [garbage collection]({{ page.version.version }}/architecture/storage-layer.md#garbage-collection) queue, as tracked by the `queue.gc.process.success` metric.
+Pending Actions | The number of pending replicas in the [garbage collection]({{ page.version.version }}/architecture/storage-layer.md#garbage-collection) queue, as tracked by the `queue.gc.pending` metric.
 
 ## Protected Timestamp Records
 
-<img src="{{ 'images/v24.2/ui_protected_timestamp_records.png' | relative_url }}" alt="DB Console GC queue graph" style="border:1px solid #eee;max-width:100%" />
+![DB Console GC queue graph](/images/v24.2/ui_protected_timestamp_records.png)
 
-The **Protected Timestamp Records** graph displays the number of [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records (used by backups, changefeeds, etc. to prevent MVCC GC) per node, as tracked by the `spanconfig.kvsubscriber.protected_record_count` metric.
+The **Protected Timestamp Records** graph displays the number of [protected timestamp]({{ page.version.version }}/architecture/storage-layer.md#protected-timestamps) records (used by backups, changefeeds, etc. to prevent MVCC GC) per node, as tracked by the `spanconfig.kvsubscriber.protected_record_count` metric.
 
-{% include {{ page.version.version }}/ui/ui-summary-events.md %}
 
 ## See also
 
-- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
-- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
-- [Raw Status Endpoints]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#raw-status-endpoints)
+- [Troubleshooting Overview]({{ page.version.version }}/troubleshooting-overview.md)
+- [Support Resources]({{ page.version.version }}/support-resources.md)
+- [Raw Status Endpoints]({{ page.version.version }}/monitoring-and-alerting.md#raw-status-endpoints)

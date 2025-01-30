@@ -9,23 +9,23 @@ To secure your CockroachDB cluster's inter-node and client-node communication, t
 
 - Nodes
 - Clients
-- Optionally: the [DB Console]({% link {{ page.version.version }}/authentication.md %}#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
+- Optionally: the [DB Console]({{ page.version.version }}/authentication.md#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
 
 With Auto TLS, your cluster creates the CA (certificate authority) certificate and key pair required for secure communication with other nodes and clients and then securely distributes these among the nodes. The cluster also creates the additional certificates that each node requires to connect to other nodes and enable connections from clients.
 
 {{site.data.alerts.callout_info}}
  This feature is an alpha release with core functionality that may not yet meet your requirements. Planned enhancements in future versions include:
 
-- Auto TLS cert generation when adding more nodes to an existing cluster, though cert generation for such nodes is already possible using [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %}) on clusters that initially used Auto TLS. Note that relevant example steps in [Start a Local Cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}) show a folder name for storing the CA key that may differ from what you have used with Auto TLS, so these may need to be adapted.
+- Auto TLS cert generation when adding more nodes to an existing cluster, though cert generation for such nodes is already possible using [`cockroach cert`]({{ page.version.version }}/cockroach-cert.md) on clusters that initially used Auto TLS. Note that relevant example steps in [Start a Local Cluster]({{ page.version.version }}/secure-a-cluster.md) show a folder name for storing the CA key that may differ from what you have used with Auto TLS, so these may need to be adapted.
 - Support for cross-region deployments (cases where not all nodes are on the same subnet, and the listening and advertised addresses are different).
 - Identification of misconfigurations leading to helpful error messages, while suppressing unnecessary warnings.
 - Additional CLI instructions and feedback.
 {{site.data.alerts.end}}
 
-Auto TLS simplifies the default method for [creating secure clusters]({% link {{ page.version.version }}/secure-a-cluster.md %}). Rather than manually generating certificates and keys and distributing them to all nodes, you run a one-time `cockroach connect` command for each node, specifying a common token. A CA cert and key are distributed to all nodes, along with all other certificates that nodes require to communicate with other nodes and with clients, all signed by the CA.
+Auto TLS simplifies the default method for [creating secure clusters]({{ page.version.version }}/secure-a-cluster.md). Rather than manually generating certificates and keys and distributing them to all nodes, you run a one-time `cockroach connect` command for each node, specifying a common token. A CA cert and key are distributed to all nodes, along with all other certificates that nodes require to communicate with other nodes and with clients, all signed by the CA.
 
 {{site.data.alerts.callout_info}}
-To create client certificates, you will still need to run [`cockroach cert create-client`]({% link {{ page.version.version }}/cockroach-cert.md %}#create-the-certificate-and-key-pair-for-a-client) or the equivalent [OpenSSL commands]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}#step-3-create-the-certificate-and-key-pair-for-the-first-user) and manually distribute these.
+To create client certificates, you will still need to run [`cockroach cert create-client`]({{ page.version.version }}/cockroach-cert.md#create-the-certificate-and-key-pair-for-a-client) or the equivalent [OpenSSL commands]({{ page.version.version }}/create-security-certificates-openssl.md#step-3-create-the-certificate-and-key-pair-for-the-first-user) and manually distribute these.
 {{site.data.alerts.end}}
 
 ## Step 1: Configure nodes
@@ -45,7 +45,6 @@ The example commands below must be tailored for your environment and run for eac
 
     For example, for the first node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach connect \
     --listen-addr=localhost:26257 \
@@ -58,7 +57,6 @@ The example commands below must be tailored for your environment and run for eac
 
     Prepare each additional node, specifying the addresses of those to `join` which are awaiting the handshake. 
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach connect \
     --listen-addr=localhost:26258 \
@@ -68,7 +66,6 @@ The example commands below must be tailored for your environment and run for eac
     --init-token={secret}
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach connect \
     --listen-addr=localhost:26259 \
@@ -90,9 +87,8 @@ The example commands below must be tailored for your environment and run for eac
     
     Finally, all nodes report `server certificate generation complete`. The `certs-dir` directory on each is populated with all required files.
 
-1. Run [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) for each node. This starts the node, but does not yet initialize the cluster. If testing this process on a single machine, run the following in each node's directory, adjusting the port numbers for each.
+1. Run [`cockroach start`]({{ page.version.version }}/cockroach-start.md) for each node. This starts the node, but does not yet initialize the cluster. If testing this process on a single machine, run the following in each node's directory, adjusting the port numbers for each.
 
-  {% include_cached copy-clipboard.html %}
   ~~~ shell
   cockroach start \
   --listen-addr=localhost:26257 \
@@ -103,7 +99,7 @@ The example commands below must be tailored for your environment and run for eac
 
 ## Step 2: Create a client certificate for the `root` user
 
-On any node's machine, manually [create the certificate and key pair]({% link {{ page.version.version }}/cockroach-cert.md %}#create-the-certificate-and-key-pair-for-a-client) for the root user.
+On any node's machine, manually [create the certificate and key pair]({{ page.version.version }}/cockroach-cert.md#create-the-certificate-and-key-pair-for-a-client) for the root user.
 
 {{site.data.alerts.callout_danger}}
 Do not share the root cert. In a later step, you can use the root user to create additional administrative users, specifying their privileges. You can then create and securely share their certs, as appropriate, using the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
@@ -116,7 +112,7 @@ cockroach cert create-client root \
 
 ## Step 3: Initialize the cluster
 
-Run [`cockroach-init`]({% link {{ page.version.version }}/cockroach-init.md %}).
+Run [`cockroach-init`]({{ page.version.version }}/cockroach-init.md).
 
 ~~~ shell
 cockroach init --certs-dir=certs --host=localhost:26257
@@ -124,7 +120,7 @@ cockroach init --certs-dir=certs --host=localhost:26257
 
 ## Step 4: Create additional users to administer the cluster
 
-1. Using the `root` user, log in to the [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}). [Create additional users]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-log-in-to-the-database), specifying role options as [parameters]({% link {{ page.version.version }}/create-role.md %}#parameters), or add the users as members of the `admin` role to confer all role options, if appropriate.
+1. Using the `root` user, log in to the [SQL shell]({{ page.version.version }}/cockroach-sql.md). [Create additional users]({{ page.version.version }}/create-role.md#create-a-role-that-can-log-in-to-the-database), specifying role options as [parameters]({{ page.version.version }}/create-role.md#parameters), or add the users as members of the `admin` role to confer all role options, if appropriate.
 
 1. Create the certificate and key pair for each of the additional users.
 
@@ -137,9 +133,9 @@ cockroach init --certs-dir=certs --host=localhost:26257
 
 ## See also
 
-- [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %})
-- [`cockroach auth-session`]({% link {{ page.version.version }}/cockroach-auth-session.md %})
-- [Authenticate to CockroachDB {{ site.data.products.core }} Clusters]({% link {{ page.version.version }}/authentication.md %})
-- [GSSAPI Authentication]({% link {{ page.version.version }}/gssapi_authentication.md %})
-- [SQL Authentication]({% link {{ page.version.version }}/security-reference/authentication.md %})
-- [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %})
+- [`cockroach cert`]({{ page.version.version }}/cockroach-cert.md)
+- [`cockroach auth-session`]({{ page.version.version }}/cockroach-auth-session.md)
+- [Authenticate to CockroachDB {{ site.data.products.core }} Clusters]({{ page.version.version }}/authentication.md)
+- [GSSAPI Authentication]({{ page.version.version }}/gssapi_authentication.md)
+- [SQL Authentication]({{ page.version.version }}/security-reference/authentication.md)
+- [Cloud Storage Authentication]({{ page.version.version }}/cloud-storage-authentication.md)

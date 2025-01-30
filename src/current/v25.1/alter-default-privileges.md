@@ -6,10 +6,10 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `ALTER DEFAULT PRIVILEGES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) changes the [default privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-privileges) on objects created by [users/roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) in the current database.
+The `ALTER DEFAULT PRIVILEGES` [statement]({{ page.version.version }}/sql-statements.md) changes the [default privileges]({{ page.version.version }}/security-reference/authorization.md#default-privileges) on objects created by [users/roles]({{ page.version.version }}/security-reference/authorization.md#roles) in the current database.
 
 {{site.data.alerts.callout_info}}
-The creator of an object is also the object's [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
+The creator of an object is also the object's [owner]({{ page.version.version }}/security-reference/authorization.md#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -21,7 +21,6 @@ For an example, see [Grant default privileges to a specific role](#grant-default
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_default_privileges.html %}
 </div>
 
 ### Parameters
@@ -40,7 +39,7 @@ If you do not specify a `FOR ...` clause, CockroachDB alters the default privile
 
 ## Required privileges
 
-- To run `ALTER DEFAULT PRIVILEGES FOR ALL ROLES`, the user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) role.
+- To run `ALTER DEFAULT PRIVILEGES FOR ALL ROLES`, the user must be a member of the [`admin`]({{ page.version.version }}/security-reference/authorization.md#admin-role) role.
 - To alter the default privileges on objects created by a specific role, the user must be a member of that role.
 
 ## Examples
@@ -49,22 +48,18 @@ If you do not specify a `FOR ...` clause, CockroachDB alters the default privile
 
 Run the following statements as a member of the `admin` role, with `ALL` privileges:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE ROLE cockroachlabs WITH LOGIN;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT CREATE ON DATABASE defaultdb TO cockroachlabs;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max WITH LOGIN;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ROLE cockroachlabs;
 ~~~
@@ -82,7 +77,6 @@ Run the following statements as a member of the `admin` role, with `ALL` privile
 
 In the same database, run the following statements as the `cockroachlabs` user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DEFAULT PRIVILEGES FOR ROLE cockroachlabs GRANT SELECT ON TABLES TO max;
 ~~~
@@ -91,7 +85,6 @@ In the same database, run the following statements as the `cockroachlabs` user:
 Because `cockroachlabs` is the current user, the previous statement is equivalent to `ALTER DEFAULT PRIVILEGES GRANT SELECT ON TABLES TO max;`.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES;
 ~~~
@@ -108,7 +101,6 @@ Because `cockroachlabs` is the current user, the previous statement is equivalen
 (6 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE albums (
         id UUID PRIMARY KEY,
@@ -120,7 +112,6 @@ Because `cockroachlabs` is the current user, the previous statement is equivalen
 
 In the same database, run the following statements as the `max` user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE albums;
 ~~~
@@ -130,7 +121,6 @@ ERROR: user max does not have DROP privilege on relation albums
 SQLSTATE: 42501
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM albums;
 ~~~
@@ -149,7 +139,6 @@ Because `max` has default `SELECT` privileges on all tables created by `cockroac
 
 To see this, run the following statements as a member of the `admin` role, with `ALL` privileges:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP USER max;
 ~~~
@@ -159,7 +148,6 @@ ERROR: cannot drop role/user max: grants still exist on defaultdb.public.albums
 SQLSTATE: 2BP01
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP USER cockroachlabs;
 ~~~
@@ -173,7 +161,6 @@ SQLSTATE: 2BP01
 
 Run the following statements as the `cockroachlabs` user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES;
 ~~~
@@ -190,12 +177,10 @@ Run the following statements as the `cockroachlabs` user:
 (6 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DEFAULT PRIVILEGES FOR ROLE cockroachlabs REVOKE SELECT ON TABLES FROM max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES;
 ~~~
@@ -211,7 +196,6 @@ Run the following statements as the `cockroachlabs` user:
 (5 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE tracks (
         id UUID PRIMARY KEY,
@@ -223,7 +207,6 @@ Run the following statements as the `cockroachlabs` user:
 
 In the same database, run the following statements as the `max` user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE albums;
 ~~~
@@ -233,7 +216,6 @@ ERROR: user max does not have DROP privilege on relation albums
 SQLSTATE: 42501
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM albums;
 ~~~
@@ -250,12 +232,10 @@ SQLSTATE: 42501
 
 `max` still has `SELECT` privileges on `albums` because when `cockroachlabs` created `albums`, `max` was granted default `SELECT` privileges on all tables created by `cockroachlabs`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE SELECT ON TABLE albums FROM max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE tracks;
 ~~~
@@ -265,7 +245,6 @@ ERROR: user max does not have DROP privilege on relation tracks
 SQLSTATE: 42501
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM tracks;
 ~~~
@@ -279,12 +258,10 @@ SQLSTATE: 42501
 
 Because `max` has no default privileges, the user can now be dropped:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP USER max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW USERS;
 ~~~
@@ -302,12 +279,10 @@ Because `max` has no default privileges, the user can now be dropped:
 
 Run the following statements as a member of the `admin` role, with `ALL` privileges:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DEFAULT PRIVILEGES FOR ALL ROLES GRANT SELECT ON TABLES TO public;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ALL ROLES;
 ~~~
@@ -322,7 +297,6 @@ Run the following statements as a member of the `admin` role, with `ALL` privile
 
 In the same database, run the following statements as any two different users:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE discographies (
         id UUID PRIMARY KEY,
@@ -332,10 +306,9 @@ In the same database, run the following statements as any two different users:
 ~~~
 
 {{site.data.alerts.callout_info}}
-[`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) requires the `CREATE` privilege on the database.
+[`CREATE TABLE`]({{ page.version.version }}/create-table.md) requires the `CREATE` privilege on the database.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM discographies;
 ~~~
@@ -351,6 +324,6 @@ In the same database, run the following statements as any two different users:
 
 ## See also
 
-- [`SHOW DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/show-default-privileges.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
-- [Default Privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-privileges)
+- [`SHOW DEFAULT PRIVILEGES`]({{ page.version.version }}/show-default-privileges.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)
+- [Default Privileges]({{ page.version.version }}/security-reference/authorization.md#default-privileges)

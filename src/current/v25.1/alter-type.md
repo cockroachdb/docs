@@ -5,14 +5,12 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `ALTER TYPE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) modifies a [user-defined data type]({% link {{ page.version.version }}/create-type.md %}) in the current database.
+The `ALTER TYPE` [statement]({{ page.version.version }}/sql-statements.md) modifies a [user-defined data type]({{ page.version.version }}/create-type.md) in the current database.
 
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_type.html %}
 </div>
 
 ## Parameters
@@ -24,13 +22,13 @@ Parameter | Description
 `DROP VALUE value` |  Drop a specific value from the user-defined type's list of values.
 `RENAME TO name` | Rename the user-defined type.
 `RENAME VALUE value TO value` |  Rename a constant value in the user-defined type's list of values.
-`SET SCHEMA`  | Set [the schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of the user-defined type.
-`OWNER TO`  | Change the [role specification]({% link {{ page.version.version }}/grant.md %}) for the user-defined type's owner.
+`SET SCHEMA`  | Set [the schema]({{ page.version.version }}/sql-name-resolution.md) of the user-defined type.
+`OWNER TO`  | Change the [role specification]({{ page.version.version }}/grant.md) for the user-defined type's owner.
 
 ## Required privileges
 
-- To [alter a type]({% link {{ page.version.version }}/alter-type.md %}), the user must be the owner of the type.
-- To set the schema of a user-defined type, the user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the schema and the `DROP` privilege
+- To [alter a type]({{ page.version.version }}/alter-type.md), the user must be the owner of the type.
+- To set the schema of a user-defined type, the user must have the `CREATE` [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the schema and the `DROP` privilege
 on the type.
 - To alter the owner of a user-defined type:
     - The user executing the command must be a member of the new owner role.
@@ -38,18 +36,15 @@ on the type.
 
 ## Known limitations
 
-{% include {{ page.version.version }}/known-limitations/alter-type-limitations.md %}
 
 ## Example
 
-The following example uses a [user-defined type]({% link {{ page.version.version }}/create-type.md %}).
+The following example uses a [user-defined type]({{ page.version.version }}/create-type.md).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -65,12 +60,10 @@ The following example uses a [user-defined type]({% link {{ page.version.version
 
 To add a value to the `status` type, use an `ADD VALUE` clause:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE status ADD VALUE 'pending';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -86,12 +79,10 @@ To add a value to the `status` type, use an `ADD VALUE` clause:
 
 To rename a value in the `status` type, use a `RENAME VALUE` clause:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE status RENAME VALUE 'open' TO 'active';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -107,12 +98,10 @@ To rename a value in the `status` type, use a `RENAME VALUE` clause:
 
 To rename the `status` type, use a `RENAME TO` clause:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE status RENAME TO account_status;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -128,12 +117,10 @@ To rename the `status` type, use a `RENAME TO` clause:
 
 To drop a value from the `account_status` type, use a `DROP VALUE` clause:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TYPE account_status DROP VALUE 'inactive';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ENUMS;
 ~~~
@@ -147,9 +134,9 @@ To drop a value from the `account_status` type, use a `DROP VALUE` clause:
 
 ## See also
 
-- [`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %})
-- [`ENUM`]({% link {{ page.version.version }}/enum.md %})
-- [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %})
-- [`SHOW TYPES`]({% link {{ page.version.version }}/show-types.md %})
-- [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})
-- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [`CREATE TYPE`]({{ page.version.version }}/create-type.md)
+- [`ENUM`]({{ page.version.version }}/enum.md)
+- [`SHOW ENUMS`]({{ page.version.version }}/show-enums.md)
+- [`SHOW TYPES`]({{ page.version.version }}/show-types.md)
+- [`DROP TYPE`]({{ page.version.version }}/drop-type.md)
+- [Online Schema Changes]({{ page.version.version }}/online-schema-changes.md)

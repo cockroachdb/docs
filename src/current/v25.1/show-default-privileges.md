@@ -6,12 +6,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW DEFAULT PRIVILEGES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the [default privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-privileges) for the objects created by [users/roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) in the current database.
+The `SHOW DEFAULT PRIVILEGES` [statement]({{ page.version.version }}/sql-statements.md) lists the [default privileges]({{ page.version.version }}/security-reference/authorization.md#default-privileges) for the objects created by [users/roles]({{ page.version.version }}/security-reference/authorization.md#roles) in the current database.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_default_privileges.html %}
 </div>
 
 ## Parameters
@@ -28,13 +27,12 @@ If you do not specify a `FOR ...` clause, CockroachDB returns the default privil
 
 ## Required privileges
 
-To show default privileges, the user/role must have any [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the current database.
+To show default privileges, the user/role must have any [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the current database.
 
 ## Examples
 
 ### Show default privileges for objects created by the current user
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES;
 ~~~
@@ -52,7 +50,6 @@ To show default privileges, the user/role must have any [privilege]({% link {{ p
 
 ### Show default privileges for objects created by any user/role
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ALL ROLES;
 ~~~
@@ -66,12 +63,10 @@ To show default privileges, the user/role must have any [privilege]({% link {{ p
 
 ### Show default privileges for objects created by a specific user/role
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ROLE max;
 ~~~
@@ -89,17 +84,14 @@ To show default privileges, the user/role must have any [privilege]({% link {{ p
 
 ### Show default privileges for objects in a specific schema
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA test;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DEFAULT PRIVILEGES IN SCHEMA test GRANT SELECT ON TABLES TO max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES IN SCHEMA test;
 ~~~
@@ -113,9 +105,8 @@ To show default privileges, the user/role must have any [privilege]({% link {{ p
 
 ### Show default privileges for a grantee
 
-To show the default [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) that a user received as a grantee, issue the following statement:
+To show the default [privileges]({{ page.version.version }}/security-reference/authorization.md#privileges) that a user received as a grantee, issue the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW DEFAULT PRIVILEGES FOR GRANTEE root;
 ~~~
@@ -133,7 +124,7 @@ SHOW DEFAULT PRIVILEGES FOR GRANTEE root;
 
 ## See also
 
-- [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %})
-- [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
-- [Default Privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-privileges)
+- [`ALTER DEFAULT PRIVILEGES`]({{ page.version.version }}/alter-default-privileges.md)
+- [`SHOW ROLES`]({{ page.version.version }}/show-roles.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)
+- [Default Privileges]({{ page.version.version }}/security-reference/authorization.md#default-privileges)

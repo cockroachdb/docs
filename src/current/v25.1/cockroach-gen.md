@@ -6,7 +6,7 @@ key: generate-cockroachdb-resources.html
 docs_area: reference.cli
 ---
 
-The `cockroach gen` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) can generate command-line interface (CLI) utilities ([`man` pages](https://wikipedia.org/wiki/Man_page) and a `bash` autocompletion script), example SQL data suitable to populate test databases, and an HAProxy configuration file for load balancing a running cluster.
+The `cockroach gen` [command]({{ page.version.version }}/cockroach-commands.md) can generate command-line interface (CLI) utilities ([`man` pages](https://wikipedia.org/wiki/Man_page) and a `bash` autocompletion script), example SQL data suitable to populate test databases, and an HAProxy configuration file for load balancing a running cluster.
 
 ## Subcommands
 
@@ -14,67 +14,57 @@ Subcommand | Usage
 -----------|------
 `man` | Generate man pages for CockroachDB.
 `autocomplete` | Generate `bash` or `zsh` autocompletion script for CockroachDB.<br><br>**Default:** `bash`
-`example-data` | Generate example SQL datasets. You can also use the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) command to generate these sample datasets in a persistent cluster and the [`cockroach demo <dataset>`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to generate these datasets in a temporary, in-memory cluster.
+`example-data` | Generate example SQL datasets. You can also use the [`cockroach workload`]({{ page.version.version }}/cockroach-workload.md) command to generate these sample datasets in a persistent cluster and the [`cockroach demo <dataset>`]({{ page.version.version }}/cockroach-demo.md) command to generate these datasets in a temporary, in-memory cluster.
 `haproxy` | Generate an HAProxy config file for a running CockroachDB cluster. The node addresses included in the config are those advertised by the nodes. Make sure hostnames are resolvable and IP addresses are routable from HAProxy.<br><br> [Decommissioned nodes](node-shutdown.html?filters=decommission) are excluded from the config file.
 
 ## Synopsis
 
 Generate man pages:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen man
 ~~~
 
 Generate bash autocompletion script:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen autocomplete
 ~~~
 
 Generate example SQL data:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen example-data intro | cockroach sql
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen example-data startrek | cockroach sql
 ~~~
 
 Generate an HAProxy config file for a running cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen haproxy
 ~~~
 
 View help:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen --help
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen man --help
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen autocomplete --help
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen example-data --help
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen haproxy --help
 ~~~
@@ -108,14 +98,13 @@ Flag | Description
 `--host` | The server host and port number to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost:26257`
 `--port`<br>`-p` | The server port to connect to. Note: The port number can also be specified via `--host`. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--insecure` | Use an insecure connection.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
-`--certs-dir` | The path to the [certificate directory]({% link {{ page.version.version }}/cockroach-cert.md %}) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
-`--url` | A [connection URL]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
+`--certs-dir` | The path to the [certificate directory]({{ page.version.version }}/cockroach-cert.md) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
+`--url` | A [connection URL]({{ page.version.version }}/connection-parameters.md#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
 `--out` | The path where the `haproxy.cfg` file will be generated. If an `haproxy.cfg` file already exists in the directory, it will be overwritten.<br><br>**Default:** `haproxy.cfg` in the current directory
-`--locality` | If nodes were started with [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) details, you can use the `--locality` flag here to filter the nodes included in the HAProxy config file, specifying the explicit locality tier(s) or a regular expression to match against. This is useful in cases where you want specific instances of HAProxy to route to specific nodes. See the [Generate an HAProxy configuration file](#generate-an-haproxy-config-file) example for more details.
+`--locality` | If nodes were started with [locality]({{ page.version.version }}/cockroach-start.md#locality) details, you can use the `--locality` flag here to filter the nodes included in the HAProxy config file, specifying the explicit locality tier(s) or a regular expression to match against. This is useful in cases where you want specific instances of HAProxy to route to specific nodes. See the [Generate an HAProxy configuration file](#generate-an-haproxy-config-file) example for more details.
 
 ### Logging
 
-{% include {{ page.version.version }}/misc/logging-defaults.md %}
 
 ### Client Connection
 
@@ -123,8 +112,8 @@ Flag | Description
 
 Flag | Description
 -----|------------
-`--cluster-name` | The cluster name to use to verify the cluster's identity. If the cluster has a cluster name, you must include this flag. For more information, see [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}#general).
-`--disable-cluster-name-verification` | Disables the cluster name check for this command. This flag must be paired with `--cluster-name`. For more information, see [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}#general).
+`--cluster-name` | The cluster name to use to verify the cluster's identity. If the cluster has a cluster name, you must include this flag. For more information, see [`cockroach start`]({{ page.version.version }}/cockroach-start.md#general).
+`--disable-cluster-name-verification` | Disables the cluster name check for this command. This flag must be paired with `--cluster-name`. For more information, see [`cockroach start`]({{ page.version.version }}/cockroach-start.md#general).
 
 ## Examples
 
@@ -132,21 +121,18 @@ Flag | Description
 
 Generate man pages:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen man
 ~~~
 
 Move the man pages to the man directory:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ sudo mv man/man1/* /usr/share/man/man1
 ~~~
 
 Access man pages:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ man cockroach
 ~~~
@@ -155,19 +141,16 @@ $ man cockroach
 
 Generate bash autocompletion script:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen autocomplete
 ~~~
 
 Add the script to your `.bashrc` and `.bash_profle`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ printf "\n\n#cockroach bash autocomplete\nsource '<path to>cockroach.bash'" >> ~/.bashrc
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ printf "\n\n#cockroach bash autocomplete\nsource '<path to>cockroach.bash'" >> ~/.bash_profile
 ~~~
@@ -177,21 +160,19 @@ You can now use `tab` to autocomplete `cockroach` commands.
 ### Generate example data
 
 {{site.data.alerts.callout_success}}
-You can also use the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) command to generate these sample datasets in a persistent cluster and the [`cockroach demo <dataset>`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to generate these datasets in a temporary, in-memory cluster.
+You can also use the [`cockroach workload`]({{ page.version.version }}/cockroach-workload.md) command to generate these sample datasets in a persistent cluster and the [`cockroach demo <dataset>`]({{ page.version.version }}/cockroach-demo.md) command to generate these datasets in a temporary, in-memory cluster.
 {{site.data.alerts.end}}
 
 To test out CockroachDB, you can generate an example `startrek` database, which contains 2 tables, `episodes` and `quotes`.
 
-1. Start up [a demo cluster]({% link {{ page.version.version }}/cockroach-demo.md %}):
+1. Start up [a demo cluster]({{ page.version.version }}/cockroach-demo.md):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach demo
     ~~~
 
-1. Pipe the output from `cockroach gen` to [the URL to the demo cluster]({% link {{ page.version.version }}/cockroach-demo.md %}#connection-parameters):
+1. Pipe the output from `cockroach gen` to [the URL to the demo cluster]({{ page.version.version }}/cockroach-demo.md#connection-parameters):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach gen example-data startrek | cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
     ~~~
@@ -209,14 +190,12 @@ To test out CockroachDB, you can generate an example `startrek` database, which 
     ...
     ~~~
 
-1. Open a [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) to view it:
+1. Open a [SQL shell]({{ page.version.version }}/cockroach-sql.md) to view it:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SHOW TABLES FROM startrek;
     ~~~
@@ -231,7 +210,6 @@ To test out CockroachDB, you can generate an example `startrek` database, which 
 
 1. Generate an example `intro` database, which contains 1 table, `mytable`, with a hidden message:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach gen example-data intro | cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
     ~~~
@@ -250,14 +228,12 @@ To test out CockroachDB, you can generate an example `startrek` database, which 
 
 1. Launch the SQL client to view it:
  
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
     ~~~
 
 1. Show the tables in the `intro` database:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES FROM intro;
     ~~~
@@ -271,7 +247,6 @@ To test out CockroachDB, you can generate an example `startrek` database, which 
 
 1. Select the message from the table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM intro.mytable WHERE (l % 2) = 0;
     ~~~
@@ -313,18 +288,16 @@ To test out CockroachDB, you can generate an example `startrek` database, which 
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="secure">
-To generate an HAProxy config file for an entire secure cluster, run the `cockroach gen haproxy` command, specifying the location of [certificate directory]({% link {{ page.version.version }}/cockroach-cert.md %}) and the address of any instance running a CockroachDB node:
+To generate an HAProxy config file for an entire secure cluster, run the `cockroach gen haproxy` command, specifying the location of [certificate directory]({{ page.version.version }}/cockroach-cert.md) and the address of any instance running a CockroachDB node:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen haproxy \
 --certs-dir=<path to certs directory> \
 --host=<address of any node in the cluster>
 ~~~
 
-To limit the HAProxy config file to nodes matching specific ["localities"]({% link {{ page.version.version }}/cockroach-start.md %}#locality), use the `--localities` flag, specifying the explicit locality tier(s) or a regular expression to match against:
+To limit the HAProxy config file to nodes matching specific ["localities"]({{ page.version.version }}/cockroach-start.md#locality), use the `--localities` flag, specifying the explicit locality tier(s) or a regular expression to match against:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen haproxy \
 --certs-dir=<path to certs directory> \
@@ -336,16 +309,14 @@ $ cockroach gen haproxy \
 <div class="filter-content" markdown="1" data-scope="insecure">
 To generate an HAProxy config file for an entire insecure cluster, run the `cockroach gen haproxy` command, specifying the address of any instance running a CockroachDB node:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen haproxy \
 --insecure \
 --host=<address of any node in the cluster>
 ~~~
 
-To limit the HAProxy config file to nodes matching specific ["localities"]({% link {{ page.version.version }}/cockroach-start.md %}#locality), use the `--localities` flag, specifying the explicit locality tier(s) or a regular expression to match against:
+To limit the HAProxy config file to nodes matching specific ["localities"]({{ page.version.version }}/cockroach-start.md#locality), use the `--localities` flag, specifying the explicit locality tier(s) or a regular expression to match against:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen haproxy \
 --insecure \
@@ -387,8 +358,8 @@ Field | Description
 `timeout connect`<br>`timeout client`<br>`timeout server` | Timeout values that should be suitable for most deployments.
 `bind` | The port that HAProxy listens on. This is the port clients will connect to and thus needs to be allowed by your network configuration.<br><br>This tutorial assumes HAProxy is running on a separate machine from CockroachDB nodes. If you run HAProxy on the same machine as a node (not recommended), you'll need to change this port, as `26257` is likely already being used by the CockroachDB node.
 `balance` | The balancing algorithm. This is set to `roundrobin` to ensure that connections get rotated amongst nodes (connection 1 on node 1, connection 2 on node 2, etc.). Check the [HAProxy Configuration Manual](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-balance) for details about this and other balancing algorithms.
-`option httpchk` | The HTTP endpoint that HAProxy uses to check node health. [`/health?ready=1`]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) ensures that HAProxy doesn't direct traffic to nodes that are live but not ready to receive requests.
-`server` | For each included node, this field specifies the address the node advertises to other nodes in the cluster, i.e., the addressed pass in the [`--advertise-addr` flag]({% link {{ page.version.version }}/cockroach-start.md %}#networking) on node startup. Make sure hostnames are resolvable and IP addresses are routable from HAProxy.
+`option httpchk` | The HTTP endpoint that HAProxy uses to check node health. [`/health?ready=1`]({{ page.version.version }}/monitoring-and-alerting.md#health-ready-1) ensures that HAProxy doesn't direct traffic to nodes that are live but not ready to receive requests.
+`server` | For each included node, this field specifies the address the node advertises to other nodes in the cluster, i.e., the addressed pass in the [`--advertise-addr` flag]({{ page.version.version }}/cockroach-start.md#networking) on node startup. Make sure hostnames are resolvable and IP addresses are routable from HAProxy.
 
 {{site.data.alerts.callout_info}}
 For full details on these and other configuration settings, see the [HAProxy Configuration Manual](http://cbonte.github.io/haproxy-dconv/1.7/configuration.html).
@@ -396,5 +367,5 @@ For full details on these and other configuration settings, see the [HAProxy Con
 
 ## See also
 
-- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [Deploy CockroachDB On-Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) (using HAProxy for load balancing)
+- [`cockroach` Commands Overview]({{ page.version.version }}/cockroach-commands.md)
+- [Deploy CockroachDB On-Premises]({{ page.version.version }}/deploy-cockroachdb-on-premises.md) (using HAProxy for load balancing)

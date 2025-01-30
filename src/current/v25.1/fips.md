@@ -21,12 +21,12 @@ For details about cryptographic algorithms and key lengths used by CockroachDB. 
 
 When you use a FIPS-ready CockroachDB runtime and each cluster node's OpenSSL is FIPS-validated and configured correctly, Cockroach Labs has verified that cryptographic operations in the following contexts meet the requirements of FIPS 140-2:
 
-- [Encryption At Rest]({% link {{ page.version.version }}/security-reference/encryption.md %}#encryption-keys-used-by-cockroachdb-self-hosted-clusters)
-- [Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %})
-- [Change Data Capture to Kafka over TLS]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters)
-- [Certificate-based Node-to-Node and Client-to-Node Authentication]({% link {{ page.version.version }}/authentication.md %})
-- [SASL SCRAM-SHA-256 Password Authentication]({% link {{ page.version.version }}/security-reference/scram-authentication.md %})
-- [SQL Cryptographic Built-in Functions]({% link {{ page.version.version }}/functions-and-operators.md %}#cryptographic-functions)
+- [Encryption At Rest]({{ page.version.version }}/security-reference/encryption.md#encryption-keys-used-by-cockroachdb-self-hosted-clusters)
+- [Encrypted Backups]({{ page.version.version }}/take-and-restore-encrypted-backups.md)
+- [Change Data Capture to Kafka over TLS]({{ page.version.version }}/create-changefeed.md#query-parameters)
+- [Certificate-based Node-to-Node and Client-to-Node Authentication]({{ page.version.version }}/authentication.md)
+- [SASL SCRAM-SHA-256 Password Authentication]({{ page.version.version }}/security-reference/scram-authentication.md)
+- [SQL Cryptographic Built-in Functions]({{ page.version.version }}/functions-and-operators.md#cryptographic-functions)
 
   {{site.data.alerts.callout_danger}}
   When running a FIPS-ready runtime, Cockroach Labs recommends that you avoid using cryptographic operations that are not supported by FIPS 140-2. For example, generating an MD5 hash is not compatible with FIPS 140-2, because MD5 is not a FIPS-validated algorithm. Use algorithms and functions that do not comply with the standard at your own risk.
@@ -70,7 +70,6 @@ Once FIPS mode is enabled, install OpenSSL so that the FIPS-validated OpenSSL li
 
 To install OpenSSL on RHEL:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 microdnf -y install openssl crypto-policies-scripts
 fips-mode-setup --enable
@@ -84,14 +83,12 @@ If FIPS mode is not enabled in the Linux kernel, or if OpenSSL is not configured
 
 1. You can list the FIPS-validated ciphers using the `openssl ciphers` command. If FIPS mode is disabled, a `no cipher match` error occurs.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     openssl ciphers FIPS -v
     ~~~
 
 1. When FIPS mode is enabled, the `sysctl` variable `fips_enabled` is set to `1`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     sysctl crypto.fips_enabled
     ~~~
@@ -106,7 +103,6 @@ If FIPS mode is not enabled in the Linux kernel, or if OpenSSL is not configured
 
 1. The MD5 hashing algorithm is not compatible with FIPS 140-2. If the following command **fails**, FIPS mode is enabled:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     echo "test" | openssl md5
     ~~~
@@ -167,7 +163,7 @@ To download FIPS-ready CockroachDB runtimes, use the following links.
     <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
         <td>
                 {% comment %}Version{% endcomment %}
-            <a href="{% link releases/{{ page.version.version }}.md %}#{{ r.release_name | replace: '.', '-' }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+            <a href="releases/{{ page.version.version }}.md#{{ r.release_name | replace: '.', '-' }}">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
                     {% if r.release_name == latest_hotfix.release_name %}
             <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                     {% endif %}
@@ -217,17 +213,16 @@ No FIPS-ready runtimes are available at this time. Please check again later.
 
 ## Install the FIPS-ready CockroachDB runtime
 
-After you [download](#downloads) a FIPS-ready CockroachDB binary, install it in the same way as the standard binary. Refer to [Install CockroachDB on Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}).
+After you [download](#downloads) a FIPS-ready CockroachDB binary, install it in the same way as the standard binary. Refer to [Install CockroachDB on Linux]({{ page.version.version }}/install-cockroachdb-linux.md).
 
 {{site.data.alerts.callout_info}}
-Upgrading an existing CockroachDB cluster's binary in-place to be FIPS-ready is not supported. Instead, you can [restore your cluster]({% link {{ page.version.version }}/restore.md %}#full-cluster) to a new FIPS-ready cluster.
+Upgrading an existing CockroachDB cluster's binary in-place to be FIPS-ready is not supported. Instead, you can [restore your cluster]({{ page.version.version }}/restore.md#full-cluster) to a new FIPS-ready cluster.
 {{site.data.alerts.end}}
 
 ### Verify that CockroachDB is FIPS-ready
 
 If the CockroachDB binary is FIPS-ready, the string `fips` is appended to the Go version in the `cockroach version` command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach version |grep fips
 ~~~
@@ -244,7 +239,6 @@ This indicates that CockroachDB was built using [Red Hat's Go FIPS with OpenSSL 
 1. Go to [Download FIPS-ready Runtimes](#download-fips-ready-runtimes) and copy the name of a FIPS-ready Docker image tag.
 1. Pull the Docker image locally, create a new container that uses it, run the container, and attach to it. The following example gives the running container the name `cockroachdb-fips-container`. Replace `{image_tag}` with the name of the Docker image tag you copied.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run {image_tag} --name="cockroachdb-fips-container" -i
     ~~~
@@ -268,7 +262,7 @@ This section provides more information about the cryptographic algorithms and ke
 
 **Algorithm**: [TLS 1.3 (RFC 8446)](https://www.rfc-editor.org/rfc/rfc8446).
 
-Refer to [Using Digital Certificates with CockroachDB]({% link {{ page.version.version }}/authentication.md %}#using-digital-certificates-with-cockroachdb).
+Refer to [Using Digital Certificates with CockroachDB]({{ page.version.version }}/authentication.md#using-digital-certificates-with-cockroachdb).
 
 #### Client identity
 
@@ -276,13 +270,13 @@ Refer to [Using Digital Certificates with CockroachDB]({% link {{ page.version.v
 
 **Algorithm**: `bcrypt` or `scram-sha-256`.
 
-Refer to [SASL/SCRAM-SHA-256 Secure Password-based Authentication]({% link {{ page.version.version }}/security-reference/scram-authentication.md %}).
+Refer to [SASL/SCRAM-SHA-256 Secure Password-based Authentication]({{ page.version.version }}/security-reference/scram-authentication.md).
 
 ##### Client certificates
 
 **Algorithm**: [TLS 1.3 (RFC 8446)](https://www.rfc-editor.org/rfc/rfc8446).
 
-Refer to [Using Digital Certificates with CockroachDB]({% link {{ page.version.version }}/authentication.md %}#using-digital-certificates-with-cockroachdb).
+Refer to [Using Digital Certificates with CockroachDB]({{ page.version.version }}/authentication.md#using-digital-certificates-with-cockroachdb).
 
 ##### GSSAPI / Kerberos
 
@@ -292,19 +286,19 @@ Not supported for FIPS-ready deployments.
 
 **Algorithm**: `scram-sha-256`.
 
-Refer to [SASL/SCRAM-SHA-256 Secure Password-based Authentication]({% link {{ page.version.version }}/security-reference/scram-authentication.md %}).
+Refer to [SASL/SCRAM-SHA-256 Secure Password-based Authentication]({{ page.version.version }}/security-reference/scram-authentication.md).
 
 ##### JSON Web Tokens (JWTs)
 
-**Algorithms**: Specified by the [`server.jwt_authentication.jwks` cluster setting]({% link {{ page.version.version }}/sso-sql.md %}#cluster-settings).
+**Algorithms**: Specified by the [`server.jwt_authentication.jwks` cluster setting]({{ page.version.version }}/sso-sql.md#cluster-settings).
 
-Refer to [Cluster Single Sign-on (SSO) using a JSON web token (JWT)]({% link {{ page.version.version }}/sso-sql.md %}).
+Refer to [Cluster Single Sign-on (SSO) using a JSON web token (JWT)]({{ page.version.version }}/sso-sql.md).
 
 ##### DB Console Authentication via OIDC
 
 **Algorithm**: Specified by the identity provider (IdP) as part of the OIDC handshake process.
 
-Refer to [Single Sign-on (SSO) for DB Console]({% link {{ page.version.version }}/sso-db-console.md %}).
+Refer to [Single Sign-on (SSO) for DB Console]({{ page.version.version }}/sso-db-console.md).
 
 ##### HTTP API access via login tokens
 
@@ -352,5 +346,5 @@ Default encryption provided by [Google Cloud](https://cloud.google.com/docs/secu
 
 ## See also
 
-- [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb-linux.md %})
-- [Releases]({% link releases/index.md %})
+- [Install CockroachDB]({{ page.version.version }}/install-cockroachdb-linux.md)
+- [Releases](releases/index.md)

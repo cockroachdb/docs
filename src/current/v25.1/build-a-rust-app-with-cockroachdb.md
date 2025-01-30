@@ -14,13 +14,11 @@ You must have Rust and Cargo installed. For instructions on installing Rust and 
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup.md %}
 
 ## Step 2. Get the code
 
 Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachdb/example-app-rust-postgres
 ~~~
@@ -37,36 +35,32 @@ The project has the following structure:
 
 The `Cargo.toml` file is the configuration file for the example, and sets the dependencies for the project.
 
-{% include_cached copy-clipboard.html %}
 ~~~ toml
-{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/use-uuids/Cargo.toml %}
+
 ~~~
 
 The `main` function is the entry point for the application, with the code for connecting to the cluster, creating the `accounts` table, creating accounts in that table, and transferring money between two accounts.
 
-The `execute_txn` function wraps database operations in the context of an explicit transaction. If a [retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) is thrown, the function will retry committing the transaction, with [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
+The `execute_txn` function wraps database operations in the context of an explicit transaction. If a [retry error]({{ page.version.version }}/transaction-retry-error-reference.md) is thrown, the function will retry committing the transaction, with [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
 
 {{site.data.alerts.callout_info}}
-CockroachDB may require the [client to retry a transaction]({% link {{ page.version.version }}/transactions.md %}#transaction-retries) in case of read/write [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
+CockroachDB may require the [client to retry a transaction]({{ page.version.version }}/transactions.md#transaction-retries) in case of read/write [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention). CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ rust
-{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/use-uuids/src/main.rs || BEGIN execute_txn || END execute_txn %}
+
 ~~~
 
 The `transfer_funds` function calls `execute_txn` to perform the actual transfer of funds from one account to the other.
 
-{% include_cached copy-clipboard.html %}
 ~~~ rust
-{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/use-uuids/src/main.rs || BEGIN transfer_funds || END transfer_funds %}
+
 ~~~
 
 ## Step 3. Run the code
 
 1. In a terminal go to the `example-app-rust-postgres` directory.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd example-app-rust-postgres
     ~~~
@@ -75,7 +69,6 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -99,7 +92,6 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 
     1. Set the `DATABASE_URL` environment variable to the modified connection string.
 
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ export DATABASE_URL="{connection-string}"
         ~~~
@@ -112,7 +104,6 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 
 1. Run the code to create a table and insert some rows:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cargo run
     ~~~
@@ -136,5 +127,3 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 ## What's next?
 
 Read more about using the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>Rust-Postgres driver</a>.
-
-{% include {{ page.version.version }}/app/see-also-links.md %}

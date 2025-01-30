@@ -4,19 +4,18 @@ summary: The SHOW STATISTICS statement lists table statistics.
 toc: true
 ---
 
-The `SHOW STATISTICS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists [table statistics]({% link {{ page.version.version }}/create-statistics.md %}) used by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}).
+The `SHOW STATISTICS` [statement]({{ page.version.version }}/sql-statements.md) lists [table statistics]({{ page.version.version }}/create-statistics.md) used by the [cost-based optimizer]({{ page.version.version }}/cost-based-optimizer.md).
 
-By default, CockroachDB [automatically generates statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) on all indexed columns and up to 100 non-indexed columns, and automatically collects [multi-column statistics]({% link {{ page.version.version }}/create-statistics.md %}#create-statistics-on-multiple-columns) on the columns that prefix each index.
+By default, CockroachDB [automatically generates statistics]({{ page.version.version }}/cost-based-optimizer.md#table-statistics) on all indexed columns and up to 100 non-indexed columns, and automatically collects [multi-column statistics]({{ page.version.version }}/create-statistics.md#create-statistics-on-multiple-columns) on the columns that prefix each index.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_stats.html %}
 </div>
 
 ## Required Privileges
 
-To list table statistics, the user must have any [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table being inspected.
+To list table statistics, the user must have any [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the table being inspected.
 
 ## Parameters
 
@@ -37,20 +36,18 @@ Parameter      | Description
 |-----------|-------------|
 | `statistics_name` | The name of the statistics. If `__auto__`, the statistics were created automatically. If `__forecast__`, the statistics are [forecasted](#display-forecasted-statistics). |
 | `column_names` | The name of the columns on which the statistics were created. |
-| `created` | The [`timestamptz`]({% link {{ page.version.version }}/timestamp.md %}) when the statistics were created. |
+| `created` | The [`timestamptz`]({{ page.version.version }}/timestamp.md) when the statistics were created. |
 | `row_count` | The number of rows for which the statistics were computed. |
 | `distinct_count` |  The number of distinct values for which the statistics were computed. |
 | `null_count` |  The number of null values for which the statistics were computed.  |
 | `avg_size` |  The average size in bytes of the values of the columns for which the statistics were computed. |
-| `histogram_id` |  The ID of the [histogram]({% link {{ page.version.version }}/cost-based-optimizer.md %}#control-histogram-collection) used to compute statistics. |
+| `histogram_id` |  The ID of the [histogram]({{ page.version.version }}/cost-based-optimizer.md#control-histogram-collection) used to compute statistics. |
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### List table statistics
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW STATISTICS FOR TABLE rides;
 ~~~
@@ -76,7 +73,7 @@ Parameter      | Description
 
 ### Display forecasted statistics
 
-The `WITH FORECAST` option calculates and displays forecasted statistics along with the existing table statistics. The forecast is a simple regression model that predicts how the statistics have changed since they were last collected. Forecasts that closely match the historical statistics are used by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}).
+The `WITH FORECAST` option calculates and displays forecasted statistics along with the existing table statistics. The forecast is a simple regression model that predicts how the statistics have changed since they were last collected. Forecasts that closely match the historical statistics are used by the [cost-based optimizer]({{ page.version.version }}/cost-based-optimizer.md).
 
 CockroachDB generates forecasted statistics when the following conditions are met:
 
@@ -85,7 +82,6 @@ CockroachDB generates forecasted statistics when the following conditions are me
 
 The following example shows 3 historical statistics collections and the subsequent forecast:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW STATISTICS FOR TABLE rides WITH FORECAST;
 ~~~
@@ -150,12 +146,11 @@ The following example shows 3 historical statistics collections and the subseque
 
 ### Delete statistics
 
-{% include {{ page.version.version }}/misc/delete-statistics.md %}
 
 ## See also
 
-- [Cost-Based Optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %})
-- [`CREATE STATISTICS`]({% link {{ page.version.version }}/create-statistics.md %})
-- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
-- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Cost-Based Optimizer]({{ page.version.version }}/cost-based-optimizer.md)
+- [`CREATE STATISTICS`]({{ page.version.version }}/create-statistics.md)
+- [`CREATE TABLE`]({{ page.version.version }}/create-table.md)
+- [`INSERT`]({{ page.version.version }}/insert.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

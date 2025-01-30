@@ -7,23 +7,19 @@ ssh-link: https://docs.microsoft.com/azure/virtual-machines/linux/mac-create-ssh
 docs_area:
 ---
 
-{% include {{ page.version.version }}/filter-tabs/deploy-crdb-ma.md %}
 
 This page shows you how to manually deploy a secure multi-node CockroachDB cluster on Microsoft Azure, using Azure's managed load balancing service to distribute client traffic.
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 
 ### Requirements
 
-{% include {{ page.version.version }}/prod-deployment/secure-requirements.md %}
 
 ### Recommendations
 
-{% include {{ page.version.version }}/prod-deployment/secure-recommendations.md %}
 
 ## Step 1. Configure your network
 
@@ -70,17 +66,15 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 [Create Linux VMs](https://docs.microsoft.com/azure/virtual-machine-scale-sets/quick-create-portal) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate VM for that workload.
 
-- Run at least 3 nodes to [ensure survivability]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
+- Run at least 3 nodes to [ensure survivability]({{ page.version.version }}/recommended-production-settings.md#topology).
 
-{% include {{ page.version.version }}/prod-deployment/recommended-instances-azure.md %}
 
 - When creating the VMs, make sure to select the **Resource Group**, **Virtual Network**, and **Network Security Group** you created.
 
-For more details, see [Hardware Recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) and [Cluster Topology]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
+For more details, see [Hardware Recommendations]({{ page.version.version }}/recommended-production-settings.md#hardware) and [Cluster Topology]({{ page.version.version }}/recommended-production-settings.md#topology).
 
 ## Step 3. Synchronize clocks
 
-{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 4. Set up load balancing
 
@@ -94,7 +88,7 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 1.  [Add Azure load balancing](https://docs.microsoft.com/azure/load-balancer/load-balancer-overview). Be sure to:
   - Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the nodes.
-  - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
+  - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint]({{ page.version.version }}/monitoring-and-alerting.md#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
 
 1.  Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
 
@@ -102,36 +96,26 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 
 ## Step 5. Generate certificates
 
-{% include {{ page.version.version }}/prod-deployment/secure-generate-certificates.md %}
 
 ## Step 6. Start nodes
 
-{% include {{ page.version.version }}/prod-deployment/secure-start-nodes.md %}
 
 ## Step 7. Initialize the cluster
 
-{% include {{ page.version.version }}/prod-deployment/secure-initialize-cluster.md %}
 
 ## Step 8. Test the cluster
 
-{% include {{ page.version.version }}/prod-deployment/secure-test-cluster.md %}
 
 ## Step 9. Run a sample workload
 
-{% include {{ page.version.version }}/prod-deployment/secure-test-load-balancing.md %}
 
 ## Step 10. Monitor the cluster
 
-{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 11. Scale the cluster
 
-{% include {{ page.version.version }}/prod-deployment/secure-scale-cluster.md %}
 
 ## Step 12. Use the database
 
-{% include {{ page.version.version }}/prod-deployment/use-cluster.md %}
 
 ## See also
-
-{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

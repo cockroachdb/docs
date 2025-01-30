@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-CockroachDB supports the following SQL functions and operators for use in [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}).
+CockroachDB supports the following SQL functions and operators for use in [scalar expressions]({{ page.version.version }}/scalar-expressions.md).
 
 {{site.data.alerts.callout_success}}In the <a href="cockroach-sql.html#help">built-in SQL shell</a>, use <code>\hf [function]</code> to get inline help about a specific function.{{site.data.alerts.end}}
 
@@ -15,11 +15,10 @@ The following syntax forms are recognized for compatibility with the
 SQL standard and PostgreSQL, but are equivalent to regular built-in
 functions:
 
-{% include {{ page.version.version }}/sql/function-special-forms.md %}
 
 ## Function volatility
 
-A function's _volatility_ is a promise to the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) about the behavior of the function.
+A function's _volatility_ is a promise to the [optimizer]({{ page.version.version }}/cost-based-optimizer.md) about the behavior of the function.
 
 Type   | Description | Examples
 -------|-------------|----------
@@ -34,38 +33,38 @@ The following table lists the operators that look like built-in functions but ha
 
  Operator | Description
 ----------|-------------
- `ANNOTATE_TYPE(...)` | [Explicitly Typed Expression]({% link {{ page.version.version }}/scalar-expressions.md %}#explicitly-typed-expressions)
- `ARRAY(...)` | [Conversion of Subquery Results to An Array]({% link {{ page.version.version }}/scalar-expressions.md %}#conversion-of-subquery-results-to-an-array)
- `ARRAY[...]` | [Conversion of Scalar Expressions to An Array]({% link {{ page.version.version }}/scalar-expressions.md %}#array-constructors)
- `CAST(...)` | [Type Cast]({% link {{ page.version.version }}/scalar-expressions.md %}#explicit-type-coercions)
- `COALESCE(...)` | [First non-NULL expression with Short Circuit]({% link {{ page.version.version }}/scalar-expressions.md %}#coalesce-and-ifnull-expressions)
- `EXISTS(...)` | [Existence Test on the Result of Subqueries]({% link {{ page.version.version }}/scalar-expressions.md %}#existence-test-on-the-result-of-subqueries)
- `IF(...)` | [Conditional Evaluation]({% link {{ page.version.version }}/scalar-expressions.md %}#if-expressions)
+ `ANNOTATE_TYPE(...)` | [Explicitly Typed Expression]({{ page.version.version }}/scalar-expressions.md#explicitly-typed-expressions)
+ `ARRAY(...)` | [Conversion of Subquery Results to An Array]({{ page.version.version }}/scalar-expressions.md#conversion-of-subquery-results-to-an-array)
+ `ARRAY[...]` | [Conversion of Scalar Expressions to An Array]({{ page.version.version }}/scalar-expressions.md#array-constructors)
+ `CAST(...)` | [Type Cast]({{ page.version.version }}/scalar-expressions.md#explicit-type-coercions)
+ `COALESCE(...)` | [First non-NULL expression with Short Circuit]({{ page.version.version }}/scalar-expressions.md#coalesce-and-ifnull-expressions)
+ `EXISTS(...)` | [Existence Test on the Result of Subqueries]({{ page.version.version }}/scalar-expressions.md#existence-test-on-the-result-of-subqueries)
+ `IF(...)` | [Conditional Evaluation]({{ page.version.version }}/scalar-expressions.md#if-expressions)
  `IFNULL(...)` | Alias for `COALESCE` restricted to two operands
- `NULLIF(...)` | [Return `NULL` conditionally]({% link {{ page.version.version }}/scalar-expressions.md %}#nullif-expressions)
- `ROW(...)` | [Tuple Constructor]({% link {{ page.version.version }}/scalar-expressions.md %}#tuple-constructors)
+ `NULLIF(...)` | [Return `NULL` conditionally]({{ page.version.version }}/scalar-expressions.md#nullif-expressions)
+ `ROW(...)` | [Tuple Constructor]({{ page.version.version }}/scalar-expressions.md#tuple-constructors)
 
 ## User-defined functions
 
-In addition to the built-in functions described in the following sections, CockroachDB supports user-defined functions. For details, see [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %}).
+In addition to the built-in functions described in the following sections, CockroachDB supports user-defined functions. For details, see [User-Defined Functions]({{ page.version.version }}/user-defined-functions.md).
 
 ## Built-in functions
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/functions.md %}
+
 
 ## Aggregate functions
 
-For examples showing how to use aggregate functions, see [the `SELECT` clause documentation]({% link {{ page.version.version }}/select-clause.md %}#aggregate-functions).
+For examples showing how to use aggregate functions, see [the `SELECT` clause documentation]({{ page.version.version }}/select-clause.md#aggregate-functions).
 
 {{site.data.alerts.callout_info}}
-Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}#aggregate-functions). To specify the order in which input rows are processed, you can add an [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}) clause within the function argument list. For examples, see the [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}#order-aggregate-function-input-rows-by-column) documentation.
+Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding [`SELECT` clause]({{ page.version.version }}/select-clause.md#aggregate-functions). To specify the order in which input rows are processed, you can add an [`ORDER BY`]({{ page.version.version }}/order-by.md) clause within the function argument list. For examples, see the [`SELECT` clause]({{ page.version.version }}/select-clause.md#order-aggregate-function-input-rows-by-column) documentation.
 {{site.data.alerts.end}}
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/aggregates.md %}
+
 
 ## Window functions
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/window_functions.md %}
+
 
 ## Operators
 
@@ -74,14 +73,14 @@ The following table lists all CockroachDB operators from highest to lowest prece
 | Order of Precedence | Operator | Name | Operator Arity |
 | ------------------- | -------- | ---- | -------------- |
 | 1 | `.` | Member field access operator | binary |
-| 2 | `::` | [Type cast]({% link {{ page.version.version }}/scalar-expressions.md %}#explicit-type-coercions) | binary |
+| 2 | `::` | [Type cast]({{ page.version.version }}/scalar-expressions.md#explicit-type-coercions) | binary |
 | 3 | `-` | Unary minus | unary (prefix) |
 |   | `~` | Bitwise not | unary (prefix) |
 | 4 | `^` | Exponentiation | binary |
 | 5 | `*` | Multiplication | binary |
 |   | `/` | Division | binary |
 |   | `//` | Floor division | binary |
-|   | `%` | Modulo, or text similarity when accessing a `STRING` column. For more information, see [Trigram Indexes]({% link {{ page.version.version }}/trigram-indexes.md %}#comparisons). | binary |
+|   | `%` | Modulo, or text similarity when accessing a `STRING` column. For more information, see [Trigram Indexes]({{ page.version.version }}/trigram-indexes.md#comparisons). | binary |
 | 6 | `+` | Addition | binary |
 |   | `-` | Subtraction | binary |
 | 7 | `<<` | Bitwise left-shift | binary |
@@ -127,17 +126,17 @@ The following table lists all CockroachDB operators from highest to lowest prece
 | 14 | `IS [DISTINCT FROM]` | Equal, considering `NULL` as value | binary |
 |    | `IS NOT [DISTINCT FROM]` | `a IS NOT b` equivalent to `NOT (a IS b)` | binary |
 |    | `ISNULL`, `IS UNKNOWN` , `NOTNULL`, `IS NOT UNKNOWN` | Equivalent to `IS NULL` / `IS NOT NULL` | unary (postfix) |
-|    | `IS NAN`, `IS NOT NAN` | [Comparison with the floating-point NaN value]({% link {{ page.version.version }}/scalar-expressions.md %}#comparison-with-nan) | unary (postfix) |
+|    | `IS NAN`, `IS NOT NAN` | [Comparison with the floating-point NaN value]({{ page.version.version }}/scalar-expressions.md#comparison-with-nan) | unary (postfix) |
 |    | `IS OF(...)` | Type predicate | unary (postfix)
-| 15 | `NOT` | [Logical NOT]({% link {{ page.version.version }}/scalar-expressions.md %}#logical-operators) | unary |
-| 16 | `AND` | [Logical AND]({% link {{ page.version.version }}/scalar-expressions.md %}#logical-operators) | binary |
-| 17 | `OR` | [Logical OR]({% link {{ page.version.version }}/scalar-expressions.md %}#logical-operators) | binary |
+| 15 | `NOT` | [Logical NOT]({{ page.version.version }}/scalar-expressions.md#logical-operators) | unary |
+| 16 | `AND` | [Logical AND]({{ page.version.version }}/scalar-expressions.md#logical-operators) | binary |
+| 17 | `OR` | [Logical OR]({{ page.version.version }}/scalar-expressions.md#logical-operators) | binary |
 
-[Multi-valued]: {% link {{ page.version.version }}/scalar-expressions.md %}#multi-valued-comparisons
+[Multi-valued]: {{ page.version.version }}/scalar-expressions.md#multi-valued-comparisons
 
 ### Supported operations
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/operators.md %}
+
 
 {% comment %}
 ## `CAST()`

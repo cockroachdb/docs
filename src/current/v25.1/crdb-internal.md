@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `crdb_internal` [system catalog]({% link {{ page.version.version }}/system-catalogs.md %}) is a [schema]({% link {{ page.version.version }}/schema-design-overview.md %}#schemas) that contains information about internal objects, processes, and metrics related to a specific database. `crdb_internal` tables are read-only.
+The `crdb_internal` [system catalog]({{ page.version.version }}/system-catalogs.md) is a [schema]({{ page.version.version }}/schema-design-overview.md#schemas) that contains information about internal objects, processes, and metrics related to a specific database. `crdb_internal` tables are read-only.
 
 <a id="data-exposed-by-crdb_internal"></a>
 
@@ -22,47 +22,47 @@ To view the schema and query examples for a table supported in production, click
 
 Table name | Description| Use in production
 -----------|------------|-------------------
-`active_range_feeds` | Contains information about [range feeds]({% link {{ page.version.version }}/architecture/distribution-layer.md %}) on nodes in your cluster. | ✗
+`active_range_feeds` | Contains information about [range feeds]({{ page.version.version }}/architecture/distribution-layer.md) on nodes in your cluster. | ✗
 `backward_dependencies` | Contains information about backward dependencies.| ✗
-`builtin_functions` | Contains information about supported [functions]({% link {{ page.version.version }}/functions-and-operators.md %}).| ✗
-[`cluster_contended_indexes`](#cluster_contended_indexes) | Contains information about [contended]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) indexes in your cluster.| ✓
-[`cluster_contended_keys`](#cluster_contended_keys)  | Contains information about [contended]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) keys in your cluster.| ✓
-[`cluster_contended_tables`](#cluster_contended_tables)  | Contains information about [contended]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) tables in your cluster.| ✓
-[`cluster_contention_events`](#cluster_contention_events)  | Contains information about [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) in your cluster.| ✓
-[`cluster_locks`](#cluster_locks) | Contains information about [locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#concurrency-control) held by [transactions]({% link {{ page.version.version }}/transactions.md %}) on specific [keys]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range). | ✓
-`cluster_database_privileges` | Contains information about the [database privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) on your cluster.| ✗
+`builtin_functions` | Contains information about supported [functions]({{ page.version.version }}/functions-and-operators.md).| ✗
+[`cluster_contended_indexes`](#cluster_contended_indexes) | Contains information about [contended]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) indexes in your cluster.| ✓
+[`cluster_contended_keys`](#cluster_contended_keys)  | Contains information about [contended]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) keys in your cluster.| ✓
+[`cluster_contended_tables`](#cluster_contended_tables)  | Contains information about [contended]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) tables in your cluster.| ✓
+[`cluster_contention_events`](#cluster_contention_events)  | Contains information about [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) in your cluster.| ✓
+[`cluster_locks`](#cluster_locks) | Contains information about [locks]({{ page.version.version }}/architecture/transaction-layer.md#concurrency-control) held by [transactions]({{ page.version.version }}/transactions.md) on specific [keys]({{ page.version.version }}/architecture/overview.md#architecture-range). | ✓
+`cluster_database_privileges` | Contains information about the [database privileges]({{ page.version.version }}/security-reference/authorization.md#privileges) on your cluster.| ✗
 `cluster_execution_insights` | Contains information about SQL statement executions on your cluster.| ✗
-`cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) scheduled in your cluster.| ✗
-`cluster_inflight_traces` | Contains information about in-flight [tracing]({% link {{ page.version.version }}/show-trace.md %}) in your cluster.| ✗
+`cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution]({{ page.version.version }}/architecture/sql-layer.md#distsql) scheduled in your cluster.| ✗
+`cluster_inflight_traces` | Contains information about in-flight [tracing]({{ page.version.version }}/show-trace.md) in your cluster.| ✗
 [`cluster_queries`](#cluster_queries) | Contains information about queries running on your cluster. Requires `admin`, `VIEWACTIVITY`, or `VIEWACTIVITYREDACTED`. If a user has both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and sensitive queries are redacted.| ✓
 [`cluster_sessions`](#cluster_sessions) | Contains information about cluster sessions, including current and past queries.| ✓
-`cluster_settings` | Contains information about [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}).| ✗
+`cluster_settings` | Contains information about [cluster settings]({{ page.version.version }}/cluster-settings.md).| ✗
 [`cluster_transactions`](#cluster_transactions) | Contains information about transactions running on your cluster.| ✓
 `create_statements` | Contains information about tables and indexes in your database.| ✗
-`create_function_statements` | <a name="create_function_statements"></a> Contains information about [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) in your database.| ✗
-`create_type_statements` | <a name="create_type_statements"></a> Contains information about [user-defined types]({% link {{ page.version.version }}/enum.md %}) in your database.| ✗
-`cross_db_references` | Contains information about objects that reference other objects, such as [foreign keys]({% link {{ page.version.version }}/foreign-key.md %}) or [views]({% link {{ page.version.version }}/views.md %}), across databases in your cluster.| ✗
+`create_function_statements` | <a name="create_function_statements"></a> Contains information about [user-defined functions]({{ page.version.version }}/user-defined-functions.md) in your database.| ✗
+`create_type_statements` | <a name="create_type_statements"></a> Contains information about [user-defined types]({{ page.version.version }}/enum.md) in your database.| ✗
+`cross_db_references` | Contains information about objects that reference other objects, such as [foreign keys]({{ page.version.version }}/foreign-key.md) or [views]({{ page.version.version }}/views.md), across databases in your cluster.| ✗
 `databases` | Contains information about the databases in your cluster.| ✗
-`default_privileges` | Contains information about per-database default [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges).| ✗
+`default_privileges` | Contains information about per-database default [privileges]({{ page.version.version }}/security-reference/authorization.md#privileges).| ✗
 `feature_usage` | Contains information about feature usage on your cluster.| ✗
 `forward_dependencies` | Contains information about forward dependencies.| ✗
 `gossip_alerts` | Contains information about gossip alerts.| ✗
 `gossip_liveness` | Contains information about your cluster's gossip liveness.| ✗
 `gossip_network` | Contains information about your cluster's gossip network.| ✗
 `gossip_nodes` | Contains information about nodes in your cluster's gossip network.| ✗
-`index_columns` | Contains information about [indexed]({% link {{ page.version.version }}/indexes.md %}) columns in your cluster.| ✗
+`index_columns` | Contains information about [indexed]({{ page.version.version }}/indexes.md) columns in your cluster.| ✗
 [`index_usage_statistics`](#index_usage_statistics) | Contains statistics about the primary and secondary indexes used in statements.| ✓
 `invalid_objects` | Contains information about invalid objects in your cluster.| ✗
-`jobs` | Contains information about [jobs]({% link {{ page.version.version }}/show-jobs.md %}) running on your cluster.| ✗
-`kv_node_liveness` | Contains information about [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).| ✗
-`kv_node_status` | Contains information about node status at the [key-value layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).| ✗
+`jobs` | Contains information about [jobs]({{ page.version.version }}/show-jobs.md) running on your cluster.| ✗
+`kv_node_liveness` | Contains information about [node liveness]({{ page.version.version }}/cluster-setup-troubleshooting.md#node-liveness-issues).| ✗
+`kv_node_status` | Contains information about node status at the [key-value layer]({{ page.version.version }}/architecture/storage-layer.md).| ✗
 `kv_store_status` | Contains information about the key-value store for your cluster.| ✗
-`leases` | Contains information about [leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) in your cluster.| ✗
+`leases` | Contains information about [leases]({{ page.version.version }}/architecture/replication-layer.md#leases) in your cluster.| ✗
 `lost_descriptors_with_data` | Contains information about table descriptors that have been deleted but still have data left over in storage.| ✗
 `node_build_info` | Contains information about nodes in your cluster.| ✗
 `node_contention_events`| Contains information about contention on the gateway node of your cluster.| ✗
 `node_execution_insights` | Contains information about SQL statement executions on the gateway node of your cluster.| ✗
-`node_distsql_flows` | Contains information about the flows of the [DistSQL execution]({% link {{ page.version.version }}/architecture/sql-layer.md %}#distsql) scheduled on nodes in your cluster.| ✗
+`node_distsql_flows` | Contains information about the flows of the [DistSQL execution]({{ page.version.version }}/architecture/sql-layer.md#distsql) scheduled on nodes in your cluster.| ✗
 `node_inflight_trace_spans` | Contains information about currently in-flight spans in the current node.| ✗
 `node_metrics` | Contains metrics for nodes in your cluster.| ✗
 `node_queries` | Contains information about queries running on nodes in your cluster. Requires `admin`, `VIEWACTIVITY`, or `VIEWACTIVITYREDACTED`. If a user has both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and sensitive queries are redacted.| ✗
@@ -72,28 +72,27 @@ Table name | Description| Use in production
 `node_transaction_statistics` | Contains transaction statistics for nodes in your cluster.| ✗
 `node_transactions` | Contains information about transactions for nodes in your cluster.| ✗
 `node_txn_stats` | Contains transaction statistics for nodes in your cluster.| ✗
-`partitions` | Contains information about [partitions]({% link {{ page.version.version }}/partitioning.md %}) in your cluster.| ✗
+`partitions` | Contains information about [partitions]({{ page.version.version }}/partitioning.md) in your cluster.| ✗
 `predefined_comments` | Contains predefined comments about your cluster.| ✗
-`ranges` | Contains information about [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in your cluster.| ✗
-`ranges_no_leases` | Contains information about [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in your cluster, without [leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases).| ✗
-`regions` | Contains information about [cluster regions]({% link {{ page.version.version }}/multiregion-overview.md %}#cluster-regions).| ✗
+`ranges` | Contains information about [ranges]({{ page.version.version }}/architecture/overview.md#architecture-range) in your cluster.| ✗
+`ranges_no_leases` | Contains information about [ranges]({{ page.version.version }}/architecture/overview.md#architecture-range) in your cluster, without [leases]({{ page.version.version }}/architecture/replication-layer.md#leases).| ✗
+`regions` | Contains information about [cluster regions]({{ page.version.version }}/multiregion-overview.md#cluster-regions).| ✗
 `schema_changes` | Contains information about schema changes in your cluster.| ✗
 `session_trace` | Contains session trace information for your cluster.| ✗
-`session_variables` | Contains information about [session variables]({% link {{ page.version.version }}/set-vars.md %}) in your cluster.| ✗
-[`statement_statistics`](#statement_statistics) | <a name="statement-statistics"></a>Aggregates in-memory and persisted [statistics]({% link {{ page.version.version }}/ui-statements-page.md %}#statement-statistics) from `system.statement_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. To reset the statistics call `SELECT crdb_internal.reset_sql_stats()`.| ✓
+`session_variables` | Contains information about [session variables]({{ page.version.version }}/set-vars.md) in your cluster.| ✗
+[`statement_statistics`](#statement_statistics) | <a name="statement-statistics"></a>Aggregates in-memory and persisted [statistics]({{ page.version.version }}/ui-statements-page.md#statement-statistics) from `system.statement_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. To reset the statistics call `SELECT crdb_internal.reset_sql_stats()`.| ✓
 `table_columns` | Contains information about table columns in your cluster.| ✗
 `table_indexes` | Contains information about table indexes in your cluster.| ✗
 `table_row_statistics` | Contains row count statistics for tables in the current database.| ✗
 `tables` | Contains information about tables in your cluster.| ✗
-[`transaction_contention_events`](#transaction_contention_events)| Contains information about historical transaction [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) events. | ✓
-[`transaction_statistics`](#transaction_statistics) | Aggregates in-memory and persisted [statistics]({% link {{ page.version.version }}/ui-transactions-page.md %}#transaction-statistics) from `system.transaction_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. To reset the statistics, call `SELECT crdb_internal.reset_sql_stats()`.| ✓
-`zones` | Contains information about [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) in your cluster.| ✗
+[`transaction_contention_events`](#transaction_contention_events)| Contains information about historical transaction [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) events. | ✓
+[`transaction_statistics`](#transaction_statistics) | Aggregates in-memory and persisted [statistics]({{ page.version.version }}/ui-transactions-page.md#transaction-statistics) from `system.transaction_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. To reset the statistics, call `SELECT crdb_internal.reset_sql_stats()`.| ✓
+`zones` | Contains information about [zone configurations]({{ page.version.version }}/configure-replication-zones.md) in your cluster.| ✗
 
 ## List `crdb_internal` tables
 
-To list the `crdb_internal` tables for the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database), use the following [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}) statement:
+To list the `crdb_internal` tables for the [current database]({{ page.version.version }}/sql-name-resolution.md#current-database), use the following [`SHOW TABLES`]({{ page.version.version }}/show-tables.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM crdb_internal;
 ~~~
@@ -119,13 +118,12 @@ To list the `crdb_internal` tables for the [current database]({% link {{ page.ve
 To get detailed information about objects, processes, or metrics related to your database, you can read from the `crdb_internal` table that corresponds to the item of interest.
 
 {{site.data.alerts.callout_success}}
-- To ensure that you can view all of the tables in `crdb_internal`, query the tables as a user with the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
-- Unless specified otherwise, queries to `crdb_internal` assume the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database).
+- To ensure that you can view all of the tables in `crdb_internal`, query the tables as a user with the [`admin` role]({{ page.version.version }}/security-reference/authorization.md#admin-role).
+- Unless specified otherwise, queries to `crdb_internal` assume the [current database]({{ page.version.version }}/sql-name-resolution.md#current-database).
 {{site.data.alerts.end}}
 
-For example, to return the `crdb_internal` table for the index usage statistics of the [`movr`]({% link {{ page.version.version }}/movr.md %}) database, you can use the following statement:
+For example, to return the `crdb_internal` table for the index usage statistics of the [`movr`]({{ page.version.version }}/movr.md) database, you can use the following statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.crdb_internal.index_usage_statistics;
 ~~~
@@ -152,15 +150,14 @@ This section provides the schema and examples for tables supported in production
 
 Column | Type | Description
 ------------|-----|------------
-`database_name`  | `STRING`  | The name of the database experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`schema_name`  | `STRING`  | The name of the schema experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`table_name` | `STRING` | The name of the table experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`index_name` | `STRING` | The name of the index experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`num_contention_events` | `INT8` | The number of [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) events.
+`database_name`  | `STRING`  | The name of the database experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`schema_name`  | `STRING`  | The name of the schema experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`table_name` | `STRING` | The name of the table experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`index_name` | `STRING` | The name of the index experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`num_contention_events` | `INT8` | The number of [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) events.
 
 #### View all indexes that have experienced contention
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM movr.crdb_internal.cluster_contended_indexes;
 ~~~
@@ -175,16 +172,15 @@ SELECT * FROM movr.crdb_internal.cluster_contended_indexes;
 
 Column | Type | Description
 ------------|-----|------------
-`database_name`  | `STRING`  | The name of the database experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`schema_name`  | `STRING`  | The name of the schema experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`table_name` | `STRING` | The name of the table experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`index_name` | `STRING` | The name of the index experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`key` | `BYTES` | The key experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`num_contention_events` | `INT8` | The number of [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) events.
+`database_name`  | `STRING`  | The name of the database experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`schema_name`  | `STRING`  | The name of the schema experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`table_name` | `STRING` | The name of the table experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`index_name` | `STRING` | The name of the index experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`key` | `BYTES` | The key experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`num_contention_events` | `INT8` | The number of [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) events.
 
 #### View all keys that have experienced contention
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT table_name, index_name, key, num_contention_events FROM movr.crdb_internal.cluster_contended_keys where database_name = 'movr';
 ~~~
@@ -217,14 +213,13 @@ SELECT table_name, index_name, key, num_contention_events FROM movr.crdb_interna
 
 Column | Type | Description
 ------------|-----|------------
-`database_name`  | `STRING`  | The name of the database experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`schema_name`  | `STRING`  | The name of the schema experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`table_name` | `STRING` | The name of the table experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`num_contention_events` | `INT8` | The number of [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) events.
+`database_name`  | `STRING`  | The name of the database experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`schema_name`  | `STRING`  | The name of the schema experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`table_name` | `STRING` | The name of the table experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`num_contention_events` | `INT8` | The number of [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) events.
 
 #### View all tables that have experienced contention
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.crdb_internal.cluster_contended_tables;
 ~~~
@@ -241,15 +236,14 @@ Column | Type | Description
 ------------|-----|------------
 `table_id`  | `INT8`  | Unique table identifier.
 `index_id`  | `INT8`  | Unique index identifier.
-`num_contention_events` | `INT8` | The number of [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) events.
-`cumulative_contention_time` | `INTERVAL` | The cumulative time that the transaction spends waiting in [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
-`key` | `BYTES` | The key experiencing [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
+`num_contention_events` | `INT8` | The number of [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) events.
+`cumulative_contention_time` | `INTERVAL` | The cumulative time that the transaction spends waiting in [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
+`key` | `BYTES` | The key experiencing [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
 `txn_id` | `UUID` | Unique transaction identifier.
-`count` | `INT8` | The number of [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) events.
+`count` | `INT8` | The number of [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) events.
 
 #### View all contention events
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM crdb_internal.cluster_contention_events;
 ~~~
@@ -270,13 +264,11 @@ SELECT * FROM crdb_internal.cluster_contention_events;
 
 #### View the tables/indexes with the most time under contention
 
-To view the [tables]({% link {{ page.version.version }}/create-table.md %}) and [indexes]({% link {{ page.version.version }}/indexes.md %}) with the most cumulative time under [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) since the last server restart, run the query below.
+To view the [tables]({{ page.version.version }}/create-table.md) and [indexes]({{ page.version.version }}/indexes.md) with the most cumulative time under [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) since the last server restart, run the query below.
 
 {{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
 {{site.data.alerts.end}}
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 WITH c AS (SELECT DISTINCT ON (table_id, index_id) table_id, index_id, num_contention_events AS events, cumulative_contention_time AS time FROM crdb_internal.cluster_contention_events) SELECT i.descriptor_name, i.index_name, c.events, c.time FROM crdb_internal.table_indexes AS i JOIN c ON i.descriptor_id = c.table_id AND i.index_id = c.index_id ORDER BY c.time DESC LIMIT 10;
 ~~~
@@ -292,11 +284,11 @@ WITH c AS (SELECT DISTINCT ON (table_id, index_id) table_id, index_id, num_conte
 (5 rows)
 ~~~
 
-(The output above is for a [local cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}) running the [TPC-C workload]({% link {{ page.version.version }}/cockroach-workload.md %}#tpcc-workload) at a `--concurrency` of 256.)
+(The output above is for a [local cluster]({{ page.version.version }}/start-a-local-cluster.md) running the [TPC-C workload]({{ page.version.version }}/cockroach-workload.md#tpcc-workload) at a `--concurrency` of 256.)
 
 ### `cluster_locks`
 
-The `crdb_internal.cluster_locks` schema contains information about [locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#concurrency-control) held by [transactions]({% link {{ page.version.version }}/transactions.md %}) on specific [keys]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range). Queries acquire locks on keys within transactions, or they wait until they can acquire locks until other transactions have released locks on those keys.
+The `crdb_internal.cluster_locks` schema contains information about [locks]({{ page.version.version }}/architecture/transaction-layer.md#concurrency-control) held by [transactions]({{ page.version.version }}/transactions.md) on specific [keys]({{ page.version.version }}/architecture/overview.md#architecture-range). Queries acquire locks on keys within transactions, or they wait until they can acquire locks until other transactions have released locks on those keys.
 
 For more information, see the following sections.
 
@@ -314,35 +306,33 @@ The `crdb_internal.cluster_locks` table has the following columns that describe 
 
 | Column            | Type                          | Description                                                                                                                                                                   |
 |-------------------+-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `range_id`        | [`INT`]({% link {{ page.version.version }}/int.md %})             | The ID of the [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) that stores the key the lock is being acquired on.                                                       |
-| `table_id`        | [`INT`]({% link {{ page.version.version }}/int.md %})             | The ID of the [table]({% link {{ page.version.version }}/create-table.md %}) that includes the key the lock is being acquired on.                                                                                 |
-| `database_name`   | [`STRING`]({% link {{ page.version.version }}/string.md %})       | The name of the [database]({% link {{ page.version.version }}/create-database.md %}) that includes the key the lock is being acquired on.                                                                         |
-| `schema_name`     | [`STRING`]({% link {{ page.version.version }}/string.md %})       | The name of the [schema]({% link {{ page.version.version }}/create-schema.md %}) that includes the key this lock is being acquired on.                                                                            |
-| `table_name`      | [`STRING`]({% link {{ page.version.version }}/string.md %})       | The name of the [table]({% link {{ page.version.version }}/create-table.md %}) that includes the key this lock is being acquired on.                                                                              |
-| `index_name`      | [`STRING`]({% link {{ page.version.version }}/string.md %})       | The name of the [index]({% link {{ page.version.version }}/indexes.md %}) that includes the key this lock is being acquired on.                                                                                   |
-| `lock_key`        | [`BYTES`]({% link {{ page.version.version }}/bytes.md %})         | The actual key that this lock is being acquired on.                                                                                                                           |
-| `lock_key_pretty` | [`STRING`]({% link {{ page.version.version }}/string.md %})       | A string representation of the key this lock is being acquired on.                                                                                                            |
-| `txn_id`          | [`UUID`]({% link {{ page.version.version }}/uuid.md %})           | The ID of the [transaction]({% link {{ page.version.version }}/transactions.md %}) that is acquiring this lock.                                                                                                   |
-| `ts`              | [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) | The [timestamp]({% link {{ page.version.version }}/timestamp.md %}) at which this lock was acquired.                                                                                                              |
-| `lock_strength`   | [`STRING`]({% link {{ page.version.version }}/string.md %})       | The strength of this lock. Allowed values: `"Exclusive"` or `"None"` (read-only requests don't need an exclusive lock).                                                                                                         |
-| `durability`      | [`STRING`]({% link {{ page.version.version }}/string.md %})       | Whether the lock is one of: `Replicated` or `Unreplicated`. For more information about lock replication, see [types of locking]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing). |
-| `granted`         | [`BOOLEAN`]({% link {{ page.version.version }}/bool.md %})        | Whether this lock has been granted to the [transaction]({% link {{ page.version.version }}/transactions.md %}) requesting it.                                                                                     |
-| `contended`       | [`BOOLEAN`]({% link {{ page.version.version }}/bool.md %})        | Whether multiple [transactions]({% link {{ page.version.version }}/transactions.md %}) are trying to acquire a lock on this key.                                                                                  |
-| `duration`        | [`INTERVAL`]({% link {{ page.version.version }}/interval.md %})   | The length of time this lock has been held for.                                                                                                                               |
+| `range_id`        | [`INT`]({{ page.version.version }}/int.md)             | The ID of the [range]({{ page.version.version }}/architecture/overview.md#architecture-range) that stores the key the lock is being acquired on.                                                       |
+| `table_id`        | [`INT`]({{ page.version.version }}/int.md)             | The ID of the [table]({{ page.version.version }}/create-table.md) that includes the key the lock is being acquired on.                                                                                 |
+| `database_name`   | [`STRING`]({{ page.version.version }}/string.md)       | The name of the [database]({{ page.version.version }}/create-database.md) that includes the key the lock is being acquired on.                                                                         |
+| `schema_name`     | [`STRING`]({{ page.version.version }}/string.md)       | The name of the [schema]({{ page.version.version }}/create-schema.md) that includes the key this lock is being acquired on.                                                                            |
+| `table_name`      | [`STRING`]({{ page.version.version }}/string.md)       | The name of the [table]({{ page.version.version }}/create-table.md) that includes the key this lock is being acquired on.                                                                              |
+| `index_name`      | [`STRING`]({{ page.version.version }}/string.md)       | The name of the [index]({{ page.version.version }}/indexes.md) that includes the key this lock is being acquired on.                                                                                   |
+| `lock_key`        | [`BYTES`]({{ page.version.version }}/bytes.md)         | The actual key that this lock is being acquired on.                                                                                                                           |
+| `lock_key_pretty` | [`STRING`]({{ page.version.version }}/string.md)       | A string representation of the key this lock is being acquired on.                                                                                                            |
+| `txn_id`          | [`UUID`]({{ page.version.version }}/uuid.md)           | The ID of the [transaction]({{ page.version.version }}/transactions.md) that is acquiring this lock.                                                                                                   |
+| `ts`              | [`TIMESTAMP`]({{ page.version.version }}/timestamp.md) | The [timestamp]({{ page.version.version }}/timestamp.md) at which this lock was acquired.                                                                                                              |
+| `lock_strength`   | [`STRING`]({{ page.version.version }}/string.md)       | The strength of this lock. Allowed values: `"Exclusive"` or `"None"` (read-only requests don't need an exclusive lock).                                                                                                         |
+| `durability`      | [`STRING`]({{ page.version.version }}/string.md)       | Whether the lock is one of: `Replicated` or `Unreplicated`. For more information about lock replication, see [types of locking]({{ page.version.version }}/architecture/transaction-layer.md#writing). |
+| `granted`         | [`BOOLEAN`]({{ page.version.version }}/bool.md)        | Whether this lock has been granted to the [transaction]({{ page.version.version }}/transactions.md) requesting it.                                                                                     |
+| `contended`       | [`BOOLEAN`]({{ page.version.version }}/bool.md)        | Whether multiple [transactions]({{ page.version.version }}/transactions.md) are trying to acquire a lock on this key.                                                                                  |
+| `duration`        | [`INTERVAL`]({{ page.version.version }}/interval.md)   | The length of time this lock has been held for.                                                                                                                               |
 
 {{site.data.alerts.callout_success}}
-You can see the types and default values of columns in this and other tables using [`SHOW COLUMNS FROM {table}`]({% link {{ page.version.version }}/show-columns.md %}).
+You can see the types and default values of columns in this and other tables using [`SHOW COLUMNS FROM {table}`]({{ page.version.version }}/show-columns.md).
 {{site.data.alerts.end}}
 
 #### Cluster locks - basic example
 
-In this example, we'll use the [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) statement to order two transactions by controlling concurrent access to a table. Then, we will look at the data in `cluster_locks` to see the locks being held by these transactions on the objects they are accessing.
+In this example, we'll use the [`SELECT FOR UPDATE`]({{ page.version.version }}/select-for-update.md) statement to order two transactions by controlling concurrent access to a table. Then, we will look at the data in `cluster_locks` to see the locks being held by these transactions on the objects they are accessing.
 
-{% include {{page.version.version}}/sql/select-for-update-example-partial.md %}
 
 Now that we have two transactions both trying to update the `kv` table, let's query the data in `crdb_internal.cluster_locks`. We should see two locks:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT database_name, table_name, txn_id, ts, lock_key_pretty, lock_strength, granted, contended FROM crdb_internal.cluster_locks WHERE table_name = 'kv';
 ~~~
@@ -357,14 +347,13 @@ SELECT database_name, table_name, txn_id, ts, lock_key_pretty, lock_strength, gr
 
 As expected, there are two locks. This is the case because:
 
-- The transaction with the [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) query in Terminal 1 asked for an `Exclusive` lock on a row in the `defaultdb.kv` table, as shown in the `lock_strength` column. We can see that it was able to get that lock, since the `granted` column is `true`.
+- The transaction with the [`SELECT FOR UPDATE`]({{ page.version.version }}/select-for-update.md) query in Terminal 1 asked for an `Exclusive` lock on a row in the `defaultdb.kv` table, as shown in the `lock_strength` column. We can see that it was able to get that lock, since the `granted` column is `true`.
 - The transaction in Terminal 2 is also trying to lock the same row in the `kv` table with a `lock_strength` of `Exclusive`. However, the value of the `granted` column is `false`, which means it could not get the exclusive lock yet, and is waiting on the lock from the query in Terminal 1 to be released before it can proceed.
 
 Further, both transactions show the `contended` column as `true`, since these transactions are both trying to update rows in the `defaultdb.kv` table at the same time.
 
 The following more complex query shows additional information about lockholders, sessions, and waiting queries. This may be useful on a busy cluster for figuring out which transactions from which clients are trying to grab locks. Note that joining with `cluster_queries` will only show queries currently in progress.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     sessions.session_id,
@@ -407,25 +396,22 @@ Locks are held by transactions, not queries. A lock can be acquired by a transac
 
 This example assumes you have a cluster in the state it was left in by [the previous example](#cluster-locks-basic-example).
 
-In this example you will run a workload on the cluster with multiple concurrent transactions using the [bank workload]({% link {{ page.version.version }}/cockroach-workload.md %}#run-the-bank-workload). With a sufficiently high concurrency setting, the bank workload will frequently attempt to update multiple accounts at the same time. This will create plenty of locks to view in the `crdb_internal.cluster_locks` table.
+In this example you will run a workload on the cluster with multiple concurrent transactions using the [bank workload]({{ page.version.version }}/cockroach-workload.md#run-the-bank-workload). With a sufficiently high concurrency setting, the bank workload will frequently attempt to update multiple accounts at the same time. This will create plenty of locks to view in the `crdb_internal.cluster_locks` table.
 
 1. Initialize the workload:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach workload init bank 'postgresql://root@localhost:26257/bank?sslmode=disable'
     ~~~
 
 1. Run it at a high concurrency setting:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach workload run bank --concurrency=128 --duration=3m 'postgresql://root@localhost:26257/bank?sslmode=disable'
     ~~~
 
 1. While the workload is running, issue the following query to view a subset of the locks being requested:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT
         database_name,
@@ -463,7 +449,6 @@ As in the [basic example](#cluster-locks-basic-example), you can see that some t
 
 The following more complex query shows additional information about lockholders, sessions, and waiting queries. This may be useful on a busy cluster for figuring out which transactions from which clients are trying to grab locks. Note that joining with `cluster_queries` will only show queries currently in progress.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     sessions.session_id,
@@ -516,11 +501,10 @@ Locks are held by transactions, not queries. A lock can be acquired by a transac
 
 #### Blocked vs. blocking transactions
 
-Run the query below to display a list of pairs of [transactions]({% link {{ page.version.version }}/transactions.md %}) that are holding and waiting on locks for the same [keys]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range).
+Run the query below to display a list of pairs of [transactions]({{ page.version.version }}/transactions.md) that are holding and waiting on locks for the same [keys]({{ page.version.version }}/architecture/overview.md#architecture-range).
 
 This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     lh.database_name,
@@ -563,11 +547,10 @@ LIMIT
 
 #### Client sessions holding locks
 
-Run the query below to display a list of [sessions]({% link {{ page.version.version }}/show-sessions.md %}) that are holding and waiting on locks for the same [keys]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range).
+Run the query below to display a list of [sessions]({{ page.version.version }}/show-sessions.md) that are holding and waiting on locks for the same [keys]({{ page.version.version }}/architecture/overview.md#architecture-range).
 
 This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     l.database_name,
@@ -609,11 +592,10 @@ WHERE
 
 #### Count locks held by sessions
 
-Run the query below to show a list of lock counts being held by different [sessions]({% link {{ page.version.version }}/show-sessions.md %}).
+Run the query below to show a list of lock counts being held by different [sessions]({{ page.version.version }}/show-sessions.md).
 
 This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     l.database_name,
@@ -652,11 +634,10 @@ GROUP BY
 
 #### Count queries waiting on locks
 
-Run the query below to show a list of [keys]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) ordered by how many transactions are waiting on the locks on those keys.
+Run the query below to show a list of [keys]({{ page.version.version }}/architecture/overview.md#architecture-range) ordered by how many transactions are waiting on the locks on those keys.
 
 This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
     l.database_name,
@@ -712,7 +693,6 @@ Column | Type | Description
 
 #### View all active queries for the `movr` application
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM crdb_internal.cluster_queries where application_name = 'movr';
 ~~~
@@ -742,7 +722,6 @@ Column | Type | Description
 
 #### View all open SQL sessions for the `movr` application
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM crdb_internal.cluster_sessions where application_name = 'movr';
 ~~~
@@ -769,7 +748,6 @@ Column | Type | Description
 
 #### View all active transactions for the `movr` application
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM crdb_internal.cluster_transactions where application_name = 'movr';
 ~~~
@@ -793,7 +771,6 @@ Column | Type | Description
 
 You can reset the index usages statistics by invoking the function `crdb_internal.reset_index_usage_stats()`. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT crdb_internal.reset_index_usage_stats();
 ~~~
@@ -809,7 +786,6 @@ SELECT crdb_internal.reset_index_usage_stats();
 
 To view index usage statistics by table and index name, join with `table_indexes`:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT  ti.descriptor_name as table_name, ti.index_name, total_reads
 FROM  crdb_internal.index_usage_statistics AS us
@@ -837,7 +813,6 @@ ORDER BY total_reads desc;
 
 To determine if there are indexes that have become stale and are no longer needed, show which indexes haven't been used during the past week with the following query:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT  ti.descriptor_name as table_name, ti.index_name, total_reads
 FROM  crdb_internal.index_usage_statistics AS us
@@ -851,7 +826,6 @@ ORDER BY total_reads desc;
 
 View which indexes are no longer used with the following query:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT  ti.descriptor_name as table_name, ti.index_name, total_reads
 FROM crdb_internal.index_usage_statistics AS us
@@ -873,20 +847,18 @@ Column | Type | Description
 `statistics` | `JSONB NOT NULL` | Statistics for the statement. See [`statistics` column](#statistics-column).
 `sampled_plan` | `JSONB NOT NULL` | The sampled query plan of the current statement statistics. This column is unfilled if there is no sampled query plan.
 `aggregation_interval` | `INTERVAL NOT NULL` | The interval over which statistics are aggregated.
-`index_recommendations` | `STRING[] NOT NULL` | An array of strings containing [index recommendations]({% link {{ page.version.version }}/ui-insights-page.md %}#schema-insights-tab) of the format `{type} : {sql query}`.
+`index_recommendations` | `STRING[] NOT NULL` | An array of strings containing [index recommendations]({{ page.version.version }}/ui-insights-page.md#schema-insights-tab) of the format `{type} : {sql query}`.
 
 #### `fingerprint_id` column
 
 The value is in hexadecimal format. The following examples show how to use this value to query `statement_statistics`:
 
 1. Add the escape character `\x` at the start of the `fingerprint_id`:
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT * FROM crdb_internal.statement_statistics WHERE fingerprint_id='\x97ffc170783445fd';
 ~~~
 
 1. Encode the `fingerprint_id` as `hex`:
-{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT * FROM crdb_internal.statement_statistics WHERE encode(fingerprint_id, 'hex')='97ffc170783445fd';
 ~~~
@@ -901,22 +873,22 @@ Field | Type | Description
 `implicitTxn` | `BOOLEAN` | Whether the statement executed in an implicit transaction.
 `query` | `STRING` | The statement string.
 `querySummary` | `STRING` | The statement string summary.
-`stmtTyp` | `STRING` | The type of SQL statement: `"TypeDDL"`, `"TypeDML"`, `"TypeDCL"`, or `"TypeTCL"`. These types map to the CockroachDB statement types [data definition language (DDL)]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements), [data manipulation language (DML)]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements), [data control language (DCL)](sql-statements.html#data-control-statements), and [transaction control language (TCL)](sql-statements.html#transaction-control-statements).
+`stmtTyp` | `STRING` | The type of SQL statement: `"TypeDDL"`, `"TypeDML"`, `"TypeDCL"`, or `"TypeTCL"`. These types map to the CockroachDB statement types [data definition language (DDL)]({{ page.version.version }}/sql-statements.md#data-definition-statements), [data manipulation language (DML)]({{ page.version.version }}/sql-statements.md#data-manipulation-statements), [data control language (DCL)](sql-statements.html#data-control-statements), and [transaction control language (TCL)](sql-statements.html#transaction-control-statements).
 `vec` | `BOOLEAN` | Whether the statement executed in the vectorized query engine.
 
 #### `statistics` column
 
-The [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) [Statements]({% link {{ page.version.version }}/ui-statements-page.md %}) and [Statement Fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#statement-fingerprint-page) pages display information from `statistics`.
+The [DB Console]({{ page.version.version }}/ui-overview.md) [Statements]({{ page.version.version }}/ui-statements-page.md) and [Statement Fingerprint]({{ page.version.version }}/ui-statements-page.md#statement-fingerprint-page) pages display information from `statistics`.
 
-The `statistics` column contains a JSONB object with `statistics` and `execution_statistics` subobjects. [`statistics`]({% link {{ page.version.version }}/ui-statements-page.md %}#statement-statistics) are always populated and are updated each time a new statement of that statement fingerprint is executed. [`execution_statistics`]({% link {{ page.version.version }}/ui-statements-page.md %}#charts) are collected using sampling. CockroachDB probabilistically runs a query with tracing enabled to collect fine-grained statistics of the query execution.
+The `statistics` column contains a JSONB object with `statistics` and `execution_statistics` subobjects. [`statistics`]({{ page.version.version }}/ui-statements-page.md#statement-statistics) are always populated and are updated each time a new statement of that statement fingerprint is executed. [`execution_statistics`]({{ page.version.version }}/ui-statements-page.md#charts) are collected using sampling. CockroachDB probabilistically runs a query with tracing enabled to collect fine-grained statistics of the query execution.
 
-The `NumericStat` type tracks two running values: the running mean `mean` and the running sum of squared differences `sqDiff` from the mean. You can use these statistics along with the total number of values to compute the variance using Welford's method. CockroachDB computes the variance and displays it along with `mean` in the [Statements table]({% link {{ page.version.version }}/ui-statements-page.md %}#statements-table).
+The `NumericStat` type tracks two running values: the running mean `mean` and the running sum of squared differences `sqDiff` from the mean. You can use these statistics along with the total number of values to compute the variance using Welford's method. CockroachDB computes the variance and displays it along with `mean` in the [Statements table]({{ page.version.version }}/ui-statements-page.md#statements-table).
 
 Field | Type | Description
 ------------|-----|------------
 `execution_statistics -> cnt` | `INT64` | The number of times execution statistics were recorded.
 <code>execution_statistics -> contentionTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) the statement spent contending for resources before being executed.
-<code>execution_statistics -> cpuSQLNanos -> [mean&#124;sqDiff]</code> | `NumericStat` | The amount of CPU time spent executing the statement in  nanoseconds. The CPU time represents the time spent and work done within SQL execution operators. <br><br>The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
+<code>execution_statistics -> cpuSQLNanos -> [mean&#124;sqDiff]</code> | `NumericStat` | The amount of CPU time spent executing the statement in  nanoseconds. The CPU time represents the time spent and work done within SQL execution operators. <br><br>The CPU time includes time spent in the [SQL layer]({{ page.version.version }}/architecture/sql-layer.md). It does not include time spent in the [storage layer]({{ page.version.version }}/architecture/storage-layer.md).
 <code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage (in bytes) that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g., when performing a large sort where not all of the tuples fit in memory.
 <code>execution_statistics -> maxMemUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum memory usage (in bytes) that occurred on a node.
 <code>execution_statistics -> networkBytes -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes sent over the network.
@@ -925,7 +897,7 @@ Field | Type | Description
 `statistics -> cnt` | `INT8` | The total number of times this statement was executed since the beginning of the aggregation period.
 `statistics -> failureCount` | `INT` | The total number of times the execution of this statement fingerprint failed.
 `statistics -> firstAttemptCnt` | `INT8` | The total number of times a first attempt was executed (either the one time in explicitly committed statements, or the first time in implicitly committed statements with implicit retries).
-<code>statistics -> idleLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({% link {{ page.version.version }}/transactions.md %}#batched-statements).
+<code>statistics -> idleLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time (in seconds) spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ page.version.version }}/transactions.md#batched-statements).
 `statistics -> indexes` | Array of `String` | The list of indexes used by the statement. Each index has the format `{tableID}@{indexID}`.
 `statistics -> lastErrorCode` | `String` | The [PostgreSQL Error Code](https://www.postgresql.org/docs/current/errcodes-appendix.html) from the last failed execution of the statement fingerprint.
 `statistics -> lastExecAt` | `TIMESTAMP` | The last timestamp the statement was executed.
@@ -944,9 +916,8 @@ Field | Type | Description
 #### View historical statement statistics and the sampled logical plan per fingerprint
 
 This example command shows how to query the two most important JSON columns: `metadata` and `statistics`. It displays
-the first 60 characters of query text, statement statistics, and sampled plan for DDL and DML statements for the [`movr`]({% link {{ page.version.version }}/movr.md %}) demo database:
+the first 60 characters of query text, statement statistics, and sampled plan for DDL and DML statements for the [`movr`]({{ page.version.version }}/movr.md) demo database:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT substring(metadata ->> 'query',1,60) AS statement_text,
    metadata ->> 'stmtTyp' AS statement_type,
@@ -1090,7 +1061,6 @@ Historical plans are stored in plan gists in `statistics->'statistics'->'planGis
 
 Suppose you wanted to compare plans of the following query:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
   name, count(rides.id) AS sum
@@ -1106,9 +1076,8 @@ LIMIT
   10;
 ~~~
 
-To decode plan gists, use the `crdb_internal.decode_plan_gist` function, as shown in the following query. The example shows the performance impact of adding an [index on the `start_time` column in the `rides` table]({% link {{ page.version.version }}/apply-statement-performance-rules.md %}#rule-2-use-the-right-index). The first row of the output shows the improved performance (reduced number of rows read and latency) after the index was added. The second row shows the query, which performs a full scan on the `rides` table, before the index was added.
+To decode plan gists, use the `crdb_internal.decode_plan_gist` function, as shown in the following query. The example shows the performance impact of adding an [index on the `start_time` column in the `rides` table]({{ page.version.version }}/apply-statement-performance-rules.md#rule-2-use-the-right-index). The first row of the output shows the improved performance (reduced number of rows read and latency) after the index was added. The second row shows the query, which performs a full scan on the `rides` table, before the index was added.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 substring(metadata ->> 'query',1,60) AS statement_text,
@@ -1165,21 +1134,21 @@ group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 
 ### `transaction_contention_events`
 
-Contains one row for each transaction [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) event.
+Contains one row for each transaction [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) event.
 
-Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) to access. If you have the `VIEWACTIVITYREDACTED` privilege, `contending_key` will be redacted. If you have both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and `contending_key` will be redacted.
+Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [system privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) (or the legacy `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option]({{ page.version.version }}/security-reference/authorization.md#role-options)) to access. If you have the `VIEWACTIVITYREDACTED` privilege, `contending_key` will be redacted. If you have both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and `contending_key` will be redacted.
 
-Contention events are stored in memory. You can control the amount of contention events stored per node via the `sql.contention.event_store.capacity` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
+Contention events are stored in memory. You can control the amount of contention events stored per node via the `sql.contention.event_store.capacity` [cluster setting]({{ page.version.version }}/cluster-settings.md).
 
-The `sql.contention.event_store.duration_threshold` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) specifies the minimum contention duration to cause the contention events to be collected into the `crdb_internal.transaction_contention_events` table. The default value is `0`. If contention event collection is overwhelming the CPU or memory you can raise this value to reduce the load.
+The `sql.contention.event_store.duration_threshold` [cluster setting]({{ page.version.version }}/cluster-settings.md) specifies the minimum contention duration to cause the contention events to be collected into the `crdb_internal.transaction_contention_events` table. The default value is `0`. If contention event collection is overwhelming the CPU or memory you can raise this value to reduce the load.
 
 Column | Type | Description
 ------------|-----|------------
-`collection_ts` | `TIMESTAMPTZ NOT NULL` | The timestamp when the transaction [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) event was collected.
+`collection_ts` | `TIMESTAMPTZ NOT NULL` | The timestamp when the transaction [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) event was collected.
 `blocking_txn_id` | `UUID NOT NULL` | The ID of the blocking transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
-`blocking_txn_fingerprint_id` | `BYTES NOT NULL`| The ID of the blocking transaction fingerprint. To surface historical information about the transactions that caused the [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables to surface historical information about the transactions that caused the contention.
+`blocking_txn_fingerprint_id` | `BYTES NOT NULL`| The ID of the blocking transaction fingerprint. To surface historical information about the transactions that caused the [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention), you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables to surface historical information about the transactions that caused the contention.
 `waiting_txn_id` | `UUID NOT NULL` | The ID of the waiting transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
-`waiting_txn_fingerprint_id` | `BYTES NOT NULL` | The ID of the waiting transaction fingerprint. To surface historical information about the transactions that caused the [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables.
+`waiting_txn_fingerprint_id` | `BYTES NOT NULL` | The ID of the waiting transaction fingerprint. To surface historical information about the transactions that caused the [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention), you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables.
 `contention_duration` | `INTERVAL NOT NULL` | The interval of time the waiting transaction spent waiting for the blocking transaction.
 `contending_key` | `BYTES NOT NULL` | The key on which the transactions contended.
 
@@ -1189,7 +1158,6 @@ The following example shows how to join the `transaction_contention_events` tabl
 
 1. Display contention table removing in-progress transactions.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT
       collection_ts,
@@ -1213,7 +1181,6 @@ The following example shows how to join the `transaction_contention_events` tabl
 
 1. Display counts for each blocking and waiting transaction fingerprint pair.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT
       encode(hce.blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
@@ -1240,7 +1207,6 @@ The following example shows how to join the `transaction_contention_events` tabl
 
 1. Join to show blocking statements text.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SELECT DISTINCT
       hce.blocking_statement,
@@ -1295,9 +1261,8 @@ Column | Type | Description
 #### View historical transaction statistics per fingerprint
 
 This example command shows how to query the two most important JSON columns: `metadata` and `statistics`. It displays
-the statistics for transactions on the [`movr`]({% link {{ page.version.version }}/movr.md %}) demo database:
+the statistics for transactions on the [`movr`]({{ page.version.version }}/movr.md) demo database:
 
-{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT
    metadata -> 'stmtFingerprintIDs' AS statement_fingerprint_id,
@@ -1345,14 +1310,14 @@ FROM crdb_internal.transaction_statistics WHERE app_name = 'movr' LIMIT 20;
 
 ## See also
 
-- [`SHOW`]({% link {{ page.version.version }}/show-vars.md %})
-- [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %})
-- [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %})
-- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
-- [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})
-- [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})
-- [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %})
-- [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %})
-- [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
-- [SQL Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %})
-- [System Catalogs]({% link {{ page.version.version }}/system-catalogs.md %})
+- [`SHOW`]({{ page.version.version }}/show-vars.md)
+- [`SHOW COLUMNS`]({{ page.version.version }}/show-columns.md)
+- [`SHOW CONSTRAINTS`]({{ page.version.version }}/show-constraints.md)
+- [`SHOW CREATE`]({{ page.version.version }}/show-create.md)
+- [`SHOW DATABASES`]({{ page.version.version }}/show-databases.md)
+- [`SHOW GRANTS`]({{ page.version.version }}/show-grants.md)
+- [`SHOW INDEX`]({{ page.version.version }}/show-index.md)
+- [`SHOW SCHEMAS`]({{ page.version.version }}/show-schemas.md)
+- [`SHOW TABLES`]({{ page.version.version }}/show-tables.md)
+- [SQL Name Resolution]({{ page.version.version }}/sql-name-resolution.md)
+- [System Catalogs]({{ page.version.version }}/system-catalogs.md)

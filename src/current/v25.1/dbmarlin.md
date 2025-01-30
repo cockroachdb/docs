@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-[DBmarlin](https://www.dbmarlin.com/home) is a monitoring platform for databases. The CockroachDB integration with DBmarlin enables DBmarlin to view CockroachDB metrics stored in the [`crdb_internal` system catalog]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#crdb_internal-system-catalog).
+[DBmarlin](https://www.dbmarlin.com/home) is a monitoring platform for databases. The CockroachDB integration with DBmarlin enables DBmarlin to view CockroachDB metrics stored in the [`crdb_internal` system catalog]({{ page.version.version }}/monitoring-and-alerting.md#crdb_internal-system-catalog).
 
 In this tutorial, you will enable the CockroachDB integration in DBmarlin, run a workload on CockroachDB, and visualize data.
 
@@ -28,18 +28,16 @@ Follow the steps in [CockroachDB](https://docs.dbmarlin.com/docs/Monitored-Techn
 
 ## Step 2. Run a sample workload
 
-To test the dashboard functionality, use [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) to run a sample workload on the cluster.
+To test the dashboard functionality, use [`cockroach workload`]({{ page.version.version }}/cockroach-workload.md) to run a sample workload on the cluster.
 
 Initialize the workload for MovR, a fictional vehicle-sharing company:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach workload init movr  "postgresql://<username>:<password>@<host-address>:26257/movr?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt&options=--cluster%<cluster-id>"
 ~~~
 
 Run the MovR workload for 5 minutes:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach workload run movr --duration=5m <username>:<password>@<host-address>:26257/movr?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt&options=--cluster%<cluster-id>"
 ~~~
@@ -50,10 +48,10 @@ Follow the steps in [Instance Dashboard](https://docs.dbmarlin.com/docs/Using-DB
 
 When you open the dashboard you'll see :
 
-<img src="{{ 'images/v24.2/dbmarlin-crdb-dashboard.png' | relative_url }}" alt="CockroachDB Overview dashboard for DBmarlin" style="border:1px solid #eee;max-width:100%" />
+![CockroachDB Overview dashboard for DBmarlin](/images/v24.2/dbmarlin-crdb-dashboard.png)
 
 ## See also
 
-- [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
-- [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
-- [Logging Overview]({% link {{ page.version.version }}/logging-overview.md %})
+- [Monitoring and Alerting]({{ page.version.version }}/monitoring-and-alerting.md)
+- [DB Console Overview]({{ page.version.version }}/ui-overview.md)
+- [Logging Overview]({{ page.version.version }}/logging-overview.md)

@@ -8,16 +8,15 @@ docs_area: deploy
 When you're ready to run CockroachDB in production in a single region, it's important to deploy at least 3 CockroachDB nodes to take advantage of CockroachDB's automatic replication, distribution, rebalancing, and resiliency capabilities.
 
 {{site.data.alerts.callout_success}}
-If you haven't already, [review the full range of topology patterns]({% link {{ page.version.version }}/topology-patterns.md %}) to ensure you choose the right one for your use case.
+If you haven't already, [review the full range of topology patterns]({{ page.version.version }}/topology-patterns.md) to ensure you choose the right one for your use case.
 {{site.data.alerts.end}}
 
 ## Before you begin
 
-{% include {{ page.version.version }}/topology-patterns/fundamentals.md %}
 
 ## Configuration
 
-<img src="{{ 'images/v24.2/topology-patterns/topology_basic_production1.png' | relative_url }}" alt="Basic production topology" style="max-width:100%" />
+![Basic production topology](/images/v24.2/topology-patterns/topology_basic_production1.png)
 
 1. Provision hardware as follows:
     - 1 region with 3 AZs
@@ -25,9 +24,8 @@ If you haven't already, [review the full range of topology patterns]({% link {{ 
     - App and load balancer in same region as VMs for CockroachDB
         - The load balancer redirects to CockroachDB nodes in the region
 
-1. Start each node on a separate VM, setting the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag to the node's region and AZ combination. For example, the following command starts a node in the east1 availability zone of the us-east region:
+1. Start each node on a separate VM, setting the [`--locality`]({{ page.version.version }}/cockroach-start.md#locality) flag to the node's region and AZ combination. For example, the following command starts a node in the east1 availability zone of the us-east region:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --locality=region=us-east,zone=east1 \
@@ -38,7 +36,7 @@ If you haven't already, [review the full range of topology patterns]({% link {{ 
     --max-sql-memory=.25
     ~~~
 
-With the default 3-way replication factor and `--locality` set as described, CockroachDB balances each range of table data across AZs, one replica per AZ. System data is replicated 5 times by default and also balanced across AZs, thus increasing the [resiliency of the cluster]({% link {{ page.version.version }}/configure-replication-zones.md %}#create-a-replication-zone-for-a-system-range) as a whole.
+With the default 3-way replication factor and `--locality` set as described, CockroachDB balances each range of table data across AZs, one replica per AZ. System data is replicated 5 times by default and also balanced across AZs, thus increasing the [resiliency of the cluster]({{ page.version.version }}/configure-replication-zones.md#create-a-replication-zone-for-a-system-range) as a whole.
 
 ## Characteristics
 
@@ -56,7 +54,7 @@ For example, in the animation below:
 1. The leaseholder retrieves the results and returns to the gateway node.
 1. The gateway node returns the results to the client.
 
-<img src="{{ 'images/v24.2/topology-patterns/topology_basic_production_reads.png' | relative_url }}" alt="Basic production topology reads" style="max-width:100%" />
+![Basic production topology reads](/images/v24.2/topology-patterns/topology_basic_production_reads.png)
 
 #### Writes
 
@@ -72,18 +70,16 @@ For example, in the animation below:
 1. The leaseholders then return acknowledgement of the commit to the gateway node.
 1. The gateway node returns the acknowledgement to the client.
 
-<img src="{{ 'images/v24.2/topology-patterns/topology_basic_production_writes.gif' | relative_url }}" alt="Leaseholder preferences topology writes" style="max-width:100%" />
+![Leaseholder preferences topology writes](/images/v24.2/topology-patterns/topology_basic_production_writes.gif)
 
 ### Resiliency
 
 Because each range is balanced across AZs, one AZ can fail without interrupting access to any data:
 
-<img src="{{ 'images/v24.2/topology-patterns/topology_basic_production_resiliency1.png' | relative_url }}" alt="Basic production topology single zone failure" style="max-width:100%" />
+![Basic production topology single zone failure](/images/v24.2/topology-patterns/topology_basic_production_resiliency1.png)
 
 However, if an additional AZ fails at the same time, the ranges that lose consensus become unavailable for reads and writes:
 
-<img src="{{ 'images/v24.2/topology-patterns/topology_basic_production_resiliency2.png' | relative_url }}" alt="Basic production topology double zone failure" style="max-width:100%" />
+![Basic production topology double zone failure](/images/v24.2/topology-patterns/topology_basic_production_resiliency2.png)
 
 ## See also
-
-{% include {{ page.version.version }}/topology-patterns/see-also.md %}

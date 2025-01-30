@@ -17,43 +17,42 @@ If you want to delete all of the rows in a table (and not just a large subset of
 
 ## Batch-delete "expired" data
 
-{% include {{page.version.version}}/sql/row-level-ttl.md %}
 
-For more information, see [Batch delete expired data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}).
+For more information, see [Batch delete expired data with Row-Level TTL]({{ page.version.version }}/row-level-ttl.md).
 
 ## Manually delete data using batches
 
 This section provides guidance on batch deleting with the `DELETE` query filter [on an indexed column](#batch-delete-on-an-indexed-column) and [on a non-indexed column](#batch-delete-on-a-non-indexed-column). Filtering on an indexed column is both simpler to implement and more efficient, but adding an index to a table can slow down insertions to the table and may cause bottlenecks. Queries that filter on a non-indexed column must perform at least one full-table scan, a process that takes time proportional to the size of the entire table.
 
 {{site.data.alerts.callout_danger}}
-Exercise caution when batch deleting rows from tables with foreign key constraints and explicit [`ON DELETE` foreign key actions]({% link {{ page.version.version }}/foreign-key.md %}#foreign-key-actions). To preserve `DELETE` performance on tables with foreign key actions, we recommend using smaller batch sizes, as additional rows updated or deleted due to `ON DELETE` actions can make batch loops significantly slower.
+Exercise caution when batch deleting rows from tables with foreign key constraints and explicit [`ON DELETE` foreign key actions]({{ page.version.version }}/foreign-key.md#foreign-key-actions). To preserve `DELETE` performance on tables with foreign key actions, we recommend using smaller batch sizes, as additional rows updated or deleted due to `ON DELETE` actions can make batch loops significantly slower.
 {{site.data.alerts.end}}
 
 ### Before you begin
 
 Before reading this page, do the following:
 
-- [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
-- [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %}).
-- [Connect to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
-- [Insert data]({% link {{ page.version.version }}/insert-data.md %}) that you now want to delete.
+- [Create a CockroachDB {{ site.data.products.standard }} cluster](quickstart.md) or [start a local cluster](quickstart.md?filters=local).
+- [Install a Driver or ORM Framework]({{ page.version.version }}/install-client-drivers.md).
+- [Connect to the database]({{ page.version.version }}/connect-to-the-database.md).
+- [Insert data]({{ page.version.version }}/insert-data.md) that you now want to delete.
 
-    For the example on this page, we load a cluster with the [`tpcc` database]({% link {{ page.version.version }}/cockroach-workload.md %}#tpcc-workload) and data from [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}).
+    For the example on this page, we load a cluster with the [`tpcc` database]({{ page.version.version }}/cockroach-workload.md#tpcc-workload) and data from [`cockroach workload`]({{ page.version.version }}/cockroach-workload.md).
 
 ### Batch delete on an indexed column
 
-For high-performance batch deletes, we recommending filtering the `DELETE` query on an [indexed column]({% link {{ page.version.version }}/indexes.md %}).
+For high-performance batch deletes, we recommending filtering the `DELETE` query on an [indexed column]({{ page.version.version }}/indexes.md).
 
 {{site.data.alerts.callout_info}}
-Having an indexed filtering column can make delete operations faster, but it might lead to bottlenecks in execution, especially if the filtering column is a [timestamp]({% link {{ page.version.version }}/timestamp.md %}). To reduce bottlenecks, we recommend using a [hash-sharded index]({% link {{ page.version.version }}/hash-sharded-indexes.md %}).
+Having an indexed filtering column can make delete operations faster, but it might lead to bottlenecks in execution, especially if the filtering column is a [timestamp]({{ page.version.version }}/timestamp.md). To reduce bottlenecks, we recommend using a [hash-sharded index]({{ page.version.version }}/hash-sharded-indexes.md).
 {{site.data.alerts.end}}
 
 Each iteration of a batch-delete loop should execute a transaction containing a single `DELETE` query. When writing this `DELETE` query:
 
-- Use a `WHERE` clause to filter on a column that identifies the unwanted rows. If the filtering column is not the primary key, the column should have [a secondary index]({% link {{ page.version.version }}/indexes.md %}). Note that if the filtering column is not already indexed, it is not beneficial to add an index just to speed up batch deletes. Instead, consider [batch deleting on non-indexed columns](#batch-delete-on-a-non-indexed-column).
-- To ensure that rows are efficiently scanned in the `DELETE` query, add an [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}) clause on the filtering column.
-- Use a [`LIMIT`]({% link {{ page.version.version }}/limit-offset.md %}) clause to limit the number of rows to the desired batch size. To determine the optimal batch size, try out different batch sizes (1,000 rows, 10,000 rows, 100,000 rows, etc.) and monitor the change in performance.
-- Add a `RETURNING` clause to the end of the query that returns the filtering column values of the deleted rows. Then, using the values of the deleted rows, update the filter to match only the subset of remaining rows to delete. This narrows each query's scan to the fewest rows possible, and [preserves the performance of the deletes over time]({% link {{ page.version.version }}/delete.md %}#preserving-delete-performance-over-time). This pattern assumes that no new rows are generated that match on the `DELETE` filter during the time that it takes to perform the delete.
+- Use a `WHERE` clause to filter on a column that identifies the unwanted rows. If the filtering column is not the primary key, the column should have [a secondary index]({{ page.version.version }}/indexes.md). Note that if the filtering column is not already indexed, it is not beneficial to add an index just to speed up batch deletes. Instead, consider [batch deleting on non-indexed columns](#batch-delete-on-a-non-indexed-column).
+- To ensure that rows are efficiently scanned in the `DELETE` query, add an [`ORDER BY`]({{ page.version.version }}/order-by.md) clause on the filtering column.
+- Use a [`LIMIT`]({{ page.version.version }}/limit-offset.md) clause to limit the number of rows to the desired batch size. To determine the optimal batch size, try out different batch sizes (1,000 rows, 10,000 rows, 100,000 rows, etc.) and monitor the change in performance.
+- Add a `RETURNING` clause to the end of the query that returns the filtering column values of the deleted rows. Then, using the values of the deleted rows, update the filter to match only the subset of remaining rows to delete. This narrows each query's scan to the fewest rows possible, and [preserves the performance of the deletes over time]({{ page.version.version }}/delete.md#preserving-delete-performance-over-time). This pattern assumes that no new rows are generated that match on the `DELETE` filter during the time that it takes to perform the delete.
 
 #### Examples
 
@@ -65,13 +64,12 @@ Choose the language for the example code.
     <button class="filter-button page-level" data-scope="csharp"><strong>C# (Npgsql)</strong></button>
 </div>
 
-For example, suppose that you want to delete all rows in the [`tpcc`]({% link {{ page.version.version }}/cockroach-workload.md %}#tpcc-workload) `new_order` table where `no_w_id` is less than `5`, in batches of 5,000 rows. To do this, you can write a query that loops over batches of 5,000 rows, following the `DELETE` query guidance provided above. Note that in this case, `no_w_id` is the first column in the primary index, and, as a result, you do not need to create a secondary index on the column.
+For example, suppose that you want to delete all rows in the [`tpcc`]({{ page.version.version }}/cockroach-workload.md#tpcc-workload) `new_order` table where `no_w_id` is less than `5`, in batches of 5,000 rows. To do this, you can write a query that loops over batches of 5,000 rows, following the `DELETE` query guidance provided above. Note that in this case, `no_w_id` is the first column in the primary index, and, as a result, you do not need to create a secondary index on the column.
 
 <section class="filter-content" markdown="1" data-scope="python">
 
 In Python using the psycopg2 driver, the script would look similar to the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -104,7 +102,6 @@ conn.close()
 
 A simple JDBC application that bulk deletes rows in batches of 5000 would look like this:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 package com.cockroachlabs.bulkdelete;
 
@@ -170,7 +167,6 @@ public class App {
 
 A simple C# Npgsql application that bulk deletes rows in batches of 5000 would look like this:
 
-{% include_cached copy-clipboard.html %}
 ~~~ csharp
 using System;
 using System.Data;
@@ -248,15 +244,15 @@ This example iteratively deletes rows in batches of 5,000, until all of the rows
 
 If you cannot index the column that identifies the unwanted rows, we recommend defining the batch loop to execute separate read and write operations at each iteration:
 
-1. Execute a [`SELECT` query]({% link {{ page.version.version }}/selection-queries.md %}) that returns the primary key values for the rows that you want to delete. When writing the `SELECT` query:
+1. Execute a [`SELECT` query]({{ page.version.version }}/selection-queries.md) that returns the primary key values for the rows that you want to delete. When writing the `SELECT` query:
     - Use a `WHERE` clause that filters on the column identifying the rows.
-    - If you need to avoid [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) you can use an [`AS OF SYSTEM TIME` clause]({% link {{ page.version.version }}/as-of-system-time.md %}) at the end of the selection subquery, or run the selection query in a separate, read-only transaction with [`SET TRANSACTION AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}#use-as-of-system-time-in-transactions). If you add an `AS OF SYSTEM TIME` clause, make sure your selection query to get the batches of rows is run outside of the window of the `AS OF SYSTEM TIME` clause. That is, if you use `AS OF SYSTEM TIME '-5s'` to find the rows to delete, you should wait at least 5 seconds before rerunning the select query. Otherwise you will retrieve rows that have already been deleted.
-    - Use a [`LIMIT`]({% link {{ page.version.version }}/limit-offset.md %}) clause to limit the number of rows queried to a subset of the rows that you want to delete. To determine the optimal `SELECT` batch size, try out different sizes (10,000 rows, 100,000 rows, 1,000,000 rows, etc.), and monitor the change in performance. Note that this `SELECT` batch size can be much larger than the batch size of rows that are deleted in the subsequent `DELETE` query.
-    - To ensure that rows are efficiently scanned in the subsequent `DELETE` query, include an [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}) clause on the primary key.
+    - If you need to avoid [transaction contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) you can use an [`AS OF SYSTEM TIME` clause]({{ page.version.version }}/as-of-system-time.md) at the end of the selection subquery, or run the selection query in a separate, read-only transaction with [`SET TRANSACTION AS OF SYSTEM TIME`]({{ page.version.version }}/as-of-system-time.md#use-as-of-system-time-in-transactions). If you add an `AS OF SYSTEM TIME` clause, make sure your selection query to get the batches of rows is run outside of the window of the `AS OF SYSTEM TIME` clause. That is, if you use `AS OF SYSTEM TIME '-5s'` to find the rows to delete, you should wait at least 5 seconds before rerunning the select query. Otherwise you will retrieve rows that have already been deleted.
+    - Use a [`LIMIT`]({{ page.version.version }}/limit-offset.md) clause to limit the number of rows queried to a subset of the rows that you want to delete. To determine the optimal `SELECT` batch size, try out different sizes (10,000 rows, 100,000 rows, 1,000,000 rows, etc.), and monitor the change in performance. Note that this `SELECT` batch size can be much larger than the batch size of rows that are deleted in the subsequent `DELETE` query.
+    - To ensure that rows are efficiently scanned in the subsequent `DELETE` query, include an [`ORDER BY`]({{ page.version.version }}/order-by.md) clause on the primary key.
 
 1. Write a nested `DELETE` loop over the primary key values returned by the `SELECT` query, in batches smaller than the initial `SELECT` batch size. To determine the optimal `DELETE` batch size, try out different sizes (1,000 rows, 10,000 rows, 100,000 rows, etc.), and monitor the change in performance. Where possible, we recommend executing each `DELETE` in a separate transaction.
 
-For example, suppose that you want to delete all rows in the [`tpcc`]({% link {{ page.version.version }}/cockroach-workload.md %}#tpcc-workload) `history` table that are older than a month. You can create a script that loops over the data and deletes unwanted rows in batches, following the query guidance provided above.
+For example, suppose that you want to delete all rows in the [`tpcc`]({{ page.version.version }}/cockroach-workload.md#tpcc-workload) `history` table that are older than a month. You can create a script that loops over the data and deletes unwanted rows in batches, following the query guidance provided above.
 
 #### Examples
 
@@ -272,7 +268,6 @@ Choose the language for the example code.
 
 In Python, the script would look similar to the following:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -322,7 +317,6 @@ if __name__ == "__main__":
 
 In Java, the code would look similar to:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 public static void deleteDataNonindexed(Connection conn) {
     boolean cont = true;
@@ -390,7 +384,6 @@ The `KeyFields` class encapsulates the compound primary key for the `history` ta
 
 In C# the code would look similar to:
 
-{% include_cached copy-clipboard.html %}
 ~~~ csharp
 public class KeyFields {
     public Int32 hwid;
@@ -472,21 +465,20 @@ CockroachDB records the timestamp of each row created in a table in the `crdb_in
 
 `crdb_internal_mvcc_timestamp` cannot be indexed. If you plan to use `crdb_internal_mvcc_timestamp` as a filter for large deletes, you must follow the [non-indexed column pattern](#batch-delete-on-a-non-indexed-column).
 
-**Exercise caution when using `crdb_internal_mvcc_timestamp` in production, as the column is subject to change without prior notice in new releases of CockroachDB. Instead, we recommend creating a column with an [`ON UPDATE` expression]({% link {{ page.version.version }}/create-table.md %}#on-update-expressions) to avoid any conflicts due to internal changes to `crdb_internal_mvcc_timestamp`.**
+**Exercise caution when using `crdb_internal_mvcc_timestamp` in production, as the column is subject to change without prior notice in new releases of CockroachDB. Instead, we recommend creating a column with an [`ON UPDATE` expression]({{ page.version.version }}/create-table.md#on-update-expressions) to avoid any conflicts due to internal changes to `crdb_internal_mvcc_timestamp`.**
 {{site.data.alerts.end}}
 
 ### Delete all of the rows in a table
 
-To delete all of the rows in a table, use a [`TRUNCATE` statement]({% link {{ page.version.version }}/truncate.md %}).
+To delete all of the rows in a table, use a [`TRUNCATE` statement]({{ page.version.version }}/truncate.md).
 
-For example, to delete all rows in the [`tpcc`]({% link {{ page.version.version }}/cockroach-workload.md %}#tpcc-workload) `new_order` table, execute the following SQL statement:
+For example, to delete all rows in the [`tpcc`]({{ page.version.version }}/cockroach-workload.md#tpcc-workload) `new_order` table, execute the following SQL statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 TRUNCATE new_order;
 ~~~
 
-You can execute the statement from a compatible SQL client (e.g., the [CockroachDB SQL client]({% link {{ page.version.version }}/cockroach-sql.md %})), or in a script or application.
+You can execute the statement from a compatible SQL client (e.g., the [CockroachDB SQL client]({{ page.version.version }}/cockroach-sql.md)), or in a script or application.
 
 #### Examples
 
@@ -502,7 +494,6 @@ Choose the language for the example code.
 
 For example, in Python, using the `psycopg2` client driver:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -522,7 +513,6 @@ with conn:
 
 In Java, the code would look similar to this:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
 public static void truncateTable (Connection conn) {
     try {
@@ -541,7 +531,6 @@ public static void truncateTable (Connection conn) {
 
 In C# the code would look similar to this:
 
-{% include_cached copy-clipboard.html %}
 ~~~ csharp
 static void TruncateTable(string connString)
 {
@@ -558,12 +547,12 @@ static void TruncateTable(string connString)
 </section>
 
 {{site.data.alerts.callout_success}}
-For detailed reference documentation on the `TRUNCATE` statement, including additional examples, see the [`TRUNCATE` syntax page]({% link {{ page.version.version }}/truncate.md %}).
+For detailed reference documentation on the `TRUNCATE` statement, including additional examples, see the [`TRUNCATE` syntax page]({{ page.version.version }}/truncate.md).
 {{site.data.alerts.end}}
 
 ## See also
 
-- [Delete data]({% link {{ page.version.version }}/delete-data.md %})
-- [Batch Delete Expired Data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %})
-- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
-- [`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %})
+- [Delete data]({{ page.version.version }}/delete-data.md)
+- [Batch Delete Expired Data with Row-Level TTL]({{ page.version.version }}/row-level-ttl.md)
+- [`DELETE`]({{ page.version.version }}/delete.md)
+- [`TRUNCATE`]({{ page.version.version }}/truncate.md)

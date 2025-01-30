@@ -4,15 +4,15 @@ summary: Learn how to connect a changefeed to stream data to an Amazon MSK clust
 toc: true
 ---
 
-[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can stream change data to [Amazon MSK clusters](https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html) (Amazon Managed Streaming for Apache Kafka) using [AWS IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html?icmpid=docs_iam_console) or [SASL/SCRAM]({% link {{ page.version.version }}/security-reference/scram-authentication.md %}) authentication to connect to the MSK cluster.
+[Changefeeds]({{ page.version.version }}/change-data-capture-overview.md) can stream change data to [Amazon MSK clusters](https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html) (Amazon Managed Streaming for Apache Kafka) using [AWS IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html?icmpid=docs_iam_console) or [SASL/SCRAM]({{ page.version.version }}/security-reference/scram-authentication.md) authentication to connect to the MSK cluster.
 
 In this tutorial, you'll set up an MSK cluster and connect a changefeed with either IAM or SCRAM authentication:
 
-- For [IAM authentication]({% link {{ page.version.version }}/stream-a-changefeed-to-amazon-msk.md %}?filters=iam-setup-steps#step-1-create-an-msk-cluster-with-iam-authentication), you'll create the MSK cluster with an IAM policy and role. CockroachDB and a Kafka client will assume the IAM role in order to connect to the MSK cluster. Then, you'll set up the Kafka client to consume the changefeed messages and start the changefeed on the CockroachDB cluster.
-- For [SCRAM authentication]({% link {{ page.version.version }}/stream-a-changefeed-to-amazon-msk.md %}?filters=scram-setup-steps#step-1-create-an-msk-cluster-with-scram-authentication), you'll create the MSK cluster and then store your SCRAM credentials in [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/). You'll set up the Kafka client configuration and consume the changefeed messages from the CockroachDB cluster.
+- For [IAM authentication]({{ page.version.version }}/stream-a-changefeed-to-amazon-msk.md?filters=iam-setup-steps#step-1-create-an-msk-cluster-with-iam-authentication), you'll create the MSK cluster with an IAM policy and role. CockroachDB and a Kafka client will assume the IAM role in order to connect to the MSK cluster. Then, you'll set up the Kafka client to consume the changefeed messages and start the changefeed on the CockroachDB cluster.
+- For [SCRAM authentication]({{ page.version.version }}/stream-a-changefeed-to-amazon-msk.md?filters=scram-setup-steps#step-1-create-an-msk-cluster-with-scram-authentication), you'll create the MSK cluster and then store your SCRAM credentials in [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/). You'll set up the Kafka client configuration and consume the changefeed messages from the CockroachDB cluster.
 
 {{site.data.alerts.callout_info}}
-CockroachDB changefeeds also support IAM authentication to MSK Serverless clusters. For a setup guide, refer to [Stream a Changefeed to Amazon MSK Serverless]({% link {{ page.version.version }}/stream-a-changefeed-to-amazon-msk-serverless.md %}).
+CockroachDB changefeeds also support IAM authentication to MSK Serverless clusters. For a setup guide, refer to [Stream a Changefeed to Amazon MSK Serverless]({{ page.version.version }}/stream-a-changefeed-to-amazon-msk-serverless.md).
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -20,12 +20,10 @@ CockroachDB changefeeds also support IAM authentication to MSK Serverless cluste
 You'll need:
 
 - An [AWS account](https://signin.aws.amazon.com/signup?request_type=register).
-- A CockroachDB {{ site.data.products.core }} cluster hosted on AWS. You can set up a cluster using [Deploy CockroachDB on AWS EC2]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %}). You must create instances in the same VPC that the MSK cluster will use in order for the changefeed to authenticate successfully.
+- A CockroachDB {{ site.data.products.core }} cluster hosted on AWS. You can set up a cluster using [Deploy CockroachDB on AWS EC2]({{ page.version.version }}/deploy-cockroachdb-on-aws.md). You must create instances in the same VPC that the MSK cluster will use in order for the changefeed to authenticate successfully.
 - A Kafka client to consume the changefeed messages. You **must** ensure that your client machine is in the same VPC as the MSK cluster. This tutorial uses a client set up following the AWS [MSK guide](https://docs.aws.amazon.com/msk/latest/developerguide/create-topic.html).
-- {% include {{ page.version.version }}/cdc/tutorial-privilege-check.md %}
 
 {{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/cdc/msk-dedicated-support.md %}
 {{site.data.alerts.end}}
 
 **Select the authentication method that you'll use to connect the changefeed to your MSK cluster:**
@@ -51,13 +49,11 @@ You'll need:
 
 In this step, you'll create an IAM policy that contains the permissions to interact with the MSK  cluster. Then, you'll create an IAM role, which you'll associate with the IAM policy. In a later step, both the CockroachDB cluster and Kafka client machine will use this role to work with the MSK cluster.
 
-{% include {{ page.version.version }}/cdc/msk-iam-policy-role-step.md %}
 
 ## Step 3. Set up the CockroachDB cluster role
 
 In this step, you'll create a role, which contains the `sts:AssumeRole` permission, for the EC2 instance that is running your CockroachDB cluster. The `sts:AssumeRole` permission will allow the EC2 instance to obtain temporary security credentials to access the MSK cluster according to the `msk-policy` permissions. To achieve this, you'll add the EC2 role to the trust relationship of the `msk-role` you created in the [previous step](#step-2-create-an-iam-policy-and-role-to-access-the-msk-cluster).
 
-{% include {{ page.version.version }}/cdc/cluster-iam-role-step.md %}
 
 ## Step 4. Connect the client to the MSK cluster
 
@@ -67,7 +63,6 @@ In this step, you'll prepare the client to connect to the MSK cluster, create a 
 1. On the **Modify IAM role** page, select the role you created for the MSK cluster (`msk-role`) that contains the policy created in [Step 2](#step-2-create-an-iam-policy-and-role-to-access-the-msk-cluster). Click **Update IAM role**.
 1. Open a terminal and connect to your Kafka client. Check that the `client.properties` file in your Kafka installation contains the correct SASL and security configuration, like the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     security.protocol=SASL_SSL
     sasl.mechanism=AWS_MSK_IAM
@@ -78,14 +73,12 @@ In this step, you'll prepare the client to connect to the MSK cluster, create a 
     If you need further detail on setting up the Kafka client, refer to the [AWS setup guide](https://docs.aws.amazon.com/msk/latest/developerguide/create-topic.html).
 1. Move to the directory of your Kafka installation:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd kafka_2.12-2.8.1/bin
     ~~~
 
 1. To create a topic, run the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ~/kafka_2.12-2.8.1/bin/kafka-topics.sh --bootstrap-server {msk_endpoint} --command-config client.properties --create --topic {users} --partitions {1} --replication-factor {3}
     ~~~
@@ -106,7 +99,6 @@ In this step, you'll prepare the client to connect to the MSK cluster, create a 
 
 In this step, you'll prepare your CockroachDB cluster to start the changefeed.
 
-{% include {{ page.version.version }}/cdc/msk-tutorial-crdb-setup.md %}
 
 1. To connect the changefeed to the MSK cluster, the URI must contain the following parameters:
     - An MSK cluster endpoint prefixed with the `kafka://` scheme, for example: `kafka://b-1.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9098`.
@@ -121,18 +113,16 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
     'kafka://b-1.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9098/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region=us-east-1&sasl_aws_iam_role_arn=arn:aws:iam::{account ID}:role/{msk-role}&sasl_aws_iam_session_name={user-specified session name}'
     ~~~
 
-    You can either specify the Kafka URI in the `CREATE CHANGEFEED` statement directly. Or, create an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) for the MSK URI.
+    You can either specify the Kafka URI in the `CREATE CHANGEFEED` statement directly. Or, create an [external connection]({{ page.version.version }}/create-external-connection.md) for the MSK URI.
 
     External connections define a name for an external connection while passing the provider URI and query parameters:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION msk AS 'kafka://b-1.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9098/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region=us-east-1&sasl_aws_iam_role_arn=arn:aws:iam::{account ID}:role/{msk-role}&sasl_aws_iam_session_name={user-specified session name}';
     ~~~
 
-1. Use the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) statement to start the changefeed using either the external connection (`external://`) or full `kafka://` URI:
+1. Use the [`CREATE CHANGEFEED`]({{ page.version.version }}/create-changefeed.md) statement to start the changefeed using either the external connection (`external://`) or full `kafka://` URI:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE movr.users INTO `external://msk` WITH resolved;
     ~~~
@@ -142,20 +132,18 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
     1002677216020987905
     ~~~
 
-    To view a changefeed job, use [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs).
+    To view a changefeed job, use [`SHOW CHANGEFEED JOBS`]({{ page.version.version }}/show-jobs.md#show-changefeed-jobs).
 
 ## Step 6. Consume the changefeed messages on the client
 
 1. Return to the terminal that is running the Kafka client. Move to the Kafka installation directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd kafka_2.12-2.8.1/bin
     ~~~
 
 1. Run the following command to start a consumer. Set `--topic` to the topic you created:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ~/kafka_2.12-2.8.1/bin/kafka-console-consumer.sh --bootstrap-server {msk_endpoint} --consumer.config client.properties --topic users --from-beginning
     ~~~
@@ -196,7 +184,6 @@ In this step, you'll store the SCRAM credentials in [AWS Secrets Manager](https:
 1. For **Secret type**, select **Other type of secret**.
 1. In the **Key/value pairs** box, enter the user and password in **Plaintext** in the same format as the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     {
       "username": "your_username",
@@ -217,7 +204,6 @@ In this step, you'll configure the Kafka client for SASL/SCRAM authentication an
 
 1. Open a terminal window and connect to your Kafka client. Check that your `client.properties` file contains the correct SASL/SCRAM, security configuration, and your SASL username and password, like the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     security.protocol=SASL_SSL
     sasl.mechanism=SCRAM-SHA-512
@@ -228,21 +214,18 @@ In this step, you'll configure the Kafka client for SASL/SCRAM authentication an
 
 1. Create an environment variable for your broker endpoints:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export brokers=b-3.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9096,b-1.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9096,b-2.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9096
     ~~~
 
 1. Move to the directory of your Kafka installation:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd kafka_2.12-2.8.1/bin
     ~~~
 
 1. To allow the user to interact with Kafka, grant them permission with the Kafka ACL. Replace `your_username` in the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ./kafka-acls.sh --bootstrap-server $brokers --add --allow-principal User:{your_username} --operation All --cluster --command-config client.properties
     ~~~
@@ -251,7 +234,6 @@ In this step, you'll configure the Kafka client for SASL/SCRAM authentication an
 
 1. Create a topic:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ./kafka-topics.sh --create --bootstrap-server $brokers --replication-factor {3} --partitions {1} --topic {users} --command-config client.properties
     ~~~
@@ -271,7 +253,6 @@ In this step, you'll configure the Kafka client for SASL/SCRAM authentication an
 
 In this step, you'll prepare your CockroachDB cluster to start the changefeed.
 
-{% include {{ page.version.version }}/cdc/msk-tutorial-crdb-setup.md %}
 
 1. To connect the changefeed to the MSK cluster, the URI in the changefeed statement must contain the following parameters:
     - One of the MSK cluster endpoints prefixed with the `kafka://` scheme, for example: `kafka://b-3.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9096`.
@@ -285,18 +266,16 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
     'kafka://b-3.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9096?tls_enabled=true&sasl_enabled=true&sasl_user={your_username}&sasl_password={your_password}-secret&sasl_mechanism=SCRAM-SHA-512'
     ~~~
 
-    You can either specify the Kafka URI in the `CREATE CHANGEFEED` statement directly. Or, create an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) for the MSK URI.
+    You can either specify the Kafka URI in the `CREATE CHANGEFEED` statement directly. Or, create an [external connection]({{ page.version.version }}/create-external-connection.md) for the MSK URI.
 
     External connections define a name for an external connection while passing the provider URI and query parameters:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION msk AS 'kafka://b-3.msk-cluster_name.1a2b3c.c4.kafka.us-east-1.amazonaws.com:9096?tls_enabled=true&sasl_enabled=true&sasl_user={your_username}&sasl_password={your_password}-secret&sasl_mechanism=SCRAM-SHA-512';
     ~~~
 
-1. Use the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) statement to start the changefeed using either the external connection (`external://`) or full `kafka://` URI:
+1. Use the [`CREATE CHANGEFEED`]({{ page.version.version }}/create-changefeed.md) statement to start the changefeed using either the external connection (`external://`) or full `kafka://` URI:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE movr.users INTO `external://msk` WITH resolved;
     ~~~
@@ -306,20 +285,18 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
     1002677216020987905
     ~~~
 
-    To view a changefeed job, use [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs).
+    To view a changefeed job, use [`SHOW CHANGEFEED JOBS`]({{ page.version.version }}/show-jobs.md#show-changefeed-jobs).
 
 ## Step 5. Consume the changefeed messages
 
 1. Return to the terminal that is running the Kafka client. Move to the Kafka installation directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cd kafka_2.12-2.8.1/bin
     ~~~
 
 1. Run the following command to start a consumer. Set `--topic` to the topic you created in [Step 3](#step-3-set-up-the-scram-authentication-on-the-client):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ./kafka-console-consumer.sh --bootstrap-server $brokers --consumer.config client.properties --topic users --from-beginning
     ~~~
@@ -344,5 +321,5 @@ In this step, you'll prepare your CockroachDB cluster to start the changefeed.
 
 For more resources, refer to the following:
 
-- [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page for details on parameters that sinks support.
-- [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}) for details on monitoring the changefeed job.
+- [Changefeed Sinks]({{ page.version.version }}/changefeed-sinks.md) page for details on parameters that sinks support.
+- [Monitor and Debug Changefeeds]({{ page.version.version }}/monitor-and-debug-changefeeds.md) for details on monitoring the changefeed job.

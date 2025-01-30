@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `INTERVAL` [data type]({% link {{ page.version.version }}/data-types.md %}) stores a value that represents a span of time.
+The `INTERVAL` [data type]({{ page.version.version }}/data-types.md) stores a value that represents a span of time.
 
 ## Syntax
 
-You can express a constant value of type `INTERVAL` using an [interpreted literal]({% link {{ page.version.version }}/sql-constants.md %}#interpreted-literals), or a string literal [annotated with]({% link {{ page.version.version }}/scalar-expressions.md %}#explicitly-typed-expressions) type `INTERVAL` or [coerced to]({% link {{ page.version.version }}/scalar-expressions.md %}#explicit-type-coercions) type `INTERVAL`. CockroachDB also supports using uninterpreted [string literals]({% link {{ page.version.version }}/sql-constants.md %}#string-literals) in contexts where an `INTERVAL` value is otherwise expected.
+You can express a constant value of type `INTERVAL` using an [interpreted literal]({{ page.version.version }}/sql-constants.md#interpreted-literals), or a string literal [annotated with]({{ page.version.version }}/scalar-expressions.md#explicitly-typed-expressions) type `INTERVAL` or [coerced to]({{ page.version.version }}/scalar-expressions.md#explicit-type-coercions) type `INTERVAL`. CockroachDB also supports using uninterpreted [string literals]({{ page.version.version }}/sql-constants.md#string-literals) in contexts where an `INTERVAL` value is otherwise expected.
 
 `INTERVAL` constants can be expressed using the following formats:
 
@@ -20,11 +20,10 @@ ISO 8601 | `INTERVAL 'P1Y2M3DT4H5M6S'`
 Traditional PostgreSQL | `INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'`
 Abbreviated PostgreSQL | `INTERVAL '1 yr 2 mons 3 d 4 hrs 5 mins 6 secs'`
 
- By default, CockroachDB displays `INTERVAL` values in the traditional PostgreSQL format (e.g., `INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'`). To change the display format of `INTERVAL` values, set the `intervalstyle` [session variable]({% link {{ page.version.version }}/set-vars.md %}) or the `sql.defaults.intervalstyle` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to a supported format (`iso_8601` for the ISO 8601 format; `sql_standard` for the SQL Standard format).
+ By default, CockroachDB displays `INTERVAL` values in the traditional PostgreSQL format (e.g., `INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'`). To change the display format of `INTERVAL` values, set the `intervalstyle` [session variable]({{ page.version.version }}/set-vars.md) or the `sql.defaults.intervalstyle` [cluster setting]({{ page.version.version }}/cluster-settings.md) to a supported format (`iso_8601` for the ISO 8601 format; `sql_standard` for the SQL Standard format).
 
 The value of `intervalstyle` affects how CockroachDB parses certain `INTERVAL` values. Specifically, when `intervalstyle = 'sql_standard'`, and when the `INTERVAL` value begins with a negative symbol, CockroachDB parses all fields as negative values (e.g., `-3 years 1 day` is parsed as `-(3 years 1 day)`, or `-3 years, -1 day`). When `intervalstyle = 'postgres'` (the default format), and when the `INTERVAL` value begins with a negative symbol, CockroachDB only applies the negative symbol to the field that it directly precedes (e.g., `-3 years 1 day` is parsed as `-3 years, +1 day`).
 
-{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 ### Details on SQL Standard input
 
@@ -65,12 +64,10 @@ If the interval input is ambiguous, specifying two duration fields stores the in
 
 ## Example
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE intervals (a INT PRIMARY KEY, b INTERVAL);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM intervals;
 ~~~
@@ -83,7 +80,6 @@ If the interval input is ambiguous, specifying two duration fields stores the in
 (2 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO
     intervals
@@ -92,7 +88,6 @@ If the interval input is ambiguous, specifying two duration fields stores the in
            (3, '1-2 3 4:5:6');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM intervals;
 ~~~
@@ -108,7 +103,7 @@ If the interval input is ambiguous, specifying two duration fields stores the in
 
 ## Supported casting and conversion
 
-You can [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) `INTERVAL` values to any of the following data types:
+You can [cast]({{ page.version.version }}/data-types.md#data-type-conversions-and-casts) `INTERVAL` values to any of the following data types:
 
 Type | Details
 -----|--------
@@ -120,4 +115,4 @@ Type | Details
 
 ## See also
 
-[Data Types]({% link {{ page.version.version }}/data-types.md %})
+[Data Types]({{ page.version.version }}/data-types.md)

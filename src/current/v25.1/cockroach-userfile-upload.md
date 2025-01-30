@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.cli
 ---
 
- The `cockroach userfile upload` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) uploads a file to the [user-scoped file storage]({% link {{ page.version.version }}/use-userfile-storage.md %}) using a SQL connection.
+ The `cockroach userfile upload` [command]({{ page.version.version }}/cockroach-commands.md) uploads a file to the [user-scoped file storage]({{ page.version.version }}/use-userfile-storage.md) using a SQL connection.
 
 This command takes in a source file to upload and a destination filename. It will then use a SQL connection to upload the file to the [destination](#file-destination).
 
@@ -15,7 +15,7 @@ A userfile uses storage space in the cluster, and is replicated with the rest of
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
+The user must have the `CREATE` [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
 
 A user can only upload files to their own user-scoped storage, which is accessed through the [userfile URI](#file-destination). CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role.
 
@@ -69,10 +69,10 @@ Files are uploaded with a `.tmp` suffix and are renamed once the userfile upload
  Flag            | Description
 -----------------+-----------------------------------------------------
 `--cert-principal-map` | A comma-separated list of `<cert-principal>:<db-principal>` mappings. This allows mapping the principal in a cert to a DB principal such as `node` or `root` or any SQL user. This is intended for use in situations where the certificate management system places restrictions on the `Subject.CommonName` or `SubjectAlternateName` fields in the certificate (e.g., disallowing a `CommonName` like `node` or `root`). If multiple mappings are provided for the same `<cert-principal>`, the last one specified in the list takes precedence. A principal not specified in the map is passed through as-is via the identity function. A cert is allowed to authenticate a DB principal if the DB principal name is contained in the mapped `CommonName` or DNS-type `SubjectAlternateName` fields.
-`--certs-dir`    | The path to the [certificate directory]({% link {{ page.version.version }}/cockroach-cert.md %}) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
+`--certs-dir`    | The path to the [certificate directory]({{ page.version.version }}/cockroach-cert.md) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--echo-sql`     | Reveal the SQL statements sent implicitly by the command-line utility.
-`--url`          | A [connection URL]({% link {{ page.version.version }}/connection-parameters.md %}#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
-`--user`<br>`-u` | The [SQL user]({% link {{ page.version.version }}/create-user.md %}) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
+`--url`          | A [connection URL]({{ page.version.version }}/connection-parameters.md#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
+`--user`<br>`-u` | The [SQL user]({{ page.version.version }}/create-user.md) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
 `--recursive`<br>`-r` |  Upload a directory and its contents rooted at a specified directory recursively to user-scoped file storage. For example: `cockroach userfile upload -r <location/of/file> <userfile destination/of/file>` <br><br> See [File Destination](#file-destination) for detail on forming the destination URI and this [usage example](#upload-a-directory-recursively) for working with the `--recursive` flag.
 
 ## Examples
@@ -81,7 +81,6 @@ Files are uploaded with a `.tmp` suffix and are renamed once the userfile upload
 
 To upload a file to the default storage (`userfile://defaultdb.public.userfiles_$user/`):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv /test-data.csv --certs-dir=certs
 ~~~
@@ -92,7 +91,6 @@ successfully uploaded to userfile://defaultdb.public.userfiles_root/test-data.cs
 
 Also, a file can be uploaded to the default storage if the destination is not specified:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile upload /Users/maxroach/Desktop/test-data2.csv --certs-dir=certs
 ~~~
@@ -101,13 +99,12 @@ $ cockroach userfile upload /Users/maxroach/Desktop/test-data2.csv --certs-dir=c
 successfully uploaded to userfile://defaultdb.public.userfiles_root/test-data2.csv
 ~~~
 
-Then, you can use the file to [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) data.
+Then, you can use the file to [`IMPORT INTO`]({{ page.version.version }}/import-into.md) data.
 
 ### Upload a file to a specific directory
 
 To upload a file to a specific destination, include the destination in the command:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv /test-upload/test-data.csv --cert-dir=certs
 ~~~
@@ -116,11 +113,11 @@ $ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv /test-upload/t
 successfully uploaded to userfile://defaultdb.public.userfiles_root/test-upload/test-data.csv
 ~~~
 
-Then, you can use the file to [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) data.
+Then, you can use the file to [`IMPORT INTO`]({{ page.version.version }}/import-into.md) data.
 
 ### Upload a directory recursively
 
- To upload the contents of a directory to userfile storage, specify a source directory and destination. For example, to upload a [backup]({% link {{ page.version.version }}/backup.md %}) directory to userfile storage:
+ To upload the contents of a directory to userfile storage, specify a source directory and destination. For example, to upload a [backup]({{ page.version.version }}/backup.md) directory to userfile storage:
 
 ~~~ shell
 cockroach userfile upload -r /Users/maxroach/movr-backup userfile:///backup-data --certs-dir=certs
@@ -152,7 +149,6 @@ See the [file destination](#file-destination) section for more detail on forming
 
 ### Upload a file to a non-default userfile URI
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach userfile upload /Users/maxroach/Desktop/test-data.csv userfile://testdb.public.uploads/test-data.csv
 ~~~
@@ -163,9 +159,9 @@ successfully uploaded to userfile://testdb.public.uploads/test-data.csv
 
 ## See also
 
-- [`cockroach userfile list`]({% link {{ page.version.version }}/cockroach-userfile-list.md %})
-- [`cockroach userfile delete`]({% link {{ page.version.version }}/cockroach-userfile-delete.md %})
-- [`cockroach userfile get`]({% link {{ page.version.version }}/cockroach-userfile-get.md %})
-- [Use `userfile` storage]({% link {{ page.version.version }}/use-userfile-storage.md %})
-- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [`cockroach userfile list`]({{ page.version.version }}/cockroach-userfile-list.md)
+- [`cockroach userfile delete`]({{ page.version.version }}/cockroach-userfile-delete.md)
+- [`cockroach userfile get`]({{ page.version.version }}/cockroach-userfile-get.md)
+- [Use `userfile` storage]({{ page.version.version }}/use-userfile-storage.md)
+- [`cockroach` Commands Overview]({{ page.version.version }}/cockroach-commands.md)
+- [`IMPORT INTO`]({{ page.version.version }}/import-into.md)

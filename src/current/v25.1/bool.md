@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `BOOL` [data type]({% link {{ page.version.version }}/data-types.md %}) stores a Boolean value of `false` or `true`.
+The `BOOL` [data type]({{ page.version.version }}/data-types.md) stores a Boolean value of `false` or `true`.
 
 
 ## Aliases
@@ -14,7 +14,7 @@ In CockroachDB, `BOOLEAN` is an alias for `BOOL`.
 
 ## Syntax
 
-There are two predefined [named constants]({% link {{ page.version.version }}/sql-constants.md %}#named-constants) for `BOOL`: `TRUE` and `FALSE` (the names are case-insensitive).
+There are two predefined [named constants]({{ page.version.version }}/sql-constants.md#named-constants) for `BOOL`: `TRUE` and `FALSE` (the names are case-insensitive).
 
 Alternately, a boolean value can be obtained by coercing a numeric value: zero is coerced to `FALSE`, and any non-zero value to `TRUE`.
 
@@ -27,12 +27,10 @@ A `BOOL` value is 1 byte in width, but the total storage size is likely to be la
 
 ## Examples
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE bool (a INT PRIMARY KEY, b BOOL, c BOOLEAN);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM bool;
 ~~~
@@ -46,12 +44,10 @@ A `BOOL` value is 1 byte in width, but the total storage size is likely to be la
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO bool VALUES (12345, true, CAST(0 AS BOOL));
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bool;
 ~~~
@@ -66,7 +62,7 @@ A `BOOL` value is 1 byte in width, but the total storage size is likely to be la
 
 ## Supported casting and conversion
 
-`BOOL` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to any of the following data types:
+`BOOL` values can be [cast]({{ page.version.version }}/data-types.md#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------
@@ -77,4 +73,4 @@ Type | Details
 
 ## See also
 
-[Data Types]({% link {{ page.version.version }}/data-types.md %})
+[Data Types]({{ page.version.version }}/data-types.md)

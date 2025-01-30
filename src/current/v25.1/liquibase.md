@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page guides you through a series of simple database schema changes using the [Liquibase](https://www.liquibase.org/get-started/how-liquibase-works) command-line tool and the [CockroachDB SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}).
+This page guides you through a series of simple database schema changes using the [Liquibase](https://www.liquibase.org/get-started/how-liquibase-works) command-line tool and the [CockroachDB SQL shell]({{ page.version.version }}/cockroach-sql.md).
 
 For detailed information about using Liquibase, see the [Liquibase documentation site](https://docs.liquibase.com/home.html).
 
@@ -13,7 +13,7 @@ For detailed information about using Liquibase, see the [Liquibase documentation
 
 Before you begin the tutorial, do the following:
 
-1. [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}), and [start a secure cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}). When starting your cluster, make sure that you generate cluster certificates, create the `bank` database, and create the `max` user.
+1. [Install CockroachDB]({{ page.version.version }}/install-cockroachdb.md), and [start a secure cluster]({{ page.version.version }}/secure-a-cluster.md). When starting your cluster, make sure that you generate cluster certificates, create the `bank` database, and create the `max` user.
 1. Download and install a Java Development Kit. Liquibase supports JDK versions 8+. In this tutorial, we use [AdoptOpenJDK](https://adoptopenjdk.net/) 8, but you can follow along with any JDK version 8+.
 
 ## Step 1. Download and install Liquibase
@@ -28,26 +28,22 @@ To install the Liquibase binary on your machine:
 
 1. Make a new directory for your Liquibase installation:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir liquibase-4.2.0-bin
     ~~~
 
 1. Extract the Liquibase download to the new directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ tar -xvf liquibase-4.2.0.tar.gz -C liquibase-4.2.0-bin
     ~~~
 
 1. Append the full path of the `liquibase` binary (now located in the `liquibase-4.2.0-bin` folder) to your machine's `PATH` environment variable:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ echo "export PATH=$PATH:/full-path/liquibase-4.2.0-bin" >> ~/.bash_profile
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ source ~/.bash_profile
     ~~~
@@ -58,7 +54,6 @@ To install the Liquibase binary on your machine:
 
 1. To verify that the installation was successful, run the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ liquibase --version
     ~~~
@@ -97,7 +92,6 @@ To install the driver for Liquibase:
 1. Download the latest JDBC driver from [the PostgreSQL website](https://jdbc.postgresql.org/download/).
 1. Place the driver in the `lib` directory of the Liquibase binary. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp ~/Downloads/postgresql-{version}.jar liquibase-4.2.0-bin/lib/
     ~~~
@@ -110,16 +104,15 @@ If you are using Liquibase in the context of a separate Java application, we rec
 
 ## Step 3. Generate TLS certificates for the `max` user
 
-When you [started a secure CockroachDB cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}), you should have created a user `max`. You should have also given this user the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role), which grants all privileges to all databases on the cluster. In this tutorial, Liquibase runs schema changes as the `max` user.
+When you [started a secure CockroachDB cluster]({{ page.version.version }}/secure-a-cluster.md), you should have created a user `max`. You should have also given this user the [`admin` role]({{ page.version.version }}/security-reference/authorization.md#admin-role), which grants all privileges to all databases on the cluster. In this tutorial, Liquibase runs schema changes as the `max` user.
 
-To authenticate connection requests to CockroachDB from the Liquibase client, you need to generate some certificates for `max`. Use [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %}) to generate the certificates:
+To authenticate connection requests to CockroachDB from the Liquibase client, you need to generate some certificates for `max`. Use [`cockroach cert`]({{ page.version.version }}/cockroach-cert.md) to generate the certificates:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client max --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
 ~~~
 
-The [`--also-generate-pkcs8-key` flag]({% link {{ page.version.version }}/cockroach-cert.md %}#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.max.key.pk8`.
+The [`--also-generate-pkcs8-key` flag]({{ page.version.version }}/cockroach-cert.md#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.max.key.pk8`.
 
 ## Step 4: Create a changelog
 
@@ -129,14 +122,12 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
 
 1. Create a file named `changelog-main.xml`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch changelog-main.xml
     ~~~
 
 1. Add the following to the blank `changelog-main.xml` file:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ xml
     <databaseChangeLog
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -155,20 +146,18 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
     This first changeset uses [the `sqlFile` tag](https://docs.liquibase.com/change-types/community/sql-file.html), which tells Liquibase that an external `.sql` file contains some [SQL statements](https://docs.liquibase.com/concepts/basic/sql-format.html) to execute.
 
     {{site.data.alerts.callout_success}}
-    CockroachDB [doesn't guarantee the atomicity of online schema changes in transactions with multiple statements]({% link {{ page.version.version }}/online-schema-changes.md %}#schema-changes-within-transactions). To avoid running into issues with incomplete transactions, we recommend setting the [`runInTransaction` attribute](https://docs.liquibase.com/concepts/basic/changeset.html#available-attributes) to `"false"` on all changesets.
+    CockroachDB [doesn't guarantee the atomicity of online schema changes in transactions with multiple statements]({{ page.version.version }}/online-schema-changes.md#schema-changes-within-transactions). To avoid running into issues with incomplete transactions, we recommend setting the [`runInTransaction` attribute](https://docs.liquibase.com/concepts/basic/changeset.html#available-attributes) to `"false"` on all changesets.
     {{site.data.alerts.end}}
 
 
 1. In the same directory, create the SQL file specified by the first changeset:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch create.sql
     ~~~
 
-1. Add the following [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) statement to the `create.sql` file:
+1. Add the following [`CREATE TABLE`]({{ page.version.version }}/create-table.md) statement to the `create.sql` file:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     create table account
     (
@@ -183,7 +172,6 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
 
 1. Now let's use the [XML format](https://docs.liquibase.com/concepts/basic/xml-format.html) to define the second changeset. Directly after the first `changeSet` element in `changelog-main.xml`, add the following:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ xml
     <changeSet id="2" author="max" runInTransaction="false">
         <insert tableName="account">
@@ -218,7 +206,7 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
 When the application is started, all of the queries specified by the changesets are executed in the order specified by their `changeset` `id` values.
 
 {{site.data.alerts.callout_success}}
-When possible, we recommend limiting each changeset to a single statement, per the **one change per changeset** [Liquibase best practice](https://docs.liquibase.com/concepts/bestpractices.html). This is especially important for [online schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}). For more information, see [Liquibase and transactions](#liquibase-and-transactions).
+When possible, we recommend limiting each changeset to a single statement, per the **one change per changeset** [Liquibase best practice](https://docs.liquibase.com/concepts/bestpractices.html). This is especially important for [online schema changes]({{ page.version.version }}/online-schema-changes.md). For more information, see [Liquibase and transactions](#liquibase-and-transactions).
 {{site.data.alerts.end}}
 
 ## Step 5. Configure a Liquibase properties file
@@ -233,14 +221,12 @@ To configure Liquibase properties:
 
 1. In the same directory as `changelog-main.xml`, create a `liquibase.properties` file:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch liquibase.properties
     ~~~
 
 1. Add the following property definitions to the file:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ yml
     changeLogFile: changelog-main.xml
     driver: org.postgresql.Driver
@@ -256,7 +242,6 @@ To configure Liquibase properties:
 
 To run Liquibase from the command line, execute the following command from the directory containing your `liquibase.properties` and `changelog-main.xml` files:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ liquibase update
 ~~~
@@ -287,14 +272,12 @@ Liquibase: Update has been successful.
 
 When the changelog is first executed, Liquibase also creates a table called [`databasechangelog`](https://docs.liquibase.com/concepts/databasechangelog-table.html) in the database where it performs changes. This table's rows log all completed changesets.
 
-To see the completed changesets, open a new terminal, start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}), and query the `databasechangelog` table:
+To see the completed changesets, open a new terminal, start the [built-in SQL shell]({{ page.version.version }}/cockroach-sql.md), and query the `databasechangelog` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.databasechangelog;
 ~~~
@@ -309,7 +292,6 @@ $ cockroach sql --certs-dir=certs
 
 You can also query the `account` table directly to see the latest changes reflected in the table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.account;
 ~~~
@@ -325,16 +307,15 @@ You can also query the `account` table directly to see the latest changes reflec
 ~~~
 
 {{site.data.alerts.callout_info}}
-Liquibase does not [retry transactions]({% link {{ page.version.version }}/transactions.md %}#transaction-retries) automatically. If a changeset fails at startup, you might need to restart the application manually to complete the changeset.
+Liquibase does not [retry transactions]({{ page.version.version }}/transactions.md#transaction-retries) automatically. If a changeset fails at startup, you might need to restart the application manually to complete the changeset.
 {{site.data.alerts.end}}
 
 ## Step 7. Add additional changesets
 
-Suppose that you want to change the primary key of the `accounts` table from a simple, incrementing [integer]({% link {{ page.version.version }}/int.md %}) (in this case, `id`) to an auto-generated [UUID]({% link {{ page.version.version }}/uuid.md %}), to follow some [CockroachDB best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices). You can make these changes to the schema by creating and executing an additional changeset:
+Suppose that you want to change the primary key of the `accounts` table from a simple, incrementing [integer]({{ page.version.version }}/int.md) (in this case, `id`) to an auto-generated [UUID]({{ page.version.version }}/uuid.md), to follow some [CockroachDB best practices]({{ page.version.version }}/performance-best-practices-overview.md#unique-id-best-practices). You can make these changes to the schema by creating and executing an additional changeset:
 
 1. Create a SQL file to add a new UUID-typed column to the table:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch add_uuid.sql
     ~~~
@@ -345,13 +326,12 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 1. Add the following SQL statement to `add_uuid.sql`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     /* Add new UUID-typed column */
     ALTER TABLE account ADD COLUMN unique_id UUID NOT NULL DEFAULT gen_random_uuid();
     ~~~
 
-    This statement adds [a new `unique_id` column]({% link {{ page.version.version }}/alter-table.md %}#add-column) to the `accounts` table, with the default value as [a randomly-generated UUID]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-functions-to-generate-unique-ids).
+    This statement adds [a new `unique_id` column]({{ page.version.version }}/alter-table.md#add-column) to the `accounts` table, with the default value as [a randomly-generated UUID]({{ page.version.version }}/performance-best-practices-overview.md#use-functions-to-generate-unique-ids).
 
 1. In the `changelog-main.xml` file, add the following after the second `changeSet` element:
 
@@ -363,20 +343,18 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 1. Now create a SQL file to update the primary key for the table with the new column:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch update_pk.sql
     ~~~
 
 1. Add the following SQL statement to `update_pk.sql`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     /* Change primary key */
     ALTER TABLE account ALTER PRIMARY KEY USING COLUMNS (unique_id);
     ~~~
 
-    This statement [alters the `accounts` primary key]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key) to use the `unique_id` column.
+    This statement [alters the `accounts` primary key]({{ page.version.version }}/alter-table.md#alter-primary-key) to use the `unique_id` column.
 
 1. In the `changelog-main.xml` file, add the following after the third `changeSet` element:
 
@@ -388,7 +366,6 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 1. To update the table, run `liquibase update` again:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ liquibase update
     ~~~
@@ -417,14 +394,12 @@ Suppose that you want to change the primary key of the `accounts` table from a s
     Liquibase: Update has been successful.
     ~~~
 
-To see the completed changesets, open a new terminal, start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}), and query the `databasechangelog` table:
+To see the completed changesets, open a new terminal, start the [built-in SQL shell]({{ page.version.version }}/cockroach-sql.md), and query the `databasechangelog` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.databasechangelog;
 ~~~
@@ -441,7 +416,6 @@ $ cockroach sql --certs-dir=certs
 
 You can also query the `account` table directly to see the latest changes reflected in the table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.account;
 ~~~
@@ -456,7 +430,6 @@ You can also query the `account` table directly to see the latest changes reflec
 (4 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE bank.account;
 ~~~
@@ -481,7 +454,7 @@ You can also query the `account` table directly to see the latest changes reflec
 
 By default, Liquibase wraps each changeset within a single transaction. If the transaction fails to successfully commit, Liquibase rolls back the transaction.
 
-CockroachDB has [doesn't guarantee the atomicity of schema changes within transactions with multiple statements]({% link {{ page.version.version }}/online-schema-changes.md %}#schema-changes-within-transactions). If a schema change fails, automatic rollbacks can lead to unexpected results. To avoid running into issues with incomplete transactions, we recommend setting the `runInTransaction` attribute on each of your changesets to `"false"`, as demonstrated throughout this tutorial.
+CockroachDB has [doesn't guarantee the atomicity of schema changes within transactions with multiple statements]({{ page.version.version }}/online-schema-changes.md#schema-changes-within-transactions). If a schema change fails, automatic rollbacks can lead to unexpected results. To avoid running into issues with incomplete transactions, we recommend setting the `runInTransaction` attribute on each of your changesets to `"false"`, as demonstrated throughout this tutorial.
 
 {{site.data.alerts.callout_info}}
 If `runInTransaction="false"` for a changeset, and an error occurs while Liquid is running the changeset, the `databasechangelog` table might be left in an invalid state and need to be fixed manually.
@@ -489,13 +462,13 @@ If `runInTransaction="false"` for a changeset, and an error occurs while Liquid 
 
 ### Transaction retries
 
-When multiple, concurrent transactions or statements are issued to a single CockroachDB cluster, [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) can cause schema migrations to fail. In the event of transaction contention, CockroachDB returns a `40001 SQLSTATE` (i.e., a serialization failure).
+When multiple, concurrent transactions or statements are issued to a single CockroachDB cluster, [transaction contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention) can cause schema migrations to fail. In the event of transaction contention, CockroachDB returns a `40001 SQLSTATE` (i.e., a serialization failure).
 
-Liquibase does not automatically retry transactions. To handle transaction failures, we recommend writing client-side transaction retry logic. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries]({% link {{ page.version.version }}/transactions.md %}#transaction-retries).
+Liquibase does not automatically retry transactions. To handle transaction failures, we recommend writing client-side transaction retry logic. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries]({{ page.version.version }}/transactions.md#transaction-retries).
 
 ## Liquibase integrations
 
-You can run Liquibase in the context of a Java application framework, like Spring Boot. For examples of using Liquibase for schema management in a Spring Boot application built on CockroachDB, see [Build a Spring App with CockroachDB and JDBC]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jdbc.md %}) and [Build a Spring App with CockroachDB and JPA]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jpa.md %}).
+You can run Liquibase in the context of a Java application framework, like Spring Boot. For examples of using Liquibase for schema management in a Spring Boot application built on CockroachDB, see [Build a Spring App with CockroachDB and JDBC]({{ page.version.version }}/build-a-spring-app-with-cockroachdb-jdbc.md) and [Build a Spring App with CockroachDB and JPA]({{ page.version.version }}/build-a-spring-app-with-cockroachdb-jpa.md).
 
 For documentation on running Liquibase with other tooling, see [the Liquibase documentation site](https://docs.liquibase.com/workflows/liquibase-community/running.html).
 
@@ -503,7 +476,7 @@ For documentation on running Liquibase with other tooling, see [the Liquibase do
 
 If you run into problems, please file an issue on the [Liquibase issue tracker](https://github.com/liquibase/liquibase/issues), including the following details about the environment where you encountered the issue:
 
-- CockroachDB version ([`cockroach version`]({% link {{ page.version.version }}/cockroach-version.md %}))
+- CockroachDB version ([`cockroach version`]({{ page.version.version }}/cockroach-version.md))
 - Liquibase version
 - Operating system
 - Steps to reproduce the behavior
@@ -512,8 +485,8 @@ If you run into problems, please file an issue on the [Liquibase issue tracker](
 
 + [Liquibase documentation](https://docs.liquibase.com/home.html)
 + [Liquibase issue tracker](https://github.com/liquibase/liquibase/issues)
-+ [Client connection parameters]({% link {{ page.version.version }}/connection-parameters.md %})
-+ [Third-Party Database Tools]({% link {{ page.version.version }}/third-party-database-tools.md %})
-+ [Learn CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %})
-+ [Build a Spring App with CockroachDB and JDBC]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jdbc.md %})
-+ [Build a Spring App with CockroachDB and JPA]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jpa.md %})
++ [Client connection parameters]({{ page.version.version }}/connection-parameters.md)
++ [Third-Party Database Tools]({{ page.version.version }}/third-party-database-tools.md)
++ [Learn CockroachDB SQL]({{ page.version.version }}/learn-cockroachdb-sql.md)
++ [Build a Spring App with CockroachDB and JDBC]({{ page.version.version }}/build-a-spring-app-with-cockroachdb-jdbc.md)
++ [Build a Spring App with CockroachDB and JPA]({{ page.version.version }}/build-a-spring-app-with-cockroachdb-jpa.md)

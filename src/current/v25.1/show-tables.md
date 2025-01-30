@@ -6,21 +6,20 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW TABLES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the schema, table name, table type, owner, and estimated row count for the tables or [views]({% link {{ page.version.version }}/views.md %}) in a schema or database.
+The `SHOW TABLES` [statement]({{ page.version.version }}/sql-statements.md) lists the schema, table name, table type, owner, and estimated row count for the tables or [views]({{ page.version.version }}/views.md) in a schema or database.
 
 {{site.data.alerts.callout_info}}
-While a table or view is being [dropped]({% link {{ page.version.version }}/drop-table.md %}), `SHOW TABLES` will list the object with a `(dropped)` suffix.
+While a table or view is being [dropped]({{ page.version.version }}/drop-table.md), `SHOW TABLES` will list the object with a `(dropped)` suffix.
 {{site.data.alerts.end}}
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_tables.html %}
 </div>
 
 ## Required privileges
 
-The `CONNECT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the database of the concerned table is required to list it with SHOW TABLES.
+The `CONNECT` [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the database of the concerned table is required to list it with SHOW TABLES.
 
 ## Parameters
 
@@ -29,26 +28,24 @@ Parameter | Description
 `database_name` | The name of the database for which to show tables.
 `schema_name` | The name of the schema for which to show tables.
 
-When a `database_name` and `schema_name` are omitted, the tables of the [current schema]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-schema) in the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database) are listed.
+When a `database_name` and `schema_name` are omitted, the tables of the [current schema]({{ page.version.version }}/sql-name-resolution.md#current-schema) in the [current database]({{ page.version.version }}/sql-name-resolution.md#current-database) are listed.
 
-`SHOW TABLES` will attempt to find a schema with the specified name first. If that fails, it will try to find a database with that name instead, and list the tables of its `public` schema. For more details, see [Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %}).
+`SHOW TABLES` will attempt to find a schema with the specified name first. If that fails, it will try to find a database with that name instead, and list the tables of its `public` schema. For more details, see [Name Resolution]({{ page.version.version }}/sql-name-resolution.md).
 
 ## Performance
 
 To optimize the performance of the `SHOW TABLES` statement, you can do the following:
 
-- Disable table row-count estimation by setting the `sql.show_tables.estimated_row_count.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `false` before executing a `SHOW TABLES` statement.
+- Disable table row-count estimation by setting the `sql.show_tables.estimated_row_count.enabled` [cluster setting]({{ page.version.version }}/cluster-settings.md) to `false` before executing a `SHOW TABLES` statement.
 - Avoid running `SHOW TABLES` on databases with a large number of tables (e.g., more than 10,000 tables).
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements-nodes.md %}
 
 ### Show tables in the current database
 
-`SHOW TABLES` uses the [current schema]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-schema) `public` set by default in `search_path`:
+`SHOW TABLES` uses the [current schema]({{ page.version.version }}/sql-name-resolution.md#current-schema) `public` set by default in `search_path`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -65,9 +62,8 @@ To optimize the performance of the `SHOW TABLES` statement, you can do the follo
 (6 rows)
 ~~~
 
-Alternatively, within the built-in SQL shell, you can use the `\dt` [shell command]({% link {{ page.version.version }}/cockroach-sql.md %}#commands):
+Alternatively, within the built-in SQL shell, you can use the `\dt` [shell command]({{ page.version.version }}/cockroach-sql.md#commands):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \dt
 ~~~
@@ -88,12 +84,10 @@ Alternatively, within the built-in SQL shell, you can use the `\dt` [shell comma
 
 You can show the tables in schemas other than the current schema. You can also show the schema by table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr.information_schema;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM information_schema;
 ~~~
@@ -116,12 +110,10 @@ Because `movr` is the current database, these statements return the same output:
 
 You can also show tables from a different database.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM system.public;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM system;
 ~~~
@@ -141,16 +133,14 @@ Because `public` is the current schema, these statements return the same output:
 
 ### Show user-defined tables with comments
 
-You can use [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) to add comments on a table.
+You can use [`COMMENT ON`]({{ page.version.version }}/comment-on.md) to add comments on a table.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON TABLE users IS 'This table contains information about users.';
 ~~~
 
 To view a table's comments:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr WITH COMMENT;
 ~~~
@@ -167,9 +157,8 @@ To view a table's comments:
 (6 rows)
 ~~~
 
-You can also view comments on a table with [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}):
+You can also view comments on a table with [`SHOW CREATE`]({{ page.version.version }}/show-create.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -189,7 +178,7 @@ You can also view comments on a table with [`SHOW CREATE`]({% link {{ page.versi
 (1 row)
 ~~~
 
-For more information, see [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}).
+For more information, see [`COMMENT ON`]({{ page.version.version }}/comment-on.md).
 
 ### Show virtual tables with comments
 
@@ -197,7 +186,6 @@ The virtual tables in the `pg_catalog`, `information_schema`, and `crdb_internal
 
 To view virtual tables with comments and documentation links, use `SHOW TABLES FROM <virtual schema> WITH COMMENT`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM information_schema WITH COMMENT;
 ~~~
@@ -225,27 +213,24 @@ To view virtual tables with comments and documentation links, use `SHOW TABLES F
 
 ### Show locality of tables
 
-For [multi-region]({% link {{ page.version.version }}/multiregion-overview.md %}) tables, you can display the locality of each table using the `SHOW TABLES` command.
+For [multi-region]({{ page.version.version }}/multiregion-overview.md) tables, you can display the locality of each table using the `SHOW TABLES` command.
 
 
 
-1. [Set the primary region]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region) on `movr` to `us-east`:
+1. [Set the primary region]({{ page.version.version }}/alter-database.md#set-primary-region) on `movr` to `us-east`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER DATABASE movr SET PRIMARY REGION "us-east";
     ~~~
 
-    All tables will be [`REGIONAL BY TABLE`]({% link {{ page.version.version }}/alter-table.md %}#set-the-table-locality-to-regional-by-table) in the primary region by default.
+    All tables will be [`REGIONAL BY TABLE`]({{ page.version.version }}/alter-table.md#set-the-table-locality-to-regional-by-table) in the primary region by default.
 
-1. Configure the `users` table to be [`REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#set-the-table-locality-to-regional-by-row):
+1. Configure the `users` table to be [`REGIONAL BY ROW`]({{ page.version.version }}/alter-table.md#set-the-table-locality-to-regional-by-row):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE users SET LOCALITY REGIONAL BY ROW;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES;
     ~~~
@@ -263,14 +248,14 @@ For [multi-region]({% link {{ page.version.version }}/multiregion-overview.md %}
     ~~~
 
     {{site.data.alerts.callout_info}}
-    Locality information for tables is also available in the `locality` column within the [`crdb_internal.tables`]({% link {{ page.version.version }}/crdb-internal.md %}) table.
+    Locality information for tables is also available in the `locality` column within the [`crdb_internal.tables`]({{ page.version.version }}/crdb-internal.md) table.
     {{site.data.alerts.end}}
 
 ## See also
 
-- [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})
-- [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %})
-- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
-- [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %})
-- [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %})
-- [Information Schema]({% link {{ page.version.version }}/information-schema.md %})
+- [`SHOW DATABASES`]({{ page.version.version }}/show-databases.md)
+- [`SHOW SCHEMAS`]({{ page.version.version }}/show-schemas.md)
+- [`CREATE TABLE`]({{ page.version.version }}/create-table.md)
+- [`CREATE VIEW`]({{ page.version.version }}/create-view.md)
+- [`COMMENT ON`]({{ page.version.version }}/comment-on.md)
+- [Information Schema]({{ page.version.version }}/information-schema.md)

@@ -7,19 +7,16 @@ referral_id: docs_go_pq
 docs_area: get_started
 ---
 
-{% include {{ page.version.version }}/filter-tabs/crud-go.md %}
 
 This tutorial shows you how build a simple Go application with CockroachDB and the Go [pq driver](https://github.com/lib/pq).
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup.md %}
 
 ## Step 2. Get the code
 
 Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/hello-world-go-pq
 ~~~
@@ -28,7 +25,6 @@ $ git clone https://github.com/cockroachlabs/hello-world-go-pq
 
 1. Navigate to the `hello-world-go-pq` directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd hello-world-go-pq
     ~~~
@@ -37,7 +33,6 @@ $ git clone https://github.com/cockroachlabs/hello-world-go-pq
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -46,7 +41,6 @@ $ git clone https://github.com/cockroachlabs/hello-world-go-pq
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     export DATABASE_URL="{connection-string}"
     ~~~
@@ -60,20 +54,18 @@ You can now run the code sample (`main.go`) provided in this tutorial to do the 
 - Create a table.
 - Insert some rows into the table you created.
 - Read values from the table.
-- Execute a batch of statements as an atomic [transaction]({% link {{ page.version.version }}/transactions.md %}).
+- Execute a batch of statements as an atomic [transaction]({{ page.version.version }}/transactions.md).
 
-    Note that CockroachDB may require the [client to retry a transaction]({% link {{ page.version.version }}/transactions.md %}#transaction-retries) in the case of read/write [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). The [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go) includes a generic **retry function** (`ExecuteTx()`) that runs inside a transaction and retries it as needed. The code sample shows how you can use this function to wrap SQL statements.
+    Note that CockroachDB may require the [client to retry a transaction]({{ page.version.version }}/transactions.md#transaction-retries) in the case of read/write [contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention). The [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go) includes a generic **retry function** (`ExecuteTx()`) that runs inside a transaction and retries it as needed. The code sample shows how you can use this function to wrap SQL statements.
 
 1. Initialize the module:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ go mod init basic-sample && go mod tidy
     ~~~
 
 1. Run the code:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ go run main.go
     ~~~
@@ -93,5 +85,3 @@ You can now run the code sample (`main.go`) provided in this tutorial to do the 
 ## What's next?
 
 Read more about using the [Go pq driver](https://godoc.org/github.com/lib/pq).
-
-{% include {{ page.version.version }}/app/see-also-links.md %}

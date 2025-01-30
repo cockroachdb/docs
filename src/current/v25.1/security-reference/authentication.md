@@ -9,8 +9,8 @@ This page give an overview of CockroachDB's security features for authenticating
 
 Instead, you might be looking for:
 
-- [Logging in to the CockroachDB {{ site.data.products.cloud }} web console]({% link cockroachcloud/authentication.md %}).
-- [Accessing the DB console on CockroachDB {{ site.data.products.core }} clusters]({% link {{ page.version.version }}/ui-overview.md %}).
+- [Logging in to the CockroachDB {{ site.data.products.cloud }} web console](authentication.md).
+- [Accessing the DB console on CockroachDB {{ site.data.products.core }} clusters]({{ page.version.version }}/ui-overview.md).
 
 ## Authentication configuration
 
@@ -21,7 +21,7 @@ CockroachDB allows fine-grained configuration of which database connection attem
 
 CockroachDB's authentication behavior is configured using a domain-specific language (DSL) called host-based authentication (HBA). HBA syntax is shared with PostgreSQL.
 
-A specific CockroachDB cluster's authentication behavior is configured by setting its `server.host_based_authentication.configuration` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), using the [`SET CLUSTER SETTING` statement]({% link {{ page.version.version }}/set-cluster-setting.md %}), which accepts a single text field that must be a correctly formatted HBA manifest. Inspect the current setting with [`SHOW CLUSTER SETTING`.]({% link {{ page.version.version }}/show-cluster-setting.md %})
+A specific CockroachDB cluster's authentication behavior is configured by setting its `server.host_based_authentication.configuration` [cluster setting]({{ page.version.version }}/cluster-settings.md), using the [`SET CLUSTER SETTING` statement]({{ page.version.version }}/set-cluster-setting.md), which accepts a single text field that must be a correctly formatted HBA manifest. Inspect the current setting with [`SHOW CLUSTER SETTING`.]({{ page.version.version }}/show-cluster-setting.md)
 
 ## Supported authentication methods
 
@@ -38,8 +38,8 @@ All options also support the following no-op 'authentication methods', which do 
 - `reject`: unconditionally rejects the connection attempt.
 - `trust`: unconditionally accepts the connection attempt.
 
-[SCRAM-SHA-256]: {% link {{ page.version.version }}/security-reference/scram-authentication.md %}
-[certificate]: {% link {{ page.version.version }}/security-reference/transport-layer-security.md %}
+[SCRAM-SHA-256]: {{ page.version.version }}/security-reference/scram-authentication.md
+[certificate]: {{ page.version.version }}/security-reference/transport-layer-security.md
 
 ## HBA configuration syntax
 
@@ -69,12 +69,12 @@ Each rule definition contains up to 6 values.
 1. **`IP MASK`** (unless the Address in the prior field included or did not require an IP mask).
 1. Authentication **METHOD** by which specified user(s) may authenticate from specified addresses.
   - `password`: user may authenticate with a plaintext password.
-  - `scram-sha-256`: user may authenticate via [Salted Challenge-Response]({% link {{ page.version.version }}/security-reference/scram-authentication.md %})
+  - `scram-sha-256`: user may authenticate via [Salted Challenge-Response]({{ page.version.version }}/security-reference/scram-authentication.md)
   - `cert`: user may authenticate with a PKI certificate signed by a trusted certificate authority CA.
-  - `cert-password`: user may authenticate with either a certificate or a password. Additionally, the server may use a [SCRAM]({% link {{ page.version.version }}/security-reference/scram-authentication.md %}) exchange, if the cluster setting `server.user_login.cert_password_method.auto_scram_promotion.enabled` is set to `true`.
-  - `cert-scram-sha-25`: user may authenticate with either a certificate or a [SCRAM]({% link {{ page.version.version }}/security-reference/scram-authentication.md %}) exchange.
+  - `cert-password`: user may authenticate with either a certificate or a password. Additionally, the server may use a [SCRAM]({{ page.version.version }}/security-reference/scram-authentication.md) exchange, if the cluster setting `server.user_login.cert_password_method.auto_scram_promotion.enabled` is set to `true`.
+  - `cert-scram-sha-25`: user may authenticate with either a certificate or a [SCRAM]({{ page.version.version }}/security-reference/scram-authentication.md) exchange.
   - `gss`: user may authenticate with a GSSAPI token.
-  - `ldap`: user may authenticate using [LDAP]({% link {{ page.version.version }}/ldap-authentication.md %})-compatible directory services, such as Microsoft Entra ID and Active Directory.
+  - `ldap`: user may authenticate using [LDAP]({{ page.version.version }}/ldap-authentication.md)-compatible directory services, such as Microsoft Entra ID and Active Directory.
   - `reject`: server unconditionally rejects connection without performing authentication.
   - `trust`: server unconditionally allows connection without performing authentication.
 
@@ -103,13 +103,13 @@ The default authentication configuration for CockroachDB {{ site.data.products.s
    host    all           all         all           password
 ```
 
-This is convenient for quick usage and experimentation, but is not suitable for clusters containing production data. It is a best practice to [configure SQL authentication for hardened CockroachDB cluster security]({% link {{ page.version.version }}/security-reference/config-secure-hba.md %}).
+This is convenient for quick usage and experimentation, but is not suitable for clusters containing production data. It is a best practice to [configure SQL authentication for hardened CockroachDB cluster security]({{ page.version.version }}/security-reference/config-secure-hba.md).
 
 ### CockroachDB {{ site.data.products.advanced }}
 
 CockroachDB {{ site.data.products.advanced }} clusters enforce IP allowlisting. Each cluster has an allowlist, which is configured through the CockroachDB Cloud Console.
 
-See [Managing Network Authorization for CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/network-authorization.md %}).
+See [Managing Network Authorization for CockroachDB {{ site.data.products.advanced }}](network-authorization.md).
 
 ### CockroachDB {{ site.data.products.core }}
 
@@ -121,4 +121,3 @@ CockroachDB {{ site.data.products.core }} deploys with the following default HBA
   host    all           all         all            cert-password
   local   all           all                        password
 ```
-

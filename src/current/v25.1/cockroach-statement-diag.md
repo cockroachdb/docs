@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.cli
 ---
 
-Use the `cockroach statement-diag` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) to manage and download statement diagnostics bundles generated from the [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`]({% link {{ page.version.version }}/explain-analyze.md %}#explain-analyze-debug).
+Use the `cockroach statement-diag` [command]({{ page.version.version }}/cockroach-commands.md) to manage and download statement diagnostics bundles generated from the [DB Console]({{ page.version.version }}/ui-statements-page.md#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`]({{ page.version.version }}/explain-analyze.md#explain-analyze-debug).
 
 ## Required privileges
 
-Only members of the `admin` role and users with the `VIEWSYSTEMTABLE` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges), which provides read-only access to system tables, can run `cockroach statement-diag`. By default, the `root` user belongs to the `admin` role.
+Only members of the `admin` role and users with the `VIEWSYSTEMTABLE` [system privilege]({{ page.version.version }}/security-reference/authorization.md#privileges), which provides read-only access to system tables, can run `cockroach statement-diag`. By default, the `root` user belongs to the `admin` role.
 
 ## Subcommands
 
@@ -71,25 +71,22 @@ Flag | Description
 
 ### Client connection
 
-{% include {{ page.version.version }}/sql/connection-parameters.md %}
 
-See [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %}) for more details.
+See [Client Connection Parameters]({{ page.version.version }}/connection-parameters.md) for more details.
 
 ### Logging
 
-{% include {{ page.version.version }}/misc/logging-defaults.md %}
 
 ## Examples
 
 ### Setup
 
-These examples assume you are running [an insecure cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}) and have requested and/or generated statement diagnostics bundles using the [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`]({% link {{ page.version.version }}/explain-analyze.md %}#explain-analyze-debug).
+These examples assume you are running [an insecure cluster]({{ page.version.version }}/start-a-local-cluster.md) and have requested and/or generated statement diagnostics bundles using the [DB Console]({{ page.version.version }}/ui-statements-page.md#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`]({{ page.version.version }}/explain-analyze.md#explain-analyze-debug).
 
 ### Download a statement diagnostics bundle
 
 List statement diagnostics bundles and/or activation requests:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach statement-diag list --insecure
 ~~~
@@ -122,7 +119,6 @@ $ cockroach statement-diag delete --all --insecure
 
 List statement diagnostics bundles and/or activation requests:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach statement-diag list --insecure
 ~~~
@@ -141,6 +137,6 @@ $ cockroach statement-diag cancel 603811900498804737 --insecure
 
 ## See also
 
-- [DB Console statement diagnostics]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics)
-- [`EXPLAIN ANALYZE (DEBUG)`]({% link {{ page.version.version }}/explain-analyze.md %}#explain-analyze-debug)
-- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [DB Console statement diagnostics]({{ page.version.version }}/ui-statements-page.md#diagnostics)
+- [`EXPLAIN ANALYZE (DEBUG)`]({{ page.version.version }}/explain-analyze.md#explain-analyze-debug)
+- [`cockroach` Commands Overview]({{ page.version.version }}/cockroach-commands.md)

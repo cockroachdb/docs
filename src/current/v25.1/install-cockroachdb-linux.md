@@ -13,25 +13,22 @@ docs_area: deploy
   <a href="install-cockroachdb-windows.html"><button id="windows" data-eventcategory="buttonClick-doc-os" data-eventaction="windows">Windows</button></a>
 </div>
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-{% include latest-release-details.md %}
 
-Use one of the options below to install CockroachDB. To upgrade an existing cluster, refer to [Upgrade to {{ page.version.version }}]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
+Use one of the options below to install CockroachDB. To upgrade an existing cluster, refer to [Upgrade to {{ page.version.version }}]({{ page.version.version }}/upgrade-cockroach-version.md).
 
-- To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-compliant build of CockroachDB]({% link {{ page.version.version }}/fips.md %}) instead of this page.
+- To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-compliant build of CockroachDB]({{ page.version.version }}/fips.md) instead of this page.
 - For limitations of CockroachDB on ARM, refer to [ARM limitations](#arm).
 - For limitations of CockroachDB on a NUMA architecture, refer to [NUMA limitations](#numa).
 
 <div id="download-the-binary-linux" class="install-option">
   <h2 id="install-binary">Download the binary</h2>
-  {% include {{ page.version.version }}/misc/linux-binary-prereqs.md %}
   <ol>
     <li>
-      <p>Visit <a href="/docs/releases/index.html">Releases</a> to download the CockroachDB archive for the architecture of your Linux host. The archive contains the <code>cockroach</code> binary and the supporting libraries that are used to provide <a href="{% link {{ page.version.version }}/spatial-data-overview.md %}">spatial features</a>. Extract the archive and optionally copy the <code>cockroach</code> binary into your <code>PATH</code> so you can execute <a href="cockroach-commands.html">cockroach commands</a> from any shell. If you get a permission error, use <code>sudo</code>.</p>
+      <p>Visit <a href="/docs/releases/index.html">Releases</a> to download the CockroachDB archive for the architecture of your Linux host. The archive contains the <code>cockroach</code> binary and the supporting libraries that are used to provide <a href="{{ page.version.version }}/spatial-data-overview.md">spatial features</a>. Extract the archive and optionally copy the <code>cockroach</code> binary into your <code>PATH</code> so you can execute <a href="cockroach-commands.html">cockroach commands</a> from any shell. If you get a permission error, use <code>sudo</code>.</p>
     </li>
     <div class="bs-callout bs-callout--info"><div class="bs-callout__label">Note:</div>
-    <p>If you plan to use CockroachDB's <a href="{% link {{ page.version.version }}/spatial-data-overview.md %}">spatial features</a>, you must complete the following steps. Otherwise, your installation is now complete.</p>
+    <p>If you plan to use CockroachDB's <a href="{{ page.version.version }}/spatial-data-overview.md">spatial features</a>, you must complete the following steps. Otherwise, your installation is now complete.</p>
     </div>
     <li>
       <p>CockroachDB uses custom-built versions of the <a href="architecture/glossary.html#geos">GEOS</a> libraries. Copy these libraries to one of the locations where CockroachDB expects to find them.</p>
@@ -97,7 +94,6 @@ true
       </ol>
     <li>
       <p>Keep up-to-date with CockroachDB releases and best practices:</p>
-{% include marketo-install.html uid="1" %}
     </li>
   </ol>
 </div>
@@ -117,11 +113,10 @@ true
 <div id="use-docker-linux" markdown="1" class="install-option">
 <h2 id="install-docker">Use Docker</h2>
 
-{% include {{ page.version.version }}/install-docker-steps.md %}
 
   <p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contain binaries for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.</p>
   <p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>
-  <p>CockroachDB on ARM is in <b><a href="{% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#feature-availability-phases">Limited Access</a></b> in v22.2.13, and is <b>experimental</b> in all other versions. Experimental images are not qualified for production use and not eligible for support or uptime SLA commitments.</p>
+  <p>CockroachDB on ARM is in <b><a href="{{ page.version.version }}/cockroachdb-feature-availability.md#feature-availability-phases">Limited Access</a></b> in v22.2.13, and is <b>experimental</b> in all other versions. Experimental images are not qualified for production use and not eligible for support or uptime SLA commitments.</p>
 
   <ol>
     <li>
@@ -151,7 +146,6 @@ true
     </li>
     <li>
       <p>Keep up-to-date with CockroachDB releases and best practices:</p>
-{% include marketo-install.html uid="2" %}
     </li>
   </ol>
 </div>
@@ -178,10 +172,6 @@ CockroachDB runtimes built for the ARM architecture have the following limitatio
 
 ### NUMA
 
-{% include_cached common/numa_and_go.md %}
 
 <h2 id="whats-next">What&#39;s next?</h2>
 
-{% include {{ page.version.version }}/misc/install-next-steps.html %}
-
-{% include {{ page.version.version }}/misc/diagnostics-callout.html %}

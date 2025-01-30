@@ -7,7 +7,6 @@ ssh-link: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 docs_area:
 ---
 
-{% include {{ page.version.version }}/filter-tabs/deploy-crdb-aws.md %}
 
 This page shows you how to manually deploy a multi-node, self-hosted CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load-balancing service to distribute client traffic.
 
@@ -15,17 +14,15 @@ After setting up the AWS network, clock synchronization, and load balancing, it 
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
 
-{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 {{site.data.alerts.callout_info}}
-You need a license to use CockroachDB. Refer to the [Licensing FAQ]({% link {{ page.version.version }}/licensing-faqs.md %}) and [CockroachDB Pricing](https://www.cockroachlabs.com/pricing). [Contact us](https://cockroachlabs.com/contact-sales) about custom pricing through AWS Marketplace.
+You need a license to use CockroachDB. Refer to the [Licensing FAQ]({{ page.version.version }}/licensing-faqs.md) and [CockroachDB Pricing](https://www.cockroachlabs.com/pricing). [Contact us](https://cockroachlabs.com/contact-sales) about custom pricing through AWS Marketplace.
 {{site.data.alerts.end}}
 
 ## Before you begin
 
 ### Requirements
 
-{% include {{ page.version.version }}/prod-deployment/secure-requirements.md %}
 
 {{site.data.alerts.callout_info}}
 CockroachDB is supported in all [AWS regions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html).
@@ -33,7 +30,6 @@ CockroachDB is supported in all [AWS regions](https://docs.aws.amazon.com/AWSEC2
 
 ### Recommendations
 
-{% include {{ page.version.version }}/prod-deployment/secure-recommendations.md %}
 
 - You should have familiarity with configuring the following AWS components:
   - [Amazon VPC](https://docs.aws.amazon.com/vpc/index.html)
@@ -56,7 +52,7 @@ CockroachDB is supported in all [AWS regions](https://docs.aws.amazon.com/AWSEC2
 
 In this basic deployment, 3 CockroachDB nodes are each deployed on an Amazon EC2 instance across 3 availability zones. These are grouped within a single VPC and security group. Users are routed to the cluster via [Amazon Route 53](https://aws.amazon.com/route53/) (which is not used in this tutorial) and a load balancer.
 
-<img src="{{ 'images/v24.2/aws-architecture.png' | relative_url }}" alt="Architecture diagram for a three-node CockroachDB cluster deployed on AWS" style="border:1px solid #eee;max-width:100%" />
+![Architecture diagram for a three-node CockroachDB cluster deployed on AWS](/images/v24.2/aws-architecture.png)
 
 ## Step 1. Create instances
 
@@ -66,7 +62,6 @@ Open the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) and [launch a
 
 - Your instances will rely on Amazon Time Sync Service for clock synchronization. When choosing an AMI, note that some machines are preconfigured to use Amazon Time Sync Service (e.g., Amazon Linux AMIs) and others are not.
 
-{% include {{ page.version.version }}/prod-deployment/recommended-instances-aws.md %}
 
 - Note the ID of the VPC you select. You will need to look up its IP range when setting inbound rules for your security group.
 
@@ -76,7 +71,7 @@ Open the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) and [launch a
 
 - When creating the instance, you will be prompted to specify an EC2 key pair. For more information on key pairs, see the [AWS documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html). These are used to securely connect to your instances and should be encrypted (e.g., `ssh-keygen -p -f $keypairfile` in Linux).
 
-For more details, see [Hardware Recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) and [Cluster Topology]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
+For more details, see [Hardware Recommendations]({{ page.version.version }}/recommended-production-settings.md#hardware) and [Cluster Topology]({{ page.version.version }}/recommended-production-settings.md#topology).
 
 ## Step 2. Configure your network
 
@@ -85,7 +80,6 @@ For more details, see [Hardware Recommendations]({% link {{ page.version.version
 - `26257` for inter-node and client-node communication. This enables the nodes to work as a cluster, the load balancer to route traffic to the nodes, and applications to connect to the load balancer.
 - `8080` for exposing the DB Console to the user, and for routing the load balancer to the health check endpoint.
 
-{% include {{ page.version.version }}/prod-deployment/aws-inbound-rules.md %}
 
 #### Load balancer-health check communication
 
@@ -98,7 +92,6 @@ To get the IP range of a VPC, open the [Amazon VPC console](https://console.aws.
 
 ## Step 3. Synchronize clocks
 
-{% include {{ page.version.version }}/prod-deployment/synchronize-clocks.md %}
 
 ## Step 4. Set up load balancing
 
@@ -115,7 +108,7 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 	- Select the VPC and *all* availability zones of your instances. This is important, as you cannot change the availability zones once the load balancer is created. The availability zone of an instance is determined by its subnet, found by inspecting the instance in the Amazon EC2 Console.
 	- Set the load balancer port to **26257**.
     - Create a new target group that uses TCP port **26257**. Traffic from your load balancer is routed to this target group, which contains your instances.
-    - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
+    - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint]({{ page.version.version }}/monitoring-and-alerting.md#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
     - Register your instances with the target group you created, specifying port **26257**. You can add and remove instances later.
 1. To test load balancing and connect your application to the cluster, you will need the provisioned internal (private) **IP address** for the load balancer. To find this, open the Network Interfaces section of the Amazon EC2 console and look up the load balancer by its name.
 
@@ -123,40 +116,30 @@ AWS offers fully-managed load balancing to distribute traffic between instances.
 
 ## Step 5. Generate certificates
 
-{% include {{ page.version.version }}/prod-deployment/secure-generate-certificates.md %}
 
 ## Step 6. Start nodes
 
-{% include {{ page.version.version }}/prod-deployment/secure-start-nodes.md %}
 
 ## Step 7. Initialize the cluster
 
-{% include {{ page.version.version }}/prod-deployment/secure-initialize-cluster.md %}
 
 ## Step 8. Test your cluster
 
-{% include {{ page.version.version }}/prod-deployment/secure-test-cluster.md %}
 
 ## Step 9. Run a sample workload
 
-{% include {{ page.version.version }}/prod-deployment/secure-test-load-balancing.md %}
 
 ## Step 10. Monitor the cluster
 
 In the Target Groups section of the Amazon EC2 console, [check the health](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/target-group-health-checks.html) of your instances by inspecting your target group and opening the Targets tab.
 
-{% include {{ page.version.version }}/prod-deployment/monitor-cluster.md %}
 
 ## Step 11. Scale the cluster
 
 Before adding a new node, [create a new instance](#step-1-create-instances) as you did earlier. Then [generate and upload a certificate and key](#step-5-generate-certificates) for the new node.
 
-{% include {{ page.version.version }}/prod-deployment/secure-scale-cluster.md %}
 
 ## Step 12. Use the database
 
-{% include {{ page.version.version }}/prod-deployment/use-cluster.md %}
 
 ## See also
-
-{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

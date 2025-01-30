@@ -10,21 +10,21 @@ CockroachDB allows fine-grained configuration of which database connect attempts
 - **Who** is making the attempt (SQL user).
 - **Where** on the internet (IP Address) the attempt is coming from.
 
-This document describes the rationale for restricting database access to specific IP ranges as a security measure and then demonstrates the procedure using [authentication configuration]({% link {{ page.version.version }}/security-reference/authentication.md %}) to achieve that aim.
+This document describes the rationale for restricting database access to specific IP ranges as a security measure and then demonstrates the procedure using [authentication configuration]({{ page.version.version }}/security-reference/authentication.md) to achieve that aim.
 
 ## Why customize your authentication configuration?
 
 CockroachDB Cloud clusters include industry-standard security controls at the network and infrastructure levels, and CockroachDB {{ site.data.products.core }} may be deployed with any measure of network security one cares to put in place. Nevertheless, a hardened authentication configuration offers a powerful measure of [security in depth](https://wikipedia.org/wiki/Defense_in_depth_(computing)).
 
-Limiting allowed database connections to secure IP addresses reduces the risk that your cluster is compromised, because a potential attacker who acquires database credentials (e.g., username/password combinations or client [PKI certificates]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#certificates-signing-trust-and-authority)) cannot use those credentials without also gaining infrastructure access. Infrastructure access can and should be protected with multifactor authentication and restricted to appropriate parties using infrastructure-level IAM.
+Limiting allowed database connections to secure IP addresses reduces the risk that your cluster is compromised, because a potential attacker who acquires database credentials (e.g., username/password combinations or client [PKI certificates]({{ page.version.version }}/security-reference/transport-layer-security.md#certificates-signing-trust-and-authority)) cannot use those credentials without also gaining infrastructure access. Infrastructure access can and should be protected with multifactor authentication and restricted to appropriate parties using infrastructure-level IAM.
 
 ## Step 1: Provision and access your cluster
 
-[Create your own free CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
+[Create your own free CockroachDB {{ site.data.products.standard }} cluster](create-your-cluster.md).
 
 From the CockroachDB Cloud Console, select your new cluster and click the **Connect** button to obtain your connection credentials from the **Connection Info** pane in the CockroachDB Cloud Console.
 
-You'll also need to download the cluster's [Certificate Authority certificate]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#certificates-signing-trust-and-authority), so that your client can authenticate the database server as it connects.
+You'll also need to download the cluster's [Certificate Authority certificate]({{ page.version.version }}/security-reference/transport-layer-security.md#certificates-signing-trust-and-authority), so that your client can authenticate the database server as it connects.
 
 Open a SQL shell against your cluster.
 
@@ -54,7 +54,7 @@ Keep the IP address handy!
 
 Next, we'll configure our cluster to only allow SQL connection attempts from our jumpbox. This means that in order to access the cluster, someone will need not only the username and password (which could be guessed or stolen), but will also need access to the jumpbox. Manage permissions to access the jumpbox using Google Cloud's IAM, and make sure that users in your Google Cloud organization are required to use two-factor authentication.
 
-Returning to the SQL console, let's set our authentication configuration to limit access to the jumpbox. This configuration is accessed as a [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
+Returning to the SQL console, let's set our authentication configuration to limit access to the jumpbox. This configuration is accessed as a [cluster setting]({{ page.version.version }}/cluster-settings.md).
 
 
 Run `SHOW CLUSTER SETTING server.host_based_authentication.configuration;` to view your current authentication configuration, which should be in its default state, which displays as empty:
@@ -99,7 +99,7 @@ Failed running "sql"
 
 ## Step 5: Access your cluster via the jumpbox
 
-Finally, let's attempt the connection from the jumpbox. You'll need to use `scp` to transfer the cluster's root [CA certificate]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#certificates-signing-trust-and-authority) to the jumpbox, so that your client there can use it to authenticate the server. Then shell into the jumpbox with the `gcloud gcompute ssh` and run your connection command from inside the jumpbox.
+Finally, let's attempt the connection from the jumpbox. You'll need to use `scp` to transfer the cluster's root [CA certificate]({{ page.version.version }}/security-reference/transport-layer-security.md#certificates-signing-trust-and-authority) to the jumpbox, so that your client there can use it to authenticate the server. Then shell into the jumpbox with the `gcloud gcompute ssh` and run your connection command from inside the jumpbox.
 
 ```shell
 gcloud compute scp root.crt roach-jump-box:root.crt
@@ -117,7 +117,7 @@ Of course, it's likely that an application will also need to access the database
 
 Further, we can fine-tune our configuration and improve the overall security and resilience of our system by restricting access from the given IP to the appropriate user.
 
-Each user's permissions should then be precisely configured using CockroachDB's system of [access grants]({% link {{ page.version.version }}/security-reference/authorization.md %}). Always keep in mind the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege), which is one of the golden rules of security!
+Each user's permissions should then be precisely configured using CockroachDB's system of [access grants]({{ page.version.version }}/security-reference/authorization.md). Always keep in mind the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege), which is one of the golden rules of security!
 
 ```shell
 SET CLUSTER SETTING server.host_based_authentication.configuration TO '

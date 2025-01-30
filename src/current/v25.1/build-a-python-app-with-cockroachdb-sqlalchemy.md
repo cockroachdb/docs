@@ -7,21 +7,17 @@ referral_id: docs_python_sqlalchemy
 docs_area: get_started
 ---
 
-{% include {{ page.version.version }}/filter-tabs/crud-python.md %}
 
-{% include cockroach_u_pydev.md %}
 
 This tutorial shows you how build a simple CRUD Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/) ORM.
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup-certs.md %}
 
 ## Step 2. Get the code
 
 Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-python-sqlalchemy/
 ~~~
@@ -38,30 +34,26 @@ The project has the following directory structure:
 
 The `requirements.txt` file includes the required libraries to connect to CockroachDB with SQLAlchemy, including the [`sqlalchemy-cockroachdb` Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb), which accounts for some differences between CockroachDB and PostgreSQL:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/requirements.txt %}
+
 ~~~
 
 The `dbinit.sql` file initializes the database schema that the application uses:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/dbinit.sql %}
+
 ~~~
 
 The `models.py` uses SQLAlchemy to map the `Accounts` table to a Python object:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/models.py %}
+
 ~~~
 
 The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/main.py %}
+
 ~~~
 
 `main.py` also executes the `main` method of the program.
@@ -72,33 +64,28 @@ This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency man
 
 1. Install `virtualenv`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pip install virtualenv
     ~~~
 
 1. At the top level of the app's project directory, create and then activate a virtual environment:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ virtualenv env
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ source env/bin/activate
     ~~~
 
 1. Install the required modules to the virtual environment:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pip install -r requirements.txt
     ~~~
 
 ## Step 4. Initialize the database
 
-{% include {{ page.version.version }}/setup/init-bank-sample.md %}
 
 ## Step 5. Run the code
 
@@ -107,7 +94,6 @@ This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency man
 {{site.data.alerts.callout_info}}
 The example application uses the general connection string, which begins with `postgresql://` but modifies it so it uses the `cockroachdb://` prefix. It does this so SQLAlchemy will use the CockroachDB SQLAlchemy adapter.
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
 db_uri = os.environ['DATABASE_URL'].replace("postgresql://", "cockroachdb://")
 ~~~
@@ -115,7 +101,6 @@ db_uri = os.environ['DATABASE_URL'].replace("postgresql://", "cockroachdb://")
 
 Run the app:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python main.py
 ~~~
@@ -148,7 +133,6 @@ Deleted account e4f33c55-7230-4080-b5ac-5dde8a7ae41d.
 
 In a SQL shell connected to the cluster, you can verify that the rows were inserted, updated, and deleted successfully:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT COUNT(*) FROM accounts;
 ~~~
@@ -164,14 +148,14 @@ In a SQL shell connected to the cluster, you can verify that the rows were inser
 
 ### Use the `run_transaction` function
 
-We strongly recommend using the [`sqlalchemy_cockroachdb.run_transaction()`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/blob/master/sqlalchemy_cockroachdb/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries]({% link {{ page.version.version }}/transactions.md %}#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
+We strongly recommend using the [`sqlalchemy_cockroachdb.run_transaction()`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/blob/master/sqlalchemy_cockroachdb/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries]({{ page.version.version }}/transactions.md#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
 
 In addition to the above, using `run_transaction` has the following benefits:
 
 - Because it must be passed a [sqlalchemy.orm.session.sessionmaker](https://docs.sqlalchemy.org/orm/session_api.html#session-and-sessionmaker) object (*not* a [session][session]), it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction.
-- It abstracts away the [client-side transaction retry logic]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) from your application, which keeps your application code portable across different databases. For example, the sample code given on this page works identically when run against PostgreSQL (modulo changes to the prefix and port number in the connection string).
+- It abstracts away the [client-side transaction retry logic]({{ page.version.version }}/transaction-retry-error-reference.md#client-side-retry-handling) from your application, which keeps your application code portable across different databases. For example, the sample code given on this page works identically when run against PostgreSQL (modulo changes to the prefix and port number in the connection string).
 
-For more information about how transactions (and retries) work, see [Transactions]({% link {{ page.version.version }}/transactions.md %}).
+For more information about how transactions (and retries) work, see [Transactions]({{ page.version.version }}/transactions.md).
 
 ### Avoid mutations of session and/or transaction state inside `run_transaction()`
 
@@ -191,40 +175,37 @@ In keeping with the above recommendations from the official docs, we **strongly 
 
 ### Break up large transactions into smaller units of work
 
-If you see an error message like `transaction is too large to complete; try splitting into pieces`, you are trying to commit too much data in a single transaction. As described in our [Cluster Settings]({% link {{ page.version.version }}/cluster-settings.md %}) docs, the size limit for transactions is defined by the `kv.transaction.max_intents_bytes` setting, which defaults to 256 KiB. Although this setting can be changed by an admin, we strongly recommend against it in most cases.
+If you see an error message like `transaction is too large to complete; try splitting into pieces`, you are trying to commit too much data in a single transaction. As described in our [Cluster Settings]({{ page.version.version }}/cluster-settings.md) docs, the size limit for transactions is defined by the `kv.transaction.max_intents_bytes` setting, which defaults to 256 KiB. Although this setting can be changed by an admin, we strongly recommend against it in most cases.
 
 Instead, we recommend breaking your transaction into smaller units of work (or "chunks"). A pattern that works for inserting large numbers of objects using `run_transaction` to handle retries automatically for you is shown below.
 
-{% include_cached copy-clipboard.html %}
 ~~~ python
-{% include {{page.version.version}}/app/python/sqlalchemy/sqlalchemy-large-txns.py %}
 ~~~
 
 ### Use `IMPORT INTO` to read in large data sets
 
-If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code that uses an ORM and use the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement instead. It is much faster and more efficient than making a series of [`INSERT`s]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`s]({% link {{ page.version.version }}/update.md %}) such as are generated by calls to [`session.bulk_save_objects()`](https://docs.sqlalchemy.org/orm/session_api.html?highlight=bulk_save_object#sqlalchemy.orm.session.Session.bulk_save_objects).
+If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code that uses an ORM and use the [`IMPORT INTO`]({{ page.version.version }}/import-into.md) statement instead. It is much faster and more efficient than making a series of [`INSERT`s]({{ page.version.version }}/insert.md) and [`UPDATE`s]({{ page.version.version }}/update.md) such as are generated by calls to [`session.bulk_save_objects()`](https://docs.sqlalchemy.org/orm/session_api.html?highlight=bulk_save_object#sqlalchemy.orm.session.Session.bulk_save_objects).
 
-For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}).
+For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL]({{ page.version.version }}/migrate-from-postgres.md).
 
-For more information about importing data from MySQL, see [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}).
+For more information about importing data from MySQL, see [Migrate from MySQL]({{ page.version.version }}/migrate-from-mysql.md).
 
 ### Prefer the query builder
 
 In general, we recommend using the query-builder APIs of SQLAlchemy (e.g., [`Engine.execute()`](https://docs.sqlalchemy.org/core/connections.html?highlight=execute#sqlalchemy.engine.Engine.execute)) in your application over the [Session][session]/ORM APIs if at all possible. That way, you know exactly what SQL is being generated and sent to CockroachDB, which has the following benefits:
 
 - It's easier to debug your SQL queries and make sure they are working as expected.
-- You can more easily tune SQL query performance by issuing different statements, creating and/or using different indexes, etc. For more information, see [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}).
+- You can more easily tune SQL query performance by issuing different statements, creating and/or using different indexes, etc. For more information, see [SQL Performance Best Practices]({{ page.version.version }}/performance-best-practices-overview.md).
 
 ### Joins without foreign keys
 
-SQLAlchemy relies on the existence of [foreign keys]({% link {{ page.version.version }}/foreign-key.md %}) to generate [`JOIN` expressions]({% link {{ page.version.version }}/joins.md %}) from your application code. If you remove foreign keys from your schema, SQLAlchemy will not generate joins for you. As a workaround, you can [create a "custom foreign condition" by adding a `relationship` field to your table objects](https://stackoverflow.com/questions/37806625/sqlalchemy-create-relations-but-without-foreign-key-constraint-in-db), or do the equivalent work in your application.
+SQLAlchemy relies on the existence of [foreign keys]({{ page.version.version }}/foreign-key.md) to generate [`JOIN` expressions]({{ page.version.version }}/joins.md) from your application code. If you remove foreign keys from your schema, SQLAlchemy will not generate joins for you. As a workaround, you can [create a "custom foreign condition" by adding a `relationship` field to your table objects](https://stackoverflow.com/questions/37806625/sqlalchemy-create-relations-but-without-foreign-key-constraint-in-db), or do the equivalent work in your application.
 
 ## See also
 
 - The [SQLAlchemy](https://docs.sqlalchemy.org/) docs
-- [Transactions]({% link {{ page.version.version }}/transactions.md %})
+- [Transactions]({{ page.version.version }}/transactions.md)
 
-{% include_cached {{page.version.version}}/app/see-also-links.md %}
 
 {% comment %} Reference Links {% endcomment %}
 

@@ -5,31 +5,30 @@ toc: true
 docs_area: develop
 ---
 
-SQL subqueries enable reuse of the results from a [selection query]({% link {{ page.version.version }}/selection-queries.md %}) within another query.
+SQL subqueries enable reuse of the results from a [selection query]({{ page.version.version }}/selection-queries.md) within another query.
 
 CockroachDB supports two kinds of subqueries:
 
-- **Relational** subqueries, which appear as operands in [selection queries]({% link {{ page.version.version }}/selection-queries.md %}) and [table expressions]({% link {{ page.version.version }}/table-expressions.md %}).
-- **Scalar** subqueries, which appear as operands in a [scalar expression]({% link {{ page.version.version }}/scalar-expressions.md %}).
+- **Relational** subqueries, which appear as operands in [selection queries]({{ page.version.version }}/selection-queries.md) and [table expressions]({{ page.version.version }}/table-expressions.md).
+- **Scalar** subqueries, which appear as operands in a [scalar expression]({{ page.version.version }}/scalar-expressions.md).
 
 ## Data writes in subqueries
 
 When a subquery contains a data-modifying statement (`INSERT`,`DELETE`, etc.), the data modification is always executed to
 completion even if the surrounding query only uses a subset of the result rows.
 
-This is true for subqueries defined using the [`(...)`]({% link {{ page.version.version }}/table-expressions.md %}#use-a-subquery)
-notation and those defined using [`WITH`]({% link {{ page.version.version }}/table-expressions.md %}#use-the-output-of-another-statement).
+This is true for subqueries defined using the [`(...)`]({{ page.version.version }}/table-expressions.md#use-a-subquery)
+notation and those defined using [`WITH`]({{ page.version.version }}/table-expressions.md#use-the-output-of-another-statement).
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH t AS (INSERT INTO t(x) VALUES (1), (2), (3) RETURNING x)
 SELECT * FROM t LIMIT 1;
 ~~~
 
 This query inserts 3 rows into `t`, even though the surrounding
-query only observes 1 row using [`LIMIT`]({% link {{ page.version.version }}/limit-offset.md %}).
+query only observes 1 row using [`LIMIT`]({{ page.version.version }}/limit-offset.md).
 
 ## Correlated subqueries
 
@@ -37,7 +36,6 @@ A subquery is said to be _correlated_ when it uses table or column names defined
 
 For example, to find every customer with at least one order, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
       c.name
@@ -49,18 +47,17 @@ For example, to find every customer with at least one order, run:
 
 The subquery is correlated because it uses `c` defined in the surrounding query.
 
-The [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) supports most [correlated subqueries](https://wikipedia.org/wiki/Correlated_subquery),
+The [cost-based optimizer]({{ page.version.version }}/cost-based-optimizer.md) supports most [correlated subqueries](https://wikipedia.org/wiki/Correlated_subquery),
 with the exception of correlated subqueries that generate side effects inside a `CASE` statement.
 
 ### `LATERAL` subqueries
 
-A `LATERAL` subquery is a correlated subquery that references another query or subquery in its `SELECT` statement, usually in the context of a [`LEFT` join]({% link {{ page.version.version }}/joins.md %}#left-outer-joins) or an [`INNER` join]({% link {{ page.version.version }}/joins.md %}#inner-joins). Unlike other correlated subqueries, `LATERAL` subqueries iterate through each row in the referenced query for each row in the inner subquery, like a [for loop](https://wikipedia.org/wiki/For_loop).
+A `LATERAL` subquery is a correlated subquery that references another query or subquery in its `SELECT` statement, usually in the context of a [`LEFT` join]({{ page.version.version }}/joins.md#left-outer-joins) or an [`INNER` join]({{ page.version.version }}/joins.md#inner-joins). Unlike other correlated subqueries, `LATERAL` subqueries iterate through each row in the referenced query for each row in the inner subquery, like a [for loop](https://wikipedia.org/wiki/For_loop).
 
 To create a `LATERAL` subquery, use the `LATERAL` keyword directly before the inner subquery's `SELECT` statement.
 
 For example, the following statement performs an `INNER` join of the `users` table and a subquery of the `rides` table that filters on values in the `users` table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name, address FROM users, LATERAL (SELECT * FROM rides WHERE rides.start_address = users.address AND city = 'new york');
 ~~~
@@ -77,11 +74,10 @@ For example, the following statement performs an `INNER` join of the `users` tab
 (6 rows)
 ~~~
 
-`LATERAL` subquery joins are especially useful when the join table includes a [computed column]({% link {{ page.version.version }}/computed-columns.md %}).
+`LATERAL` subquery joins are especially useful when the join table includes a [computed column]({{ page.version.version }}/computed-columns.md).
 
 For example, the following query joins a subquery of the `rides` table with a computed column (`adjusted_revenue`), and a subquery of the `vehicles` table that references columns in the `rides` subquery:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
     ride_id, vehicle_id, type, adjusted_revenue
@@ -125,7 +121,7 @@ The results of scalar subqueries are loaded entirely into memory when the execut
 
 ## See also
 
-- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
-- [Scalar Expressions]({% link {{ page.version.version }}/scalar-expressions.md %})
-- [Table Expressions]({% link {{ page.version.version }}/table-expressions.md %})
-- [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %})
+- [Selection Queries]({{ page.version.version }}/selection-queries.md)
+- [Scalar Expressions]({{ page.version.version }}/scalar-expressions.md)
+- [Table Expressions]({{ page.version.version }}/table-expressions.md)
+- [SQL Performance Best Practices]({{ page.version.version }}/performance-best-practices-overview.md)

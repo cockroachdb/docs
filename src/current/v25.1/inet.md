@@ -5,16 +5,16 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `INET` [data type]({% link {{ page.version.version }}/data-types.md %}) stores an IPv4 or IPv6 address.
+The `INET` [data type]({{ page.version.version }}/data-types.md) stores an IPv4 or IPv6 address.
 
 ## Syntax
 
 A constant value of type `INET` can be expressed using an
-[interpreted literal]({% link {{ page.version.version }}/sql-constants.md %}#interpreted-literals), or a
+[interpreted literal]({{ page.version.version }}/sql-constants.md#interpreted-literals), or a
 string literal
-[annotated with]({% link {{ page.version.version }}/scalar-expressions.md %}#explicitly-typed-expressions)
+[annotated with]({{ page.version.version }}/scalar-expressions.md#explicitly-typed-expressions)
 type `INET` or
-[coerced to]({% link {{ page.version.version }}/scalar-expressions.md %}#explicit-type-coercions) type
+[coerced to]({{ page.version.version }}/scalar-expressions.md#explicit-type-coercions) type
 `INET`.
 
 `INET` constants can be expressed using the following formats:
@@ -32,7 +32,6 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 
 ## Example
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE computers (
     ip INET PRIMARY KEY,
@@ -41,7 +40,6 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
   );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM computers;
 ~~~
@@ -56,7 +54,6 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 (3 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO computers
   VALUES
@@ -65,7 +62,6 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
     ('2001:4f8:3:ba:2e0:81ff:fe22:d1f1/120', 'test@cockroachlabs.com', '2018-01-31');
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM computers;
 ~~~
@@ -81,11 +77,11 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 
 ## Supported casting and conversion
 
-`INET` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to the following data type:
+`INET` values can be [cast]({{ page.version.version }}/data-types.md#data-type-conversions-and-casts) to the following data type:
 
 - `STRING` - Converts to format `'Address/subnet'`.
 
 ## See also
 
-- [Data Types]({% link {{ page.version.version }}/data-types.md %})
-- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})
+- [Data Types]({{ page.version.version }}/data-types.md)
+- [Functions and Operators]({{ page.version.version }}/functions-and-operators.md)

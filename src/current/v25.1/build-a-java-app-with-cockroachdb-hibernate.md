@@ -7,33 +7,29 @@ referral_id: docs_java_hibernate
 docs_area: get_started
 ---
 
-{% include {{ page.version.version }}/filter-tabs/crud-java.md %}
 
 This tutorial shows you how build a simple Java application with CockroachDB and the Hibernate ORM.
 
-{% include {{page.version.version}}/app/java-version-note.md %}
 
 {{site.data.alerts.callout_success}}
-For a sample app and tutorial that uses Spring Data JPA (Hibernate) and CockroachDB, see [Build a Spring App with CockroachDB and JPA]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jpa.md %}).
+For a sample app and tutorial that uses Spring Data JPA (Hibernate) and CockroachDB, see [Build a Spring App with CockroachDB and JPA]({{ page.version.version }}/build-a-spring-app-with-cockroachdb-jpa.md).
 
 For another use of Hibernate with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup-parameters.md %}
 
 ## Step 2. Get the sample code
 
 Clone the `example-app-java-hibernate` repo to your machine:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/cockroachlabs/example-app-java-hibernate/
 ~~~
 
 {{site.data.alerts.callout_info}}
-The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate]({% link {{ page.version.version }}/install-client-drivers.md %}).
+The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate]({{ page.version.version }}/install-client-drivers.md).
 {{site.data.alerts.end}}
 
 ## Step 3. Run the code
@@ -45,16 +41,15 @@ The sample code in this tutorial ([`Sample.java`](#code-contents)) uses Hibernat
 1. Transfers money from one account to another with the `transferFunds()` method.
 1. Prints out account balances before and after the transfer with the `getAccountBalance()` method.
 
-In addition, the code shows a pattern for automatically handling [transaction retries]({% link {{ page.version.version }}/transaction-retry-error-example.md %}) by wrapping transactions in a higher-order function named `runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+In addition, the code shows a pattern for automatically handling [transaction retries]({{ page.version.version }}/transaction-retry-error-example.md) by wrapping transactions in a higher-order function named `runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
 
 It does all of the above using the practices we recommend for using Hibernate (and the underlying JDBC connection) with CockroachDB, which are listed in the [Recommended Practices](#recommended-practices) section below.
 
 <a name="code-contents"></a>
 The contents of `Sample.java`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-hibernate/master/src/main/java/com/cockroachlabs/Sample.java %}
+
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
@@ -63,7 +58,6 @@ The contents of `Sample.java`:
 
 Open `src/main/resources/hibernate.cfg.xml`, and set the `hibernate.connection.url`, `hibernate.connection.username`, and `hibernate.connection.password` properties, using the connection information that you obtained from the {{ site.data.products.cloud }} Console:
 
-{% include_cached copy-clipboard.html %}
 ~~~ xml
 <property name="hibernate.connection.url">jdbc:postgresql://{host}:{port}/defaultdb?sslmode=verify-full</property>
 <property name="hibernate.connection.username">{username}</property>
@@ -76,12 +70,10 @@ Open `src/main/resources/hibernate.cfg.xml`, and set the `hibernate.connection.u
 
 Compile and run the code using `gradlew`, which will also download the dependencies:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cd example-app-java-hibernate
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ./gradlew run
 ~~~
@@ -118,21 +110,19 @@ APP: getAccountBalance(2) --> 350.00
 
 ### Generate PKCS8 keys for client authentication
 
-{% include {{page.version.version}}/app/pkcs8-gen.md %}
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-{% include cockroachcloud/cc-no-user-certs.md %}
 
 </section>
 
 ### Use `IMPORT INTO` to read in large data sets
 
-If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement instead. It is much faster and more efficient than making a series of [`INSERT`s]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`s]({% link {{ page.version.version }}/update.md %}). It bypasses the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
+If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT INTO`]({{ page.version.version }}/import-into.md) statement instead. It is much faster and more efficient than making a series of [`INSERT`s]({{ page.version.version }}/insert.md) and [`UPDATE`s]({{ page.version.version }}/update.md). It bypasses the [SQL layer]({{ page.version.version }}/architecture/sql-layer.md) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
 
-For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}).
+For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL]({{ page.version.version }}/migrate-from-postgres.md).
 
-For more information about importing data from MySQL, see [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}).
+For more information about importing data from MySQL, see [Migrate from MySQL]({{ page.version.version }}/migrate-from-mysql.md).
 
 ### Use `reWriteBatchedInserts` for increased speed
 
@@ -142,7 +132,7 @@ We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x pe
 
 ### Retrieve large data sets in chunks using cursors
 
-CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`]({% link {{ page.version.version }}/pagination.md %}).
+CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`]({{ page.version.version }}/pagination.md).
 
 For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/query/#getting-results-based-on-a-cursor) from the PGJDBC documentation.
 
@@ -151,5 +141,3 @@ Note that interleaved execution (partial execution of multiple statements within
 ## What's next?
 
 Read more about using the [Hibernate ORM](http://hibernate.org/orm/), or check out a more realistic implementation of Hibernate with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
-
-{% include_cached {{page.version.version}}/app/see-also-links.md %}

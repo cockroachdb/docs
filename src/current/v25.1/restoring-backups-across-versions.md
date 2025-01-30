@@ -14,7 +14,6 @@ This page describes the support Cockroach Labs provides for restoring backups ac
 Since CockroachDB considers the cluster version when running a backup, this page refers to versions in a "v22.2.x" format. For example, both v22.2.8 and v22.2.14 are considered as v22.2 clusters for backup purposes.
 {{site.data.alerts.end}}
 
-{% include {{page.version.version}}/backups/recommend-backups-for-upgrade.md%} See [how to upgrade to the latest version of CockroachDB]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
 
 ## Support for restoring backups into a newer version
 
@@ -29,7 +28,7 @@ Backup taken on version   | Restorable into version
 22.1.x                    | 22.1.x, 22.2.x
 22.2.x                    | 22.2.x, 23.1.x
 
-When a cluster is in a mixed-version state during an upgrade, [full cluster restores]({% link {{ page.version.version }}/restore.md %}#restore-a-cluster) will fail. See the [Upgrade documentation]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}) for the necessary steps to finalize your upgrade. For CockroachDB {{ site.data.products.cloud }} clusters, see the [CockroachDB Cloud Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}) page.
+When a cluster is in a mixed-version state during an upgrade, [full cluster restores]({{ page.version.version }}/restore.md#restore-a-cluster) will fail. See the [Upgrade documentation]({{ page.version.version }}/upgrade-cockroach-version.md) for the necessary steps to finalize your upgrade. For CockroachDB {{ site.data.products.cloud }} clusters, see the [CockroachDB Cloud Upgrade Policy](upgrade-policy.md) page.
 
 {{site.data.alerts.callout_info}}
 Cockroach Labs does **not** support restoring backups from a higher version into a lower version.
@@ -39,9 +38,9 @@ Cockroach Labs does **not** support restoring backups from a higher version into
 
 When you need to archive a backup for the long term, we recommend that you also archive the CockroachDB binary of the version that the backup was taken on.
 
-For a true archival copy that is not dependent on CockroachDB at all, running a changefeed to export your data from CockroachDB and archiving the files would be a better approach instead of taking a backup. See [Export Data with Changefeeds]({% link {{ page.version.version }}/export-data-with-changefeeds.md %}) for more detail.
+For a true archival copy that is not dependent on CockroachDB at all, running a changefeed to export your data from CockroachDB and archiving the files would be a better approach instead of taking a backup. See [Export Data with Changefeeds]({{ page.version.version }}/export-data-with-changefeeds.md) for more detail.
 
 ## See also
 
-- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
-- [Take Full and Incremental Backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [`RESTORE`]({{ page.version.version }}/restore.md)
+- [Take Full and Incremental Backups]({{ page.version.version }}/take-full-and-incremental-backups.md)

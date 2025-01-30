@@ -5,20 +5,18 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CREATE SCHEMA` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a user-defined [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}#naming-hierarchy).
+The `CREATE SCHEMA` [statement]({{ page.version.version }}/sql-statements.md) creates a user-defined [schema]({{ page.version.version }}/sql-name-resolution.md#naming-hierarchy).
 
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
 - Only members of the `admin` role can create new schemas. By default, the `root` user belongs to the `admin` role.
-- To [grant privileges]({% link {{ page.version.version }}/grant.md %}) on a user-defined schema, a user must have the `GRANT` privilege on the schema and the privilege that they want to grant.
+- To [grant privileges]({{ page.version.version }}/grant.md) on a user-defined schema, a user must have the `GRANT` privilege on the schema and the privilege that they want to grant.
 - To create or interact with objects that depend on a user-defined schema, a user must have the `USAGE` privilege on the schema.
 
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_schema.html %}
 </div>
 
 ### Parameters
@@ -26,21 +24,18 @@ The `CREATE SCHEMA` [statement]({% link {{ page.version.version }}/sql-statement
 Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new schema only if a schema of the same name does not already exist within the database. If one does exist, do not return an error.
-`name`<br>`name.name` | The name of the schema to create, or the name of the database in which to create the schema and the schema name, separated by a "`.`". The schema name must be unique within its database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers).
+`name`<br>`name.name` | The name of the schema to create, or the name of the database in which to create the schema and the schema name, separated by a "`.`". The schema name must be unique within its database and follow these [identifier rules]({{ page.version.version }}/keywords-and-identifiers.md#identifiers).
 `AUTHORIZATION role_spec` | Optionally identify a user (`role_spec`) to be the owner of the schema.<br><br>If a `CREATE SCHEMA` statement has an `AUTHORIZATION` clause, but no schema name is specified, the schema will be named after the specified owner of the schema. If a `CREATE SCHEMA` statement does not have an `AUTHORIZATION` clause, the user executing the statement will be named the owner.
 
 ## Example
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Create a schema
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA org_one;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -61,7 +56,6 @@ By default, the user executing the `CREATE SCHEMA` statement is the owner of the
 
 ### Create a schema if one does not exist
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA org_one;
 ~~~
@@ -70,14 +64,12 @@ By default, the user executing the `CREATE SCHEMA` statement is the owner of the
 ERROR: schema "org_one" already exists
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS org_one;
 ~~~
 
 SQL does not generate an error, even though a new schema wasn't created.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -98,17 +90,14 @@ SQL does not generate an error, even though a new schema wasn't created.
 
 You can create tables of the same name in the same database if they are in separate schemas.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS org_one;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS org_two;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -126,7 +115,6 @@ You can create tables of the same name in the same database if they are in separ
 (7 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE org_one.employees (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -135,7 +123,6 @@ You can create tables of the same name in the same database if they are in separ
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE org_two.employees (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -144,7 +131,6 @@ You can create tables of the same name in the same database if they are in separ
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x as (SHOW TABLES) SELECT * x WHERE table_name='employees';
 ~~~
@@ -161,17 +147,14 @@ You can create tables of the same name in the same database if they are in separ
 
 To specify the owner of a schema, add an `AUTHORIZATION` clause to the `CREATE SCHEMA` statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max WITH PASSWORD 'roach';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA org_two AUTHORIZATION max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -190,12 +173,10 @@ To specify the owner of a schema, add an `AUTHORIZATION` clause to the `CREATE S
 
 If no schema name is specified in a `CREATE SCHEMA` statement with an `AUTHORIZATION` clause, the schema will be named after the user specified:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA AUTHORIZATION max;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SCHEMAS;
 ~~~
@@ -213,23 +194,20 @@ If no schema name is specified in a `CREATE SCHEMA` statement with an `AUTHORIZA
 (7 rows)
 ~~~
 
-When you [use a table without specifying a schema]({% link {{ page.version.version }}/sql-name-resolution.md %}#search-path), CockroachDB looks for the table in the `$user` schema (i.e., a schema named after the current user). If no schema exists with the name of the current user, the `public` schema is used.
+When you [use a table without specifying a schema]({{ page.version.version }}/sql-name-resolution.md#search-path), CockroachDB looks for the table in the `$user` schema (i.e., a schema named after the current user). If no schema exists with the name of the current user, the `public` schema is used.
 
-For example, suppose that you [grant the `root` role]({% link {{ page.version.version }}/grant.md %}) (i.e., the role of the current user `root`) to the `max` user:
+For example, suppose that you [grant the `root` role]({{ page.version.version }}/grant.md) (i.e., the role of the current user `root`) to the `max` user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT root TO max;
 ~~~
 
-Then, `max` [accesses the cluster]({% link {{ page.version.version }}/cockroach-sql.md %}) and creates two tables of the same name, in the same database, one in the `max` schema, and one in the `public` schema:
+Then, `max` [accesses the cluster]({{ page.version.version }}/cockroach-sql.md) and creates two tables of the same name, in the same database, one in the `max` schema, and one in the `public` schema:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE max.accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -238,7 +216,6 @@ $ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE public.accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -247,7 +224,6 @@ $ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -262,12 +238,10 @@ $ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
 
 `max` then inserts some values into the `accounts` table, without specifying a schema:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO accounts (name, balance) VALUES ('checking', 1000), ('savings', 15000);
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -282,7 +256,6 @@ $ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
 
 Because `max` is the current user, all unqualified `accounts` table names resolve as `max.accounts`, and not `public.accounts`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM public.accounts;
 ~~~
@@ -295,9 +268,9 @@ Because `max` is the current user, all unqualified `accounts` table names resolv
 
 ## See also
 
-- [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %})
-- [`SET SCHEMA`]({% link {{ page.version.version }}/alter-table.md %}#set-schema)
-- [`DROP SCHEMA`]({% link {{ page.version.version }}/drop-schema.md %})
-- [`ALTER SCHEMA`]({% link {{ page.version.version }}/alter-schema.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
-- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [`SHOW SCHEMAS`]({{ page.version.version }}/show-schemas.md)
+- [`SET SCHEMA`]({{ page.version.version }}/alter-table.md#set-schema)
+- [`DROP SCHEMA`]({{ page.version.version }}/drop-schema.md)
+- [`ALTER SCHEMA`]({{ page.version.version }}/alter-schema.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)
+- [Online Schema Changes]({{ page.version.version }}/online-schema-changes.md)

@@ -5,16 +5,15 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW CREATE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) shows the `CREATE` statement for an existing [database]({% link {{ page.version.version }}/create-database.md %}), [function]({% link {{ page.version.version }}/create-function.md %}), [table]({% link {{ page.version.version }}/create-table.md %}), [view]({% link {{ page.version.version }}/create-view.md %}), or [sequence]({% link {{ page.version.version }}/create-sequence.md %}).
+The `SHOW CREATE` [statement]({{ page.version.version }}/sql-statements.md) shows the `CREATE` statement for an existing [database]({{ page.version.version }}/create-database.md), [function]({{ page.version.version }}/create-function.md), [table]({{ page.version.version }}/create-table.md), [view]({{ page.version.version }}/create-view.md), or [sequence]({{ page.version.version }}/create-sequence.md).
 
 ## Required privileges
 
-The user must have any [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the target database, function, table, view, or sequence.
+The user must have any [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) on the target database, function, table, view, or sequence.
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_create.html %}
 </div>
 
 ## Parameters
@@ -22,9 +21,9 @@ The user must have any [privilege]({% link {{ page.version.version }}/security-r
 Parameter | Description
 ----------|------------
 `object_name` | The name of the database, function, table, view, or sequence for which to show the `CREATE` statement.
-`ALL TABLES` | Show the `CREATE` statements for all tables, views, and sequences in the current database.<br>This option is intended to provide the statements required to recreate the objects in the current database. As a result, `SHOW CREATE ALL TABLES` also returns the [`ALTER` statements]({% link {{ page.version.version }}/alter-table.md %}) that add, modify, and validate an object's [constraints]({% link {{ page.version.version }}/constraints.md %}). The `ALTER` statements follow the `CREATE` statements to guarantee that all objects are added before their references.
-`ALL SCHEMAS` | Show the `CREATE` statements for all [schemas]({% link {{ page.version.version }}/create-schema.md %}) in the current database.
-`ALL TYPES` | Show the `CREATE` statements for all [types]({% link {{ page.version.version }}/create-type.md %}) in the current database.
+`ALL TABLES` | Show the `CREATE` statements for all tables, views, and sequences in the current database.<br>This option is intended to provide the statements required to recreate the objects in the current database. As a result, `SHOW CREATE ALL TABLES` also returns the [`ALTER` statements]({{ page.version.version }}/alter-table.md) that add, modify, and validate an object's [constraints]({{ page.version.version }}/constraints.md). The `ALTER` statements follow the `CREATE` statements to guarantee that all objects are added before their references.
+`ALL SCHEMAS` | Show the `CREATE` statements for all [schemas]({{ page.version.version }}/create-schema.md) in the current database.
+`ALL TYPES` | Show the `CREATE` statements for all [types]({{ page.version.version }}/create-type.md) in the current database.
 
 ## Response
 
@@ -37,11 +36,9 @@ Field | Description
 
 ## Example
 
-{% include {{page.version.version}}/sql/movr-statements-nodes.md %}
 
 ### Show the `CREATE TABLE` statement for a table
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE drivers (
     id UUID NOT NULL,
@@ -53,7 +50,6 @@ Field | Description
 );
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE drivers;
 ~~~
@@ -75,7 +71,6 @@ Field | Description
 
 To return just the `create_statement` value:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CREATE TABLE drivers) SELECT create_statement FROM x;
 ~~~
@@ -101,16 +96,14 @@ To return just the `create_statement` value:
 
 ### Show the `CREATE TABLE` statement for a table with a hidden column
 
-If one or more columns is [`NOT VISIBLE`]({% link {{ page.version.version }}/create-table.md %}#not-visible-property) within a table, `SHOW CREATE` will display the `NOT VISIBLE` flag after those columns.
+If one or more columns is [`NOT VISIBLE`]({{ page.version.version }}/create-table.md#not-visible-property) within a table, `SHOW CREATE` will display the `NOT VISIBLE` flag after those columns.
 
 Start by setting the `credit_card` field to `NOT VISIBLE`:
 
-{% include copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE public.users ALTER COLUMN credit_card SET NOT VISIBLE;
 ~~~
 
-{% include copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -131,12 +124,10 @@ users        | CREATE TABLE public.users (
 
 ### Show the `CREATE VIEW` statement for a view
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW user_view (city, name) AS SELECT city, name FROM users;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE user_view;
 ~~~
@@ -150,7 +141,6 @@ users        | CREATE TABLE public.users (
 
 To return just the `create_statement` value:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CREATE VIEW user_view) SELECT create_statement FROM x;
 ~~~
@@ -166,7 +156,6 @@ To return just the `create_statement` value:
 
 To get just a view's `SELECT` statement, you can query the `views` table in the built-in `information_schema` database and filter on the view name:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT view_definition
   FROM information_schema.views
@@ -182,12 +171,10 @@ To get just a view's `SELECT` statement, you can query the `views` table in the 
 
 ### Show the `CREATE SEQUENCE` statement for a sequence
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE desc_customer_list START -1 INCREMENT -2;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE desc_customer_list;
 ~~~
@@ -201,7 +188,6 @@ To get just a view's `SELECT` statement, you can query the `views` table in the 
 
 To return just the `create_statement` value:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CREATE desc_customer_list) SELECT create_statement FROM x;
 ~~~
@@ -215,14 +201,12 @@ To return just the `create_statement` value:
 
 ### Show the `CREATE TABLE` statement for a table with a comment
 
-If you [add a comment]({% link {{ page.version.version }}/comment-on.md %}) on a table, `SHOW CREATE TABLE` will display the comment.
+If you [add a comment]({{ page.version.version }}/comment-on.md) on a table, `SHOW CREATE TABLE` will display the comment.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON TABLE users IS 'This table contains information about users.';
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -244,7 +228,6 @@ If you [add a comment]({% link {{ page.version.version }}/comment-on.md %}) on a
 
 To return just the `create_statement` value:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH x AS (SHOW CREATE TABLE users) SELECT create_statement FROM x;
 ~~~
@@ -264,17 +247,16 @@ To return just the `create_statement` value:
 (1 row)
 ~~~
 
-For more information, see [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}).
+For more information, see [`COMMENT ON`]({{ page.version.version }}/comment-on.md).
 
 ### Show the `CREATE TABLE` statement for a table with a multi-region locality
 
-Use the `SHOW CREATE TABLE` command to view [multi-region-defined]({% link {{ page.version.version }}/multiregion-overview.md %}) table localities.
+Use the `SHOW CREATE TABLE` command to view [multi-region-defined]({{ page.version.version }}/multiregion-overview.md) table localities.
 
 
 
-To add the first region to the database, or to set an already-added region as the primary region, use a [`SET PRIMARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region) statement:
+To add the first region to the database, or to set an already-added region as the primary region, use a [`SET PRIMARY REGION`]({{ page.version.version }}/alter-database.md#set-primary-region) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE movr SET PRIMARY REGION "us-east";
 ~~~
@@ -286,14 +268,12 @@ ALTER DATABASE PRIMARY REGION
 Time: 49ms total (execution 48ms / network 0ms)
 ~~~
 
-All tables will be [`REGIONAL BY TABLE`]({% link {{ page.version.version }}/alter-table.md %}#regional-by-table) in `us-east` by default. Configure the `users` table to be [`REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#regional-by-row) instead:
+All tables will be [`REGIONAL BY TABLE`]({{ page.version.version }}/alter-table.md#regional-by-table) in `us-east` by default. Configure the `users` table to be [`REGIONAL BY ROW`]({{ page.version.version }}/alter-table.md#regional-by-row) instead:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users SET LOCALITY REGIONAL BY ROW;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -318,12 +298,10 @@ All tables will be [`REGIONAL BY TABLE`]({% link {{ page.version.version }}/alte
 
 The following statement defines a function to return the number of rows in the `users` table.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE FUNCTION num_users() RETURNS INT AS 'SELECT count(*) from users' LANGUAGE SQL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE FUNCTION num_users;
 ~~~
@@ -347,9 +325,8 @@ The following statement defines a function to return the number of rows in the `
 
 To return the `CREATE` statements for all of the tables, views, and sequences in the current database, use `SHOW CREATE ALL TABLES`.
 
-Note that this statement also returns the [`ALTER` statements]({% link {{ page.version.version }}/alter-table.md %}) that add, modify, and validate an object's [constraints]({% link {{ page.version.version }}/constraints.md %}).
+Note that this statement also returns the [`ALTER` statements]({{ page.version.version }}/alter-table.md) that add, modify, and validate an object's [constraints]({{ page.version.version }}/constraints.md).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE ALL TABLES;
 ~~~
@@ -448,7 +425,6 @@ Note that this statement also returns the [`ALTER` statements]({% link {{ page.v
 
 To return the `CREATE DATABASE` statement for a database, use `SHOW CREATE DATABASE`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE DATABASE movr;
 ~~~
@@ -460,18 +436,16 @@ To return the `CREATE DATABASE` statement for a database, use `SHOW CREATE DATAB
 (1 row)
 ~~~
 
-Suppose that you have a multi-region cluster, and you want to return the `SHOW CREATE DATABASE` statement for a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}).
+Suppose that you have a multi-region cluster, and you want to return the `SHOW CREATE DATABASE` statement for a [multi-region database]({{ page.version.version }}/multiregion-overview.md).
 
 In a new terminal, start a virtual multi-region demo cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo --global --nodes 9
 ~~~
 
-In the SQL shell, [add regions to the database]({% link {{ page.version.version }}/alter-database.md %}#add-region):
+In the SQL shell, [add regions to the database]({{ page.version.version }}/alter-database.md#add-region):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE movr PRIMARY REGION "us-east1";
 ALTER DATABASE movr ADD REGION "europe-west1";
@@ -480,7 +454,6 @@ ALTER DATABASE movr ADD REGION "us-west1";
 
 The `SHOW CREATE DATABASE` output includes the database regions.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE DATABASE movr;
 ~~~
@@ -494,7 +467,6 @@ The `SHOW CREATE DATABASE` output includes the database regions.
 
 ### Show the `CREATE SCHEMA` statement for all schemas within a database
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE ALL SCHEMAS;
 ~~~
@@ -508,9 +480,9 @@ The `SHOW CREATE DATABASE` output includes the database regions.
 
 ## See also
 
-- [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
-- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
-- [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %})
-- [`CREATE TABLE`]({% link {{ page.version.version }}/create-sequence.md %})
-- [Information Schema]({% link {{ page.version.version }}/information-schema.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [`CREATE FUNCTION`]({{ page.version.version }}/create-function.md)
+- [`CREATE TABLE`]({{ page.version.version }}/create-table.md)
+- [`CREATE VIEW`]({{ page.version.version }}/create-view.md)
+- [`CREATE TABLE`]({{ page.version.version }}/create-sequence.md)
+- [Information Schema]({{ page.version.version }}/information-schema.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)

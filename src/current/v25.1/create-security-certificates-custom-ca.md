@@ -5,7 +5,7 @@ toc: true
 docs_area:
 ---
 
-This document discusses the use of advanced [Public Key Infrastructure (PKI)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}) systems and certificates issued by them with CockroachDB.
+This document discusses the use of advanced [Public Key Infrastructure (PKI)]({{ page.version.version }}/security-reference/transport-layer-security.md) systems and certificates issued by them with CockroachDB.
  security certificates with CockroachDB. PKI certificates are used in CockroachDB for TLS encryption and for node and client authentication.
 
 Approach | Use case description
@@ -16,22 +16,21 @@ Approach | Use case description
 
 ## Accessing the DB Console for a secure cluster
 
-On [accessing the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) for a secure cluster, your web browser will consider the CockroachDB-issued certificate invalid, because the browser hasn't been configured to trust the CA that issued the certificate.
+On [accessing the DB Console]({{ page.version.version }}/ui-overview.md#db-console-access) for a secure cluster, your web browser will consider the CockroachDB-issued certificate invalid, because the browser hasn't been configured to trust the CA that issued the certificate.
 
 For secure clusters, you can avoid getting the warning message by using a certificate issued by a public CA whose certificates are trusted by browsers, in addition to the CockroachDB-created certificates.
 
 1. Request a certificate from a public CA (for example, [Let's Encrypt](https://letsencrypt.org/)). The certificate must have the IP addresses and DNS names used to reach the DB Console listed in the `Subject Alternative Name` field.
 1. Rename the certificate and key files to `ui.crt` and `ui.key`.
-1. Add the `ui.crt` and `ui.key` files to the [trust store]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}#trust-store). `ui.key` must meet the [permission requirements check]({% link {{ page.version.version }}/cockroach-cert.md %}#key-file-permissions) on macOS, Linux, and other UNIX-like systems. If your cluster is deployed using containers, update the containers to include the new certificate and key.
+1. Add the `ui.crt` and `ui.key` files to the [trust store]({{ page.version.version }}/security-reference/transport-layer-security.md#trust-store). `ui.key` must meet the [permission requirements check]({{ page.version.version }}/cockroach-cert.md#key-file-permissions) on macOS, Linux, and other UNIX-like systems. If your cluster is deployed using containers, update the containers to include the new certificate and key.
 1. The cockroach process reads certificates only when the process starts.
 
    - In a manually-deployed cluster, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the cockroach process:
-      {% include_cached copy-clipboard.html %}
       ~~~ shell
       pkill -SIGHUP -x cockroach
       ~~~
       The `SIGHUP` signal must be sent by the same user running the process or by a user with adequate privileges to send signals to processes owned by another user, such as a user with `sudo` access.
-   - In a cluster deployed using the [Kubernetes Operator]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}), there is no way to send a `SIGHUP` signal to the individual `cockroach` process on each cluster node. Instead, perform a rolling restart of the cluster's pods.
+   - In a cluster deployed using the [Kubernetes Operator]({{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md), there is no way to send a `SIGHUP` signal to the individual `cockroach` process on each cluster node. Instead, perform a rolling restart of the cluster's pods.
 
 ### Node key and certificates
 
@@ -56,12 +55,11 @@ File name | File usage
 `client.<user>.key` | Client key created using the `cockroach cert` command.
 
 {{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
 {{site.data.alerts.end}}
 
 ## Split node certificates
 
-The node certificate discussed in the `cockroach cert` command [documentation]({% link {{ page.version.version }}/cockroach-cert.md %}) is multifunctional, which means the same certificate is presented for the node's incoming connections (from SQL and DB Console clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. This works if you are also using the CockroachDB CA created using the `cockroach cert` command. However, if you need to use an external public CA or your own organizational CA, the CA policy might not allow it to sign a server certificate containing a CN that is not an IP address or domain name.
+The node certificate discussed in the `cockroach cert` command [documentation]({{ page.version.version }}/cockroach-cert.md) is multifunctional, which means the same certificate is presented for the node's incoming connections (from SQL and DB Console clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make the certificate multi-functional, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. This works if you are also using the CockroachDB CA created using the `cockroach cert` command. However, if you need to use an external public CA or your own organizational CA, the CA policy might not allow it to sign a server certificate containing a CN that is not an IP address or domain name.
 
 To get around this issue, you can split the node key and certificate into two:
 
@@ -132,9 +130,8 @@ File name | File usage
 To enable certificate revocation:
 
 1. Ensure that your Certificate Authority sets the OCSP server address in the `authorityInfoAccess` field in the certificate.
-1. [Set the cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
+1. [Set the cluster setting]({{ page.version.version }}/set-cluster-setting.md) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
 
-      {% include_cached copy-clipboard.html %}
       ~~~ sql
       > SHOW CLUSTER SETTING security.ocsp.mode;
       ~~~
@@ -149,7 +146,6 @@ To enable certificate revocation:
       Network Latency: 181µs
       ~~~
 
-      {% include_cached copy-clipboard.html %}
       ~~~ sql
       > SET CLUSTER SETTING security.ocsp.mode = lax;
       ~~~
@@ -163,9 +159,9 @@ To enable certificate revocation:
 
 ## See also
 
-- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %})
-- [Use the CockroachDB CLI to provision a development cluster]({% link {{ page.version.version }}/manage-certs-cli.md %}).
-- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %}).
-- [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}): Learn about starting a multi-node secure cluster and accessing it from a client.
-- [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}): Learn more about the flags you pass when adding a node to a secure cluster
-- [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [Public Key Infrastructure (PKI) and Transport Layer Security (TLS)]({{ page.version.version }}/security-reference/transport-layer-security.md)
+- [Use the CockroachDB CLI to provision a development cluster]({{ page.version.version }}/manage-certs-cli.md).
+- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({{ page.version.version }}/manage-certs-vault.md).
+- [Manual Deployment]({{ page.version.version }}/manual-deployment.md): Learn about starting a multi-node secure cluster and accessing it from a client.
+- [Start a Node]({{ page.version.version }}/cockroach-start.md): Learn more about the flags you pass when adding a node to a secure cluster
+- [Client Connection Parameters]({{ page.version.version }}/connection-parameters.md)

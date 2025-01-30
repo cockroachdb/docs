@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.architecture 
 ---
 
-The SQL layer of CockroachDB's architecture exposes a SQL API to developers and converts high-level [SQL statements]({% link {{ page.version.version }}/sql-statements.md %}) into low-level read and write requests to the underlying key-value store, which are passed to the [transaction Layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %}).
+The SQL layer of CockroachDB's architecture exposes a SQL API to developers and converts high-level [SQL statements]({{ page.version.version }}/sql-statements.md) into low-level read and write requests to the underlying key-value store, which are passed to the [transaction Layer]({{ page.version.version }}/architecture/transaction-layer.md).
 
 It consists of the following sublayers:
 
@@ -16,43 +16,43 @@ It consists of the following sublayers:
 - [SQL execution engine](#query-execution), which executes the physical plan by making read and write requests to the underlying key-value store.
 
 {{site.data.alerts.callout_info}}
-If you haven't already, we recommend reading the [Architecture Overview]({% link {{ page.version.version }}/architecture/overview.md %}).
+If you haven't already, we recommend reading the [Architecture Overview]({{ page.version.version }}/architecture/overview.md).
 {{site.data.alerts.end}}
 
 ## Overview
 
-Once CockroachDB has been [deployed]({% link cockroachcloud/quickstart.md %}), developers need only a [connection string]({% link {{ page.version.version }}/connection-parameters.md %}) to the cluster, and they can start working with SQL statements.
+Once CockroachDB has been [deployed](quickstart.md), developers need only a [connection string]({{ page.version.version }}/connection-parameters.md) to the cluster, and they can start working with SQL statements.
 
 <a name="gateway-node"></a>
 
 Because each node in a CockroachDB cluster behaves symmetrically, developers can send requests to any node (which means CockroachDB works well with load balancers). Whichever node receives the request acts as the "gateway node," which processes the request and responds to the client.
 
-Requests to the cluster arrive as SQL statements, but data is ultimately written to and read from the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) as key-value (KV) pairs. To handle this, the SQL layer converts SQL statements into a plan of KV operations, which it then passes along to the [transaction layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %}).
+Requests to the cluster arrive as SQL statements, but data is ultimately written to and read from the [storage layer]({{ page.version.version }}/architecture/storage-layer.md) as key-value (KV) pairs. To handle this, the SQL layer converts SQL statements into a plan of KV operations, which it then passes along to the [transaction layer]({{ page.version.version }}/architecture/transaction-layer.md).
 
 ### Interactions with other layers
 
 In relationship to other layers in CockroachDB, the SQL layer:
 
 - Receives requests from the outside world via its [SQL API](#sql-api).
-- Converts SQL statements into low-level KV operations, which it sends as requests to the [transaction layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %}).
+- Converts SQL statements into low-level KV operations, which it sends as requests to the [transaction layer]({{ page.version.version }}/architecture/transaction-layer.md).
 
 ## Components
 
 ### Relational structure
 
-Developers experience data stored in CockroachDB as a relational structure comprised of rows and columns. Sets of rows and columns are further organized into [tables]({% link {{ page.version.version }}/show-tables.md %}). Collections of tables are then organized into [databases]({% link {{ page.version.version }}/show-databases.md %}). A CockroachDB cluster can contain many databases.
+Developers experience data stored in CockroachDB as a relational structure comprised of rows and columns. Sets of rows and columns are further organized into [tables]({{ page.version.version }}/show-tables.md). Collections of tables are then organized into [databases]({{ page.version.version }}/show-databases.md). A CockroachDB cluster can contain many databases.
 
-CockroachDB provides typical relational features like [constraints]({% link {{ page.version.version }}/constraints.md %}) (e.g., [foreign keys]({% link {{ page.version.version }}/foreign-key.md %})). These features mean that application developers can trust that the database will ensure consistent structuring of the application's data; data validation doesn't need to be built into the application logic separately.
+CockroachDB provides typical relational features like [constraints]({{ page.version.version }}/constraints.md) (e.g., [foreign keys]({{ page.version.version }}/foreign-key.md)). These features mean that application developers can trust that the database will ensure consistent structuring of the application's data; data validation doesn't need to be built into the application logic separately.
 
 ### SQL API
 
-CockroachDB implements most of the ANSI SQL standard to manifest its relational structure. For a complete list of the SQL features CockroachDB supports, see [SQL Feature Support]({% link {{ page.version.version }}/sql-feature-support.md %}).
+CockroachDB implements most of the ANSI SQL standard to manifest its relational structure. For a complete list of the SQL features CockroachDB supports, see [SQL Feature Support]({{ page.version.version }}/sql-feature-support.md).
 
-Importantly, through the SQL API developers have access to ACID-semantic [transactions]({% link {{ page.version.version }}/transactions.md %}) like they would through any SQL database (using [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}), [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}), etc.).
+Importantly, through the SQL API developers have access to ACID-semantic [transactions]({{ page.version.version }}/transactions.md) like they would through any SQL database (using [`BEGIN`]({{ page.version.version }}/begin-transaction.md), [`COMMIT`]({{ page.version.version }}/commit-transaction.md), etc.).
 
 ### PostgreSQL wire protocol
 
-SQL queries reach your cluster through the PostgreSQL wire protocol. This makes connecting your application to the cluster simple by supporting many PostgreSQL-compatible [drivers and ORMs]({% link {{ page.version.version }}/install-client-drivers.md %}).
+SQL queries reach your cluster through the PostgreSQL wire protocol. This makes connecting your application to the cluster simple by supporting many PostgreSQL-compatible [drivers and ORMs]({{ page.version.version }}/install-client-drivers.md).
 
 ### SQL parser, planner, executor
 
@@ -70,13 +70,13 @@ During the *logical planning* phase, the AST is transformed into a query plan in
     - Checking whether the query is a valid statement in the SQL language.
     - Resolving names, such as the names of tables or variables to their values.
     - Eliminating unneeded intermediate computations, e.g., by replacing `0.6 + 0.4` with `1.0`. This is also known as [constant folding](https://wikipedia.org/wiki/Constant_folding).
-    - Finalizing which data types to use for intermediate results, e.g., when a query contains one or more [subqueries]({% link {{ page.version.version }}/subqueries.md %}).
+    - Finalizing which data types to use for intermediate results, e.g., when a query contains one or more [subqueries]({{ page.version.version }}/subqueries.md).
 
 1. The logical plan is *simplified* using a series of transformations that are always valid. For example, `a BETWEEN b AND c` may be converted to `a >= b AND a <= c`.
 
-1. The logical plan is *optimized* using a [search algorithm]({% link {{ page.version.version }}/cost-based-optimizer.md %}#how-is-cost-calculated) that evaluates many possible ways to execute a query and selects an execution plan with the least costs.
+1. The logical plan is *optimized* using a [search algorithm]({{ page.version.version }}/cost-based-optimizer.md#how-is-cost-calculated) that evaluates many possible ways to execute a query and selects an execution plan with the least costs.
 
-The result of the final step above is an optimized logical plan. To view the logical plan generated by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}), use the [`EXPLAIN (OPT)`]({% link {{ page.version.version }}/explain.md %}) statement.
+The result of the final step above is an optimized logical plan. To view the logical plan generated by the [cost-based optimizer]({{ page.version.version }}/cost-based-optimizer.md), use the [`EXPLAIN (OPT)`]({{ page.version.version }}/explain.md) statement.
 
 #### Physical planning
 
@@ -85,9 +85,9 @@ the execution of the query, based on range locality information. This
 is where CockroachDB decides to distribute a query to perform some
 computations close to where the data is stored.
 
-More concretely, the physical planning phase transforms the optimized logical plan generated during [logical planning](#logical-planning) into a [directed acyclic graph](https://wikipedia.org/wiki/Directed_acyclic_graph) (DAG) of physical *SQL operators*. These operators can be viewed by running the [`EXPLAIN(DISTSQL)`]({% link {{ page.version.version }}/explain.md %}) statement.
+More concretely, the physical planning phase transforms the optimized logical plan generated during [logical planning](#logical-planning) into a [directed acyclic graph](https://wikipedia.org/wiki/Directed_acyclic_graph) (DAG) of physical *SQL operators*. These operators can be viewed by running the [`EXPLAIN(DISTSQL)`]({{ page.version.version }}/explain.md) statement.
 
-Because the [distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}) presents the abstraction of a single key space, the SQL layer can perform read and write operations for any range on any node. This allows the SQL operators to behave identically whether planned in gateway or distributed mode.
+Because the [distribution layer]({{ page.version.version }}/architecture/distribution-layer.md) presents the abstraction of a single key space, the SQL layer can perform read and write operations for any range on any node. This allows the SQL operators to behave identically whether planned in gateway or distributed mode.
 
 The decision about whether to distribute a query across multiple nodes is made by a heuristic that estimates the quantity of data that would need to be sent over the network. Queries that only need a small number of rows are executed on the gateway node. Other queries are distributed across multiple nodes.
 
@@ -101,9 +101,9 @@ Each processor uses an encoded form for the scalar values manipulated by the que
 
 #### Vectorized query execution
 
-If [vectorized execution]({% link {{ page.version.version }}/vectorized-execution.md %}) is enabled, the physical plan is sent to nodes to be processed by the vectorized execution engine.
+If [vectorized execution]({{ page.version.version }}/vectorized-execution.md) is enabled, the physical plan is sent to nodes to be processed by the vectorized execution engine.
 
-Upon receiving the physical plan, the vectorized engine reads batches of table data [from disk]({% link {{ page.version.version }}/architecture/storage-layer.md %}) and converts the data from row format to columnar format. These batches of column data are stored in memory so the engine can access them quickly during execution.
+Upon receiving the physical plan, the vectorized engine reads batches of table data [from disk]({{ page.version.version }}/architecture/storage-layer.md) and converts the data from row format to columnar format. These batches of column data are stored in memory so the engine can access them quickly during execution.
 
 The vectorized engine uses specialized, precompiled functions that quickly iterate over the type-specific arrays of column data. The columnar output from the functions is stored in memory as the engine processes each column of data.
 
@@ -138,7 +138,7 @@ You can find much greater detail in the [DistSQL RFC](https://github.com/cockroa
 
 ## Schema changes
 
-CockroachDB performs schema changes, such as the [addition of columns]({% link {{ page.version.version }}/alter-table.md %}#add-column) or [secondary indexes]({% link {{ page.version.version }}/create-index.md %}), using a protocol that allows tables to remain online (i.e., able to serve reads and writes) during the schema change. This protocol allows different nodes in the cluster to asynchronously transition to a new table schema at different times.
+CockroachDB performs schema changes, such as the [addition of columns]({{ page.version.version }}/alter-table.md#add-column) or [secondary indexes]({{ page.version.version }}/create-index.md), using a protocol that allows tables to remain online (i.e., able to serve reads and writes) during the schema change. This protocol allows different nodes in the cluster to asynchronously transition to a new table schema at different times.
 
 The schema change protocol decomposes each schema change into a sequence of incremental changes that will achieve the desired effect.
 
@@ -146,7 +146,7 @@ For example, the addition of a secondary index requires two intermediate schema 
 
 This approach is based on the paper [_Online, Asynchronous Schema Change in F1_](https://research.google/pubs/pub41376/).
 
-For more information, including examples and limitations, see [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %}).
+For more information, including examples and limitations, see [Online Schema Changes]({{ page.version.version }}/online-schema-changes.md).
 
 ## Technical interactions with other layers
 
@@ -156,4 +156,4 @@ KV operations from executed `planNodes` are sent to the transaction layer.
 
 ## What's next?
 
-Learn how CockroachDB handles concurrent requests in the [transaction layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %}).
+Learn how CockroachDB handles concurrent requests in the [transaction layer]({{ page.version.version }}/architecture/transaction-layer.md).

@@ -5,15 +5,14 @@ toc: true
 docs_area: reference.metrics
 ---
 
-The [cluster setting `server.child_metrics.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-child-metrics-enabled) enables the exporting of child metrics, which are additional [Prometheus]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) time series with extra labels.
+The [cluster setting `server.child_metrics.enabled`]({{ page.version.version }}/cluster-settings.md#setting-server-child-metrics-enabled) enables the exporting of child metrics, which are additional [Prometheus]({{ page.version.version }}/monitoring-and-alerting.md#prometheus-endpoint) time series with extra labels.
 
 The metrics and their potential child metrics are determined by the specific feature the cluster is using. The number of child metrics can significantly increase based on their associated labels, which increases cardinality. This page will help you understand the potential size of the Prometheus scrape payload for your workload when child metrics are enabled.
 
 ## Enable child metrics
 
-`server.child_metrics.enabled` is disabled by default. To enable it, use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement:
+`server.child_metrics.enabled` is disabled by default. To enable it, use the [`SET CLUSTER SETTING`]({{ page.version.version }}/set-cluster-setting.md) statement:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.child_metrics.enabled = true;
 ~~~
@@ -44,11 +43,10 @@ rpc_connection_healthy{node_id="1",remote_node_id="3",remote_addr="crlMBP-X3HQX3
 ~~~
 
 {% assign feature = "all" %}
-{% include {{ page.version.version }}/child-metrics-table.md %}
 
 ## Secure clusters
 
-When child metrics is enabled, for [secure clusters]({% link {{ page.version.version }}/secure-a-cluster.md %}) the `security.certificate.expiration.client` is exported per SQL user with a label for `sql_user`. The `sql_user` label may have the values of the cluster's users who are logged into a node using client security certificates. The cardinality increases with the number of SQL users. An aggregated metric is also included, however since this is a sum of the child metric values which represent timestamps, it is not usable.
+When child metrics is enabled, for [secure clusters]({{ page.version.version }}/secure-a-cluster.md) the `security.certificate.expiration.client` is exported per SQL user with a label for `sql_user`. The `sql_user` label may have the values of the cluster's users who are logged into a node using client security certificates. The cardinality increases with the number of SQL users. An aggregated metric is also included, however since this is a sum of the child metric values which represent timestamps, it is not usable.
 
 For example:
 
@@ -61,14 +59,13 @@ security_certificate_expiration_client{node_id="1",sql_user="root"} 1.878055014e
 ~~~
 
 {% assign feature = "secure" %}
-{% include {{ page.version.version }}/child-metrics-table.md %}
 
 ## Virtual clusters
 
-When child metrics is enabled, for [virtual clusters]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) the `kv.tenant_rate_limit.*` metrics and other kv-related metrics are exported per virtual cluster with a label for `tenant_id`. The `tenant_id` label may have the values: `system` or the id of the virtual cluster. The cardinality increases with the number of virtual clusters. An aggregated metric is also included.
+When child metrics is enabled, for [virtual clusters]({{ page.version.version }}/cluster-virtualization-overview.md) the `kv.tenant_rate_limit.*` metrics and other kv-related metrics are exported per virtual cluster with a label for `tenant_id`. The `tenant_id` label may have the values: `system` or the id of the virtual cluster. The cardinality increases with the number of virtual clusters. An aggregated metric is also included.
 
 {{site.data.alerts.callout_info}}
-With virtual clusters, while the `tenant_id` label on kv metrics is only exported when child metrics is enabled, [the `tenant` label on SQL metrics]({% link {{ page.version.version }}/work-with-virtual-clusters.md %}#work-with-metrics-with-cluster-virtualization-enabled) is exported whether child metrics is enabled or disabled. 
+With virtual clusters, while the `tenant_id` label on kv metrics is only exported when child metrics is enabled, [the `tenant` label on SQL metrics]({{ page.version.version }}/work-with-virtual-clusters.md#work-with-metrics-with-cluster-virtualization-enabled) is exported whether child metrics is enabled or disabled. 
 {{site.data.alerts.end}}
 
 For example:
@@ -90,11 +87,10 @@ sysbytes{store="1",node_id="1",tenant_id="system"} 41476
 ~~~
 
 {% assign feature = "virtual" %}
-{% include {{ page.version.version }}/child-metrics-table.md %}
 
 ## Clusters with changefeeds
 
-When child metrics is enabled and [changefeeds with metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) are created on the cluster, the `changefeed.*` metrics are exported per changefeed metric label with a label for `scope`. The `scope` label may have the values set using the `metrics_label` option. The cardinality increases with the number of changefeed metric labels. An aggregated metric is also included.
+When child metrics is enabled and [changefeeds with metrics labels]({{ page.version.version }}/monitor-and-debug-changefeeds.md#using-changefeed-metrics-labels) are created on the cluster, the `changefeed.*` metrics are exported per changefeed metric label with a label for `scope`. The `scope` label may have the values set using the `metrics_label` option. The cardinality increases with the number of changefeed metric labels. An aggregated metric is also included.
 
 For example, when you create two changefeeds with the metrics labels `employees` and `office_dogs`, the counter metric `changefeed_error_retries` exports child metrics with a `scope` for `employees` and `office_dogs`. In addition, the `default` scope will also be exported which includes changefeeds started without a metrics label.
 
@@ -108,11 +104,10 @@ changefeed_error_retries{node_id="1",scope="office_dogs"} 0
 ~~~
 
 {% assign feature = "changefeed" %}
-{% include {{ page.version.version }}/child-metrics-table.md %}
 
 ## Clusters with logical data replication jobs
 
-When child metrics is enabled and [logical data replication (LDR) jobs with metrics labels]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}#metrics-labels) are created on the cluster, the `logical_replication_*_by_label` metrics are exported per LDR metric label. The `label` may have the values set using the `label` option. The cardinality increases with the number of LDR metric labels.
+When child metrics is enabled and [logical data replication (LDR) jobs with metrics labels]({{ page.version.version }}/logical-data-replication-monitoring.md#metrics-labels) are created on the cluster, the `logical_replication_*_by_label` metrics are exported per LDR metric label. The `label` may have the values set using the `label` option. The cardinality increases with the number of LDR metric labels.
 
 For example, when you create two LDR jobs with the metrics labels `ldr_job1` and `ldr_job2`, the metrics `logical_replication_*_by_label` export child metrics with a `label` for `ldr_job1` and `ldr_job2`.
 
@@ -143,11 +138,10 @@ logical_replication_scanning_ranges{node_id="2"} 0
 ~~~
 
 {% assign feature = "ldr" %}
-{% include {{ page.version.version }}/child-metrics-table.md %}
 
 ## Clusters with row-level TTL jobs
 
-When child metrics is enabled and [row-level TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}) are created on the cluster with the [`ttl_label_metrics` storage parameter enabled]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-metrics), the `jobs.row_level_ttl.*` metrics are exported per TTL job with `ttl_label_metrics` enabled with a label for `relation`. The value of the `relation` label may have the format: `{database}_{schema}_{table}_{primary key}`. The cardinality increases with the number of TTL jobs with `ttl_label_metrics` enabled. An aggregated metric is also included.
+When child metrics is enabled and [row-level TTL jobs]({{ page.version.version }}/row-level-ttl.md) are created on the cluster with the [`ttl_label_metrics` storage parameter enabled]({{ page.version.version }}/row-level-ttl.md#ttl-metrics), the `jobs.row_level_ttl.*` metrics are exported per TTL job with `ttl_label_metrics` enabled with a label for `relation`. The value of the `relation` label may have the format: `{database}_{schema}_{table}_{primary key}`. The cardinality increases with the number of TTL jobs with `ttl_label_metrics` enabled. An aggregated metric is also included.
 
 For example:
 
@@ -161,7 +155,6 @@ jobs_row_level_ttl_total_rows{node_id="1",relation="defaultdb_public_events_usin
 ~~~
 
 {% assign feature = "row-level-ttl" %}
-{% include {{ page.version.version }}/child-metrics-table.md %}
 
 ## Metrics of type histogram
 

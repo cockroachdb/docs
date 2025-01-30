@@ -7,16 +7,15 @@ docs_area: reference.sql
 
 The `ORDER BY` clause controls the order in which rows are returned or
 processed. It can be used in any [selection
-query]({% link {{ page.version.version }}/selection-queries.md %}), including
-as operand of [`INSERT`]({% link {{ page.version.version }}/insert.md %}) or [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}), as
-well as with [`DELETE`]({% link {{ page.version.version }}/delete.md %}) and [`UPDATE`]({% link {{ page.version.version }}/update.md %})
+query]({{ page.version.version }}/selection-queries.md), including
+as operand of [`INSERT`]({{ page.version.version }}/insert.md) or [`UPSERT`]({{ page.version.version }}/upsert.md), as
+well as with [`DELETE`]({{ page.version.version }}/delete.md) and [`UPDATE`]({{ page.version.version }}/update.md)
 statements.
 
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/sort_clause.html %}
 </div>
 
 ## Parameters
@@ -28,9 +27,9 @@ by the keyword `ASC` or `DESC`.
 Each **column selection** can take one of the following forms:
 
 - A simple column selection, determined as follows:
-  1. The name of a column label configured with `AS` earlier in the [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}). This uses the value computed by the `SELECT` clause as the sorting key.
+  1. The name of a column label configured with `AS` earlier in the [`SELECT` clause]({{ page.version.version }}/select-clause.md). This uses the value computed by the `SELECT` clause as the sorting key.
   1. A positive integer number, designating one of the columns in the data source, either the `FROM` clause of the `SELECT` clause where it happens or the table being written to by `DELETE` or `UPDATE`. This uses the corresponding input value from the data source to use as the sorting key.
-  1. An arbitrary [scalar expression]({% link {{ page.version.version }}/scalar-expressions.md %}). This uses the result of evaluating that expression as the sorting key.
+  1. An arbitrary [scalar expression]({{ page.version.version }}/scalar-expressions.md). This uses the result of evaluating that expression as the sorting key.
 - The notation `PRIMARY KEY <table_name>`. This uses the primary key column(s) of the given table as sorting key. This table must be part of the data source.
 - The notation `INDEX <table_name>@<index_name>`. This uses the columns indexed by the given index as sorting key. This table must be part of the data source.
 
@@ -41,7 +40,7 @@ The optional keyword `DESC` inverts the direction of the column(s)
 selected by the selection that immediately precedes.
 
 CockroachDB supports `NULLS FIRST` and `NULLS LAST` in `ORDER BY` clauses for compatibility with [PostgreSQL row-sorting syntax](https://www.postgresql.org/docs/current/queries-order.html).
-The default CockroachDB ordering is `NULL`s first for ascending order and `NULL`s last for descending order, which is the opposite of the PostgreSQL default. To change the default CockroachDB ordering, set the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `true`.
+The default CockroachDB ordering is `NULL`s first for ascending order and `NULL`s last for descending order, which is the opposite of the PostgreSQL default. To change the default CockroachDB ordering, set the `null_ordered_last` [session variable]({{ page.version.version }}/set-vars.md) to `true`.
 
 ## Order preservation
 
@@ -50,14 +49,13 @@ even if `ORDER BY` is specified. In other words, the `ORDER BY` clause is only
 effective at the top-level statement. For example, it is *ignored* by the query
 planner when present in a sub-query in a `FROM` clause as follows:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  SELECT * FROM a, b ORDER BY a.x;                 -- valid, effective
 >  SELECT * FROM (SELECT * FROM a ORDER BY a.x), b; -- ignored, ineffective
 ~~~
 
 However, when combining queries together with
-[sub-queries]({% link {{ page.version.version }}/table-expressions.md %}#use-a-subquery),
+[sub-queries]({{ page.version.version }}/table-expressions.md#use-a-subquery),
 some combinations will make the `ORDER BY` clause in a sub-query
 significant:
 
@@ -67,10 +65,10 @@ significant:
 1. The ordering of the operand of a stand-alone `LIMIT` or `OFFSET` clause (within
    a `FROM` operand of a `SELECT` clause) is preserved, to determine
    which rows are kept in the result.
-1. The ordering of the data source for an [`INSERT`]({% link {{ page.version.version }}/insert.md %})
-   statement or an [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement that also uses
+1. The ordering of the data source for an [`INSERT`]({{ page.version.version }}/insert.md)
+   statement or an [`UPSERT`]({{ page.version.version }}/upsert.md) statement that also uses
    `LIMIT` is preserved, to determine [which rows are processed, but not their order](#ordering-rows-in-dml-statements).
-1. The ordering indicated for an [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or [`DELETE`]({% link {{ page.version.version }}/delete.md %})
+1. The ordering indicated for an [`UPDATE`]({{ page.version.version }}/update.md) or [`DELETE`]({{ page.version.version }}/delete.md)
    statement that also uses `LIMIT` is used to determine
    [which rows are processed, but not their order](#ordering-rows-in-dml-statements).
    (This is a CockroachDB extension.)
@@ -79,7 +77,6 @@ significant:
 
 For example, using `WITH ORDINALITY`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM (SELECT * FROM a ORDER BY a.x) WITH ORDINALITY;
   -- ensures that the rows are numbered in the order of column a.x.
@@ -87,7 +84,6 @@ For example, using `WITH ORDINALITY`:
 
 For example, using a stand-alone `LIMIT` clause in `FROM`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM a, ((SELECT * FROM b ORDER BY b.x) LIMIT 1);
   -- ensures that only the first row of b in the order of column b.x
@@ -96,7 +92,6 @@ For example, using a stand-alone `LIMIT` clause in `FROM`:
 
 For example, using a sub-query in scalar context:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ARRAY(SELECT a.x FROM a ORDER BY a.x);
   -- ensures that the array is constructed using the values of a.x in sorted order.
@@ -115,7 +110,6 @@ of the CockroachDB cluster, and is generally variable over time.
 
 Considering the following table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE a(a INT);
 > INSERT INTO a VALUES (1), (3), (2);
@@ -123,7 +117,6 @@ Considering the following table:
 
 The following statements are equivalent:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT a AS b FROM a ORDER BY b; -- first form: refers to an AS alias.
 > SELECT a      FROM a ORDER BY 1; -- second form: refers to a column position.
@@ -144,7 +137,6 @@ The following statements are equivalent:
 Note that the order of the rules matter. If there is ambiguity, the `AS` aliases
 take priority over the data source columns, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ab(a INT, b INT);
 > SELECT a AS b, b AS c FROM ab ORDER BY b; -- orders by column a, renamed to b
@@ -153,7 +145,6 @@ take priority over the data source columns, for example:
 
 It is also possible to sort using an arbitrary scalar expression computed for each row, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT a, b FROM ab ORDER BY a + b; -- orders by the result of computing a+b.
 ~~~
@@ -163,7 +154,6 @@ It is also possible to sort using an arbitrary scalar expression computed for ea
 When more than one ordering specification is given, the later specifications are used
 to order rows that are equal over the earlier specifications, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ab(a INT, b INT);
 > SELECT a, b FROM ab ORDER BY b, a;
@@ -178,7 +168,6 @@ rows by column `a`.
 The keyword `DESC` ("descending") can be added after an ordering specification to
 invert its order. This can be specified separately for each specification, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ab(a INT, b INT);
 > SELECT a, b FROM ab ORDER BY b DESC, a; -- sorts on b descending, then a ascending.
@@ -193,7 +182,6 @@ The particular advantage is that for queries using the primary index,
 this guarantees the order while also guaranteeing there will not be an
 additional sorting computation to achieve it, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE kv(k INT PRIMARY KEY, v INT);
 > SELECT k, v FROM kv ORDER BY PRIMARY KEY kv; -- guarantees ordering by column k.
@@ -203,7 +191,6 @@ If a primary key uses the keyword `DESC` already, then its meaning
 will be flipped (cancelled) if the `ORDER BY` clause also uses
 `DESC`, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ab(a INT, b INT, PRIMARY KEY (b DESC, a ASC));
 > SELECT * FROM ab ORDER BY b DESC; -- orders by b descending, then a ascending.
@@ -222,7 +209,6 @@ The particular advantage is that for queries using that index, this
 guarantees the order while also guaranteeing there will not be an
 additional sorting computation to achieve it, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE kv(k INT PRIMARY KEY, v INT, INDEX v_idx(v));
 > SELECT k, v FROM kv ORDER BY INDEX kv@v_idx; -- guarantees ordering by column v.
@@ -232,7 +218,6 @@ If an index uses the keyword `DESC` already, then its meaning
 will be flipped (cancelled) if the `ORDER BY` clause also uses
 `DESC`, for example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ab(a INT, b INT, INDEX b_idx (b DESC, a ASC));
 > SELECT * FROM ab ORDER BY b DESC; -- orders by b descending, then a ascending.
@@ -244,9 +229,9 @@ will be flipped (cancelled) if the `ORDER BY` clause also uses
 
 ## Ordering rows in DML statements
 
-When using `ORDER BY` with an [`INSERT`]({% link {{ page.version.version }}/insert.md %}),
-[`UPSERT`]({% link {{ page.version.version }}/upsert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or
-[`DELETE`]({% link {{ page.version.version }}/delete.md %}) (i.e., a DML statement), the `ORDER BY` clause is
+When using `ORDER BY` with an [`INSERT`]({{ page.version.version }}/insert.md),
+[`UPSERT`]({{ page.version.version }}/upsert.md), [`UPDATE`]({{ page.version.version }}/update.md) or
+[`DELETE`]({{ page.version.version }}/delete.md) (i.e., a DML statement), the `ORDER BY` clause is
 ignored if it is not used in combination with [`LIMIT` and/or
 `OFFSET`](limit-offset.html).
 
@@ -257,7 +242,6 @@ place*.
 
 For example, using `LIMIT` in `INSERT`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO a SELECT * FROM b ORDER BY b.x LIMIT 1;
   -- ensures that only the first row of b in the order of column b.x
@@ -266,20 +250,19 @@ For example, using `LIMIT` in `INSERT`:
 
 The reason why `ORDER BY` does not control the final order of the rows
 in the table is that the ordering of rows in the target table is
-determined by its [primary and secondary indexes]({% link {{ page.version.version }}/indexes.md %}).
+determined by its [primary and secondary indexes]({{ page.version.version }}/indexes.md).
 
 To order the result of the `RETURNING` clause, see [Sorting the output
 of deletes](#sorting-the-output-of-deletes).
 
 ## Sorting the output of deletes
 
-{% include {{page.version.version}}/misc/sorting-delete-output.md %}
 
 ## See also
 
-- [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
-- [Scalar Expressions]({% link {{ page.version.version }}/scalar-expressions.md %})
-- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
-- [`UPSERT`]({% link {{ page.version.version }}/upsert.md %})
-- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
-- [`UPDATE`]({% link {{ page.version.version }}/delete.md %})
+- [Selection Queries]({{ page.version.version }}/selection-queries.md)
+- [Scalar Expressions]({{ page.version.version }}/scalar-expressions.md)
+- [`INSERT`]({{ page.version.version }}/insert.md)
+- [`UPSERT`]({{ page.version.version }}/upsert.md)
+- [`DELETE`]({{ page.version.version }}/delete.md)
+- [`UPDATE`]({{ page.version.version }}/delete.md)

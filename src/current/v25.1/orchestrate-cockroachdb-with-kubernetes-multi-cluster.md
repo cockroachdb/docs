@@ -16,7 +16,7 @@ docs_area: deploy
 This page shows you how to orchestrate a secure CockroachDB deployment across three [Kubernetes](http://kubernetes.io/) clusters, each in a different geographic region, using [StatefulSets](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) to manage the containers within each cluster and linking them together via DNS. This will result in a single, multi-region CockroachDB cluster running on Kubernetes.
 
 {{site.data.alerts.callout_success}}
-To deploy CockroachDB in a single Kubernetes cluster instead, see [Kubernetes Single-Cluster Deployment]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes]({% link {{ page.version.version }}/kubernetes-performance.md %}).
+To deploy CockroachDB in a single Kubernetes cluster instead, see [Kubernetes Single-Cluster Deployment]({{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes]({{ page.version.version }}/kubernetes-performance.md).
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -57,7 +57,6 @@ To enable the pods to communicate across regions, we peer the VPCs in all 3 regi
 
 ### Best practices
 
-{% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 
 <section class="filter-content" markdown="1" data-scope="gke">
 #### Exposing DNS servers
@@ -82,7 +81,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
 1. From your local workstation, start the first Kubernetes cluster, specifying the [zone](https://cloud.google.com/compute/docs/regions-zones/) it should run in:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters create cockroachdb1 --zone=<gce-zone>
     ~~~
@@ -99,7 +97,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
 1. Start the second Kubernetes cluster, specifying the [zone](https://cloud.google.com/compute/docs/regions-zones/) it should run in:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters create cockroachdb2 --zone=<gce-zone>
     ~~~
@@ -110,7 +107,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
 1. Start the third Kubernetes cluster, specifying the [zone](https://cloud.google.com/compute/docs/regions-zones/) it should run in:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters create cockroachdb3 --zone=<gce-zone>
     ~~~
@@ -121,7 +117,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
 1. Get the `kubectl` "contexts" for your clusters:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl config get-contexts
     ~~~
@@ -136,7 +131,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
     {{site.data.alerts.callout_info}}
     `kubectl` commands are run against the `CURRENT` context by default. You can change the current context with this command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl config use-context <context-name>
     ~~~
@@ -146,7 +140,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
 1. Get the email address associated with your Google Cloud account:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud info | grep Account
     ~~~
@@ -161,17 +154,14 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
 1. For each Kubernetes cluster, [create the RBAC roles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#prerequisites_for_using_role-based_access_control) CockroachDB needs for running on GKE, using the email address and relevant "context" name from the previous steps:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create clusterrolebinding $USER-cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org> --context <cluster-context-1>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create clusterrolebinding $USER-cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org> --context <cluster-context-2>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create clusterrolebinding $USER-cluster-admin-binding --clusterrole=cluster-admin --user=<your.google.cloud.email@example.org> --context <cluster-context-3>
     ~~~
@@ -196,7 +186,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
     To ensure that all 3 nodes can be placed into a different availability zone, you may want to first [confirm that at least 3 zones are available in the region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#availability-zones-describe) for your account.
     {{site.data.alerts.end}}
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl create cluster \
     --name cockroachdb1 \
@@ -207,7 +196,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --vpc-cidr <ip-range-1>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl create cluster \
     --name cockroachdb2 \
@@ -218,7 +206,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --vpc-cidr <ip-range-2>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl create cluster \
     --name cockroachdb3 \
@@ -231,7 +218,7 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
     Each command creates three EKS instances in a region, one for each CockroachDB node you will deploy. Note that each instance is assigned to a different availability zone in the region.
 
-    In each region, the EKS instances are joined into a separate Kubernetes cluster: `cockroachdb1`, `cockroachdb2`, and `cockroachdb3`. The `--node-type` flag tells the node pool to use the [`m5.xlarge`](https://aws.amazon.com/ec2/instance-types/) instance type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration]({% link {{ page.version.version }}/recommended-production-settings.md %}#basic-hardware-recommendations).
+    In each region, the EKS instances are joined into a separate Kubernetes cluster: `cockroachdb1`, `cockroachdb2`, and `cockroachdb3`. The `--node-type` flag tells the node pool to use the [`m5.xlarge`](https://aws.amazon.com/ec2/instance-types/) instance type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration]({{ page.version.version }}/recommended-production-settings.md#basic-hardware-recommendations).
 
     {{site.data.alerts.callout_info}}
     Cluster provisioning usually takes between 10 and 15 minutes. Do not move on to the next step until you see a message like `[✔]  EKS cluster "cockroachdb1" in "us-east-1" region is ready` for each cluster.
@@ -241,7 +228,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
 1. Get the context name for each of the 3 regions. When running `kubectl` commands against each region's cluster, you will need to specify the context name for that region.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl config get-contexts
     ~~~
@@ -261,7 +247,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
 1. Create three namespaces, one corresponding to each region. The CockroachDB cluster in each region will run in this namespace.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl create namespace <cluster-namespace> --context <cluster-context>
     ~~~
@@ -316,7 +301,6 @@ Source | The IP range of each region's VPC in CIDR notation (e.g., 10.12.0.0/16)
 
 This important rule enables node communication between Kubernetes clusters in different regions. You need to create a separate rule for each region in your deployment.
 
-{% include {{ page.version.version }}/prod-deployment/aws-inbound-rules.md %}
 
 ### Set up load balancing
 
@@ -324,17 +308,14 @@ The Kubernetes cluster in each region needs to have a [Network Load Balancer](ht
 
 1. Upload our load balancer manifest [`dns-lb-eks.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml) to the Kubernetes clusters in all 3 regions:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml --context <cluster-context-1>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml --context <cluster-context-2>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/dns-lb-eks.yaml --context <cluster-context-3>
     ~~~
@@ -345,7 +326,6 @@ The Kubernetes cluster in each region needs to have a [Network Load Balancer](ht
 
 1. For each region's load balancer, look up the IP addresses mapped to the load balancer's DNS name:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     dig <nlb-dns-name>
     ~~~
@@ -371,7 +351,6 @@ To enable traffic forwarding to CockroachDB pods in all 3 regions, you need to [
 
 1. Download and open our ConfigMap template [`configmap.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/multiregion/eks/configmap.yaml):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/configmap.yaml
     ~~~
@@ -412,21 +391,18 @@ To enable traffic forwarding to CockroachDB pods in all 3 regions, you need to [
 
 1. For each region, first back up the existing ConfigMap:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl -n kube-system get configmap coredns -o yaml > <configmap-backup-name>
     ~~~
 
     Then apply the new ConfigMap:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     kubectl apply -f <configmap-name> --context <cluster-context>
     ~~~
 
 1. For each region, check that your CoreDNS settings were applied:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get -n kube-system cm/coredns --export -o yaml --context <cluster-context>
     ~~~
@@ -437,7 +413,6 @@ You will need to tell AWS to exclude your VPCs from [source network address tran
 
 Set `AWS_VPC_K8S_CNI_EXCLUDE_SNAT_CIDRS` to recognize the values of your 3 CIDR blocks. Do this for all 3 regions:
 
-{% include_cached copy-clipboard.html %}
 ~~~
 kubectl set env ds aws-node -n kube-system AWS_VPC_K8S_CNI_EXCLUDE_SNAT_CIDRS="cidr1,cidr2,cidr3" --context <cluster-context>
 ~~~
@@ -454,17 +429,14 @@ If you plan to run your instances exclusively on private subnets, set the follow
 
 1. Create a directory and download the required script and configuration files into it:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir multiregion
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd multiregion
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl -OOOOOOOOO \
     https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/{README.md,client-secure.yaml,cluster-init-secure.yaml,cockroachdb-statefulset-secure.yaml,dns-lb.yaml,example-app-secure.yaml,external-name-svc.yaml,setup.py,teardown.py}
@@ -472,7 +444,6 @@ If you plan to run your instances exclusively on private subnets, set the follow
 
 1. Retrieve the `kubectl` "contexts" for your clusters:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl config get-contexts
     ~~~
@@ -499,15 +470,14 @@ If you plan to run your instances exclusively on private subnets, set the follow
 
     Setting `regions` is optional, but recommended, because it improves CockroachDB's ability to diversify data placement if you use more than one zone in the same region. If you aren't specifying regions, just leave the map empty.
 
-1. If you haven't already, [install CockroachDB locally and add it to your `PATH`]({% link {{ page.version.version }}/install-cockroachdb.md %}). The `cockroach` binary will be used to generate certificates.
+1. If you haven't already, [install CockroachDB locally and add it to your `PATH`]({{ page.version.version }}/install-cockroachdb.md). The `cockroach` binary will be used to generate certificates.
 
     If the `cockroach` binary is not on your `PATH`, in the `setup.py` script, set the `cockroach_path` variable to the path to the binary.
 
-1. Optionally, to optimize your deployment for better performance, review [CockroachDB Performance on Kubernetes]({% link {{ page.version.version }}/kubernetes-performance.md %}) and make the desired modifications to the `cockroachdb-statefulset-secure.yaml` file.
+1. Optionally, to optimize your deployment for better performance, review [CockroachDB Performance on Kubernetes]({{ page.version.version }}/kubernetes-performance.md) and make the desired modifications to the `cockroachdb-statefulset-secure.yaml` file.
 
 1. Run the `setup.py` script:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ python setup.py
     ~~~
@@ -516,7 +486,6 @@ If you plan to run your instances exclusively on private subnets, set the follow
 
 1. Confirm that the CockroachDB pods in each cluster say `1/1` in the `READY` column, indicating that they've successfully joined the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods --selector app=cockroachdb --all-namespaces --context <cluster-context-1>
     ~~~
@@ -528,7 +497,6 @@ If you plan to run your instances exclusively on private subnets, set the follow
     us-east1-b   cockroachdb-2   1/1       Running   0          14m
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods --selector app=cockroachdb --all-namespaces --context <cluster-context-2>
     ~~~
@@ -540,7 +508,6 @@ If you plan to run your instances exclusively on private subnets, set the follow
     us-central1-a   cockroachdb-2   1/1       Running   0          14m
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods --selector app=cockroachdb --all-namespaces --context <cluster-context-3>
     ~~~
@@ -554,7 +521,6 @@ If you plan to run your instances exclusively on private subnets, set the follow
 
     If you notice that only one of the Kubernetes clusters' pods are marked as `READY`, you likely also need to configure a network firewall rule that will allow the pods in the different clusters to talk to each other. You can run the following command to create a firewall rule allowing traffic on port 26257 (the port used by CockroachDB for inter-node traffic) within your private GCE network. It will not allow any traffic in from outside your private network:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud compute firewall-rules create allow-cockroach-internal --allow=tcp:26257 --source-ranges=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
     ~~~
@@ -572,12 +538,11 @@ If you plan to run your instances exclusively on private subnets, set the follow
 ### Generate certificates
 
 {{site.data.alerts.callout_info}}
-The below steps use [`cockroach cert` commands]({% link {{ page.version.version }}/cockroach-cert.md %}) to quickly generate and sign the CockroachDB node and client certificates. Read our [Authentication]({% link {{ page.version.version }}/authentication.md %}#using-digital-certificates-with-cockroachdb) docs to learn about other methods of signing certificates.
+The below steps use [`cockroach cert` commands]({{ page.version.version }}/cockroach-cert.md) to quickly generate and sign the CockroachDB node and client certificates. Read our [Authentication]({{ page.version.version }}/authentication.md#using-digital-certificates-with-cockroachdb) docs to learn about other methods of signing certificates.
 {{site.data.alerts.end}}
 
 1. Create two directories:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
@@ -589,7 +554,6 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
 
 1. Create the CA certificate and key pair:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -598,7 +562,6 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
 
 1. Create a client certificate and key pair for the root user:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -612,7 +575,6 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
     Specify the namespace in which the CockroachDB pods will run. You defined these namespaces after [starting your Kubernetes clusters](#step-1-start-kubernetes-clusters).
     {{site.data.alerts.end}}
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create secret \
     generic cockroachdb.client.root \
@@ -621,7 +583,6 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
     --namespace <cluster-namespace-1>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create secret \
     generic cockroachdb.client.root \
@@ -630,7 +591,6 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
     --namespace <cluster-namespace-2>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create secret \
     generic cockroachdb.client.root \
@@ -641,7 +601,6 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
 
 1. Create the certificate and key pair for your CockroachDB nodes in one region, substituting `<cluster-namespace>` in this command with the appropriate namespace:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     localhost 127.0.0.1 \
@@ -657,7 +616,6 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
 
 1. Upload the node certificate and key to the Kubernetes cluster as a secret, specifying the appropriate context and namespace:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create secret \
     generic cockroachdb.node \
@@ -670,7 +628,6 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
 
 1. For all 3 regions, check that the secrets were created on the cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get secrets --context <cluster-context>
     ~~~
@@ -687,7 +644,6 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
 
 1. Download and open our [multi-region StatefulSet configuration](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml). You'll save three versions of this file locally, one for each set of 3 CockroachDB nodes per region.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml
     ~~~
@@ -720,7 +676,7 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
     If you do not specify a memory request, no memory will be allocated to CockroachDB. If you do not specify a memory limit, the Kubernetes scheduler will allocate the maximum possible amount.
     {{site.data.alerts.end}}
 
-1. The StatefulSet configuration includes a [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command that creates the nodes on the Kubernetes pods.
+1. The StatefulSet configuration includes a [`cockroach start`]({{ page.version.version }}/cockroach-start.md) command that creates the nodes on the Kubernetes pods.
 
     In the `--locality` flag, name `region` after region 1. This can technically be an arbitrary value, but it's simplest to use the CockroachDB namespace in region 1.
 
@@ -740,24 +696,20 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
 
 1. Deploy the StatefulSets in each of your 3 regions:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create -f <statefulset-1> --context <cluster-context-1> --namespace <cluster-namespace-1>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create -f <statefulset-2> --context <cluster-context-2> --namespace <cluster-namespace-2>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create -f <statefulset-3> --context <cluster-context-3> --namespace <cluster-namespace-3>
     ~~~
 
 1. Run `cockroach init` on one of the pods to complete the node startup process and have them join together as a cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~
     kubectl exec \
     --context <cluster-context> \
@@ -773,7 +725,6 @@ The below steps use [`cockroach cert` commands]({% link {{ page.version.version 
 
 1. Confirm that cluster initialization has completed successfully in each region. The job should be considered successful and the Kubernetes pods should soon be considered `Ready`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods --context <cluster-context> --namespace <cluster-namespace>
     ~~~
@@ -795,7 +746,6 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
 Use the `client-secure.yaml` file to launch a pod and keep it running indefinitely, specifying the context of the Kubernetes cluster to run it in:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl create -f client-secure.yaml --context <cluster-context>
 ~~~
@@ -812,7 +762,6 @@ The pod uses the `root` client certificate created earlier by the `setup.py` scr
 
 1. Use the `client-secure.yaml` file to launch a pod and keep it running indefinitely, specifying the context of the Kubernetes cluster and namespace of the CockroachDB pods to run it in:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/client-secure.yaml --context <cluster-context> --namespace <cluster-namespace>
     ~~~
@@ -823,9 +772,8 @@ The pod uses the `root` client certificate created earlier by the `setup.py` scr
 
     The pod uses the `root` client certificate you [generated earlier](#generate-certificates). Note that this will work from any of the three Kubernetes clusters as long as you use the correct namespace and context combination.
 
-1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}), again specifying the namespace and context of the Kubernetes cluster where the pod is running:
+1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({{ page.version.version }}/cockroach-sql.md), again specifying the namespace and context of the Kubernetes cluster where the pod is running:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure --context <cluster-context> --namespace <cluster-namespace> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
     ~~~
@@ -844,24 +792,20 @@ The pod uses the `root` client certificate created earlier by the `setup.py` scr
     root@cockroachdb-public:26257/>
     ~~~
 
-1. Run some basic [CockroachDB SQL statements]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}):
+1. Run some basic [CockroachDB SQL statements]({{ page.version.version }}/learn-cockroachdb-sql.md):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1, 1000.50);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -875,9 +819,8 @@ The pod uses the `root` client certificate created earlier by the `setup.py` scr
     (1 row)
     ~~~
 
-1. [Create a user with a password]({% link {{ page.version.version }}/create-user.md %}#create-a-user-with-a-password):
+1. [Create a user with a password]({{ page.version.version }}/create-user.md#create-a-user-with-a-password):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
     ~~~
@@ -886,16 +829,14 @@ The pod uses the `root` client certificate created earlier by the `setup.py` scr
 
 1. Exit the SQL shell and pod:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
-    The pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other [`cockroach` client commands]({% link {{ page.version.version }}/cockroach-commands.md %}) (e.g., `cockroach node`), repeat step 2 using the appropriate command.
+    The pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other [`cockroach` client commands]({{ page.version.version }}/cockroach-commands.md) (e.g., `cockroach node`), repeat step 2 using the appropriate command.
 
     If you'd prefer to delete the pod and recreate it when needed, run:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod cockroachdb-client-secure --context <cluster-context>
     ~~~
@@ -909,34 +850,30 @@ The pod uses the `root` client certificate created earlier by the `setup.py` scr
 ## Step 5. Access the DB Console
 </section>
 
-To access the cluster's [DB Console]({% link {{ page.version.version }}/ui-overview.md %}):
+To access the cluster's [DB Console]({{ page.version.version }}/ui-overview.md):
 
-1. On secure clusters, [certain pages of the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) can only be accessed by `admin` users.
+1. On secure clusters, [certain pages of the DB Console]({{ page.version.version }}/ui-overview.md#db-console-access) can only be accessed by `admin` users.
 
-    Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+    Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client]({{ page.version.version }}/cockroach-sql.md):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure --context <cluster-context> --namespace <cluster-namespace> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
     ~~~
 
 1.  Assign `roach` to the `admin` role (you only need to do this once):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT admin TO roach;
     ~~~
 
 1. Exit the SQL shell and pod:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
 1. Port-forward from your local machine to a pod in one of your Kubernetes clusters:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl port-forward cockroachdb-0 8080 --context <cluster-context> --namespace <cluster-namespace>
     ~~~
@@ -951,7 +888,7 @@ To access the cluster's [DB Console]({% link {{ page.version.version }}/ui-overv
 
 1. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a> and log in with the username and password created in the [Use the built-in SQL client](#step-3-use-the-built-in-sql-client) step.
 
-1. In the UI, check the [**Node List**]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-list) to verify that all nodes are running, open the [**Databases** page]({% link {{ page.version.version }}/ui-databases-page.md %}) to verify that `bank` is listed, and open the [**Network Latency** page]({% link {{ page.version.version }}/ui-network-latency-page.md %}) to see the performance of your CockroachDB cluster across 3 regions.
+1. In the UI, check the [**Node List**]({{ page.version.version }}/ui-cluster-overview-page.md#node-list) to verify that all nodes are running, open the [**Databases** page]({{ page.version.version }}/ui-databases-page.md) to verify that `bank` is listed, and open the [**Network Latency** page]({{ page.version.version }}/ui-network-latency-page.md) to see the performance of your CockroachDB cluster across 3 regions.
 
 <section class="filter-content" markdown="1" data-scope="gke">
 ## Step 5. Simulate datacenter failure
@@ -967,7 +904,6 @@ To see this in action:
 
 1. Scale down one of the StatefulSets to zero pods, specifying the namespace and context of the Kubernetes cluster where it's running:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=0 --context <cluster-context> --namespace <cluster-namespace>
     ~~~
@@ -980,7 +916,6 @@ To see this in action:
 
 1. When you're done verifying that the cluster still fully functions with one of the regions down, you can bring the region back up by running:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=3 --context <cluster-context> --namespace <cluster-namespace>
     ~~~
@@ -1003,7 +938,7 @@ To see this in action:
 
 ### Scale the cluster
 
-Each of your Kubernetes clusters contains 3 instances that can run CockroachDB pods. It's easy to scale a cluster to run more pods. To ensure that you do not have two CockroachDB pods on the same instance (as recommended in our [production best practices]({% link {{ page.version.version }}/recommended-production-settings.md %})), you need to first add a new instance and then edit your StatefulSet configuration to add another pod.
+Each of your Kubernetes clusters contains 3 instances that can run CockroachDB pods. It's easy to scale a cluster to run more pods. To ensure that you do not have two CockroachDB pods on the same instance (as recommended in our [production best practices]({{ page.version.version }}/recommended-production-settings.md)), you need to first add a new instance and then edit your StatefulSet configuration to add another pod.
 
 <section class="filter-content" markdown="1" data-scope="gke">
 1. [Resize your Kubernetes cluster.](https://cloud.google.com/kubernetes-engine/docs/how-to/resizing-a-cluster)
@@ -1015,7 +950,6 @@ Each of your Kubernetes clusters contains 3 instances that can run CockroachDB p
 
 1. Use the `kubectl scale` command to add a pod to the StatefulSet in the Kubernetes cluster where you want to add a CockroachDB node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4 --context <cluster-context> --namespace <cluster-namespace>
     ~~~
@@ -1026,7 +960,6 @@ Each of your Kubernetes clusters contains 3 instances that can run CockroachDB p
 
 1. Verify that a fourth pod was added successfully:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods --context <cluster-context> --namespace <cluster-namespace>
     ~~~
@@ -1048,17 +981,17 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
 1. Verify that you can upgrade.
 
-    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release]({% link releases/index.md %}) and not a testing release (alpha/beta).
+    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release](releases/index.md) and not a testing release (alpha/beta).
 
     Therefore, in order to upgrade to {{ page.version.version }}, you must be on a production release of {{ previous_version }}.
 
-    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of {{ previous_version }}]({% link {{ previous_version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md %}#upgrade-the-cluster). Be sure to complete all the steps.
+    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of {{ previous_version }}]({{ previous_version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md#upgrade-the-cluster). Be sure to complete all the steps.
 
     1. Then return to this page and perform a second upgrade to {{ page.version.version }}.
 
     1. If you are upgrading from any production release of {{ previous_version }}, or from any earlier {{ page.version.version }} release, you do not have to go through intermediate releases; continue to step 2.
 
-1. Verify the overall health of your cluster using the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}). On the **Overview**:
+1. Verify the overall health of your cluster using the [DB Console]({{ page.version.version }}/ui-overview.md). On the **Overview**:
     - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or decommission them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
     - Under **Replication Status**, make sure there are 0 under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
     - In the **Node List**:
@@ -1066,63 +999,55 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
         - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](#scale-the-cluster) to your cluster before beginning your upgrade.
 
 {% comment %}
-1. Review the [backward-incompatible changes in {{ page.version.version }}]({% link releases/{{ page.version.version }}.md %}#v21-2-0#backward-incompatible-changes) and [deprecated features]({% link releases/{{ page.version.version }}.md %}#v21-2-0#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
+1. Review the [backward-incompatible changes in {{ page.version.version }}](releases/{{ page.version.version }}.md#v21-2-0#backward-incompatible-changes) and [deprecated features](releases/{{ page.version.version }}.md#v21-2-0#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 {% endcomment %}
 
 1. Review the backward-incompatible changes in {{ page.version.version }} and deprecated features. If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 
 1. Decide how the upgrade will be finalized.
 
-    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain features and performance improvements introduced in {{ page.version.version }}. After finalization, however, it will no longer be possible to perform a downgrade to {{ previous_version }}. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
+    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain features and performance improvements introduced in {{ page.version.version }}. After finalization, however, it will no longer be possible to perform a downgrade to {{ previous_version }}. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup]({{ page.version.version }}/take-full-and-incremental-backups.md) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
 
     {{site.data.alerts.callout_info}}
     Finalization only applies when performing a major version upgrade (for example, from {{ previous_version }}.x to {{ page.version.version }}). Patch version upgrades (for example, within the {{ page.version.version }}.x series) can always be downgraded.
     {{site.data.alerts.end}}
 
-    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client]({{ page.version.version }}/cockroach-sql.md):
 
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure --context <cluster-context> --namespace <cluster-namespace> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
         ~~~
 
-    1. Set the `cluster.preserve_downgrade_option` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
+    1. Set the `cluster.preserve_downgrade_option` [cluster setting]({{ page.version.version }}/cluster-settings.md):
 
-        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > SET CLUSTER SETTING cluster.preserve_downgrade_option = '21.1';
         ~~~
 
 1. For each Kubernetes cluster, kick off the upgrade process by changing the desired Docker image. To do so, pick the version that you want to upgrade to, then run the following command, replacing "VERSION" with your desired new version and specifying the relevant namespace and "context" name for the Kubernetes cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb --namespace <namespace-of-kubernetes-cluster1> --context <cluster-context-1> --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:VERSION"}]'
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb --namespace <namespace-of-kubernetes-cluster2> --context <cluster-context-2> --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:VERSION"}]'
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb --namespace <namespace-of-kubernetes-cluster3> --context <cluster-context-3> --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:VERSION"}]'
     ~~~
 
 1. If you then check the status of the pods in each Kubernetes cluster, you should see one of them being restarted:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods --selector app=cockroachdb --all-namespaces --context <cluster-context-1>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods --selector app=cockroachdb --all-namespaces --context <cluster-context-2>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods --selector app=cockroachdb --all-namespaces --context <cluster-context-3>
     ~~~
@@ -1139,16 +1064,14 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
     To finalize the upgrade, re-enable auto-finalization:
 
-    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client]({{ page.version.version }}/cockroach-sql.md):
 
-        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure --context <cluster-context> --namespace <cluster-namespace> -- ./cockroach sql --certs-dir=/cockroach-certs --host=cockroachdb-public
         ~~~
 
     1. Re-enable auto-finalization:
 
-        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
         ~~~
@@ -1158,7 +1081,6 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 <section class="filter-content" markdown="1" data-scope="gke">
 1. To delete all of the resources created in your clusters, copy the `contexts` map from `setup.py` into `teardown.py`, and then run `teardown.py`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ python teardown.py
     ~~~
@@ -1183,7 +1105,6 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
 1. Stop each Kubernetes cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters delete cockroachdb1 --zone=<gce-zone>
     ~~~
@@ -1192,7 +1113,6 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
     Deleting cluster cockroachdb1...done.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters delete cockroachdb2 --zone=<gce-zone>
     ~~~
@@ -1201,7 +1121,6 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
     Deleting cluster cockroachdb2...done.
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters delete cockroachdb3 --zone=<gce-zone>
     ~~~
@@ -1214,17 +1133,14 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 <section class="filter-content" markdown="1" data-scope="eks">
 1. In each region, delete all of the resources associated with the `cockroachdb` label, including the logs, and remote persistent volumes:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount -l app=cockroachdb --context <cluster-context-1>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount -l app=cockroachdb --context <cluster-context-2>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount -l app=cockroachdb --context <cluster-context-3>
     ~~~
@@ -1248,7 +1164,6 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
 1. Delete the pod created for `cockroach` client commands, if you didn't do so earlier:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod cockroachdb-client-secure --context <cluster-context>
     ~~~
@@ -1259,7 +1174,6 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
 1. Get the names of the secrets you created on each cluster. These should be identical in all 3 regions:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get secrets --context <cluster-context>
     ~~~
@@ -1273,34 +1187,28 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
 1. Delete the secrets that you created:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete secrets cockroachdb.client.root cockroachdb.node  --context <cluster-context-1>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete secrets cockroachdb.client.root cockroachdb.node  --context <cluster-context-2>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete secrets cockroachdb.client.root cockroachdb.node  --context <cluster-context-3>
     ~~~
 
 1. Stop Kubernetes in each region:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl delete cluster --name cockroachdb1 --region <aws-region-1>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl delete cluster --name cockroachdb2 --region <aws-region-2>
     ~~~
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl delete cluster --name cockroachdb3 --region <aws-region-3>
     ~~~
@@ -1314,6 +1222,5 @@ If you stop Kubernetes without first deleting the persistent volumes, they will 
 
 ## See also
 
-- [Kubernetes Single-Cluster Deployment]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %})
-- [Kubernetes Performance Guide]({% link {{ page.version.version }}/kubernetes-performance.md %})
-{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}
+- [Kubernetes Single-Cluster Deployment]({{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md)
+- [Kubernetes Performance Guide]({{ page.version.version }}/kubernetes-performance.md)

@@ -6,12 +6,11 @@ docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
 
-Refer to the [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}#known-limitations) for further detail.
+Refer to the [Cluster Virtualization Overview]({{ page.version.version }}/cluster-virtualization-overview.md#known-limitations) for further detail.
 {{site.data.alerts.end}}
 
-When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each metric has a scope. For descriptions and details about each cluster metric, refer to [Metrics]({% link {{ page.version.version }}/metrics.md %}).
+When [cluster virtualization]({{ page.version.version }}/cluster-virtualization-overview.md) is enabled, each metric has a scope. For descriptions and details about each cluster metric, refer to [Metrics]({{ page.version.version }}/metrics.md).
 
 - When a metric is scoped to a non-system virtual cluster, the metric is tracked separately for each virtual cluster (including the system virtual cluster). Most metrics are scoped to a virtual cluster. Refer to [Metrics scoped to a virtual cluster](#metrics-scoped-to-a-virtual-cluster).
 - When a metric is scoped to the system virtual cluster, it is included only in the metrics for the system virtual cluster. These metrics provide information about the underlying CockroachDB cluster's performance. Refer to [Metrics scoped to the system virtual cluster](#metrics-scoped-to-the-system-virtual-cluster).
@@ -1853,6 +1852,6 @@ SERVER: n/a
 
 ## See also
 
-- [Cluster Virtualization Overview]({% link {{ page.version.version }}/cluster-virtualization-overview.md %})
-- [Cluster Setting Scopes with Cluster Virtualization Enabled]({% link {{ page.version.version }}/cluster-virtualization-setting-scopes.md %})
-- [Physical Cluster Replication]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %})
+- [Cluster Virtualization Overview]({{ page.version.version }}/cluster-virtualization-overview.md)
+- [Cluster Setting Scopes with Cluster Virtualization Enabled]({{ page.version.version }}/cluster-virtualization-setting-scopes.md)
+- [Physical Cluster Replication]({{ page.version.version }}/physical-cluster-replication-overview.md)

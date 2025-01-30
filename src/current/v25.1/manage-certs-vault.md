@@ -4,5 +4,3 @@ summary: Use Google Cloud Platform Certificate Authority Service to manage PKI c
 toc: true
 docs_area: manage.security
 ---
-
-{% include_cached common/manage-certs-vault.md %}

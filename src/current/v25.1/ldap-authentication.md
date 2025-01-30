@@ -6,7 +6,7 @@ toc: true
 
 CockroachDB supports authentication and authorization using LDAP-compatible directory services, such as Active Directory and Microsoft Entra ID. This allows you to integrate your cluster with your organization's existing identity infrastructure for centralized user management and access control.
 
-This page describes how to configure CockroachDB user authentication using LDAP. You can additionally configure CockroachDB to use the same directory service for user [authorization]({% link v24.3/ldap-authorization.md %}) (role-based access control), which assigns CockroachDB roles to users based on their group memberships in the directory.
+This page describes how to configure CockroachDB user authentication using LDAP. You can additionally configure CockroachDB to use the same directory service for user [authorization](/docs/v24.3/ldap-authorization.md) (role-based access control), which assigns CockroachDB roles to users based on their group memberships in the directory.
 
 ## Overview
 
@@ -21,7 +21,7 @@ While LDAP configuration is cluster-specific, each request to authenticate a use
   - If a matching record was found, the cluster attempts to verify the user's identity through another LDAP request, this time using the credentials (username and password) provided by that user.
   - If this LDAP bind operation succeeds, the user is authenticated to the CockroachDB cluster.
 1. Authorize the user (optional)
-  - If [LDAP authorization]({% link v24.3/ldap-authorization.md %}) is also enabled, an additional request is sent to retrieve the groups to which the user is assigned, using configurable criteria.
+  - If [LDAP authorization](/docs/v24.3/ldap-authorization.md) is also enabled, an additional request is sent to retrieve the groups to which the user is assigned, using configurable criteria.
   - If group memberships are found, any existing CockroachDB roles that match these group names are asssigned to the user.
 
 These requests use a node's existing connection to the LDAP server, if one is open. Otherwise, the node establishes a new connection. The connection remains open for handling additional LDAP requests until it is closed by the LDAP server, based on its timeout setting.
@@ -45,14 +45,13 @@ You will set LDAP bind credentials for the service account that enables this int
 	
 To redact these sensitive setting values for all users except for those with the `admin` role or the `MODIFYCLUSTERSETTING` privilege, run:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.redact_sensitive_settings.enabled = 'true';
 ~~~
 
 ### Step 2: Configure Host-Based Authentication (HBA)
 
-To enable LDAP, you will need to update the [host-based authentication (HBA)]({% link {{ page.version.version }}/security-reference/authentication.md %}#authentication-configuration) configuration specified in the cluster setting `server.host_based_authentication.configuration`.
+To enable LDAP, you will need to update the [host-based authentication (HBA)]({{ page.version.version }}/security-reference/authentication.md#authentication-configuration) configuration specified in the cluster setting `server.host_based_authentication.configuration`.
 
 Set the authentication method for all users and databases to `ldap` and include the LDAP-specific option parameters:
 
@@ -66,7 +65,6 @@ Set the authentication method for all users and databases to `ldap` and include 
 
 For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.host_based_authentication.configuration = '
 host    all    all    all    ldap    ldapserver=ldap.example.com 
@@ -78,7 +76,7 @@ host    all    all    all    ldap    ldapserver=ldap.example.com
     "ldapsearchfilter=(memberof=cn=cockroachdb_users,ou=groups,dc=example,dc=com)"';
 ~~~
 
-If you also intend to configure LDAP Authorization, you will need to include an additional LDAP parameter, `ldapgrouplistfilter`. For details, refer to [LDAP Authorization]({% link {{ page.version.version }}/ldap-authorization.md %}#configuration).
+If you also intend to configure LDAP Authorization, you will need to include an additional LDAP parameter, `ldapgrouplistfilter`. For details, refer to [LDAP Authorization]({{ page.version.version }}/ldap-authorization.md#configuration).
 
 ### Step 3: Configure TLS (Optional)
 
@@ -86,14 +84,12 @@ If, for LDAPS, you are using a certificate signed by a custom Certificate Author
 
 Set the custom CA certificate:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.ldap_authentication.domain_ca = '<PEM_ENCODED_CA_CERT>';
 ~~~
 
 Configure a client certificate for mTLS if required:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.ldap_authentication.client.tls_certificate = '<PEM_ENCODED_CERT>';
 SET CLUSTER SETTING server.ldap_authentication.client.tls_key = '<PEM_ENCODED_KEY>';
@@ -102,7 +98,7 @@ SET CLUSTER SETTING server.ldap_authentication.client.tls_key = '<PEM_ENCODED_KE
 ### Step 4: Sync database users
 
 {{site.data.alerts.callout_info}}
-LDAP authentication cannot be used for the `root` user or other [reserved identities]({% link {{ page.version.version }}/security-reference/authorization.md %}#reserved-identities). Credentials for `root` must be managed separately using password authentication to ensure continuous administrative access regardless of LDAP availability.
+LDAP authentication cannot be used for the `root` user or other [reserved identities]({{ page.version.version }}/security-reference/authorization.md#reserved-identities). Credentials for `root` must be managed separately using password authentication to ensure continuous administrative access regardless of LDAP availability.
 {{site.data.alerts.end}}
 
 Before LDAP authentication can be used for a user, the username must be created directly in CockroachDB. You will need to establish an automated method for keeping users in sync with the directory server, creating and dropping them as needed.
@@ -110,12 +106,11 @@ Before LDAP authentication can be used for a user, the username must be created 
 For Active Directory deployments, the CockroachDB username can typically be set to match the `sAMAccountName` field from the `user` object. This field name would need to be specified in the HBA configuration using `ldapsearchattribute=sAMAccountName`.
 
 {{site.data.alerts.callout_info}}
-SQL usernames must comply with CockroachDB's [username requirements]({% link {{ page.version.version }}/create-user.md %}#user-names). Ensure that the values in the field you are using for `ldapsearchattribute` meet these requirements.
+SQL usernames must comply with CockroachDB's [username requirements]({{ page.version.version }}/create-user.md#user-names). Ensure that the values in the field you are using for `ldapsearchattribute` meet these requirements.
 {{site.data.alerts.end}}
 
 To create a single user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE username LOGIN;
 ~~~
@@ -123,9 +118,8 @@ CREATE ROLE username LOGIN;
 To create users in bulk:
 
 1. Export usernames from the directory server.
-1. Produce a `.sql` file with a [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}) statement per user, each on a separate line.
+1. Produce a `.sql` file with a [`CREATE ROLE`]({{ page.version.version }}/create-role.md) statement per user, each on a separate line.
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE ROLE username1 LOGIN;
     CREATE ROLE username2 LOGIN;
@@ -134,16 +128,14 @@ To create users in bulk:
 
     If you are not also enabling LDAP Authorization to manage roles and privileges, you can also include one or more `GRANT` lines for each user. For example, `GRANT developer TO username1` or `GRANT SELECT ON DATABASE orders TO username2;`.
 
-1. Run the SQL statements in the [file]({% link {{ page.version.version }}/cockroach-sql.md %}#general):
+1. Run the SQL statements in the [file]({{ page.version.version }}/cockroach-sql.md#general):
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     cockroach sql --file=create_users.sql --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
     ~~~
 
-To update users on an ongoing basis, you could script the required [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %}), or [`GRANT`]({% link {{ page.version.version }}/grant.md %}) commands to be [executed]({% link {{ page.version.version }}/cockroach-sql.md %}#general) as needed. For example:
+To update users on an ongoing basis, you could script the required [`CREATE ROLE`]({{ page.version.version }}/create-role.md), [`DROP ROLE`]({{ page.version.version }}/drop-role.md), or [`GRANT`]({{ page.version.version }}/grant.md) commands to be [executed]({{ page.version.version }}/cockroach-sql.md#general) as needed. For example:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     cockroach sql --execute="DROP ROLE username1" --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
     ~~~
@@ -154,7 +146,6 @@ To update users on an ongoing basis, you could script the required [`CREATE ROLE
 
 To connect using LDAP credentials, use your LDAP password: 
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Method 1: Password in environment variable
 export PGPASSWORD='ldap_password'
@@ -174,9 +165,8 @@ Authorization (role-based access control) is not applied when logging in to DB C
 
 ## Troubleshooting
 
-Enable [`SESSION` logging]({% link {{ page.version.version }}/logging.md %}#sessions) to preserve data that will help troubleshoot LDAP issues.
+Enable [`SESSION` logging]({{ page.version.version }}/logging.md#sessions) to preserve data that will help troubleshoot LDAP issues.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~
@@ -185,7 +175,7 @@ SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 Once all functionality is configured and tested successfully, we recommend disabling session logging to conserve system resources.
 {{site.data.alerts.end}}
 
-To view the logs, open `cockroach-session.log` from your [logging directory]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory).
+To view the logs, open `cockroach-session.log` from your [logging directory]({{ page.version.version }}/configure-logs.md#logging-directory).
 
 Potential issues to investigate may pertain to:
 

@@ -62,6 +62,6 @@ For this example, we have 3 CockroachDB nodes (**A**, **B**, **C**) in a multi-a
 
 ## What's next?
 
-To get a greater understanding of how CockroachDB is a survivable system that enforces strong consistency, check out our [architecture documentation]({% link {{ page.version.version }}/architecture/overview.md %}).
+To get a greater understanding of how CockroachDB is a survivable system that enforces strong consistency, check out our [architecture documentation]({{ page.version.version }}/architecture/overview.md).
 
-To see Multi-Active Availability in action, see this [availability demo]({% link {{ page.version.version }}/demo-cockroachdb-resilience.md %}).
+To see Multi-Active Availability in action, see this [availability demo]({{ page.version.version }}/demo-cockroachdb-resilience.md).

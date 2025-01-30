@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.cli
 ---
 
-To create and manage web sessions and authentication tokens to the HTTP interface from the command line, use the `cockroach auth-session` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) with the appropriate subcommands and flags.
+To create and manage web sessions and authentication tokens to the HTTP interface from the command line, use the `cockroach auth-session` [command]({{ page.version.version }}/cockroach-commands.md) with the appropriate subcommands and flags.
 
 ## Subcommands
 
@@ -47,7 +47,7 @@ $ cockroach auth-session {subcommand} --help
 
 ## Flags
 
-All three `auth-session` subcommands accept the standard [SQL command-line flags]({% link {{ page.version.version }}/cockroach-start.md %}#flags).
+All three `auth-session` subcommands accept the standard [SQL command-line flags]({{ page.version.version }}/cockroach-start.md#flags).
 
 In addition, the `auth-session login` subcommand supports the following flags.
 
@@ -89,14 +89,14 @@ Field | Description
 
 ## Required roles
 
-To run any of the `auth-session` subcommands, you must be a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role). The user being authenticated via `login` or `logout` does not require any special roles.
+To run any of the `auth-session` subcommands, you must be a member of the [`admin` role]({{ page.version.version }}/security-reference/authorization.md#admin-role). The user being authenticated via `login` or `logout` does not require any special roles.
 
 ## Considerations
 
-- The `login` subcommand allows users with the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) to create HTTP authentication tokens with an arbitrary duration. If operational policy requires stricter control of authentication sessions, you can:
+- The `login` subcommand allows users with the [`admin` role]({{ page.version.version }}/security-reference/authorization.md#admin-role) to create HTTP authentication tokens with an arbitrary duration. If operational policy requires stricter control of authentication sessions, you can:
 
   - Monitor the `system.web_sessions` table for all current and recent HTTP sessions. If you monitor this table regularly, consider adjusting the `server.log_gc.period` and
-`server.log_gc.max_deletions_per_cycle` [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) to fine tune garbage collection for this table.
+`server.log_gc.max_deletions_per_cycle` [cluster settings]({{ page.version.version }}/cluster-settings.md) to fine tune garbage collection for this table.
   - Revoke HTTP authentication tokens as needed with the `logout` subcommand. See the [example](#terminate-all-active-sessions-for-a-user).
   - Set the `--expire-after` flag with a shorter duration. See the [example](#log-in-to-the-http-interface-with-a-custom-expiry).
 
@@ -108,7 +108,6 @@ To run any of the `auth-session` subcommands, you must be a member of the [`admi
 
 Log in to the HTTP interface, by generating a new HTTP authentication token for the `web_user` user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach auth-session login web_user
 ~~~
@@ -124,7 +123,6 @@ $ cockroach auth-session login web_user
 
 Log in to the HTTP interface, by generating a new HTTP authentication token for the `web_user` user and specifying a token expiry of 4 hours and 30 minutes:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach auth-session login web_user --expire-after=4h30m
 ~~~
@@ -140,7 +138,6 @@ $ cockroach auth-session login web_user --expire-after=4h30m
 
 Log in to the HTTP interface, by generating a new HTTP authentication token for the `web_user` user, limiting command output to only the generated cookie:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach auth-session login web_user --only-cookie
 ~~~
@@ -151,7 +148,6 @@ session=CIGA6t2q0LrxChIQV8QCF3vuYSasR7h4LPSfmg==; Path=/; HttpOnly; Secure
 
 This is useful if you intend to use the cookie with other command line tools. For example, you might output the generated cookie to a local file, and then pass that file to `curl` using its `--cookie` flag:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach auth-session login web_user --certs-dir=certs --only-cookie > $HOME/.cockroachdb_api_key
 $ curl --cookie $HOME/.cockroachdb_api_key https://localhost:8080/_status/logfiles/local
@@ -159,7 +155,6 @@ $ curl --cookie $HOME/.cockroachdb_api_key https://localhost:8080/_status/logfil
 
 Of course you can also provide the cookie directly:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --cookie 'session=CIGA8I7/irvxChIQDtZQsMtn3AqpgDko6bldSw==; Path=/; HttpOnly; Secure' https://localhost:8080/_status/logfiles/local
 ~~~
@@ -168,7 +163,6 @@ curl --cookie 'session=CIGA8I7/irvxChIQDtZQsMtn3AqpgDko6bldSw==; Path=/; HttpOnl
 
 Terminate all active sessions for the `web_user` user:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach auth-session logout web_user
 ~~~
@@ -189,7 +183,6 @@ Note that the output may include recently revoked sessions for this user as well
 
 List all authenticated sessions to the HTTP interface, including currently active and recently expired sessions:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach auth-session list
 ~~~
@@ -207,5 +200,5 @@ A value of `NULL` in the `revoked` column indicates that the session is still ac
 
 ## See also
 
-- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
-- [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
+- [`cockroach` Commands Overview]({{ page.version.version }}/cockroach-commands.md)
+- [DB Console Overview]({{ page.version.version }}/ui-overview.md)

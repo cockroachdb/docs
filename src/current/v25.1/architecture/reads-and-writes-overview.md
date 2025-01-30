@@ -8,12 +8,11 @@ docs_area: reference.architecture
 This page explains how reads and writes are affected by the replicated and distributed nature of data in CockroachDB. It starts by summarizing how CockroachDB executes queries and then guides you through a few simple read and write scenarios.
 
 {{site.data.alerts.callout_info}}
-For a more detailed information about how transactions work in CockroachDB, see the [Transaction Layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %}) documentation.
+For a more detailed information about how transactions work in CockroachDB, see the [Transaction Layer]({{ page.version.version }}/architecture/transaction-layer.md) documentation.
 {{site.data.alerts.end}}
 
 ## CockroachDB architecture terms
 
-{% include {{ page.version.version }}/misc/basic-terms.md %}
 
 ## Query execution
 
@@ -30,7 +29,7 @@ First, imagine a simple read scenario where:
 - Ranges are replicated 3 times (the default).
 - A query is executed against node 2 to read from table 3.
 
-<img src="{{ 'images/v24.2/perf_tuning_concepts1.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+![Perf tuning concepts](/images/v24.2/perf_tuning_concepts1.png)
 
 In this case:
 
@@ -41,13 +40,13 @@ In this case:
 
 If the query is received by the node that has the leaseholder for the relevant range, there are fewer network hops:
 
-<img src="{{ 'images/v24.2/perf_tuning_concepts2.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+![Perf tuning concepts](/images/v24.2/perf_tuning_concepts2.png)
 
 ## Write scenario
 
 Now imagine a simple write scenario where a query is executed against node 3 to write to table 1:
 
-<img src="{{ 'images/v24.2/perf_tuning_concepts3.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+![Perf tuning concepts](/images/v24.2/perf_tuning_concepts3.png)
 
 In this case:
 
@@ -60,7 +59,7 @@ In this case:
 
 Just as in the read scenario, if the write request is received by the node that has the leaseholder and Raft leader for the relevant range, there are fewer network hops:
 
-<img src="{{ 'images/v24.2/perf_tuning_concepts4.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+![Perf tuning concepts](/images/v24.2/perf_tuning_concepts4.png)
 
 ## Network and I/O bottlenecks
 

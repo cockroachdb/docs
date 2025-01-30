@@ -19,7 +19,6 @@ docs_area:
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
             <h6 class="mt-2 mt-0 text-black">Start a local <br>cluster</h6>
             <p class="text-black">Run a multi-node CockroachDB cluster locally</p>
-            <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb text-center">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
           </div>
           </a>
         </div>
@@ -30,7 +29,6 @@ docs_area:
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
             <h6 class="mt-2 mt-0 text-black">Sample <br>apps</h6>
             <p class="text-black">Examples that show you how to build a simple "Hello World" application with CockroachDB</p>
-            <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb text-center">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
           </div>
           </a>
         </div>
@@ -41,7 +39,6 @@ docs_area:
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
             <h6 class="m-0 text-black">CockroachDB <br>FAQ</h6>
             <p class="text-black">Answers to frequently asked questions</p>
-            <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb text-center">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
           </div>
           </a>
         </div>
@@ -54,7 +51,6 @@ docs_area:
 
   <div class="row pt-5 mt-5 pb-5 mb-5">
     <div class="col-lg-12 text-center">
-      <a class="btn btn-redirect mt-3" href="install-cockroachdb.html">Get CockroachDB <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arrow left" /></a>
     </div>
   </div>
 
@@ -90,7 +86,7 @@ docs_area:
       <p class="landing-column-title">Deploy</p>
       <ul>
         <li><a href="recommended-production-settings.html">Production Checklist</a></li>
-        <li><a href="{% link cockroachcloud/create-your-cluster.md %}">CockroachDB Cloud Deployment</a></li>
+        <li><a href="cockroachcloud/create-your-cluster.md">CockroachDB Cloud Deployment</a></li>
         <li><a href="kubernetes-overview.html">Kubernetes Overview</a></li>
         <li><a href="performance.html">Performance Profiles</a></li>
         <li><a href="upgrade-cockroach-version.html">Cluster Maintenance</a></li>
@@ -138,9 +134,9 @@ docs_area:
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Releases</p>
       <ul>
-        <li><a href="{% link releases/{{page.version.version}}.md %}">{{page.version.version}} Release</a></li>
-        <li><a href="{% link releases/index.md %}">All Releases</a></li>
-        <li><a href="{% link releases/release-support-policy.md %}">Release Support Policy</a></li>
+        <li><a href="releases/{{page.version.version}}.md">{{page.version.version}} Release</a></li>
+        <li><a href="releases/index.md">All Releases</a></li>
+        <li><a href="releases/release-support-policy.md">Release Support Policy</a></li>
         <li><a href="known-limitations.html">Known Limitations</a></li>
       </ul>
     </div>

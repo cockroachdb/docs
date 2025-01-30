@@ -6,14 +6,13 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `CREATE FUNCTION` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
+The `CREATE FUNCTION` [statement]({{ page.version.version }}/sql-statements.md) creates a [user-defined function]({{ page.version.version }}/user-defined-functions.md).
 
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-- To create a function, a user must have [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the schema of the function. The user must also have privileges on all the objects referenced in the function body.
-- To define a function with a [user-defined type]({% link {{ page.version.version }}/create-type.md %}), a user must have `USAGE` privilege on the user-defined type.
+- To create a function, a user must have [`CREATE` privilege]({{ page.version.version }}/security-reference/authorization.md#supported-privileges) on the schema of the function. The user must also have privileges on all the objects referenced in the function body.
+- To define a function with a [user-defined type]({{ page.version.version }}/create-type.md), a user must have `USAGE` privilege on the user-defined type.
 - To resolve a function, a user must have at least the `USAGE` privilege on the schema of the function.
 - To call a function, a user must have `EXECUTE` privilege on the function. By default, the user must also have privileges on all the objects referenced in the function body. However, a [`SECURITY DEFINER` function](#create-a-security-definer-function) executes with the privileges of the user that owns the function, not the user that calls it. A `SECURITY INVOKER` function executes with the privileges of the user that calls the function, thus matching the default behavior.
 
@@ -22,7 +21,6 @@ If you grant `EXECUTE` privilege as a default privilege at the database level, n
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/create_func.html %}
 </div>
 
 ## Parameters
@@ -32,20 +30,18 @@ Parameter | Description
 `routine_create_name` | The name of the function.
 `routine_param` | A comma-separated list of function parameters, specifying the mode, name, and type.
 `routine_return_type` | The type returned by the function. 
-`routine_body_str` | The body of the function. For allowed contents, see [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
+`routine_body_str` | The body of the function. For allowed contents, see [User-Defined Functions]({{ page.version.version }}/user-defined-functions.md#overview).
 
 ## Example of a simple function
 
 The following statement creates a function to compute the square of integers:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION sq(a INT) RETURNS INT AS 'SELECT a*a' LANGUAGE SQL;
 ~~~
 
 The following statement invokes the `sq` function:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT sq(2);
 ~~~
@@ -59,18 +55,15 @@ SELECT sq(2);
 
 ## Examples of functions that reference tables
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Create a function that references a table
 
 The following statement defines a function that returns the total number of MovR application users.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION num_users() RETURNS INT AS 'SELECT count(*) FROM users' LANGUAGE SQL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT num_users();
 ~~~
@@ -86,7 +79,6 @@ SELECT num_users();
 
 The following statement defines a function that updates the `rules` value for a specified row in `promo_codes`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION update_code(
   code_name VARCHAR,
@@ -107,7 +99,6 @@ Given the `promo_codes` row:
   0_building_it_remember   | Door let Mrs manager buy model. Course rock training together. | 2019-01-09 03:04:05 | 2019-01-14 03:04:05 | {"type": "percent_discount", "value": "10%"}
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT update_code('0_building_it_remember', '{"type": "percent_discount", "value": "50%"}');
 ~~~
@@ -122,14 +113,12 @@ SELECT update_code('0_building_it_remember', '{"type": "percent_discount", "valu
 
 The following statement defines a function that returns the total revenue for rides taken in European cities.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION total_euro_revenue() RETURNS DECIMAL LANGUAGE SQL AS $$
   SELECT SUM(revenue) FROM rides WHERE city IN ('paris', 'rome', 'amsterdam')
 $$;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT total_euro_revenue();
 ~~~
@@ -143,14 +132,12 @@ SELECT total_euro_revenue();
 
 The following statement defines a function that returns information for all vehicles not in use. The `SETOF` clause specifies that the function should return each row as the query executes to completion.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION available_vehicles() RETURNS SETOF vehicles LANGUAGE SQL AS $$
   SELECT * FROM vehicles WHERE status = 'available'
 $$;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT city,current_location,type FROM available_vehicles();
 ~~~
@@ -172,7 +159,6 @@ The following statement defines a function that returns the information for the 
 
 In the function subquery, the latest `end_time` timestamp is used to determine the most recently completed ride.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION last_rider() RETURNS RECORD LANGUAGE SQL AS $$
   SELECT * FROM users WHERE id = (
@@ -181,7 +167,6 @@ CREATE OR REPLACE FUNCTION last_rider() RETURNS RECORD LANGUAGE SQL AS $$
 $$;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT last_rider();
 ~~~
@@ -197,7 +182,6 @@ SELECT last_rider();
 
 The following statement uses a combination of `OUT` and `INOUT` parameters to modify a provided value and output the result. An `OUT` parameter returns a value, while an `INOUT` parameter passes an input value and returns a value.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION double_triple(INOUT double INT, OUT triple INT) AS 
   $$
@@ -208,7 +192,6 @@ CREATE OR REPLACE FUNCTION double_triple(INOUT double INT, OUT triple INT) AS
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT double_triple(1);
 ~~~
@@ -221,7 +204,6 @@ SELECT double_triple(1);
 
 The `CREATE FUNCTION` statement does not need a `RETURN` statement because this is added implicitly for a function with `OUT` parameters:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE FUNCTION double_triple;
 ~~~
@@ -247,7 +229,6 @@ SHOW CREATE FUNCTION double_triple;
 
 The following statement defines a function that invokes the [`double_triple` example function](#create-a-function-that-uses-out-and-inout-parameters). 
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION f(input_value INT)
   RETURNS RECORD 
@@ -258,7 +239,6 @@ CREATE OR REPLACE FUNCTION f(input_value INT)
   $$ LANGUAGE PLpgSQL;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT f(1);
 ~~~
@@ -271,13 +251,11 @@ SELECT f(1);
 
 ### Create a function that uses a loop
 
-{% include {{ page.version.version }}/sql/udf-plpgsql-example.md %}
 
 ### Create a trigger function
 
-A trigger function is a [function that is executed by a trigger]({% link {{ page.version.version }}/triggers.md %}#trigger-function). A trigger function must return type `TRIGGER` and is written in [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}).
+A trigger function is a [function that is executed by a trigger]({{ page.version.version }}/triggers.md#trigger-function). A trigger function must return type `TRIGGER` and is written in [PL/pgSQL]({{ page.version.version }}/plpgsql.md).
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION change_name()
 RETURNS TRIGGER AS $$
@@ -288,7 +266,7 @@ END;
 $$ LANGUAGE PLpgSQL;
 ~~~
 
-The preceding example modifies a given `name` value and returns the `NEW` [trigger variable]({% link {{ page.version.version }}/triggers.md %}#trigger-variables) because it is meant to be executed by a `BEFORE` trigger. For details, refer to [Triggers]({% link {{ page.version.version }}/triggers.md %}).
+The preceding example modifies a given `name` value and returns the `NEW` [trigger variable]({{ page.version.version }}/triggers.md#trigger-variables) because it is meant to be executed by a `BEFORE` trigger. For details, refer to [Triggers]({{ page.version.version }}/triggers.md).
 
 ### Create a `SECURITY DEFINER` function
 
@@ -296,29 +274,25 @@ The following example defines a function using the `SECURITY DEFINER` clause. Th
 
 Create two roles:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE owner;
 CREATE ROLE invoker;
 ~~~
 
-Grant a [`SELECT` privilege]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the `user_promo_codes` table to the `owner` role.
+Grant a [`SELECT` privilege]({{ page.version.version }}/grant.md#supported-privileges) on the `user_promo_codes` table to the `owner` role.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 GRANT SELECT ON TABLE user_promo_codes TO owner;
 ~~~
 
 Set your role to `owner`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET ROLE owner;
 ~~~
 
 Create a simple `SECURITY DEFINER` function that reads the contents of `user_promo_codes`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION get_codes() 
   RETURNS SETOF RECORD 
@@ -331,14 +305,12 @@ CREATE OR REPLACE FUNCTION get_codes()
 
 Set your role to `invoker`.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET ROLE invoker;
 ~~~
 
 `invoker` does not have the privileges to read the `user_promo_codes` table directly:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM user_promo_codes;
 ~~~
@@ -350,7 +322,6 @@ SQLSTATE: 42501
 
 As `invoker`, you can call the `get_codes` function, since `SECURITY DEFINER` is executed with the privileges of the `owner` role:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT get_codes();
 ~~~
@@ -368,8 +339,8 @@ SELECT get_codes();
 
 ## See also
 
-- [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %})
-- [`ALTER FUNCTION`]({% link {{ page.version.version }}/alter-function.md %})
-- [`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
-- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [User-Defined Functions]({{ page.version.version }}/user-defined-functions.md)
+- [`ALTER FUNCTION`]({{ page.version.version }}/alter-function.md)
+- [`DROP FUNCTION`]({{ page.version.version }}/drop-function.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)
+- [Online Schema Changes]({{ page.version.version }}/online-schema-changes.md)

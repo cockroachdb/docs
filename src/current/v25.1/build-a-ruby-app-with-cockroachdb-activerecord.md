@@ -7,7 +7,6 @@ referral_id: docs_ruby_activerecord
 docs_area: get_started
 ---
 
-{% include {{ page.version.version }}/filter-tabs/crud-ruby.md %}
 
 This tutorial shows you how build a simple Ruby application with CockroachDB and [Active Record](http://guides.rubyonrails.org/active_record_basics.html). CockroachDB provides an Active Record adapter for CockroachDB as a [RubyGem](https://rubygems.org/gems/activerecord-cockroachdb-adapter).
 
@@ -17,13 +16,11 @@ For a more realistic use of Active Record with CockroachDB in a Rails app, see o
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/setup/sample-setup-certs.md %}
 
 ## Step 2. Get the code
 
 Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-ruby-activerecord).
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 ~~~
@@ -34,7 +31,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
     For example, to install `libpq` on macOS with Homebrew, run the following command:
 
-    {% include_cached copy-clipboard.html %}
     ~~~shell
     brew install libpq
     ~~~
@@ -43,7 +39,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
     For example, if you installed `libpq` on macOS with Homebrew, run the following command from the `example-app-ruby-activerecord` directory:
 
-    {% include_cached copy-clipboard.html %}
     ~~~shell
     bundle config --local build.pg --with-opt-dir="{libpq-path}"
     ~~~
@@ -52,7 +47,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
 1. Install the dependencies:
 
-    {% include_cached copy-clipboard.html %}
     ~~~shell
     bundle install
     ~~~
@@ -63,7 +57,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
     <section class="filter-content" markdown="1" data-scope="local">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
     ~~~
@@ -72,7 +65,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
     <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ export DATABASE_URL="{connection-string}"
     ~~~
@@ -85,7 +77,6 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 
 1. Run the code to create a table and insert some rows:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ruby main.rb
     ~~~
@@ -102,5 +93,3 @@ git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 ## What's next?
 
 Read more about using [Active Record](http://guides.rubyonrails.org/active_record_basics.html), or check out a more realistic implementation of Active Record with CockroachDB in a Rails app in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
-
-{% include_cached {{page.version.version}}/app/see-also-links.md %}

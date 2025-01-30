@@ -5,31 +5,28 @@ toc: true
 docs_area: reference.sql
 ---
 
-Use the `SHOW PARTITIONS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) to view details about existing [partitions]({% link {{ page.version.version }}/partitioning.md %}).
-
-{% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
+Use the `SHOW PARTITIONS` [statement]({{ page.version.version }}/sql-statements.md) to view details about existing [partitions]({{ page.version.version }}/partitioning.md).
 
 
 
-{% include {{page.version.version}}/sql/crdb-internal-partitions.md %}
+
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_partitions.html %}
 </div>
 
 ## Required privileges
 
-No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to list partitions.
+No [privileges]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) are required to list partitions.
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-`database_name` | The name of the [database]({% link {{ page.version.version }}/create-database.md %}) for which to show [partitions]({% link {{ page.version.version }}/partitioning.md %}).
-`table_name` | The name of the [table]({% link {{ page.version.version }}/create-table.md %}) for which to show [partitions]({% link {{ page.version.version }}/partitioning.md %}).
-`table_index_name` | The name of the [index]({% link {{ page.version.version }}/create-index.md %}) for which to show [partitions]({% link {{ page.version.version }}/partitioning.md %}).
+`database_name` | The name of the [database]({{ page.version.version }}/create-database.md) for which to show [partitions]({{ page.version.version }}/partitioning.md).
+`table_name` | The name of the [table]({{ page.version.version }}/create-table.md) for which to show [partitions]({{ page.version.version }}/partitioning.md).
+`table_index_name` | The name of the [index]({{ page.version.version }}/create-index.md) for which to show [partitions]({{ page.version.version }}/partitioning.md).
 
 ## Response
 
@@ -40,21 +37,19 @@ Field | Description
 `database_name` | The name of the database that contains the partition.
 `table_name` | The name of the table that contains the partition.
 `partition_name` | The name of the partition.
-`parent_partition` | The name of the parent partition, if the partition is a [subpartition]({% link {{ page.version.version }}/partitioning.md %}#define-subpartitions-on-a-table).
+`parent_partition` | The name of the parent partition, if the partition is a [subpartition]({{ page.version.version }}/partitioning.md#define-subpartitions-on-a-table).
 `column_names` | The names of the columns in the partition definition expression.
 `index_name` | The name of the index for the partition.
 `partition_value` | The value that defines the partition.
-`zone_constraints` | The [zone constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}), if replication zones are configured for the partition.
+`zone_constraints` | The [zone constraints]({{ page.version.version }}/configure-replication-zones.md), if replication zones are configured for the partition.
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements-geo-partitioned-replicas.md %}
 
-The `movr` database in this example is pre-partitioned. For information about partitioning tables, see [Define Table Partitions]({% link {{ page.version.version }}/partitioning.md %}) or [`ALTER TABLE ... PARTITION BY`]({% link {{ page.version.version }}/alter-table.md %}#partition-by).
+The `movr` database in this example is pre-partitioned. For information about partitioning tables, see [Define Table Partitions]({{ page.version.version }}/partitioning.md) or [`ALTER TABLE ... PARTITION BY`]({{ page.version.version }}/alter-table.md#partition-by).
 
 ### Show table partitions
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW PARTITIONS FROM TABLE users;
 ~~~
@@ -83,9 +78,8 @@ The `movr` database in this example is pre-partitioned. For information about pa
 (3 rows)
 ~~~
 
-You can also use [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %}) to view partitions on a table:
+You can also use [`SHOW CREATE TABLE`]({{ page.version.version }}/show-create.md) to view partitions on a table:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -117,14 +111,12 @@ You can also use [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-c
 
 If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output includes a warning.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION us_west OF TABLE users CONFIGURE ZONE DISCARD;
   ALTER PARTITION us_east OF TABLE users CONFIGURE ZONE DISCARD;
   ALTER PARTITION europe_west OF TABLE users CONFIGURE ZONE DISCARD;
 ~~~
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -152,7 +144,6 @@ If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output i
 
 ### Show partitions by index
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW PARTITIONS FROM INDEX vehicles@vehicles_auto_index_fk_city_ref_users;
 ~~~
@@ -183,7 +174,6 @@ If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output i
 
 ### Show partitions by database
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW PARTITIONS FROM DATABASE movr;
 ~~~
@@ -231,10 +221,9 @@ If a partitioned table has no zones configured, the `SHOW CREATE TABLE` output i
 (24 rows)
 ~~~
 
-{% include {{page.version.version}}/sql/crdb-internal-partitions-example.md %}
 
 ## See also
 
-- [Define Table Partitions]({% link {{ page.version.version }}/partitioning.md %})
-- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
-- [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
+- [Define Table Partitions]({{ page.version.version }}/partitioning.md)
+- [SQL Statements]({{ page.version.version }}/sql-statements.md)
+- [Low Latency Reads and Writes in a Multi-Region Cluster]({{ page.version.version }}/demo-low-latency-multi-region-deployment.md)

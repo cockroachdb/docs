@@ -5,28 +5,26 @@ toc: true
 docs_area: deploy
 ---
 
-CockroachDB's flexible [replication controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) make it trivially easy to run a single CockroachDB cluster across cloud platforms and to migrate data from one cloud to another without any service interruption. This page guides you through a local simulation of the process.
+CockroachDB's flexible [replication controls]({{ page.version.version }}/configure-replication-zones.md) make it trivially easy to run a single CockroachDB cluster across cloud platforms and to migrate data from one cloud to another without any service interruption. This page guides you through a local simulation of the process.
 
 ## Watch the demo
 
-{% include_cached youtube.html video_id="cCJkgZy6s2Q" %}
 
 ## Step 1. Install prerequisites
 
 In this tutorial, you'll use CockroachDB, its built-in `ycsb` workload, and the HAProxy load balancer. Before you begin, make sure these applications are installed:
 
-- Install the latest version of [CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+- Install the latest version of [CockroachDB]({{ page.version.version }}/install-cockroachdb.md).
 - Install [HAProxy](http://www.haproxy.org/). If you're on a Mac and using Homebrew, use `brew install haproxy`.
 
 Also, to keep track of the data files and logs for your cluster, you may want to create a new directory (e.g., `mkdir cloud-migration`) and start all your nodes in that directory.
 
 ## Step 2. Start a 3-node cluster on "cloud 1"
 
-If you've already [started a local cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}), the commands for starting nodes should be familiar to you. The new flag to note is [`--locality`]({% link {{ page.version.version }}/configure-replication-zones.md %}#descriptive-attributes-assigned-to-nodes), which accepts key-value pairs that describe the topography of a node. In this case, you're using the flag to specify that the first 3 nodes are running on cloud 1.
+If you've already [started a local cluster]({{ page.version.version }}/start-a-local-cluster.md), the commands for starting nodes should be familiar to you. The new flag to note is [`--locality`]({{ page.version.version }}/configure-replication-zones.md#descriptive-attributes-assigned-to-nodes), which accepts key-value pairs that describe the topography of a node. In this case, you're using the flag to specify that the first 3 nodes are running on cloud 1.
 
 In a new terminal, start node 1 on cloud 1:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -40,7 +38,6 @@ $ cockroach start \
 
 In a new terminal, start node 2 on cloud 1:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -54,7 +51,6 @@ $ cockroach start \
 
 In a new terminal, start node 3 on cloud 1:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -68,9 +64,8 @@ $ cockroach start \
 
 ## Step 3. Initialize the cluster
 
-In a new terminal, use the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster:
+In a new terminal, use the [`cockroach init`]({{ page.version.version }}/cockroach-init.md) command to perform a one-time initialization of the cluster:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init \
 --insecure \
@@ -81,9 +76,8 @@ $ cockroach init \
 
 You're now running 3 nodes in a simulated cloud. Each of these nodes is an equally suitable SQL gateway to your cluster, but to ensure an even balancing of client requests across these nodes, you can use a TCP load balancer. Let's use the open-source [HAProxy](http://www.haproxy.org/) load balancer that you installed earlier.
 
-In a new terminal, run the [`cockroach gen haproxy`]({% link {{ page.version.version }}/cockroach-gen.md %}) command, specifying the port of any node:
+In a new terminal, run the [`cockroach gen haproxy`]({{ page.version.version }}/cockroach-gen.md) command, specifying the port of any node:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach gen haproxy \
 --insecure \
@@ -118,7 +112,6 @@ listen psql
 
 Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ haproxy -f haproxy.cfg
 ~~~
@@ -129,7 +122,6 @@ Now that you have a load balancer running in front of your cluster, lets use the
 
 1. In a new terminal, load the initial `ycsb` schema and data, pointing it at HAProxy's port:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init ycsb \
     'postgresql://root@localhost:26000?sslmode=disable'
@@ -137,7 +129,6 @@ Now that you have a load balancer running in front of your cluster, lets use the
 
 1. Run the `ycsb` workload, pointing it at HAProxy's port:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload run ycsb \
     --duration=20m \
@@ -171,15 +162,14 @@ Now open the DB Console at `http://localhost:8080` and click **Metrics** in the 
 
 Scroll down a bit and hover over the **Replicas per Node** graph. Because CockroachDB replicates each piece of data 3 times by default, the replica count on each of your 3 nodes should be identical:
 
-<img src="{{ 'images/v24.2/ui_replicas_migration.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+![DB Console](/images/v24.2/ui_replicas_migration.png)
 
 ## Step 7. Add 3 nodes on "cloud 2"
 
-At this point, you're running three nodes on cloud 1. But what if you'd like to start experimenting with resources provided by another cloud vendor? Let's try that by adding three more nodes to a new cloud platform. Again, the flag to note is [`--locality`]({% link {{ page.version.version }}/configure-replication-zones.md %}#descriptive-attributes-assigned-to-nodes), which you're using to specify that these next 3 nodes are running on cloud 2.
+At this point, you're running three nodes on cloud 1. But what if you'd like to start experimenting with resources provided by another cloud vendor? Let's try that by adding three more nodes to a new cloud platform. Again, the flag to note is [`--locality`]({{ page.version.version }}/configure-replication-zones.md#descriptive-attributes-assigned-to-nodes), which you're using to specify that these next 3 nodes are running on cloud 2.
 
 In a new terminal, start node 4 on cloud 2:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -193,7 +183,6 @@ $ cockroach start \
 
 In a new terminal, start node 5 on cloud 2:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -207,7 +196,6 @@ $ cockroach start \
 
 In a new terminal, start node 6 on cloud 2:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -221,19 +209,18 @@ $ cockroach start \
 
 ## Step 8. Watch data balance across all 6 nodes
 
-Back on the **Overview** dashboard in DB Console, hover over the **Replicas per Node** graph again. Because you used [`--locality`]({% link {{ page.version.version }}/configure-replication-zones.md %}#descriptive-attributes-assigned-to-nodes) to specify that nodes are running on 2 clouds, you'll see an approximately even number of replicas on each node, indicating that CockroachDB has automatically rebalanced replicas across both simulated clouds:
+Back on the **Overview** dashboard in DB Console, hover over the **Replicas per Node** graph again. Because you used [`--locality`]({{ page.version.version }}/configure-replication-zones.md#descriptive-attributes-assigned-to-nodes) to specify that nodes are running on 2 clouds, you'll see an approximately even number of replicas on each node, indicating that CockroachDB has automatically rebalanced replicas across both simulated clouds:
 
-<img src="{{ 'images/v24.2/ui_replicas_migration2.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+![DB Console](/images/v24.2/ui_replicas_migration2.png)
 
 Note that it takes a few minutes for the DB Console to show accurate per-node replica counts on hover. This is why the new nodes in the screenshot above show 0 replicas. However, the graph lines are accurate, and you can click **View node list** in the **Summary** area for accurate per-node replica counts as well.
 
 ## Step 9. Migrate all data to "cloud 2"
 
-So your cluster is replicating across two simulated clouds. But let's say that after experimentation, you're happy with cloud vendor 2, and you decide that you'd like to move everything there. Can you do that without interruption to your live client traffic? Yes, and it's as simple as running a single command to add a [hard constraint]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) that all replicas must be on nodes with `--locality=cloud=2`.
+So your cluster is replicating across two simulated clouds. But let's say that after experimentation, you're happy with cloud vendor 2, and you decide that you'd like to move everything there. Can you do that without interruption to your live client traffic? Yes, and it's as simple as running a single command to add a [hard constraint]({{ page.version.version }}/configure-replication-zones.md#replication-constraints) that all replicas must be on nodes with `--locality=cloud=2`.
 
-In a new terminal, [edit the default replication zone]({% link {{ page.version.version }}/alter-range.md %}#configure-zone):
+In a new terminal, [edit the default replication zone]({{ page.version.version }}/alter-range.md#configure-zone):
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING constraints='[+cloud=2]';" --insecure --host=localhost:26257
 ~~~
@@ -242,7 +229,7 @@ $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING constraints=
 
 Back on the **Overview** dashboard in the DB Console, hover over the **Replicas per Node** graph again. Very soon, you'll see the replica count double on nodes 4, 5, and 6 and drop to 0 on nodes 1, 2, and 3:
 
-<img src="{{ 'images/v24.2/ui_replicas_migration3.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+![DB Console](/images/v24.2/ui_replicas_migration3.png)
 
 This indicates that all data has been migrated from cloud 1 to cloud 2. In a real cloud migration scenario, at this point you would update the load balancer to point to the nodes on cloud 2 and then stop the nodes on cloud 1. But for the purpose of this local simulation, there's no need to do that.
 
@@ -254,7 +241,6 @@ Once you're done with your cluster, stop YCSB by switching into its terminal and
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config file:
 
-{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ rm -rf cloud1node1 cloud1node2 cloud1node3 cloud2node4 cloud2node5 cloud2node6 haproxy.cfg
 ~~~
@@ -263,11 +249,10 @@ $ rm -rf cloud1node1 cloud1node2 cloud1node3 cloud2node4 cloud2node5 cloud2node6
 
 Explore other CockroachDB benefits and features:
 
-{% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 
 You may also want to learn other ways to control the location and number of replicas in a cluster:
 
-- [Even Replication Across Datacenters]({% link {{ page.version.version }}/configure-replication-zones.md %}#even-replication-across-availability-zones)
-- [Multiple Applications Writing to Different Databases]({% link {{ page.version.version }}/configure-replication-zones.md %}#multiple-applications-writing-to-different-databases)
-- [Stricter Replication for a Table and Its Indexes]({% link {{ page.version.version }}/configure-replication-zones.md %}#stricter-replication-for-a-table-and-its-secondary-indexes)
-- [Tweaking the Replication of System Ranges]({% link {{ page.version.version }}/configure-replication-zones.md %}#tweaking-the-replication-of-system-ranges)
+- [Even Replication Across Datacenters]({{ page.version.version }}/configure-replication-zones.md#even-replication-across-availability-zones)
+- [Multiple Applications Writing to Different Databases]({{ page.version.version }}/configure-replication-zones.md#multiple-applications-writing-to-different-databases)
+- [Stricter Replication for a Table and Its Indexes]({{ page.version.version }}/configure-replication-zones.md#stricter-replication-for-a-table-and-its-secondary-indexes)
+- [Tweaking the Replication of System Ranges]({{ page.version.version }}/configure-replication-zones.md#tweaking-the-replication-of-system-ranges)

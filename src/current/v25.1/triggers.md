@@ -5,16 +5,15 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-A *trigger* executes a function when one or more specified SQL operations is performed on a table. The executed function is called a [*trigger function*](#trigger-function) and is written in [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}).
+A *trigger* executes a function when one or more specified SQL operations is performed on a table. The executed function is called a [*trigger function*](#trigger-function) and is written in [PL/pgSQL]({{ page.version.version }}/plpgsql.md).
 
 Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
 
 ## Structure
 
-A trigger consists of a trigger name, table name associated with the trigger, SQL operations and other conditions that activate the trigger, and a trigger function name with optional arguments. A trigger is defined with [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %}) and has the following overall structure:
+A trigger consists of a trigger name, table name associated with the trigger, SQL operations and other conditions that activate the trigger, and a trigger function name with optional arguments. A trigger is defined with [`CREATE TRIGGER`]({{ page.version.version }}/create-trigger.md) and has the following overall structure:
 
 ~~~ sql
 CREATE TRIGGER trigger_name 
@@ -28,15 +27,14 @@ CREATE TRIGGER trigger_name
 	- `FOR EACH ROW` specifies a row-level trigger, which activates once for each row that is affected by the statements.
 	- `WHEN` specifies an optional boolean condition that determines whether the trigger activates for a given row.
 	- For details on the preceding behaviors, refer to [Trigger conditions](#trigger-conditions).
-- The [trigger function](#trigger-function), written in [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}), is executed each time the trigger activates. A comma-separated list of constant string arguments can be included.
+- The [trigger function](#trigger-function), written in [PL/pgSQL]({{ page.version.version }}/plpgsql.md), is executed each time the trigger activates. A comma-separated list of constant string arguments can be included.
 
 ### Trigger conditions
 
-A trigger activates when one or more SQL statements is issued on a table. The statement can be [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`DELETE`]({% link {{ page.version.version }}/delete.md %}), or [`UPDATE`]({% link {{ page.version.version }}/update.md %}). 
+A trigger activates when one or more SQL statements is issued on a table. The statement can be [`INSERT`]({{ page.version.version }}/insert.md), [`DELETE`]({{ page.version.version }}/delete.md), or [`UPDATE`]({{ page.version.version }}/update.md). 
 
 To specify more than one statement, use the `OR` clause. For example:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TRIGGER check_value
   BEFORE INSERT OR UPDATE ON users
@@ -44,9 +42,9 @@ CREATE TRIGGER check_value
 ~~~
 
 {{site.data.alerts.callout_info}}
-`INSERT` and `UPDATE` triggers activate when [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statements insert or update rows, respectively. However, `UPSERT` cannot be specified in a [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %}) statement.
+`INSERT` and `UPDATE` triggers activate when [`UPSERT`]({{ page.version.version }}/upsert.md) statements insert or update rows, respectively. However, `UPSERT` cannot be specified in a [`CREATE TRIGGER`]({{ page.version.version }}/create-trigger.md) statement.
 
-`UPDATE` triggers activate when the [`ON CONFLICT`]({% link {{ page.version.version }}/insert.md %}#on-conflict-clause) clause of an `INSERT` updates rows.
+`UPDATE` triggers activate when the [`ON CONFLICT`]({{ page.version.version }}/insert.md#on-conflict-clause) clause of an `INSERT` updates rows.
 {{site.data.alerts.end}}
 
 If `BEFORE` is specified, the trigger activates before the SQL operation. `BEFORE` triggers can be used to validate or modify data before it is inserted, or to check row values before they are updated.
@@ -57,7 +55,6 @@ The `FOR EACH ROW` clause must be included after the table name. This specifies 
 
 An optional `WHEN` boolean condition can then be added. This further controls whether the trigger activates on an affected row, and is typically applied to the `OLD` or `NEW` [trigger variables](#trigger-variables). For example, the following trigger only activates if the row's `address` value was changed by the `UPDATE`:
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TRIGGER audit_address_change
   AFTER UPDATE ON users
@@ -67,7 +64,7 @@ CREATE TRIGGER audit_address_change
 ~~~
 
 {{site.data.alerts.callout_info}}
-Due to a [known limitation]({% link {{ page.version.version }}/known-limitations.md %}#limitations-for-composite-types), `OLD` and `NEW` must be wrapped in parentheses when accessing column names.
+Due to a [known limitation]({{ page.version.version }}/known-limitations.md#limitations-for-composite-types), `OLD` and `NEW` must be wrapped in parentheses when accessing column names.
 {{site.data.alerts.end}}
 
 Only `OLD` can be referenced in the `WHEN` clause of a `DELETE` trigger, and only `NEW` in the `WHEN` clause of an `INSERT` trigger. `OLD` or `NEW` or both can be referenced in the `WHEN` clause of an `UPDATE` trigger. For details, refer to [Trigger variables](#trigger-variables).
@@ -86,11 +83,11 @@ For an example, refer to [Demonstrate `BEFORE` and `AFTER` trigger ordering](#de
 
 ### Trigger function
 
-A trigger executes a [function]({% link {{ page.version.version }}/user-defined-functions.md %}) called a trigger function. A trigger function is defined with [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %}#create-a-trigger-function) and has the following requirements:
+A trigger executes a [function]({{ page.version.version }}/user-defined-functions.md) called a trigger function. A trigger function is defined with [`CREATE FUNCTION`]({{ page.version.version }}/create-function.md#create-a-trigger-function) and has the following requirements:
 
 - The function must return type `TRIGGER`. 
 - The function must be declared without arguments.
-- The function must be written in [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}).
+- The function must be written in [PL/pgSQL]({{ page.version.version }}/plpgsql.md).
 - The function for a [`BEFORE`](#trigger-conditions) trigger must return one of the following values:
 	- The [`NEW`](#trigger-variables) table row resulting from the SQL operation that activated the trigger. This variable applies only to `INSERT` and `UPDATE` triggers, and also allows the `BEFORE` trigger to modify the row before it is written.
 	- The [`OLD`](#trigger-variables) table row affected by the SQL operation that activated the trigger. This variable applies only to `UPDATE` and `DELETE` triggers.
@@ -98,7 +95,6 @@ A trigger executes a [function]({% link {{ page.version.version }}/user-defined-
 - The function for an [`AFTER`](#trigger-conditions) trigger typically returns `NULL` by convention, because its return value will be ignored.
 - The function must be defined before creating the trigger.
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION function_name()
   RETURNS TRIGGER AS $$
@@ -122,11 +118,11 @@ The following trigger variables are automatically created for trigger functions,
 | `TG_WHEN`         | `STRING`   | When the trigger is set to activate: [`BEFORE` or `AFTER`](#trigger-conditions).                                                                                                                                             |
 | `TG_LEVEL`        | `STRING`   | Scope of trigger behavior: [`ROW`](#trigger-conditions).                                                                                                                                                                     |
 | `TG_OP`           | `STRING`   | SQL operation that activated the trigger: [`INSERT`, `UPDATE`, or `DELETE`](#trigger-conditions).                                                                                                                            |
-| `TG_RELID`        | `OID`      | [`OID`]({% link {{ page.version.version }}/oid.md %}) of the table associated with the trigger.                                                                                                                              |
+| `TG_RELID`        | `OID`      | [`OID`]({{ page.version.version }}/oid.md) of the table associated with the trigger.                                                                                                                              |
 | `TG_TABLE_NAME`   | `NAME`     | Name of the table associated with the trigger.                                                                                                                                                                               |
 | `TB_TABLE_SCHEMA` | `NAME`     | Name of the table schema associated with the trigger.                                                                                                                                                                        |
-| `TG_NARGS`        | `INT`      | Number of arguments passed to the trigger function in the [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %}) definition.                                                                            |
-| `TG_ARGV`         | `STRING[]` | Arguments passed to the trigger function in the [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %}) definition.                                                                                      |
+| `TG_NARGS`        | `INT`      | Number of arguments passed to the trigger function in the [`CREATE TRIGGER`]({{ page.version.version }}/create-trigger.md) definition.                                                                            |
+| `TG_ARGV`         | `STRING[]` | Arguments passed to the trigger function in the [`CREATE TRIGGER`]({{ page.version.version }}/create-trigger.md) definition.                                                                                      |
 
 ## Examples
 
@@ -134,16 +130,14 @@ The following trigger variables are automatically created for trigger functions,
 
 In the following example, a trigger is used to log data changes to an "audit log" table.
 
-1. Run [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) to start a temporary, in-memory cluster with the [`movr`]({% link {{ page.version.version }}/movr.md %}) sample dataset preloaded:
+1. Run [`cockroach demo`]({{ page.version.version }}/cockroach-demo.md) to start a temporary, in-memory cluster with the [`movr`]({{ page.version.version }}/movr.md) sample dataset preloaded:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	cockroach demo
 	~~~
 
 1. Create a table that stores audit records. Each record includes the table that was affected, the SQL operation that was performed on the table, the old and new table rows, and the timestamp when the change was made:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TABLE audit_log (
 	    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -155,9 +149,8 @@ In the following example, a trigger is used to log data changes to an "audit log
 	);
 	~~~
 
-1. Create a [trigger function]({% link {{ page.version.version }}/create-function.md %}#create-a-trigger-function) that inserts the corresponding values into the `audit_log` table:
+1. Create a [trigger function]({{ page.version.version }}/create-function.md#create-a-trigger-function) that inserts the corresponding values into the `audit_log` table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE OR REPLACE FUNCTION audit_changes()
 	RETURNS TRIGGER AS $$
@@ -179,7 +172,6 @@ In the following example, a trigger is used to log data changes to an "audit log
 
 1. Create a trigger that executes the `audit_changes` function after an `INSERT`, `UPDATE`, or `DELETE` is issued on the `users` table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TRIGGER audit_trigger
 	AFTER INSERT OR UPDATE OR DELETE ON users
@@ -192,7 +184,6 @@ In the following example, a trigger is used to log data changes to an "audit log
 
 1. Test the trigger by inserting, updating, and deleting a row in the `users` table of the `movr` database:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	INSERT INTO users (id, city, name) VALUES (uuid_generate_v4(), 'new york', 'Max Roach');
 	UPDATE users SET address = '541 Greene Avenue' WHERE name = 'Max Roach';
@@ -203,7 +194,6 @@ In the following example, a trigger is used to log data changes to an "audit log
 
 1. View the results in the `audit_log` table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	SELECT * FROM audit_log ORDER BY changed_at;
 	~~~
@@ -225,7 +215,6 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. Create the following two sample tables. `products` contains a list of products, and `orders` contains a list of orders on those products:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TABLE products (
 		product_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -233,7 +222,6 @@ In the following example, a trigger is used to calculate sales figures for a "su
 	);
 	~~~
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TABLE orders (
 	    order_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -247,7 +235,6 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. Create a `product_sales_summary` table that stores summary records. Each record includes the total number of orders and the total value of sales for each product:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TABLE product_sales_summary (
 	    product_id UUID PRIMARY KEY,
@@ -257,9 +244,8 @@ In the following example, a trigger is used to calculate sales figures for a "su
 	);
 	~~~
 
-1. Create a [trigger function]({% link {{ page.version.version }}/create-function.md %}#create-a-trigger-function) that updates existing summary records, or inserts a new summary record, to reflect each order that is placed:
+1. Create a [trigger function]({{ page.version.version }}/create-function.md#create-a-trigger-function) that updates existing summary records, or inserts a new summary record, to reflect each order that is placed:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE OR REPLACE FUNCTION update_product_sales_summary()
 	RETURNS TRIGGER AS $$
@@ -285,7 +271,6 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. Create a trigger that executes the `update_product_sales_summary` function after an `INSERT` is issued on the `orders` table (i.e., an order is placed):
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TRIGGER trg_update_product_sales_summary
 	AFTER INSERT ON orders
@@ -297,12 +282,10 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. Set up the example scenario by inserting two sample product names and creating a function to randomly generate orders on those product names:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	INSERT INTO products (product_name) VALUES ('Product A'), ('Product B');
 	~~~
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE OR REPLACE FUNCTION generate_orders(num_orders INT)
 	RETURNS VOID AS $$
@@ -336,14 +319,12 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. Run the example function, generating 100 orders:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	SELECT generate_orders(100);
 	~~~
 
 1. View some of the orders that were generated:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	SELECT * FROM orders limit 5;
 	~~~
@@ -360,7 +341,6 @@ In the following example, a trigger is used to calculate sales figures for a "su
 
 1. View the aggregated results on the summary table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	SELECT * FROM product_sales_summary;
 	~~~
@@ -379,7 +359,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Create a sample table of employees and their wages:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TABLE employees (
 	    employee_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -389,9 +368,8 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 	);
 	~~~
 
-1. Create a [trigger function]({% link {{ page.version.version }}/create-function.md %}#create-a-trigger-function) that checks whether a new wage is below the minimum:
+1. Create a [trigger function]({{ page.version.version }}/create-function.md#create-a-trigger-function) that checks whether a new wage is below the minimum:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE OR REPLACE FUNCTION ensure_minimum_wage()
 	RETURNS TRIGGER AS $$
@@ -405,11 +383,10 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 	$$ LANGUAGE PLpgSQL;
 	~~~
 
-	The function prints the wage that is initially assigned to the employee. If the new wage is below minimum, the function [raises an exception]({% link {{ page.version.version }}/plpgsql.md %}#report-messages-and-handle-exceptions) to abort the SQL operation that changes the wage. Otherwise, it returns the `NEW` row resulting from the SQL operation.
+	The function prints the wage that is initially assigned to the employee. If the new wage is below minimum, the function [raises an exception]({{ page.version.version }}/plpgsql.md#report-messages-and-handle-exceptions) to abort the SQL operation that changes the wage. Otherwise, it returns the `NEW` row resulting from the SQL operation.
 
 1. Create a trigger that executes the `ensure_minimum_wage` function before an `INSERT` or `UPDATE` is issued on the `employees` table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TRIGGER trg_ensure_minimum_wage
 	BEFORE INSERT OR UPDATE ON employees
@@ -419,7 +396,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Create a trigger function that adds an initial starting bonus of `5` to each new wage:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE OR REPLACE FUNCTION give_bonus()
 	RETURNS TRIGGER AS $$
@@ -433,7 +409,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Create a trigger that executes the `give_bonus` function before an `INSERT` or `UPDATE` is issued on the `employees` table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TRIGGER trg_give_bonus
 	BEFORE INSERT OR UPDATE ON employees
@@ -445,7 +420,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Create a trigger function that prints an employee's final wage with the bonus applied.
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE OR REPLACE FUNCTION print_final_wage()
 	RETURNS TRIGGER AS $$
@@ -458,7 +432,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Create a trigger that executes the `print_final_wage` function after an `INSERT` or `UPDATE` is issued on the `employees` table:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	CREATE TRIGGER trg_print_final_wage
 	AFTER INSERT OR UPDATE ON employees
@@ -470,7 +443,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Test the triggers by adding a new employee with a wage of `20`:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	INSERT INTO employees (name, wage) VALUES ('John Doe', 20);
 	~~~
@@ -491,7 +463,6 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 1. Add a new employee with a wage of `10`:
 
-	{% include_cached copy-clipboard.html %}
 	~~~ sql
 	INSERT INTO employees (name, wage) VALUES ('Jane Doe', 10);
 	~~~
@@ -512,16 +483,14 @@ In the following example, a combination of `BEFORE` and `AFTER` triggers is used
 
 For a deep-dive demo on triggers, play the following video:
 
-{% include_cached youtube.html video_id="OEu5Dbe7ueE" %}
 
 ## Known limitations
 
-{% include {{ page.version.version }}/known-limitations/trigger-limitations.md %}
 
 ## See also
 
-- [`CREATE TRIGGER`]({% link {{ page.version.version }}/create-trigger.md %})
-- [`DROP TRIGGER`]({% link {{ page.version.version }}/drop-trigger.md %})
-- [User-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %})
-- [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
-- [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %})
+- [`CREATE TRIGGER`]({{ page.version.version }}/create-trigger.md)
+- [`DROP TRIGGER`]({{ page.version.version }}/drop-trigger.md)
+- [User-defined functions]({{ page.version.version }}/user-defined-functions.md)
+- [`CREATE FUNCTION`]({{ page.version.version }}/create-function.md)
+- [PL/pgSQL]({{ page.version.version }}/plpgsql.md)

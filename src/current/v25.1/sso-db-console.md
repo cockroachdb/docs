@@ -6,11 +6,11 @@ docs_area: manage
 key: sso.html
 ---
 
-CockroachDB clusters allow users to authenticate with single sign-on (SSO) to the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and the SQL interface:
+CockroachDB clusters allow users to authenticate with single sign-on (SSO) to the [DB Console]({{ page.version.version }}/ui-overview.md) and the SQL interface:
 
 - Cluster single sign-on (SSO): Enables users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or {{ site.data.products.core }}) with the full security of single sign-on (SSO), and the choice of a variety of cloud-based or customer-managed identity providers (IdPs).
 
-- Single sign-on (SSO) for DB Console: Allows a CockroachDB user to access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) in a secure cluster via an OpenID Connect (OIDC) client and an external identity provider. When SSO is configured and enabled, the [DB Console login page]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) will display an OAuth login button in addition to the password access option.
+- Single sign-on (SSO) for DB Console: Allows a CockroachDB user to access the [DB Console]({{ page.version.version }}/ui-overview.md) in a secure cluster via an OpenID Connect (OIDC) client and an external identity provider. When SSO is configured and enabled, the [DB Console login page]({{ page.version.version }}/ui-overview.md#db-console-access) will display an OAuth login button in addition to the password access option.
 
 This page describes how to set up Single Sign-on to the DB Console, which includes the following steps:
 
@@ -18,7 +18,7 @@ This page describes how to set up Single Sign-on to the DB Console, which includ
 - [Provision an OIDC client](#provision-an-oauth-client-using-google-cloud-platform-gcp) for CockroachDB Cluster SSO authentication using GCP.
 - [Configure a CockroachDB Cluster for OIDC SSO authentication](#configure-your-cluster-to-use-an-oidc-client-and-provider) to the DB Console.
 
-If you would also like to enable SSO authentication for SQL clients, you must complete additional configuration on the [Cluster Single Sign-on (SSO) using a JSON web token (JWT)]({% link {{ page.version.version }}/sso-sql.md %}) page.
+If you would also like to enable SSO authentication for SQL clients, you must complete additional configuration on the [Cluster Single Sign-on (SSO) using a JSON web token (JWT)]({{ page.version.version }}/sso-sql.md) page.
 
 This SSO implementation uses the [authorization code grant type](https://tools.ietf.org/html/rfc6749#section-4.1) to authenticate a user.
 
@@ -27,8 +27,8 @@ This SSO implementation uses the [authorization code grant type](https://tools.i
 - **IdP:** You must have access to an OAuth 2.0 identity provider and client. The process of provisioning one with Google Cloud Platform is described on this page in the [Provision an OAuth client using Google Cloud Platform (GCP)](#provision-an-oauth-client-using-google-cloud-platform-gcp) section.
 
 - **CockroachDB cluster**: you must have access to one of the following:
-	- A {{ site.data.products.core }} cluster enabled with a valid [CockroachDB Enterprise license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses).
-	- A [CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
+	- A {{ site.data.products.core }} cluster enabled with a valid [CockroachDB Enterprise license]({{ page.version.version }}/licensing-faqs.md#types-of-licenses).
+	- A [CockroachDB {{ site.data.products.dedicated }} cluster](create-your-cluster.md).
 
 
 ## Log in to a cluster's DB Console with SSO
@@ -40,7 +40,7 @@ From the user's perspective, once the cluster is properly configured to an ident
 1. The user authenticates successfully with the provider, which completes the OAuth flow.
 1. The user is redirected to the CockroachDB cluster.
 1. CockroachDB creates a web session for the SQL user in a new browser tab.
-1. In the original browser tab, the user is redirected to the [DB Console Cluster Overview]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}).
+1. In the original browser tab, the user is redirected to the [DB Console Cluster Overview]({{ page.version.version }}/ui-cluster-overview-page.md).
 
 ## Provision an OAuth client using Google Cloud Platform (GCP)
 
@@ -64,7 +64,7 @@ You must have the ability to update your cluster settings, which you can achieve
 
 ### Cluster Settings
 
-You must configure the [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) in the following table to enable SSO authentication to the DB Console. Refer to the [Update your cluster settings](#update-your-cluster-settings) section to configure your cluster settings.
+You must configure the [cluster settings]({{ page.version.version }}/cluster-settings.md) in the following table to enable SSO authentication to the DB Console. Refer to the [Update your cluster settings](#update-your-cluster-settings) section to configure your cluster settings.
 
 Cluster Setting | Description
 ----------------|------
@@ -84,14 +84,12 @@ Cluster Setting | Description
 
 1. Open a SQL shell to your cluster:
 
-    {% include_cached copy-clipboard.html %}
     ~~~shell
     cockroach sql --certs-dir=certs --host={your cluster url}:26257
     ~~~
 
 1. Specify the client ID and client secret you obtained earlier:
 
-	{% include_cached copy-clipboard.html %}
 	~~~sql
 	SET CLUSTER SETTING server.oidc_authentication.client_id = '\<client id\>';
 	SET CLUSTER SETTING server.oidc_authentication.client_secret = '\<client secret\>';
@@ -99,14 +97,12 @@ Cluster Setting | Description
 
 1. Specify the OAuth provider URL:
 
-	{% include_cached copy-clipboard.html %}
 	~~~sql
 	SET CLUSTER SETTING server.oidc_authentication.provider_url = 'https://accounts.google.com';
 	~~~
 
 1. Specify the callback URL to redirect the user to the CockroachDB cluster. On a local cluster, this will be `https://localhost:8080/oidc/v1/callback`. For a {{ site.data.products.dedicated }} cluster, replace 'localhost' with your cluster's domain, which can be found by opening the DB Console from the **Tools** tab in your cluster's page in Cloud Console.
 
-	{% include_cached copy-clipboard.html %}
 	~~~sql
 	SET CLUSTER SETTING server.oidc_authentication.redirect_url = 'https://{your cluster url}:8080/oidc/v1/callback';
 	~~~
@@ -115,44 +111,39 @@ Cluster Setting | Description
 
 	Request the `openid` and `email` scopes from the Access Token:
 
-	{% include_cached copy-clipboard.html %}
 	~~~sql
 	SET CLUSTER SETTING server.oidc_authentication.scopes = 'openid email';
 	~~~
 
 	Specify the `email` field from the ID Token:
 
-	{% include_cached copy-clipboard.html %}
 	~~~sql
 	SET CLUSTER SETTING server.oidc_authentication.claim_json_key = 'email';
 	~~~
 
 	Use a regular expression that will extract a username from `email` that you can match to a SQL user. For example, `'^([^@]+)@cockroachlabs\.com$'` extracts the characters that precede `@cockroachlabs.com` in the email address.
 
-	{% include_cached copy-clipboard.html %}
 	~~~sql
 	SET CLUSTER SETTING server.oidc_authentication.principal_regex = '^([^@]+)@cockroachlabs.com$';
 	~~~
 
-1. [Create a SQL user]({% link {{ page.version.version }}/create-user.md %}#create-a-user) that will log into the DB Console. The SQL username you specify must match the identifier obtained in the previous step. For example, a user with the email address `docs@cockroachlabs.com` will need the SQL username `docs`:
+1. [Create a SQL user]({{ page.version.version }}/create-user.md#create-a-user) that will log into the DB Console. The SQL username you specify must match the identifier obtained in the previous step. For example, a user with the email address `docs@cockroachlabs.com` will need the SQL username `docs`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~sql
     CREATE USER docs;
     ~~~
 
 1. Finally, enable OIDC authentication:
 
-	{% include_cached copy-clipboard.html %}
 	~~~sql
 	SET CLUSTER SETTING server.oidc_authentication.enabled = true;
 	~~~
 
 {{site.data.alerts.callout_info}}
-You can optionally enable the [`server.oidc_authentication.autologin` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to automatically log in an authenticated user who visits the DB Console.
+You can optionally enable the [`server.oidc_authentication.autologin` cluster setting]({{ page.version.version }}/cluster-settings.md) to automatically log in an authenticated user who visits the DB Console.
 {{site.data.alerts.end}}
 
 ## See also
 
-- [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
-- [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)]({% link {{ page.version.version }}/sso-sql.md %})
+- [DB Console Overview]({{ page.version.version }}/ui-overview.md)
+- [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)]({{ page.version.version }}/sso-sql.md)

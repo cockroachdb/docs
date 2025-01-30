@@ -5,14 +5,14 @@ toc: true
 docs_area: migrate
 ---
 
-There are multiple strategies for [migrating off legacy technology]({% link {{ page.version.version }}/migration-overview.md %}) to CockroachDB.
+There are multiple strategies for [migrating off legacy technology]({{ page.version.version }}/migration-overview.md) to CockroachDB.
 
-This page discusses the ["Lift and Shift" strategy]({% link {{ page.version.version }}/migration-overview.md %}#lift-and-shift) for migrating your database, which is a commonly used approach. This approach, which is also known as "Big Bang" (and by other names), refers to the process where your data is moved in its entirety from a source system to a target system within a defined period of time. This typically involves some application downtime and can involve some service degradation.
+This page discusses the ["Lift and Shift" strategy]({{ page.version.version }}/migration-overview.md#lift-and-shift) for migrating your database, which is a commonly used approach. This approach, which is also known as "Big Bang" (and by other names), refers to the process where your data is moved in its entirety from a source system to a target system within a defined period of time. This typically involves some application downtime and can involve some service degradation.
 
 Lift and Shift may not be the right approach if a strong application service continuity during the migration is required. It may be a viable method if application downtime is permitted.
 
 {{site.data.alerts.callout_info}}
-The information on this page assumes you have already reviewed the [migration overview]({% link {{ page.version.version }}/migration-overview.md %}).
+The information on this page assumes you have already reviewed the [migration overview]({{ page.version.version }}/migration-overview.md).
 {{site.data.alerts.end}}
 
 ## Pros and Cons
@@ -25,20 +25,20 @@ Pros:
 - Less complex: If you can afford some downtime, the overall effort will usually be lower, and the chance of errors is lower.
 - Lower time start-to-finish: In general, the more downtime you can afford, the shorter the overall migration project timeframe can be.
 - Lower technical risk: It does not involve running multiple systems alongside each other for an extended period of time.
-- Easy to practice [dry runs]({% link {{ page.version.version }}/migration-overview.md %}#perform-a-dry-run) of import/export using testing/non-production systems.
-- Good import/export tooling is available (e.g., external tools like: [AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %}), [Qlik Replicate]({% link {{ page.version.version }}/qlik.md %}), [Striim]({% link {{ page.version.version }}/striim.md %}); or internal tools like [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}), [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}), [`cockroach userdata`]({% link {{ page.version.version }}/cockroach-userfile-upload.md %})).
+- Easy to practice [dry runs]({{ page.version.version }}/migration-overview.md#perform-a-dry-run) of import/export using testing/non-production systems.
+- Good import/export tooling is available (e.g., external tools like: [AWS Database Migration Service (DMS)]({{ page.version.version }}/aws-dms.md), [Qlik Replicate]({{ page.version.version }}/qlik.md), [Striim]({{ page.version.version }}/striim.md); or internal tools like [`IMPORT INTO`]({{ page.version.version }}/import-into.md), [`COPY FROM`]({{ page.version.version }}/copy-from.md), [`cockroach userdata`]({{ page.version.version }}/cockroach-userfile-upload.md)).
 - If your application already has regularly scheduled maintenance windows, your customers will not encounter application downtime.
 
 Cons:
 
-- All or nothing: It either works or does not work; once you start, you have to finish or [roll back]({% link {{ page.version.version }}/migration-overview.md %}#all-at-once-rollback).
-- Higher project risk: The project **must** be completed to meet a given [downtime / service degradation window]({% link {{ page.version.version }}/migration-overview.md %}#downtime-window).
+- All or nothing: It either works or does not work; once you start, you have to finish or [roll back]({{ page.version.version }}/migration-overview.md#all-at-once-rollback).
+- Higher project risk: The project **must** be completed to meet a given [downtime / service degradation window]({{ page.version.version }}/migration-overview.md#downtime-window).
 - Application service continuity requirements must be relaxed (that is, application downtime or increased latency may be needed).
 
 ## Process design considerations
 
 {{site.data.alerts.callout_info}}
-The high-level considerations in this section only refer to the data-loading portion of your migration. They assume you are following the steps in the overall migration process described in [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
+The high-level considerations in this section only refer to the data-loading portion of your migration. They assume you are following the steps in the overall migration process described in [Migration Overview]({{ page.version.version }}/migration-overview.md).
 {{site.data.alerts.end}}
 
 Keep in mind the following considerations when designing a Lift and Shift data migration process.
@@ -52,17 +52,17 @@ Keep in mind the following considerations when designing a Lift and Shift data m
 
 ### Decide on your data migration tooling
 
-If you plan to do your bulk data migration using a managed migration service, you must have a secure, publicly available CockroachDB cluster. CockroachDB supports the following [third-party migration services]({% link {{ page.version.version }}/third-party-database-tools.md %}#data-migration-tools):
+If you plan to do your bulk data migration using a managed migration service, you must have a secure, publicly available CockroachDB cluster. CockroachDB supports the following [third-party migration services]({{ page.version.version }}/third-party-database-tools.md#data-migration-tools):
 
-- [AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %})
-- [Qlik Replicate]({% link {{ page.version.version }}/qlik.md %})
-- [Striim]({% link {{ page.version.version }}/striim.md %})
+- [AWS Database Migration Service (DMS)]({{ page.version.version }}/aws-dms.md)
+- [Qlik Replicate]({{ page.version.version }}/qlik.md)
+- [Striim]({{ page.version.version }}/striim.md)
 
 {{site.data.alerts.callout_info}}
-Depending on the migration service you choose, [long-running transactions]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#hanging-or-stuck-queries) can occur. In some cases, these queries will cause [transaction retry errors]({% link {{ page.version.version }}/common-errors.md %}#restart-transaction). If you encounter these errors while migrating to CockroachDB using a managed migration service, please reach out to our [Support Resources]({% link {{ page.version.version }}/support-resources.md %}).
+Depending on the migration service you choose, [long-running transactions]({{ page.version.version }}/query-behavior-troubleshooting.md#hanging-or-stuck-queries) can occur. In some cases, these queries will cause [transaction retry errors]({{ page.version.version }}/common-errors.md#restart-transaction). If you encounter these errors while migrating to CockroachDB using a managed migration service, please reach out to our [Support Resources]({{ page.version.version }}/support-resources.md).
 {{site.data.alerts.end}}
 
-If you will not be using a managed migration service, see the following sections for more information on how to use SQL statements like [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}), [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}), etc.
+If you will not be using a managed migration service, see the following sections for more information on how to use SQL statements like [`IMPORT INTO`]({{ page.version.version }}/import-into.md), [`COPY FROM`]({{ page.version.version }}/copy-from.md), etc.
 
 <a name="data-formats"></a>
 
@@ -72,20 +72,20 @@ It's important to decide which data formats, storage media, and database feature
 
 Data formats that can be imported by CockroachDB include:
 
-- [SQL]({% link {{ page.version.version }}/schema-design-overview.md %}) for the [schema import]({% link cockroachcloud/migrations-page.md %}).
-- [CSV]({% link {{ page.version.version }}/migrate-from-csv.md %}) for table data.
-- [Avro]({% link {{ page.version.version }}/migrate-from-avro.md %}) for table data.
+- [SQL]({{ page.version.version }}/schema-design-overview.md) for the [schema import](migrations-page.md).
+- [CSV]({{ page.version.version }}/migrate-from-csv.md) for table data.
+- [Avro]({{ page.version.version }}/migrate-from-avro.md) for table data.
 
 The storage media you use to export / import from can be intermediate data files or streaming data coming over the network. Options include:
 
-- Local "userdata" storage for small tables (see [`cockroach userdata`]({% link {{ page.version.version }}/cockroach-userfile-upload.md %}), [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})).
-- Cloud blob storage (see [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}), [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %}), [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})).
+- Local "userdata" storage for small tables (see [`cockroach userdata`]({{ page.version.version }}/cockroach-userfile-upload.md), [Use a Local File Server]({{ page.version.version }}/use-a-local-file-server.md)).
+- Cloud blob storage (see [`IMPORT INTO`]({{ page.version.version }}/import-into.md), [Import Performance Best Practices]({{ page.version.version }}/import-performance-best-practices.md), [Use Cloud Storage]({{ page.version.version }}/use-cloud-storage.md)).
 - Direct wire transfers (see [managed migration services](#managed-migration)).
 
 Database features for export/import from the source and target databases can include:
 
 - Tools for exporting from the source database may include: `pg_dump --schema-only` and `COPY FROM`, `mysqldump`, `expdp`, etc.
-- For import into CockroachDB, use [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}) or [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}). For a bulk data migrations, most users should use `IMPORT INTO` because the tables will be offline anyway, and `IMPORT INTO` can [perform the data import much faster]({% link {{ page.version.version }}/import-performance-best-practices.md %}) than `COPY FROM`.
+- For import into CockroachDB, use [`COPY FROM`]({{ page.version.version }}/copy-from.md) or [`IMPORT INTO`]({{ page.version.version }}/import-into.md). For a bulk data migrations, most users should use `IMPORT INTO` because the tables will be offline anyway, and `IMPORT INTO` can [perform the data import much faster]({{ page.version.version }}/import-performance-best-practices.md) than `COPY FROM`.
 
 Decide which of the options above will meet your requirements while resulting in a process that is [restartable](#restartable) and [scalable](#scalable).
 
@@ -116,24 +116,24 @@ Keep the following requirements in mind:
   - For best performance, these files should contain presorted, disjoint data sets.
 - Benchmark the performance of your migration process to help ensure it will complete within the allotted downtime window.
   
-For more information about import performance, see [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %}).
+For more information about import performance, see [Import Performance Best Practices]({{ page.version.version }}/import-performance-best-practices.md).
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Use the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
-- [Migrate with AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %})
+- [Migration Overview]({{ page.version.version }}/migration-overview.md)
+- [Use the Schema Conversion Tool](migrations-page.md)
+- [Migrate with AWS Database Migration Service (DMS)]({{ page.version.version }}/aws-dms.md)
 - [AWS DMS documentation](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html)
-- [Migrate and Replicate Data with Qlik Replicate]({% link {{ page.version.version }}/qlik.md %})
-- [Migrate and Replicate Data with Striim]({% link {{ page.version.version }}/striim.md %})
-- [Schema Design Overview]({% link {{ page.version.version }}/schema-design-overview.md %})
-- [Back Up and Restore]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
-- [Export data with Changefeeds]({% link {{ page.version.version }}/export-data-with-changefeeds.md %})
-- [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %})
-- [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
-- [Migrate from CSV]({% link {{ page.version.version }}/migrate-from-csv.md %})
-- [Migrate from Avro]({% link {{ page.version.version }}/migrate-from-avro.md %})
-- [Client connection parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [Migrate and Replicate Data with Qlik Replicate]({{ page.version.version }}/qlik.md)
+- [Migrate and Replicate Data with Striim]({{ page.version.version }}/striim.md)
+- [Schema Design Overview]({{ page.version.version }}/schema-design-overview.md)
+- [Back Up and Restore]({{ page.version.version }}/take-full-and-incremental-backups.md)
+- [Export data with Changefeeds]({{ page.version.version }}/export-data-with-changefeeds.md)
+- [`COPY FROM`]({{ page.version.version }}/copy-from.md)
+- [`IMPORT INTO`]({{ page.version.version }}/import-into.md)
+- [Migrate from CSV]({{ page.version.version }}/migrate-from-csv.md)
+- [Migrate from Avro]({{ page.version.version }}/migrate-from-avro.md)
+- [Client connection parameters]({{ page.version.version }}/connection-parameters.md)
 
 
 {% comment %} eof {% endcomment %}

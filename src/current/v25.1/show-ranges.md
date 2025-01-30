@@ -5,38 +5,37 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW RANGES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) shows information about the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) that comprise the data for a table, index, database, or the current catalog. This information is useful for verifying how SQL data maps to underlying [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), and where the [replicas]({% link {{ page.version.version }}/architecture/glossary.md %}#replica) for those ranges are located.
+The `SHOW RANGES` [statement]({{ page.version.version }}/sql-statements.md) shows information about the [ranges]({{ page.version.version }}/architecture/overview.md#architecture-range) that comprise the data for a table, index, database, or the current catalog. This information is useful for verifying how SQL data maps to underlying [ranges]({{ page.version.version }}/architecture/overview.md#architecture-range), and where the [replicas]({{ page.version.version }}/architecture/glossary.md#replica) for those ranges are located.
 
 {{site.data.alerts.callout_success}}
-To show range information for a specific row in a table or index, use the [`SHOW RANGE ... FOR ROW`]({% link {{ page.version.version }}/show-range-for-row.md %}) statement.
+To show range information for a specific row in a table or index, use the [`SHOW RANGE ... FOR ROW`]({{ page.version.version }}/show-range-for-row.md) statement.
 {{site.data.alerts.end}}
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_ranges.html %}
 </div>
 
 ## Required privileges
 
-To use the `SHOW RANGES` statement, a user must either be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) role (the `root` user belongs to the `admin` role by default) or have the `ZONECONFIG` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) defined.
+To use the `SHOW RANGES` statement, a user must either be a member of the [`admin`]({{ page.version.version }}/security-reference/authorization.md#admin-role) role (the `root` user belongs to the `admin` role by default) or have the `ZONECONFIG` [privilege]({{ page.version.version }}/security-reference/authorization.md#managing-privileges) defined.
 
 ## Parameters
 
 Parameter | Description
 ----------|------------
-[`table_name`]({% link {{ page.version.version }}/sql-grammar.md %}#table_name) | The name of the [table]({% link {{ page.version.version }}/show-tables.md %}) you want [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) information about.
-[`table_index_name`]({% link {{ page.version.version }}/sql-grammar.md %}#table_index_name) | The name of the [index]({% link {{ page.version.version }}/indexes.md %}) you want [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) information about.
-[`database_name`]({% link {{ page.version.version }}/sql-grammar.md %}#database_name) | The name of the [database]({% link {{ page.version.version }}/show-databases.md %}) you want [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) information about.
-[`opt_show_ranges_options`]({% link {{ page.version.version }}/sql-grammar.md %}#show_ranges_options) | The [options](#options) used to configure what fields appear in the [response](#response).
+[`table_name`]({{ page.version.version }}/sql-grammar.md#table_name) | The name of the [table]({{ page.version.version }}/show-tables.md) you want [range]({{ page.version.version }}/architecture/overview.md#architecture-range) information about.
+[`table_index_name`]({{ page.version.version }}/sql-grammar.md#table_index_name) | The name of the [index]({{ page.version.version }}/indexes.md) you want [range]({{ page.version.version }}/architecture/overview.md#architecture-range) information about.
+[`database_name`]({{ page.version.version }}/sql-grammar.md#database_name) | The name of the [database]({{ page.version.version }}/show-databases.md) you want [range]({{ page.version.version }}/architecture/overview.md#architecture-range) information about.
+[`opt_show_ranges_options`]({{ page.version.version }}/sql-grammar.md#show_ranges_options) | The [options](#options) used to configure what fields appear in the [response](#response).
 
 ## Options
 
-The following [options]({% link {{ page.version.version }}/sql-grammar.md %}#show_ranges_options) are available to affect the output. Multiple options can be passed at once, separated by commas.
+The following [options]({{ page.version.version }}/sql-grammar.md#show_ranges_options) are available to affect the output. Multiple options can be passed at once, separated by commas.
 
-- `TABLES`:  List [tables]({% link {{ page.version.version }}/show-tables.md %}) contained per [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range).
-- `INDEXES`: List [indexes]({% link {{ page.version.version }}/indexes.md %}) contained per [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range).
-- `DETAILS`: Add [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) size, [leaseholder]({% link {{ page.version.version }}/architecture/glossary.md %}#leaseholder) and other details. Note that this incurs a large computational overhead because it needs to fetch data across nodes.
+- `TABLES`:  List [tables]({{ page.version.version }}/show-tables.md) contained per [range]({{ page.version.version }}/architecture/overview.md#architecture-range).
+- `INDEXES`: List [indexes]({{ page.version.version }}/indexes.md) contained per [range]({{ page.version.version }}/architecture/overview.md#architecture-range).
+- `DETAILS`: Add [range]({{ page.version.version }}/architecture/overview.md#architecture-range) size, [leaseholder]({{ page.version.version }}/architecture/glossary.md#leaseholder) and other details. Note that this incurs a large computational overhead because it needs to fetch data across nodes.
 - `KEYS`:    Include binary [start and end keys](#start-key).
 
 ## Response
@@ -45,34 +44,34 @@ The specific fields in the response vary depending on the values passed as [opti
 
 Field | Description | Emitted for option(s)
 ------|-------------|----------------------
-`start_key` | <a name="start-key"></a> The start key for the [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range). | Always emitted.
-`end_key` | <a name="end-key"></a> The end key for the [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range). | Always emitted.
-`raw_start_key` | The start key for the [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), displayed as a [hexadecimal byte value]({% link {{ page.version.version }}/sql-constants.md %}#string-literals-with-character-escapes). | `KEYS`
-`raw_end_key` | The end key for the [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), displayed as a [hexadecimal byte value]({% link {{ page.version.version }}/sql-constants.md %}#string-literals-with-character-escapes). | `KEYS`
-`range_id` | The internal [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) ID. | Always emitted.
-`voting_replicas` | The [nodes]({% link {{ page.version.version }}/architecture/glossary.md %}#node) that contain the range's voting replicas (that is, the replicas that participate in [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) elections). | Always emitted.
-`non_voting_replicas` | The [nodes]({% link {{ page.version.version }}/architecture/glossary.md %}#node) that contain the range's [non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas). | Always emitted.
-`replicas` | The [nodes]({% link {{ page.version.version }}/architecture/glossary.md %}#node) that contain the range's [replicas]({% link {{ page.version.version }}/architecture/glossary.md %}#replica). | Always emitted.
-`replica_localities` | The [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) of the range's [replicas]({% link {{ page.version.version }}/architecture/glossary.md %}#replica). | Always emitted.
-`range_size` | The size of the [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in bytes. | `DETAILS`
-`range_size_mb` | The size of the [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in MiB. | `DETAILS`
-`lease_holder` | The  [node]({% link {{ page.version.version }}/architecture/glossary.md %}#node) that contains the range's [leaseholder]({% link {{ page.version.version }}/architecture/glossary.md %}#leaseholder). | `DETAILS`
-`lease_holder_locality` | The [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) of the range's [leaseholder]({% link {{ page.version.version }}/architecture/glossary.md %}#leaseholder). | `DETAILS`
-`learner_replicas` | The _learner replicas_ of the range. A learner replica is a replica that has just been added to a range, and is thus in an interim state. It accepts messages but doesn't vote in [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) elections. This means it doesn't affect quorum and thus doesn't affect the stability of the range, even if it's very far behind. | Always emitted.
-`split_enforced_until` | The time a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) is enforced until. This can be set using [`ALTER TABLE ... SPLIT AT`]({% link {{ page.version.version }}/alter-table.md %}#split-at) using the [`WITH EXPIRATION` clause]({% link {{ page.version.version }}/alter-table.md %}#set-the-expiration-on-a-split-enforcement). Example: `2262-04-11 23:47:16.854776` (this is a default value which means "never"). | Always emitted.
-`schema_name` | The name of the [schema]({% link {{ page.version.version }}/create-schema.md %}) this [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) holds data for. | `TABLES`, `INDEXES`
-`table_name` | The name of the [table]({% link {{ page.version.version }}/create-table.md %}) this [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) holds data for. | `TABLES`, `INDEXES`
-`table_id` | The internal ID of the [table]({% link {{ page.version.version }}/create-table.md %}) this [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) holds data for. | `TABLES`, `INDEXES`
-`table_start_key` | The start key of the first [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) that holds data for this table. | `TABLES`
-`table_end_key` | The end key of the last [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) that holds data for this table. | `TABLES`
-`raw_table_start_key` | The start key of the first [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) that holds data for this table, expressed as [`BYTES`]({% link {{ page.version.version }}/bytes.md %}). | `TABLES`, `KEYS`
-`raw_table_end_key` | The end key of the last [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) that holds data for this table, expressed as [`BYTES`]({% link {{ page.version.version }}/bytes.md %}). | `TABLES`, `KEYS`
-`index_name` | The name of the [index]({% link {{ page.version.version }}/indexes.md %}) this [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) holds data for. | `INDEXES`
-`index_id` | The internal ID of the [index]({% link {{ page.version.version }}/indexes.md %}) this [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) holds data for. | `INDEXES`
-`index_start_key` | The start key of the first [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) of [index]({% link {{ page.version.version }}/indexes.md %}) data. | `INDEXES`
-`index_end_key` | The end key of the last [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) of [index]({% link {{ page.version.version }}/indexes.md %}) data. | `INDEXES`
-`raw_index_start_key` | The start key of the first [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) of [index]({% link {{ page.version.version }}/indexes.md %}) data, expressed as [`BYTES`]({% link {{ page.version.version }}/bytes.md %}). | `INDEXES`, `KEYS`
-`raw_index_end_key` | The end key of the last [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) of [index]({% link {{ page.version.version }}/indexes.md %}) data, expressed as [`BYTES`]({% link {{ page.version.version }}/bytes.md %}). | `INDEXES`, `KEYS`
+`start_key` | <a name="start-key"></a> The start key for the [range]({{ page.version.version }}/architecture/overview.md#architecture-range). | Always emitted.
+`end_key` | <a name="end-key"></a> The end key for the [range]({{ page.version.version }}/architecture/overview.md#architecture-range). | Always emitted.
+`raw_start_key` | The start key for the [range]({{ page.version.version }}/architecture/overview.md#architecture-range), displayed as a [hexadecimal byte value]({{ page.version.version }}/sql-constants.md#string-literals-with-character-escapes). | `KEYS`
+`raw_end_key` | The end key for the [range]({{ page.version.version }}/architecture/overview.md#architecture-range), displayed as a [hexadecimal byte value]({{ page.version.version }}/sql-constants.md#string-literals-with-character-escapes). | `KEYS`
+`range_id` | The internal [range]({{ page.version.version }}/architecture/overview.md#architecture-range) ID. | Always emitted.
+`voting_replicas` | The [nodes]({{ page.version.version }}/architecture/glossary.md#node) that contain the range's voting replicas (that is, the replicas that participate in [Raft]({{ page.version.version }}/architecture/replication-layer.md#raft) elections). | Always emitted.
+`non_voting_replicas` | The [nodes]({{ page.version.version }}/architecture/glossary.md#node) that contain the range's [non-voting replicas]({{ page.version.version }}/architecture/replication-layer.md#non-voting-replicas). | Always emitted.
+`replicas` | The [nodes]({{ page.version.version }}/architecture/glossary.md#node) that contain the range's [replicas]({{ page.version.version }}/architecture/glossary.md#replica). | Always emitted.
+`replica_localities` | The [localities]({{ page.version.version }}/cockroach-start.md#locality) of the range's [replicas]({{ page.version.version }}/architecture/glossary.md#replica). | Always emitted.
+`range_size` | The size of the [range]({{ page.version.version }}/architecture/overview.md#architecture-range) in bytes. | `DETAILS`
+`range_size_mb` | The size of the [range]({{ page.version.version }}/architecture/overview.md#architecture-range) in MiB. | `DETAILS`
+`lease_holder` | The  [node]({{ page.version.version }}/architecture/glossary.md#node) that contains the range's [leaseholder]({{ page.version.version }}/architecture/glossary.md#leaseholder). | `DETAILS`
+`lease_holder_locality` | The [locality]({{ page.version.version }}/cockroach-start.md#locality) of the range's [leaseholder]({{ page.version.version }}/architecture/glossary.md#leaseholder). | `DETAILS`
+`learner_replicas` | The _learner replicas_ of the range. A learner replica is a replica that has just been added to a range, and is thus in an interim state. It accepts messages but doesn't vote in [Raft]({{ page.version.version }}/architecture/replication-layer.md#raft) elections. This means it doesn't affect quorum and thus doesn't affect the stability of the range, even if it's very far behind. | Always emitted.
+`split_enforced_until` | The time a [range split]({{ page.version.version }}/architecture/distribution-layer.md#range-splits) is enforced until. This can be set using [`ALTER TABLE ... SPLIT AT`]({{ page.version.version }}/alter-table.md#split-at) using the [`WITH EXPIRATION` clause]({{ page.version.version }}/alter-table.md#set-the-expiration-on-a-split-enforcement). Example: `2262-04-11 23:47:16.854776` (this is a default value which means "never"). | Always emitted.
+`schema_name` | The name of the [schema]({{ page.version.version }}/create-schema.md) this [range]({{ page.version.version }}/architecture/overview.md#architecture-range) holds data for. | `TABLES`, `INDEXES`
+`table_name` | The name of the [table]({{ page.version.version }}/create-table.md) this [range]({{ page.version.version }}/architecture/overview.md#architecture-range) holds data for. | `TABLES`, `INDEXES`
+`table_id` | The internal ID of the [table]({{ page.version.version }}/create-table.md) this [range]({{ page.version.version }}/architecture/overview.md#architecture-range) holds data for. | `TABLES`, `INDEXES`
+`table_start_key` | The start key of the first [range]({{ page.version.version }}/architecture/overview.md#architecture-range) that holds data for this table. | `TABLES`
+`table_end_key` | The end key of the last [range]({{ page.version.version }}/architecture/overview.md#architecture-range) that holds data for this table. | `TABLES`
+`raw_table_start_key` | The start key of the first [range]({{ page.version.version }}/architecture/overview.md#architecture-range) that holds data for this table, expressed as [`BYTES`]({{ page.version.version }}/bytes.md). | `TABLES`, `KEYS`
+`raw_table_end_key` | The end key of the last [range]({{ page.version.version }}/architecture/overview.md#architecture-range) that holds data for this table, expressed as [`BYTES`]({{ page.version.version }}/bytes.md). | `TABLES`, `KEYS`
+`index_name` | The name of the [index]({{ page.version.version }}/indexes.md) this [range]({{ page.version.version }}/architecture/overview.md#architecture-range) holds data for. | `INDEXES`
+`index_id` | The internal ID of the [index]({{ page.version.version }}/indexes.md) this [range]({{ page.version.version }}/architecture/overview.md#architecture-range) holds data for. | `INDEXES`
+`index_start_key` | The start key of the first [range]({{ page.version.version }}/architecture/overview.md#architecture-range) of [index]({{ page.version.version }}/indexes.md) data. | `INDEXES`
+`index_end_key` | The end key of the last [range]({{ page.version.version }}/architecture/overview.md#architecture-range) of [index]({{ page.version.version }}/indexes.md) data. | `INDEXES`
+`raw_index_start_key` | The start key of the first [range]({{ page.version.version }}/architecture/overview.md#architecture-range) of [index]({{ page.version.version }}/indexes.md) data, expressed as [`BYTES`]({{ page.version.version }}/bytes.md). | `INDEXES`, `KEYS`
+`raw_index_end_key` | The end key of the last [range]({{ page.version.version }}/architecture/overview.md#architecture-range) of [index]({{ page.version.version }}/indexes.md) data, expressed as [`BYTES`]({{ page.version.version }}/bytes.md). | `INDEXES`, `KEYS`
 `span_stats` | A `JSON` object containing span statistics. For more details, see [Span Statistics](#span-statistics). | `DETAILS`
 
 ### Span Statistics
@@ -83,14 +82,14 @@ The `SHOW RANGES` command emits span statistics when the `DETAILS` option is spe
 
 The statistics are calculated for the identifier of each row. For example:
 
-- `SHOW RANGES WITH DETAILS` will compute span statistics for each [range]({% link {{ page.version.version }}/ui-replication-dashboard.md %}#review-of-cockroachdb-terminology).
+- `SHOW RANGES WITH DETAILS` will compute span statistics for each [range]({{ page.version.version }}/ui-replication-dashboard.md#review-of-cockroachdb-terminology).
 - `SHOW RANGES WITH TABLES, DETAILS` will compute span statistics for each table.
  
 The `span_stats` `JSON` object has the following keys:
 
  Key | Description
 -----|-------------
-`approximate_disk_bytes` | An approximation of the total on-disk size of the given object, across all [replicas]({% link {{ page.version.version }}/architecture/glossary.md %}#replica) (after compression).
+`approximate_disk_bytes` | An approximation of the total on-disk size of the given object, across all [replicas]({{ page.version.version }}/architecture/glossary.md#replica) (after compression).
 `key_count` | The number of non-system keys, including live and deleted keys, as well as new, uncommitted keys.
 `key_bytes` | The total key size (in bytes) of the keys tracked in `key_count`.
 `val_count` | The number of values, or versions, of the keys tracked in `key_count`, including deletion tombstones. A key will always have at least one value, but may have several historical values.
@@ -99,12 +98,11 @@ The `span_stats` `JSON` object has the following keys:
 `sys_bytes` | The total size (in bytes) of the keys in `sys_count` and all of their values, or versions.
 `live_count` | The number of live (committed and non-deleted) non-system keys.
 `live_bytes` | Total size (in bytes) of the keys tracked in `live_count` and their most recent value.
-`intent_count` | The number of [intents]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) (keys with new, uncommitted values).
+`intent_count` | The number of [intents]({{ page.version.version }}/architecture/transaction-layer.md#write-intents) (keys with new, uncommitted values).
 `intent_bytes` | The total size (in bytes) of the keys tracked in `intent_count` and their uncommitted values.
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements-geo-partitioned-replicas.md %}
 
 ### Show ranges for a database
 
@@ -115,7 +113,6 @@ The `span_stats` `JSON` object has the following keys:
 - [Show ranges for a database (with details)](#show-ranges-for-a-database-with-details)
 - [Show ranges for a database (with keys)](#show-ranges-for-a-database-with-keys)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW DATABASES;
 ~~~
@@ -132,7 +129,6 @@ SHOW DATABASES;
 
 #### Show ranges for a database (without options)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM DATABASE movr;
 ~~~
@@ -149,7 +145,6 @@ SHOW RANGES FROM DATABASE movr;
 
 #### Show ranges for a database (with tables, keys, details)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM DATABASE movr WITH TABLES, KEYS, DETAILS;
 ~~~
@@ -166,7 +161,6 @@ SHOW RANGES FROM DATABASE movr WITH TABLES, KEYS, DETAILS;
 
 #### Show ranges for a database (with tables)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM DATABASE movr WITH TABLES;
 ~~~
@@ -183,7 +177,6 @@ SHOW RANGES FROM DATABASE movr WITH TABLES;
 
 #### Show ranges for a database (with indexes)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM DATABASE movr WITH INDEXES;
 ~~~
@@ -200,7 +193,6 @@ SHOW RANGES FROM DATABASE movr WITH INDEXES;
 
 #### Show ranges for a database (with details)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM DATABASE movr WITH DETAILS;
 ~~~
@@ -217,7 +209,6 @@ SHOW RANGES FROM DATABASE movr WITH DETAILS;
 
 #### Show ranges for a database (with keys)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM DATABASE movr WITH KEYS;
 ~~~
@@ -240,7 +231,6 @@ SHOW RANGES FROM DATABASE movr WITH KEYS;
 - [Show ranges for a table (with details)](#show-ranges-for-a-table-with-details)
 - [Show ranges for a table (with keys)](#show-ranges-for-a-table-with-keys)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW TABLES;
 ~~~
@@ -259,7 +249,6 @@ SHOW TABLES;
 
 #### Show ranges for a table (without options)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM TABLE movr.users;
 ~~~
@@ -276,7 +265,6 @@ SHOW RANGES FROM TABLE movr.users;
 
 #### Show ranges for a table (with indexes, keys, details)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM TABLE movr.users with INDEXES, KEYS, DETAILS;
 ~~~
@@ -293,7 +281,6 @@ SHOW RANGES FROM TABLE movr.users with INDEXES, KEYS, DETAILS;
 
 #### Show ranges for a table (with indexes)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM TABLE movr.users WITH INDEXES;
 ~~~
@@ -310,7 +297,6 @@ SHOW RANGES FROM TABLE movr.users WITH INDEXES;
 
 #### Show ranges for a table (with details)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM TABLE movr.users WITH DETAILS;
 ~~~
@@ -327,7 +313,6 @@ SHOW RANGES FROM TABLE movr.users WITH DETAILS;
 
 #### Show ranges for a table (with keys)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM TABLE movr.users WITH KEYS;
 ~~~
@@ -349,7 +334,6 @@ SHOW RANGES FROM TABLE movr.users WITH KEYS;
 - [Show ranges for an index (with details)](#show-ranges-for-an-index-with-details)
 - [Show ranges for an index (with keys)](#show-ranges-for-an-index-with-keys)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW INDEXES FROM movr.users;
 ~~~
@@ -367,7 +351,6 @@ SHOW INDEXES FROM movr.users;
 
 #### Show ranges for an index (without options)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM INDEX movr.users_pkey;
 ~~~
@@ -384,7 +367,6 @@ SHOW RANGES FROM INDEX movr.users_pkey;
 
 #### Show ranges for an index (with keys, details)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS, DETAILS;
 ~~~
@@ -401,7 +383,6 @@ SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS, DETAILS;
 
 #### Show ranges for an index (with details)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM INDEX movr.users_pkey WITH DETAILS;
 ~~~
@@ -418,7 +399,6 @@ SHOW RANGES FROM INDEX movr.users_pkey WITH DETAILS;
 
 #### Show ranges for an index (with keys)
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS;
 ~~~
@@ -437,15 +417,14 @@ SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS;
 
 For a deep dive demo on ranges and how data is stored within them, watch the following video:
 
-{% include_cached youtube.html video_id="BVqnI4tnLA8" %}
 
 ## See also
 
-- [`SHOW RANGE ... FOR ROW`]({% link {{ page.version.version }}/show-range-for-row.md %})
-- [`ALTER TABLE ... SPLIT AT`]({% link {{ page.version.version }}/alter-table.md %}#split-at)
-- [`ALTER INDEX ... SPLIT AT`]({% link {{ page.version.version }}/alter-index.md %}#split-at)
-- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
-- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
-- [Indexes]({% link {{ page.version.version }}/indexes.md %})
-- [Partitioning tables]({% link {{ page.version.version }}/partitioning.md %})
-- [Architecture Overview]({% link {{ page.version.version }}/architecture/overview.md %})
+- [`SHOW RANGE ... FOR ROW`]({{ page.version.version }}/show-range-for-row.md)
+- [`ALTER TABLE ... SPLIT AT`]({{ page.version.version }}/alter-table.md#split-at)
+- [`ALTER INDEX ... SPLIT AT`]({{ page.version.version }}/alter-index.md#split-at)
+- [`CREATE TABLE`]({{ page.version.version }}/create-table.md)
+- [`CREATE INDEX`]({{ page.version.version }}/create-index.md)
+- [Indexes]({{ page.version.version }}/indexes.md)
+- [Partitioning tables]({{ page.version.version }}/partitioning.md)
+- [Architecture Overview]({{ page.version.version }}/architecture/overview.md)

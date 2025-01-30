@@ -5,9 +5,9 @@ toc: true
 docs_area: manage
 ---
 
-CockroachDB allows you to rotate [public key infrastructure (PKI)security certificates]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}) without restarting nodes.
+CockroachDB allows you to rotate [public key infrastructure (PKI)security certificates]({{ page.version.version }}/security-reference/transport-layer-security.md) without restarting nodes.
 
-{{site.data.alerts.callout_success}}For an introduction to how security certificates work in a secure CockroachDB cluster, see <a href="{% link {{ page.version.version }}/cockroach-cert.md %}">Create Security Certificates</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For an introduction to how security certificates work in a secure CockroachDB cluster, see <a href="{{ page.version.version }}/cockroach-cert.md">Create Security Certificates</a>.{{site.data.alerts.end}}
 
 
 ## When to rotate certificates
@@ -23,7 +23,6 @@ You may need to rotate the node, client, or CA certificates in the following sce
 
 1. Create a new client certificate and key:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client <username> \
     --certs-dir=certs \
@@ -42,7 +41,6 @@ To rotate a node certificate, you create a new node certificate and key and relo
 
 1. Create a new node certificate and key:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     <node hostname> \
@@ -57,7 +55,6 @@ To rotate a node certificate, you create a new node certificate and key and relo
 
 1. Upload the node certificate and key to the node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp certs/node.crt \
     certs/node.key \
@@ -66,7 +63,6 @@ To rotate a node certificate, you create a new node certificate and key and relo
 
 1. Reload the node certificate without restarting the node by issuing a `SIGHUP` signal to the `cockroach` process:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     pkill -SIGHUP -x cockroach
     ~~~
@@ -81,18 +77,16 @@ To rotate a node certificate, you create a new node certificate and key and relo
 
 To rotate the CA certificate, you create a new CA key and a combined CA certificate that contains the new CA certificate followed by the old CA certificate, and then you reload the new combined CA certificate on the nodes and clients. Once all nodes and clients have the combined CA certificate, you then create new node and client certificates signed with the new CA certificate and reload those certificates on the nodes and clients as well.
 
-For more background, see [Why CockroachDB creates a combined CA certificate]({% link {{ page.version.version }}/rotate-certificates.md %}#why-cockroachdb-creates-a-combined-ca-certificate) and [Why rotate CA certificate in advance]({% link {{ page.version.version }}/rotate-certificates.md %}#why-rotate-ca-certificates-in-advance).
+For more background, see [Why CockroachDB creates a combined CA certificate]({{ page.version.version }}/rotate-certificates.md#why-cockroachdb-creates-a-combined-ca-certificate) and [Why rotate CA certificate in advance]({{ page.version.version }}/rotate-certificates.md#why-rotate-ca-certificates-in-advance).
 
 1. Rename the existing CA key:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv  my-safe-directory/ca.key my-safe-directory/ca.old.key
     ~~~
 
 1. Create a new CA certificate and key, using the `--overwrite` flag to overwrite the old CA certificate:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -100,13 +94,12 @@ For more background, see [Why CockroachDB creates a combined CA certificate]({% 
     --overwrite
     ~~~
 
-    This results in the [combined CA certificate]({% link {{ page.version.version }}/rotate-certificates.md %}#why-cockroachdb-creates-a-combined-ca-certificate), `ca.crt`, which contains the new certificate followed by the old certificate.
+    This results in the [combined CA certificate]({{ page.version.version }}/rotate-certificates.md#why-cockroachdb-creates-a-combined-ca-certificate), `ca.crt`, which contains the new certificate followed by the old certificate.
 
     {{site.data.alerts.callout_danger}}The CA key is never loaded automatically by <code>cockroach</code> commands, so it should be created in a separate directory, identified by the <code>--ca-key</code> flag.{{site.data.alerts.end}}
 
 1. Upload the new CA certificate to each node:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp certs/ca.crt
     <username>@<node1 address>:~/certs
@@ -116,7 +109,6 @@ For more background, see [Why CockroachDB creates a combined CA certificate]({% 
 
 1. On each node, reload the CA certificate without restarting the node by issuing a `SIGHUP` signal to the `cockroach` process:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     pkill -SIGHUP -x cockroach
     ~~~
@@ -145,8 +137,8 @@ On rotating node and client certificates after rotating the CA certificate, the 
 
 ## See also
 
-- [Create Security Certificates]({% link {{ page.version.version }}/cockroach-cert.md %})
-- [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %})
-- [Orchestrated Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})
-- [Local Deployment]({% link {{ page.version.version }}/secure-a-cluster.md %})
-- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [Create Security Certificates]({{ page.version.version }}/cockroach-cert.md)
+- [Manual Deployment]({{ page.version.version }}/manual-deployment.md)
+- [Orchestrated Deployment]({{ page.version.version }}/kubernetes-overview.md)
+- [Local Deployment]({{ page.version.version }}/secure-a-cluster.md)
+- [`cockroach` Commands Overview]({{ page.version.version }}/cockroach-commands.md)

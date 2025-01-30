@@ -5,45 +5,43 @@ toc: true
 docs_area: manage
 ---
 
-If a [SQL statement]({% link {{ page.version.version }}/sql-statements.md %}) returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.
+If a [SQL statement]({{ page.version.version }}/sql-statements.md) returns an unexpected result or takes longer than expected to process, this page will help you troubleshoot the issue.
 
 {{site.data.alerts.callout_success}}
-For a developer-centric overview of optimizing SQL statement performance, see [Optimize Statement Performance Overview]({% link {{ page.version.version }}/make-queries-fast.md %}).
+For a developer-centric overview of optimizing SQL statement performance, see [Optimize Statement Performance Overview]({{ page.version.version }}/make-queries-fast.md).
 {{site.data.alerts.end}}
 
 ## Query issues
 
 ### Hanging or stuck queries
 
-When you experience a hanging or stuck query and the cluster is healthy (i.e., no [unavailable ranges]({% link {{ page.version.version }}/ui-replication-dashboard.md %}#unavailable-ranges), [network partitions]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition), etc), the cause could be a long-running transaction holding [write intents]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents) or [locking reads]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths) on the same rows as your query.
+When you experience a hanging or stuck query and the cluster is healthy (i.e., no [unavailable ranges]({{ page.version.version }}/ui-replication-dashboard.md#unavailable-ranges), [network partitions]({{ page.version.version }}/cluster-setup-troubleshooting.md#network-partition), etc), the cause could be a long-running transaction holding [write intents]({{ page.version.version }}/architecture/transaction-layer.md#write-intents) or [locking reads]({{ page.version.version }}/select-for-update.md#lock-strengths) on the same rows as your query.
 
-Such long-running queries can hold locks for (practically) unlimited durations. If your query tries to access those rows, it must wait for that transaction to complete (by [committing]({% link {{ page.version.version }}/commit-transaction.md %}) or [rolling back]({% link {{ page.version.version }}/rollback-transaction.md %})) before it can make progress. Until the transaction is committed or rolled back, the chances of concurrent transactions internally retrying and throwing a retry error increase.
+Such long-running queries can hold locks for (practically) unlimited durations. If your query tries to access those rows, it must wait for that transaction to complete (by [committing]({{ page.version.version }}/commit-transaction.md) or [rolling back]({{ page.version.version }}/rollback-transaction.md)) before it can make progress. Until the transaction is committed or rolled back, the chances of concurrent transactions internally retrying and throwing a retry error increase.
 
-Refer to the performance tuning recipe for [identifying and unblocking a waiting transaction]({% link {{ page.version.version }}/performance-recipes.md %}#waiting-transaction).
+Refer to the performance tuning recipe for [identifying and unblocking a waiting transaction]({{ page.version.version }}/performance-recipes.md#waiting-transaction).
 
-If you experience this issue on a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster, your cluster may be throttled or disabled because you've reached your monthly [resource limits]({% link cockroachcloud/troubleshooting-page.md %}#hanging-or-stuck-queries).
+If you experience this issue on a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster, your cluster may be throttled or disabled because you've reached your monthly [resource limits](troubleshooting-page.md#hanging-or-stuck-queries).
 
 ### Identify slow queries
 
-You can identify high-latency SQL statements on the [**Insights**]({% link {{ page.version.version }}/ui-insights-page.md %}) or [**Statements**]({% link {{ page.version.version }}/ui-statements-page.md %}) pages in the DB Console. If these graphs reveal latency spikes, CPU usage spikes, or slow requests, these might indicate slow queries in your cluster.
+You can identify high-latency SQL statements on the [**Insights**]({{ page.version.version }}/ui-insights-page.md) or [**Statements**]({{ page.version.version }}/ui-statements-page.md) pages in the DB Console. If these graphs reveal latency spikes, CPU usage spikes, or slow requests, these might indicate slow queries in your cluster.
 
-You can also enable the [slow query log]({% link {{ page.version.version }}/logging-use-cases.md %}#sql_perf) to log all queries whose latency exceeds a configured threshold, as well as queries that perform a full table or index scan.
+You can also enable the [slow query log]({{ page.version.version }}/logging-use-cases.md#sql_perf) to log all queries whose latency exceeds a configured threshold, as well as queries that perform a full table or index scan.
 
-You can collect richer diagnostics of a high-latency statement by creating a [diagnostics bundle]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) when a statement fingerprint exceeds a certain latency.
+You can collect richer diagnostics of a high-latency statement by creating a [diagnostics bundle]({{ page.version.version }}/ui-statements-page.md#diagnostics) when a statement fingerprint exceeds a certain latency.
 
 {{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
 {{site.data.alerts.end}}
 
 ### Visualize statement traces in Jaeger
 
-You can look more closely at the behavior of a statement by visualizing a [statement trace]({% link {{ page.version.version }}/show-trace.md %}#trace-description) in [Jaeger](https://www.jaegertracing.io/). A statement trace contains messages and timing information from all nodes involved in the execution.
+You can look more closely at the behavior of a statement by visualizing a [statement trace]({{ page.version.version }}/show-trace.md#trace-description) in [Jaeger](https://www.jaegertracing.io/). A statement trace contains messages and timing information from all nodes involved in the execution.
 
 #### Run Jaeger
 
 1. Start Jaeger:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -d --name jaeger -p 6831:6831/udp -p 16686:16686 jaegertracing/all-in-one:latest
     ~~~
@@ -52,29 +50,29 @@ You can look more closely at the behavior of a statement by visualizing a [state
 
 #### Import a trace from a diagnostics bundle into Jaeger
 
-1. Activate [statement diagnostics]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) on the DB Console Statements Page or run [`EXPLAIN ANALYZE (DEBUG)`]({% link {{ page.version.version }}/explain-analyze.md %}#debug-option) to obtain a diagnostics bundle for the statement.
+1. Activate [statement diagnostics]({{ page.version.version }}/ui-statements-page.md#diagnostics) on the DB Console Statements Page or run [`EXPLAIN ANALYZE (DEBUG)`]({{ page.version.version }}/explain-analyze.md#debug-option) to obtain a diagnostics bundle for the statement.
 
 1. Go to [`http://localhost:16686`](http://localhost:16686).
 
 1. Click **JSON File** in the Jaeger UI and upload `trace-jaeger.json` from the diagnostics bundle. The trace will appear in the list on the right.
 
-    <img src="{{ 'images/v24.2/jaeger-trace-json.png' | relative_url }}" alt="Jaeger Trace Upload JSON" style="border:1px solid #eee;max-width:40%" />
+    ![Jaeger Trace Upload JSON](/images/v24.2/jaeger-trace-json.png)
 
 1. Click the trace to view its details. It is visualized as a collection of spans with timestamps. These may include operations executed by different nodes.
 
-    <img src="{{ 'images/v24.2/jaeger-trace-spans.png' | relative_url }}" alt="Jaeger Trace Spans" style="border:1px solid #eee;max-width:100%" />
+    ![Jaeger Trace Spans](/images/v24.2/jaeger-trace-spans.png)
 
-    The full timeline displays the execution time and [execution phases]({% link {{ page.version.version }}/architecture/sql-layer.md %}#sql-parser-planner-executor) for the statement.
+    The full timeline displays the execution time and [execution phases]({{ page.version.version }}/architecture/sql-layer.md#sql-parser-planner-executor) for the statement.
 
 1. Click a span to view details for that span and log messages.
 
-    <img src="{{ 'images/v24.2/jaeger-trace-log-messages.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
+    ![Jaeger Trace Log Messages](/images/v24.2/jaeger-trace-log-messages.png)
 
-1. You can troubleshoot [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), for example, by gathering [diagnostics]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) on statements with high latency and looking through the log messages in `trace-jaeger.json` for jumps in latency.
+1. You can troubleshoot [transaction contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention), for example, by gathering [diagnostics]({{ page.version.version }}/ui-statements-page.md#diagnostics) on statements with high latency and looking through the log messages in `trace-jaeger.json` for jumps in latency.
 
-    In the following example, the trace shows that there is significant latency between a push attempt on a transaction that is holding a [lock]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing) (56.85ms) and that transaction being committed (131.37ms).
+    In the following example, the trace shows that there is significant latency between a push attempt on a transaction that is holding a [lock]({{ page.version.version }}/architecture/transaction-layer.md#writing) (56.85ms) and that transaction being committed (131.37ms).
 
-    <img src="{{ 'images/v24.2/jaeger-trace-transaction-contention.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
+    ![Jaeger Trace Log Messages](/images/v24.2/jaeger-trace-transaction-contention.png)
 
 #### Visualize traces sent directly from CockroachDB
 
@@ -93,7 +91,7 @@ Enabling full tracing is expensive both in terms of CPU usage and memory footpri
 1. Go to [`http://localhost:16686`](http://localhost:16686).
 1. In the Service field, select **CockroachDB**.
 
-    <img src="{{ 'images/v24.2/jaeger-cockroachdb.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
+    ![Jaeger Trace Log Messages](/images/v24.2/jaeger-cockroachdb.png)
 
 1. Click **Find Traces**.
 
@@ -113,31 +111,31 @@ docker run -d --name jaeger \
 
 ### Queries are always slow
 
-If you have consistently slow queries in your cluster, use the [Statement Fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#statement-fingerprint-page) page to drill down to an individual statement and [collect diagnostics]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) for the statement. A diagnostics bundle contains a record of transaction events across nodes for the SQL statement.
+If you have consistently slow queries in your cluster, use the [Statement Fingerprint]({{ page.version.version }}/ui-statements-page.md#statement-fingerprint-page) page to drill down to an individual statement and [collect diagnostics]({{ page.version.version }}/ui-statements-page.md#diagnostics) for the statement. A diagnostics bundle contains a record of transaction events across nodes for the SQL statement.
 
-You can also use an [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) statement, which executes a SQL query and returns a physical query plan with execution statistics. You can use query plans to troubleshoot slow queries by indicating where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
+You can also use an [`EXPLAIN ANALYZE`]({{ page.version.version }}/explain-analyze.md) statement, which executes a SQL query and returns a physical query plan with execution statistics. You can use query plans to troubleshoot slow queries by indicating where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
 
-Cockroach Labs recommends sending either the diagnostics bundle (preferred) or the `EXPLAIN ANALYZE` output to our [support team]({% link {{ page.version.version }}/support-resources.md %}) for analysis.
+Cockroach Labs recommends sending either the diagnostics bundle (preferred) or the `EXPLAIN ANALYZE` output to our [support team]({{ page.version.version }}/support-resources.md) for analysis.
 
 ### Queries are sometimes slow
 
 If the query performance is irregular:
 
-1.  Run [`SHOW TRACE FOR SESSION`]({% link {{ page.version.version }}/show-trace.md %}) for the query twice: once when the query is performing as expected and once when the query is slow.
+1.  Run [`SHOW TRACE FOR SESSION`]({{ page.version.version }}/show-trace.md) for the query twice: once when the query is performing as expected and once when the query is slow.
 
-1.  [Contact support]({% link {{ page.version.version }}/support-resources.md %}) to help analyze the outputs of the `SHOW TRACE` command.
+1.  [Contact support]({{ page.version.version }}/support-resources.md) to help analyze the outputs of the `SHOW TRACE` command.
 
 ### `SELECT` statements are slow
 
 The common reasons for a sub-optimal `SELECT` performance are inefficient scans, full scans, and incorrect use of indexes. To improve the performance of `SELECT` statements, refer to the following documents:
 
--  [Table scan best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#table-scan-best-practices)
+-  [Table scan best practices]({{ page.version.version }}/performance-best-practices-overview.md#table-scan-best-practices)
 
--  [Indexes best practices]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices)
+-  [Indexes best practices]({{ page.version.version }}/schema-design-indexes.md#best-practices)
 
 ### `SELECT` statements with `GROUP BY` columns are slow
 
-Suppose you have a [slow selection query]({% link {{ page.version.version }}/selection-queries.md %}) that
+Suppose you have a [slow selection query]({{ page.version.version }}/selection-queries.md) that
 
 -  Has a `GROUP BY` clause.
 -  Uses an index that has a `STORING` clause.
@@ -234,81 +232,79 @@ This index allows CockroachDB to perform a streaming `GROUP BY` rather than a ha
 
 ### `INSERT` and `UPDATE` statements are slow
 
-Use the [Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) to identify the slow [SQL statements]({% link {{ page.version.version }}/sql-statements.md %}).
+Use the [Statements page]({{ page.version.version }}/ui-statements-page.md) to identify the slow [SQL statements]({{ page.version.version }}/sql-statements.md).
 
 Refer to the following pages to improve `INSERT`  and `UPDATE` performance:
 
--   [Multi-row DML]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#dml-best-practices)
+-   [Multi-row DML]({{ page.version.version }}/performance-best-practices-overview.md#dml-best-practices)
 
--   [Bulk-Insert best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#bulk-insert-best-practices)
+-   [Bulk-Insert best practices]({{ page.version.version }}/performance-best-practices-overview.md#bulk-insert-best-practices)
 
 ### Cancel running queries
 
-See [Cancel long-running queries]({% link {{ page.version.version }}/manage-long-running-queries.md %}#cancel-long-running-queries).
+See [Cancel long-running queries]({{ page.version.version }}/manage-long-running-queries.md#cancel-long-running-queries).
 
 ### Low throughput
 
 Throughput is affected by the disk I/O, CPU usage, and network latency. Use the DB Console to check the following metrics:
 
-- Disk I/O: [Disk IOPS in progress]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#disk-ops-in-progress)
+- Disk I/O: [Disk IOPS in progress]({{ page.version.version }}/ui-hardware-dashboard.md#disk-ops-in-progress)
 
-- CPU usage: [CPU percent]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent)
+- CPU usage: [CPU percent]({{ page.version.version }}/ui-hardware-dashboard.md#cpu-percent)
 
-- Network latency: [Network Latency]({% link {{ page.version.version }}/ui-network-latency-page.md %})
+- Network latency: [Network Latency]({{ page.version.version }}/ui-network-latency-page.md)
 
 ### Query runs out of memory
 
-If your query returns the error code `SQLSTATE: 53200` with the message `ERROR: root: memory budget exceeded`, follow the guidelines in [memory budget exceeded]({% link {{ page.version.version }}/common-errors.md %}#memory-budget-exceeded).
+If your query returns the error code `SQLSTATE: 53200` with the message `ERROR: root: memory budget exceeded`, follow the guidelines in [memory budget exceeded]({{ page.version.version }}/common-errors.md#memory-budget-exceeded).
 
 ## Transaction retry errors
 
-Messages with the error code `40001` and the string `restart transaction` are known as [*transaction retry errors*]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). These indicate that a transaction failed due to [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#understanding-and-avoiding-transaction-contention) with another concurrent or recent transaction attempting to write to the same data. The transaction needs to be retried by the client.
+Messages with the error code `40001` and the string `restart transaction` are known as [*transaction retry errors*]({{ page.version.version }}/transaction-retry-error-reference.md). These indicate that a transaction failed due to [contention]({{ page.version.version }}/performance-best-practices-overview.md#understanding-and-avoiding-transaction-contention) with another concurrent or recent transaction attempting to write to the same data. The transaction needs to be retried by the client.
 
-{% include {{ page.version.version }}/performance/transaction-retry-error-actions.md %}
 
 ## Unsupported SQL features
 
-CockroachDB has support for [most SQL features]({% link {{ page.version.version }}/sql-feature-support.md %}).
+CockroachDB has support for [most SQL features]({{ page.version.version }}/sql-feature-support.md).
 
-Additionally, CockroachDB supports [the PostgreSQL wire protocol and the majority of its syntax]({% link {{ page.version.version }}/postgresql-compatibility.md %}). This means that existing applications can often be migrated to CockroachDB without changing application code.
+Additionally, CockroachDB supports [the PostgreSQL wire protocol and the majority of its syntax]({{ page.version.version }}/postgresql-compatibility.md). This means that existing applications can often be migrated to CockroachDB without changing application code.
 
 However, you may encounter features of SQL or the PostgreSQL dialect that are not supported by CockroachDB. For example, the following PostgreSQL features are not supported:
 
-{% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
 
-For more information about the differences between CockroachDB and PostgreSQL feature support, see [PostgreSQL Compatibility]({% link {{ page.version.version }}/postgresql-compatibility.md %}).
+For more information about the differences between CockroachDB and PostgreSQL feature support, see [PostgreSQL Compatibility]({{ page.version.version }}/postgresql-compatibility.md).
 
-For more information about the SQL standard features supported by CockroachDB, see [SQL Feature Support]({% link {{ page.version.version }}/sql-feature-support.md %}).
+For more information about the SQL standard features supported by CockroachDB, see [SQL Feature Support]({{ page.version.version }}/sql-feature-support.md).
 
 ## Node issues
 
 ### Single hot node
 
-A *hot node* is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and check the following:
+A *hot node* is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console]({{ page.version.version }}/ui-overview.md#db-console-access) and check the following:
 
 - Click **Metrics** and navigate to the following graphs. Hover over each graph to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
-  - [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}#other-graphs) > **Average Queries per Store** graph
-  - [**Overview** dashboard]({% link {{ page.version.version }}/ui-overview-dashboard.md %}#service-latency-sql-99th-percentile) > **Service Latency** graph
-  - [**Hardware** dashboard]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent) > **CPU Percent** graph
-  - [**SQL** dashboard]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#connection-latency-99th-percentile) > **SQL Connections** graph
-  - [**Hardware** dashboard]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#disk-ops-in-progress) > **Disk IOPS in Progress** graph
-- Open the [**Hot Ranges** page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) and check for ranges with significantly higher QPS on any nodes.
+  - [**Replication** dashboard]({{ page.version.version }}/ui-replication-dashboard.md#other-graphs) > **Average Queries per Store** graph
+  - [**Overview** dashboard]({{ page.version.version }}/ui-overview-dashboard.md#service-latency-sql-99th-percentile) > **Service Latency** graph
+  - [**Hardware** dashboard]({{ page.version.version }}/ui-hardware-dashboard.md#cpu-percent) > **CPU Percent** graph
+  - [**SQL** dashboard]({{ page.version.version }}/ui-sql-dashboard.md#connection-latency-99th-percentile) > **SQL Connections** graph
+  - [**Hardware** dashboard]({{ page.version.version }}/ui-hardware-dashboard.md#disk-ops-in-progress) > **Disk IOPS in Progress** graph
+- Open the [**Hot Ranges** page]({{ page.version.version }}/ui-hot-ranges-page.md) and check for ranges with significantly higher QPS on any nodes.
 
 #### Solution
 
-- If you have a small table that fits into one range, then only one of the nodes will be used. This is expected behavior. However, you can [split your range]({% link {{ page.version.version }}/alter-table.md %}#split-at) to distribute the table across multiple nodes.
+- If you have a small table that fits into one range, then only one of the nodes will be used. This is expected behavior. However, you can [split your range]({{ page.version.version }}/alter-table.md#split-at) to distribute the table across multiple nodes.
 
 - If the SQL Connections graph shows that one node has a higher number of SQL connections and other nodes have zero connections, check if your app is set to talk to only one node.
 
 - Check load balancer settings.
 
-- Check for [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
+- Check for [transaction contention]({{ page.version.version }}/performance-best-practices-overview.md#transaction-contention).
 
-- If you have a monotonically increasing index column or primary Key, then your index or primary key should be redesigned. For more information, see [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
+- If you have a monotonically increasing index column or primary Key, then your index or primary key should be redesigned. For more information, see [Unique ID best practices]({{ page.version.version }}/performance-best-practices-overview.md#unique-id-best-practices).
 
-- If a range has significantly higher QPS on a node, there may be a hot spot on the range that needs to be reduced. For more information, see [Hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots).
+- If a range has significantly higher QPS on a node, there may be a hot spot on the range that needs to be reduced. For more information, see [Hot spots]({{ page.version.version }}/performance-best-practices-overview.md#hot-spots).
 
-- If you have a monotonically increasing index column or primary key, then your index or primary key should be redesigned. See [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices) for more information.
+- If you have a monotonically increasing index column or primary key, then your index or primary key should be redesigned. See [Unique ID best practices]({{ page.version.version }}/performance-best-practices-overview.md#unique-id-best-practices) for more information.
 
 ### Per-node queries per second (QPS) is high
 
@@ -316,21 +312,21 @@ If a cluster is not idle, it is useful to monitor the per-node queries per secon
 
 ### Increasing number of nodes does not improve performance
 
-See [Why would increasing the number of nodes not result in more operations per second?]({% link {{ page.version.version }}/operational-faqs.md %}#why-would-increasing-the-number-of-nodes-not-result-in-more-operations-per-second)
+See [Why would increasing the number of nodes not result in more operations per second?]({{ page.version.version }}/operational-faqs.md#why-would-increasing-the-number-of-nodes-not-result-in-more-operations-per-second)
 
 ### `bad connection` and `closed` responses
 
-A response of `bad connection` or `closed` normally indicates that the node to which you are connected has terminated. You can check this by connecting to another node in the cluster and running [`cockroach node status`]({% link {{ page.version.version }}/cockroach-node.md %}#show-the-status-of-all-nodes).
+A response of `bad connection` or `closed` normally indicates that the node to which you are connected has terminated. You can check this by connecting to another node in the cluster and running [`cockroach node status`]({{ page.version.version }}/cockroach-node.md#show-the-status-of-all-nodes).
 
-Once you find the node, you can check its [logs]({% link {{ page.version.version }}/logging.md %}) (stored in `cockroach-data/logs` by [default]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration)).
+Once you find the node, you can check its [logs]({{ page.version.version }}/logging.md) (stored in `cockroach-data/logs` by [default]({{ page.version.version }}/configure-logs.md#default-logging-configuration)).
 
-Because this kind of behavior is unexpected, you should [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
+Because this kind of behavior is unexpected, you should [file an issue]({{ page.version.version }}/file-an-issue.md).
 
 ### Log queries executed by a specific node
 
 If you are testing CockroachDB locally and want to log queries executed by a specific node, you can either pass a CLI flag at node startup or execute a SQL function on a running node.
 
-Using the CLI to start a new node, use the `--vmodule` flag with the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command. For example, to start a single node locally and log all client-generated SQL queries it executes, run:
+Using the CLI to start a new node, use the `--vmodule` flag with the [`cockroach start`]({{ page.version.version }}/cockroach-start.md) command. For example, to start a single node locally and log all client-generated SQL queries it executes, run:
 
 ~~~ shell
 $ cockroach start --insecure --listen-addr=localhost --vmodule=exec_log=2 --join=<join addresses>
@@ -340,9 +336,8 @@ $ cockroach start --insecure --listen-addr=localhost --vmodule=exec_log=2 --join
 To log CockroachDB-generated SQL queries as well, use `--vmodule=exec_log=3`.
 {{site.data.alerts.end}}
 
-From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function]({% link {{ page.version.version }}/functions-and-operators.md %}):
+From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function]({{ page.version.version }}/functions-and-operators.md):
 
-{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT crdb_internal.set_vmodule('exec_log=2');
 ~~~
@@ -356,7 +351,7 @@ This will result in the following output:
 (1 row)
 ~~~
 
-Once the logging is enabled, all client-generated SQL queries executed by the node will be written to the `DEV` [logging channel]({% link {{ page.version.version }}/logging.md %}#dev), which outputs by [default]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration) to the primary `cockroach` log file in `/cockroach-data/logs`. Use the symlink `cockroach.log` to open the most recent log.
+Once the logging is enabled, all client-generated SQL queries executed by the node will be written to the `DEV` [logging channel]({{ page.version.version }}/logging.md#dev), which outputs by [default]({{ page.version.version }}/configure-logs.md#default-logging-configuration) to the primary `cockroach` log file in `/cockroach-data/logs`. Use the symlink `cockroach.log` to open the most recent log.
 
 ~~~
 I180402 19:12:28.112957 394661 sql/exec_log.go:173  [n1,client=127.0.0.1:50155,user=root] exec "psql" {} "SELECT version()" {} 0.795 1 ""
@@ -376,7 +371,7 @@ You can configure the CockroachDB tracer to route to the OpenTelemetry tracer, w
 - The OpenTelemetry (OTEL) collector, which can in turn route them to other tools. The OTEL collector is a canonical collector, using the OTLP protocol, that can buffer traces and perform some processing on them before exporting them to Jaeger, Zipkin, and other OTLP tools.
 - Jaeger or Zipkin using their native protocols. This is implemented by using the Jaeger and Zipkin dedicated "exporters" from the OTEL SDK.
 
-The following [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) are supported:
+The following [cluster settings]({{ page.version.version }}/cluster-settings.md) are supported:
 
 <table>
 <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
@@ -399,23 +394,22 @@ The following [cluster settings]({% link {{ page.version.version }}/cluster-sett
 
 #### Overview
 
-When [SASL/SCRAM-SHA-256 Secure Password-based Authentication]({% link {{ page.version.version }}/security-reference/scram-authentication.md %}) (SCRAM Authentication) is enabled on a cluster, some additional CPU load is incurred on client applications, which are responsible for handling SCRAM hashing. It's important to plan for this additional CPU load to avoid performance degradation, CPU starvation, and [connection pool]({% link {{ page.version.version }}/connection-pooling.md %}) exhaustion on the client. For example, the following set of circumstances can exhaust the client application's resources:
+When [SASL/SCRAM-SHA-256 Secure Password-based Authentication]({{ page.version.version }}/security-reference/scram-authentication.md) (SCRAM Authentication) is enabled on a cluster, some additional CPU load is incurred on client applications, which are responsible for handling SCRAM hashing. It's important to plan for this additional CPU load to avoid performance degradation, CPU starvation, and [connection pool]({{ page.version.version }}/connection-pooling.md) exhaustion on the client. For example, the following set of circumstances can exhaust the client application's resources:
 
-1. SCRAM Authentication is enabled on the cluster (the `server.user_login.password_encryption` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-user-login-password-encryption) is set to `scram-sha-256`).
-1. The client driver's [connection pool]({% link {{ page.version.version }}/connection-pooling.md %}) has no defined maximum number of connections, or is configured to close idle connections eagerly.
-1. The client application issues [transactions]({% link {{ page.version.version }}/transactions.md %}) concurrently.
+1. SCRAM Authentication is enabled on the cluster (the `server.user_login.password_encryption` [cluster setting]({{ page.version.version }}/cluster-settings.md#setting-server-user-login-password-encryption) is set to `scram-sha-256`).
+1. The client driver's [connection pool]({{ page.version.version }}/connection-pooling.md) has no defined maximum number of connections, or is configured to close idle connections eagerly.
+1. The client application issues [transactions]({{ page.version.version }}/transactions.md) concurrently.
 
 In this situation, each new connection uses more CPU on the client application server than connecting to a cluster without SCRAM Authentication enabled. Because of this additional CPU load, each concurrent transaction is slower, and a larger quantity of concurrent transactions can accumulate, in conjunction with a larger number of concurrent connections. In this situation, it can be difficult for the client application server to recover.
 
 Some applications may also see increased connection latency. This can happen because SCRAM incurs additional round trips during authentication which can add latency to the initial connection.
 
-For more information about how SCRAM works, see [SASL/SCRAM-SHA-256 Secure Password-based Authentication]({% link {{ page.version.version }}/security-reference/scram-authentication.md %}).
+For more information about how SCRAM works, see [SASL/SCRAM-SHA-256 Secure Password-based Authentication]({{ page.version.version }}/security-reference/scram-authentication.md).
 
 #### Mitigation steps while keeping SCRAM enabled
 
 To mitigate against this situation while keeping SCRAM authentication enabled, Cockroach Labs recommends that you:
 
-{% include_cached {{page.version.version}}/scram-authentication-recommendations.md %}
 
 If the above steps don't work, you can try lowering the default hashing cost and reapplying the password as described below.
 
@@ -423,17 +417,16 @@ If the above steps don't work, you can try lowering the default hashing cost and
 
 To decrease the CPU usage of SCRAM password hashing while keeping SCRAM enabled:
 
-1. Set the [`server.user_login.password_hashes.default_cost.scram_sha_256` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-user-login-password-hashes-default-cost-scram-sha-256) to `4096`:
+1. Set the [`server.user_login.password_hashes.default_cost.scram_sha_256` cluster setting]({{ page.version.version }}/cluster-settings.md#setting-server-user-login-password-hashes-default-cost-scram-sha-256) to `4096`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING server.user_login.password_hashes.default_cost.scram_sha_256 = 4096;
     ~~~
 
-1. Make sure the [`server.user_login.rehash_scram_stored_passwords_on_cost_change.enabled` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is set to `true` (the default).
+1. Make sure the [`server.user_login.rehash_scram_stored_passwords_on_cost_change.enabled` cluster setting]({{ page.version.version }}/cluster-settings.md) is set to `true` (the default).
 
 {{site.data.alerts.callout_success}}
-When lowering the default hashing cost, we recommend that you use strong, complex passwords for [SQL users]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users).
+When lowering the default hashing cost, we recommend that you use strong, complex passwords for [SQL users]({{ page.version.version }}/security-reference/authorization.md#sql-users).
 {{site.data.alerts.end}}
 
 If you are still seeing higher connection latencies than before, you can [downgrade from SCRAM authentication](#downgrade-from-scram-authentication).
@@ -442,22 +435,20 @@ If you are still seeing higher connection latencies than before, you can [downgr
 
 As an alternative to the [mitigation steps listed above](#mitigation-steps-while-keeping-scram-enabled), you can downgrade from SCRAM authentication to bcrypt as follows:
 
-1. Set the [`server.user_login.password_encryption` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-user-login-password-encryption) to `crdb-bcrypt`:
+1. Set the [`server.user_login.password_encryption` cluster setting]({{ page.version.version }}/cluster-settings.md#setting-server-user-login-password-encryption) to `crdb-bcrypt`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING server.user_login.password_encryption = 'crdb-bcrypt';
     ~~~
 
-1. Ensure the [`server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-user-login-downgrade-scram-stored-passwords-to-bcrypt-enabled) is set to `true`:
+1. Ensure the [`server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled` cluster setting]({{ page.version.version }}/cluster-settings.md#setting-server-user-login-downgrade-scram-stored-passwords-to-bcrypt-enabled) is set to `true`:
 
-    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled = true;
     ~~~
 
 {{site.data.alerts.callout_info}}
-The [`server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-user-login-upgrade-bcrypt-stored-passwords-to-scram-enabled) can be left at its default value of `true`.
+The [`server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` cluster setting]({{ page.version.version }}/cluster-settings.md#setting-server-user-login-upgrade-bcrypt-stored-passwords-to-scram-enabled) can be left at its default value of `true`.
 {{site.data.alerts.end}}
 
 
@@ -465,15 +456,15 @@ The [`server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` cluste
 
 Try searching the rest of our docs for answers:
 
-- [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %})
-- [Run Multi-Statement Transactions]({% link {{ page.version.version }}/run-multi-statement-transactions.md %})
+- [Connect to a CockroachDB Cluster]({{ page.version.version }}/connect-to-the-database.md)
+- [Run Multi-Statement Transactions]({{ page.version.version }}/run-multi-statement-transactions.md)
 - [Optimize Statement Performance Overview][fast]
-- [Common Errors and Solutions]({% link {{ page.version.version }}/common-errors.md %})
-- [Transactions]({% link {{ page.version.version }}/transactions.md %})
-- [Client-side transaction retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling)
+- [Common Errors and Solutions]({{ page.version.version }}/common-errors.md)
+- [Transactions]({{ page.version.version }}/transactions.md)
+- [Client-side transaction retry handling]({{ page.version.version }}/transaction-retry-error-reference.md#client-side-retry-handling)
 - [SQL Layer][sql]
 
-Or try using our other [support resources]({% link {{ page.version.version }}/support-resources.md %}), including:
+Or try using our other [support resources]({{ page.version.version }}/support-resources.md), including:
 
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
 - [CockroachDB Community Slack](https://cockroachdb.slack.com)
@@ -483,4 +474,4 @@ Or try using our other [support resources]({% link {{ page.version.version }}/su
 {% comment %} Reference Links {% endcomment %}
 
 [sql]: architecture/sql-layer.html
-[fast]: {% link {{ page.version.version }}/make-queries-fast.md %}
+[fast]: {{ page.version.version }}/make-queries-fast.md
