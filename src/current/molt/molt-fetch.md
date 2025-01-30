@@ -950,7 +950,7 @@ You can also use the [sample Grafana dashboard](https://molt.cockroachdb.com/mol
 
 ## Docker usage
 
-{% include {{ site.current_cloud_version }}/molt/molt-docker.md %}
+{% include molt/molt-docker.md %}
 
 ## Examples
 
