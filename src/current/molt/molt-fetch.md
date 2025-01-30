@@ -559,7 +559,7 @@ Only the path specified in `--bucket-path` is used. Query parameters, such as cr
 
 `--bucket-path` instructs MOLT Fetch to write intermediate files to a path within a [Google Cloud Storage](https://cloud.google.com/storage/docs/buckets) or [Amazon S3](https://aws.amazon.com/s3/) bucket to which you have the necessary permissions. Use additional [flags](#global-flags), shown in the following examples, to specify authentication or region parameters as required for bucket access.
 
-The following example connects to a Google Cloud Storage bucket with [implicit authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#google-cloud-storage-implicit) and [assume role]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#set-up-google-cloud-storage-assume-role).
+The following example connects to a Google Cloud Storage bucket with [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}#google-cloud-storage-implicit) and [assume role]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}#set-up-google-cloud-storage-assume-role).
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -950,7 +950,7 @@ You can also use the [sample Grafana dashboard](https://molt.cockroachdb.com/mol
 
 ## Docker usage
 
-{% include {{ page.version.version }}/molt/molt-docker.md %}
+{% include {{ site.current_cloud_version }}/molt/molt-docker.md %}
 
 ## Examples
 
