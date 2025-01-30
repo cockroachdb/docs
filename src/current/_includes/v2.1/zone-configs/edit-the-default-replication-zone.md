@@ -1,10 +1,10 @@
 {{site.data.alerts.callout_info}}
-{% include {{page.version.version}}/known-limitations/system-range-replication.md %}
+{% include "_includes/25.1/known-limitations/system-range-replication.md" %}
 {{site.data.alerts.end}}
 
 To edit the default replication zone, use the `ALTER RANGE ... CONFIGURE ZONE` statement to define the values you want to change (other values will remain the same):
 
-{% include copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > ALTER RANGE default CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
 ~~~
@@ -13,7 +13,7 @@ To edit the default replication zone, use the `ALTER RANGE ... CONFIGURE ZONE` s
 CONFIGURE ZONE 1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FOR RANGE default;
 ~~~

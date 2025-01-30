@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-{% include cockroachcloud/filter-tabs/cluster-management.md %}
+{% include "_includes/cockroachcloud/filter-tabs/cluster-management.md" %}
 
 This page describes the cluster management and cluster deletion workflows for CockroachDB {{ site.data.products.basic }}.
 
@@ -17,35 +17,35 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 ## View cluster overview
 
-The **Overview** page displays details about the selected CockroachDB {{ site.data.products.basic }} cluster. For more information, see [Cluster Overview Page]({% link cockroachcloud/cluster-overview-page.md %}).
+The **Overview** page displays details about the selected CockroachDB {{ site.data.products.basic }} cluster. For more information, see [Cluster Overview Page](cluster-overview-page.md).
 
 ## Estimate usage cost
 
 {{site.data.alerts.callout_info}}
-This feature is not available if your organization is billed through [Credits]({% link cockroachcloud/billing-management.md %}).
+This feature is not available if your organization is billed through [Credits](billing-management.md).
 {{site.data.alerts.end}}
 
 The monthly cost estimate is calculated using simple extrapolation that assumes your workload during the selected time frame is an accurate representation of your workload over the month. If you haven't been running a workload for at least the length of the selected time frame, your results will be inaccurate.
 
-1. In the **Capacity used this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Update capacity**.
+1. In the **Capacity used this month** section of your cluster's [**Overview** page](cluster-overview-page.md), click **Update capacity**.
 1. On the **Edit cluster** page, navigate to **Capacity**.
 1. Under the **Estimate cost based on usage** section, select a time period in which your workload was active.
 
-    Your used [RUs]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrued costs and monthly cost estimate do not account for the [free resources]({% link cockroachcloud/plan-your-cluster-basic.md %}#free-vs-paid-usage) granted to each non-contract organization, which you would have to use up before being charged.
+    Your used [RUs](plan-your-cluster-basic.md#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrued costs and monthly cost estimate do not account for the [free resources](plan-your-cluster-basic.md#free-vs-paid-usage) granted to each non-contract organization, which you would have to use up before being charged.
 
 ## Edit cluster capacity
 
 The price-performance characteristics of CockroachDB {{ site.data.products.basic }} vary significantly depending on the workload. It can be difficult to estimate a workload's compute requirements in advance. With {{ site.data.products.basic }}, by default compute and storage scale with your cluster's needs, but you can limit a cluster's resource usage:
 
-1. In the **Capacity used this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Update capacity**.
+1. In the **Capacity used this month** section of your cluster's [**Overview** page](cluster-overview-page.md), click **Update capacity**.
 
 1. On the **Capacity** page, edit the resource limits. In the sidebar, click **Update cluster**.
 
-Changes apply to the current and future billing cycles. For more details, refer to [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %}).
+Changes apply to the current and future billing cycles. For more details, refer to [Plan a CockroachDB {{ site.data.products.basic }} cluster](plan-your-cluster-basic.md).
 
 ## Edit regions
 
-You can add up to six [regions]({% link cockroachcloud/regions.md %}) at a time and change your [primary region]({% link cockroachcloud/plan-your-cluster-basic.md %}#multi-region-clusters) through the {{ site.data.products.cloud }} Console. You cannot currently edit the region configuration for a single-region cluster once it has been created, and you cannot remove a region once it has been added.
+You can add up to six [regions](regions.md) at a time and change your [primary region](plan-your-cluster-basic.md#multi-region-clusters) through the {{ site.data.products.cloud }} Console. You cannot currently edit the region configuration for a single-region cluster once it has been created, and you cannot remove a region once it has been added.
 
 {{site.data.alerts.callout_info}}
 You can only add regions to clusters created after May 16, 2023.
@@ -81,15 +81,15 @@ To set the primary region:
 
 A CockroachDB {{ site.data.products.basic }} cluster cannot be moved from one region to another directly. Instead, you must restore the cluster's data from a backup to a new CockroachDB {{ site.data.products.basic }} cluster with the desired region configuration:
 
-1. [Back up your existing cluster's data]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
-1. [Create a new CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) in the desired region.
-1. Once the new cluster is set up, [restore your data]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) from the backup into the new cluster.
+1. [Back up your existing cluster's data](take-and-restore-self-managed-backups.md).
+1. [Create a new CockroachDB {{ site.data.products.basic }} cluster](create-a-basic-cluster.md) in the desired region.
+1. Once the new cluster is set up, [restore your data](take-and-restore-self-managed-backups.md) from the backup into the new cluster.
 
 ## Restore data from a backup
 
-Use the [Managed Backups]({% link cockroachcloud/managed-backups.md %}) to restore your cluster from automatic full cluster backups.
+Use the [Managed Backups](managed-backups.md) to restore your cluster from automatic full cluster backups.
 
-You can also [back up and restore]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) your CockroachDB {{ site.data.products.basic }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to [`userfile`]({% link {{site.current_cloud_version}}/use-userfile-storage.md %}) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
+You can also [back up and restore](take-and-restore-self-managed-backups.md) your CockroachDB {{ site.data.products.basic }} cluster manually. You can take [backups locally](take-and-restore-self-managed-backups.md) to [`userfile`]({{site.current_cloud_version}}/use-userfile-storage.md) or [back up to cloud storage](take-and-restore-self-managed-backups.md).
 
 ## Enable deletion protection
 

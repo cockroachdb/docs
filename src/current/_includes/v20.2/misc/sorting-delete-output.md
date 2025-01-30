@@ -1,6 +1,6 @@
 To sort the output of a `DELETE` statement, use:
 
-{% include copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > WITH a AS (DELETE ... RETURNING ...)
   SELECT ... FROM a ORDER BY ...

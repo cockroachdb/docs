@@ -1,8 +1,8 @@
-The following {% if page.name == "stored-procedures.md" %}stored procedure{% else %}[stored procedure]({% link {{ page.version.version }}/user-defined-functions.md %}){% endif %} removes a specified number of earliest rides in `vehicle_location_histories`.
+The following {% if page.name == "stored-procedures.md" %}stored procedure{% else %}[stored procedure]({{ page.version.version }}/user-defined-functions.md){% endif %} removes a specified number of earliest rides in `vehicle_location_histories`.
 
-It uses the {% if page.name == "plpgsql.md" %}PL/pgSQL{% else %}[PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}){% endif %} [`WHILE`]({% link {{ page.version.version }}/plpgsql.md %}#write-loops) syntax to iterate through the rows, [`RAISE`] to return notice and error messages, and `REFCURSOR` to define a cursor that fetches the next rows to be affected by the procedure.
+It uses the {% if page.name == "plpgsql.md" %}PL/pgSQL{% else %}[PL/pgSQL]({{ page.version.version }}/plpgsql.md){% endif %} [`WHILE`]({{ page.version.version }}/plpgsql.md#write-loops) syntax to iterate through the rows, [`RAISE`] to return notice and error messages, and `REFCURSOR` to define a cursor that fetches the next rows to be affected by the procedure.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE delete_earliest_histories (
 	num_deletions INT, remaining_histories REFCURSOR
@@ -43,16 +43,16 @@ END;
 $$;
 ~~~
 
-Open a [transaction]({% link {{ page.version.version }}/transactions.md %}):
+Open a [transaction]({{ page.version.version }}/transactions.md):
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 ~~~
 
 Call the stored procedure, specifying 5 rows to delete and a `rides_left` cursor name:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 CALL delete_earliest_histories (5, 'rides_left');
 ~~~
@@ -68,7 +68,7 @@ CALL
 
 Use the cursor to fetch the 3 earliest remaining rows in `vehicle_location_histories`:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 FETCH 3 from rides_left;
 ~~~
@@ -88,25 +88,25 @@ If the procedure is called again, these rows will be the first 3 to be deleted.
 
 The example works as follows:
 
-[`CREATE PROCEDURE`]({% link {{ page.version.version }}/create-procedure.md %}) defines a stored procedure called `delete_earliest_histories` with an `INT` and a `REFCURSOR` parameter.
+[`CREATE PROCEDURE`]({{ page.version.version }}/create-procedure.md) defines a stored procedure called `delete_earliest_histories` with an `INT` and a `REFCURSOR` parameter.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 CREATE OR REPLACE PROCEDURE delete_earliest_histories (
 	num_deletions INT, remaining_histories REFCURSOR
   )
 ~~~
 
-`LANGUAGE` specifies [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}) as the language for the stored procedure.
+`LANGUAGE` specifies [PL/pgSQL]({{ page.version.version }}/plpgsql.md) as the language for the stored procedure.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 LANGUAGE PLpgSQL
 ~~~
 
-`DECLARE` specifies the [PL/pgSQL variable definitions]({% link {{ page.version.version }}/plpgsql.md %}#declare-a-variable) that are used in the procedure body.
+`DECLARE` specifies the [PL/pgSQL variable definitions]({{ page.version.version }}/plpgsql.md#declare-a-variable) that are used in the procedure body.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 DECLARE
 	counter INT := 0;
@@ -115,16 +115,16 @@ DECLARE
 	latest_timestamp TIMESTAMP;
 ~~~
 
-`BEGIN` and `END` [group the PL/pgSQL statements]({% link {{ page.version.version }}/plpgsql.md %}#structure) in the procedure body.
+`BEGIN` and `END` [group the PL/pgSQL statements]({{ page.version.version }}/plpgsql.md#structure) in the procedure body.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 BEGIN
   ...
   END
 ~~~
 
-The following [`IF ... THEN`]({% link {{ page.version.version }}/plpgsql.md %}#write-conditional-statements) statement [raises an exception]({% link {{ page.version.version }}/plpgsql.md %}#report-messages-and-handle-exceptions) if `vehicle_location_histories` has fewer rows than the number specified with `num_deletions`. If the exception is raised within an open transaction, the transaction will abort.
+The following [`IF ... THEN`]({{ page.version.version }}/plpgsql.md#write-conditional-statements) statement [raises an exception]({{ page.version.version }}/plpgsql.md#report-messages-and-handle-exceptions) if `vehicle_location_histories` has fewer rows than the number specified with `num_deletions`. If the exception is raised within an open transaction, the transaction will abort.
 
 ~~~ sql
 IF (SELECT COUNT(*) FROM vehicle_location_histories) < num_deletions THEN
@@ -132,11 +132,11 @@ IF (SELECT COUNT(*) FROM vehicle_location_histories) < num_deletions THEN
   END IF;
 ~~~
 
-The following [`WHILE`]({% link {{ page.version.version }}/plpgsql.md %}#write-loops) loop deletes rows iteratively from `vehicle_location_histories`, stopping when the number of loops reaches the `num_deletions` value.
+The following [`WHILE`]({{ page.version.version }}/plpgsql.md#write-loops) loop deletes rows iteratively from `vehicle_location_histories`, stopping when the number of loops reaches the `num_deletions` value.
 
-The `DELETE ... RETURNING ... INTO` statement assigns column values from each deleted row into separate variables. For more information about assigning variables, see [Assign a result to a variable]({% link {{ page.version.version }}/plpgsql.md %}#assign-a-result-to-a-variable).
+The `DELETE ... RETURNING ... INTO` statement assigns column values from each deleted row into separate variables. For more information about assigning variables, see [Assign a result to a variable]({{ page.version.version }}/plpgsql.md#assign-a-result-to-a-variable).
 
-Finally, the [`RAISE NOTICE`]({% link {{ page.version.version }}/plpgsql.md %}#report-messages-and-handle-exceptions) statement reports these values for each deleted row.
+Finally, the [`RAISE NOTICE`]({{ page.version.version }}/plpgsql.md#report-messages-and-handle-exceptions) statement reports these values for each deleted row.
 
 ~~~ sql
 WHILE counter < num_deletions LOOP
@@ -152,14 +152,14 @@ WHILE counter < num_deletions LOOP
   END LOOP;
 ~~~
 
-The `OPEN` statement [opens a cursor]({% link {{ page.version.version }}/plpgsql.md %}#open-and-use-cursors) for all remaining rows in `vehicle_location_histories`, sorted by timestamp. After calling the procedure in an open transaction, the cursor can be used to fetch rows from the table.
+The `OPEN` statement [opens a cursor]({{ page.version.version }}/plpgsql.md#open-and-use-cursors) for all remaining rows in `vehicle_location_histories`, sorted by timestamp. After calling the procedure in an open transaction, the cursor can be used to fetch rows from the table.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 OPEN remaining_histories FOR SELECT * FROM vehicle_location_histories ORDER BY timestamp;
 ~~~
 
 {% else %}
-For more details on this example, see the [Stored Procedures documentation]({% link {{ page.version.version }}/stored-procedures.md %}#example-details).
+For more details on this example, see the [Stored Procedures documentation]({{ page.version.version }}/stored-procedures.md#example-details).
 
 {% endif %}

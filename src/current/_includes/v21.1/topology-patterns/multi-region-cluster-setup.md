@@ -1,6 +1,6 @@
 Each [multi-region pattern](topology-patterns.html#multi-region) assumes the following setup:
 
-<img src="{{ 'images/v21.1/topology-patterns/topology_multi-region_hardware.png' | relative_url }}" alt="Multi-region hardware setup" style="max-width:100%" />
+![Multi-region hardware setup](/images/v21.1/topology-patterns/topology_multi-region_hardware.png)
 
 #### Hardware
 
@@ -14,7 +14,7 @@ Each [multi-region pattern](topology-patterns.html#multi-region) assumes the fol
 
 Each node is started with the [`--locality`](cockroach-start.html#locality) flag specifying its region and AZ combination. For example, the following command starts a node in the `west1` AZ of the `us-west` region:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 $ cockroach start \
 --locality=region=us-west,zone=west1 \

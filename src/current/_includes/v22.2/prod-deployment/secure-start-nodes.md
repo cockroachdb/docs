@@ -14,13 +14,13 @@ For each initial node of your cluster, complete the following steps:
 After completing these steps, nodes will not yet be live. They will complete the startup process and join together to form a cluster as soon as the cluster is initialized in the next step.
 {{site.data.alerts.end}}
 
-1. Visit [Releases]({% link releases/index.md %}) and download the full binary of CockroachDB to the node.
+1. Visit [Releases](releases/index.md) and download the full binary of CockroachDB to the node.
 
-1. On the node, follow the instructions to [install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+1. On the node, follow the instructions to [install CockroachDB]({{ page.version.version }}/install-cockroachdb.md).
 
 1. Run the [`cockroach start`](cockroach-start.html) command:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -61,7 +61,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
 1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
@@ -69,7 +69,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
 1. Copy the binary into the `PATH`:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -78,17 +78,17 @@ After completing these steps, nodes will not yet be live. They will complete the
 
 1. CockroachDB uses custom-built versions of the [GEOS](spatial-glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ mkdir -p /usr/local/lib/cockroach
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/lib/libgeos.so /usr/local/lib/cockroach/
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/lib/libgeos_c.so /usr/local/lib/cockroach/
     ~~~
@@ -97,49 +97,49 @@ After completing these steps, nodes will not yet be live. They will complete the
 
 1. Create the Cockroach directory:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ mkdir /var/lib/cockroach
     ~~~
 
 1. Create a Unix user named `cockroach`:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ useradd cockroach
     ~~~
 
 1.  Move the `certs` directory to the `cockroach` directory.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ mv certs /var/lib/cockroach/
     ~~~
 
 1.  Change the ownership of the `cockroach` directory to the user `cockroach`:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ chown -R cockroach /var/lib/cockroach
     ~~~
 
 1.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ wget -qO- https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service
     ~~~
 
     Alternatively, you can create the file yourself and copy the script into it:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
-    {% include {{ page.version.version }}/prod-deployment/securecockroachdb.service %}
+    {% include "_includes/25.1/prod-deployment/securecockroachdb.service" %}
     ~~~
 
 1. In the sample configuration template, specify values for the following flags:
 
-    {% include {{ page.version.version }}/prod-deployment/advertise-addr-join.md %}
+    {% include "_includes/25.1/prod-deployment/advertise-addr-join.md" %}
 
     When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain [{{ site.data.products.enterprise }} features](enterprise-licensing.html). For more details, see [Locality](cockroach-start.html#locality).
 
@@ -147,7 +147,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
 1. Start the CockroachDB cluster:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ systemctl start securecockroachdb
     ~~~

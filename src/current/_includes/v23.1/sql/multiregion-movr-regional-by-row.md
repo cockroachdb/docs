@@ -1,10 +1,10 @@
-All of the tables except `promo_codes` contain rows which are partitioned by region, and updated very frequently. For these tables, the right table locality for optimizing access to their data is [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables).
+All of the tables except `promo_codes` contain rows which are partitioned by region, and updated very frequently. For these tables, the right table locality for optimizing access to their data is [`REGIONAL BY ROW`]({{ page.version.version }}/table-localities.md#regional-by-row-tables).
 
 Apply this table locality to the remaining tables. These statements use a `CASE` statement to put data for a given city in the right region and can take around 1 minute to complete for each table.
 
 - `rides`
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
       CASE WHEN city = 'amsterdam' THEN 'europe-west1'
@@ -24,7 +24,7 @@ Apply this table locality to the remaining tables. These statements use a `CASE`
 
 - `user_promo_codes`
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE user_promo_codes ADD COLUMN region crdb_internal_region AS (
       CASE WHEN city = 'amsterdam' THEN 'europe-west1'
@@ -44,7 +44,7 @@ Apply this table locality to the remaining tables. These statements use a `CASE`
 
 - `users`
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE users ADD COLUMN region crdb_internal_region AS (
       CASE WHEN city = 'amsterdam' THEN 'europe-west1'
@@ -64,7 +64,7 @@ Apply this table locality to the remaining tables. These statements use a `CASE`
 
 - `vehicle_location_histories`
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE vehicle_location_histories ADD COLUMN region crdb_internal_region AS (
       CASE WHEN city = 'amsterdam' THEN 'europe-west1'
@@ -84,7 +84,7 @@ Apply this table locality to the remaining tables. These statements use a `CASE`
 
 - `vehicles`
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     ALTER TABLE vehicles ADD COLUMN region crdb_internal_region AS (
       CASE WHEN city = 'amsterdam' THEN 'europe-west1'

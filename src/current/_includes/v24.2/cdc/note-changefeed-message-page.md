@@ -1,1 +1,1 @@
-For an overview of the messages emitted from changefeeds, see the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}) page.
+For an overview of the messages emitted from changefeeds, see the [Changefeed Messages]({{ page.version.version }}/changefeed-messages.md) page.

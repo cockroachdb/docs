@@ -29,7 +29,7 @@ Transaction executions with the **High Contention** insight are transactions tha
 {% if page.cloud != true -%}
 The following screenshot shows the execution of a transaction flagged with **High Contention**:
 
-<img src="{{ 'images/v22.2/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
+![Transaction execution](/images/v22.2/transaction_execution.png)
 {% endif -%}
 
 To view [details of the execution](#transaction-execution-details), click an execution ID in the **Latest Transaction Execution ID** column.
@@ -50,7 +50,7 @@ The transaction execution details view provides more details on a transaction ex
 {% if page.cloud != true -%}
 The following screenshot shows the execution details of the transaction execution in the preceding section:
 
-<img src="{{ 'images/v22.2/transaction_execution_details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
+![Transaction execution details](/images/v22.2/transaction_execution_details.png)
 {% endif -%}
 
 The **Insights** column shows the name of the insight, in this case **High Contention**; the **Details** column provides details on the insight.
@@ -94,7 +94,7 @@ The rows in this page are populated from the [`crdb_internal.cluster_execution_i
 {% if page.cloud != true -%}
 The following screenshot shows the statement execution of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
-<img src="{{ 'images/v22.2/statement_executions.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
+![Statement execution](/images/v22.2/statement_executions.png)
 {% endif -%}
 
 To view [details of the execution](#statement-execution-details), click an execution ID in the **Statement Execution ID** column.
@@ -129,7 +129,7 @@ The statement execution details view provides more details on a statement execut
 {% if page.cloud != true -%}
 The following screenshot shows the execution details of the statement execution in the preceding section:
 
-<img src="{{ 'images/v22.2/statement_execution_details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
+![Statement execution details](/images/v22.2/statement_execution_details.png)
 {% endif -%}
 
 The **Insights** column shows the name of the insight, in this case **Suboptimal Plan**; the **Details** column provides details on the insight; and the final column contains a **Create Index** button. Click the **Create Index** button to perform a query to mitigate the cause of the insight, in this case to create an index on the ride `start_time` that stores the `rider_id`.
@@ -163,7 +163,7 @@ This view lists the [indexes]({{ link_prefix }}indexes.html) that have not been 
 {% if page.cloud != true -%}
 The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) 6 or more times:
 
-<img src="{{ 'images/v22.2/schema_insight.png' | relative_url }}" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
+![Schema insight](/images/v22.2/schema_insight.png)
 {% endif -%}
 
 CockroachDB uses the threshold of 6 executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.

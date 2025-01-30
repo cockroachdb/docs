@@ -4,9 +4,9 @@ Starting in v22.2, CockroachDB introduces a new [system-level privilege model](s
 There is continued support for the [legacy privilege model](#legacy-privilege-model) for changefeeds in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all changefeeds.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v22.2" %} You can [grant](grant.html#grant-privileges-on-specific-tables-in-a-database) a user the `CHANGEFEED` privilege to allow them to create changefeeds on a specific table:
+{% include "_includes/new-in.html" version="v22.2" %} You can [grant](grant.html#grant-privileges-on-specific-tables-in-a-database) a user the `CHANGEFEED` privilege to allow them to create changefeeds on a specific table:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~sql
 GRANT CHANGEFEED ON TABLE example_table TO user;
 ~~~
@@ -17,7 +17,7 @@ Since you can grant the `CHANGEFEED` privilege to a user or role **without** the
 
 You can add `CHANGEFEED` to the user or role's [default privileges](security-reference/authorization.html#default-privileges) with [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html#grant-default-privileges-to-a-specific-role):
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~sql
 ALTER DEFAULT PRIVILEGES GRANT CHANGEFEED ON TABLES TO user;
 ~~~

@@ -1,27 +1,27 @@
 Now you'll import Movr data representing users, vehicles, and rides in 3 eastern US cities (New York, Boston, and Washington DC) and 3 western US cities (Los Angeles, San Francisco, and Seattle).
 
-1. Still on the fourth instance, start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}), pointing it at one of the CockroachDB nodes:
+1. Still on the fourth instance, start the [built-in SQL shell]({{ page.version.version }}/cockroach-sql.md), pointing it at one of the CockroachDB nodes:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cockroach sql {{page.certs}} --host=<address of any node>
     ~~~
 
 1. Create the `movr` database and set it as the default:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE movr;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > SET DATABASE = movr;
     ~~~
 
-1. Use the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement to create and populate the `users`, `vehicles,` and `rides` tables:
+1. Use the [`IMPORT`]({{ page.version.version }}/import.md) statement to create and populate the `users`, `vehicles,` and `rides` tables:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > IMPORT TABLE users (
       	id UUID NOT NULL,
@@ -45,7 +45,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     Time: 2.882582355s
     ~~~    
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > IMPORT TABLE vehicles (
         id UUID NOT NULL,
@@ -73,7 +73,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     Time: 5.803841493s
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > IMPORT TABLE rides (
       	id UUID NOT NULL,
@@ -115,10 +115,10 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     ~~~
 
     {{site.data.alerts.callout_success}}
-    You can observe the progress of imports as well as all schema change operations (e.g., adding secondary indexes) on the [**Jobs** page]({% link {{ page.version.version }}/ui-jobs-page.md %}) of the DB Console.
+    You can observe the progress of imports as well as all schema change operations (e.g., adding secondary indexes) on the [**Jobs** page]({{ page.version.version }}/ui-jobs-page.md) of the DB Console.
     {{site.data.alerts.end}}
 
-1. Logically, there should be a number of [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) relationships between the tables:
+1. Logically, there should be a number of [foreign key]({{ page.version.version }}/foreign-key.md) relationships between the tables:
 
     Referencing columns | Referenced columns
     --------------------|-------------------
@@ -128,7 +128,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
 
     As mentioned earlier, it wasn't possible to put these relationships in place during `IMPORT`, but it was possible to create the required secondary indexes. Now, let's add the foreign key constraints:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > ALTER TABLE vehicles
     ADD CONSTRAINT fk_city_ref_users
@@ -136,7 +136,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     REFERENCES users (city, id);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > ALTER TABLE rides
     ADD CONSTRAINT fk_city_ref_users
@@ -144,7 +144,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     REFERENCES users (city, id);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > ALTER TABLE rides
     ADD CONSTRAINT fk_vehicle_city_ref_vehicles
@@ -154,7 +154,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
 
 1. Exit the built-in SQL shell:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~

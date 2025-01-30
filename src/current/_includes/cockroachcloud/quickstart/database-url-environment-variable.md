@@ -1,7 +1,7 @@
 <section class="filter-content" markdown="1" data-scope="mac, linux">
 In a terminal set the `DATABASE_URL` environment variable to the connection string that you copied earlier:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 export DATABASE_URL="<connection-string>"
 ~~~
@@ -13,7 +13,7 @@ The code sample uses the connection string stored in the environment variable `D
 
 In a terminal set the `DATABASE_URL` environment variable to the connection string that you copied earlier:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 $env:DATABASE_URL = "<connection-string>"
 ~~~
@@ -23,5 +23,5 @@ The code sample uses the connection string stored in the environment variable `D
 </section>
 
 {{site.data.alerts.callout_success}}
-For reference information about connecting to CockroachDB with supported client drivers, see [Connect to a CockroachDB Cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}).
+For reference information about connecting to CockroachDB with supported client drivers, see [Connect to a CockroachDB Cluster]({{ page.version.version }}/connect-to-the-database.md).
 {{site.data.alerts.end}}

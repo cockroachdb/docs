@@ -1,5 +1,5 @@
-1. [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
-1. Start up a [secure]({% link {{ page.version.version }}/secure-a-cluster.md %}) or [insecure]({% link {{ page.version.version }}/start-a-local-cluster.md %}) local cluster.
+1. [Install CockroachDB]({{ page.version.version }}/install-cockroachdb.md).
+1. Start up a [secure]({{ page.version.version }}/secure-a-cluster.md) or [insecure]({{ page.version.version }}/start-a-local-cluster.md) local cluster.
 1. Choose the instructions that correspond to whether your cluster is secure or insecure:
 
 <div class="filters filters-big clearfix">
@@ -8,5 +8,5 @@
 </div>
 
 <section class="filter-content" markdown="1" data-scope="insecure">
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
+{% include "_includes/25.1/prod-deployment/insecure-flag.md" %}
 </section>

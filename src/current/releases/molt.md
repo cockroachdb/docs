@@ -5,10 +5,10 @@ toc: true
 docs_area: releases
 ---
 
-This page has details about each release of the following [MOLT (Migrate Off Legacy Technology) tools]({% link molt/molt-overview.md %}):
+This page has details about each release of the following [MOLT (Migrate Off Legacy Technology) tools](molt/molt-overview.md):
 
-- [Fetch]({% link molt/molt-fetch.md %})
-- [Verify]({% link molt/molt-verify.md %})
+- [Fetch](molt/molt-fetch.md)
+- [Verify](molt/molt-verify.md)
 
 Cockroach Labs recommends using the latest available version of each tool. See [Installation](#installation).
 
@@ -16,53 +16,53 @@ Cockroach Labs recommends using the latest available version of each tool. See [
 
 To download the latest MOLT Fetch/Verify binary:
 
-{% include molt/molt-install.md %}
+{% include "_includes/molt/molt-install.md" %}
 
 ## December 13, 2024
 
 MOLT Fetch/Verify 1.2.1 is [available](#installation).
 
-- MOLT Fetch users now can use [`--assume-role`]({% link molt/molt-fetch.md %}#global-flags) to specify a service account for assume role authentication to cloud storage. `--assume-role` must be used with `--use-implicit-auth`, or the flag will be ignored. 
-- MySQL 5.7 and later are now supported with MOLT Fetch replication modes. For details on setup, refer to the [MOLT Fetch documentation]({% link molt/molt-fetch.md %}#replication-setup).
+- MOLT Fetch users now can use [`--assume-role`](molt/molt-fetch.md#global-flags) to specify a service account for assume role authentication to cloud storage. `--assume-role` must be used with `--use-implicit-auth`, or the flag will be ignored. 
+- MySQL 5.7 and later are now supported with MOLT Fetch replication modes. For details on setup, refer to the [MOLT Fetch documentation](molt/molt-fetch.md#replication-setup).
 - Fetch replication mode now defaults to a less verbose `INFO` logging level. To specify `DEBUG` logging, pass in the `--replicator-flags '-v'` setting, or `--replicator-flags '-vv'` for trace logging.
-- MySQL columns of type `BIGINT UNSIGNED` or `SERIAL` are now auto-mapped to [`DECIMAL`]({% link {{ site.current_cloud_version }}/decimal.md %}) type in CockroachDB. MySQL regular `BIGINT` types are mapped to [`INT`]({% link {{ site.current_cloud_version }}/int.md %}) type in CockroachDB.
-- The `pglogical` replication workflow was modified in order to enforce safer and simpler defaults for the [`data-load`]({% link molt/molt-fetch.md %}#load-data), [`data-load-and-replication`]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes), and [`replication-only`]({% link molt/molt-fetch.md %}#replicate-changes) workflows for PostgreSQL sources. Fetch now ensures that the publication is created before the slot, and that `replication-only` defaults to using publications and slots created either in previous Fetch runs or manually.
+- MySQL columns of type `BIGINT UNSIGNED` or `SERIAL` are now auto-mapped to [`DECIMAL`]({{ site.current_cloud_version }}/decimal.md) type in CockroachDB. MySQL regular `BIGINT` types are mapped to [`INT`]({{ site.current_cloud_version }}/int.md) type in CockroachDB.
+- The `pglogical` replication workflow was modified in order to enforce safer and simpler defaults for the [`data-load`](molt/molt-fetch.md#load-data), [`data-load-and-replication`](molt/molt-fetch.md#load-data-and-replicate-changes), and [`replication-only`](molt/molt-fetch.md#replicate-changes) workflows for PostgreSQL sources. Fetch now ensures that the publication is created before the slot, and that `replication-only` defaults to using publications and slots created either in previous Fetch runs or manually.
 - Fixed scan iterator query ordering for `BINARY` and `TEXT` (of same collation) PKs so that they lead to the correct queries and ordering.
-- For a MySQL source in [`replication-only`]({% link molt/molt-fetch.md %}#replicate-changes) mode, the [`--stagingSchema` replicator flag]({% link molt/molt-fetch.md %}#replication-flags) can now be used to resume streaming replication after being interrupted. Otherwise, the [`--defaultGTIDSet` replicator flag]({% link molt/molt-fetch.md %}#mysql-replication-flags) is used to start initial replication after a previous Fetch run in [`data-load`]({% link molt/molt-fetch.md %}#load-data) mode, or as an override to the current replication stream.
+- For a MySQL source in [`replication-only`](molt/molt-fetch.md#replicate-changes) mode, the [`--stagingSchema` replicator flag](molt/molt-fetch.md#replication-flags) can now be used to resume streaming replication after being interrupted. Otherwise, the [`--defaultGTIDSet` replicator flag](molt/molt-fetch.md#mysql-replication-flags) is used to start initial replication after a previous Fetch run in [`data-load`](molt/molt-fetch.md#load-data) mode, or as an override to the current replication stream.
 
 ## October 29, 2024
 
 MOLT Fetch/Verify 1.2.0 is [available](#installation).
 
-- Added [`failback` mode]({% link molt/molt-fetch.md %}#fail-back-to-source-database) to MOLT Fetch, which allows the user to replicate changes on CockroachDB back to the initial source database. Failback is supported for MySQL and PostgreSQL databases.
-- The [`--pprof-list-addr` flag]({% link molt/molt-fetch.md %}#global-flags), which specifies the address of the `pprof` endpoint, is now configurable. The default value is `'127.0.0.1:3031'`.
-- [Fetch modes]({% link molt/molt-fetch.md %}#fetch-mode) involving replication now state that MySQL 8.0 and later are supported for replication between MySQL and CockroachDB.
-- [Partitioned tables]({% link molt/molt-fetch.md %}#transformations) can now be moved to CockroachDB using [`IMPORT INTO`]({% link {{ site.current_cloud_version }}/import-into.md %}).
-- Improved logging for the [Fetch]({% link molt/molt-fetch.md %}) schema check phases under the `trace` logging level, which is set with [`--logging trace`]({% link molt/molt-fetch.md %}#global-flags).
+- Added [`failback` mode](molt/molt-fetch.md#fail-back-to-source-database) to MOLT Fetch, which allows the user to replicate changes on CockroachDB back to the initial source database. Failback is supported for MySQL and PostgreSQL databases.
+- The [`--pprof-list-addr` flag](molt/molt-fetch.md#global-flags), which specifies the address of the `pprof` endpoint, is now configurable. The default value is `'127.0.0.1:3031'`.
+- [Fetch modes](molt/molt-fetch.md#fetch-mode) involving replication now state that MySQL 8.0 and later are supported for replication between MySQL and CockroachDB.
+- [Partitioned tables](molt/molt-fetch.md#transformations) can now be moved to CockroachDB using [`IMPORT INTO`]({{ site.current_cloud_version }}/import-into.md).
+- Improved logging for the [Fetch](molt/molt-fetch.md) schema check phases under the `trace` logging level, which is set with [`--logging trace`](molt/molt-fetch.md#global-flags).
 - Added a [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) for monitoring MOLT tasks. 
-- Fetch now logs the name of the staging database in the target CockroachDB cluster used to store metadata for [replication modes]({% link molt/molt-fetch.md %}#fetch-mode).
-- String [primary keys]({% link {{ site.current_cloud_version }}/primary-key.md %}) that use `C` [collations]({% link {{ site.current_cloud_version }}/collate.md %}) on PostgreSQL can now be compared to the default `en_US.utf8` on CockroachDB.
+- Fetch now logs the name of the staging database in the target CockroachDB cluster used to store metadata for [replication modes](molt/molt-fetch.md#fetch-mode).
+- String [primary keys]({{ site.current_cloud_version }}/primary-key.md) that use `C` [collations]({{ site.current_cloud_version }}/collate.md) on PostgreSQL can now be compared to the default `en_US.utf8` on CockroachDB.
 - MOLT is now distributed under the [Cockroach Labs Product License Agreement](https://www.cockroachlabs.com/cockroach-labs-product-license-agreement/), which is bundled with the binary.
 
 ## August 26, 2024
 
 MOLT Fetch/Verify 1.1.7 is [available](#installation).
 
-- When a [Fetch transformation rule]({% link molt/molt-fetch.md %}#transformations) is used to rename a table or map partitioned tables, a script in the format `partitionTableScript.{timestamp}.ts` is now automatically generated to ensure that [replication]({% link molt/molt-fetch.md %}#fetch-mode) works properly if enabled.
+- When a [Fetch transformation rule](molt/molt-fetch.md#transformations) is used to rename a table or map partitioned tables, a script in the format `partitionTableScript.{timestamp}.ts` is now automatically generated to ensure that [replication](molt/molt-fetch.md#fetch-mode) works properly if enabled.
 
 ## August 19, 2024
 
 MOLT Fetch/Verify 1.1.6 is [available](#installation).
 
-- Fixed a Fetch bug where [`--table-exclusion-filter`]({% link molt/molt-fetch.md %}#schema-and-table-selection) was ignored when `--table-filter` and `--schema-filter` were set to the default (`'.*'`).
+- Fixed a Fetch bug where [`--table-exclusion-filter`](molt/molt-fetch.md#schema-and-table-selection) was ignored when `--table-filter` and `--schema-filter` were set to the default (`'.*'`).
 
 ## August 15, 2024
 
 MOLT Fetch/Verify 1.1.5 is [available](#installation).
 
-- **Deprecated** the `--ongoing-replication` flag in favor of [`--mode data-load-and-replication`]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes), using the new `--mode` flag. Users should replace all instances of `--ongoing-replication` with `--mode data-load-and-replication`.
-- Fetch can now be run in an export-only mode by specifying [`--mode export-only`]({% link molt/molt-fetch.md %}#export-data-to-storage). This will export all the data in `csv` or `csv.gz` format to the specified cloud or local store.
-- Fetch can now be run in an import-only mode by specifying [`--mode import-only`]({% link molt/molt-fetch.md %}#import-data-from-storage). This will load all data in the specified cloud or local store into the target CockroachDB database, effectively skipping the export data phase.
+- **Deprecated** the `--ongoing-replication` flag in favor of [`--mode data-load-and-replication`](molt/molt-fetch.md#load-data-and-replicate-changes), using the new `--mode` flag. Users should replace all instances of `--ongoing-replication` with `--mode data-load-and-replication`.
+- Fetch can now be run in an export-only mode by specifying [`--mode export-only`](molt/molt-fetch.md#export-data-to-storage). This will export all the data in `csv` or `csv.gz` format to the specified cloud or local store.
+- Fetch can now be run in an import-only mode by specifying [`--mode import-only`](molt/molt-fetch.md#import-data-from-storage). This will load all data in the specified cloud or local store into the target CockroachDB database, effectively skipping the export data phase.
 - Strings for the `--mode` flag are now word-separated by hyphens instead of underscores. For example, `replication-only` instead of `replication_only`.
 
 ## August 8, 2024
@@ -70,7 +70,7 @@ MOLT Fetch/Verify 1.1.5 is [available](#installation).
 MOLT Fetch/Verify 1.1.4 is [available](#installation).
 
 - Added a replication-only mode for Fetch that allows the user to run ongoing replication without schema creation or initial data load. This requires users to set `--mode replication_only` and `--replicator-flags` to specify the `defaultGTIDSet` ([MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical)) or `slotName` ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical)).
-- Partitioned tables can now be mapped to renamed tables on the target database, using the Fetch [transformations framework]({% link molt/molt-fetch.md %}#transformations).
+- Partitioned tables can now be mapped to renamed tables on the target database, using the Fetch [transformations framework](molt/molt-fetch.md#transformations).
 - Added a new `--metrics-scrape-interval` flag to allow users to specify their Prometheus scrape interval and apply a sleep at the end to allow for the final metrics to be scraped.
 - Previously, there was a mismatch between the errors logged in log lines and those recorded in the exceptions table when an `IMPORT INTO` or `COPY FROM` operation failed due to a non-PostgreSQL error. Now, all errors will lead to an exceptions table entry that allows the user to continue progress from a certain table's file.
 - Fixed a bug that will allow Fetch to properly determine a GTID if there are multiple `source_uuids`.
@@ -80,8 +80,8 @@ MOLT Fetch/Verify 1.1.4 is [available](#installation).
 MOLT Fetch/Verify 1.1.3 is [available](#installation).
 
 - `'infinity'::timestamp` values can now be moved with Fetch.
-- Fixed an issue where connections were not being closed immediately after sharding was completed. This could lead to errors if the [maximum number of connections]({% link molt/molt-fetch.md %}#best-practices) was set to a low value.
-- Fetch users can now exclude specific tables from migration using the [`--table-exclusion-filter` flag]({% link molt/molt-fetch.md %}#global-flags).
+- Fixed an issue where connections were not being closed immediately after sharding was completed. This could lead to errors if the [maximum number of connections](molt/molt-fetch.md#best-practices) was set to a low value.
+- Fetch users can now exclude specific tables from migration using the [`--table-exclusion-filter` flag](molt/molt-fetch.md#global-flags).
 
 ## July 18, 2024
 
@@ -89,16 +89,16 @@ MOLT Fetch/Verify 1.1.2 is [available](#installation).
 
 - Fetch users can now specify columns to exclude from table migrations in order to migrate a subset of their data. This is supported in the schema creation, export, import, and direct copy phases.
 - Fetch now automatically maps a partitioned table from a PostgreSQL source to the target CockroachDB schema.
-- Fetch now supports column exclusions and computed column mappings via a new [transformations framework]({% link molt/molt-fetch.md %}#transformations). 
-- The new Fetch [`--transformations-file`]({% link molt/molt-fetch.md %}#global-flags) flag specifies a JSON file for schema/table/column transformations, which has validation utilities built in.
+- Fetch now supports column exclusions and computed column mappings via a new [transformations framework](molt/molt-fetch.md#transformations). 
+- The new Fetch [`--transformations-file`](molt/molt-fetch.md#global-flags) flag specifies a JSON file for schema/table/column transformations, which has validation utilities built in.
 
 ## July 10, 2024
 
 MOLT Fetch/Verify 1.1.1 is [available](#installation).
 
-- Fixed a bug that led to incorrect list continuation file behavior if a trailing slash was provided in [`--bucket-path`]({% link molt/molt-fetch.md %}#global-flags).
+- Fixed a bug that led to incorrect list continuation file behavior if a trailing slash was provided in [`--bucket-path`](molt/molt-fetch.md#global-flags).
 - Fixed a bug with extracting the filename from a failed import URL. Previously, an older filename was being used, which could result in duplicated data. Now, the filename that is used in import matches what is stored in the exceptions log table.
-- Added a [`--use-implicit-auth`]({% link molt/molt-fetch.md %}#global-flags) flag that determines whether [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}) is used for cloud storage import URIs.
+- Added a [`--use-implicit-auth`](molt/molt-fetch.md#global-flags) flag that determines whether [implicit authentication]({{ site.current_cloud_version }}/cloud-storage-authentication.md) is used for cloud storage import URIs.
 
 ## July 8, 2024
 
@@ -113,33 +113,33 @@ MOLT Fetch/Verify 1.1.0 is [available](#installation).
 
 MOLT Fetch/Verify 1.0.0 is [available](#installation).
 
-- Renamed the `--table-splits` flag to [`--concurrency-per-table`]({% link molt/molt-fetch.md %}#global-flags), which is more descriptive.
-- Increased the default value of [`--import-batch-size`]({% link molt/molt-fetch.md %}#global-flags) to `1000`. This leads to better performance on the target post-migration. Each individual import job will take longer, since more data is now imported in each batch, but the sum total of all jobs should take the same (or less) time.
+- Renamed the `--table-splits` flag to [`--concurrency-per-table`](molt/molt-fetch.md#global-flags), which is more descriptive.
+- Increased the default value of [`--import-batch-size`](molt/molt-fetch.md#global-flags) to `1000`. This leads to better performance on the target post-migration. Each individual import job will take longer, since more data is now imported in each batch, but the sum total of all jobs should take the same (or less) time.
 
 ## May 29, 2024
 
 MOLT Fetch/Verify 0.3.0 is [available](#installation).
 
-- Added an [`--import-batch-size`]({% link molt/molt-fetch.md %}#global-flags) flag, which configures the number of files to be imported in each `IMPORT` job.
+- Added an [`--import-batch-size`](molt/molt-fetch.md#global-flags) flag, which configures the number of files to be imported in each `IMPORT` job.
 - In some cases on the previous version, binaries would not work due to how `molt` was being built. Updated the build method to use static linking, which creates binaries that should be more portable.
-- [`VARBIT`]({% link {{ site.current_cloud_version }}/bit.md %}) <> [`BOOL`]({% link {{ site.current_cloud_version }}/bool.md %}) conversion is now allowed for Fetch and Verify. The bit array is first converted to `UINT64`. A resulting `1` or `0` is converted to `true` or `false` accordingly. If the `UINT64` is another value, an error is emitted.
+- [`VARBIT`]({{ site.current_cloud_version }}/bit.md) <> [`BOOL`]({{ site.current_cloud_version }}/bool.md) conversion is now allowed for Fetch and Verify. The bit array is first converted to `UINT64`. A resulting `1` or `0` is converted to `true` or `false` accordingly. If the `UINT64` is another value, an error is emitted.
 
 ## May 20, 2024
 
 MOLT Fetch/Verify 0.2.1 is [available](#installation).
 
 - MOLT tools now enforce secure connections to databases as a default. The `--allow-tls-mode-disable` flag allows users to override that behavior if secure access is not possible.
-- When using MySQL as a source, [`--table-concurrency`]({% link molt/molt-fetch.md %}#global-flags) and [`--export-concurrency`]({% link molt/molt-fetch.md %}#global-flags) are strictly set to `1`.
-- Fixed a bug involving history retention for [`DECIMAL`]({% link {{ site.current_cloud_version }}/decimal.md %}) values.
+- When using MySQL as a source, [`--table-concurrency`](molt/molt-fetch.md#global-flags) and [`--export-concurrency`](molt/molt-fetch.md#global-flags) are strictly set to `1`.
+- Fixed a bug involving history retention for [`DECIMAL`]({{ site.current_cloud_version }}/decimal.md) values.
 
 ## May 3, 2024
 
 MOLT Fetch/Verify 0.2.0 is [available](#installation).
 
-- Fetch now supports CockroachDB [multi-region tables]({% link {{ site.current_cloud_version }}/multiregion-overview.md %}).
-- Fetch now supports continuous replication for PostgreSQL and MySQL source databases via the [`--ongoing-replication`]({% link molt/molt-fetch.md %}#global-flags) flag. When Fetch finishes the initial data load phase, it will start the replicator process as a subprocess, which runs indefinitely until the user ends the process with a `SIGTERM` (`ctrl-c`).
-- Replicator flags for ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) and [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) are now supported, allowing users to further configure the [`--ongoing-replication`]({% link molt/molt-fetch.md %}#global-flags) mode for their use case.
-- Added the [`--type-map-file`]({% link molt/molt-fetch.md %}#global-flags) flag, which enables custom type mapping for schema creation.
+- Fetch now supports CockroachDB [multi-region tables]({{ site.current_cloud_version }}/multiregion-overview.md).
+- Fetch now supports continuous replication for PostgreSQL and MySQL source databases via the [`--ongoing-replication`](molt/molt-fetch.md#global-flags) flag. When Fetch finishes the initial data load phase, it will start the replicator process as a subprocess, which runs indefinitely until the user ends the process with a `SIGTERM` (`ctrl-c`).
+- Replicator flags for ([PostgreSQL](https://github.com/cockroachdb/replicator/wiki/PGLogical#postgresql-logical-replication) and [MySQL](https://github.com/cockroachdb/replicator/wiki/MYLogical#mysqlmariadb-replication)) are now supported, allowing users to further configure the [`--ongoing-replication`](molt/molt-fetch.md#global-flags) mode for their use case.
+- Added the [`--type-map-file`](molt/molt-fetch.md#global-flags) flag, which enables custom type mapping for schema creation.
 - Fixed a bug where primary key positions could be missed when creating a schema with multiple primary keys.
 - Added a default mode for MySQL sources that ensures consistency and does not leverage parallelism. New text is displayed that alerts the user and links to documentation in cases where fetching from MySQL might not be consistent.
 - Logging for continuation tokens is now omitted when data export does not successfully complete.

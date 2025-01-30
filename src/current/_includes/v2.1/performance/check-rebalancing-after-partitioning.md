@@ -2,11 +2,11 @@ Over the next minutes, CockroachDB will rebalance all partitions based on the co
 
 To check this at a high level, access the Web UI on any node at `<node address>:8080` and look at the **Node List**. You'll see that the range count is still close to even across all nodes but much higher than before partitioning:
 
-<img src="{{ 'images/v2.1/perf_tuning_multi_region_rebalancing_after_partitioning.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
+![Perf tuning rebalancing](/images/v2.1/perf_tuning_multi_region_rebalancing_after_partitioning.png)
 
 To check at a more granular level, SSH to one of the instances not running CockroachDB and run the `SHOW EXPERIMENTAL_RANGES` statement on the `vehicles` table:
 
-{% include copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 $ cockroach sql \
 {{page.certs}} \

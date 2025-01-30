@@ -12,7 +12,7 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
 
 1. Create a [CockroachDB {{ site.data.products.cloud }}](https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}) account and log in.
 
-1. [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}) for the sample To-Do app.
+1. [Create a CockroachDB {{ site.data.products.standard }} cluster](create-your-cluster.md) for the sample To-Do app.
 
 1. On your local system, be sure the following tools are installed:
 
@@ -28,18 +28,18 @@ Follow the steps in this section to prepare your cluster for the example To-DO a
 
 ### Step 1. Authorize your local workstation's network
 
-Before you can connect to your CockroachDB {{ site.data.products.standard }} cluster, you need to authorize your network by adding the public IP address of the workstation to the [allowlist]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting). Otherwise, connections from this workstation will be rejected.
+Before you can connect to your CockroachDB {{ site.data.products.standard }} cluster, you need to authorize your network by adding the public IP address of the workstation to the [allowlist](network-authorization.md#ip-allowlisting). Otherwise, connections from this workstation will be rejected.
 
 1. In the left navigation bar of the CockroachDB {{ site.data.products.cloud }} Console, click **Networking**.
 1. Click **Add Network**. The **Add Network** dialog displays.
 1. (Optional) Enter a descriptive name for the network.
 1. From the **Network** selector, choose **Current Network**. Your local machine's IP address will be auto-populated in the box.
-1. Select both **DB Console to monitor the cluster** and **CockroachDB Client to access the databases**. The first option allows connections from this IP to the cluster's [DB Console]({% link {{site.current_cloud_version}}/ui-overview.md %}), where you can observe your cluster's health and performance. The second option allows SQL clients to connect from this IP.
+1. Select both **DB Console to monitor the cluster** and **CockroachDB Client to access the databases**. The first option allows connections from this IP to the cluster's [DB Console]({{site.current_cloud_version}}/ui-overview.md), where you can observe your cluster's health and performance. The second option allows SQL clients to connect from this IP.
 1. Click **Apply**.
 
 ### Step 2. Create a SQL user
 
-{% include cockroachcloud/cockroachcloud-ask-admin.md %}
+{% include "_includes/cockroachcloud/cockroachcloud-ask-admin.md" %}
 
 To connect from a SQL client, your cluster must have at least one SQL user. To create a SQL user:
 
@@ -49,7 +49,7 @@ To connect from a SQL client, your cluster must have at least one SQL user. To c
 1. Copy the generated password to a secure location, such as a password manager.
 1. Click **Close**.
 
-    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster).
+    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Managing SQL users on a cluster](managing-access.md#manage-sql-users-on-a-cluster).
 
 ### Step 3. Find the cluster's connection details
 
@@ -85,25 +85,25 @@ On your local workstation's terminal:
 
 1. Use the **Command Line** `cockroach sql` command to connect to the cluster from a terminal:
 
-    {% include cockroachcloud/sql-connection-string.md %}
+    {% include "_includes/cockroachcloud/sql-connection-string.md" %}
 
 1. After connecting to the cluster, create a database named `todos`:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE todos;
     ~~~
 
 1. Select the `todos` database:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > USE todos;
     ~~~
 
 1. Create a table `todos` with the following schema:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > CREATE TABLE todos (
     	todo_id INT8 NOT NULL DEFAULT unique_rowid(),
@@ -127,21 +127,21 @@ In a new terminal:
 
 1. Clone the `examples-python` repository to your local machine:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ git clone https://github.com/cockroachdb/examples-python
     ~~~
 
 1. Navigate to the `flask-alchemy` folder:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cd examples-python/flask-sqlalchemy
     ~~~
 
 1. In the `hello.cfg` file, replace the value for the `SQLALCHEMY_DATABASE_URI` with the application connection string you generated in [Step 3. Find the cluster's connection details](#step-3-find-the-clusters-connection-details). Replace `defaultdb` with `todos` to connect to the `todos` database. Save the file.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~
     SQLALCHEMY_DATABASE_URI = 'cockroachdb://{username}:{password}@{host}:26257/todos?sslmode=verify-full&sslrootcert=$Home/Library/CockroachCloud/certs/{cluster-name}-ca.crt'
     ~~~
@@ -156,7 +156,7 @@ In a new terminal:
 
 1. Install the following Python packages to satisfy the example app's dependencies. The `sqlalchemy-cockroachdb` package accounts for some differences between CockroachDB and PostgreSQL:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ pip install flask sqlalchemy sqlalchemy-cockroachdb Flask-SQLAlchemy
     ~~~
@@ -165,7 +165,7 @@ In a new terminal:
 
 1. Run the `hello.py` code:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ python hello.py
     ~~~
@@ -186,7 +186,7 @@ These steps show how to deploy your app locally using Kubernetes.
 
 On your local workstation's terminal:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 $ minikube start
 ~~~
@@ -197,7 +197,7 @@ The startup procedure might take a few minutes.
 
 Create a Kubernetes secret to store the CA certificate you downloaded earlier:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 $ kubectl create secret generic <username>-secret \
   --from-file $Home/Library/CockroachCloud/certs/<cluster-name>-ca.crt
@@ -205,7 +205,7 @@ $ kubectl create secret generic <username>-secret \
 
 Verify the Kubernetes secret was created:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 $ kubectl get secrets
 ~~~
@@ -220,7 +220,7 @@ default-token-875zk   kubernetes.io/service-account-token   3      75s
 
 In the `hello.cfg` file in the `flask-alchemy` folder, replace the certificate directory path from the default location to `/data/certs` and save the file.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~
 SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=verify-full&sslrootcert=$Home/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
 ~~~
@@ -229,7 +229,7 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. In the `flask-sqlalchemy` folder, create a file named `Dockerfile` with the following contents:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~
     FROM python:3.7-slim
 
@@ -250,21 +250,21 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. Set the environment variable:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ eval $(minikube docker-env)
     ~~~
 
 1. Create the Docker image:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ docker build -t appdocker .
     ~~~
 
 1. Verify the image was created:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ docker image ls
     ~~~
@@ -278,7 +278,7 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. In the `flask-alchemy` folder, create a file named `app-deployment.yaml` and copy the following code into the file. Replace the `{username}` placeholder with the SQL user's username that you created [while preparing the cluster](#step-2-create-a-sql-user):
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~
     apiVersion: apps/v1
     kind: Deployment
@@ -331,7 +331,7 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. Create the deployment with `kubectl`:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f app-deployment.yaml
     ~~~
@@ -343,7 +343,7 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. Verify that the deployment is ready and the load balancer service is pending:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get deployments
     ~~~
@@ -353,7 +353,7 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
     appdeploy      3/3     3            3           27s
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get services
     ~~~
@@ -365,7 +365,7 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. Start the app:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ minikube service appdeploy
     ~~~
@@ -374,7 +374,7 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
     1. Get the name of one of the pods:
 
-        {% include_cached copy-clipboard.html %}
+        {% include "_includes/copy-clipboard.html" %}
         ~~~ shell
         $ kubectl get pods
         ~~~
@@ -388,7 +388,7 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
     1. Port-forward from your local machine to one of the pods:
 
-        {% include_cached copy-clipboard.html %}
+        {% include "_includes/copy-clipboard.html" %}
         ~~~ shell
         $ kubectl port-forward appdeploy-5f5868f6bf-2cjt5 5000:5000
         ~~~
@@ -413,13 +413,13 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 
 1. Enter the SQL user's username and password you created while [preparing the cluster](#step-2-create-a-sql-user).
 
-    {% include cockroachcloud/postgresql-special-characters.md %}
+    {% include "_includes/cockroachcloud/postgresql-special-characters.md" %}
 
 1. Click **Log In**.
 
 ### Step 2. Monitor cluster health, metrics, and SQL statements
 
-On the [**Cluster Overview** page]({% link {{site.current_cloud_version}}/ui-cluster-overview-page.md %}), view essential metrics about the cluster's health:
+On the [**Cluster Overview** page]({{site.current_cloud_version}}/ui-cluster-overview-page.md), view essential metrics about the cluster's health:
 
 - Number of live, dead, and suspect nodes
 - Number of unavailable and under-replicated ranges
@@ -429,7 +429,7 @@ On the [**Cluster Overview** page]({% link {{site.current_cloud_version}}/ui-clu
 #### Monitor the hardware metrics
 
 1. Click **Metrics** on the left, and then select **Dashboard > Hardware**.
-1. On the [**Hardware** dashboard]({% link {{site.current_cloud_version}}/ui-hardware-dashboard.md %}), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+1. On the [**Hardware** dashboard]({{site.current_cloud_version}}/ui-hardware-dashboard.md), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
 #### Monitor inter-node latencies
 
@@ -438,4 +438,4 @@ On the [**Cluster Overview** page]({% link {{site.current_cloud_version}}/ui-clu
 #### Identify frequently executed or high latency SQL statements
 
 1. Click **Statements** on the left.
-1. The [**Statements** page]({% link {{site.current_cloud_version}}/ui-statements-page.md %}) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
+1. The [**Statements** page]({{site.current_cloud_version}}/ui-statements-page.md) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.

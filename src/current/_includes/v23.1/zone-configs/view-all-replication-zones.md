@@ -1,4 +1,4 @@
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SHOW ALL ZONE CONFIGURATIONS;
 ~~~

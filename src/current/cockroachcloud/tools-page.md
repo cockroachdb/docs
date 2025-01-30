@@ -11,11 +11,11 @@ The **Tools** page is accessible on CockroachDB {{ site.data.products.standard }
 - Set up cluster [monitoring with Amazon CloudWatch](#monitor-cockroachdb-cloud-with-amazon-cloudwatch-integration) (available on clusters hosted on AWS).
 - Access the [built-in DB Console](#access-the-db-console) to view time-series data on SQL queries, troubleshoot query performance, view a list of jobs, and more (available on CockroachDB {{ site.data.products.advanced }} clusters).
 
-To view the **Tools** page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Tools** in the **Monitoring** section of the left side navigation.
+To view the **Tools** page, select a cluster from the [**Clusters** page](cluster-management.md#view-clusters-page), and click **Tools** in the **Monitoring** section of the left side navigation.
 
 ## Monitor CockroachDB Cloud with Datadog
 
-The [CockroachDB {{ site.data.products.cloud }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/) enables data collection and alerting on a [subset of CockroachDB metrics](#available-metrics) available at the [Prometheus endpoint]({% link {{site.current_cloud_version}}/monitoring-and-alerting.md %}#prometheus-endpoint), using the Datadog platform.
+The [CockroachDB {{ site.data.products.cloud }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/) enables data collection and alerting on a [subset of CockroachDB metrics](#available-metrics) available at the [Prometheus endpoint]({{site.current_cloud_version}}/monitoring-and-alerting.md#prometheus-endpoint), using the Datadog platform.
 
 To set up Datadog monitoring with CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }}, your Datadog account must be associated with a [Datadog organization](https://docs.datadoghq.com/account_management/#organizations).
 
@@ -29,7 +29,7 @@ For more information about using Datadog, see the [Datadog documentation](https:
 
 To enable Datadog monitoring for a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster, you can **either**:
 
-- Use the [Cloud API]({% link cockroachcloud/cloud-api.md %}), following the instructions on [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export).
+- Use the [Cloud API](cloud-api.md), following the instructions on [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster](export-metrics.md?filters=datadog-metrics-export) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster](export-metrics-advanced.md?filters=datadog-metrics-export).
 
 OR
 
@@ -78,10 +78,10 @@ Both sample dashboards presents a high-level view of SQL performance and latency
 
 To create your own CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} dashboard, you can either [clone](https://docs.datadoghq.com/dashboards/#clone-dashboard) the default dashboards and edit the widgets, or [create a new dashboard](https://docs.datadoghq.com/dashboards/#new-dashboard).
 
-The [available metrics](#available-metrics) are drawn directly from the CockroachDB [Prometheus endpoint]({% link {{site.current_cloud_version}}/monitoring-and-alerting.md %}#prometheus-endpoint) and are intended for use as building blocks for your own charts.
+The [available metrics](#available-metrics) are drawn directly from the CockroachDB [Prometheus endpoint]({{site.current_cloud_version}}/monitoring-and-alerting.md#prometheus-endpoint) and are intended for use as building blocks for your own charts.
 
 {{site.data.alerts.callout_info}}
-Metric values and time-series graphs in Datadog are not guaranteed to match those in the [DB Console](#access-the-db-console), due to differences in how CockroachDB and Datadog calculate and display metrics. For more information, refer to [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({% link {{site.current_cloud_version}}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md %}).
+Metric values and time-series graphs in Datadog are not guaranteed to match those in the [DB Console](#access-the-db-console), due to differences in how CockroachDB and Datadog calculate and display metrics. For more information, refer to [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({{site.current_cloud_version}}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md).
 {{site.data.alerts.end}}
 
 #### Enable percentiles for selected metrics
@@ -109,13 +109,13 @@ To preview the metrics being collected, you can:
 - Click on your cluster's entry in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/) to display time-series graphs for each available metric.
 - Use the [Metrics Explorer](https://docs.datadoghq.com/metrics/explorer/) to search for and view `crdb_cloud` metrics.
 
-See [Metrics]({% link {{site.current_cloud_version}}/metrics.md %}) for the full list of metrics available in CockroachDB.
+See [Metrics]({{site.current_cloud_version}}/metrics.md) for the full list of metrics available in CockroachDB.
 
 ### Monitor health of metrics export
 
 To monitor the health of metrics export in a CockroachDB {{ site.data.products.advanced }} cluster, we recommend that you [create a new Monitor](https://docs.datadoghq.com/monitors/create/types/metric/?tab=threshold).
 
-Select **Threshold Alert** as the detection method, which configures an alert that is sent when a supported metric reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting]({% link {{site.current_cloud_version}}/monitoring-and-alerting.md %}#events-to-alert-on).
+Select **Threshold Alert** as the detection method, which configures an alert that is sent when a supported metric reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting]({{site.current_cloud_version}}/monitoring-and-alerting.md#events-to-alert-on).
 
 - To **Define the metric**:
 
@@ -153,7 +153,7 @@ After deactivating an integration, the metrics data will remain in Datadog for a
 
 ## Monitor CockroachDB {{ site.data.products.cloud }} with Amazon CloudWatch integration
 
-The CockroachDB {{ site.data.products.cloud }} integration for [Amazon CloudWatch]((https://aws.amazon.com/cloudwatch/) enables data collection and alerting on CockroachDB metrics available at the [Prometheus endpoint]({% link {{site.current_cloud_version}}/monitoring-and-alerting.md %}#prometheus-endpoint). It is only available with CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters hosted on AWS.
+The CockroachDB {{ site.data.products.cloud }} integration for [Amazon CloudWatch]((https://aws.amazon.com/cloudwatch/) enables data collection and alerting on CockroachDB metrics available at the [Prometheus endpoint]({{site.current_cloud_version}}/monitoring-and-alerting.md#prometheus-endpoint). It is only available with CockroachDB {{ site.data.products.standard }} and {{ site.data.products.advanced }} clusters hosted on AWS.
 
 {{site.data.alerts.callout_success}}
 Enabling the Amazon CloudWatch integration on your CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster will apply additional charges to your **Amazon CloudWatch** bill. Your CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} bill is unchanged.
@@ -163,7 +163,7 @@ Enabling the Amazon CloudWatch integration on your CockroachDB {{ site.data.prod
 
 To enable Amazon CloudWatch monitoring for a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.advanced }} cluster hosted on AWS, you can **either**:
 
-- Use the [Cloud API]({% link cockroachcloud/cloud-api.md %}), following the instructions on [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}).
+- Use the [Cloud API](cloud-api.md), following the instructions on [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster](export-metrics.md) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster](export-metrics-advanced.md).
 
 OR
 
@@ -172,7 +172,7 @@ OR
 1. On the cluster's **Tools** page, click **Setup** in the **CloudWatch** panel.
 
 1. Fill in the **Role ARN**, **Target Region**, and **Log Group Name** fields with their corresponding values.
-    - The **Role ARN** is in the format: `arn:aws:iam::{role_arn}:role/{role_name}`. To determine `{role_arn}` and `{role_name}`, follow the steps in the **Enable metrics export** section on [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}#enable-metrics-export) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}#enable-metrics-export).
+    - The **Role ARN** is in the format: `arn:aws:iam::{role_arn}:role/{role_name}`. To determine `{role_arn}` and `{role_name}`, follow the steps in the **Enable metrics export** section on [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster](export-metrics.md#enable-metrics-export) or [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster](export-metrics-advanced.md#enable-metrics-export).
     - The **Target Region** is your AWS region, like `us-east-1`. Specifying an AWS region that you do not have a cluster in, or a region that only partially covers your cluster, will result in missing metrics.
     - The **Log Group Name** is the target Amazon CloudWatch log group you used when creating the role in the **Role ARN**.
 
@@ -195,7 +195,7 @@ In the event of transient CockroachDB unavailability, metrics export from Cockro
 {{site.data.alerts.callout_info}}
 Gaps in metrics within CloudWatch do not necessarily point to an availability issue with CockroachDB. If you encounter any gaps in metrics, we recommend [contacting support](https://support.cockroachlabs.com/).
 
-Metric values and time-series graphs in CloudWatch are not guaranteed to match those in the [DB Console](#access-the-db-console), due to differences in how CockroachDB and CloudWatch calculate and display metrics. For more information, refer to [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({% link {{site.current_cloud_version}}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md %}).
+Metric values and time-series graphs in CloudWatch are not guaranteed to match those in the [DB Console](#access-the-db-console), due to differences in how CockroachDB and CloudWatch calculate and display metrics. For more information, refer to [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({{site.current_cloud_version}}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md).
 {{site.data.alerts.end}}
 
 ### Update
@@ -222,17 +222,17 @@ For CockroachDB {{ site.data.products.advanced }} clusters, to access the DB Con
 
     You can also access the DB Console by navigating to `https://admin-{cluster-name}crdb.io:8080/#/metrics/overview/cluster`. Replace the `{cluster-name}` placeholder with the name of your cluster.
 
-1. Log in with your [SQL username]({% link cockroachcloud/managing-access.md %}) and password.
+1. Log in with your [SQL username](managing-access.md) and password.
 
 {{site.data.alerts.callout_info}}
-For details on creating additional users that can connect to the cluster and access the DB Console, see [User Management]({% link cockroachcloud/managing-access.md %}).
+For details on creating additional users that can connect to the cluster and access the DB Console, see [User Management](managing-access.md).
 {{site.data.alerts.end}}
 
 ## Explore the DB Console
 
-- For an overview of all the areas of the DB Console, see [DB Console Overview]({% link {{site.current_cloud_version}}/ui-overview.md %}).
-- Be sure to check out the [**Node Map**]({% link {{site.current_cloud_version}}/ui-overview.md %}), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.
+- For an overview of all the areas of the DB Console, see [DB Console Overview]({{site.current_cloud_version}}/ui-overview.md).
+- Be sure to check out the [**Node Map**]({{site.current_cloud_version}}/ui-overview.md), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.
 
 {{site.data.alerts.callout_info}}
-If you have a single-node cluster, you may see a warning that you have under-replicated ranges. This is expected because the default replication factor is set to 3, and you can only have one [replica]({% link {{site.current_cloud_version}}/architecture/overview.md %}#architecture-replica) per node. For more information about replication issues, see [Cluster Setup Troubleshooting]({% link {{site.current_cloud_version}}/cluster-setup-troubleshooting.md %}#db-console-shows-under-replicated-unavailable-ranges).
+If you have a single-node cluster, you may see a warning that you have under-replicated ranges. This is expected because the default replication factor is set to 3, and you can only have one [replica]({{site.current_cloud_version}}/architecture/overview.md#architecture-replica) per node. For more information about replication issues, see [Cluster Setup Troubleshooting]({{site.current_cloud_version}}/cluster-setup-troubleshooting.md#db-console-shows-under-replicated-unavailable-ranges).
 {{site.data.alerts.end}}

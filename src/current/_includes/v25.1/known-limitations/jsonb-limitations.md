@@ -1,1 +1,1 @@
-- You cannot use [primary key]({% link {{ page.version.version }}/primary-key.md %}), [foreign key]({% link {{ page.version.version }}/foreign-key.md %}), and [unique]({% link {{ page.version.version }}/unique.md %}) [constraints]({% link {{ page.version.version }}/constraints.md %}) on `JSONB` values.
+- You cannot use [primary key]({{ page.version.version }}/primary-key.md), [foreign key]({{ page.version.version }}/foreign-key.md), and [unique]({{ page.version.version }}/unique.md) [constraints]({{ page.version.version }}/constraints.md) on `JSONB` values.

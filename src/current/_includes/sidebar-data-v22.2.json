@@ -6,13 +6,13 @@
       "/"
     ]
   },
-  {% include_cached v22.2/sidebar-data/get-started.json %},
-  {% include_cached v22.2/sidebar-data/develop.json %},
-  {% include_cached v22.2/sidebar-data/deploy.json %},
-  {% include_cached v22.2/sidebar-data/manage.json %},
-  {% include_cached v22.2/sidebar-data/migrate.json %},
-  {% include_cached v22.2/sidebar-data/stream.json %},
-  {% include_cached v22.2/sidebar-data/reference.json %},
-  {% include_cached v22.2/sidebar-data/releases.json %},
-  {% include_cached sidebar-data-cockroach-university.json %}
+  {% include v22.2/sidebar-data/get-started.json %},
+  {% include v22.2/sidebar-data/develop.json %},
+  {% include v22.2/sidebar-data/deploy.json %},
+  {% include v22.2/sidebar-data/manage.json %},
+  {% include v22.2/sidebar-data/migrate.json %},
+  {% include v22.2/sidebar-data/stream.json %},
+  {% include v22.2/sidebar-data/reference.json %},
+  {% include v22.2/sidebar-data/releases.json %},
+  {% include sidebar-data-cockroach-university.json %}
 ]

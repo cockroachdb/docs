@@ -1,5 +1,5 @@
-- It is necessary to [`PAUSE`]({% link {{ page.version.version }}/pause-job.md %}) the changefeed before performing any [`ALTER CHANGEFEED`]({% link {{ page.version.version }}/alter-changefeed.md %}) statement. [#77171](https://github.com/cockroachdb/cockroach/issues/77171)
-- CockroachDB does not keep track of the [`initial_scan`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) option applied to tables when it is set to `yes` or `only`. For example:
+- It is necessary to [`PAUSE`]({{ page.version.version }}/pause-job.md) the changefeed before performing any [`ALTER CHANGEFEED`]({{ page.version.version }}/alter-changefeed.md) statement. [#77171](https://github.com/cockroachdb/cockroach/issues/77171)
+- CockroachDB does not keep track of the [`initial_scan`]({{ page.version.version }}/create-changefeed.md#initial-scan) option applied to tables when it is set to `yes` or `only`. For example:
 
     ~~~ sql
     ALTER CHANGEFEED {job_ID} ADD table WITH initial_scan = 'yes';

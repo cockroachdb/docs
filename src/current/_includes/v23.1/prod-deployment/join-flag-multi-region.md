@@ -1,1 +1,1 @@
-When starting a multi-region cluster, set more than one `--join` address per region, and select nodes that are spread across failure domains. This ensures [high availability]({% link {{ page.version.version }}/architecture/replication-layer.md %}#overview).
+When starting a multi-region cluster, set more than one `--join` address per region, and select nodes that are spread across failure domains. This ensures [high availability]({{ page.version.version }}/architecture/replication-layer.md#overview).

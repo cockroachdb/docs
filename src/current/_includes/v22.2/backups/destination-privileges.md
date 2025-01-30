@@ -1,4 +1,4 @@
-{% include_cached new-in.html version="v22.2" %} You can grant a user the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#supported-privileges).
+{% include "_includes/new-in.html" version="v22.2" %} You can grant a user the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#supported-privileges).
 
 Either the `EXTERNALIOIMPLICITACCESS` system-level privilege or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
@@ -11,4 +11,4 @@ No special privilege is required for:
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - Using [Userfile](use-userfile-storage.html) storage.
 
-{% include {{ page.version.version }}/misc/bulk-permission-note.md %}
+{% include "_includes/25.1/misc/bulk-permission-note.md" %}

@@ -1,6 +1,6 @@
-Each [multi-region pattern]({% link {{ page.version.version }}/topology-patterns.md %}#multi-region) assumes the following setup:
+Each [multi-region pattern]({{ page.version.version }}/topology-patterns.md#multi-region) assumes the following setup:
 
-<img src="{{ 'images/v23.2/topology-patterns/topology_multi-region_hardware.png' | relative_url }}" alt="Multi-region hardware setup" style="max-width:100%" />
+![Multi-region hardware setup](/images/v23.2/topology-patterns/topology_multi-region_hardware.png)
 
 #### Hardware
 
@@ -12,9 +12,9 @@ Each [multi-region pattern]({% link {{ page.version.version }}/topology-patterns
 
 #### Cluster startup
 
-Start each node with the [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag specifying its region and AZ combination. For example, the following command starts a node in the `west1` AZ of the `us-west` region:
+Start each node with the [`--locality`]({{ page.version.version }}/cockroach-start.md#locality) flag specifying its region and AZ combination. For example, the following command starts a node in the `west1` AZ of the `us-west` region:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 $ cockroach start \
 --locality=region=us-west,zone=west1 \

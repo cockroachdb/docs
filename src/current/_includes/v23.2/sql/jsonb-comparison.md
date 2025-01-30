@@ -1,6 +1,6 @@
-You cannot use comparison operators (such as `<` or `>`) on [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) elements. For example, the following query does not work and returns an error:
+You cannot use comparison operators (such as `<` or `>`) on [`JSONB`]({{ page.version.version }}/jsonb.md) elements. For example, the following query does not work and returns an error:
 
-  {% include_cached copy-clipboard.html %}
+  {% include "_includes/copy-clipboard.html" %}
   ~~~ sql
   SELECT '{"a": 1}'::JSONB -> 'a' < '{"b": 2}'::JSONB -> 'b';
   ~~~

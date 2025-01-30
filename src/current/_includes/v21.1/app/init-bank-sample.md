@@ -3,7 +3,7 @@ To initialize the example database, use the [`cockroach sql`](cockroach-sql.html
 
 <div class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 cat dbinit.sql | cockroach sql --url "<connection-string>"
 ~~~
@@ -14,7 +14,7 @@ Where `<connection-string>` is the connection string you obtained earlier from t
 
 <div class="filter-content" markdown="1" data-scope="local">
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 cat dbinit.sql | cockroach sql --url "postgresql://root@localhost:26257?sslmode=disable"
 ~~~

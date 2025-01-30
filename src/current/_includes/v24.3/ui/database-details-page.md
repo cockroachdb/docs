@@ -13,13 +13,13 @@ The following information is displayed for each table:
  Column                        | Description
 -------------------------------|-------------
 Name                           | The name of the table. Click a table name to view the [Table Details Page](#table-details-page) for the selected table.
-Replication Size               | The approximate compressed total disk size across all [replicas]({% link {{ version_prefix }}/architecture/glossary.md %}#replica) of the table.
-Ranges                         | The number of [ranges]({% link {{ version_prefix }}/architecture/glossary.md %}#range) in the table.
+Replication Size               | The approximate compressed total disk size across all [replicas]({{ version_prefix }}/architecture/glossary.md#replica) of the table.
+Ranges                         | The number of [ranges]({{ version_prefix }}/architecture/glossary.md#range) in the table.
 Columns                        | The number of columns in the table.
-Indexes                        | The number of [indexes]({% link {{ version_prefix }}/indexes.md %}) in the table.
+Indexes                        | The number of [indexes]({{ version_prefix }}/indexes.md) in the table.
 Regions/Nodes                  | Regions/Nodes on which the table's data is stored.{% if page.cloud == true %}<br><br>**Note:** Not available on Standard or Basic clusters.{% endif %}
 % of Live Data                 | The percentage of total uncompressed logical data that has not been modified (updated or deleted).
-Table auto stats enabled       | Whether automatic [table statistics]({% link {{ version_prefix }}/cost-based-optimizer.md %}#table-statistics) is enabled. Automatic statistics can help improve query performance.
+Table auto stats enabled       | Whether automatic [table statistics]({{ version_prefix }}/cost-based-optimizer.md#table-statistics) is enabled. Automatic statistics can help improve query performance.
 Stats last updated             | The last time table statistics used by the SQL optimizer were updated.
 
 #### Search and filter tables
@@ -33,7 +33,7 @@ To search for specific tables, use the search field above the list table:
 
     The list of tables is filtered by the string.
 
-{% include_cached new-in.html version="v24.3" %} To filter databases based on the nodes on which the database tables are located, use the nodes multi-select dropdown above the list table:
+{% include "_includes/new-in.html" version="v24.3" %} To filter databases based on the nodes on which the database tables are located, use the nodes multi-select dropdown above the list table:
 
 1. Click the dropdown arrow.
 1. Select one or more nodes. You may need to scroll down for nodes in different regions. You may also type in the beginning of the node name to narrow the list.
@@ -48,7 +48,7 @@ Nodes multi-select dropdown is not available on Standard or Basic clusters.
 
 ### Database Grants Tab
 
-{% include_cached new-in.html version="v24.3" %} Click on the **Grants** tab [Database Details Page](#database-details-page) to show the [privileges]({% link {{ version_prefix }}/security-reference/authorization.md %}#managing-privileges) granted to users and roles on the database.
+{% include "_includes/new-in.html" version="v24.3" %} Click on the **Grants** tab [Database Details Page](#database-details-page) to show the [privileges]({{ version_prefix }}/security-reference/authorization.md#managing-privileges) granted to users and roles on the database.
 
 The following information is displayed for each grantee:
 
@@ -57,4 +57,4 @@ The following information is displayed for each grantee:
 Grantee    | The role or user.
 Privileges | The list of privileges for the role or user on the database.
 
-For more details about grants and privileges, refer to [`GRANT`]({% link {{ version_prefix }}/grant.md %}).
+For more details about grants and privileges, refer to [`GRANT`]({{ version_prefix }}/grant.md).

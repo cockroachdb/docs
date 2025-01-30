@@ -9,7 +9,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
 
 ### Create a free cluster
 
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+{% include "_includes/cockroachcloud/quickstart/create-a-free-cluster.md" %}
 
 ### Set up your cluster connection
 
@@ -34,7 +34,7 @@ The **Connection info** dialog shows information about how to connect to your cl
 1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
 1. Run the [`cockroach demo`](cockroach-demo.html) command:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cockroach demo \
     --no-example-database

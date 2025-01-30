@@ -6,7 +6,7 @@ There are several ways to log SQL queries. The type of logging you use will depe
 
 ### SQL audit logs
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include "_includes/25.1/misc/experimental-warning.md" %}
 
 SQL audit logging is useful if you want to log all queries that are run against specific tables.
 
@@ -40,7 +40,7 @@ $ cockroach start --insecure --host=localhost --vmodule=exec_log=2
 
 From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function](functions-and-operators.html):
 
-{% include copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SELECT crdb_internal.set_vmodule('exec_log=2');
 ~~~

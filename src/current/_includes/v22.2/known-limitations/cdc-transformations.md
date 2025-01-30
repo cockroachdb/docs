@@ -2,7 +2,7 @@
 - You can only apply CDC transformations on a single table in each statement.
 - Some [stable functions](functions-and-operators.html#built-in-functions), notably functions that return MVCC timestamps, are overridden to return the MVCC timestamp of the event.
 - You cannot [alter](alter-changefeed.html) a changefeed that uses CDC transformations. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83033)
-{% include {{ page.version.version }}/known-limitations/udf-cdc-transformations.md %}
+{% include "_includes/25.1/known-limitations/udf-cdc-transformations.md" %}
 - The following are not permitted in CDC transformations:
     - [Volatile functions](functions-and-operators.html#function-volatility)
     - Sub-select queries

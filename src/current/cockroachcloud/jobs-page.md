@@ -10,8 +10,6 @@ docs_area: manage
 
 The **Jobs** page of the CockroachDB {{ site.data.products.cloud }} Console provides details of all jobs in the cluster.
 
-To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Jobs** in the **Monitoring** section of the left side navigation.
+To view this page, select a cluster from the [**Clusters** page](cluster-management.md#view-clusters-page), and click **Jobs** in the **Monitoring** section of the left side navigation.
 
-{% include common/ui/jobs-page.md %}
 
-{% include {{version_prefix}}ui/jobs.md %}

@@ -2,6 +2,6 @@
     "title": "Latest Releases",
     "is_top_level": true,
     "items": [
-      {% include_cached sidebar-latest-releases.json %}
+      {% include sidebar-latest-releases.json %}
     ]
   }

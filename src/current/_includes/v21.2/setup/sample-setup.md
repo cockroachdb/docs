@@ -8,11 +8,11 @@
 
 ### Create a free cluster
 
-{% include {{ page.version.version }}/setup/create-a-free-cluster.md %}
+{% include "_includes/25.1/setup/create-a-free-cluster.md" %}
 
 ### Create a SQL user
 
-{% include {{ page.version.version }}/setup/create-first-sql-user.md %}
+{% include "_includes/25.1/setup/create-first-sql-user.md" %}
 
 ### Get the connection string
 
@@ -31,6 +31,6 @@ The **Connect to cluster** dialog shows information about how to connect to your
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-{% include {{ page.version.version }}/setup/start-single-node-insecure.md %}
+{% include "_includes/25.1/setup/start-single-node-insecure.md" %}
 
 </section>

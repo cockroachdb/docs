@@ -19,11 +19,11 @@ You can install a CockroachDB {{ site.data.products.standard }} cluster using ei
 
 ### Create a free trial cluster
 
-{% include cockroachcloud/quickstart/create-free-trial-standard-cluster.md %}
+{% include "_includes/cockroachcloud/quickstart/create-free-trial-standard-cluster.md" %}
 
 ### Create a SQL user
 
-{% include {{ page.version.version }}/setup/create-first-sql-user.md %}
+{% include "_includes/25.1/setup/create-first-sql-user.md" %}
 
 ### Get the connection information
 
@@ -44,11 +44,11 @@ The <code>ccloud</code> CLI tool is in Preview.
 
 <h3>Install <code>ccloud</code></h3>
 
-{% include cockroachcloud/ccloud/install-ccloud.md %}
+{% include "_includes/cockroachcloud/ccloud/install-ccloud.md" %}
 
 ### Run `ccloud quickstart` to create a new cluster, create a SQL user, and retrieve the connection string.
 
-{% include cockroachcloud/ccloud/quickstart.md %}
+{% include "_includes/cockroachcloud/ccloud/quickstart.md" %}
 
 Select **Parameters only** then copy the connection parameters displayed and save them in a secure location.
 
@@ -74,6 +74,6 @@ Connection parameters
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-{% include {{ page.version.version }}/setup/start-single-node-insecure.md %}
+{% include "_includes/25.1/setup/start-single-node-insecure.md" %}
 
 </section>

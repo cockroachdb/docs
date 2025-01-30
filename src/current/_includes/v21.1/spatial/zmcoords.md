@@ -1,4 +1,4 @@
-{% include_cached new-in.html version="v21.1" %} You can also store a `{{page.title}}` with the following additional dimensions:
+{% include "_includes/new-in.html" version="v21.1" %} You can also store a `{{page.title}}` with the following additional dimensions:
 
 - A third dimension coordinate `Z` (`{{page.title}}Z`).
 - A measure coordinate `M` (`{{page.title}}M`).

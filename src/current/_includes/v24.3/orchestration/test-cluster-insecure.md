@@ -1,8 +1,8 @@
-1. Launch a temporary interactive pod and start the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) inside it:
+1. Launch a temporary interactive pod and start the [built-in SQL client]({{ page.version.version }}/cockroach-sql.md) inside it:
 
     <section class="filter-content" markdown="1" data-scope="manual">
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
     --image=cockroachdb/cockroach:{{page.release_info.version}} \
@@ -17,7 +17,7 @@
 
     <section class="filter-content" markdown="1" data-scope="helm">
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
     --image=cockroachdb/cockroach:{{page.release_info.version}} \
@@ -30,14 +30,14 @@
 
     </section>
 
-1. Run some basic [CockroachDB SQL statements]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}):
+1. Run some basic [CockroachDB SQL statements]({{ page.version.version }}/learn-cockroachdb-sql.md):
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > CREATE TABLE bank.accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -45,14 +45,14 @@
       );
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > INSERT INTO bank.accounts (balance)
       VALUES
     	  (1000.50), (20000), (380), (500), (55000);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -70,7 +70,7 @@
 
 1. Exit the SQL shell and delete the temporary pod:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~

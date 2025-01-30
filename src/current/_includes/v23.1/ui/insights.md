@@ -32,7 +32,7 @@ Status | The status of the transaction: `Failed` or `Completed`.
 Insights | The [insight type](#workload-insight-types) for the transaction execution.
 Start Time (UTC) | The timestamp when the transaction execution started.
 Contention Time | The amount of time the transaction execution spent waiting in [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
-CPU Time | The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators. <br><br>{% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
+CPU Time | The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators. <br><br>{% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({{ page.version.version }}/architecture/sql-layer.md). It does not include time spent in the [storage layer]({{ page.version.version }}/architecture/storage-layer.md).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
 {% endif -%}
 
 Application Name | The name specified by the [`application_name` session setting]({{ link_prefix }}show-vars.html#supported-variables).
@@ -44,7 +44,7 @@ The transaction execution details view provides more details on a transaction ex
 - **Start Time**: The timestamp when the transaction execution started.
 - **End Time**: The timestamp when the transaction execution ended.
 - **Elapsed Time**: The time that elapsed during transaction execution.
-- **CPU Time**: The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators. {% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
+- **CPU Time**: The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators. {% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({{ page.version.version }}/architecture/sql-layer.md). It does not include time spent in the [storage layer]({{ page.version.version }}/architecture/storage-layer.md).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
 {% endif -%}
 <br>
 - **Rows Read**: The total number of rows read by the transaction execution.
@@ -89,9 +89,9 @@ The rows in this page are populated from the [`crdb_internal.cluster_execution_i
 
 - The results displayed on the **Statement Executions** view will be available as long as the number of rows in each node is less than the [`sql.insights.execution_insights_capacity` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-execution-insights-capacity).
 {% if include.version_prefix != nil %}
-- {% include {{ include.version_prefix }}performance/sql-trace-txn-enable-threshold.md version_prefix=version_prefix %}
+- {% include "_includes/{{" include.version_prefix }}performance/sql-trace-txn-enable-threshold.md version_prefix=version_prefix %}
 {% else %}
-- {% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
+- {% include "_includes/25.1/performance/sql-trace-txn-enable-threshold.md" %}
 {% endif %}
 {{site.data.alerts.end}}
 
@@ -113,7 +113,7 @@ Application Name | The name specified by the [`application_name`]({{ link_prefix
 Rows Processed | The total number of rows read and written.
 Retries | The number of times the statement execution was [retried]({{ link_prefix }}transactions.html#automatic-retries).
 Contention Time | The amount of time the statement execution spent waiting in [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
-CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. <br><br>{%- if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).{%- endif -%}{%- if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
+CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. <br><br>{%- if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({{ page.version.version }}/architecture/sql-layer.md). It does not include time spent in the [storage layer]({{ page.version.version }}/architecture/storage-layer.md).{%- endif -%}{%- if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
 {%- endif -%}
 <br>
 Full Scan | Whether the execution performed a full scan of the table.
@@ -127,7 +127,7 @@ The statement execution details view provides more details on a statement execut
 - **Start Time**: The timestamp when the statement execution started.
 - **End Time**: The timestamp when the statement execution ended.
 - **Elapsed Time**: The time that elapsed during statement execution.
-- **CPU Time**: The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. {% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
+- **CPU Time**: The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. {% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({{ page.version.version }}/architecture/sql-layer.md). It does not include time spent in the [storage layer]({{ page.version.version }}/architecture/storage-layer.md).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
 {% endif -%}
 <br>
 - **Rows Read**: The total number of rows read by the statement execution.
@@ -169,11 +169,11 @@ The transaction or statement execution failed.
 {% if page.cloud != true -%}
 The following screenshot shows a failed statement execution:
 
-<img src="{{ 'images/v23.1/statement_executions_failed.png' | relative_url }}" alt="Failed statement execution" style="border:1px solid #eee;max-width:100%" />
+![Failed statement execution](/images/v23.1/statement_executions_failed.png)
 
 The following screenshot shows the execution details of the preceding failed statement execution.
 
-<img src="{{ 'images/v23.1/statement_execution_details_failed.png' | relative_url }}" alt="Failed statement execution details" style="border:1px solid #eee;max-width:100%" />
+![Failed statement execution details](/images/v23.1/statement_execution_details_failed.png)
 
 {% endif -%}
 
@@ -186,11 +186,11 @@ The transaction or statement execution experienced high [contention]({{ link_pre
 {% if page.cloud != true -%}
 The following screenshot shows the execution of a transaction flagged with **High Contention**:
 
-<img src="{{ 'images/v23.1/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
+![Transaction execution](/images/v23.1/transaction_execution.png)
 
 The following screenshot shows the execution details of the preceding transaction execution:
 
-<img src="{{ 'images/v23.1/transaction_execution_details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
+![Transaction execution details](/images/v23.1/transaction_execution_details.png)
 
 {% endif -%}
 
@@ -214,11 +214,11 @@ The statement execution has resulted in one or more [index recommendations](#sch
 {% if page.cloud != true -%}
 The following screenshot shows the statement execution of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
-<img src="{{ 'images/v23.1/statement_executions.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
+![Statement execution](/images/v23.1/statement_executions.png)
 
 The following screenshot shows the execution details of the preceding statement execution:
 
-<img src="{{ 'images/v23.1/statement_execution_details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
+![Statement execution details](/images/v23.1/statement_execution_details.png)
 
 {% endif -%}
 
@@ -241,7 +241,7 @@ This view lists the [indexes]({{ link_prefix }}indexes.html) that have not been 
 {% if page.cloud != true -%}
 The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) 6 or more times:
 
-<img src="{{ 'images/v22.2/schema_insight.png' | relative_url }}" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
+![Schema insight](/images/v22.2/schema_insight.png)
 
 {% endif -%}
 

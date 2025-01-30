@@ -1,8 +1,8 @@
-{% include cockroachcloud/cockroachcloud-ask-admin.md %}
+{% include "_includes/cockroachcloud/cockroachcloud-ask-admin.md" %}
 
 1. Navigate to your cluster's **SQL Users** page.
 
-    <img src="{{ 'images/cockroachcloud/sql-users.png' | relative_url }}" alt="SQL users" style="border:1px solid #eee;max-width:100%" />
+    ![SQL users](/images/cockroachcloud/sql-users.png)
 
 1. Click the **Add User** button in the top right corner.
 
@@ -12,4 +12,4 @@
 1. Click **Generate & save password**.
 1. Copy the **Generated password** and save it in a secure location.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster).
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Managing SQL users on a cluster](managing-access.md#manage-sql-users-on-a-cluster).

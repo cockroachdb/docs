@@ -11,9 +11,9 @@ Target Name | Description
 Use caution when editing replication zones for system ranges, as they could cause some (or all) parts of your cluster to stop working.
 {{site.data.alerts.end}}
 
-To control replication for one of the above sets of system ranges, use the [`ALTER RANGE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-range.md %}#configure-zone) statement to define the relevant values (other values will be inherited from the parent zone):
+To control replication for one of the above sets of system ranges, use the [`ALTER RANGE ... CONFIGURE ZONE`]({{ page.version.version }}/alter-range.md#configure-zone) statement to define the relevant values (other values will be inherited from the parent zone):
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 7;
 ~~~
@@ -22,7 +22,7 @@ To control replication for one of the above sets of system ranges, use the [`ALT
 CONFIGURE ZONE 1
 ~~~
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FROM RANGE meta;
 ~~~

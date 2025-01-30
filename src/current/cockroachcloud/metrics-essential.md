@@ -4,7 +4,7 @@ summary: Learn about the recommended essential metrics for monitoring your Cockr
 toc: true
 ---
 
-These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.standard }} cluster. The metrics are available on graphs on the tabs listed in the **Metrics tabs** column. Where **Custom** is listed, the metric may be graphed in a [**Custom Metrics Chart**]({% link cockroachcloud/custom-metrics-chart-page.md %}). The **Usage** column explains why each metric is important to visualize and how to make both practical and actionable use of the metric in a production deployment.
+These essential CockroachDB metrics let you monitor your CockroachDB {{ site.data.products.standard }} cluster. The metrics are available on graphs on the tabs listed in the **Metrics tabs** column. Where **Custom** is listed, the metric may be graphed in a [**Custom Metrics Chart**](custom-metrics-chart-page.md). The **Usage** column explains why each metric is important to visualize and how to make both practical and actionable use of the metric in a production deployment.
 
 {% assign version = site.current_cloud_version | replace: ".", "" %}
 {% assign types = site.data[version].metrics.metrics | map: "metric_type" | uniq %}
@@ -38,12 +38,12 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
             <td><div id="{{ m.metric_id }}" class="anchored"><code>{{ m.metric_id }}</code></div></td>
             <td>{{ m.short_name }}</td>
             <td>{{ metrics-list[0].description}}</td>
-            <td>{% include cockroachcloud/metrics-usage/{{ m.metric_id }}.md %}</td>
+            <td>{% include "_includes/cockroachcloud/metrics-usage/{" m.metric_id }.md %}</td>
             <td>{% for t in tab_array %}
                     {% if t contains "Custom" %}
-                        [{{ t | remove: '"' | strip }}]({% link cockroachcloud/custom-metrics-chart-page.md %}){%- unless forloop.last -%}, {% endunless %}
+                        [{{ t | remove: '"' | strip }}](custom-metrics-chart-page.md){%- unless forloop.last -%}, {% endunless %}
                     {% else %}
-                        [{{ t | remove: '"' | strip }}]({% link cockroachcloud/metrics-{{ t | remove: '"' | strip | downcase | replace: ' ', '-' }}.md %}){%- unless forloop.last -%}, {% endunless %}
+                        [{{ t | remove: '"' | strip }}](metrics-{{ t | remove: '"' | strip | downcase | replace: ' ', '-' }}.md){%- unless forloop.last -%}, {% endunless %}
                     {% endif %}
                 {% endfor %}</td>
         </tr>
@@ -55,9 +55,9 @@ These essential CockroachDB metrics let you monitor your CockroachDB {{ site.dat
 
 ## See also
 
-- [Metrics Overview]({% link cockroachcloud/metrics.md %})
-- [Overview metrics]({% link cockroachcloud/metrics-overview.md %})
-- [Request Unit metrics]({% link cockroachcloud/metrics-request-units.md %})
-- [SQL metrics]({% link cockroachcloud/metrics-sql.md %})
-- [Changefeed metrics]({% link cockroachcloud/metrics-changefeeds.md %})
-- [Row-Level TTL metrics]({% link cockroachcloud/metrics-row-level-ttl.md %})
+- [Metrics Overview](metrics.md)
+- [Overview metrics](metrics-overview.md)
+- [Request Unit metrics](metrics-request-units.md)
+- [SQL metrics](metrics-sql.md)
+- [Changefeed metrics](metrics-changefeeds.md)
+- [Row-Level TTL metrics](metrics-row-level-ttl.md)

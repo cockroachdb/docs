@@ -2,7 +2,7 @@
 
 You'll start with a 3-node CockroachDB cluster in a single Google Compute Engine (GCE) zone, with an extra instance for running a client application workload:
 
-<img src="{{ 'images/v19.2/perf_tuning_single_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
+![Perf tuning topology](/images/v19.2/perf_tuning_single_region_topology.png)
 
 {{site.data.alerts.callout_info}}
 Within a single GCE zone, network latency between instances should be sub-millisecond.
@@ -10,7 +10,7 @@ Within a single GCE zone, network latency between instances should be sub-millis
 
 You'll then scale the cluster to 9 nodes running across 3 GCE regions, with an extra instance in each region for a client application workload:
 
-<img src="{{ 'images/v19.2/perf_tuning_multi_region_topology.png' | relative_url }}" alt="Perf tuning topology" style="max-width:100%" />
+![Perf tuning topology](/images/v19.2/perf_tuning_multi_region_topology.png)
 
 To reproduce the performance demonstrated in this tutorial:
 
@@ -21,7 +21,7 @@ To reproduce the performance demonstrated in this tutorial:
 
 Your schema and data will be based on our open-source, fictional peer-to-peer vehicle-sharing application, [MovR](movr.html).
 
-<img src="{{ 'images/v19.2/perf_tuning_movr_schema.png' | relative_url }}" alt="Perf tuning schema" style="max-width:100%" />
+![Perf tuning schema](/images/v19.2/perf_tuning_movr_schema.png)
 
 A few notes about the schema:
 

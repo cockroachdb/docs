@@ -1,10 +1,10 @@
-Before scaling CockroachDB, ensure that your Kubernetes cluster has enough worker nodes to host the number of pods you want to add. This is to ensure that two pods are not placed on the same worker node, as recommended in our [production guidance]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
+Before scaling CockroachDB, ensure that your Kubernetes cluster has enough worker nodes to host the number of pods you want to add. This is to ensure that two pods are not placed on the same worker node, as recommended in our [production guidance]({{ page.version.version }}/recommended-production-settings.md#topology).
 
 For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes cluster should have at least 4 worker nodes. You can verify the size of your Kubernetes cluster by running `kubectl get nodes`.
 
 1. Edit your StatefulSet configuration to add another pod for the new CockroachDB node:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -38,7 +38,7 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
 
 1. Get the name of the `Pending` CSR for the new pod:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get csr
     ~~~
@@ -60,7 +60,7 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
 
 1. Examine the CSR for the new pod:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl describe csr default.node.my-release-cockroachdb-3
     ~~~
@@ -89,7 +89,7 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
 
 1. If everything looks correct, approve the CSR for the new pod:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl certificate approve default.node.my-release-cockroachdb-3
     ~~~
@@ -100,7 +100,7 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
 
 1. Verify that the new pod started successfully:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -115,4 +115,4 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
     ...
     ~~~
 
-1. You can also open the [**Node List**]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-list) in the DB Console to ensure that the fourth node successfully joined the cluster.
+1. You can also open the [**Node List**]({{ page.version.version }}/ui-cluster-overview-page.md#node-list) in the DB Console to ensure that the fourth node successfully joined the cluster.

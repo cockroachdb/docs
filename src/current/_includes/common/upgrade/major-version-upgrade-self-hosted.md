@@ -3,11 +3,11 @@ To perform a major upgrade:
 1. One node at a time:
     1. Replace the `cockroach` binary on the node with the binary for the new patch release. For containerized workloads, update the deployment to use the image for the new patch release.
     1. Restart CockroachDB on the node. For containerized workloads, use your orchestration framework to restart the `cockroach` process in the node's container.
-    1. Ensure that the node is ready to accept a SQL connection. Unless there are tens of thousands of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) on the node, this takes less than a minute.
+    1. Ensure that the node is ready to accept a SQL connection. Unless there are tens of thousands of [ranges]({{ page.version.version }}/architecture/overview.md#architecture-range) on the node, this takes less than a minute.
 
         To be certain that the node is ready, run the following command to connect to the cluster and run a test query.
 
-        {% include_cached copy-clipboard.html %}
+        {% include "_includes/copy-clipboard.html" %}
         ~~~ shell
         cockroach sql -e 'select 1'
         ~~~

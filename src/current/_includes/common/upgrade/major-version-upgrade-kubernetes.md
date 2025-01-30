@@ -11,7 +11,7 @@ To perform a major upgrade:
 
 1. Apply the new settings to the cluster:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     kubectl apply -f example.yaml
     ~~~
@@ -21,13 +21,13 @@ To perform a major upgrade:
 1. To check the status of the rolling upgrade, run `kubectl get pods`.
 1. Verify that all pods have been upgraded:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
     ~~~
 
-    You can also check the CockroachDB version of each node in the [DB Console]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-details).
+    You can also check the CockroachDB version of each node in the [DB Console]({{ page.version.version }}/ui-cluster-overview-page.md#node-details).
 
 1. Before beginning a major-version upgrade, the Operator disables auto-finalization by setting the cluster setting `cluster.preserve_downgrade_option` to the cluster's current major version. Before finalizing an upgrade, follow your organization's testing procedures to decide whether to [finalize](#finalize-a-major-version-upgrade-manually) or [roll back](#roll-back-a-major-version-upgrade) the upgrade. After finalization begins, you can no longer roll back to the cluster's previous major version.
 
@@ -38,7 +38,7 @@ To perform a major upgrade:
 1.
 1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb \
     -p='{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":2}}}}'
@@ -50,7 +50,7 @@ To perform a major upgrade:
 
 1. Change the container image in the StatefulSet:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb \
     --type='json' \
@@ -62,9 +62,9 @@ To perform a major upgrade:
     ~~~
 
 1. To check the status of the rolling upgrade, run `kubectl get pods`.
-1. After the pod has been restarted with the new image, start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+1. After the pod has been restarted with the new image, start the CockroachDB [built-in SQL client]({{ page.version.version }}/cockroach-sql.md):
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \-- ./cockroach sql \
     --certs-dir=/cockroach-certs \
@@ -73,7 +73,7 @@ To perform a major upgrade:
 
 1. Run the following SQL query to verify that the number of underreplicated ranges is zero:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     SELECT sum((metrics->>'ranges.underreplicated')::DECIMAL)::INT AS ranges_underreplicated FROM crdb_internal.kv_store_status;
     ~~~
@@ -89,14 +89,14 @@ To perform a major upgrade:
 
 1. Exit the SQL shell:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~
 
 1. Decrement the partition value by 1 to allow the next pod in the cluster to update:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl patch statefulset cockroachdb \
     -p='{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":1}}}}'
@@ -110,7 +110,7 @@ To perform a major upgrade:
 
 1. Check the image of each pod to confirm that all have been upgraded:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
@@ -123,7 +123,7 @@ To perform a major upgrade:
     ...
     ~~~
 
-    You can also check the CockroachDB version of each node in the [DB Console]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-details).
+    You can also check the CockroachDB version of each node in the [DB Console]({{ page.version.version }}/ui-cluster-overview-page.md#node-details).
 1. If auto-finalization is disabled, the upgrade is not complete until you [finalize the upgrade](#finalize-a-major-version-upgrade-manually).
 
 </section>
@@ -132,7 +132,7 @@ To perform a major upgrade:
 
 1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -142,7 +142,7 @@ To perform a major upgrade:
 
 1. Connect to the cluster using the SQL shell:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -152,14 +152,14 @@ To perform a major upgrade:
 
 1. Remove the cluster initialization job from when the cluster was created:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl delete job my-release-cockroachdb-init
     ~~~
 
 1. Change the container image in the StatefulSet:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -181,11 +181,11 @@ To perform a major upgrade:
     Ignore the pod for cluster initialization. It is re-created as a byproduct of the StatefulSet configuration but does not impact your existing cluster.
     {{site.data.alerts.end}}
 
-1. After the pod has been restarted with the new image, start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+1. After the pod has been restarted with the new image, start the CockroachDB [built-in SQL client]({{ page.version.version }}/cockroach-sql.md):
 
     {% if page.secure == true %}
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -195,7 +195,7 @@ To perform a major upgrade:
 
     {% else %}
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
     --image=cockroachdb/cockroach \
@@ -209,7 +209,7 @@ To perform a major upgrade:
 
 1. Run the following SQL query to verify that the number of underreplicated ranges is zero:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     SELECT sum((metrics->>'ranges.underreplicated')::DECIMAL)::INT AS ranges_underreplicated FROM crdb_internal.kv_store_status;
     ~~~
@@ -225,14 +225,14 @@ To perform a major upgrade:
 
 1. Exit the SQL shell:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~
 
 1. Decrement the partition value by 1 to allow the next pod in the cluster to update:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -244,7 +244,7 @@ To perform a major upgrade:
 
 1. Check the image of each pod to confirm that all have been upgraded:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
@@ -257,7 +257,7 @@ To perform a major upgrade:
     ...
     ~~~
 
-    You can also check the CockroachDB version of each node in the [DB Console]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-details).
+    You can also check the CockroachDB version of each node in the [DB Console]({{ page.version.version }}/ui-cluster-overview-page.md#node-details).
 
 1. If auto-finalization is disabled, the upgrade is not complete until you [finalize the upgrade](#finalize-a-major-version-upgrade-manually).
 

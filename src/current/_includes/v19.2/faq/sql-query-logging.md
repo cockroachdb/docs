@@ -34,7 +34,7 @@ To log CockroachDB-generated SQL queries as well, use `--vmodule=exec_log=3`.
 
 From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function](functions-and-operators.html):
 
-{% include copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SELECT crdb_internal.set_vmodule('exec_log=2');
 ~~~
@@ -56,7 +56,7 @@ I180402 19:12:28.112957 394661 sql/exec_log.go:173  [n1,client=127.0.0.1:50155,u
 
 ### SQL audit logs
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include "_includes/25.1/misc/experimental-warning.md" %}
 
 SQL audit logging is useful if you want to log all queries that are run against specific tables, by specific users.
 

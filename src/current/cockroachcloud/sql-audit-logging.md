@@ -11,9 +11,9 @@ After you enable SQL audit logging for a table, [contact Support](https://suppor
 
 ## Enable auditing
 
-Use the [`ALTER TABLE ... EXPERIMENTAL_AUDIT`]({% link {{site.current_cloud_version}}/alter-table.md %}#experimental_audit) statement:
+Use the [`ALTER TABLE ... EXPERIMENTAL_AUDIT`]({{site.current_cloud_version}}/alter-table.md#experimental_audit) statement:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE {table_name} EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~

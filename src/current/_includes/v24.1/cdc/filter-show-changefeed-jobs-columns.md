@@ -1,6 +1,6 @@
 You can filter the columns that `SHOW CHANGEFEED JOBS` displays using a `SELECT` statement:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 SELECT job_id, sink_uri, status, format FROM [SHOW CHANGEFEED JOBS] WHERE job_id = 997306743028908033;
 ~~~

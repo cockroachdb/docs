@@ -1,10 +1,10 @@
 {{site.data.alerts.callout_info}}
-`SHOW BACKUP` is able to display metadata using `check_files` for locality-aware backups taken with the [`incremental_location`]({% link {{ page.version.version }}/show-backup.md %}#show-a-backup-taken-with-the-incremental-location-option) option.
+`SHOW BACKUP` is able to display metadata using `check_files` for locality-aware backups taken with the [`incremental_location`]({{ page.version.version }}/show-backup.md#show-a-backup-taken-with-the-incremental-location-option) option.
 {{site.data.alerts.end}}
 
-To view a list of [locality-aware backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}), pass the endpoint [collection URI]({% link {{ page.version.version }}/backup.md %}#backup-file-urls) that is set as the `default` location with `COCKROACH_LOCALITY=default`: 
+To view a list of [locality-aware backups]({{ page.version.version }}/take-and-restore-locality-aware-backups.md), pass the endpoint [collection URI]({{ page.version.version }}/backup.md#backup-file-urls) that is set as the `default` location with `COCKROACH_LOCALITY=default`: 
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SHOW BACKUPS IN 's3://{default collection URI}/{path}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
 ~~~
@@ -17,9 +17,9 @@ To view a list of [locality-aware backups]({% link {{ page.version.version }}/ta
 (2 rows)
 ~~~
 
-To view a [locality-aware backup]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}), pass locality-aware backup URIs to `SHOW BACKUP`:
+To view a [locality-aware backup]({{ page.version.version }}/take-and-restore-locality-aware-backups.md), pass locality-aware backup URIs to `SHOW BACKUP`:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SHOW BACKUP FROM LATEST IN ('s3://{bucket name}/locality?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}&COCKROACH_LOCALITY=default', 's3://{bucket name}/locality?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}&COCKROACH_LOCALITY=region%3Dus-west');
 ~~~

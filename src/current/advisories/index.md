@@ -12,7 +12,7 @@ Users are invited to evaluate advisories and consider the recommended mitigation
 
 Get future technical advisories emailed to you:
 
-{% include_cached marketo.html formId=1085 %}
+{% include "_includes/marketo.html" formId=1085 %}
 
 {% assign advisories = site.pages | where_exp: "advisories", "advisories.path contains 'advisories'" | where_exp: "advisories", "advisories.url != page.url" | sort: "advisory_date" | reverse %}
 

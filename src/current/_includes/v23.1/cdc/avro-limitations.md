@@ -1,6 +1,6 @@
-- [Decimals]({% link {{ page.version.version }}/decimal.md %}) must have precision specified.
-- [`BYTES`]({% link {{ page.version.version }}/bytes.md %}) (or its aliases `BYTEA` and `BLOB`) are often used to store machine-readable data. When you stream these types through a changefeed with [`format=avro`]({% link {{ page.version.version }}/create-changefeed.md %}#format), CockroachDB does not encode or change the data. However, Avro clients can often include escape sequences to present the data in a printable format, which can interfere with deserialization. A potential solution is to hex-encode `BYTES` values when initially inserting them into CockroachDB. This will ensure that Avro clients can consistently decode the hexadecimal. Note that hex-encoding values at insertion will increase record size. 
-- [`BIT`]({% link {{ page.version.version }}/bit.md %}) and [`VARBIT`]({% link {{ page.version.version }}/bit.md %}) types are encoded as arrays of 64-bit integers.
+- [Decimals]({{ page.version.version }}/decimal.md) must have precision specified.
+- [`BYTES`]({{ page.version.version }}/bytes.md) (or its aliases `BYTEA` and `BLOB`) are often used to store machine-readable data. When you stream these types through a changefeed with [`format=avro`]({{ page.version.version }}/create-changefeed.md#format), CockroachDB does not encode or change the data. However, Avro clients can often include escape sequences to present the data in a printable format, which can interfere with deserialization. A potential solution is to hex-encode `BYTES` values when initially inserting them into CockroachDB. This will ensure that Avro clients can consistently decode the hexadecimal. Note that hex-encoding values at insertion will increase record size. 
+- [`BIT`]({{ page.version.version }}/bit.md) and [`VARBIT`]({{ page.version.version }}/bit.md) types are encoded as arrays of 64-bit integers.
     
     For efficiency, CockroachDB encodes `BIT` and `VARBIT` bitfield types as arrays of 64-bit integers. That is, [base-2 (binary format)](https://wikipedia.org/wiki/Binary_number#Conversion_to_and_from_other_numeral_systems) `BIT` and `VARBIT` data types are converted to base 10 and stored in arrays. Encoding in CockroachDB is [big-endian](https://wikipedia.org/wiki/Endianness), therefore the last value may have many trailing zeroes. For this reason, the first value of each array is the number of bits that are used in the last value of the array.
 
@@ -27,4 +27,4 @@
     ~~~
 
     Next, you use the first element in the array to take the number of bits from the last base-2 element, `10111110`. Finally, you append each of the base-2 numbers together — in the above array, the second, third, and truncated last element. This results in 136 bits, the original number of bits.
-- {% include {{page.version.version}}/cdc/avro-udt-composite.md %}
+- {% include "_includes/25.1/cdc/avro-udt-composite.md" %}

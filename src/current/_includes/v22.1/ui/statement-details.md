@@ -20,11 +20,11 @@ The **Overview** section displays the SQL statement fingerprint and execution at
 
 The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
-<img src="{{ 'images/v22.1/ui_statement_fingerprint_overview.png' | relative_url }}" alt="Statement fingerprint overview" style="border:1px solid #eee;max-width:100%" />
+![Statement fingerprint overview](/images/v22.1/ui_statement_fingerprint_overview.png)
 
 #### Charts
 
-{% include_cached new-in.html version="v22.1.3" %} Charts following the execution attributes display statement fingerprint statistics:
+{% include "_includes/new-in.html" version="v22.1.3" %} Charts following the execution attributes display statement fingerprint statistics:
 
 - **Statement Execution and Planning Time**: the time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements.
 - **Rows Processed**: the total number of rows read and written.
@@ -34,21 +34,21 @@ The following screenshot shows the statement fingerprint of the query described 
 
 The following charts summarize the executions of the statement fingerprint illustrated in the preceding section:
 
-<img src="{{ 'images/v22.1/ui_statement_fingerprint_charts.png' | relative_url }}" alt="Statement fingerprint charts" style="border:1px solid #eee;max-width:100%" />
+![Statement fingerprint charts](/images/v22.1/ui_statement_fingerprint_charts.png)
 
 ### Explain Plans
 
-{% include_cached new-in.html version="v22.1" %} The **Explain Plans** tab displays statement plans for an [explainable statement]({{ link_prefix }}sql-grammar.html#preparable_stmt) in the selected [time interval](#time-interval). You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`]({{ link_prefix }}explain.html).
+{% include "_includes/new-in.html" version="v22.1" %} The **Explain Plans** tab displays statement plans for an [explainable statement]({{ link_prefix }}sql-grammar.html#preparable_stmt) in the selected [time interval](#time-interval). You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`]({{ link_prefix }}explain.html).
 
 The following screenshot shows two executions of the query discussed in the preceding sections:
 
-<img src="{{ 'images/v22.1/ui_plan_table.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:100%" />
+![Plan table](/images/v22.1/ui_plan_table.png)
 
 The plan table shows statistics for the execution and whether the execution was distributed or used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html). In the screenshot, the **Average Execution Time** column show that the second execution at `20:37`, which uses the index, takes less time than the first execution.
 
 To display the plan that was executed, click a plan ID. When you click the plan ID `13182663282122740000`, the following plan displays:
 
-<img src="{{ 'images/v22.1/ui_statement_plan.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:100%" />
+![Plan table](/images/v22.1/ui_statement_plan.png)
 
 ### Diagnostics
 
@@ -67,17 +67,17 @@ When you activate diagnostics for a fingerprint, CockroachDB waits for the next 
 Diagnostics will be collected a maximum of *N* times for a given activated fingerprint where *N* is the number of nodes in your cluster.
 {{site.data.alerts.end}}
 
-{% include common/sql/statement-bundle-warning.md %}
+{% include "_includes/common/sql/statement-bundle-warning.md" %}
 
 #### Activate diagnostics collection and download bundles
 
-<img src="{{ 'images/v22.1/ui_activate_diagnostics.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:100%" />
+![Statements diagnostics](/images/v22.1/ui_activate_diagnostics.png)
 
 To activate diagnostics collection:
 
-1. Click the **Activate diagnostics** button. {% include_cached new-in.html version="v22.1" %} The **Activate statement diagnostics** dialog displays.
+1. Click the **Activate diagnostics** button. {% include "_includes/new-in.html" version="v22.1" %} The **Activate statement diagnostics** dialog displays.
 
-    <img src="{{ 'images/v22.1/ui_activate_diagnostics_dialog.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:100%" />
+    ![Statements diagnostics](/images/v22.1/ui_activate_diagnostics_dialog.png)
 
 1. Choose whether to activate collection on the next statement execution (default) or if execution latency exceeds a certain time. If you choose the latter, accept the default latency of 100 milliseconds, or specify a different time. All executions of the statement fingerprint will run slower until diagnostics are collected.
 1. Choose whether the request should expire after 15 minutes, or after a different the time, or disable automatic expiration by deselecting the checkbox.
@@ -85,12 +85,12 @@ To activate diagnostics collection:
 
 A row  with the activation time and collection status is added to the **Statement diagnostics** table.
 
-<img src="{{ 'images/v22.1/ui_statement_diagnostics.png' | relative_url }}" alt="Statement diagnostics" style="border:1px solid #eee;max-width:100%" />
+![Statement diagnostics](/images/v22.1/ui_statement_diagnostics.png)
 
 The collection status values are:
 
-- **READY**: indicates that the diagnostics have been collected. To download the diagnostics bundle, click <img src="{{ 'images/v22.1/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)**.
-- **WAITING**: indicates that a SQL statement matching the fingerprint has not yet been recorded. {% include_cached new-in.html version="v22.1" %} To cancel diagnostics collection, click the **Cancel request** button.
+- **READY**: indicates that the diagnostics have been collected. To download the diagnostics bundle, click ![Download bundle](/images/v22.1/ui-download-button.png) **Bundle (.zip)**.
+- **WAITING**: indicates that a SQL statement matching the fingerprint has not yet been recorded. {% include "_includes/new-in.html" version="v22.1" %} To cancel diagnostics collection, click the **Cancel request** button.
 - **ERROR**: indicates that the attempt at diagnostics collection failed.
 
 #### View and download diagnostic bundles for all statement fingerprints
@@ -102,7 +102,7 @@ Although fingerprints are periodically cleared from the Statements page, all dia
 - Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History](ui-debug-pages.html#reports).
 {% endif %}
 
-Click <img src="{{ 'images/v22.1/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)** to download any diagnostics bundle.
+Click ![Download bundle](/images/v22.1/ui-download-button.png) **Bundle (.zip)** to download any diagnostics bundle.
 
 ## See also
 

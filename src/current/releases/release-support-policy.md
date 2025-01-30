@@ -11,13 +11,13 @@ docs_area: releases
 
 {% assign versions = site.data.versions | where_exp: "versions", "versions.release_date <= today" | sort: "release_date" | reverse %} {% comment %} Get all versions (e.g., v21.2) sorted in reverse chronological order. {% endcomment %}
 
-This page explains Cockroach Labs' policy for supporting [production releases]({% link releases/index.md %}) of CockroachDB {{ site.data.products.core }}. For clusters deployed in {{ site.data.products.cloud }}, refer to the [CockroachDB {{ site.data.products.cloud }} Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+This page explains Cockroach Labs' policy for supporting [production releases](releases/index.md) of CockroachDB {{ site.data.products.core }}. For clusters deployed in {{ site.data.products.cloud }}, refer to the [CockroachDB {{ site.data.products.cloud }} Support and Upgrade Policy](upgrade-policy.md).
 
-There are two major release types: [Regular and Innovation releases]({% link releases/index.md %}#release-types). Each offers a unique set of Support Types, which define the durations for each [support phase](#support-phases).
+There are two major release types: [Regular and Innovation releases](releases/index.md#release-types). Each offers a unique set of Support Types, which define the durations for each [support phase](#support-phases).
 
 ## Support Phases
 
-- **Maintenance Support**: Begins for a CockroachDB major version upon its [GA release]({% link releases/index.md %}#patch-releases). During this phase:
+- **Maintenance Support**: Begins for a CockroachDB major version upon its [GA release](releases/index.md#patch-releases). During this phase:
   - Cockroach Labs will produce regular patch releases that include critical security fixes and resolutions to problems identified by users.
   - Cockroach Labs may backport non-breaking enhancements produced for newer major versions.
   - Cockroach Labs may direct customers to workarounds or other fixes applicable to a reported case.
@@ -135,7 +135,7 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
 
       {% if v.initial_lts_patch != "N/A" %}{% comment %} For LTS releases print an LTS row first{% endcomment %}
   <tr>
-    <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}</td>
+    <td><a href="releases/{{ v.major_version }}.md">{{ v.major_version }}</td>
     <td>{% if v.initial_lts_patch != "N/A" %}{{ v.initial_lts_patch }}+{% endif %}</td>
     <td>LTS</td>
     <td>{{ v.initial_lts_release_date }}</td>
@@ -151,7 +151,7 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
 
       {% if r_eol != true %}
   <tr>
-    <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}{% if will_never_have_lts == false and v.initial_lts_patch == "N/A" %}&nbsp;<a href="#lts-tbd"><sup>*</sup></a>{% elsif skippable == true %}&nbsp;<a href="#skippable"><sup>**</sup></a>{% endif %}</td>
+    <td><a href="releases/{{ v.major_version }}.md">{{ v.major_version }}{% if will_never_have_lts == false and v.initial_lts_patch == "N/A" %}&nbsp;<a href="#lts-tbd"><sup>*</sup></a>{% elsif skippable == true %}&nbsp;<a href="#skippable"><sup>**</sup></a>{% endif %}</td>
     <td>{% if v.last_ga_patch != "N/A" %}{{ v.major_version }}.0 - {{ v.last_ga_patch }}{% else %}{{ v.major_version }}.0+{% endif %}</td>
     <td>{% if skippable == true %}Innovation{% else %}GA{% endif %}</td>
     <td>{{ v.release_date }}</td>
@@ -245,7 +245,7 @@ Once a major version is older than four years from its GA release date, the link
     {% if r_eol == true %}
       {% if r_lts_eol == true %}
   <tr class="eol">{% comment %} For LTS releases print an LTS row first{% endcomment %}
-    <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}</td>
+    <td><a href="releases/{{ v.major_version }}.md">{{ v.major_version }}</td>
     <td>{{ v.initial_lts_patch }}+</td>
     <td>LTS</td>
     <td>{{ v.initial_lts_release_date }}</td>
@@ -256,7 +256,7 @@ Once a major version is older than four years from its GA release date, the link
 
     {% comment %} Always print a GA row{% endcomment %}
   <tr class="eol">
-    <td><a href="{% link releases/{{ v.major_version }}.md %}">{{ v.major_version }}{% if skippable == true %}&nbsp;<a href="#skippable-eol"><sup>*</sup>{% endif %}</a></a></td>
+    <td><a href="releases/{{ v.major_version }}.md">{{ v.major_version }}{% if skippable == true %}&nbsp;<a href="#skippable-eol"><sup>*</sup>{% endif %}</a></a></td>
     <td>{% if v.last_ga_patch != "N/A" %}{{ v.major_version }}.0 - {{ v.last_ga_patch }}{% else %}{{ v.major_version }}.0+{% endif %}</td>
     <td>{% if skippable == true %}Innovation{% else %}GA{% endif %}</td>
     <td>{{ v.release_date }}</td>

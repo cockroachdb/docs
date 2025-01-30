@@ -5,22 +5,22 @@ toc: true
 docs_area: manage
 ---
 
-This page explains how to organize and manage access to your {{ site.data.products.db }} organization's clusters with folders using the CockroachDB {{ site.data.products.cloud }} Console. You can also use the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. For more details about managing access to {{ site.data.products.db }} resources, refer to [Managing Users, Roles, and Service Accounts in {{ site.data.products.db }}]({% link cockroachcloud/managing-access.md %}).
+This page explains how to organize and manage access to your {{ site.data.products.db }} organization's clusters with folders using the CockroachDB {{ site.data.products.cloud }} Console. You can also use the [CockroachDB {{ site.data.products.cloud }} API](cloud-api.md), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. For more details about managing access to {{ site.data.products.db }} resources, refer to [Managing Users, Roles, and Service Accounts in {{ site.data.products.db }}](managing-access.md).
 
 {{site.data.alerts.callout_success}}
-{% include_cached feature-phases/preview.md %}
+{% include "_includes/feature-phases/preview.md" %}
 {{site.data.alerts.end}}
 
 ## How folders work
 
-Folders allow you to organize and manage access to your clusters according to your organization's requirements, and to [summarize billing by folder]({% link cockroachcloud/billing-management.md %}#view-invoices). For example, you can create top-level folders for each business unit in your organization, and within those folders, you can organize clusters by geographic location and then by their level of maturity, such as production, staging, and testing. For more details, refer to [Folder Structure](#folder-structure).
+Folders allow you to organize and manage access to your clusters according to your organization's requirements, and to [summarize billing by folder](billing-management.md#view-invoices). For example, you can create top-level folders for each business unit in your organization, and within those folders, you can organize clusters by geographic location and then by their level of maturity, such as production, staging, and testing. For more details, refer to [Folder Structure](#folder-structure).
 
 Each folder can contain a mix of folders and clusters. Roles assigned on a folder are inherited by its descendants.
 
 Each folder is assigned a unique ID when it is created, and each folder and cluster has an optional _parent ID_ field, which determines its position in the organization's hierarchy.
 
 - Clusters or folders within a folder have their parent ID set to that folder's ID.
-- A cluster or folder created at the root level of the organization has no parent ID. When using the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), you can either omit the parent ID for a folder or cluster, or set it to `root`, to create it at or move it to the root level.
+- A cluster or folder created at the root level of the organization has no parent ID. When using the [CockroachDB {{ site.data.products.cloud }} API](cloud-api.md), you can either omit the parent ID for a folder or cluster, or set it to `root`, to create it at or move it to the root level.
 - Moving a folder is a lightweight operation that does not modify the folder itself or its descendant folders or clusters; only the folder's parent ID field is updated. Similarly, when moving a cluster into or out of a folder, only the cluster's parent ID field is updated. If you move a folder that contains descendant resources, the descendant resources are not directly modified.
 
 A folder operation may fail if it violates [folder naming](#folder-naming) or [folder structure](#folder-structure) restrictions or if you attempt to move a folder into itself or into one of its descendant folders.
@@ -55,7 +55,7 @@ Operations that violate these restrictions result in an error.
 
 ### Folders and role assignment
 
-A role granted on a folder is inherited on its descendant folders and clusters. All existing organizational roles, such as [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator), can be granted at the folder scope.
+A role granted on a folder is inherited on its descendant folders and clusters. All existing organizational roles, such as [Cluster Administrator](authorization.md#cluster-administrator) or [Cluster Creator](authorization.md#cluster-creator), can be granted at the folder scope.
 
 A role granted directly on a cluster is unchanged if the cluster is moved into or out of a folder.
 
@@ -73,9 +73,9 @@ The following roles allow creation of clusters at the level of the hierarchy whe
 
 The following additional roles explicitly allow management of folders and their contents:
 
-- {% include cockroachcloud/org-roles/folder-admin.md %}
+- {% include "_includes/cockroachcloud/org-roles/folder-admin.md" %}
 
-- {% include cockroachcloud/org-roles/folder-mover.md %}
+- {% include "_includes/cockroachcloud/org-roles/folder-mover.md" %}
 
 The remainder of this page shows how to create folders, manage access to them, and use them to organize your clusters.
 
@@ -83,10 +83,10 @@ The remainder of this page shows how to create folders, manage access to them, a
 
 Your user account must have the following roles to manage access to folders:
 
-- [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin)
+- [Folder Admin](authorization.md#folder-admin)
 
 {{site.data.alerts.callout_success}}
-An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can grant themselves, another user, or a service account the Folder Admin role.
+An [Org Administrator](authorization.md#org-administrator) can grant themselves, another user, or a service account the Folder Admin role.
 {{site.data.alerts.end}}
 
 ## Grant the `FOLDER_ADMIN` or `FOLDER_MOVER` role
@@ -109,7 +109,7 @@ To grant the `FOLDER_ADMIN` role:
 
 Your service account must have the following roles on the organization, the folder, or by inheritance:
 
-- [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin)
+- [Folder Admin](authorization.md#folder-admin)
 
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
 1. If you have permission to create folders at the root of the organization, the **Create folder** option is displayed. Click it to create a folder.
@@ -134,9 +134,9 @@ Your service account must have the following roles on the organization, the fold
 
 Your service account must have one of the following roles to read a folder's contents:
 
-- [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator).
-- [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) or [Folder Mover]({% link cockroachcloud/authorization.md %}#folder-mover).
-- [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator), [Cluster Developer]({%link cockroachcloud/authorization.md %}#cluster-developer), [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator), or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator).
+- [Org Administrator](authorization.md#org-administrator).
+- [Folder Admin](authorization.md#folder-admin) or [Folder Mover](authorization.md#folder-mover).
+- [Cluster Administrator](authorization.md#cluster-administrator), [Cluster Developer]({ cockroachcloud/authorization.md }#cluster-developer), [Cluster Creator](authorization.md#cluster-creator), or [Cluster Operator](authorization.md#cluster-operator).
 
 1. To list the clusters and folders at the level of the organization, go to **Clusters**.
 1. To list the clusters and folders in a folder, click the folder name.
@@ -146,7 +146,7 @@ Your service account must have one of the following roles to read a folder's con
 
 Your service account must have the following roles on the organization or the folder:
 
-- [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator)
+- [Cluster Administrator](authorization.md#cluster-administrator) or [Cluster Creator](authorization.md#cluster-creator)
 
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
 1. Browse to the folder where you want to create the cluster.
@@ -166,7 +166,7 @@ Your service account must have the following roles on the organization or the fo
 
 Your service account must have permission to move clusters at both the source and destination locations. This permission is provided by the following roles:
 
-- [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) or [Folder Mover]({% link cockroachcloud/authorization.md %}#folder-mover)
+- [Folder Admin](authorization.md#folder-admin) or [Folder Mover](authorization.md#folder-mover)
 
 Folder Movers can move clusters within the folder hierarchy even if they do not have a role that allows them to connect to the cluster, such as Cluster Creator or Cluster Operator.
 
@@ -188,14 +188,14 @@ To move a cluster to a new folder from the **Clusters** page:
 1. Click the the three-dots **Action** button, then select **Move**.
 
 {{site.data.alerts.callout_info}}
-A cluster is [billed]({% link cockroachcloud/billing-management.md %}#view-invoices) to the folder it resides in at the end of the billing period, even if it was moved from one folder to another during the billing period.
+A cluster is [billed](billing-management.md#view-invoices) to the folder it resides in at the end of the billing period, even if it was moved from one folder to another during the billing period.
 {{site.data.alerts.end}}
 
 ## Move a folder into another folder
 
 Your service account must have permission to move folders at both the source and destination locations. This permission is provided by the following roles:
 
-- [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) or [Folder Mover]({% link cockroachcloud/authorization.md %}#folder-mover)
+- [Folder Admin](authorization.md#folder-admin) or [Folder Mover](authorization.md#folder-mover)
 
 {{site.data.alerts.callout_info}}
 When you move a folder, users or service accounts who had access to the previous location through inheritance may lose access to its descendant folders and clusters. Roles granted directly on a folder or a cluster do not change when the folder or cluster is moved.
@@ -213,7 +213,7 @@ To move a folder and its contents into another folder:
 
 Your service account must have the following roles on the organization, the folder, or by inheritance:
 
-- [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin)
+- [Folder Admin](authorization.md#folder-admin)
 
 {{site.data.alerts.callout_info}}
 Only an empty folder can be deleted.
@@ -231,9 +231,9 @@ To delete a folder:
 
 - Folders can be nested a maximum of four levels deep, including the organization level.
 - An organization can have a maximum of 65 folders, regardless of how they are organized.
-- You can manage folders using the CockroachDB {{ site.data.products.cloud }} Console, the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. {% include cockroachcloud/limitations/limitation-ccloud-folders.md %}
+- You can manage folders using the CockroachDB {{ site.data.products.cloud }} Console, the [CockroachDB {{ site.data.products.cloud }} API](cloud-api.md), or the [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) v1.1.0 or above. {% include "_includes/cockroachcloud/limitations/limitation-ccloud-folders.md" %}
 
 ## See also
 
-- [CockroachDB Cloud Access Management (Authorization) Overview]({% link cockroachcloud/authorization.md %})
-- [Manage Users, Roles, and Service Accounts]({% link cockroachcloud/managing-access.md %})
+- [CockroachDB Cloud Access Management (Authorization) Overview](authorization.md)
+- [Manage Users, Roles, and Service Accounts](managing-access.md)

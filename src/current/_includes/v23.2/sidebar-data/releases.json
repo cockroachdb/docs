@@ -2,6 +2,6 @@
     "title": "CockroachDB Releases",
     "is_top_level": true,
     "items": [
-      {% include_cached sidebar-all-releases.json %}
+      {% include sidebar-all-releases.json %}
     ]
   }

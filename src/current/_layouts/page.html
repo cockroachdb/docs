@@ -5,7 +5,7 @@ layout: default
 
 {% unless page.homepage %}
   {% if page.version %}
-    {% include version-switcher.html %}
+    {% include "_includes/version-switcher.html" %}
   {% endif %}
 {% endunless %}
 
@@ -26,7 +26,7 @@ layout: default
       {% assign toc_classes = toc_classes | append: 'd-lg-none' %}
     {% endunless %}
     <div class="{{toc_classes}}">
-      {% include contribute-options.html %}
+      {% include "_includes/contribute-options.html" %}
     </div>
   {% endunless %}
 </div>
@@ -50,7 +50,7 @@ front-matter.
 {{content}}
 
 {% if page.feedback != false %}
-  {% include feedback-widget-bottom.html %}
+  {% include "_includes/feedback-widget-bottom.html" %}
 {% endif %}
 
 {% if page.docs_area %}

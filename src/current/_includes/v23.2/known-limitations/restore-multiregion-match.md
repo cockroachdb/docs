@@ -1,8 +1,8 @@
-[`REGIONAL BY TABLE`]({% link {{ page.version.version }}/table-localities.md %}#regional-tables) and [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables can be restored **only** if the regions of the backed-up table match those of the target database. All of the following must be true for `RESTORE` to be successful:
+[`REGIONAL BY TABLE`]({{ page.version.version }}/table-localities.md#regional-tables) and [`REGIONAL BY ROW`]({{ page.version.version }}/table-localities.md#regional-by-row-tables) tables can be restored **only** if the regions of the backed-up table match those of the target database. All of the following must be true for `RESTORE` to be successful:
 
-    * The [regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) of the source database and the regions of the destination database have the same set of regions.
+    * The [regions]({{ page.version.version }}/multiregion-overview.md#database-regions) of the source database and the regions of the destination database have the same set of regions.
     * The regions were added to each of the databases in the same order.
-    * The databases have the same [primary region]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region).
+    * The databases have the same [primary region]({{ page.version.version }}/alter-database.md#set-primary-region).
 
     The following example would be considered as having **mismatched** regions because the database regions were not added in the same order and the primary regions do not match.
 

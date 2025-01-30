@@ -9,7 +9,7 @@ This page summarizes the security features available in CockroachDB {{ site.data
 
 - CockroachDB {{ site.data.products.standard }}: Deployed in shared (multi-tenant) network and compute infrastructure. Storage scales automatically according to demand, but the cluster's compute requirements are defined explicitly as part of the cluster's configuration.
 - CockroachDB {{ site.data.products.basic }}: Deployed in shared (multi-tenant) network and compute infrastructure. Storage and compute scale automatically according to demand, and you are charged only for the storage and activity of your cluster.
-- CockroachDB {{ site.data.products.advanced }}: Deployed in dedicated network and compute infrastructure. This deployment may be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, Advanced clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as [PCI DSS compliance]({% link cockroachcloud/pci-dss.md %}). Refer to [Payment Card Industry Data Security Standard (PCI DSS) Compliance in CockroachDB Advanced]({% link cockroachcloud/pci-dss.md %})
+- CockroachDB {{ site.data.products.advanced }}: Deployed in dedicated network and compute infrastructure. This deployment may be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, Advanced clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as [PCI DSS compliance](pci-dss.md). Refer to [Payment Card Industry Data Security Standard (PCI DSS) Compliance in CockroachDB Advanced](pci-dss.md)
 
 The following table summarizes the CockroachDB {{ site.data.products.cloud }} security features and provides links to detailed documentation for each feature where applicable.
 
@@ -25,7 +25,7 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
   </thead>
   <tbody>
     <tr>
-      <td rowspan="8"><a href="{% link cockroachcloud/authentication.md %}">Authentication</a></td>
+      <td rowspan="8"><a href="cockroachcloud/authentication.md">Authentication</a></td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
@@ -41,37 +41,37 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td><a href="{% link {{ site.current_cloud_version }}/security-reference/scram-authentication.md %}">SASL/SCRAM-SHA-256 secure password-based authentication</a></td>
+      <td><a href="{{ site.current_cloud_version }}/security-reference/scram-authentication.md">SASL/SCRAM-SHA-256 secure password-based authentication</a></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>✓</td>
-      <td>Cluster DB console authentication with third-party <a href="{% link {{ site.current_cloud_version }}/sso-db-console.md %}">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a> or <a href="https://wikipedia.org/wiki/Security_Assertion_Markup_Language">SAML</a></td>
+      <td>Cluster DB console authentication with third-party <a href="{{ site.current_cloud_version }}/sso-db-console.md">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a> or <a href="https://wikipedia.org/wiki/Security_Assertion_Markup_Language">SAML</a></td>
     </tr>
     <tr>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td>SQL Client authentication with <a href="{% link cockroachcloud/cloud-sso-sql.md %}">Cluster SSO</a> using CockroachDB Cloud as identity provider</td>
+      <td>SQL Client authentication with <a href="cockroachcloud/cloud-sso-sql.md">Cluster SSO</a> using CockroachDB Cloud as identity provider</td>
     </tr>
     <tr>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td>SQL Client authentication with <a href="{% link {{ site.current_cloud_version }}/sso-sql.md %}">Cluster SSO</a> using customer-managed identity providers</td>
+      <td>SQL Client authentication with <a href="{{ site.current_cloud_version }}/sso-sql.md">Cluster SSO</a> using customer-managed identity providers</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>✓</td>
-      <td>Client identity authentication using <a href="{% link cockroachcloud/client-certs-advanced.md %}">PKI certificates</a></td>
+      <td>Client identity authentication using <a href="cockroachcloud/client-certs-advanced.md">PKI certificates</a></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>✓</td>
-      <td><a href="{% link {{ site.current_cloud_version }}/manage-certs-revoke-ocsp.md %}">OCSP</a> certificate revocation protocol</td>
+      <td><a href="{{ site.current_cloud_version }}/manage-certs-revoke-ocsp.md">OCSP</a> certificate revocation protocol</td>
     </tr>
     <tr>
     <td rowspan="5" >Data Protection</a></td>
@@ -102,10 +102,10 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>✓</td>
-      <td><a href="{% link cockroachcloud/cmek.md %}">Customer Managed Encryption Keys (CMEK)</a>, with [Advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) enabled.
+      <td><a href="cockroachcloud/cmek.md">Customer Managed Encryption Keys (CMEK)</a>, with [Advanced security features](create-an-advanced-cluster.md#step-6-configure-advanced-security-features) enabled.
     </tr>
     <tr>
-    <td rowspan="3" ><a href="{% link cockroachcloud/authorization.md %}">Access Control (Authorization)</a></td>
+    <td rowspan="3" ><a href="cockroachcloud/authorization.md">Access Control (Authorization)</a></td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
@@ -128,13 +128,13 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td><a href="{% link cockroachcloud/authentication.md %}">SQL-level configuration of allowed authentication attempts by IP address</a></td>
+      <td><a href="cockroachcloud/authentication.md">SQL-level configuration of allowed authentication attempts by IP address</a></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>✓</td>
-      <td><a href="{% link cockroachcloud/private-clusters.md %}">Private Clusters</a></td>
+      <td><a href="cockroachcloud/private-clusters.md">Private Clusters</a></td>
     </tr>
     <tr>
       <td>✓</td>
@@ -152,39 +152,39 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
       <td>&nbsp;</td>
       <td>✓</td>
       <td>✓</td>
-      <td><a href="{% link cockroachcloud/network-authorization.md %}#gcp-private-service-connect">Private Service Connect (PSC) for GCP clusters</td>
+      <td><a href="cockroachcloud/network-authorization.md#gcp-private-service-connect">Private Service Connect (PSC) for GCP clusters</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>✓</td>
-      <td><a href="{% link cockroachcloud/network-authorization.md %}#gcp-vpc-peering">VPC Peering</a> for GCP clusters</td>
+      <td><a href="cockroachcloud/network-authorization.md#gcp-vpc-peering">VPC Peering</a> for GCP clusters</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>✓</td>
       <td>✓</td>
-      <td><a href="{% link cockroachcloud/network-authorization.md %}#aws-privatelink"></a>PrivateLink for AWS clusters. </td>
+      <td><a href="cockroachcloud/network-authorization.md#aws-privatelink"></a>PrivateLink for AWS clusters. </td>
     </tr>
     <tr>
       <td rowspan="2"><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td><a href="{% link {{ site.current_cloud_version }}/sql-audit-logging.md %}">SQL Audit Logging</a></td>
+      <td><a href="{{ site.current_cloud_version }}/sql-audit-logging.md">SQL Audit Logging</a></td>
     </tr>
     <tr>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td><a href="{% link cockroachcloud/cloud-org-audit-logs.md %}">Cloud Organization Audit Logging</a></td>
+      <td><a href="cockroachcloud/cloud-org-audit-logs.md">Cloud Organization Audit Logging</a></td>
     </tr>
     <tr>
-      <td><a href="{% link {{ site.current_cloud_version }}/demo-cockroachdb-resilience.md %}">Availability/Resilience</a></td>
+      <td><a href="{{ site.current_cloud_version }}/demo-cockroachdb-resilience.md">Availability/Resilience</a></td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
-      <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="{% link {{ site.current_cloud_version }}/demo-cockroachdb-resilience.md %}">Disaster Recovery.</a></td>
+      <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="{{ site.current_cloud_version }}/demo-cockroachdb-resilience.md">Disaster Recovery.</a></td>
     </tr>
   </thead>
 </table>

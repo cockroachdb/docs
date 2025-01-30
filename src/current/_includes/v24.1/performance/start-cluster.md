@@ -4,20 +4,20 @@
 
 1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
+1. Run the [`cockroach start`]({{ page.version.version }}/cockroach-start.md) command:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start \
     {{page.certs}} \
@@ -37,7 +37,7 @@
 
 1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
@@ -45,16 +45,16 @@
 
 1. Copy the binary into the `PATH`:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-1. Run the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command:
+1. Run the [`cockroach init`]({{ page.version.version }}/cockroach-init.md) command:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cockroach init {{page.certs}} --host=<address of any node>
     ~~~
 
-    Each node then prints helpful details to the [standard output]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output), such as the CockroachDB version, the URL for the DB Console, and the SQL URL for clients.
+    Each node then prints helpful details to the [standard output]({{ page.version.version }}/cockroach-start.md#standard-output), such as the CockroachDB version, the URL for the DB Console, and the SQL URL for clients.

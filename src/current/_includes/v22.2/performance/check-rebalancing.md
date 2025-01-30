@@ -2,7 +2,7 @@ Since you started each node with the `--locality` flag set to its GCE zone, over
 
 To check this, access the DB Console on any node at `<node address>:8080` and look at the **Node List**. You'll see that the range count is more or less even across all nodes:
 
-<img src="{{ 'images/v22.2/perf_tuning_multi_region_rebalancing.png' | relative_url }}" alt="Perf tuning rebalancing" style="border:1px solid #eee;max-width:100%" />
+![Perf tuning rebalancing](/images/v22.2/perf_tuning_multi_region_rebalancing.png)
 
 For reference, here's how the nodes map to zones:
 
@@ -14,7 +14,7 @@ Node IDs | Zone
 
 To verify even balancing at range level, SSH to one of the instances not running CockroachDB and run the `SHOW EXPERIMENTAL_RANGES` statement:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 $ cockroach sql \
 {{page.certs}} \

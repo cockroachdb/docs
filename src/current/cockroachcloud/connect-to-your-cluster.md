@@ -6,18 +6,18 @@ docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}
-CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({{ site.current_cloud_version }}/cockroachdb-feature-availability.md).
 {{site.data.alerts.end}}
 
-{% include cockroachcloud/filter-tabs/crdb-cloud-connection.md %}
+{% include "_includes/cockroachcloud/filter-tabs/crdb-cloud-connection.md" %}
 
-This page shows you how to connect to your CockroachDB {{ site.data.products.standard }} cluster. This includes the administrative task of configuring allowed networks to support SQL client connections, as well as the steps for connecting to the cluster with CockroachDB's [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}).
+This page shows you how to connect to your CockroachDB {{ site.data.products.standard }} cluster. This includes the administrative task of configuring allowed networks to support SQL client connections, as well as the steps for connecting to the cluster with CockroachDB's [built-in SQL client]({{site.current_cloud_version}}/cockroach-sql.md).
 
 ## Before you start
 
-- [Create a cluster]({% link cockroachcloud/create-your-cluster.md %}).
-- [Create a SQL user]({% link cockroachcloud/managing-access.md %}#create-a-sql-user).
-- Understand [Network Authorization for CockroachDB Cloud Clusters]({% link cockroachcloud/network-authorization.md %})
+- [Create a cluster](create-your-cluster.md).
+- [Create a SQL user](managing-access.md#create-a-sql-user).
+- Understand [Network Authorization for CockroachDB Cloud Clusters](network-authorization.md)
 
 ## Authorize your network
 
@@ -32,7 +32,7 @@ By default, CockroachDB {{ site.data.products.standard }} clusters are locked do
 Removing or adding an authorized network on your CockroachDB {{ site.data.products.standard }} cluster may take a few seconds to take effect.
 {{site.data.alerts.end}}
 
-{% include cockroachcloud/authorize-your-clusters-networks.md %}
+{% include "_includes/cockroachcloud/authorize-your-clusters-networks.md" %}
 
 <a id="establish-gcp-vpc-peering-or-aws-privatelink"></a>
 ### Establish private connectivity
@@ -44,14 +44,14 @@ Private connectivity allows you to establish SQL access to a CockroachDB {{ site
 
 CockroachDB {{ site.data.products.standard }} is not yet available on Azure.
 
-For more information, refer to [Network authorization]({% link cockroachcloud/network-authorization.md %}).
+For more information, refer to [Network authorization](network-authorization.md).
 
 {{site.data.alerts.callout_success}}
 Private connectivity cannot be configured during cluster creation.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-{% include cockroachcloud/cdc/kafka-vpc-limitation.md %}
+{% include "_includes/cockroachcloud/cdc/kafka-vpc-limitation.md" %}
 {{site.data.alerts.end}}
 
 <a id="vpc-peering"></a>
@@ -68,7 +68,7 @@ For GKE, we recommend deploying your application to a VPC-native cluster that us
 After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
 
 {{site.data.alerts.callout_info}}
-Self-service VPC peering setup is not supported for CockroachDB {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster]({% link cockroachcloud/create-your-cluster.md %}) with VPC peering enabled, then [export your data]({% link cockroachcloud/managed-backups.md %}) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachDB's default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
+Self-service VPC peering setup is not supported for CockroachDB {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](create-your-cluster.md) with VPC peering enabled, then [export your data](managed-backups.md) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachDB's default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
 {{site.data.alerts.end}}
 
 #### GCP Private Service Connect
@@ -96,7 +96,7 @@ After the connection is established, you can use it to [connect to your cluster]
 
 #### AWS PrivateLink
 
-To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink for a cluster]({% link cockroachcloud/aws-privatelink.md %}). After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink for a cluster](aws-privatelink.md). After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
 
 #### Azure Private Link
 
@@ -132,10 +132,10 @@ To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink f
 
 ## Connect to your cluster
 
-{% include cockroachcloud/postgresql-special-characters.md %}
+{% include "_includes/cockroachcloud/postgresql-special-characters.md" %}
 
 {{site.data.alerts.callout_info}}
-If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+If you forget your SQL user's password, an [Org Administrator](authorization.md#org-administrator) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
 {{site.data.alerts.end}}
 
 1. In the top right corner of the CockroachDB {{ site.data.products.cloud }} Console, click **Connect**.
@@ -159,26 +159,26 @@ If you forget your SQL user's password, an [Org Administrator]({% link cockroach
 
     Parameter | Description
     ----------|------------
-    `{username}`  | The [SQL user]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) connecting to the cluster.
+    `{username}`  | The [SQL user](managing-access.md#create-a-sql-user) connecting to the cluster.
     `{host}`  | The host on which the CockroachDB node is running.
     `{port}`  | The port at which the CockroachDB node is listening.
     `{database}`  | The name of the (existing) database.
 
-   Additionally, you will need the SQL user's [password]({% link cockroachcloud/managing-access.md %}#create-a-sql-user). If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+   Additionally, you will need the SQL user's [password](managing-access.md#create-a-sql-user). If you forget your SQL user's password, an [Org Administrator](authorization.md#org-administrator) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
 
   </section>
   <section class="filter-content" markdown="1" data-scope="command-line">
 
-You can connect to your cluster with any [supported version]({% link releases/release-support-policy.md %}#supported-versions) of the full CockroachDB binary or the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}).
+You can connect to your cluster with any [supported version](releases/release-support-policy.md#supported-versions) of the full CockroachDB binary or the [built-in SQL client]({{site.current_cloud_version}}/cockroach-sql.md).
 
 1. Select **CockroachDB Client** from the **Select option/language** dropdown.
 1. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install the latest downloadable version of CockroachDB on your local system.
-1. Copy the [`cockroach sql`]({% link {{site.current_cloud_version}}/cockroach-sql.md %}) command and connection string provided in the **Connect** dialog, which will be used in the next step (and to connect to your cluster in the future).
-1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}).
+1. Copy the [`cockroach sql`]({{site.current_cloud_version}}/cockroach-sql.md) command and connection string provided in the **Connect** dialog, which will be used in the next step (and to connect to your cluster in the future).
+1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client]({{site.current_cloud_version}}/cockroach-sql.md).
 
 1. Enter the SQL user's password and hit enter.
 
-    {% include cockroachcloud/postgresql-special-characters.md %}
+    {% include "_includes/cockroachcloud/postgresql-special-characters.md" %}
 
     A welcome message displays:
 
@@ -190,7 +190,7 @@ You can connect to your cluster with any [supported version]({% link releases/re
     #
     ~~~
 
-    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
+    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](learn-cockroachdb-sql.md).
 
   </section>
 
@@ -201,29 +201,29 @@ To connect to your cluster from your application:
 1. Select the **Connection string** tab.
 1. If the CA certificate for the cluster is not downloaded locally, copy the command to download it. In your terminal, run the command.
 1. Copy the connection string, which begins with `postgresql://`. This will be used to connect your application to CockroachDB {{ site.data.products.dedicated }}.
-1. Add your copied connection string to your application code. Refer to [Connect to a CockroachDB Cluster]({% link {{ site.current_cloud_version }}/connect-to-the-database.md %}).
+1. Add your copied connection string to your application code. Refer to [Connect to a CockroachDB Cluster]({{ site.current_cloud_version }}/connect-to-the-database.md).
 1. Click **Close**.
 
-{% include cockroachcloud/postgresql-special-characters.md %}
+{% include "_includes/cockroachcloud/postgresql-special-characters.md" %}
 
 For examples, see the following:
 
-- [Build a Python App with CockroachDB]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb.md %})
-- [Build a Go App with CockroachDB]({% link {{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.md %})
-- [Build a Java App with CockroachDB]({% link {{site.current_cloud_version}}/build-a-java-app-with-cockroachdb.md %})
+- [Build a Python App with CockroachDB]({{site.current_cloud_version}}/build-a-python-app-with-cockroachdb.md)
+- [Build a Go App with CockroachDB]({{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.md)
+- [Build a Java App with CockroachDB]({{site.current_cloud_version}}/build-a-java-app-with-cockroachdb.md)
 
   </section>
 
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
-To connect to your cluster with a [CockroachDB-compatible tool]({% link {{site.current_cloud_version}}/third-party-database-tools.md %}):
+To connect to your cluster with a [CockroachDB-compatible tool]({{site.current_cloud_version}}/third-party-database-tools.md):
 
 1. If the CA certificate for the cluster is not downloaded locally, select the **Connection string** tab, then copy the command to download the CA certificate. In your terminal, run the command.
 1. Select the **Connection parameters** tab.
-1. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool]({% link {{site.current_cloud_version}}/third-party-database-tools.md %}).
+1. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool]({{site.current_cloud_version}}/third-party-database-tools.md).
 
     Parameter     | Description
     --------------|------------
-    `{username}`  | The [SQL user]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) connecting to the cluster.
+    `{username}`  | The [SQL user](managing-access.md#create-a-sql-user) connecting to the cluster.
     `{password}`  | The password for the SQL user connecting to the cluster.
     `{host}`      | The host on which the CockroachDB node is running.
     `{port}`      | The port at which the CockroachDB node is listening.
@@ -234,5 +234,5 @@ To connect to your cluster with a [CockroachDB-compatible tool]({% link {{site.c
 
 ## What's next
 
-- [Build a "Hello, World" app]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.md %})
-- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md %})
+- [Build a "Hello, World" app]({{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.md)
+- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB {{ site.data.products.cloud }}](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.md)

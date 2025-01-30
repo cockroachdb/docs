@@ -10,7 +10,7 @@ The **Transactions** page provides information about the execution of SQL transa
 {%- if page.cloud != true %}
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console. Click the **Transactions** tab.
 {% else %}
-To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **SQL Activity** in the **Monitoring** section of the left side navigation. Select the **Transactions** tab.
+To view this page, select a cluster from the [**Clusters** page](cluster-management.md#view-clusters-page), and click **SQL Activity** in the **Monitoring** section of the left side navigation. Select the **Transactions** tab.
 {% endif %}
 
 It offers two views:
@@ -41,11 +41,11 @@ Click the **Transactions** tab. The **Transaction Fingerprints** radio button is
 
 The following screenshot shows the transaction fingerprint for `SELECT city, id FROM vehicles WHERE city = $1` while running the [`movr` workload]({{ link_prefix }}cockroach-workload.html#run-the-movr-workload):
 
-<img src="{{ 'images/v23.2/transaction-fingerprint.png' | relative_url }}" alt="Transaction fingerprint" style="border:1px solid #eee;max-width:100%" />
+![Transaction fingerprint](/images/v23.2/transaction-fingerprint.png)
 
 If you click the transaction fingerprint in the **Transactions** column, the [**Transaction Details** page](#transaction-details-page) displays.
 
-<img src="{{ 'images/v23.2/transaction-details.png' | relative_url }}" alt="Transaction details" style="border:1px solid #eee;max-width:100%" />
+![Transaction details](/images/v23.2/transaction-details.png)
 
 ## Active Executions view
 
@@ -66,14 +66,14 @@ When Auto [Refresh](#refresh) is On, active executions are polled every 10 secon
 
 The following screenshot shows the active statement execution for `UPSERT INTO vehicle_location_histories VALUES ($1, $2, now(), $4, $5)` while running the [`movr` workload]({{ link_prefix }}cockroach-workload.html#run-the-movr-workload):
 
-<img src="{{ 'images/v23.2/transaction-execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
+![Transaction execution](/images/v23.2/transaction-execution.png)
 
 If you click the execution ID in the **Transaction Execution ID** column, the [**Transaction Execution** details page](#transaction-execution-details-page) displays.
 
-<img src="{{ 'images/v23.2/transaction-execution-details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
+![Transaction execution details](/images/v23.2/transaction-execution-details.png)
 
 {% if page.cloud != true %}
-{% include {{ page.version.version }}/ui/refresh.md %}
+{% include "_includes/25.1/ui/refresh.md" %}
 {% else %}
-{% include {{ site.current_cloud_version }}/ui/refresh.md %}
+{% include "_includes/{{" site.current_cloud_version }}/ui/refresh.md %}
 {% endif %}

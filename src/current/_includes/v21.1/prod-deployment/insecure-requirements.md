@@ -6,4 +6,4 @@
 
 - Carefully review the [Production Checklist](recommended-production-settings.html) and recommended [Topology Patterns](topology-patterns.html).
 
-{% include {{ page.version.version }}/prod-deployment/topology-recommendations.md %}
+{% include "_includes/25.1/prod-deployment/topology-recommendations.md" %}

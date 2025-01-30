@@ -1,4 +1,4 @@
-- Consider using a [secure cluster]({% link {{ page.version.version }}/manual-deployment.md %}) instead. Using an insecure cluster comes with risks:
+- Consider using a [secure cluster]({{ page.version.version }}/manual-deployment.md) instead. Using an insecure cluster comes with risks:
     - Your cluster is open to any client that can access any node's IP addresses.
     - Any user, even `root`, can log in without providing a password.
     - Any user, connecting as `root`, can read or write any data in your cluster.

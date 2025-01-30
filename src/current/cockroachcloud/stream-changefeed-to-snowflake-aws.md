@@ -27,26 +27,26 @@ Before you begin, make sure you have:
     {{site.data.alerts.end}}
 
 - [Read and write access](https://docs.snowflake.net/manuals/user-guide/security-access-control-overview.html) to a Snowflake cluster
-- {% include cockroachcloud/cdc/tutorial-privilege-check.md %}
+- {% include "_includes/cockroachcloud/cdc/tutorial-privilege-check.md" %}
 
 ## Step 1. Create a cluster
 
-If you have not done so already, [create a cluster]({% link cockroachcloud/create-your-cluster.md %}).
+If you have not done so already, [create a cluster](create-your-cluster.md).
 
 ## Step 2. Connect to your cluster
 
-Refer to [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) for detailed instructions on how to:
+Refer to [Connect to your cluster](connect-to-your-cluster.md) for detailed instructions on how to:
 
 1. Download and install CockroachDB and your cluster's CA certificate locally.
 1. Generate the `cockroach sql` command that you will use to connect to the cluster from the command line as a SQL user with [admin] privileges in the cluster.
 
 ## Step 3. Configure your cluster
 
-1. In your terminal, enter the `cockroach sql` command and connection string from [Step 2. Connect to your cluster](#step-2-connect-to-your-cluster) to start the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}).
+1. In your terminal, enter the `cockroach sql` command and connection string from [Step 2. Connect to your cluster](#step-2-connect-to-your-cluster) to start the [built-in SQL client]({{site.current_cloud_version}}/cockroach-sql.md).
 
 1. Enable [rangefeeds](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#enable-rangefeeds):
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
@@ -57,14 +57,14 @@ Refer to [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluste
 
 1. In the built-in SQL shell, create a database called `cdc_test`:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     CREATE DATABASE cdc_test;
     ~~~
 
 1. Set it as the default:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     SET DATABASE = cdc_test;
     ~~~
@@ -75,7 +75,7 @@ Before you can start a changefeed, you need to create at least one table for the
 
 Create a table called `order_alerts` to target:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE order_alerts (
     id   INT PRIMARY KEY,
@@ -97,7 +97,7 @@ Every change to a watched row is emitted as a record in a configurable format (i
 
 Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.current_cloud_version}}/create-changefeed.html). Replace the placeholders with your AWS access key ID and AWS secret access key:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE order_alerts
     INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={access key ID}&AWS_SECRET_ACCESS_KEY={secret access key}'
@@ -120,7 +120,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 
 1. In the built-in SQL shell, insert data into the `order_alerts` table that the changefeed is targeting:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     INSERT INTO order_alerts
         VALUES
@@ -131,7 +131,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 1. Navigate back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new date-based directory should display on the **Objects** tab.
 
     {{site.data.alerts.callout_info}}
-    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed]({% link {{site.current_cloud_version}}/monitor-and-debug-changefeeds.md %}#debug-a-changefeed).
+    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed]({{site.current_cloud_version}}/monitor-and-debug-changefeeds.md#debug-a-changefeed).
     {{site.data.alerts.end}}
 
 ## Step 9. Configure Snowflake
@@ -142,7 +142,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 
 1. Create a table to store the data to be ingested:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     CREATE TABLE order_alerts (
        changefeed_record VARIANT
@@ -155,14 +155,14 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 
 1. In the worksheet, create a [stage](https://docs.snowflake.com/en/user-guide/data-load-s3-create-stage) called `cdc-stage`, which tells Snowflake where your data files reside in S3. Replace the placeholders with your AWS access key ID and AWS secret access key:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     CREATE STAGE cdc_stage url='s3://changefeed-example/' credentials=(aws_key_id='<KEY>' aws_secret_key='<SECRET_KEY>') file_format = (type = json);
     ~~~
 
 1. In the worksheet, create a Snowpipe called `cdc-pipe`, which tells Snowflake to auto-ingest data:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     CREATE PIPE cdc_pipe auto_ingest = TRUE as COPY INTO order_alerts FROM @cdc_stage;
     ~~~
@@ -173,7 +173,7 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 
 1. In the worksheet, view the Snowpipe:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     SHOW PIPES;
     ~~~
@@ -195,14 +195,14 @@ You will receive the changefeed's job ID that you can use to [manage the changef
 
 1. Ingest the data from your stage:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     ALTER PIPE cdc_pipe refresh;
     ~~~
 
 1. To view the data in Snowflake, query the `order_alerts` table:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     SELECT * FROM order_alerts;
     ~~~
@@ -228,7 +228,7 @@ The following points outline two potential workarounds. For detailed instruction
 
     For example, in your materialized view statement, query the required columns and partition, rank, and select only the first row for each primary key:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~sql
     SELECT * FROM order_alerts QUALIFY row_number() OVER (PARTITION BY id ORDER BY modified DESC) = 1;
     ~~~
@@ -240,7 +240,7 @@ The following points outline two potential workarounds. For detailed instruction
 ## Known limitations
 
 - Snowflake cannot filter streaming updates by table. Because of this, we recommend creating a changefeed that watches only one table.
-- Snowpipe is unaware of CockroachDB [resolved timestamps]({% link {{site.current_cloud_version}}/create-changefeed.md %}#resolved). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
+- Snowpipe is unaware of CockroachDB [resolved timestamps]({{site.current_cloud_version}}/create-changefeed.md#resolved). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
 - Snowpipe works best with append-only workloads, as Snowpipe lacks native ETL capabilities to perform updates to data. You may need to pre-process data before uploading it to Snowflake.
 
-Refer to the [Create and Configure Changefeeds]({% link {{site.current_cloud_version}}/create-and-configure-changefeeds.md %}#known-limitations) page for more general changefeed known limitations.
+Refer to the [Create and Configure Changefeeds]({{site.current_cloud_version}}/create-and-configure-changefeeds.md#known-limitations) page for more general changefeed known limitations.

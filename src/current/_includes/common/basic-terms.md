@@ -50,7 +50,7 @@ A CockroachDB {{ site.data.products.cloud }} cluster with full operational capac
 
 #### Request Unit (RU)
 
-{% include cockroachcloud/request-units.md %}
+{% include "_includes/cockroachcloud/request-units.md" %}
 
 #### Resource limits
 

@@ -25,7 +25,7 @@
             <td>{{ m.short_name }}</td>
             <td><div id="{{ m.metric_id }}" class="anchored"><code>{{ m.metric_id }}</code></div></td>
             <td>{{ metrics-list[0].description}}</td>
-            <td>{% include cockroachcloud/metrics-usage/{{ m.metric_id }}.md %}</td>
+            <td>{% include "_includes/cockroachcloud/metrics-usage/{" m.metric_id }.md %}</td>
         </tr>
     {% endfor %} {% comment %} metrics {% endcomment %}
     </tbody>

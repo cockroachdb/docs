@@ -11,7 +11,7 @@ ERROR: Cannot decommission nodes.
 Failed running "node decommission"
 ~~~
 
-These checks can be skipped by [passing the flag `--checks=skip` to `cockroach node decommission`]({% link {{ page.version.version }}/cockroach-node.md %}#decommission-checks).
+These checks can be skipped by [passing the flag `--checks=skip` to `cockroach node decommission`]({{ page.version.version }}/cockroach-node.md#decommission-checks).
 
 {{site.data.alerts.callout_info}}
 The amount of remaining disk space on other nodes in the cluster is not yet considered as part of the decommissioning pre-flight checks. For more information, see [cockroachdb/cockroach#71757](https://github.com/cockroachdb/cockroach/issues/71757)

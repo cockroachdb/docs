@@ -5,13 +5,13 @@ toc: true
 docs_area: manage
 ---
 
-{% include cockroachcloud/filter-tabs/cluster-management.md %}
+{% include "_includes/cockroachcloud/filter-tabs/cluster-management.md" %}
 
 This page describes the cluster management and cluster deletion workflows for CockroachDB {{ site.data.products.advanced }}.
 
 ## Planning your cluster
 
-Before making any changes to your cluster's regions, review the [requirements and recommendations]({% link cockroachcloud/plan-your-cluster.md %}) for CockroachDB {{ site.data.products.cloud }} cluster configuration.
+Before making any changes to your cluster's regions, review the [requirements and recommendations](plan-your-cluster.md) for CockroachDB {{ site.data.products.cloud }} cluster configuration.
 
 ## View Clusters page
 
@@ -21,9 +21,9 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 ## View cluster overview
 
-The [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) displays details about the selected CockroachDB {{ site.data.products.cloud }} cluster.
+The [**Overview** page](cluster-overview-page.md) displays details about the selected CockroachDB {{ site.data.products.cloud }} cluster.
 
-From the **Overview** page, you can connect to your cluster. For more information, refer to [Connect to Your CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
+From the **Overview** page, you can connect to your cluster. For more information, refer to [Connect to Your CockroachDB {{ site.data.products.advanced }} Cluster](connect-to-your-cluster.md).
 
 ## Add a region to your cluster
 
@@ -50,22 +50,22 @@ To edit your cluster's capacity:
 {% comment %}
 ## Configure PCI ready features
 
-CockroachDB {{ site.data.products.advanced }} clusters have a **PCI ready** panel to monitor the status of security features required for [PCI DSS readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
+CockroachDB {{ site.data.products.advanced }} clusters have a **PCI ready** panel to monitor the status of security features required for [PCI DSS readiness](pci-dss.md). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
 
-- [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
-- [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/managing-cmek.md %})
-- [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
-- Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
-- [Network security]({% link cockroachcloud/network-authorization.md %})
+- [CockroachDB {{ site.data.products.cloud }} Organization Audit logs](cloud-org-audit-logs.md)
+- [Customer-Managed Encryption Keys (CMEK)](managing-cmek.md)
+- [Egress Perimeter Controls](egress-perimeter-controls.md)
+- Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization](configure-cloud-org-sso.md) and your [clusters](cloud-sso-sql.md)
+- [Network security](network-authorization.md)
 
-You can also check the status of these features on the [**PCI ready**]({% link cockroachcloud/cluster-overview-page.md %}?filters=dedicated#pci-ready-dedicated-advanced) page of the CockroachDB {{ site.data.products.cloud }} Console.
+You can also check the status of these features on the [**PCI ready**](cluster-overview-page.md?filters=dedicated#pci-ready-dedicated-advanced) page of the CockroachDB {{ site.data.products.cloud }} Console.
 {% endcomment %}
 
 ## Restore data from a backup
 
-Refer to [Managed-Service Backups]({% link cockroachcloud/managed-backups.md %}) for instructions to restore your cluster from an automatic cluster backup.
+Refer to [Managed-Service Backups](managed-backups.md) for instructions to restore your cluster from an automatic cluster backup.
 
-You can also [back up and restore]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) your cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to [`userfile`]({% link {{site.current_cloud_version}}/use-userfile-storage.md %}) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
+You can also [back up and restore](take-and-restore-self-managed-backups.md) your cluster manually. You can take [backups locally](take-and-restore-self-managed-backups.md) to [`userfile`]({{site.current_cloud_version}}/use-userfile-storage.md) or [back up to cloud storage](take-and-restore-self-managed-backups.md).
 
 ## Enable deletion protection
 

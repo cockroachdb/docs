@@ -8,5 +8,5 @@
 </div>
 
 <section class="filter-content" markdown="1" data-scope="insecure">
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
+{% include "_includes/25.1/prod-deployment/insecure-flag.md" %}
 </section>

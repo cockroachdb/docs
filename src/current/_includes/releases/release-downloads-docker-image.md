@@ -5,11 +5,11 @@
 <h3 id="{{ release.release_name | downcase | replace: ".", "-" }}-downloads">Downloads</h3>{% comment %} take the version name, force it to be lowercase, and replace all periods with hyphens. {% endcomment %}
 
 {% if release.release_type == "Testing" %}
-{% include releases/experimental-test-release.md version=release.release_name %}
+{% include "_includes/releases/experimental-test-release.md" version=release.release_name %}
 {% endif %}
 
 {% if release.withdrawn == true %}
-{% include releases/withdrawn.md %}
+{% include "_includes/releases/withdrawn.md" %}
 {% elsif release.cloud_only == true %} {% comment %}Show the Cloud-first info instead of download links {% endcomment %}
 {{site.data.alerts.callout_info}}
 {{ r.cloud_only_message }}
@@ -23,7 +23,7 @@ Experimental downloads are not qualified for production use and not eligible for
 <h4>Full CockroachDB executable</h4>
 
 {% comment %}Assign the JS for the experimental download prompt and store it in the Liquid variable experimental_download_js {% endcomment %}
-  {% capture experimental_download_js %}{% include_cached releases/experimental_download_dialog.md %}{% endcapture %}
+  {% capture experimental_download_js %}{% include "_includes/releases/experimental_download_dialog.md" %}{% endcapture %}
   {% capture onclick_string %}onclick="{{ experimental_download_js }}"{% endcapture %}
 
 <div><div class="os-tabs" class="filters clearfix">
@@ -69,7 +69,7 @@ Experimental downloads are not qualified for production use and not eligible for
   {% endif %}
 
 <section class="filter-content" markdown="1" data-scope="windows">
-{% include_cached windows_warning.md %}
+{% include "_includes/windows_warning.md" %}
 </section>
 
 <h3 id="{{ release.release_name | downcase | replace: ".", "-" }}-docker-image">Docker image</h3>
@@ -90,7 +90,7 @@ To download the Docker image:
 To download the Docker image (Intel-only):
   {% endif %}
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~shell
 docker pull {{ release.docker.docker_image }}:{{ release.release_name }}
 ~~~

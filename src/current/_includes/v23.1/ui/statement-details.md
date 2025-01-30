@@ -21,7 +21,7 @@ The **Overview** section displays the SQL statement fingerprint and execution at
 
 The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
-<img src="{{ 'images/v23.1/ui_statement_fingerprint_overview.png' | relative_url }}" alt="Statement fingerprint overview" style="border:1px solid #eee;max-width:100%" />
+![Statement fingerprint overview](/images/v23.1/ui_statement_fingerprint_overview.png)
 
 #### Insights
 
@@ -33,7 +33,7 @@ The **Insights** table is displayed when CockroachDB has detected a problem with
 
 The following screenshot shows the insights of the statement fingerprint illustrated in [Overview](#overview):
 
-<img src="{{ 'images/v23.1/ui_statement_fingerprint_insights.png' | relative_url }}" alt="Statement fingerprint overview" style="border:1px solid #eee;max-width:100%" />
+![Statement fingerprint overview](/images/v23.1/ui_statement_fingerprint_insights.png)
 
 #### Charts
 
@@ -49,7 +49,7 @@ Charts following the execution attributes display statement fingerprint statisti
 
 The following charts summarize the executions of the statement fingerprint illustrated in [Overview](#overview):
 
-<img src="{{ 'images/v23.1/ui_statement_fingerprint_charts.png' | relative_url }}" alt="Statement fingerprint charts" style="border:1px solid #eee;max-width:100%" />
+![Statement fingerprint charts](/images/v23.1/ui_statement_fingerprint_charts.png)
 
 ### Explain Plans
 
@@ -57,7 +57,7 @@ The **Explain Plans** tab displays statement plans for an [explainable statement
 
 The following screenshot shows an execution of the query discussed in [Overview](#overview):
 
-<img src="{{ 'images/v23.1/ui_plan_table.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:100%" />
+![Plan table](/images/v23.1/ui_plan_table.png)
 
 The plan table shows the following details:
 
@@ -76,7 +76,7 @@ Vectorized | Whether the execution used the [vectorized execution engine]({{ lin
 
 To display the plan that was executed, click the plan gist. For the plan gist `AgHUAQIABQAAAAHYAQIAiA...`, the following plan displays:
 
-<img src="{{ 'images/v23.1/ui_statement_plan.png' | relative_url }}" alt="Plan table" style="border:1px solid #eee;max-width:100%" />
+![Plan table](/images/v23.1/ui_statement_plan.png)
 
 #### Insights
 
@@ -84,7 +84,7 @@ The plan table displays the number of insights related to the plan. If a plan ha
 
 The following screenshot shows 1 insight found after running the query discussed in [Overview](#overview) 6 or more times:
 
-<img src="{{ 'images/v23.1/plan_with_insight.png' | relative_url }}" alt="Plan with insight" style="border:1px solid #eee;max-width:100%" />
+![Plan with insight](/images/v23.1/plan_with_insight.png)
 
 {{site.data.alerts.callout_info}}
 CockroachDB uses the threshold of 6 executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.
@@ -96,7 +96,7 @@ If you click **Create Index**, a confirmation dialog displays a warning about th
 
 If you click **Apply** to create the index and then execute the statement again, the **Explain Plans** tab will show that the second execution (in this case at `19:40`), which uses the index and has no insight, takes less time than the first 6 executions.
 
-<img src="{{ 'images/v23.1/ui_statement_plan_2.png' | relative_url }}" alt="Plan table after index" style="border:1px solid #eee;max-width:100%" />
+![Plan table after index](/images/v23.1/ui_statement_plan_2.png)
 
 ### Diagnostics
 
@@ -115,11 +115,11 @@ When you activate diagnostics for a fingerprint, CockroachDB waits for the next 
 Diagnostics will be collected a maximum of *N* times for a given activated fingerprint where *N* is the number of nodes in your cluster.
 {{site.data.alerts.end}}
 
-{% include common/sql/statement-bundle-warning.md %}
+{% include "_includes/common/sql/statement-bundle-warning.md" %}
 
 #### Activate diagnostics collection and download bundles
 
-<img src="{{ 'images/v23.1/ui_activate_diagnostics.png' | relative_url }}" alt="Activate statement diagnostics" style="border:1px solid #eee;max-width:100%" />
+![Activate statement diagnostics](/images/v23.1/ui_activate_diagnostics.png)
 
 {{site.data.alerts.callout_danger}}
 Collecting diagnostics has an impact on performance. All executions of the statement fingerprint will run slower until diagnostics are collected.
@@ -137,11 +137,11 @@ To activate diagnostics collection:
 
 When the statement fingerprint is executed according to the statement diagnostic options selected, a row with the activation time and collection status is added to the **Statement diagnostics** table.
 
-<img src="{{ 'images/v23.1/ui_statement_diagnostics.png' | relative_url }}" alt="Statement diagnostics table" style="border:1px solid #eee;max-width:100%" />
+![Statement diagnostics table](/images/v23.1/ui_statement_diagnostics.png)
 
 The collection status values are:
 
-- **READY**: indicates that the diagnostics have been collected. To download the diagnostics bundle, click <img src="{{ 'images/v23.1/ui-download-button.png' | relative_url }}" alt="Down arrow" /> **Bundle (.zip)**.
+- **READY**: indicates that the diagnostics have been collected. To download the diagnostics bundle, click ![Down arrow](/images/v23.1/ui-download-button.png) **Bundle (.zip)**.
 - **WAITING**: indicates that a SQL statement matching the fingerprint has not yet been recorded. To cancel diagnostics collection, click the **Cancel request** button.
 - **ERROR**: indicates that the attempt at diagnostics collection failed.
 
@@ -151,7 +151,7 @@ Although fingerprints are periodically cleared from the Statements page, all dia
 
 - On the **Diagnostics** tab for a statement fingerprint, click the **All statement diagnostics** link.
 {% if page.cloud != true %}
-- Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History]({% link {{ page.version.version }}/ui-debug-pages.md %}#reports).
+- Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History]({{ page.version.version }}/ui-debug-pages.md#reports).
 {% endif %}
 
-Click <img src="{{ 'images/v23.1/ui-download-button.png' | relative_url }}" alt="Down arrow" /> **Bundle (.zip)** to download any diagnostics bundle.
+Click ![Down arrow](/images/v23.1/ui-download-button.png) **Bundle (.zip)** to download any diagnostics bundle.

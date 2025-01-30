@@ -1,8 +1,8 @@
 {% comment %}This include is used in install-cockroachdb-*.md{% endcomment %}
 {% capture deployment_link %}
-{% if page.name contains "mac" %}[Deploy a local container in Docker]({% link {{ page.version.version }}/start-a-local-cluster-in-docker-mac.md %})
-{% elsif page.name contains "windows" %}[Deploy a local container in Docker]({% link {{ page.version.version }}/start-a-local-cluster-in-docker-windows.md %})
-{% else %}[Deploy a local container in Docker]({% link {{ page.version.version }}/start-a-local-cluster-in-docker-linux.md %})
+{% if page.name contains "mac" %}[Deploy a local container in Docker]({{ page.version.version }}/start-a-local-cluster-in-docker-mac.md)
+{% elsif page.name contains "windows" %}[Deploy a local container in Docker]({{ page.version.version }}/start-a-local-cluster-in-docker-windows.md)
+{% else %}[Deploy a local container in Docker]({{ page.version.version }}/start-a-local-cluster-in-docker-linux.md)
 {% endif %}
 {% endcapture %}
 
@@ -49,7 +49,7 @@ Experimental images are not qualified for production use and not eligible for su
 
 1. Pull the image. Replace `{TAG}` with the tag from the previous step.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     docker pull cockroachdb/cockroach:{TAG}
     ~~~

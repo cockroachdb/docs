@@ -40,11 +40,11 @@ If you enter a payment method before the end of your free trial, you will not re
 
 ## Estimate costs
 
-To understand how costs vary per tier and begin to estimate future expenses, refer to [CockroachDB Cloud Costs]({% link cockroachcloud/costs.md %}).
+To understand how costs vary per tier and begin to estimate future expenses, refer to [CockroachDB Cloud Costs](costs.md).
 
 ## Add payment methods
 
-During the free trial, a [Billing Coordinator]({% link cockroachcloud/authorization.md %}) can [add a credit card]({% link cockroachcloud/billing-management.md %}) in the CockroachDB Cloud Console or subscribe through the [AWS Marketplace]({% link cockroachcloud/billing-management.md %}?filters=aws) or [Google Cloud Marketplace]({% link cockroachcloud/billing-management.md %}?filters=gcp) for monthly, pay-as-you-go payment. You can also [contact Sales](https://cockroachlabs.com/contact-sales) during the trial to learn more about CockroachDB and consider an initial purchse of credits as part of an annual or multi-year contract.
+During the free trial, a [Billing Coordinator](authorization.md) can [add a credit card](billing-management.md) in the CockroachDB Cloud Console or subscribe through the [AWS Marketplace](billing-management.md?filters=aws) or [Google Cloud Marketplace](billing-management.md?filters=gcp) for monthly, pay-as-you-go payment. You can also [contact Sales](https://cockroachlabs.com/contact-sales) during the trial to learn more about CockroachDB and consider an initial purchse of credits as part of an annual or multi-year contract.
 
 {{site.data.alerts.callout_info}}
 To avoid service disruption and possible data loss, be sure to enter a payment method or be in communication with Sales before your free trial ends.
@@ -60,4 +60,4 @@ If the end of the grace period is reached and no payment method has been added, 
 
 ## Get started
 
-[Create an Account]({% link cockroachcloud/create-an-account.md %}) or learn more about [CockroachDB Cloud](https://www.cockroachlabs.com/docs/cockroachcloud/).
+[Create an Account](create-an-account.md) or learn more about [CockroachDB Cloud](https://www.cockroachlabs.com/docs/cockroachcloud/).

@@ -28,7 +28,7 @@ Click a **database name** to open the **Tables** page.
 
 {% if page.cloud != true  -%}
 ### `ui.database_locality_metadata.enabled` cluster setting
-{% include_cached new-in.html version="v24.2.6" %} Retrieving extended database and table region information can cause significant CPU load on large multi-node clusters with many ranges. You can prevent the retrieval of this data and the associated CPU load by disabling the [`ui.database_locality_metadata.enabled` cluster setting]({{ link_prefix }}cluster-settings.html#setting-ui-database-locality-metadata-enabled). When set to `false`, “No data” will be displayed for region data and replica counts. If you require this data, use the SQL statement [`SHOW RANGES FROM {DATABASE|TABLE}`]({{ link_prefix }}show-ranges.html) to compute this information.
+{% include "_includes/new-in.html" version="v24.2.6" %} Retrieving extended database and table region information can cause significant CPU load on large multi-node clusters with many ranges. You can prevent the retrieval of this data and the associated CPU load by disabling the [`ui.database_locality_metadata.enabled` cluster setting]({{ link_prefix }}cluster-settings.html#setting-ui-database-locality-metadata-enabled). When set to `false`, “No data” will be displayed for region data and replica counts. If you require this data, use the SQL statement [`SHOW RANGES FROM {DATABASE|TABLE}`]({{ link_prefix }}show-ranges.html) to compute this information.
 {% endif -%}
 
 ## Search and filter

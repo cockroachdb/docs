@@ -9,7 +9,7 @@ The **Billing** page contains an overview of your charges and the payment detail
 
 ## Set up billing for an organization
 
-Users with the [Billing Coordinator]({% link cockroachcloud/authorization.md %}#billing-coordinator) role can manage billing for the organization.
+Users with the [Billing Coordinator](authorization.md#billing-coordinator) role can manage billing for the organization.
 
 You can pay for CockroachDB {{ site.data.products.cloud }} by using a credit card, or you can set up billing through [AWS Marketplace](https://aws.amazon.com/marketplace) or [Google Cloud Marketplace](https://cloud.google.com/marketplace).
 
@@ -65,7 +65,7 @@ To subscribe to CockroachDB {{ site.data.products.cloud }} through the AWS Marke
 
 1. From the [AWS Marketplace page for CockroachDB (pay-as-you-go)](https://aws.amazon.com/marketplace/pp/prodview-n3xpypxea63du),  click **View purchase options**. to open the **Subscribe to CockroachDB Cloud** page
 1. Click **Subscribe**, then click **Set up your account**. You will be redirected to the CockroachDB {{ site.data.products.cloud }} console.
-1. [Register]({% link cockroachcloud/create-an-account.md %}#register-a-new-account) a new CockroachDB {{ site.data.products.cloud }} account or sign in to your existing account.
+1. [Register](create-an-account.md#register-a-new-account) a new CockroachDB {{ site.data.products.cloud }} account or sign in to your existing account.
 1. If you have access to multiple CockroachDB {{ site.data.products.cloud }} organizations, select an organization to update its billing configuration.
 
     {{site.data.alerts.callout_info}}
@@ -102,7 +102,7 @@ To subscribe to CockroachDB Cloud through the Google Cloud Marketplace:
 2. **Select a billing account** and agree to **Additional Terms**, then click **Subscribe**.   
 3. Click **Go to Product Page**. You will be redirected to the [Google Cloud Marketplace page for CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go).
 4. From the product page, click **Sign up with Cockroach Labs**. You will be redirected to the CockroachDB Cloud console.
-5. [Register]({% link cockroachcloud/create-an-account.md %}#register-a-new-account) a new CockroachDB Cloud account or sign in to your existing account.
+5. [Register](create-an-account.md#register-a-new-account) a new CockroachDB Cloud account or sign in to your existing account.
 6. If you have access to multiple CockroachDB Cloud organizations, select an organization to update its billing configuration.
     {{site.data.alerts.callout_info}}
     Organizations that are configured for invoice billing or are already linked to a cloud marketplace are not listed.
@@ -139,4 +139,4 @@ Under the **Spend over time** section, you can see a table of each of your organ
 
 You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Click any invoice to view the details of your charges for a billing period.
 
-If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your clusters, billing is grouped by folder. Click any folder to view invoices for individual clusters in the folder or its descendants. Within a folder, click any subfolder to view its details.
+If you're using [folders](folders.md) to organize your clusters, billing is grouped by folder. Click any folder to view invoices for individual clusters in the folder or its descendants. Within a folder, click any subfolder to view its details.

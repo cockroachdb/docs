@@ -1,6 +1,6 @@
 Let's assume the `events` table already exists:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE events (
     product_id INT8,
@@ -15,12 +15,12 @@ Let's assume the `events` table already exists:
 
 You can create a hash-sharded index on an existing table:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > CREATE INDEX ON events(ts) USING HASH;
 ~~~
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SHOW INDEX FROM events;
 ~~~
@@ -43,7 +43,7 @@ You can create a hash-sharded index on an existing table:
 (12 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SHOW COLUMNS FROM events;
 ~~~

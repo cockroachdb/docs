@@ -1,1 +1,1 @@
-Either the [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) or [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) role on a pre-existing cluster, or the [Cluster Creator](authorization.html#cluster-creator) role in order to create a new cluster.
+Either the [Cluster Operator](authorization.md#cluster-operator) or [Cluster Administrator](authorization.md#cluster-administrator) role on a pre-existing cluster, or the [Cluster Creator](authorization.html#cluster-creator) role in order to create a new cluster.

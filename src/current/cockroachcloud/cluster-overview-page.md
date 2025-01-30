@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-The **Cluster Overview** page displays key metrics about your CockroachDB {{ site.data.products.cloud }} cluster. To view this page, click on a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page).
+The **Cluster Overview** page displays key metrics about your CockroachDB {{ site.data.products.cloud }} cluster. To view this page, click on a cluster from the [**Clusters** page](cluster-management.md#view-clusters-page).
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="standard">CockroachDB {{ site.data.products.standard }} / {{ site.data.products.basic }}</button>
@@ -16,22 +16,22 @@ The **Cluster Overview** page displays key metrics about your CockroachDB {{ sit
 
 ## Cluster settings
 
-The **Cluster settings** panel displays the settings you chose during [cluster creation]({% link cockroachcloud/create-a-basic-cluster.md %}).
+The **Cluster settings** panel displays the settings you chose during [cluster creation](create-a-basic-cluster.md).
 
 | Field     | Description                                                                                             |
 |-----------|---------------------------------------------------------------------------------------------------------|
-| Cloud     | The cluster's [cloud provider]({% link cockroachcloud/create-a-basic-cluster.md %}#step-2-select-the-cloud-provider). |
+| Cloud     | The cluster's [cloud provider](create-a-basic-cluster.md#step-2-select-the-cloud-provider). |
 | Plan type | The plan type used to create the cluster.                                                               |
-| Regions    | The cluster's [regions]({% link cockroachcloud/create-a-basic-cluster.md %}#step-3-select-the-regions).         |
+| Regions    | The cluster's [regions](create-a-basic-cluster.md#step-3-select-the-regions).         |
 
 ## Capacity used this month
 
-The **Capacity used this month** panel displays your cluster usage statistics for the current month. You can click [**Estimate usage cost**]({% link cockroachcloud/basic-cluster-management.md %}#estimate-usage-cost) to open a tool that estimates your monthly costs based on your workload during a selected time frame.
+The **Capacity used this month** panel displays your cluster usage statistics for the current month. You can click [**Estimate usage cost**](basic-cluster-management.md#estimate-usage-cost) to open a tool that estimates your monthly costs based on your workload during a selected time frame.
 
 | Field         | Description                                                                                                                                                                                                                                                                      |
 |---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Capacity used   | The CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster's [configured capacity]({% link cockroachcloud/create-a-basic-cluster.md %}#step-4-configure-cluster-capacity). Click the **edit** icon to change the configured capacity.                                                                                                         |
-| [Request Units]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your configured capacity.              |
+| Capacity used   | The CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster's [configured capacity](create-a-basic-cluster.md#step-4-configure-cluster-capacity). Click the **edit** icon to change the configured capacity.                                                                                                         |
+| [Request Units](plan-your-cluster-basic.md#request-units) | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your configured capacity.              |
 | Storage       | The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your configured capacity. |
 
 
@@ -61,7 +61,7 @@ The **Storage Used** graph displays the amount of data being stored in the clust
 
 ### SQL Statements
 
-The **SQL Statements** graph displays an average of the number of [`SELECT`]({% link {{site.current_cloud_version}}/select-clause.md %}), [`INSERT`]({% link {{site.current_cloud_version}}/insert.md %}), [`UPDATE`]({% link {{site.current_cloud_version}}/update.md %}), and [`DELETE`]({% link {{site.current_cloud_version}}/delete.md %}) statements successfully executed per second.
+The **SQL Statements** graph displays an average of the number of [`SELECT`]({{site.current_cloud_version}}/select-clause.md), [`INSERT`]({{site.current_cloud_version}}/insert.md), [`UPDATE`]({{site.current_cloud_version}}/update.md), and [`DELETE`]({{site.current_cloud_version}}/delete.md) statements successfully executed per second.
 
 </section>
 
@@ -69,27 +69,27 @@ The **SQL Statements** graph displays an average of the number of [`SELECT`]({% 
 
 ## Cluster configuration
 
-The **Cluster configuration** panel displays the settings you chose during [cluster creation]({% link cockroachcloud/create-your-cluster.md %}).
+The **Cluster configuration** panel displays the settings you chose during [cluster creation](create-your-cluster.md).
 
 | Field     | Description                                                                                             |
 |-----------|---------------------------------------------------------------------------------------------------------|
-| Cloud     | The cluster's [cloud provider]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-2-select-the-cloud-provider). |
-| Plan type | The [plan type]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-1-start-the-cluster-creation-process) used to create the cluster.                                                           |
-| Regions   | The cluster's [region]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-3-configure-regions-and-nodes).         |
-| Nodes     | The [number of nodes]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-3-configure-regions-and-nodes) the cluster has and the status of each. |
-| Compute   | The cluster's [compute power per node]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity).         |
-| Storage   | The cluster's [storage per node]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-5-configure-cluster-capacity).         |
+| Cloud     | The cluster's [cloud provider](create-an-advanced-cluster.md#step-2-select-the-cloud-provider). |
+| Plan type | The [plan type](create-an-advanced-cluster.md#step-1-start-the-cluster-creation-process) used to create the cluster.                                                           |
+| Regions   | The cluster's [region](create-an-advanced-cluster.md#step-3-configure-regions-and-nodes).         |
+| Nodes     | The [number of nodes](create-an-advanced-cluster.md#step-3-configure-regions-and-nodes) the cluster has and the status of each. |
+| Compute   | The cluster's [compute power per node](create-an-advanced-cluster.md#step-5-configure-cluster-capacity).         |
+| Storage   | The cluster's [storage per node](create-an-advanced-cluster.md#step-5-configure-cluster-capacity).         |
 
 <a id="pci-ready"></a>
 ## PCI ready (with Security add-on)
 
-CockroachDB {{ site.data.products.advanced }} clusters with Security add-on have a **PCI ready** panel to monitor the status of security features required for [PCI readiness]({% link cockroachcloud/pci-dss.md %}). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
+CockroachDB {{ site.data.products.advanced }} clusters with Security add-on have a **PCI ready** panel to monitor the status of security features required for [PCI readiness](pci-dss.md). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
 
-- [CockroachDB {{ site.data.products.cloud }} Organization Audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %})
-- [Cluster audit log export]({% link cockroachcloud/export-logs.md %})
-- [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/managing-cmek.md %})
-- [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
-- Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization]({% link cockroachcloud/configure-cloud-org-sso.md %}) and your [clusters]({% link cockroachcloud/cloud-sso-sql.md %})
-- [Network security]({% link cockroachcloud/network-authorization.md %})
+- [CockroachDB {{ site.data.products.cloud }} Organization Audit logs](cloud-org-audit-logs.md)
+- [Cluster audit log export](export-logs.md)
+- [Customer-Managed Encryption Keys (CMEK)](managing-cmek.md)
+- [Egress Perimeter Controls](egress-perimeter-controls.md)
+- Single Sign-On (SSO) for your [CockroachDB {{ site.data.products.cloud }} organization](configure-cloud-org-sso.md) and your [clusters](cloud-sso-sql.md)
+- [Network security](network-authorization.md)
 
 </section>

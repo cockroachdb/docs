@@ -1,6 +1,6 @@
-{% include_cached new-in.html version="v24.1" %} To cut back to a cluster that was previously the primary cluster, use the [`ALTER VIRTUAL CLUSTER`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) syntax:
+{% include "_includes/new-in.html" version="v24.1" %} To cut back to a cluster that was previously the primary cluster, use the [`ALTER VIRTUAL CLUSTER`]({{ page.version.version }}/alter-virtual-cluster.md) syntax:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 ALTER VIRTUAL CLUSTER {original_primary_vc} START REPLICATION OF {promoted_standby_vc} ON {connection_string_standby};
 ~~~

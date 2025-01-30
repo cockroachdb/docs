@@ -14,7 +14,7 @@ Before starting, make sure the email address associated with your Google Cloud a
 
 1. From your local workstation, edit the `cockroachdb` service to add the `prometheus: cockroachdb` label:
 
-    {% include copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl label svc cockroachdb prometheus=cockroachdb
     ~~~
@@ -27,7 +27,7 @@ Before starting, make sure the email address associated with your Google Cloud a
 
 2. Install [CoreOS's Prometheus Operator](https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.20/bundle.yaml):
 
-    {% include copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.20/bundle.yaml
     ~~~
@@ -41,7 +41,7 @@ Before starting, make sure the email address associated with your Google Cloud a
 
 3. Confirm that the `prometheus-operator` has started:
 
-    {% include copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get deploy prometheus-operator
     ~~~
@@ -53,7 +53,7 @@ Before starting, make sure the email address associated with your Google Cloud a
 
 4. Use our [`prometheus.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/prometheus.yaml) file to create the various objects necessary to run a Prometheus instance:
 
-    {% include copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/prometheus.yaml
     ~~~
@@ -69,7 +69,7 @@ Before starting, make sure the email address associated with your Google Cloud a
 
     1. Port-forward from your local machine to the pod running Prometheus:
 
-        {% include copy-clipboard.html %}
+        {% include "_includes/copy-clipboard.html" %}
         ~~~ shell
         $ kubectl port-forward prometheus-cockroachdb-0 9090
         ~~~
@@ -78,11 +78,11 @@ Before starting, make sure the email address associated with your Google Cloud a
 
     3. To verify that each CockroachDB node is connected to Prometheus, go to **Status > Targets**. The screen should look like this:
 
-        <img src="{{ 'images/v2.1/kubernetes-prometheus-targets.png' | relative_url }}" alt="Prometheus targets" style="border:1px solid #eee;max-width:100%" />
+        ![Prometheus targets](/images/v2.1/kubernetes-prometheus-targets.png)
 
     4. To verify that data is being collected, go to **Graph**, enter the `sys_uptime` variable in the field, click **Execute**, and then click the **Graph** tab. The screen should like this:
 
-        <img src="{{ 'images/v2.1/kubernetes-prometheus-graph.png' | relative_url }}" alt="Prometheus graph" style="border:1px solid #eee;max-width:100%" />
+        ![Prometheus graph](/images/v2.1/kubernetes-prometheus-graph.png)
 
     {{site.data.alerts.callout_success}}
     Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, port-forward as described in {% if page.secure == true %}[Access the Admin UI](#step-6-access-the-admin-ui){% else %}[Access the Admin UI](#step-5-access-the-admin-ui){% endif %} and then point your browser to <a href="http://localhost:8080/_status/vars" data-proofer-ignore>http://localhost:8080/_status/vars</a>.
@@ -100,7 +100,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 3. Add this configuration to the Kubernetes cluster as a secret, renaming it to `alertmanager.yaml` and labelling it to make it easier to find:
 
-    {% include copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create secret generic alertmanager-cockroachdb --from-file=alertmanager.yaml=alertmanager-config.yaml
     ~~~
@@ -109,7 +109,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     secret "alertmanager-cockroachdb" created
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl label secret alertmanager-cockroachdb app=cockroachdb
     ~~~
@@ -124,7 +124,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 4. Use our [`alertmanager.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alertmanager.yaml) file to create the various objects necessary to run an Alertmanager instance, including a ClusterIP service so that Prometheus can forward alerts:
 
-    {% include copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager.yaml
     ~~~
@@ -138,22 +138,22 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
     1. Port-forward from your local machine to the pod running Alertmanager:
 
-        {% include copy-clipboard.html %}
+        {% include "_includes/copy-clipboard.html" %}
         ~~~ shell
         $ kubectl port-forward alertmanager-cockroachdb-0 9093
         ~~~
 
     2. Go to <a href="http://localhost:9093/" data-proofer-ignore>http://localhost:9093</a> in your browser. The screen should look like this:
 
-        <img src="{{ 'images/v2.1/kubernetes-alertmanager-home.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
+        ![Alertmanager](/images/v2.1/kubernetes-alertmanager-home.png)
 
 6. Ensure that the Alertmanagers are visible to Prometheus by opening <a href="http://localhost:9090/status" data-proofer-ignore>http://localhost:9090/status</a>. The screen should look like this:
 
-    <img src="{{ 'images/v2.1/kubernetes-prometheus-alertmanagers.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
+    ![Alertmanager](/images/v2.1/kubernetes-prometheus-alertmanagers.png)
 
 7. Add CockroachDB's starter [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alert-rules.yaml):
 
-    {% include copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alert-rules.yaml
     ~~~
@@ -164,17 +164,17 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 8. Ensure that the rules are visible to Prometheus by opening http://localhost:9090/status <a href="http://localhost:9090/rules" data-proofer-ignore>http://localhost:9090/rules</a>. The screen should look like this:
 
-    <img src="{{ 'images/v2.1/kubernetes-prometheus-alertrules.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
+    ![Alertmanager](/images/v2.1/kubernetes-prometheus-alertrules.png)
 
 9. Verify that the example alert is firing by opening <a href="http://localhost:9090/alerts" data-proofer-ignore>http://localhost:9090/alerts</a>. The screen should look like this:
 
-    <img src="{{ 'images/v2.1/kubernetes-prometheus-alerts.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
+    ![Alertmanager](/images/v2.1/kubernetes-prometheus-alerts.png)
 
 10. To remove the example alert:
 
     1. Use the `kubectl edit` command to open the rules for editing:
 
-        {% include copy-clipboard.html %}
+        {% include "_includes/copy-clipboard.html" %}
         ~~~ shell
         $ kubectl edit prometheusrules prometheus-cockroachdb-rules
         ~~~

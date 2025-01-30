@@ -1,10 +1,10 @@
-CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.version }}/cockroach-workload.md %}) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
+CockroachDB comes with a number of [built-in workloads]({{ page.version.version }}/cockroach-workload.md) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
 {{site.data.alerts.callout_info}}
 Be sure that you have configured your network to allow traffic from the application to the load balancer. In this case, you will run the sample workload on one of your machines. The traffic source should therefore be the **internal (private)** IP address of that machine.
 {{site.data.alerts.end}}
 
-For comprehensive guidance on benchmarking CockroachDB with TPC-C, refer to [Performance Benchmarking]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-local.md %}).
+For comprehensive guidance on benchmarking CockroachDB with TPC-C, refer to [Performance Benchmarking]({{ page.version.version }}/performance-benchmarking-with-tpcc-local.md).
 
 1. SSH to the machine where you want to run the sample TPC-C workload.
 
@@ -12,7 +12,7 @@ For comprehensive guidance on benchmarking CockroachDB with TPC-C, refer to [Per
 
 1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
@@ -20,16 +20,16 @@ For comprehensive guidance on benchmarking CockroachDB with TPC-C, refer to [Per
 
 1. Copy the binary into the `PATH`:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
     If you get a permissions error, prefix the command with `sudo`.
 
-1. Use the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) command to load the initial schema and data, pointing it at the IP address of the load balancer:
+1. Use the [`cockroach workload`]({{ page.version.version }}/cockroach-workload.md) command to load the initial schema and data, pointing it at the IP address of the load balancer:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cockroach workload init tpcc \
     'postgresql://root@<IP ADDRESS OF LOAD BALANCER>:26257/tpcc?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key'
@@ -37,7 +37,7 @@ For comprehensive guidance on benchmarking CockroachDB with TPC-C, refer to [Per
 
 1. Use the `cockroach workload` command to run the workload for 10 minutes:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cockroach workload run tpcc \
     --duration=10m \
@@ -72,6 +72,6 @@ For comprehensive guidance on benchmarking CockroachDB with TPC-C, refer to [Per
     For more `tpcc` options, use `cockroach workload run tpcc --help`. For details about other workloads built into the `cockroach` binary, use `cockroach workload --help`.
     {{site.data.alerts.end}}
 
-1. To monitor the load generator's progress, open the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+1. To monitor the load generator's progress, open the [DB Console]({{ page.version.version }}/ui-overview.md) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
     Since the load generator is pointed at the load balancer, the connections will be evenly distributed across nodes. To verify this, click **Metrics** on the left, select the **SQL** dashboard, and then check the **SQL Connections** graph. You can use the **Graph** menu to filter the graph for specific nodes.

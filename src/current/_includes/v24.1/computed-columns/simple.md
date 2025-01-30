@@ -1,6 +1,6 @@
 In this example, let's create a simple table with a computed column:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -16,7 +16,7 @@ In this example, let's create a simple table with a computed column:
 
 Then, insert a few rows of data:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO users (first_name, last_name) VALUES
     ('Lola', 'McDog'),
@@ -24,7 +24,7 @@ Then, insert a few rows of data:
     ('Ernie', 'Narayan');
 ~~~
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users;
 ~~~
@@ -37,4 +37,4 @@ Then, insert a few rows of data:
 (3 rows)
 ~~~
 
-The `full_name` column is computed from the `first_name` and `last_name` columns without the need to define a [view]({% link {{ page.version.version }}/views.md %}).
+The `full_name` column is computed from the `first_name` and `last_name` columns without the need to define a [view]({{ page.version.version }}/views.md).

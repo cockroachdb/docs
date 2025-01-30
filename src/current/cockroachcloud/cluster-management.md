@@ -6,16 +6,16 @@ docs_area: manage
 ---
 
 {{site.data.alerts.callout_info}}
-CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({{ site.current_cloud_version }}/cockroachdb-feature-availability.md).
 {{site.data.alerts.end}}
 
-{% include cockroachcloud/filter-tabs/cluster-management.md %}
+{% include "_includes/cockroachcloud/filter-tabs/cluster-management.md" %}
 
 This page describes the cluster management and cluster deletion workflows for CockroachDB {{ site.data.products.standard }}.
 
 ## Planning your cluster
 
-Before making any changes to your cluster's regions, review the [requirements and recommendations]({% link cockroachcloud/plan-your-cluster.md %}) for CockroachDB {{ site.data.products.cloud }} cluster configuration.
+Before making any changes to your cluster's regions, review the [requirements and recommendations](plan-your-cluster.md) for CockroachDB {{ site.data.products.cloud }} cluster configuration.
 
 ## View Clusters page
 
@@ -25,9 +25,9 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 ## View cluster overview
 
-The [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) displays details about the selected CockroachDB {{ site.data.products.cloud }} cluster.
+The [**Overview** page](cluster-overview-page.md) displays details about the selected CockroachDB {{ site.data.products.cloud }} cluster.
 
-From the **Overview** page, you can connect to your cluster. For more information, refer to [Connect to Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
+From the **Overview** page, you can connect to your cluster. For more information, refer to [Connect to Your CockroachDB {{ site.data.products.standard }} Cluster](connect-to-your-cluster.md).
 
 ## Add a region to your cluster
 
@@ -57,14 +57,14 @@ To edit your cluster's capacity:
 
 1. In the sidebar, verify the new estimated cost for the cluster and click **Update cluster**.
 
-To learn more, refer to [Plan a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/plan-your-cluster.md %}#provisioned-capacity).
+To learn more, refer to [Plan a CockroachDB {{ site.data.products.standard }} cluster](plan-your-cluster.md#provisioned-capacity).
 
 ## Manage cluster upgrades
 
 By default, major-version and patch upgrades are automatically applied to CockroachDB {{ site.data.products.standard }} clusters. To control when a cluster is upgraded to a new major version, you can disable automatic major-version upgrades. Patch upgrades are always applied automatically.
 
 {{site.data.alerts.callout_danger}}
-If you disable automatic major-version upgrades for a cluster, to maintain support for the cluster, you must manually upgrade it to a later major version before its current version reaches [End of Support (EOS)]({% link cockroachcloud/upgrade-policy.md %}).
+If you disable automatic major-version upgrades for a cluster, to maintain support for the cluster, you must manually upgrade it to a later major version before its current version reaches [End of Support (EOS)](upgrade-policy.md).
 {{site.data.alerts.end}}
 
 To disable automatic major-version upgrades for a CockroachDB {{ site.data.products.standard }} cluster:
@@ -75,9 +75,9 @@ To disable automatic major-version upgrades for a CockroachDB {{ site.data.produ
 
 ## Restore data from a backup
 
-Refer to [Managed Backups]({% link cockroachcloud/managed-backups.md %}) for instructions to restore your cluster from an automatic cluster backup.
+Refer to [Managed Backups](managed-backups.md) for instructions to restore your cluster from an automatic cluster backup.
 
-You can also [back up and restore]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) your CockroachDB {{ site.data.products.serverless }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
+You can also [back up and restore](take-and-restore-self-managed-backups.md) your CockroachDB {{ site.data.products.serverless }} cluster manually. You can take [backups locally](take-and-restore-self-managed-backups.md) to [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) or [back up to cloud storage](take-and-restore-self-managed-backups.md).
 
 ## Enable deletion protection
 

@@ -214,10 +214,10 @@ The syntax for including content is `{% include {{ page.version.version }}/<file
 
 New and changed features should be called out in the documentation using version tags.
 
-- To add a version tag to a paragraph, place `{% include_cached new-in.html version="<version>" %}` at the start of the paragraph, e.g:
+- To add a version tag to a paragraph, place `{% include new-in.html version="<version>" %}` at the start of the paragraph, e.g:
 
     ```
-    {% include_cached new-in.html version="v22.2" %} The [**Databases**](#databases), [table details](#table-details), and [index details](#index-details) pages show recommendations to drop indexes based on index usage. You can traverse the **Databases** page and **Tables** view to determine which indexes have recommendations.
+    {% include new-in.html version="v22.2" %} The [**Databases**](#databases), [table details](#table-details), and [index details](#index-details) pages show recommendations to drop indexes based on index usage. You can traverse the **Databases** page and **Tables** view to determine which indexes have recommendations.
     ```
 
 - To add a version tag to a heading, place `<span class="version-tag">New in vX.X</span>` to the right of the heading, for example:

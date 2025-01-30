@@ -24,7 +24,7 @@ indented in relation to the other Liquid. Please try to keep the indentation con
 ## Overview
 
 {{site.data.alerts.callout_info}}
-{% include common/license/evolving.md %}
+{% include "_includes/common/license/evolving.md" %}
 {{site.data.alerts.end}}
 
 This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB [releases](#downloads).
@@ -33,16 +33,16 @@ A new major version of CockroachDB is released quarterly. After a series of test
 
 Releases are named in the format `vYY.R.PP`, where `YY` indicates the year, `R` indicates the major release starting with `1` each year, and `PP` indicates the patch number, starting with `0`.
 
-For example, the latest production release is `{{ latest_full_production_version.release_name }}`, within major version [`{{ latest_major_version_with_production }}`]({% link releases/{{ latest_major_version_with_production }}.md %}).
+For example, the latest production release is `{{ latest_full_production_version.release_name }}`, within major version [`{{ latest_major_version_with_production }}`](releases/{{ latest_major_version_with_production }}.md).
 
 After choosing a version of CockroachDB, learn how to:
 
-- [Create a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/create-your-cluster.md %}).
-- [Upgrade a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/upgrade-cockroach-version.md %}).
-- [Install CockroachDB {{ site.data.products.core }}]({% link {{site.current_cloud_version}}/install-cockroachdb.md %})
-- [Upgrade a Self-Hosted cluster]({% link {{site.current_cloud_version}}/upgrade-cockroach-version.md %}).
+- [Create a cluster in CockroachDB {{ site.data.products.cloud }}](create-your-cluster.md).
+- [Upgrade a cluster in CockroachDB {{ site.data.products.cloud }}](upgrade-cockroach-version.md).
+- [Install CockroachDB {{ site.data.products.core }}]({{site.current_cloud_version}}/install-cockroachdb.md)
+- [Upgrade a Self-Hosted cluster]({{site.current_cloud_version}}/upgrade-cockroach-version.md).
 
-Be sure to review Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}) and review information about applicable [software licenses](#licenses).
+Be sure to review Cockroach Labs' [Release Support Policy](releases/release-support-policy.md) and review information about applicable [software licenses](#licenses).
 
 ### Release types
 
@@ -52,7 +52,7 @@ As of 2024, every second major version is an **Innovation release**. For Cockroa
 
 All other major versions are **Regular releases**, which are required upgrades. These versions offer longer support periods, which, for CockroachDB {{ site.data.products.core }} clusters, are further extended when a patch version is announced that begins their **LTS** (Long-Term Support) release series.
 
-For details on how LTS impacts support in CockroachDB {{ site.data.products.core }}, refer to [Release Support Policy]({% link releases/release-support-policy.md %}). For details on support per release type in CockroachDB Cloud, refer to [CockroachDB Cloud Support and Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+For details on how LTS impacts support in CockroachDB {{ site.data.products.core }}, refer to [Release Support Policy](releases/release-support-policy.md). For details on support per release type in CockroachDB Cloud, refer to [CockroachDB Cloud Support and Upgrade Policy](upgrade-policy.md).
 
 | Major Release Type | Frequency | Required upgrade | LTS releases and extended support |
 | :---: | :---: | :---: | :---: |
@@ -147,7 +147,7 @@ The following releases and their descriptions represent proposed plans that are 
 {% comment %} For the latest GA version, find the latest hotfix that is not withdrawn. {% endcomment %}
 
 {% comment %}Assign the JS for the experimental download prompt and store it in the Liquid variable experimental_download_js {% endcomment %}
-{% capture experimental_download_js %}{% include_cached releases/experimental_download_dialog.md %}{% endcapture %}
+{% capture experimental_download_js %}{% include "_includes/releases/experimental_download_dialog.md" %}{% endcapture %}
 {% capture onclick_string %}onclick="{{ experimental_download_js }}"{% endcapture %}
 
 {% assign is_not_downloadable_message = "No longer available for download." %}
@@ -193,9 +193,9 @@ The following releases and their descriptions represent proposed plans that are 
 {% endif %}
 
 {% if released == false %}
-CockroachDB {{ page.major_version }} is in active development and is not yet supported. The following [testing releases]({% link releases/index.md %}#release-types) are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments. When CockroachDB {{ page.major_version }} is Generally Available (GA), production releases will also be announced on this page.
+CockroachDB {{ page.major_version }} is in active development and is not yet supported. The following [testing releases](releases/index.md#release-types) are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments. When CockroachDB {{ page.major_version }} is Generally Available (GA), production releases will also be announced on this page.
 {% else %}
-CockroachDB {{ v.major_version }} is {% if skippable == true %}an [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases) that is optional for CockroachDB {{ site.data.products.advanced }}, CockroachDB {{ site.data.products.standard }}, and CockroachDB {{ site.data.products.core }} but required for CockroachDB {{ site.data.products.basic }}.{% else %}a required [Regular release]({% link releases/release-support-policy.md %}#regular-releases).{% endif %}{% if released == false %} It is still in development and not yet supported.{% endif %}{% unless latest_full_production_version.release_name != v.major_version %} CockroachDB {{ latest_full_production_version.release_name }} is the latest supported version.{% endunless %} To learn more, refer to [CockroachDB {{ latest.major_version }} Release Notes]({% link releases/{{ v.major_version }}.md %}).
+CockroachDB {{ v.major_version }} is {% if skippable == true %}an [Innovation release](releases/release-support-policy.md#innovation-releases) that is optional for CockroachDB {{ site.data.products.advanced }}, CockroachDB {{ site.data.products.standard }}, and CockroachDB {{ site.data.products.core }} but required for CockroachDB {{ site.data.products.basic }}.{% else %}a required [Regular release](releases/release-support-policy.md#regular-releases).{% endif %}{% if released == false %} It is still in development and not yet supported.{% endif %}{% unless latest_full_production_version.release_name != v.major_version %} CockroachDB {{ latest_full_production_version.release_name }} is the latest supported version.{% endunless %} To learn more, refer to [CockroachDB {{ latest.major_version }} Release Notes](releases/{{ v.major_version }}.md).
 {% endif %}
 
 Refer to [Major release types](#major-releases) before installing or upgrading for release support details.
@@ -213,7 +213,7 @@ Refer to [Major release types](#major-releases) before installing or upgrading f
       v.major_version == 'v22.1' or
       v.major_version == 'v22.2' or
       released == false %}
-To learn what’s new in this release, refer to [Feature Highlights]({% link releases/{{ v.major_version }}.md %}#feature-highlights).
+To learn what’s new in this release, refer to [Feature Highlights](releases/{{ v.major_version }}.md#feature-highlights).
 {% endunless %}
 
 <div id="os-tabs" class="filters filters-big clearfix">
@@ -295,7 +295,7 @@ To learn what’s new in this release, refer to [Feature Highlights]({% link rel
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if in_lts == true %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r, decorate with link about LTS if applicable. {% endcomment %}
+                <a href="releases/{{ v.major_version }}.md#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if in_lts == true %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r, decorate with link about LTS if applicable. {% endcomment %}
                 {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                 {% endif %}
@@ -357,7 +357,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="releases/{{ v.major_version }}.md#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
             {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
@@ -416,7 +416,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
+                <a href="releases/{{ v.major_version }}.md#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
                 {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
                 {% endif %}
@@ -499,7 +499,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
 
             {% comment %}Version column{% endcomment %}
-            <td><a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace:
+            <td><a href="releases/{{ v.major_version }}.md#{{ r.release_name | replace:
 ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if in_lts == true %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r.{% endcomment %}
             {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
@@ -561,7 +561,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% comment %} Add link to each release r {% endcomment %}
+                <a href="releases/{{ v.major_version }}.md#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% comment %} Add link to each release r {% endcomment %}
             {% if r.release_name == latest_hotfix.release_name %}
                 <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
             {% endif %}
@@ -605,5 +605,5 @@ All binaries available on this page released prior to the release date of 24.3.0
 To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.
 
 ## Unsupported versions 
-[Here]({% link releases/unsupported-versions.md %}) are the versions of CockroachDB that are no longer supported
+[Here](releases/unsupported-versions.md) are the versions of CockroachDB that are no longer supported
 

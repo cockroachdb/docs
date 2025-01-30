@@ -1,6 +1,6 @@
 In this example, create a table with a `JSONB` column and virtual computed columns:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > CREATE TABLE student_profiles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -12,7 +12,7 @@ In this example, create a table with a `JSONB` column and virtual computed colum
 
 Then, insert a few rows of data:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > INSERT INTO student_profiles (profile) VALUES
     ('{"id": "d78236", "firstName": "Arthur", "lastName": "Read", "birthdate": "2010-01-25", "school": "PVPHS", "credits": 120, "sports": "none"}'),
@@ -20,7 +20,7 @@ Then, insert a few rows of data:
     ('{"firstName": "Ernie", "lastName": "Narayan", "school" : "Brooklyn Tech", "id": "t63512", "sports": "Track and Field", "clubs": "Chess"}');
 ~~~
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM student_profiles;
 ~~~
@@ -36,6 +36,6 @@ Then, insert a few rows of data:
 Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
-The virtual column `full_name` is computed as a field from the `profile` column's data. The first name and last name are concatenated and separated by a single whitespace character using the [`concat_ws` string function]({% link {{ page.version.version }}/functions-and-operators.md %}#string-and-byte-functions).
+The virtual column `full_name` is computed as a field from the `profile` column's data. The first name and last name are concatenated and separated by a single whitespace character using the [`concat_ws` string function]({{ page.version.version }}/functions-and-operators.md#string-and-byte-functions).
 
-The virtual column `birthday` is parsed as a `TIMESTAMP` value from the `profile` column's `birthdate` string value. The [`parse_timestamp` function]({% link {{ page.version.version }}/functions-and-operators.md %}) is used to parse strings in `TIMESTAMP` format.
+The virtual column `birthday` is parsed as a `TIMESTAMP` value from the `profile` column's `birthdate` string value. The [`parse_timestamp` function]({{ page.version.version }}/functions-and-operators.md) is used to parse strings in `TIMESTAMP` format.

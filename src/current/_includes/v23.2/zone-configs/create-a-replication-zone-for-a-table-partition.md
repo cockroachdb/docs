@@ -2,9 +2,9 @@
 
 {% endunless %}
 
-Once [partitions have been defined for a table or a secondary index]({% link {{ page.version.version }}/partitioning.md %}), to control replication for a partition, use `ALTER PARTITION <partition> OF INDEX <table@index> CONFIGURE ZONE`:
+Once [partitions have been defined for a table or a secondary index]({{ page.version.version }}/partitioning.md), to control replication for a partition, use `ALTER PARTITION <partition> OF INDEX <table@index> CONFIGURE ZONE`:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > ALTER PARTITION us_west OF INDEX vehicles@primary
     CONFIGURE ZONE USING
@@ -16,7 +16,7 @@ Once [partitions have been defined for a table or a secondary index]({% link {{ 
 CONFIGURE ZONE 1
 ~~~
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > ALTER PARTITION us_west OF INDEX vehicles@vehicles_auto_index_fk_city_ref_users
     CONFIGURE ZONE USING
@@ -30,7 +30,7 @@ CONFIGURE ZONE 1
 
 To define replication zones for identically named partitions of a table and its secondary indexes, you can use the `<table>@*` syntax to save several steps:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > ALTER PARTITION us_west OF INDEX vehicles@*
     CONFIGURE ZONE USING
@@ -40,7 +40,7 @@ To define replication zones for identically named partitions of a table and its 
 
 To view the zone configuration for a partition, use `SHOW ZONE CONFIGURATION FROM PARTITION <partition> OF INDEX <table@index>`:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FROM PARTITION us_west OF INDEX vehicles@primary;
 ~~~
@@ -59,5 +59,5 @@ To view the zone configuration for a partition, use `SHOW ZONE CONFIGURATION FRO
 ~~~
 
 {{site.data.alerts.callout_success}}
-You can also use the [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %}) statement or [`SHOW PARTITIONS`]({% link {{ page.version.version }}/show-partitions.md %}) statements to view details about all of the replication zones defined for the partitions of a table and its secondary indexes.
+You can also use the [`SHOW CREATE TABLE`]({{ page.version.version }}/show-create.md) statement or [`SHOW PARTITIONS`]({{ page.version.version }}/show-partitions.md) statements to view details about all of the replication zones defined for the partitions of a table and its secondary indexes.
 {{site.data.alerts.end}}

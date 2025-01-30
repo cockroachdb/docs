@@ -6,7 +6,7 @@ docs_area: deploy
 cloud: true
 ---
 
-CockroachDB {{ site.data.products.cloud }} clusters can be [created]({% link cockroachcloud/create-your-cluster.md %}) in the following cloud regions.
+CockroachDB {{ site.data.products.cloud }} clusters can be [created](create-your-cluster.md) in the following cloud regions.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="standard">CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }}</button>

@@ -35,7 +35,7 @@ The transaction execution details page provides the following details on the tra
 
 If a transaction execution is waiting, the transaction execution details are followed by Contention Insights and details of the transaction execution on which the blocked transaction execution is waiting. For more information about contention, see [Transaction contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
 
-<img src="{{ 'images/v23.1/waiting-transaction.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
+![Movr rides transactions](/images/v23.1/waiting-transaction.png)
 
 ## See also
 
@@ -43,7 +43,7 @@ If a transaction execution is waiting, the transaction execution details are fol
 - [Transaction Layer]({{ link_prefix }}architecture/transaction-layer.html)
 - [Run Multi-Statement Transactions]({{ link_prefix }}run-multi-statement-transactions.html)
 {% if page.cloud != true %}
-- [Transaction latency graphs]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#transactions)
+- [Transaction latency graphs]({{ page.version.version }}/ui-sql-dashboard.md#transactions)
 {% endif %}
 - [Transaction retries]({{ link_prefix }}transactions.html#transaction-retries)
 - [Statements Page]({{ page_prefix }}statements-page.html)

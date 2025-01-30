@@ -26,4 +26,4 @@ To filter transactions in which a SQL statement fingerprint exceeds a specified 
 
 The following screenshot shows the transactions that contain the string `rides` for the `movr` application:
 
-<img src="{{ 'images/v21.2/movr-transactions-rides.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:80%" />
+![Movr rides transactions](/images/v21.2/movr-transactions-rides.png)

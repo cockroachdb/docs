@@ -4,7 +4,7 @@ To view this page, click **Databases** in the left side navigation menu.
 
 The Databases List Page shows:
 
-- Whether [automatic statistics collection]({% link {{ version_prefix }}/cost-based-optimizer.md %}#table-statistics) is enabled for the cluster. The **Auto stats collection** indicator is on the top right.
+- Whether [automatic statistics collection]({{ version_prefix }}/cost-based-optimizer.md#table-statistics) is enabled for the cluster. The **Auto stats collection** indicator is on the top right.
 - A list of the databases on the cluster.
 
 The following information is displayed for each database:
@@ -27,7 +27,7 @@ To search for specific databases, use the search field above the list table:
 
     The list of databases is filtered by the string.
 
-{% include_cached new-in.html version="v24.3" %} To filter databases based on the nodes on which the database tables are located, use the nodes multi-select dropdown above the list table:
+{% include "_includes/new-in.html" version="v24.3" %} To filter databases based on the nodes on which the database tables are located, use the nodes multi-select dropdown above the list table:
 
 1. Click the dropdown arrow.
 1. Select one or more nodes. You may need to scroll down for nodes in different regions. You may also type in the beginning of the node name to narrow the list.
@@ -42,13 +42,13 @@ Nodes multi-select dropdown is not available on Standard or Basic clusters.
 
 ### Refresh data
 
-{% include_cached new-in.html version="v24.3" %} The `system.table_metadata` table caches the necessary metadata of a table that populates the following:
+{% include "_includes/new-in.html" version="v24.3" %} The `system.table_metadata` table caches the necessary metadata of a table that populates the following:
 
 - [Databases List Page](#databases-list-page)
 - [Tables List Tab](#tables-list-tab) of the [Database Details Page](#database-details-page)
 - [Overview Tab](#overview-tab) of the [Table Details Page](#table-details-page)
 
-The [cluster settings]({% link {{ version_prefix }}/cluster-settings.md %}) that control the refresh behavior for the cached data in the `system.table_metadata` table are:
+The [cluster settings]({{ version_prefix }}/cluster-settings.md) that control the refresh behavior for the cached data in the `system.table_metadata` table are:
 
 - `obs.tablemetadata.automatic_updates.enabled` (default: `false`) enables automatic updates of the table metadata cache `system.table_metadata`.
 - `obs.tablemetadata.data_valid_duration` (default: `20m0s`) is the duration for which the data in `system.table_metadata` is considered valid.

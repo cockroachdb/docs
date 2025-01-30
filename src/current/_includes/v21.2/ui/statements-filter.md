@@ -27,4 +27,4 @@ You can also filter by one or more databases (**Database**), SQL statement types
 
 The following screenshot shows the statements that contain the string `rides` for the `movr` application:
 
-<img src="{{ 'images/v21.2/movr-statements-rides.png' | relative_url }}" alt="Movr rides statements" style="border:1px solid #eee;max-width:80%" />
+![Movr rides statements](/images/v21.2/movr-statements-rides.png)

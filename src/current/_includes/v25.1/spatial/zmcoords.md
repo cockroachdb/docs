@@ -4,7 +4,7 @@
 - A measure coordinate `M` (`{{page.title}}M`).
 - Both a third dimension and a measure coordinate (`{{page.title}}ZM`).
 
-The `Z` and `M` dimensions can be accessed or modified using a number of [built-in functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions), including:
+The `Z` and `M` dimensions can be accessed or modified using a number of [built-in functions]({{ page.version.version }}/functions-and-operators.md#spatial-functions), including:
 
 - `ST_Z`
 - `ST_M`
@@ -21,7 +21,7 @@ The `Z` and `M` dimensions can be accessed or modified using a number of [built-
 - `ST_RotateZ`
 - `ST_AddMeasure`
 
-Note that CockroachDB's [spatial indexing]({% link {{ page.version.version }}/spatial-indexes.md %}) is still based on the 2D coordinate system.  This means that:
+Note that CockroachDB's [spatial indexing]({{ page.version.version }}/spatial-indexes.md) is still based on the 2D coordinate system.  This means that:
 
 - The Z/M dimension is not index accelerated when using spatial predicates.
 - Some spatial functions ignore the Z/M dimension, with transformations discarding the Z/M value.

@@ -1,7 +1,7 @@
 ### Install the Operator
 
-{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
-{% capture apply_default_operator_manifest_command %}{% include_cached copy-clipboard.html %}
+{% capture latest_operator_version %}{% include "_includes/latest_operator_version.md" %}{% endcapture %}
+{% capture apply_default_operator_manifest_command %}{% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
@@ -17,12 +17,12 @@
     deployment.apps/cockroach-operator created
     ~~~
 {% endcapture %}
-{% capture download_operator_manifest_command %}{% include_cached copy-clipboard.html %}
+{% capture download_operator_manifest_command %}{% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
 {% endcapture %}
-{% capture apply_local_operator_manifest_command %}{% include_cached copy-clipboard.html %}
+{% capture apply_local_operator_manifest_command %}{% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     kubectl apply -f operator.yaml
     ~~~
@@ -30,7 +30,7 @@
 
 1. Apply the [custom resource definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) for the Operator:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/crds.yaml
     ~~~
@@ -43,14 +43,14 @@
 
 1. Set your current namespace to the one used by the Operator. For example, to use the Operator's default namespace:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl config set-context --current --namespace=cockroach-operator-system
     ~~~
 
 1. Validate that the Operator is running:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -68,7 +68,7 @@ After a cluster managed by the Kubernetes operator is initialized, its Kubernete
 
 1. Download `example.yaml`, a custom resource that tells the Operator how to configure the Kubernetes cluster.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/example.yaml
     ~~~
@@ -81,7 +81,7 @@ After a cluster managed by the Kubernetes operator is initialized, its Kubernete
 
 1. Apply `example.yaml`:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl apply -f example.yaml
     ~~~
@@ -94,7 +94,7 @@ After a cluster managed by the Kubernetes operator is initialized, its Kubernete
 
 1. Check that the pods were created:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl get pods
     ~~~

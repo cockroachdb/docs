@@ -6,13 +6,13 @@ docs_area: deploy
 cloud: true
 ---
 
-{% include cockroachcloud/filter-tabs/plan-your-cluster.md %}
+{% include "_includes/cockroachcloud/filter-tabs/plan-your-cluster.md" %}
 
-This page describes how resource usage, pricing, and cluster configurations work in CockroachDB {{ site.data.products.basic }}. For information on diagnosing and optimizing your resource consumption, see [Optimize your Resource Usage]({% link cockroachcloud/resource-usage.md %}).
+This page describes how resource usage, pricing, and cluster configurations work in CockroachDB {{ site.data.products.basic }}. For information on diagnosing and optimizing your resource consumption, see [Optimize your Resource Usage](resource-usage.md).
 
 ## Request Units
 
-{% include cockroachcloud/request-units.md %}
+{% include "_includes/cockroachcloud/request-units.md" %}
 
 ## Pricing
 
@@ -25,30 +25,30 @@ RU and storage consumption is prorated at the following prices:
   1M Request Units        | $0.20
   1 GiB storage           | $0.50
 
-Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of common queries and how they increase with the size and complexity of the query. You can view your cluster's RU and storage usage on the [**Cluster Overview** page]({% link cockroachcloud/cluster-overview-page.md %}).
+Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of common queries and how they increase with the size and complexity of the query. You can view your cluster's RU and storage usage on the [**Cluster Overview** page](cluster-overview-page.md).
 
 ## Free vs. paid usage
 
 CockroachDB {{ site.data.products.basic }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each non-contract CockroachDB {{ site.data.products.cloud }} organization is given 50 million [Request Units](#request-units) and 10 GiB of storage for free each month. Free resources do not apply to contract customers. Free resources can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
-Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You must [set resource limits]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) if you've already created one free CockroachDB {{ site.data.products.basic }} cluster. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
+Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You must [set resource limits](basic-cluster-management.md#edit-cluster-capacity) if you've already created one free CockroachDB {{ site.data.products.basic }} cluster. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
 
 ## Choose resource limits
 
-Your cluster's [configured capacity]({% link cockroachcloud/create-a-basic-cluster.md %}#step-4-configure-cluster-capacity) determines the [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) (the maximum amount of storage and RUs the cluster can use in a month).
+Your cluster's [configured capacity](create-a-basic-cluster.md#step-4-configure-cluster-capacity) determines the [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) (the maximum amount of storage and RUs the cluster can use in a month).
 
 - If you reach your storage limit, your cluster will be unable to write to its storage unless you delete data or increase your storage limit.
 - If you reach your RU limit, your cluster will be disabled until you increase your RU limit or a new billing cycle begins.
 
-  {% include cockroachcloud/basic-usage.md %}
+  {% include "_includes/cockroachcloud/basic-usage.md" %}
 
-Cockroach Labs recommends setting your resource limits to about 30% higher than your expected usage to prevent cluster disruption. To learn about tuning your workload to reduce costs, refer to [Understand your Resource Usage]({% link cockroachcloud/resource-usage.md %}).
+Cockroach Labs recommends setting your resource limits to about 30% higher than your expected usage to prevent cluster disruption. To learn about tuning your workload to reduce costs, refer to [Understand your Resource Usage](resource-usage.md).
 
-Each [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
+Each [Org Administrator](authorization.md#org-administrator) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
 
 ## Multi-region clusters
 
-When you create a multi-region {{ site.data.products.basic }} cluster, you will be prompted to select a **Primary region** from which CockroachDB will optimize access to data. If you want to change your region configuration, [you can use the {{ site.data.products.cloud }} Console]({% link cockroachcloud/basic-cluster-management.md %}#edit-regions), or you can [back up and restore]({% link cockroachcloud/managed-backups.md %}) your data into a new cluster with the desired configuration.
+When you create a multi-region {{ site.data.products.basic }} cluster, you will be prompted to select a **Primary region** from which CockroachDB will optimize access to data. If you want to change your region configuration, [you can use the {{ site.data.products.cloud }} Console](basic-cluster-management.md#edit-regions), or you can [back up and restore](managed-backups.md) your data into a new cluster with the desired configuration.
 
 {{site.data.alerts.callout_info}}
 You cannot currently remove regions once they have been added.

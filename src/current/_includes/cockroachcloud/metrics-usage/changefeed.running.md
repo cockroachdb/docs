@@ -1,1 +1,1 @@
-This metric tracks the total number of all running [changefeeds]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}).
+This metric tracks the total number of all running [changefeeds]({{ site.current_cloud_version }}/change-data-capture-overview.md).

@@ -6,27 +6,27 @@ docs_area: manage.security
 cloud: true
 ---
 
-SQL clients may authenticate to CockroachDB {{ site.data.products.advanced }} clusters using public key infrastructure (PKI) security certificates as an alternative to authenticating using a username and password or using [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console]({% link cockroachcloud/cloud-sso-sql.md %}) or [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)]({% link {{site.current_cloud_version}}/sso-sql.md %}).
+SQL clients may authenticate to CockroachDB {{ site.data.products.advanced }} clusters using public key infrastructure (PKI) security certificates as an alternative to authenticating using a username and password or using [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](cloud-sso-sql.md) or [Cluster Single Sign-on (SSO) using JSON web tokens (JWTs)]({{site.current_cloud_version}}/sso-sql.md).
 
-{% include cockroachcloud/prefer-sso.md %}
+{% include "_includes/cockroachcloud/prefer-sso.md" %}
 
-This page describes how to administer [public key infrastructure (PKI)]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}) for a CockroachDB {{ site.data.products.advanced }} cluster, using [HashiCorp Vault PKI Secrets Engine]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
+This page describes how to administer [public key infrastructure (PKI)]({{site.current_cloud_version}}/security-reference/transport-layer-security.md) for a CockroachDB {{ site.data.products.advanced }} cluster, using [HashiCorp Vault PKI Secrets Engine]({{site.current_cloud_version}}/hashicorp-integration.md).
 
-Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}) for an overview of PKI certificate authentication in general and its use in CockroachDB.
+Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({{site.current_cloud_version}}/security-reference/transport-layer-security.md) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
-Refer to [Authenticating to CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/authentication.md %}) for an overview of authentication in CockroachDB {{ site.data.products.cloud }}, both at the level of the organization and at the cluster.
+Refer to [Authenticating to CockroachDB {{ site.data.products.cloud }}](authentication.md) for an overview of authentication in CockroachDB {{ site.data.products.cloud }}, both at the level of the organization and at the cluster.
 
 ## Provision a PKI hierarchy for SQL authentication in your cluster
 
 There are many ways to create, manage, and distribute digital security certificates. Cockroach Labs recommends using a secure secrets server such as [HashiCorp Vault](https://www.vaultproject.io/), which can be used to securely generate certificates without revealing the CA private key.
 
-Refer to: [CockroachDB - HashiCorp Vault Integration]({% link {{site.current_cloud_version}}/hashicorp-integration.md %})
+Refer to: [CockroachDB - HashiCorp Vault Integration]({{site.current_cloud_version}}/hashicorp-integration.md)
 
-Alternatively, you can generate certificates [using CockroachDB's `cockroach cert`]({% link {{site.current_cloud_version}}/cockroach-cert.md %}#synopsis) command or [with OpenSSL]({% link {{site.current_cloud_version}}/create-security-certificates-openssl.md %}). However, generating certificates this way and manually handling cryptographic material comes with considerable additional risk and room for error. PKI cryptographic material related to your CockroachDB {{ site.data.products.cloud }} organizations, particularly in any production systems, should be handled according to a considered policy appropriate to your security goals.
+Alternatively, you can generate certificates [using CockroachDB's `cockroach cert`]({{site.current_cloud_version}}/cockroach-cert.md#synopsis) command or [with OpenSSL]({{site.current_cloud_version}}/create-security-certificates-openssl.md). However, generating certificates this way and manually handling cryptographic material comes with considerable additional risk and room for error. PKI cryptographic material related to your CockroachDB {{ site.data.products.cloud }} organizations, particularly in any production systems, should be handled according to a considered policy appropriate to your security goals.
 
 ### Initialize your Vault workstation
 
-1. [Install Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install) on your workstation. Your workstation must be secure to ensure the security of the PKI hierarchy you are establishing. Consider using a dedicated secure jumpbox, as described in [PKI Strategy]({% link {{site.current_cloud_version}}/manage-certs-vault.md %}#pki-strategy).
+1. [Install Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install) on your workstation. Your workstation must be secure to ensure the security of the PKI hierarchy you are establishing. Consider using a dedicated secure jumpbox, as described in [PKI Strategy]({{site.current_cloud_version}}/manage-certs-vault.md#pki-strategy).
 
 1. Obtain the required parameters to target and authenticate to Vault.
 
@@ -44,7 +44,7 @@ Alternatively, you can generate certificates [using CockroachDB's `cockroach cer
 
 1. Initialize your shell for Vault.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     export VAULT_ADDR= # your Vault cluster's Public URL
     export VAULT_NAMESPACE="admin"
@@ -52,7 +52,7 @@ Alternatively, you can generate certificates [using CockroachDB's `cockroach cer
 
 1. Authenticate with your admin token.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     vault login
     ~~~
@@ -63,7 +63,7 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
 
 1. Create a PKI secrets engine to serve as your client CA.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     vault secrets enable -path=cockroach_client_ca pki
     ~~~
@@ -76,7 +76,7 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
 
     Refer to: [Vault documentation - PKI Secrets Engine: Setup and Usage](https://developer.hashicorp.com/vault/docs/secrets/pki/setup)
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     vault write \
     cockroach_client_ca/root/generate/internal \
@@ -90,7 +90,7 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
     On macOS, you can install `jq` from Homebrew: `brew install jq`
     {{site.data.alerts.end}}
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     cat "${SECRETS_DIR}/certs/cockroach_client_ca_cert.json" | jq .data.certificate
     ~~~
@@ -133,7 +133,7 @@ You can authenticate to a cluster using the private key and public certificate p
     CockroachDB takes the name of the SQL user to be authenticated from the `common_name` field.
     {{site.data.alerts.end}}
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     vault write "cockroach_client_ca/issue/client" \
     common_name=root \
@@ -142,7 +142,7 @@ You can authenticate to a cluster using the private key and public certificate p
 
 1. Extract the client key and certificate pair from the payload.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     echo -e $(cat "${SECRETS_DIR}/clients/certs.json" | jq .data.private_key | tr -d '"') > "${SECRETS_DIR}/clients/client.root.key"
     echo -e $(cat "${SECRETS_DIR}/clients/certs.json" | jq .data.certificate | tr -d '"') > "${SECRETS_DIR}/clients/client.root.crt"
@@ -150,7 +150,7 @@ You can authenticate to a cluster using the private key and public certificate p
 
 1. Ensure that the key file is owned by and readable only by the current user. CockroachDB will reject requests to authenticate using keys with overly-permissive permissions.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     chmod 0600  ${SECRETS_DIR}/clients/client.root.key
     chown $USER ${SECRETS_DIR}/clients/client.root.key
@@ -160,10 +160,10 @@ You can authenticate to a cluster using the private key and public certificate p
 
 Add a CA certificate to your cluster's trust store for client authentication. Client certificates signed using the private key corresponding to this certificate will be accepted by your cluster for certificate-based client authentication.
 
-Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI): The CockroachDB certificate Trust Store]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}#the-cockroachdb-certificate-trust-store)
+Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI): The CockroachDB certificate Trust Store]({{site.current_cloud_version}}/security-reference/transport-layer-security.md#the-cockroachdb-certificate-trust-store)
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
+The [Cluster Administrator](authorization.md#cluster-administrator) or [Org Administrator](authorization.md#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -178,7 +178,7 @@ The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-a
 
     A `200` successful response code indicates that the asynchronous request was successfully submitted, but does not guarantee that the operation (configuring the CA certificate) successfully completed. You must confirm success with a follow-up `GET` request, as described in the next step.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     curl --request POST \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
@@ -193,7 +193,7 @@ The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-a
 
 1. Confirm success of the operation with the following `GET` request.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
@@ -225,7 +225,7 @@ The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-a
 
 Add the [`cockroach_client_ca_cert` resource block](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/client_ca_cert) to your Terraform template and apply the change:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~shell
 resource "cockroach_client_ca_cert" "yourclustername" {
   id = cockroach_cluster.example.id
@@ -243,7 +243,7 @@ Clients must be provisioned with client certificates signed by the cluster's CA 
 This section shows how to replace the CA certificate used by your cluster for certificate-based client authentication. To roll out a new CA certificate gradually instead of following this procedure directly, CockroachDB supports the ability to include multiple CA certificates for a cluster by concatenating them in PEM format. This allows clients to connect as long as the client certificate is signed by either the old CA certificate or the new one. PEM format requires a blank line in between certificates.
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
+The [Cluster Administrator](authorization.md#cluster-administrator) or [Org Administrator](authorization.md#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -258,7 +258,7 @@ The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-a
 
     A `200` successful response code indicates that the asynchronous request was successfully submitted, but does not guarantee that the operation (configuring the CA certificate) successfully completed. You must confirm success with a follow-up `GET` request, as described in the next step.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     curl --request PATCH \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
@@ -273,7 +273,7 @@ The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-a
 
 1. Confirm success of the operation with the following `GET` request.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
@@ -304,7 +304,7 @@ The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-a
 
 Update the [`cockroach_client_ca_cert` resource block](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/client_ca_cert) in your Terraform template, then run `terraform apply`.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~shell
 resource "cockroach_client_ca_cert" "yourclustername" {
   id = cockroach_cluster.example.id
@@ -322,7 +322,7 @@ After this operation is performed, clients can no longer authenticate with certi
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
+The [Cluster Administrator](authorization.md#cluster-administrator) or [Org Administrator](authorization.md#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -337,7 +337,7 @@ The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-a
 
     A `200` successful response code indicates that the asynchronous request was successfully submitted, but does not guarantee that the operation (configuring the CA certificate) successfully completed. You must confirm success with a follow-up `GET` request, as described in the next step.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     curl --request DELETE \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
@@ -350,7 +350,7 @@ The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-a
 
 1. Confirm success of the operation with the following `GET` request.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
       --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
@@ -398,7 +398,7 @@ To use certificate authentication for a SQL client, you must include the filepat
 
 1. Connect using the `cockroach sql` command or the SQL client of your choice:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     cockroach sql --url "postgresql://root@flooping-frogs-123.gcp-us-east1.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=${HOME}/Library/CockroachCloud/certs/2186fbdb-598c-4797-a463-aaaee865903e/flooping-frogs-ca.crt&sslcert=${SECRETS_DIR}/clients/client.root.crt&sslkey=${SECRETS_DIR}/clients/client.root.key"
     ~~~

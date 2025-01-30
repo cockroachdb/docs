@@ -6,14 +6,14 @@ docs_area: manage
 cloud: true
 ---
 
-{% include cockroachcloud/backups/managed-backup-description.md %}
+{% include "_includes/cockroachcloud/backups/managed-backup-description.md" %}
 
-{% include cockroachcloud/filter-tabs/managed-backups.md %}
+{% include "_includes/cockroachcloud/filter-tabs/managed-backups.md" %}
 
 This page describes managed backups in {{ site.data.products.basic }} clusters, which have a default non-configurable schedule.
 
 {{site.data.alerts.callout_info}}
-In addition to managed backups, you can take manual backups to your own storage bucket with self-managed backups. Refer to the [Take and Restore Self-Managed Backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) page.
+In addition to managed backups, you can take manual backups to your own storage bucket with self-managed backups. Refer to the [Take and Restore Self-Managed Backups](take-and-restore-self-managed-backups.md) page.
 {{site.data.alerts.end}}
 
 Cockroach Labs will take a managed backup every 24 hours. By default, managed backups will be retained for 30 days in {{ site.data.products.basic }} clusters.
@@ -24,7 +24,7 @@ For details on viewing and managing the backups, refer to the [Cloud Console](#r
 
 ## Upgrades and downgrades
 
-{% include cockroachcloud/backups/managed-backup-upgrade-downgrade.md %}
+{% include "_includes/cockroachcloud/backups/managed-backup-upgrade-downgrade.md" %}
 
 ## Considerations
 
@@ -65,7 +65,7 @@ To restore a cluster:
 1. You can restore a backup to the same cluster.
 
     {{site.data.alerts.callout_info}}
-    If you need to restore data into a new or different cluster, use [self-managed backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) or [contact support]({% link {{site.current_cloud_version}}/support-resources.md %}).
+    If you need to restore data into a new or different cluster, use [self-managed backups](take-and-restore-self-managed-backups.md) or [contact support]({{site.current_cloud_version}}/support-resources.md).
     {{site.data.alerts.end}}
 
 1. Click **Restore**.

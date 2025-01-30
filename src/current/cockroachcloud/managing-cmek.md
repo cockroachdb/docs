@@ -5,18 +5,18 @@ toc: true
 docs_area: manage.security
 ---
 
-[Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for CockroachDB {{ site.data.products.cloud }} advanced allows the customer to delegate responsibility for the work of encrypting their cluster data to CockroachDB {{ site.data.products.cloud }}, while maintaining the ability to completely revoke CockroachDB {{ site.data.products.cloud }}'s access.
+[Customer-Managed Encryption Keys (CMEK)](cmek.md) for CockroachDB {{ site.data.products.cloud }} advanced allows the customer to delegate responsibility for the work of encrypting their cluster data to CockroachDB {{ site.data.products.cloud }}, while maintaining the ability to completely revoke CockroachDB {{ site.data.products.cloud }}'s access.
 
-This page shows how to enable [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) for CockroachDB {{ site.data.products.advanced }} advanced.
+This page shows how to enable [Customer-Managed Encryption Keys (CMEK)](cmek.md) for CockroachDB {{ site.data.products.advanced }} advanced.
 
 ## Before you begin
 
 To enable CMEK for a cluster, you need:
 
-- An IAM role in your AWS account or a cross-tenant service account in your GCP project. CockroachDB Cloud will use this identity to encrypt and decrypt using the CMEK. This page shows how to provision a new identity, but you can use an existing identity instead. CMEK is not yet available for [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
+- An IAM role in your AWS account or a cross-tenant service account in your GCP project. CockroachDB Cloud will use this identity to encrypt and decrypt using the CMEK. This page shows how to provision a new identity, but you can use an existing identity instead. CMEK is not yet available for [CockroachDB {{ site.data.products.advanced }} on Azure](cockroachdb-advanced-on-azure.md).
 - A CMEK key for your cluster stored in AWS KMS or GCP KMS. CockroachDB Cloud never has access to the CMEK itself. This page shows how to provision a new CMEK directly in your KMS or using Hashicorp Vault, but you can use an existing key instead.
-- A new CockroachDB {{ site.data.products.advanced }} [private cluster]({% link cockroachcloud/private-clusters.md %}) with [advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) enabled. A private cluster's nodes communicate only over private Cloud infrastructure, avoiding public networks.<br /><br />Advanced security features can be enabled only during cluster creation. If necessary, create a new CockroachDB {{ site.data.products.advanced }} private cluster and enable advanced security features. Complete the steps in this page before inserting data into the cluster.
-- A [ CockroachDB {{ site.data.products.cloud }} service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) and a [CockroachDB Cloud API key]({% link cockroachcloud/managing-access.md %}#create-api-keys) for the service account. You will use the service account to authenticate to the CockroachDB Cloud API and configure CMEK on your cluster.
+- A new CockroachDB {{ site.data.products.advanced }} [private cluster](private-clusters.md) with [advanced security features](create-an-advanced-cluster.md#step-6-configure-advanced-security-features) enabled. A private cluster's nodes communicate only over private Cloud infrastructure, avoiding public networks.<br /><br />Advanced security features can be enabled only during cluster creation. If necessary, create a new CockroachDB {{ site.data.products.advanced }} private cluster and enable advanced security features. Complete the steps in this page before inserting data into the cluster.
+- A [ CockroachDB {{ site.data.products.cloud }} service account](managing-access.md#manage-service-accounts) and a [CockroachDB Cloud API key](managing-access.md#create-api-keys) for the service account. You will use the service account to authenticate to the CockroachDB Cloud API and configure CMEK on your cluster.
 
 ## Enable CMEK
 
@@ -34,7 +34,7 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
 1. Make a note of your {{ site.data.products.cloud }} organization ID in the [Organization settings page](https://cockroachlabs.cloud/settings).
 1. Find your {{ site.data.products.advanced }} cluster's ID. From the CockroachDB {{ site.data.products.cloud }} console [Clusters list](https://cockroachlabs.cloud/clusters), click the name of a cluster to open its **Cluster Overview** page. From the page's URL make a note of the **last 12 digits** of the portion of the URL before `/overview/`. This is the cluster ID.
 1. Use the cluster ID to find the cluster's associated cross-account IAM role, which is managed by CockroachDB {{ site.data.products.cloud }}.
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
       --url https://cockroachlabs.cloud/api/v1/clusters/{YOUR_CLUSTER_ID} \
@@ -51,7 +51,7 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
 1. Find your {{ site.data.products.advanced }} cluster's ID. From the CockroachDB {{ site.data.products.cloud }} console [Clusters list](https://cockroachlabs.cloud/clusters), click the name of a cluster to open its **Cluster Overview** page. From the page's URL make a note of the **last 12 digits** of the portion of the URL before `/overview/`. This is the cluster ID.
 1. Use the cluster ID to find the cluster's associated GCP Project ID, which is managed by CockroachDB {{ site.data.products.cloud }}. Query the `clusters/` endpoint of the CockroachDB {{ site.data.products.cloud }} API:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ```shell
     CLUSTER_ID= #{ your cluster ID }
     API_KEY= #{ your API key }
@@ -100,7 +100,7 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
 
 1. Formulate the service account's email address, which is in the following format. Replace `{cluster_id}` with the cluster ID, and replace `{account_id}` with the GCP project ID.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ text
     crl-kms-user-{cluster_id}@{account_id}.iam.gserviceaccount.com
     ~~~
@@ -114,7 +114,7 @@ Follow these steps to create a cross-account IAM role and give it permission to 
 
 1. Use the CockroachDB Cloud API to find the ID of the AWS account managed by CockroachDB {{ site.data.products.cloud }} that is associated with your cluster (not your own AWS account):
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     curl --request GET \
          --url https://cockroachlabs.cloud/api/v1/clusters/{YOUR_CLUSTER_ID} \
@@ -154,7 +154,7 @@ If you intend to use an existing key as the CMEK, skip this step.
 
 <section class="filter-content" markdown="1" data-scope="aws">
 
-You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
+You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({{site.current_cloud_version}}/hashicorp-integration.md).
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="aws-console">AWS Console</button>
@@ -171,7 +171,7 @@ You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({
     - Set **Alias** to a name for the key.
 1. Configure the permissions for your key using the following IAM policy:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~json
     {
       "Version": "2012-10-17",
@@ -210,7 +210,7 @@ You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({
 
 1. Configure Vault's authentication details:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
       export VAULT_ADDR={YOUR_VAULT_TARGET}
       export VAULT_TOKEN={YOUR_VAULT_TOKEN}
@@ -218,7 +218,7 @@ You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({
     ~~~
 
 1. Enable Vault KMS Secrets Engine:
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     vault secrets enable keymgmt
     ~~~{% endcapture %}
@@ -227,7 +227,7 @@ You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({
 
 1. Connect Vault to your AWS account by creating a KMS provider entry:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     vault write keymgmt/kms/awskms \
       provider="awskms" \
@@ -238,14 +238,14 @@ You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({
 
 1. Create an encryption key in Vault. The key has not yet been imported into AWS KMS.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     vault write keymgmt/key/crdb-cmek-vault type="aes256-gcm96"
     ~~~
 
 1. Import the key into AWS KMS:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     vault write keymgmt/kms/awskms/key/crdb-cmek-vault \
         purpose="encrypt,decrypt" \
@@ -264,7 +264,7 @@ You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({
 
 <section class="filter-content" markdown="1" data-scope="gcp">
 
-You can create the CMEK directly in the GCP Console or using [HashiCorp Vault]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
+You can create the CMEK directly in the GCP Console or using [HashiCorp Vault]({{site.current_cloud_version}}/hashicorp-integration.md).
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="gcp-console">GCP Console</button>
@@ -302,7 +302,7 @@ Make a note of the key ring name.
 
 1. Connect Vault to your GCP project by creating a KMS provider entry. Replace `{SERVICE_ACCOUNT_FILE}` with the path to the JSON file you downloaded earlier and replace `{YOUR_PROJECT_NAME}` with your GCP project ID.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     vault write keymgmt/kms/gcpckms \
     provider="gcpckms" \
@@ -312,14 +312,14 @@ Make a note of the key ring name.
 
 1. Create the encryption key in Vault:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     vault write keymgmt/key/crdb-cmek-vault type="aes256-gcm96"
     ~~~
 
 1. Import the key into GCP KMS:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     vault write keymgmt/kms/gcpkms/key/crdb-cmek-vault \
         purpose="encrypt,decrypt" \
@@ -344,7 +344,7 @@ Compile the information about the service account and key we've just created int
 
     Replace the placeholder values, being careful to include one `region_spec` object per cluster region. When enabling CMEK, you must include a `region_spec` for each region in the cluster.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ json
     {
       "region_specs": [
@@ -374,7 +374,7 @@ Compile the information about the service account and key we've just created int
 <section class="filter-content" markdown="1" data-scope="gcp">
 1. Set the required information as environment variables:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     export CLUSTER_REGION= # the region of the {{ site.data.products.advanced}}-controlled GCP project where your cluster is located
     export GCP_PROJECT_ID= # your GCP project ID
@@ -386,7 +386,7 @@ Compile the information about the service account and key we've just created int
 
 1. Then copy paste the following heredoc command to generate the YAML file, populating the values from your shell environment. (Alternatively, you can manually create the YAML file).
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     <<YML > cmek_config.yml
     ---
@@ -401,7 +401,7 @@ Compile the information about the service account and key we've just created int
 
 1. Use Ruby or another tool to compile human-editable YAML into API-parsable JSON:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     ruby -ryaml -rjson -e 'puts(YAML.load(ARGF.read).to_json)' < cmek_config.yml > cmek_config.json
     ~~~
@@ -414,18 +414,18 @@ Compile the information about the service account and key we've just created int
     On a Mac, install JQ with `brew install jq`
     {{site.data.alerts.end}}
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     cat cmek_config.json | jq
     ~~~
 
-After you have built your CMEK configuration manifest with the details of your cluster and provisioned the service account and KMS key in GCP, return to [Enabling CMEK for a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/managing-cmek.md %}#step-4-activate-cmek).
+After you have built your CMEK configuration manifest with the details of your cluster and provisioned the service account and KMS key in GCP, return to [Enabling CMEK for a CockroachDB {{ site.data.products.advanced }} cluster](managing-cmek.md#step-4-activate-cmek).
 
 ### Step 4. Activate CMEK
 
 Using the CockroachDB {{ site.data.products.cloud }} API, send a `POST` request with the contents of `cmek_config.json` to the cluster's `cmek` endpoint.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 CLUSTER_ID= #{ your cluster ID }
 API_KEY= #{ your API key }
@@ -440,7 +440,7 @@ curl --request POST \
 
 To view your cluster's CMEK status, send a `GET` request:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
@@ -449,7 +449,7 @@ curl --request GET \
 
 ## Rotate a CMEK key
 
-{% include cockroachcloud/cmek-rotation-types.md %}
+{% include "_includes/cockroachcloud/cmek-rotation-types.md" %}
 
 {{site.data.alerts.callout_danger}}
 Within your KMS, **do not** revoke access to, disable, schedule for destruction, or destroy a CMEK after it is rotated. It is still required to access data that was written using it. that is in use by one or more clusters. The CMEK is an external resource and is never stored in CockroachDB {{ site.data.products.cloud }}. If the CMEK for a cluster or region is not available in your KMS, nodes that are configured to use it cannot rejoin the cluster if they are restarted, and the cluster's managed CockroachDB {{ site.data.products.cloud }} backups will fail. Even if access to the CMEK is restored, affected nodes cannot automatically recover. For assistance in that situation, contact your Cockroach Labs account team.
@@ -461,7 +461,7 @@ To rotate a CMEK key:
 
 1. Using the CockroachDB {{ site.data.products.cloud }} API, send a `PUT` request with the contents of `cmek_config.json` to the cluster's `cmek` endpoint:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     CLUSTER_ID= #{ your cluster ID }
     API_KEY= #{ your API key }
@@ -480,7 +480,7 @@ To add a region to a cluster that already has CMEK enabled:
 
 1. Send the payload as a `PATCH` request to the cluster endpoint:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~shell
     CLUSTER_ID= #{ your cluster ID }
     API_KEY= #{ your API key }
@@ -507,7 +507,7 @@ Within your KMS, **do not revoke** access to a CMEK that is in use by one or mor
 
 1. Your cluster will continue to operate with the CMEK until you update it to revoke CMEK. To revoke access:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     curl --request PATCH \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/cmek \
@@ -528,7 +528,7 @@ This IAM policy is to be attached to the CMEK key. It grants the required KMS pe
 
 Note that this IAM policy refers to the ARN for the cross-account IAM role you created at the end of [Step 1. Provision the cross-account IAM role](#step-1-provision-the-cross-account-iam-role).
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~json
 {
   "Version": "2012-10-17",

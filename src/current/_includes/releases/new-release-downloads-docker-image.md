@@ -5,7 +5,7 @@
 <h3 id="{{ release.release_name | downcase | replace: ".", "-" }}-downloads">Downloads</h3>{% comment %} take the version name, force it to be lowercase, and replace all periods with hyphens. {% endcomment %}
 
 {% if release.release_type == "Testing" %}
-{% include releases/experimental-test-release.md version=release.release_name %}
+{% include "_includes/releases/experimental-test-release.md" version=release.release_name %}
 {% endif %}
 
 {% comment %}No downloads for Cloud-first or withdrawn releases{% endcomment %}
@@ -15,7 +15,7 @@
 {{site.data.alerts.end}}
 {% elsif release.withdrawn == true % %}{% comment %}If not withdrawn and not Cloud-only, show download links{% endcomment %}
 
-  {% include releases/withdrawn.md %}
+  {% include "_includes/releases/withdrawn.md" %}
 
 {% else %}
 
@@ -24,7 +24,7 @@ Experimental downloads are not qualified for production use and not eligible for
 {{site.data.alerts.end}}
 
 {% comment %}Assign the JS for the experimental download prompt and store it in the Liquid variable experimental_download_js {% endcomment %}
-  {% capture experimental_download_js %}{% include_cached releases/experimental_download_dialog.md %}{% endcapture %}
+  {% capture experimental_download_js %}{% include "_includes/releases/experimental_download_dialog.md" %}{% endcapture %}
   {% capture onclick_string %}onclick="{{ experimental_download_js }}"{% endcapture %}
   {% capture linux_arm_button_text_addendum %}{% if r.linux.linux_arm_experimental == true %}<br />(Experimental){% endif %}{% if r.linux.linux_arm_limited_access == true %}<br />(Limited Access){% endif %}{% endcapture %}
 
@@ -89,7 +89,7 @@ To download the Docker image:
 To download the Docker image (Intel-only):
   {% endif %}
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~shell
 docker pull {{ release.docker.docker_image }}:{{ release.release_name }}
 ~~~

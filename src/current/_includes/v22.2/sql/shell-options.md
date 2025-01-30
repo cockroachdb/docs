@@ -30,7 +30,7 @@ Prompt variable | Description
 
 For example, to change the prompt to just the user, host, and database:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 \set prompt1 %n@%m/%/
 ~~~

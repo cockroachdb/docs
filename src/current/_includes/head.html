@@ -53,10 +53,10 @@
 <title>{{ page.title }}</title>
 
 <link rel="canonical" href="{{ site.main_url | append: site.baseurl | append: page.canonical | replace: stable_path, "/stable/" | replace: dev_path, "/dev/" }}">
-{% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}
-{% include_cached corestyles.css.html %}
-<link rel="preload" href="{{ 'css/customstyles.css' | relative_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="{{ 'css/customstyles.css' | relative_url }}"></noscript>
+{% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css'  }}">{% endif %}
+{% include "_includes/corestyles.css.html" %}
+<link rel="preload" href="{{ 'css/customstyles.css'  }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ 'css/customstyles.css'  }}"></noscript>
 
 <script>
 var pageConfig = {
@@ -106,11 +106,11 @@ var pageConfig = {
 </script>
 
 {% if page.comparison == true %}
-  <script src="{{ 'js/comparison-chart.js' | relative_url }}"></script>
-  <script src="{{ 'js/select2.min.js' | relative_url }}"></script>
+  <script src="{{ 'js/comparison-chart.js'  }}"></script>
+  <script src="{{ 'js/select2.min.js'  }}"></script>
 {% endif %}
 {% if page.license == true %}
-  <script src="{{ 'js/license-on-page.js' | relative_url }}"></script>
+  <script src="{{ 'js/license-on-page.js'  }}"></script>
 {% endif %}
 
 <link rel="preconnect dns-prefetch" href="https://go.cockroachlabs.com" />

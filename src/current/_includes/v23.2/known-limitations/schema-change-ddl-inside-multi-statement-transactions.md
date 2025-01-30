@@ -1,4 +1,4 @@
-Most schema change [DDL](https://wikipedia.org/wiki/Data_definition_language#ALTER_statement) statements that run inside a multi-statement transaction with non-DDL statements can fail at [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) time, even if other statements in the transaction succeed. This leaves such transactions in a "partially committed, partially aborted" state that may require manual intervention to determine whether the DDL statements succeeded.
+Most schema change [DDL](https://wikipedia.org/wiki/Data_definition_language#ALTER_statement) statements that run inside a multi-statement transaction with non-DDL statements can fail at [`COMMIT`]({{ page.version.version }}/commit-transaction.md) time, even if other statements in the transaction succeed. This leaves such transactions in a "partially committed, partially aborted" state that may require manual intervention to determine whether the DDL statements succeeded.
 
 Some DDL statements do not have this limitation. `CREATE TABLE` and `CREATE INDEX` statements have the same atomicity guarantees as other statements within a transaction.
 
@@ -22,7 +22,7 @@ This error will occur in various scenarios, including but not limited to:
 
 To see an example of this error, start by creating the following table.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 CREATE TABLE T(x INT);
 INSERT INTO T(x) VALUES (1), (2), (3);
@@ -30,7 +30,7 @@ INSERT INTO T(x) VALUES (1), (2), (3);
 
 Then, enter the following multi-statement transaction, which will trigger the error.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 BEGIN;
 ALTER TABLE t ADD CONSTRAINT unique_x UNIQUE(x);
@@ -44,9 +44,9 @@ HINT: Some of the non-DDL statements may have committed successfully, but some o
 Manual inspection may be required to determine the actual state of the database.
 ~~~
 
-In this example, the [`INSERT`]({% link {{ page.version.version }}/insert.md %}) statement committed, but the [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}) statement adding a [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %}) failed.  We can verify this by looking at the data in table `t` and seeing that the additional non-unique value `3` was successfully inserted.
+In this example, the [`INSERT`]({{ page.version.version }}/insert.md) statement committed, but the [`ALTER TABLE`]({{ page.version.version }}/alter-table.md) statement adding a [`UNIQUE` constraint]({{ page.version.version }}/unique.md) failed.  We can verify this by looking at the data in table `t` and seeing that the additional non-unique value `3` was successfully inserted.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 SELECT * FROM t;
 ~~~

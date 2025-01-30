@@ -1,4 +1,4 @@
-{{ $currentPage := . }}
+{% assign currentPage = page %}
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
   .navbar-nav .nav-item .nav-link {
@@ -102,7 +102,7 @@
 <div class="main-nav main-nav-contained-800">
   <nav class="navbar navbar-expand-lg navbar-light py-0 fixed-top">
     <div class="container-xl px-0">
-      <a class="navbar-brand mr-0 mr-md-2 d-xl-block" href="{{ '/' | relative_url }}" style="
+      <a class="navbar-brand mr-0 mr-md-2 d-xl-block" href="{{ '/'  }}" style="
       padding-bottom: 10px;
   ">
         <img 
@@ -110,7 +110,7 @@
           height="24" 
           alt="Cockroach Labs" 
           class="br0 db mb0" 
-          src="{{ '/images/cockroachlabs-logo-170.png' | relative_url }}?auto=format,compress"
+          src="{{ '/images/cockroachlabs-logo-170.png'  }}?auto=format,compress"
         >
       </a>
     <button
@@ -142,7 +142,7 @@
             </div>
             <div id="collapseProduct" class="collapse" aria-labelledby="mobileProduct" data-parent="#accordionExample">
               <div class="card-body">
-                {% include_cached nav-product.html %}
+                {% include "_includes/nav-product.html" %}
               </div>
             </div>
           </div>
@@ -159,7 +159,7 @@
             </div>
             <div id="collapseSolutions" class="collapse" aria-labelledby="mobileSolutions" data-parent="#accordionExample">
               <div class="card-body">
-                {% include_cached nav-solutions.html %}
+                {% include "_includes/nav-solutions.html" %}
               </div>
             </div>
           </div>
@@ -177,7 +177,7 @@
             </div>
             <div id="collapseResources" class="collapse" aria-labelledby="mobileResources" data-parent="#accordionExample">
               <div class="card-body">
-                {% include_cached nav-resources.html %}
+                {% include "_includes/nav-resources.html" %}
               </div>
             </div>
           </div>
@@ -195,7 +195,7 @@
             </div>
             <div id="collapseDocs" class="collapse" aria-labelledby="mobileDocs" data-parent="#accordionExample">
               <div class="card-body">
-                {% include_cached nav-docs.html %}
+                {% include "_includes/nav-docs.html" %}
               </div>
             </div>
           </div>
@@ -213,7 +213,7 @@
             </div>
             <div id="collapseCompany" class="collapse" aria-labelledby="mobileCompany" data-parent="#accordionExample">
               <div class="card-body">
-                {% include_cached nav-company.html %}
+                {% include "_includes/nav-company.html" %}
               </div>
             </div>
           </div> 
@@ -231,7 +231,7 @@
             </div>
             <div id="collapseCustomers" class="collapse" aria-labelledby="mobileCustomers" data-parent="#accordionExample">
               <div class="card-body">
-                {% include_cached nav-company.html %}
+                {% include "_includes/nav-company.html" %}
               </div>
             </div>
           </div>
@@ -277,7 +277,7 @@
           aria-haspopup="true"
           aria-expanded="false">Product</a>
           <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
-            {% include_cached nav-product.html %}
+            {% include "_includes/nav-product.html" %}
           </div>
         </li>
 
@@ -290,7 +290,7 @@
           aria-haspopup="true"
           aria-expanded="false">Solutions</a>
           <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
-            {% include_cached nav-solutions.html %}
+            {% include "_includes/nav-solutions.html" %}
           </div>
         </li>
 
@@ -303,7 +303,7 @@
           aria-haspopup="true"
           aria-expanded="false">Resources</a>
           <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
-            {% include_cached nav-resources.html %}
+            {% include "_includes/nav-resources.html" %}
           </div>
         </li>
 
@@ -317,7 +317,7 @@
           aria-haspopup="true"
           aria-expanded="false">Docs</a>
           <div class="dropdown-menu w-100 p-45 docs" aria-labelledby="navbarDropdown">
-            {% include_cached nav-docs.html %}
+            {% include "_includes/nav-docs.html" %}
           </div>
         </li>
 
@@ -338,7 +338,7 @@
           aria-haspopup="true"
           aria-expanded="false">Customers</a>
           <div class="dropdown-menu w-100 p-45 company" aria-labelledby="navbarDropdown">
-            {% include_cached nav-customers.html %}
+            {% include "_includes/nav-customers.html" %}
           </div>
         </li>
 
@@ -351,7 +351,7 @@
           aria-haspopup="true"
           aria-expanded="false">Company</a>
           <div class="dropdown-menu w-100 p-45 company" aria-labelledby="navbarDropdown">
-            {% include_cached nav-company.html %}
+            {% include "_includes/nav-company.html" %}
           </div>
         </li>
 
@@ -363,7 +363,7 @@
         <ul class="d-none d-lg-flex navbar-nav mr-auto mb-2 mb-lg-0 mt-auto">
           <li class="nav-item">
             <a class="nav-link" href="https://www.cockroachlabs.com/contact/" role="button"> Contact us</a>
-            <a class="nav-link nav-icon-md" href="https://www.cockroachlabs.com/contact/" role="button"><img class="" width="32" src="{{ '/images/icons/icon-envelope.png' | relative_url }}" alt="Sign in"></a>
+            <a class="nav-link nav-icon-md" href="https://www.cockroachlabs.com/contact/" role="button"><img class="" width="32" src="{{ '/images/icons/icon-envelope.png'  }}" alt="Sign in"></a>
           </li>
           <li class="nav-item">
             <a href="https://cockroachlabs.cloud/" class="nav-link">Sign In</a>

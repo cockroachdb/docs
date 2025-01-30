@@ -1,6 +1,6 @@
 CockroachDB supports TLS 1.2 and 1.3, and uses 1.3 by default.
 
-{% include common/tls-bad-cipher-warning.md %}
+{% include "_includes/common/tls-bad-cipher-warning.md" %}
 
 [A bug in the TLS 1.3 implementation](https://bugs.openjdk.java.net/browse/JDK-8236039) in Java 11 versions lower than 11.0.7 and Java 13 versions lower than 13.0.3 makes the versions incompatible with CockroachDB.
 

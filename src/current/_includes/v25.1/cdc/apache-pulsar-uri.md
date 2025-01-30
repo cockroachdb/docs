@@ -1,4 +1,4 @@
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~
 pulsar://{host IP}:6650
 ~~~

@@ -1,11 +1,11 @@
 ### Rename an index
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > CREATE INDEX on users(name);
 ~~~
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SHOW INDEXES FROM users;
 ~~~
@@ -24,12 +24,12 @@
 (8 rows)
 ~~~
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > ALTER INDEX users@name_idx RENAME TO users_name_idx;
 ~~~
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SHOW INDEXES FROM users;
 ~~~

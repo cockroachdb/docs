@@ -1,4 +1,4 @@
-{% include copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE t CONFIGURE ZONE DISCARD;
 ~~~

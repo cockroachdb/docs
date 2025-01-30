@@ -1,4 +1,4 @@
-We recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}). Read our guidance in the [Performance]({% link {{ page.version.version }}/backup.md %}#performance) section on the [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) page.
+We recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`]({{ page.version.version }}/as-of-system-time.md). Read our guidance in the [Performance]({{ page.version.version }}/backup.md#performance) section on the [`BACKUP`]({{ page.version.version }}/backup.md) page.
 
 {{site.data.alerts.callout_info}}
 Only database and table-level backups are possible when using `userfile` as storage. Restoring cluster-level backups will not work because `userfile` data is stored in the `defaultdb` database, and you cannot restore a cluster with existing table data.
@@ -15,7 +15,7 @@ BACKUP DATABASE bank INTO 'userfile://defaultdb.public.userfiles_$user/bank-back
 This directory will hold the files that make up a backup; including the manifest file and data files.
 
 {{site.data.alerts.callout_info}}
-When backing up from a cluster and restoring a database or table that is stored in your `userfile` space to a different cluster, you can run [`cockroach userfile get`]({% link {{ page.version.version }}/cockroach-userfile-get.md %}) to download the backup files to a local machine and [`cockroach userfile upload -r <location/of/file> <userfile destination/of/file> --url {CONNECTION STRING}`]({% link {{ page.version.version }}/cockroach-userfile-upload.md %}#upload-a-directory-recursively) to upload to the `userfile` of the restoring cluster.
+When backing up from a cluster and restoring a database or table that is stored in your `userfile` space to a different cluster, you can run [`cockroach userfile get`]({{ page.version.version }}/cockroach-userfile-get.md) to download the backup files to a local machine and [`cockroach userfile upload -r <location/of/file> <userfile destination/of/file> --url {CONNECTION STRING}`]({{ page.version.version }}/cockroach-userfile-upload.md#upload-a-directory-recursively) to upload to the `userfile` of the restoring cluster.
 {{site.data.alerts.end}}
 
 In cases when your database needs to be restored, run the following:
@@ -32,4 +32,4 @@ Once the backup data is no longer needed, delete from the `userfile` storage wit
 cockroach userfile delete bank-backup --url {CONNECTION STRING}
 ~~~
 
-If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds) to be removed from disk.
+If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection]({{ page.version.version }}/configure-replication-zones.md#gc-ttlseconds) to be removed from disk.

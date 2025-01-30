@@ -3,4 +3,4 @@ By default, changefeeds emit messages in JSON format. You can use a different fo
 - `json`
 - `csv`
 - `avro`
-- `parquet` (in [**Preview**]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}))
+- `parquet` (in [**Preview**]({{ page.version.version }}/cockroachdb-feature-availability.md))

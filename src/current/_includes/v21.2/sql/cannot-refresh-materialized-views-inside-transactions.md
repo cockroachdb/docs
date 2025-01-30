@@ -2,7 +2,7 @@ CockroachDB cannot refresh {% if page.name == "views.md" %} materialized views {
 
 1. First, start [`cockroach demo`](cockroach-demo.html) with the sample `bank` data set:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     cockroach demo bank
     ~~~
@@ -11,14 +11,14 @@ CockroachDB cannot refresh {% if page.name == "views.md" %} materialized views {
 
 3. Start a new multi-statement transaction with [`BEGIN TRANSACTION`](begin-transaction.html):
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     BEGIN TRANSACTION;
     ~~~
 
 4. Inside the open transaction, attempt to [refresh the view](refresh.html) as shown below. This will result in an error.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     REFRESH MATERIALIZED VIEW overdrawn_accounts;
     ~~~

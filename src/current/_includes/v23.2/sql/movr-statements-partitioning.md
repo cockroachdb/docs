@@ -1,8 +1,8 @@
-The following examples use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App]({% link {{ page.version.version }}/movr.md %}).
+The following examples use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App]({{ page.version.version }}/movr.md).
 
-To follow along with the examples below, open a new terminal and run [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) with the [`--nodes`]({% link {{ page.version.version }}/cockroach-demo.md %}#flags) and [`--demo-locality`]({% link {{ page.version.version }}/cockroach-demo.md %}#flags) flags. This command opens an interactive SQL shell to a temporary, multi-node in-memory cluster with the `movr` database preloaded and set as the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database).
+To follow along with the examples below, open a new terminal and run [`cockroach demo`]({{ page.version.version }}/cockroach-demo.md) with the [`--nodes`]({{ page.version.version }}/cockroach-demo.md#flags) and [`--demo-locality`]({{ page.version.version }}/cockroach-demo.md#flags) flags. This command opens an interactive SQL shell to a temporary, multi-node in-memory cluster with the `movr` database preloaded and set as the [current database]({{ page.version.version }}/sql-name-resolution.md#current-database).
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 $ cockroach demo \
 --nodes=9 \

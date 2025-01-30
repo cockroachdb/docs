@@ -28,4 +28,4 @@ To filter the transactions:
 
 1. Click **Apply**.
 
-<img src="{{ 'images/v22.1/movr-transactions-rides.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
+![Movr rides transactions](/images/v22.1/movr-transactions-rides.png)

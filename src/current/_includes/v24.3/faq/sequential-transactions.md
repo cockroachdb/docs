@@ -14,6 +14,6 @@ However, if your application absolutely requires strong time-based write orderin
 - Initially: `CREATE TABLE cnt(val INT PRIMARY KEY); INSERT INTO cnt(val) VALUES(1);`
 - In each transaction: `INSERT INTO cnt(val) SELECT max(val)+1 FROM cnt RETURNING val;`
 
-This will cause [`INSERT`]({% link {{ page.version.version }}/insert.md %}) transactions to conflict with each other and effectively force the transactions to commit one at a time throughout the cluster, which in turn guarantees the values generated in this way are strictly increasing over time without gaps. The caveat is that performance is severely limited as a result.
+This will cause [`INSERT`]({{ page.version.version }}/insert.md) transactions to conflict with each other and effectively force the transactions to commit one at a time throughout the cluster, which in turn guarantees the values generated in this way are strictly increasing over time without gaps. The caveat is that performance is severely limited as a result.
 
-If you find yourself interested in this problem, please [contact us]({% link {{ page.version.version }}/support-resources.md %}) and describe your situation. We would be glad to help you find alternative solutions and possibly extend CockroachDB to better match your needs.
+If you find yourself interested in this problem, please [contact us]({{ page.version.version }}/support-resources.md) and describe your situation. We would be glad to help you find alternative solutions and possibly extend CockroachDB to better match your needs.

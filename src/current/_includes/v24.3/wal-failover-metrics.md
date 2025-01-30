@@ -8,5 +8,5 @@ The `storage.wal.failover.secondary.duration` is the primary metric to monitor. 
 
 You can access these metrics via the following methods:
 
-- The [**Custom Chart** debug page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) in [DB Console]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}).
-- By [monitoring CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}).
+- The [**Custom Chart** debug page]({{ page.version.version }}/ui-custom-chart-debug-page.md) in [DB Console]({{ page.version.version }}/ui-custom-chart-debug-page.md).
+- By [monitoring CockroachDB with Prometheus]({{ page.version.version }}/monitor-cockroachdb-with-prometheus.md).

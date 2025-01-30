@@ -62,14 +62,14 @@ When you activate diagnostics for a fingerprint, CockroachDB waits for the next 
 Diagnostics will be collected a maximum of *N* times for a given activated fingerprint where *N* is the number of nodes in your cluster.
 {{site.data.alerts.end}}
 
-{% include common/sql/statement-bundle-warning.md %}
+{% include "_includes/common/sql/statement-bundle-warning.md" %}
 
 #### Activate diagnostics collection and download bundles
 
 {% if page.cloud != true %}
-<img src="{{ 'images/v21.2/ui_activate_diagnostics.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:80%" />
+![Statements diagnostics](/images/v21.2/ui_activate_diagnostics.png)
 {% else %}
-<img src="{{ 'images/cockroachcloud/statements_diagnostics.png' | relative_url }}" alt="CockroachDB {{ site.data.products.cloud }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
+![CockroachDB {{ site.data.products.cloud }} Console Statements Page](/images/cockroachcloud/statements_diagnostics.png)
 {% endif %}
 
 To activate diagnostics collection, click the **Activate diagnostics** button.
@@ -77,12 +77,12 @@ To activate diagnostics collection, click the **Activate diagnostics** button.
 A row  with the activation time and collection status is added to the **Statement diagnostics** table.
 
 {% if page.cloud != true %}
-<img src="{{ 'images/v21.2/ui_statements_diagnostics.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:80%" />
+![Statements diagnostics](/images/v21.2/ui_statements_diagnostics.png)
 {% endif %}
 
 The collection status values are:
 
-- **READY**: indicates that the diagnostics have been collected. To download the diagnostics bundle, click <img src="{{ 'images/v21.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)**.
+- **READY**: indicates that the diagnostics have been collected. To download the diagnostics bundle, click ![Download bundle](/images/v21.2/ui-download-button.png) **Bundle (.zip)**.
 - **WAITING**: indicates that a SQL statement matching the fingerprint has not yet been recorded.
 - **ERROR**: indicates that the attempt at diagnostics collection failed.
 
@@ -96,7 +96,7 @@ Although fingerprints are periodically cleared from the Statements page, all dia
 {% endif %}
 
 {% if page.cloud != true %}
-Click <img src="{{ 'images/v21.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)** to download any diagnostics bundle.
+Click ![Download bundle](/images/v21.2/ui-download-button.png) **Bundle (.zip)** to download any diagnostics bundle.
 {% else %}
 Click **Bundle(.zip)** to download any diagnostics bundle.
 {% endif %}
@@ -106,12 +106,12 @@ Click **Bundle(.zip)** to download any diagnostics bundle.
 The **Explain Plan** section displays CockroachDB's statement plan for an [explainable statement]({{ link_prefix }}sql-grammar.html#preparable_stmt). You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`]({{ link_prefix }}explain.html).
 
 {% if page.cloud == true %}
-<img src="{{ 'images/cockroachcloud/statements_logical_plan.png' | relative_url }}" alt="CockroachDB {{ site.data.products.cloud }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
+![CockroachDB {{ site.data.products.cloud }} Console Statements Page](/images/cockroachcloud/statements_logical_plan.png)
 {% endif %}
 
 By default, the explain plan for each fingerprint is sampled every 5 minutes. You can change the interval with the [`sql.metrics.statement_details.plan_collection.period`]({{ link_prefix }}cluster-settings.html#settings) cluster setting. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`]({{ link_prefix }}set-cluster-setting.html) command:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SET CLUSTER SETTING sql.metrics.statement_details.plan_collection.period  = '2m0s';
 ~~~

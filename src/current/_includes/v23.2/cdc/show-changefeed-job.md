@@ -1,4 +1,4 @@
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 SHOW CHANGEFEED JOBS;
 ~~~
@@ -12,7 +12,7 @@ SHOW CHANGEFEED JOBS;
 
 To show an individual {{ site.data.products.enterprise }} changefeed:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 SHOW CHANGEFEED JOB {job_id};
 ~~~

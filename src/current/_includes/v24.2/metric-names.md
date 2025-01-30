@@ -8,10 +8,10 @@ Name | Description
 `capacity.reserved` | Capacity reserved for snapshots
 `capacity.used` | Used storage capacity
 `capacity` | Total storage capacity
-`changefeed.aggregator_progress` | The earliest timestamp up to which any [aggregator]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) is guaranteed to have emitted all values for which it is responsible. **Note:** This metric may regress when a changefeed restarts due to a transient error. Consider tracking the `changefeed.checkpoint_progress` metric, which will not regress.
+`changefeed.aggregator_progress` | The earliest timestamp up to which any [aggregator]({{ page.version.version }}/how-does-an-enterprise-changefeed-work.md) is guaranteed to have emitted all values for which it is responsible. **Note:** This metric may regress when a changefeed restarts due to a transient error. Consider tracking the `changefeed.checkpoint_progress` metric, which will not regress.
 `changefeed.checkpoint_progress` | The earliest timestamp of any changefeed's persisted checkpoint (values prior to this timestamp will never need to be re-emitted).
-`changefeed.failures` | Total number of [changefeed jobs]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) which have failed.
-`changefeed.lagging_ranges` | Number of ranges which are behind in a changefeed. This is calculated based on the changefeed options: <ul><li>[`lagging_ranges_threshold`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-threshold), which is the amount of time that a range checkpoint needs to be in the past to be considered lagging.</li><li>[`lagging_ranges_polling_interval`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-polling-interval), which is the frequency at which lagging ranges are polled and the metric is updated.</li></ul>
+`changefeed.failures` | Total number of [changefeed jobs]({{ page.version.version }}/show-jobs.md#show-changefeed-jobs) which have failed.
+`changefeed.lagging_ranges` | Number of ranges which are behind in a changefeed. This is calculated based on the changefeed options: <ul><li>[`lagging_ranges_threshold`]({{ page.version.version }}/create-changefeed.md#lagging-ranges-threshold), which is the amount of time that a range checkpoint needs to be in the past to be considered lagging.</li><li>[`lagging_ranges_polling_interval`]({{ page.version.version }}/create-changefeed.md#lagging-ranges-polling-interval), which is the frequency at which lagging ranges are polled and the metric is updated.</li></ul>
 `changefeed.running` | Number of currently running changefeeds, including sinkless.
 `clock-offset.meannanos` | Mean clock offset with other nodes in nanoseconds
 `clock-offset.stddevnanos` | Std dev clock offset with other nodes in nanoseconds
@@ -42,10 +42,10 @@ Name | Description
 `intentage` | Cumulative age of intents in seconds
 `intentbytes` | Number of bytes in intent KV pairs
 `intentcount` | Count of intent keys
-`jobs.changefeed.expired_pts_records` | Number of expired [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records owned by [changefeed jobs]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs).
-`jobs.{job_type}.currently_paused` | Number of `{job_type}` [jobs]({% link {{ page.version.version }}/show-jobs.md %}) currently considered paused. See the [`/_status/vars`]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) endpoint for all job types.
-`jobs.{job_type}.protected_age_sec` | The age of the oldest [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) record protecting `{job_type}` [jobs]({% link {{ page.version.version }}/show-jobs.md %}). See the [`/_status/vars`]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) endpoint for all job types.
-`jobs.{job_type}.protected_record_count` | Number of [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records held by `{job_type}` [jobs]({% link {{ page.version.version }}/show-jobs.md %}). See the [`/_status/vars`]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) endpoint for all job types.
+`jobs.changefeed.expired_pts_records` | Number of expired [protected timestamp]({{ page.version.version }}/architecture/storage-layer.md#protected-timestamps) records owned by [changefeed jobs]({{ page.version.version }}/show-jobs.md#show-changefeed-jobs).
+`jobs.{job_type}.currently_paused` | Number of `{job_type}` [jobs]({{ page.version.version }}/show-jobs.md) currently considered paused. See the [`/_status/vars`]({{ page.version.version }}/monitoring-and-alerting.md#prometheus-endpoint) endpoint for all job types.
+`jobs.{job_type}.protected_age_sec` | The age of the oldest [protected timestamp]({{ page.version.version }}/architecture/storage-layer.md#protected-timestamps) record protecting `{job_type}` [jobs]({{ page.version.version }}/show-jobs.md). See the [`/_status/vars`]({{ page.version.version }}/monitoring-and-alerting.md#prometheus-endpoint) endpoint for all job types.
+`jobs.{job_type}.protected_record_count` | Number of [protected timestamp]({{ page.version.version }}/architecture/storage-layer.md#protected-timestamps) records held by `{job_type}` [jobs]({{ page.version.version }}/show-jobs.md). See the [`/_status/vars`]({{ page.version.version }}/monitoring-and-alerting.md#prometheus-endpoint) endpoint for all job types.
 `jobs.row_level_ttl.num_active_spans` | Number of active spans the TTL job is deleting from
 `jobs.row_level_ttl.span_total_duration` | Duration for processing a span during row level TTL
 `keybytes` | Number of bytes taken up by keys
@@ -229,8 +229,8 @@ Name | Description
 `round-trip-latency` | Distribution of round-trip latencies with other nodes in nanoseconds
 `security.certificate.expiration.ca` | Expiration timestamp in seconds since Unix epoch for the CA certificate. 0 means no certificate or error.
 `security.certificate.expiration.node` | Expiration timestamp in seconds since Unix epoch for the node certificate. 0 means no certificate or error.
-`schedules.BACKUP.protected_age_sec` | The age of the oldest [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) record protected by `BACKUP` schedules.
-`schedules.BACKUP.protected_record_count` | Number of [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) records held by `BACKUP` schedules.
+`schedules.BACKUP.protected_age_sec` | The age of the oldest [protected timestamp]({{ page.version.version }}/architecture/storage-layer.md#protected-timestamps) record protected by `BACKUP` schedules.
+`schedules.BACKUP.protected_record_count` | Number of [protected timestamp]({{ page.version.version }}/architecture/storage-layer.md#protected-timestamps) records held by `BACKUP` schedules.
 `sql.bytesin` | Number of SQL bytes received
 `sql.bytesout` | Number of SQL bytes sent
 `sql.conns` | Number of active SQL connections. For new recent connections, refer to `sql.new_conns`.
@@ -269,8 +269,8 @@ Name | Description
 `sql.txn.begin.count` | Number of SQL transaction BEGIN statements
 `sql.txn.commit.count` | Number of SQL transaction COMMIT statements
 `sql.txn.contended.count` | Number of SQL transactions that experienced contention
-`sql.txn.isolation.executed_at.read_committed` | Number of times a [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transaction was executed.
-`sql.txn.isolation.upgraded_from.read_committed` | Number of times a [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) transaction was automatically upgraded to a stronger isolation level.
+`sql.txn.isolation.executed_at.read_committed` | Number of times a [`READ COMMITTED`]({{ page.version.version }}/read-committed.md) transaction was executed.
+`sql.txn.isolation.upgraded_from.read_committed` | Number of times a [`READ COMMITTED`]({{ page.version.version }}/read-committed.md) transaction was automatically upgraded to a stronger isolation level.
 `sql.txn.rollback.count` | Number of SQL transaction ROLLBACK statements
 `sql.update.count` | Number of SQL UPDATE statements
 `storage.l0-level-score` | Compaction score of level 0

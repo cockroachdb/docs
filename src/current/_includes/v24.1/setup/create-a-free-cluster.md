@@ -1,4 +1,4 @@
-{% include cockroachcloud/free-cluster-limit.md %}
+{% include "_includes/cockroachcloud/free-cluster-limit.md" %}
 
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}" rel="noopener" target="_blank">sign up for a CockroachDB {{ site.data.products.cloud }} account</a>.
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachDB {{ site.data.products.cloud }} account.

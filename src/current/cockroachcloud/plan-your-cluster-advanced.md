@@ -6,7 +6,7 @@ docs_area: deploy
 cloud: true
 ---
 
-{% include cockroachcloud/filter-tabs/plan-your-cluster.md %}
+{% include "_includes/cockroachcloud/filter-tabs/plan-your-cluster.md" %}
 
 This page describes how to plan your CockroachDB {{ site.data.products.advanced }} cluster.
 
@@ -22,18 +22,18 @@ Some of a CockroachDB {{ site.data.products.advanced }} cluster's provisioned me
 
 CockroachDB {{ site.data.products.advanced }} clusters use three Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (for example, 3, 6, or 9 nodes per region).
 
-You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) your cluster and [restore]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) it into a new single-node cluster.
+You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, [back up](take-and-restore-self-managed-backups.md) your cluster and [restore](take-and-restore-self-managed-backups.md) it into a new single-node cluster.
 
 ### Multi-region clusters
 
-Multi-region CockroachDB {{ site.data.products.advanced }} clusters must contain at least three regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the [`GLOBAL`]({% link {{site.current_cloud_version}}/global-tables.md %}) table locality or the [`REGIONAL BY TABLE`]({% link {{site.current_cloud_version}}/regional-tables.md %}#regional-tables) table locality and [`REGION` survival goal]({% link {{site.current_cloud_version}}/multiregion-survival-goals.md %}#survive-region-failures).
+Multi-region CockroachDB {{ site.data.products.advanced }} clusters must contain at least three regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the [`GLOBAL`]({{site.current_cloud_version}}/global-tables.md) table locality or the [`REGIONAL BY TABLE`]({{site.current_cloud_version}}/regional-tables.md#regional-tables) table locality and [`REGION` survival goal]({{site.current_cloud_version}}/multiregion-survival-goals.md#survive-region-failures).
 
-Each region of a multi-region cluster must contain at least 3 nodes to ensure that data located entirely in a region can survive the loss of one node in that region. For example, this applies to tables with the [`REGIONAL BY ROW`]({% link {{site.current_cloud_version}}/regional-tables.md %}#regional-by-row-tables) table locality. For best performance and stability, we recommend you use the same number of nodes in each region of your cluster.
+Each region of a multi-region cluster must contain at least 3 nodes to ensure that data located entirely in a region can survive the loss of one node in that region. For example, this applies to tables with the [`REGIONAL BY ROW`]({{site.current_cloud_version}}/regional-tables.md#regional-by-row-tables) table locality. For best performance and stability, we recommend you use the same number of nodes in each region of your cluster.
 
 You can configure a maximum of 9 regions per cluster through the Console. If you need to add more regions, [contact your Cockroach Labs account team](https://support.cockroachlabs.com).
 
 {{site.data.alerts.callout_success}}
-If your cluster's workload is subject to [compliance]({% link cockroachcloud/compliance.md %}) requirements such as PCI DSS or HIPAA, or to access advanced security features such as [CMEK]({% link cockroachcloud/cmek.md %}) or [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %}), you must enable [advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features) during cluster creation. This cannot be changed after the cluster is created. Advanced security features incurs additional costs. Refer to [Pricing](https://www.cockroachlabs.com/pricing/).
+If your cluster's workload is subject to [compliance](compliance.md) requirements such as PCI DSS or HIPAA, or to access advanced security features such as [CMEK](cmek.md) or [Egress Perimeter Controls](egress-perimeter-controls.md), you must enable [advanced security features](create-an-advanced-cluster.md#step-6-configure-advanced-security-features) during cluster creation. This cannot be changed after the cluster is created. Advanced security features incurs additional costs. Refer to [Pricing](https://www.cockroachlabs.com/pricing/).
 {{site.data.alerts.end}}
 
 ## Cluster sizing and scaling
@@ -79,7 +79,7 @@ Assume a storage buffer of 50% to account for overhead and data growth. The net 
 
 With the default replication factor of 3, the total amount of data stored is (3 * 450 GiB) = 1350 GiB.
 
-To determine the number of nodes and the hardware configuration to store 1350 GiB of data, refer to the table in [Create Your Cluster]({% link cockroachcloud/create-your-cluster.md %}#step-2-select-the-cloud-provider). One way to reach a 1350 GiB storage capacity is 3 nodes with 480 GiB per node, which gives you a capacity of (3*480 GiB) = 1440 GiB.
+To determine the number of nodes and the hardware configuration to store 1350 GiB of data, refer to the table in [Create Your Cluster](create-your-cluster.md#step-2-select-the-cloud-provider). One way to reach a 1350 GiB storage capacity is 3 nodes with 480 GiB per node, which gives you a capacity of (3*480 GiB) = 1440 GiB.
 
 To meet your performance requirement of 2000 TPS, consider a configuration of 3 nodes with 4 vCPUs per node. This configuration has (3*4 vCPUs) = 12 vCPUs. Each vCPU can handle around 1000 TPS, so this configuration provides 12000 TPS, which exceeds your performance requirements.
 

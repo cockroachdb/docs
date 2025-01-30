@@ -1,4 +1,4 @@
-This page documents the telemetry data that is collected by CockroachDB from clusters with telemetry enabled. For more information, refer to the [Licensing FAQs]({% link {{ page.version.version }}/licensing-faqs.md %}).
+This page documents the telemetry data that is collected by CockroachDB from clusters with telemetry enabled. For more information, refer to the [Licensing FAQs]({{ page.version.version }}/licensing-faqs.md).
 
 ## Who runs the telemetry server, and how is the data secured?
 
@@ -8,9 +8,9 @@ Once collected, Cockroach Labs conducts its post-processing of the telemetry dat
 
 ## What data is collected?
 
-{% include common/telemetry-table.html %}
+{% include "_includes/common/telemetry-table.html" %}
 
 ## See also
 
-- [Licensing FAQs]({% link {{ page.version.version }}/licensing-faqs.md %})
-- [`cockroach start --locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality)
+- [Licensing FAQs]({{ page.version.version }}/licensing-faqs.md)
+- [`cockroach start --locality`]({{ page.version.version }}/cockroach-start.md#locality)

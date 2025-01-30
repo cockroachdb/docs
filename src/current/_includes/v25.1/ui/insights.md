@@ -32,7 +32,7 @@ Status | The status of the transaction: `Failed` or `Completed`.
 Insights | The [insight type](#workload-insight-types) for the transaction execution.
 Start Time (UTC) | The timestamp when the transaction execution started.
 Contention Time | The amount of time the transaction execution spent waiting in [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
-CPU Time | The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators.<br><br>{% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).{% endif %}
+CPU Time | The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators.<br><br>{% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({{ page.version.version }}/architecture/sql-layer.md). It does not include time spent in the [storage layer]({{ page.version.version }}/architecture/storage-layer.md).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).{% endif %}
 Application Name | The name specified by the [`application_name` session setting]({{ link_prefix }}show-vars.html#supported-variables).
 
 ### Transaction Execution details
@@ -48,7 +48,7 @@ Field/Column | Description
 Start Time | The timestamp when the transaction execution started.
 End Time | The timestamp when the transaction execution ended.
 Elapsed Time | The time that elapsed during transaction execution.
-CPU Time | The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators. {% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).{% endif -%}{% if page.cloud == true %}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).{% endif %}
+CPU Time | The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators. {% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({{ page.version.version }}/architecture/sql-layer.md). It does not include time spent in the [storage layer]({{ page.version.version }}/architecture/storage-layer.md).{% endif -%}{% if page.cloud == true %}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).{% endif %}
 Rows Read | The total number of rows read by the transaction execution.
 Rows Written | The total number of rows written by the transaction execution.
 Priority | The [priority]({{ link_prefix }}transactions.html#set-transaction-priority) of the transaction execution.
@@ -101,9 +101,9 @@ The rows in this page are populated from the [`crdb_internal.cluster_execution_i
 
 - The results displayed on the **Statement Executions** view will be available as long as the number of rows in each node is less than the [`sql.insights.execution_insights_capacity` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-execution-insights-capacity).
 {% if include.version_prefix != nil %}
-- {% include {{ include.version_prefix }}performance/sql-trace-txn-enable-threshold.md version_prefix=version_prefix %}
+- {% include "_includes/{{" include.version_prefix }}performance/sql-trace-txn-enable-threshold.md version_prefix=version_prefix %}
 {% else %}
-- {% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
+- {% include "_includes/25.1/performance/sql-trace-txn-enable-threshold.md" %}
 {% endif %}
 {{site.data.alerts.end}}
 
@@ -125,7 +125,7 @@ Application Name | The name specified by the [`application_name`]({{ link_prefix
 Rows Processed | The total number of rows read and written.
 Retries | The number of times the statement execution was [retried]({{ link_prefix }}transactions.html#automatic-retries).
 Contention Time | The amount of time the statement execution spent waiting in [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
-CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. <br /><br />{%- if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).{%- endif -%}{%- if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
+CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. <br /><br />{%- if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({{ page.version.version }}/architecture/sql-layer.md). It does not include time spent in the [storage layer]({{ page.version.version }}/architecture/storage-layer.md).{%- endif -%}{%- if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
 {%- endif %}    
 Full Scan | Whether the execution performed a full scan of the table.
 Transaction Fingerprint ID | The ID of the transaction fingerprint for the statement execution.
@@ -144,7 +144,7 @@ Field/Column | Description
 Start Time | The timestamp when the statement execution started.
 End Time | The timestamp when the statement execution ended.
 Elapsed Time | The time that elapsed during statement execution.
-CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. {% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).{% endif %}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).{% endif %}
+CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. {% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({{ page.version.version }}/architecture/sql-layer.md). It does not include time spent in the [storage layer]({{ page.version.version }}/architecture/storage-layer.md).{% endif %}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).{% endif %}
 Rows Read | The total number of rows read by the statement execution.
 Rows Written | The total number of rows written by the statement execution.
 Transaction Priority | The [priority]({{ link_prefix }}transactions.html#set-transaction-priority) of the transaction for the statement execution.
@@ -185,11 +185,11 @@ The Workload Insights tab surfaces the following type of insights:
 
 The transaction or statement execution failed. The following screenshot shows a failed transaction execution:
 
-<img src="{{ 'images/v24.2/transaction_executions_failed.png' | relative_url }}" alt="Failed transaction execution" style="border:1px solid #eee;max-width:100%" />
+![Failed transaction execution](/images/v24.2/transaction_executions_failed.png)
 
 The following screenshot shows the default details of the preceding failed transaction execution.
 
-<img src="{{ 'images/v24.2/transaction_execution_details_failed.png' | relative_url }}" alt="Failed transaction execution details" style="border:1px solid #eee;max-width:100%" />
+![Failed transaction execution details](/images/v24.2/transaction_execution_details_failed.png)
 
 The **Insights** column shows the name of the insight, in this case **Failed Execution**. The **Details** column provides the **Error Code** and **Error Message**. CockroachDB uses [PostgreSQL Error Codes](https://www.postgresql.org/docs/current/errcodes-appendix.html). In this example, Error Code `40001` is a `serialization_failure`.
 
@@ -197,7 +197,7 @@ The **Insights** column shows the name of the insight, in this case **Failed Exe
 
 The following screenshot shows the conditional details of the preceding failed transaction execution. In this case, there was a *serialization conflict*, also known as an *isolation conflict*, due to [transaction contention]({{ link_prefix }}performance-recipes.html#transaction-contention). (For transaction contention that causes *lock contention*, see [High Contention](#high-contention)).
 
-<img src="{{ 'images/v24.2/transaction_execution_details_failed_conditional.png' | relative_url }}" alt="Failed transaction execution details conditional" style="border:1px solid #eee;max-width:100%" />
+![Failed transaction execution details conditional](/images/v24.2/transaction_execution_details_failed_conditional.png)
 
 To capture more information in the event of a failed transaction execution due to a serialization conflict, set the [`sql.contention.record_serialization_conflicts.enabled`]({{ link_prefix }}cluster-settings.html#setting-sql-contention-record-serialization-conflicts-enabled) cluster setting to `true` (default). With this setting enabled, when the **Error Code** is `40001` and the **Error Message** specifically has [`RETRY_SERIALIZABLE - failed preemptive refresh`]({{ link_prefix }}transaction-retry-error-reference.html#failed_preemptive_refresh)` due to conflicting locks`, a conditional **Failed Execution** section is displayed with **Conflicting Transaction** and **Conflicting Location** information.
 
@@ -211,11 +211,11 @@ To troubleshoot, refer to the performance tuning recipe for [identifying and unb
 
 The following screenshot shows the execution of a transaction flagged with **High Contention**:
 
-<img src="{{ 'images/v24.2/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eeqe;max-width:100%" />
+![Transaction execution](/images/v24.2/transaction_execution.png)
 
 The following screenshot shows the execution details of the preceding transaction execution:
 
-<img src="{{ 'images/v24.2/transaction_execution_details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
+![Transaction execution details](/images/v24.2/transaction_execution_details.png)
 
 ### High Retry Count
 
@@ -236,11 +236,11 @@ The statement execution has resulted in one or more [index recommendations](#sch
 
 The following screenshot shows the statement execution of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
-<img src="{{ 'images/v24.2/statement_executions.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
+![Statement execution](/images/v24.2/statement_executions.png)
 
 The following screenshot shows the execution details of the preceding statement execution:
 
-<img src="{{ 'images/v24.2/statement_execution_details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
+![Statement execution details](/images/v24.2/statement_execution_details.png)
 
 The **Insights** column shows the name of the insight, in this case **Suboptimal Plan**. The **Details** column provides details on the insight, such as a **Description** with the cause of the suboptimal plan and a **Recommendation** with a `CREATE INDEX` statement. The final column contains a **Create Index** button. Click the **Create Index** button to execute the recommended statement to mitigate the cause of the insight.
 
@@ -260,7 +260,7 @@ This view lists the [indexes]({{ link_prefix }}indexes.html) that have not been 
 
 The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) 6 or more times:
 
-<img src="{{ 'images/v24.2/schema_insight.png' | relative_url }}" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
+![Schema insight](/images/v24.2/schema_insight.png)
 
 CockroachDB uses the threshold of 6 executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.
 

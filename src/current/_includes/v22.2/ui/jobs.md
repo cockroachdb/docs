@@ -10,7 +10,7 @@ Use the **Jobs** table to see recently created and completed jobs.
 
 The following screenshot shows `ALTER TABLE` jobs:
 
-<img src="{{ 'images/v22.2/ui_jobs_page.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
+![DB Console Jobs Page](/images/v22.2/ui_jobs_page.png)
 
 ### Filter jobs
 
@@ -61,7 +61,7 @@ Status | Description
 
 The job ID, creation time, user, status, and error messages (if any) are also shown.
 
-<img src="{{ 'images/v22.2/ui_jobs_page_details.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
+![DB Console Jobs Page](/images/v22.2/ui_jobs_page_details.png)
 
 ## See also
 

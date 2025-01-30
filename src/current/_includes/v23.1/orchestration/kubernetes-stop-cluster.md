@@ -1,18 +1,18 @@
 To shut down the CockroachDB cluster:
 
 <section class="filter-content" markdown="1" data-scope="operator">
-{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+{% capture latest_operator_version %}{% include "_includes/latest_operator_version.md" %}{% endcapture %}
 
 1. Delete the previously created custom resource:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     kubectl delete -f example.yaml
     ~~~
 
 1. Remove the Operator:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml
     ~~~
@@ -36,7 +36,7 @@ Do **not** use the `--all` flag to `kubectl delete`, to avoid the risk of data l
 
 1. Delete the resources associated with the `cockroachdb` label, including the logs and Prometheus and Alertmanager resources. This command is very long; you may need to scroll your browser to read all of it.
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     kubectl delete \
       pods,statefulsets,services,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor \
@@ -70,7 +70,7 @@ Do **not** use the `--all` flag to `kubectl delete`, to avoid the risk of data l
 
 1. Delete the pod created for `cockroach` client commands, if you didn't do so earlier:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     kubectl delete pod cockroachdb-client-secure
     ~~~
@@ -79,7 +79,7 @@ Do **not** use the `--all` flag to `kubectl delete`, to avoid the risk of data l
     pod "cockroachdb-client-secure" deleted
     ~~~
 
-{% capture get_issuers_command %}{% include_cached copy-clipboard.html %}
+{% capture get_issuers_command %}{% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     kubectl get issuer
     ~~~
@@ -88,7 +88,7 @@ Do **not** use the `--all` flag to `kubectl delete`, to avoid the risk of data l
     ~~~
 {% endcapture %}
 
-{% capture get_csrs_command %}{% include_cached copy-clipboard.html %}
+{% capture get_csrs_command %}{% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     kubectl get csr
     ~~~
@@ -104,7 +104,7 @@ Do **not** use the `--all` flag to `kubectl delete`, to avoid the risk of data l
 <section class="filter-content" markdown="1" data-scope="helm">
 1. Uninstall the release:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     helm uninstall my-release
     ~~~
@@ -115,7 +115,7 @@ Do **not** use the `--all` flag to `kubectl delete`, to avoid the risk of data l
 
 1. Delete the pod created for `cockroach` client commands, if you didn't do so earlier:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     kubectl delete pod cockroachdb-client-secure
     ~~~

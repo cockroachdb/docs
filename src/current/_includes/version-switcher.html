@@ -63,7 +63,7 @@
         <li class="tier-2 {% if v.version == page.version %}active{% endif %}">
           <a data-proofer-ignore
           {% if v.url %}
-            href="{{ v.url | relative_url | replace: "/index.html", "" | replace: ".html", "" | downcase }}"
+            href="{{ v.url  | replace: "/index.html", "" | replace: ".html", "" | downcase }}"
             class="version--mobile"
           {% else %}
             class="version--mobile version--page-dne"
@@ -78,7 +78,7 @@
           </a>
           <a data-proofer-ignore
           {% if v.url %}
-            href="{{ v.url | relative_url | replace: "/index.html", "" | replace: ".html", "" | downcase }}"
+            href="{{ v.url  | replace: "/index.html", "" | replace: ".html", "" | downcase }}"
             class="version--desktop"
           {% else %}
             class="version--desktop version--page-dne"
@@ -95,4 +95,4 @@
 </div>
 </div>
 
-<script src="{{ 'js/initVersionSwitcher.js' | relative_url }}" async></script>
+<script src="{{ 'js/initVersionSwitcher.js'  }}" async></script>

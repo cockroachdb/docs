@@ -14,7 +14,7 @@
       "/cockroachcloud/quickstart-trial-cluster.html"
     ]
   },
-  {% include_cached sidebar-data-cockroachcloud.json %},
+  {% include sidebar-data-cockroachcloud.json %},
   {
     "title": "CockroachDB Self-Hosted",
     "is_top_level": true,
@@ -1309,8 +1309,8 @@
           }
         ]
       },
-      {% include_cached sidebar-releases.json %}
+      {% include sidebar-releases.json %}
     ]
   },
-  {% include_cached v21.1/sidebar-data-reference.json %}
+  {% include v21.1/sidebar-data-reference.json %}
 ]

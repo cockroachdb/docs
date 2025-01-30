@@ -1,7 +1,7 @@
 1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
 1. Run the [`cockroach start-single-node`](cockroach-start-single-node.html) command:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cockroach start-single-node --advertise-addr 'localhost' --insecure
     ~~~
@@ -19,4 +19,4 @@
     You'll use the `sql` connection string to connect to the cluster later in this tutorial.
 
 
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
+{% include "_includes/25.1/prod-deployment/insecure-flag.md" %}

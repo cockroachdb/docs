@@ -37,7 +37,7 @@ Yes, an admin could assign a cluster level role like Cluster Admin, Cluster Oper
 
 ### If an admin removes all role assignments for a particular user, is that user automatically removed from the CockroachDB {{ site.data.products.cloud }} organization?
 
-When all role assignments have been removed for a user, they still implicitly have the Org Member role which is granted to each newly-added CockroachDB {{ site.data.products.cloud }} member, and the member is not automatically removed from the organization. Refer to: [Remove a team member]({% link cockroachcloud/managing-access.md %}#remove-a-team-member)
+When all role assignments have been removed for a user, they still implicitly have the Org Member role which is granted to each newly-added CockroachDB {{ site.data.products.cloud }} member, and the member is not automatically removed from the organization. Refer to: [Remove a team member](managing-access.md#remove-a-team-member)
 
 ### Which roles grant the ability to add, remove, and manage members in a CockroachDB {{ site.data.products.cloud }} organization?
 
@@ -60,14 +60,14 @@ CockroachDB {{ site.data.products.cloud }} has a two-level authorization model:
 
 ### What methods can an admin use to assign organization-wide and cluster-specific roles to human users and service accounts?
 
-You can use Cloud Console, the [Cloud API]({% link cockroachcloud/cloud-api.md %}), or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest) to assign roles to human users.
+You can use Cloud Console, the [Cloud API](cloud-api.md), or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest) to assign roles to human users.
 
 To manage roles for service accounts, you must use the Cloud API.
 
 Refer to:
-- [Manage organization users]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users)
-- [Manage service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts)
+- [Manage organization users](managing-access.md#manage-an-organizations-users)
+- [Manage service accounts](managing-access.md#manage-service-accounts)
 
 ### How can we track and audit role-assignment actions in a CockroachDB {{ site.data.products.cloud }} organization?
 
-Any user with the Org Administrator role can access [Cloud Organization audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %}) to track when users are added and removed in the CockroachDB {{ site.data.products.cloud }} organization, and whenever any role assignment changes are performed for those users.
+Any user with the Org Administrator role can access [Cloud Organization audit logs](cloud-org-audit-logs.md) to track when users are added and removed in the CockroachDB {{ site.data.products.cloud }} organization, and whenever any role assignment changes are performed for those users.

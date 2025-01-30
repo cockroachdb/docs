@@ -9,8 +9,8 @@ The table of licenses below refers to options for {{ site.data.products.core }} 
 Type | Description
 -------------|------------
 **Enterprise** <a name="enterprise"></a> | This paid license allows usage of all CockroachDB features in accordance with the terms specified in the [CockroachDB Software License][csl]. License must be renewed annually or as negotiated. Support levels available include [Enterprise][support] or [Essential][support].
-**Enterprise Free** <a name="enterprise-free"></a> | Same functionality as **Enterprise**, but free of charge for businesses with less than $10M in annual revenue. Clusters will be [throttled](#throttling) after 7 days without sending [telemetry]({% link {{ page.version.version }}/telemetry.md %}). License must be renewed annually. Support level available is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
-**Enterprise Trial** <a name="enterprise-trial"></a> | A 30 day self-service trial license. [Telemetry]({% link {{ page.version.version }}/telemetry.md %}) is required during the trial. Clusters will be [throttled](#throttling) after 7 days without sending telemetry. Telemetry can be disabled once the cluster is upgraded to a paid **Enterprise** license. Support level available during trial is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
+**Enterprise Free** <a name="enterprise-free"></a> | Same functionality as **Enterprise**, but free of charge for businesses with less than $10M in annual revenue. Clusters will be [throttled](#throttling) after 7 days without sending [telemetry]({{ page.version.version }}/telemetry.md). License must be renewed annually. Support level available is Community (i.e., [Docs]({{ page.version.version }}/index.md), [Forum][forum], [Slack][slack]).
+**Enterprise Trial** <a name="enterprise-trial"></a> | A 30 day self-service trial license. [Telemetry]({{ page.version.version }}/telemetry.md) is required during the trial. Clusters will be [throttled](#throttling) after 7 days without sending telemetry. Telemetry can be disabled once the cluster is upgraded to a paid **Enterprise** license. Support level available during trial is Community (i.e., [Docs]({{ page.version.version }}/index.md), [Forum][forum], [Slack][slack]).
 
 <a href="mailto:sales@cockroachlabs.com">Contact Sales</a> if you want to try CockroachDB without telemetry requirements or if you require an extended trial period.
 
@@ -27,7 +27,7 @@ To obtain a paid **Enterprise** license, <a href="mailto:sales@cockroachlabs.com
 
 To obtain an **Enterprise Free** or **Enterprise Trial** license, take the following steps:
 
-1. Point your web browser to the [CockroachDB {{ site.data.products.cloud }} Console][cloud-console] and [log in]({% link cockroachcloud/authentication.md %}#console-ui-authentication) as an account with **Organization Admin** permissions.
+1. Point your web browser to the [CockroachDB {{ site.data.products.cloud }} Console][cloud-console] and [log in](authentication.md#console-ui-authentication) as an account with **Organization Admin** permissions.
 1. Select **Organization &raquo; Enterprise Licenses** from the nav bar dropdown. This will bring you to the **Enterprise Licenses** page, which shows a (possibly empty) list of licenses and their keys, with information about the status of each.
 1. Click the **Create License** button. This will bring you to a page called **Get started with CockroachDB Enterprise**.
 1. On this page, you will create an **Enterprise Trial** license or an **Enterprise Free** license.
@@ -57,13 +57,13 @@ For quick local testing of Enterprise features, you can [run a single-node clust
 
 ## Set a license
 
-{% include common/set-enterprise-license.md %}
+{% include "_includes/common/set-enterprise-license.md" %}
 
 ## Verify a license
 
-To verify a license, open the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) and use the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) command to check the license key:
+To verify a license, open the [built-in SQL shell]({{ page.version.version }}/cockroach-sql.md) and use the [`SHOW CLUSTER SETTING`]({{ page.version.version }}/show-cluster-setting.md) command to check the license key:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 SHOW CLUSTER SETTING enterprise.license;
 ~~~
@@ -76,7 +76,7 @@ SHOW CLUSTER SETTING enterprise.license;
 
 The license setting is also logged in the `cockroach.log` on the node where the command is run:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 cat cockroach.log | grep license
 ~~~
@@ -88,10 +88,10 @@ I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root
 
 You can monitor the time until your license expires in the following ways:
 
-1. [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}): The `seconds_until_enterprise_license_expiry` metric reports the number of seconds until the license on a cluster expires. It will report `0` if there is no license, and a negative number if the license has already expired. For more information, see [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %}).
-1. [DB Console]({% link {{ page.version.version }}/ui-overview.md %}): Several [license expiration messages]({% link {{ page.version.version }}/ui-overview.md %}#license-expiration-message) may be displayed, depending on the status of your cluster's license.
+1. [Prometheus]({{ page.version.version }}/monitor-cockroachdb-with-prometheus.md): The `seconds_until_enterprise_license_expiry` metric reports the number of seconds until the license on a cluster expires. It will report `0` if there is no license, and a negative number if the license has already expired. For more information, see [Monitoring and Alerting]({{ page.version.version }}/monitoring-and-alerting.md).
+1. [DB Console]({{ page.version.version }}/ui-overview.md): Several [license expiration messages]({{ page.version.version }}/ui-overview.md#license-expiration-message) may be displayed, depending on the status of your cluster's license.
 1. [CockroachDB {{ site.data.products.cloud }} Console][cloud-console]: If you have an **Enterprise Free** or **Enterprise Trial** cluster, you will see notifications in the **Enterprise Licenses** section, as well as receive notification emails sent to users with **Organization Admin** permissions.
-1. CockroachDB emits [log messages]({% link {{ page.version.version }}/logging-overview.md %}) when a cluster is at risk of being [throttled](#throttling) due to license expiration or [telemetry]({% link {{ page.version.version }}/telemetry.md %}) requirements. The database will also return notices to [SQL clients]({% link {{ page.version.version }}/cockroach-sql.md %}) or [applications]({% link {{ page.version.version }}/install-client-drivers.md %}) that try to execute [transactions]({% link {{ page.version.version }}/transactions.md %}).
+1. CockroachDB emits [log messages]({{ page.version.version }}/logging-overview.md) when a cluster is at risk of being [throttled](#throttling) due to license expiration or [telemetry]({{ page.version.version }}/telemetry.md) requirements. The database will also return notices to [SQL clients]({{ page.version.version }}/cockroach-sql.md) or [applications]({{ page.version.version }}/install-client-drivers.md) that try to execute [transactions]({{ page.version.version }}/transactions.md).
 
 {{site.data.alerts.callout_info}}
 During the transition to the [CockroachDB Software License][csl], expiration behavior (including [throttling](#throttling)) will work as follows depending on your version of CockroachDB.
@@ -124,11 +124,11 @@ Hosting CockroachDB as a service means creating an offering that allows third pa
 
 ### What is throttling and how does it work?
 
-When a cluster is being throttled, the number of concurrent open [SQL transactions]({% link {{ page.version.version }}/transactions.md %}) is limited to 5.
+When a cluster is being throttled, the number of concurrent open [SQL transactions]({{ page.version.version }}/transactions.md) is limited to 5.
 
 This will happen in the following cases:
 
-- The cluster is not following [telemetry]({% link {{ page.version.version }}/telemetry.md %}) requirements.
+- The cluster is not following [telemetry]({{ page.version.version }}/telemetry.md) requirements.
     - There is a 7 day grace period for **Enterprise Free** and **Enterprise Trial** clusters to (re)start sending telemetry. This applies when the license is first [added](#set-a-license), or any time there is an interruption in telemetry.
 - The cluster has an expired [license key](#obtain-a-license); depending on the type of expired license, the cluster will be throttled after the following time periods:
     - **Enterprise**: Never throttles
@@ -152,10 +152,10 @@ No, government entities do not qualify for an **Enterprise Free** license. To ob
 
 ### Do I need a license key for running a single node cluster?
 
-No license key is required for developers running [single-node clusters]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) using the following [`cockroach` commands]({% link {{ page.version.version }}/cockroach-commands.md %}):
+No license key is required for developers running [single-node clusters]({{ page.version.version }}/cockroach-start-single-node.md) using the following [`cockroach` commands]({{ page.version.version }}/cockroach-commands.md):
 
-- [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %})
-- [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})
+- [`cockroach start-single-node`]({{ page.version.version }}/cockroach-start-single-node.md)
+- [`cockroach demo`]({{ page.version.version }}/cockroach-demo.md)
 
 Single-node clusters are not [throttled](#throttling).
 

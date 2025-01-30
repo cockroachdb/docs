@@ -1,5 +1,5 @@
 {% if page.cloud != true %}
-<img src="{{ 'images/v21.2/ui-sessions-page.png' | relative_url }}" alt="Sessions Page" style="border:1px solid #eee;max-width:100%" />
+![Sessions Page](/images/v21.2/ui-sessions-page.png)
 {% endif %}
 
 {{site.data.alerts.callout_info}}
@@ -26,7 +26,7 @@ To view [details of a session](#session-details), click **Session Duration**.
 ## Session details
 
 {% if page.cloud != true %}
-<img src="{{ 'images/v21.2/ui-sessions-details-page.png' | relative_url }}" alt="Sessions Details Page" style="border:1px solid #eee;max-width:100%" />
+![Sessions Details Page](/images/v21.2/ui-sessions-details-page.png)
 {% endif %}
 
 The **Cancel statement** button ends the SQL statement. The session running this statement will receive an error.

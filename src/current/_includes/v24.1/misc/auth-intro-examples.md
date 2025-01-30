@@ -1,3 +1,3 @@
-These examples use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}).
+These examples use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication]({{ page.version.version }}/cloud-storage-authentication.md).
 
-CockroachDB supports assume role authentication. This allows you to limit the control specific users have over your storage buckets. See [Assume role authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for more information.
+CockroachDB supports assume role authentication. This allows you to limit the control specific users have over your storage buckets. See [Assume role authentication]({{ page.version.version }}/cloud-storage-authentication.md) for more information.

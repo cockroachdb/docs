@@ -2,4 +2,4 @@ The number of RUs consumed by KV storage layer reads, broken down by batches. SQ
 <br>
 <b>1 RU = 2 storage read batches</b>
 <br>
-Correlate this metric with [Request Units (RUs)](#tenant.consumption.request_units). To learn more about how RUs are calculated, refer to [Resource Usage]({% link cockroachcloud/resource-usage-basic.md %}).
+Correlate this metric with [Request Units (RUs)](#tenant.consumption.request_units). To learn more about how RUs are calculated, refer to [Resource Usage](resource-usage-basic.md).

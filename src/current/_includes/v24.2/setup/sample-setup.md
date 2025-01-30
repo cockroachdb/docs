@@ -19,11 +19,11 @@ You can install a CockroachDB {{ site.data.products.serverless }} cluster using 
 
 ### Create a free cluster
 
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+{% include "_includes/cockroachcloud/quickstart/create-a-free-cluster.md" %}
 
 ### Create a SQL user
 
-{% include {{ page.version.version }}/setup/create-first-sql-user.md %}
+{% include "_includes/25.1/setup/create-first-sql-user.md" %}
 
 ### Get the connection string
 
@@ -50,11 +50,11 @@ The <code>ccloud</code> CLI tool is in Preview.
 
 <h3>Install <code>ccloud</code></h3>
 
-{% include cockroachcloud/ccloud/install-ccloud.md %}
+{% include "_includes/cockroachcloud/ccloud/install-ccloud.md" %}
 
 ### Run `ccloud quickstart` to create a new cluster, create a SQL user, and retrieve the connection string.
 
-{% include cockroachcloud/ccloud/quickstart.md %}
+{% include "_includes/cockroachcloud/ccloud/quickstart.md" %}
 
 Select **General connection string**, then copy the connection string displayed and save it in a secure location. The connection string is the line starting `postgresql://`.
 
@@ -70,6 +70,6 @@ postgresql://maxroach:ThisIsNotAGoodPassword@blue-dog-147.6wr.cockroachlabs.clou
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-{% include {{ page.version.version }}/setup/start-single-node-insecure.md %}
+{% include "_includes/25.1/setup/start-single-node-insecure.md" %}
 
 </section>

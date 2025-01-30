@@ -2,17 +2,17 @@ To use the CockroachDB SQL client, first launch a secure pod running the `cockro
 
 <section class="filter-content" markdown="1" data-scope="operator">
 
-{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+{% capture latest_operator_version %}{% include "_includes/latest_operator_version.md" %}{% endcapture %}
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 $ kubectl create \
 -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/examples/client-secure-operator.yaml
 ~~~
 
-1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({{ page.version.version }}/cockroach-sql.md):
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -33,13 +33,13 @@ $ kubectl create \
     root@cockroachdb-public:26257/defaultdb>
     ~~~
 
-{% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
+{% include "_includes/25.1/orchestration/kubernetes-basic-sql.md" %}
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ shell
 $ kubectl create \
 -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
@@ -49,9 +49,9 @@ $ kubectl create \
 pod/cockroachdb-client-secure created
 ~~~
 
-1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({{ page.version.version }}/cockroach-sql.md):
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -75,12 +75,12 @@ pod/cockroachdb-client-secure created
     ~~~
 
     {{site.data.alerts.callout_success}}
-    This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other [`cockroach` client commands]({% link {{ page.version.version }}/cockroach-commands.md %}) (e.g., `cockroach node`), repeat step 2 using the appropriate `cockroach` command.
+    This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other [`cockroach` client commands]({{ page.version.version }}/cockroach-commands.md) (e.g., `cockroach node`), repeat step 2 using the appropriate `cockroach` command.
 
     If you'd prefer to delete the pod and recreate it when needed, run `kubectl delete pod cockroachdb-client-secure`.
     {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
+{% include "_includes/25.1/orchestration/kubernetes-basic-sql.md" %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
@@ -88,7 +88,7 @@ From your local workstation, use our [`client-secure.yaml`](https://github.com/c
 
 1. Download the file:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ curl -OOOOOOOOO \
     https://raw.githubusercontent.com/cockroachdb/helm-charts/master/examples/client-secure.yaml
@@ -101,7 +101,7 @@ From your local workstation, use our [`client-secure.yaml`](https://github.com/c
 
 1. Use the file to launch a pod and keep it running indefinitely:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl create -f client-secure.yaml
     ~~~
@@ -110,9 +110,9 @@ From your local workstation, use our [`client-secure.yaml`](https://github.com/c
     pod "cockroachdb-client-secure" created
     ~~~
 
-1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
+1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({{ page.version.version }}/cockroach-sql.md):
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -136,10 +136,10 @@ From your local workstation, use our [`client-secure.yaml`](https://github.com/c
     ~~~
 
     {{site.data.alerts.callout_success}}
-    This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other [`cockroach` client commands]({% link {{ page.version.version }}/cockroach-commands.md %}) (e.g., `cockroach node`), repeat step 2 using the appropriate `cockroach` command.
+    This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other [`cockroach` client commands]({{ page.version.version }}/cockroach-commands.md) (e.g., `cockroach node`), repeat step 2 using the appropriate `cockroach` command.
 
     If you'd prefer to delete the pod and recreate it when needed, run `kubectl delete pod cockroachdb-client-secure`.
     {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
+{% include "_includes/25.1/orchestration/kubernetes-basic-sql.md" %}
 </section>

@@ -32,9 +32,9 @@ Refer to: [Overview of the CockroachDB {{ site.data.products.cloud }} authorizat
 
 ## Console UI authentication
 
-You may log in to the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) with a username and password, or by using [Single Sign-on (SSO) for CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/cloud-org-sso.md %}).
+You may log in to the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) with a username and password, or by using [Single Sign-on (SSO) for CockroachDB {{ site.data.products.cloud }}](cloud-org-sso.md).
 
-{% include cockroachcloud/prefer-sso.md %}
+{% include "_includes/cockroachcloud/prefer-sso.md" %}
 
 
 ## `ccloud` authentication
@@ -46,24 +46,24 @@ For more information, refer to: [Get Started with the `ccloud` CLI
 
 To authenticate `ccloud` to a particular organization, run the following command. `ccloud` will open up your machine's default browser, attempt to authenticate to the console and export a temporary auth token.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~shell
 ccloud auth login --org <organization label>
 ~~~
 
-Refer to: [Log in to CockroachDB Cloud using `ccloud auth`]({% link cockroachcloud/ccloud-get-started.md %}#log-in-to-cockroachdb-cloud-using-ccloud-auth)
+Refer to: [Log in to CockroachDB Cloud using `ccloud auth`](ccloud-get-started.md#log-in-to-cockroachdb-cloud-using-ccloud-auth)
 
 ## Cloud API authentication
 
-The [Cloud API]({% link cockroachcloud/cloud-api.md %}) allows automated execution of organization functions. Unlike `ccloud` and the console UI, however, only service accounts can authenticate to the API.
+The [Cloud API](cloud-api.md) allows automated execution of organization functions. Unlike `ccloud` and the console UI, however, only service accounts can authenticate to the API.
 
 Service accounts authenticate to the API using API keys, which are provisioned through the console UI.
 
-Refer to: [Managing Service Accounts: API access]({% link cockroachcloud/managing-access.md %}#api-access)
+Refer to: [Managing Service Accounts: API access](managing-access.md#api-access)
 
 ## SQL client authentication
 
-To execute SQL statements or perform database administration functions on a cluster, you must connect to the cluster with a SQL client. CockroachDB clients include the CockroachDB CLI, and numerous [drivers and object-relational mapping (ORM) tools]({% link {{site.current_cloud_version}}/install-client-drivers.md %}).
+To execute SQL statements or perform database administration functions on a cluster, you must connect to the cluster with a SQL client. CockroachDB clients include the CockroachDB CLI, and numerous [drivers and object-relational mapping (ORM) tools]({{site.current_cloud_version}}/install-client-drivers.md).
 
 ### The connection string
 
@@ -76,7 +76,7 @@ Clients can authenticate in two ways. Your connection string must be modified de
 - [Username and password](#username-and-password)
 - [PKI security certificate](#pki-security-certificate)
 
-Note that the [TLS public root certificate authority (CA) certificate of the cluster]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}#certificates-signing-trust-and-authority) is also required for authenticating the cluster server against the SQL client. This certificate can be downloaded by following the instructions in the **Connect** UI.
+Note that the [TLS public root certificate authority (CA) certificate of the cluster]({{site.current_cloud_version}}/security-reference/transport-layer-security.md#certificates-signing-trust-and-authority) is also required for authenticating the cluster server against the SQL client. This certificate can be downloaded by following the instructions in the **Connect** UI.
 
 ### Username and password
 
@@ -84,32 +84,32 @@ A user can authenticate to a cluster by providing their username and password in
 
 [The connection string](#the-connection-string) UI will indicate how to modify the string to user credentials.
 
-For information on managing SQL user credentials, including provisioning passwords, refer to [Manage SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster).
+For information on managing SQL user credentials, including provisioning passwords, refer to [Manage SQL users on a cluster](managing-access.md#manage-sql-users-on-a-cluster).
 
 ### PKI security certificate
 
 SQL clients may authenticate to CockroachDB {{ site.data.products.advanced }} clusters using PKI security certificates.
 
-Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}) for an overview of PKI certificate authentication in general and its use in CockroachDB.
+Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({{site.current_cloud_version}}/security-reference/transport-layer-security.md) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
-Refer to [Certificate Authentication for SQL Clients in CockroachDB Advanced Clusters]({% link cockroachcloud/client-certs-advanced.md %}) for procedural information on administering and using client certificate authentication.
+Refer to [Certificate Authentication for SQL Clients in CockroachDB Advanced Clusters](client-certs-advanced.md) for procedural information on administering and using client certificate authentication.
 
 ## Node identity verification
 
-The [connection string]({% link cockroachcloud/connect-to-your-cluster.md %}) generated to connect to your application uses the `verify-full` [SSL mode](#ssl-mode-settings) by default to verify a node’s identity. This mode encrypts the data in-flight as well as verifies the identity of the CockroachDB node, thus ensuring a secure connection to your cluster. Using this mode prevents MITM (Machine in the Middle) attacks, impersonation attacks, and eavesdropping.
+The [connection string](connect-to-your-cluster.md) generated to connect to your application uses the `verify-full` [SSL mode](#ssl-mode-settings) by default to verify a node’s identity. This mode encrypts the data in-flight as well as verifies the identity of the CockroachDB node, thus ensuring a secure connection to your cluster. Using this mode prevents MITM (Machine in the Middle) attacks, impersonation attacks, and eavesdropping.
 
 To connect securely to your cluster using the `verify-full` mode:
 
 1. Download the CA certificate and place it in the `certs` directory. The Certificate Authority (CA) certificate is the file that the client uses to verify the identity of the CockroachDB node.
-1. When connecting to the cluster, specify the path to the `certs` directory in the connection string. See [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) for more details.
+1. When connecting to the cluster, specify the path to the `certs` directory in the connection string. See [Connect to your cluster](connect-to-your-cluster.md) for more details.
 
 You can also use the `require` SSL mode, although we do not recommend using it since it can make the cluster susceptible to MITM and impersonation attacks. For more information, see the "Protection Provided in Different Modes" section in PostgreSQL's [SSL Support](https://www.postgresql.org/docs/9.4/libpq-ssl.html) document.
 
-For more information about creating SQL users and passwords, see [User Authorization]({% link cockroachcloud/managing-access.md %}).
+For more information about creating SQL users and passwords, see [User Authorization](managing-access.md).
 
 ## SSL mode settings
 
-The table below lists the `sslmode` settings you can use to [connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and their associated security risks. Other settings are not recommended.
+The table below lists the `sslmode` settings you can use to [connect to your cluster](connect-to-your-cluster.md) and their associated security risks. Other settings are not recommended.
 
 `sslmode` | Eavesdropping protection | MITM protection | Description
 -------------|------------|------------|------------
@@ -118,7 +118,7 @@ The table below lists the `sslmode` settings you can use to [connect to your clu
 
 ## See also
 
-- [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %})
-- [Configure Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %})
-- [Client Connection Parameters]({% link {{site.current_cloud_version}}/connection-parameters.md %})
-- [Connect to Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %})
+- [Cloud Organization SSO](cloud-org-sso.md)
+- [Configure Cloud Organization SSO](configure-cloud-org-sso.md)
+- [Client Connection Parameters]({{site.current_cloud_version}}/connection-parameters.md)
+- [Connect to Your CockroachDB {{ site.data.products.standard }} Cluster](connect-to-your-cluster.md)

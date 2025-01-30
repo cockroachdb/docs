@@ -3,5 +3,5 @@
 - `%>` and `<%` comparisons and acceleration.
 - `<<%` and `%>>` comparisons and acceleration.
 - `<->`, `<<->`, `<->>`, `<<<->`, and `<->>>` comparisons.
-- Acceleration on [regex string matching]({% link {{ page.version.version }}/scalar-expressions.md %}#string-matching-using-posix-regular-expressions).
-- `%` comparisons, `show_trgm`, and trigram index creation on [collated strings]({% link {{ page.version.version }}/collate.md %}).
+- Acceleration on [regex string matching]({{ page.version.version }}/scalar-expressions.md#string-matching-using-posix-regular-expressions).
+- `%` comparisons, `show_trgm`, and trigram index creation on [collated strings]({{ page.version.version }}/collate.md).

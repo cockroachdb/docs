@@ -1,5 +1,5 @@
 - Stored procedures
-  - {% include_cached new-in.html version="v22.2" %} CockroachDB has support for [user-defined functions](user-defined-functions.html).
+  - {% include "_includes/new-in.html" version="v22.2" %} CockroachDB has support for [user-defined functions](user-defined-functions.html).
 - Triggers.
 - Events.
 - `FULLTEXT` functions and indexes.

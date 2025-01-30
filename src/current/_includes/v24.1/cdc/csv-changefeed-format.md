@@ -1,1 +1,1 @@
-Changefeeds emit the same CSV format as [`EXPORT`]({% link {{ page.version.version }}/export.md %}). In v22.1, changefeeds emitted CSV data that wrapped some values in single quotes, which were not wrapped when exporting data with the `EXPORT` statement.
+Changefeeds emit the same CSV format as [`EXPORT`]({{ page.version.version }}/export.md). In v22.1, changefeeds emitted CSV data that wrapped some values in single quotes, which were not wrapped when exporting data with the `EXPORT` statement.

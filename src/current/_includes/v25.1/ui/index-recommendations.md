@@ -4,4 +4,4 @@ The [Indexes List Tab](#indexes-list-tab) of the [Table Details Page](#table-det
 
 The [Index Details Page](#index-details-page) also shows recommendations to drop the selected index based on index usage.
 
-To configure the threshold for when CockroachDB will recommend that you drop an index due to low usage, change the [`sql.index_recommendation.drop_unused_duration` cluster setting]({% link {{ version_prefix }}/cluster-settings.md %}). The default value is 7 days.
+To configure the threshold for when CockroachDB will recommend that you drop an index due to low usage, change the [`sql.index_recommendation.drop_unused_duration` cluster setting]({{ version_prefix }}/cluster-settings.md). The default value is 7 days.

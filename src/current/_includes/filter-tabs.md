@@ -15,14 +15,14 @@ Example 1:
 {% assign tab_names_html = "CockroachDB Serverless;CockroachDB Dedicated" %}
 {% assign html_page_filenames = "serverless-faqs.html;frequently-asked-questions.html" %}
 
-{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder="cockroachcloud" %}
+{% include "_includes/filter-tabs.md" tab_names=tab_names_html page_filenames=html_page_filenames page_folder="cockroachcloud" %}
 
 Example 2:
 
 {% assign tab_names_html = "Use <strong>JDBC</strong>;Use <strong>Hibernate</strong>;Use <strong>jOOQ</strong>;Use <strong>MyBatis-Spring</strong>" %}
 {% assign html_page_filenames = "build-a-java-app-with-cockroachdb.html;build-a-java-app-with-cockroachdb-hibernate.html;build-a-java-app-with-cockroachdb-jooq.html;build-a-spring-app-with-cockroachdb-mybatis.html" %}
 
-{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder=page.version.version %}
+{% include "_includes/filter-tabs.md" tab_names=tab_names_html page_filenames=html_page_filenames page_folder=page.version.version %}
 
 {% endcomment %}
 
@@ -37,7 +37,7 @@ Example 2:
 <div class="filters clearfix">
     {% for x in (0..ul) %}
       {% if page_filenames[x] contains "http://" or page_filenames[x] contains "https://" %} {% comment %} Add support for external URLs {% endcomment %}
-        {% assign external = "true"}
+        {% assign external = "true" %}
         {% assign url = page_filenames[x] %}
         {% assign baseurl = page_filenames[x] %}
       {% else %}

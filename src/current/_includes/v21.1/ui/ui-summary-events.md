@@ -13,14 +13,14 @@ Queries per second | The total number of `SELECT`, `UPDATE`, `INSERT`, and `DELE
 P99 Latency | The 99th percentile of service latency.
 
 {{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/misc/available-capacity-metric.md %}
+{% include "_includes/25.1/misc/available-capacity-metric.md" %}
 {{site.data.alerts.end}}
 
 ### Events panel
 
 Underneath the [Summary](#summary-panel) panel, the **Events** panel lists the 5 most recent events logged for all nodes across the cluster. To list all events, click **View all events**.
 
-<img src="{{ 'images/v21.1/ui_events.png' | relative_url }}" alt="DB Console Events" style="border:1px solid #eee;max-width:40%" />
+![DB Console Events](/images/v21.1/ui_events.png)
 
 The following types of events are listed:
 

@@ -19,13 +19,13 @@ CockroachDB {{ site.data.products.advanced }} has been certified by a PCI Qualif
 
 Features to support PCI DSS are not yet available on Azure.
 
-To learn more, refer to [PCI DSS Compliance in CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/pci-dss.md %}).
+To learn more, refer to [PCI DSS Compliance in CockroachDB {{ site.data.products.advanced }}](pci-dss.md).
 
 ## HIPAA
 
 The Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_, defines standards for the storage and handling of personally-identifiable information (PII) related to patient healthcare and health insurance (also referred to as Private Health Information, or PHI).
 
-When configured appropriately for [PCI DSS Compliance]({% link cockroachcloud/pci-dss.md %}), CockroachDB {{ site.data.products.advanced }} on AWS and GCP also meets the requirements of HIPAA.
+When configured appropriately for [PCI DSS Compliance](pci-dss.md), CockroachDB {{ site.data.products.advanced }} on AWS and GCP also meets the requirements of HIPAA.
 
 Features to support HIPAA are not yet available on Azure.
 

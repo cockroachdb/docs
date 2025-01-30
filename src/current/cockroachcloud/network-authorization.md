@@ -20,14 +20,14 @@ You can authorize network access to your cluster by:
     - <a id="aws-privatelink"></a>CockroachDB {{ site.data.products.advanced }} or {{ site.data.products.standard }} clusters deployed on AWS can connect privately using AWS PrivateLink, which allows you to connect your cluster to a VPC within your AWS account.
     - <a id="azure-private-link"></a>CockroachDB {{ site.data.products.advanced }} clusters deployed on Azure can connect privately using Azure Private Link, which allows you to connect your cluster to a virtual network within your Azure tenant.
 
-    For detailed instructions, refer to [Establish private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity).
+    For detailed instructions, refer to [Establish private connectivity](connect-to-your-cluster.md#establish-private-connectivity).
 
 
 {{site.data.alerts.callout_info}}
-{% include cockroachcloud/cdc/kafka-vpc-limitation.md %}
+{% include "_includes/cockroachcloud/cdc/kafka-vpc-limitation.md" %}
 {{site.data.alerts.end}}
 
-**Prerequisite**: {% include cockroachcloud/cluster-operator-prereq.md %}
+**Prerequisite**: {% include "_includes/cockroachcloud/cluster-operator-prereq.md" %}
 
 Use private connectivity if:
 
@@ -35,10 +35,10 @@ Use private connectivity if:
 - Your servers’ IP addresses are not static.
 - You have a requirement to avoid exposing your cluster to the public internet.
 
-Learn more about [Private Clusters (Preview)]({% link cockroachcloud/private-clusters.md %}), which offer enhanced cluster security. A private cluster's nodes have no public IP addresses.
+Learn more about [Private Clusters (Preview)](private-clusters.md), which offer enhanced cluster security. A private cluster's nodes have no public IP addresses.
 
 {{site.data.alerts.callout_info}}
-Neither Azure Private Link nor private clusters are available for [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
+Neither Azure Private Link nor private clusters are available for [CockroachDB {{ site.data.products.advanced }} on Azure](cockroachdb-advanced-on-azure.md).
 {{site.data.alerts.end}}
 
 ## Cluster default network configuration
@@ -74,9 +74,9 @@ If your application servers’ IP addresses are not static, or you want to limit
 
 Refer to:
 
-- [Connect to a CockroachDB {{ site.data.products.basic }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-a-basic-cluster.md %}#authorize-your-network).
-- - [Connect to a CockroachDB {{ site.data.products.standard }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-your-cluster.md %}#authorize-your-network).
-- [Connect to a CockroachDB {{ site.data.products.advanced }} Cluster: Authorize your network]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#authorize-your-network).
+- [Connect to a CockroachDB {{ site.data.products.basic }} Cluster: Authorize your network](connect-to-a-basic-cluster.md#authorize-your-network).
+- - [Connect to a CockroachDB {{ site.data.products.standard }} Cluster: Authorize your network](connect-to-your-cluster.md#authorize-your-network).
+- [Connect to a CockroachDB {{ site.data.products.advanced }} Cluster: Authorize your network](connect-to-an-advanced-cluster.md#authorize-your-network).
 
 ## DB Console
 
@@ -84,16 +84,16 @@ The DB Console provides details about a CockroachDB {{ site.data.products.advanc
 
 {{site.data.alerts.callout_info}}
 Users must have the Cluster Developer, Cluster Operator, Cluster Admin, or Cluster Creator on a specific cluster role to access its DB Console.
-Refer to [Organization user roles]({% link cockroachcloud/authorization.md %}#organization-user-roles)
+Refer to [Organization user roles](authorization.md#organization-user-roles)
 {{site.data.alerts.end}}
 
-For information on functionality, refer to: [DB Console Overview]({% link {{site.current_cloud_version}}/ui-overview.md %}).
+For information on functionality, refer to: [DB Console Overview]({{site.current_cloud_version}}/ui-overview.md).
 
 To access the DB Console, you must first authorize your current IP address:
 
 1. Visit your cluster's IP allowlist page:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~txt
     https://cockroachlabs.cloud/cluster/{ your cluster UUID }/networking/allowlist
     ~~~
@@ -116,7 +116,7 @@ Remove an authorized network by selecting **Delete** from the **Action** dropdow
 
 To access your cluster's DB Console:
 
-1. Navigate to your CockroachDB {{ site.data.products.advanced }} cluster's [**Tools** page]({% link cockroachcloud/tools-page.md %}) in the **Monitoring** section of the CockroachDB {{ site.data.products.cloud }} Console.
+1. Navigate to your CockroachDB {{ site.data.products.advanced }} cluster's [**Tools** page](tools-page.md) in the **Monitoring** section of the CockroachDB {{ site.data.products.cloud }} Console.
 
 1. Click **Open DB Console**. Your browser will attempt to access the DB console in a new tab.
 
@@ -124,7 +124,7 @@ To access your cluster's DB Console:
 
 (Optional) To find the IP addresses for your cluster's DB Console, perform DNS lookup on the DB Console URL that opens in the browser. These IP addresses are static for the lifecycle of the cluster. For example, to use the `dig` command:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~shell
 dig examplary-advanced-clusterberry-77tq.cockroachlabs.cloud | grep -A3 'ANSWER SECTION'
 ~~~

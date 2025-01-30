@@ -806,7 +806,7 @@ Use a code block to provide executable code samples. A code block has an opening
 ```
 This is a sample line of text.
 
-{% include_cached copy-clipboard.html %}
+{% include copy-clipboard.html %}
 ~~~ shell
 $ go get -u github.com/lib/pq
 ~~~
@@ -844,10 +844,10 @@ SQL code samples are broken into two sections: commands and responses.
 
 **Copy to Clipboard Button**
 
-Many of our code blocks are written so users can copy and paste them directly into a terminal. To make that easier, add the **Copy to Clipboard** button by placing `{% include_cached copy-clipboard.html %}` on the line directly preceding the code block, for example:
+Many of our code blocks are written so users can copy and paste them directly into a terminal. To make that easier, add the **Copy to Clipboard** button by placing `{% include copy-clipboard.html %}` on the line directly preceding the code block, for example:
 
 ```
-{% include_cached copy-clipboard.html %}
+{% include copy-clipboard.html %}
 ~~~ shell
 $ go get -u github.com/lib/pq
 ~~~
@@ -856,7 +856,7 @@ $ go get -u github.com/lib/pq
 Notes for usage:
 
 - **Copy to Clipboard** should be used for every code block that can be **executed**.
-- There must be a line break above the `{% include_cached copy-clipboard.html %}` line.
+- There must be a line break above the `{% include copy-clipboard.html %}` line.
 
 #### Placeholders
 
@@ -938,7 +938,7 @@ Version tags inform users of new and updated features in CockroachDB, and could 
 To add a version tag, use the following Liquid tag:
 
 ~~~
-{% include_cached new-in.html version="v22.1" %}
+{% include new-in.html version="v22.1" %}
 ~~~
 
 <a name="version-tags-tables"></a>
@@ -947,11 +947,11 @@ Note: If using a version tag inside of a Markdown table, use `<span class="versi
 
 Put version tags at the beginning of a paragraph, sentence, or description in a table cell.
 
-If a feature is new in a GA release, use the major release number for the release version tag (e.g., `{% include_cached new-in.html version="v21.2" %}`).
+If a feature is new in a GA release, use the major release number for the release version tag (e.g., `{% include new-in.html version="v21.2" %}`).
 
-If a feature has been backported to a previous version in a patch release, use the patch release number for the release version tag (for example, `{% include_cached new-in.html version="v21.2.10" %}`).
+If a feature has been backported to a previous version in a patch release, use the patch release number for the release version tag (for example, `{% include new-in.html version="v21.2.10" %}`).
 
-Version tags should only refer to the version of the docset that contains them. For example, the version tag `{% include_cached new-in.html version="v21.1.9" %}` should only be on pages in `v21.1` directories.
+Version tags should only refer to the version of the docset that contains them. For example, the version tag `{% include new-in.html version="v21.1.9" %}` should only be on pages in `v21.1` directories.
 
 ### Version references
 
@@ -1184,7 +1184,7 @@ Like images, use videos to clarify a topic, but only use them as needed. Typical
 Use the following Liquid to include an embedded video in a Markdown page:
 
 ~~~ md
-{% include_cached youtube.html video_id="<YouTube ID>" [widescreen=true] %}
+{% include youtube.html video_id="<YouTube ID>" [widescreen=true] %}
 ~~~
 
 The `video_id` parameter is required and is whatever is after the `?v=` portion of the URL. If the URL to the video you wish to embed is `https://www.youtube.com/watch?v=5kiMg7GXAsY`, for example, then the value of `video_id` should be `5kiMg7GXAsY`. The `widescreen` parameter is optional and meant for videos with wide banners such as our video on [Foreign Key Constraints](https://www.youtube.com/watch?v=5kiMg7GXAsY).
@@ -1192,7 +1192,7 @@ The `video_id` parameter is required and is whatever is after the `?v=` portion 
 You can optionally pass in a start time to the `video_id` parameter to make the video start at a specific timestamp. The below example embeds the [How to Create Tables with Foreign Keys in SQL](https://www.youtube.com/watch?v=mFQk1VsIkZA) video and starts playing it at 25 seconds:
 
 ~~~ md
-{% include_cached youtube.html video_id="mFQk1VsIkZA?start=25" %}
+{% include youtube.html video_id="mFQk1VsIkZA?start=25" %}
 ~~~
 
 <a name="include-files"></a>

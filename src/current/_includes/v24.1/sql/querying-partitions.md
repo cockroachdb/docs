@@ -1,16 +1,16 @@
 ## Query partitions
 
-Similar to [indexes]({% link {{ page.version.version }}/indexes.md %}), partitions can improve query performance by limiting the numbers of rows that a query must scan. In the case of [geo-partitioned data]({% link {{ page.version.version }}/regional-tables.md %}), partitioning can limit a query scan to data in a specific region.
+Similar to [indexes]({{ page.version.version }}/indexes.md), partitions can improve query performance by limiting the numbers of rows that a query must scan. In the case of [geo-partitioned data]({{ page.version.version }}/regional-tables.md), partitioning can limit a query scan to data in a specific region.
 
 ### Filter on an indexed column
 
-If you filter the query of a partitioned table on a [column in the index directly following the partition prefix]({% link {{ page.version.version }}/indexes.md %}), the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) creates a query plan that scans each partition in parallel, rather than performing a costly sequential scan of the entire table.
+If you filter the query of a partitioned table on a [column in the index directly following the partition prefix]({{ page.version.version }}/indexes.md), the [cost-based optimizer]({{ page.version.version }}/cost-based-optimizer.md) creates a query plan that scans each partition in parallel, rather than performing a costly sequential scan of the entire table.
 
-For example, suppose that the tables in the [`movr`]({% link {{ page.version.version }}/movr.md %}) database are geo-partitioned by region, and you want to query the `users` table for information about a specific user.
+For example, suppose that the tables in the [`movr`]({{ page.version.version }}/movr.md) database are geo-partitioned by region, and you want to query the `users` table for information about a specific user.
 
 Here is the `CREATE TABLE` statement for the `users` table:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -42,7 +42,7 @@ Here is the `CREATE TABLE` statement for the `users` table:
 
 If you know the user's id, you can filter on the `id` column:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users WHERE id='00000000-0000-4000-8000-000000000000';
 ~~~
@@ -54,9 +54,9 @@ If you know the user's id, you can filter on the `id` column:
 (1 row)
 ~~~
 
-An [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) statement shows more detail about the cost-based optimizer's plan:
+An [`EXPLAIN`]({{ page.version.version }}/explain.md) statement shows more detail about the cost-based optimizer's plan:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > EXPLAIN SELECT * FROM users WHERE id='00000000-0000-4000-8000-000000000000';
 ~~~
@@ -77,12 +77,12 @@ Because the `id` column is in the primary index, directly after the partition pr
 
 If you know the set of all possible partitioned values, adding a check constraint to the table's create statement can also improve performance. For example:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > ALTER TABLE users ADD CONSTRAINT check_city CHECK (city IN ('amsterdam','boston','los angeles','new york','paris','rome','san francisco','seattle','washington dc'));
 ~~~
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > EXPLAIN SELECT * FROM users WHERE id='00000000-0000-4000-8000-000000000000';
 ~~~
@@ -106,7 +106,7 @@ To see the performance improvement over a query that performs a full table scan,
 
 Suppose that you want to query the `users` table for information about a specific user, but you only know the user's name.
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > SELECT * FROM users WHERE name='Robert Murphy';
 ~~~
@@ -118,7 +118,7 @@ Suppose that you want to query the `users` table for information about a specifi
 (1 row)
 ~~~
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > EXPLAIN SELECT * FROM users WHERE name='Robert Murphy';
 ~~~
@@ -139,11 +139,11 @@ The query returns the same result, but because `name` is not an indexed column, 
 
 ### Filter on a partitioned column
 
-If you know which partition contains the data that you are querying, using a filter (e.g., a [`WHERE` clause]({% link {{ page.version.version }}/select-clause.md %}#filter-rows)) on the column that is used for the partition can further improve performance by limiting the scan to the specific partition(s) that contain the data that you are querying.
+If you know which partition contains the data that you are querying, using a filter (e.g., a [`WHERE` clause]({{ page.version.version }}/select-clause.md#filter-rows)) on the column that is used for the partition can further improve performance by limiting the scan to the specific partition(s) that contain the data that you are querying.
 
 Now suppose that you know the user's name and location. You can query the table with a filter on the user's name and city:
 
-{% include_cached copy-clipboard.html %}
+{% include "_includes/copy-clipboard.html" %}
 ~~~ sql
 > EXPLAIN SELECT * FROM users WHERE name='Robert Murphy' AND city='new york';
 ~~~

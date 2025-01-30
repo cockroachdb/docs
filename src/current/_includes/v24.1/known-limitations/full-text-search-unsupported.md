@@ -1,4 +1,4 @@
-- Aspects of [text search configurations]({% link {{ page.version.version }}/full-text-search.md %}#text-search-configuration) other than the specified dictionary.
+- Aspects of [text search configurations]({{ page.version.version }}/full-text-search.md#text-search-configuration) other than the specified dictionary.
 - `websearch_to_tsquery()` built-in function.
 - `tsquery_phrase()` built-in function.
 - `ts_rank_cd()` built-in function.

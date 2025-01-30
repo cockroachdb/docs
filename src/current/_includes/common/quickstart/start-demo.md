@@ -2,7 +2,7 @@
 
 1. Run the [`cockroach demo`](../{{site.versions["stable"]}}/cockroach-demo.html) command:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ shell
     $ cockroach demo \
     --no-example-database

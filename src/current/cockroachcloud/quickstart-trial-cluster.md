@@ -21,7 +21,7 @@ For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region
 1. For **Regions & nodes**, select `California (us-west)` region and 3 nodes.
 
     {{site.data.alerts.callout_info}}
-    To create a [multi-region]({% link cockroachcloud/plan-your-cluster-advanced.md %}#multi-region-clusters) trial cluster, you can select 3 regions with 3 nodes per region, 9 nodes in total.
+    To create a [multi-region](plan-your-cluster-advanced.md#multi-region-clusters) trial cluster, you can select 3 regions with 3 nodes per region, 9 nodes in total.
     {{site.data.alerts.end}}
 
 1. For **VPC Peering**, use the default selection of **Use the default IP range**. Click **Next: Capacity**.
@@ -66,7 +66,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 ## Step 4. Connect to the cluster
 
-To download CockroachDB locally and configure it to connect to the cluster with the SQL user you just created, refer to [Connect to a CockroachDB Advanced cluster]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}). Make a note of the `cockroach sql` command provided in the **Connect** dialog.
+To download CockroachDB locally and configure it to connect to the cluster with the SQL user you just created, refer to [Connect to a CockroachDB Advanced cluster](connect-to-an-advanced-cluster.md). Make a note of the `cockroach sql` command provided in the **Connect** dialog.
 
 ## Step 5. Use the built-in SQL client
 
@@ -76,11 +76,11 @@ To download CockroachDB locally and configure it to connect to the cluster with 
     This connection string contains your password, which will be provided only once. Save it in a secure place (e.g., in a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the **SQL Users** page for the cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`.
     {{site.data.alerts.end}}
 
-    {% include cockroachcloud/sql-connection-string.md %}
+    {% include "_includes/cockroachcloud/sql-connection-string.md" %}
 
 1. Enter the SQL user's password and hit enter.
 
-    {% include cockroachcloud/postgresql-special-characters.md %}
+    {% include "_includes/cockroachcloud/postgresql-special-characters.md" %}
 
     A welcome message displays:
 
@@ -92,24 +92,24 @@ To download CockroachDB locally and configure it to connect to the cluster with 
     #
     ~~~
 
-1. You can now run [CockroachDB SQL statements]({% link cockroachcloud/learn-cockroachdb-sql.md %}):
+1. You can now run [CockroachDB SQL statements](learn-cockroachdb-sql.md):
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1, 1000.50);
     ~~~
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -123,7 +123,7 @@ To download CockroachDB locally and configure it to connect to the cluster with 
 
 1. To exit the SQL shell:
 
-    {% include_cached copy-clipboard.html %}
+    {% include "_includes/copy-clipboard.html" %}
     ~~~ sql
     > \q
     ~~~
@@ -132,12 +132,12 @@ To download CockroachDB locally and configure it to connect to the cluster with 
 
 Learn more:
 
-- Use the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}) to connect to your cluster and [learn CockroachDB SQL]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
-- Build a ["Hello World" app with the Django framework]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.md %}), or [install a client driver]({% link {{site.current_cloud_version}}/install-client-drivers.md %}) for your favorite language.
-- Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair]({% link {{site.current_cloud_version}}/demo-cockroachdb-resilience.md %}).
+- Use the [built-in SQL client]({{site.current_cloud_version}}/cockroach-sql.md) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.md).
+- Build a ["Hello World" app with the Django framework]({{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.md), or [install a client driver]({{site.current_cloud_version}}/install-client-drivers.md) for your favorite language.
+- Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair]({{site.current_cloud_version}}/demo-cockroachdb-resilience.md).
 
 Before you move into production:
 
-- [Authorize the network]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#authorize-your-network) from which your app will access the cluster.
-- Configure every machine from which you want to [connect to the cluster]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#connect-to-your-cluster).
-- Review the [production checklist]({% link cockroachcloud/production-checklist.md %}).
+- [Authorize the network](connect-to-an-advanced-cluster.md#authorize-your-network) from which your app will access the cluster.
+- Configure every machine from which you want to [connect to the cluster](connect-to-an-advanced-cluster.md#connect-to-your-cluster).
+- Review the [production checklist](production-checklist.md).

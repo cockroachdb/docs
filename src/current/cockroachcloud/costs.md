@@ -15,9 +15,9 @@ This page reflects [updated costs](https://www.cockroachlabs.com/pricing/new/) r
 
 For details on planning or provisioning clusters, refer to:
 
-- [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %})
-- [Plan a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/plan-your-cluster.md %})
-- [Plan a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %})
+- [Plan a CockroachDB {{ site.data.products.basic }} cluster](plan-your-cluster-basic.md)
+- [Plan a CockroachDB {{ site.data.products.standard }} cluster](plan-your-cluster.md)
+- [Plan a CockroachDB {{ site.data.products.advanced }} cluster](plan-your-cluster-advanced.md)
 
 ## Costs across CockroachDB Cloud plans
 
@@ -92,7 +92,7 @@ This section supplements the details in [Costs across CockroachDB Cloud plans](#
 
 <section class="filter-content" markdown="1" data-scope="basic">
 
-For CockroachDB Basic, compute cost is usage-based through its consumption of [Request Units]({% link cockroachcloud/resource-usage-basic.md %}#understand-resource-consumption).
+For CockroachDB Basic, compute cost is usage-based through its consumption of [Request Units](resource-usage-basic.md#understand-resource-consumption).
 
 </section>
 
@@ -158,13 +158,13 @@ For CockroachDB Standard clusters, storage is automatically provisioned on deman
 
 Storage is billed hourly, with [rates](https://www.cockroachlabs.com/pricing/new/) specific to each cloud provider and the region where the cluster is hosted. CockroachDB Cloud measures storage in GiB-hour. These charges are accumulated throughout the month to determine the total monthly storage charges.
 
-A CockroachDB Standard cluster maintains a minimum of three [replicas]({% link {{site.current_cloud_version}}/architecture/replication-layer.md %}) of your data. The second and third replicas are included, with no additional storage charge. If you add further replicas, each will incur a storage cost equal to that of the first replica—the logical database size.
+A CockroachDB Standard cluster maintains a minimum of three [replicas]({{site.current_cloud_version}}/architecture/replication-layer.md) of your data. The second and third replicas are included, with no additional storage charge. If you add further replicas, each will incur a storage cost equal to that of the first replica—the logical database size.
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
-Each Advanced cluster is provisioned with dedicated storage, and users can configure the per-node storage size when setting up their cluster. This storage setting applies to all nodes in the cluster. The storage is billed hourly, with the rate depending on the cloud provider, the region where the cluster is hosted, and whether the Advanced security add-on is enabled. Storage costs are independent of other resources, meaning you can adjust your cluster's storage capacity without altering its compute capacity. For guidance on provisioning compute and storage, refer to [Plan Your Cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %}).
+Each Advanced cluster is provisioned with dedicated storage, and users can configure the per-node storage size when setting up their cluster. This storage setting applies to all nodes in the cluster. The storage is billed hourly, with the rate depending on the cloud provider, the region where the cluster is hosted, and whether the Advanced security add-on is enabled. Storage costs are independent of other resources, meaning you can adjust your cluster's storage capacity without altering its compute capacity. For guidance on provisioning compute and storage, refer to [Plan Your Cluster](plan-your-cluster-advanced.md).
 
 - For AWS clusters: Storage charge (per hour) is calculated by multiplying the storage size (in GiB) by the per GiB-hour rate for storage, plus any additional charges for IOPS.  
 - For GCP and Azure clusters: Node storage charge (per hour) is determined by multiplying the storage size (in GiB) by the per GiB-hour rate, without additional IOPS fees.
@@ -187,9 +187,9 @@ Backups on Basic clusters are included in the Request Unit costs. Managed backup
 
 <section class="filter-content" markdown="1" data-scope="standard">
 
-[Managed backups]({% link cockroachcloud/managed-backups.md %}) are charged per-GiB storage rates that vary per cloud provider, region, and backup [frequency]({% link cockroachcloud/managed-backups.md %}#frequency) (daily vs. more than daily). The per-GiB unit prices are tiered, based on the amount of backup data stored: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 500 GiB-Month, 500 to 1000 GiB-Month, or 1000 GiB-Month and higher.
+[Managed backups](managed-backups.md) are charged per-GiB storage rates that vary per cloud provider, region, and backup [frequency](managed-backups.md#frequency) (daily vs. more than daily). The per-GiB unit prices are tiered, based on the amount of backup data stored: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 500 GiB-Month, 500 to 1000 GiB-Month, or 1000 GiB-Month and higher.
 
-[Self-managed backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to your own object storage are charged a per-GiB fee for the data transferred. This option provides an advanced backup scheduler and additional control over backup storage placement.
+[Self-managed backups](take-and-restore-self-managed-backups.md) to your own object storage are charged a per-GiB fee for the data transferred. This option provides an advanced backup scheduler and additional control over backup storage placement.
 
 For further details, refer to CockroachDB Cloud [Pricing](https://www.cockroachlabs.com/pricing/new/).
 
@@ -197,9 +197,9 @@ For further details, refer to CockroachDB Cloud [Pricing](https://www.cockroachl
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
-[Managed backups]({% link cockroachcloud/managed-backups.md %}) are charged per-GiB storage rates that vary per cloud provider, region, backup [frequency]({% link cockroachcloud/managed-backups.md %}#frequency) (daily vs. more than daily), and whether the Advanced security add-on is enabled. The per-GiB unit prices are tiered, based on the amount of backup data stored: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 500 GiB-Month, 500 to 1000 GiB-Month, or 1000 GiB-Month and higher.
+[Managed backups](managed-backups.md) are charged per-GiB storage rates that vary per cloud provider, region, backup [frequency](managed-backups.md#frequency) (daily vs. more than daily), and whether the Advanced security add-on is enabled. The per-GiB unit prices are tiered, based on the amount of backup data stored: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 500 GiB-Month, 500 to 1000 GiB-Month, or 1000 GiB-Month and higher.
 
-[Self-managed backups]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to your own object storage are charged a per-GiB fee for the data transferred. The rate varies depending on whether the Advanced security add-on is enabled. Self-managed backups offer additional control over backup storage placement, and an advanced backup scheduler.
+[Self-managed backups](take-and-restore-self-managed-backups.md) to your own object storage are charged a per-GiB fee for the data transferred. The rate varies depending on whether the Advanced security add-on is enabled. Self-managed backups offer additional control over backup storage placement, and an advanced backup scheduler.
 
 For further details, refer to CockroachDB Cloud [Pricing](https://www.cockroachlabs.com/pricing/new/).
 </section>
@@ -230,8 +230,8 @@ Cross-region data transfer includes:
 
 - Data transfer required to support queries that involve lookups on nodes in another region.  
 - CockroachDB replication across nodes that are in different regions.  
-- Data egress from the CockroachDB Cloud cluster via supported [private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) services to a private endpoint in another region.  
-- [Managed backup]({% link cockroachcloud/backup-and-restore-overview.md %}#managed-backups) and [Self-managed backup]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) data transfer to another region.  
+- Data egress from the CockroachDB Cloud cluster via supported [private connectivity](connect-to-your-cluster.md#establish-private-connectivity) services to a private endpoint in another region.  
+- [Managed backup](backup-and-restore-overview.md#managed-backups) and [Self-managed backup](take-and-restore-self-managed-backups.md) data transfer to another region.  
 - Change data capture (changefeed) data transfer to another region.
 
 Customers are charged the cloud service provider’s (CSP) list price for metered cross-region data transfer.
@@ -264,8 +264,8 @@ Cross-region data transfer includes:
 
 - Data transfer required to support queries that involve lookups on nodes in another region.  
 - CockroachDB replication across nodes that are in different regions.  
-- Data egress from the CockroachDB Cloud cluster via supported [private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity) services to a private endpoint in another region.  
-- [Managed backup]({% link cockroachcloud/backup-and-restore-overview.md %}#managed-backups) and [Self-managed backup]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) data transfer to another region.  
+- Data egress from the CockroachDB Cloud cluster via supported [private connectivity](connect-to-your-cluster.md#establish-private-connectivity) services to a private endpoint in another region.  
+- [Managed backup](backup-and-restore-overview.md#managed-backups) and [Self-managed backup](take-and-restore-self-managed-backups.md) data transfer to another region.  
 - Change data capture (changefeed) data transfer to another region.
 
 Customers are charged the cloud service provider’s (CSP) list price for metered cross-region data transfer.
@@ -280,7 +280,7 @@ This is the usage for any data leaving CockroachDB such as SQL data being sent t
 
 ### Change data capture (changefeeds)
 
-For change data capture (CDC), all CockroachDB {{ site.data.products.cloud }} clusters can use [Enterprise changefeeds]({% link {{ site.current_cloud_version}}/how-does-an-enterprise-changefeed-work.md %}).
+For change data capture (CDC), all CockroachDB {{ site.data.products.cloud }} clusters can use [Enterprise changefeeds]({{ site.current_cloud_version}}/how-does-an-enterprise-changefeed-work.md).
 
 <section class="filter-content" markdown="1" data-scope="basic">
 
@@ -289,7 +289,7 @@ In CockroachDB {{ site.data.products.basic }}, CDC cost is usage-based via Reque
 
 <section class="filter-content" markdown="1" data-scope="standard">
 
-{% include common/define-watched-cdc.md %}
+{% include "_includes/common/define-watched-cdc.md" %}
 
 In CockroachDB {{ site.data.products.standard }}, CDC is billed monthly based on the total size in GiB-Month of all of a cluster's watched tables. The per-GiB unit price is tiered, based on the size of watched data: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
 
@@ -297,7 +297,7 @@ In CockroachDB {{ site.data.products.standard }}, CDC is billed monthly based on
 
 <section class="filter-content" markdown="1" data-scope="advanced">
 
-{% include common/define-watched-cdc.md %}
+{% include "_includes/common/define-watched-cdc.md" %}
 
 In CockroachDB {{ site.data.products.advanced }}, CDC is billed monthly based on the total size of a cluster's watched tables and whether the {{ site.data.products.advanced }} security add-on is enabled. The per-GiB unit price is tiered, based on the size of watched data: Less than 5 GiB-Month, 5 to 100 GiB-Month, 100 to 250 GiB-Month, 250 to 500 GiB-Month, or 500 GiB-Month and higher.
 
@@ -305,6 +305,6 @@ In CockroachDB {{ site.data.products.advanced }}, CDC is billed monthly based on
 
 ## Learn more
 
-- [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %})
-- [Plan a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/plan-your-cluster.md %})
-- [Plan a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/plan-your-cluster-advanced.md %})
+- [Plan a CockroachDB {{ site.data.products.basic }} cluster](plan-your-cluster-basic.md)
+- [Plan a CockroachDB {{ site.data.products.standard }} cluster](plan-your-cluster.md)
+- [Plan a CockroachDB {{ site.data.products.advanced }} cluster](plan-your-cluster-advanced.md)
