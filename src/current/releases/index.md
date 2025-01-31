@@ -117,7 +117,7 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
 | [v24.2](#v24-2) | Innovation | 2024-08-12 |
 | [v24.1](#v24-1) | Regular | 2024-05-20 |
 | [v23.2](#v23-2) | Regular | 2024-02-05 |
-| [v23.1](https://www.cockroachlabs.com/docs/releases/unsupported-versions#v23-1) | Regular | 2023-05-15 |
+| [v23.1](#v23-1) | Regular | 2023-05-15 |
 
 ### Upcoming releases
 
@@ -140,7 +140,7 @@ The following releases and their descriptions represent proposed plans that are 
 {% assign released_versions = site.data.releases | map: "major_version" | uniq | reverse %}
 {% comment %} Fetch the list of the major versions of all releases that currently exist {% endcomment %}
 
-{% assign versions = site.data.supported_versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
+{% assign versions = site.data.versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
 {% comment %} Fetch all major versions (e.g., v21.2), sorted in reverse chronological order. {% endcomment %}
 
 {% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where_exp: "latest_hotfix", "latest_hotfix.withdrawn != true"  | sort: "release_date" | reverse | first %}
@@ -152,7 +152,11 @@ The following releases and their descriptions represent proposed plans that are 
 
 {% assign is_not_downloadable_message = "No longer available for download." %}
 
-{% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
+{% assign current_date = "now" | date: "%Y-%m-%d" %}
+{% for v in versions %} 
+{% comment %} Iterate through all major versions {% endcomment %}
+{% assign maint_supp_exp_date = v.maint_supp_exp_date %}
+{% assign asst_supp_exp_date = v.asst_supp_exp_date %}
 
     {% comment %}
       Determine if the major version is LTS and the patch component of the initial LTS patch,
@@ -176,7 +180,44 @@ The following releases and their descriptions represent proposed plans that are 
             {% assign lts_patch = lts_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
         {% endif %}
     {% endif %}
+    {% assign valid_release_date = false %}
+    {% assign release_date_parsed = v.release_date | date: '%Y-%m-%d' %}
+    {% if release_date_parsed != '' and release_date_parsed != 'N/A' %}
+        {% assign valid_release_date = true %}
+    {% endif %}
 
+    {% assign valid_maint_date = false %}
+    {% assign maint_date_parsed = v.maint_supp_exp_date | date: '%Y-%m-%d' %}
+    {% if maint_date_parsed != '' and maint_date_parsed != 'N/A' and maint_date_parsed >= current_date %}
+        {% assign valid_maint_date = true %}
+    {% endif %}
+
+    {% assign valid_asst_date = false %}
+    {% assign asst_date_parsed = v.asst_supp_exp_date | date: '%Y-%m-%d' %}
+    {% if asst_date_parsed == 'N/A' or asst_date_parsed >= current_date %}
+        {% assign valid_asst_date = true %}
+    {% endif %}
+
+    {% assign maint_asst_date_valid = false %}
+    {% if lts_maint_date_parsed >= current_date or lts_asst_date_parsed >= current_date %}
+    {% assign maint_asst_date_valid = true %}
+    {% endif %}
+
+    {% assign valid_lts_release = false %}
+    {% assign lts_maint_date_parsed = v.lts_maint_supp_exp_date | date: '%Y-%m-%d' %}
+    {% assign lts_asst_date_parsed = v.lts_asst_supp_exp_date | date: '%Y-%m-%d' %}
+    {% if lts_maint_date_parsed != '' and lts_maint_date_parsed != 'N/A' 
+        and lts_asst_date_parsed != '' and lts_asst_date_parsed != 'N/A'
+        and maint_asst_date_valid %}
+        {% assign valid_lts_release = true %}
+    {% endif %}
+    {% assign valid_normal_release = false %}
+     {% if valid_release_date and valid_maint_date and valid_asst_date %}
+        {% assign valid_normal_release = true %}
+    {% endif %}
+
+
+    {% if valid_normal_release or valid_lts_release %}
 ### {{ v.major_version }}
 
 {% if DEBUG == true %}
@@ -594,6 +635,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 
         {% endif %} {% comment %}if releases[0]{% endcomment %}
     {% endfor %} {% comment %}for s in sections {% endcomment %}
+            {% endif %}
 {% endfor %} {% comment %}for v in versions{% endcomment %}
 
 ## Licenses
@@ -605,5 +647,6 @@ All binaries available on this page released prior to the release date of 24.3.0
 To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.
 
 ## Unsupported versions 
-[Here]({% link releases/unsupported-versions.md %}) are the versions of CockroachDB that are no longer supported
+
+Release notes for unsupported CockroachDB versions are found on [Unsupported Versions]({% link releases/unsupported-versions.md %}).
 
