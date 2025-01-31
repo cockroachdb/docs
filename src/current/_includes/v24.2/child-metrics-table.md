@@ -1,4 +1,5 @@
-{% assign metrics = site.data.metrics.child-metrics | where_exp: "metrics", "metrics.feature contains feature" | sort: "child_metric_id" %} 
+{% assign version = page.version.version | replace: ".", "" %}
+{% assign metrics = site.data[version].metrics.child-metrics | where_exp: "metrics", "metrics.feature contains feature" | sort: "child_metric_id" %} 
 {% comment %} Fetch child-metrics for given feature. {% endcomment %}
 
 Following is a list of the metrics that have child metrics:
@@ -14,7 +15,7 @@ Following is a list of the metrics that have child metrics:
     </thead>
     <tbody>    
     {% for m in metrics %} {% comment %} Iterate through the metrics. {% endcomment %}
-        {% assign metrics-list = site.data.metrics.metrics-list | where: "metric", m.child_metric_id %}
+        {% assign metrics-list = site.data[version].metrics.metrics-list | where: "metric", m.child_metric_id %}
         {% comment %} Get the row from the metrics-list with the given child_metric_id. {% endcomment %}
             <tr>
             <td><div id="{{ m.child_metric_id }}" class="anchored"><code>{{ m.child_metric_id }}</code></div></td>
