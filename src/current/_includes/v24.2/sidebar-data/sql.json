@@ -167,9 +167,9 @@
               ]
             },
             {
-              "title": "<code>COPY FROM</code>",
+              "title": "<code>COPY</code>",
               "urls": [
-                "/${VERSION}/copy-from.html"
+                "/${VERSION}/copy.html"
               ]
             },
             {

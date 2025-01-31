@@ -7,7 +7,7 @@ docs_area: reference.sql
 ---
 
 {{site.data.alerts.callout_danger}}
-The statements on this page are **deprecated** as of v23.1 and will be removed in a future release. To move data into CockroachDB, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}).
+The statements on this page are **deprecated** as of v23.1 and will be removed in a future release. To move data into CockroachDB, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy.md %}).
 {{site.data.alerts.end}}
 
 The `IMPORT` [statement]({% link {{ page.version.version }}/sql-statements.md %}) imports the following types of data into CockroachDB:
