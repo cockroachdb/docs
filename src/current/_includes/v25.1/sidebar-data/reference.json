@@ -285,9 +285,9 @@
             ]
           },
           {
-            "title": "Child Metrics",
+            "title": "Multi-Dimensional Metrics",
             "urls": [
-              "/${VERSION}/child-metrics.html"
+              "/${VERSION}/multi-dimensional-metrics.html"
             ]
           }
         ]

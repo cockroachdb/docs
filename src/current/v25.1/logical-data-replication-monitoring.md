@@ -112,7 +112,7 @@ You can use Prometheus and Alertmanager to track and alert on LDR metrics. Refer
 
 #### Metrics labels
 
-To view metrics at the job level, you can use the `label` option when you start LDR to add a metrics label to the LDR job. This enables [child metric]({% link {{ page.version.version }}/child-metrics.md %}) export, which are Prometheus time series with extra labels. You can track the following metrics for an LDR job with labels:
+To view metrics at the job level, you can use the `label` option when you start LDR to add a metrics label to the LDR job. This enables [child metric]({% link {{ page.version.version }}/multi-dimensional-metrics.md %}) export, which are Prometheus time series with extra labels. You can track the following metrics for an LDR job with labels:
 
 - `logical_replication.catchup_ranges_by_label`
 - `logical_replication.events_dlqed_by_label`
@@ -136,7 +136,7 @@ ON 'external://{source_external_connection}'
 INTO TABLE {database.public.table_name} WITH label=ldr_job;
 ~~~
 
-For a full reference on tracking metrics with labels, refer to the [Child Metrics]({% link {{ page.version.version }}/child-metrics.md %}#clusters-with-logical-data-replication-jobs) page.
+For a full reference on tracking metrics with labels, refer to the [Multi-dimensional Metrics]({% link {{ page.version.version }}/multi-dimensional-metrics.md %}#clusters-with-logical-data-replication-jobs) page.
 
 ### Datadog
 
