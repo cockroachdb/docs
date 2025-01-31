@@ -8,7 +8,7 @@ Following is a list of the metrics that have multi-dimensional metrics:
     <thead>
         <tr>
             <td><b>CockroachDB Metric Name</b></td>
-            <td><b>{% if feature == "ldr" %}Description{% else %}Description When Aggregated{% endif %}</b></td>
+            <td><b>{% if feature == "ldr" or feature == "detailed-latency" %}Description{% else %}Description When Aggregated{% endif %}</b></td>
             <td><b>Type</b></td>
             <td><b>Unit</b></td>
         </tr>
