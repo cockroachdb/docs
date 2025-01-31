@@ -198,12 +198,17 @@ The following releases and their descriptions represent proposed plans that are 
         {% assign valid_asst_date = true %}
     {% endif %}
 
+    {% assign maint_asst_date_valid = false %}
+    {% if lts_maint_date_parsed >= current_date or lts_asst_date_parsed >= current_date %}
+    {% assign maint_asst_date_valid = true %}
+    {% endif %}
+
     {% assign valid_lts_release = false %}
     {% assign lts_maint_date_parsed = v.lts_maint_supp_exp_date | date: '%Y-%m-%d' %}
     {% assign lts_asst_date_parsed = v.lts_asst_supp_exp_date | date: '%Y-%m-%d' %}
     {% if lts_maint_date_parsed != '' and lts_maint_date_parsed != 'N/A' 
         and lts_asst_date_parsed != '' and lts_asst_date_parsed != 'N/A'
-        and (lts_maint_date_parsed >= current_date or lts_asst_date_parsed >= current_date) %}
+        and maint_asst_date_valid %}
         {% assign valid_lts_release = true %}
     {% endif %}
     {% assign valid_normal_release = false %}

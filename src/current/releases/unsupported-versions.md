@@ -78,9 +78,13 @@ The CockroachDB versions on this page are no longer supported. For more informat
     {% assign invalid_lts_release = false %}
     {% assign lts_maint_date_parsed = v.lts_maint_supp_exp_date | date: '%Y-%m-%d' %}
     {% assign lts_asst_date_parsed = v.lts_asst_supp_exp_date | date: '%Y-%m-%d' %}
+    {% assign maint_asst_date_expired = false %}
+    {% if lts_maint_date_parsed <= current_date and  lts_asst_date_parsed <= current_date %}
+    {% assign maint_asst_date_expired = true %}
+    {% endif %}
     {% if lts_maint_date_parsed != '' and lts_maint_date_parsed != 'N/A' 
         and lts_asst_date_parsed != '' and lts_asst_date_parsed != 'N/A'
-        and (lts_maint_date_parsed <= current_date and  lts_asst_date_parsed <= current_date) %}
+        and maint_asst_date_expired %}
         {% assign invalid_lts_release = true %}
     {% endif %}
     {% assign invalid_normal_release = false %}
@@ -88,7 +92,12 @@ The CockroachDB versions on this page are no longer supported. For more informat
         {% assign invalid_normal_release = true %}
     {% endif %}
 
-    {% if (invalid_normal_release and is_not_lts_date)  or invalid_lts_release %}
+    {% assign invalid_normal_release_not_lts = false %}
+     {% if invalid_normal_release and is_not_lts_date %}
+        {% assign invalid_normal_release_not_lts = true %}
+    {% endif %}
+
+    {% if invalid_normal_release_not_lts  or invalid_lts_release %}
 ### {{ v.major_version }}
 
 {% if DEBUG == true %}
