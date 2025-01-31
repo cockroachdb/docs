@@ -117,7 +117,7 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
 | [v24.2](#v24-2) | Innovation | 2024-08-12 |
 | [v24.1](#v24-1) | Regular | 2024-05-20 |
 | [v23.2](#v23-2) | Regular | 2024-02-05 |
-| [v23.1](https://www.cockroachlabs.com/docs/releases/unsupported-versions#v23-1) | Regular | 2023-05-15 |
+| [v23.1](#v23-1) | Regular | 2023-05-15 |
 
 ### Upcoming releases
 
@@ -181,20 +181,38 @@ The following releases and their descriptions represent proposed plans that are 
         {% endif %}
     {% endif %}
     {% assign valid_release_date = false %}
-    {% if v.release_date != 'N/A' %}
-    {% assign valid_release_date = true %}
+    {% assign release_date_parsed = v.release_date | date: '%Y-%m-%d' %}
+    {% if release_date_parsed != '' and release_date_parsed != 'N/A' %}
+        {% assign valid_release_date = true %}
     {% endif %}
 
     {% assign valid_maint_date = false %}
-    {% if v.maint_supp_exp_date != 'N/A' and v.maint_supp_exp_date >= current_date %}
-    {% assign valid_maint_date = true %}
+    {% assign maint_date_parsed = v.maint_supp_exp_date | date: '%Y-%m-%d' %}
+    {% if maint_date_parsed != '' and maint_date_parsed != 'N/A' and maint_date_parsed >= current_date %}
+        {% assign valid_maint_date = true %}
     {% endif %}
 
     {% assign valid_asst_date = false %}
-    {% if v.asst_supp_exp_date == 'N/A' or v.asst_supp_exp_date >= current_date %}
-    {% assign valid_asst_date = true %}
+    {% assign asst_date_parsed = v.asst_supp_exp_date | date: '%Y-%m-%d' %}
+    {% if asst_date_parsed == 'N/A' or asst_date_parsed >= current_date %}
+        {% assign valid_asst_date = true %}
     {% endif %}
-    {% if valid_release_date and valid_maint_date and valid_asst_date %}
+
+    {% assign valid_lts_release = false %}
+    {% assign lts_maint_date_parsed = v.lts_maint_supp_exp_date | date: '%Y-%m-%d' %}
+    {% assign lts_asst_date_parsed = v.lts_asst_supp_exp_date | date: '%Y-%m-%d' %}
+    {% if lts_maint_date_parsed != '' and lts_maint_date_parsed != 'N/A' 
+        and lts_asst_date_parsed != '' and lts_asst_date_parsed != 'N/A'
+        and (lts_maint_date_parsed >= current_date or lts_asst_date_parsed >= current_date) %}
+        {% assign valid_lts_release = true %}
+    {% endif %}
+    {% assign valid_normal_release = false %}
+     {% if valid_release_date and valid_maint_date and valid_asst_date %}
+        {% assign valid_normal_release = true %}
+    {% endif %}
+
+
+    {% if valid_normal_release or valid_lts_release %}
 ### {{ v.major_version }}
 
 {% if DEBUG == true %}
@@ -418,7 +436,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 </section>
 
 <section class="filter-content" markdown="1" data-scope="windows">
-    Windows 8 or higher is required. Windows downloads are **experimental**. Experimental downloads are not yet qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases
+    Windows 8 or higher is required. Windows downloads are **experimental**. Experimental downloads are not yet qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
 
     <table class="release-table">
     <thead>
@@ -623,6 +641,7 @@ All binaries available on this page released prior to the release date of 24.3.0
 
 To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.
 
-## Unsupported Versions 
-[Here]({% link releases/unsupported-versions.md %}) are the versions of CockroachDB that are no longer supported
+## Unsupported versions 
+
+Release notes for unsupported CockroachDB versions are found on [Unsupported Versions]({% link releases/unsupported-versions.md %}).
 

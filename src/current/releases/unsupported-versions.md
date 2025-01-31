@@ -4,7 +4,9 @@ summary: Versions of CockroachDB that are no longer supported
 toc: true
 docs_area: releases
 ---
-
+{{site.data.alerts.callout_danger}}
+The CockroachDB versions on this page are no longer supported. For more information, refer to [Release Support Policy]({% link releases/release-support-policy.md %}#unsupported-versions). To download and learn about currently supported CockroachDB versions, refer to [CockroachDB Releases]({% link releases/index.md %}).
+{{site.data.alerts.end}}
 ## Downloads
 
 {{ experimental_js_warning }}
@@ -67,7 +69,26 @@ docs_area: releases
     {% if v.asst_supp_exp_date == 'N/A' or v.asst_supp_exp_date <= current_date %}
     {% assign invalid_asst_date = true %}
     {% endif %}
-    {% if valid_release_date and invalid_maint_date and invalid_asst_date %}
+
+    {% assign is_not_lts_date = false %}
+    {% if v.lts_maint_supp_exp_date == 'N/A' and v.lts_asst_supp_exp_date == 'N/A' %}
+    {% assign is_not_lts_date = true %}
+    {% endif %}
+
+    {% assign invalid_lts_release = false %}
+    {% assign lts_maint_date_parsed = v.lts_maint_supp_exp_date | date: '%Y-%m-%d' %}
+    {% assign lts_asst_date_parsed = v.lts_asst_supp_exp_date | date: '%Y-%m-%d' %}
+    {% if lts_maint_date_parsed != '' and lts_maint_date_parsed != 'N/A' 
+        and lts_asst_date_parsed != '' and lts_asst_date_parsed != 'N/A'
+        and (lts_maint_date_parsed <= current_date and  lts_asst_date_parsed <= current_date) %}
+        {% assign invalid_lts_release = true %}
+    {% endif %}
+    {% assign invalid_normal_release = false %}
+     {% if valid_release_date and invalid_maint_date and invalid_asst_date %}
+        {% assign invalid_normal_release = true %}
+    {% endif %}
+
+    {% if (invalid_normal_release and is_not_lts_date)  or invalid_lts_release %}
 ### {{ v.major_version }}
 
 {% if DEBUG == true %}
