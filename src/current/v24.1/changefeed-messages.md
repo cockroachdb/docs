@@ -358,7 +358,7 @@ There are three different ways to configure resolved timestamp messages:
     CREATE CHANGEFEED FOR TABLE ... WITH resolved;
     ~~~
 
-- If you specify a duration like `WITH resolved={duration}`, the changefeed will use it as the minimum duration between `resolved` messages that the changefeed coordinator sends. The changefeed will only emit a resolved timestamp message if the timestamp has advanced and at least the optional duration has elapsed. For example:
+- If you specify a duration like `WITH resolved={duration}`, the coordinator node will use the duration as the minimum amount of time a new resolved message's timestamp must be later than the last emitted resolved message's timestamp. The changefeed will only emit a resolved timestamp message if the timestamp has advanced and at least the optional duration has elapsed. For example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
