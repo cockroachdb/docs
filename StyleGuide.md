@@ -282,208 +282,9 @@ File names should match the page title. If you need to change a file name, it is
 - Add the previous page URL with the new URL to `_redirects`.
 - Replace all links to the previous file name with the new file name in the applicable docs versions.
 
-## Content types
+## Page components
 
-There are four fundamental content types:
-
-- [Concept](#concept)
-- [Task](#task)
-- [Reference](#reference)
-- [Definition](#definition)
-
-A page or a heading within a page can be one of these content types.
-
-### Concept
-
-_Concept_ content explains how a particular feature works, or how a specific system is designed. Conceptual pages do not provide prescriptive guidance or instruction.
-
-Concept content helps users understand the foundation of Cockroach Labs services and product features, including definitions of terms with specific meaning in CockroachDB and descriptions of how CockroachDB and Cockroach services are structured.
-
-Concept content often includes a [glossary](#glossary).
-
-- The first sentence answers the implicit question "what is a \<singular noun\>?" in the form **A _\<singular noun\>_ is ….**.
-
-  **Example:** An _index_ is a data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space to maintain the index data structure.
-
-- For simple concept pages, the title should be a plural noun representing the concept(s) or entities(s) to be described, optionally followed by a page descriptor, such as **Overview**.
-
-  **Example:** Indexes.
-
-- Provide as much relevant information as you can, and then link to other pages as necessary. If there is a related reference topic, link to it within the topic.
-- Use diagrams and graphs when you can.
-
-#### Examples
-
-- [Indexes](https://www.cockroachlabs.com/docs/stable/indexes.html)
-- [Architecture Overview](https://www.cockroachlabs.com/docs/stable/architecture/overview.html)
-- [SQL Layer](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html)
-- [Multi-Region Capabilities Overview](https://www.cockroachlabs.com/docs/stable/multiregion-overview.html)
-
-### Task
-
-_Task_ content provides step-by-step instructions to complete a specific goal. In contrast with [tutorials](#tutorials), tasks are discrete, action-based, and do not need to be limited to a specific use case.
-
-Task content helps users efficiently develop, deploy, and manage applications.
-
-At the page level, a task could take two different forms: a page with multiple, related tasks or a single longer task.
-
-- Answers the question of "how to do \<an action\>?" by describing precisely what to do and the order in which to do it.
-- The title or heading should state an actionable goal for the user and ideally of the form **\<Imperative verb\> [\<article\>|\<conjunction\>] \<noun\> or \<proper noun\>**.
-
-  **Example:** Create an Index
-- The verb ideally should be specific. Avoid generic verbs such as **Use**, **Manage** unless naming a page containing specific tasks.
-- Avoid **Your** because you may be using an object that you don't "own".
-
-  **Example:** Connect to a Cluster, not Connect to Your Cluster
-- Lead with the verb. Don't bury it at the end of the heading.
-
-  **Example:** Access DB Console, not DB Console Access.
-
-- Present the steps as an ordered list.
-
-- The title of the page, and the steps on the page, should be second-person imperative. For example, if the first step in starting a cluster is to generate a certificate, then the first header on the page might be **Generate a certificate** (as opposed to **Generating a certificate** or **How to generate a certificate**).
-- Limit the amount of reference information on the page. You can add links to the relevant sections of [reference](#reference) in line or in the [See also](#see-also) section.
-- When using examples (e.g., code snippets, or dedicated task-based examples), aim for utility and simplicity. Lengthier examples are better for tutorials. A large number of smaller examples is better for reference docs.
-- If the headings on a page each represent an ordered step of a single task, each heading should start with `Step N.` to denote this sequence, and its substeps should take the form of an ordered list.
-
-#### Examples
-
-- [Create a CockroachCloud Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster.html)
-- [Upgrade to CockroachDB vX.X](https://www.cockroachlabs.com/docs/stable/upgrade-cockroach-version.html)
-- [Configure Replication Zones](https://www.cockroachlabs.com/docs/stable/configure-replication-zones.html)
-
-### Reference
-
-_Reference_ content provides information about a specific CockroachDB function, feature, or interface. Reference is detail-oriented, and should include all of the information available on a specific topic, without providing prescriptive guidance. It typically documents programming constructs, interface parameters, or facts about a product that provide quick access to facts, but does not provide explanation of concepts or procedures.
-
-Reference content helps users understand the precise meaning and affect of CockroachDB SQL language constructs, platform, configuration options, and API parameter values, etc.
-
-- The content should be comprehensive and accurate. This principle might apply to other pages types, but it is especially important for reference, as it is the ultimate source of truth (i.e., the "reference") for a particular feature or interface.
-- The content should be succinct. Details are typically presented in tabular form. Prose is better suited for [conceptual pages](#conceptual).
-
-#### Examples
-
-- **SQL reference:** [`CREATE TABLE`](https://www.cockroachlabs.com/docs/stable/create-table.html)
-- **CLI reference:** [`cockroach sql`](https://www.cockroachlabs.com/docs/stable/cockroach-sql.html)
-- **API reference:** [Cluster API](https://www.cockroachlabs.com/docs/api/cluster/v2)
-
-### Definition
-
-A _definition_ is the statement of the meaning of a term, configuration property, or parameter. A _definition_ consists of a _definition term_ and a _definition description_. Definitions typically appear in [glossaries](#glossary) and [reference](#reference) content.
-
-The definition description should not repeat the definition term.
-
-#### Examples
-
-- Node: An individual machine running CockroachDB. One or more nodes join together to create a cluster.
-- Leaseholder: For each range, one of the replicas holds the "range lease." This replica, referred to as the "leaseholder," is the one that receives and coordinates all read and write requests for the range.
-
-## Standard sections
-
-### Glossary
-
-A _glossary_ is a collection (usually in tabular form) of [definitions](#definition).
-
-#### Examples
-
-- [Architecture Glossary](https://www.cockroachlabs.com/docs/v21.2/architecture/overview.html#glossary)
-- [Cockroach Cloud Concepts](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#cockroachdb-cloud-terms)
-
-### Before you begin
-
-The "Before you begin" section describes any knowledge, consideration, or conditions that the user should be aware of before starting a [task](#task) or [tutorial](#tutorial). These may be setup requirements or contextual information that's helpful to the task.
-
-### See also
-
-A _see also_ section is a list of related pages.
-
-This section is always the last section in a page.
-
-Keep the list of links short, and think about whether the related pages should instead be linked within the content itself to give users more context around _why_ another topic is related. For example, if the task describes how to perform an action on the command line, and another task describes how to perform the same action in a GUI, the link to the GUI task should be in the topic's introduction, not in the See also section.
-
-## Page types
-
-In addition to the content types, CockroachDB docs have the following special purpose page types:
-
-- [Tutorial](#tutorial)
-- [Best practice](#best-practice)
-- [Troubleshooting](#troubleshooting)
-- [FAQs](#faqs)
-- [Release note](#release-note)
-
-### Tutorial
-
-A _tutorial_ is a task that provides instructions on using CockroachDB in the context of a specific use case. Tutorials acquaint users with a specific feature of CockroachDB through an end-to-end example that achieves a concrete result.
-
-A tutorial helps users quickly achieve competence in a CockroachDB feature or understand tradeoffs between different features and feature configurations. The latter usage is complementary to a [Best Practice](#best-practice) guide.
-
-- The title is of the form **\<Imperative verb\> xxx \<noun\>**.
-
-  **Example:** Stream a Changefeed to Snowflake
-
-- The first section describes requirements and knowledge necessary or helpful for the user [before starting the tutorial](#before-you-begin). Heading title: **Before you begin**.
-- Subsequent headings are **Step 1. \<Imperative verb\> a \<noun\>**, **Step 2. \<Imperative verb\> a \<noun\>**, etc., each containing a small ordered list of steps. Within each **Step**, limit the number of steps. Aim for the heuristic maximum of 10 steps.
-- Tutorials should be written in a conversational [tone](#language-and-tone), as if it is teaching the user.
-- The instructions should be prescriptive (i.e., tell the user exactly what to do).
-- Tutorials should be self-contained. The reader shouldn't have to consult multiple pages to complete the tutorial.
-
-#### Examples
-
-- [Deploy a Local Cluster with Kubernetes](https://www.cockroachlabs.com/docs/stable/orchestrate-a-local-cluster-with-kubernetes.html)
-- [Visualize CockroachDB Schemas with DBeaver](https://www.cockroachlabs.com/docs/stable/dbeaver.html)
-
-### Best practice
-
-A _best practice_ guide is a set of recommendations on how to choose among CockroachDB features and their available configurations to achieve specific goals. Goals can include throughput, latency, survivability, and security.
-
-A best practice guide helps users weigh alternative CockroachDB features or feature configurations and achieve specified goals for application availability, response time, etc.
-
-#### Examples
-
-- [SQL Performance Best Practices](https://www.cockroachlabs.com/docs/stable/performance-best-practices-overview.html)
-- [When to use ZONE vs. REGION Survival Goals](https://www.cockroachlabs.com/docs/stable/when-to-use-zone-vs-region-survival-goals.html)
-
-### Troubleshooting
-
-A _troubleshooting_ guide describes how to resolve errors. It typically has a series of observed, undesired behavior and recommendations on how to mitigate the behavior.
-
-A troubleshooting guide helps users quickly recognize the source of an error condition and take steps to mitigate the error.
-
-- Title: **Troubleshoot <XXX>**
-- Filename: `xxx-troubleshooting.md`
-
-#### Examples
-
-- [Troubleshoot SQL Behavior](https://www.cockroachlabs.com/docs/stable/query-behavior-troubleshooting.html)
-
-### FAQ
-
-A _FAQ_ is a list of frequently asked questions and answers to the questions.
-
-A FAQ helps users quickly find answers to questions that recur.
-
-- Title: **<XXX> FAQs**
-- Filename: `<title>-faqs.md`.
-
-#### Examples
-
-- [Operational FAQs](https://www.cockroachlabs.com/docs/stable/operational-faqs.html)
-- [CockroachDB Cloud FAQs](https://www.cockroachlabs.com/docs/cockroachcloud/frequently-asked-questions.html)
-
-### Release note
-
-A _release note_ is a description of features and bug fixes related to a specific release of CockroachDB.
-
-A release note helps users understand what they gain from upgrading to the version of CockroachDB.
-
-#### Examples
-
-- [CockroachDB Cloud Release Notes](https://www.cockroachlabs.com/docs/releases/cloud.html)
-- [What's New in v21.2.5](https://www.cockroachlabs.com/docs/releases/v21.2.html#v21-2-5)
-
-## Components
-
-### Page title
+### Title
 
 Set the page title in the `title:` metadata. The title should be in title case. Heading 1 (`#`) is reserved for page titles and **should not** be used in pages.
 
@@ -725,7 +526,7 @@ You might also need to document a known limitation that is discovered after the 
 
 #### Who documents known limitations
 
-In the past, the person assigned to known limitations is usually someone with extra bandwidth at the end of the GA release cycle. You might volunteer for this task, or your manager might assign it to you.
+Known limitations for a given product area are documented by the writer assigned to that product area.
 
 #### Where to document known limitations
 
@@ -735,59 +536,20 @@ If the limitation is related to a feature documented elsewhere on our docs site,
 
 #### How to document known limitations
 
-Known limitations should generally follow this template:
-
-~~~
-<Level-3 header with a descriptive, concise title>
-
-<Descriptive summary, with more details and possibly a workaround and/or an example>
-
-<A link to the tracking issue on GitHub, if one exists>
-~~~
-
-For example:
-
-~~~
-### Feature doesn't do this thing
-
-Feature doesn't do this thing because it doesn't do it. To get around this, do this other thing. For example, instead of `do this thing`, use `do this other thing`.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/number)
-~~~
-
-For more examples, check out the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations.html) page.
-
-When the time comes to document known limitations, keep in mind that you are documenting known limitations for a specific release, just like you document any other feature. This means that you have to update all documented known limitations be relevant to the upcoming release
-
-1. In the latest version's docset, move all existing known limitations from the ["New limitations"](https://www.cockroachlabs.com/docs/stable/known-limitations.html#new-limitations) header, and place them under the ["Unresolved limitations"](https://www.cockroachlabs.com/docs/stable/known-limitations.html#unresolved-limitations) header.
-
-1. Verify that each of the limitations under "Unresolved limitations" is, in fact, still a limitation:
-
-    1. Navigate to the linked GitHub tracking issue. If there is no GitHub issue associated with the limitation, you can assume that the limitation will not be resolved.
-
-    1. If the tracking GitHub issue is still open, you should leave the known limitation as unresolved. If it is closed, you need to find the PR that resolved the issue, and see if it was backported to a previous release.
-
-    1. Remove the limitation from the Known Limitations page, and from all other pages in the docs **for each version in which the resolving PR was merged**. If the resolving PR was not backported, then you can remove the limitation from just the latest release's docs.
-
-1. [Document all new limitations](#where-to-find-known-limitations) under the "New limitations" header. Note that undocumented known limitations might apply to more than just one release. If the limitation applies to previous releases, then add the limitation under the "Existing limitations" header for each supported versioned docset to which the limitation applies.
-
-1. After you document a known limitation, add the `docs-done` label to the limitation's tracking issue in the `cockroach` repo (it will have both `docs-known-limitations` and `docs-done` labels). *Do not close the issue* if it is in the `cockroach` repo. Documenting a limitation does not resolve the limitation.
-
-1. Open a single PR with all of the known limitations updates for a GA release to the `docs` repo and add a manager as the reviewer. Known limitations are part of the GA checklist for docs, so managers need to be aware of the work.
+Refer to the [wiki](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/3516825623/Document+known+limitations).
 
 ### Product names
 
 All product names except CockroachDB should be written as Liquid variables unless part of front-matter, file names, or non-Markdown files. Use the following code in place of product names:
 
-- **CockroachDB Serverless** : `CockroachDB {{ site.data.products.serverless }}`
-- **CockroachDB Dedicated** : `CockroachDB {{ site.data.products.dedicated }}`
-- **CockroachDB Self-Hosted** : `CockroachDB {{ site.data.products.core }}`
 - **CockroachDB Cloud** : `CockroachDB {{ site.data.products.cloud }}`
+- **CockroachDB Basic** : `CockroachDB {{ site.data.products.basic }}`
+- **CockroachDB Standard** : `CockroachDB {{ site.data.products.standard }}`
+- **CockroachDB Advanced** : `CockroachDB {{ site.data.products.advanced }}`
+- **self-hosted** : `CockroachDB {{ site.data.products.core }} cluster`
 - **Enterprise** : `{{ site.data.products.enterprise }}`
 
-The first occurrence of a product name within a docs page should use its full name. At the writer's discretion, subsequent occurrences may be shortened to “Dedicated”, “Serverless”, "Cloud", or "Self-Hosted", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
-
-It should be noted that each of these words can occur uncapitalized if referring to general concepts, rather than CockroachDB concepts/products. For example, we can refer to "Serverless clusters and serverless applications", note that "Dedicated clusters used dedicated (rather than shared) network and compute infrastructure".
+The first occurrence of a product name within a docs page should use its full name. At the writer's discretion, subsequent occurrences may be shortened to "Basic", "Advanced", or "Cloud", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
 
 ### Code
 
@@ -1408,7 +1170,7 @@ Examples:
 
 ```
 {% comment %}
-TODO clean up SQL diagrams
+TODO clean up the style guide
 {% endcomment %}
 ```
 
@@ -1425,10 +1187,12 @@ Many popular code editors feature extensions that can highlight `TODO`s across t
 This section logs decisions about dictionary words to use and avoid. Add specific guidelines we decide as a team to this section. Refer also to [Technical terminology](#technical-termilogy) for technical terms that may not be in a dictionary.
 
 ### Directories and folders
+
 - Use "directory" to refer to a filesystem directory, either locally or in a VM. For example, "Compress the directory into a `zip` archive."
 - Use "folder" to refer to a folder within a UI, such as a web UI or an IDE. For example, "Create a folder in your CockroachDB Cloud organization."
 
 ### Technical terminology
+
 This section logs decisions about software branding and terminology. In general, align third-party branding with that brand's usage. For example, the [PostgreSQL project](https://www.postgresql.org/) uses the word "PostgreSQL" with that capitalization. Add specific guidelines we decide as a team to this table.
 
 Term | Classification | Note
