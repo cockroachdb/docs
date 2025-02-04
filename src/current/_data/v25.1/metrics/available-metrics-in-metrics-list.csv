@@ -475,3 +475,5 @@ auth.jwt.conn.latency
 auth.ldap.conn.latency
 auth.password.conn.latency
 auth.scram.conn.latency
+sql.exec.latency.detail
+sql.query.unique.count
