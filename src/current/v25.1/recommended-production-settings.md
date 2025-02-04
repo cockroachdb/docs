@@ -22,6 +22,15 @@ For optimal cluster performance, Cockroach Labs recommends that all nodes use th
 
 We recommend running a [glibc](https://www.gnu.org/software/libc/)-based Linux distribution and Linux kernel version from the last 5 years, such as [Ubuntu](https://ubuntu.com/), [Red Hat Enterprise Linux (RHEL)](https://www.redhat.com/technologies/linux-platforms/enterprise-linux), [CentOS](https://www.centos.org/), or [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs).
 
+New deployments should configure [transparent huge pages (THP)](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html) with the `madvise` option:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+echo madvise > /sys/kernel/mm/transparent_hugepage/enabled
+~~~
+
+Existing deployments that have THP enabled using the `always` option don't need to be changed; the differences between the settings are minor.
+
 ## Hardware
 
 {% include {{ page.version.version }}/prod-deployment/terminology-vcpu.md %}
