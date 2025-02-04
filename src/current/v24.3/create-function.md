@@ -296,82 +296,82 @@ The following example defines a function using the `SECURITY DEFINER` clause. Th
 
 1. Create two roles:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  CREATE ROLE owner;
-  CREATE ROLE invoker;
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE ROLE owner;
+    CREATE ROLE invoker;
+    ~~~
 
 1. Grant a [`SELECT` privilege]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the `user_promo_codes` table to the `owner` role.
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  GRANT SELECT ON TABLE user_promo_codes TO owner;
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    GRANT SELECT ON TABLE user_promo_codes TO owner;
+    ~~~
 
 1. Set your role to `owner`.
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  SET ROLE owner;
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET ROLE owner;
+    ~~~
 
 1. Create a simple `SECURITY DEFINER` function that reads the contents of `user_promo_codes`.
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  CREATE OR REPLACE FUNCTION get_codes() 
-    RETURNS SETOF RECORD 
-    LANGUAGE SQL 
-    SECURITY DEFINER
-    AS $$
-      SELECT * FROM user_promo_codes;
-    $$;
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE OR REPLACE FUNCTION get_codes() 
+      RETURNS SETOF RECORD 
+      LANGUAGE SQL 
+      SECURITY DEFINER
+      AS $$
+        SELECT * FROM user_promo_codes;
+      $$;
+    ~~~
 
 1. Grant the [`EXECUTE` privilege]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the `get_codes` function to the `invoker` role.
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  GRANT EXECUTE ON FUNCTION get_codes() TO invoker;
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    GRANT EXECUTE ON FUNCTION get_codes() TO invoker;
+    ~~~
 
 1. Set your role to `invoker`.
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  SET ROLE invoker;
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET ROLE invoker;
+    ~~~
 
 1. `invoker` does not have the privileges to read the `user_promo_codes` table directly:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  SELECT * FROM user_promo_codes;
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM user_promo_codes;
+    ~~~
 
-  ~~~
-  ERROR: user invoker does not have SELECT privilege on relation user_promo_codes
-  SQLSTATE: 42501
-  ~~~
+    ~~~
+    ERROR: user invoker does not have SELECT privilege on relation user_promo_codes
+    SQLSTATE: 42501
+    ~~~
 
 1. As `invoker`, call the `get_codes` function to read `user_promo_codes`, since `SECURITY DEFINER` is executed with the privileges of the `owner` role (i.e., `SELECT` on `user_promo_codes`).
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ sql
-  SELECT get_codes();
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT get_codes();
+    ~~~
 
-  ~~~
-                                                   get_codes
-  ------------------------------------------------------------------------------------------------------------
-    ("new york",00000000-0000-4000-8000-000000000000,0_audience_thought_seven,"2019-01-02 03:04:05",10)
-    ("new york",051eb851-eb85-4ec0-8000-000000000001,1_assume_its_leg,"2019-01-02 03:04:05.001",0)
-    ("new york",0a3d70a3-d70a-4d80-8000-000000000002,2_popular_if_describe,"2019-01-02 03:04:05.002",16)
-    ("new york",0f5c28f5-c28f-4c00-8000-000000000003,3_environmental_myself_add,"2019-01-02 03:04:05.003",4)
-    ("new york",147ae147-ae14-4b00-8000-000000000004,4_rule_edge_career,"2019-01-02 03:04:05.004",13)
-  (5 rows)
-  ~~~
+    ~~~
+                                                     get_codes
+    ------------------------------------------------------------------------------------------------------------
+      ("new york",00000000-0000-4000-8000-000000000000,0_audience_thought_seven,"2019-01-02 03:04:05",10)
+      ("new york",051eb851-eb85-4ec0-8000-000000000001,1_assume_its_leg,"2019-01-02 03:04:05.001",0)
+      ("new york",0a3d70a3-d70a-4d80-8000-000000000002,2_popular_if_describe,"2019-01-02 03:04:05.002",16)
+      ("new york",0f5c28f5-c28f-4c00-8000-000000000003,3_environmental_myself_add,"2019-01-02 03:04:05.003",4)
+      ("new york",147ae147-ae14-4b00-8000-000000000004,4_rule_edge_career,"2019-01-02 03:04:05.004",13)
+    (5 rows)
+    ~~~
 
 ## See also
 
