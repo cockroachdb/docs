@@ -172,7 +172,7 @@ SELECT city,current_location,type FROM available_vehicles();
 
 ### Create a function that returns a `RECORD` type
 
-The following statement defines a function that returns the information for the user that most recently completed a ride. The information is returned as a record, which takes the structure of the row that is retrieved by the selection query.
+The following function returns the information for the user that most recently completed a ride. The information is returned as a record, which takes the structure of the row that is retrieved by the selection query.
 
 In the function subquery, the latest `end_time` timestamp is used to determine the most recently completed ride:
 
@@ -191,46 +191,50 @@ SELECT last_rider();
 ~~~
 
 ~~~
-                                                last_rider
-----------------------------------------------------------------------------------------------------------
-  (70a3d70a-3d70-4400-8000-000000000016,seattle,"Mary Thomas","43322 Anthony Flats Suite 85",1141093639)
+                                                    last_rider
+-------------------------------------------------------------------------------------------------------------------
+  (147ae147-ae14-4b00-8000-000000000004,"new york","Isabel Clark DVM","98891 Timothy Cliffs Suite 39",4302568047)
 (1 row)
 ~~~
 
 ### Create a function that returns a table
 
-The following statement defines a function that returns information for all users that live in a specified city. The `RETURNS TABLE` clause specifies the columns to return: `id`, `name`, and `address`. The information is returned as a table, which is equivalent to a set of [`RECORD` values](#create-a-function-that-returns-a-record-type).
+The following function returns information for the last `x` users that recently completed a ride. The information is returned as a table, which is equivalent to a set of [`RECORD` values](#create-a-function-that-returns-a-record-type). The rows are sorted in order of most recent ride.
+
+The `RETURNS TABLE` clause specifies the column names to output: `id`, `name`, `city`, AND `end_time`. A [common table expression]({% link {{ page.version.version }}/common-table-expressions.md %}) reads the most recent rides from the `rides` table.
 
 {{site.data.alerts.callout_info}}
 [`OUT` and `INOUT` parameters](#create-a-function-that-uses-out-and-inout-parameters) cannot be used with `RETURNS TABLE`.
 {{site.data.alerts.end}}
 
-In the function body, the ordinal `$1` references the function argument:
-
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE OR REPLACE FUNCTION get_users_in_city(city VARCHAR) RETURNS TABLE(id UUID, name VARCHAR, address VARCHAR) LANGUAGE SQL AS $$
-  SELECT id, name, address FROM users WHERE city = $1;
+CREATE OR REPLACE FUNCTION last_x_riders(x INT) RETURNS TABLE(id UUID, name VARCHAR, city VARCHAR, end_time TIMESTAMP) LANGUAGE SQL AS $$
+  WITH recent_rides AS (
+    SELECT rider_id, end_time FROM rides
+    ORDER BY end_time DESC
+  )
+  SELECT u.id, u.name, u.city, r.end_time FROM users u, recent_rides r
+  WHERE u.id = r.rider_id
+  ORDER BY r.end_time DESC
+  LIMIT x
 $$;
 ~~~
 
-The following statement returns the results for users in New York City as a table:
-
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT * FROM get_users_by_city('new york');
+SELECT * FROM last_x_riders(5);
 ~~~
 
 ~~~
-                   id                  |       name        |             address
----------------------------------------+-------------------+----------------------------------
-  00000000-0000-4000-8000-000000000000 | Hannah Gonzalez   | 68010 Monica Union
-  051eb851-eb85-4ec0-8000-000000000001 | Brittney Carrillo | 22439 Kylie Highway
-  0a3d70a3-d70a-4d80-8000-000000000002 | Allen Mcdonald    | 24005 Simmons Course Apt. 41
-  0f5c28f5-c28f-4c00-8000-000000000003 | Wesley Paul       | 26691 Michael Rapids
-  147ae147-ae14-4b00-8000-000000000004 | Suzanne Compton   | 32939 Patrick Junctions Apt. 13
-  19999999-9999-4a00-8000-000000000005 | Eric Gamble       | 66456 Sandra Walk
-(6 rows)
+                   id                  |       name       |     city      |      end_time
+---------------------------------------+------------------+---------------+----------------------
+  147ae147-ae14-4b00-8000-000000000004 | Isabel Clark DVM | new york      | 2019-01-04 14:04:05
+  8f5c28f5-c28f-4000-8000-00000000001c | Patricia Sexton  | los angeles   | 2019-01-04 08:04:05
+  75c28f5c-28f5-4400-8000-000000000017 | Andre Wilson     | san francisco | 2019-01-04 07:04:05
+  00000000-0000-4000-8000-000000000000 | William Martin   | new york      | 2019-01-04 04:04:05
+  d1eb851e-b851-4800-8000-000000000029 | Terry Reyes      | paris         | 2019-01-03 21:04:05
+(5 rows)
 ~~~
 
 ### Create a function that uses `OUT` and `INOUT` parameters
