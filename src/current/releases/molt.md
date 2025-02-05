@@ -18,6 +18,15 @@ To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
 
+## February 5, 2025
+
+MOLT Fetch/Verify 1.2.2 is [available](#installation).
+
+- Added an [`--import-region`]({% link molt/molt-fetch.md %}#global-flags) flag that is used to set the `AWS_REGION` query parameter explicitly in the [`s3` URL]({% link molt/molt-fetch.md %}#cloud-storage).
+- Fixed the [`truncate-if-exists`]({% link molt/molt-fetch.md %}#target-table-handling) schema mode for cases where there are uppercase table or schema names.
+- Fixed an issue with unsigned `BIGINT` values overflowing in replication.
+- Added a `--schemaRefresh` flag that is used to configure the schema watcher refresh delay. Previously, the refresh delay was set to a constant value of 1 minute.
+
 ## December 13, 2024
 
 MOLT Fetch/Verify 1.2.1 is [available](#installation).
