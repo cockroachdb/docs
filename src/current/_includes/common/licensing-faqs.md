@@ -12,7 +12,7 @@ Type | Description
 **Enterprise Free** <a name="enterprise-free"></a> | Same functionality as **Enterprise**, but free of charge for businesses with less than $10M in annual revenue. Clusters will be [throttled](#throttling) after 7 days without sending [telemetry]({% link {{ page.version.version }}/telemetry.md %}). License must be renewed annually. Support level available is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
 **Enterprise Trial** <a name="enterprise-trial"></a> | A 30 day self-service trial license. [Telemetry]({% link {{ page.version.version }}/telemetry.md %}) is required during the trial. Clusters will be [throttled](#throttling) after 7 days without sending telemetry. Telemetry can be disabled once the cluster is upgraded to a paid **Enterprise** license. Support level available during trial is Community (i.e., [Docs]({% link {{ page.version.version }}/index.md %}), [Forum][forum], [Slack][slack]).
 
-<a href="mailto:sales@cockroachlabs.com">Contact Sales</a> if you want to try CockroachDB without telemetry requirements or if you require an extended trial period.
+[Contact Sales][sales] if you want to try CockroachDB without telemetry requirements or if you require an extended trial period.
 
 {{site.data.alerts.callout_success}}
 Note that:
@@ -23,12 +23,12 @@ Note that:
 
 ## Obtain a license
 
-To obtain a paid **Enterprise** license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
+To obtain a paid **Enterprise** license, [Contact Sales][sales].
 
 To obtain an **Enterprise Free** or **Enterprise Trial** license, take the following steps:
 
-1. Point your web browser to the [CockroachDB {{ site.data.products.cloud }} Console][cloud-console] and [log in]({% link cockroachcloud/authentication.md %}#console-ui-authentication) as an account with **Organization Admin** permissions.
-1. Select **Organization &raquo; Enterprise Licenses** from the nav bar dropdown. This will bring you to the **Enterprise Licenses** page, which shows a (possibly empty) list of licenses and their keys, with information about the status of each.
+1. Open the [CockroachDB {{ site.data.products.cloud }} Console][cloud-console] and [log in]({% link cockroachcloud/authentication.md %}#console-ui-authentication) using an account with **Organization Admin** permissions.
+1. Select **Organization &raquo; Enterprise Licenses** from the nav bar dropdown. This will bring you to the **Enterprise Licenses** page, which shows any existing licenses and their keys, with information about the status of each.
 1. Click the **Create License** button. This will bring you to a page called **Get started with CockroachDB Enterprise**.
 1. On this page, you will create an **Enterprise Trial** license or an **Enterprise Free** license.
     1. To create an **Enterprise Trial** license:
@@ -106,7 +106,7 @@ For versions less than or equal to v23.1.28, v23.2.14, v24.1.6, and v24.2.4, the
 
 ## Renew an expired license
 
-To renew an expired **Enterprise** license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a> and then [set](#set-a-license) the new license.
+To renew an expired **Enterprise** license, [Contact Sales][sales] and then [set](#set-a-license) the new license.
 
 To renew an expired **Enterprise Free** license, follow the steps in [Obtain a license](#obtain-a-license).
 
@@ -165,7 +165,7 @@ Generally, single-node clusters used for design, prototyping, testing, or develo
 
 - [CockroachDB Software License][csl]
 - [Enterprise support][support]
-- <a href="mailto:sales@cockroachlabs.com">Contact Sales</a>
+- [Contact Sales][sales]
 
 <!-- Reference Links -->
 
@@ -174,3 +174,4 @@ Generally, single-node clusters used for design, prototyping, testing, or develo
 [forum]: https://forum.cockroachlabs.com
 [slack]: https://www.cockroachlabs.com/join-community
 [cloud-console]: https://cockroachlabs.cloud
+[sales]: https://www.cockroachlabs.com/contact/ent/
