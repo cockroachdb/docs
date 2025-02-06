@@ -43,12 +43,7 @@ Before you begin, it may be useful to enable authentication logging, which can h
 
 You will set LDAP bind credentials for the service account that enables this integration using the cluster setting `server.host_based_authentication.configuration`. You will also configure the mapping of external identities to CockroachDB SQL users using the cluster settings `server.identity_map.configuration`.
 	
-To redact these sensitive setting values for all users except for those with the `admin` role or the `MODIFYCLUSTERSETTING` privilege, run:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET CLUSTER SETTING server.redact_sensitive_settings.enabled = 'true';
-~~~
+To redact these two settings, refer to [Sensitive settings]({% link {{ page.version.version }}/cluster-settings.md %}#sensitive-settings).
 
 ### Step 2: Configure Host-Based Authentication (HBA)
 
