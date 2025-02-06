@@ -158,15 +158,10 @@ For details on setting quotas to client IDs, refer to the [Kafka documentation](
 The `CompressionLevel` field allows you to implement a level of compression for your set `Compression` protocol. `CompressionLevel` determines the level of the compression ratio versus the compression speed. That is, how much the data is reduced for _better_ compression and how quickly the compression is completed for _faster_ compression. The compression protocols support the following values:
 
 - `GZIP`:
+    - {% include_cached new-in.html version="v25.1" %} `-2`: [Huffman-only compression](https://en.wikipedia.org/wiki/Huffman_coding)
+    - {% include_cached new-in.html version="v25.1" %} `-1`: Default compression
     - `0`: No compression
     - `1` to `9`: From fastest compression to best compression
-    {% comment %}
-    These values are not available yet per KL #136492
-    - `-1`: Default compression
-    - `-2`: [Huffman-only compression](https://en.wikipedia.org/wiki/Huffman_coding)
-    - `-3`: Stateless compression
-    {% endcomment %}
-    The default compression level for `GZIP` is `-1`; however, the `CompressionLevel` field does **not** support manually set negative values. For more details, refer to [Known Limitations]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#known-limitations).
 - `ZSTD`:
     - `1`: Fastest compression
     - `2`: Default compression
