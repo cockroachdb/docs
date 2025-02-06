@@ -201,7 +201,7 @@ SELECT last_rider();
 
 The following function returns information for the last `x` users that recently completed a ride. The information is returned as a table, which is equivalent to a set of [`RECORD` values](#create-a-function-that-returns-a-record-type). The rows are sorted in order of most recent ride.
 
-The `RETURNS TABLE` clause specifies the column names to output: `id`, `name`, `city`, AND `end_time`. A [common table expression]({% link {{ page.version.version }}/common-table-expressions.md %}) reads the most recent rides from the `rides` table.
+The `RETURNS TABLE` clause specifies the column names to output: `id`, `name`, `city`, and `end_time`. A [common table expression]({% link {{ page.version.version }}/common-table-expressions.md %}) reads the most recent rides from the `rides` table.
 
 {{site.data.alerts.callout_info}}
 [`OUT` and `INOUT` parameters](#create-a-function-that-uses-out-and-inout-parameters) cannot be used with `RETURNS TABLE`.
