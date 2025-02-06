@@ -299,6 +299,12 @@
               ]
             },
             {
+              "title": "<code>DO</code>",
+              "urls": [
+                "/${VERSION}/do.html"
+              ]
+            },
+            {
               "title": "<code>DROP DATABASE</code>",
               "urls": [
                 "/${VERSION}/drop-database.html"
