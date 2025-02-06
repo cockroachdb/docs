@@ -1,3 +1,5 @@
+[XXX](XXX): are these limitations still valid?
+
 You cannot alter the data type of a column if:
 
 - The column is part of an [index]({% link {{ page.version.version }}/indexes.md %}).
