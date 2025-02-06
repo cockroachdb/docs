@@ -44,7 +44,7 @@ Almost all database operations that use CPU or perform storage IO are controlled
 
 - [General SQL queries]({% link {{ page.version.version }}/selection-queries.md %}) have their CPU usage subject to admission control, as well as storage IO for writes to [leaseholder replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases).
 - [Bulk data imports]({% link {{ page.version.version }}/import-into.md %}).
-- [`COPY`]({% link {{ page.version.version }}/copy-from.md %}) statements.
+- [`COPY`]({% link {{ page.version.version }}/copy.md %}) statements.
 - [Deletes]({% link {{ page.version.version }}/delete-data.md %}) (including deletes initiated by [row-level TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}); the [selection queries]({% link {{ page.version.version }}/selection-queries.md %}) performed by TTL jobs are also subject to CPU admission control).
 - [Backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}).
 - [Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), including index and column backfills (on both the [leaseholder replica]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
@@ -108,7 +108,7 @@ SET default_transaction_quality_of_service=regular;
 
 <a id="copy-qos"></a>
 
-The quality of service for [`COPY`]({% link {{ page.version.version }}/copy-from.md %}) statements is configured separately with the [`copy_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#copy-transaction-quality-of-service) session variable, which defaults to `background`.
+The quality of service for [`COPY`]({% link {{ page.version.version }}/copy.md %}) statements is configured separately with the [`copy_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#copy-transaction-quality-of-service) session variable, which defaults to `background`.
 
 To increase the priority of subsequent `COPY` statements, run:
 

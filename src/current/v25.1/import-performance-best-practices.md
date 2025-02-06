@@ -7,7 +7,7 @@ docs_area: migrate
 
 This page provides best practices for optimizing [import]({% link {{ page.version.version }}/import-into.md %}) performance in CockroachDB.
 
-`IMPORT INTO` is the fastest method to ingest data into CockroachDB but it requires taking the target table offline for the duration of the import. `IMPORT INTO` is a good choice for initial data migrations and data migrations that can tolerate table downtime. If you cannot tolerate table unavailability, we recommend using [`COPY FROM`](copy-from.html) instead.
+`IMPORT INTO` is the fastest method to ingest data into CockroachDB but it requires taking the target table offline for the duration of the import. `IMPORT INTO` is a good choice for initial data migrations and data migrations that can tolerate table downtime. If you cannot tolerate table unavailability, we recommend using [`COPY FROM`]({% link {{ page.version.version }}/copy.md %}) instead.
 
 Import performance primarily depends on the amount of data that you want to import. However, there are three actions you should take before importing that have a significant impact on the amount of time it takes to run an import:
 
