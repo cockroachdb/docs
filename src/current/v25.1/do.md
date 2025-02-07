@@ -1,6 +1,6 @@
 ---
 title: DO
-summary: The DO statement executes a PL/pgSQL code block.
+summary: The DO SQL statement executes a PL/pgSQL code block.
 toc: true
 keywords:
 docs_area: reference.sql
