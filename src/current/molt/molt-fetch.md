@@ -564,7 +564,7 @@ The following example connects to a Google Cloud Storage bucket with [implicit a
 {% include_cached copy-clipboard.html %}
 ~~~
 --bucket-path 'gs://migration/data/cockroach
---assume-role='user-test@cluster-ephemeral.iam.gserviceaccount.com'
+--assume-role 'user-test@cluster-ephemeral.iam.gserviceaccount.com'
 --use-implicit-auth
 ~~~
 
