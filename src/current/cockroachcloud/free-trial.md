@@ -50,7 +50,7 @@ During the free trial, a [Billing Coordinator]({% link cockroachcloud/authorizat
 To avoid service disruption and possible data loss, be sure to enter a payment method or be in communication with Sales before your free trial ends.
 {{site.data.alerts.end}}
 
-If the trial ends and a payment method has not been provided, a three-day grace period begins where your organization’s clusters operate normally, but you are restricted from modifying their configuration, for example, to scale up or down, or update regions.
+If the trial ends and a payment method has not been provided, a 30 day grace period begins where your organization’s clusters are throttled, and you are restricted from modifying their configuration, for example, to scale up or down, or update regions.
 
 The cluster will be fully restored if a payment method is added. Any charges accrued during the grace period will be billed to the payment method.
 
