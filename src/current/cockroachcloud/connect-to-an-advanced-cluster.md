@@ -48,10 +48,6 @@ Private connectivity can be configured only after a cluster is created.
 
 #### GCP Private Service Connect
 
-{{site.data.alerts.callout_info}}
-{% include_cached feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 1. Navigate to your cluster's **Networking > Private endpoint** tab.
 1. Click **Add a private endpoint**. Copy the value provided for **Target service**. Do not close this browser window.
 1. In a new browser window, log in to Google Cloud Console, go to **Private Service Connect** section, and create a new endpoint in the same VPC as your application. For details, refer to [Create an endpoint](https://cloud.google.com/vpc/docs/configure-private-service-connect-services#create-endpoint) in the Google Cloud documentation.
@@ -98,10 +94,6 @@ Self-service VPC peering setup is not supported for CockroachDB {{ site.data.pro
 To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink for a cluster]({% link cockroachcloud/aws-privatelink.md %}). After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
 
 #### Azure Private Link
-
-{{site.data.alerts.callout_success}}
-{% include_cached feature-phases/preview.md %}
-{{site.data.alerts.end}}
 
 1. Navigate to your cluster's **Networking > Private endpoint** tab.
 1. Click **Add a private endpoint**. Copy the value provided for **Alias**. Do not close this browser window.

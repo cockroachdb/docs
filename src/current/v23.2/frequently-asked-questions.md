@@ -167,13 +167,11 @@ For more details, see our [Security Overview]({% link {{ page.version.version }}
 
 While all of these databases support SQL syntax, CockroachDB is the only one that scales easily (without the manual complexity of sharding), rebalances and repairs itself automatically, and distributes transactions seamlessly across your cluster.
 
-For more insight, see [CockroachDB in Comparison]({% link {{ page.version.version }}/cockroachdb-in-comparison.md %}).
 
 ### How does CockroachDB compare to Cassandra, HBase, MongoDB, or Riak?
 
 While all of these are distributed databases, only CockroachDB supports distributed transactions and provides strong consistency. Also, these other databases provide custom APIs, whereas CockroachDB offers standard SQL with extensions.
 
-For more insight, see [CockroachDB in Comparison]({% link {{ page.version.version }}/cockroachdb-in-comparison.md %}).
 
 ## Have questions that weren’t answered?
 

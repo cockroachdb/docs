@@ -798,9 +798,6 @@
 - destination: stable/cockroach-sql.md
   sources: ['use-the-built-in-sql-client.md']
 
-- destination: stable/cockroachdb-in-comparison.md
-  sources: ['cockroachdb-in-comparison.md']
-
 - destination: stable/column-families.md
   sources: ['column-families.md']
 
@@ -1019,3 +1016,13 @@
 - destination: serverless-resource-usage.md
   sources: ['optimize-serverless-workload.md']
   versions: ['cockroachcloud']
+
+- destination: https://www.cockroachlabs.com/compare/
+  sources:
+    - stable/cockroachdb-in-comparison.md
+    - v23.1/cockroachdb-in-comparison.md
+    - v23.2/cockroachdb-in-comparison.md
+    - v24.1/cockroachdb-in-comparison.md
+    - v24.2/cockroachdb-in-comparison.md
+    - v24.3/cockroachdb-in-comparison.md
+    - v25.1/cockroachdb-in-comparison.md
