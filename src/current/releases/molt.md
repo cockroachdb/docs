@@ -25,7 +25,7 @@ MOLT Fetch/Verify 1.2.2 is [available](#installation).
 - Added an [`--import-region`]({% link molt/molt-fetch.md %}#global-flags) flag that is used to set the `AWS_REGION` query parameter explicitly in the [`s3` URL]({% link molt/molt-fetch.md %}#cloud-storage).
 - Fixed the [`truncate-if-exists`]({% link molt/molt-fetch.md %}#target-table-handling) schema mode for cases where there are uppercase table or schema names.
 - Fixed an issue with unsigned `BIGINT` values overflowing in replication.
-- Added a `--schemaRefresh` flag that is used to configure the schema watcher refresh delay in the replication phase. Previously, the refresh delay was set to a constant value of 1 minute. Set the flag as follows: `--replicator-flags "--schemaRefresh {value}"`.
+- Added a `--schemaRefresh` [replication flag]({% link molt/molt-fetch.md %}#replication-flags) that is used to configure the schema watcher refresh delay in the replication phase. Previously, the refresh delay was set to a constant value of 1 minute. Set the flag as follows: `--replicator-flags "--schemaRefresh {value}"`.
 
 ## December 13, 2024
 
