@@ -31,7 +31,7 @@ Parameter | Description
 ----------|------------
 `routine_create_name` | The name of the function.
 `routine_param` | A comma-separated list of function parameters, specifying the mode, name, and type.
-`routine_return_type` | The type returned by the function: any built-in [SQL type]({% link {{ page.version.version }}/data-types.md %}), user-defined [`ENUM`]({% link {{ page.version.version }}/enum.md %}) or [composite]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) type, [`RECORD`](#create-a-function-that-returns-a-record-type), [`TABLE`](#create-a-function-that-returns-a-table), PL/pgSQL [`REFCURSOR`]({% link {{ page.version.version }}/plpgsql.md %}#declare-cursor-variables) type, implicit record type, [`TRIGGER`]({% link {{ page.version.version }}/triggers.md %}#trigger-function), or `VOID`.
+`routine_return_type` | The type returned by the function: any built-in [SQL type]({% link {{ page.version.version }}/data-types.md %}), user-defined [`ENUM`]({% link {{ page.version.version }}/enum.md %}) or [composite]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) type, [`RECORD`](#create-a-function-that-returns-a-record-type), [`TABLE`](#create-a-function-that-returns-a-table), PL/pgSQL [`REFCURSOR`]({% link {{ page.version.version }}/plpgsql.md %}#declare-cursor-variables) type, [`TRIGGER`]({% link {{ page.version.version }}/triggers.md %}#trigger-function), or `VOID`.
 `routine_body_str` | The body of the function. For allowed contents, refer to [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
 
 ## Example of a simple function
