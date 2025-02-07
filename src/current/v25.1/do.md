@@ -1,16 +1,15 @@
 ---
 title: DO
-summary: The DO statement executes a SQL or PL/pgSQL code block.
+summary: The DO statement executes a PL/pgSQL code block.
 toc: true
 keywords:
 docs_area: reference.sql
 ---
 
-The `DO` [statement]({% link {{ page.version.version }}/sql-statements.md %}) defines a code block that executes SQL or [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}) syntax.
+The `DO` [statement]({% link {{ page.version.version }}/sql-statements.md %}) defines a code block that executes [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %}) syntax.
 
 ## Required privileges
 
-- To execute a `DO` block, a user must have at least the [`USAGE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the schema where the `DO` block is being executed.
 - To define a `DO` block with a [user-defined type]({% link {{ page.version.version }}/create-type.md %}), a user must have `USAGE` privilege on the user-defined type.
 
 ## Synopsis
@@ -99,3 +98,9 @@ END $$;
 NOTICE: Sum of numbers 1-5: 15
 DO
 ~~~
+
+## See also
+
+- [PL/pgSQL]({% link {{ page.version.version }}/plpgsql.md %})
+- [Stored Procedures]({% link {{ page.version.version }}/stored-procedures.md %})
+- [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %})
