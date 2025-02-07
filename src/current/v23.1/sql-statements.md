@@ -70,7 +70,7 @@ Statement | Usage
 Statement | Usage
 ----------|------------
 [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}) | Create a new table in a database using the results from a [selection query]({% link {{ page.version.version }}/selection-queries.md %}).
-[`COPY FROM`]({% link {{ page.version.version }}/copy.md %}) | Copy data from a third-party client to a CockroachDB cluster.<br>For compatibility with PostgreSQL drivers and ORMs, CockroachDB supports `COPY FROM` statements issued only from third-party clients; you cannot issue `COPY FROM` statements from the [`cockroach` SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}). To import data from files, use an [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement instead.
+[`COPY FROM`]({% link {{ page.version.version }}/copy.md %}) | Copy data from a third-party client to a CockroachDB cluster.<br>For compatibility with PostgreSQL drivers and ORMs, CockroachDB supports `COPY FROM` statements issued from third-party clients. To import data from files, use an [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) statement instead.
 [`DELETE`]({% link {{ page.version.version }}/delete.md %}) | Delete specific rows from a table.
 [`EXPORT`]({% link {{ page.version.version }}/export.md %}) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files.
 [`IMPORT`]({% link {{ page.version.version }}/import.md %}) | Bulk-insert CSV data into a new table.
