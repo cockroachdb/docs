@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `COPY ... FROM` statement copies data from [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) or other [third party clients]({% link {{ page.version.version }}/install-client-drivers.md %}) to tables in your cluster. The `COPY ... TO` statement allows you to export a table or arbitrary query in a [PostgreSQL wire-compatible]({% link {{ page.version.version }}/postgresql-compatibility.md %}) text or CSV format.
+The `COPY ... FROM` statement copies data from [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) or other [third party clients]({% link {{ page.version.version }}/install-client-drivers.md %}) to tables in your cluster. The `COPY ... TO` statement allows you to export a table or arbitrary query in a text or CSV format.
 
 ## Syntax
 
