@@ -336,6 +336,10 @@ The following example defines a function using the `SECURITY DEFINER` clause. Th
     GRANT EXECUTE ON FUNCTION get_codes() TO invoker;
     ~~~
 
+    {{site.data.alerts.callout_info}}
+    This step is not necessary if the function is defined on the `public` schema, for which roles automatically have the `EXECUTE` privilege.
+    {{site.data.alerts.end}}
+
 1. Set your role to `invoker`.
 
     {% include_cached copy-clipboard.html %}
