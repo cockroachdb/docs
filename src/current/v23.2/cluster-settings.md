@@ -46,7 +46,7 @@ Before changing a cluster setting, note the following:
 
 ## Sensitive settings
 
-Due to security concerns, some cluster settings are considered sensitive. Their values should not be visible to all users when using the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) statement.
+{% include_cached new-in.html version="v23.2.1" %} Due to security concerns, some cluster settings are considered sensitive. Their values should not be visible to all users when using the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) statement.
 
 The values of these sensitive settings are always visible to users with the `admin` role or the `MODIFYCLUSTERSETTING` privilege.
 

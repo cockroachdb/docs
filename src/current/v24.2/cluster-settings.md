@@ -69,10 +69,6 @@ The table below summarizes when sensitive settings values are visible or redacte
 
 The following are sensitive settings whose values are redacted:
 
-- [`server.jwt_authentication.issuers.custom_ca`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-jwt-authentication-issuers-custom-ca)
-- [`server.ldap_authentication.domain.custom_ca`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-ldap-authentication-domain-custom-ca)
-- [`server.ldap_authentication.client.tls_certificate`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-ldap-authentication-client-tls-certificate)
-- [`server.ldap_authentication.client.tls_key`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-ldap-authentication-client-tls-key)
 - [`server.oidc_authentication.client_id`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-oidc-authentication-client-id)
 - [`server.oidc_authentication.client_secret`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-oidc-authentication-client-secret)
 
