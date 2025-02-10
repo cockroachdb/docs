@@ -21,16 +21,6 @@ The [examples](#examples) on this page provide the foundational syntax of the `C
 
 {% include {{ page.version.version }}/cdc/privilege-model.md %}
 
-### Legacy privilege model
-
-{{site.data.alerts.callout_info}}
-Starting in v22.2, CockroachDB introduces a new [system-level privilege model]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) that provides finer control over a user's privilege to work with the database, including creating and managing changefeeds.
-
-There is continued support for the legacy privilege model for changefeeds in v23.1, however it **will be removed** in a future release of CockroachDB. We recommend implementing the [new privilege model](#required-privileges) for all changefeeds.
-{{site.data.alerts.end}}
-
-To create a changefeed, the user must be a member of the `admin` role or have the [`CREATECHANGEFEED`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-control-changefeeds) parameter set.
-
 ## Synopsis
 
 <div>
