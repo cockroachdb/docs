@@ -15,7 +15,7 @@ For more detail on using changefeeds to create an export of your table data, see
 
 ### Legacy privilege model
 
-To create a changefeed, the user must be a member of the `admin` role or have the [`CREATECHANGEFEED`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-control-changefeeds) parameter set.
+To create a changefeed, the user must be a member of the `admin` role or have the [`CONTROLCHANGEFEED`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-control-changefeeds) parameter set.
 
 ## Synopsis
 

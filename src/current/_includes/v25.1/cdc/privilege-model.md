@@ -1,10 +1,14 @@
 {{site.data.alerts.callout_danger}}
-As of v25.1, viewing and managing a changefeed job by users with the `CHANGEFEED` privilege is **deprecated**. This functionality of the `CHANGEFEED` privilege will be removed in a future release.
+As of v25.1, **viewing and managing** a changefeed job by users with the [`CHANGEFEED` privilege](#changefeed-privilege) is **deprecated**. This functionality of the `CHANGEFEED` privilege will be removed in a future release.
 
 We recommend transitioning users that need to view and manage running changefeed jobs to [roles]({% link {{ page.version.version }}/create-role.md %}) that own the [jobs]({% link {{ page.version.version }}/show-jobs.md %}) or [granting]({% link {{ page.version.version }}/grant.md %}) them the `VIEWJOB` or `CONTROLJOB` privilege. For more details, refer to [View and manage changefeed jobs](#view-and-manage-changefeed-jobs).
 {{site.data.alerts.end}}
 
 ### Privilege model
+
+{{site.data.alerts.callout_success}}
+For fine-grained access control, we recommend using the system-level privileges [`CHANGEFEED`](#changefeed-privilege) and [`CONTROLJOB` / `VIEWJOB`](#view-and-manage-changefeed-jobs).
+{{site.data.alerts.end}}
 
 The following summarizes the operations users can run depending on whether the assigned privileges are at the job or table level:
 
@@ -16,13 +20,14 @@ Job ownership | [View]({% link {{ page.version.version }}/show-jobs.md %}#show-c
 `CONTROLJOB` | Manage changefeed jobs ([pause]({% link {{ page.version.version }}/pause-job.md %}), [resume]({% link {{ page.version.version }}/resume-job.md %}), and [cancel]({% link {{ page.version.version }}/cancel-job.md %})). For details, refer to [View and manage changefeed jobs](#view-and-manage-changefeed-jobs).
 `VIEWJOB` | [View]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) changefeed jobs. For details, refer to [View and manage changefeed jobs](#view-and-manage-changefeed-jobs).
 `SELECT` | Create a sinkless changefeed that emits messages to a SQL client.
-**Deprecated** `CONTROLCHANGEFEED` role option + `SELECT` | Create changefeeds on tables. For an alternative, refer to the [`CHANGEFEED` privilege](#changefeed-privilege). 
-
-{{site.data.alerts.callout_info}}
-Users with the `CONTROLCHANGEFEED` role option must have `SELECT` on each table, even if they are also granted the `CHANGEFEED` privilege. The `CONTROLCHANGEFEED` role option will be removed in a future release.
-{{site.data.alerts.end}}
+**Deprecated** `CONTROLCHANGEFEED` role option + `SELECT` | Create changefeeds on tables. Users with the `CONTROLCHANGEFEED` role option must have `SELECT` on each table, even if they are also granted the `CHANGEFEED` privilege.<br><br>The `CONTROLCHANGEFEED` role option will be removed in a future release. We recommend using the system-level privileges [`CHANGEFEED`](#changefeed-privilege) and [`CONTROLJOB`/ `VIEWJOB`](#view-and-manage-changefeed-jobs) for fine-grained access control.
+`admin` | Create, view, and manage changefeed jobs. 
 
 #### `CHANGEFEED` privilege
+
+{{site.data.alerts.callout_info}}
+Viewing and managing changefeed jobs with the `CHANGEFEED` privilege is **deprecated** as of v25.1. Instead, transition users that need to view and manage running changefeed jobs to [roles]({% link {{ page.version.version }}/create-role.md %}) that own the [jobs]({% link {{ page.version.version }}/show-jobs.md %}) or [granting]({% link {{ page.version.version }}/grant.md %}) them the `VIEWJOB` or `CONTROLJOB` privilege. For more details, refer to [View and manage changefeed jobs](#view-and-manage-changefeed-jobs).
+{{site.data.alerts.end}}
 
 You can [grant]({% link {{ page.version.version }}/grant.md %}#grant-privileges-on-specific-tables-in-a-database) a user the `CHANGEFEED` privilege to allow them to create changefeeds on a specific table:
 
@@ -32,10 +37,6 @@ GRANT CHANGEFEED ON TABLE example_table TO user;
 ~~~
 
 When you grant a user the `CHANGEFEED` privilege on a set of tables, they can create changefeeds on the target tables even if the user does **not** have the [`CONTROLCHANGEFEED` role option]({% link {{ page.version.version }}/alter-role.md %}#role-options) or the `SELECT` privilege on the tables.
-
-{{site.data.alerts.callout_info}}
-Viewing and managing changefeed jobs with the `CHANGEFEED` privilege is **deprecated** as of v25.1. Instead, transition users that need to view and manage running changefeed jobs to [roles]({% link {{ page.version.version }}/create-role.md %}) that own the [jobs]({% link {{ page.version.version }}/show-jobs.md %}) or [granting]({% link {{ page.version.version }}/grant.md %}) them the `VIEWJOB` or `CONTROLJOB` privilege. For more details, refer to [View and manage changefeed jobs](#view-and-manage-changefeed-jobs).
-{{site.data.alerts.end}}
 
 These users will be able to create changefeeds, but they will not be able to run a `SELECT` query on that data directly. However, they could still read this data indirectly if they have read access to the [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
 
