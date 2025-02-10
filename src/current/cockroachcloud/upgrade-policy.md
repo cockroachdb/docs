@@ -39,7 +39,7 @@ For expected future versions, refer to [Upcoming releases]({% link releases/inde
 Version | Release Type | Support period | Release date | EOS date
 :------:|:------------:|:--------------:|:------------:|:--------:
 v23.2   | Regular      | 12 months      | 2024-02-05   | 2025-02-05
-|v23.1  | Regular      | 12 months      | 2023-05-15   | 2024-05-15
+v23.1   | Regular      | 12 months      | 2023-05-15   | 2024-05-15
 
 ## Patch version upgrades
 
