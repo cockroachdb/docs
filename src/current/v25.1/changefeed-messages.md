@@ -358,7 +358,7 @@ There are three different ways to configure resolved timestamp messages:
     CREATE CHANGEFEED FOR TABLE ... WITH resolved;
     ~~~
 
-- If you specify a duration like `WITH resolved={duration}`, the coordinator node will use the duration as the minimum amount of time a new resolved message's timestamp must be later than the last emitted resolved message's timestamp. The changefeed will only emit a resolved timestamp message if the timestamp has advanced and at least the optional duration has elapsed. For example:
+- If you specify a duration like `WITH resolved={duration}`, the coordinator node will use the duration as the minimum amount of time that the changefeed's high-water mark (overall resolved timestamp) must advance by before another resolved timestamp is emitted. The changefeed will only emit a resolved timestamp message if the timestamp has advanced (and by at least the optional duration, if set). For example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -369,7 +369,7 @@ There are three different ways to configure resolved timestamp messages:
 
 The changefeed job's coordinating node will emit resolved timestamp messages once the changefeed has reached a checkpoint. The frequency of the checkpoints determine how often the resolved timestamp messages emit to the sink. To configure how often the changefeed checkpoints, you can set the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option and [flush frequency]({% link {{ page.version.version }}/changefeed-sinks.md %}) (if flushing is configurable for your sink).
 
-The `min_checkpoint_frequency` option controls how often nodes flush their progress to the coordinating node. If you need resolved timestamp messages to emit from the changefeed more frequently than the `30s` default, then you must set `min_checkpoint_frequency` to at least the desired resolved timestamp frequency. For example: {% comment  %}The resolved option in CockroachDB changefeeds configures the minimum amount of time that must pass between emitted resolved messages, ensuring that each new resolved timestamp is at least this duration later than the last emitted resolved timestamp.{% endcomment %}
+The `min_checkpoint_frequency` option controls how often nodes flush their progress to the coordinating node. If you need resolved timestamp messages to emit from the changefeed more frequently than the `30s` default, then you must set `min_checkpoint_frequency` to at least the desired resolved timestamp frequency. For example: 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
