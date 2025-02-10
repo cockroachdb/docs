@@ -50,7 +50,7 @@ Due to security concerns, some cluster settings are considered sensitive. Their 
 
 The values of these sensitive settings are always visible to users with the `admin` role or the `MODIFYCLUSTERSETTING` privilege.
 
-The values of these sensitive settings are also visible to users with the `VIEWCLUSTERSETTING` privilege when [`server.redact_sensitive_settings.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-redact-sensitive-settings-enabled) is disabled (default, `false`).
+The values of these sensitive settings are also visible to users with the `VIEWCLUSTERSETTING` privilege when [`server.redact_sensitive_settings.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-redact-sensitive-settings-enabled) is disabled.
 
 To enable redaction of these sensitive setting values for non-`admin` users without the `MODIFYCLUSTERSETTING` privilege, such as users with the `VIEWCLUSTERSETTING` privilege, run:
 
@@ -77,7 +77,6 @@ The following are sensitive settings whose values are redacted:
 - [`server.ldap_authentication.client.tls_key`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-ldap-authentication-client-tls-key)
 - [`server.oidc_authentication.client_id`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-oidc-authentication-client-id)
 - [`server.oidc_authentication.client_secret`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-oidc-authentication-client-secret)
-
 
 ## See also
 
