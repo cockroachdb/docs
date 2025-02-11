@@ -24,7 +24,7 @@ ALTER DEFAULT PRIVILEGES GRANT CHANGEFEED ON TABLES TO user;
 ### Privilege model
 
 {{site.data.alerts.callout_success}}
-For fine-grained access control, we recommend using the system-level privileges [`CHANGEFEED`](#changefeed-privilege) and [`CONTROLJOB` / `VIEWJOB`](#view-and-manage-changefeed-jobs).
+For fine-grained access control, we recommend using the system-level privileges `CHANGEFEED` and `CONTROLJOB` / `VIEWJOB`.
 {{site.data.alerts.end}}
 
 The following summarizes the operations users can run when they have changefeed privileges on a table:

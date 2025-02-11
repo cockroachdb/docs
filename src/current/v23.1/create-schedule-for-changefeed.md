@@ -13,10 +13,6 @@ For more detail on using changefeeds to create an export of your table data, see
 
 {% include {{ page.version.version }}/cdc/privilege-model.md %}
 
-### Legacy privilege model
-
-To create a changefeed, the user must be a member of the `admin` role or have the [`CONTROLCHANGEFEED`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-control-changefeeds) parameter set.
-
 ## Synopsis
 
 <div>
