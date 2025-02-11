@@ -4,7 +4,12 @@
 | Linux            | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64.tgz)   | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.linux-arm64.tgz)   |
 | Mac              | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64.tgz)  | [Download](https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64.tgz)  |
 
-For previous binaries, refer to the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). {% if page.name != "molt.md" %}For release details, see the [MOLT changelog]({% link releases/molt.md %}).{% endif %}
+The following binaries are included:
+
+- `molt`
+- `replicator`. To use replication features, `replicator` **must** be located either in the same directory as `molt` or in a directory beneath `molt`.
+
+For previous binaries, refer to the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). {% if page.name != "molt.md" %}For release details, refer to the [MOLT changelog]({% link releases/molt.md %}).{% endif %}
 
 {% if page.name == "molt-fetch.md" or page.name == "molt.md" %}
 {{site.data.alerts.callout_info}}
