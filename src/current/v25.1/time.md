@@ -191,6 +191,15 @@ ALTER TABLE
 (2 rows)
 ~~~
 
+You can reduce the precision of the values of `DECIMAL`, `TIMESTAMP`, and `TIMESTAMPTZ` columns; this yields the same behavior as the PostgreSQL implementation.
+
+For example, to lower the precision of the `time_val` column, which is of type `TIME(5)`, use the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE time ALTER COLUMN time_val SET DATA TYPE TIME(3);
+~~~
+
 ## Supported casting & conversion
 
 `TIME`/`TIMETZ` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to any of the following data types:

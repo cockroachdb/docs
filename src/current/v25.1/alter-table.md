@@ -1577,10 +1577,6 @@ To change the data type from `DECIMAL` to `STRING`:
     > ALTER TABLE customer ALTER c_credit_lim TYPE STRING;
     ~~~
 
-    ~~~
-    NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes; some writes to the altered column may be rejected until the schema change is finalized
-    ~~~
-
 1. Verify the type:
 
     {% include_cached copy-clipboard.html %}
@@ -1671,10 +1667,6 @@ You can change the data type of a column and create a new, computed value from t
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE customer ALTER c_discount TYPE STRING USING ((c_discount*100)::DECIMAL(4,2)::STRING || ' percent');
-~~~
-
-~~~
-NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes; some writes to the altered column may be rejected until the schema change is finalized
 ~~~
 
 {% include_cached copy-clipboard.html %}
