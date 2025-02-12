@@ -1,11 +1,11 @@
 ---
-title: COPY FROM
-summary: Copy data from a third-party client to a CockroachDB table.
+title: COPY
+summary: Copy data from a third-party client to a CockroachDB table, or export data in a PostgreSQL wire-compatible format.
 toc: true
 docs_area: reference.sql
 ---
 
-The `COPY FROM` statement copies data from [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) or other [third party clients]({% link {{ page.version.version }}/install-client-drivers.md %}) to tables in your cluster.
+The `COPY ... FROM` statement copies data from [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) or other [third party clients]({% link {{ page.version.version }}/install-client-drivers.md %}) to tables in your cluster. The `COPY ... TO` statement allows you to export a table or arbitrary query in a text or CSV format.
 
 ## Syntax
 
@@ -20,6 +20,7 @@ Parameter | Description
 `table_name` | The name of the table to which to copy data.
 `opt_column_list` | The column name, or list of column names, to which to copy data.
 `WITH copy_options` | Optionally specify one or more [copy options](#options).
+`query` | A [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}), [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}), or [`DELETE`]({% link {{ page.version.version }}/delete.md %}) statement for which to copy results.
 
 ### Options
 
@@ -27,8 +28,8 @@ Option | Description
 -----------|-------------
 `DELIMITER 'value'` |  The value that delimits the rows of input data, passed as a string.
 `NULL 'value'` |  The string that represents a `NULL` value in the input data.
-`BINARY` | Copy data from binary format. If `BINARY` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
-`CSV` |  Copy data from CSV format. If `CSV` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
+`BINARY` | Copy data `FROM` binary format. If `BINARY` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
+`CSV` |  Copy data `FROM` CSV format, or copy data `TO` CSV format. If `CSV` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
 `ESCAPE` | Specify an escape character for quoting the fields in CSV data.
 `HEADER` | Specify that CockroachDB should skip the header in CSV data (first line of input).
 
@@ -334,6 +335,25 @@ You can copy CSV data into CockroachDB using the following methods:
       3 | hi
       4 | hi
     (4 rows)
+    ~~~
+
+### Copy data to `stdout` in CSV format
+
+1. Start a temporary, in-memory cluster with the [`movr`]({% link {{ page.version.version }}/movr.md %}) sample dataset preloaded:
+
+1. Copy five rows from the `users` table to `stdout`, specifying the `CSV` [option](#options):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    COPY (SELECT * FROM users LIMIT 5) TO STDOUT WITH CSV;
+    ~~~
+
+    ~~~
+    ae147ae1-47ae-4800-8000-000000000022,amsterdam,Christine Crosby,10563 Mcfarland Burg Apt. 34,1007823073
+    b3333333-3333-4000-8000-000000000023,amsterdam,Natalie Barnes,58875 Monique Port,4777504042
+    b851eb85-1eb8-4000-8000-000000000024,amsterdam,Brenda Meyer,82208 Jamie Track Suite 57,3209048436
+    bd70a3d7-0a3d-4000-8000-000000000025,amsterdam,Jose Nelson,31068 Mark Mall,2715842506
+    c28f5c28-f5c2-4000-8000-000000000026,amsterdam,Anna Bennett,80284 Jeffery Courts,1695553015
     ~~~
 
 ## See also

@@ -6,7 +6,7 @@ docs_area: reference.cli
 ---
 
 {{site.data.alerts.callout_danger}}
-The statements on this page are **deprecated** as of v23.1 and will be removed in a future release. To move data into CockroachDB, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}).
+The statements on this page are **deprecated** as of v23.1 and will be removed in a future release. To move data into CockroachDB, use [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) or [`COPY FROM`]({% link {{ page.version.version }}/copy.md %}).
 {{site.data.alerts.end}}
 
 The `cockroach import` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) imports a database or table from a local dump file into a running cluster. This command [uploads a userfile]({% link {{ page.version.version }}/cockroach-userfile-upload.md %}), imports its data, then [deletes the userfile]({% link {{ page.version.version }}/cockroach-userfile-delete.md %}). `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
