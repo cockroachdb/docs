@@ -13,7 +13,7 @@ In contrast to cluster-wide settings, node-level settings apply to a single node
 
 This page provides information on:
 
-- [Public settings](#settings)
+- [Available settings](#settings)
 - How to [view current cluster settings](#view-current-cluster-settings)
 - How to [change a cluster setting](#change-a-cluster-setting)
 - [Sensitive settings](#sensitive-settings)
@@ -26,8 +26,6 @@ These cluster settings have a broad impact on CockroachDB internals and affect a
 
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
-The following are public settings for which tuning is supported.
-
 {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/settings/settings.html %}
 
 ## View current cluster settings
@@ -36,7 +34,7 @@ Use the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster
 
 ## Change a cluster setting
 
-Cluster settings can be updated anytime after a cluster has been started. Use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement.
+Cluster settings can be updated via SQL command while the cluster is running. Use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement.
 
 Before changing a cluster setting, note the following:
 
@@ -46,26 +44,27 @@ Before changing a cluster setting, note the following:
 
 ## Sensitive settings
 
-{% include_cached new-in.html version="v23.2.1" %} Due to security concerns, some cluster settings are considered sensitive. Their values should not be visible to all users when using the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) statement.
+You can prevent users without sufficient permissions from viewing the values of cluster settings that CockroachDB classifies as sensitive.
 
-The values of these sensitive settings are always visible to users with the `admin` role or the `MODIFYCLUSTERSETTING` privilege.
+By default, users with the `VIEWCLUSTERSETTING` privilege can view the values of all settings displayed when using the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) statement.
 
-The values of these sensitive settings are also visible to users with the `VIEWCLUSTERSETTING` privilege when [`server.redact_sensitive_settings.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-redact-sensitive-settings-enabled) is disabled.
+If you enable the option to redact sensitive settings, the sensitive setting values are hidden from those users, and visible only to users with the `admin` role or the `MODIFYCLUSTERSETTING` privilege.
 
-To enable redaction of these sensitive setting values for non-`admin` users without the `MODIFYCLUSTERSETTING` privilege, such as users with the `VIEWCLUSTERSETTING` privilege, run:
+To enable this redaction of sensitive setting values, set the cluster setting [`server.redact_sensitive_settings.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-redact-sensitive-settings-enabled) to `true`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.redact_sensitive_settings.enabled = 'true';
 ~~~
 
-The table below summarizes when sensitive settings values are visible or redacted:
+The table summarizes when sensitive setting values are visible or redacted:
 
 | User attribute | Redaction disabled | Redaction enabled |
 |----------------|:------------------:|:-----------------:|
 |`admin` role | visible | visible
 |`MODIFYCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) | visible | visible
 |`VIEWCLUSTERSETTING` [system-level privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) | visible | **redacted**
+| None of the above attributes | not visible | not visible |
 
 The following are sensitive settings whose values are redacted:
 
