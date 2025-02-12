@@ -141,9 +141,7 @@ Use `ALTER TABLE ... ALTER COLUMN` to do the following:
 - Change a column's [data type]({% link {{ page.version.version }}/data-types.md %}).
 - Set the [visibility](#set-the-visibility-of-a-column) of a column.
 
-{{site.data.alerts.callout_info}}
-Support for altering column data types is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}), with certain limitations. For details, see [Altering column data types](#alter-column-data-types).
-{{site.data.alerts.end}}
+For details about altering column data types, see [Altering column data types](#alter-column-data-types).
 
 For examples, see [Alter columns](#alter-columns).
 
@@ -159,20 +157,20 @@ Parameter | Description |
 `a_expr` | The new [default value]({% link {{ page.version.version }}/default-value.md %}) to set. |
 `b_expr` | The [`ON UPDATE` expression]({% link {{ page.version.version }}/create-table.md %}#on-update-expressions) to set.
 `[NOT] VISIBLE` | The visibility of a column when using `*` in a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}).
-`typename` | The new [data type]({% link {{ page.version.version }}/data-types.md %}) you want to use.<br> Support for altering column types is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}), with certain limitations. For details, see [Alter column data types](#alter-column-data-types). |
+`typename` | The new [data type]({% link {{ page.version.version }}/data-types.md %}) you want to use. For details, see [Alter column data types](#alter-column-data-types). |
 `USING a_expr` |  How to compute a new column value from the old column value. |
 
 For usage, see [Synopsis](#synopsis).
 
 #### Alter column data types
 
-Support for altering column data types is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}), with certain limitations. To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `true`.
-
 The following are equivalent in CockroachDB:
 
 - `ALTER TABLE ... ALTER ... TYPE`
 - `ALTER TABLE ... ALTER COLUMN TYPE`
 - `ALTER TABLE ... ALTER COLUMN SET DATA TYPE`
+
+For examples, see [Alter columns](#alter-columns).
 
 #### Known limitations
 
@@ -1572,22 +1570,11 @@ The [TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpc
 
 To change the data type from `DECIMAL` to `STRING`:
 
-1. Set the `enable_experimental_alter_column_type_general` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `true`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > SET enable_experimental_alter_column_type_general = true;
-    ~~~
-
 1. Alter the column type:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE customer ALTER c_credit_lim TYPE STRING;
-    ~~~
-
-    ~~~
-    NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes; some writes to the altered column may be rejected until the schema change is finalized
     ~~~
 
 1. Verify the type:
@@ -1680,10 +1667,6 @@ You can change the data type of a column and create a new, computed value from t
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE customer ALTER c_discount TYPE STRING USING ((c_discount*100)::DECIMAL(4,2)::STRING || ' percent');
-~~~
-
-~~~
-NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes; some writes to the altered column may be rejected until the schema change is finalized
 ~~~
 
 {% include_cached copy-clipboard.html %}
