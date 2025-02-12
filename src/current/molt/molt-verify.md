@@ -73,8 +73,8 @@ Flag | Description
 `--log-file` | Write messages to the specified log filename. If no filename is provided, messages write to `verify-{datetime}.log`. If `"stdout"` is provided, messages write to `stdout`.
 `--metrics-listen-addr` | Address of the metrics endpoint, which has the path `{address}/metrics`.<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                                 |
 `--row-batch-size` | Number of rows to get from a table at a time. <br>**Default:** 20000
-`--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
-`--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
+`--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`
+`--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`
 
 ## Usage
 

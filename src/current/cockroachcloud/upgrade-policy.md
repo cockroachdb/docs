@@ -28,7 +28,6 @@ When a CockroachDB {{ site.data.products.advanced }} cluster is nearing its EOS 
 
 Version | Release Type | Support period | Release date | EOS date
 :------:|:------------:|:--------------:|:------------:|:---------:
-v23.2   | Regular      | 12 months      | 2024-02-05   | 2025-02-05
 v24.1   | Regular      | 12 months      | 2024-05-20   | 2025-05-20
 v24.2   | Innovation   | 6 months       | 2024-08-12   | 2025-02-12
 v24.3   | Regular      | 12 months      | 2024-11-18   | 2025-11-18
@@ -39,7 +38,8 @@ For expected future versions, refer to [Upcoming releases]({% link releases/inde
 
 Version | Release Type | Support period | Release date | EOS date
 :------:|:------------:|:--------------:|:------------:|:--------:
-|v23.1  | Regular      | 12 months      | 2023-05-15   | 2024-05-15
+v23.2   | Regular      | 12 months      | 2024-02-05   | 2025-02-05
+v23.1   | Regular      | 12 months      | 2023-05-15   | 2024-05-15
 
 ## Patch version upgrades
 

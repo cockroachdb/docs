@@ -11,7 +11,7 @@
               ]
             },
             {
-              "title": "<code>ALTER BACKUP</code> (Enterprise)",
+              "title": "<code>ALTER BACKUP</code>",
               "urls": [
                 "/${VERSION}/alter-backup.html"
               ]
@@ -23,7 +23,7 @@
               ]
             },
             {
-              "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
+              "title": "<code>ALTER CHANGEFEED</code>",
               "urls": [
                 "/${VERSION}/alter-changefeed.html"
               ]
@@ -53,7 +53,7 @@
               ]
             },
             {
-              "title": "<code>ALTER PARTITION</code> (Enterprise)",
+              "title": "<code>ALTER PARTITION</code>",
               "urls": [
                 "/${VERSION}/alter-partition.html"
               ]
@@ -167,13 +167,13 @@
               ]
             },
             {
-              "title": "<code>COPY FROM</code>",
+              "title": "<code>COPY</code>",
               "urls": [
-                "/${VERSION}/copy-from.html"
+                "/${VERSION}/copy.html"
               ]
             },
             {
-              "title": "<code>CREATE CHANGEFEED</code> (Enterprise)",
+              "title": "<code>CREATE CHANGEFEED</code>",
               "urls": [
                 "/${VERSION}/create-changefeed.html"
               ]
@@ -296,6 +296,12 @@
               "title": "<code>DELETE</code>",
               "urls": [
                 "/${VERSION}/delete.html"
+              ]
+            },
+            {
+              "title": "<code>DO</code>",
+              "urls": [
+                "/${VERSION}/do.html"
               ]
             },
             {
@@ -671,7 +677,7 @@
                 ]
               },
             {
-              "title": "<code>SHOW PARTITIONS</code> (Enterprise)",
+              "title": "<code>SHOW PARTITIONS</code>",
               "urls": [
                 "/${VERSION}/show-partitions.html"
               ]

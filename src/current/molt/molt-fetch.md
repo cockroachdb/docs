@@ -7,14 +7,14 @@ docs_area: migrate
 
 MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link {{site.current_cloud_version}}/migration-overview.md %}).
 
-MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy-from.md %}) to move the source data to cloud storage (Google Cloud Storage or Amazon S3), a local file server, or local memory. Once the data is exported, MOLT Fetch can load the data into a target CockroachDB database and replicate changes from the source database. For details, see [Usage](#usage).
+MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to move the source data to cloud storage (Google Cloud Storage or Amazon S3), a local file server, or local memory. Once the data is exported, MOLT Fetch can load the data into a target CockroachDB database and replicate changes from the source database. For details, see [Usage](#usage).
 
 ## Supported databases
 
 The following source databases are currently supported:
 
-- [PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %})
-- [MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
+- PostgreSQL
+- MySQL
 - CockroachDB
 
 ## Installation
@@ -31,21 +31,21 @@ Complete the following items before using MOLT Fetch:
 
 - Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`drop-on-target-and-recreate`](#target-table-handling) option. If you are creating the target schema manually, review the behaviors in [Mismatch handling](#mismatch-handling).
 
-- Ensure that the SQL user running MOLT Fetch has [`SELECT` privileges]({% link {{site.current_cloud_version}}/grant.md %}#supported-privileges) on the source and target CockroachDB databases, along with the required privileges to run [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy-from.md %}#required-privileges) (depending on the command used for [data movement](#data-movement)) on CockroachDB, as described on their respective pages.
+- Ensure that the SQL user running MOLT Fetch has [`SELECT` privileges]({% link {{site.current_cloud_version}}/grant.md %}#supported-privileges) on the source and target CockroachDB databases, along with the required privileges to run [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}#required-privileges) (depending on the command used for [data movement](#data-movement)) on CockroachDB, as described on their respective pages.
 
 - <a id="replication-setup"></a> If you plan to use continuous replication, using either the MOLT Fetch [replication feature](#load-data-and-replicate-changes) or an [external change data capture (CDC) tool](#cdc-cursor):
 
 	- For PostgreSQL sources, enable logical replication. In `postgresql.conf` or in the SQL shell, set [`wal_level`](https://www.postgresql.org/docs/current/runtime-config-wal.html) to `logical`.
 
 	- For MySQL **8.0 and later** sources, enable [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) consistency. Set the following values in `mysql.cnf`, in the SQL shell, or as flags in the `mysql` start command:
+		- `--binlog-row-metadata=full`
 		- `--enforce-gtid-consistency=ON`
 		- `--gtid-mode=ON`
-		- `--binlog-row-metadata=full`
 
 	- For MySQL **5.7** sources, set the following values. Note that `binlog-row-image` is used instead of `binlog-row-metadata`. Set `server-id` to a unique integer that differs from any other MySQL server you have in your cluster (e.g., `3`).
+		- `--binlog-row-image=full`
 		- `--enforce-gtid-consistency=ON`
 		- `--gtid-mode=ON`
-		- `--binlog-row-image=full`
 		- `--server-id={ID}`
 		- `--log-bin=log-bin`
 
@@ -77,7 +77,7 @@ Complete the following items before using MOLT Fetch:
 - To prevent connections from terminating prematurely during data export, set the following to high values on the source database:
 
 	- **Maximum allowed number of connections:** MOLT Fetch can export data across multiple connections. The number of connections it will create is the number of shards ([`--export-concurrency`](#global-flags)) multiplied by the number of tables ([`--table-concurrency`](#global-flags)) being exported concurrently.
-	- **Maximum lifetime of a connection:** This is particularly important for MySQL sources, which can only use a single connection to move data. See the following note.
+	- **Maximum lifetime of a connection:** This is particularly important for MySQL sources, which can only use a single connection to move data.
 
 - If a PostgreSQL database is set as a [source](#source-and-target-databases), ensure that [`idle_in_transaction_session_timeout`](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT) on PostgreSQL is either disabled or set to a value longer than the duration of data export. Otherwise, the connection will be prematurely terminated. To estimate the time needed to export the PostgreSQL tables, you can [perform a dry run](#perform-a-dry-run) and sum the value of [`molt_fetch_table_export_duration_ms`](#metrics) for all exported tables.
 
@@ -201,7 +201,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--target`                                           | (Required) Connection string for the target database. For details, see [Source and target databases](#source-and-target-databases).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `--allow-tls-mode-disable`                           | Allow insecure connections to databases. Secure SSL/TLS connections should be used by default. This should be enabled **only** if secure SSL/TLS connections to the source or target database are not possible.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `--assume-role`                                      | Service account to use for assume role authentication. `--use-implicit-auth` must be included. For example, `--assume-role='user-test@cluster-ephemeral.iam.gserviceaccount.com' --use-implicit-auth`. For details, refer to [Cloud Storage Authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}).                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `--bucket-path`                                      | The path within the [cloud storage](#cloud-storage) bucket where intermediate files are written (e.g., `'s3://bucket/path'` or `'gs://bucket/path'`). Only the URL path is used; query parameters (e.g., credentials) are ignored. To include the `AWS_REGION` query parameter in an `s3` URL, set the `--import-region` flag.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `--bucket-path`                                      | The path within the [cloud storage](#cloud-storage) bucket where intermediate files are written (e.g., `'s3://bucket/path'` or `'gs://bucket/path'`). Only the URL path is used; query parameters (e.g., credentials) are ignored. To pass in query parameters, use the appropriate flags: `--assume-role`, `--import-region`, `--use-implicit-auth`.                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `--changefeeds-path`                                 | Path to a JSON file that contains changefeed override settings for [failback](#fail-back-to-source-database), when enabled with `--mode failback`. If not specified, an insecure default configuration is used, and `--allow-tls-mode-disable` must be included. For details, see [Fail back to source database](#fail-back-to-source-database).                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `--cleanup`                                          | Whether to delete intermediate files after moving data using [cloud or local storage](#data-path). **Note:** Cleanup does not occur on [continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `--compression`                                      | Compression method for data when using [`IMPORT INTO`](#data-movement) (`gzip`/`none`).<br><br>**Default:** `gzip`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
@@ -215,7 +215,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--flush-rows`                                       | Number of rows before the source data is flushed to intermediate files. **Note:** If `--flush-size` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `--flush-size`                                       | Size (in bytes) before the source data is flushed to intermediate files. **Note:** If `--flush-rows` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `--import-batch-size`                                | The number of files to be imported at a time to the target database. This applies only when using [`IMPORT INTO`](#data-movement) for data movement. **Note:** Increasing this value can improve the performance of full-scan queries on the target database shortly after fetch completes, but very high values are not recommended. If any individual file in the import batch fails, you must [retry](#fetch-continuation) the entire batch.<br><br>**Default:** `1000`                                                                                                                                                                                                                                                                                                                                       |
-| `--import-region`                                    | The region of the [cloud storage](#cloud-storage) bucket. This applies only to [Amazon S3 buckets](#cloud-storage) when using [`IMPORT INTO`](#data-movement) for data movement. **Required** when `AWS_REGION` needs to be included in the `--bucket-path` URL. For example, if the `s3` URL has `AWS_REGION=ap-south-1`, include `--import-region=ap-south-1`.                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `--import-region`                                    | The region of the [cloud storage](#cloud-storage) bucket. This applies only to [Amazon S3 buckets](#cloud-storage). Set this flag only if you need to specify an `AWS_REGION` explicitly when using [`IMPORT INTO`](#data-movement) for data movement. For example, `--import-region=ap-south-1`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `--local-path`                                       | The path within the [local file server](#local-file-server) where intermediate files are written (e.g., `data/migration/cockroach`). `--local-path-listen-addr` must be specified.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `--local-path-crdb-access-addr`                      | Address of a [local file server](#local-file-server) that is **publicly accessible**. This flag is only necessary if CockroachDB cannot reach the local address specified with `--local-path-listen-addr` (e.g., when moving data to a CockroachDB {{ site.data.products.cloud }} deployment). `--local-path` and `--local-path-listen-addr` must be specified.<br><br>**Default:** Value of `--local-path-listen-addr`.                                                                                                                                                                                                                                                                                                                                                                                         |
 | `--local-path-listen-addr`                           | Write intermediate files to a [local file server](#local-file-server) at the specified address (e.g., `'localhost:3000'`). `--local-path` must be specified.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
@@ -356,7 +356,10 @@ To customize the replication behavior (an advanced use case), use `--replicator-
 #### Replicate changes
 
 {{site.data.alerts.callout_info}}
-Before using this option, the source PostgreSQL or MySQL database **must** be configured for continuous replication, as described in [Setup](#replication-setup). MySQL 5.7 and later are supported.
+Before using this option: 
+
+- The source PostgreSQL or MySQL database **must** be configured for continuous replication, as described in [Setup](#replication-setup). MySQL 5.7 and later are supported.
+- The `replicator` binary **must** be located either in the same directory as `molt` or in a directory beneath `molt`.
 {{site.data.alerts.end}}
 
 `replication-only` instructs MOLT Fetch to replicate ongoing changes on the source to CockroachDB, using the specified replication marker. This assumes you have already run [`--mode data-load`](#load-data) to load the source data into CockroachDB.
@@ -448,7 +451,7 @@ When running `molt fetch --mode failback`, `--source` is the CockroachDB connect
 ~~~
 --source 'postgresql://{username}:{password}@{host}:{port}/{database}'
 --target 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
---table-filter 'employees, payments'
+--table-filter 'employees|payments'
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -528,7 +531,7 @@ Either `--changefeeds-path`, which overrides the default insecure configuration;
 
 ### Data movement
 
-MOLT Fetch can use either [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy-from.md %}) to load data into CockroachDB.
+MOLT Fetch can use either [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to load data into CockroachDB.
 
 By default, MOLT Fetch uses `IMPORT INTO`:
 
@@ -554,23 +557,24 @@ MOLT Fetch can move the source data to CockroachDB via [cloud storage](#cloud-st
 Only the path specified in `--bucket-path` is used. Query parameters, such as credentials, are ignored. To authenticate cloud storage, follow the steps in [Secure cloud storage](#secure-cloud-storage).
 {{site.data.alerts.end}}
 
-`--bucket-path` instructs MOLT Fetch to write intermediate files to a path within a [Google Cloud Storage](https://cloud.google.com/storage/docs/buckets) or [Amazon S3](https://aws.amazon.com/s3/) bucket to which you have the necessary permissions. For example:
+`--bucket-path` instructs MOLT Fetch to write intermediate files to a path within a [Google Cloud Storage](https://cloud.google.com/storage/docs/buckets) or [Amazon S3](https://aws.amazon.com/s3/) bucket to which you have the necessary permissions. Use additional [flags](#global-flags), shown in the following examples, to specify authentication or region parameters as required for bucket access.
 
-Google Cloud Storage:
-
-{% include_cached copy-clipboard.html %}
-~~~
---bucket-path 'gs://migration/data/cockroach'
-~~~
-
-Amazon S3:
+The following example connects to a Google Cloud Storage bucket with [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}#google-cloud-storage-implicit) and [assume role]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}#set-up-google-cloud-storage-assume-role).
 
 {% include_cached copy-clipboard.html %}
 ~~~
---bucket-path 's3://migration/data/cockroach'
+--bucket-path 'gs://migration/data/cockroach
+--assume-role 'user-test@cluster-ephemeral.iam.gserviceaccount.com'
+--use-implicit-auth
 ~~~
 
-Cloud storage can be used to move data with either [`IMPORT INTO` or `COPY FROM`](#data-movement).
+The following example connects to an Amazon S3 bucket and explicitly specifies the `ap_south-1` region. The `--import-region` flag enables the use of the `AWS_REGION` query parameter in the `s3` URL. When this flag is set, `IMPORT INTO` must be used for [data movement](#data-movement).
+
+{% include_cached copy-clipboard.html %}
+~~~
+--bucket-path 's3://migration/data/cockroach
+--import-region 'ap-south-1'
+~~~
 
 #### Local file server
 
@@ -592,8 +596,6 @@ For example, if you are migrating to CockroachDB {{ site.data.products.cloud }},
 --local-path-listen-addr 'localhost:3000'
 --local-path-crdb-access-addr '44.55.66.77:3000'
 ~~~
-
-A local file server can be used to move data with either [`IMPORT INTO` or `COPY FROM`](#data-movement).
 
 {{site.data.alerts.callout_success}}
 [Cloud storage](#cloud-storage) is often preferable to a local file server, which can require considerable disk space.
@@ -948,7 +950,7 @@ You can also use the [sample Grafana dashboard](https://molt.cockroachdb.com/mol
 
 ## Docker usage
 
-{% include {{ page.version.version }}/molt/molt-docker.md %}
+{% include molt/molt-docker.md %}
 
 ## Examples
 
@@ -1110,7 +1112,7 @@ The following `molt fetch` command uses [`failback` mode](#fail-back-to-source-d
 molt fetch \
 --source 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full' \
 --target 'mysql://root:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt' \
---table-filter 'employees, payments' \
+--table-filter 'employees|payments' \
 --non-interactive \
 --logging debug \
 --replicator-flags "--tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key" \
