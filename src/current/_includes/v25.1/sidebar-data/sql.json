@@ -59,12 +59,6 @@
                 ]
             },
             {
-                "title": "<code>ALTER JOB</code>",
-                "urls": [
-                  "/${VERSION}/alter-job.html"
-                ]
-            },
-            {
               "title": "<code>ALTER PARTITION</code>",
               "urls": [
                 "/${VERSION}/alter-partition.html"
