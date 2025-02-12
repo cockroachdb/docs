@@ -44,7 +44,7 @@ Before changing a cluster setting, note the following:
 
 ## Sensitive settings
 
-You can prevent users without sufficient permissions from viewing the values of cluster settings that CockroachDB classifies as sensitive.
+{% include_cached new-in.html version="v23.2.1" %} You can prevent users without sufficient permissions from viewing the values of cluster settings that CockroachDB classifies as sensitive.
 
 By default, users with the `VIEWCLUSTERSETTING` privilege can view the values of all settings displayed when using the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) statement.
 
