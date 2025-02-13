@@ -30,7 +30,7 @@ There are two major release types: [Regular and Innovation releases]({% link rel
   - Cockroach Labs may direct customers to [upgrade](https://www.cockroachlabs.com/docs/stable/upgrade-cockroach-version) to a later version of CockroachDB to resolve or further troubleshoot an issue.
 - **Unsupported**: The day that a major version’s final support period ends is its unsupported date. After a version reaches end of life, Cockroach Labs provides no further support for the release.
   - A Regular release reaches unsupported at the Assistance Support phase's end date.
-  - An Innovation releases reaches unsupported at the Maintenance Support phase's end date.
+  - An Innovation release reaches unsupported at the Maintenance Support phase's end date.
 
 ## Support Types
 
