@@ -180,3 +180,4 @@ For more information, see [Zone Config Extensions]({% link {{ page.version.versi
 - [`SET SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-secondary-region)
 - [`ALTER DATABASE ... DROP SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#drop-secondary-region)
 - [Zone Config Extensions]({% link {{ page.version.version }}/zone-config-extensions.md %})
+- [Troubleshoot Replication Zones]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %})

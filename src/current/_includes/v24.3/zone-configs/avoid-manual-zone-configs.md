@@ -1,0 +1,3 @@
+Cockroach Labs {% if page.name != "configure-replication-zones.md" %} [does not recommend modifying zone configurations manually]({% link {{ page.version.version }}/configure-replication-zones.md %}#why-manual-zone-config-management-is-not-recommended). {% else %} [does not recommend modifying zone configurations manually](#why-manual-zone-config-management-is-not-recommended). {% endif %}
+
+Most users should use [Multi-region SQL statements]({% link {{ page.version.version }}/multiregion-overview.md %}) instead; if additional control is needed, [Zone config extensions]({% link {{ page.version.version }}/zone-config-extensions.md %}) can be used to augment the multi-region SQL statements.
