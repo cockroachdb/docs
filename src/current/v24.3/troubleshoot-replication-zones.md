@@ -138,69 +138,57 @@ Once you have a range ID, you need to map from that ID to the name of a schema o
 
 The following example query uses the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to show, for each range ID, which tables and indexes use that range for their underlying storage. The query assumes the [`movr` schema]({% link {{ page.version.version }}/movr.md %}#the-movr-database) that is loaded by [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}), so you'll need to modify it to work with your schema.
 
-XXX: GET HELP WITH THIS QUERY, OUTPUT SEEMS NOT QUITE RIGHT??? (or is it ok?)
-
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-WITH movr_tables AS (SHOW RANGES FROM DATABASE movr WITH TABLES),
-       movr_indexes AS (SHOW RANGES FROM DATABASE movr WITH INDEXES)
-  SELECT movr_indexes.range_id,
+    WITH movr_tables AS (SHOW RANGES FROM DATABASE movr WITH TABLES),
+         movr_indexes AS (SHOW RANGES FROM DATABASE movr WITH INDEXES)
+  SELECT array_agg(movr_indexes.range_id) AS ranges,
          movr_tables.table_name,
          movr_indexes.index_name
     FROM movr_tables, movr_indexes
    WHERE movr_tables.range_id = movr_indexes.range_id
-ORDER BY movr_tables.range_id
+GROUP BY movr_tables.table_name, movr_indexes.index_name
+ORDER BY table_name, index_name
 ~~~
 
-In the following output, each range ID in the leftmost column maps to a table name and index name in the subsequent columns. For example, given this output, if the critical nodes endpoint said the constraint violation was for range ID 103, we would know to look at the zone configuration(s) for the `rides` table and the `rides_pkey` primary index.
-
-XXX: EDIT THIS QUERY OUTPUT ONCE YOU GET A (HOPEFULLY) BETTER QUERY
+In the following output, each range ID in the leftmost column maps to a table name and index name in the subsequent columns. For example, given this output, if the critical nodes endpoint said the constraint violation was for range ID 101, we would know to look at the zone configuration(s) for the `users` table and the `users_pkey` primary index.
 
 ~~~
-  range_id |         table_name         |                  index_name
------------+----------------------------+------------------------------------------------
-        71 | promo_codes                | promo_codes_pkey
-        71 | user_promo_codes           | promo_codes_pkey
-        78 | vehicle_location_histories | vehicle_location_histories_pkey
-        78 | promo_codes                | vehicle_location_histories_pkey
-        79 | user_promo_codes           | user_promo_codes_pkey
-        85 | vehicle_location_histories | rides_auto_index_fk_vehicle_city_ref_vehicles
-        85 | rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles
-        87 | users                      | users_pkey
-        88 | users                      | users_pkey
-        89 | users                      | users_pkey
-        90 | users                      | users_pkey
-        91 | users                      | users_pkey
-        92 | vehicles                   | vehicles_pkey
-        92 | users                      | users_pkey
-        92 | users                      | vehicles_pkey
-        92 | vehicles                   | users_pkey
-        93 | users                      | users_pkey
-        94 | users                      | users_pkey
-        95 | vehicles                   | vehicles_pkey
-        96 | vehicles                   | vehicles_pkey
-        97 | vehicles                   | vehicles_pkey
-        98 | rides                      | vehicles_pkey
-        98 | rides                      | vehicles_auto_index_fk_city_ref_users
-        98 | vehicles                   | rides_pkey
-        98 | rides                      | rides_pkey
-        98 | vehicles                   | vehicles_pkey
-        98 | vehicles                   | vehicles_auto_index_fk_city_ref_users
-        99 | vehicles                   | vehicles_pkey
-       100 | vehicles                   | vehicles_pkey
-       101 | vehicles                   | vehicles_pkey
-       102 | vehicles                   | vehicles_pkey
-       103 | rides                      | rides_pkey
-       104 | rides                      | rides_pkey
-       105 | rides                      | rides_pkey
-       106 | rides                      | rides_pkey
-       106 | rides                      | rides_auto_index_fk_city_ref_users
-       107 | rides                      | rides_pkey
-       108 | rides                      | rides_pkey
-       109 | rides                      | rides_pkey
-       110 | rides                      | rides_pkey
-       111 | users                      | users_pkey
-(41 rows)
+                ranges               |         table_name         |                  index_name
+-------------------------------------+----------------------------+------------------------------------------------
+  {150}                              | promo_codes                | promo_codes_pkey
+  {150}                              | promo_codes                | rides_auto_index_fk_city_ref_users
+  {150}                              | promo_codes                | rides_auto_index_fk_vehicle_city_ref_vehicles
+  {150}                              | promo_codes                | rides_pkey
+  {150}                              | promo_codes                | user_promo_codes_pkey
+  {150}                              | promo_codes                | vehicle_location_histories_pkey
+  {150}                              | rides                      | promo_codes_pkey
+  {150}                              | rides                      | rides_auto_index_fk_city_ref_users
+  {150}                              | rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles
+  {83,153,152,96,154,95,141,140,150} | rides                      | rides_pkey
+  {150}                              | rides                      | user_promo_codes_pkey
+  {150}                              | rides                      | vehicle_location_histories_pkey
+  {83}                               | rides                      | vehicles_auto_index_fk_city_ref_users
+  {83}                               | rides                      | vehicles_pkey
+  {150}                              | user_promo_codes           | promo_codes_pkey
+  {150}                              | user_promo_codes           | rides_auto_index_fk_city_ref_users
+  {150}                              | user_promo_codes           | rides_auto_index_fk_vehicle_city_ref_vehicles
+  {150}                              | user_promo_codes           | rides_pkey
+  {150}                              | user_promo_codes           | user_promo_codes_pkey
+  {150}                              | user_promo_codes           | vehicle_location_histories_pkey
+  {101,73,72,71,100,70,81,80,90}     | users                      | users_pkey
+  {90}                               | users                      | vehicles_pkey
+  {150}                              | vehicle_location_histories | promo_codes_pkey
+  {150}                              | vehicle_location_histories | rides_auto_index_fk_city_ref_users
+  {150}                              | vehicle_location_histories | rides_auto_index_fk_vehicle_city_ref_vehicles
+  {150}                              | vehicle_location_histories | rides_pkey
+  {150}                              | vehicle_location_histories | user_promo_codes_pkey
+  {150}                              | vehicle_location_histories | vehicle_location_histories_pkey
+  {83}                               | vehicles                   | rides_pkey
+  {90}                               | vehicles                   | users_pkey
+  {83}                               | vehicles                   | vehicles_auto_index_fk_city_ref_users
+  {90,94,93,92,85,91,84,82,83}       | vehicles                   | vehicles_pkey
+(32 rows)
 ~~~
 
 ### Replication system priorities: data placement vs data durability

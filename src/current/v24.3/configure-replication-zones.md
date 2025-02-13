@@ -43,7 +43,7 @@ When a cluster starts, there are two categories of replication zone:
 1. Pre-configured replication zones that apply to internal system data.
 1. A single default replication zone that applies to the rest of the cluster.
 
-You can adjust these pre-configured zones as well as add zones for individual databases, tables, rows, and secondary indexes as needed.
+You can adjust these pre-configured zones as well as add zones for individual databases, tables, rows, and indexes as needed.
 
 For example, you might rely on the [default zone](#view-the-default-replication-zone) to spread most of a cluster's data across all of your availability zones, but [create a custom replication zone for a specific database](#create-a-replication-zone-for-a-database) to make sure its data is only stored in certain availability zones and/or geographies.
 
@@ -56,8 +56,8 @@ Level | Description
 Cluster | CockroachDB comes with a pre-configured `default` replication zone that applies to all table data in the cluster not constrained by a database, table, or row-specific replication zone. This zone can be adjusted but not removed. See [View the Default Replication Zone](#view-the-default-replication-zone) and [Edit the Default Replication Zone](#edit-the-default-replication-zone) for more details.
 Database | You can add replication zones for specific databases. See [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database) for more details.
 Table | You can add replication zones for specific tables. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table).
-Index | The [secondary indexes]({% link {{ page.version.version }}/indexes.md %}) on a table will automatically use the replication zone for the table. However, with an Enterprise license, you can add distinct replication zones for secondary indexes. See [Create a Replication Zone for a Secondary Index](#create-a-replication-zone-for-a-secondary-index) for more details.
-Row | You can add replication zones for specific rows in a table or secondary index by [defining table partitions]({% link {{ page.version.version }}/partitioning.md %}). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-partition) for more details.
+Index | The [indexes]({% link {{ page.version.version }}/indexes.md %}) on a table will automatically use the replication zone for the table. However, with an Enterprise license, you can add distinct replication zones for indexes. See [Create a Replication Zone for a Secondary Index](#create-a-replication-zone-for-a-secondary-index) for more details.
+Row | You can add replication zones for specific rows in a table or index by [defining table partitions]({% link {{ page.version.version }}/partitioning.md %}). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-partition) for more details.
 
 ### For system data
 
@@ -73,8 +73,8 @@ System Range | CockroachDB comes with pre-configured replication zones for impor
 When replicating data, whether table or system, CockroachDB always uses the most granular replication zone available. For example, for a piece of user data:
 
 1. If there's a replication zone [for the row](#create-a-replication-zone-for-a-partition) (a.k.a. [partition]({% link {{ page.version.version }}/partitioning.md %})), CockroachDB uses it.
-1. If there's no applicable row replication zone and the row is from a secondary index, CockroachDB uses the [secondary index replication zone](#create-a-replication-zone-for-a-secondary-index).
-1. If the row isn't from a secondary index or there is no applicable secondary index replication zone, CockroachDB uses the [table replication zone](#create-a-replication-zone-for-a-table).
+1. If there's no applicable row replication zone and the row is from an index, CockroachDB uses the [index replication zone](#create-a-replication-zone-for-a-secondary-index).
+1. If the row isn't from a index or there is no applicable index replication zone, CockroachDB uses the [table replication zone](#create-a-replication-zone-for-a-table).
 1. If there's no applicable table replication zone, CockroachDB uses the [database replication zone](#create-a-replication-zone-for-a-database).
 1. If there's no applicable database replication zone, CockroachDB uses [the `default` cluster-wide replication zone](#view-the-default-replication-zone).
 
@@ -102,17 +102,17 @@ The only exception to this simple inheritance relationship is that due to a know
 
 ```
 - default
-  - database
-    - table
-      - index
+  - database A
+    - table A.B
+      - index A.B.1
         - partition (row) 1
           - sub-partition 1.1 (NB. Sub-partitions inherit from tables, *not* partitions - see cockroachdb/cockroach#75862)
             - sub-partition 1.1.1
           - sub-partition 1.2
-    - table
-      - index
-      - index
-      - ... 
+    - table A.C
+      - index A.C.1
+      - index A.C.2
+  - ...
 ```
 
 The way the zone config inheritance hierarchy works can be thought of from a "bottom-up" or "top-down" perspective; both are useful, but which one is easier to understand may depend on what you are trying to do.
