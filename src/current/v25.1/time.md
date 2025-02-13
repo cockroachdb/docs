@@ -197,7 +197,7 @@ For example, to lower the precision of the `time_val` column, which is of type `
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER TABLE time ALTER COLUMN time_val SET DATA TYPE TIME(3);
+ALTER TABLE time_precise ALTER COLUMN time_val SET DATA TYPE TIME(3);
 ~~~
 
 ## Supported casting & conversion
