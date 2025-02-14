@@ -14,7 +14,7 @@ Changes to [cluster settings]({% link v25.1/cluster-settings.md %}) should be re
 
 - Since v23.2, table statistics histograms have been collected for non-indexed JSON columns. Histograms are no longer collected for these columns. This reduces memory usage during table statistics collection, for both automatic and manual collection via `ANALYZE` and `CREATE STATISTICS`. The previous behavior can be re-enabled by setting the cluster setting `sql.stats.non_indexed_json_histograms.enabled` to `true`. [#139898][#139898]
 
-- Added the cluster setting `ui.database_locality_metadata.enabled` that allows operators to disable loading extended database and table region information in the DB Console Database and Table pages. This information can cause significant CPU load on large clusters with many ranges. Versions of this page in v24.3 and later do not have this problem. If customers require this data, they can use the `SHOW RANGES FROM {DATABASE| TABLE}` query via SQL to compute on-demand. [#133075][#133075]
+- `ui.database_locality_metadata.enabled` allows operators to disable the loading of extended region information in the DB Console Database and Table pages. In versions prior to v24.3, this information can cause significant CPU load on large clusters with many ranges. When disabled, if customers require this data, they can use the query `SHOW RANGES FROM {DATABASE| TABLE}` to compute it on demand. [#133075][#133075]
 
 <h5 id="v25-1-0-settings-with-changed-defaults">Settings with changed defaults</h5>
 
