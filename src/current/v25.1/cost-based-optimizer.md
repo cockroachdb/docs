@@ -312,8 +312,6 @@ Two types of plans can be cached:
 
     Generic plans are **not** included in the plan cache, but are cached per session. This means that they must still be re-optimized each time a session prepares a statement using a generic plan. To reuse generic query plans for maximum performance, a prepared statement should be executed multiple times instead of prepared and executed once.
 
-    This feature is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}) and is subject to change.
-
     {{site.data.alerts.callout_success}}
     Generic query plans will only benefit workloads that use prepared statements, which are issued via explicit `PREPARE` statements or by client libraries using the [PostgreSQL extended wire protocol](https://www.postgresql.org/docs/current/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY). Generic query plans are most beneficial for queries with high planning times, such as queries with many [joins]({% link {{ page.version.version }}/joins.md %}). For more information on reducing planning time for such queries, refer to [Reduce planning time for queries with many joins](#reduce-planning-time-for-queries-with-many-joins).
     {{site.data.alerts.end}}
