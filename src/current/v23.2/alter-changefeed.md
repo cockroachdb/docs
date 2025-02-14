@@ -18,6 +18,16 @@ The statement will return a job ID and the new job description.
 
 It is necessary to [**pause**]({% link {{ page.version.version }}/pause-job.md %}) a changefeed before running the `ALTER CHANGEFEED` statement against it. For an example of a changefeed modification using `ALTER CHANGEFEED`, see [Modify a changefeed](#modify-a-changefeed).
 
+## Required privileges
+
+To alter a changefeed, the user must have one of the following:
+
+- `CHANGEFEED` privilege on the table.
+- `admin` role.
+- `CONTROLCHANGEFEED` role option + `SELECT` on the table. (**Deprecated**) The `CONTROLCHANGEFEED` role option will be removed in a future release. We recommend using the system-level privilege [`CHANGEFEED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges).
+
+For more details on the required privileges for changefeeds generally, refer to the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) page.
+
 ## Synopsis
 
 <div>
@@ -56,10 +66,6 @@ Consider the following when specifying options with `ALTER CHANGEFEED`:
     ~~~
 
     Setting `initial_scan = 'yes'` will trigger an initial scan on the newly added table. You may also explicitly define `initial_scan = 'no'`, though this is already the default behavior. The changefeed does not track the application of this option post scan. This means that you will not see the option listed in output or after a `SHOW CHANGEFEED JOB` statement.
-
-## Required privileges
-
-To alter a changefeed, the user must be a member of the `admin` role or have the [`CREATECHANGEFEED`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-control-changefeeds) parameter set.
 
 ## Examples
 

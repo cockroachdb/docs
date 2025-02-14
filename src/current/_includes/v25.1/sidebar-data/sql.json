@@ -53,6 +53,12 @@
               ]
             },
             {
+                "title": "<code>ALTER JOB</code>",
+                "urls": [
+                  "/${VERSION}/alter-job.html"
+                ]
+            },
+            {
               "title": "<code>ALTER PARTITION</code>",
               "urls": [
                 "/${VERSION}/alter-partition.html"
@@ -296,6 +302,12 @@
               "title": "<code>DELETE</code>",
               "urls": [
                 "/${VERSION}/delete.html"
+              ]
+            },
+            {
+              "title": "<code>DO</code>",
+              "urls": [
+                "/${VERSION}/do.html"
               ]
             },
             {
