@@ -107,7 +107,7 @@ Include the following:
 To include multiple tables in an LDR stream, add the fully qualified table names in a list format. Ensure that the table name in the source table list and destination table list are in the same order:
 
 ~~~ sql
-CREATE LOGICALLY REPLICATED TABLES ({database.public.destination_table_name_1}, {database.public.destination_table_name_2}) FROM TABLE ({database.public.source_table_name_1}, {database.public.source_table_name_2}) ON 'external://source' WITH bidirectional ON 'external://destination';
+CREATE LOGICALLY REPLICATED TABLES ({database.public.destination_table_name_1}, {database.public.destination_table_name_2}) FROM TABLES ({database.public.source_table_name_1}, {database.public.source_table_name_2}) ON 'external://source' WITH bidirectional ON 'external://destination';
 ~~~
 
 ## See more
