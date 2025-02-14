@@ -168,7 +168,7 @@ At this point, you've set up one LDR job from cluster A as the source to cluster
 In this step, you'll access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and monitor the status and metrics for the created LDR jobs. Depending on which cluster you would like to view, follow the instructions for either the source or destination.
 
 {{site.data.alerts.callout_success}}
-You can use the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), the SQL shell, [Metrics Export]({% link {{ page.version.version }}/datadog.md %}#enable-metrics-collection) with Prometheus and Datadog, and [labels with some LDR metrics]({% link {{ page.version.version }}/child-metrics.md %}) to monitor the job.
+You can use the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), the SQL shell, [Metrics Export]({% link {{ page.version.version }}/datadog.md %}#enable-metrics-collection) with Prometheus and Datadog, and [labels with some LDR metrics]({% link {{ page.version.version }}/multi-dimensional-metrics.md %}) to monitor the job.
 
 For a full reference on monitoring LDR, refer to [Logical Data Replication Monitoring]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}).
 {{site.data.alerts.end}}
