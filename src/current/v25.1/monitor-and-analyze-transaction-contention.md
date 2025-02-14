@@ -48,7 +48,7 @@ SQL Activity has per statement and per transaction contention information.
 
 #### Statements page
 
-The Statements page ([CockroachDB Cloud Console]({% link cockroachcloud/statements-page.md %}) or [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %})) shows statements that were involved in contention events. To view these statements, change the search criteria to view the top 100 [statement fingerprints]({% link {{ page.version.version }}/ui-statements-page.md %}sql-statement-fingerprints) by Contention Time, then sort descending by Contention Time column.
+The Statements page ([CockroachDB Cloud Console]({% link cockroachcloud/statements-page.md %}) or [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %})) shows statements that were involved in contention events. To view these statements, change the search criteria to view the top 100 [statement fingerprints]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints) by Contention Time, then sort descending by Contention Time column.
 
 The Contention Time column shows the average and standard deviation for the time spent in contention. As noted earlier, only lock contention events are included in the contention time.
 
@@ -68,7 +68,7 @@ The following image shows the Transactions page with the top 3 transactions fing
 
 ### Insights page
 
-The Insights page ([CockroachDB Cloud Console]({% link cockroachcloud/insights-page.md %}) or [DB Console]({% link {{ page.version.version }}/ui-insights-page.md %})) displays a variety of [workload insights]({% link {{ page.version.version }}/ui-insights-page.md %}workload-insights-tab) on statement and transaction executions related to transaction contention:
+The Insights page ([CockroachDB Cloud Console]({% link cockroachcloud/insights-page.md %}) or [DB Console]({% link {{ page.version.version }}/ui-insights-page.md %})) displays a variety of [workload insights]({% link {{ page.version.version }}/ui-insights-page.md %}#workload-insights-tab) on statement and transaction executions related to transaction contention:
 
 - [Slow Execution]({% link {{ page.version.version }}/ui-insights-page.md %}#slow-execution)
 
