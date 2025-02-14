@@ -42,24 +42,42 @@ Admission control can help if your cluster has degraded performance due to the f
 
 Almost all database operations that use CPU or perform storage IO are controlled by the admission control system. From a user's perspective, specific operations that are affected by admission control include:
 
-- [General SQL queries]({% link {{ page.version.version }}/selection-queries.md %}) have their CPU usage subject to admission control, as well as storage IO for writes to [leaseholder replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases).
+- [General SQL queries]({% link {{ page.version.version }}/selection-queries.md %}) have their CPU usage subject to admission control, as well as storage IO for writes to [leaseholder replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [follower replicas](#replication-admission-control).
 - [Bulk data imports]({% link {{ page.version.version }}/import-into.md %}).
 - [`COPY`]({% link {{ page.version.version }}/copy.md %}) statements.
 - [Deletes]({% link {{ page.version.version }}/delete-data.md %}) (including deletes initiated by [row-level TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}); the [selection queries]({% link {{ page.version.version }}/selection-queries.md %}) performed by TTL jobs are also subject to CPU admission control).
 - [Backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}).
 - [Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), including index and column backfills (on both the [leaseholder replica]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
-- [Follower replication work]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
+- [Follower replication work](#replication-admission-control).
 - [Raft log entries being written to disk]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
 - [Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}).
 - [Intent resolution]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#write-intents).
 
-The following operations are not subject to admission control:
-
-- SQL writes are not subject to admission control on [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) by default, unless those writes occur in transactions that are subject to a Quality of Service (QoS) level as described in [Set quality of service level for a session](#set-quality-of-service-level-for-a-session). In order for writes on follower replicas to be subject to admission control, the setting `default_transaction_quality_of_service=background` must be used.
-
 {{site.data.alerts.callout_info}}
 Admission control is beneficial when overall cluster health is good but some nodes are experiencing overload. If you see these overload scenarios on many nodes in the cluster, that typically means the cluster needs more resources.
 {{site.data.alerts.end}}
+
+### Replication admission control
+
+The admission control subsystem paces all work done at the [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) to avoid cluster overload. This includes user-facing writes from SQL statements, as well as background (elastic) replication work.
+
+{% include_cached new-in.html version="v25.1" %} The pacing of catchup writes is controlled at the replication layer to avoid overloading slow or [newly restarted nodes]({% link {{ page.version.version }}/eventlog.md %}#node_restart) with replication flows. Note that this pacing does not slow down user-facing SQL writes; it only ensures there are fewer impacts from background operations.
+
+At a high level, replication admission control works by:
+
+- Pacing regular SQL writes at the rate of replica quorum. (**New in v25.1**)
+- Pacing background (elastic) replication at the rate of the slowest replica.
+
+This has the following effects:
+
+1. Does not overload slow/restarted nodes with replication flows. (**New in v25.1**)
+2. Isolates performance between regular and elastic traffic.
+3. Paces regular writes at quorum speed. (**New in v25.1**)
+4. Paces elastic writes at the slowest replica's speed.
+
+For example, prior to CockroachDB v25.1, when a leader and follower replica were disconnected from each other due to a node going away and coming back, once the follower came back the leader would slam the follower with any Raft entries it had missed. In v25.1 and later, the leader paces the entries it sends to the follower. The result is that baseline cluster QPS (queries per second) and latency should not change substantially during perturbations such as [node restarts]({% link {{ page.version.version }}/eventlog.md %}#node_restart).
+
+To monitor the behavior of replication admission control, refer to [UI Overload Dashboard &gt; Replication Admission Control]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#admission-queueing-delay-p99-replication-admission-control).
 
 ## Enable and disable admission control
 
