@@ -15,7 +15,7 @@ In this tutorial, you will set up [**logical data replication (LDR)**]({% link {
 - _Unidirectional_ LDR from a source table to a destination table (cluster A to cluster B) in one LDR job.
 - _Bidirectional_ LDR for the same table from cluster A to cluster B and from cluster B to cluster A. In a bidirectional setup, each cluster operates as both a source and a destination in separate LDR jobs.
 
-{% include_cached new-in.html version="v25.1" %} Create the new table on the destination cluster automatically and conduct a fast, offline initial scan with the [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}) syntax. `CREATE LOGICALLY REPLICATED` accepts `unidirectional` or `bidirectional` as an option in order to create either one of the setups automatically. [Step 3](#step-3-start-ldr) outlines when to use the `CREATE LOGICALLY REPLICATED` or the `CREATE LOGICAL REPLICATION STREAM` syntax to start LDR.
+{% include_cached new-in.html version="v25.1" %} Create the new table on the destination cluster automatically and conduct a fast, offline initial scan with the [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}) syntax. `CREATE LOGICALLY REPLICATED` accepts `unidirectional` or `bidirectional on` as an option in order to create either one of the setups automatically. [Step 3](#step-3-start-ldr) outlines when to use the `CREATE LOGICALLY REPLICATED` or the `CREATE LOGICAL REPLICATION STREAM` syntax to start LDR.
 
 In the following diagram, **LDR stream 1** creates a unidirectional LDR setup, introducing **LDR stream 2** extends the setup to bidirectional.
 
@@ -104,7 +104,7 @@ In this step, you'll set up [external connection(s)]({% link {{ page.version.ver
 
 You can use the `cockroach encode-uri` command to generate a connection string containing a cluster's certificate.
 
-1. On the **source** cluster in a new terminal window, generate a connection string, by passing the user, node IP, and port, along with the directory to the source cluster's CA certificate:
+1. On the **source** cluster in a new terminal window, generate a connection string, by passing the replication user, node IP, and port, along with the directory to the source cluster's CA certificate:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -161,7 +161,7 @@ In this step, you'll start the LDR stream(s) from the destination cluster. You c
 
 There are two different SQL statements for starting an LDR stream, depending on your requirements:
 
-- {% include_cached new-in.html version="v25.1" %} [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}): Creates the new table on the destination cluster automatically, and conducts a fast, offline initial scan. `CREATE LOGICALLY REPLICATED` accepts `unidirectional` or `bidirectional` as an option in order to create either one of the setups automatically. **The table cannot contain a [user-defined types]({% link {{ page.version.version }}/enum.md %}) or [foregin key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies.** Follow [these steps](#create-logically-replicated) for setup instructions.
+- {% include_cached new-in.html version="v25.1" %} [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}): Creates the new table on the destination cluster automatically, and conducts a fast, offline initial scan. `CREATE LOGICALLY REPLICATED` accepts `unidirectional` or `bidirectional on` as an option in order to create either one of the setups automatically. **The table cannot contain a [user-defined types]({% link {{ page.version.version }}/enum.md %}) or [foregin key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies.** Follow [these steps](#create-logically-replicated) for setup instructions.
 - [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %}): Starts the LDR stream after you've created the matching table on the destination cluster. **If the table contains user-defined types or foreign key dependencies, you must use this syntax.** Allows for manual creation of unidirectional or bidirectional LDR. Follow [these steps](#create-logical-replication-stream) for setup instructions.
 
 Also, for either syntax, note:
@@ -227,7 +227,7 @@ Once LDR has started, an LDR job will run on the destination cluster. You can [p
 SHOW LOGICAL REPLICATION JOBS;
 ~~~
 ~~~
-        job_id        | status  |          targets          | replicated_time
+        job_id        | status  |          tables           | replicated_time
 ----------------------+---------+---------------------------+------------------
 1012877040439033857   | running | {database.public.table}   | NULL
 (1 row)

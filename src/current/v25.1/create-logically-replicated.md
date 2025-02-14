@@ -10,7 +10,7 @@ toc: true
 Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v25.1" %} The `CREATE LOGICALLY REPLICATED` statement starts [**logical data replication (LDR)**]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) on a table(s) that runs between a source and destination cluster in an active-active setup. `CREATE LOGICALLY REPLICATED` creates the new table on the destination cluster automatically and conducts a fast, offline initial scan. It accepts `unidirectional` or `bidirectional` as an option to create either one of the setups automatically. 
+{% include_cached new-in.html version="v25.1" %} The `CREATE LOGICALLY REPLICATED` statement starts [**logical data replication (LDR)**]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) on a table(s) that runs between a source and destination cluster in an active-active setup. `CREATE LOGICALLY REPLICATED` creates the new table on the destination cluster automatically and conducts a fast, offline initial scan. It accepts `unidirectional` or `bidirectional on` as an option to create either one of the setups automatically. 
 
 Once the offline initial scan completes, the new table will come online and is ready to serve queries. In a bidirectional setup, the second LDR stream will also initialize after the offline initial scan completes.
 
@@ -47,13 +47,13 @@ Parameter | Description
 `db_object_name` | The fully qualified name of the table on the source or destination cluster. Refer to [Examples](#examples).
 `logical_replication_resources_list` | A list of the fully qualified table names on the source or destination cluster to include in the LDR stream. Refer to the [LDR with multiple tables](#multiple-tables) example.
 `source_connection_string` | The connection string to the source cluster. Use an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) to store the source cluster's connection URI. To start LDR, you run `CREATE LOGICALLY REPLICATED` from the destination cluster.
-`logical_replication_create_table_options` | Options to modify the behavior of the LDR stream. For a list, refer to [Options](#options). **Note:** `bidirectional` or `unidirectional`is a required option.
+`logical_replication_create_table_options` | Options to modify the behavior of the LDR stream. For a list, refer to [Options](#options). **Note:** `bidirectional on` or `unidirectional`is a required option.
 
 ## Options
 
 Option | Description
 -------+------------
-`bidirectional` / `unidirectional` | (**Required**) Specifies whether the LDR stream will be unidirectional or bidirectional. With `bidirectional` specified, LDR will set up two LDR streams between the clusters.
+`bidirectional on` / `unidirectional` | (**Required**) Specifies whether the LDR stream will be unidirectional or bidirectional. With `bidirectional on` specified, LDR will set up two LDR streams between the clusters.
 `label` | Tracks LDR metrics at the job level. Add a user-specified string with `label`. For more details, refer to [Metrics labels]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}#metrics-labels).
 `mode` | Determines how LDR replicates the data to the destination cluster. Possible values: `immediate`, `validated`. For more details, refer to [LDR modes](#ldr-modes).
 
@@ -91,7 +91,7 @@ Both clusters will act as a source and destination in bidirectional LDR setups. 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE LOGICALLY REPLICATED TABLE {database.public.destination_table_name} FROM TABLE {database.public.source_table_name} ON 'external://source' WITH bidirectional ON 'external://destination', label=track_job;
+CREATE LOGICALLY REPLICATED TABLE {database.public.destination_table_name} FROM TABLE {database.public.source_table_name} ON 'external://source' WITH bidirectional ON 'external://destination';
 ~~~
 
 Include the following: 
@@ -99,7 +99,7 @@ Include the following:
 - Fully qualified destination table name.
 - Fully qualified source table name.
 - [External connection]({% link {{ page.version.version }}/create-external-connection.md %}) for the source cluster. For instructions on creating the external connection for LDR, refer to [Set Up Logical Data Replication]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#step-2-connect-from-the-destination-to-the-source).
-- `bidirectional` option defining the external connection for the destination cluster. 
+- `bidirectional on` option defining the external connection for the destination cluster. 
 - Any other [options](#options).
 
 ### Multiple tables
@@ -107,7 +107,7 @@ Include the following:
 To include multiple tables in an LDR stream, add the fully qualified table names in a list format. Ensure that the table name in the source table list and destination table list are in the same order:
 
 ~~~ sql
-CREATE LOGICALLY REPLICATED TABLE ({database.public.destination_table_name_1}, {database.public.destination_table_name_2}) FROM TABLE ({database.public.source_table_name_1}, {database.public.source_table_name_2}) ON 'external://source' WITH bidirectional ON 'external://destination', label=track_job;
+CREATE LOGICALLY REPLICATED TABLES ({database.public.destination_table_name_1}, {database.public.destination_table_name_2}) FROM TABLE ({database.public.source_table_name_1}, {database.public.source_table_name_2}) ON 'external://source' WITH bidirectional ON 'external://destination';
 ~~~
 
 ## See more
