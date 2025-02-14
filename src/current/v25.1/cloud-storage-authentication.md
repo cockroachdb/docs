@@ -738,6 +738,7 @@ When the `AUTH` parameter is set to `implicit`, CockroachDB will load credential
     - `AZURE_CLIENT_SECRET`: Client credentials secret generated for your App Registration.
     - `AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
 - An Azure [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview).
+- {% include_cached new-in.html version="v25.1" %} An Azure [workload identity](https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview).
 
 You can use this for authenticating an Azure Blob Storage URI or an Azure Key Vault URI for an [Azure encrypted backup]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#azure-key-vault-uri-format).
 

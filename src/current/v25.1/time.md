@@ -76,7 +76,7 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`]({% link {{ page.version.versio
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE time (time_id INT PRIMARY KEY, time_val TIME);
+> CREATE TABLE IF NOT EXISTS time (time_id INT PRIMARY KEY, time_val TIME);
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -94,7 +94,7 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`]({% link {{ page.version.versio
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO time VALUES (1, TIME '05:40:00'), (2, TIME '05:41:39');
+> UPSERT INTO time VALUES (1, TIME '05:40:00'), (2, TIME '05:41:39');
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -133,37 +133,37 @@ Comparing `TIME` values:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE time (time_id INT PRIMARY KEY, time_val TIME(4));
+> CREATE TABLE IF NOT EXISTS time_precise (time_id INT PRIMARY KEY, time_val TIME(4));
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW COLUMNS FROM time;
+> SHOW COLUMNS FROM time_precise;
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+----------------+-----------------------+-----------+------------
-  time_id     | INT8      |    false    | NULL           |                       | {primary} |   false
-  time_val    | TIME(4)   |    true     | NULL           |                       | {primary} |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |       indices       | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+---------------------+------------
+  time_id     | INT8      |      f      | NULL           |                       | {time_precise_pkey} |     f
+  time_val    | TIME(4)   |      t      | NULL           |                       | {time_precise_pkey} |     f
 (2 rows)
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO time VALUES (1, TIME '05:40:00.123456'), (2, TIME '05:41:39.12345');
+> UPSERT INTO time_precise VALUES (1, TIME '05:40:00.123456'), (2, TIME '05:41:39.12345');
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM time;
+> SELECT * FROM time_precise;
 ~~~
 
 ~~~
-  time_id |            time_val
-----------+---------------------------------
-        1 | 0000-01-01 05:40:00.1235+00:00
-        2 | 0000-01-01 05:41:39.1235+00:00
+  time_id |   time_val
+----------+----------------
+        1 | 05:40:00.1235
+        2 | 05:41:39.1235
 (2 rows)
 ~~~
 
@@ -171,7 +171,7 @@ To change the precision level of a column, you can use an [`ALTER COLUMN ... SET
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE time ALTER COLUMN time_val SET DATA TYPE TIME(5);
+> ALTER TABLE time_precise ALTER COLUMN time_val SET DATA TYPE TIME(5);
 ~~~
 
 ~~~
@@ -180,33 +180,25 @@ ALTER TABLE
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW COLUMNS FROM time;
+> SHOW COLUMNS FROM time_precise;
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+----------------+-----------------------+-----------+------------
-  time_id     | INT8      |    false    | NULL           |                       | {primary} |   false
-  time_val    | TIME(5)   |    true     | NULL           |                       | {primary} |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |       indices       | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+---------------------+------------
+  time_id     | INT8      |      f      | NULL           |                       | {time_precise_pkey} |     f
+  time_val    | TIME(5)   |      t      | NULL           |                       | {time_precise_pkey} |     f
 (2 rows)
 ~~~
 
-{{site.data.alerts.callout_info}}
-If a non-default precision level has already been specified, you cannot change the precision to a lower level.
-{{site.data.alerts.end}}
+You can reduce the precision of the values of `DECIMAL`, `TIMESTAMP`, and `TIMESTAMPTZ` columns; this yields the same behavior as the PostgreSQL implementation.
 
-In this case, the `time_val` column, which is of type `TIME(5)`, cannot be changed to a precision level below `5`:
+For example, to lower the precision of the `time_val` column, which is of type `TIME(5)`, use the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE time ALTER COLUMN time_val SET DATA TYPE TIME(3);
+ALTER TABLE time_precise ALTER COLUMN time_val SET DATA TYPE TIME(3);
 ~~~
-
-~~~
-ERROR: unimplemented: type conversion from TIME(5) to TIME(3) requires overwriting existing values which is not yet implemented
-SQLSTATE: 0A000
-~~~
-
 
 ## Supported casting & conversion
 
