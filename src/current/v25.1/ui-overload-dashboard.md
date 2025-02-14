@@ -96,7 +96,7 @@ There are separate lines for regular flow token wait time and elastic (backgroun
 - In the node view, the graph shows the wait duration of regular flow token wait time and elastic flow token wait time on the selected node.
 - In the cluster view, the graph shows the wait duration of regular flow token wait time and elastic flow token wait time across all nodes in the cluster.
 
-For more information about how replication admission control works, see [Replication admission control]({% link {{ page.version.version }}/admission-control.md %}#replication-admission-control).
+For more information about how replication admission control works, refer to [Replication admission control]({% link {{ page.version.version }}/admission-control.md %}#replication-admission-control).
 
 ## Blocked Replication Streams
 

@@ -61,7 +61,7 @@ Admission control is beneficial when overall cluster health is good but some nod
 
 The admission control subsystem paces all work done at the [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) to avoid cluster overload. This includes user-facing writes from SQL statements, as well as background (elastic) replication work.
 
-{% include_cached new-in.html version="v25.1" %} This includes controlling the pacing of catchup writes at the replication layer to avoid overloading slow or [newly restarted nodes]({% link {{ page.version.version }}/eventlog.md %}#node_restart) with replication flows. Note that this pacing does not slow down user-facing SQL writes; it only ensures there are fewer impacts from background operations.
+{% include_cached new-in.html version="v25.1" %} The pacing of catchup writes is controlled at the replication layer to avoid overloading slow or [newly restarted nodes]({% link {{ page.version.version }}/eventlog.md %}#node_restart) with replication flows. Note that this pacing does not slow down user-facing SQL writes; it only ensures there are fewer impacts from background operations.
 
 At a high level, replication admission control works by:
 
@@ -75,9 +75,9 @@ This has the following effects:
 3. Paces regular writes at quorum speed. (**New in v25.1**)
 4. Paces elastic writes at the slowest replica's speed.
 
-For example, prior to CockroachDB v25.1, when a leader and follower replica were disconnected from each other due to a node going away and coming back, when the follower came back the leader would slam the follower with any Raft entries it had missed. In v25.1 and later, the leader paces the entries it sends to the follower. This has the result that baseline cluster QPS (queries per second) and latency should not change substantially during perturbations such as [node restarts]({% link {{ page.version.version }}/eventlog.md %}#node_restart).
+For example, prior to CockroachDB v25.1, when a leader and follower replica were disconnected from each other due to a node going away and coming back, once the follower came back the leader would slam the follower with any Raft entries it had missed. In v25.1 and later, the leader paces the entries it sends to the follower. The result is that baseline cluster QPS (queries per second) and latency should not change substantially during perturbations such as [node restarts]({% link {{ page.version.version }}/eventlog.md %}#node_restart).
 
-To monitor the behavior of replication admission control, see [UI Overload Dashboard &gt; Replication Admission Control]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#admission-queueing-delay-p99-replication-admission-control).
+To monitor the behavior of replication admission control, refer to [UI Overload Dashboard &gt; Replication Admission Control]({% link {{ page.version.version }}/ui-overload-dashboard.md %}#admission-queueing-delay-p99-replication-admission-control).
 
 ## Enable and disable admission control
 
