@@ -13,10 +13,5 @@ To add a size limit using [`ALTER TABLE ... ALTER COLUMN`]({% link {{ page.versi
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SET enable_experimental_alter_column_type_general = true;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
 ALTER TABLE name ALTER first TYPE STRING(99);
 ~~~
