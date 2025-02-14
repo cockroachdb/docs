@@ -15,12 +15,12 @@
  <tbody>
   <tr>
    <td>
-    <p class="feature-summary">User-defined functions and stored procedures support SECURITY DEFINER</p>
+    <p class="feature-summary">Admission Control Available on SQL Writes</p>
     <p class="feature-description">
-      You can create or alter a <a href="https://cockroachlabs.com/docs/v24.3/user-defined-functions.html">user-defined function (UDF)</a> or <a href="https://cockroachlabs.com/docs/v24.3/stored-procedures.html">stored procedure</a> with <code>[EXTERNAL] SECURITY DEFINER</code> instead of the default <code>[EXTERNAL] SECURITY INVOKER</code>. With <a href="https://cockroachlabs.com/docs/v24.3/create-function.html#create-a-security-definer-function"><code>[SECURITY DEFINER]</code></a>, the privileges of the owner are checked when the UDF or stored procedure is executed, rather than the privileges of the executor. The <code>EXTERNAL</code> keyword is optional and exists for SQL language conformity.
+      Added support for replication admission control on SQL writes, allowing writes and background cluster operations to be paced to prevent overloading the cluster during node restarts or joins.
     </p>
    </td>
-   <td>24.3</td>
+   <td>25.1</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
@@ -28,16 +28,55 @@
   </tr>
   <tr>
     <td>
-     <p class="feature-summary">CockroachDB now supports triggers in Preview</p>
+     <p class="feature-summary">ALTER COLUMN Type Now Generally Available</p>
      <p class="feature-description">
-      CockroachDB now supports <a href="https://cockroachlabs.com/docs/v24.3/triggers.html">triggers</a>. Triggers allow automatic execution of specified functions in response to specified events on a particular table or view. They can be used for automating tasks, enforcing business rules, and maintaining data integrity. This feature is in Preview.
+      ALTER COLUMN TYPE is now generally available (GA). This provides enhanced schema flexibility for your CockroachDB deployments. This release significantly expands the capabilities of ALTER COLUMN TYPE and simplifies its usage.
+
+      Key improvements include:
+      <ul>
+        <li>Full support for check constraints, enabling you to maintain data integrity while modifying column types</li>
+        <li>Seamless integration with virtual columns, allowing for more flexible schema modifications</li>
+        <li>Complete compatibility with default values, preserving your data consistency requirements</li>
+        <li>Simplified usage with no session variable requirements</li>
+      </ul>
      </p>
     </td>
-    <td>24.3</td>
+    <td>25.1</td>
     <td class="icon-center">{% include icon-yes.html %}</td>
     <td class="icon-center">{% include icon-yes.html %}</td>
     <td class="icon-center">{% include icon-yes.html %}</td>
     <td class="icon-center">{% include icon-yes.html %}</td>
-   </tr>
+  </tr>
+  <tr>
+    <td>
+     <p class="feature-summary">Transactions Automatically Commit Before DDL Statements</p>
+     <p class="feature-description">
+      CockroachDB now automatically commits the current transaction before executing DDL statements. With this change, data definition language (DDL) statements now trigger an automatic commit of any preceding data manipulation language (DML) statements. This change eliminates common errors from mixing DDL and DML. The cluster setting `autocommit_before_ddl` enables this behavior and is set to `on` by default. To disable this behavior run `ALTER ROLE ALL SET autocommit_before_ddl = off;`. See the backward incompatible changes section for additional information.
+     </p>
+    </td>
+    <td>25.1</td>
+    <td class="icon-center">{% include icon-yes.html %}</td>
+    <td class="icon-center">{% include icon-yes.html %}</td>
+    <td class="icon-center">{% include icon-yes.html %}</td>
+    <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+    <td>
+     <p class="feature-summary">Improvements to Stored Procedures and User Defined Functions (UDFs)</p>
+     <p class="feature-description">
+      Expanded support for stored procedures and SQL blocks. This release introduces several features that enhance your ability to write complex database logic. The changes include:
+      <ul>
+        <li>Support for CTEs (WITH queries) within PL/pgSQL stored procedures</li>        
+        <li>New support for RETURNS TABLE in SQL language functions</li>
+        <li>Anonymous Function Blocks (DO blocks)</li>
+      </ul>
+     </p>
+    </td>
+    <td>25.1</td>
+    <td class="icon-center">{% include icon-yes.html %}</td>
+    <td class="icon-center">{% include icon-yes.html %}</td>
+    <td class="icon-center">{% include icon-yes.html %}</td>
+    <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
  </tbody>
 </table>
