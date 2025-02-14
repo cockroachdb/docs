@@ -209,6 +209,12 @@
               ]
             },
             {
+              "title": "<code>CREATE LOGICALLY REPLICATED</code>",
+              "urls": [
+                "/${VERSION}/create-logically-replicated.html"
+              ]
+            },
+            {
               "title": "<code>CREATE LOGICAL REPLICATION STREAM</code>",
               "urls": [
                 "/${VERSION}/create-logical-replication-stream.html"
