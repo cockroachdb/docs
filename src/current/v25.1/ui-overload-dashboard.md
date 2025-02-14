@@ -86,10 +86,17 @@ This graph shows the 99th percentile latency of requests waiting in the [admissi
 
 ## Admission Queueing Delay p99 – Replication Admission Control
 
-This graph shows the 99th percentile latency of requests waiting in the replication [admission control]({% link {{ page.version.version }}/admission-control.md %}) queue, as tracked by the `kvadmission.flow_controller.regular_wait_duration-p99` and the `kvadmission.flow_controller.elastic_wait_duration-p99` metrics. There are separate lines for regular flow token wait time and elastic (background) flow token wait time. These metrics are indicative of store overload on replicas.
+This graph shows the 99th percentile latency of requests waiting in the replication [admission control]({% link {{ page.version.version }}/admission-control.md %}) queue, as tracked by the following metrics:
+
+- `kvflowcontrol.eval_wait.regular.duration-p99`
+- `kvflowcontrol.eval_wait.elastic.duration-p99`
+
+There are separate lines for regular flow token wait time and elastic (background) flow token wait time. These metrics are indicative of store overload on replicas.
 
 - In the node view, the graph shows the wait duration of regular flow token wait time and elastic flow token wait time on the selected node.
 - In the cluster view, the graph shows the wait duration of regular flow token wait time and elastic flow token wait time across all nodes in the cluster.
+
+For more information about how replication admission control works, see [Replication admission control]({% link {{ page.version.version }}/admission-control.md %}#replication-admission-control).
 
 ## Blocked Replication Streams
 
