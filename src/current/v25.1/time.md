@@ -142,10 +142,10 @@ Comparing `TIME` values:
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+----------------+-----------------------+-----------+------------
-  time_id     | INT8      |    false    | NULL           |                       | {primary} |   false
-  time_val    | TIME(4)   |    true     | NULL           |                       | {primary} |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |       indices       | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+---------------------+------------
+  time_id     | INT8      |      f      | NULL           |                       | {time_precise_pkey} |     f
+  time_val    | TIME(4)   |      t      | NULL           |                       | {time_precise_pkey} |     f
 (2 rows)
 ~~~
 
@@ -160,10 +160,10 @@ Comparing `TIME` values:
 ~~~
 
 ~~~
-  time_id |            time_val
-----------+---------------------------------
-        1 | 0000-01-01 05:40:00.1235+00:00
-        2 | 0000-01-01 05:41:39.1235+00:00
+  time_id |   time_val
+----------+----------------
+        1 | 05:40:00.1235
+        2 | 05:41:39.1235
 (2 rows)
 ~~~
 
@@ -184,10 +184,10 @@ ALTER TABLE
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+----------------+-----------------------+-----------+------------
-  time_id     | INT8      |    false    | NULL           |                       | {primary} |   false
-  time_val    | TIME(5)   |    true     | NULL           |                       | {primary} |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |       indices       | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+---------------------+------------
+  time_id     | INT8      |      f      | NULL           |                       | {time_precise_pkey} |     f
+  time_val    | TIME(5)   |      t      | NULL           |                       | {time_precise_pkey} |     f
 (2 rows)
 ~~~
 
