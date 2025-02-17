@@ -2,6 +2,7 @@
 title: CockroachDB Releases
 summary: Information about CockroachDB releases with an index of available releases and their release notes and binaries.
 toc: true
+# toc_not_nested: true
 docs_area: releases
 ---
 
@@ -116,7 +117,7 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
 | [v24.2](#v24-2) | Innovation | 2024-08-12 |
 | [v24.1](#v24-1) | Regular | 2024-05-20 |
 | [v23.2](#v23-2) | Regular | 2024-02-05 |
-| [v23.1](#v23-1) | Regular | 2023-05-15 |
+| [v23.1](https://www.cockroachlabs.com/docs/releases/unsupported-versions#v23-1) | Regular | 2023-05-15 |
 
 ### Upcoming releases
 
@@ -139,7 +140,7 @@ The following releases and their descriptions represent proposed plans that are 
 {% assign released_versions = site.data.releases | map: "major_version" | uniq | reverse %}
 {% comment %} Fetch the list of the major versions of all releases that currently exist {% endcomment %}
 
-{% assign versions = site.data.versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
+{% assign versions = site.data.supported_versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
 {% comment %} Fetch all major versions (e.g., v21.2), sorted in reverse chronological order. {% endcomment %}
 
 {% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where_exp: "latest_hotfix", "latest_hotfix.withdrawn != true"  | sort: "release_date" | reverse | first %}
@@ -602,3 +603,7 @@ All binaries available on this page released on or after the day 24.3.0 is relea
 All binaries available on this page released prior to the release date of 24.3.0 are variously licensed under the Business Source License 1.1 (BSL), the CockroachDB Community License (CCL), and other licenses specified in the source code.
 
 To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.
+
+## Unsupported versions 
+[Here]({% link releases/unsupported-versions.md %}) are the versions of CockroachDB that are no longer supported
+
