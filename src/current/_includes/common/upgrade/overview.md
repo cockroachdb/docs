@@ -36,7 +36,7 @@ For CockroachDB Basic clusters and CockroachDB Standard clusters that are set to
 
 For all Cloud plans:
 
-- All major versions that are Regular releases (as opposed to Innovation releases) are required upgrades during the period in which they are supported.
+- All major versions that are Regular releases (as opposed to Innovation releases) are required upgrades before proceeding to a newer major version. To maintain support, an upgrade to a supported version must occur prior to the [EOS date]({% link cockroachcloud/upgrade-policy.md %}) of the current version.
 - Patch version upgrades occur automatically.
 {% endif %}
 ### Compatible versions

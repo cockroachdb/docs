@@ -13,8 +13,6 @@ This page describes how major-version and patch upgrades work and shows how to u
 
 A list of [currently supported major versions]({% link cockroachcloud/upgrade-policy.md %}#currently-supported-versions) with links to their release notes is available in the CockroachDB Cloud [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
-{% include common/upgrade/upgrade-high-level.md %}
-
 ### Availability during an upgrade
 
 For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }}, a cluster remains available during an upgrade.
