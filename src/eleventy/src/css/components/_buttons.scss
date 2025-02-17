@@ -1,0 +1,323 @@
+@mixin button() {
+	@include button-text;
+	text-transform: capitalize;
+	@include rounded(3px);
+	@include groovy(all);
+	display: inline-block;
+	border: $btn-border-width solid transparent;
+	// padding: $btn-padding-y $btn-padding-x;
+	line-height: $line-height-base;
+	white-space: nowrap;
+}
+
+.button--primary {
+	@include button();
+	color: #FFFFFF;
+	padding: 18px 25px 16px;
+	background-color: $electric-purple;
+
+	&:focus {
+		color: #FFFFFF;
+	}
+
+	&:hover {
+		background-color: #FFFFFF;
+		color: $electric-purple;
+	}
+}
+
+.btn-redirect {
+	@include button();
+	white-space: break-spaces;
+	color: #FFFFFF;
+	background: linear-gradient(-90deg, $spanish-roast 0%, #0037A5 48.3%, $electric-purple 100%);
+	box-shadow: none;
+	&:hover {
+		color: #fff;
+		box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5);
+	}
+	&:focus {
+		border: 1px solid #237300;
+		box-shadow: none;
+		color: #FFFFFF;
+	}
+	
+	&:active {
+		&:focus {
+			border: 1px solid #237300;
+			box-shadow: none;
+			color: #FFFFFF;
+		}
+	}
+}
+.btn-outline-primary {
+	@include button();
+	color: $electric-purple; 
+	text-align: center;
+	background-color: #FFFFFF;
+	border-color: $electric-purple;
+	border-width: 2px;
+	@include poppins(16px);
+	&:focus {
+		border-color: $electric-purple;
+		background-color: $electric-purple;
+		box-shadow: 0 0 0 $input-focus-width $electric-purple;
+	}
+
+	&:hover {
+		border-color: $electric-purple;
+		background-color: $electric-purple;
+		color: #fff;
+	}
+
+	&:not(:disabled):not(.disabled) {
+
+		&:active {
+			border-color: $electric-purple;
+			background-color: $electric-purple;
+	
+			&:focus {
+				border-color: $electric-purple;
+				background-color: $electric-purple;
+				box-shadow: 0 0 0 $input-focus-width $electric-purple; 
+			  }
+		}
+		
+	}
+}
+.btn-outline-secondary {
+	@include button();
+	color: $neutral-700; 
+	text-align: center;
+	background-color: #FFFFFF;
+	border-color: $neutral-400;
+	&:focus {
+		border-color: $neutral-500;
+		background-color: $neutral-100;
+		box-shadow: 0 0 0 $input-focus-width $neutral-100;
+	}
+
+	&:hover {
+		background-color: $neutral-100;
+		color: $neutral-800;
+	}
+
+	&:not(:disabled):not(.disabled) {
+
+		&:active {
+			border-color: $neutral-500;
+			background-color: $neutral-100;
+	
+			&:focus {
+				border-color: $neutral-500;
+				background-color: $neutral-100;
+				box-shadow: 0 0 0 $input-focus-width $neutral-100; 
+			  }
+		}
+		
+	}
+}
+
+.btn--sm {
+	padding: $btn-padding-y-sm $btn-padding-x-sm;
+}
+.button--header {
+	@include button();
+	display: none;
+	height: 30px;
+	@include sourcesanspro_b(10px);
+	line-height: 13px;
+	background-color: $electric-purple;
+	border-color: $electric-purple;
+	border-width: 1px;
+	border-radius: 0px;
+	padding: 8.25px 16px;
+	color: #FFFFFF;
+	margin-right: 15px;
+
+	&:focus, &:hover {
+		color: #FFFFFF;
+	}
+
+	@include at-query($min, $screen-sm) {
+		display: inline-block;
+	}
+
+	@include at-query($min, $screen-md) {
+		height: 40px;
+		font-size: 12px;
+		line-height: 40px;
+		margin-left: 5px;
+		padding: 0 17px;
+
+		&:hover {
+			background-color: #FFFFFF;
+			color: $electric-purple;
+			border: 1px solid $electric-purple;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		margin-left: 10px;
+	}
+
+	&--alt {
+		background-color: #FFFFFF;
+		color: $electric-purple;
+
+		&:focus, &:hover {
+			color: $electric-purple;
+		}
+
+		@include at-query($min, $screen-md) {
+			&:hover {
+				background-color: $electric-purple;
+				color: #FFFFFF;
+			}
+		}
+	}
+}
+
+.blue-arrow {
+	display: inline-block;
+	border: solid $cl_blue;
+	padding: 4px;
+	margin-left: 4px;
+	transition: transform 0.2s ease, margin-bottom 0.2s ease;
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	float: right;
+	cursor: pointer;
+
+	@include at-query($min, $screen-md) {
+		display: none;
+	}
+
+	&--up {
+		border-width: 2px 0 0 2px;
+		margin-top: 3px;
+	}
+
+	&--down {
+		border-width: 0 2px 2px 0;
+		margin-bottom: 3px;
+	}
+}
+
+.arrow-down {
+  display: inline-block;
+
+  border: solid $cl_blue;
+  border-width: 0 2px 2px 0;
+  padding: 2px;
+  margin-left: 4px;
+  margin-bottom: 2px;
+  transition: transform 0.2s ease, margin-bottom 0.2s ease;
+  transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	cursor: pointer;
+
+  &--pre {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    margin-left: 0;
+    border-width: 0 1px 1px 0;
+    margin: 0 3px;
+  }
+}
+
+.arrow-up {
+  display: inline-block;
+  border: solid $cl_blue;
+  border-width: 2px 0 0 2px;
+  padding: 2px;
+  margin-left: 4px;
+  margin-bottom: 0;
+  transition: transform 0.2s ease, margin-bottom 0.2s ease;
+  transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	cursor: pointer;
+
+  &--pre {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    margin-left: 0;
+    border-width: 0 1px 1px 0;
+    margin: 0 3px;
+  }
+}
+
+.contribute {
+	.btn-contribute {
+		@include button();
+                font-size: 14px;
+                font-weight: 600;
+                font-style: normal;
+		border: 1px solid #D6DBE7;
+                box-sizing: border-box;
+                background: #F5F7FA;
+                color: #242A35;
+		line-height: 24px;
+                letter-spacing: 0.1px;
+                align-items: center;
+                width: 134px;
+                height: 32px;
+		margin-top: 9px;
+		margin-right: 55px;
+		text-align: center;
+
+		&:focus {
+                        outline: 0;
+                        box-shadow: 0 0 0 3px #E7ECF3;
+                        border: 1px solid #7E89A9;
+                        border-radius: 3px;
+		}
+
+		@include at-query($min, 571px) {
+			margin-left: 3px;
+		}
+		&:after {
+			display:none;
+		}
+	}
+
+	.dropdown-menu {
+		border: none;
+		box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
+
+		@include at-query($min, 571px) {
+			left: 1px;
+		}
+	}
+
+	.dropdown-menu > li > a {
+		@include caption;
+                font-size: 14px;
+                line-height: 22px;
+		color: #394455;
+		margin: 7px 0 7px;
+
+		&:focus {
+			text-decoration: none;
+			background-color: transparent;
+			color: #394455;
+		}
+
+		&:hover {
+			text-decoration: none;
+			background-color: transparent;
+			color: #394455;
+		}
+	}
+}
+
+// mkt nav
+.btn-outline-purple {
+	border: 2px solid $electric-purple;
+	background-color: white;
+	color: $electric-purple;
+	&:hover {
+	  @extend .shadow;
+	  color: $electric-purple;
+	}
+  }

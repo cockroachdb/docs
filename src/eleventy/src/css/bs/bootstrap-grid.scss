@@ -1,0 +1,38 @@
+---
+---
+
+@use "sass:map";
+@use "sass:math";
+
+// Import the files directly without @use
+@import "functions";
+@import "variables";
+
+// Change @use to @import for these as well
+@import "mixins/breakpoints";
+@import "mixins/grid-framework";
+@import "mixins/grid";
+
+@import "grid";
+@import "utilities/display";
+@import "utilities/flex";
+@import "utilities/spacing";
+/*!
+ * Bootstrap Grid v4.5.2 (https://getbootstrap.com/)
+ * Copyright 2011-2020 The Bootstrap Authors
+ * Copyright 2011-2020 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
+
+html {
+  box-sizing: border-box;
+  -ms-overflow-style: scrollbar;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+

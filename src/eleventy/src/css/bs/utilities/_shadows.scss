@@ -1,0 +1,18 @@
+// stylelint-disable declaration-no-important
+
+.shadow-sm { box-shadow: $box-shadow-sm !important; }
+.shadow { box-shadow: $box-shadow !important; }
+.shadow-lg { box-shadow: $box-shadow-lg !important; }
+.shadow-none { box-shadow: none !important; }
+.new-header .shadow {
+    -webkit-box-shadow: 4px 4px 20px -7px rgba(25, 15, 51, 0.25);
+            box-shadow: 4px 4px 20px -7px rgba(25, 15, 51, 0.25); }
+  .new-header .shadow-sm {
+    -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); }
+  .new-header .shadow-lg {
+    -webkit-box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175); }
+  .new-header .shadow-none {
+    -webkit-box-shadow: none;
+            box-shadow: none; }

@@ -2,16 +2,29 @@
   "name": "cockroachdb-docs",
   "version": "2.0.0",
   "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
     "@netlify/plugin-lighthouse": "^4.0.7",
     "jest": "^26",
-    "jest-cli": "^26"
+    "jest-cli": "^26",
+    "sass": "^1.85.0"
   },
   "dependencies": {
     "@netlify/edge-functions": "^2.10.0",
     "front-matter": "^4.0.2",
+    "js-yaml": "^4.1.0",
     "redoc-cli": "^0.11.4",
     "snippet-enricher-cli": "^0.0.8",
     "swagger2openapi": "^7.0.5",
     "yaml": "^1.10.2"
-  }
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "eleventy --serve",
+    "build": "eleventy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

@@ -1,0 +1,346 @@
+section.footer {
+	background: $cl_gray_footer;
+	padding: 0 0 20px;
+	z-index: 1;
+	position: relative; // needed for z-index
+
+	@include at-query($min, $screen-md) {
+		// border-top: 1px solid $cl_gray_medium;
+		// background: #fff;
+		padding: 0 0 40px;
+	}
+
+	.container {
+		width: 100%;
+		padding-left: 0;
+		padding-right: 0;
+		margin: 0;
+		max-width: 100%;
+
+		@include at-query($min, $screen-md) {
+			// display: -webkit-box;
+			// display: -ms-flexbox;
+			// display: flex;
+			// -ms-flex-wrap: wrap;
+			//     flex-wrap: wrap;
+			padding: 60px 0 20px 45px;
+			margin: 0 auto;
+			width: 1500px;
+		}
+	}
+
+	.footer {
+		&__flex-wrap {
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-pack: justify;
+			    -ms-flex-pack: justify;
+			        justify-content: space-between;
+			-ms-flex-wrap: wrap;
+			    flex-wrap: wrap;
+
+			@include at-query($min, $screen-md) {
+				width: 68%;
+			}
+		}
+
+		&__right {
+			display: flex;
+			border-bottom: solid 1px $cl_gray_medium;
+
+			@include at-query($min, $screen-md) {
+				border-bottom: none;
+				border-left: solid 1px $cl_gray_medium;
+				width: 25%;
+				padding-top: 0;
+				padding-left: 60px;
+				margin-left: 50px;
+			}
+		}
+	}
+
+	// Nav Items
+	.footer-nav {
+		width: 100%;
+		list-style: none;
+		margin-bottom: 0;
+
+		// mobile only
+		@include at-query($max, $screen-md) {
+			border-top: 1px solid $cl_gray_medium;
+			padding: 20px;
+		}
+
+		@include at-query($min, $screen-md) {
+			width: calc(100% / 4 - 1px);
+			padding-left: 0;
+
+			&--product {
+				-webkit-box-ordinal-group: -1;
+				    -ms-flex-order: -2;
+				        order: -2;
+			}
+
+			&--documentation {
+				-webkit-box-ordinal-group: 0;
+				    -ms-flex-order: -1;
+				        order: -1;
+			}
+		}
+
+		li {
+			color: $cl_blue;
+			// text-transform: uppercase;
+			list-style:none;
+			text-align: left;
+			padding:0;
+			margin: 0 10px 0 0;
+			text-indent:0;
+
+			@include at-query($min, $screen-md) {
+				width: 100%;
+				margin-right: 20px;
+			}
+
+			a {
+				@include sourcesanspro_r(14px);
+				color: $cl_blue_dark;
+				// @include type-caption;
+				// vertical spacing
+				line-height: 40px;
+				text-transform: none;
+				display: block;
+				@include groovy(color);
+
+				@include at-query($min, $screen-md) {
+					// back to normal
+					line-height: 25px;
+					margin-bottom: 10px;
+				}
+
+				&:hover {
+					color: $spanish-roast;
+				}
+			}
+		}
+
+		li.header {
+			@include poppins_sb(14px);
+			// @include button-text--heavy--medium;
+			line-height: 5px;
+			// text-transform: uppercase;
+
+			@include at-query($min, $screen-md) {
+				margin-bottom: 15px;
+			}
+		}
+
+		li:before {
+		  content: "";
+			display:none;
+			left:auto;
+			top:auto;
+		}
+	}
+
+	.footer-sub-nav {
+		display: none;
+		margin-top: 20px;
+		padding-left: 0;
+
+		@include at-query($min, $screen-md) {
+			display: block;
+		}
+	}
+
+	.copyright {
+		margin: 20px 0 0 20px;
+		@include type-caption;
+		color: $cl_blue;
+
+		@include at-query($min, $screen-md) {
+			text-align: left;
+			width: 100%;
+			margin-top: 15px;
+			margin-left: 0;
+		}
+	}
+
+	.blue-arrow {
+		margin-right: -12px;
+		cursor: pointer;
+	}
+}
+
+.footer {
+	z-index: 1;
+    position: relative;
+	background: $cl_gray_footer;
+	// &__flex-wrap {
+	// 	display: -webkit-box;
+	// 	display: -ms-flexbox;
+	// 	display: flex;
+	// 	-webkit-box-pack: justify;
+	// 		-ms-flex-pack: justify;
+	// 			justify-content: space-between;
+	// 	-ms-flex-wrap: wrap;
+	// 		flex-wrap: wrap;
+
+	// 	@include at-query($min, $screen-md) {
+	// 		width: 68%;
+	// 	}
+	// }
+
+	// &__right {
+	// 	display: flex;
+	// 	border-bottom: solid 1px $cl_gray_medium;
+
+	// 	@include at-query($min, $screen-md) {
+	// 		border-bottom: none;
+	// 		border-left: solid 1px $cl_gray_medium;
+	// 		width: 25%;
+	// 		padding-top: 0;
+	// 		padding-left: 60px;
+	// 		margin-left: 50px;
+	// 	}
+	// }
+}
+
+// Nav Items
+.footer-nav {
+	width: 100%;
+	list-style: none;
+	margin-bottom: 0;
+
+	// mobile only
+	// @include at-query($max, $screen-md) {
+	// 	border-top: 1px solid $cl_gray_medium;
+	// 	padding: 20px;
+	// }
+
+	// @include at-query($min, $screen-md) {
+	// 	padding-left: 0;
+
+	// 	&--product {
+	// 		-webkit-box-ordinal-group: -1;
+	// 			-ms-flex-order: -2;
+	// 				order: -2;
+	// 	}
+
+	// 	&--documentation {
+	// 		-webkit-box-ordinal-group: 0;
+	// 			-ms-flex-order: -1;
+	// 				order: -1;
+	// 	}
+	// }
+
+	li {
+		list-style:none;
+		text-align: left;
+		padding:0;
+		margin: 0 10px 0 0;
+		text-indent:0;
+
+		@include at-query($min, $screen-md) {
+			width: 100%;
+			margin-right: 20px;
+		}
+
+		a {
+			@include sourcesanspro_r(14px);
+			color: $cl_blue_dark;
+			line-height: 40px;
+			text-transform: none;
+			display: block;
+			@include groovy(color);
+
+			@include at-query($min, $screen-md) {
+				line-height: 25px;
+				margin-bottom: 10px;
+			}
+
+			&:hover {
+				color: $electric-purple;
+			}
+		}
+	}
+
+	li.header {
+		@include poppins_sb(14px);
+		// @include button-text--heavy--medium;
+		line-height: 5px;
+		// text-transform: uppercase;
+
+		@include at-query($min, $screen-md) {
+			margin-bottom: 15px;
+		}
+	}
+
+	li:before {
+	  content: "";
+		display:none;
+		left:auto;
+		top:auto;
+	}
+}
+
+.copyright {
+	margin: 20px 0 0 20px;
+	@include type-caption;
+	color: $cl_blue;
+
+	@include at-query($min, $screen-md) {
+		text-align: left;
+		width: 100%;
+		margin-top: 15px;
+		margin-left: 0;
+	}
+}
+
+#footer-mktoForm_1083 {
+	width: 100%!important;
+	&.mkto-footer-form {
+		#Email {
+			display: block;
+			width: 70%!important;
+			height: calc(1.725em + 1rem + 2px);
+			padding: 0.5rem 1rem;
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 1.725;
+			color: #495057;
+			background-color: #fff;
+			background-clip: padding-box;
+			border: 1px solid #ced4da;
+			border-radius: 5px;
+			transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		.mktoButton {
+			border-radius: $border-radius;
+			display: inline-block;
+			font-weight: 400;
+			color: $white;
+			text-align: center;
+			vertical-align: middle;
+			user-select: none;
+			background-color: transparent;
+			border: 1px solid transparent;
+			padding: 0.5rem 1rem;
+			font-size: 1rem;
+			line-height: 1.725;
+			background: $electric-purple;
+			height: calc(1.725em + 1rem + 2px);
+			margin-left: -1px;
+			border-top-left-radius: 0px;
+			border-bottom-left-radius: 0px;
+			&:hover{
+				background-color: $electric-purple!important;
+				box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5);
+			}
+		}
+	}
+
+}

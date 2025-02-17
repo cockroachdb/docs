@@ -1,0 +1,37 @@
+$font-weight-semi-bold: 600;
+$extra-small-font-size: 13px;
+.font-size-16 {
+    font-size: 16px;
+}
+
+.font-weight-medium {
+    font-weight: $font-weight-medium;
+}
+
+.text-xs {
+    font-size: $extra-small-font-size;
+}
+
+.semibold {
+    font-weight: $font-weight-semi-bold;
+}
+
+.font-poppins-sb {
+    @include poppins_sb(16px);
+}
+
+.font-family-poppins {
+    @include poppins(16px);
+}
+
+.overline {
+    @include poppins_sb(18px);
+    margin-bottom: 0;
+}
+
+.text-inherit {
+    text-transform: inherit;
+}
+.lh-n {
+    line-height: normal;
+}

@@ -8,36 +8,36 @@ layout: default
       <div class="row d-lg-flex mx-0">
         <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
           <div class="card card-link h-100 d-flex text-center">
-          <a href="{{ '/cockroachcloud/quickstart.html' | url }}" class="h-100">
+          <a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}" class="h-100">
             <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
-              <img class="m-0 mb-4 mt-3" src="{{ '/images/icon-in-browser.svg' | url }}" alt="icon browser" />
+              <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-in-browser.svg' | relative_url }}" alt="icon browser" />
               <h6 class="mt-2 mt-0 text-black">Start a cloud <br>cluster</h6>
 
-              <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ '/images/icon-arrow-right-purple.svg' | url }}" alt="arrow right"/></h4>
+              <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right"/></h4>
             </div>
             </a>
           </div>
         </div>
         <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
           <div class="card card-link h-100 d-flex text-center">
-          <a href="{{ '/stable/start-a-local-cluster.html' | url }}" class="h-100">
+          <a href="{{ '/stable/start-a-local-cluster.html' | relative_url }}" class="h-100">
             <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
-              <img class="m-0 mb-4 mt-3" src="{{ '/images/icon-sample-apps.svg' | url }}" alt="sample app" />
+              <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-sample-apps.svg' | relative_url }}" alt="sample app" />
               <h6 class="mt-2 mt-0 text-black">Start a local <br>cluster</h6>
 
-              <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ '/images/icon-arrow-right-purple.svg' | url }}" alt="arrow right"/></h4>
+              <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right"/></h4>
             </div>
             </a>
           </div>
         </div>
         <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
           <div class="card card-link h-100 d-flex text-center">
-          <a href="{{ '/stable/example-apps.html' | url }}" class="h-100">
+          <a href="{{ '/stable/example-apps.html' | relative_url }}" class="h-100">
             <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
-              <img class="m-0 mb-4 mt-3" src="{{ '/images/icon-deploy-cloud.svg' | url }}" alt="icon cloud" />
+              <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-deploy-cloud.svg' | relative_url }}" alt="icon cloud" />
               <h6 class="m-0 text-black">Build a sample <br>app</h6>
 
-              <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ '/images/icon-arrow-right-purple.svg' | url }}" alt="arrow right"/></h4>
+              <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right"/></h4>
             </div>
             </a>
           </div>
@@ -47,9 +47,10 @@ layout: default
   </div>
 
   <div class="container">
+
     <div class="row pt-5 mt-5 pb-5 mb-5">
       <div class="col-lg-8">
-        <a class="btn btn-redirect mt-3" href="{{ '/releases/index.html#production-releases' | url }}">Download the CockroachDB binary <img class="m-0" src="{{ '/images/arrow-left.svg' | url }}" alt="arrow left" /></a>
+        <a class="btn btn-redirect mt-3" href="{{ '/releases/index.html#production-releases' | relative_url }}">Download the CockroachDB binary <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arrow left" /></a>
       </div>
     </div>
 
@@ -65,10 +66,10 @@ layout: default
         <h3 class="mt-3">Get Started</h3>
         <div class="landing-column-content">
           <ul>
-            <li><a href="{{ '/cockroachcloud/quickstart.html' | url }}">Start a Free Cloud Cluster</a></li>
-            <li><a href="{{ '/stable/start-a-local-cluster.html' | url }}">Start a Local Cluster</a></li>
-            <li><a href="{{ '/stable/learn-cockroachdb-sql.html' | url }}">Learn CockroachDB SQL</a></li>
-            <li><a href="{{ '/stable/demo-cockroachdb-resilience.html' | url }}">Explore Capabilities</a></li>
+            <li><a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}">Start a Free Cloud Cluster</a></li>
+            <li><a href="{{ '/stable/start-a-local-cluster.html' | relative_url }}">Start a Local Cluster</a></li>
+            <li><a href="{{ '/stable/learn-cockroachdb-sql.html' | relative_url }}">Learn CockroachDB SQL</a></li>
+            <li><a href="{{ '/stable/demo-cockroachdb-resilience.html' | relative_url }}">Explore Capabilities</a></li>
           </ul>
         </div>
       </div>
@@ -76,11 +77,11 @@ layout: default
         <h3 class="mt-3">Develop</h3>
         <div class="landing-column-content">
           <ul>
-            <li><a href="{{ '/stable/developer-guide-overview.html' | url }}">Common Dev Tasks</a></li>
-            <li><a href="{{ '/stable/example-apps.html' | url }}">Sample Apps</a></li>
-            <li><a href="{{ '/stable/sql-feature-support.html' | url }}">SQL Reference</a></li>
-            <li><a href="{{ '/stable/performance-best-practices-overview.html' | url }}">SQL Best Practices</a></li>
-            <li><a href="{{ '/stable/query-behavior-troubleshooting.html' | url }}">SQL Troubleshooting</a></li>
+            <li><a href="{{ '/stable/developer-guide-overview.html' | relative_url }}">Common Dev Tasks</a></li>
+            <li><a href="{{ '/stable/example-apps.html' | relative_url }}">Sample Apps</a></li>
+            <li><a href="{{ '/stable/sql-feature-support.html' | relative_url }}">SQL Reference</a></li>
+            <li><a href="{{ '/stable/performance-best-practices-overview.html' | relative_url }}">SQL Best Practices</a></li>
+            <li><a href="{{ '/stable/query-behavior-troubleshooting.html' | relative_url }}">SQL Troubleshooting</a></li>
           </ul>
         </div>
       </div>
@@ -88,10 +89,10 @@ layout: default
         <h3 class="mt-3">Deploy</h3>
         <div class="landing-column-content">
           <ul>
-            <li><a href="{{ '/cockroachcloud/create-your-cluster.html' | url }}">CockroachDB Cloud Deployment</a></li>
-            <li><a href="{{ '/stable/kubernetes-overview.html' | url }}">Kubernetes Overview</a></li>
-            <li><a href="{{ '/stable/recommended-production-settings.html' | url }}">Production Checklist</a></li>
-            <li><a href="{{ '/stable/upgrade-cockroach-version.html' | url }}">Upgrade CockroachDB</a></li>
+            <li><a href="{{ '/cockroachcloud/create-your-cluster.html' | relative_url }}">CockroachDB Cloud Deployment</a></li>
+            <li><a href="{{ '/stable/kubernetes-overview.html' | relative_url }}">Kubernetes Overview</a></li>
+            <li><a href="{{ '/stable/recommended-production-settings.html' | relative_url }}">Production Checklist</a></li>
+            <li><a href="{{ '/stable/upgrade-cockroach-version.html' | relative_url }}">Upgrade CockroachDB</a></li>
           </ul>
         </div>
       </div>
@@ -99,9 +100,9 @@ layout: default
         <h3 class="mt-3">FAQs</h3>
         <div class="landing-column-content">
           <ul>
-            <li><a href="{{ '/stable/frequently-asked-questions.html' | url }}">CockroachDB FAQs</a></li>
-            <li><a href="{{ '/stable/sql-faqs.html' | url }}">SQL FAQs</a></li>
-            <li><a href="{{ '/stable/licensing-faqs.html' | url }}">Licensing FAQs</a></li>
+            <li><a href="{{ '/stable/frequently-asked-questions.html' | relative_url }}">CockroachDB FAQs</a></li>
+            <li><a href="{{ '/stable/sql-faqs.html' | relative_url }}">SQL FAQs</a></li>
+            <li><a href="{{ '/stable/licensing-faqs.html' | relative_url }}">Licensing FAQs</a></li>
           </ul>
         </div>
       </div>
@@ -115,7 +116,7 @@ layout: default
             href="#"
             data-dismiss="alert"
             aria-label="Close"
-            ><img class="m-0" src="{{ '/images/icon-cancel.svg' | url }}" alt="icon cancel"
+            ><img class="m-0" src="{{ 'images/icon-cancel.svg' | relative_url }}" alt="icon cancel"
           /></a>
           <div class="card-body m-2 p-xl-5 text-white bg-dark-wing m-3">
             <h6 class="m-0">Learning Resources</h6>
@@ -127,7 +128,7 @@ layout: default
             </h4>
             <a class="mb-3 text-ice-temple text-decoration-none" href="https://www.cockroachlabs.com/cockroach-university/"
               >Start free course
-              <img class="ml-1 m-0" src="{{ '/images/icon-arrow-right-ice-temple.svg' | url }}" alt="icon arrow right"
+              <img class="ml-1 m-0" src="{{ 'images/icon-arrow-right-ice-temple.svg' | relative_url }}" alt="icon arrow right"
             /></a>
           </div>
         </div>
@@ -193,4 +194,5 @@ layout: default
     <div class="text-center mb-5">
     <a class="btn btn-redirect mt-3 text-inherit" target="_blank" rel="noopener" href="https://www.cockroachlabs.com/guides/the-state-of-resilience-2025/">Check out the report</a>
     </div>
+
   </div>

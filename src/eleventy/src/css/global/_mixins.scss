@@ -1,0 +1,95 @@
+//Mixins*
+@mixin rounded($val){
+	-webkit-border-radius: $val;
+	   -moz-border-radius: $val;
+	        border-radius: $val;
+}
+
+@mixin rotate($degrees) {
+  -webkit-transform: rotate($degrees);
+      -ms-transform: rotate($degrees);
+       -o-transform: rotate($degrees);
+          transform: rotate($degrees);
+}
+
+@mixin border-top-radius($radius) {
+  border-top-right-radius: $radius;
+   border-top-left-radius: $radius;
+}
+@mixin border-right-radius($radius) {
+  border-bottom-right-radius: $radius;
+     border-top-right-radius: $radius;
+}
+@mixin border-bottom-radius($radius) {
+  border-bottom-right-radius: $radius;
+   border-bottom-left-radius: $radius;
+}
+@mixin border-left-radius($radius) {
+  border-bottom-left-radius: $radius;
+     border-top-left-radius: $radius;
+}
+
+@mixin translate($x, $y) {
+	-webkit-transform: translate($x, $y);
+	    -ms-transform: translate($x, $y);
+	     -o-transform: translate($x, $y);
+	        transform: translate($x, $y);
+}
+
+@mixin groovy($opt){
+  -webkit-transition: $opt .2s cubic-bezier(.16, .68, .43, .99);
+     -moz-transition: $opt .2s cubic-bezier(.16, .68, .43, .99);
+       -o-transition: $opt .2s cubic-bezier(.16, .68, .43, .99);
+          transition: $opt .2s cubic-bezier(.16, .68, .43, .99);
+}
+
+@mixin box-shadow($x, $y, $blur, $spread, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $x $y $blur $spread $color;
+    -moz-box-shadow:inset $x $y $blur $spread $color;
+    box-shadow:inset $x $y $blur $spread $color;
+  } @else {
+    -webkit-box-shadow: $x $y $blur $spread $color;
+    -moz-box-shadow: $x $y $blur $spread $color;
+    box-shadow: $x $y $blur $spread $color;
+  }
+}
+
+@mixin cl-box-shadow {
+  box-shadow: 0 3px 6px 0 rgba(36,67,112,0.15), 0 6px 20px 0 rgba(36,67,112,0.15);
+}
+
+@mixin cl-box-shadow--light {
+  box-shadow: 0 1px 10px 0 rgba(36, 67, 112, 0.1);
+}
+
+@mixin cl-box-shadow--blue {
+  box-shadow: 0 2px 5px 0 rgba(17, 29, 57, 0.10), 0 4px 20px 0 rgba(17, 29, 57, 0.12);
+}
+
+/*============================================================================
+  Dependency-free breakpoint mixin
+    - Based on http://blog.grayghostvisuals.com/sass/sass-media-query-mixin/
+    - Usage docs: http://shopify.github.io/Timber/#sass-mixins
+==============================================================================*/
+$min: min-width;
+$max: max-width;
+@mixin at-query ($constraint_, $viewport1_, $viewport2_:null) {
+ $constraint: $constraint_; $viewport1: $viewport1_; $viewport2: $viewport2_;
+  @if type-of($constraint_) == number {
+    $viewport1 : $constraint_; $viewport2 : $viewport1_; $constraint : null;
+  }
+  @if $constraint == $min {
+    @media screen and ($min: $viewport1) {
+      @content;
+    }
+  } @else if $constraint == $max {
+    @media screen and ($max: $viewport1 - 1) {
+      @content;
+    }
+  } @else {
+    @media screen and ($min: $viewport1) and ($max: $viewport2) {
+      @content;
+    }
+  }
+}

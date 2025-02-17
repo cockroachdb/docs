@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include "head.html" %}
+  </head>
+  <body>
+    {% include "main-menu-serverless.html" %}
+    {% for hash in allowed_hashes %}
+      <a id="{{ hash }}" style="display: none"></a>
+    {% endfor %}
+    <div class="container-fluid">
+      <div class="row" id="maincontent">
+        <div class="nav-docs-mobile d-flex d-lg-none w-100 justify-content-between align-items-center px-4 py-2 border-top border-bottom" data-toggle="collapse" data-target="#sidebarMenu" aria-expanded="false" aria-controls="sidebarMenu" data-nosnippet>
+          <div class="h3 m-0">
+            Docs Menu
+          </div>
+          <div class="sidenav-arrow mr-4">
+            <div class="arrow-down">
+            </div>
+          </div>
+        </div>
+        <nav id="sidebarMenu" class="col-lg-2 d-lg-block sidebar collapse border-right pt-3 pr-md-0">
+          {%- assign sidebar_class = "" -%}
+          {%- if page.fileSlug == "" -%}
+            {%- assign sidebar_class = "nav--home " -%}
+          {%- elsif page.url == '/search/' -%}
+            {%- assign sidebar_class = "nav--search " -%}
+          {%- endif -%}
+          {% include "sidebar.html" %}
+        </nav>
+
+        {% if toc %}
+          {% if not homepage %}
+            <main role="main" class="col col-lg-8 ml-sm-auto px-lg-5">
+          {% endif %}
+        {% else %}
+          <main role="main" class="ml-sm-auto col-lg-10 px-lg-5">
+        {% endif %}
+
+        {{ content | safe }}
+        </main>
+
+        {% if toc %}
+          <div class="toc-col col-md-2">
+            <div class="toc-col-contents">
+              <div class="d-none d-lg-block pb-4">
+                {% include "contribute-options.html" %}
+              </div>
+              <div class="toc-right-title">On this page</div>
+              <div id="toc-right">
+              </div>
+              {% if feedback != false %}
+                {% include "feedback-widget-toc.html" %}
+              {% endif %}
+              <div class="cf-5329-area-16738">
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {% include "footer.html" %}
+    {% include "sidebar.js.html" %}
+
+    <script src="https://go.cockroachlabs.com/js/forms2/js/forms2.min.js" defer></script>
+    <script src="/js/jquery.cookie.min.js" defer></script>
+    <script src="/js/jquery.navgoco.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous" defer></script>
+    <script src="/js/toc.js" defer></script>
+    <script src="/js/cookieUtils.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" defer></script>
+    <script src="/js/customscripts.js" defer></script>
+    <script src="/js/setDocsContext.js" defer></script>
+    <script src="/js/anchor.js" defer></script>
+
+    {% if not homepage %}
+      <script>
+        whenAvailable('anchors', function() {
+          anchors.add('h2, h3, h4, h5');
+          anchors.add('.anchored');
+        });
+      </script>
+    {% endif %}
+
+    <script src="/js/tocRightScrollHighlight.js" defer></script>
+    {% include "google_tag_manager.html" %}
+    {% include "google_remarketing.html" %}
+    
+    {% if twitter %}
+      {% include "twitter_analytics.html" %}
+    {% endif %}
+
+    <script>
+      window.onload = function() {
+        console.log("Kapa Loaded");
+        Kapa("onModalOpen", function({ mode }) {
+          analytics.track('Kapa Modal Opened', {
+            mode: mode
+          });
+        });
+        Kapa("onModalClose", function({ mode }) {
+          analytics.track('Kapa Modal Closed', {
+            mode: mode
+          });
+        });
+        Kapa("onAskAIQuerySubmit", function({ threadId, questionAnswerId, question }) {
+          analytics.track('Kapa AI Query Submitted', {
+            threadId: threadId,
+            questionAnswerId: questionAnswerId,
+            question: question
+          });
+        });
+      };
+    </script>
+  </body>
+</html>

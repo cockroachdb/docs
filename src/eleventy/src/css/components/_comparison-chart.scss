@@ -1,0 +1,219 @@
+.comparison-chart {
+  width: 100%;
+  text-align: center;
+  table-layout: fixed;
+
+  // we only want one column besides CockroachDB on mobile
+  &__column-two {
+    display: none;
+
+    @include at-query($min, $screen-sm) {
+      display: table-cell;
+    }
+  }
+
+  tr {
+    &:hover, &:focus {
+      background-color: inherit !important;
+    }
+
+    &:nth-child(even) {
+      background: rgba(243, 243, 243, 0.5);
+
+      &:hover, &:focus {
+        background: rgba(243, 243, 243, 0.5) !important;
+      }
+    }
+
+    &:last-of-type {
+      border-bottom: 1px solid $cl_gray_light;
+    }
+  }
+
+  th {
+    border-top: none;
+    border-bottom: 2px solid $cl_blue;
+    @include sourcesanspro_b(12px);
+    line-height: 28px; // vertical spacing
+    color: $spanish-roast;
+    text-align: center;
+    padding: 20px;
+
+    @include at-query($min, $screen-sm) {
+      font-size: 17px;
+    }
+
+    &:first-of-type {
+      width: 125px;
+
+      @include at-query($min, $screen-sm) {
+        width: 200px;
+      }
+    }
+  }
+
+  td {
+    vertical-align: middle;
+    border: none;
+    border-left: 1px solid $cl_gray_light;
+    @include sourcesanspro_r(12px);
+    line-height: 20px;
+    padding: 10px 0;
+
+    @include at-query($min, $screen-sm) {
+      font-size: 17px;
+      line-height: 30px;
+      padding: 20px 0;
+    }
+
+    &:first-child {
+      min-width: auto;
+      border-left: none;
+    }
+
+    span.gray {
+      color: $cl_gray_medium;
+    }
+  }
+
+  td.comparison-chart__feature {
+    @include sourcesanspro_r(12px);
+    line-height: 20px;
+    font-weight: normal;
+    color: $cl_blue;
+    text-align: left;
+    padding: 10px 15px;
+    hyphens: none;
+
+    @include at-query($min, $screen-sm) {
+      font-size: 17px;
+      line-height: 30px;
+      padding: 20px 5px 20px 15px;
+    }
+
+    a[data-toggle="tooltip"] {
+      &:hover {
+        border-bottom: none;
+        cursor: pointer;
+      }
+
+      img {
+        margin: 0;
+      }
+    }
+  }
+
+  .comparison-chart__link {
+    color: $cl_blue;
+    position: relative;
+    @include groovy(all);
+    margin-right: 15px;
+  }
+
+  .comparison-chart__cockroach {
+    margin-right: 10px;
+  }
+}
+
+//
+// select2 overrides
+//
+.select2 {
+  width: 100% !important;
+}
+
+.select2-container {
+  .select2-selection {
+    border: none;
+    outline: none;
+
+    .select2-selection__rendered {
+      text-align: center;
+      color: $spanish-roast;
+
+      @include at-query($min, $screen-md) {
+        padding-right: 5px;
+      }
+    }
+
+    .select2-selection__arrow b {
+      display: none;
+    }
+  }
+
+  .select2-results {
+    .select2-results__options {
+      max-height: none;
+    }
+
+    &__option {
+      text-align: center;
+      @include caption--small;
+      border-bottom: 1px solid $cl_gray_light;
+      padding: 20px 0;
+      @include groovy(all);
+
+      @include at-query($min, $screen-sm) {
+        font-size: 17px;
+      }
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+    }
+  }
+
+  &--open .select2-dropdown {
+    top: 5px;
+  }
+
+  .select2-dropdown {
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+}
+
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+  display: none;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected],
+.select2-container--default .select2-results__option[aria-selected=true] {
+  background-color: #fff;
+  color: $spanish-roast;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  right: 6px;
+
+  @include at-query($min, $screen-lg) {
+    right: 23px;
+  }
+}
+
+
+.select2-container .select2-selection .select2-selection__rendered {
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    border: solid $cl_blue;
+    border-width: 0 2px 2px 0;
+    padding: 2px;
+    top: 8px;
+    margin-left: 8px;
+    transition: transform 0.2s ease, margin-bottom 0.2s ease;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+}
+
+.select2-container--default.select2-container--open .select2-selection .select2-selection__rendered {
+  &:after {
+    border-width: 2px 0 0 2px;
+    top: 10px;
+  }
+}
