@@ -21,3 +21,10 @@ Before [upgrading to CockroachDB v25.1]({% link v25.1/upgrade-cockroach-version.
     ``` ALTER ROLE ALL SET autocommit_before_ddl = false; ``` 
   
     [#140156][#140156]
+
+
+[#133610]: https://github.com/cockroachdb/cockroach/pull/133610
+[#134829]: https://github.com/cockroachdb/cockroach/pull/134829
+[#134516]: https://github.com/cockroachdb/cockroach/pull/134516
+[#138786]: https://github.com/cockroachdb/cockroach/pull/138786
+[#140156]: https://github.com/cockroachdb/cockroach/pull/140156
