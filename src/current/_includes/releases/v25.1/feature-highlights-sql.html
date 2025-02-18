@@ -14,23 +14,10 @@
  </thead>
  <tbody>
   <tr>
-   <td>
-    <p class="feature-summary">Admission Control Available on SQL Writes</p>
-    <p class="feature-description">
-      Added support for replication admission control on SQL writes, allowing writes and background cluster operations to be paced to prevent overloading the cluster during node restarts or joins.
-    </p>
-   </td>
-   <td>25.1</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-   <td class="icon-center">{% include icon-yes.html %}</td>
-  </tr>
-  <tr>
     <td>
-     <p class="feature-summary">ALTER COLUMN Type Now Generally Available</p>
+     <p class="feature-summary"><pre><code>ALTER COLUMN TYPE</code></pre> Now Generally Available</p>
      <p class="feature-description">
-      ALTER COLUMN TYPE is now generally available (GA). This provides enhanced schema flexibility for your CockroachDB deployments. This release significantly expands the capabilities of ALTER COLUMN TYPE and simplifies its usage.
+      <a href="https://www.cockroachlabs.com/docs/stable/alter-table#alter-column-data-types"><pre><code>ALTER COLUMN TYPE</code></pre></a> is now generally available (GA). This provides enhanced schema flexibility for your CockroachDB deployments. This release significantly expands the capabilities of <pre><code>ALTER COLUMN TYPE</code></pre> and simplifies its usage.
 
       Key improvements include:
       <ul>
@@ -51,7 +38,7 @@
     <td>
      <p class="feature-summary">Transactions Automatically Commit Before DDL Statements</p>
      <p class="feature-description">
-      CockroachDB now automatically commits the current transaction before executing DDL statements. With this change, data definition language (DDL) statements now trigger an automatic commit of any preceding data manipulation language (DML) statements. This change eliminates common errors from mixing DDL and DML. The cluster setting `autocommit_before_ddl` enables this behavior and is set to `on` by default. To disable this behavior run `ALTER ROLE ALL SET autocommit_before_ddl = off;`. See the backward incompatible changes section for additional information.
+      CockroachDB now automatically commits the current transaction before executing DDL statements. With this change, data definition language (DDL) statements now trigger an automatic commit of any preceding data manipulation language (DML) statements. This change eliminates common errors from mixing DDL and DML. The cluster setting <pre><code>autocommit_before_ddl</code></pre> enables this behavior and is set to <pre><code>on</code></pre> by default. To disable this behavior run <pre><code>ALTER ROLE ALL SET autocommit_before_ddl = off;</code></pre>. See the <a href="https://www.cockroachlabs.com/docs/releases/v25.1#v25-1-0-backward-incompatible-changes">backward incompatible changes</a> section for additional information.
      </p>
     </td>
     <td>25.1</td>
