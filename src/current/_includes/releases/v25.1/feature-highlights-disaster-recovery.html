@@ -15,35 +15,16 @@
  <tbody>
   <tr>
    <td>
-    <p class="feature-summary">SELECT now supported on PCR standby clusters</p>
+    <p class="feature-summary">Now Supporting Workload Identify for Azure Blob Storage</p>
     <p class="feature-description">
-      <a href="https://cockroachlabs.com/docs/v24.3/physical-cluster-replication-overview.html">Physical cluster replication (PCR)</a> has been enhanced to support <code>SELECT</code> operations on standby clusters. This enables you to scale read performance by running, for example, non-critical workloads on standby clusters.  
+      CockroachDB now supports Workload Identity for implicit authentication with <a href="https://www.cockroachlabs.com/docs/dev/cloud-storage-authentication?filters=azure#azure-blob-storage-implicit-authentication">Azure Blob Storage</a>.  
     </p>
    </td>
-   <td>24.3</td>
+   <td>25.1</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
-   <td class="icon-center">{% include icon-no.html %}</td>
-   <td class="icon-center">{% include icon-no.html %}</td>
-   <td class="icon-center">{% include icon-no.html %}</td>
-</tr>
-  <tr>
-    <td>
-     <p class="feature-summary">Logical Data Replication in Preview</p>
-     <p class="feature-description">
-      <a href="https://cockroachlabs.com/docs/v24.3/logical-data-replication-overview.html">Logical data replication (LDR)</a> continuously replicates tables between an active source CockroachDB cluster to an active destination CockroachDB cluster. Both source and destination can receive application reads and writes, and participate in bidirectional LDR replication for eventual consistency in the replicating tables.
-      </p>
-      <p class="feature-description">
-      The active-active setup between clusters can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Each cluster in an LDR job still benefits individually from multi-active availability with CockroachDB's built-in Raft replication providing data consistency across nodes, zones, and regions. 
-     </p>
-     <p class="feature-description">
-      This feature is in Preview.
-     </p>
-    </td>
-    <td>24.3</td>
-    <td class="icon-center">{% include icon-yes.html %}</td>
-    <td class="icon-center">{% include icon-no.html %}</td>
-    <td class="icon-center">{% include icon-no.html %}</td>
-    <td class="icon-center">{% include icon-no.html %}</td>
-   </tr>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
  </tbody>
 </table>

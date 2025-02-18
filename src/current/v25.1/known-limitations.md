@@ -1,5 +1,5 @@
 ---
-title: Known Limitations in CockroachDB v24.3
+title: Known Limitations in CockroachDB v25.1
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 keywords: limitations, known limitations, unsupported features, PostgreSQL compatibility
@@ -11,19 +11,6 @@ docs_area: releases
 ## New limitations in {{ page.version.version }}
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
-
-### Triggers
-
-{% include {{ page.version.version }}/known-limitations/trigger-limitations.md %}
-
-### Logical data replication (LDR)
-
-- {% include {{ page.version.version }}/known-limitations/ldr-triggers.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-udfs.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-sequences.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-indexes.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-column-families.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-composite-primary.md %}
 
 {% comment %}
 {{site.data.alerts.callout_info}}
@@ -127,6 +114,10 @@ By default, CockroachDB orders `NULL`s before all other values. For compatibilit
 {% include {{ page.version.version }}/known-limitations/routine-limitations.md %}
 {% include {{ page.version.version }}/known-limitations/stored-proc-limitations.md %}
 {% include {{ page.version.version }}/known-limitations/udf-limitations.md %}
+
+### Triggers
+
+{% include {{ page.version.version }}/known-limitations/trigger-limitations.md %}
 
 ### Transactions
 
@@ -482,6 +473,17 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 #### `SHOW BACKUP` does not support symlinks for nodelocal
 
 {% include {{page.version.version}}/known-limitations/show-backup-symlink.md %}
+
+### High Availability
+
+#### Logical data replication (LDR)
+
+- {% include {{ page.version.version }}/known-limitations/ldr-triggers.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-udfs.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-sequences.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-indexes.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-composite-primary.md %}
 
 ### Change data capture
 
