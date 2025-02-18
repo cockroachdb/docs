@@ -12,11 +12,9 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
-{% comment %}
 {{site.data.alerts.callout_info}}
 Limitations will be added as they are discovered.
 {{site.data.alerts.end}}
-{% endcomment %}
 
 ## Limitations from {{ previous_version }} and earlier
 
