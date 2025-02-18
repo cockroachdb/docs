@@ -6,6 +6,8 @@ Before [upgrading to CockroachDB v25.1]({% link v25.1/upgrade-cockroach-version.
 
 - `BACKUP`/`RESTORE` statements no longer return index entries and bytes backed up/restored. [#134516][#134516]
 
+- Updated the default for `legacy_varchar_typing` session setting. This setting reverts the changes of [#133037](https://github.com/cockroachdb/cockroach/pull/133037) that causes the change in typing behavior described in [#137837](https://github.com/cockroachdb/cockroach/pull/137837). Specifically, it makes type-checking and overload resolution ignore the newly added "unpreferred" overloads. As of v25.1.0 this setting defaults to `off`. [#137844][#137844]
+
 - Several metrics are redundant and have been removed. The following list maps each removed metric to an existing, identical metric. [#138786][#138786]
   - Removed `sql.schema_changer.running`, which is redundant with `jobs.schema_change.currently_running`.
   - Removed `sql.schema_changer.successes`, which is redundant with `jobs.schema_change.resume_completed`.
@@ -26,5 +28,6 @@ Before [upgrading to CockroachDB v25.1]({% link v25.1/upgrade-cockroach-version.
 [#133610]: https://github.com/cockroachdb/cockroach/pull/133610
 [#134829]: https://github.com/cockroachdb/cockroach/pull/134829
 [#134516]: https://github.com/cockroachdb/cockroach/pull/134516
+[#137844]: https://github.com/cockroachdb/cockroach/pull/137844
 [#138786]: https://github.com/cockroachdb/cockroach/pull/138786
 [#140156]: https://github.com/cockroachdb/cockroach/pull/140156
