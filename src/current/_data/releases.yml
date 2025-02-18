@@ -8200,9 +8200,6 @@
   source: true
   previous_release: v25.1.0-beta.3
 
-
-###### EDIT THE SECTION BELOW
-
 - release_name: v25.1.0
   major_version: v25.1
   release_date: '2025-02-18'
