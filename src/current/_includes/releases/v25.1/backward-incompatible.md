@@ -1,10 +1,33 @@
-Before [upgrading to CockroachDB v24.3]({% link v24.3/upgrade-cockroach-version.md %}), be sure to review the following backward-incompatible changes, as well as [key cluster setting changes](#v24-3-0-cluster-settings), and adjust your deployment as necessary.
+Before [upgrading to CockroachDB v25.1]({% link v25.1/upgrade-cockroach-version.md %}), be sure to review the following backward-incompatible changes, as well as [key cluster setting changes](#v25-1-0-cluster-settings), and adjust your deployment as necessary.
 
-If you plan to upgrade to v24.3 directly from v24.1 and skip v24.2, be sure to also review the [v24.2 release notes]({% link releases/v24.2.md %}) for backward-incompatible changes from v24.1.
+- The old `BACKUP TO`, `RESTORE FROM <collectionURI>`, and `SHOW BACKUP IN <collectionURI>` syntaxes are now fully deprecated and no longer usable. [#133610][#133610]
 
-- Upgrading to v24.3 is blocked if no [license]({% link v24.3/licensing-faqs.md %}) is installed, or if a trial/free license is installed with telemetry disabled. [#130576][#130576]
+- Altering a paused backup schedule's recurrence or location no longer resumes the schedule. [#134829][#134829]
 
-[#130576]: https://github.com/cockroachdb/cockroach/pull/130576
+- `BACKUP`/`RESTORE` statements no longer return index entries and bytes backed up/restored. [#134516][#134516]
 
-{% comment %}Remove this anchor when it is added to the v24.3.0 GA release notes{% endcomment %}
-<a id="v24-3-0-cluster-settings"></a>
+- Introduced the `legacy_varchar_typing` session setting. If `on`, type checking and overload resolution for VARCHAR types ignore overloads that cause errors, allowing comparisons between VARCHAR and non-STRING-like placeholder values to execute successfully. If `off`, type checking of these comparisons is more strict and must be handled with explicit type casts. As of v25.1.0 this setting defaults to `off`. [#137844][#137844]
+
+- Several metrics are redundant and have been removed. The following list maps each removed metric to an existing, identical metric. [#138786][#138786]
+  - Removed `sql.schema_changer.running`, which is redundant with `jobs.schema_change.currently_running`.
+  - Removed `sql.schema_changer.successes`, which is redundant with `jobs.schema_change.resume_completed`.
+  - Removed `sql.schema_changer.retry_errors`, which is redundant with `jobs.schema_change.resume_retry_error`.
+  - Removed `sql.schema_changer.permanent_errors`, which is redundant with `jobs.schema_change.resume_failed`.
+
+- The default value of the `autocommit_before_ddl` session variable is now `true`. This will cause any schema change statement that is sent during a transaction to make the current transaction commit before executing the schema change in a separate transaction.
+
+    This change is being made because CockroachDB does not have full support for multiple schema changes in a transaction, as described [here]({% link v25.1/online-schema-changes.md %}#schema-changes-within-transactions).
+
+    Users who do not desire the autocommit behavior can preserve the old behavior by changing the default value of `autocommit_before_ddl` with a command such as:
+
+    ``` ALTER ROLE ALL SET autocommit_before_ddl = false; ``` 
+  
+    [#140156][#140156]
+
+
+[#133610]: https://github.com/cockroachdb/cockroach/pull/133610
+[#134829]: https://github.com/cockroachdb/cockroach/pull/134829
+[#134516]: https://github.com/cockroachdb/cockroach/pull/134516
+[#137844]: https://github.com/cockroachdb/cockroach/pull/137844
+[#138786]: https://github.com/cockroachdb/cockroach/pull/138786
+[#140156]: https://github.com/cockroachdb/cockroach/pull/140156
