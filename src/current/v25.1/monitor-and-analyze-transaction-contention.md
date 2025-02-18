@@ -4,7 +4,7 @@ summary: How to monitor transaction contention using console, metrics, and crdb_
 toc: true
 ---
 
-It is important to understand where [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) is occurring and how much of an impact it has on your workload. Contention is a normal part of database operations. In many cases, it has limited impact on a workload. For example, a large number of contention events that have a very short duration, may not cause a workload impact. Similarly, a small number of contention events with larger duration may be acceptable if they occur off the “user path”. However, when contention substantially contributes to query latency, then it should be addressed.
+Understanding where [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) occurs and its impact on your workload is crucial. Contention is a normal part of database operations. In many cases, it has limited impact on a workload. For example, a large number of contention events that have a very short duration, may not cause a workload impact. Similarly, a small number of contention events with larger duration may be acceptable if they occur off the “user path”. However, when contention substantially contributes to query latency, then it should be addressed.
 
 This page shows how to monitor and analyze two types of contention: [lock contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) and [serializable conflicts]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). These types of contention are exposed via different observability mechanisms:
 
@@ -119,12 +119,12 @@ Because these metrics are not broken down by database, they can be difficult to 
 
 The [`crdb_internal`]({% link {{ page.version.version }}/crdb-internal.md %}) system catalog is a schema that contains information about internal objects, processes, and metrics related to a specific database. `crdb_internal` tables are read-only.
 
-### `transaction_contention_events`
+### `transaction_contention_events` table
 
 The [`crdb_internal.transaction_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events) virtual table contains information about historical transaction contention events. By default, lock contention events and serializable conflicts that have a blocking transaction are persisted in memory on each node and exposed via SQL by this virtual table. 
 
 {{site.data.alerts.callout_danger}}
-When the `crdb_internal.transaction_contention_events` virtual table is queried, RPCs are sent to every node in the cluster to get the in-memory events, which may be a somewhat expensive operation. Therefore, it is recommended that the table is not polled on frequent intervals that could cause excessive resource usage.
+Querying `crdb_internal.transaction_contention_events` triggers RPCs to every node, making it a resource-intensive operation. Avoid frequent polling to minimize resource usage.
 {{site.data.alerts.end}}
 
 Several cluster settings determine how events are logged to this table. For most uses, the default cluster settings are appropriate.
@@ -136,27 +136,9 @@ Setting | Type | Default | Description
 `sql.contention.event_store.resolution_interval  ` | duration | `30s ` | the interval at which transaction fingerprint ID resolution is performed (set to 0 to disable)
 `sql.contention.record_serialization_conflicts.enabled` | boolean | `true` | enables recording 40001 errors with conflicting txn meta as SERIALIZATION_CONFLICT contention events into crdb_internal.transaction_contention_events
 
-The table is defined as follows:
+The table columns are as follows:
 
-``` sql
-CREATE TABLE crdb_internal.transaction_contention_events (
-    collection_ts TIMESTAMPTZ NOT NULL,
-    blocking_txn_id UUID NOT NULL,
-    blocking_txn_fingerprint_id BYTES NOT NULL,
-    waiting_txn_id UUID NOT NULL,
-    waiting_txn_fingerprint_id BYTES NOT NULL,
-    contention_duration INTERVAL NOT NULL,
-    contending_key BYTES NOT NULL,
-    contending_pretty_key STRING NOT NULL,
-    waiting_stmt_id STRING NOT NULL,
-    waiting_stmt_fingerprint_id BYTES NOT NULL,
-    database_name STRING NOT NULL,
-    schema_name STRING NOT NULL,
-    table_name STRING NOT NULL,
-    index_name STRING NULL,
-    contention_type STRING NOT NULL
-)
-```
+{% include {{ page.version.version }}/transaction-contention-events-columns.md %}
 
 The transaction and statement fingerprint IDs (`*_txn_fingerprint_id` and `*_stmt_fingerprint_id`) columns are hexadecimal values that can be used to look up the SQL and other information from the [`crdb_internal.transaction_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_statistics) and [`crdb_internal.statement_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#statement_statistics) tables. These should not be confused with the transaction and statement IDs (`*_txn_id` and `*_stmt_id`), which are unique for each transaction and statement execution.
 
@@ -194,15 +176,204 @@ Because querying the `crdb_internal.transaction_contention_events` table require
 
 ## Analyze using `crdb_internal` tables
 
+To analyze the specific causes of contention, use the `crdb_internal.transaction_contention_events`, `crdb_internal.transaction_statistics` and `crdb_internal.statement_statistics` tables.
 
+First, query for the frequency and duration of contention events during a specific time period. These can be summarized at a database, schema, table, and index level to make it easy to identify if any workload has significant lock contention. Since some contention events are normal, the frequency and duration of contention events can be compared to the overall workload volume to determine the impact.
+
+Next, individual transactions and statements can be analyzed to understand the specific causes and impacts of the contention. The transaction and statement fingerprints can be used to look up detailed information from the `crdb_internal.transaction_statistics` and `crdb_internal.statement_statistics` tables, such as the specific SQL.
+
+### Run `insights` workload
+
+To analyze the specific cause of contention on the sample `insights` workload, you will use 2 terminals.
+
+1. In Terminal 1, use the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to start a temporary, in-memory CockroachDB cluster of one node. Once the cluster is started, an interactive SQL shell will connect to that cluster. This shell will be used in the analysis process.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach demo --no-example-database --insecure
+    ~~~
+
+1. In Terminal 2, use [cockroach workload]({% link {{ page.version.version }}/cockroach-workload.md %}) to load the initial schema on the demo cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach workload init insights 'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+    Then, run the workload for 10 minutes:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach workload run insights --concurrency=128 --duration=10m 'postgresql://root@localhost:26257?sslmode=disable'
+    ~~~
+
+    You'll see per-operation statistics print to standard output every second:
+    
+    ~~~
+    _elapsed___errors__ops/sec(inst)___ops/sec(cum)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)
+        1.0s        0            4.0            4.0     25.2     60.8     60.8     60.8 joinOnNonIndexColumn
+        1.0s        0          127.7          127.8     39.8     71.3     79.7     79.7 orderByOnNonIndexColumn
+        1.0s        0          127.7          127.8     62.9     75.5     83.9     83.9 transfer
+        2.0s        0            0.5            0.5    973.1    973.1    973.1    973.1 contention
+        ...
+    ~~~
+
+    After the specified duration (10 minutes in this case), the workload will stop and you'll see totals printed to standard output:
+
+    ~~~
+    _elapsed___errors_____ops(total)___ops/sec(cum)__avg(ms)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)__result
+      600.0s        0          23739           39.6   3226.8   3758.1   6174.0   7784.6  12884.9
+    ~~~
+
+1.  In the interactive SQL shell in Terminal 1, run the SQL queries in this test scenario.
+
+### `transaction_contention_events`
+
+#### Query 1 time period
+
+When analyzing contention in a workload, you need the time period when it occurred. For this test scenario, get the time period of contention events by finding the `min` and `max` of the `collection_ts` column. Adjust [Query 2](#query-2-frequency-and-duration) and [Query 3](#query-3-blocking-and-waiting-transaction-fingerprint-ids) with this time period clause.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT CONCAT('BETWEEN ''',MIN(collection_ts),''' AND ''', MAX(collection_ts),'''') FROM crdb_internal.transaction_contention_events;
+~~~
+
+~~~
+                                    concat
+-------------------------------------------------------------------------------
+  BETWEEN '2025-02-18 20:16:18.906348+00' AND '2025-02-18 20:56:25.030577+00'
+~~~
+
+#### Query 2 frequency and duration
+
+Find the frequency, total duration, and average duration of contention events per database, schema, table, and index for the test time period. Internal contention events (e.g., to `system` tables) are excluded by omitting the fingerprints with the pattern `'0000000000000000'`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT COUNT(*) as cnt,
+  SUM(contention_duration) as duration,                
+  SUM(contention_duration)/count(*) as avg_duration,
+  database_name, schema_name, table_name, index_name, contention_type
+FROM crdb_internal.transaction_contention_events
+WHERE collection_ts BETWEEN '2025-02-18 20:16:18.906348+00' AND '2025-02-18 20:56:25.030577+00'
+  AND encode(blocking_txn_fingerprint_id, 'hex') != '0000000000000000'
+  AND encode(waiting_txn_fingerprint_id, 'hex') != '0000000000000000'
+GROUP BY database_name, schema_name, table_name, index_name, contention_type
+ORDER BY COUNT(*) desc;
+~~~
+
+~~~
+  cnt  |    duration     |  avg_duration   | database_name | schema_name |        table_name         |           index_name           | contention_type
+-------+-----------------+-----------------+---------------+-------------+---------------------------+--------------------------------+------------------
+  1281 | 00:11:37.329786 | 00:00:00.544364 | insights      | public      | insights_workload_table_0 | insights_workload_table_0_pkey | LOCK_WAIT
+   157 | 00:04:32.919447 | 00:00:01.73834  | insights      | public      | insights_workload_table_1 | insights_workload_table_1_pkey | LOCK_WAIT
+~~~
+
+These results show that the primary key `insights_workload_table_0_pkey` had 1281 contention events in the time period with a total duration of `11m37.3s` and an average duration of `544ms`.
+
+#### Query 3 blocking and waiting transaction fingerprint IDs
+
+To find the top 2 combinations of blocking transaction and waiting transactions and statements, modify the previous query by:
+
+- Grouping by `blocking_txn_fingerprint_id, waiting_txn_fingerprint_id,waiting_stmt_fingerprint_id`.
+- Filtering by `database_name`, `table_name`, and `index_name`.
+- Then, placing the resulting query in a [common table expression (CTE)]({% link {{ page.version.version }}/common-table-expressions.md %}).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+With x AS (
+SELECT COUNT(*) AS cnt, 
+  SUM(contention_duration) as duration,
+  SUM(contention_duration)/count(*) as avg_duration,
+  blocking_txn_fingerprint_id, waiting_txn_fingerprint_id, waiting_stmt_fingerprint_id,
+  database_name, schema_name, table_name, index_name, contention_type
+FROM crdb_internal.transaction_contention_events
+WHERE collection_ts BETWEEN '2025-02-18 20:16:18.906348+00' AND '2025-02-18 20:56:25.030577+00'
+  AND encode(blocking_txn_fingerprint_id, 'hex') != '0000000000000000'
+  AND encode(waiting_txn_fingerprint_id, 'hex') != '0000000000000000'
+  AND database_name = 'insights' AND table_name = 'insights_workload_table_0' AND index_name = 'insights_workload_table_0_pkey'
+GROUP BY blocking_txn_fingerprint_id, waiting_txn_fingerprint_id, waiting_stmt_fingerprint_id, database_name, schema_name, table_name, index_name, contention_type
+) 
+SELECT row_number() OVER (), *
+  FROM (
+        SELECT cnt, blocking_txn_fingerprint_id, waiting_txn_fingerprint_id, waiting_stmt_fingerprint_id
+        FROM x ORDER BY cnt DESC LIMIT 2
+  );
+
+~~~
+
+~~~
+  row_number | cnt | blocking_txn_fingerprint_id | waiting_txn_fingerprint_id | waiting_stmt_fingerprint_id
+-------------+-----+-----------------------------+----------------------------+------------------------------
+           1 | 551 | \xebdfe9282ddfd5bd          | \x275ef4f9eea20099         | \x883d49b568a3b746
+           2 | 288 | \x966b8907aeed74ec          | \x9df582e8f8802926         | \x32963fa47e819ef9
+~~~
+
+### `transaction_statistics`
+
+#### Query 4 blocking statement fingerprint IDs
+
+To get the statements associated with the blocking transaction (`\xebdfe9282ddfd5bd`) from `row_number 1`, we can query the `crdb_internal.transaction_statistics` table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT fingerprint_id as blocking_txn_fingerprint_id, app_name, metadata->>'stmtFingerprintIDs' AS blocking_stmt_fingerprint_ids
+FROM crdb_internal.transaction_statistics
+WHERE fingerprint_id = '\xebdfe9282ddfd5bd' LIMIT 1;
+~~~
+
+~~~
+  blocking_txn_fingerprint_id | app_name |                blocking_stmt_fingerprint_ids
+------------------------------+----------+---------------------------------------------------------------
+  \xebdfe9282ddfd5bd          | insights | ["4bb36019649a9816", "47778d05a0e698a4", "845cbd5dab02f860"]
+~~~
+
+### `statement_statistics`
+
+#### Query 5 blocking statement SQL
+
+To get the SQL associated with the *blocking* statements, query the `crdb_internal.statement_statistics` table using the fingerprint IDs previously found.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT fingerprint_id as blocking_stmt_fingerprint_id, app_name, metadata->>'query' AS query
+FROM crdb_internal.statement_statistics
+WHERE transaction_fingerprint_id='\xebdfe9282ddfd5bd' and fingerprint_id in ('\x4bb36019649a9816','\x47778d05a0e698a4','\x845cbd5dab02f860')
+ORDER BY fingerprint_id
+~~~
+
+~~~
+  blocking_stmt_fingerprint_id | app_name |                                  query
+-------------------------------+----------+--------------------------------------------------------------------------
+  \x47778d05a0e698a4           | insights | SELECT pg_sleep(_)
+  \x4bb36019649a9816           | insights | UPDATE insights_workload_table_0 SET balance = balance - _ WHERE id = _
+  \x845cbd5dab02f860           | insights | UPDATE insights_workload_table_0 SET balance = balance + _ WHERE id = _
+~~~
+
+#### Query 6 waiting statement SQL
+
+To get the SQL associated with the *waiting* statement (`\x883d49b568a3b746` of transaction `\x275ef4f9eea20099`), again query the `crdb_internal.statement_statistics` table.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT fingerprint_id as waiting_stmt_fingerprint_id, app_name, metadata->>'query' AS query
+FROM crdb_internal.statement_statistics
+WHERE transaction_fingerprint_id='\x275ef4f9eea20099' and fingerprint_id = '\x883d49b568a3b746'
+~~~
+
+~~~
+  waiting_stmt_fingerprint_id | app_name |                                    query
+------------------------------+----------+------------------------------------------------------------------------------
+  \x883d49b568a3b746          | insights | SELECT balance FROM insights_workload_table_0 ORDER BY balance DESC LIMIT _
+~~~
+
+A similar process can be applied to the second set (`row_number 2`) of blocking and waiting transactions and statements.
+
+This process provides a view of the actual statements that are involved in the highest frequency of contention events.
 
 ## Analysis of production scenario
 
-
-
 ## Analyze using Insights page
-
-
 
 ## See Also
 
