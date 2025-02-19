@@ -15,12 +15,12 @@
  <tbody>
   <tr>
    <td>
-    <p class="feature-summary">IAM authentication support for Amazon MSK Serverless</p>
+    <p class="feature-summary">Added a Human-Readable Format for Timestamps</p>
     <p class="feature-description">
-     <a href="https://www.cockroachlabs.com/docs/v24.3/change-data-capture-overview.html">Changefeeds</a> support IAM Authentication with Amazon MSK Serverless clusters (Amazon Managed Streaming for Apache Kafka). This feature is generally available.
+     <a href="https://www.cockroachlabs.com/docs/v25.1/show-jobs.html#show-changefeed-jobs"><code>SHOW CHANGEFEED JOBS</code></a> output now includes timestamps in a human readable format via a new field called <code>readable_high_water_timestamp</code>. You can still find timestamps in the epoch nanosecond format in the field <code>high_water_timestamp</code>.
     </p>
    </td>
-   <td>24.3</td>
+   <td>25.1</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
    <td class="icon-center">{% include icon-yes.html %}</td>
    <td class="icon-center">{% include icon-yes.html %}</td>

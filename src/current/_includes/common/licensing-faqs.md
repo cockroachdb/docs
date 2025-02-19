@@ -150,6 +150,10 @@ No, government entities do not qualify for an **Enterprise Free** license. To ob
 
 <a name="single-node-clusters"></a>
 
+### Where can I deploy CockroachDB Enterprise Free licenses?  Does it have to be on my own hardware or cloud instance?
+
+When using an **Enterprise Free** license, an **Enterprise Free** license can only be used to run CockroachDB on your own on premises hardware or in your own account in the public clouds. If you plan to run CockroachDB in your customer's environment or public cloud instance, you will need an **Enterprise** License.
+
 ### Do I need a license key for running a single node cluster?
 
 No license key is required for developers running [single-node clusters]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) using the following [`cockroach` commands]({% link {{ page.version.version }}/cockroach-commands.md %}):
