@@ -1,6 +1,3 @@
-CockroachDB v24.3 is a Regular release. To upgrade to it, you must be running either:
+CockroachDB v25.1 is an Innovation release. To upgrade to it, you must be running v24.3, the previous Regular release.
 
-- [v24.2]({% link v24.2/upgrade-cockroach-version.md %}), the previous Innovation release.
-- [v24.1]({% link v24.1/upgrade-cockroach-version.md %}), the previous Regular release.
-
-Before continuing, upgrade to an appropriate version.
+Before continuing, [upgrade to v24.3]({% link v24.3/upgrade-cockroach-version.md %}).
