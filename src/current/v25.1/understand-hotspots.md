@@ -294,7 +294,9 @@ _Temporal hotspots_ refer to increased database usage during particular windows 
 
 ### Load Balancing Hotspot
 
-A _load balancing hotspot_ is a hotspot caused by a load balancer misconfiguration. Although this issue is often considered an afterthought because key hotspots are generally more common, it is important to note that all possible consumer groups can create uneven load on the cluster. For example, a [changefeed]({% link {{ page.version.version }}/changefeed-best-practices.md %}#maintain-system-resources-and-running-changefeeds) subscription can create hotspots if a single node is responsible for exporting all row updates within the cluster.
+A _load balancing hotspot_ is a hotspot caused by a [load balancer]({% link {{ page.version.version }}/recommended-production-settings.md %}#load-balancing) misconfiguration. This means that the connections are not distributed equally across all nodes. Instead, one node receives an excessive number of connections, resulting in an overload.
+
+Although this issue is often considered an afterthought because key hotspots are generally more common, it is important to note that all possible consumer groups can create uneven load on the cluster. For example, a [changefeed]({% link {{ page.version.version }}/changefeed-best-practices.md %}#maintain-system-resources-and-running-changefeeds) subscription can create hotspots if a single node is responsible for exporting all row updates within the cluster.
 
 ### Tenant Hotspot
 
