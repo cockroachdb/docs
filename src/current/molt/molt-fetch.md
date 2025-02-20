@@ -759,10 +759,10 @@ The following JSON example defines two type mappings:
 ]
 ~~~
 
-- `table` specifies the table that will use the custom type mappings in `column-type-map`. The value is written as `{schema}.{table}`.
-- `column` specifies the column that will use the custom type mapping. If `*` is specified, then all columns in the `table` with the matching `source-type` are converted.
-- `source-type` specifies the source type to be mapped.
-- `crdb-type` specifies the target CockroachDB [type]({% link {{ site.current_cloud_version }}/data-types.md %}) to be mapped.
+- `table` specifies the table that will use the custom type mappings in `column_type_map`. The value is written as `{schema}.{table}`.
+- `column` specifies the column that will use the custom type mapping. If `*` is specified, then all columns in the `table` with the matching `source_type` are converted.
+- `source_type` specifies the source type to be mapped.
+- `crdb_type` specifies the target CockroachDB [type]({% link {{ site.current_cloud_version }}/data-types.md %}) to be mapped.
 
 ### Transformations
 
