@@ -371,7 +371,194 @@ A similar process can be applied to the second set (`row_number 2`) of blocking 
 
 This process provides a view of the actual statements that are involved in the highest frequency of contention events.
 
-## Analysis of production scenario
+## Analysis of support scenario
+
+This section applies a variation of the previously described analysis process to a support scenario where high contention occurred during a period of increased errors.
+
+Review the DB Console Metrics graphs to get a high-level understanding of the contention events. The [SQL Statement Errors]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-errors) graph show an increase of errors during the time period of 9:16 to 9:23 UTC:
+
+<img src="{{ 'images/v25.1/contention-4.png' | relative_url }}" alt="DB Console SQL Statement Errors graph" style="border:1px solid #eee;max-width:100%" />
+
+The [SQL Statement Contention]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-contention) graph show a corresponding increase during the time period of 9:16 to 9:23 UTC: 
+
+<img src="{{ 'images/v25.1/contention-5.png' | relative_url }}" alt="DB Console SQL Statement Contention graph" style="border:1px solid #eee;max-width:100%" />
+
+The [Transaction Restarts]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#transaction-restarts) graph also show a corresponding increase during the time period of 9:16 to 9:23 UTC: 
+
+<img src="{{ 'images/v25.1/contention-6.png' | relative_url }}" alt="DB Console Transaction Restarts graph" style="border:1px solid #eee;max-width:100%" />
+
+These graphs help to understand the incident at a high-level, but not the specific transactions that are involved. To understand that, query `crdb_internal.transaction_contention_events` table.
+
+### `transaction_contention_events` for support scenario
+
+#### Query 1 frequency and duration
+
+Determine the frequency, total duration, and average duration of contention events per database, schema, table, and index for the time period. Internal contention events (e.g., to `system` tables) are excluded by omitting the fingerprints with the pattern `'0000000000000000'`.
+
+~~~ sql
+SELECT COUNT(*) as cnt,
+  SUM(contention_duration) as duration,                
+  SUM(contention_duration)/count(*) as avg_duration,
+  database_name, schema_name, table_name, index_name, contention_type
+FROM crdb_internal.transaction_contention_events
+WHERE collection_ts BETWEEN '2025-02-20 09:16:00' AND '2025-02-20 09:23:00'
+  AND encode(blocking_txn_fingerprint_id, 'hex') != '0000000000000000'
+  AND encode(waiting_txn_fingerprint_id, 'hex') != '0000000000000000'
+GROUP BY database_name, schema_name, table_name, index_name, contention_type
+ORDER BY COUNT(*) desc;
+  cnt  |    duration     |  avg_duration   | database_name       | schema_name | table_name  | index_name          | contention_type
+-------+-----------------+-----------------+---------------------+-------------+-------------+---------------------+------------------------
+  4756 | ...             | ...             | Support-permissions | public      | UserOptions | UserOptions+userKey | SERIALIZATION_CONFLICT
+     8 | ...             | ...             | Support-permissions | public      | UserOptions | UserOptions+id      | SERIALIZATION_CONFLICT
+~~~
+
+The results indicate that the main source of the contention is the `UserOptions+userKey` index on the `UserOptions` table.
+
+Examine the table schema for `UserOptions`. Notice that the `UserOptions+userKey` index is a secondary unique index on the `userKey` column.
+
+~~~ sql
+SHOW CREATE UserOptions;
+  table_name | create_statement
+-------------+-------------------------------------------------------------
+"UserOptions"| CREATE TABLE public."UserOptions" (
+             |     id INT8 NOT NULL DEFAULT unordered_unique_rowid(),
+             |     "updatedUtc" INT8 NOT NULL,
+             |     "userKey" STRING(40) NOT NULL,
+             |     ...
+             |     CONSTRAINT "UserOptions+id" PRIMARY KEY (id ASC),
+             |     UNIQUE INDEX "UserOptions+userKey" ("userKey" ASC),
+             |     ...
+             | )
+~~~
+
+#### Query 2 specific `contending_key`
+
+Determine which specific keys were involved in the contention events on that index:
+
+~~~ sql
+SELECT contending_key, crdb_internal.pretty_key(contending_key, 0) as pretty_key, count(*) 
+FROM crdb_internal.transaction_contention_events
+WHERE collection_ts BETWEEN '2025-02-20 09:16:00' AND '2025-02-20 09:23:00'
+  AND database_name = 'Support-permissions' AND table_name = 'UserOptions' AND index_name = 'UserOptions+userKey'
+GROUP BY contending_key, crdb_internal.pretty_key(contending_key, 0)
+ORDER BY count(*) DESC;
+
+                contending_key                |        pretty_key         | count
+-----------------------------------------------+---------------------------+--------
+  \xf67f8a123739635a316b6a64316f303d2d31000188 | /127/2/"abcdefghijklmn"/0 |  4756
+~~~
+
+The results indicate that a single key (`"abcdefghijklmn"`) accounts for all of the contention events during the incident time period.
+
+#### Query 3 blocking and waiting transaction fingerprint IDs
+
+Next, determine which specific transactions and statements were involved in the contention events. Modify the query by updating the `database_name`, `table_name`, and `index_name`. Increase the limit to `5`.
+
+~~~ sql
+With x AS (
+SELECT COUNT(*) AS cnt, 
+  SUM(contention_duration) as duration,
+  SUM(contention_duration)/count(*) as avg_duration,
+  blocking_txn_fingerprint_id, waiting_txn_fingerprint_id, waiting_stmt_fingerprint_id,
+  database_name, schema_name, table_name, index_name, contention_type
+FROM crdb_internal.transaction_contention_events
+WHERE collection_ts BETWEEN '2025-02-20 09:16:00' AND '2025-02-20 09:23:00'
+  AND encode(blocking_txn_fingerprint_id, 'hex') != '0000000000000000'
+  AND encode(waiting_txn_fingerprint_id, 'hex') != '0000000000000000'
+  AND database_name = 'Support-permissions' AND table_name = 'UserOptions' AND index_name = 'UserOptions+userKey'
+GROUP BY blocking_txn_fingerprint_id, waiting_txn_fingerprint_id, waiting_stmt_fingerprint_id, database_name, schema_name, table_name, index_name, contention_type
+) 
+SELECT row_number() OVER (), *
+  FROM (
+        SELECT cnt, blocking_txn_fingerprint_id, waiting_txn_fingerprint_id, waiting_stmt_fingerprint_id
+        FROM x ORDER BY cnt DESC LIMIT 5
+  );
+  row_number | cnt  | blocking_txn_fingerprint_id | waiting_txn_fingerprint_id | waiting_stmt_fingerprint_id
+-------------+------+-----------------------------+----------------------------+------------------------------
+           1 | 1331 | \x9b06dfa27c208be3          | \x9b06dfa27c208be3         | \x346562eefa213c3c
+           2 | 1164 | \x9b06f0a27c20af50          | \x9b06dfa27c208be3         | \x346562eefa213c3c
+           3 | 1115 | \x9b06dfa27c208be3          | \x9b06f0a27c20af50         | \x346562eefa213c3c
+           4 |  968 | \x9b06f0a27c20af50          | \x9b06f0a27c20af50         | \x346562eefa213c3c
+           5 |   52 | \xcbf29ce484222325          | \x9b06dfa27c208be3         | \x346562eefa213c3c
+~~~
+
+The results indicate that the top 4 rows, which accounted for the vast majority of the contention events, all involved two blocking transaction fingerprints: `\x9b06dfa27c208be3` and \x9b06f0a27c20af50. There is a single statement fingerprint that does all of the waiting: `\x346562eefa213c3c`.
+
+### `transaction_statistics` and `statement_statistics`
+
+To examine the statements associated with the two transaction fingerprints, query the `crdb_internal.transaction_statistics` and `crdb_internal.statement_statistics` tables.
+
+#### Query 4 row 1 blocking statement fingerprint IDs
+
+~~~ sql
+SELECT fingerprint_id as blocking_txn_fingerprint_id, app_name, metadata->>'stmtFingerprintIDs' AS blocking_stmt_fingerprint_ids
+FROM crdb_internal.transaction_statistics
+WHERE fingerprint_id = '\x9b06dfa27c208be3' LIMIT 1;
+  blocking_txn_fingerprint_id | app_name        | blocking_stmt_fingerprint_ids
+------------------------------+-----------------+-------------------------------
+  \x9b06dfa27c208be3          | permissions-api | ["346562eefa213c3c"]
+~~~
+
+#### Query 5 row 1 blocking statement metadata
+
+~~~ sql
+SELECT fingerprint_id as blocking_stmt_fingerprint_id, app_name, jsonb_pretty(metadata) AS metadata
+FROM crdb_internal.statement_statistics
+WHERE transaction_fingerprint_id='\x9b06dfa27c208be3' and fingerprint_id in ('\x346562eefa213c3c')
+ORDER BY fingerprint_id;
+    fingerprint_id   |       app_name        | metadata
+---------------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  \x346562eefa213c3c | permissions-api       | {
+                     |                       |     "db": "Support-permissions",
+                     |                       |     "distsql": false,
+                     |                       |     "failed": true,
+                     |                       |     "fullScan": false,
+                     |                       |     "implicitTxn": true,
+                     |                       |     "query": "INSERT INTO \"UserOptions\"(\"userKey\", \"updatedUtc\") VALUES ($1, $1) ON CONFLICT (\"userKey\") DO UPDATE SET \"updatedUtc\" = excluded.\"updatedUtc\" ...
+                     |                       |     "querySummary": "INSERT INTO \"UserOptions\".(\"userKey\", \"updatedUtc\")",
+                     |                       |     "stmtType": "TypeDML",
+                     |                       |     "vec": false
+                     |                       | }
+~~~
+
+#### Query 6 row 2 blocking statement fingerprint IDs
+
+~~~ sql
+SELECT fingerprint_id as blocking_txn_fingerprint_id, app_name, metadata->>'stmtFingerprintIDs' AS blocking_stmt_fingerprint_ids
+FROM crdb_internal.transaction_statistics
+WHERE fingerprint_id = '\x9b06f0a27c20af50' LIMIT 1;
+  blocking_txn_fingerprint_id | app_name        | blocking_stmt_fingerprint_ids
+------------------------------+-----------------+-------------------------------
+  \x9b06f0a27c20af50          | permissions-api | ["x34654deefa21188f"]
+~~~
+
+#### Query 7 row 2 blocking statement metadata
+
+~~~ sql
+SELECT fingerprint_id as blocking_stmt_fingerprint_id, app_name, jsonb_pretty(metadata) AS metadata
+FROM crdb_internal.statement_statistics
+WHERE transaction_fingerprint_id='\x9b06f0a27c20af50' and fingerprint_id in ('\x34654deefa21188f')
+ORDER BY fingerprint_id;
+    fingerprint_id   |       app_name        | metadata
+---------------------+-----------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  \x34654deefa21188f | permissions-api       | {
+                     |                       |     "db": "Support-permissions",
+                     |                       |     "distsql": false,
+                     |                       |     "failed": false,
+                     |                       |     "fullScan": false,
+                     |                       |     "implicitTxn": true,
+                     |                       |     "query": "INSERT INTO \"UserOptions\"(\"userKey\", \"updatedUtc\") VALUES ($1, $1) ON CONFLICT (\"userKey\") DO UPDATE SET \"updatedUtc\" = excluded.\"updatedUtc\" ...
+                     |                       |     "querySummary": "INSERT INTO \"UserOptions\".(\"userKey\", \"updatedUtc\")",
+                     |                       |     "stmtType": "TypeDML",
+                     |                       |     "vec": false
+                     |                       | }
+~~~
+
+Transactions from row 1 and row 2 are both the `InsertOrUpdate` operations with the first having failed executions (`"failed": true`) and the second successful (`"failed": false`).
+
+From this analysis, we can conclude that a large number of `InsertOrUpdate` operations were operating on the same `userKey` ("abcdefghijklmn") in the `UserOptions@UserOptions+userKey` index during the time period of the incident.
+
+The next steps would be to investigate what on the application side may have caused this large number of updates on a single key.
 
 ## Analyze using Insights page
 
