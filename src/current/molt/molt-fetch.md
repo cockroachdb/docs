@@ -740,19 +740,19 @@ If [`drop-on-target-and-recreate`](#target-table-handling) is set, MOLT Fetch au
 The following JSON example defines two type mappings:
 
 ~~~ json
-[
+ [
   {
     "table": "public.t1",
-    "column-type-map": [
+    "column_type_map": [
       {
         "column": "*",
-        "source-type": "int",
-        "crdb-type": "INT2"
+        "source_type": "int",
+        "crdb_type": "INT2"
       },
       {
         "column": "name",
-        "source-type": "varbit",
-        "crdb-type": "string"
+        "source_type": "varbit",
+        "crdb_type": "string"
       }
     ]
   }
