@@ -17,7 +17,7 @@ The [Continuous monitoring](#continuous-monitoring) section provides further con
 The remaining sections address analyzing contention once identified:
 
 - [Analyze using crdb_internal tables](#analyze-using-crdb_internal-tables): A process to determine which workload and queries are involved in the contention.
-- [Analysis of production scenario](#analysis-of-production-scenario): A real-life application of the previously described analysis process.
+- [Analysis of support scenario](#analysis-of-support-scenario): An application of the previously described analysis process to a support incident.
 - [Analyze using Insights page](#analyze-using-insights-page): Basic examples of lock contention are addressed.
 
 ## Monitor using console
