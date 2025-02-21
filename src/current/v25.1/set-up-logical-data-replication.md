@@ -10,12 +10,12 @@ toc: true
 Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-In this tutorial, you will set up [**logical data replication (LDR)**]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) streaming data from a source table to a destination table between two CockroachDB clusters. Both clusters are active and can serve traffic. You can apply the outlined steps to set up either:
+In this tutorial, you will set up [**logical data replication (LDR)**]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) streaming data from a source table to a destination table between two CockroachDB clusters. Both clusters are active and can serve traffic. You can apply the outlined steps to set up one of the following:
 
 - _Unidirectional_ LDR from a source table to a destination table (cluster A to cluster B) in one LDR job.
 - _Bidirectional_ LDR for the same table from cluster A to cluster B and from cluster B to cluster A. In a bidirectional setup, each cluster operates as both a source and a destination in separate LDR jobs.
 
-{% include_cached new-in.html version="v25.1" %} Create the new table on the destination cluster automatically and conduct a fast, offline initial scan with the [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}) syntax. `CREATE LOGICALLY REPLICATED` accepts `unidirectional` or `bidirectional on` as an option in order to create either one of the setups automatically. [Step 3](#step-3-start-ldr) outlines when to use the `CREATE LOGICALLY REPLICATED` or the `CREATE LOGICAL REPLICATION STREAM` syntax to start LDR.
+{% include_cached new-in.html version="v25.1" %} Create the new table on the destination cluster automatically and conduct a fast, offline initial scan with the [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}) syntax. `CREATE LOGICALLY REPLICATED` accepts `unidirectional` or `bidirectional on` as an option in order to create one of the setups automatically. [Step 3](#step-3-start-ldr) outlines when to use the `CREATE LOGICALLY REPLICATED` or the `CREATE LOGICAL REPLICATION STREAM` syntax to start LDR.
 
 In the following diagram, **LDR stream 1** creates a unidirectional LDR setup, introducing **LDR stream 2** extends the setup to bidirectional.
 
@@ -27,7 +27,7 @@ For more details on use cases, refer to the [Logical Data Replication Overview](
 
 If you're setting up bidirectional LDR, both clusters will act as a source and a destination in the respective LDR jobs. The high-level steps for setting up bidirectional or unidirectional LDR:
 
-1. Prepare the clusters with the required, settings, users, and privileges according to the LDR setup.
+1. Prepare the clusters with the required settings, users, and privileges according to the LDR setup.
 1. Set up [external connection(s)]({% link {{ page.version.version }}/create-external-connection.md %}) on the destination to hold the connection URI for the source.
 1. Start LDR from the destination cluster with your required modes and syntax.
 1. Check the status of the LDR job in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}).
@@ -159,14 +159,14 @@ In this step, you'll start the LDR stream(s) from the destination cluster. You c
 
 ### Syntax
 
-There are two different SQL statements for starting an LDR stream, depending on your requirements:
+LDR streams can be started using one of the following SQL statements, depending on your requirements:
 
-- {% include_cached new-in.html version="v25.1" %} [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}): Creates the new table on the destination cluster automatically, and conducts a fast, offline initial scan. `CREATE LOGICALLY REPLICATED` accepts `unidirectional` or `bidirectional on` as an option in order to create either one of the setups automatically. **The table cannot contain a [user-defined types]({% link {{ page.version.version }}/enum.md %}) or [foregin key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies.** Follow [these steps](#create-logically-replicated) for setup instructions.
+- {% include_cached new-in.html version="v25.1" %} [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}): Creates the new table on the destination cluster automatically, and conducts a fast, offline initial scan. `CREATE LOGICALLY REPLICATED` accepts `unidirectional` or `bidirectional on` as an option in order to create either one of the setups automatically. **The table cannot contain a [user-defined types]({% link {{ page.version.version }}/enum.md %}) or [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies.** Follow [these steps](#create-logically-replicated) for setup instructions.
 - [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %}): Starts the LDR stream after you've created the matching table on the destination cluster. **If the table contains user-defined types or foreign key dependencies, you must use this syntax.** Allows for manual creation of unidirectional or bidirectional LDR. Follow [these steps](#create-logical-replication-stream) for setup instructions.
 
-Also, for either syntax, note:
+Also, for both SQL statements, note:
 
-- It is necessary to use the fully qualified table name for the source table and destination table in the statement.
+- It is necessary to use the [fully qualified]({% link {{ page.version.version }}/sql-name-resolution.md %}) table name for the source table and destination table in the statement.
 - {% include {{ page.version.version }}/ldr/multiple-tables.md %}
 
 #### `CREATE LOGICALLY REPLICATED`
@@ -189,7 +189,7 @@ Use `CREATE LOGICALLY REPLICATED` to create either a unidirectional or bidirecti
     CREATE LOGICALLY REPLICATED TABLE {database.public.destination_table_name} FROM TABLE {database.public.source_table_name} ON 'external://source' WITH bidirectional ON 'external://destination';
     ~~~
 
-You can include multiple tables in the LDR stream for unidirectional or bidirectional setups. Ensure that the table name in the source table list and destination table list are in the same order:
+You can include multiple tables in the LDR stream for unidirectional or bidirectional setups. Ensure that the table name in the source table list and destination table list are in the same order so that the tables correctly map between the source and destination for replication:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -200,7 +200,7 @@ With the LDR streams created, move to [Step 4](#step-4-manage-and-monitor-the-ld
 
 #### `CREATE LOGICAL REPLICATION STREAM`
 
-Ensure you've created the table on the destination cluster with a matching schema definition to the source cluster table. From the **destination** cluster, start LDR. Use the fully qualified table name for the source and destination tables:
+Ensure you've created the table on the destination cluster with a matching schema definition to the source cluster table. From the **destination** cluster, start LDR. Use the [fully qualified]({% link {{ page.version.version }}/sql-name-resolution.md %}) table name for the source and destination tables:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
