@@ -16,8 +16,8 @@ The [Continuous monitoring](#continuous-monitoring) section provides further con
 
 The remaining sections address analyzing contention once identified:
 
-- [Analyze using crdb_internal tables](#analyze-using-crdb_internal-tables): A process to determine which workload and queries are involved in the contention.
-- [Analysis of support scenario](#analysis-of-support-scenario): An application of the previously described analysis process to a support incident.
+- [Analyze using `crdb_internal` tables](#analyze-using-crdb_internal-tables): A process to determine which workload and queries are involved in the contention.
+- [Analysis of support scenario](#analysis-of-support-scenario): An application of the previously described analysis process to a hypothetical support incident.
 - [Analyze using Insights page](#analyze-using-insights-page): Basic examples of lock contention are addressed.
 
 ## Monitor using console
@@ -373,7 +373,7 @@ This process provides a view of the actual statements that are involved in the h
 
 ## Analysis of support scenario
 
-This section applies a variation of the previously described analysis process to a support scenario where high contention occurred during a period of increased errors.
+This section applies a variation of the previously described analysis process to a hypothetical support scenario where high contention occurred during a period of increased errors.
 
 Review the DB Console Metrics graphs to get a high-level understanding of the contention events. The [SQL Statement Errors]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-errors) graph show an increase of errors during the time period of 9:16 to 9:23 UTC:
 
@@ -501,6 +501,8 @@ WHERE fingerprint_id = '\x9b06dfa27c208be3' LIMIT 1;
 
 #### Query 5 row 1 blocking statement metadata
 
+Instead of selecting the `metadata->>'query'` key as in [Query 5 blocking statement SQL](#query-5-blocking-statement-sql), select the whole `JSONB` `metadata` object. 
+
 ~~~ sql
 SELECT fingerprint_id as blocking_stmt_fingerprint_id, app_name, jsonb_pretty(metadata) AS metadata
 FROM crdb_internal.statement_statistics
@@ -520,6 +522,8 @@ ORDER BY fingerprint_id;
                      |                       |     "vec": false
                      |                       | }
 ~~~
+
+Note that in `metadata`, the key `"failed"` has the value of `true`.
 
 #### Query 6 row 2 blocking statement fingerprint IDs
 
@@ -554,13 +558,17 @@ ORDER BY fingerprint_id;
                      |                       | }
 ~~~
 
-Transactions from row 1 and row 2 are both the `InsertOrUpdate` operations with the first having failed executions (`"failed": true`) and the second successful (`"failed": false`).
+Note that in `metadata`, the key `"failed"` has the value of `false`.
 
-From this analysis, we can conclude that a large number of `InsertOrUpdate` operations were operating on the same `userKey` ("abcdefghijklmn") in the `UserOptions@UserOptions+userKey` index during the time period of the incident.
+Transactions from row 1 and row 2 are both the `INSERT` or `UPDATE` operations with the first having failed executions (`"failed": true`) and the second successful (`"failed": false`).
+
+From this analysis, we can conclude that a large number of `INSERT` or `UPDATE` operations were operating on the same `userKey` (`"abcdefghijklmn"`) in the `UserOptions@UserOptions+userKey` index during the time period of the incident.
 
 The next steps would be to investigate what on the application side may have caused this large number of updates on a single key.
 
 ## Analyze using Insights page
+
+While the previous analysis process uses the `crdb_internal` tables, the performance tuning tutorial [Troubleshoot Lock Contention]({% link {{ page.version.version }}/troubleshoot-lock-contention.md %}) gives basic examples to understand lock contention and how to analyze it using the Insights page.
 
 ## See Also
 
