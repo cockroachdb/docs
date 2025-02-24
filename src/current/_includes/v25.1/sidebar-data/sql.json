@@ -53,6 +53,12 @@
               ]
             },
             {
+                "title": "<code>ALTER JOB</code>",
+                "urls": [
+                  "/${VERSION}/alter-job.html"
+                ]
+            },
+            {
               "title": "<code>ALTER PARTITION</code>",
               "urls": [
                 "/${VERSION}/alter-partition.html"
@@ -167,9 +173,9 @@
               ]
             },
             {
-              "title": "<code>COPY FROM</code>",
+              "title": "<code>COPY</code>",
               "urls": [
-                "/${VERSION}/copy-from.html"
+                "/${VERSION}/copy.html"
               ]
             },
             {
@@ -200,6 +206,12 @@
               "title": "<code>CREATE INDEX</code>",
               "urls": [
                 "/${VERSION}/create-index.html"
+              ]
+            },
+            {
+              "title": "<code>CREATE LOGICALLY REPLICATED</code>",
+              "urls": [
+                "/${VERSION}/create-logically-replicated.html"
               ]
             },
             {
@@ -296,6 +308,12 @@
               "title": "<code>DELETE</code>",
               "urls": [
                 "/${VERSION}/delete.html"
+              ]
+            },
+            {
+              "title": "<code>DO</code>",
+              "urls": [
+                "/${VERSION}/do.html"
               ]
             },
             {
