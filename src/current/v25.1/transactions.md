@@ -264,97 +264,97 @@ What follows is an example of a very simple XA transaction that represents movin
 
 1. Create a table representing each system, and insert test data.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE TABLE IF NOT EXISTS system_a (
-    account_id SERIAL PRIMARY KEY,
-    account_number VARCHAR(20) UNIQUE NOT NULL,
-    balance NUMERIC(12,2) NOT NULL CHECK (balance >= 0),
-    owner_name VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE IF NOT EXISTS system_a (
+        account_id SERIAL PRIMARY KEY,
+        account_number VARCHAR(20) UNIQUE NOT NULL,
+        balance NUMERIC(12,2) NOT NULL CHECK (balance >= 0),
+        owner_name VARCHAR(100) NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
 
-CREATE TABLE IF NOT EXISTS system_b (
-    account_id SERIAL PRIMARY KEY,
-    account_number VARCHAR(20) UNIQUE NOT NULL,
-    balance NUMERIC(12,2) NOT NULL CHECK (balance >= 0),
-    owner_name VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
+    CREATE TABLE IF NOT EXISTS system_b (
+        account_id SERIAL PRIMARY KEY,
+        account_number VARCHAR(20) UNIQUE NOT NULL,
+        balance NUMERIC(12,2) NOT NULL CHECK (balance >= 0),
+        owner_name VARCHAR(100) NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
 
-INSERT INTO system_a (account_number, balance, owner_name) VALUES ('A12345', 10000.00, 'Alice Smith');
-INSERT INTO system_b (account_number, balance, owner_name) VALUES ('B67890', 5000.00, 'Bob Jones');
-~~~
+    INSERT INTO system_a (account_number, balance, owner_name) VALUES ('A12345', 10000.00, 'Alice Smith');
+    INSERT INTO system_b (account_number, balance, owner_name) VALUES ('B67890', 5000.00, 'Bob Jones');
+    ~~~
 
-1. start the transaction, and issue the actual sql statements that represent actions distributed across separate systems:
+1. Start the transaction, and issue the actual SQL statements that represent actions distributed across separate systems:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BEGIN;
-WITH old_balance AS (
-    SELECT balance AS current_balance
-    FROM system_a
-    WHERE account_number = 'A12345'
-  )
-  UPDATE system_a
-  SET balance = (SELECT current_balance FROM old_balance) - 1000
-  WHERE account_number = 'A12345';
-WITH old_balance AS (
-    SELECT balance AS current_balance
-    FROM system_b
-    WHERE account_number = 'B67890'
-  )
-  UPDATE system_b
-  SET balance = (SELECT current_balance FROM old_balance) + 1000
-  WHERE account_number = 'B67890';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    BEGIN;
+    WITH old_balance AS (
+        SELECT balance AS current_balance
+        FROM system_a
+        WHERE account_number = 'A12345'
+      )
+      UPDATE system_a
+      SET balance = (SELECT current_balance FROM old_balance) - 1000
+      WHERE account_number = 'A12345';
+    WITH old_balance AS (
+        SELECT balance AS current_balance
+        FROM system_b
+        WHERE account_number = 'B67890'
+      )
+      UPDATE system_b
+      SET balance = (SELECT current_balance FROM old_balance) + 1000
+      WHERE account_number = 'B67890';
+    ~~~
 
-1. mark the transaction as an xa transaction. `PREPARE TRANSACTION` puts the transaction in a special state with the constraint that after this point, *only* `COMMIT PREPARED` or `ROLLBACK PREPARED` statements are allowed.
+1. Mark the transaction as an XA transaction. `PREPARE TRANSACTION` puts the transaction in a special state with the constraint that after this point, *only* `COMMIT PREPARED` or `ROLLBACK PREPARED` statements are allowed.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-PREPARE TRANSACTION 'transfer_a12345_b67890';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    PREPARE TRANSACTION 'transfer_a12345_b67890';
+    ~~~
 
-1. commit (or rollback) the xa transaction:
+1. Commit (or rollback) the XA transaction:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-COMMIT PREPARED 'transfer_a_to_b';
--- ... or ROLLBACK PREPARED 'transfer_a_to_b'
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    COMMIT PREPARED 'transfer_a_to_b';
+    -- ... or ROLLBACK PREPARED 'transfer_a_to_b'
+    ~~~
 
 ### Inspect open XA transactions
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT * FROM pg_prepared_xacts;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM pg_prepared_xacts;
+    ~~~
 
-~~~
-  transaction |    gid          |           prepared           | owner | database
---------------+-----------------+------------------------------+-------+------------
-            0 | transfer_a_to_b | 2025-02-12 19:50:02.86884+00 | root  | defaultdb
-(1 row)
-~~~
+    ~~~
+      transaction |    gid          |           prepared           | owner | database
+    --------------+-----------------+------------------------------+-------+------------
+                0 | transfer_a_to_b | 2025-02-12 19:50:02.86884+00 | root  | defaultdb
+    (1 row)
+    ~~~
 
 ### Check the ages of XA transactions
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT
-    transaction,
-    prepared,
-    age(clock_timestamp(), prepared) as transaction_age
-  FROM pg_prepared_xacts;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT
+        transaction,
+        prepared,
+        age(clock_timestamp(), prepared) as transaction_age
+      FROM pg_prepared_xacts;
+    ~~~
 
-~~~
-  transaction |           prepared           | transaction_age
---------------+------------------------------+------------------
-            0 | 2025-02-12 19:50:02.86884+00 | 00:00:26.699268
-(1 row)
-~~~
+    ~~~
+      transaction |           prepared           | transaction_age
+    --------------+------------------------------+------------------
+                0 | 2025-02-12 19:50:02.86884+00 | 00:00:26.699268
+    (1 row)
+    ~~~
 
 ## See also
 
