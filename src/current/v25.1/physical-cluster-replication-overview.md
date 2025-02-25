@@ -1,4 +1,4 @@
---- 
+---
 title: Physical Cluster Replication
 summary: An overview of CockroachDB physical cluster replication (PCR).
 toc: true
