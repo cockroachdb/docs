@@ -155,6 +155,10 @@ You have a bidirectional LDR setup with a stream between cluster A to cluster B,
     CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name};
     ~~~
 
+    {{site.data.alerts.callout_info}}
+    {% include {{ page.version.version }}/ldr/use-create-logically-replicated.md %}
+    {{site.data.alerts.end}}
+
 #### Coordinate schema changes for unidirectional LDR 
 
 If you have a unidirectional LDR setup, you should cancel the running LDR stream and redirect all application traffic to the source cluster.
@@ -173,6 +177,10 @@ If you have a unidirectional LDR setup, you should cancel the running LDR stream
     ~~~ sql
     CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name};
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    {% include {{ page.version.version }}/ldr/use-create-logically-replicated.md %}
+    {{site.data.alerts.end}}
 
 ## Jobs and LDR
 
