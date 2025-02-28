@@ -165,6 +165,10 @@ Single-node clusters are not [throttled](#throttling).
 
 Generally, single-node clusters used for design, prototyping, testing, or development purposes in non-production, internal development environments do not require a license key.
 
+### Can a company with less than $10 million in annual revenue use the Enterprise Free license if the aggregate revenue of its parent company and affiliates exceeds this threshold?
+
+No, the **Enterprise Free** license is intended solely for organizations whose combined annual revenue, including the parent company and all affiliates, is under $10 million. If total annual revenues exceed this limit, the affiliate does not qualify for the **Enterprise Free** license.
+
 ## See also
 
 - [CockroachDB Software License][csl]
