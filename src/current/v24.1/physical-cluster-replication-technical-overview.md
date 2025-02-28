@@ -52,5 +52,5 @@ For the [cutover process]({% link {{ page.version.version }}/cutover-replication
 After reverting any necessary data, the standby virtual cluster is promoted as available to serve traffic and the replication job ends.
 
 {{site.data.alerts.callout_info}}
-For detail on cutting back to the primary cluster following a cutover, refer to [Cut back to the primary cluster]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-to-the-primary-cluster).
+For detail on cutting back to the primary cluster following a cutover, refer to [Cut back to the primary cluster]({% link {{ page.version.version }}/cutover-replication.md %}#cut-back-to-the-original-primary-cluster).
 {{site.data.alerts.end}}
