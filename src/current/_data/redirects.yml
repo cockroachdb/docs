@@ -282,6 +282,12 @@
   - 'migrate-from-serverless-to-dedicated.md'
   versions: ['cockroachcloud']
 
+- destination: migrate-to-cockroachdb.md
+  sources:
+    - migrate-from-postgres.md
+    - migrate-from-mysql.md
+  versions: ['v25.1']
+
 - destination: migration-overview.md
   sources: ['import-data.md']
   versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
