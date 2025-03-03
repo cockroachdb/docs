@@ -7,7 +7,7 @@ docs_area: releases
 {{site.data.alerts.callout_danger}}
 The CockroachDB versions on this page are no longer supported. For more information, refer to [Release Support Policy]({% link releases/release-support-policy.md %}#unsupported-versions). To download and learn about currently supported CockroachDB versions, refer to [CockroachDB Releases]({% link releases/index.md %}).
 {{site.data.alerts.end}}
-## Downloads
+## Unsupported Downloads
 
 {{ experimental_js_warning }}
 
@@ -28,8 +28,10 @@ The CockroachDB versions on this page are no longer supported. For more informat
 {% capture onclick_string %}onclick="{{ experimental_download_js }}"{% endcapture %}
 
 {% assign is_not_downloadable_message = "No longer available for download." %}
+
 {% assign current_date = "now" | date: "%Y-%m-%d" %}
-{% for v in versions %} {% comment %} Iterate through all major versions {% endcomment %}
+{% for v in versions %} 
+{% comment %} Iterate through all major versions {% endcomment %}
 {% assign maint_supp_exp_date = v.maint_supp_exp_date %}
 {% assign asst_supp_exp_date = v.asst_supp_exp_date %}
 
@@ -44,98 +46,114 @@ The CockroachDB versions on this page are no longer supported. For more informat
     {% assign in_lts = false %}
     {% assign comparison = nil %}
     {% assign skippable = false %}
+    {% assign has_initial_lts_patch = false %}
+    
     {% if v.release_date != "N/A" and v.maint_supp_exp_date != "N/A" %}
         {% assign released = true %}
         {% if v.asst_supp_exp_date == "N/A" %}
             {% assign skippable = true %}
         {% elsif v.initial_lts_patch != "N/A" %}
             {% assign has_lts_releases = true %}
+            {% assign has_initial_lts_patch = true %}
             {% assign lts_link = '&nbsp;(<a href="release-support-policy.html">LTS</a>)&nbsp;' %}
             {% capture lts_patch_string %}{{ v.initial_lts_patch | split: '.' | shift | shift }}{% endcapture %}
             {% assign lts_patch = lts_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
         {% endif %}
     {% endif %}
-     {% assign valid_release_date = false %}
-    {% if v.release_date != 'N/A' %}
-    {% assign valid_release_date = true %}
+    {% assign valid_release_date = false %}
+    {% assign release_date_parsed = v.release_date | date: '%Y-%m-%d' %}
+    {% if release_date_parsed != '' and release_date_parsed != 'N/A' %}
+        {% assign valid_release_date = true %}
     {% endif %}
 
-    {% assign invalid_maint_date = false %}
-    {% if v.maint_supp_exp_date != 'N/A' and v.maint_supp_exp_date <= current_date %}
-    {% assign invalid_maint_date = true %}
+    {% assign valid_maint_date = false %}
+    {% assign maint_date_parsed = v.maint_supp_exp_date | date: '%Y-%m-%d' %}
+    {% if maint_date_parsed != '' and maint_date_parsed != 'N/A' and maint_date_parsed >= current_date %}
+        {% assign valid_maint_date = true %}
     {% endif %}
 
-    {% assign invalid_asst_date = false %}
-    {% if v.asst_supp_exp_date == 'N/A' or v.asst_supp_exp_date <= current_date %}
-    {% assign invalid_asst_date = true %}
+    {% assign valid_asst_date = false %}
+    {% assign asst_date_parsed = v.asst_supp_exp_date | date: '%Y-%m-%d' %}
+    {% if asst_date_parsed != 'N/A' and asst_date_parsed >= current_date %}
+        {% assign valid_asst_date = true %}
     {% endif %}
 
-    {% assign is_not_lts_date = false %}
-    {% if v.lts_maint_supp_exp_date == 'N/A' and v.lts_asst_supp_exp_date == 'N/A' %}
-    {% assign is_not_lts_date = true %}
-    {% endif %}
-
-    {% assign invalid_lts_release = false %}
+    {% assign valid_lts_release = false %}
     {% assign lts_maint_date_parsed = v.lts_maint_supp_exp_date | date: '%Y-%m-%d' %}
     {% assign lts_asst_date_parsed = v.lts_asst_supp_exp_date | date: '%Y-%m-%d' %}
-    {% assign maint_asst_date_expired = false %}
-    {% if lts_maint_date_parsed <= current_date and  lts_asst_date_parsed <= current_date %}
-    {% assign maint_asst_date_expired = true %}
+    {% assign maint_asst_date_valid = false %}
+    
+    {% if lts_maint_date_parsed != '' and lts_maint_date_parsed != 'N/A' and lts_maint_date_parsed >= current_date %}
+        {% assign maint_asst_date_valid = true %}
     {% endif %}
+    
+    {% if lts_asst_date_parsed != '' and lts_asst_date_parsed != 'N/A' and lts_asst_date_parsed >= current_date %}
+        {% assign maint_asst_date_valid = true %}
+    {% endif %}
+    
     {% if lts_maint_date_parsed != '' and lts_maint_date_parsed != 'N/A' 
         and lts_asst_date_parsed != '' and lts_asst_date_parsed != 'N/A'
-        and maint_asst_date_expired %}
-        {% assign invalid_lts_release = true %}
+        and maint_asst_date_valid %}
+        {% assign valid_lts_release = true %}
     {% endif %}
-    {% assign invalid_normal_release = false %}
-     {% if valid_release_date and invalid_maint_date and invalid_asst_date %}
-        {% assign invalid_normal_release = true %}
-    {% endif %}
+    
+    {% assign has_any_unsupported_releases = false %}
+    {% for r in site.data.releases %}
+        {% if r.major_version == v.major_version %}
+            {% comment %} Check if this release is unsupported {% endcomment %}
+            {% assign is_unsupported = false %}
+            
+            {% comment %} Extract patch version for comparison {% endcomment %}
+            {% assign release_version_parts = r.release_name | split: "." %}
+            {% assign release_patch_part = 0 %}
+            {% if release_version_parts.size > 2 %}
+                {% assign release_patch_part = release_version_parts[2] | times: 1 %}
+            {% endif %}
+            
+            {% comment %} Extract LTS initial patch version for comparison {% endcomment %}
+            {% assign lts_version_parts = v.initial_lts_patch | split: "." %}
+            {% assign lts_patch_part = 0 %}
+            {% if lts_version_parts.size > 2 %}
+                {% assign lts_patch_part = lts_version_parts[2] | times: 1 %}
+            {% endif %}
+            
+            {% if has_initial_lts_patch %}
+                {% if release_patch_part >= lts_patch_part %}
+                    {% if lts_asst_date_parsed == 'N/A' or lts_asst_date_parsed < current_date %}
+                        {% assign is_unsupported = true %}
+                    {% endif %}
+                {% else %}
+                    {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                        {% assign is_unsupported = true %}
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                    {% assign is_unsupported = true %}
+                {% endif %}
+            {% endif %}
+            
+            {% if is_unsupported %}
+                {% assign has_any_unsupported_releases = true %}
+                {% break %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
 
-    {% assign invalid_normal_release_not_lts = false %}
-     {% if invalid_normal_release and is_not_lts_date %}
-        {% assign invalid_normal_release_not_lts = true %}
-    {% endif %}
-
-    {% if invalid_normal_release_not_lts  or invalid_lts_release %}
+    {% if has_any_unsupported_releases or v.release_date == "N/A" %}
 ### {{ v.major_version }}
 
-{% if DEBUG == true %}
-    released: {{ released }}<br />
-    has_lts_releases: {{ has_lts_releases }}<br />
-    lts_patch_string: {{ lts_patch_string }}<br />
-    lts_patch: {{ lts_patch }}<br />
-    v.initial_lts_patch: {{ v.initial_lts_patch }}<br />
-    v.major_version: {{ v.major_version }}<br />
-    has_lts_releases: {{ has_lts_releases }}<br />
-    v.release_date: {{ v.release_date }}<br />
-    v.initial_lts_release_date: {{ v.initial_lts_release_date }}<br />
-    skippable: {{ skippable }}<br /><br />
-{% endif %}
-
-{% if released == false %}
-CockroachDB {{ page.major_version }} is in active development and is not yet supported. The following [testing releases]({% link releases/index.md %}#release-types) are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments. When CockroachDB {{ page.major_version }} is Generally Available (GA), production releases will also be announced on this page.
+{% if v.release_date == "N/A" %}
+This version is no longer supported. For information about CockroachDB's support policy, see [Release Support Policy]({% link releases/release-support-policy.md %}).
 {% else %}
-CockroachDB {{ v.major_version }} is {% if skippable == true %}an [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases) that is optional for CockroachDB {{ site.data.products.advanced }}, CockroachDB {{ site.data.products.standard }}, and CockroachDB {{ site.data.products.core }} but required for CockroachDB {{ site.data.products.basic }}.{% else %}a required [Regular release]({% link releases/release-support-policy.md %}#regular-releases).{% endif %}{% if released == false %} It is still in development and not yet supported.{% endif %}{% unless latest_full_production_version.release_name != v.major_version %} CockroachDB {{ latest_full_production_version.release_name }} is the latest supported version.{% endunless %} To learn more, refer to [CockroachDB {{ latest.major_version }} Release Notes]({% link releases/{{ v.major_version }}.md %}).
+{% if has_initial_lts_patch %}
+CockroachDB {{ v.major_version }} is partially unsupported:
+- Versions before {{ v.initial_lts_patch }} are no longer supported as their support expired on {{ v.asst_supp_exp_date }}
+- LTS versions ({{ v.initial_lts_patch }} and later) are {% if lts_asst_date_parsed < current_date %}no longer supported as of {{ v.lts_asst_supp_exp_date }}{% else %}supported until {{ v.lts_asst_supp_exp_date }}{% endif %}
+{% else %}
+CockroachDB {{ v.major_version }} is no longer supported as of {{ v.asst_supp_exp_date }}. For information about CockroachDB's support policy, see [Release Support Policy]({% link releases/release-support-policy.md %}).
 {% endif %}
-
-Refer to [Major release types](https://www.cockroachlabs.com/docs/releases#major-releases) before installing or upgrading for release support details.
-{% comment %}Some old pages don't have feature highlights and won't get LTS{% endcomment %}
-{% unless v.major_version == 'v1.0' or
-      v.major_version == 'v1.1' or
-      v.major_version == 'v2.0' or
-      v.major_version == 'v2.1' or
-      v.major_version == 'v19.1' or
-      v.major_version == 'v19.2' or
-      v.major_version == 'v20.1' or
-      v.major_version == 'v20.2' or
-      v.major_version == 'v21.1' or
-      v.major_version == 'v21.2' or
-      v.major_version == 'v22.1' or
-      v.major_version == 'v22.2' or
-      released == false %}
-To learn what’s new in this release, refer to [Feature Highlights]({% link releases/{{ v.major_version }}.md %}#feature-highlights).
-{% endunless %}
+{% endif %}
 
 <div id="os-tabs" class="filters filters-big clearfix">
     <button id="linux" class="filter-button" data-scope="linux">Linux</button>
@@ -148,6 +166,53 @@ To learn what’s new in this release, refer to [Feature Highlights]({% link rel
     {% for s in sections %} {% comment %} For each major version, iterate through the sections. {% endcomment %}
 
         {% assign releases = site.data.releases | where_exp: "releases", "releases.major_version == v.major_version" | where_exp: "releases", "releases.release_type == s" | sort: "release_date" | reverse %} {% comment %} Fetch all releases for that major version based on release type (Production/Testing). {% endcomment %}
+
+        {% comment %} Filter for unsupported releases {% endcomment %}
+            {% assign unsupported_releases = "" | split: "," %}
+            {% for r in releases %}
+                {% assign is_unsupported = false %}
+                
+                {% comment %} Extract patch version for comparison {% endcomment %}
+                {% assign release_version_parts = r.release_name | split: "." %}
+                {% assign release_patch_part = 0 %}
+                {% if release_version_parts.size > 2 %}
+                    {% assign release_patch_part = release_version_parts[2] | times: 1 %}
+                {% endif %}
+                
+                {% comment %} Extract LTS initial patch version for comparison {% endcomment %}
+                {% assign lts_version_parts = v.initial_lts_patch | split: "." %}
+                {% assign lts_patch_part = 0 %}
+                {% if lts_version_parts.size > 2 %}
+                    {% assign lts_patch_part = lts_version_parts[2] | times: 1 %}
+                {% endif %}
+                
+                {% comment %} Check if this is an LTS version with initial LTS patch defined {% endcomment %}
+                {% if has_initial_lts_patch %}
+                    {% comment %} For versions from initial_lts_patch onward, check against lts_asst_supp_exp_date {% endcomment %}
+                    {% if release_patch_part >= lts_patch_part %}
+                        {% if lts_asst_date_parsed == 'N/A' or lts_asst_date_parsed < current_date %}
+                            {% assign is_unsupported = true %}
+                        {% endif %}
+                    {% else %}
+                        {% comment %} For versions before initial_lts_patch, check against asst_supp_exp_date {% endcomment %}
+                        {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                            {% assign is_unsupported = true %}
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    {% comment %} If no initial_lts_patch, just check against asst_supp_exp_date {% endcomment %}
+                    {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                        {% assign is_unsupported = true %}
+                    {% endif %}
+                {% endif %}
+
+                {% comment %} Add to unsupported releases if it meets the criteria {% endcomment %}
+                {% if is_unsupported %}
+                    {% assign unsupported_releases = unsupported_releases | push: r %}
+                {% endif %}
+            {% endfor %}
+
+            {% comment %} Display unsupported releases for this version and section {% endcomment %}
 
 {% comment %}Do a separate loop through the releases and for each release, copy some fields into some local v_ variables to use when we are not in a loop below{% endcomment %}
 
@@ -169,13 +234,13 @@ To learn what’s new in this release, refer to [Feature Highlights]({% link rel
 
         {% assign v_docker_arm = false %}
         {% for r in releases %}
-            {% if r.docker.docker_arm   == true %}
+            {% if r.docker.docker_arm == true %}
                 {% assign v_docker_arm = true %}
                 {% break %}
             {% endif %}
         {% endfor %}
 
-        {% if releases[0] %}
+{% if unsupported_releases.size > 0 %}
 
 #### {{ s }} Releases
 
@@ -194,32 +259,52 @@ To learn what’s new in this release, refer to [Feature Highlights]({% link rel
     </thead>
     <tbody>
             {% for r in releases %}
-
-                {% assign current_patch_string = '' %}
-                {% assign current_patch = nil %}
-                {% assign in_lts = false %}
-                {% if has_lts_releases == true and s == "Production" %}
-                    {% capture current_patch_string %}{{ r.release_name | split: '.' | shift | shift }}{% endcapture %}
-                    {% assign current_patch = current_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
-                    {% if current_patch == nil %}
-                        Error: Could not determine the current patch. Giving up.<br />
-                        {% break %}{% break %}
-                    {% endif %}
-
-                    {% assign comparison = current_patch | minus: lts_patch %}
-                    {% unless comparison < 0 %}
-                        {% assign in_lts = true %}
-                    {% endunless %}
+                {% comment %} Determine if this release is unsupported based on our criteria {% endcomment %}
+                {% assign is_unsupported = false %}
+                
+                {% comment %} Extract patch version for comparison {% endcomment %}
+                {% assign release_version_parts = r.release_name | split: "." %}
+                {% assign release_patch_part = 0 %}
+                {% if release_version_parts.size > 2 %}
+                    {% assign release_patch_part = release_version_parts[2] | times: 1 %}
                 {% endif %}
-
-                {% if DEBUG == true %}<tr><td colspan="3">current_patch: {{ current_patch }}<br />lts_patch: {{ lts_patch }}<br />r.release_name: {{ r.release_name }}<br />lts_link: {{ lts_link }}<br />in_lts: {{ in_lts }}</td>{% endif %}
+                
+                {% comment %} Extract LTS initial patch version for comparison {% endcomment %}
+                {% assign lts_version_parts = v.initial_lts_patch | split: "." %}
+                {% assign lts_patch_part = 0 %}
+                {% if lts_version_parts.size > 2 %}
+                    {% assign lts_patch_part = lts_version_parts[2] | times: 1 %}
+                {% endif %}
+                
+                {% assign was_lts_release = false %}
+                {% if has_initial_lts_patch and release_patch_part >= lts_patch_part %}
+                    {% assign was_lts_release = true %}
+                {% endif %}
+                
+                {% if has_initial_lts_patch %}
+                    {% if release_patch_part >= lts_patch_part %}
+                        {% if lts_asst_date_parsed == 'N/A' or lts_asst_date_parsed < current_date %}
+                            {% assign is_unsupported = true %}
+                        {% endif %}
+                    {% else %}
+                        {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                            {% assign is_unsupported = true %}
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                        {% assign is_unsupported = true %}
+                    {% endif %}
+                {% endif %}
+                
+                {% comment %} Skip releases that don't meet our criteria {% endcomment %}
+                {% if is_unsupported == false %}
+                    {% continue %}
+                {% endif %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if in_lts == true %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r, decorate with link about LTS if applicable. {% endcomment %}
-                {% if r.release_name == latest_hotfix.release_name %}
-                <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
-                {% endif %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if was_lts_release %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r, decorate with link about LTS if applicable. {% endcomment %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
                 {% if r.withdrawn == true %} {% comment %} Suppress download links for withdrawn releases. {% endcomment %}
@@ -275,13 +360,52 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
+            {% comment %} Determine if this release is unsupported based on our criteria {% endcomment %}
+            {% assign is_unsupported = false %}
+            
+            {% comment %} Extract patch version for comparison {% endcomment %}
+            {% assign release_version_parts = r.release_name | split: "." %}
+            {% assign release_patch_part = 0 %}
+            {% if release_version_parts.size > 2 %}
+                {% assign release_patch_part = release_version_parts[2] | times: 1 %}
+            {% endif %}
+            
+            {% comment %} Extract LTS initial patch version for comparison {% endcomment %}
+            {% assign lts_version_parts = v.initial_lts_patch | split: "." %}
+            {% assign lts_patch_part = 0 %}
+            {% if lts_version_parts.size > 2 %}
+                {% assign lts_patch_part = lts_version_parts[2] | times: 1 %}
+            {% endif %}
+            
+            {% assign was_lts_release = false %}
+            {% if has_initial_lts_patch and release_patch_part >= lts_patch_part %}
+                {% assign was_lts_release = true %}
+            {% endif %}
+            
+            {% if has_initial_lts_patch %}
+                {% if release_patch_part >= lts_patch_part %}
+                    {% if lts_asst_date_parsed == 'N/A' or lts_asst_date_parsed < current_date %}
+                        {% assign is_unsupported = true %}
+                    {% endif %}
+                {% else %}
+                    {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                        {% assign is_unsupported = true %}
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                    {% assign is_unsupported = true %}
+                {% endif %}
+            {% endif %}
+            
+            {% comment %} Skip releases that don't meet our criteria {% endcomment %}
+            {% if is_unsupported == false %}
+                {% continue %}
+            {% endif %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
-            {% if r.release_name == latest_hotfix.release_name %}
-                <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
-            {% endif %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if was_lts_release %}{{ lts_link }}{% endif %} {% comment %} Add link to each release r and LTS indicator if applicable. {% endcomment %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
             {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
@@ -333,14 +457,53 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
-
+            {% comment %} Determine if this release is unsupported based on our criteria {% endcomment %}
+            {% assign is_unsupported = false %}
+            
+            {% comment %} Extract patch version for comparison {% endcomment %}
+            {% assign release_version_parts = r.release_name | split: "." %}
+            {% assign release_patch_part = 0 %}
+            {% if release_version_parts.size > 2 %}
+                {% assign release_patch_part = release_version_parts[2] | times: 1 %}
+            {% endif %}
+            
+            {% comment %} Extract LTS initial patch version for comparison {% endcomment %}
+            {% assign lts_version_parts = v.initial_lts_patch | split: "." %}
+            {% assign lts_patch_part = 0 %}
+            {% if lts_version_parts.size > 2 %}
+                {% assign lts_patch_part = lts_version_parts[2] | times: 1 %}
+            {% endif %}
+            
+            {% assign was_lts_release = false %}
+            {% if has_initial_lts_patch and release_patch_part >= lts_patch_part %}
+                {% assign was_lts_release = true %}
+            {% endif %}
+            
+            {% if has_initial_lts_patch %}
+                {% if release_patch_part >= lts_patch_part %}
+                    {% if lts_asst_date_parsed == 'N/A' or lts_asst_date_parsed < current_date %}
+                        {% assign is_unsupported = true %}
+                    {% endif %}
+                {% else %}
+                    {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                        {% assign is_unsupported = true %}
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                    {% assign is_unsupported = true %}
+                {% endif %}
+            {% endif %}
+            
+            {% comment %} Skip releases that don't meet our criteria {% endcomment %}
+            {% if is_unsupported == false %}
+                {% continue %}
+            {% endif %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a> {% comment %} Add link to each release r. {% endcomment %}
-                {% if r.release_name == latest_hotfix.release_name %}
-                <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
-                {% endif %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if was_lts_release %}{{ lts_link }}{% endif %} {% comment %} Add link to each release r and LTS indicator if applicable. {% endcomment %}
+                
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
                 {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
@@ -399,32 +562,55 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
-
-            {% assign current_patch_string = '' %}
-            {% assign current_patch = nil %}
-            {% assign in_lts = false %}
-            {% if has_lts_releases == true and s == "Production" %}
-                {% capture current_patch_string %}{{ r.release_name | split: '.' | shift | shift }}{% endcapture %}
-                {% assign current_patch = current_patch_string | times: 1 %}{% comment %}Cast string to integer {% endcomment %}
-                {% if current_patch == nil %}
-                    Error: Could not determine the current patch. Giving up.<br />
-                    {% break %}{% break %}
+            {% comment %} Determine if this release is unsupported based on our criteria {% endcomment %}
+            {% assign is_unsupported = false %}
+            
+            {% comment %} Extract patch version for comparison {% endcomment %}
+            {% assign release_version_parts = r.release_name | split: "." %}
+            {% assign release_patch_part = 0 %}
+            {% if release_version_parts.size > 2 %}
+                {% assign release_patch_part = release_version_parts[2] | times: 1 %}
+            {% endif %}
+            
+            {% comment %} Extract LTS initial patch version for comparison {% endcomment %}
+            {% assign lts_version_parts = v.initial_lts_patch | split: "." %}
+            {% assign lts_patch_part = 0 %}
+            {% if lts_version_parts.size > 2 %}
+                {% assign lts_patch_part = lts_version_parts[2] | times: 1 %}
+            {% endif %}
+            
+            {% assign was_lts_release = false %}
+            {% if has_initial_lts_patch and release_patch_part >= lts_patch_part %}
+                {% assign was_lts_release = true %}
+            {% endif %}
+            
+            {% if has_initial_lts_patch %}
+                {% if release_patch_part >= lts_patch_part %}
+                    {% if lts_asst_date_parsed == 'N/A' or lts_asst_date_parsed < current_date %}
+                        {% assign is_unsupported = true %}
+                    {% endif %}
+                {% else %}
+                    {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                        {% assign is_unsupported = true %}
+                    {% endif %}
                 {% endif %}
-
-                {% assign comparison = current_patch | minus: lts_patch %}
-                {% unless comparison < 0 %}
-                    {% assign in_lts = true %}
-                {% endunless %}
+            {% else %}
+                {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                    {% assign is_unsupported = true %}
+                {% endif %}
+            {% endif %}
+            
+            {% comment %} Skip releases that don't meet our criteria {% endcomment %}
+            {% if is_unsupported == false %}
+                {% continue %}
             {% endif %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
 
             {% comment %}Version column{% endcomment %}
             <td><a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace:
-".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if in_lts == true %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r.{% endcomment %}
-            {% if r.release_name == latest_hotfix.release_name %}
-                <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
-            {% endif %}
+".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if was_lts_release %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r with LTS indicator if applicable.{% endcomment %}
+                
             </td>
 
             {% comment %}Release Date column{% endcomment %}
@@ -452,6 +638,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
             {% if show_notes_column == true %}
             {% comment %}Notes column{% endcomment %}
             <td>
+                <br />
                 {% if r.docker.docker_arm_limited_access == true %}
                 **Intel**: Production<br />**ARM**: Limited Access
                 {% elsif r.docker.docker_arm_experimental == true %}
@@ -479,13 +666,53 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
     </thead>
     <tbody>
         {% for r in releases %}
+            {% comment %} Determine if this release is unsupported based on our criteria {% endcomment %}
+            {% assign is_unsupported = false %}
+            
+            {% comment %} Extract patch version for comparison {% endcomment %}
+            {% assign release_version_parts = r.release_name | split: "." %}
+            {% assign release_patch_part = 0 %}
+            {% if release_version_parts.size > 2 %}
+                {% assign release_patch_part = release_version_parts[2] | times: 1 %}
+            {% endif %}
+            
+            {% comment %} Extract LTS initial patch version for comparison {% endcomment %}
+            {% assign lts_version_parts = v.initial_lts_patch | split: "." %}
+            {% assign lts_patch_part = 0 %}
+            {% if lts_version_parts.size > 2 %}
+                {% assign lts_patch_part = lts_version_parts[2] | times: 1 %}
+            {% endif %}
+            
+            {% assign was_lts_release = false %}
+            {% if has_initial_lts_patch and release_patch_part >= lts_patch_part %}
+                {% assign was_lts_release = true %}
+            {% endif %}
+            
+            {% if has_initial_lts_patch %}
+                {% if release_patch_part >= lts_patch_part %}
+                    {% if lts_asst_date_parsed == 'N/A' or lts_asst_date_parsed < current_date %}
+                        {% assign is_unsupported = true %}
+                    {% endif %}
+                {% else %}
+                    {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                        {% assign is_unsupported = true %}
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if asst_date_parsed == 'N/A' or asst_date_parsed < current_date %}
+                    {% assign is_unsupported = true %}
+                {% endif %}
+            {% endif %}
+            
+            {% comment %} Skip releases that don't meet our criteria {% endcomment %}
+            {% if is_unsupported == false %}
+                {% continue %}
+            {% endif %}
 
         <tr {% if r.release_name == latest_hotfix.release_name %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
-                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% comment %} Add link to each release r {% endcomment %}
-            {% if r.release_name == latest_hotfix.release_name %}
-                <span class="badge-new">Latest</span> {% comment %} Add "Latest" badge to release if it's the latest release. {% endcomment %}
-            {% endif %}
+                <a href="{% link releases/{{ v.major_version }}.md %}#{{ r.release_name | replace: ".", "-" }}" class="binary-link">{{ r.release_name }}</a>{% if was_lts_release %}{{ lts_link }}{% endif %}{% comment %} Add link to each release r and LTS indicator if applicable {% endcomment %}
+                
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
             {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
@@ -513,7 +740,7 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
 </section>
 
 
-        {% endif %} {% comment %}if releases[0]{% endcomment %}
+        {% endif %} {% comment %}if unsupported_releases.size > 0{% endcomment %}
     {% endfor %} {% comment %}for s in sections {% endcomment %}
-    {% endif %}
+            {% endif %}
 {% endfor %} {% comment %}for v in versions{% endcomment %}
