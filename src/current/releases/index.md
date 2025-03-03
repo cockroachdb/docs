@@ -267,11 +267,11 @@ To learn what’s new in this release, refer to [Feature Highlights]({% link rel
             <td>Date</td>
             <td>Intel 64-bit Downloads</td>
             {% if v_linux_arm == true %}
-            <td>ARM 64-bit Downloads</td>
+            <td>ARM 64-bit Downloads{% include accordion.html %}</td>
             {% endif %}
         </tr>
     </thead>
-    <tbody>
+    <tbody id="arm-tbody">
             {% for r in releases %}
 
                 {% assign current_patch_string = '' %}
