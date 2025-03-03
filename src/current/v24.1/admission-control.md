@@ -46,7 +46,7 @@ Almost all database operations that use CPU or perform storage IO are controlled
 - [Bulk data imports]({% link {{ page.version.version }}/import-into.md %}).
 - [Backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}).
 - [Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}), including index and column backfills (on both the [leaseholder replica]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and [follower replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft)).
-- [`COPY`]({% link {{ page.version.version }}/copy-from.md %}) statements.
+- [`COPY`]({% link {{ page.version.version }}/copy.md %}) statements.
 - [Deletes]({% link {{ page.version.version }}/delete-data.md %}) (including deletes initiated by [row-level TTL jobs]({% link {{ page.version.version }}/row-level-ttl.md %}); the [selection queries]({% link {{ page.version.version }}/selection-queries.md %}) performed by TTL jobs are also subject to CPU admission control).
 - [Follower replication work]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
 - [Raft log entries being written to disk]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
@@ -106,7 +106,7 @@ SET default_transaction_quality_of_service=regular;
 
 <a id="copy-qos"></a>
 
-The quality of service for [`COPY`]({% link {{ page.version.version }}/copy-from.md %}) statements is configured separately with the [`copy_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#copy-transaction-quality-of-service) session variable, which defaults to `background`.
+The quality of service for [`COPY`]({% link {{ page.version.version }}/copy.md %}) statements is configured separately with the [`copy_transaction_quality_of_service`]({% link {{ page.version.version }}/set-vars.md %}#copy-transaction-quality-of-service) session variable, which defaults to `background`.
 
 To increase the priority of subsequent `COPY` statements, run:
 

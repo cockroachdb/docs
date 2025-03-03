@@ -187,6 +187,10 @@
   sources: ['connect-to-a-free-cluster.md']
   versions: ['cockroachcloud']
 
+- destination: copy.md
+  sources: ['copy-from.md']
+  versions: ['v23.1', 'v23.2', 'v24.1', 'v24.2', 'v24.3', 'v25.1']
+
 - destination: cost-based-optimizer.md
   sources: ['sql-optimizer.md']
   versions: [':version']
@@ -794,9 +798,6 @@
 - destination: stable/cockroach-sql.md
   sources: ['use-the-built-in-sql-client.md']
 
-- destination: stable/cockroachdb-in-comparison.md
-  sources: ['cockroachdb-in-comparison.md']
-
 - destination: stable/column-families.md
   sources: ['column-families.md']
 
@@ -1018,6 +1019,7 @@
 
 - destination: https://www.cockroachlabs.com/compare/
   sources:
+    - stable/cockroachdb-in-comparison.md
     - v23.1/cockroachdb-in-comparison.md
     - v23.2/cockroachdb-in-comparison.md
     - v24.1/cockroachdb-in-comparison.md

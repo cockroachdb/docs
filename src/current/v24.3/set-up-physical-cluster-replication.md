@@ -381,8 +381,8 @@ You can replicate data from an existing CockroachDB cluster that does not have [
 
 Before you begin, you will need:
 
-- An existing primary cluster that is running {{page.version.version}}. If you need to upgrade your existing cluster, refer to [Upgrade to CockroachDB v24.2]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
-- A v24.2 standby cluster. To set up the cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you initialize the cluster with the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command, you **must** pass the `--virtualized-empty` flag. For details, refer to the cluster creation steps for the [standby cluster](#initialize-the-standby-cluster).
+- An existing primary cluster that is running {{page.version.version}}. If you need to upgrade your existing cluster, refer to [Upgrade CockroachDB self-hosted]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}).
+- A {{page.version.version}} standby cluster. To set up the cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you initialize the cluster with the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command, you **must** pass the `--virtualized-empty` flag. For details, refer to the cluster creation steps for the [standby cluster](#initialize-the-standby-cluster).
 - Review the remaining [prerequisites](#before-you-begin) at the start of this page, which also apply to running PCR from an existing cluster.
 
 ### Example

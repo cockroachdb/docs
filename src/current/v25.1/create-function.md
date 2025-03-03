@@ -31,8 +31,8 @@ Parameter | Description
 ----------|------------
 `routine_create_name` | The name of the function.
 `routine_param` | A comma-separated list of function parameters, specifying the mode, name, and type.
-`routine_return_type` | The type returned by the function. 
-`routine_body_str` | The body of the function. For allowed contents, see [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
+`routine_return_type` | The type returned by the function: any built-in [SQL type]({% link {{ page.version.version }}/data-types.md %}), user-defined [`ENUM`]({% link {{ page.version.version }}/enum.md %}) or [composite]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) type, [`RECORD`](#create-a-function-that-returns-a-record-type), [`TABLE`](#create-a-function-that-returns-a-table), PL/pgSQL [`REFCURSOR`]({% link {{ page.version.version }}/plpgsql.md %}#declare-cursor-variables) type, [`TRIGGER`]({% link {{ page.version.version }}/triggers.md %}#trigger-function), or `VOID`.
+`routine_body_str` | The body of the function. For allowed contents, refer to [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
 
 ## Example of a simple function
 
@@ -143,6 +143,10 @@ SELECT total_euro_revenue();
 
 The following statement defines a function that returns information for all vehicles not in use. The `SETOF` clause specifies that the function should return each row as the query executes to completion.
 
+{{site.data.alerts.callout_success}}
+[`RETURNS TABLE`](#create-a-function-that-returns-a-table) also returns a set of results, each formatted as a [`RECORD`](#create-a-function-that-returns-a-record-type) type.
+{{site.data.alerts.end}}
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE OR REPLACE FUNCTION available_vehicles() RETURNS SETOF vehicles LANGUAGE SQL AS $$
@@ -168,9 +172,9 @@ SELECT city,current_location,type FROM available_vehicles();
 
 ### Create a function that returns a `RECORD` type
 
-The following statement defines a function that returns the information for the user that most recently completed a ride. The information is returned as a record, which takes the structure of the row that is retrieved by the selection query.
+The following function returns the information for the user that most recently completed a ride. The information is returned as a record, which takes the structure of the row that is retrieved by the selection query.
 
-In the function subquery, the latest `end_time` timestamp is used to determine the most recently completed ride.
+In the function subquery, the latest `end_time` timestamp is used to determine the most recently completed ride:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -187,10 +191,50 @@ SELECT last_rider();
 ~~~
 
 ~~~
-                                                last_rider
-----------------------------------------------------------------------------------------------------------
-  (70a3d70a-3d70-4400-8000-000000000016,seattle,"Mary Thomas","43322 Anthony Flats Suite 85",1141093639)
+                                                    last_rider
+-------------------------------------------------------------------------------------------------------------------
+  (147ae147-ae14-4b00-8000-000000000004,"new york","Isabel Clark DVM","98891 Timothy Cliffs Suite 39",4302568047)
 (1 row)
+~~~
+
+### Create a function that returns a table
+
+The following function returns information for the last `x` users that recently completed a ride. The information is returned as a table, which is equivalent to a set of [`RECORD` values](#create-a-function-that-returns-a-record-type). The rows are sorted in order of most recent ride.
+
+The `RETURNS TABLE` clause specifies the column names to output: `id`, `name`, `city`, and `end_time`. A [common table expression]({% link {{ page.version.version }}/common-table-expressions.md %}) reads the most recent rides from the `rides` table.
+
+{{site.data.alerts.callout_info}}
+[`OUT` and `INOUT` parameters](#create-a-function-that-uses-out-and-inout-parameters) cannot be used with `RETURNS TABLE`.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE OR REPLACE FUNCTION last_x_riders(x INT) RETURNS TABLE(id UUID, name VARCHAR, city VARCHAR, end_time TIMESTAMP) LANGUAGE SQL AS $$
+  WITH recent_rides AS (
+    SELECT rider_id, end_time FROM rides
+    ORDER BY end_time DESC
+  )
+  SELECT u.id, u.name, u.city, r.end_time FROM users u, recent_rides r
+  WHERE u.id = r.rider_id
+  ORDER BY r.end_time DESC
+  LIMIT x
+$$;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM last_x_riders(5);
+~~~
+
+~~~
+                   id                  |       name       |     city      |      end_time
+---------------------------------------+------------------+---------------+----------------------
+  147ae147-ae14-4b00-8000-000000000004 | Isabel Clark DVM | new york      | 2019-01-04 14:04:05
+  8f5c28f5-c28f-4000-8000-00000000001c | Patricia Sexton  | los angeles   | 2019-01-04 08:04:05
+  75c28f5c-28f5-4400-8000-000000000017 | Andre Wilson     | san francisco | 2019-01-04 07:04:05
+  00000000-0000-4000-8000-000000000000 | William Martin   | new york      | 2019-01-04 04:04:05
+  d1eb851e-b851-4800-8000-000000000029 | Terry Reyes      | paris         | 2019-01-03 21:04:05
+(5 rows)
 ~~~
 
 ### Create a function that uses `OUT` and `INOUT` parameters
@@ -294,77 +338,88 @@ The preceding example modifies a given `name` value and returns the `NEW` [trigg
 
 The following example defines a function using the `SECURITY DEFINER` clause. This causes the function to execute with the privileges of the function owner.
 
-Create two roles:
+1. Create two roles:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE ROLE owner;
-CREATE ROLE invoker;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE ROLE owner;
+    CREATE ROLE invoker;
+    ~~~
 
-Grant a [`SELECT` privilege]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the `user_promo_codes` table to the `owner` role.
+1. Grant a [`SELECT` privilege]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the `user_promo_codes` table to the `owner` role.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-GRANT SELECT ON TABLE user_promo_codes TO owner;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    GRANT SELECT ON TABLE user_promo_codes TO owner;
+    ~~~
 
-Set your role to `owner`.
+1. Set your role to `owner`.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET ROLE owner;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET ROLE owner;
+    ~~~
 
-Create a simple `SECURITY DEFINER` function that reads the contents of `user_promo_codes`.
+1. Create a simple `SECURITY DEFINER` function that reads the contents of `user_promo_codes`.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE OR REPLACE FUNCTION get_codes() 
-  RETURNS SETOF RECORD 
-  LANGUAGE SQL 
-  SECURITY DEFINER
-  AS $$
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE OR REPLACE FUNCTION get_codes() 
+      RETURNS SETOF RECORD 
+      LANGUAGE SQL 
+      SECURITY DEFINER
+      AS $$
+        SELECT * FROM user_promo_codes;
+      $$;
+    ~~~
+
+1. Grant the [`EXECUTE` privilege]({% link {{ page.version.version }}/grant.md %}#supported-privileges) on the `get_codes` function to the `invoker` role.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    GRANT EXECUTE ON FUNCTION get_codes() TO invoker;
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    This step is not necessary if the function is defined on the `public` schema, for which roles automatically have the `EXECUTE` privilege.
+    {{site.data.alerts.end}}
+
+1. Set your role to `invoker`.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET ROLE invoker;
+    ~~~
+
+1. `invoker` does not have the privileges to read the `user_promo_codes` table directly:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
     SELECT * FROM user_promo_codes;
-  $$;
-~~~
+    ~~~
 
-Set your role to `invoker`.
+    ~~~
+    ERROR: user invoker does not have SELECT privilege on relation user_promo_codes
+    SQLSTATE: 42501
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET ROLE invoker;
-~~~
+1. As `invoker`, call the `get_codes` function to read `user_promo_codes`, since `SECURITY DEFINER` is executed with the privileges of the `owner` role (i.e., `SELECT` on `user_promo_codes`).
 
-`invoker` does not have the privileges to read the `user_promo_codes` table directly:
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT get_codes();
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT * FROM user_promo_codes;
-~~~
-
-~~~
-ERROR: user invoker does not have SELECT privilege on relation user_promo_codes
-SQLSTATE: 42501
-~~~
-
-As `invoker`, you can call the `get_codes` function, since `SECURITY DEFINER` is executed with the privileges of the `owner` role:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT get_codes();
-~~~
-
-~~~
-                                                 get_codes
-------------------------------------------------------------------------------------------------------------
-  ("new york",00000000-0000-4000-8000-000000000000,0_audience_thought_seven,"2019-01-02 03:04:05",10)
-  ("new york",051eb851-eb85-4ec0-8000-000000000001,1_assume_its_leg,"2019-01-02 03:04:05.001",0)
-  ("new york",0a3d70a3-d70a-4d80-8000-000000000002,2_popular_if_describe,"2019-01-02 03:04:05.002",16)
-  ("new york",0f5c28f5-c28f-4c00-8000-000000000003,3_environmental_myself_add,"2019-01-02 03:04:05.003",4)
-  ("new york",147ae147-ae14-4b00-8000-000000000004,4_rule_edge_career,"2019-01-02 03:04:05.004",13)
-(5 rows)
-~~~
+    ~~~
+                                                     get_codes
+    ------------------------------------------------------------------------------------------------------------
+      ("new york",00000000-0000-4000-8000-000000000000,0_audience_thought_seven,"2019-01-02 03:04:05",10)
+      ("new york",051eb851-eb85-4ec0-8000-000000000001,1_assume_its_leg,"2019-01-02 03:04:05.001",0)
+      ("new york",0a3d70a3-d70a-4d80-8000-000000000002,2_popular_if_describe,"2019-01-02 03:04:05.002",16)
+      ("new york",0f5c28f5-c28f-4c00-8000-000000000003,3_environmental_myself_add,"2019-01-02 03:04:05.003",4)
+      ("new york",147ae147-ae14-4b00-8000-000000000004,4_rule_edge_career,"2019-01-02 03:04:05.004",13)
+    (5 rows)
+    ~~~
 
 ## See also
 
