@@ -19,7 +19,7 @@ fi
 echo "url: ${site_url}" > _config_url.yml
 
 function build {
-	bundle exec jekyll build --trace --config _config_base.yml,$1
+	bundle exec jekyll build --verbose --trace --config _config_base.yml,$1
 	if [[ $? != 0 ]]; then
 	  exit 1
 	fi
