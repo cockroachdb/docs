@@ -5,9 +5,13 @@ toc: true
 docs_area: migrate
 ---
 
+{{site.data.alerts.callout_info}}
+For current migration instructions using the [MOLT tools]({% link molt/molt-overview.md %}), refer to [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}).
+{{site.data.alerts.end}}
+
 This page describes basic considerations and provides a basic [example](#example-migrate-frenchtowns-to-cockroachdb) of migrating data from PostgreSQL to CockroachDB. The information on this page assumes that you have read [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}), which describes the broad phases and considerations of migrating a database to CockroachDB.
 
-The [PostgreSQL migration example](#example-migrate-frenchtowns-to-cockroachdb) on this page demonstrates how to use [MOLT tooling]({% link {{ page.version.version }}/migration-overview.md %}#molt) to update the PostgreSQL schema, perform an initial load of data, and validate the data. These steps are essential when [preparing for a full migration]({% link {{ page.version.version }}/migration-overview.md %}#prepare-for-migration).
+The [PostgreSQL migration example](#example-migrate-frenchtowns-to-cockroachdb) on this page demonstrates how to update the PostgreSQL schema, perform an initial load of data, and validate the data. These steps are essential when [preparing for a full migration]({% link {{ page.version.version }}/migration-overview.md %}#prepare-for-migration).
 
 {{site.data.alerts.callout_success}}
 If you need help migrating to CockroachDB, contact our <a href="mailto:sales@cockroachlabs.com">sales team</a>.
@@ -43,7 +47,7 @@ The [following example](#example-migrate-frenchtowns-to-cockroachdb) uses `IMPOR
 
 ## Example: Migrate `frenchtowns` to CockroachDB
 
-The following steps demonstrate [converting a schema]({% link {{ page.version.version }}/migration-overview.md %}#convert-the-schema), performing an [initial load of data]({% link {{ page.version.version }}/migration-overview.md %}#load-test-data), and [validating data consistency]({% link {{ page.version.version }}/migration-overview.md %}#validate-queries) during a migration.
+The following steps demonstrate converting a schema, performing an [initial load of data]({% link {{ page.version.version }}/migration-overview.md %}#load-test-data), and [validating data consistency]({% link {{ page.version.version }}/migration-overview.md %}#validate-queries) during a migration.
 
 In the context of a full migration, these steps ensure that PostgreSQL data can be properly migrated to CockroachDB and your application queries tested against the cluster. For details, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#prepare-for-migration).
 
