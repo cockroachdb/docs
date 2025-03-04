@@ -58,7 +58,7 @@ The AWS URI **requires** the following:
 `{key}`                     | The key identifiers used to reference the KMS key that should be used to encrypt or decrypt. For information about the supported formats, see the [AWS KMS docs](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-id).
 `AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, you must provide access keys in the URI parameters (e.g., `AWS_ACCESS_KEY_ID=<key_id>&AWS_SECRET_ACCESS_KEY=<secret_key>`). If you use `AUTH=implicit`, the access keys can be omitted and the [credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/). For details on setting up and using the different authentication types, see [Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}).
 `REGION=<region>`           | The region of the KMS key.
-(optional) `AWS_ENDPOINT` | <span class="version-tag">New in v23.2.13:</span> A custom endpoint for Amazon S3. Use to define a particular region or a Virtual Private Cloud (VPC) endpoint. Use with `specified` or `implicit` [authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}).
+(optional) `AWS_ENDPOINT` | A custom endpoint for Amazon S3. Use to define a particular region or a Virtual Private Cloud (VPC) endpoint. Use with `specified` or `implicit` [authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}).
 
 See AWS's [KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html) documentation for guidance on creating an AWS KMS key.
 
