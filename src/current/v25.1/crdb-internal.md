@@ -1173,15 +1173,7 @@ Contention events are stored in memory. You can control the amount of contention
 
 The `sql.contention.event_store.duration_threshold` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) specifies the minimum contention duration to cause the contention events to be collected into the `crdb_internal.transaction_contention_events` table. The default value is `0`. If contention event collection is overwhelming the CPU or memory you can raise this value to reduce the load.
 
-Column | Type | Description
-------------|-----|------------
-`collection_ts` | `TIMESTAMPTZ NOT NULL` | The timestamp when the transaction [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) event was collected.
-`blocking_txn_id` | `UUID NOT NULL` | The ID of the blocking transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
-`blocking_txn_fingerprint_id` | `BYTES NOT NULL`| The ID of the blocking transaction fingerprint. To surface historical information about the transactions that caused the [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables to surface historical information about the transactions that caused the contention.
-`waiting_txn_id` | `UUID NOT NULL` | The ID of the waiting transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
-`waiting_txn_fingerprint_id` | `BYTES NOT NULL` | The ID of the waiting transaction fingerprint. To surface historical information about the transactions that caused the [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables.
-`contention_duration` | `INTERVAL NOT NULL` | The interval of time the waiting transaction spent waiting for the blocking transaction.
-`contending_key` | `BYTES NOT NULL` | The key on which the transactions contended.
+{% include {{ page.version.version }}/transaction-contention-events-columns.md %}
 
 #### Transaction contention - example
 
