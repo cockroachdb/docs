@@ -1,6 +1,6 @@
 ---
 title: Changefeed Monitoring Guide
-summary: Learn about how to monitor stages of the changefeed pipeline.
+summary: Learn how to monitor stages of the changefeed pipeline.
 toc: true
 ---
 
@@ -16,10 +16,10 @@ For details on how changefeeds work as jobs in CockroachDB, refer to the [techni
 
 To monitor changefeed jobs effectively, it is necessary to have a view of the high-level metrics that track the health of the changefeed overall and metrics that track the different stages of the changefeed pipeline.
 
-The changefeed pipeline contains three main sections that start at the storage layer of CockroachDB and end at the downstream sink with message delivery. The work completed in each of these pipeline sections feeds metrics that you can track and use to identify where issues could occur.
+The changefeed pipeline contains three main sections that start at the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) of CockroachDB and end at the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) with message delivery. The work completed in each of these pipeline sections feeds metrics that you can track and use to identify where issues could occur.
 
 - [**Rangefeed**](#rangefeed): Connects changefeeds to a long-lived request called a [_rangefeed_]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds), which pushes changes as they happen. 
-- [**Processing**](#processing-aggregation-and-encoding): Prepares the change events from the rangefeed into [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}) by encoding messages into the specified format. 
+- [**Processing**](#processing-aggregation-and-encoding): Prepares the change events from the rangefeed into [changefeed messages]({% link {{ page.version.version }}/changefeed-messages.md %}) by encoding messages into the specified [format]({% link {{ page.version.version }}/changefeed-messages.md %}#message-formats).  
 - [**Sink**](#sink): Delivers changefeed messages to the [downstream sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). 
 
 <img src="{{ 'images/v24.3/changefeed-pipeline.svg' | relative_url }}" alt="An overview of the changefeed pipeline and the metrics that are connected to each stage." style="width:100%" />
@@ -28,18 +28,23 @@ Where noted in the following sections, you can use changefeed [metrics labels]({
 
 You can [enable the Datadog integration]({% link {{ page.version.version }}/datadog.md %}) on your cluster to collect data and alert on [selected CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
 
+{{site.data.alerts.callout_info}}
+Metrics names in Prometheus replace the `.` with `_`. In Datadog, metrics names can differ, refer to the [Datadog metrics list](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#metrics).
+{{site.data.alerts.end}}
+
 ## Overall pipeline metrics
 
 ### High-level performance metrics
 
-- Metric: `(now() - changefeed.checkpoint_progress)`
-- Description: The progress of changefeed [checkpointing]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). Indicates how recently the changefeed state was persisted durably. Critical for monitoring changefeed [recovery capability]({% link {{ page.version.version }}/changefeed-messages.md %}#duplicate-messages).
-- Investigation needed: If checkpointing falls too far behind the current time.
+- Metric: `changefeed.max_behind_nanos`
+- Description: The maximum lag in nanoseconds between the timestamp of the most recent [resolved timestamp]({% link {{ page.version.version }}/changefeed-messages.md %}#resolved-timestamp-frequency) emitted by the changefeed and the current time. Indicates how far behind the changefeed is in processing changes.
+- Investigation needed: If `changefeed.max_behind_nanos` is consistently increasing.
 - Impact:
-    - Recovery time after failures.
+    - Slow processing of changes and updates to downstream sinks.
+    - Recovery time after failures, potential for increase in change backlog.
     - Ability to resume from last known good state.
-    - Resource usage during catch-up after restarts.
-- Supported Versions: v23.2.3+, v24.1.0+
+    - Resource usage during catch-up after restarts or failures.
+- Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels).
 
 ## Pipeline section metrics
 
