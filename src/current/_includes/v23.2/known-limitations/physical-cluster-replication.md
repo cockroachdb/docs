@@ -3,4 +3,3 @@
 - The primary and standby clusters must have the same [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 - Before cutover to the standby, the standby cluster does not support running [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) or [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}).
 - After a cutover, there is no mechanism to stop applications from connecting to the original primary cluster. It is necessary to redirect application traffic manually, such as by using a network load balancer or adjusting DNS records.
-- Large data imports, such as those produced by [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) or [`IMPORT`]({% link {{ page.version.version }}/import.md %}), may dramatically increase [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#cutover-and-promotion-process).
