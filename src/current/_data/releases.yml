@@ -8284,7 +8284,7 @@
   previous_release: v24.1.12
 
 
-- release_name: v25.1.1
+- release_name: ebembi
   major_version: v25.1
   release_date: '2025-03-01'
   release_type: Production
