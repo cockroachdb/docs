@@ -1,4 +1,4 @@
-major_version,release_date,maint_supp_exp_date,asst_supp_exp_date,last_ga_patch,initial_lts_patch,initial_lts_release_date,lts_maint_supp_exp_date,lts_asst_supp_exp_date,previous_version,crdb_branch_name,unsupported_date
+major_version,release_date,maint_supp_exp_date,asst_supp_exp_date,last_ga_patch,initial_lts_patch,initial_lts_release_date,lts_maint_supp_exp_date,lts_asst_supp_exp_date,previous_version,crdb_branch_name,binaries_unsupported_date
 v1.0,2017-05-10,2018-05-10,2018-11-10,N/A,N/A,N/A,N/A,N/A,N/A,release-1.0,2024-01-01
 v1.1,2017-10-12,2018-10-12,2019-04-12,N/A,N/A,N/A,N/A,N/A,v1.0,release-1.1,2024-01-01
 v2.0,2018-04-04,2019-04-04,2019-10-04,N/A,N/A,N/A,N/A,N/A,v1.1,release-2.0,2024-01-01

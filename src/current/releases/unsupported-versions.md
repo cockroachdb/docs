@@ -47,7 +47,7 @@ The CockroachDB versions on this page are no longer supported. For more informat
     {% assign version_past_unsupported_date = false %}
     
     {% comment %} Check if the version is past its unsupported date {% endcomment %}
-    {% if v.unsupported_date != "N/A" and v.unsupported_date <= current_date %}
+    {% if v.binaries_unsupported_date != "N/A" and v.binaries_unsupported_date <= current_date %}
         {% assign version_past_unsupported_date = true %}
     {% endif %}
     
