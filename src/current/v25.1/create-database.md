@@ -188,6 +188,10 @@ CREATE DATABASE
 
 For more information about secondary regions, see [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions).
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
+{{site.data.alerts.end}}
+
 ## See also
 
 - [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})

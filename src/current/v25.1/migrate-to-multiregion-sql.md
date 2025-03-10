@@ -246,6 +246,10 @@ SHOW ZONE CONFIGURATION FROM TABLE users;
 
 ~~~
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
+{{site.data.alerts.end}}
+
 #### Global tables
 
 A [`GLOBAL`]({% link {{ page.version.version }}/table-localities.md %}) table differs from the default by setting the following zone configuration settings:
