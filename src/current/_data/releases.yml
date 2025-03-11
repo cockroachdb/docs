@@ -8310,13 +8310,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.6
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-    This version is currently available only for select
-    CockroachDB Cloud clusters. To request to upgrade
-    a CockroachDB self-hosted cluster to this version,
-    [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 
 - release_name: v23.2.21
@@ -8345,13 +8338,7 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.20
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
+
 
 - release_name: v24.1.14
   major_version: v24.1
@@ -8379,13 +8366,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.13
-  cloud_only: true
-  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
-  cloud_only_message: >
-      This version is currently available only for select
-      CockroachDB Cloud clusters. To request to upgrade
-      a CockroachDB self-hosted cluster to this version,
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 
 - release_name: v25.1.1
@@ -8393,7 +8373,7 @@
   release_date: '2025-03-01'
   release_type: Production
   go_version: go1.23.6
-  sha: badb6b7615d90c95d61488cd18bdb709c59f2b1a
+  sha: 3472f9bb34e7a8db6947c79d1d00e01d508286ee
   has_sql_only: true
   has_sha256sum: true
   mac:
