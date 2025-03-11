@@ -301,6 +301,7 @@ The `crdb_internal.cluster_locks` schema contains information about [locks]({% l
 For more information, see the following sections.
 
 - [Cluster locks columns](#cluster-locks-columns)
+- [Lock strengths](#lock-strengths)
 - [Cluster locks - basic example](#cluster-locks-basic-example)
 - [Cluster locks - intermediate example](#cluster-locks-intermediate-example)
 - [Blocked vs. blocking transactions](#blocked-vs-blocking-transactions)
@@ -324,7 +325,7 @@ The `crdb_internal.cluster_locks` table has the following columns that describe 
 | `lock_key_pretty` | [`STRING`]({% link {{ page.version.version }}/string.md %})       | A string representation of the key this lock is being acquired on.                                                                                                            |
 | `txn_id`          | [`UUID`]({% link {{ page.version.version }}/uuid.md %})           | The ID of the [transaction]({% link {{ page.version.version }}/transactions.md %}) that is acquiring this lock.                                                                                                   |
 | `ts`              | [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) | The [timestamp]({% link {{ page.version.version }}/timestamp.md %}) at which this lock was acquired.                                                                                                              |
-| `lock_strength`   | [`STRING`]({% link {{ page.version.version }}/string.md %})       | The strength of this lock. Allowed values: `"Exclusive"` or `"None"` (read-only requests don't need an exclusive lock).                                                                                                         |
+| `lock_strength`   | [`STRING`]({% link {{ page.version.version }}/string.md %})       | The strength of this lock. Allowed values: `None`, `Shared`, `Exclusive`, or `Intent`. For more information, refer to [Lock strengths](#lock-strengths). |
 | `durability`      | [`STRING`]({% link {{ page.version.version }}/string.md %})       | Whether the lock is one of: `Replicated` or `Unreplicated`. For more information about lock replication, see [types of locking]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing). |
 | `granted`         | [`BOOLEAN`]({% link {{ page.version.version }}/bool.md %})        | Whether this lock has been granted to the [transaction]({% link {{ page.version.version }}/transactions.md %}) requesting it.                                                                                     |
 | `contended`       | [`BOOLEAN`]({% link {{ page.version.version }}/bool.md %})        | Whether multiple [transactions]({% link {{ page.version.version }}/transactions.md %}) are trying to acquire a lock on this key.                                                                                  |
@@ -333,6 +334,17 @@ The `crdb_internal.cluster_locks` table has the following columns that describe 
 {{site.data.alerts.callout_success}}
 You can see the types and default values of columns in this and other tables using [`SHOW COLUMNS FROM {table}`]({% link {{ page.version.version }}/show-columns.md %}).
 {{site.data.alerts.end}}
+
+#### Lock strengths
+
+Lock strengths in CockroachDB define how transactions interact with data, balancing concurrency and consistency to prevent conflicts and ensure isolation. The `lock_strength` column can have one of the following values:
+
+- `None`: Used for standard reads that do not acquire locks. A [simple `SELECT * WHERE id = x`]({% link {{ page.version.version }}/select-clause.md %}) corresponds to lock strength *None*.
+- `Shared`: Allows multiple transactions to read the same key simultaneously but prevents exclusive locks or writes. `Shared` locks are acquired through [`SELECT * WHERE id = x FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths).
+- `Exclusive`: Grants exclusive access to a key, blocking all other reads and writes. `Exclusive` locks are acquired using [`SELECT * WHERE id = x FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths).
+- `Intent`: Temporary lock placed on a key during a transaction’s write operation ([`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %})). It conflicts with shared locks, exclusive locks, and non-locking readers at later timestamps.
+
+For a detailed explanation of how CockroachDB handles transaction locks, refer to [Writes and reads (phase 1)]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writes-and-reads-phase-1).
 
 #### Cluster locks - basic example
 
