@@ -53,7 +53,7 @@ Private connectivity can be configured only after a cluster is created.
 1. In a new browser window, log in to Google Cloud Console, go to **Private Service Connect** section, and create a new endpoint in the same VPC as your application. For details, refer to [Create an endpoint](https://cloud.google.com/vpc/docs/configure-private-service-connect-services#create-endpoint) in the Google Cloud documentation.
     - Set **Target** to **Published service**.
     - Set **Target service** to the value you copied from CockroachDB {{ site.data.products.cloud }} Console. If the endpoint's configured target service does not match, validation will fail.
-    - Provide a value for **Endpoint name**. You will need to provide this **Endpoint name** when connecting to the cluster using Command Line, Connection String or Connection Parameters. {{ site.data.products.cloud }}.
+    - Provide a value for **Endpoint name**. You will need to provide this **Endpoint name** when connecting to the cluster using the command line, a connection string, or connection parameters.
     - If it is not enabled, enable the Service Directory API, click **Enable global access**, and create a namespace in each region where your cluster is deployed.
     - Click **Add endpoint**.
     - After the endpoint is created, copy the connection ID.
