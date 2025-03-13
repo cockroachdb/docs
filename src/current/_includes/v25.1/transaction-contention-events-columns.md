@@ -14,4 +14,4 @@ Column | Type | Description
 `schema_name` | `STRING NOT NULL` | The schema where the contention occurred.
 `table_name` | `STRING NOT NULL` | The table where the contention occurred.
 `index_name` | `STRING NULL` | The index where the contention occurred.
-`contention_type` | `STRING NOT NULL` | The type of contention: `LOCK_WAIT` or `SERIALIZATION_CONFLICT`.
+`contention_type` | `STRING NOT NULL` | The type of contention. Possible values:<ul><li>`LOCK_WAIT`: Indicates that the transaction waited on a specific key. The record includes the key and the wait duration.</li><li>`SERIALIZATION_CONFLICT`: Represents a serialization conflict specific to a transaction execution. This is recorded only when a [client-side retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) containing the conflicting transaction details is emitted.</li></ul>After recording, the `contention_type` is not modified. A transaction may have multiple `LOCK_WAIT` events, as they correspond to specific keys, but only one `SERIALIZATION_CONFLICT` event.

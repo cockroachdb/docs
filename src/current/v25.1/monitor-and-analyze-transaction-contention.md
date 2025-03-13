@@ -136,6 +136,10 @@ Setting | Type | Default | Description
 `sql.contention.event_store.resolution_interval  ` | duration | `30s ` | the interval at which transaction fingerprint ID resolution is performed (set to 0 to disable)
 `sql.contention.record_serialization_conflicts.enabled` | boolean | `true` | enables recording 40001 errors with conflicting txn meta as SERIALIZATION_CONFLICT contention events into crdb_internal.transaction_contention_events
 
+{{site.data.alerts.callout_info}}
+`crdb_internal.transaction_content_events` displays in-memory data, not on-disk data. The data changes over time as new events arrive and old ones are evicted from the cache.
+{{site.data.alerts.end}}
+
 The table columns are as follows:
 
 {% include {{ page.version.version }}/transaction-contention-events-columns.md %}
