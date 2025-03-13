@@ -165,7 +165,7 @@ To download a supported version of the SQL shell instead of the full binary, vis
 1. Select the **Command Line** tab.
 1. If CockroachDB is not installed locally, copy the command to download and install it. In your terminal, run the command.
 1. If the CA certificate for the cluster is not downloaded locally, copy the command to download it. In your terminal, run the command.
-1. Copy the [`cockroach sql`]({% link {{site.current_cloud_version}}/cockroach-sql.md %}) command, which will be used in the next step (and to connect to your cluster in the future). If you are connecting using Private Endpoint in GCP, replace `<ENTER-ENDPOINT-NAME>` in the command with the assigned GCP endpointname. Click **Close**.
+1. Copy the [`cockroach sql`]({% link {{site.current_cloud_version}}/cockroach-sql.md %}) command, which will be used in the next step (and to connect to your cluster in the future). If you are connecting using a private endpoint in GCP, replace `<ENTER-ENDPOINT-NAME>` in the command with the assigned GCP endpoint name. Click **Close**.
 1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client]({% link {{site.current_cloud_version}}/cockroach-sql.md %}).
 
 1. Enter the SQL user's password and enter.
@@ -192,7 +192,7 @@ To connect to your cluster from your application:
 
 1. Select the **Connection string** tab.
 1. If the CA certificate for the cluster is not downloaded locally, copy the command to download it. In your terminal, run the command.
-1. Copy the connection string, which begins with `postgresql://`. This will be used to connect your application to CockroachDB {{ site.data.products.advanced }}. If you are connecting using Private Endpoint in GCP, replace `<ENTER-ENDPOINT-NAME>` in the connection string with the assigned GCP endpoint name.
+1. Copy the connection string, which begins with `postgresql://`. This will be used to connect your application to CockroachDB {{ site.data.products.advanced }}. If you are connecting using private endpoint in GCP, replace `<ENTER-ENDPOINT-NAME>` in the connection string with the assigned GCP endpoint name.
 1. Add your copied connection string to your application code. For information about connecting to CockroachDB {{ site.data.products.advanced }} with a [supported client]({% link {{ site.current_cloud_version }}/third-party-database-tools.md %}), see [Connect to a CockroachDB Cluster]({% link {{ site.current_cloud_version }}/connect-to-the-database.md %}).
 1. Click **Close**.
 
@@ -217,7 +217,7 @@ To connect to your cluster with a [CockroachDB-compatible tool]({% link {{site.c
     --------------|------------
     `{username}`  | The [SQL user]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) connecting to the cluster.
     `{password}`  | The password for the SQL user connecting to the cluster.
-    `{host}`      | The host on which the CockroachDB node is running. If you are connecting using Private Endpoint in GCP, replace `<ENTER-ENDPOINT-NAME>` in this connection parameter with the assigned GCP endpoint name.
+    `{host}`      | The host on which the CockroachDB node is running. If you are connecting using a private endpoint in GCP, replace `<ENTER-ENDPOINT-NAME>` in this connection parameter with the assigned GCP endpoint name.
     `{port}`      | The port at which the CockroachDB node is listening.
     `{database}`  | The name of the (existing) database.
 
