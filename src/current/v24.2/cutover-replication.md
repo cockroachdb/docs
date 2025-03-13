@@ -9,7 +9,7 @@ docs_area: manage
 Physical cluster replication is supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-_Cutover_ in [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to switch from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication stream to initiate a cutover, the job stops replicating data from the primary, sets the standby [virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) to a point in time where all ingested data is consistent, and then makes the standby virtual cluster ready to accept traffic.
+_Cutover_ in [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to switch from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication stream to initiate a cutover, the job stops replicating data from the primary, sets the standby [virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) to a point in time (in the past or future) where all ingested data is consistent, and then makes the standby virtual cluster ready to accept traffic.
 
 _Cutback_ in PCR switches operations back to the original primary cluster (or a different cluster) after a cutover event. When you initiate a cutback, the job ensures the original primary is up to date with writes from the standby that happened after cutover. The original primary cluster is then set as ready to accept application traffic once again.
 
