@@ -9,7 +9,7 @@ docs_area: manage
 Physical cluster replication is supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-_Cutover_ in [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to switch from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication stream to initiate a cutover, the job stops the stream of new data, resets the standby [virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) to a point in time where all ingested data is consistent, and then marks the standby virtual cluster as ready to accept traffic.
+_Cutover_ in [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to switch from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication stream to initiate a cutover, the job stops replicating data from the primary, sets the standby [virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) to a point in time where all ingested data is consistent, and then makes the standby virtual cluster as ready to accept traffic.
 
 _Cutback_ in PCR switches operations back to the original primary cluster (or a different cluster) after a cutover event. When you initiate a cutback, the job ensures the original primary is up to date with writes from the standby that happened after cutover. The original primary cluster is then set as ready to accept application traffic once again.
 
@@ -75,7 +75,7 @@ To initiate a cutover to the most recent replicated timestamp, you can specify `
     ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO LATEST;
     ~~~
 
-    The `cutover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any data above this timestamp:
+    The `cutover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any replicated data above this timestamp to ensure that the standby is consistent with the primary at that timestamp:
 
     ~~~
             cutover_time
@@ -174,7 +174,7 @@ To enable PCR again, from the new primary to the original primary (or a complete
 
 ## Cutback
 
-After cutting over to the standby cluster, you may need to cut back to the original primary cluster to serve your application. Depending on the state of the primary cluster in the original PCR stream, use one of the following workflows:
+After cutting over to the standby cluster, you may need to cut back to the original primary-standby cluster setup cluster to serve your application. Depending on the state of the primary cluster in the original PCR stream, use one of the following workflows:
 
 - [From the original standby cluster (after it was promoted during cutover) to the original primary cluster](#cut-back-to-the-original-primary-cluster).
 - [After the PCR stream used an existing cluster as the primary cluster](#cut-back-after-pcr-from-an-existing-cluster).
@@ -279,7 +279,7 @@ This section illustrates the steps to cut back to the original primary cluster f
     {% include {{ page.version.version }}/physical-replication/fast-cutback-latest-timestamp.md %}
     {{site.data.alerts.end}}
 
-    The `cutover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any data above this timestamp:
+    The `cutover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any replicated data above this timestamp to ensure that the standby is consistent with the primary at that timestamp:
 
     ~~~
                cutover_time

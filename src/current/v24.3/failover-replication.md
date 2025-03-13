@@ -9,7 +9,7 @@ key: cutover-replication.html
 Physical cluster replication is supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-_Failover_ in [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to switch from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication stream to initiate a failover, the job stops the stream of new data, resets the standby [virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) to a point in time where all ingested data is consistent, and then marks the standby virtual cluster as ready to accept traffic.
+_Failover_ in [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to switch from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication stream to initiate a failover, the job stops replicating data from the primary, sets the standby [virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) to a point in time where all ingested data is consistent, and then makes the standby virtual cluster as ready to accept traffic.
 
 _Failback_ in PCR switches operations back to the original primary cluster (or a different cluster) after a failover event. When you initiate a failback, the job ensures the original primary is up to date with writes from the standby that happened after failover. The original primary cluster is then set as ready to accept application traffic once again.
 
@@ -75,7 +75,7 @@ To initiate a failover to the most recent replicated timestamp, you can specify 
     ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO LATEST;
     ~~~
 
-    The `failover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any data above this timestamp:
+    The `failover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any replicated data above this timestamp to ensure that the standby is consistent with the primary at that timestamp:
 
     ~~~
             failover_time
@@ -174,7 +174,7 @@ To enable PCR again, from the new primary to the original primary (or a complete
 
 ## Failback
 
-After failing over to the standby cluster, you may need to fail back to the original primary cluster to serve your application. Depending on the state of the primary cluster in the original PCR stream, use one of the following workflows:
+After failing over to the standby cluster, you may need to fail back to the original primary-standby cluster setup cluster to serve your application. Depending on the state of the primary cluster in the original PCR stream, use one of the following workflows:
 
 - [From the original standby cluster (after it was promoted during failover) to the original primary cluster](#fail-back-to-the-original-primary-cluster).
 - [After the PCR stream used an existing cluster as the primary cluster](#fail-back-after-pcr-from-an-existing-cluster).
@@ -279,7 +279,7 @@ This section illustrates the steps to fail back to the original primary cluster 
     ALTER VIRTUAL CLUSTER {cluster_a} COMPLETE REPLICATION TO LATEST;
     ~~~
 
-    The `failover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any data above this timestamp:
+    The `failover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any replicated data above this timestamp to ensure that the standby is consistent with the primary at that timestamp:
 
     ~~~
                failover_time
@@ -339,7 +339,7 @@ If your backup schedule was created on a cluster in v23.1 or earlier, it will **
 
 ### Changefeeds
 
-[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will fail on the promoted cluster immediately after failover to avoid two clusters running the same changefeed to one sink. We recommend that you recreate changefeeds on the promoted cluster.
+Currently running [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will fail on the promoted cluster immediately after failover to avoid two clusters running the same changefeed to one sink. We recommend that you recreate changefeeds on the promoted cluster.
 
 To avoid multiple clusters running the same schedule concurrently, [changefeed schedules]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) will [pause]({% link {{ page.version.version }}/pause-schedules.md %}) after physical cluster replication has completed.
 
