@@ -1,11 +1,11 @@
 ---
 title: Deployment & Operations Skills Taxonomy
-summary: Learn the basic skills required to deploy and operate CockroachDB
+summary: Learn the foundational skills required to deploy and operate CockroachDB
 toc: true
 docs_area: deploy
 ---
 
-This document outlines the basic skills required to deploy and operate CockroachDB in production environments.
+This document outlines the foundational skills required to deploy and operate CockroachDB in production environments.
 
 The skills are organized into sections based on the following operational domains:
 
@@ -35,6 +35,7 @@ Each section includes links to relevant documentation for the listed skills.
 - [Shut down a node gracefully]({% link {{ page.version.version }}/node-shutdown.md %})
 - [Handling unplanned node outages]({% link {{ page.version.version }}/recommended-production-settings.md %}#load-balancing)
 - [Adding nodes]({% link {{ page.version.version }}/cockroach-start.md %}#add-a-node-to-a-cluster)
+- [Removing nodes]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#remove-nodes)
 - [Add a region]({% link {{ page.version.version }}/alter-database.md %}#add-regions-to-a-database)
 - [Remove a region]({% link {{ page.version.version }}/alter-database.md %}#drop-region)
 - [Rolling upgrades]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#perform-a-patch-upgrade)
@@ -43,8 +44,10 @@ Each section includes links to relevant documentation for the listed skills.
 - [Change a cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#change-a-cluster-setting)
 - Cluster repaving involves the following individual skills, which are also used during [rolling upgrades]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#perform-a-patch-upgrade):
     1. [Shut down a node gracefully]({% link {{ page.version.version }}/node-shutdown.md %})
-    1. Delete the removed node's virtual machine (VM)
+    1. Detach the [persistent volume]({% link {{ page.version.version }}/kubernetes-overview.md %}#kubernetes-terminology) (a.k.a. persistent disk) from the removed node's virtual machine (VM) (this step is optional but recommended)
+    1. Delete the removed node's VM
     1. Start a new VM
+    1. Reattach the persistent disk to the new VM (necessary if you did step #2)
     1. [Add a node to the cluster]({% link {{ page.version.version }}/cockroach-start.md %}#add-a-node-to-a-cluster) from the new VM
 
 ## Troubleshooting
@@ -53,7 +56,7 @@ Each section includes links to relevant documentation for the listed skills.
 - [SQL throughput degradation across the board]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#low-throughput)
 - [Cluster instability: Dead/suspect nodes]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues)
 - [Out of memory problems]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash)
-- [No scaling after a cluster expansion]({% link {{ page.version.version }}/architecture/replication-layer.md %}#load-based-replica-rebalancing)
+- [Imbalanced cluster load]({% link {{ page.version.version }}/architecture/replication-layer.md %}#load-based-replica-rebalancing)
 - [EOF errors]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#client-connection-issues)
 - [Changefeed is falling behind]({% link {{ page.version.version }}/advanced-changefeed-configuration.md %}#lagging-ranges)
 
