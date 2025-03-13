@@ -36,15 +36,52 @@ Metrics names in Prometheus replace the `.` with `_`. In Datadog, metrics names 
 
 ### High-level performance metrics
 
-- Metric: `changefeed.max_behind_nanos`
-- Description: The maximum lag in nanoseconds between the timestamp of the most recent [resolved timestamp]({% link {{ page.version.version }}/changefeed-messages.md %}#resolved-timestamp-frequency) emitted by the changefeed and the current time. Indicates how far behind the changefeed is in processing changes.
-- Investigation needed: If `changefeed.max_behind_nanos` is consistently increasing.
+- Metrics: 
+    - `changefeed.max_behind_nanos`
+        - Description: The maximum lag in nanoseconds between the timestamp of the most recent [resolved timestamp]({% link {{ page.version.version }}/changefeed-messages.md %}#resolved-timestamp-frequency) emitted by the changefeed and the current time. Indicates how far behind the changefeed is in processing changes.
+        - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) (supported in v24.3.5+).
+        - Investigation needed: If `changefeed.max_behind_nanos` is consistently increasing.
+    - `(now() - changefeed.checkpoint_progress)`
+        - Description: The progress of changefeed [checkpointing]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). Indicates how recently the changefeed state was persisted durably. Critical for monitoring changefeed [recovery capability]({% link {{ page.version.version }}/changefeed-messages.md %}#duplicate-messages).
+        - Investigation needed: If checkpointing falls too far behind the current time.
 - Impact:
     - Slow processing of changes and updates to downstream sinks.
     - Recovery time after failures, potential for increase in change backlog.
     - Ability to resume from last known good state.
     - Resource usage during catch-up after restarts or failures.
-- Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) (supported in v24.3.5+).
+
+### End-to-end performance metrics
+
+#### End-to-end commit latency
+
+- Metric: `changefeed.commit_latency`
+- Description: The time between when a [transaction]({% link {{ page.version.version }}/transactions.md %}) commits and when the changefeed emits the corresponding changes. This time includes rangefeed and buffer delays.
+- Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels).
+
+#### Batch latency
+
+- Metric: `changefeed.sink_batch_hist_nanos`
+- Description: The end-to-end latency from the change event being put in a batch to the changefeed emitting the event message to the sink.
+- Investigation needed: If this metric has consistently high values, it indicates that there are bottlenecks in the pipeline.
+
+#### Protected timestamp age
+
+- Metric: `jobs.changefeed.protected_age_sec`
+- Description: The age of the [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) record for the changefeed.
+- Investigation needed: If this metric has high values, it may indicate changefeed processing delays or resource constraints.
+- Impact: High values can [block garbage collection]({% link {{ page.version.version }}/protect-changefeed-data.md %}) and lead to increased disk usage and degraded performance for some workloads.
+
+#### Progress tracking
+
+- Metrics: 
+    - `high_water_timestamp` from [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) 
+    - `(now() - changefeed.aggregator_progress)`
+        - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels).
+    - `changefeed.max_behind_nanos`
+        - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) (supported in v24.3.5+).
+    - `(now() - changefeed.checkpoint_progress)`
+- Description: These metrics help to measure how far behind the changefeed is from the current time.
+- Investigation: A growing delay indicates changefeed processing and messages emitting cannot keep up with the rate of change events.
 
 ## Pipeline section metrics
 
