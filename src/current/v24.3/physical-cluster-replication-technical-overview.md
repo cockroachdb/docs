@@ -71,4 +71,4 @@ When a PCR stream is started with a `readonly` virtual cluster, the job will del
 
 After reverting any necessary data, the standby virtual cluster is promoted as available to serve traffic and the replication job ends.
 
-For details on failing back to the primary cluster following a failover, refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-to-the-primary-cluster).
+For details on failing back to the primary cluster following a failover, refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#failback).
