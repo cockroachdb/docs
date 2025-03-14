@@ -81,6 +81,14 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.basic }} c
 
     {% include_cached copy-clipboard.html %}
     ~~~ hcl
+    terraform {
+      required_providers {
+        cockroach = {
+          source = "cockroachdb/cockroach"
+        }
+      }
+    }
+
     resource "cockroach_cluster" "basic" {
       name           = "cockroach-basic"
       cloud_provider = "GCP"
@@ -94,6 +102,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.basic }} c
       delete_protection = false
     }
     ~~~
+      - Optionally, include the `version` attribute in the `cockroach` nested block to specify a version of the provider. If you do not include the `version` attribute, Terraform will use the latest provider version.
       - Replace `cockroach-basic` with a name for the cluster.
       - Set `cloud_provider` to `AWS` `AZURE`, or `GCP`.
       - Under `serverless {}`, optionally set values for `resource_unit_limit` and `storage_mib_limits`.
@@ -119,6 +128,14 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.standard }
 
     {% include_cached copy-clipboard.html %}
     ~~~ hcl
+    terraform {
+      required_providers {
+        cockroach = {
+          source = "cockroachdb/cockroach"
+        }
+      }
+    }
+
     resource "cockroach_cluster" "standard" {
       name           = "cockroach-standard"
       cloud_provider = "GCP"
@@ -136,6 +153,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.standard }
       delete_protection = false
     }
     ~~~
+      - Optionally, include the `version` attribute in the `cockroach` nested block to specify a version of the provider. If you do not include the `version` attribute, Terraform will use the latest provider version.
       - Replace `cockroach-standard` with a name for the cluster.
       - Set `cloud_provider` to `AWS` `AZURE`, or `GCP`.
       - Under `usage_limits`, set `provisioned_virtual_cpus` to the required maximum vCPUs for the cluster.
@@ -159,6 +177,14 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.advanced }
 
     {% include_cached copy-clipboard.html %}
     ~~~ hcl
+    terraform {
+      required_providers {
+        cockroach = {
+          source = "cockroachdb/cockroach"
+        }
+      }
+    }
+
     resource "cockroach_cluster" "advanced" {
       name           = "cockroach-advanced"
       cloud_provider = "GCP"
@@ -176,6 +202,7 @@ In this tutorial, you will create a CockroachDB {{ site.data.products.advanced }
       delete_protection = true
     }
     ~~~
+      - Optionally, include the `version` attribute in the `cockroach` nested block to specify a version of the provider. If you do not include the `version` attribute, Terraform will use the latest provider version.
       - Replace `cockroach-advanced` with a name for the cluster.
       - Set `cloud_provider` to `AWS` `AZURE`, or `GCP`.
       - Under `dedicated`, set `storage_gib` to a value large enough to contain the cluster's expected data. Set `num_virtual_cpus` to the number of vCPUs per node.
