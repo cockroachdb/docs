@@ -19,7 +19,7 @@ Ensuring consistency with nodes offline, though, is a challenge many databases f
 
 The number of failures that can be tolerated is equal to *(Replication factor - 1)/2*. For example, with 3x replication, one failure can be tolerated; with 5x replication, two failures, and so on. You can control the replication factor at the cluster, database, and table level using [replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
-When failures happen, though, CockroachDB automatically realizes nodes have stopped responding and works to redistribute your data to continue maximizing survivability. This process also works the other way around: when new nodes join your cluster, data automatically rebalances onto it, ensuring your load is evenly distributed.
+When failures happen, though, CockroachDB automatically realizes nodes have stopped responding and works to redistribute your data to continue maximizing survivability. This process also works the other way around: when new nodes join your cluster, data automatically rebalances onto them, ensuring your load is evenly distributed.
 
 ### Interactions with other layers
 
