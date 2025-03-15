@@ -702,3 +702,7 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 #### Inverted join for `tsvector` and `tsquery` types is not supported
 
 CockroachDB cannot index-accelerate queries with `@@` predicates when both sides of the operator are variables. [#102731](https://github.com/cockroachdb/cockroach/issues/102731)
+
+#### Secondary Regions and Regional By-Row Tables
+
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
