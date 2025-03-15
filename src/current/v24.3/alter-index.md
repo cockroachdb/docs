@@ -47,11 +47,11 @@ Subcommand | Description |
 
 `ALTER INDEX ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for an index. To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}). For more information about replication zones, see [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
-
-
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
 For examples, see [Replication Controls](#configure-replication-zones).
+
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
 
 #### Required privileges
 
@@ -224,6 +224,10 @@ You cannot `DISCARD` any zone configurations on multi-region tables, indexes, or
 ~~~ sql
 ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE DISCARD;
 ~~~
+
+#### Troubleshoot replication zones
+
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
 
 ### Define partitions
 
