@@ -193,7 +193,7 @@ Potential issues to investigate may pertain to:
 ## Security Considerations
 
 1. Always keep a backup authentication method (like password) for administrative users.
-2. Use LDAPS (LDAP over TLS) in production environments.
-3. Use a restricted service account for directory searches.
-4. Regularly audit LDAP group memberships.
-5. Monitor authentication logs for unusual patterns.
+1. Use LDAPS (LDAP over TLS) in production environments.
+1. Use a restricted service account for directory searches.
+1. Regularly audit LDAP group memberships.
+1. Monitor authentication logs for unusual patterns.
