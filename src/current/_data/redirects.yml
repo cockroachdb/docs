@@ -283,13 +283,11 @@
   versions: ['cockroachcloud']
 
 - destination: migrate-to-cockroachdb.md?filters=mysql
-  sources:
-    - migrate-from-mysql.md
+  sources: ['migrate-from-mysql.md']
   versions: ['v25.1']
 
-  - destination: migrate-to-cockroachdb.md
-  sources:
-    - migrate-from-postgres.md
+- destination: migrate-to-cockroachdb.md
+  sources: ['migrate-from-postgres.md']
   versions: ['v25.1']
 
 - destination: migration-overview.md
