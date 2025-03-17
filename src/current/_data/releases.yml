@@ -8398,7 +8398,7 @@
 
 - release_name: v25.1.1
   major_version: v25.1
-  release_date: '2025-03-12'
+  release_date: '2025-03-11'
   release_type: Production
   go_version: go1.23.6
   sha: a5c682ed7f4b1e42717616d676ff14d6e6a8b192
