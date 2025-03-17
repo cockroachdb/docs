@@ -63,7 +63,7 @@ Perform an initial load of data into the target database. This can be a subset o
 	--table-handling truncate-if-exists \
 	--non-interactive \
 	--pglogical-replication-slot-name cdc_slot \
-	--mode data-load \
+	--mode data-load
 	~~~
 	</section>
 
@@ -77,7 +77,7 @@ Perform an initial load of data into the target database. This can be a subset o
 	--bucket-path 's3://molt-test' \
 	--table-handling truncate-if-exists \
 	--non-interactive \
-	--mode data-load \
+	--mode data-load
 	~~~
 	</section>
 
@@ -112,7 +112,7 @@ The following example specifies that the `employees` table should be watched for
 	--table-filter 'employees' \
 	--non-interactive \
 	--mode replication-only \
-	--pglogical-replication-slot-name cdc_slot \
+	--pglogical-replication-slot-name cdc_slot
 	~~~
 	</section>
 
@@ -127,7 +127,7 @@ The following example specifies that the `employees` table should be watched for
 	--table-filter 'employees' \
 	--non-interactive \
 	--mode replication-only \
-	--replicator-flags '--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29' \
+	--replicator-flags '--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29'
 	~~~
 	</section>
 

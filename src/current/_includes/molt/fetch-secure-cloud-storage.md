@@ -2,15 +2,13 @@
 
 	- If you are using [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) for cloud storage:
 
-		- Ensure that the environment variable and access tokens are set appropriately in the terminal running `molt fetch`. For example:
+		- Ensure that the following environment variables are set appropriately in the terminal running `molt fetch`:
 
 			{% include_cached copy-clipboard.html %}
 			~~~ shell
 			export AWS_REGION='us-east-1'
 			export AWS_SECRET_ACCESS_KEY='key'
 			export AWS_ACCESS_KEY_ID='id'
-			export AWS_SESSION_TOKEN='token'
-			export AWS_CREDENTIAL_EXPIRATION='timestamp'
 			~~~
 
 		- Alternatively, set the `--use-implicit-auth` flag to use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}).

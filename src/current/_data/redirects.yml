@@ -282,10 +282,14 @@
   - 'migrate-from-serverless-to-dedicated.md'
   versions: ['cockroachcloud']
 
-- destination: migrate-to-cockroachdb.md
+- destination: migrate-to-cockroachdb.md?filters=mysql
+  sources:
+    - migrate-from-mysql.md
+  versions: ['v25.1']
+
+  - destination: migrate-to-cockroachdb.md
   sources:
     - migrate-from-postgres.md
-    - migrate-from-mysql.md
   versions: ['v25.1']
 
 - destination: migration-overview.md

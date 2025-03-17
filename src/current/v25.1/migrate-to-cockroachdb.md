@@ -63,7 +63,7 @@ Start the initial load of data into the target database. Continuous replication 
 	--table-handling truncate-if-exists \
 	--non-interactive \
 	--mode data-load-and-replication \
-	--pglogical-replication-slot-name cdc_slot \
+	--pglogical-replication-slot-name cdc_slot
 	~~~
 	</section>
 
@@ -77,7 +77,7 @@ Start the initial load of data into the target database. Continuous replication 
 	--bucket-path 's3://molt-test' \
 	--table-handling truncate-if-exists \
 	--non-interactive \
-	--mode data-load-and-replication \
+	--mode data-load-and-replication
 	~~~
 	</section>
 
