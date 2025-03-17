@@ -130,7 +130,7 @@ Metrics names in Prometheus replace the `.` with `_`. In Datadog, metrics names 
 #### Sink performance 
 
 {{site.data.alerts.callout_info}}
-This metric is supported for [webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), [Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub), and the latest version of the CockroachDB [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) sink, which is the [default from v24.2.1]({% link v24.2/changefeed-sinks.md %}#kafka).
+This metric is supported for [webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), [Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub), and the latest version of the CockroachDB [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) sink.
 {{site.data.alerts.end}}
 
 - Metric: `changefeed.parallel_io_queue_nanos`

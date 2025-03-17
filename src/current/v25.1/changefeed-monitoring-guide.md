@@ -39,7 +39,7 @@ Metrics names in Prometheus replace the `.` with `_`. In Datadog, metrics names 
 - Metrics: 
     - `changefeed.max_behind_nanos`
         - Description: The maximum lag in nanoseconds between the timestamp of the most recent [resolved timestamp]({% link {{ page.version.version }}/changefeed-messages.md %}#resolved-timestamp-frequency) emitted by the changefeed and the current time. Indicates how far behind the changefeed is in processing changes.
-        - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) (supported in v24.3.5+).
+        - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels).
         - Investigation needed: If `changefeed.max_behind_nanos` is consistently increasing.
     - `(now() - changefeed.checkpoint_progress)`
         - Description: The progress of changefeed [checkpointing]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). Indicates how recently the changefeed state was persisted durably. Critical for monitoring changefeed [recovery capability]({% link {{ page.version.version }}/changefeed-messages.md %}#duplicate-messages).
@@ -78,7 +78,7 @@ Metrics names in Prometheus replace the `.` with `_`. In Datadog, metrics names 
     - `(now() - changefeed.aggregator_progress)`
         - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels).
     - `changefeed.max_behind_nanos`
-        - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels) (supported in v24.3.5+).
+        - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels).
     - `(now() - changefeed.checkpoint_progress)`
 - Description: These metrics help to measure how far behind the changefeed is from the current time.
 - Investigation: A growing delay indicates changefeed processing and messages emitting cannot keep up with the rate of change events.
@@ -92,7 +92,6 @@ Metrics names in Prometheus replace the `.` with `_`. In Datadog, metrics names 
 - Metric: `changefeed.buffer_entries.allocated_mem.rangefeed`
 - Description: The current quota pool memory allocation between the rangefeed and the KV feed.
 - Impact: High memory usage may indicate backpressure.
-- Supported versions: v23.2.13+, v24.1.6+, v24.2.4+, v24.3.0+
 
 #### Rangefeed buffer latency
 
@@ -102,14 +101,12 @@ Metrics names in Prometheus replace the `.` with `_`. In Datadog, metrics names 
 - Description: Latency within the rangefeed section of the changefeed pipeline.
 - Impact: Indicates potential scanning or changefeed catch-up issues.
 - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels).
-- Supported Versions: v23.2.13+, v24.1.6+, v24.2.4+, v24.3.0+
 
 #### KV feed
 
 - Metric: `changefeed.stage.kv_feed_wait_for_table_event.latency` (count/sum/bucket)
 - Description: Latency within the [processing section](#processing-aggregation-and-encoding) of the changefeed pipeline.
 - Impact: Potential bottlenecks in encoding, batching, sending data, or at the [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). Use this metric in conjunction with the [downstream delivery metrics](#downstream-delivery).
-- Supported Versions: v23.2.13+, v24.1.6+, v24.2.4+, v24.3.0+
 
 ### Processing — aggregation and encoding
 
@@ -120,7 +117,6 @@ Metrics names in Prometheus replace the `.` with `_`. In Datadog, metrics names 
     - `changefeed.stage.kv_feed_buffer.latency` (count/sum/bucket)
 - Description: The current quota pool memory allocation between the KV feed and the sink. Latency within the processing section of the changefeed pipeline.
 - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels).
-- Supported Versions: v23.2.13+, v24.1.6+, v24.2.4+, v24.3.0+
 
 #### Encoding performance
 
@@ -128,20 +124,18 @@ Metrics names in Prometheus replace the `.` with `_`. In Datadog, metrics names 
 - Description: Latency encoding data within the processing section of the changefeed pipeline.
 - Impact: High encoding latency can create a bottleneck for the entire changefeed pipeline.
 - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels).
-- Supported Versions: v23.2.13+, v24.1.6+, v24.2.4+, v24.3.0+
 
 ### Sink
 
 #### Sink performance 
 
 {{site.data.alerts.callout_info}}
-This metric is supported for [webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), [Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub), and the latest version of the CockroachDB [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) sink, which is the [default from v24.2.1]({% link v24.2/changefeed-sinks.md %}#kafka).
+This metric is supported for [webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), [Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub), and the latest version of the CockroachDB [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) sink.
 {{site.data.alerts.end}}
 
 - Metric: `changefeed.parallel_io_queue_nanos`
 - Description: The time that outgoing requests to the sink spend waiting in a queue due to in-flight requests with conflicting keys.
 - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels).
-- Supported Versions: v23.2.0+
 
 #### Sink errors
 
@@ -149,7 +143,6 @@ This metric is supported for [webhook]({% link {{ page.version.version }}/change
 - Description: The number of changefeed errors caused by the sink.
 - Impact: Indicates connectivity or downstream processing issues.
 - Use with [metrics labels]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#using-changefeed-metrics-labels).
-- Supported Versions: v23.2.16+, v24.1.7,+, v24.2.5+, v24.3.0+
 
 #### Downstream delivery
 
@@ -159,7 +152,6 @@ This metric is supported for [webhook]({% link {{ page.version.version }}/change
 - Description: Latency when flushing messages from a sink's client to the downstream sink. (This includes sends that failed for most, but not all sinks.) The number of messages for which an aggregator node attempted to retry.
 - Impact: Indicates connectivity or downstream processing issues.
 - Scoped by `changefeed_job_id`
-- Supported Versions: v23.2.13+, v24.1.6+, v24.2.4+, v24.3.0+
 
 ## See also
 - [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %})
