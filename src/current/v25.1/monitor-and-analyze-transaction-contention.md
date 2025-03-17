@@ -4,7 +4,7 @@ summary: How to monitor transaction contention using console, metrics, and crdb_
 toc: true
 ---
 
-Understanding where [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) occurs and its impact on your workload is crucial. Contention is a normal part of database operations. In many cases, it has limited impact on a workload. For example, a large number of contention events that have a very short duration, may not cause a workload impact. Similarly, a small number of contention events with larger duration may be acceptable if they occur off the “user path”. However, when contention substantially contributes to query latency, then it should be addressed.
+It is crucial to understand where [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) occurs and how it impacts your workload. Contention is a normal part of database operations. In many cases, it has limited impact on a workload. For example, a large number of contention events with a very short duration may not impact your workload. Similarly, a small number of contention events with longer duration may be acceptable if they occur outside the “user path”. However, if contention substantially contributes to query latency, it should be addressed.
 
 This page shows how to monitor and analyze two types of contention: [lock contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) and [serializable conflicts]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). These types of contention are exposed via different observability mechanisms:
 
@@ -29,12 +29,12 @@ The [CockroachDB Cloud Console]({% link cockroachcloud/cluster-overview-page.md 
 - [Insights page](#insights-page)
 
 {{site.data.alerts.callout_info}}
-Contention metrics typically are exposed with count and duration information. Both lock contention and serializable conflicts will be recorded in count-related metrics, but only lock contention will be included in duration-related metrics.
+Contention metrics are typically presented with count and duration information. Both lock contention and serializable conflicts will be recorded in count-related metrics, but only lock contention will be included in duration-related metrics.
 {{site.data.alerts.end}}
 
 ### SQL Statement Contention graph
 
-On the Metrics page, SQL dashboard, the SQL Statement Contention graph ([CockroachDB Cloud Console]({% link cockroachcloud/metrics-sql.md %}#sql-statement-contention) or [DB Console]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-contention)) shows the rate of contention events per second across the cluster. This graph is based on the `sql.distsql.contended_queries.count` metric.
+On the SQL dashboard within the Metrics page, the SQL Statement Contention graph ([CockroachDB Cloud Console]({% link cockroachcloud/metrics-sql.md %}#sql-statement-contention) or [DB Console]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-contention)) shows the rate of contention events per second across the cluster. This graph is based on the `sql.distsql.contended_queries.count` metric, which measures the rate of contention events per second across the cluster.
 
 In the DB Console, in the cluster view, this rate is averaged across all nodes, which sometimes makes it difficult to interpret. When viewing an individual node, it shows the rate for that single node.
 
@@ -50,7 +50,7 @@ SQL Activity has per statement and per transaction contention information.
 
 The Statements page ([CockroachDB Cloud Console]({% link cockroachcloud/statements-page.md %}) or [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %})) shows statements that were involved in contention events. To view these statements, change the search criteria to view the top 100 [statement fingerprints]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints) by Contention Time, then sort descending by Contention Time column.
 
-The Contention Time column shows the average and standard deviation for the time spent in contention. As noted earlier, only lock contention events are included in the contention time.
+The Contention Time column displays the average time and standard deviation of contention events. As noted earlier, only lock contention events are included in the contention time.
 
 The following image shows the Statements page with the top 3 statement fingerprints by Contention Time in a cluster containing the test data from the [Analyze using `crdb_internal` tables](#analyze-using-crdb_internal-tables) section.
 
@@ -58,9 +58,9 @@ The following image shows the Statements page with the top 3 statement fingerpri
 
 #### Transactions page
 
-The Transactions page ([CockroachDB Cloud Console]({% link cockroachcloud/transactions-page.md %}) or [DB Console]({% link {{ page.version.version }}/ui-transactions-page.md %})) shows transaction that were involved in contention events. To view these transactions, change the search criteria to view the top 100 transaction fingerprints by Contention Time, then sort descending by Contention Time column.
+The Transactions page ([CockroachDB Cloud Console]({% link cockroachcloud/transactions-page.md %}) or [DB Console]({% link {{ page.version.version }}/ui-transactions-page.md %})) shows transactions that were involved in contention events. To view these transactions, change the search criteria to view the top 100 transaction fingerprints by Contention Time, then sort descending by Contention Time column.
 
-The Contention Time column shows the average and standard deviation for the time spent in contention. As noted earlier, only lock contention events are included in the contention time.
+The Contention Time column displays the average and standard deviation of the time spent in contention. As noted earlier, only lock contention events are included in the contention time.
 
 The following image shows the Transactions page with the top 3 transactions fingerprints by Contention Time in a cluster containing the test data in the [Analyze using `crdb_internal` tables](#analyze-using-crdb_internal-tables) section.
 
@@ -72,14 +72,14 @@ The Insights page ([CockroachDB Cloud Console]({% link cockroachcloud/insights-p
 
 - [Slow Execution]({% link {{ page.version.version }}/ui-insights-page.md %}#slow-execution)
 
-    To be identified as a Slow Execution, the statement or transaction must meet one of the two following criteria:
+    A statement or transaction is classified as Slow Execution if it meets either of the following criteria:
     
     - The execution took longer than the configured [`sql.insights.latency_threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-insights-latency-threshold).
     - Anomaly detection is enabled ([`sql.insights.anomaly_detection.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-insights-anomaly-detection-enabled)) and the execution was greater than twice the median execution latency and higher than [`sql.insights.anomaly_detection.latency_threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-insights-anomaly-detection-latency-threshold).
 
 - [High Contention]({% link {{ page.version.version }}/ui-insights-page.md %}#high-contention)
 
-    After the Slow Execution criteria is met, the execution will be identified as High Contention if a significant part of the slow execution time was due to contention.
+    After meeting the Slow Execution criteria, an execution is classified as High Contention if a significant portion of its duration was due to contention.
 
 - [Failed Execution]({% link {{ page.version.version }}/ui-insights-page.md %}#slow-execution)
 
@@ -89,7 +89,7 @@ Several [workload insights settings]({% link {{ page.version.version }}/ui-insig
 
 ## Monitor using metrics
 
-As part of normal operation, CockroachDB continuously records metrics that are often useful in troubleshooting performance. How metrics are exposed depends on deployment, refer to: 
+As part of normal operation, CockroachDB continuously records metrics that are often useful in troubleshooting performance. The way metrics are exposed depends on the deployment type. Refer to:
 
 - [Export Metrics From a CockroachDB Standard Cluster]({% link cockroachcloud/export-metrics.md %})
 - [Export Metrics From a CockroachDB Advanced Cluster]({% link cockroachcloud/export-metrics-advanced.md %})
@@ -112,7 +112,7 @@ CockroachDB Metric Name | Description | Type | Unit
 `txn.restarts.writetooold` | Number of restarts due to a concurrent writer committing first | COUNTER | COUNT
 
 {{site.data.alerts.callout_info}}
-Because these metrics are not broken down by database, they can be difficult to interpret.
+Since these metrics are not categorized by database, interpreting them can be challenging.
 {{site.data.alerts.end}}
 
 ## Monitor using `crdb_internal` tables
@@ -121,13 +121,13 @@ The [`crdb_internal`]({% link {{ page.version.version }}/crdb-internal.md %}) sy
 
 ### `transaction_contention_events` table
 
-The [`crdb_internal.transaction_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events) virtual table contains information about historical transaction contention events. By default, lock contention events and serializable conflicts that have a blocking transaction are persisted in memory on each node and exposed via SQL by this virtual table. 
+The [`crdb_internal.transaction_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events) virtual table contains information about historical transaction contention events. By default, lock contention events and serializable conflicts with a blocking transaction are stored in memory on each node and exposed via SQL in this virtual table.
 
 {{site.data.alerts.callout_danger}}
 Querying `crdb_internal.transaction_contention_events` triggers RPCs to every node, making it a resource-intensive operation. Avoid frequent polling to minimize resource usage.
 {{site.data.alerts.end}}
 
-Several cluster settings determine how events are logged to this table. For most uses, the default cluster settings are appropriate.
+Several cluster settings control how events are logged to this table. In most cases, the default settings are sufficient.
 
 Setting | Type | Default | Description
 --------|------|---------|-------------
@@ -146,7 +146,7 @@ The table columns are as follows:
 
 The transaction and statement fingerprint IDs (`*_txn_fingerprint_id` and `*_stmt_fingerprint_id`) columns are hexadecimal values that can be used to look up the SQL and other information from the [`crdb_internal.transaction_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_statistics) and [`crdb_internal.statement_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#statement_statistics) tables. These should not be confused with the transaction and statement IDs (`*_txn_id` and `*_stmt_id`), which are unique for each transaction and statement execution.
 
-The `crdb_internal.transaction_contention_events` table can be used to summarize the frequency and duration of contention events by database, schema, table and index. This can be useful for determining which workloads have the highest frequency and duration of contention events and which indexes they are occurring on. The table also contains information about specific transactions and statements involved in the contention event, allowing a deeper analysis of the contention event.
+The `crdb_internal.transaction_contention_events` table can be used to summarize the frequency and duration of contention events by database, schema, table and index. This can be useful for determining which workloads have the highest frequency and duration of contention events and which indexes they are occurring on. The table includes details on specific transactions and statements involved in contention, enabling deeper analysis.
 
 ### Other tables
 
@@ -156,7 +156,7 @@ There are several other tables that can give insights into contention.
 - [`crdb_internal.cluster_contended_tables`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_contended_tables)
 - [`crdb_internal.cluster_contended_keys`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_contended_keys)
 
-    These are views based on `crdb_internal.transaction_contention_events` that group all events by index, table, and key, respectively. A start and end time cannot be provided, so they count every event that is currently stored. Because of this, they act more like counter metric, this may be misleading since high numbers do not necessarily represent a high contention rate.
+    These are views based on `crdb_internal.transaction_contention_events` that group all events by index, table, and key, respectively. A start and end time cannot be provided, so they count every event that is currently stored. As a result, these act more like counter metrics, which can be misleading since high values do not always indicate a high contention rate.
 
 - [`crdb_internal.cluster_locks`]({% link {{ page.version.version }}/crdb-internal.md %}#cluster_locks)
     
@@ -168,11 +168,11 @@ There are several other tables that can give insights into contention.
 
 ## Continuous monitoring
 
-CockroachDB offers tools to monitor contention, but it is important to turn this data into actionable insights. The main question is: “Does contention significantly affect this workload?”. Ideally, continuous monitoring should answer this without manual effort.
+CockroachDB offers tools to monitor contention, but it is important to turn this data into actionable insights. The main question is: “Does contention significantly affect this workload?” Ideally, continuous monitoring should answer this without manual effort.
 
-At the cluster level, track how often contention happens compared to overall throughput. For example, divide the rate of contention events ([`sql.distsql.contended_queries.count`]({% link {{ page.version.version }}/metrics.md %}#sql.distsql.contended_queries.count) metric) by the total number of queries ([`sql.query.count`]({% link {{ page.version.version }}/metrics.md %}#sql.query.count) metric) to get the percentage of queries affected by contention. This can serve as a high-level indicator of view how frequently contention is encountered, but does not identify specific workloads.
+At the cluster level, track how often contention happens compared to overall throughput. For example, divide the rate of contention events ([`sql.distsql.contended_queries.count`]({% link {{ page.version.version }}/metrics.md %}#sql.distsql.contended_queries.count) metric) by the total number of queries ([`sql.query.count`]({% link {{ page.version.version }}/metrics.md %}#sql.query.count) metric) to get the percentage of queries affected by contention. This provides a high-level indicator of how frequently contention occurs but does not identify specific workloads.
 
-If more than 1% of queries are affected by contention, use the analysis process described in [Analyze using `crdb_internal` tables](#analyze-using-crdb_internal-tables) to determine which workloads and queries are causing the issue.
+If contention affects more than 1% of queries, use the [`crdb_internal` table analysis](#analyze-using-crdb_internal-tables) to identify the impacted workloads and queries.
 
 {{site.data.alerts.callout_danger}}
 Because querying the `crdb_internal.transaction_contention_events` table requires an expensive RPC fan-out, it is not recommended for use as a part of a continuous monitoring system.
@@ -180,15 +180,15 @@ Because querying the `crdb_internal.transaction_contention_events` table require
 
 ## Analyze using `crdb_internal` tables
 
-To analyze the specific causes of contention, use the `crdb_internal.transaction_contention_events`, `crdb_internal.transaction_statistics` and `crdb_internal.statement_statistics` tables.
+To analyze contention causes, use `crdb_internal.transaction_contention_events`, `crdb_internal.transaction_statistics` and `crdb_internal.statement_statistics` tables.
 
-First, query for the frequency and duration of contention events during a specific time period. These can be summarized at a database, schema, table, and index level to make it easy to identify if any workload has significant lock contention. Since some contention events are normal, the frequency and duration of contention events can be compared to the overall workload volume to determine the impact.
+First, retrieve the frequency and duration of contention events for a specific time period. These can be summarized at a database, schema, table, and index level to make it easy to identify if any workload has significant lock contention. Since some contention is expected, compare the frequency and duration of contention events against overall workload volume to assess the impact.
 
 Next, individual transactions and statements can be analyzed to understand the specific causes and impacts of the contention. The transaction and statement fingerprints can be used to look up detailed information from the `crdb_internal.transaction_statistics` and `crdb_internal.statement_statistics` tables, such as the specific SQL.
 
 ### Run `insights` workload
 
-To analyze the specific cause of contention on the sample `insights` workload, you will use 2 terminals.
+Use two terminals to analyze contention in the sample `insights` workload.
 
 1. In Terminal 1, use the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command to start a temporary, in-memory CockroachDB cluster of one node. Once the cluster is started, an interactive SQL shell will connect to that cluster. This shell will be used in the analysis process.
 
@@ -383,11 +383,11 @@ Review the DB Console Metrics graphs to get a high-level understanding of the co
 
 <img src="{{ 'images/v25.1/contention-4.png' | relative_url }}" alt="DB Console SQL Statement Errors graph" style="border:1px solid #eee;max-width:100%" />
 
-The [SQL Statement Contention]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-contention) graph show a corresponding increase during the time period of 9:16 to 9:23 UTC: 
+The [SQL Statement Contention]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-contention) graph shows a corresponding increase between 9:16 and 9:23 UTC: 
 
 <img src="{{ 'images/v25.1/contention-5.png' | relative_url }}" alt="DB Console SQL Statement Contention graph" style="border:1px solid #eee;max-width:100%" />
 
-The [Transaction Restarts]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#transaction-restarts) graph also show a corresponding increase during the time period of 9:16 to 9:23 UTC: 
+The [Transaction Restarts]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#transaction-restarts) graph also shows a corresponding increase between 9:16 and 9:23 UTC: 
 
 <img src="{{ 'images/v25.1/contention-6.png' | relative_url }}" alt="DB Console Transaction Restarts graph" style="border:1px solid #eee;max-width:100%" />
 
