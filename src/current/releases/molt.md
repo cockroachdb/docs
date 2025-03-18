@@ -18,6 +18,12 @@ To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
 
+## February 26, 2025
+
+MOLT Fetch/Verify 1.2.3 is [available](#installation).
+
+- MOLT Fetch users can now set [`--table-concurrency`]({% link molt/molt-fetch.md %}#global-flags) and [`--export-concurrency`]({% link molt/molt-fetch.md %}#global-flags) to values greater than `1` for MySQL sources.
+
 ## February 5, 2025
 
 MOLT Fetch/Verify 1.2.2 is [available](#installation).
