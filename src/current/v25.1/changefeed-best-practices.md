@@ -51,7 +51,7 @@ The key areas to monitor when running changefeeds:
 
 ## Manage changefeeds and schema changes
 
-When a schema change is issued that causes a column backfill, it can result in a changefeed emitting [duplicate messages]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes-with-column-backfill) for an event. We recommend issuing schema changes **outside of explicit transactions** to make use of the declarative schema changer, which does not perform column backfill for the [schema changes it supports]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer). For more details on schema changes and column backfill generally, refer to the [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %}) page.
+When a schema change is issued that causes a column backfill, it can result in a changefeed emitting [duplicate messages]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes-with-column-backfill) for an event. We recommend issuing schema changes **outside of explicit transactions**. For more details on schema changes and column backfill generally, refer to the [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %}) page.
 
 You can also use the [`schema_change_events`]({% link {{ page.version.version }}/create-changefeed.md %}#schema-change-events) and [`schema_change_policy`]({% link {{ page.version.version }}/create-changefeed.md %}#schema-change-policy) options to define a schema change type and an associated policy that will modify how the changefeed behaves under the schema change.
 
