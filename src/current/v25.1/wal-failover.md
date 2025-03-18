@@ -472,7 +472,7 @@ However, the WAL failback operation will not cascade back until **all drives are
 
 ## Video demo: WAL failover
 
-To explain WAL Failover in CockroachDB and demonstrate what happens when you enable vs disable it, join our Technical Evangelist at Cockroach Labs Rob Reid for this in-depth video:
+For a demo of WAL Failover in CockroachDB and what happens when you enable or disable it, play the following video:
 
 {% include_cached youtube.html video_id="R-BuPePPU-k" %}
 
