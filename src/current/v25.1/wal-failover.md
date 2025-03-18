@@ -470,6 +470,12 @@ Store _A_ will failover to store _B_, store _B_ will failover to store _C_, and 
 
 However, the WAL failback operation will not cascade back until **all drives are available** - that is, if store _A_'s disk unstalls while store _B_ is still stalled, store _C_ will not failback to store _A_ until _B_ also becomes available again. In other words, _C_ must failback to _B_, which must then failback to _A_.
 
+## Video demo: WAL failover
+
+For a demo of WAL Failover in CockroachDB and what happens when you enable or disable it, play the following video:
+
+{% include_cached youtube.html video_id="R-BuPePPU-k" %}
+
 ## See also
 
 + [Data Resilience]({% link {{ page.version.version }}/data-resilience.md %})
