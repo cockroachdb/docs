@@ -342,7 +342,7 @@ Lock strengths in CockroachDB define how transactions interact with data, balanc
 - `None`: Used for standard reads that do not acquire locks. A [simple `SELECT * WHERE id = x`]({% link {{ page.version.version }}/select-clause.md %}) corresponds to lock strength *None*.
 - `Shared`: Allows multiple transactions to read the same key simultaneously but prevents exclusive locks or writes. `Shared` locks are acquired through [`SELECT * WHERE id = x FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths).
 - `Exclusive`: Grants exclusive access to a key, blocking all other reads and writes. `Exclusive` locks are acquired using [`SELECT * WHERE id = x FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths).
-- `Intent`: Temporary lock placed on a key during a transaction’s write operation ([`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %})). It conflicts with shared locks, exclusive locks, and non-locking readers at later timestamps.
+- `Intent`: Temporary lock placed on a key during a transaction’s write operation ([`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %})). It conflicts with shared locks, exclusive locks, and non-locking readers at higher timestamps.
 
 For a detailed explanation of how CockroachDB handles transaction locks, refer to [Writes and reads (phase 1)]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writes-and-reads-phase-1).
 
