@@ -130,7 +130,7 @@ To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({%
 
 ## Create an incremental locality-aware backup
 
-If you backup to a destination already containing a [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups), an [incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) will be appended to the full backup in a subdirectory. When you're taking an incremental backup, you must ensure that the incremental backup localities match the full backup localities otherwise you will receive an error. Alternatively, take another full backup with the matching localities before running the incremental backup.
+If you back up to a destination already containing a [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups), an [incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) will be appended to the full backup in a subdirectory. To take a locality-aware incremental backup and restore from it successfully, you must maintain the same storage URI to `COCKROACH_LOCALITY` query parameter mappings for all incrementals in the backup collection. Alternatively, take another full backup with the necessary storage URI to `COCKROACH_LOCALITY` mapping before running an incremental backup.
 
 There is different syntax for taking an incremental backup depending on where you need to store the backups:
 
