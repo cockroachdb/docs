@@ -433,6 +433,8 @@ If the [primary region](#set-primary-region) fails, the secondary region becomes
 
 {{site.data.alerts.callout_danger}}
 In order to add a secondary region with `ALTER DATABASE ... SET SECONDARY REGION`, you must first set a primary database region with [`SET PRIMARY REGION`](#set-primary-region), or when [creating the database]({% link {{ page.version.version }}/create-database.md %}). For an example showing how to add a secondary region with `ALTER DATABASE`, see [Set the secondary region](#set-the-secondary-region).
+
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
 {{site.data.alerts.end}}
 
 For examples, see [Manage regions](#manage-regions).
@@ -549,6 +551,10 @@ ALTER DATABASE SET SECONDARY REGION
 ~~~
 
 Now, the `"us-west1"` region will act as the primary region if the original primary region fails.
+
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
+{{site.data.alerts.end}}
 
 #### Unset the secondary region
 
