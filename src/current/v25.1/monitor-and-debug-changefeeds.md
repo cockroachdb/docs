@@ -28,10 +28,10 @@ We recommend monitoring changefeeds with [Prometheus]({% link {{ page.version.ve
 
 ## Monitor a changefeed
 
-Changefeed progress is exposed as a high-water timestamp that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
+Changefeed progress is exposed as a [high-water timestamp]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
 
 - On the [**Changefeeds** dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}) of the DB Console.
-- On the [**Jobs** page]({% link {{ page.version.version }}/ui-jobs-page.md %}) of the DB Console. Hover over the high-water timestamp to view the [system time]({% link {{ page.version.version }}/as-of-system-time.md %}).
+- On the [**Jobs** page]({% link {{ page.version.version }}/ui-jobs-page.md %}) of the DB Console. Hover over the high-water timestamp column to view the [system time]({% link {{ page.version.version }}/as-of-system-time.md %}).
 - Using `SHOW CHANGEFEED JOB <job_id>`:
 
     {% include_cached copy-clipboard.html %}
@@ -39,9 +39,9 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
     SHOW CHANGEFEED JOB 383870400694353921;
     ~~~
     ~~~
-            job_id       |  job_type  |                              description                              | ... |      high_water_timestamp      | ... |
-    +--------------------+------------+-----------------------------------------------------------------------+ ... +--------------------------------+ ... +
-      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' | ... | 1537279405671006870.0000000000 | ... |
+            job_id       |  job_type  |                              description                              | ... |      high_water_timestamp      | readable_high_water_timestamptz | ...
+    +--------------------+------------+-----------------------------------------------------------------------+ ... +--------------------------------+---------------------------------+-----
+      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' | ... | 1741616141951323000.0000000000 | 2025-03-10 14:15:41.951323+00   |
     (1 row)
     ~~~
 
@@ -208,21 +208,11 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
 
 ### Using `SHOW CHANGEFEED JOBS`
 
- For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
+For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW CHANGEFEED JOBS;
-~~~
+{% include {{ page.version.version }}/cdc/show-changefeed-job.md %}
 
-~~~
-        job_id       |               description                                                                                                                                      | user_name | status  |         running_status                    |          created           |          started           | finished |          modified          |      high_water_timestamp      | error |   sink_uri                                                                            |                    full_table_names                     |        topics         | format
----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+---------+-------------------------------------------+----------------------------+----------------------------+----------+----------------------------+--------------------------------+-------+---------------------------------------------------------------------------------------+---------------------------------------------------------+-----------------------+---------
-786667716931878913   | CREATE CHANGEFEED FOR TABLE movr.users INTO 's3://changefeed_bucket?AWS_ACCESS_KEY_ID={ACCESS KEY}L&AWS_SECRET_ACCESS_KEY=redacted' WITH resolved              | user_name | running | running: resolved=1660144018.670219356,0  | 2022-08-10 14:38:55.098861 | 2022-08-10 14:38:55.12946  | NULL     | 2022-08-10 15:07:31.886757 | 1660144048833832849.0000000000 |       | s3://changefeed_bucket?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY=redacted  | {movr.public.users}                                     | NULL                  | json
-685724608744325121   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | root      | running | running: resolved=1629336943.183631090,0  | 2021-08-19 01:35:43.19592  | 2021-08-19 01:35:43.225445 | NULL     | 2021-08-19 01:35:43.252318 | 1629336943183631090.0000000000 |       | kafka://localhost:9092                                                                | {defaultdb.public.mytable}                              | mytable               | avro
-~~~
-
-For more information, see [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}).
+For more information on responses, refer to the [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) page.
 
 ### Using the DB Console
 

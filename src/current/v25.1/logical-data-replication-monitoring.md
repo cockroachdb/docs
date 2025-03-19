@@ -37,7 +37,7 @@ In the destination cluster's SQL shell, you can query `SHOW LOGICAL REPLICATION 
 SHOW LOGICAL REPLICATION JOBS;
 ~~~
 ~~~
-        job_id        | status  |          targets          | replicated_time
+        job_id        | status  |          tables           | replicated_time
 ----------------------+---------+---------------------------+------------------
 1012877040439033857   | running | {database.public.table}   | NULL
 (1 row)
@@ -50,7 +50,7 @@ For additional detail on each LDR job, use the `WITH details` option:
 SHOW LOGICAL REPLICATION JOBS WITH details;
 ~~~
 ~~~
-        job_id        |  status  |            targets             |        replicated_time        |    replication_start_time     | conflict_resolution_type |                                      description
+        job_id        |  status  |            tables              |        replicated_time        |    replication_start_time     | conflict_resolution_type |                                      command
 ----------------------+----------+--------------------------------+-------------------------------+-------------------------------+--------------------------+-----------------------------------------------------------------------------------------
   1010959260799270913 | running  | {movr.public.promo_codes}      | 2024-10-24 17:50:05+00        | 2024-10-10 20:04:42.196982+00 | LWW                      | LOGICAL REPLICATION STREAM into movr.public.promo_codes from external://cluster_a
   1014047902397333505 | canceled | {defaultdb.public.office_dogs} | 2024-10-24 17:30:25+00        | 2024-10-21 17:54:20.797643+00 | LWW                      | LOGICAL REPLICATION STREAM into defaultdb.public.office_dogs from external://cluster_a
@@ -112,7 +112,7 @@ You can use Prometheus and Alertmanager to track and alert on LDR metrics. Refer
 
 #### Metrics labels
 
-To view metrics at the job level, you can use the `label` option when you start LDR to add a metrics label to the LDR job. This enables [child metric]({% link {{ page.version.version }}/child-metrics.md %}) export, which are Prometheus time series with extra labels. You can track the following metrics for an LDR job with labels:
+To view metrics at the job level, you can use the `label` option when you start LDR to add a metrics label to the LDR job. This enables [child metric]({% link {{ page.version.version }}/multi-dimensional-metrics.md %}) export, which are Prometheus time series with extra labels. You can track the following metrics for an LDR job with labels:
 
 - `logical_replication.catchup_ranges_by_label`
 - `logical_replication.events_dlqed_by_label`
@@ -136,7 +136,7 @@ ON 'external://{source_external_connection}'
 INTO TABLE {database.public.table_name} WITH label=ldr_job;
 ~~~
 
-For a full reference on tracking metrics with labels, refer to the [Child Metrics]({% link {{ page.version.version }}/child-metrics.md %}#clusters-with-logical-data-replication-jobs) page.
+For a full reference on tracking metrics with labels, refer to the [Multi-dimensional Metrics]({% link {{ page.version.version }}/multi-dimensional-metrics.md %}#clusters-with-logical-data-replication-jobs) page.
 
 ### Datadog
 

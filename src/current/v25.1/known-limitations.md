@@ -1,5 +1,5 @@
 ---
-title: Known Limitations in CockroachDB v24.3
+title: Known Limitations in CockroachDB v25.1
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 keywords: limitations, known limitations, unsupported features, PostgreSQL compatibility
@@ -12,24 +12,9 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
-### Triggers
-
-{% include {{ page.version.version }}/known-limitations/trigger-limitations.md %}
-
-### Logical data replication (LDR)
-
-- {% include {{ page.version.version }}/known-limitations/ldr-triggers.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-udfs.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-sequences.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-indexes.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-column-families.md %}
-- {% include {{ page.version.version }}/known-limitations/ldr-composite-primary.md %}
-
-{% comment %}
 {{site.data.alerts.callout_info}}
 Limitations will be added as they are discovered.
 {{site.data.alerts.end}}
-{% endcomment %}
 
 ## Limitations from {{ previous_version }} and earlier
 
@@ -127,6 +112,10 @@ By default, CockroachDB orders `NULL`s before all other values. For compatibilit
 {% include {{ page.version.version }}/known-limitations/routine-limitations.md %}
 {% include {{ page.version.version }}/known-limitations/stored-proc-limitations.md %}
 {% include {{ page.version.version }}/known-limitations/udf-limitations.md %}
+
+### Triggers
+
+{% include {{ page.version.version }}/known-limitations/trigger-limitations.md %}
 
 ### Transactions
 
@@ -309,6 +298,10 @@ CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{
 
 {% include {{ page.version.version }}/known-limitations/expression-index-limitations.md %}
 
+#### Secondary regions and regional by row tables
+
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
+
 ### Data types
 
 #### Spatial support limitations
@@ -483,6 +476,17 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 
 {% include {{page.version.version}}/known-limitations/show-backup-symlink.md %}
 
+### High Availability
+
+#### Logical data replication (LDR)
+
+- {% include {{ page.version.version }}/known-limitations/ldr-triggers.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-udfs.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-sequences.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-indexes.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-column-families.md %}
+- {% include {{ page.version.version }}/known-limitations/ldr-composite-primary.md %}
+
 ### Change data capture
 
 Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
@@ -491,7 +495,6 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
 - {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
 - {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}
-- {% include {{ page.version.version }}/known-limitations/compression-level-kafka-config.md %}
 
 #### `ALTER CHANGEFEED` limitations
 
