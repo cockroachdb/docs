@@ -1,6 +1,6 @@
 {% if page.name == "migrate-in-phases.md" %}
 {{site.data.alerts.callout_info}}
-For the best possible [replication](#step-6-replicate-changes-to-cockroachdb) performance, perform this step right before [cutover](#step-8-cutover).
+If you need the best possible [replication](#step-6-replicate-changes-to-cockroachdb) performance, you can perform this step right before [cutover](#step-8-cutover).
 {{site.data.alerts.end}}
 {% endif %}
 
