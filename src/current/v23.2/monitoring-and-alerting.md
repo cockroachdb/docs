@@ -197,7 +197,9 @@ The critical nodes status endpoint is used to:
 
 - Check if any of your nodes are in a critical state.  A node is _critical_ if that node becoming unreachable would cause [replicas to become unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status).
 - Check if any ranges are [under-replicated or unavailable]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#replication-status). This is useful when determining whether a node is ready for [decommissioning]({% link {{ page.version.version }}/node-shutdown.md %}#decommissioning).
-- Check if any of your cluster's data placement constraints (set via [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) or direct [configuration of replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %})) are being violated. This is useful when implementing [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}).
+- Check if any of your cluster's data placement constraints (set via [multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) or direct [configuration of replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %})) are being violated. This is useful when implementing [data domiciling]({% link {{ page.version.version }}/data-domiciling.md %}) or [troubleshooting zone configurations]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}) generally.
+
+If you find under-replicated ranges or constraint violations, you will need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
 
 {{site.data.alerts.callout_info}}
 This HTTP status endpoint supersedes the deprecated [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}) SQL API. Due to architectural changes in CockroachDB, the SQL queries described on that page will not result in correct output.
@@ -360,7 +362,9 @@ In other words, this tells the ranges that "where you are now is *not* where you
 The critical nodes endpoint should now report a constraint violation in the `violatingConstraints` field of the response, similar to the one shown below.
 
 {{site.data.alerts.callout_success}}
-You can also use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the ranges that are in violation of constraints.
+Use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the ranges that are in violation of constraints.
+
+In a real life constraint violation scenario, you will need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -536,7 +540,9 @@ Once the statement above executes, the cluster will rebalance so that it's stori
 The critical nodes endpoint should now report ranges in the `underReplicated` field of the response, similar to the one shown below.
 
 {{site.data.alerts.callout_success}}
-You can also use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the under-replicated ranges.
+Use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the under-replicated ranges.
+
+In a real life under-replication scenario, you may need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -771,6 +777,13 @@ ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING n
 ~~~
 
 The critical nodes endpoint should now report that all of the cluster's nodes are critical by listing them in the `criticalNodes` field of the response.
+
+{{site.data.alerts.callout_success}}
+Use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement to find out more information about the ranges in critical localities.
+
+In a real life critical localities scenario, you may need to [Troubleshoot your replication zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
+{{site.data.alerts.end}}
+
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -1175,3 +1188,4 @@ Currently, not all events listed have corresponding alert rule definitions avail
 - [Local Deployment]({% link {{ page.version.version }}/start-a-local-cluster.md %})
 - [Third-Party Monitoring Integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
+- [Troubleshoot Replication Zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %})
