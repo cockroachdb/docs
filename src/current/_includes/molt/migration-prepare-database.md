@@ -10,7 +10,7 @@ ALTER SYSTEM SET wal_level = 'logical';
 <section class="filter-content" markdown="1" data-scope="mysql">
 Ensure that the MySQL database is configured for replication.
 
-For MySQL **8.0 and later** sources, enable [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) consistency. Set the following values in `mysql.cnf`, in the SQL shell, or as flags in the `mysql` start command:
+For MySQL **8.0 and later** sources, enable [global transaction identifiers (GTID)](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) consistency. Set the following values in `mysql.cnf`, in the SQL shell, or as flags in the `mysql` start command:
 
 - `--enforce-gtid-consistency=ON`
 - `--gtid-mode=ON`

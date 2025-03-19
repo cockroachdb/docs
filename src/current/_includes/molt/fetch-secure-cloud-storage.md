@@ -1,4 +1,4 @@
-- When using exporting data to [cloud storage]({% link molt/molt-fetch.md %}#cloud-storage), ensure that access control is properly configured:
+- When exporting data to [cloud storage]({% link molt/molt-fetch.md %}#cloud-storage), ensure that access control is properly configured:
 
 	- If you are using [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) for cloud storage:
 
@@ -13,7 +13,7 @@
 
 		- Alternatively, set the `--use-implicit-auth` flag to use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}).
 
-		- Ensure the S3 bucket is created and accessible by authorized roles/users only.
+		- Ensure the S3 bucket is created and accessible by authorized roles and users only.
 
 	- If you are using [Google Cloud Storage](https://cloud.google.com/storage/docs/access-control) for cloud storage:
 
@@ -34,6 +34,6 @@
 			export GOOGLE_APPLICATION_CREDENTIALS={path_to_cred_json}
 			~~~
 
-		- Alternatively, set the `--use-implicit-auth` flag to use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}).
+		- Alternatively, set the `--use-implicit-auth` flag to use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}?filters=gcs).
 
-		- Ensure the Google Cloud Storage bucket is created and accessible by authorized roles/users only.
+		- Ensure the Google Cloud Storage bucket is created and accessible by authorized roles and users only.

@@ -7,8 +7,6 @@ docs_area: migrate
 
 This page provides a high-level overview of database migration.
 
-For instructions on migrating to CockroachDB using the [MOLT (Migrate Off Legacy Technology) tools]({% link molt/molt-overview.md %}), refer to [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}).
-
 A database migration broadly consists of the following phases:
 
 1. [Develop a migration plan:](#develop-a-migration-plan) Evaluate your [downtime approach](#approach-to-downtime), [size the CockroachDB cluster](#capacity-planning) that you will migrate to, and become familiar with the [application changes](#application-changes) that you need to make for CockroachDB.
@@ -164,7 +162,7 @@ After you have successfully [conducted the migration](#conduct-the-migration):
 ## See also
 
 - [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})
-- [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})
+- [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %})
 - [Schema Design Overview]({% link {{ page.version.version }}/schema-design-overview.md %})
 - [Primary key best practices]({% link {{ page.version.version }}/schema-design-table.md %}#primary-key-best-practices)
 - [Secondary index best practices]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices)

@@ -32,7 +32,7 @@ Select the source dialect you migrated to CockroachDB:
 
 ## Step 1. Stop replication to CockroachDB
 
-Cancel replication to CockroachDB by entering `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`.
+Cancel replication to CockroachDB by entering `ctrl-c` to issue a `SIGTERM` signal to the `fetch` process. This returns an exit code `0`.
 
 ## Step 2. Fail back from CockroachDB
 

@@ -99,7 +99,7 @@ With initial load complete, start replication of ongoing changes on the source t
 
 The following example specifies that the `employees` table should be watched for change events.
 
-1. Issue the [MOLT Fetch]({% link molt/molt-fetch.md %}) command to start replication on CockroachDB, specifying `--mode replication-only` to perform a one-time data load. For details on this mode, refer to the [MOLT Fetch]({% link molt/molt-fetch.md %}#replicate-changes) page.
+1. Issue the [MOLT Fetch]({% link molt/molt-fetch.md %}) command to start replication on CockroachDB, specifying `--mode replication-only` to replicate ongoing changes on the source to CockroachDB. For details on this mode, refer to the [MOLT Fetch]({% link molt/molt-fetch.md %}#replicate-changes) page.
 
 	<section class="filter-content" markdown="1" data-scope="postgres">
 	Be sure to specify the same `--pglogical-replication-slot-name` value that you provided in [Step 3](#step-3-load-data-into-cockroachdb).
