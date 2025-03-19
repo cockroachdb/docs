@@ -7,7 +7,7 @@ docs_area: migrate
 
 There are multiple strategies for [migrating off legacy technology]({% link {{ page.version.version }}/migration-overview.md %}) to CockroachDB.
 
-This page discusses the ["Lift and Shift" strategy]({% link {{ page.version.version }}/migration-overview.md %}#lift-and-shift) for migrating your database, which is a commonly used approach. This approach, which is also known as "Big Bang" (and by other names), refers to the process where your data is moved in its entirety from a source system to a target system within a defined period of time. This typically involves some application downtime and can involve some service degradation.
+This page discusses the "Lift and Shift" strategy for migrating your database, which is a commonly used approach. This approach, which is also known as "Big Bang" (and by other names), refers to the process where your data is moved in its entirety from a source system to a target system within a defined period of time. This typically involves some application downtime and can involve some service degradation.
 
 Lift and Shift may not be the right approach if a strong application service continuity during the migration is required. It may be a viable method if application downtime is permitted.
 
@@ -31,8 +31,8 @@ Pros:
 
 Cons:
 
-- All or nothing: It either works or does not work; once you start, you have to finish or [roll back]({% link {{ page.version.version }}/migration-overview.md %}#all-at-once-rollback).
-- Higher project risk: The project **must** be completed to meet a given [downtime / service degradation window]({% link {{ page.version.version }}/migration-overview.md %}#downtime-window).
+- All or nothing: It either works or does not work; once you start, you have to finish or roll back.
+- Higher project risk: The project **must** be completed to meet a given [downtime / service degradation window]({% link {{ page.version.version }}/migration-overview.md %}#approach-to-downtime).
 - Application service continuity requirements must be relaxed (that is, application downtime or increased latency may be needed).
 
 ## Process design considerations
