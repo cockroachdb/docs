@@ -109,6 +109,10 @@
   sources: ['cdc-transformations.md']
   versions: ['v23.1']
 
+- destination: change-plan-from-standard-to-advanced.md
+  sources: ['migrate-from-standard-to-advanced.md']
+  versions: ['cockroachcloud']
+
 - destination: change-data-capture-overview.md
   sources: ['change-data-capture.md']
   versions: ['v21.2']
