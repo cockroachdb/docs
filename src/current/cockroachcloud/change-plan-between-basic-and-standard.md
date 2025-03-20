@@ -1,0 +1,39 @@
+---
+title: Change a Cluster's Plan Between Basic and Standard
+summary: Learn how to change a cluster's plan between a CockroachDB Basic cluster and a CockroachDB Standard cluster.
+toc: true
+---
+
+{{site.data.alerts.callout_info}}
+CockroachDB {{ site.data.products.standard }}, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+{{site.data.alerts.end}}
+
+This page describes how to change a cluster's [plan]({% link cockroachcloud/index.md %}#plans) between CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }} using the [{{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/).
+
+To use the CockroachDB Cloud API to change your cluster's plan, refer to [Use the CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}#change-a-clusters-plan).
+
+## Before you begin
+
+You'll need the [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) role on the running {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster in order to change the cluster's [plan]({% link cockroachcloud/index.md %}#plans).
+
+## Change a cluster's plan
+
+{{site.data.alerts.callout_info}}
+After changing your cluster's plan, you will not be able to change the plan again for 48 hours.
+{{site.data.alerts.end}}
+
+1. On the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), select the cluster that requires a plan change.
+1. On the [**Cluster Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), select the **Action** dropdown in the top-right corner, and then **Change plan type**.
+1. Choose a [plan]({% link cockroachcloud/index.md %}#plans) from {{ site.data.products.standard }} or {{ site.data.products.basic }} to change to. The current plan of the cluster will be highlighted. Select **Next: Capacity**.
+1. For capacity:
+    - If you are changing to a {{ site.data.products.standard }} plan, choose the amount of [provisioned capacity]({% link cockroachcloud/plan-your-cluster.md %}#provisioned-capacity) you want for your cluster. Select **Next: Finalize**.
+    - If you are changing to a [{{ site.data.products.basic }} plan]({% link cockroachcloud/create-a-basic-cluster.md %}#step-4-configure-cluster-capacity), choose whether the cluster should have **Unlimited** capacity to scale, or **Set a monthly limit**. Select **Next: Finalize**.
+1. Review the changes and then **Update cluster**.
+
+## See more
+
+- [CockroachDB Cloud Documentation]({% link cockroachcloud/index.md %})
+- [Use the CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %})
+
+
+

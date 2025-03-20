@@ -85,6 +85,12 @@ A CockroachDB {{ site.data.products.basic }} cluster cannot be moved from one re
 1. [Create a new CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) in the desired region.
 1. Once the new cluster is set up, [restore your data]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) from the backup into the new cluster.
 
+## Change a cluster's plan
+
+To change your cluster's plan between {{ site.data.products.basic }} and {{ site.data.products.standard }}, refer to [Change a Cluster's Plan Between Standard and Basic]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}).
+
+To change from {{ site.data.products.basic }} to {{ site.data.products.advanced }}, you must first change your cluster's plan from {{ site.data.products.basic }} to {{ site.data.products.standard }}, and then you can refer to [Change a Cluster's Plan from Standard to Advanced]({% link cockroachcloud/change-plan-from-standard-to-advanced.md %}).
+
 ## Restore data from a backup
 
 Use the [Managed Backups]({% link cockroachcloud/managed-backups.md %}) to restore your cluster from automatic full cluster backups.
