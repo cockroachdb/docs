@@ -208,7 +208,7 @@ The following releases and their descriptions represent proposed plans that are 
     {% endif %}
 
 {% comment %} Only display supported versions {% endcomment %}
-{% if is_supported %}
+{% if is_supported or released==false %}
 
 ### {{ v.major_version }}
 

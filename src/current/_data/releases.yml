@@ -8451,3 +8451,30 @@
   source: true
   previous_release: v25.1.1
 
+
+
+- release_name: v25.2.0-alpha.1
+  major_version: v25.2
+  release_date: '2025-03-24'
+  release_type: Testing
+  go_version: go1.23.7
+  sha: ccc3f31caec8193d217ce6866dfb3757c1ca47f6
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
