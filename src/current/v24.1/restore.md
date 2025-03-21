@@ -25,9 +25,9 @@ For details on restoring across versions of CockroachDB, see [Restoring Backups 
 - `RESTORE` only supports backups taken on a cluster on a specific major version into a cluster that is on the same version or the next major version. Refer to the [Restoring Backups Across Versions]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}) page for more detail.
 - `RESTORE` is a blocking statement. To run a restore job asynchronously, use the [`DETACHED`](#detached) option.
 - `RESTORE` no longer requires an {{ site.data.products.enterprise }} license, regardless of the options passed to it or to the backup it is restoring.
-- [Zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore]({% link {{ page.version.version }}/restore.md %}#full-cluster) with the zone configurations from the [backed up cluster]({% link {{ page.version.version }}/backup.md %}#back-up-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
 - When the [`exclude_data_from_backup`]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#exclude-a-tables-data-from-backups) parameter is set on a table, the table will not contain row data when restored.
+- {% include {{ page.version.version }}/backups/zone-configs-overwritten-during-restore.md %}
 
 ## Required privileges
 

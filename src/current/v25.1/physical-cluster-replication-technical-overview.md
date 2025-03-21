@@ -9,7 +9,7 @@ docs_area: manage
 Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-[**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) automatically and continuously streams data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. Each cluster contains: a _system virtual cluster_ and an application [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}):
+[**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) automatically and continuously streams data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. Each cluster contains: a _system virtual cluster_ and an application [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) during the PCR stream:
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 
@@ -71,4 +71,4 @@ When a PCR stream is started with a `readonly` virtual cluster, the job will del
 
 After reverting any necessary data, the standby virtual cluster is promoted as available to serve traffic and the replication job ends.
 
-For details on failing back to the primary cluster following a failover, refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-to-the-primary-cluster).
+For details on failing back to the primary cluster following a failover, refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#failback).

@@ -24,8 +24,14 @@ For each of these objects you can control:
 
 This page explains how replication zones work and how to use the `ALTER ... CONFIGURE ZONE` statement to manage them. `CONFIGURE ZONE` is a subcommand of the [`ALTER DATABASE`]({% link {{ page.version.version }}/alter-database.md %}#configure-zone), [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone), [`ALTER INDEX`]({% link {{ page.version.version }}/alter-index.md %}#configure-zone), [`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %}#create-a-replication-zone-for-a-partition), and [`ALTER RANGE`]({% link {{ page.version.version }}/alter-range.md %}#configure-zone) statements.
 
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
+
 {{site.data.alerts.callout_info}}
 To configure replication zones, a user must be a member of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or have been granted [`CREATE`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) or [`ZONECONFIG`]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) privileges. To configure [`system` objects](#for-system-data), the user must be a member of the `admin` role.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_danger}}
+{% include {{ page.version.version }}/zone-configs/avoid-manual-zone-configs.md %}
 {{site.data.alerts.end}}
 
 ## Overview
@@ -37,7 +43,7 @@ When a cluster starts, there are two categories of replication zone:
 1. Pre-configured replication zones that apply to internal system data.
 1. A single default replication zone that applies to the rest of the cluster.
 
-You can adjust these pre-configured zones as well as add zones for individual databases, tables, rows, and secondary indexes as needed.
+You can adjust these pre-configured zones as well as add zones for individual databases, tables, rows, and indexes as needed.
 
 For example, you might rely on the [default zone](#view-the-default-replication-zone) to spread most of a cluster's data across all of your availability zones, but [create a custom replication zone for a specific database](#create-a-replication-zone-for-a-database) to make sure its data is only stored in certain availability zones and/or geographies.
 
@@ -50,15 +56,14 @@ Level | Description
 Cluster | CockroachDB comes with a pre-configured `default` replication zone that applies to all table data in the cluster not constrained by a database, table, or row-specific replication zone. This zone can be adjusted but not removed. See [View the Default Replication Zone](#view-the-default-replication-zone) and [Edit the Default Replication Zone](#edit-the-default-replication-zone) for more details.
 Database | You can add replication zones for specific databases. See [Create a Replication Zone for a Database](#create-a-replication-zone-for-a-database) for more details.
 Table | You can add replication zones for specific tables. See [Create a Replication Zone for a Table](#create-a-replication-zone-for-a-table).
-Index | The [secondary indexes]({% link {{ page.version.version }}/indexes.md %}) on a table will automatically use the replication zone for the table. However, with an Enterprise license, you can add distinct replication zones for secondary indexes. See [Create a Replication Zone for a Secondary Index](#create-a-replication-zone-for-a-secondary-index) for more details.
-Row | You can add replication zones for specific rows in a table or secondary index by [defining table partitions]({% link {{ page.version.version }}/partitioning.md %}). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-partition) for more details.
+Index | The [indexes]({% link {{ page.version.version }}/indexes.md %}) on a table will automatically use the replication zone for the table. However, with an Enterprise license, you can add distinct replication zones for indexes. See [Create a Replication Zone for a Secondary Index](#create-a-replication-zone-for-a-secondary-index) for more details.
+Row | You can add replication zones for specific rows in a table or index by [defining table partitions]({% link {{ page.version.version }}/partitioning.md %}). See [Create a Replication Zone for a Table Partition](#create-a-replication-zone-for-a-partition) for more details.
 
 ### For system data
 
 In addition, CockroachDB stores internal [**system data**]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#monolithic-sorted-map-structure) in what are called system ranges. There are two replication zone levels for this internal system data, listed from least to most granular:
 
 Level | Description
-------|------------
 ------|------------
 Cluster | The `default` replication zone mentioned above also applies to all system ranges not constrained by a more specific replication zone.
 System Range | CockroachDB comes with pre-configured replication zones for important system ranges, such as the "meta" and "liveness" ranges. If necessary, you can add replication zones for the "timeseries" range and other system ranges as well. Editing replication zones for system ranges may override settings from `default`. See [Create a Replication Zone for a System Range](#create-a-replication-zone-for-a-system-range) for more details.<br><br>CockroachDB also comes with pre-configured replication zones for the internal `system` database and the `system.jobs` table, which stores metadata about long-running jobs such as schema changes and backups.
@@ -67,11 +72,250 @@ System Range | CockroachDB comes with pre-configured replication zones for impor
 
 When replicating data, whether table or system, CockroachDB always uses the most granular replication zone available. For example, for a piece of user data:
 
-1. If there's a replication zone for the row, CockroachDB uses it.
-1. If there's no applicable row replication zone and the row is from a secondary index, CockroachDB uses the secondary index replication zone.
-1. If the row isn't from a secondary index or there is no applicable secondary index replication zone, CockroachDB uses the table replication zone.
-1. If there's no applicable table replication zone, CockroachDB uses the database replication zone.
-1. If there's no applicable database replication zone, CockroachDB uses the `default` cluster-wide replication zone.
+1. If there's a replication zone [for the row](#create-a-replication-zone-for-a-partition) (a.k.a. [partition]({% link {{ page.version.version }}/partitioning.md %})), CockroachDB uses it.
+1. If there's no applicable row replication zone and the row is from an index, CockroachDB uses the [index replication zone](#create-a-replication-zone-for-a-secondary-index).
+1. If the row isn't from a index or there is no applicable index replication zone, CockroachDB uses the [table replication zone](#create-a-replication-zone-for-a-table).
+1. If there's no applicable table replication zone, CockroachDB uses the [database replication zone](#create-a-replication-zone-for-a-database).
+1. If there's no applicable database replication zone, CockroachDB uses [the `default` cluster-wide replication zone](#view-the-default-replication-zone).
+
+As this example shows, CockroachDB chooses which replication zone applies to a specific schema object using a hierarchy of inheritance. For most users [who never modify their zone configurations](#why-manual-zone-config-management-is-not-recommended), this level of understanding is sufficient.
+
+However, there are nuances in how inheritance works that are not explained by this example. For more details about how zone config inheritance works, see the section [How zone config inheritance works](#how-zone-config-inheritance-works).
+
+### How zone config inheritance works
+
+As [discussed previously](#level-priorities), CockroachDB always uses the most granular replication zone available for each schema object (database, table, etc.). More-specific settings applied to schema objects at lower levels of the inheritance tree will always override the settings of objects above them in the tree. All configurations will therefore be modified versions of the [`default` range]({% link {{ page.version.version }}/configure-replication-zones.md %}#view-the-default-replication-zone), which acts as the root of the tree. This means that in practice, **any changes to a specific schema object's zone configurations are by definition user-initiated**, either via [Multi-region SQL abstractions]({% link {{ page.version.version }}/multiregion-overview.md %}) or [manual changes](#why-manual-zone-config-management-is-not-recommended).
+
+Because each zone config inherits all of its initial values from its parent object, **it only stores the values that differ from its parent**. Any fields that are unset will be looked up in the parent object’s zone configuration. This continues recursively up the inheritance hierarchy all the way to the `default` zone config. In practice, most values are cached for performance.
+
+For more information, see the following subsections:
+
+- [The zone config inheritance hierarchy](#the-zone-config-inheritance-hierarchy)
+- [Zone config inheritance - example SQL session](#zone-config-inheritance-example-sql-session)
+- [Why manual zone config management is not recommended](#why-manual-zone-config-management-is-not-recommended)
+
+#### The zone config inheritance hierarchy
+
+The hierarchy of inheritance for zone configs can be visualized using the following outline-style diagram, in which each level of indentation denotes an inheritance relationship.
+
+The only exception to this simple inheritance relationship is that due to a known limitation, sub-partitions do not inherit their values from their parent partitions. Instead, sub-partitions inherit their values from the parent table. For more information, see [cockroachdb/cockroach#75862](https://github.com/cockroachdb/cockroach/issues/75862).
+
+```
+- default
+  - database A
+    - table A.B
+      - index A.B.1
+        - partition (row) 1
+          - sub-partition 1.1 (NB. Sub-partitions inherit from tables, *not* partitions - see cockroachdb/cockroach#75862)
+            - sub-partition 1.1.1
+          - sub-partition 1.2
+    - table A.C
+      - index A.C.1
+      - index A.C.2
+  - ...
+```
+
+The way the zone config inheritance hierarchy works can be thought of from a "bottom-up" or "top-down" perspective; both are useful, but which one is easier to understand may depend on what you are trying to do.
+
+The "bottom-up" view of how zone config inheritance works is useful when you [are troubleshooting unexpected replication behavior]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %}).
+
+In this view, you start with the most granular schema object whose replication behavior currently interests you. In a troubleshooting session, this is the one you think is the source of the unexpected behavior. You start at the target schema object, looking at the specific state of its configuration to see what is different about it from its parent object (if anything), and work upwards from there.
+
+The "top-down" perspective of how zone config inheritance works can be useful when thinking about how the system works as a whole.
+
+From the whole-system perspective, the hierarchy of schema object zone configs can be thought of as a tree. From this point of view, the system does a depth-first traversal down the tree of schema objects. For each object, **it uses the value of the most specific modified field from the current object's zone config, unless or until it finds a modified value of that field on an object deeper in the tree**. For each field on the current schema object's zone config where it doesn't find any modified value, it uses the inherited value from the node's parent, which inherits from its parent, and so on all the way back up to the root of the tree ([the `default` range](#view-the-default-replication-zone)).
+
+The following diagram presents the same set of schema objects as the previous outline-style diagram, but using boxes and lines joined with arrows that represent the "top-down" view. 
+
+Each box represents a schema object in the zone configuration inheritance hierarchy. Each solid line ends in an arrow that points from a parent object to its child object, which will inherit the parent's values unless those values are changed at the child level. The dotted lines between partitions and sub-partitions represent the known limitation mentioned previously that sub-partitions do not inherit their values from their parent partitions. Instead, sub-partitions inherit their values from the parent table. For more information about this limitation, see [cockroachdb/cockroach#75862](https://github.com/cockroachdb/cockroach/issues/75862).
+
+<img src="{{ 'images/v23.2/zone-config-inheritance-diagram.png' | relative_url }}" alt="zone config inheritance diagram" style="border:1px solid #eee;max-width:100%" />
+
+#### Zone config inheritance - example SQL session
+
+You can verify [the inheritance behavior described previously](#how-zone-config-inheritance-works) in a SQL session.
+
+Start a [demo cluster]({% link {{ page.version.version }}/cockroach-demo.md %}). Create a sample database and table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE DATABASE IF NOT EXISTS test;
+USE test;
+CREATE TABLE IF NOT EXISTS kv (k INT, v INT);
+~~~
+
+Next, manually set a zone configuration field at the database level. In this example, use `num_replicas`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE test CONFIGURE ZONE USING num_replicas = 1;
+~~~
+
+Check that the child table `test.kv` inherits the value of `num_replicas` from its parent database. You should see output like the following:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW ZONE CONFIGURATION FROM TABLE test.kv;
+~~~
+
+~~~
+     target     |              raw_config_sql
+----------------+-------------------------------------------
+  DATABASE test | ALTER DATABASE test CONFIGURE ZONE USING
+                |     range_min_bytes = 134217728,
+                |     range_max_bytes = 536870912,
+                |     gc.ttlseconds = 14400,
+                |     num_replicas = 1,
+                |     constraints = '[]',
+                |     lease_preferences = '[]'
+(1 row)
+~~~
+
+Then, set the `num_replicas` field on the table to a different value than its parent database:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE kv CONFIGURE ZONE USING num_replicas = 5;
+~~~
+
+This overrides the value of `num_replicas` set by the parent `test` database. From this point forward, until you discard the changed settings at the table level, the table will no longer inherit those changed values from its parent database.
+
+In other words, **the value of this field on the table's zone config has diverged from its parent database, and all state on this field must be managed manually going forward**. This divergence in state between parent and child objects, and the necessity to manage it manually once it diverges, is the reason [why manual zone config management is not recommended](#why-manual-zone-config-management-is-not-recommended).
+
+Next, check the zone config for the table `test.kv`, and verify that its value of `num_replicas` has diverged:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW ZONE CONFIGURATION FROM TABLE kv;
+~~~
+
+~~~
+   target  |           raw_config_sql
+-----------+--------------------------------------
+  TABLE kv | ALTER TABLE kv CONFIGURE ZONE USING
+           |     range_min_bytes = 134217728,
+           |     range_max_bytes = 536870912,
+           |     gc.ttlseconds = 14400,
+           |     num_replicas = 5,
+           |     constraints = '[]',
+           |     lease_preferences = '[]'
+(1 row)
+~~~
+
+Next, change the value of `num_replicas` for the `test` database again. Once again, choose a different value than its child table `test.kv` (which has `num_replicas = 5`).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE test CONFIGURE ZONE USING num_replicas = 7;
+~~~
+
+ The reason for doing this is to confirm the previous claim that "the value of this field on the table's zone config has diverged from its parent database, and all state on this field must be managed manually going forward".
+
+The following [`SHOW ZONE CONFIGURATION`]({% link {{ page.version.version }}/show-zone-configurations.md %}) statement confirms that the value of the `num_replicas` field on the `kv` table is no longer inherited from its parent database `test`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW ZONE CONFIGURATION FROM TABLE kv;
+~~~
+
+~~~
+   target  |           raw_config_sql
+-----------+--------------------------------------
+  TABLE kv | ALTER TABLE kv CONFIGURE ZONE USING
+           |     range_min_bytes = 134217728,
+           |     range_max_bytes = 536870912,
+           |     gc.ttlseconds = 14400,
+           |     num_replicas = 5,
+           |     constraints = '[]',
+           |     lease_preferences = '[]'
+(1 row)
+~~~
+
+Note that even if you manually change the value of `num_replicas` in `kv` to match the value of its parent `test`, further changes to `test` **will still not be propagated downward to `test.kv`**. Confirm this by running the following statements:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE test.kv CONFIGURE ZONE USING num_replicas = 7;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE test CONFIGURE ZONE USING num_replicas = 9;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW ZONE CONFIGURATION FROM TABLE kv;
+~~~
+
+~~~
+   target  |           raw_config_sql
+-----------+--------------------------------------
+  TABLE kv | ALTER TABLE kv CONFIGURE ZONE USING
+           |     range_min_bytes = 134217728,
+           |     range_max_bytes = 536870912,
+           |     gc.ttlseconds = 14400,
+           |     num_replicas = 7,
+           |     constraints = '[]',
+           |     lease_preferences = '[]'
+(1 row)
+~~~
+
+One way to think about this from a programming perspective is that a ["dirty bit"](https://en.wikipedia.org/wiki/Dirty_bit) has been set on the `num_replicas` field in the `kv` table's zone config.
+
+However, you can confirm that other fields on `test.kv` which have not been modified from their default values still inherit from the parent database `test` as expected by changing the value of `gc.ttlseconds` on the `test` database.
+
+Change the value of `gc.ttlseconds` on the `test` database:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE test CONFIGURE ZONE USING gc.ttlseconds = 600;
+~~~
+
+Next, confirm that the value of `gc.ttlseconds` from the `test` database is inherited by the `test.kv` table as expected:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW ZONE CONFIGURATION FROM TABLE test.kv;
+~~~
+
+~~~
+         target        |                 raw_config_sql
+-----------------------+--------------------------------------------------
+  TABLE test.public.kv | ALTER TABLE test.public.kv CONFIGURE ZONE USING
+                       |     range_min_bytes = 134217728,
+                       |     range_max_bytes = 536870912,
+                       |     gc.ttlseconds = 600,
+                       |     num_replicas = 7,
+                       |     constraints = '[]',
+                       |     lease_preferences = '[]'
+(1 row)
+~~~
+
+To return the `test.kv` table to a state where it goes back to inheriting all of its values from its parent database `test`, use the [`ALTER TABLE ... CONFIGURE ZONE DISCARD`]({% link {{ page.version.version }}/alter-table.md %}#remove-a-replication-zone) statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE test.kv CONFIGURE ZONE DISCARD;
+~~~
+
+As you can see from this example, these kinds of manual "tweaks" to zone configurations can leave the cluster in a state where its operators are managing its replication in a very manual and error-prone fashion. This example shows why, for most users, [manual zone config management is not recommended](#why-manual-zone-config-management-is-not-recommended). Instead, most users should use [Multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}).
+
+#### Why manual zone config management is not recommended
+
+Reasons to avoid modifying zone configurations manually using [`CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-database.md %}#configure-zone) include:
+
+- It is difficult to do proper auditing and change management of manually altered zone configurations.
+- It is easy to introduce logic errors (a.k.a., bugs) and end up in a state where your replication is not behaving as it is "supposed to".
+- Manual zone config modifications must be entirely maintained by the user with no help from the system. Such manual changes must be fully overwritten on each configuration change in order to take effect; this introduces another avenue for error.
+
+Given the [previous description of how zone config inheritance works](#how-zone-config-inheritance-works), if you [manually modify zone configs using `CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-database.md %}#configure-zone), you will see the following behavior:
+
+- If you set some field _F_ at the database level, the updated value of that field will propagate down the inheritance tree to all of the database's child tables.
+- However, if you then edit that same field _F_ on a child table, the table will no longer inherit its value of _F_ from its parent database. Instead, **the field _F_ across these two schema objects is now in a diverged state**. This means that any changes to the value of _F_ at the database level **no longer propagate downward to the child table**, which has its own value of _F_.
+- In other words, once you touch any schema object _O_ to manually edit some field _F_, a "dirty bit" is set on _O.F_, and CockroachDB will no longer modify _O.F_ without user intervention. **Instead, you are now responsible for managing the state of _O.F_ via direct calls to [`ALTER DATABASE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-database.md %}#configure-zone) anytime something needs to change in your configuration**.
+
+Avoiding this error-prone manual state management was the motivation behind the development of the abstractions provided by [Multi-region SQL statements]({% link {{ page.version.version }}/multiregion-overview.md %}) and [Multi-region Zone Config Extensions]({% link {{ page.version.version }}/zone-config-extensions.md %}).
 
 ## Manage replication zones
 
@@ -136,7 +380,7 @@ See [Cluster Topology]({% link {{ page.version.version }}/recommended-production
 
 ### Troubleshooting zone constraint violations
 
-To see if any of the data placement constraints defined in your replication zone configurations are being violated, use the `system.replication_constraint_stats` report as described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
+{% include {{ page.version.version }}/see-zone-config-troubleshooting-guide.md %}
 
 ## View replication zones
 
@@ -690,4 +934,5 @@ There's no need to make zone configuration changes; by default, the cluster is c
 - [`SHOW PARTITIONS`]({% link {{ page.version.version }}/show-partitions.md %})
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
 - [Table Partitioning]({% link {{ page.version.version }}/partitioning.md %})
-- [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %})
+- [Critical nodes endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint)
+- [Troubleshoot Replication Zones]({% link {{ page.version.version }}/troubleshoot-replication-zones.md %})
