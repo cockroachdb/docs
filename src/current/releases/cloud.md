@@ -16,7 +16,7 @@ Get future release notes emailed to you:
 
 ## February 18, 2025
 
-CockroachDB v25.1 is now generally available for select CockroachDB Cloud clusters. CockroachDB v25.1 is an [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases). Refer to [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to v25.1]({% link cockroachcloud/upgrade-cockroach-version.md %}).
+CockroachDB v25.1 is now generally available for select CockroachDB Cloud Advanced clusters. CockroachDB v25.1 is an [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases). Refer to [Create a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to v25.1]({% link cockroachcloud/upgrade-cockroach-version.md %}).
 
 ## January 16, 2025
 
