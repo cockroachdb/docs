@@ -13,7 +13,7 @@ docs_area: reference.db_console
 
 The **Key Visualizer** page of the DB Console provides access to the Key Visualizer tool, which enables the visualization of current and historical [key-value (KV)]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#table-data-kv-structure) traffic serviced by your cluster.
 
-The Key Visualizer is a useful troubleshooting tool when experiencing performance problems with your cluster, surfacing historical and current KV [hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots) in your keyspace, drawing attention to [range splits]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits), and highlighting potentially-unnecessary [full-table scans]({% link {{ page.version.version }}/make-queries-fast.md %}) that might benefit from the creation of a targeted index, among others.
+The Key Visualizer is a useful troubleshooting tool when experiencing performance problems with your cluster, surfacing historical and current KV [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) in your keyspace, drawing attention to [range splits]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits), and highlighting potentially-unnecessary [full-table scans]({% link {{ page.version.version }}/make-queries-fast.md %}) that might benefit from the creation of a targeted index, among others.
 
 The Key Visualizer is disabled by default. Once [enabled](#enable-the-key-visualizer), the Key Visualizer continuously collects keyspace usage data across your cluster in the background at a [configurable sampling rate](#key-visualizer-customization). Data shown in the Key Visualizer is retained for a maximum period of seven days.
 
@@ -47,7 +47,7 @@ The Key Visualizer presents the following information:
 
 - Time is represented on the X-axis, with its granularity (i.e., frequency of data collection) being controlled by the [configured sample period](#key-visualizer-customization).
 
-- Keyspace activity is visualized on a color scale from black to red, representing "cold" and "hot" respectively. Thus, a range shown in bright red indicates a [hot spot]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots), while a range shown in black indicates a range with little to no active reads or writes. Hot spots are identified relative to other ranges; for example, a range that receives one write per minute could be considered a hot spot if the rest of the ranges on the cluster aren't receiving any. A range shown in red is therefore not necessarily itself indicative of a problem, but it may help to narrow a problem down to a specific range or group of ranges when troubleshooting cluster performance.
+- Keyspace activity is visualized on a color scale from black to red, representing "cold" and "hot" respectively. Thus, a range shown in bright red indicates a [hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}), while a range shown in black indicates a range with little to no active reads or writes. Hotspots are identified relative to other ranges; for example, a range that receives one write per minute could be considered a hotspot if the rest of the ranges on the cluster aren't receiving any. A range shown in red is therefore not necessarily itself indicative of a problem, but it may help to narrow a problem down to a specific range or group of ranges when troubleshooting cluster performance.
 
 - Boundaries between buckets and time samples appear as grey lines. You can disable the drawing of these lines by deselecting the **Show span boundaries** checkbox below the Key Visualizer.
 
@@ -78,13 +78,13 @@ When troubleshooting a performance issue with your cluster, use the Key Visualiz
 
 The Key Visualizer was designed to make potentially problematic ranges stand out visually; as such, bright red spot are generally good places to begin a performance investigation. For example, consider the following cases:
 
-### Identifying hot spots
+### Identifying hotspots
 
-The following image shows the Key Visualizer highlighting a series of [hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots): ranges with much higher-than-average write rates as compared to the rest of the cluster.
+The following image shows the Key Visualizer highlighting a series of [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}): ranges with much higher-than-average write rates as compared to the rest of the cluster.
 
 <img src="{{ 'images/v24.2/key-visualizer-range-split.png' | relative_url }}" alt="Key Visualizer showing range split" style="max-width:80%" />
 
-**Remediation:** If you've identified a potentially-problematic range as a hot spot, follow the recommended best practices to [reduce hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#reduce-hot-spots). In the case of the screenshot above, the increased write cadence is due to a series of [range splits]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits), where a range experiencing a large volume of incoming writes is splitting its keyspace to accommodate the growing range. This is often part of normal operation, but can be indicative of a data modeling issue if the range split is unexpected or causing cluster performance issues.
+**Remediation:** If you've identified a potentially-problematic range as a hotspot, follow the recommended best practices to [reduce hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}#reduce-hotspots). In the case of the screenshot above, the increased write cadence is due to a series of [range splits]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits), where a range experiencing a large volume of incoming writes is splitting its keyspace to accommodate the growing range. This is often part of normal operation, but can be indicative of a data modeling issue if the range split is unexpected or causing cluster performance issues.
 
 ### Identifying full table scans
 
@@ -99,5 +99,5 @@ The following image shows the Key Visualizer highlighting a [full-table scan]({%
 - [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
 - [Hot Ranges Page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %})
-- [Reduce Hot Spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#reduce-hot-spots)
+- [Reduce Hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}#reduce-hotspots)
 - [Support Resources]({% link {{ page.version.version }}/support-resources.md %})

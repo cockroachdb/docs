@@ -69,7 +69,7 @@ The best practices for generating unique IDs in a distributed database like Cock
 1. Using the [`SERIAL`]({% link {{ page.version.version }}/serial.md %}) pseudo-type for a column to generate random unique IDs. This can result in a performance bottleneck because IDs generated temporally near each other have similar values and are located physically near each other in a table's storage.
 1. Generating monotonically increasing [`INT`]({% link {{ page.version.version }}/int.md %}) IDs by using transactions with roundtrip [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})s, e.g., `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`]({% link {{ page.version.version }}/insert.md %}) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [change data capture (CDC)]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher-performance ID strategies outlined in the following sections.
 
-The preceding approaches are likely to create [hot spots](#hot-spots) for both reads and writes in CockroachDB. {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
+The preceding approaches are likely to create [hotspots](#hotspots) for both reads and writes in CockroachDB. {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 
 To create unique and non-sequential IDs, we recommend the following approaches (listed in order from best to worst performance):
 
@@ -83,7 +83,7 @@ To create unique and non-sequential IDs, we recommend the following approaches (
 
 A well-designed multi-column primary key can yield even better performance than a [UUID primary key](#use-functions-to-generate-unique-ids), but it requires more up-front schema design work. To get the best performance, ensure that any monotonically increasing field is located **after** the first column of the primary key. When done right, such a composite primary key should result in:
 
-- Enough randomness in your primary key to spread the table data / query load relatively evenly across the cluster, which will avoid hot spots. By "enough randomness" we mean that the prefix of the primary key should be relatively uniformly distributed over its domain. Its domain should have at least as many elements as you have nodes.
+- Enough randomness in your primary key to spread the table data / query load relatively evenly across the cluster, which will avoid hotspots. By "enough randomness" we mean that the prefix of the primary key should be relatively uniformly distributed over its domain. Its domain should have at least as many elements as you have nodes.
 - A monotonically increasing column that is part of the primary key (and thus indexed) which is also useful in your queries.
 
 For example, consider a social media website. Social media posts are written by users, and on login the user's last 10 posts are displayed. A good choice for a primary key might be `(username, post_timestamp)`. For example:
@@ -343,9 +343,9 @@ By default under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serial
 - [Delays in query completion]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#hanging-or-stuck-queries). This occurs when multiple transactions are trying to write to the same "locked" data at the same time, making a transaction unable to complete. This is also known as *lock contention*.
 - [Transaction retries]({% link {{ page.version.version }}/transactions.md %}#automatic-retries) performed automatically by CockroachDB. This occurs if a transaction cannot be placed into a serializable ordering among all of the currently-executing transactions. This is also called a *serialization conflict*.
 - [Transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}), which are emitted to your client when an automatic retry is not possible or fails. Under `SERIALIZABLE` isolation, your application must address transaction retry errors with [client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
-- [Cluster hot spots](#hot-spots).
+- [Cluster hotspots](#hotspots).
 
-To mitigate these effects, [reduce the causes of transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#reduce-transaction-contention) and [reduce hot spots](#reduce-hot-spots). For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
+To mitigate these effects, [reduce the causes of transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#reduce-transaction-contention) and [reduce hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}#reduce-hotspots). For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
 
 ### Reduce transaction contention
 
@@ -361,24 +361,11 @@ To maximize transaction performance, you'll need to maximize the performance of 
 - Use the fastest [storage devices]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage) available.
 - If the contending transactions operate on different keys within the same range, add [more CPU power (more cores) per node]({% link {{ page.version.version }}/recommended-production-settings.md %}#sizing). However, if the transactions all operate on the same key, this may not provide an improvement.
 
-## Hot spots
+## Hotspots
 
-A *hot spot* is any location on the cluster receiving significantly more requests than another. Hot spots are a symptom of *resource contention* and can create problems as requests increase, including excessive [transaction contention](#transaction-contention).
+A *hotspot* is any location on the cluster receiving significantly more requests than another. Hotspots are a symptom of *resource contention* and can create problems as requests increase, including excessive [transaction contention](#transaction-contention).
 
-[Hot spots occur]({% link {{ page.version.version }}/performance-recipes.md %}#indicators-that-your-cluster-has-hot-spots) when an imbalanced workload access pattern causes significantly more reads and writes on a subset of data. For example:
-
-- Transactions operate on the **same range but different index keys**. These operations are limited by the overall hardware capacity of [the range leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#cockroachdb-architecture-terms) node.
-- A range is indexed on a column of data that is sequential in nature (e.g., [an ordered sequence]({% link {{ page.version.version }}/sql-faqs.md %}#what-are-the-differences-between-uuid-sequences-and-unique_rowid), or a series of increasing, non-repeating [`TIMESTAMP`s]({% link {{ page.version.version }}/timestamp.md %})), such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. Because the system is unable to find a split point in the range that evenly divides the traffic, the range cannot benefit from [load-based splitting]({% link {{ page.version.version }}/load-based-splitting.md %}). This creates a hot spot at the single range.
-
-Read hot spots can occur if you perform lots of scans of a portion of a table index or a single key.
-
-### Reduce hot spots
-
-{% include {{ page.version.version }}/performance/reduce-hot-spots.md %}
-
-For a demo on hot spot reduction, watch the following video:
-
-{% include_cached youtube.html video_id="j15k01NeNNA" %}
+For a detailed explanation of hotspot causes and mitigation strategies, refer to [Understand Hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}).
 
 ## See also
 

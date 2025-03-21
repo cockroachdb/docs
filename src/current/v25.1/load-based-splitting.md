@@ -87,7 +87,7 @@ You can see how often a split key cannot be found over time by looking at the fo
 
 This metric is directly related to the log message described above.
 
-For more information about how to reduce hot spots (including hot ranges) on your cluster, see [Hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots).
+For more information about how to reduce hotspots (including hot ranges) on your cluster, refer to [Understand hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}).
 
 ## See also
 

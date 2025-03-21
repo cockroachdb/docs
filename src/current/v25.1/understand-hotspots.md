@@ -1,12 +1,12 @@
 ---
 title: Understand Hotspots
-summary: Learn about the terminology and patterns of hotspots in CockroachDB
+summary: Learn about the terminology and patterns of hotspots in CockroachDB. Learn about best practices in reducing hotspots.
 toc: true
 ---
 
-In distributed SQL, hotspots refer to bottlenecks that limit a cluster's ability to scale efficiently within workloads. This page defines terminology and patterns for troubleshooting hotspots.
+In distributed SQL, hotspots refer to bottlenecks that limit a cluster's ability to scale efficiently within workloads. This page defines [terminology](#terminology) and [patterns](#patterns) for troubleshooting hotspots. These definitions are not mutually exclusive. They can be combined to describe a single incident.
 
-These definitions are not mutually exclusive. They can be combined to describe a single incident.
+The page also offers best practices for [reducing hotspots](#reduce-hotspots), including a [video demo](#video-demo).
 
 ## Terminology
 
@@ -173,11 +173,11 @@ SELECT MAX(created_at) FROM posts GROUP BY created_at ORDER BY created_at LIMIT 
 
 Lookback hotspots are unique because they are [hot by read](#read-hotspot), rather than [hot by write](#write-hotspot). Separately lookback hotspots also tend not to specify a key, which would evade systems using key requests to identify hotspots.
 
-#### Queuing hotspot
+#### Queueing hotspot
 
 **Synonyms:** outbox hotspot
 
-A _queuing hotspot_ is a type of index hotspot that occurs when a workload treats CockroachDB like a distributed queue. This can happen if you implement the [Outbox microservice pattern]({% link {{ page.version.version }}/cdc-queries.md %}#queries-and-the-outbox-pattern).
+A _queueing hotspot_ is a type of index hotspot that occurs when a workload treats CockroachDB like a distributed queue. This can happen if you implement the [Outbox microservice pattern]({% link {{ page.version.version }}/cdc-queries.md %}#queries-and-the-outbox-pattern).
 
 Queues, such as logs, generally require data to be ordered by write, which necessitates indexing in a way that is likely to create a hotspot. An outbox where data is deleted as it is read has an additional problem: it tends to accumulate an ordered set of [garbage data]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-my-disk-usage-not-decreasing-after-deleting-data) behind the live data. Since the system cannot determine whether any live rows exist within the garbage data, what appears to be a small table scan to the user can actually result in an unexpectedly intensive scan on the garbage data.
 
@@ -323,8 +323,17 @@ A _tenant hotspot_ is a hotspot where one tenant's workload affects another tena
 
 For example, consider a cluster with tenants A and B. Tenant A's workload generates a hotspot. Tenant B’s tables experience degradation on nodes where their data is colocated with Tenant A's hotspot. In this case, we say that Tenant B is experiencing a _tenant hotspot_.
 
+## Reduce hotspots
+
+{% include {{ page.version.version }}/performance/reduce-hotspots.md %}
+
+### Video demo
+
+For a demo on hotspot reduction, watch the following video:
+
+{% include_cached youtube.html video_id="j15k01NeNNA" %}
+
 ## See also
 
-- [SQL Performance Best Practices: Hotspots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots)
-- [Performance Tuning Recipes: Hotspots]({% link {{ page.version.version }}/performance-recipes.md %}#hot-spots)
+- [Performance Tuning Recipes: Hotspots]({% link {{ page.version.version }}/performance-recipes.md %}#hotspots)
 - [Single hot node]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#single-hot-node)

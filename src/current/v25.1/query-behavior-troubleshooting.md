@@ -284,7 +284,7 @@ For more information about the SQL standard features supported by CockroachDB, s
 
 ### Single hot node
 
-A *hot node* is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and check the following:
+A [*hot node*]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and check the following:
 
 - Click **Metrics** and navigate to the following graphs. Hover over each graph to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
   - [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}#other-graphs) > **Average Queries per Store** graph
@@ -306,7 +306,7 @@ A *hot node* is one that has much higher resource usage than other nodes. To det
 
 - If you have a monotonically increasing index column or primary Key, then your index or primary key should be redesigned. For more information, see [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
 
-- If a range has significantly higher QPS on a node, there may be a hot spot on the range that needs to be reduced. For more information, see [Hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots).
+- If a range has significantly higher QPS on a node, it may indicate a hotspot that needs to be addressed. For more information, refer to [Hot range]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-range).
 
 - If you have a monotonically increasing index column or primary key, then your index or primary key should be redesigned. See [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices) for more information.
 
