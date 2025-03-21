@@ -38,7 +38,7 @@ During PCR, jobs running on the primary cluster will replicate to the standby cl
 
 ### Step 1. Initiate the failover
 
-To initiate a failover to the standby cluster, you can specify the point in time for the standby's promotion in different ways. That is, the standby cluster's live data at the point of failover. Refer to the following sections for steps:
+To initiate a failover to the standby cluster, you can specify the point in time for the standby's promotion in the following ways. That is, the standby cluster's live data at the point of failover. Refer to the following sections for steps:
 
 - [`LATEST`](#fail-over-to-the-most-recent-replicated-time): The most recent replicated timestamp.
 - [Point-in-time](#fail-over-to-a-point-in-time):
