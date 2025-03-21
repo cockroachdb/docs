@@ -1,12 +1,12 @@
 ---
 title: Understand Hotspots
-summary: Learn about the terminology and patterns of hotspots in CockroachDB
+summary: Learn about the terminology and patterns of hotspots in CockroachDB. Learn about best practices in reducing hotspots.
 toc: true
 ---
 
-In distributed SQL, hotspots refer to bottlenecks that limit a cluster's ability to scale efficiently within workloads. This page defines terminology and patterns for troubleshooting hotspots.
+In distributed SQL, hotspots refer to bottlenecks that limit a cluster's ability to scale efficiently within workloads. This page defines [terminology](#terminology) and [patterns](#patterns) for troubleshooting hotspots. These definitions are not mutually exclusive. They can be combined to describe a single incident.
 
-These definitions are not mutually exclusive. They can be combined to describe a single incident.
+The page also offers best practices for [reducing hotspots](#reduce-hotspots), including a [video demo](#video-demo).
 
 ## Terminology
 
@@ -323,8 +323,17 @@ A _tenant hotspot_ is a hotspot where one tenant's workload affects another tena
 
 For example, consider a cluster with tenants A and B. Tenant A's workload generates a hotspot. Tenant B’s tables experience degradation on nodes where their data is colocated with Tenant A's hotspot. In this case, we say that Tenant B is experiencing a _tenant hotspot_.
 
+## Reduce hotspots
+
+{% include {{ page.version.version }}/performance/reduce-hotspots.md %}
+
+### Video demo
+
+For a demo on hotspot reduction, watch the following video:
+
+{% include_cached youtube.html video_id="j15k01NeNNA" %}
+
 ## See also
 
-- [SQL Performance Best Practices: Hotspots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots)
 - [Performance Tuning Recipes: Hotspots]({% link {{ page.version.version }}/performance-recipes.md %}#hot-spots)
 - [Single hot node]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#single-hot-node)

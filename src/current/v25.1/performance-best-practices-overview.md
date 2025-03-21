@@ -365,15 +365,7 @@ To maximize transaction performance, you'll need to maximize the performance of 
 
 A *hotspot* is any location on the cluster receiving significantly more requests than another. Hotspots are a symptom of *resource contention* and can create problems as requests increase, including excessive [transaction contention](#transaction-contention).
 
-For a detailed explanation of hotspot causes and mitigation strategies, refer to the [Understanding Hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) page.
-
-### Reduce hotspots
-
-{% include {{ page.version.version }}/performance/reduce-hotspots.md %}
-
-For a demo on hotspot reduction, watch the following video:
-
-{% include_cached youtube.html video_id="j15k01NeNNA" %}
+For a detailed explanation of hotspot causes and mitigation strategies, refer to [Understand Hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}).
 
 ## See also
 
