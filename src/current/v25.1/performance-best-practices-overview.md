@@ -345,7 +345,7 @@ By default under [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serial
 - [Transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}), which are emitted to your client when an automatic retry is not possible or fails. Under `SERIALIZABLE` isolation, your application must address transaction retry errors with [client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
 - [Cluster hotspots](#hotspots).
 
-To mitigate these effects, [reduce the causes of transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#reduce-transaction-contention) and [reduce hotspots](#reduce-hotspots). For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
+To mitigate these effects, [reduce the causes of transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#reduce-transaction-contention) and [reduce hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}#reduce-hotspots). For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
 
 ### Reduce transaction contention
 

@@ -192,7 +192,7 @@ For a detailed explanation of hotspot causes and mitigation strategies, refer to
 
 - The **CPU Percent** graph on the [**Hardware**]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}) and [**Overload**]({% link {{ page.version.version }}/ui-overload-dashboard.md %}) dashboards (DB Console) shows spikes in CPU usage.
 - The **Hot Ranges** list on the [**Hot Ranges** page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) (DB Console) displays a higher-than-expected QPS for a range.
-- The [**Key Visualizer**]({% link {{ page.version.version }}/ui-key-visualizer.md %}) (DB Console) shows [ranges with much higher-than-average write rates]({% link {{ page.version.version }}/ui-key-visualizer.md %}#identifying-hot-spots) for the cluster.
+- The [**Key Visualizer**]({% link {{ page.version.version }}/ui-key-visualizer.md %}) (DB Console) shows [ranges with much higher-than-average write rates]({% link {{ page.version.version }}/ui-key-visualizer.md %}#identifying-hotspots) for the cluster.
 
 If you find hotspots, use the [**Range Report**]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}#range-report) and [**Key Visualizer**]({% link {{ page.version.version }}/ui-key-visualizer.md %}) to identify the ranges with excessive traffic. Then take steps to [reduce hotspots](#reduce-hotspots).
 

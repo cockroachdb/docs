@@ -335,5 +335,5 @@ For a demo on hotspot reduction, watch the following video:
 
 ## See also
 
-- [Performance Tuning Recipes: Hotspots]({% link {{ page.version.version }}/performance-recipes.md %}#hot-spots)
+- [Performance Tuning Recipes: Hotspots]({% link {{ page.version.version }}/performance-recipes.md %}#hotspots)
 - [Single hot node]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#single-hot-node)

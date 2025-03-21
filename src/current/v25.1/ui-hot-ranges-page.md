@@ -26,7 +26,7 @@ The **Hot ranges** list displays the ranges with the highest queries per second 
 {{site.data.alerts.callout_info}}
 Hot ranges are not necessarily problematic. Some ranges naturally experience higher QPS than others. For example, a range for a frequently accessed table will have a higher QPS.
 
-However, a significant increase in traffic can also indicate a *hotspot* on the range that should be reduced. For more information, refer to [Understand hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}#hot range).
+However, a significant increase in traffic can also indicate a *hotspot* on the range that should be reduced. For more information, refer to [Understand hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-range).
 {{site.data.alerts.end}}
 
 To view the [Range Report](#range-report) for a hot range, click its range ID.
