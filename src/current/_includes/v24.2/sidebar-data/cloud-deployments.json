@@ -113,9 +113,9 @@
             ]
             },
             {
-                "title": "Change a Cluster's Plan from Standard to Advanced",
+                "title": "Migrate from Standard to Advanced",
                 "urls": [
-                    "/cockroachcloud/change-plan-from-standard-to-advanced.html"
+                    "/cockroachcloud/migrate-from-standard-to-advanced.html"
             ]
             },
             {
@@ -172,9 +172,9 @@
             ]
             },
             {
-                "title": "Change a Cluster's Plan from Standard to Advanced",
+                "title": "Migrate from Standard to Advanced",
                 "urls": [
-                    "/cockroachcloud/change-plan-from-standard-to-advanced.html"
+                    "/cockroachcloud/migrate-from-standard-to-advanced.html"
             ]
             }
         ]

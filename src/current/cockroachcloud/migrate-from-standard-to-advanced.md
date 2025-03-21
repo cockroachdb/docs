@@ -1,6 +1,6 @@
 ---
-title: Change a Cluster's Plan from Standard to Advanced
-summary: Learn how to change a cluster's plan from a CockroachDB Standard cluster to a CockroachDB Advanced cluster.
+title: Migrate from Standard or Basic to Advanced
+summary: Learn how to migrate data from a CockroachDB Standard or Basic cluster into a CockroachDB Advanced cluster.
 toc: true
 docs_area: migrate
 ---
@@ -9,7 +9,7 @@ docs_area: migrate
 CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
-This page has instructions for changing cluster [plan]({% link cockroachcloud/index.md %}#plans) from a CockroachDB {{ site.data.products.standard }} cluster to a CockroachDB {{ site.data.products.advanced }} cluster, by exporting to CSV and using [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}). You may want to change your cluster's plan to CockroachDB {{ site.data.products.advanced }} if you want a single-tenant cluster with no shared resources.
+This page has instructions migrating data from a CockroachDB {{ site.data.products.standard }} cluster to a CockroachDB {{ site.data.products.advanced }} cluster, by exporting to CSV and using [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}). You may want to migrate to CockroachDB {{ site.data.products.advanced }} if you want a single-tenant cluster with no shared resources.
 
 The following steps use sample data from the [`tpcc` workload]({% link {{site.current_cloud_version}}/cockroach-workload.md %}#workloads).
 
@@ -17,8 +17,8 @@ The following steps use sample data from the [`tpcc` workload]({% link {{site.cu
 
 These instructions assume you already have the following:
 
-- A [CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/quickstart.md %}) of which you want to change the plan.
-- A [paid CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/quickstart-trial-cluster.md %}). Your first paid CockroachDB {{ site.data.products.advanced }} cluster is free for a 30-day trial.
+- A [CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/quickstart.md %}) from which you want to migrate data.
+- A [CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/quickstart-trial-cluster.md %}).
 - [Cloud storage]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}).
 
 ## Step 1. Export data to cloud storage
