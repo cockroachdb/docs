@@ -45,7 +45,7 @@ The CockroachDB {{ site.data.products.cloud }} Console provides insight into you
 
 ### Changing cluster plan provisioned capacity recommendations
 
-If you change your cluster's plan from {{ site.data.products.basic }} to {{ site.data.products.standard }}, the Cloud Console will provide a suggested provisioned capacity. This is calculated depending on your [peak request units (RUs)]({% link cockroachcloud/plan-your-basic-cluster.md %}) in the last 30 days on the {{ site.data.products.basic }} cluster plan. The vCPU suggestion is based on the 30-day peak RUs with an additional 40% buffer. 500 RUs can be converted to 1 vCPU.   
+If you change your cluster's plan from {{ site.data.products.basic }} to {{ site.data.products.standard }}, the Cloud Console will provide a suggested provisioned capacity. This is calculated depending on your [peak request units (RUs)]({% link cockroachcloud/plan-your-basic-cluster.md %}) in the last 30 days on the {{ site.data.products.basic }} cluster plan. The vCPU suggestion is based on the 30-day peak RUs with an additional 40% buffer. 500 RUs can be converted to 1 vCPU. If the estimate is beyond the {{ site.data.products.standard }} plan's maximum supported vCPU, you may experience performance issues if your cluster's workload consistently spikes above that level.
 
 ### Capacity pricing policies
 
