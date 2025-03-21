@@ -43,6 +43,10 @@ You can decrease the provisioned capacity only three times within a 7-day period
 
 The CockroachDB {{ site.data.products.cloud }} Console provides insight into your cluster's compute usage relative to its provisioned capacity on a monthly basis. We recommend that you maintain at minimum a 40% capacity buffer over time, and that you increase this buffer if the workload is unpredictable or highly sensitive to query latency. You now have the advantage of historical data about the cluster's performance to help you maintain and improve the cluster's performance over time.
 
+### Changing cluster plan provisioned capacity recommendations
+
+If you change your cluster's plan from {{ site.data.products.basic }} to {{ site.data.products.standard }}, the Cloud Console will provide a suggested provisioned capacity. This is calculated depending on your [peak request units (RUs)]({% link cockroachcloud/plan-your-basic-cluster.md %}) in the last 30 days on the {{ site.data.products.basic }} cluster plan. The vCPU suggestion is based on the 30-day peak RUs with an additional 40% buffer. 500 RUs can be converted to 1 vCPU.   
+
 ### Capacity pricing policies
 
 Important capacity and pricing policies mentioned elsewhere are summarized here:
