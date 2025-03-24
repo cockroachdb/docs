@@ -223,7 +223,7 @@ This section illustrates the steps to fail back to the original primary cluster 
     ~~~
 
     {{site.data.alerts.callout_success}}
-    For details on connection strings, refer to the [Connection reference]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#connection-reference).
+    For details on connection strings, refer to the [Connection reference]({% link {{ page.version.version }}/manage-physical-cluster-replication.md %}#connection-reference).
     {{site.data.alerts.end}}
 
 1. Connect to the system virtual cluster for **Cluster B**:
