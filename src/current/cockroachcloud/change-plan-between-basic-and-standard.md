@@ -20,7 +20,7 @@ For changing plans from {{ site.data.products.standard }} to {{ site.data.produc
 
 ### Considerations
 
-- If the cluster was created on legacy architecture, then it cannot be upgraded in the Cloud Console. The cluster will not support multi-region features or private connections. To use these features, you must take a [backup]({% link cockroachcloud/backup-and-restore-overview.md %}) and restore into a new cluster. To change the plan for your current cluster despite the feature limitations, you can use the Cloud API ({% link cockroachcloud/cloud-api.md %}#change-a-clusters-plan).
+- If the cluster was created on legacy architecture, then it cannot be upgraded in the Cloud Console. The cluster will not support multi-region features or private connections. To use these features, you must take a [backup]({% link cockroachcloud/backup-and-restore-overview.md %}) and restore into a new cluster. To change the plan for your current cluster despite the feature limitations, you can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}#change-a-clusters-plan).
 - The plan change will take up to 5 minutes.
 - The cluster will remain operational under the current plan during the switching period.
 - You can change back the plan if needed. However, when you change from {{ site.data.products.standard }} to {{ site.data.products.basic }}, you will need to wait 48 hours before being able to change back to {{ site.data.products.standard }}.
