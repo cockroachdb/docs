@@ -28,7 +28,7 @@ For changing plans from {{ site.data.products.standard }} to {{ site.data.produc
 ## Change a cluster's plan
 
 {{site.data.alerts.callout_info}}
-After changing your cluster's plan, you will not be able to change the plan again for 48 hours.
+When you change from {{ site.data.products.standard }} to {{ site.data.products.basic }}, you will not be able to change the plan back to {{ site.data.products.standard }} for 48 hours.
 {{site.data.alerts.end}}
 
 1. On the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), select the cluster that requires a plan change.
