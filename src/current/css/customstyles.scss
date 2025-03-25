@@ -115,6 +115,10 @@ table {
         ul {
           font-size: 14px;
         }
+        strong,
+        b {
+          font-size: inherit;
+        }
       }
     }
   }
