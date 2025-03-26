@@ -350,7 +350,7 @@ Before using this option:
 	{% include_cached copy-clipboard.html %}
 	~~~
 	--mode replication-only 
-	--replicator-flags "--defaultGTIDSet 'b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21'"
+	--replicator-flags "--defaultGTIDSet b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21"
 	~~~
 
 If replication is interrupted, you can [resume replication](#resume-replication).
