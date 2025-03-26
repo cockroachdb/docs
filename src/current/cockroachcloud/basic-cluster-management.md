@@ -89,7 +89,7 @@ A CockroachDB {{ site.data.products.basic }} cluster cannot be moved from one re
 
 To change your cluster's plan between {{ site.data.products.basic }} and {{ site.data.products.standard }}, refer to [Change a Cluster's Plan Between Standard and Basic]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}).
 
-To change from {{ site.data.products.basic }} to {{ site.data.products.advanced }}, refer to [Change a Cluster's Plan from Standard or Basic to Advanced]({% link cockroachcloud/migrate-from-standard-to-advanced.md %}).
+To change from {{ site.data.products.basic }} to {{ site.data.products.advanced }}, refer to [Migrate from Standard or Basic to Advanced]({% link cockroachcloud/migrate-from-standard-to-advanced.md %}).
 
 ## Restore data from a backup
 
