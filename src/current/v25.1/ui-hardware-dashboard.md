@@ -23,7 +23,7 @@ The **Hardware** dashboard displays the following time series graphs:
 
 <img src="{{ 'images/v24.2/ui_host_cpu_percent.png' | relative_url }}" alt="DB Console CPU Percent graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Host CPU Percent** graph displays the current user and system CPU percentage consumed by all processes on the host OS, normalized by number of cores, as tracked by the `sys.cpu.host.combined.percent-normalized` metric. If the CockroachDB process is run in a containerized environment, the host OS is the container since the CockroachDB process cannot inspect CPU usage beyond the container.
+The **Host CPU Percent** graph displays the current user and system CPU percentage consumed by all processes on the host OS, normalized by number of cores, as tracked by the [`sys.cpu.host.combined.percent-normalized`]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#sys-cpu-host-combined-percent-normalized) metric. If the CockroachDB process is run in a containerized environment, the host OS is the container since the CockroachDB process cannot inspect CPU usage beyond the container.
 
 - In the node view, the graph shows the percentage of CPU in use by all processes for the selected node.
 
