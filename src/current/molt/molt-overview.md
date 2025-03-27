@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-This page describes the MOLT (Migrate Off Legacy Technology) tools. For more information about migrating to CockroachDB, see [Migration Overview]({% link {{ site.current_cloud_version }}/migration-overview.md %}).
+This page describes the MOLT (Migrate Off Legacy Technology) tools. For instructions on migrating to CockroachDB, refer to [Migrate to CockroachDB]({% link {{ site.current_cloud_version }}/migrate-to-cockroachdb.md %}).
 
 Use the MOLT tools to:
 
@@ -25,7 +25,7 @@ Use the MOLT tools to:
 
 ### Schema Conversion Tool
 
-The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) converts a source database schema [to a CockroachDB-compatible schema]({% link {{ site.current_cloud_version }}/migration-overview.md %}#convert-the-schema). The supported Schema Conversion Tool sources are PostgreSQL, MySQL, Oracle, and SQL Server.
+The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) converts a source database schema to a CockroachDB-compatible schema. The supported Schema Conversion Tool sources are PostgreSQL, MySQL, Oracle, and SQL Server.
 
 The tool will convert [data definition (DDL) syntax]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements) (excluding destructive statements such as `DROP`), identify [unimplemented features and syntax incompatibilities]({% link {{ site.current_cloud_version }}/migration-overview.md %}#unimplemented-features-and-syntax-incompatibilities) in the schema, and suggest edits according to CockroachDB [best practices]({% link {{ site.current_cloud_version }}/migration-overview.md %}#schema-design-best-practices).
 

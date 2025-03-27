@@ -28,10 +28,10 @@ We recommend monitoring changefeeds with [Prometheus]({% link {{ page.version.ve
 
 ## Monitor a changefeed
 
-Changefeed progress is exposed as a high-water timestamp that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
+Changefeed progress is exposed as a [high-water timestamp]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
 
 - On the [**Changefeeds** dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}) of the DB Console.
-- On the [**Jobs** page]({% link {{ page.version.version }}/ui-jobs-page.md %}) of the DB Console. Hover over the high-water timestamp to view the [system time]({% link {{ page.version.version }}/as-of-system-time.md %}).
+- On the [**Jobs** page]({% link {{ page.version.version }}/ui-jobs-page.md %}) of the DB Console. Hover over the high-water timestamp column to view the [system time]({% link {{ page.version.version }}/as-of-system-time.md %}).
 - Using `SHOW CHANGEFEED JOB <job_id>`:
 
     {% include_cached copy-clipboard.html %}
@@ -39,9 +39,9 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
     SHOW CHANGEFEED JOB 383870400694353921;
     ~~~
     ~~~
-            job_id       |  job_type  |                              description                              | ... |      high_water_timestamp      | ... |
-    +--------------------+------------+-----------------------------------------------------------------------+ ... +--------------------------------+ ... +
-      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' | ... | 1537279405671006870.0000000000 | ... |
+            job_id       |  job_type  |                              description                              | ... |      high_water_timestamp      | readable_high_water_timestamptz | ...
+    +--------------------+------------+-----------------------------------------------------------------------+ ... +--------------------------------+---------------------------------+-----
+      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' | ... | 1741616141951323000.0000000000 | 2025-03-10 14:15:41.951323+00   |
     (1 row)
     ~~~
 
@@ -149,7 +149,7 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `changefeed.flushed_bytes` | Bytes emitted by all changefeeds. This may differ from `emitted_bytes` when [`compression`]({% link {{ page.version.version }}/create-changefeed.md %}#compression) is enabled. | Bytes | Counter
 `changefeed.flush_hist_nanos` | Time spent flushing messages across all changefeeds. | Nanoseconds | Histograms
 `changefeed.flushes` | Total number of flushes for a changefeed. | Flushes | Counter
-<a name="lagging-ranges-metric"></a>`changefeed.lagging_ranges` | Number of ranges which are behind in a changefeed. This is calculated based on the options: <ul><li>[`lagging_ranges_threshold`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-threshold), which is the amount of time that a range checkpoint needs to be in the past to be considered lagging.</li><li>[`lagging_ranges_polling_interval`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-polling-interval), which is the frequency at which lagging ranges are polled and the metric is updated.</li></ul><br>**Note:** Ranges undergoing an [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for longer than the `lagging_ranges_threshold` duration are considered to be lagging. Starting a changefeed with an initial scan on a large table will likely increment the metric for each range in the table. As ranges complete the initial scan, the number of ranges lagging behind will decrease. | Nanoseconds | Gauge
+<a name="lagging-ranges-metric"></a>`changefeed.lagging_ranges` | Number of ranges which are behind in a changefeed. This is calculated based on the options: <ul><li>[`lagging_ranges_threshold`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-threshold), which is the amount of time that a range checkpoint needs to be in the past to be considered lagging.</li><li>[`lagging_ranges_polling_interval`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-polling-interval), which is the frequency at which lagging ranges are polled and the metric is updated.</li></ul>**Note:** Ranges undergoing an [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for longer than the `lagging_ranges_threshold` duration are considered to be lagging. Starting a changefeed with an initial scan on a large table will likely increment the metric for each range in the table. As ranges complete the initial scan, the number of ranges lagging behind will decrease. | Nanoseconds | Gauge
 `changefeed.message_size_hist` | Distribution in the size of emitted messages. | Bytes | Histogram
 `changefeed.running` | Number of currently running changefeeds, including sinkless changefeeds. | Changefeeds | Gauge
 `changefeed.sink_batch_hist_nanos` | Time messages spend batched in the sink buffer before being flushed and acknowledged. | Nanoseconds | Histogram
@@ -208,21 +208,11 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
 
 ### Using `SHOW CHANGEFEED JOBS`
 
- For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
+For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW CHANGEFEED JOBS;
-~~~
+{% include {{ page.version.version }}/cdc/show-changefeed-job.md %}
 
-~~~
-        job_id       |               description                                                                                                                                      | user_name | status  |         running_status                    |          created           |          started           | finished |          modified          |      high_water_timestamp      | error |   sink_uri                                                                            |                    full_table_names                     |        topics         | format
----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+---------+-------------------------------------------+----------------------------+----------------------------+----------+----------------------------+--------------------------------+-------+---------------------------------------------------------------------------------------+---------------------------------------------------------+-----------------------+---------
-786667716931878913   | CREATE CHANGEFEED FOR TABLE movr.users INTO 's3://changefeed_bucket?AWS_ACCESS_KEY_ID={ACCESS KEY}L&AWS_SECRET_ACCESS_KEY=redacted' WITH resolved              | user_name | running | running: resolved=1660144018.670219356,0  | 2022-08-10 14:38:55.098861 | 2022-08-10 14:38:55.12946  | NULL     | 2022-08-10 15:07:31.886757 | 1660144048833832849.0000000000 |       | s3://changefeed_bucket?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY=redacted  | {movr.public.users}                                     | NULL                  | json
-685724608744325121   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | root      | running | running: resolved=1629336943.183631090,0  | 2021-08-19 01:35:43.19592  | 2021-08-19 01:35:43.225445 | NULL     | 2021-08-19 01:35:43.252318 | 1629336943183631090.0000000000 |       | kafka://localhost:9092                                                                | {defaultdb.public.mytable}                              | mytable               | avro
-~~~
-
-For more information, see [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}).
+For more information on responses, refer to the [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) page.
 
 ### Using the DB Console
 

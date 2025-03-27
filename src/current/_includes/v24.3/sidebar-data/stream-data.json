@@ -47,11 +47,17 @@
       "title": "Monitor Changefeeds",
       "items": [
         {
-          "title": "Monitor and Debug Changefeeds",
+          "title": "Overview",
           "urls": [
             "/${VERSION}/monitor-and-debug-changefeeds.html"
           ]
         },
+        {
+            "title": "Monitoring Guide",
+            "urls": [
+              "/${VERSION}/changefeed-monitoring-guide.html"
+            ]
+          },
         {
           "title": "Protect Changefeed Data",
           "urls": [

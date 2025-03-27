@@ -298,6 +298,10 @@ CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{
 
 {% include {{ page.version.version }}/known-limitations/expression-index-limitations.md %}
 
+#### Secondary regions and regional by row tables
+
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
+
 ### Data types
 
 #### Spatial support limitations
