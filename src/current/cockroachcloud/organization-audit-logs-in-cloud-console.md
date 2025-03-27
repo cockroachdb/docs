@@ -31,7 +31,10 @@ If audit logs are found for the filter selections, a table will be displayed wit
 - **Users**: Displays either a member's email or a [service account name]({% link cockroachcloud/managing-access.md %}#manage-service-accounts). *(Note: You cannot filter by service account name.)*
 - **Action name**
 - **Cluster name**
-- **Source**: Displays either `UI` for actions executed in the {{ site.data.products.cloud }} Console or `API` for actions executed via the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}).
+- **Source**: Displays the following:
+  - `UI` for actions executed in the {{ site.data.products.cloud }} Console.
+  - `API` for actions executed via the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}).
+  - `CRL` for actions executed by Cockroach Labs.
 
 ## Audit log details
 
