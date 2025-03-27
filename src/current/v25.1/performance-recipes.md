@@ -42,8 +42,8 @@ This section describes how to use CockroachDB commands and dashboards to identif
       <li>The <b>Hot Ranges</b> page (DB Console) displays a higher-than-expected QPS for a range.</li>
       <li>The <b>Key Visualizer</b> (DB Console) shows ranges with much higher-than-average write rates for the cluster.</li>
     </ul></td>
-    <td><ul><li>Your cluster has <a href="{% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots">hot spots</a>.</li></ul></td>
-    <td><ul><li><a href="#hot-spots">Reduce hot spots</a>.</li></ul></td>
+    <td><ul><li>Your cluster has <a href="{% link {{ page.version.version }}/understand-hotspots.md %}">hotspots</a>.</li></ul></td>
+    <td><ul><li><a href="#hotspots">Reduce hotspots</a>.</li></ul></td>
   </tr>
   <tr>
     <td><ul>
@@ -182,21 +182,23 @@ to [view the tables, indexes, and transactions with the most time under contenti
 
 {% include {{ page.version.version }}/performance/reduce-contention.md %}
 
-### Hot spots
+### Hotspots
 
-[Hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots) are a symptom of *resource contention* and can create problems as requests increase, including excessive [transaction contention](#transaction-contention).
+Hotspots are a symptom of *resource contention* and can create problems as requests increase, including excessive [transaction contention](#transaction-contention).
 
-#### Indicators that your cluster has hot spots
+For a detailed explanation of hotspot causes and mitigation strategies, refer to the [Understanding Hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) page.
+
+#### Indicators that your cluster has hotspots
 
 - The **CPU Percent** graph on the [**Hardware**]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}) and [**Overload**]({% link {{ page.version.version }}/ui-overload-dashboard.md %}) dashboards (DB Console) shows spikes in CPU usage.
 - The **Hot Ranges** list on the [**Hot Ranges** page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) (DB Console) displays a higher-than-expected QPS for a range.
-- The [**Key Visualizer**]({% link {{ page.version.version }}/ui-key-visualizer.md %}) (DB Console) shows [ranges with much higher-than-average write rates]({% link {{ page.version.version }}/ui-key-visualizer.md %}#identifying-hot-spots) for the cluster.
+- The [**Key Visualizer**]({% link {{ page.version.version }}/ui-key-visualizer.md %}) (DB Console) shows [ranges with much higher-than-average write rates]({% link {{ page.version.version }}/ui-key-visualizer.md %}#identifying-hotspots) for the cluster.
 
-If you find hot spots, use the [**Range Report**]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}#range-report) and [**Key Visualizer**]({% link {{ page.version.version }}/ui-key-visualizer.md %}) to identify the ranges with excessive traffic. Then take steps to [reduce hot spots](#reduce-hot-spots).
+If you find hotspots, use the [**Range Report**]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}#range-report) and [**Key Visualizer**]({% link {{ page.version.version }}/ui-key-visualizer.md %}) to identify the ranges with excessive traffic. Then take steps to [reduce hotspots](#reduce-hotspots).
 
-#### Reduce hot spots
+#### Reduce hotspots
 
-{% include {{ page.version.version }}/performance/reduce-hot-spots.md %}
+{% include {{ page.version.version }}/performance/reduce-hotspots.md %}
 
 ### Statements with full table scans
 

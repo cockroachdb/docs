@@ -211,7 +211,7 @@ Here are some best practices to follow when selecting primary key columns:
 
 - Avoid defining primary keys over a single column of sequential data.
 
-    Querying a table with a primary key on a single sequential column (e.g., an auto-incrementing [`INT`]({% link {{ page.version.version }}/int.md %}) column, or a [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) value) can result in single-range [hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots) that negatively affect performance, or cause [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
+    Querying a table with a primary key on a single sequential column (e.g., an auto-incrementing [`INT`]({% link {{ page.version.version }}/int.md %}) column, or a [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) value) can result in single-range [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) that negatively affect performance, or cause [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
 
     If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %}). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 

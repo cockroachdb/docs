@@ -92,7 +92,7 @@ Specifying both locality tier pairs (e.g., `region=us-east,az=az1`) from the out
 
 Given a list of URIs that together contain the locations of all of the files for a single [locality-aware backup](#create-a-locality-aware-backup), [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) can read in that backup. Note that the list of URIs passed to [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) may be different from the URIs originally passed to [`BACKUP`]({% link {{ page.version.version }}/backup.md %}). This is because it's possible to move the contents of one of the parts of a locality-aware backup (i.e., the files written to that destination) to a different location, or even to consolidate all the files for a locality-aware backup into a single location.
 
-When restoring a [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups), the cluster data is restored first, then the system table data "as is." This means that the restored zone configurations can point to regions that do not have active nodes in the new cluster. For example, if your full backup has the following [zone configurations]({% link {{ page.version.version }}/alter-partition.md %}#create-a-replication-zone-for-a-partition):
+When restoring a [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups), the cluster data is restored first, then the system table data "as is." This means that the restored  [zone configurations]({% link {{ page.version.version }}/alter-partition.md %}#create-a-replication-zone-for-a-partition) can point to regions that do not have active nodes in the new cluster. For example, if your full backup has the following zone configurations:
 
 ~~~ sql
 ALTER PARTITION europe_west OF INDEX movr.public.rides@rides_pkey \
@@ -130,7 +130,7 @@ To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({%
 
 ## Create an incremental locality-aware backup
 
-If you backup to a destination already containing a [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups), an [incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) will be appended to the full backup in a subdirectory. When you're taking an incremental backup, you must ensure that the incremental backup localities match the full backup localities otherwise you will receive an error. Alternatively, take another full backup with the matching localities before running the incremental backup.
+If you back up to a destination already containing a [full backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups), an [incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups) will be appended to the full backup in a subdirectory. To take a locality-aware incremental backup and restore from it successfully, you must maintain the same storage URI to `COCKROACH_LOCALITY` query parameter mappings for all incrementals in the backup collection. Alternatively, take another full backup with the necessary storage URI to `COCKROACH_LOCALITY` mapping before running an incremental backup.
 
 There is different syntax for taking an incremental backup depending on where you need to store the backups:
 

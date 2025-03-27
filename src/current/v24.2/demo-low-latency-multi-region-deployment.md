@@ -68,7 +68,7 @@ To determine which nodes are in which regions, you will need to refer to two (2)
 Here is the output of `\demo ls` from the SQL shell.
 
 {% include_cached copy-clipboard.html %}
-~~~ sql
+~~~
 > \demo ls
 ~~~
 
@@ -145,7 +145,7 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE DATABASE movr;
+    CREATE DATABASE IF NOT EXISTS movr;
     ~~~
 
 1. Open a second terminal and run the command below to populate the MovR data set. The options are mostly self-explanatory. We limit the application to 1 thread because using multiple threads quickly overloads this small demo cluster's ability to ingest data. As a result, loading the data takes about 90 seconds on a fast laptop.
