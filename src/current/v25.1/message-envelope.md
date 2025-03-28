@@ -4,9 +4,7 @@ summary: Learn how to configure the changefeed message envelope.
 toc: true
 ---
 
-The _envelope_ defines the structure of a changefeed message. By default changefeed messages emitted to a sink contain keys and values of the watched table rows that have changed. You can use the `envelope` option to configure the structure of the message envelope that a changefeed emits. 
-
-Depending on the sink and options you specified to create the changefeed, the envelope and available configuration can vary.
+The _envelope_ defines the structure of a changefeed message. By default changefeed messages emitted to a sink contain keys and values of the [watched table rows]({% link {{ page.version.version }}/change-data-capture-overview.md %}#watched-table) that have changed. You can use the `envelope` option to configure the structure of the message envelope that a changefeed emits. 
 
 {{site.data.alerts.callout_info}}
 You can also specify the _format_ of changefeed messages, such as Avro. For more details, refer to [Message formats]({% link {{ page.version.version }}/changefeed-messages.md %}#message-formats).
@@ -22,14 +20,96 @@ and Message envelopes
 {% endcomment %}
 
 
+## Fields
+
+Depending on the sink and options you specified to create the changefeed, the envelope and available configuration can vary. The envelope can contain the following fields:
 
 - `key`: An array composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for JSON or `{"id":{"long":1}}` for Avro).
 - `table`
 - `value`:
-    - One of four possible top-level fields:
+    - Possible top-level fields:
         - `after`, which contains the state of the row after the update (or `null` for `DELETE`s).
         - `updated`, which contains the [updated]({% link {{ page.version.version }}/create-changefeed.md %}#updated) timestamp.
         - `resolved`, which is emitted for records representing [resolved](#resolved-messages) timestamps. These records do not include an `after` value since they only function as checkpoints.
         - `before`, which contains the state of the row before an update. Changefeeds must use the [`diff` option]({% link {{ page.version.version }}/create-changefeed.md %}#diff) with the default [`wrapped` envelope](#wrapped) to emit the `before` field. When a row did not previously have any data, the `before` field will emit `null`.
     - For [`INSERT`]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`]({% link {{ page.version.version }}/update.md %}), the current state of the row inserted or updated.
     - For [`DELETE`]({% link {{ page.version.version }}/delete.md %}), `null`.
+
+
+## Options
+
+
+
+### `enriched`
+
+This is a complete list of possible user-visible fields in this enriched changefeed message:
+
+Top-level:
+
+- `key`
+- `table`: use to preserve the origin/provenance of the change event, particularly when the changefeed is part of a multi-source system.
+- `value`
+    - Inside `value`:
+        - `before` (optional): use to audit changes, debug, or implement logic that depends on changes in data.
+        - `after`
+        - `op`: use to route change events to handler logic in downstream systems based on the operation type.
+        - `ts_ns`
+        - `updated` (optional): use to apply a time filter, monitor for latency (compare the source commit time to when an event is processed at the destination), For analytics, this timestamp can serve as a watermark for an event.
+        - `mvcc_timestamp` (optional)
+        - `source` (optional)
+        - `schema` (optional)
+
+## `value` Object Fields
+
+### 1. `before` (optional)
+- **Type:** `object`
+- **Description:** The row state **before** the change (only present when `diff` is enabled and the change is an update or delete).
+
+**Fields (example schema):**
+
+| Field         | Type     | Description                                     |
+|---------------|----------|-------------------------------------------------|
+| `productid`   | `int64`  | Primary key value.                             |
+| `productname` | `string` | Name of the product.                           |
+| `description` | `string` | Product description.                           |
+| `price`       | `float64`| Product price (with precision/scale metadata). |
+| `stock`       | `int64`  | Quantity available.                            |
+| `category`    | `string` | Product category.                              |
+
+### 2. `after`
+- **Type:** `object`
+- **Description:** The row state **after** the change (present for inserts and updates).
+- **Fields:** Same as `before`.
+
+### 3. `op`
+- **Type:** `string`
+- **Description:** Operation type that triggered the change event.
+
+**Possible Values:**
+- `"c"` — Insert (create)
+- `"u"` — Update
+- `"d"` — Delete
+
+### 4. `ts_ns`
+- **Type:** `int64`
+- **Description:** Logical timestamp of the change in **nanoseconds** since the Unix epoch.
+
+### 5. `updated` (if `updated` is enabled)
+- **Type:** `string` (ISO8601)
+- **Description:** Human-readable version of `ts_ns`, representing the logical commit time of the change.
+
+### 6. `mvcc_timestamp` (if `mvcc_timestamp` is enabled)
+- **Type:** `string`
+- **Description:** Internal MVCC timestamp of the row version that triggered the change. Used for exact versioning and replay.
+
+
+
+{% comment  %}
+Maybe outline can be:
+
+Intro.
+high-level overview page
+Option and Field References
+Examples which are broken down by option with sinks listed
+
+{% endcomment %}
