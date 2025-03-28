@@ -25,9 +25,20 @@
         },
         {
           "title": "Changefeed Messages",
-          "urls": [
-            "/${VERSION}/changefeed-messages.html"
-          ]
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/changefeed-messages.html"
+              ]
+            },
+            {
+                "title": "Message Envelope",
+                "urls":[
+                    "/${VERSION}/message-envelope.html"
+                ]
+            }
+        ]
         },
         {
           "title": "Changefeed Sinks",
