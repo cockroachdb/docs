@@ -35,6 +35,10 @@ Limitations will be added as they are discovered.
 
 {% include {{ page.version.version }}/known-limitations/fast-cutback-latest-timestamp.md %}
 
+### Generic query plans
+
+{% include {{ page.version.version }}/known-limitations/generic-query-plan-limitations.md %}
+
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.
@@ -312,6 +316,10 @@ CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{
 #### Expression index limitations
 
 {% include {{ page.version.version }}/known-limitations/expression-index-limitations.md %}
+
+#### Secondary regions and regional by row tables
+
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
 
 ### Data types
 

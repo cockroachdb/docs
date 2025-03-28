@@ -298,6 +298,10 @@ CockroachDB does not allow inverted indexes with a [`STORING` column]({% link {{
 
 {% include {{ page.version.version }}/known-limitations/expression-index-limitations.md %}
 
+#### Secondary regions and regional by row tables
+
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
+
 ### Data types
 
 #### Spatial support limitations
@@ -454,7 +458,6 @@ Accessing the DB Console for a secure cluster now requires login information (i.
 #### Physical cluster replication
 
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
-- {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 - {% include {{ page.version.version }}/known-limitations/cutover-stop-application.md %}
 
 #### `RESTORE` limitations
@@ -478,7 +481,6 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
-- {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
 - {% include {{ page.version.version }}/known-limitations/cdc-queries-column-families.md %}
 - {% include {{ page.version.version }}/known-limitations/changefeed-column-family-message.md %}

@@ -28,15 +28,15 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
 
-{% include {{ page.version.version }}/backups/backup-to-deprec.md %}
+{% include {{ page.version.version }}/backups/old-syntax-removed.md %}
 
 ## Considerations
 
 - [Full cluster backups](#back-up-a-cluster) include [license keys]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license). When you [restore]({% link {{ page.version.version }}/restore.md %}) a full cluster backup that includes a license, the license is also restored.
-- [Zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore]({% link {{ page.version.version }}/restore.md %}#full-cluster) with the zone configurations from the [backed up cluster](#back-up-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
 - Exclude a table's row data from a backup using the [`exclude_data_from_backup`]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#exclude-a-tables-data-from-backups) parameter.
 - `BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
+- {% include {{ page.version.version }}/backups/zone-configs-overwritten-during-restore.md %}
 
 ### Storage considerations
 
@@ -97,6 +97,9 @@ Query parameter | Value | Description
 ----------------+-------+------------
 `ASSUME_ROLE` | [`STRING`]({% link {{ page.version.version }}/string.md %}) |{% include {{ page.version.version }}/misc/assume-role-description.md %} Refer to [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for setup details.
 `AUTH` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. Refer to the [Cloud Storage Authentication page]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) page for examples of each of these.
+`AWS_ENDPOINT` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Specify a custom endpoint for Amazon S3 or S3-compatible services. Use to define a particular region or a Virtual Private Cloud (VPC) endpoint.
+`AWS_SESSION_TOKEN` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | (Optional) Use as part of temporary security credentials when accessing AWS S3. For more information, refer to Amazon's guide on [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html).
+<span class="version-tag">New in v24.3.3:</span> `AWS_USE_PATH_STYLE` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Change the URL format to path style from the default AWS S3 virtual-hosted–style URLs when connecting to Amazon S3 or S3-compatible services.
 `COCKROACH_LOCALITY` | Key-value pairs | Define a locality-aware backup with a list of URIs using `COCKROACH_LOCALITY`. The value is either `default` or a single locality key-value pair, such as `region=us-east`. At least one `COCKROACH_LOCALITY` must the `default` per locality-aware backup. Refer to [Take and Restore Locality-aware Backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}) for more detail and examples.
 `S3_STORAGE_CLASS` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Specify the Amazon S3 storage class for files created by the backup job. Refer to [Back up with an S3 storage class](#back-up-with-an-s3-storage-class) for the available classes and an example.
 
@@ -236,11 +239,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 If you need to limit the control specific users have over your storage buckets, see [Assume role authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for setup instructions.
 
-{{site.data.alerts.callout_info}}
-The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.
-
-Cockroach Labs recommends using the `BACKUP ... INTO {collectionURI}` syntax shown in the following examples.
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/backups/old-syntax-removed.md %}
 
 ### Back up a cluster
 
@@ -382,3 +381,4 @@ To use an external connection URI to back up to cloud storage with an associated
 - [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %})
 - [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
 - [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %})
+- [Troubleshoot Replication Zones]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %})

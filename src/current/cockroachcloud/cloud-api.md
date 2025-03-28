@@ -8,7 +8,7 @@ cloud: true
 
 The Cloud API is a [REST interface](https://wikipedia.org/wiki/Representational_state_transfer) that allows you programmatic access to manage the lifecycle of clusters within your organization.
 
-This document pertains to the `latest` version of the API's `v1` endpoints, `2024-09-16`. For more detailed coverage of API endpoints for this version and prior verisons, refer to the [API reference documentation](https://www.cockroachlabs.com/docs/api/cloud/v1). 
+This document pertains to the `latest` version of the API's `v1` endpoints, `2024-09-16`. For more detailed coverage of API endpoints for this version and prior versions, refer to the [API reference documentation](https://www.cockroachlabs.com/docs/api/cloud/v1). 
 
 To manage clusters and other resources in CockroachDB Cloud, you can also use the [CockroachDB Cloud Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}), which implements the API.
 
@@ -799,6 +799,7 @@ If the request was successful, the client will receive a list of SQL users.
 ~~~
 
 Where:
+
 - `<SQL-username>` is the SQL username of the user.
 - `<next_page_token>` is the token to use for retrieving the next page of results, if any.
 
@@ -863,6 +864,7 @@ curl --request DELETE \
 ~~~
 
 Where:
+
 - `{cluster_id}` is the unique ID of this cluster.
 {{site.data.alerts.callout_info}}
 The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}).
@@ -899,6 +901,7 @@ curl --request PUT \
 ~~~
 
 Where:
+
 - `{cluster_id}` is the unique ID of this cluster.
 {{site.data.alerts.callout_info}}
 The cluster ID used in the Cloud API is different from the routing ID used when [connecting to clusters]({% link cockroachcloud/connect-to-your-cluster.md %}).

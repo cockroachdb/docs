@@ -54,8 +54,9 @@ fi
 
 # Run Algolia if building main
 if [ "$CONTEXT" == "production" ]; then
-	echo "Building Algolia index..."
-	ALGOLIA_API_KEY=${PROD_ALGOLIA_API_KEY} bundle exec jekyll algolia --config _config_base.yml,_config_url.yml --builds-config _config_cockroachdb.yml
+	echo "Temporarily skipping the Algolia index build"
+	#	echo "Building Algolia index..."
+	#	ALGOLIA_API_KEY=${PROD_ALGOLIA_API_KEY} bundle exec jekyll algolia --config _config_base.yml,_config_url.yml --builds-config _config_cockroachdb.yml
 else
   echo "Not building Algolia index for context $CONTEXT"
 fi

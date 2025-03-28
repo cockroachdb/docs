@@ -15,7 +15,7 @@ This page explains Cockroach Labs' policy for supporting [production releases]({
 
 There are two major release types: [Regular and Innovation releases]({% link releases/index.md %}#release-types). Each offers a unique set of Support Types, which define the durations for each [support phase](#support-phases).
 
-## Support Phases
+## Support phases
 
 - **Maintenance Support**: Begins for a CockroachDB major version upon its [GA release]({% link releases/index.md %}#patch-releases). During this phase:
   - Cockroach Labs will produce regular patch releases that include critical security fixes and resolutions to problems identified by users.
@@ -28,15 +28,15 @@ There are two major release types: [Regular and Innovation releases]({% link rel
   - Patch releases for the purpose of resolving bugs or other errors may no longer be made to the major release.
   - Cockroach Labs may direct customers to workarounds or other fixes applicable to the reported case.
   - Cockroach Labs may direct customers to [upgrade](https://www.cockroachlabs.com/docs/stable/upgrade-cockroach-version) to a later version of CockroachDB to resolve or further troubleshoot an issue.
-- **End of Life (EOL)**: The day that a major version’s final support period ends is its EOL date. After a version reaches EOL, Cockroach Labs provides no further support for the release.
-  - A Regular release reaches EOL at the Assistance Support phase's end date.
-  - An Innovation releases reaches EOL at the Maintenance Support phase's end date.
+- **Unsupported**: The day that a major version’s final support period ends is its unsupported date. After a version reaches end of life, Cockroach Labs provides no further support for the release.
+  - A Regular release reaches unsupported at the Assistance Support phase's end date.
+  - An Innovation release reaches unsupported at the Maintenance Support phase's end date.
 
-## Support Types
+## Support types
 
 ### Regular releases
 
-Initially, a Regular release series has GA Support. After the series demonstrates a continuously high level of stability and performance, new patch releases are designated as LTS releases, which have an extended support window for each [support phase](#support-phases): Maintenance Support, Assistance Support, and EOL (End of Life).
+Initially, a Regular release series has GA Support. After the series demonstrates a continuously high level of stability and performance, new patch releases are designated as LTS releases, which have an extended support window for each [support phase](#support-phases): Maintenance Support, Assistance Support, and Unsupported versions.
 
 - **GA Support**: The default support type for production releases, starting with the initial production release of a major version, followed by each subsequent patch release before LTS releases begin for that major version.
     - **Maintenance support ends**:
@@ -169,7 +169,7 @@ Innovation releases are not eligible for Assistance Support, and reach EOL at th
 <sup id="lts-tbd">&#42;&nbsp;&nbsp;: This major version will receive LTS patch releases, which will be listed on an additional row, upon their availability.</sup><br />
 <sup id="skippable">&#42;&#42;&nbsp;&nbsp;: This major version is an optional innovation release and will not receive receive LTS patch releases. Innovation releases are EOL when Maintenance Support ends.</sup><br />
 
-## End-of-life (EOL) versions
+## Unsupported versions
 
 The following versions of CockroachDB are no longer supported.
 

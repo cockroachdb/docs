@@ -63,7 +63,7 @@ We keep a card on file after the associated organization is deleted so we can pr
 
 To subscribe to CockroachDB {{ site.data.products.cloud }} through the AWS Marketplace:
 
-1. From the [AWS Marketplace page for CockroachDB (pay-as-you-go)](https://aws.amazon.com/marketplace/pp/prodview-n3xpypxea63du),  click **View purchase options**. to open the **Subscribe to CockroachDB Cloud** page
+1. From the [AWS Marketplace page for CockroachDB (pay-as-you-go)](https://aws.amazon.com/marketplace/pp/prodview-n3xpypxea63du),  click **View purchase options** to open the **Subscribe to CockroachDB Cloud** page
 1. Click **Subscribe**, then click **Set up your account**. You will be redirected to the CockroachDB {{ site.data.products.cloud }} console.
 1. [Register]({% link cockroachcloud/create-an-account.md %}#register-a-new-account) a new CockroachDB {{ site.data.products.cloud }} account or sign in to your existing account.
 1. If you have access to multiple CockroachDB {{ site.data.products.cloud }} organizations, select an organization to update its billing configuration.
@@ -101,7 +101,7 @@ To subscribe to CockroachDB Cloud through the Google Cloud Marketplace:
 1. From the [Google Cloud Marketplace page for CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go), click **Subscribe** to open the **Order Summary** page  
 2. **Select a billing account** and agree to **Additional Terms**, then click **Subscribe**.   
 3. Click **Go to Product Page**. You will be redirected to the [Google Cloud Marketplace page for CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go).
-4. From the product page, click **Manage on Provider**. You will be redirected to the CockroachDB Cloud console.
+4. From the product page, click **Sign up with Cockroach Labs**. You will be redirected to the CockroachDB Cloud console.
 5. [Register]({% link cockroachcloud/create-an-account.md %}#register-a-new-account) a new CockroachDB Cloud account or sign in to your existing account.
 6. If you have access to multiple CockroachDB Cloud organizations, select an organization to update its billing configuration.
     {{site.data.alerts.callout_info}}
@@ -115,7 +115,7 @@ To subscribe to CockroachDB Cloud through the Google Cloud Marketplace:
 ## Unsubscribe from Google Cloud Marketplace
 
 {{ site.data.alerts.callout_danger }}
-After you unsubscribe your CockroachDB {{ site.data.products.cloud }} from Google Cloud Marketplace billing, clusters will be deleted and applications may be disrupted unless you add an alternate payment method within 6 hours after you unsubscribe from AWS Marketplace billing.
+After you unsubscribe your CockroachDB {{ site.data.products.cloud }} from Google Cloud Marketplace billing, clusters will be deleted and applications may be disrupted unless you add an alternate payment method within 6 hours after you unsubscribe.
 {{ site.data.alerts.end }}
 
 To unsubscribe from CockroachDB Cloud:
@@ -140,3 +140,11 @@ Under the **Spend over time** section, you can see a table of each of your organ
 You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Click any invoice to view the details of your charges for a billing period.
 
 If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your clusters, billing is grouped by folder. Click any folder to view invoices for individual clusters in the folder or its descendants. Within a folder, click any subfolder to view its details.
+
+### Export invoices
+
+You can export invoice data in CSV format. From the **Invoices** tab, on the row of any billing period, click the download icon under the **CSV** column.
+
+The CSV file includes line items for all clusters in your organization for the selected billing period. It includes the same information that is available when viewing invoices within the Console.
+
+If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your clusters, the full path for each cluster is provided under the **Cluster path** column.

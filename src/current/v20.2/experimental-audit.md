@@ -41,7 +41,7 @@ Only members of the `admin` role can enable audit logs on a table. By default, t
  `OFF`        | Turn off audit logging.                                  
 
 {{site.data.alerts.callout_info}}
-This command logs all reads and writes, and both the <code>READ</code> and <code>WRITE</code> parameters are required (as shown in the <a href="#examples">examples</a> below). In a future release, this should change to allow logging only reads, only writes, or both.
+This command logs all reads and writes, and both the <code>READ</code> and <code>WRITE</code> parameters are required (as shown in the <a href="#examples">examples</a> below). Logging for only reads or only writes is not supported.
 {{site.data.alerts.end}}
 
 ## Audit log file format

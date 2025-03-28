@@ -76,6 +76,10 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 {% include {{ page.version.version }}/known-limitations/physical-cluster-replication.md %}
 - {% include {{ page.version.version }}/known-limitations/pcr-scheduled-changefeeds.md %}
 
+### Generic query plans
+
+{% include {{ page.version.version }}/known-limitations/generic-query-plan-limitations.md %}
+
 ## Unresolved limitations
 
 ### Limitations for user-defined functions (UDFs)
@@ -696,6 +700,10 @@ This is because the state flip is effected by the CLI program at the end. Only t
 ### Remove a `UNIQUE` index created as part of `CREATE TABLE`
 
 {% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
+
+### Secondary regions and regional by row tables
+
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
 
 ### Row-Level TTL limitations
 
