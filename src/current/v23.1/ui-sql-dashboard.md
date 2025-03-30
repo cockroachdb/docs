@@ -109,15 +109,23 @@ The statement contention metric is a counter that represents the number of state
 
 ## Connection Latency: 99th Percentile
 
-Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication.
+Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication. This metric characterizes the database connection latency which can affect the application performance, for example, by having slow startup times. Connection failures are not recorded in these metrics.
 
 - In the node view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency for the node. Over the last minute this node established 99% of connections within this time, not including network latency between the node and the client.
 
-- In the cluster view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster established 99% of connections within this time, not including network latency between the node and the client.
+- In the cluster view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the nodes of the cluster established 99% of connections within this time, not including network latency between the node and the client.
+
+Metrics: `sql.conn.latency-p99`
 
 ## Connection Latency: 90th Percentile
 
-Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication.
+Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication. This metric characterizes the database connection latency which can affect the application performance, for example, by having slow startup times. Connection failures are not recorded in these metrics.
+
+- In the node view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency for the node. Over the last minute this node established 90% of connections within this time, not including network latency between the node and the client.
+
+- In the cluster view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the nodes of the cluster established 90% of connections within this time, not including network latency between the node and the client.
+
+Metrics: `sql.conn.latency-p90`
 
 ## Service Latency: SQL, 99.99th percentile
 
