@@ -44,7 +44,7 @@ Before you begin, do the following:
     ~~~
 
     {{site.data.alerts.callout_info}}
-    The SSL connection parameters in the connection URL must specify the full path to the certificates that you generated when you [started the secure cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}). Also, the user that you specify (e.g., `max`) must also have [admin privileges]({% link {{ page.version.version }}/grant.md %}) on the database whose schema you want to change (e.g., `bank`).
+    The SSL connection parameters in the connection URL must specify the full path to the certificates that you generated when you [started the secure cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}).  The postgresql JDBC driver doesn’t read PEM certs of keys.  You should convert the cert to DER and the key to pks8.  More details in [this post](https://forum.cockroachlabs.com/t/connecting-to-an-ssl-secure-server-using-jdbc-java-and-client-certificate-authentication/400). Also, the user that you specify (e.g., `max`) must also have [admin privileges]({% link {{ page.version.version }}/grant.md %}) on the database whose schema you want to change (e.g., `bank`).
     {{site.data.alerts.end}}
 
 ## Step 2. Create a schema migration
