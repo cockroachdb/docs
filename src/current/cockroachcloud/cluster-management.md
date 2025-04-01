@@ -29,6 +29,8 @@ The [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) disp
 
 From the **Overview** page, you can connect to your cluster. For more information, refer to [Connect to Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 
+{% include cockroachcloud/manage-labels.md %}
+
 ## Add a region to your cluster
 
 1. Navigate to the cluster's **Overview** page.
