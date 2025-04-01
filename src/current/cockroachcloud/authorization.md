@@ -89,6 +89,7 @@ Cluster Operators can perform a variety of cluster functions:
   - Configure single sign-on (SSO) enforcement.
   - Access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console).
   - Configure a cluster's [maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window).
+  - [Manage a cluster's labels]({% link cockroachcloud/cluster-management.md %}#manage-labels).
 
 - *Service accounts* with this role can perform the following *API operations*:
 

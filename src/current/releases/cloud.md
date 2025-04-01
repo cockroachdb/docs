@@ -14,6 +14,10 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## April 9, 2025
+
+You can now use the CockroachDB {{ site.data.products.cloud }} Console to [manage a cluster's labels]({% link cockroachcloud/cluster-management.md %}#manage-labels).
+
 ## February 18, 2025
 
 CockroachDB v25.1 is now generally available for select CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.1 is an [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases). Refer to [Create a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) or [Upgrade to v25.1]({% link cockroachcloud/upgrade-cockroach-version.md %}).
