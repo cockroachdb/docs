@@ -8,13 +8,11 @@
     Rate This Page
   </button>
 
-  <!-- Feedback window: a panel (not a full-screen modal) -->
+  <!-- Feedback overlay -->
   <div id="feedback-overlay">
     <div id="feedback-window">
-      <!-- Close button at top right -->
       <span id="feedback-close-btn">&times;</span>
 
-      <!-- Star rating always visible at top -->
       <div id="star-container">
         <div id="star-rating">
           <span class="star" data-value="1">★</span>
@@ -25,12 +23,10 @@
         </div>
       </div>
 
-      <!-- Step 1: Prompt to select star rating -->
       <div id="step1" class="feedback-step active">
         <p>Please select a star rating above.</p>
       </div>
 
-      <!-- Step 2: Feedback Form -->
       <div id="step2" class="feedback-step">
         <h3 id="feedback-heading">Tell us about your experience</h3>
         <textarea id="comments" placeholder="Tell us about your experience"></textarea>
@@ -40,7 +36,6 @@
         <button id="submit-btn">Send</button>
       </div>
 
-      <!-- Step 3: Thank You & Documentation Links -->
       <div id="step3" class="feedback-step">
         <h3>Thank you for your feedback!</h3>
         <p>Your input helps us improve our documentation.</p>
@@ -49,7 +44,7 @@
         <ul id="doc-links">
           <li><a href="https://www.cockroachlabs.com/docs/" target="_blank">CockroachDB Docs</a></li>
           <li><a href="https://university.cockroachlabs.com/" target="_blank">Cockroach University</a></li>
-          <li><a href="https://forum.cockroachlabs.com/" target="_blank">CockroachDB Community Forums</a></li>
+          <li><a href="https://forum.cockroachlabs.com/" target="_blank">Community Forums</a></li>
           <li><a href="https://support.cockroachlabs.com/" target="_blank">CockroachDB Support</a></li>
         </ul>
       </div>
@@ -57,48 +52,52 @@
   </div>
 </div>
 
+<!-- Styles -->
 <style>
-  /* Sticky Feedback Widget Styles */
   #sticky-feedback-widget {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     position: relative;
     z-index: 9999;
   }
-  /* Sticky button in bottom-right corner, shifted left to be beside Kapa AI button */
+
   #sticky-rating-btn {
     position: fixed;
-    bottom: 20px;
-    right: 220px;
-    background-color: #6B46C1;
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    padding: 12px 16px;
+    bottom: 120px; /* updated from 20px to 90px */
+    right: 20px;
+    background-color: rgba(76, 14, 255, 0.05);
+    color: #4C0EFF;
+    border: 1.5px solid #4C0EFF;
+    border-radius: 8px;
+    padding: 10px 16px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    z-index: 9999;
     display: inline-flex;
     align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(4px);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
   }
+
   #sticky-rating-btn svg {
-    margin-right: 8px;
+    color: #4C0EFF;
   }
+
   #sticky-rating-btn:hover {
-    background-color: #5a379f;
+    background-color: rgba(76, 14, 255, 0.1);
+    box-shadow: 0 2px 6px rgba(76, 14, 255, 0.2);
   }
-  /* Feedback window overlay: a fixed window (not full-screen modal) */
+
   #feedback-overlay {
     display: none;
     position: fixed;
-    bottom: 80px; /* Appear above the sticky button */
+    bottom: 160px;
     right: 20px;
     width: 420px;
     max-width: 90%;
     z-index: 10000;
   }
-  /* Feedback window panel */
+
   #feedback-window {
     position: relative;
     background: #fff;
@@ -109,7 +108,7 @@
     max-height: 90vh;
     overflow-y: auto;
   }
-  /* Close button at top right of the window */
+
   #feedback-close-btn {
     position: absolute;
     top: 8px;
@@ -118,19 +117,22 @@
     cursor: pointer;
     color: #666;
   }
+
   #feedback-close-btn:hover {
     color: #333;
   }
-  /* Star rating container */
+
   #star-container {
     text-align: center;
     margin-bottom: 16px;
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
   }
+
   #star-rating {
     margin: 8px 0;
   }
+
   .star {
     font-size: 30px;
     color: #ccc;
@@ -138,19 +140,21 @@
     margin: 0 4px;
     transition: transform 0.25s ease, color 0.25s ease;
   }
+
   .star.hover, .star.selected {
-    color: #FFD700; /* golden stars */
+    color: #FFD700;
     transform: scale(1.3);
   }
-  /* Feedback steps */
+
   .feedback-step {
     display: none;
     text-align: center;
   }
+
   .feedback-step.active {
     display: block;
   }
-  /* Form elements */
+
   textarea, input[type="email"] {
     width: 100%;
     padding: 10px;
@@ -160,17 +164,18 @@
     font-size: 14px;
     box-sizing: border-box;
   }
+
   textarea {
     min-height: 100px;
     resize: vertical;
   }
-  /* Hidden file input */
+
   #screenshot {
     display: none;
   }
-  /* Screenshot and Send buttons */
+
   #screenshot-btn, #submit-btn {
-    background-color: #6B46C1;
+    background-color: #4C0EFF;
     color: #fff;
     border: none;
     border-radius: 12px;
@@ -180,44 +185,50 @@
     margin-top: 10px;
     display: block;
   }
+
   #submit-btn {
     margin-top: 16px;
     width: 100%;
   }
+
   #screenshot-btn:hover, #submit-btn:hover {
-    background-color: #5a379f;
+    background-color: #3a0ccc;
   }
-  /* Documentation links in final step */
+
   #doc-links {
     list-style-type: none;
     padding: 0;
     margin-top: 16px;
     text-align: left;
   }
+
   #doc-links li {
     margin: 8px 0;
   }
+
   #doc-links a {
     text-decoration: none;
-    color: #6B46C1;
+    color: #4C0EFF;
     font-weight: 500;
   }
+
   #doc-links a:hover {
     text-decoration: underline;
   }
-  /* Headings */
+
   #feedback-window h3 {
     margin-top: 0;
     margin-bottom: 12px;
     font-size: 18px;
     color: #333;
   }
+
   #feedback-window h4 {
     margin-bottom: 8px;
     font-size: 16px;
     color: #333;
   }
-  /* Horizontal rule */
+
   #feedback-window hr {
     border: 0;
     height: 1px;
@@ -226,25 +237,25 @@
   }
 </style>
 
+<!-- Script -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const stickyBtn       = document.getElementById('sticky-rating-btn');
+  document.addEventListener('DOMContentLoaded', function () {
+    const stickyBtn = document.getElementById('sticky-rating-btn');
     const feedbackOverlay = document.getElementById('feedback-overlay');
-    const feedbackWindow  = document.getElementById('feedback-window');
-    const closeBtn        = document.getElementById('feedback-close-btn');
-    const step1           = document.getElementById('step1');
-    const step2           = document.getElementById('step2');
-    const step3           = document.getElementById('step3');
-    const stars           = document.querySelectorAll('.star');
+    const feedbackWindow = document.getElementById('feedback-window');
+    const closeBtn = document.getElementById('feedback-close-btn');
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const stars = document.querySelectorAll('.star');
     const feedbackHeading = document.getElementById('feedback-heading');
-    const commentsField   = document.getElementById('comments');
-    const emailField      = document.getElementById('email');
-    const screenshotBtn   = document.getElementById('screenshot-btn');
+    const commentsField = document.getElementById('comments');
+    const emailField = document.getElementById('email');
+    const screenshotBtn = document.getElementById('screenshot-btn');
     const screenshotField = document.getElementById('screenshot');
-    const submitBtn       = document.getElementById('submit-btn');
-    let currentRating     = 0;
+    const submitBtn = document.getElementById('submit-btn');
+    let currentRating = 0;
 
-    // Function to reset the widget
     function resetWidget() {
       currentRating = 0;
       stars.forEach(s => s.classList.remove('selected', 'hover'));
@@ -255,22 +266,19 @@
       step2.classList.remove('active');
       step3.classList.remove('active');
       feedbackHeading.textContent = 'Tell us about your experience';
-      commentsField.placeholder   = 'Tell us about your experience';
-      screenshotBtn.textContent   = 'Show us a screenshot';
+      commentsField.placeholder = 'Tell us about your experience';
+      screenshotBtn.textContent = 'Show us a screenshot';
     }
 
-    // Clicking the sticky button resets and opens the feedback window
     stickyBtn.addEventListener('click', () => {
       resetWidget();
       feedbackOverlay.style.display = 'block';
     });
 
-    // Close button: hides the feedback window
     closeBtn.addEventListener('click', () => {
       feedbackOverlay.style.display = 'none';
     });
 
-    // Star rating hover & selection
     stars.forEach(star => {
       star.addEventListener('mouseover', () => {
         const val = parseInt(star.getAttribute('data-value'), 10);
@@ -282,7 +290,6 @@
       star.addEventListener('click', () => {
         currentRating = parseInt(star.getAttribute('data-value'), 10);
         stars.forEach(s => s.classList.toggle('selected', parseInt(s.getAttribute('data-value'), 10) <= currentRating));
-        // Transition from Step 1 -> Step 2
         step1.classList.remove('active');
         step2.classList.add('active');
         if (currentRating <= 2) {
@@ -297,18 +304,15 @@
       });
     });
 
-    // Screenshot button triggers the hidden file input
     screenshotBtn.addEventListener('click', () => {
       screenshotField.click();
     });
 
-    // Submit feedback: In a real app, send data to the server here.
     submitBtn.addEventListener('click', () => {
       step2.classList.remove('active');
       step3.classList.add('active');
     });
 
-    // Prevent overlay from closing when clicking inside the feedback window
     feedbackWindow.addEventListener('click', (e) => {
       e.stopPropagation();
     });
