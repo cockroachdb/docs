@@ -34,6 +34,10 @@ CockroachDB v25.1 is now generally available for select CockroachDB Cloud {{ sit
   - [CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go) on the Google Cloud Marketplace.
   - [Subscribe through the Google Cloud Marketplace]({% link cockroachcloud/billing-management.md %}?filters=gcp#subscribe-through-aws-marketplace) in the CockroachDB {{ site.data.products.cloud }} documentation.
 
+## December 3, 2024
+
+You can now use the CockroachDB {{ site.data.products.cloud }} Console to [view and filter organization-level audit logs]({% link cockroachcloud/organization-audit-logs-in-cloud-console.md %}), providing greater visibility into user activity across your organization.
+
 ## December 1, 2024
 
 As of December 1, 2024, [updated pricing](https://www.cockroachlabs.com/pricing/new/) that was recently [announced](https://www.cockroachlabs.com/blog/improved-cockroachdb-cloud-pricing/) for CockroachDB Cloud is now in effect for all customers except those with annual or multi-year contracts that began prior to December 1, 2024. For those customers, the updated pricing, including new usage-based costs, goes into effect upon contract renewal. Prior to renewal, line items for usage of data transfer, backups, and changefeeds are displayed in the [Billing](https://cockroachlabs.cloud/billing) interface and on invoices with a $0 charge, while showing actual usage metrics to help estimate future costs.
