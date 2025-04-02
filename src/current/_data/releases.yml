@@ -8510,7 +8510,7 @@
 
 - release_name: v24.3.9
   major_version: v24.3
-  release_date: '2025-04-03'
+  release_date: '2025-04-02'
   release_type: Production
   go_version: go1.23.7
   sha: 61171977a58fbec70e508365fe9bddb2928e5cf1
