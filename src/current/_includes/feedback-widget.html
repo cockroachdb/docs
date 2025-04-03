@@ -1,11 +1,11 @@
 <!-- _includes/feedback-widget.html -->
 <div id="sticky-feedback-widget">
-  <!-- Sticky button with star SVG icon + text -->
+  <!-- Sticky button with star SVG icon -->
   <button id="sticky-rating-btn">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16" role="presentation" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16" role="presentation" aria-hidden="true">
       <path fill="currentColor" d="M7.538 1.11a.5.5 0 0 1 .924 0l1.537 3.696a.5.5 0 0 0 .421.306l3.99.32a.5.5 0 0 1 .285.878l-3.04 2.604a.5.5 0 0 0-.16.496l.928 3.893a.5.5 0 0 1-.747.542L8.261 11.76a.5.5 0 0 0-.522 0l-3.415 2.086a.5.5 0 0 1-.747-.542l.928-3.893a.5.5 0 0 0-.16-.496L1.304 6.31a.5.5 0 0 1 .285-.878l3.99-.32A.5.5 0 0 0 6 4.806L7.538 1.11Z"></path>
     </svg>
-    <span>Rate This Page</span>
+    Rate This Page
   </button>
 
   <!-- Feedback overlay -->
@@ -60,46 +60,27 @@
     z-index: 9999;
   }
 
-  /* Adjusted to reduce overall height and spacing */
   #sticky-rating-btn {
     position: fixed;
-    bottom: 110px;
+    bottom: 120px;
     right: 20px;
-    width: 72px;
-    height: 80px;               /* Reduced from 110px to 90px */
     background-color: rgba(76, 14, 255, 0.05);
     color: #4C0EFF;
     border: 1.5px solid #4C0EFF;
-    border-radius: 16px;
-    font-size: 14px;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 12px; /* font size reduced from 14px */
     font-weight: 500;
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 4px;                   /* Reduced gap from 8px to 4px */
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    gap: 4px; /* gap reduced from 6px */
     backdrop-filter: blur(4px);
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    padding: 6px 6px;           /* Reduced padding from 10px 8px to 6px 6px */
-    text-align: center;
-    box-sizing: border-box;
   }
 
   #sticky-rating-btn svg {
-    width: 18px;                /* Reduced from 22px to 18px */
-    height: 18px;               /* Reduced from 22px to 18px */
     color: #4C0EFF;
-    flex-shrink: 0;
-    margin: 0;
-    position: relative;
-  }
-
-  #sticky-rating-btn span {
-    line-height: 1.2;
   }
 
   #sticky-rating-btn:hover {
@@ -112,7 +93,7 @@
     position: fixed;
     bottom: 160px;
     right: 20px;
-    width: 420px;
+    width: 320px; /* width reduced from 420px */
     max-width: 90%;
     z-index: 10000;
   }
@@ -136,6 +117,7 @@
     cursor: pointer;
     color: #666;
   }
+
   #feedback-close-btn:hover {
     color: #333;
   }
@@ -152,12 +134,13 @@
   }
 
   .star {
-    font-size: 30px;
+    font-size: 24px; /* star size reduced from 30px */
     color: #ccc;
     cursor: pointer;
     margin: 0 4px;
     transition: transform 0.25s ease, color 0.25s ease;
   }
+
   .star.hover, .star.selected {
     color: #FFD700;
     transform: scale(1.3);
@@ -167,6 +150,7 @@
     display: none;
     text-align: center;
   }
+
   .feedback-step.active {
     display: block;
   }
@@ -177,9 +161,10 @@
     margin: 12px 0;
     border: 1px solid #ddd;
     border-radius: 12px;
-    font-size: 14px;
+    font-size: 12px; /* font size reduced from 14px */
     box-sizing: border-box;
   }
+
   textarea {
     min-height: 100px;
     resize: vertical;
@@ -188,21 +173,24 @@
   #screenshot {
     display: none;
   }
+
   #screenshot-btn, #submit-btn {
     background-color: #4C0EFF;
     color: #fff;
     border: none;
     border-radius: 12px;
     padding: 10px 16px;
-    font-size: 14px;
+    font-size: 12px; /* font size reduced from 14px */
     cursor: pointer;
     margin-top: 10px;
     display: block;
   }
+
   #submit-btn {
     margin-top: 16px;
     width: 100%;
   }
+
   #screenshot-btn:hover, #submit-btn:hover {
     background-color: #3a0ccc;
   }
@@ -213,14 +201,17 @@
     margin-top: 16px;
     text-align: left;
   }
+
   #doc-links li {
     margin: 8px 0;
   }
+
   #doc-links a {
     text-decoration: none;
     color: #4C0EFF;
     font-weight: 500;
   }
+
   #doc-links a:hover {
     text-decoration: underline;
   }
@@ -228,14 +219,16 @@
   #feedback-window h3 {
     margin-top: 0;
     margin-bottom: 12px;
-    font-size: 18px;
+    font-size: 16px; /* font size reduced from 18px */
     color: #333;
   }
+
   #feedback-window h4 {
     margin-bottom: 8px;
-    font-size: 16px;
+    font-size: 14px; /* font size reduced from 16px */
     color: #333;
   }
+
   #feedback-window hr {
     border: 0;
     height: 1px;
@@ -277,18 +270,15 @@
       screenshotBtn.textContent = 'Show us a screenshot';
     }
 
-    // Show the feedback overlay
     stickyBtn.addEventListener('click', () => {
       resetWidget();
       feedbackOverlay.style.display = 'block';
     });
 
-    // Hide the feedback overlay
     closeBtn.addEventListener('click', () => {
       feedbackOverlay.style.display = 'none';
     });
 
-    // Star rating interactions
     stars.forEach(star => {
       star.addEventListener('mouseover', () => {
         const val = parseInt(star.getAttribute('data-value'), 10);
@@ -314,18 +304,15 @@
       });
     });
 
-    // Screenshot button triggers file input
     screenshotBtn.addEventListener('click', () => {
       screenshotField.click();
     });
 
-    // Submit the feedback
     submitBtn.addEventListener('click', () => {
       step2.classList.remove('active');
       step3.classList.add('active');
     });
 
-    // Prevent clicks inside the feedback window from closing the overlay
     feedbackWindow.addEventListener('click', (e) => {
       e.stopPropagation();
     });
