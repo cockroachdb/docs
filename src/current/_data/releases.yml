@@ -8509,7 +8509,7 @@
 
 - release_name: v23.2.22
   major_version: v23.2
-  release_date: '2025-04-03'
+  release_date: '2025-04-02'
   release_type: Production
   go_version: go1.23.7
   sha: 97cf71ca36bf9fffe7658d5ccdd7fb1be3d86099
@@ -8533,6 +8533,14 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.21
+  cloud_only: true
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+      This version is currently available only for select
+      CockroachDB Cloud clusters. To request to upgrade
+      a CockroachDB self-hosted cluster to this version,
+      [contact support](https://support.cockroachlabs.com/hc/requests/new).
+
 
 - release_name: v24.3.9
   major_version: v24.3
