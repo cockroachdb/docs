@@ -21,7 +21,7 @@ Users may connect with CockroachDB {{ site.data.products.core }} clusters in 2 m
 
 ## Using digital certificates with CockroachDB
 
-Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.3 certificate. This certificate is multi-functional: the same certificate is presented irrespective of whether the node is acting as a server or a client. The nodes use these certificates to establish secure connections with clients and with other nodes. Node certificates have the following requirements:
+Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.3 certificate. This certificate is multi-functional; the same certificate is presented irrespective of whether the node is acting as a server or a client. The nodes use these certificates to establish secure connections with clients and with other nodes. Node certificates have the following requirements:
 
 - The hostname or address (IP address or DNS name) used to reach a node, either directly or through a load balancer, must be listed in the **Common Name** or **Subject Alternative Names** fields of the certificate:
 
