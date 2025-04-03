@@ -192,14 +192,14 @@ Top-level:
 - `table`: use to preserve the origin/provenance of the change event, particularly when the changefeed is part of a multi-source system.
 - `value`
     - Inside `value`:
-        - `before` (optional): use to audit changes, debug, or implement logic that depends on changes in data.
-        - `after`
-        - `op`: use to route change events to handler logic in downstream systems based on the operation type.
-        - `ts_ns`
-        - `updated` (optional): use to apply a time filter, monitor for latency (compare the source commit time to when an event is processed at the destination), For analytics, this timestamp can serve as a watermark for an event.
-        - `mvcc_timestamp` (optional)
-        - `source` (optional)
-        - `schema` (optional)
+        - `before` (optional): Reflects the state of the row before the change event. audit changes, debug, or implement logic that depends on changes in data.
+        - `after` (default): Reflects the state of the row after the change event. Set to `NULL` for `DELETE` operations. Allow downstream systems to access the latest data for processing or storage.
+        - `op`: route change events to handler logic in downstream systems based on the operation type.
+        - `ts_ns`: 
+        - `updated` (optional): apply a time filter, monitor for latency (compare the source commit time to when an event is processed at the destination). For analytics, this timestamp can serve as a watermark for an event.
+        - `mvcc_timestamp` (optional): Determine when the change occurred in the database. Compare the age of rows by comparing current and previous MVCC timestamps.
+        - `source` (optional): Includes fields to describe where the change came from. Provides contextual information.
+        - `schema` (optional): Describes the schema of the change event payload.
 
 ## `value` Object Fields
 
@@ -255,3 +255,15 @@ Option and Field References
 Examples which are broken down by option with sinks listed
 
 {% endcomment %}
+
+
+## Examples
+
+Following are a selection of examples for 
+
+- Route events based on operation type
+- Replay changes up to a certain point in time
+- Monitor for end-to-end lag
+- Preserve the origin of data
+- Audit changes in data
+
