@@ -33,11 +33,11 @@ When you change from {{ site.data.products.standard }} to {{ site.data.products.
 
 1. On the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), select the cluster that requires a plan change.
 1. On the [**Cluster Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), select the **Action** dropdown in the top-right corner, and then **Change plan type**.
-1. Choose a [plan]({% link cockroachcloud/index.md %}#plans) from {{ site.data.products.standard }} or {{ site.data.products.basic }} to change to. The current plan of the cluster will be highlighted. Select **Next: Capacity**.
+1. Choose a [plan]({% link cockroachcloud/index.md %}#plans) from {{ site.data.products.standard }} or {{ site.data.products.basic }} to change to. The current plan of the cluster will be labeled, while the other plan type will be highlighted. Select **Next: Capacity**.
 1. For capacity:
     - If you are changing to a {{ site.data.products.standard }} plan, choose the amount of [provisioned capacity]({% link cockroachcloud/plan-your-cluster.md %}#provisioned-capacity) you want for your cluster. The Cloud Console provides a suggestion for provisioned vCPU, we recommend monitoring CPU utilization and adjusting the cluster's compute capacity as necessary. For additional information, refer to [Changing cluster plan provisioned capacity recommendations]({% link cockroachcloud/plan-your-cluster.md %}#changing-cluster-plan-provisioned-capacity-recommendations). Select **Next: Finalize**.
     - If you are changing to a [{{ site.data.products.basic }} plan]({% link cockroachcloud/create-a-basic-cluster.md %}#step-4-configure-cluster-capacity), choose whether the cluster should have **Unlimited** capacity to scale, or **Set a monthly limit**. Select **Next: Finalize**.
-1. Review the changes and then **Update cluster**. Consider the following:
+1. Review the changes and then **Update cluster**.
 
 ## See more
 
