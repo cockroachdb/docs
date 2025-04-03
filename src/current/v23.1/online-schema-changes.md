@@ -78,6 +78,8 @@ The following statements use the declarative schema changer by default:
 - [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})
 - {% include_cached new-in.html version="v23.1" %} [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
 - {% include_cached new-in.html version="v23.1" %} [`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %})
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE .... ADD COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#add-column) unless the table has [Zone Config Extensions]({% link {{ page.version.version }}/zone-config-extensions.md %}) or is a [regional by row table]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE .... DROP COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#drop-column) unless the table has [Zone Config Extensions]({% link {{ page.version.version }}/zone-config-extensions.md %}) or is a [regional by row table]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables)
 - {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
 - {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK ... NOT VALID`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
 - {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
