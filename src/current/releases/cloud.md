@@ -14,7 +14,7 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
-## April 4, 2025
+## April 3, 2025
 
 You can now [change cluster plans between {{ site.data.products.basic }} and {{ site.data.products.standard }}]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}) from the CockroachDB {{ site.data.products.cloud }} Console.
 

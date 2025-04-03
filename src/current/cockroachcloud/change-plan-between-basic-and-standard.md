@@ -32,7 +32,7 @@ When you change from {{ site.data.products.standard }} to {{ site.data.products.
 {{site.data.alerts.end}}
 
 1. On the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), select the cluster that requires a plan change.
-1. On the [**Cluster Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), select the **Action** dropdown in the top-right corner, and then **Change plan type**.
+1. On the [**Cluster Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), select the **Action** dropdown in the top-right corner, and then **Change plan type**. If this option is unavailable, refer to [Considerations](#considerations).
 1. Choose a [plan]({% link cockroachcloud/index.md %}#plans) from {{ site.data.products.standard }} or {{ site.data.products.basic }} to change to. The current plan of the cluster will be labeled, while the other plan type will be highlighted. Select **Next: Capacity**.
 1. For capacity:
     - If you are changing to a {{ site.data.products.standard }} plan, choose the amount of [provisioned capacity]({% link cockroachcloud/plan-your-cluster.md %}#provisioned-capacity) you want for your cluster. The Cloud Console provides a suggestion for provisioned vCPU, we recommend monitoring CPU utilization and adjusting the cluster's compute capacity as necessary. For additional information, refer to [Changing cluster plan provisioned capacity recommendations]({% link cockroachcloud/plan-your-cluster.md %}#changing-cluster-plan-provisioned-capacity-recommendations). Select **Next: Finalize**.
