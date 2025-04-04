@@ -1,0 +1,24 @@
+{
+    "title": "FAQs",
+    "is_top_level": true,
+    "items": [
+          {
+            "title": "CockroachDB FAQs",
+            "urls": [
+              "/${VERSION}/frequently-asked-questions.html"
+            ]
+          },
+          {
+            "title": "Operational FAQs",
+            "urls": [
+              "/${VERSION}/operational-faqs.html"
+            ]
+          },
+          {
+            "title": "Licensing FAQs",
+            "urls": [
+              "/${VERSION}/licensing-faqs.html"
+            ]
+          }
+        ]
+      }
