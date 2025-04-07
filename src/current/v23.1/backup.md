@@ -386,3 +386,4 @@ To use an external connection URI to back up to cloud storage with an associated
 - [`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %})
 - [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
 - [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %})
+- [Troubleshoot Replication Zones]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %})

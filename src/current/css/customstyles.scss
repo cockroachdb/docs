@@ -113,7 +113,12 @@ table {
           line-height: 22px;
         }
         ul {
-          font-size: 14px;
+          font-size: inherit;
+          margin-top: 10px;
+        }
+        strong,
+        b {
+          font-size: inherit;
         }
       }
     }
