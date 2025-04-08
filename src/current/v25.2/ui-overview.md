@@ -131,12 +131,18 @@ DB Console area | System-level privilege | Privileged information
 
 ## DB Console timezone configuration
 
-You can view timestamps in the DB Console in your preferred timezone using the `ui.display_timezone` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}). Currently supported timezones are Coordinated Universal Time (`etc/utc`, the default) and America/New_York (`america/new_york`):
+To view timestamps in your preferred timezone in the DB Console, use the [`ui.default_timezone` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-ui-default-timezone). This setting supports all valid timezone identifiers, such as `America/New_York` and `Asia/Tokyo`.
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-SET CLUSTER SETTING ui.display_timezone = 'america/new_york';
+SET CLUSTER SETTING ui.default_timezone = 'America/New_York';
 ~~~
+
+If no value is set, the DB Console displays timestamps in UTC.
+
+{{site.data.alerts.callout_info}}
+The [`ui.display_timezone` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-ui-display-timezone) is now deprecated and will be removed in a future release. Avoid using `ui.display_timezone`. Use `ui.default_timezone` instead for full support and forward compatibility.
+{{site.data.alerts.end}}
 
 ## DB Console troubleshooting
 
