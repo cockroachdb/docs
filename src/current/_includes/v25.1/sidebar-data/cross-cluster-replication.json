@@ -3,7 +3,7 @@
     "is_top_level": true,
     "items": [
       {
-        "title": "Logical Data Replication",
+        "title": "Logical Data Replication (LDR)",
         "items": [
             {
                 "title": "Overview",
@@ -12,19 +12,19 @@
                 ]
             },
             {
-                "title": "Set Up Logical Data Replication",
+                "title": "Set Up LDR",
                 "urls": [
                   "/${VERSION}/set-up-logical-data-replication.html"
                 ]
             },
             {
-                "title": "Manage Logical Data Replication",
+                "title": "Manage LDR",
                 "urls": [
                     "/${VERSION}/manage-logical-data-replication.html"
                 ]
             },
             {
-                "title": "Monitor Logical Data Replication",
+                "title": "Monitor LDR",
                 "urls": [
                     "/${VERSION}/logical-data-replication-monitoring.html"
                 ]
@@ -32,7 +32,7 @@
         ]
       },
       {
-        "title": "Physical Cluster Replication",
+        "title": "Physical Cluster Replication (PCR)",
         "items": [
           {
             "title": "Overview",
@@ -41,7 +41,7 @@
             ]
           },
           {
-            "title": "Set Up Physical Cluster Replication",
+            "title": "Set Up PCR",
             "urls": [
               "/${VERSION}/set-up-physical-cluster-replication.html"
             ]
@@ -53,9 +53,15 @@
             ]
           },
           {
-            "title": "Monitor a Replication Stream",
+            "title": "Monitor PCR",
             "urls": [
               "/${VERSION}/physical-cluster-replication-monitoring.html"
+            ]
+          },
+          {
+            "title": "Manage PCR",
+            "urls": [
+              "/${VERSION}/manage-physical-cluster-replication.html"
             ]
           },
           {
