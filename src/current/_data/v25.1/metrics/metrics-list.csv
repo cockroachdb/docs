@@ -1266,6 +1266,9 @@ APPLICATION,changefeed.buffer_pushback_nanos,Total time spent waiting while the 
 APPLICATION,changefeed.buffer_pushback_nanos.aggregator,Total time spent waiting while the buffer was full - between the kvfeed and the sink,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.buffer_pushback_nanos.rangefeed,Total time spent waiting while the buffer was full - between the rangefeed and the kvfeed,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.bytes.messages_pushback_nanos,Total time spent throttled for bytes quota,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,changefeed.checkpoint.create_nanos,Time it takes to create a changefeed checkpoint,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.checkpoint.span_count,Number of spans in a changefeed checkpoint,Spans,HISTOGRAM,COUNT,AVG,NONE
+APPLICATION,changefeed.checkpoint.total_bytes,Total size of a changefeed checkpoint,Bytes,HISTOGRAM,BYTES,AVG,NONE
 APPLICATION,changefeed.checkpoint_hist_nanos,Time spent checkpointing changefeed progress,Changefeeds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,changefeed.checkpoint_progress,The earliest timestamp of any changefeed's persisted checkpoint (values prior to this timestamp will never need to be re-emitted),Unix Timestamp Nanoseconds,GAUGE,TIMESTAMP_NS,AVG,NONE
 APPLICATION,changefeed.cloudstorage_buffered_bytes,The number of bytes buffered in cloudstorage sink files which have not been emitted yet,Bytes,GAUGE,COUNT,AVG,NONE
