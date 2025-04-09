@@ -216,17 +216,14 @@ If `sql.txn.read_committed_isolation.enabled` is set to `true` ([enabling `READ 
 |--------------------|------------------|
 | `READ UNCOMMITTED` | `READ COMMITTED` |
 | `READ COMMITTED`   | --               |
-| `REPEATABLE READ`  | `SNAPSHOT`       |
 | `SNAPSHOT`         | `SERIALIZABLE`   |
 | `SERIALIZABLE`     | --               |
 
-{{site.data.alerts.callout_info}}
+{% comment %}{{site.data.alerts.callout_info}}
 In this configuration, `REPEATABLE READ` effectively upgrades to `SERIALIZABLE`.
-{{site.data.alerts.end}}
+{{site.data.alerts.end}}{% endcomment %}
 
-If `sql.txn.read_committed_isolation.enabled` is set to `false` (disabling `READ COMMITTED` isolation), all isolation levels upgrade to `SERIALIZABLE`.
-
-If a transaction includes [DDL]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements) or [`AOST`]({% link {{ page.version.version }}/as-of-system-time.md %}) statements, all isolation levels upgrade to `SERIALIZABLE`.
+If `sql.txn.read_committed_isolation.enabled` is set to `false` (disabling `READ COMMITTED` isolation), all transactions run under `SERIALIZABLE` isolation regardless of the isolation level requested.
 
 ### Comparison to ANSI SQL isolation levels
 
