@@ -210,20 +210,9 @@ To view the current priority of a transaction, use `SHOW transaction_priority` o
 
 By default, CockroachDB executes all transactions at `SERIALIZABLE` isolation. Under certain conditions, transactions issued at weaker isolation levels are automatically upgraded to stronger isolation levels.
 
-If `sql.txn.read_committed_isolation.enabled` is set to `true` ([enabling `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation)):
+- If `sql.txn.read_committed_isolation.enabled` is set to `true` ([enabling `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation)), `READ UNCOMMITTED` transactions are upgraded to `READ COMMITTED` isolation.
 
-|  Isolation level   |   Upgrades to    |
-|--------------------|------------------|
-| `READ UNCOMMITTED` | `READ COMMITTED` |
-| `READ COMMITTED`   | --               |
-| `SNAPSHOT`         | `SERIALIZABLE`   |
-| `SERIALIZABLE`     | --               |
-
-{% comment %}{{site.data.alerts.callout_info}}
-In this configuration, `REPEATABLE READ` effectively upgrades to `SERIALIZABLE`.
-{{site.data.alerts.end}}{% endcomment %}
-
-If `sql.txn.read_committed_isolation.enabled` is set to `false` (disabling `READ COMMITTED` isolation), all transactions run under `SERIALIZABLE` isolation regardless of the isolation level requested.
+- If `sql.txn.read_committed_isolation.enabled` is set to `false` (disabling `READ COMMITTED` isolation), all transactions are upgraded to `SERIALIZABLE` isolation regardless of the isolation level requested.
 
 ### Comparison to ANSI SQL isolation levels
 
