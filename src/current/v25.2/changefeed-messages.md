@@ -6,12 +6,10 @@ docs_area: stream_data
 key: use-changefeeds.html
 ---
 
-Changefeeds generate and emit messages (on a per-key basis) as changes happen to the rows in watched tables. CockroachDB changefeeds have an at-least-once delivery guarantee as well as message ordering guarantees. You can also configure the format of changefeed messages with different [options]({% link {{ page.version.version }}/create-changefeed.md %}#options) (e.g., `format=avro`).
+Changefeeds generate and emit _messages_ (on a per-key basis) to sinks as _change events_ (`INSERT`, `UPDATE`, `DELETE`) happen to the rows in [watched tables]({% link {{ page.version.version }}/change-data-capture-overview.md %}#watched-table). CockroachDB changefeeds have an at-least-once delivery guarantee as well as message ordering guarantees. 
 
-This page describes the format and behavior of changefeed messages. You will find the following information on this page:
+This page has reference information for the following changefeed message topics:
 
-- [Responses](#responses): The general format of changefeed messages.
-- [Message envelopes](#message-envelopes): The structure of the changefeed message.
 - [Ordering and delivery guarantees](#ordering-and-delivery-guarantees): CockroachDB's guarantees for a changefeed's message ordering and delivery.
 - [Delete messages](#delete-messages): The format of messages when a row is deleted.
 - [Resolved messages](#resolved-messages): The resolved timestamp option and how to configure it.
@@ -20,177 +18,14 @@ This page describes the format and behavior of changefeed messages. You will fin
 - [Filtering changefeed messages](#filtering-changefeed-messages): The settings and syntax to prevent and filter the messages that changefeeds emit.
 - [Message formats](#message-formats): The limitations and type mapping when creating a changefeed with different message formats.
 
+To enable various use cases and sink support, you can use changefeed options to configure the message: 
+
+- [_Envelope_]({% link {{ page.version.version }}/changefeed-message-envelopes.md %}): the structure of each message. Include or exclude row data, payload schema definitions, and source metadata.
+- [_Format_](#message-formats): the available formats, such as JSON, CSV, and Avro.
+
 {{site.data.alerts.callout_info}}
 {% include {{page.version.version}}/cdc/types-udt-composite-general.md %}
 {{site.data.alerts.end}}
-
-## Responses
-
-By default, changefeed messages emitted to a [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) contain keys and values of the watched table rows that have changed. The message will contain the following fields depending on the type of emitted change and the [options]({% link {{ page.version.version }}/create-changefeed.md %}#options) you specified to create the changefeed:
-
-- **Key**: An array composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for JSON or `{"id":{"long":1}}` for Avro).
-- **Value**:
-    - One of four possible top-level fields:
-        - `after`, which contains the state of the row after the update (or `null` for `DELETE`s).
-        - `updated`, which contains the [updated]({% link {{ page.version.version }}/create-changefeed.md %}#updated) timestamp.
-        - `resolved`, which is emitted for records representing [resolved](#resolved-messages) timestamps. These records do not include an `after` value since they only function as checkpoints.
-        - `before`, which contains the state of the row before an update. Changefeeds must use the [`diff` option]({% link {{ page.version.version }}/create-changefeed.md %}#diff) with the default [`wrapped` envelope](#wrapped) to emit the `before` field. When a row did not previously have any data, the `before` field will emit `null`.
-    - For [`INSERT`]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`]({% link {{ page.version.version }}/update.md %}), the current state of the row inserted or updated.
-    - For [`DELETE`]({% link {{ page.version.version }}/delete.md %}), `null`.
-
-{{site.data.alerts.callout_info}}
-If you use the `envelope` option to alter the changefeed message fields, your messages may not contain one or more of the values noted in the preceding list. As an example, when emitting to a Kafka sink, you can limit messages to just the changed key value by using the `envelope` option set to [`key_only`](#key_only). For more detail, refer to [Message envelopes](#message-envelopes).
-{{site.data.alerts.end}}
-
-For example, changefeeds emitting to a sink will have the default message format:
-
-Statement                                      | Response
------------------------------------------------+-----------------------------------------------------------------------
-`INSERT INTO office_dogs VALUES (1, 'Petee');` | JSON: `[1]	{"after": {"id": 1, "name": "Petee"}}` </br>Avro: `{"id":{"long":1}}	{"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee"}}}}`
-`DELETE FROM office_dogs WHERE name = 'Petee'` | JSON: `[1]	{"after": null}` </br>Avro: `{"id":{"long":1}}	{"after":null}`
-
-When a changefeed targets a table with multiple column families, the family name is appended to the table name as part of the topic. Refer to [Tables with columns families in changefeeds]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}#message-format) for guidance.
-
-For [webhook sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), the response format arrives as a batch of changefeed messages with a `payload` and `length`.
-
-~~~
-{"payload": [{"after" : {"a" : 1, "b" : "a"}, "key": [1], "topic": "foo"}, {"after": {"a": 1, "b": "b"}, "key": [1], "topic": "foo" }], "length":2}
-~~~
-
-[Webhook message batching]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink-configuration) is subject to the same key [ordering guarantee](#ordering-and-delivery-guarantees) as other sinks. Therefore, as messages are batched, you will not receive two batches at the same time with overlapping keys. You may receive a single batch containing multiple messages about one key, because ordering is maintained for a single key within its batch.
-
-Refer to [changefeed files]({% link {{ page.version.version }}/create-changefeed.md %}#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
-
-## Message envelopes
-
-The _envelope_ defines the structure of a changefeed message. You can use the [`envelope`]({% link {{ page.version.version }}/create-changefeed.md %}#envelope) option to manipulate the changefeed envelope. The values that the `envelope` option accepts are compatible with different [changefeed sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}), and the structure of the message will vary depending on the sink.
-
-{{site.data.alerts.callout_info}}
-Changefeeds created with [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) or [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) with no sink specified (sinkless changefeeds) produce messages without the envelope metadata fields of changefeeds emitting to sinks.
-{{site.data.alerts.end}}
-
-The following sections provide examples of changefeed messages that are emitted when you specify each of the supported `envelope` options. Other [changefeed options]({% link {{ page.version.version }}/create-changefeed.md %}#options) can affect the message envelope and what messages are emitted. Therefore, the examples are a guide for what you can expect when only the `envelope` option is specified.
-
-### `wrapped`
-
-`wrapped` is the default envelope structure for changefeed messages. This envelope contains an array of the primary key (or the key as part of the message metadata), a top-level field for the type of message, and the current state of the row (or `null` for [deleted rows](#delete-messages)).
-
-The message envelope contains a primary key array when your changefeed is emitting to a sink that does not have a message key as part of its protocol, (e.g., cloud storage, webhook sinks, or Google Pub/Sub). By default, messages emitted to Kafka sinks do not have the primary key array, because the key is part of the message metadata. If you would like messages emitted to Kafka sinks to contain a primary key array, you can use the [`key_in_value`]({% link {{ page.version.version }}/create-changefeed.md %}#key-in-value) option. Refer to the following message outputs for examples of this.
-
-- Cloud storage sink:
-
-    ~~~sql
-    CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://cloud';
-    ~~~
-    ~~~
-    {"after": {"city": "seattle", "creation_time": "2019-01-02T03:04:05", "current_location": "86359 Jeffrey Ranch", "ext": {"color": "yellow"}, "id": "68ee1f95-3137-48e2-8ce3-34ac2d18c7c8", "owner_id": "570a3d70-a3d7-4c00-8000-000000000011", "status": "in_use", "type": "scooter"}, "key": ["seattle", "68ee1f95-3137-48e2-8ce3-34ac2d18c7c8"]}
-    ~~~
-
-- Kafka sink:
-
-    - Default when `envelope=wrapped` or `envelope` is not specified:
-
-        ~~~sql
-        CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka';
-        ~~~
-        ~~~
-        {"after": {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "24315 Elizabeth Mountains", "ext": {"color": "yellow"}, "id": "dadc1c0b-30f0-4c8b-bd16-046c8612bbea", "owner_id": "034075b6-5380-4996-a267-5a129781f4d3", "status": "in_use", "type": "scooter"}}
-        ~~~
-
-    - Kafka sink message with `key_in_value` provided:
-
-        ~~~sql
-        CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka' WITH key_in_value, envelope=wrapped;
-        ~~~
-        ~~~
-        {"after": {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "46227 Jeremy Haven Suite 92", "ext": {"brand": "Schwinn", "color": "red"}, "id": "298cc7a0-de6b-4659-ae57-eaa2de9d99c3", "owner_id": "beda1202-63f7-41d2-aa35-ee3a835679d1", "status": "in_use", "type": "bike"}, "key": ["washington dc", "298cc7a0-de6b-4659-ae57-eaa2de9d99c3"]}
-        ~~~
-
-#### `wrapped` and `diff`
-
-To include a `before` field in the changefeed message that contains the state of a row before an update in the changefeed message, use the `diff` option with `wrapped`:
-
-~~~sql
-CREATE CHANGEFEED FOR TABLE rides INTO 'external://kafka' WITH diff, envelope=wrapped;
-~~~
-
-~~~
-{"after": {"city": "seattle", "end_address": null, "end_time": null, "id": "f6c02fe0-a4e0-476d-a3b7-91934d15dce2", "revenue": 25.00, "rider_id": "14067022-6e9b-427b-bd74-5ef48e93da1f", "start_address": "2 Michael Field", "start_time": "2023-06-02T15:14:20.790155", "vehicle_city": "seattle", "vehicle_id": "55555555-5555-4400-8000-000000000005"}, "before": {"city": "seattle", "end_address": null, "end_time": null, "id": "f6c02fe0-a4e0-476d-a3b7-91934d15dce2", "revenue": 25.00, "rider_id": "14067022-6e9b-427b-bd74-5ef48e93da1f", "start_address": "5 Michael Field", "start_time": "2023-06-02T15:14:20.790155", "vehicle_city": "seattle", "vehicle_id": "55555555-5555-4400-8000-000000000005"}, "key": ["seattle", "f6c02fe0-a4e0-476d-a3b7-91934d15dce2"]}
-~~~
-
-### `bare`
-
-`bare` removes the `after` key from the changefeed message and stores any metadata in a `crdb` field. When used with [`avro`](#avro) format, `record` will replace the `after` key.
-
-- Cloud storage sink:
-
-    ~~~sql
-    CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://cloud' WITH envelope=bare;
-    ~~~
-    ~~~
-    {"__crdb__": {"key": ["washington dc", "cd48e501-e86d-4019-9923-2fc9a964b264"]}, "city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "87247 Diane Park", "ext": {"brand": "Fuji", "color": "yellow"}, "id": "cd48e501-e86d-4019-9923-2fc9a964b264", "owner_id": "a616ce61-ade4-43d2-9aab-0e3b24a9aa9a", "status": "available", "type": "bike"}
-    ~~~
-
-{% include {{ page.version.version }}/cdc/bare-envelope-cdc-queries.md %}
-
-- In CDC queries:
-
-    - A changefeed containing a `SELECT` clause without any additional options:
-
-        ~~~sql
-        CREATE CHANGEFEED INTO 'external://kafka' AS SELECT city, type FROM movr.vehicles;
-        ~~~
-        ~~~
-        {"city": "los angeles", "type": "skateboard"}
-        ~~~
-
-    - A changefeed containing a `SELECT` clause with the [`topic_in_value`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-in-value) option specified:
-
-        ~~~sql
-        CREATE CHANGEFEED INTO 'external://kafka' WITH topic_in_value AS SELECT city, type FROM movr.vehicles;
-        ~~~
-        ~~~
-        {"__crdb__": {"topic": "vehicles"}, "city": "los angeles", "type": "skateboard"}
-        ~~~
-
-### `key_only`
-
-`key_only` emits only the key and no value, which is faster if you only need to know the key of the changed row. This envelope option is only supported for [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) or sinkless changefeeds.
-
-- Kafka sink:
-
-    ~~~sql
-    CREATE CHANGEFEED FOR TABLE users INTO 'external://kafka' WITH envelope=key_only;
-    ~~~
-    ~~~
-    ["boston", "22222222-2222-4200-8000-000000000002"]
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    It is necessary to set up a [Kafka consumer](https://docs.confluent.io/platform/current/clients/consumer.html) to display the key because the key is part of the metadata in Kafka messages, rather than in its own field. When you start a Kafka consumer, you can use `--property print.key=true` to have the key print in the changefeed message.
-    {{site.data.alerts.end}}
-
-- Sinkless changefeeds:
-
-    ~~~sql
-    CREATE CHANGEFEED FOR TABLE users WITH envelope=key_only;
-    ~~~
-    ~~~
-    {"key":"[\"seattle\", \"fff726cc-13b3-475f-ad92-a21cafee5d3f\"]","table":"users","value":""}
-    ~~~
-
-### `row`
-
-`row` emits the row without any additional metadata fields in the message. This envelope option is only supported for [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) or sinkless changefeeds. `row` does not support [`avro`](#avro) format—if you are using `avro`, refer to the [`bare`](#bare) envelope option.
-
-- Kafka sink:
-
-    ~~~sql
-    CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka' WITH envelope=row;
-    ~~~
-    ~~~
-    {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "85551 Moore Mountains Apt. 47", "ext": {"color": "red"}, "id": "d3b37607-1e9f-4e25-b772-efb9374b08e3", "owner_id": "4f26b516-f13f-4136-83e1-2ea1ae151c20", "status": "available", "type": "skateboard"}
-    ~~~
 
 ## Ordering and delivery guarantees
 
@@ -271,6 +106,10 @@ As an example, you run the following sequence of SQL statements to create a chan
     {{site.data.alerts.callout_info}}
     Depending on the workload, you can use resolved timestamp notifications on every Kafka partition to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures. Use the `resolved` timestamp to see every row that changed at a certain time.
     {{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+[Webhook message batching]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink-configuration) is subject to the same key [ordering guarantee](#ordering-and-delivery-guarantees) as other sinks. Therefore, as messages are batched, you will not receive two batches at the same time with overlapping keys. You may receive a single batch containing multiple messages about one key, because ordering is maintained for a single key within its batch.
+{{site.data.alerts.end}}
 
 #### Define a key column
 

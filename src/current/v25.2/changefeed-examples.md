@@ -680,7 +680,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     2021/08/24 14:00:22 {"payload":[{"after":{"city":"san francisco","creation_time":"2019-01-02T03:04:05","current_location":"3893 Dunn Fall Apt. 11","ext":{"color":"black"},"id":"21b2ec54-81ad-4af7-a76d-6087b9c7f0f8","dog_owner_id":"8924c3af-ea6e-4e7e-b2c8-2e318f973393","status":"lost","type":"scooter"},"key":["san francisco","21b2ec54-81ad-4af7-a76d-6087b9c7f0f8"],"topic":"vehicles","updated":"1629813621680097993.0000000000"}],"length":1}
     ~~~
 
-    For more detail on emitted changefeed messages, see [responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses).
+    For more detail on emitted changefeed messages, refer to the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}) page.
 
 ## Create a changefeed connected to an Apache Pulsar sink
 
@@ -769,7 +769,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     key:[null], properties:[], content:{"Key":["rome", "3c7d6676-f713-4985-ba52-4c19fe6c3692"],"Value":{"after": {"city": "rome", "end_address": null, "end_time": null, "id": "3c7d6676-f713-4985-ba52-4c19fe6c3692", "revenue": 27.00, "rider_id": "c15a4926-fbb2-4931-a9a0-6dfabc6c506b", "start_address": "39415 Brandon Avenue Apt. 29", "start_time": "2024-05-09T12:18:42.055498", "vehicle_city": "rome", "vehicle_id": "627dad1a-3531-4214-a173-16bcc6b93036"}},"Topic":"rides"}
     ~~~
 
-    For more detail on emitted changefeed messages, refer to [Responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses).
+    For more detail on emitted changefeed messages, refer to the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}) page.
 
 </section>
 

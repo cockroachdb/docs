@@ -80,7 +80,7 @@ If the [`schema_change_policy`]({% link {{ page.version.version }}/create-change
 . . .
 ~~~
 
-See the changefeed [responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses) section for more general information on the messages emitted from a changefeed.
+See the changefeed [messages]({% link {{ page.version.version }}/changefeed-messages.md %}) page for more general information on the messages emitted from a changefeed.
 
 ## See also
 
