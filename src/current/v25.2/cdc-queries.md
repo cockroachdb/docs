@@ -102,7 +102,7 @@ You can **not** use the following functions with CDC queries:
 
 CDC queries allow you to customize your changefeed for particular scenarios. This section outlines several possible use cases for CDC queries.
 
-{% include {{ page.version.version }}/cdc/bare-envelope-cdc-queries.md %} Refer to the [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}#bare) page for more detail.
+{% include {{ page.version.version }}/cdc/bare-envelope-cdc-queries.md %} Refer to the [Changefeed Message Envelopes]({% link {{ page.version.version }}/changefeed-message-envelopes.md %}#bare) page for more detail.
 
 Depending on how you are filtering or adapting the message envelope with a CDC query and which sink you're emitting to, message output may vary from some of the example cases in this section.
 
