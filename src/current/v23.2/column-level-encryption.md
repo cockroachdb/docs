@@ -92,7 +92,7 @@ Use of the `encrypt` built-in function can have anywhere from 10-40% overhead de
 
 Cockroach Labs measured baseline performance in a 3-node CockroachDB cluster running on three [`n1-standard-4` machines on GCP](https://cloud.google.com/compute/docs/general-purpose-machines#n1_machines).
 
-Without using `encrypt` or `decrypt`, the following statement generally ran in 60-80 ms:
+Without using `encrypt` or `decrypt`, the following statement (which represents 10,000 operations) generally ran in 60-80 ms:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
