@@ -206,25 +206,23 @@ To view the current priority of a transaction, use `SHOW transaction_priority` o
 
 {% include {{ page.version.version }}/sql/isolation-levels.md %}
 
+### Isolation level upgrades
+
+By default, CockroachDB executes all transactions at `SERIALIZABLE` isolation. Under certain conditions, transactions issued at weaker isolation levels are automatically upgraded to stronger isolation levels.
+
+- If `sql.txn.read_committed_isolation.enabled` is set to `true` ([enabling `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation)), `READ UNCOMMITTED` transactions are upgraded to `READ COMMITTED` isolation.
+
+- If `sql.txn.read_committed_isolation.enabled` is set to `false` (disabling `READ COMMITTED` isolation), all transactions are upgraded to `SERIALIZABLE` isolation regardless of the isolation level requested.
+
 ### Comparison to ANSI SQL isolation levels
 
 CockroachDB uses slightly different isolation levels than [ANSI SQL isolation levels](https://wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels).
 
-#### Aliases
-
-`SNAPSHOT` and `REPEATABLE READ` are aliases for `SERIALIZABLE`.
-
-`READ UNCOMMITTED` is an alias for `READ COMMITTED`.
-
-If `READ COMMITTED` isolation is disabled using the `sql.txn.read_committed_isolation.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-txn-read-committed-isolation-enabled), `READ COMMITTED` and `READ UNCOMMITTED` become aliases for `SERIALIZABLE`.
-
-#### Comparison
-
-The CockroachDB `SERIALIZABLE` isolation level is stronger than the ANSI SQL `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` levels and equivalent to the ANSI SQL `SERIALIZABLE` level.
+The CockroachDB `SERIALIZABLE` isolation level is stronger than the ANSI SQL `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` levels, as well as the `SNAPSHOT` level. It is equivalent to the ANSI SQL `SERIALIZABLE` level.
 
 The CockroachDB `READ COMMITTED` isolation level is stronger than the PostgreSQL `READ COMMITTED` isolation level, and is the strongest isolation level that does not experience [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that require [client-side handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling).
 
-For more information about the relationship between these levels, see [A Critique of ANSI SQL Isolation Levels](https://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
+For more information about the relationship between these levels, read [A Critique of ANSI SQL Isolation Levels](https://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
 
 ## Limit the number of rows written or read in a transaction
 
