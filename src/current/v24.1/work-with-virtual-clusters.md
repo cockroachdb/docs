@@ -114,46 +114,6 @@ sql_txn_commit_count{tenant="demo"} 0
 
 When connected to a virtual cluster from the DB Console, metrics which measure SQL and related activity show data scoped to the virtual cluster. All other metrics are collected system-wide and display the same data on all virtual clusters including the system virtual cluster.
 
-## Disaster recovery
-
-When cluster virtualization is enabled, [backup]({% link {{ page.version.version }}/backup.md %}) and [restore]({% link {{ page.version.version }}/restore.md %}) commands are scoped to the virtual cluster by default.
-
-### Back up a virtual cluster
-
-To back up a virtual cluster:
-
-1. [Connect to the virtual cluster](#connect-to-a-virtual-cluster) you want to back up as a user with the `admin` role on the virtual cluster.
-1. [Back up the cluster]({% link {{ page.version.version }}/backup.md %}). Only the virtual cluster's data and settings are included in the backup, and data and settings for other virtual clusters or for the system virtual cluster is omitted.
-
-For details about restoring a backup of a virtual cluster, refer to [Restore a virtual cluster](#restore-a-virtual-cluster).
-
-### Back up the entire cluster
-
-To back up the entire CockroachDB cluster, including all virtual clusters and the system virtual cluster:
-
-1. [Connect to the system virtual cluster](#connect-to-the-system-virtual-cluster) as a user with the `admin` role on the system virtual cluster.
-1. [Back up the cluster]({% link {{ page.version.version }}/backup.md %}), and include the `INCLUDE_ALL_SECONDARY_TENANTS` flag in the `BACKUP` command. All virtual clusters and the system virtual cluster are included in the backup.
-
-### Restore a virtual cluster
-
-You can restore a backup of a virtual cluster to:
-
-- The original virtual cluster on the original CockroachDB cluster.
-- A different virtual cluster on the original CockroachDB cluster.
-- A different virtual cluster on a different CockroachDB cluster with cluster virtualization enabled.
-
-To restore only a virtual cluster:
-
-1. [Connect to the destination virtual cluster](#connect-to-a-virtual-cluster) as a user with the `admin` role on the virtual cluster.
-1. [Restore the cluster]({% link {{ page.version.version }}/restore.md %}). Only the virtual cluster's data and settings are restored.
-
-### Restore the entire cluster
-
-To restore the entire CockroachDB cluster, including all virtual clusters and the system virtual cluster:
-
-1. [Connect to the destination system virtual cluster](#connect-to-the-system-virtual-cluster) as a user with the `admin` role on the system virtual cluster.
-1. [Restore the cluster]({% link {{ page.version.version }}/restore.md %}) from a backup that included the the `INCLUDE_ALL_SECONDARY_VIRTUAL_CLUSTERS` flag. All virtual clusters and the system virtual cluster are restored.
-
 ## Configure cluster settings
 
 When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) is enabled, each [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) is scoped to either a virtual cluster or the system virtual cluster.
