@@ -18,7 +18,7 @@ For CPU, different types of usage are queued differently based on priority to al
 
 For storage IO, the goal is to prevent the [storage layer's log-structured merge tree]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) (LSM) from experiencing high [read amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#read-amplification), which slows down reads, while also maintaining the ability to absorb bursts of writes.
 
-Admission control works on a per-[node]({% link {{ page.version.version }}/architecture/overview.md %}#node) basis, since even though a large CockroachDB cluster may be well-provisioned as a whole, individual nodes are stateful and may experience performance [hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots).
+Admission control works on a per-[node]({% link {{ page.version.version }}/architecture/overview.md %}#node) basis, since even though a large CockroachDB cluster may be well-provisioned as a whole, individual nodes are stateful and may experience performance [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}).
 
 For more details about how the admission control system works, see:
 
@@ -27,7 +27,7 @@ For more details about how the admission control system works, see:
 
 ## Use cases for admission control
 
-A well-provisioned CockroachDB cluster may still encounter performance bottlenecks at the node level, as stateful nodes can develop [hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots) that last until the cluster rebalances itself. When hot spots occur, they should not cause failures or degraded performance for important work.
+A well-provisioned CockroachDB cluster may still encounter performance bottlenecks at the node level, as stateful nodes can develop [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) that last until the cluster rebalances itself. When hotspots occur, they should not cause failures or degraded performance for important work.
 
 This is particularly important for CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.basic }}, where one user tenant cluster experiencing high load should not degrade the performance or availability of a different, isolated tenant cluster running on the same host.
 
