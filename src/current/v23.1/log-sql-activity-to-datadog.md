@@ -1,11 +1,11 @@
 ---
-title: Log SQL statistics to Datadog
+title: Log SQL Activity to Datadog
 summary: Examples of common logging use cases and possible CockroachDB logging sink configurations.
 toc: true
 docs_area: manage
 ---
 
-{% include_cached new-in.html version="v23.1.4" %} This tutorial describes how to configure logging of [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) to [Datadog](https://www.datadoghq.com/) for finer granularity and long-term retention of SQL statistics. The `sampled_query` events contain common SQL event and execution details for sessions, transactions, and statements.
+{% include_cached new-in.html version="v23.1.4" %} This tutorial describes how to configure logging of [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) to [Datadog](https://www.datadoghq.com/) for finer granularity and long-term retention of SQL activity. The `sampled_query` events contain common SQL event and execution details for sessions, transactions, and statements.
 
 CockroachDB supports a built-in integration with Datadog which sends query events as logs via the [Datadog HTTP API](https://docs.datadoghq.com/api/latest/logs/). This integration is the recommended path to achieve high throughput data ingestion, which will in turn provide more query events for greater workload observability.
 
