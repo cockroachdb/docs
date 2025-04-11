@@ -330,6 +330,11 @@
                         "urls": [
                             "/cockroachcloud/sql-audit-logging.html"
                         ]
+                    },                    {
+                        "title": "View Organization Audit Logs in Cloud Console",
+                        "urls": [
+                            "/cockroachcloud/organization-audit-logs-in-cloud-console.html"
+                        ]
                     },
                     {
                         "title": "Export Cloud Organization Audit Logs",
