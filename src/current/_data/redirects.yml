@@ -255,12 +255,9 @@
   sources: ['operate-cockroachdb-kubernetes.md']
   versions: ['v21.2']
 
-- destination: plan-your-cluster-serverless.md
-  sources:
-    - 'planning-your-serverless-cluster.md'
-    - 'learn-about-pricing.md'
-    - 'learn-about-request-units.md'
-  versions: ['cockroachcloud']
+- destination: log-sql-activity-to-datadog.md
+  sources: ['log-sql-statistics-to-datadog.md']
+  versions: ['v23.1', 'v23.2', 'v24.1', 'v24.2', 'v24.3', 'v25.1']
 
 - destination: logging-overview.md
   sources: ['debug-and-error-logs.md']
@@ -276,11 +273,26 @@
   sources: ['cloud-deployment.md']
   versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
 
+- destination: plan-your-cluster-serverless.md
+  sources:
+    - 'planning-your-serverless-cluster.md'
+    - 'learn-about-pricing.md'
+    - 'learn-about-request-units.md'
+  versions: ['cockroachcloud']
+
 - destination: provision-a-cluster-with-terraform.md
   sources:
   - 'migrate-from-free-to-dedicated.md'
   - 'migrate-from-serverless-to-dedicated.md'
   versions: ['cockroachcloud']
+
+- destination: migrate-to-cockroachdb.md?filters=mysql
+  sources: ['migrate-from-mysql.md']
+  versions: ['v25.1']
+
+- destination: migrate-to-cockroachdb.md
+  sources: ['migrate-from-postgres.md']
+  versions: ['v25.1']
 
 - destination: migration-overview.md
   sources: ['import-data.md']

@@ -56,7 +56,7 @@ You cannot use LDR on a table with a schema that contains:
 Additionally, for the `CREATE LOGICALLY REPLCATED` syntax, you cannot use LDR on a table with a schema that contains:
 
 - [User-defined types]({% link {{ page.version.version }}/enum.md %}) 
-- [Foregin key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies
+- [Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies
 
 For more details, refer to the LDR [Known limitations]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#known-limitations).
 

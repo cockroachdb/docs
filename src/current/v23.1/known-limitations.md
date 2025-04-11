@@ -702,6 +702,10 @@ If you think a rollback of a column-dropping schema change has occurred, check t
 
 {% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
 
+### Secondary regions and regional by row tables
+
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
+
 ### Row-Level TTL limitations
 
 {% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
