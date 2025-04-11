@@ -22,17 +22,32 @@ This page is a reference for the `CREATE LOGICALLY REPLICATED` SQL statement, wh
 
 ## Required privileges
 
-`CREATE LOGICALLY REPLICATED` requires one of the following privileges:
+{% include_cached new-in.html version="v25.2" %} To run the `CREATE LOGICALLY REPLICATED` statement to create an LDR stream, the following privileges are required:
 
-- The [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
-- The [`REPLICATION` system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges).
+On the source cluster:
 
-Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement:
+- The table-level `REPLICATIONSOURCE` privilege on the source table(s).
+
+This is the user provided in the source URI when you start a LDR stream.
+
+On the destination cluster:
+
+- `CREATE` on the parent database of the new table, which allows for the automatic table creation.
+
+For bidirectional LDR:
+
+- The user in the original source URI, who begins the reverse LDR stream, requires the table-level `REPLICATIONDEST` privilege.
+
+Grant a table-level privilege with the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) statement to a [user or a role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT SYSTEM REPLICATION TO user;
+GRANT REPLICATIONSOURCE ON TABLE database.public.tablename TO user/role;
 ~~~
+
+{{site.data.alerts.callout_info}}
+As of v25.2, the [`REPLICATION` system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) is **deprecated** and will be removed in a future release. Use `REPLICATIONSOURCE` and `REPLICATIONDEST` for authorization at the table level.
+{{site.data.alerts.end}}
 
 ## Synopsis
 
