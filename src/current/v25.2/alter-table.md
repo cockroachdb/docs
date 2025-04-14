@@ -59,6 +59,8 @@ Subcommand | Description | Can combine with other subcommands?
 [`RENAME CONSTRAINT`](#rename-constraint) | Change constraints columns. | Yes
 [`RENAME TO`](#rename-to) | Change the names of tables. | No
 [`RESET {storage parameter}`](#reset-storage-parameter) | Reset a storage parameter on a table to its default value. | Yes
+[`(ENABLE, DISABLE) ROW LEVEL SECURITY`](#enable-disable-row-level-security) |  Enable or disable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) for a table. | No
+[`(FORCE, UNFORCE) ROW LEVEL SECURITY`](#force-unforce-row-level-security) | Force the table owner to be subject to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies defined on a table. | No
 [`SET {storage parameter}`](#set-storage-parameter) | Set a storage parameter on a table. | Yes
 [`SET LOCALITY`](#set-locality) |  Set the table locality for a table in a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}). | No
 [`SET SCHEMA`](#set-schema) |  Change the [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of a table. | No
@@ -467,6 +469,50 @@ Parameter | Description |
 `storage_parameter_key`    | The name of the storage parameter you are changing. See [Table storage parameters](#table-storage-parameters) for a list of available parameters. |
 
 For usage, see [Synopsis](#synopsis).
+
+### `(ENABLE, DISABLE) ROW LEVEL SECURITY`
+
+[Row-level security]({% link {{ page.version.version }}/row-level-security.md %}) must be explicitly enabled per [table]({% link {{ page.version.version }}/schema-design-table.md %}). Typically, this is controlled by the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) that owns the table.
+
+For examples, see [Enable and disable row-level security](#enable-and-disable-row-level-security).
+
+{{site.data.alerts.callout_info}}
+RLS applies to a table **only when explicitly enabled** using `ALTER TABLE ... ENABLE ROW LEVEL SECURITY`. Roles exempt from RLS policies include [admins]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles), [table owners]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) (unless the table is set to [`FORCE ROW LEVEL SECURITY`](#force-and-unforce-row-level-security)), and [roles with `BYPASSRLS`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls).
+{{site.data.alerts.end}}
+
+#### Required privileges
+
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles.
+
+#### Parameters
+
+| Parameter           | Description                                                                                                                                        |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `table_name`        | The name of the table which is having [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) enabled or disabled. |
+| `(ENABLE, DISABLE)` | Whether to enable or disable RLS.                                                                                                                  |
+
+### `{FORCE, UNFORCE} ROW LEVEL SECURITY`
+
+`ALTER TABLE ... FORCE ROW LEVEL SECURITY` prevents table [owners]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) from bypassing [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) policies.
+
+Use this statement when you need to ensure that all access, including by the table owner, adheres to the defined RLS policies. For example, in production or multi-tenant environments where all roles (including administrators) must operate under policy constraints.
+
+For examples, see [Force and unforce row-level security](#force-and-unforce-row-level-security).
+
+{{site.data.alerts.callout_danger}}
+Users with the `BYPASSRLS` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) can still bypass RLS even when `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is enabled. To see the roles with this option, run: `SELECT rolname FROM pg_roles WHERE rolbypassrls = true;`.
+{{site.data.alerts.end}}
+
+#### Required privileges
+
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles.
+
+#### Parameters
+
+| Parameter          | Description                                                                                                                                                                                          |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `table_name`       | The name of the table which is having [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) enabled or disabled.                                                   |
+| `(FORCE, UNFORCE)` | `FORCE` ensures that all access (even by the table owner) adheres to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies. `UNFORCE` removes that restriction. |
 
 ### `SET {storage parameter}`
 
@@ -3030,6 +3076,46 @@ To ensure that the data added to the `vehicles` table prior to the creation of t
 
 {{site.data.alerts.callout_info}}
 If present in a [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) statement, the table is considered validated because an empty table trivially meets its constraints.
+{{site.data.alerts.end}}
+
+### Enable and disable row-level security
+
+To enable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) on a table, issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+~~~
+
+To disable row-level security, use the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE orders DISABLE ROW LEVEL SECURITY;
+~~~
+
+{{site.data.alerts.callout_info}}
+RLS applies to a table **only when explicitly enabled** using `ALTER TABLE ... ENABLE ROW LEVEL SECURITY`. Roles exempt from RLS policies include [admins]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles), [table owners]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) (unless the table is set to [`FORCE ROW LEVEL SECURITY`](#force-and-unforce-row-level-security)), and [roles with `BYPASSRLS`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls).
+{{site.data.alerts.end}}
+
+### Force and unforce row-level security
+
+To ensure that all access, including by the table [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership), adheres to the defined [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies, issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE orders FORCE ROW LEVEL SECURITY;
+~~~
+
+To remove this restriction, and allow the table owner to bypass RLS policies, issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE orders UNFORCE ROW LEVEL SECURITY;
+~~~
+
+{{site.data.alerts.callout_danger}}
+Users with the `BYPASSRLS` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) can still bypass RLS even when `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is enabled. To see the roles with this option, run: `SELECT rolname FROM pg_roles WHERE rolbypassrls = true;`.
 {{site.data.alerts.end}}
 
 ## See also

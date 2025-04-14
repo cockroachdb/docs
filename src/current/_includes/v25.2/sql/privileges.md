@@ -2,6 +2,7 @@ Privilege | Levels | Description
 ----------|--------|------------
 `ALL` | System, Database, Schema, Table, Sequence, Type | For the object to which `ALL` is applied, grants all privileges at the system, database, schema, table, sequence, or type level.
 `BACKUP` | System, Database, Table | Grants the ability to create [backups]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) at the system, database, or table level.
+<a name="bypassrls"></a> `BYPASSRLS` | **New in v25.2** Grants the ability for a role to bypass [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policies on a table using the `BYPASSRLS`/`NOBYPASSRLS` role options, granting unrestricted read and write access to all rows.
 `CANCELQUERY` | System | Grants the ability to cancel queries.
 `CHANGEFEED` | Table | Grants the ability to create [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) on a table.
 <a id="connect"></a>`CONNECT` | Database | Grants the ability to view a database's metadata, which consists of objects in a database's `information_schema` and `pg_catalog` system catalogs. This allows the role to view the database's table, schemas, user-defined types, and list the database when running `SHOW DATABASES`. The `CONNECT` privilege is also required to run backups of the database.
