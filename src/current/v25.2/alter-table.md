@@ -59,6 +59,8 @@ Subcommand | Description | Can combine with other subcommands?
 [`RENAME CONSTRAINT`](#rename-constraint) | Change constraints columns. | Yes
 [`RENAME TO`](#rename-to) | Change the names of tables. | No
 [`RESET {storage parameter}`](#reset-storage-parameter) | Reset a storage parameter on a table to its default value. | Yes
+[`{ENABLE, DISABLE} ROW LEVEL SECURITY`](#enable-disable-row-level-security) | [XXX](XXX): XXX | No
+[`{FORCE, UNFORCE} ROW LEVEL SECURITY`](#force-unforce-row-level-security) | [XXX](XXX): XXX | No
 [`SET {storage parameter}`](#set-storage-parameter) | Set a storage parameter on a table. | Yes
 [`SET LOCALITY`](#set-locality) |  Set the table locality for a table in a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}). | No
 [`SET SCHEMA`](#set-schema) |  Change the [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of a table. | No
@@ -467,6 +469,34 @@ Parameter | Description |
 `storage_parameter_key`    | The name of the storage parameter you are changing. See [Table storage parameters](#table-storage-parameters) for a list of available parameters. |
 
 For usage, see [Synopsis](#synopsis).
+
+### `{ENABLE, DISABLE} ROW LEVEL SECURITY`
+
+[XXX](XXX): XXX
+
+#### Required privileges
+
+[XXX](XXX): GET THIS REVIEWED
+
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles, or have the [`BYPASSRLS` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the table.
+
+#### Parameters
+
+[XXX](XXX): XXX
+
+### `{FORCE, UNFORCE} ROW LEVEL SECURITY`
+
+[XXX](XXX): XXX
+
+#### Required privileges
+
+[XXX](XXX): GET THIS REVIEWED
+
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles, or have the [`BYPASSRLS` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the table.
+
+#### Parameters
+
+[XXX](XXX): XXX
 
 ### `SET {storage parameter}`
 

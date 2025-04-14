@@ -110,6 +110,10 @@ The following example allows the role to modify [cluster settings]({% link {{ pa
 root@:26257/defaultdb> ALTER ROLE carl WITH MODIFYCLUSTERSETTING;
 ~~~
 
+### Allow a role to bypass row-level security (RLS)
+
+[XXX](XXX): XXX
+
 ### Set default session variable values for a role
 
 In the following example, the `root` user creates a role named `max`, and sets the default value of the `timezone` [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for the `max` role.
