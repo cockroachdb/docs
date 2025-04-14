@@ -14,9 +14,13 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
-## April 9, 2025
+## April TBD, 2025
 
 You can now use the CockroachDB {{ site.data.products.cloud }} Console to [manage a cluster's labels]({% link cockroachcloud/cluster-management.md %}#manage-labels).
+
+## April 3, 2025
+
+You can now [change cluster plans between {{ site.data.products.basic }} and {{ site.data.products.standard }}]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}) from the CockroachDB {{ site.data.products.cloud }} Console.
 
 ## February 18, 2025
 
