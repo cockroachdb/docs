@@ -1,0 +1,4 @@
+[Per-replica circuit breakers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#per-replica-circuit-breakers) have the following limitations:
+
+- They cannot prevent requests from hanging when the node's [liveness range]({% link {{ page.version.version }}/architecture/replication-layer.md %}#epoch-based-leases-table-data) is unavailable. For more information about troubleshooting a cluster that's having node liveness issues, see [Node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).
+- They are not tripped if _all_ replicas of a range [become unavailable]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#db-console-shows-under-replicated-unavailable-ranges), because the circuit breaker mechanism operates per-replica. This means at least one replica needs to be available to receive the request in order for the breaker to trip.

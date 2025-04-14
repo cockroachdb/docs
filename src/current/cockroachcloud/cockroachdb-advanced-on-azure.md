@@ -14,7 +14,6 @@ CockroachDB {{ site.data.products.advanced }} clusters on Azure have the followi
 
 - A cluster must have at minimum three nodes. A multi-region cluster must have at minimum three nodes per region. Single-node clusters are not supported on Azure.
 - The following [PCI-Ready]({% link cockroachcloud/pci-dss.md %}) and HIPAA features are not yet available on Azure. However, CockroachDB {{ site.data.products.advanced }} on Azure meets or exceeds the requirements of SOC 2 Type 2. Refer to [Regulatory Compliance in CockroachDB {{ site.data.products.advanced }}]({% link cockroachcloud/compliance.md %}).
-  - [Private Clusters]({% link cockroachcloud/private-clusters.md %})
   - [Customer Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %})
   - [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
 
