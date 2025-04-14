@@ -13,8 +13,8 @@ MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-in
 
 The following source databases are currently supported:
 
-- PostgreSQL
-- MySQL
+- PostgreSQL 11-14
+- MySQL 5.7, 8.0 and later
 - CockroachDB
 
 ## Installation
@@ -49,7 +49,7 @@ Complete the following items before using MOLT Fetch:
 		- `--server-id={ID}`
 		- `--log-bin=log-bin`
 
-- Percent-encode the connection strings for the source database and [CockroachDB]({% link {{site.current_cloud_version}}/connect-to-the-database.md %}). This ensures that the MOLT tools can parse special characters in your password.
+- URL-encode the connection strings for the source database and [CockroachDB]({% link {{site.current_cloud_version}}/connect-to-the-database.md %}). This ensures that the MOLT tools can parse special characters in your password.
 
 	- Given a password `a$52&`, pass it to the `molt escape-password` command with single quotes:
 
@@ -95,6 +95,8 @@ Complete the following items before using MOLT Fetch:
 
 - Ensure that the machine running MOLT Fetch is large enough to handle the amount of data being migrated. Fetch performance can sometimes be limited by available resources, but should always be making progress. To identify possible resource constraints, observe the `molt_fetch_rows_exported` [metric](#metrics) for decreases in the number of rows being processed. You can use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view metrics.
 
+- Before moving data, Cockroach Labs recommends dropping any [constraints]({% link {{ site.current_cloud_version }}/alter-table.md %}#drop-constraint) and [indexes]({% link {{site.current_cloud_version}}/drop-index.md %}) on the target CockroachDB database. Doing so will optimize performance. You can recreate [constraints]({% link {{ site.current_cloud_version }}/alter-table.md %}#add-constraint) and [indexes]({% link {{site.current_cloud_version}}/create-index.md %}) after the data is loaded.
+
 ## Security recommendations
 
 Cockroach Labs **strongly** recommends the following:
@@ -131,47 +133,7 @@ Cockroach Labs **strongly** recommends the following:
 
 ### Secure cloud storage
 
-- When using [cloud storage](#cloud-storage) for your intermediate store, ensure that access control is properly configured. 
-
-	- If you are using [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) for [cloud storage](#cloud-storage):
-
-		- Ensure that the environment variable and access tokens are set appropriately in the terminal running `molt fetch`. For example:
-
-			{% include_cached copy-clipboard.html %}
-			~~~ shell
-			export AWS_REGION='us-east-1'
-			export AWS_SECRET_ACCESS_KEY='key'
-			export AWS_ACCESS_KEY_ID='id'
-			~~~
-
-		- Alternatively, set the `--use-implicit-auth` flag to use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}).
-
-		- Ensure the S3 bucket is created and accessible by CockroachDB.
-
-	- If you are using [Google Cloud Storage](https://cloud.google.com/storage/docs/access-control) for [cloud storage](#cloud-storage):
-
-		- Ensure that your local environment is authenticated using [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials):
-
-			Using `gcloud`:
-
-			{% include_cached copy-clipboard.html %}
-			~~~ shell
-			gcloud init
-			gcloud auth application-default login
-			~~~
-
-			Using the environment variable:
-
-			{% include_cached copy-clipboard.html %}
-			~~~ shell
-			export GOOGLE_APPLICATION_CREDENTIALS={path_to_cred_json}
-			~~~
-
-		- Alternatively, set the `--use-implicit-auth` flag to use [implicit authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}).
-
-		- Ensure the Google Cloud Storage bucket is created and accessible by CockroachDB.
-
-- Do not use public cloud storage in production.
+{% include molt/fetch-secure-cloud-storage.md %}
 
 ### Perform a dry run
 
@@ -388,7 +350,7 @@ Before using this option:
 	{% include_cached copy-clipboard.html %}
 	~~~
 	--mode replication-only 
-	--replicator-flags "--defaultGTIDSet 'b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21'"
+	--replicator-flags "--defaultGTIDSet b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21"
 	~~~
 
 If replication is interrupted, you can [resume replication](#resume-replication).
@@ -1018,7 +980,7 @@ molt fetch \
 --mode data-load-and-replication
 ~~~
 
-- `--source` specifies the MySQL connection string and the certificates in URL-encoded format. Secure connections should be used by default. Refer to [Best practices](#best-practices).
+- `--source` specifies the MySQL connection string and the certificates in URL-encoded format. Secure connections should be used by default. Refer to [Setup](#setup).
 - `--table-handling` specifies that existing tables on CockroachDB should be truncated before the source data is loaded.
 - `--table-filter` filters for tables with the `employees` string in the name.
 - `--bucket-path` specifies a directory on an [Google Cloud Storage bucket](#data-path) where intermediate files will be written.

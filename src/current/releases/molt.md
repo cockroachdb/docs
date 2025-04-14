@@ -18,6 +18,18 @@ To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
 
+## April 7, 2025
+
+MOLT Fetch/Verify 1.2.4 is [available](#installation).
+
+- MOLT Fetch now supports PostgreSQL 11.
+- MOLT Fetch [failback]({% link molt/molt-fetch.md %}#fail-back-to-source-database) to CockroachDB is now disallowed.
+- MOLT Verify can now compare tables that are named differently on the source and target schemas.
+- The `molt` logging date format is now period-delimited for Windows compatibility.
+- During replication, an index is now created on all tables by default, improving replication performance. Because index creation can cause the replication process to initialize more slowly, this behavior can be disabled using the `--stageDisableCreateTableReaderIndex` [replication flag]({% link molt/molt-fetch.md %}#replication-flags).
+- Added a failback metric that tracks the time to write a source commit to the staging schema for a given mutation.
+- Added a failback metric that tracks the time to write a source commit to the target database for a given mutation.
+
 ## February 26, 2025
 
 MOLT Fetch/Verify 1.2.3 is [available](#installation).
