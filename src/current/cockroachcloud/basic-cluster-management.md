@@ -19,7 +19,9 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 The **Overview** page displays details about the selected CockroachDB {{ site.data.products.basic }} cluster. For more information, see [Cluster Overview Page]({% link cockroachcloud/cluster-overview-page.md %}).
 
-{% include cockroachcloud/manage-labels.md %}
+## Edit labels
+
+You can [organize CockroachDB {{ site.data.products.cloud }} clusters using labels]({% link cockroachcloud/labels.md %}).
 
 ## Estimate usage cost
 

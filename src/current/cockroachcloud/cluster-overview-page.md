@@ -23,7 +23,7 @@ The **Cluster settings** panel shows the settings selected during [cluster creat
 | Cloud     | The cluster's [cloud provider]({% link cockroachcloud/create-a-basic-cluster.md %}#step-2-select-the-cloud-provider). |
 | Plan type | The plan type used to create the cluster.                                                               |
 | Regions   | The cluster's [regions]({% link cockroachcloud/create-a-basic-cluster.md %}#step-3-select-the-regions). |
-| Labels    | The [labels]({% link cockroachcloud/cluster-management.md %}#manage-labels) added to the cluster.       |
+| Labels    | The [labels]({% link cockroachcloud/labels.md %}) added to the cluster.       |
 
 ## Capacity used this month
 
