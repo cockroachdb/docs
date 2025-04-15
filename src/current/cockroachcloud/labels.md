@@ -40,7 +40,7 @@ You can apply labels to your cluster or folder through the [CockroachDB {{ site.
 
 Adding or deleting labels on a cluster requires the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role.
 
-    1. Navigate to the cluster on the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}view-clusters-page) and click the menu button in the **Action** column. Alternatively, navigate to the [**Overview** page]({% link cockroachcloud/cluster-management.md %}view-clusters-overview) for the cluster and click **Actions** in the top right corner.
+    1. Navigate to the cluster on the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page) and click the menu button in the **Action** column. Alternatively, navigate to the [**Overview** page]({% link cockroachcloud/cluster-management.md %}#view-cluster-overview) for the cluster and click **Actions** in the top right corner.
     1. In the dropdown menu, select **Edit labels** to open the **Edit labels** window.
 
 Adding or deleting labels on a folder requires the [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) role. 

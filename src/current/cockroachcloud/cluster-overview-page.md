@@ -16,7 +16,7 @@ The **Cluster Overview** page displays key metrics about your CockroachDB {{ sit
 
 ## Cluster settings
 
-The **Cluster settings** panel shows the settings selected during [cluster creation]({% link cockroachcloud/create-a-basic-cluster.md %}), as well as any [labels]({% link cockroachcloud/cluster-management.md %}#manage-labels) added to the cluster after its creation.
+The **Cluster settings** panel shows the settings selected during [cluster creation]({% link cockroachcloud/create-a-basic-cluster.md %}), as well as any [labels]({% link cockroachcloud/labels.md %}) added to the cluster after its creation.
 
 | Field     | Description                                                                                             |
 |-----------|---------------------------------------------------------------------------------------------------------|
