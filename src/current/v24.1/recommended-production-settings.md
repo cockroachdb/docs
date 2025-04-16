@@ -194,8 +194,6 @@ Results:
 
 ### Cloud-specific recommendations
 
-{% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
-
 Based on our internal testing, we recommend the following cloud-specific configurations. Before using configurations not recommended here, be sure to test them exhaustively. Also consider the following workload-specific observations:
 
 - For OLTP applications, small instance types may outperform larger instance types.
