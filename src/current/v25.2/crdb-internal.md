@@ -298,6 +298,8 @@ WITH c AS (SELECT DISTINCT ON (table_id, index_id) table_id, index_id, num_conte
 
 The `crdb_internal.cluster_locks` schema contains information about [locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#concurrency-control) held by [transactions]({% link {{ page.version.version }}/transactions.md %}) on specific [keys]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range). Queries acquire locks on keys within transactions, or they wait until they can acquire locks until other transactions have released locks on those keys.
 
+{% include {{ page.version.version }}/crdb-internal-cluster-locks-warning.md %}
+
 For more information, see the following sections.
 
 - [Cluster locks columns](#cluster-locks-columns)
@@ -1178,6 +1180,8 @@ group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 ### `transaction_contention_events`
 
 Contains one row for each transaction [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) event.
+
+{% include {{ page.version.version }}/crdb-internal-transaction-contention-events-warning.md %}
 
 Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) to access. If you have the `VIEWACTIVITYREDACTED` privilege, `contending_key` will be redacted. If you have both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and `contending_key` will be redacted.
 
