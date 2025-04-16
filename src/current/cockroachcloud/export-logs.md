@@ -427,6 +427,7 @@ Where:
 ## Limitations
 
 - CockroachDB {{ site.data.products.standard }} clusters hosted on AWS can only export logs to Amazon CloudWatch. Similarly, CockroachDB {{ site.data.products.standard }} clusters hosted on GCP can only export logs to GCP Cloud Logging.
+- The log export feature does not guarantee 100% log delivery or at-least-once delivery.
 
 ## CockroachDB {{ site.data.products.standard }} log export Frequently Asked Questions (FAQ)
 
