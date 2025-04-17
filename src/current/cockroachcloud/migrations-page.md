@@ -361,6 +361,5 @@ To delete or verify a set of credentials, select the appropriate option in the *
 
 - [Migration Overview]({% link {{version_prefix}}migration-overview.md %})
 - [Migrate to CockroachDB]({% link {{ site.current_cloud_version }}/migrate-to-cockroachdb.md %})
-- [MOLT Overview]({% link molt/molt-overview.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})

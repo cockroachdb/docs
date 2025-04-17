@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-A migration to CockroachDB uses the [MOLT tools]({% link molt/molt-overview.md %}) to [convert your source schema](#step-2-prepare-the-source-schema), [load source data](#step-3-load-data-into-cockroachdb) into CockroachDB and immediately [replicate ongoing changes](#step-4-replicate-changes-to-cockroachdb), and [verify consistency](#step-5-stop-replication-and-verify-data) on the CockroachDB cluster before performing cutover.
+A migration to CockroachDB uses the [MOLT tools]({% link {{ page.version.version }}/migration-overview.md %}) to [convert your source schema](#step-2-prepare-the-source-schema), [load source data](#step-3-load-data-into-cockroachdb) into CockroachDB and immediately [replicate ongoing changes](#step-4-replicate-changes-to-cockroachdb), and [verify consistency](#step-5-stop-replication-and-verify-data) on the CockroachDB cluster before performing cutover.
 
 {% assign tab_names_html = "Load and replicate;Phased migration;Failback" %}
 {% assign html_page_filenames = "migrate-to-cockroachdb.html;migrate-in-phases.html;migrate-failback.html" %}
@@ -109,7 +109,7 @@ Perform a cutover by resuming application traffic, now to CockroachDB.
 
 ## See also
 
-- [MOLT Overview]({% link molt/molt-overview.md %})
+- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
 - [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})

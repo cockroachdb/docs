@@ -5,165 +5,131 @@ toc: true
 docs_area: migrate
 ---
 
-This page provides a high-level overview of database migration.
+The MOLT (Migrate Off Legacy Technology) toolkit enables safe, minimal-downtime database migrations to CockroachDB. MOLT combines schema transformation, distributed data load, continuous replication, and row-level validation into a highly configurable workflow that adapts to diverse production environments.
 
-A database migration broadly consists of the following phases:
+This page has an overview of the following:
 
-1. [Develop a migration plan:](#develop-a-migration-plan) Evaluate your [downtime approach](#approach-to-downtime), [size the CockroachDB cluster](#capacity-planning) that you will migrate to, and become familiar with the [application changes](#application-changes) that you need to make for CockroachDB.
-1. [Prepare for migration:](#prepare-for-migration) Run a [pre-mortem](#run-a-migration-pre-mortem), set up [metrics](#set-up-monitoring-and-alerting), [load test data](#load-test-data), [validate your application queries](#validate-queries) for correctness and performance, and [perform a dry run](#perform-a-dry-run) of the migration.
-1. [Conduct the migration:](#conduct-the-migration) Use the [MOLT tools]({% link molt/molt-overview.md %}) to migrate the source data to CockroachDB, replicate ongoing changes, and verify consistency on CockroachDB.
-1. [Complete the migration:](#complete-the-migration) Notify the appropriate parties and summarize the details.
+- Overall [migration flow](#migration-flow)
+- [MOLT tools](#molt-tools)
+- Supported [migration and failback modes](#migration-modes)
+
+## Migration flow
 
 {{site.data.alerts.callout_success}}
-For help migrating to CockroachDB, contact our <a href="mailto:sales@cockroachlabs.com">sales team</a>.
+Before you begin the migration, review [Migration Strategy]({% link {{ page.version.version }}/migration-strategy.md %}).
 {{site.data.alerts.end}}
 
-## Develop a migration plan
+A migration to CockroachDB generally follows this sequence:
 
-Consider the following as you plan your migration:
+<div style="text-align: center;">
+<img src="{{ 'images/molt/migration_flow.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
+</div><br>
 
-- Who will lead and perform the migration? Which teams are involved, and which aspects are they responsible for?
-- Which internal and external parties do you need to inform about the migration?
-- Which external or third-party tools (e.g., microservices, analytics, payment processors, aggregators, CRMs) must be tested and migrated along with your application?
-- What portion of the data can be inconsistent, and for how long? What is the tolerable percentage of latency and application errors? This comprises your "error budget".
-- When is the best time to perform this migration to be minimally disruptive to the database's users?
-- What is your target date for completing the migration?
+1. Prepare the source database: Configure users, permissions, and replication settings as needed.
+1. Convert the source schema: Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) to generate CockroachDB-compatible [DDL]({% link {{ page.version.version }}/sql-statements.md %}#data-definition-statements). Apply the converted schema to the target database. Drop constraints and indexes to facilitate data load.
+1. Load data into CockroachDB: Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to bulk-ingest your source data.
+1. (Optional) Verify consistency before replication: Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the data loaded into CockroachDB is consistent with the source.
+1. Replicate ongoing changes. Enable continuous replication to keep CockroachDB in sync with the source.
+1. Verify consistency before cutover. Use MOLT Verify to confirm that the CockroachDB data is consistent with the source.
+1. Finalize target schema: Recreate indexes or constraints on CockroachDB that you previously dropped to facilitate data load.
+1. Cut over to CockroachDB. Redirect application traffic to the CockroachDB cluster.
 
-Create a document that summarizes the intent of the migration, the technical details, and the team members involved.
+For a practical example of the preceding steps, refer to [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}).
 
-### Approach to downtime
+## MOLT tools
 
-It's important to fully [prepare the migration](#prepare-for-migration) in order to be certain that the migration can be completed successfully during the downtime window.
+[MOLT (Migrate Off Legacy Technology)]({% link releases/molt.md %}) is a set of tools for schema conversion, data load, replication, and validation.
 
-- *Scheduled downtime* is made known to your users in advance. Once you have [prepared for the migration](#prepare-for-migration), you take the application offline, [conduct the migration](#conduct-the-migration), and bring the application back online on CockroachDB. To succeed, you should estimate the amount of downtime required to migrate your data, and ideally schedule the downtime outside of peak hours. Scheduling downtime is easiest if your application traffic is "periodic", meaning that it varies by the time of day, day of week, or day of month.
+MOLT [Fetch](#fetch) and [Verify](#verify) are CLI-based to maximize control, automation, and visibility during the data load and replication stages.
 
-- *Unscheduled downtime* impacts as few customers as possible, ideally without impacting their regular usage. If your application is intentionally offline at certain times (e.g., outside business hours), you can migrate the data without users noticing. Alternatively, if your application's functionality is not time-sensitive (e.g., it sends batched messages or emails), then you can queue requests while your system is offline, and process those requests after completing the migration to CockroachDB.
+<table class="comparison-chart">
+  <tr>
+    <th>Tool</th>
+    <th>Usage</th>
+    <th>Tested and supported sources</th>
+    <th>Release status</th>
+  </tr>
+  <tr>
+    <td class="comparison-chart__feature"><a href="#schema-conversion-tool"><b>Schema Conversion Tool</b></a></td>
+    <td>Schema conversion</td>
+    <td>PostgreSQL, MySQL, Oracle, SQL Server</td>
+    <td>GA (Cloud only)</td>
+  </tr>
+  <tr>
+    <td class="comparison-chart__feature"><a href="#fetch"><b>Fetch</b></a></td>
+    <td>Initial data load; optional continuous replication</td>
+    <td>PostgreSQL 11-14, MySQL 5.7-8.0+, CockroachDB</td>
+    <td>GA</td>
+  </tr>
+  <tr>
+    <td class="comparison-chart__feature"><a href="#verify"><b>Verify</b></a></td>
+    <td>Schema and data validation</td>
+    <td>PostgreSQL 12-14, MySQL 5.7-8.0+, CockroachDB</td>
+    <td><a href="{% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}">Preview</a></td>
+  </tr>
+</table>
 
-- *Reduced functionality* takes some, but not all, application functionality offline. For example, you can disable writes but not reads while you migrate the application data, and queue data to be written after completing the migration.
+### Schema Conversion Tool
 
-### Capacity planning
+The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) converts a source database schema to a CockroachDB-compatible schema:
 
-Determine the size of the target CockroachDB cluster. To do this, consider your data volume and workload characteristics:
+- Identifies [unimplemented features]({% link {{ site.current_cloud_version }}/migration-strategy.md %}#unimplemented-features-and-syntax-incompatibilities)
+- Rewrites unsupported [DDL syntax]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements)
+- Applies CockroachDB schema best practices]({% link {{ site.current_cloud_version }}/migration-strategy.md %}#schema-design-best-practices)
 
-- What is the total size of the data you will migrate?
-- How many active [application connections]({% link {{ page.version.version }}/recommended-production-settings.md %}#connection-pooling) will be running in the CockroachDB environment?
+### Fetch
 
-Use this information to size the CockroachDB cluster you will create. If you are migrating to a CockroachDB {{ site.data.products.cloud }} cluster, see [Plan Your Cluster]({% link cockroachcloud/plan-your-cluster.md %}) for details:
+[MOLT Fetch]({% link molt/molt-fetch.md %}) performs the core data migration to CockroachDB. It supports:
 
-- For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }}, your cluster will scale automatically to meet your storage and usage requirements. Refer to the [CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) and [CockroachDB {{ site.data.products.basic }}]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) documentation to learn about how to limit your resource consumption.
-- For CockroachDB {{ site.data.products.advanced }}, refer to the [example]({% link cockroachcloud/plan-your-cluster-advanced.md %}#example) that shows how your data volume, storage requirements, and replication factor affect the recommended node size (number of vCPUs per node) and total number of nodes on the cluster.
-- For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.cloud }} [Production Checklist]({% link cockroachcloud/production-checklist.md %}#sql-connection-handling).
+- [Multiple migration modes](#migration-modes) via `IMPORT INTO` or `COPY FROM`
+- Concurrent data export from multiple source tables
+- [Continuous replication]({% link molt/molt-fetch.md %}#replicate-changes), enabling you to minimize downtime before cutover
+- [Schema transformation rules]({% link molt/molt-fetch.md %}#transformations)
+- Safe [continuation]({% link molt/molt-fetch.md %}#fetch-continuation) for interrupted tasks
+- [Failback]({% link molt/molt-fetch.md %}#fail-back-to-source-database) to replicate changes from CockroachDB back to the original source via a secure changefeed
 
-If you are migrating to a CockroachDB {{ site.data.products.core }} cluster:
+### Verify
 
-- Refer to our [sizing methodology]({% link {{ page.version.version }}/recommended-production-settings.md %}#sizing) to determine the total number of vCPUs on the cluster and the number of vCPUs per node (which determines the number of nodes on the cluster).
-- Refer to our [storage recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage) to determine the amount of storage to provision on each node.
-- For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.core }} [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#connection-pooling).
+[MOLT Verify]({% link molt/molt-verify.md %}) checks for data and schema discrepancies between the source database and CockroachDB. It performs:
 
-### Application changes
+- Table structure verification
+- Column definition verification
+- Row-level data verification
+- Continuous, live, or one-time verification
 
-As you develop your migration plan, consider the application changes that you will need to make. These may relate to the following:
+## Migration modes
 
-- [Designing a schema that is compatible with CockroachDB.](#schema-design-best-practices)
-- [Handling transaction contention.](#handling-transaction-contention)
-- [Unimplemented features and syntax incompatibilities.](#unimplemented-features-and-syntax-incompatibilities)
+MOLT Fetch supports multiple data migration modes. These can be combined based on your testing and cutover strategy.
 
-#### Schema design best practices
+|              Mode             |                                 Description                                  |                                                          Best For                                                          |
+|-------------------------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `data-load`                   | Performs one-time load of source data into CockroachDB                       | Testing, migrations with planned downtime, [phased migrations]({% link {{ page.version.version }}/migrate-in-phases.md %}) |
+| `data-load-and-replication`   | Loads source data and starts continuous replication from the source database | [Migrations with minimal downtime]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})                        |
+| `replication-only`            | Starts replication from a previously loaded source                           | [Phased migrations]({% link {{ page.version.version }}/migrate-in-phases.md %}), post-load sync                            |
+| `failback`                    | Replicates changes on CockroachDB back to the original source                | [Rollback scenarios]({% link {{ page.version.version }}/migrate-failback.md %})                                            |
+| `export-only` / `import-only` | Separates data export and import phases                                      | Large-scale migrations, custom storage pipelines                                                                           |
+| `direct-copy`                 | Loads data without intermediate storage using `COPY FROM`                    | Local testing, limited infra environments                                                                                  |
 
-Follow these recommendations when converting your schema for compatibility with CockroachDB.
+## Migrations with minimal downtime
 
-- Define an explicit primary key on every table. For more information, see [Primary key best practices]({% link {{ page.version.version }}/schema-design-table.md %}#primary-key-best-practices).
+MOLT simplifies and streamlines the following migration patterns that use a replication stream to minimize downtime. Rather than load all data into CockroachDB during a planned downtime window, you perform an initial data load and continuously replicate any subsequent changes to CockroachDB. Writes are only briefly paused to allow replication to drain before final cutover.
 
-- Do not use a sequence to define a primary key column. Instead, Cockroach Labs recommends that you use [multi-column primary keys]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-multi-column-primary-keys) or [auto-generating unique IDs]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-functions-to-generate-unique-ids) for primary key columns.
+### Full migration with minimal downtime
 
-- By default on CockroachDB, `INT` is an alias for `INT8`, which creates 64-bit signed integers. Depending on your source database or application requirements, you may need to change the integer size to `4`. For example, [PostgreSQL defaults to 32-bit integers](https://www.postgresql.org/docs/9.6/datatype-numeric.html). For more information, see [Considerations for 64-bit signed integers]({% link {{ page.version.version }}/int.md %}#considerations-for-64-bit-signed-integers).
+Run MOLT Fetch in `data-load-and-replication` mode to load the initial source data into CockroachDB. Continuous replication starts automatically after the initial load. When ready, pause application traffic to allow replication to drain, validate data consistency with MOLT Verify, then cut over to CockroachDB. For complete instructions, read [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}).
 
-#### Handling transaction contention
+### Phased migration with minimal downtime
 
-Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You may encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration](#conduct-the-migration) and bulk load data.
+Run MOLT Fetch in `data-load` mode to incrementally load and validate data in batches. After loading the initial source data, switch to `replication-only` mode to sync ongoing changes. When ready, pause application traffic to allow replication to drain, validate again with MOLT Verify, then cut over to CockroachDB. For complete instructions, read [Migrate in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %}).
 
-Transaction retry errors are more frequent under CockroachDB's default [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}). If you are migrating an application that was built at a `READ COMMITTED` isolation level, you should first [enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation) on the CockroachDB cluster for compatibility.
+## Migration failback
 
-#### Unimplemented features and syntax incompatibilities
-
-Update your queries to resolve differences in functionality and SQL syntax.
-
-CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and is largely compatible with PostgreSQL syntax. However, the following PostgreSQL features do not yet exist in CockroachDB:
-
-{% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
-
-If your source database uses any of the preceding features, you may need to implement workarounds in your schema design, in your [data manipulation language (DML)]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements), or in your application code.
-
-For more details on the CockroachDB SQL implementation, see [SQL Feature Support]({% link {{ page.version.version }}/sql-feature-support.md %}).
-
-## Prepare for migration
-
-Once you have a migration plan, prepare the team, application, source database, and CockroachDB cluster for the migration.
-
-### Run a migration "pre-mortem"
-
-To minimize issues after cutover, compose a migration "pre-mortem":
-
-1. Clearly describe the roles and processes of each team member performing the migration.
-1. List the likely failure points and issues that you may encounter as you [conduct the migration](#conduct-the-migration).
-1. Rank potential issues by severity, and identify ways to reduce risk.
-1. Create a plan for implementing the actions that would most effectively reduce risk.
-
-### Set up monitoring and alerting
-
-Based on the error budget you [defined in your migration plan](#develop-a-migration-plan), identify the metrics that you can use to measure your success criteria and set up monitoring for the migration. These metrics may be identical to those you normally use in production, but can also be specific to your migration needs.
-
-### Load test data
-
-It's useful to load test data into CockroachDB so that you can [test your application queries](#validate-queries). You can use the steps in [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %}) to load and verify test data.
-
-### Validate queries
-
-After you [load the test data](#load-test-data), validate your queries on CockroachDB. You can do this by [shadowing](#shadowing) or by [manually testing](#test-query-results-and-performance) the queries.
-
-Note that CockroachDB defaults to the [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) transaction isolation level. If you are migrating an application that was built at a `READ COMMITTED` isolation level on the source database, you must [enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation) on the CockroachDB cluster for compatibility.
-
-#### Shadowing
-
-You can "shadow" your production workload by executing your source SQL statements on CockroachDB in parallel. You can then [validate the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
-
-#### Test query results and performance
-
-You can manually validate your queries by testing a subset of "critical queries" on an otherwise idle CockroachDB cluster:
-
-- Check the application logs for error messages and the API response time. If application requests are slower than expected, use the **SQL Activity** page on the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/statements-page.md %}) or [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}) to find the longest-running queries that are part of that application request. If necessary, tune the queries according to our best practices for [SQL performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}).
-
-- Compare the results of the queries and check that they are identical in both the source database and CockroachDB. To do this, you can use [MOLT Verify]({% link molt/molt-verify.md %}).
-
-Test performance on a CockroachDB cluster that is appropriately [sized](#capacity-planning) for your workload:
-
-1. Run the application with single- or very low-concurrency and verify the app's performance is acceptable. The cluster should be provisioned with more than enough resources to handle this workload, because you need to verify that the queries will be fast enough when there are zero resource bottlenecks.
-
-1. Run stress tests with at least the production concurrency and rate, but ideally higher in order to verify that the system can handle unexpected spikes in load. This can also uncover [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) issues that will appear during spikes in app load, which may require [application design changes](#handling-transaction-contention) to avoid.
-
-### Perform a dry run
-
-To further minimize potential surprises when you conduct the migration, practice cutover using your application and similar volumes of data on a "dry-run" environment. Use a test or development environment that is as similar as possible to production.
-
-Performing a dry run is highly recommended. In addition to demonstrating how long the migration may take, a dry run also helps to ensure that team members understand what they need to do during the migration, and that changes to the application are coordinated.
-
-## Conduct the migration
-
-Once you are ready to migrate, follow the steps in [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}) or [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %}).
-
-## Complete the migration
-
-After you have successfully [conducted the migration](#conduct-the-migration):
-
-- Notify the teams and other stakeholders impacted by the migration.
-- Retire any test or development environments used to verify the migration.
-- Extend the document you created when [developing your migration plan](#develop-a-migration-plan) with any issues encountered and follow-up work that needs to be done.
+If issues arise post-cutover, run MOLT Fetch in `failback` mode to replicate changes from CockroachDB back to the original source database. This ensures that data is consistent on the original source so that you can retry the migration later. For complete instructions, read [Migration Failback]({% link {{ page.version.version }}/migrate-failback.md %}).
 
 ## See also
 
 - [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})
 - [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %})
-- [Schema Design Overview]({% link {{ page.version.version }}/schema-design-overview.md %})
-- [Primary key best practices]({% link {{ page.version.version }}/schema-design-table.md %}#primary-key-best-practices)
-- [Secondary index best practices]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices)
-- [Transaction contention best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention)
+- [Migration Failback]({% link {{ page.version.version }}/migrate-failback.md %})
+- [Migration Strategy]({% link {{ page.version.version }}/migration-strategy.md %})
+- [MOLT Releases]({% link releases/molt.md %})

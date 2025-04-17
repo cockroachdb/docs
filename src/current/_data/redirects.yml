@@ -301,7 +301,7 @@
 - destination: molt/molt-fetch.md
   sources: [':version/molt-fetch.md']
 
-- destination: molt/molt-overview.md
+- destination: :version/migration-overview.md
   sources:
     - molt/live-migration-service.md
     - :version/live-migration-service.md
