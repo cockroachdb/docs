@@ -111,7 +111,7 @@ The following example watches the `employees` table for change events.
 
 ## See also
 
-- [MOLT Overview]({% link molt/molt-overview.md %})
+- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
 - [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})

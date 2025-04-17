@@ -30,12 +30,6 @@
       "title": "MOLT Tools",
       "items": [
         {
-          "title": "Overview",
-          "urls": [
-            "/molt/molt-overview.html"
-          ]
-        },
-        {
           "title": "Schema Conversion Tool",
           "urls": [
             "/cockroachcloud/migrations-page.html"
