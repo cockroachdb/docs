@@ -111,7 +111,7 @@ CockroachDB Metric Name | Description | Type | Unit
 `txn.restarts.unknown` | Number of restarts due to a unknown reasons | COUNTER | COUNT
 `txn.restarts.writetooold` | Number of restarts due to a concurrent writer committing first | COUNTER | COUNT
 
-Correlate these metrics with information from the [Insights]({% link {{ page.version.version }}/ui-insights-page.md %}) and [SQL Activity]({% link {{ page.version.version }}/ui-overview.md %}#sql-activity-pages) pages to identify the affected database.
+Correlate these metrics with information from the [Insights]({% link {{ page.version.version }}/ui-insights-page.md %}) and [SQL Activity]({% link {{ page.version.version }}/ui-overview.md %}#sql-activity) pages to identify the affected database.
 
 ## Monitor using `crdb_internal` tables
 
