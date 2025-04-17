@@ -6,7 +6,7 @@ docs_area: migrate
 ---
 
 {{site.data.alerts.callout_info}}
-For current migration instructions using the [MOLT tools]({% link molt/molt-overview.md %}), refer to [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}).
+For current migration instructions using the [MOLT tools]({% link {{ page.version.version }}/migration-overview.md %}), refer to [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}).
 {{site.data.alerts.end}}
 
 This page describes basic considerations and provides a basic [example](#example-migrate-world-to-cockroachdb) of migrating data from MySQL to CockroachDB. The information on this page assumes that you have read [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}), which describes the broad phases and considerations of migrating a database to CockroachDB.
