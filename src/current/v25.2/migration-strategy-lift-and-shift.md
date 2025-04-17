@@ -25,14 +25,14 @@ Pros:
 - Less complex: If you can afford some downtime, the overall effort will usually be lower, and the chance of errors is lower.
 - Lower time start-to-finish: In general, the more downtime you can afford, the shorter the overall migration project timeframe can be.
 - Lower technical risk: It does not involve running multiple systems alongside each other for an extended period of time.
-- Easy to practice [dry runs]({% link {{ page.version.version }}/migration-overview.md %}#perform-a-dry-run) of import/export using testing/non-production systems.
+- Easy to practice [dry runs]({% link {{ page.version.version }}/migration-strategy.md %}#perform-a-dry-run) of import/export using testing/non-production systems.
 - Good import/export tooling is available (e.g., external tools like: [AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %}), [Qlik Replicate]({% link {{ page.version.version }}/qlik.md %}), [Striim]({% link {{ page.version.version }}/striim.md %}); or internal tools like [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}), [`COPY FROM`]({% link {{ page.version.version }}/copy.md %}), [`cockroach userdata`]({% link {{ page.version.version }}/cockroach-userfile-upload.md %})).
 - If your application already has regularly scheduled maintenance windows, your customers will not encounter application downtime.
 
 Cons:
 
 - All or nothing: It either works or does not work; once you start, you have to finish or roll back.
-- Higher project risk: The project **must** be completed to meet a given [downtime / service degradation window]({% link {{ page.version.version }}/migration-overview.md %}#approach-to-downtime).
+- Higher project risk: The project **must** be completed to meet a given [downtime / service degradation window]({% link {{ page.version.version }}/migration-strategy.md %}#approach-to-downtime).
 - Application service continuity requirements must be relaxed (that is, application downtime or increased latency may be needed).
 
 ## Process design considerations

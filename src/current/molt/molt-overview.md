@@ -27,7 +27,7 @@ Use the MOLT tools to:
 
 The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) converts a source database schema to a CockroachDB-compatible schema. The supported Schema Conversion Tool sources are PostgreSQL, MySQL, Oracle, and SQL Server.
 
-The tool will convert [data definition (DDL) syntax]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements) (excluding destructive statements such as `DROP`), identify [unimplemented features and syntax incompatibilities]({% link {{ site.current_cloud_version }}/migration-overview.md %}#unimplemented-features-and-syntax-incompatibilities) in the schema, and suggest edits according to CockroachDB [best practices]({% link {{ site.current_cloud_version }}/migration-overview.md %}#schema-design-best-practices).
+The tool will convert [data definition (DDL) syntax]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements) (excluding destructive statements such as `DROP`), identify unimplemented features and syntax incompatibilities in the schema, and suggest edits according to CockroachDB best practices.
 
 ### Fetch
 
