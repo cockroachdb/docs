@@ -1,8 +1,8 @@
 ---
 title: Row-Level Security (RLS) Overview
-summary: XXX
+summary: Restrict access to specific rows of data based on user roles, permissions, or other criteria
 toc: true
-keywords: security,row level security, RLS
+keywords: security, row level security, RLS
 docs_area: develop
 ---
 
@@ -34,36 +34,24 @@ RLS embeds access control logic directly into the database and eliminates the ne
 
 ### Designing multi-tenant applications
 
-[XXX](XXX): YOU ARE HERE
+In multi-tenant applications such as typical SaaS deployments, isolating data between tenants within shared tables is a requirement. Row-Level Security (RLS) provides a database-level mechanism for enforcing this isolation. SaaS providers can utilize RLS policies to ensure tenants can only access their own data, eliminating the need for complex and potentially insecure application-layer filtering logic based on tenant IDs.
 
-In multi-tenant applications, like Software as a Service (SaaS), isolating data between tenants within shared tables is a fundamental requirement. Row-Level Security (RLS) provides the database-level mechanism for enforcing this isolation. SaaS providers utilize RLS policies to ensure tenants can only access their own data, eliminating the need for complex and potentially insecure application-layer filtering logic based on tenant IDs. These policies automatically enforce tenant separation directly within the database, guaranteeing that each tenant’s data is securely isolated and accessible only by their authorized users.
+## How to use Row-Level Security
 
-## Policy Evaluation Semantics
+At a high level, the steps for using row-level security (RLS) are as follows:
 
-DESIGN DOC:
-
-- All policies apply to a specific set of roles. For a policy to be applicable, it must match at least one of the roles assigned to it. If the policy is associated with the PUBLIC role, it applies to all roles. In order for reads or writes to succeed, there must be at least one permissive policy for the user's role.
-- Permissive policies are combined using OR logic, while restrictive policies are combined using AND logic. The overall policy enforcement is determined by evaluating: (permissive policies) AND (restrictive policies).
-- USING filters rows during reads; WITH CHECK validates writes and defaults to USING if absent.
-
-GEMINI:
-
-For a given user, table, and command:
-
-1.  Applicable Policies: Identify all policies matching the user's roles, the table, and the command.
-2.  Permissive `USING` Combination: The `USING` expressions of all applicable `PERMISSIVE` policies are combined with `OR`. If no permissive policies exist, access is implicitly denied unless restrictive policies exist.
-3.  Restrictive `USING` Combination: The `USING` expressions of all applicable `RESTRICTIVE` policies are combined with `AND`.
-4.  Final `USING` Filter: A row is visible/modifiable if `(Permissive OR combination)` is `TRUE` AND `(Restrictive AND combination)` is `TRUE`. If no permissive policies match, the first term is `FALSE`. If no restrictive policies match, the second term is `TRUE`.
-5.  `WITH CHECK` Evaluation (for `INSERT`/`UPDATE`):
-    - Permissive `WITH CHECK` expressions are combined with `OR`.
-    - Restrictive `WITH CHECK` expressions are combined with `AND`.
-    - The row passes if `(Permissive OR combination)` is `TRUE` AND `(Restrictive AND combination)` is `TRUE`. If the check fails, an error is raised.
-
-Default Deny: If RLS is enabled but no policies apply to a given user/command combination, access is denied by default. It is common practice to define a permissive base policy or rely on restrictive policies for fine-grained control.
+1. Create schema objects & insert data. ([`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}), [`INSERT`]({% link {{ page.version.version }}/insert.md %}))
+2. Create roles & grant access to schema objects by those roles. ([`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`GRANT`]({% link {{ page.version.version }}/grant.md %}))
+3. Enable RLS on the schema objects. ([`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security))
+4. Define RLS policies on the schema objects which are assigned to specific roles. ([`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}))
 
 ## Considerations
 
-Performance: Complex policy expressions evaluated per-row can impact query performance. Optimize expressions and consider indexing relevant columns. Testing revealed approximately the following performance impacts to a write-heavy workload:
+### Performance
+
+Complex policy expressions evaluated per-row can impact query performance. Optimize expressions and consider indexing relevant columns. 
+
+According to our internal testing, Row-Level Security had the following performance impacts on a write-heavy workload ([`sysbench`](https://github.com/akopytov/sysbench)):
 
 | Number of policies | Percentage slowdown (approx.) |
 |--------------------|-------------------------------|
@@ -71,24 +59,35 @@ Performance: Complex policy expressions evaluated per-row can impact query perfo
 | 10                 | 140%                          |
 | 50                 | 200%                          |
 
-(above via https://cockroachlabs.slack.com/archives/C083W9NK34H/p1744914022589429)
+([XXX](XXX): above numbers are via https://cockroachlabs.slack.com/archives/C083W9NK34H/p1744914022589429, confirm if we want this specific info in docs)
 
-Security: Policy expressions execute with the privileges of the user invoking the query, unless functions marked `SECURITY DEFINER` are used (use with extreme caution). Ensure expressions do not have unintended side effects.
+### Security
 
-Complexity: Managing numerous overlapping policies can become complex. Clear naming conventions and documentation are essential.
+Policy expressions execute with the privileges of the user invoking the query, unless functions marked [`SECURITY DEFINER`]({% link {{ page.version.version }}/create-function.md %}#create-a-security-definer-function) are used. Such functions should only be used with extreme caution to ensure expressions do not have unintended side effects.
 
-Views: RLS policies on underlying tables apply when views are accessed. Policies can also be defined directly on views.
+Views: RLS policies on underlying tables apply when views are accessed. Policies can also be defined directly on views. Views use the role of the owner; future work may include security_invoker support in order to use the role of the user executing the view.
 
-Inheritance/Partitioning: Policies on parent tables typically apply to child/partition tables, but specific behaviors may vary depending on the database implementation.
+[CDC]({% link {{ page.version.version }}/change-data-capture-overview.md %}) messages that are emitted from a table will not be filtered using RLS policies. Furthermore, [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}) are not supported on tables using RLS, and will fail with the error message: `CDC queries are not supported on tables with row-level security enabled`
 
-CDC messages that are emitted from a table will not be filtered using RLS policies.
+[Backup and Restore]({% link {{ page.version.version }}/backup-and-restore-overview.md %}) do not take into account RLS policies.
 
-Backup/Restore will bypass RLS policies.
+[Logical Data Replication (LDR)]({% link {{ page.version.version }}/logical-data-replication-overview.md %}) and [Physical Cluster Replication (PCR)]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) do not take into account RLS policies. Since RLS policies amount to a [schema change]({% link {{ page.version.version }}/online-schema-changes.md %}), LDR's limitations around schema changes also apply to RLS. For PCR, the target cluster will have all RLS policies applied to the data because it performs byte for byte replication.
 
-LDR/PCR do not take into account RLS policies. Since RLS policies amount to a schema change, LDR's limitations around schema changes also apply to RLS. For PCR, the target cluster will have all RLS policies applied to the data because it’s a byte for byte replication which replicates the same schema and any changes to the schema.
+The following SQL features bypass RLS:
 
-- Foreign keys (including cascades), unique/primary key constraints, TRUNCATE, backup/restore, and changefeeds (CDC) bypass RLS.
-- Views use the role of the owner; future work may include security_invoker support in order to use the role of the user executing the view.
+- [XXX](XXX): YOU ARE HERE
+- Foreign keys (including cascades)
+- Unique/Primary key constraints
+- TRUNCATE
+
+## Policy Evaluation Semantics
+
+DESIGN DOC:
+
+- All policies apply to a specific set of roles. For a policy to be applicable, it must match at least one of the roles assigned to it. If the policy is associated with the `PUBLIC` role, it applies to all roles. In order for reads or writes to succeed, there must be at least one permissive policy for the user's role. 
+- If RLS is enabled but no policies apply to a given user/command combination, access is denied by default.
+- Permissive policies are combined using `OR` logic, while restrictive policies are combined using `AND` logic. The overall policy enforcement is determined by evaluating: `(permissive policies) AND (restrictive policies)`.
+- `USING` filters rows during reads; `WITH CHECK` validates writes and defaults to `USING` if absent.
 
 ## Examples
 
