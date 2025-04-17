@@ -40,7 +40,7 @@ CockroachDB v25.1 is now generally available for select CockroachDB Cloud {{ sit
 
 ## December 3, 2024
 
-You can now use the CockroachDB {{ site.data.products.cloud }} Console to [view and filter organization-level audit logs]({% link cockroachcloud/organization-audit-logs-in-cloud-console.md %}), providing greater visibility into user activity across your organization.
+You can now use the CockroachDB {{ site.data.products.cloud }} Console to [view and filter audit logs]({% link cockroachcloud/organization-audit-logs-in-cloud-console.md %}), providing greater visibility into user activity across your CockroachDB {{ site.data.products.cloud }} organization.
 
 ## December 1, 2024
 
