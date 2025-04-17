@@ -4,7 +4,7 @@ summary: How to monitor transaction contention using console, metrics, and crdb_
 toc: true
 ---
 
-It is crucial to understand where [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) occurs and how it impacts your workload. Contention is a normal part of database operations. In many cases, it has limited impact on a workload. For example, a large number of contention events with a very short duration may not impact your workload. Similarly, a small number of contention events with longer duration may be acceptable if they occur outside the “user path”. However, if contention substantially contributes to [query latency]({% link {{ page.version.version }}/logging-use-cases.md %}#sql_perf), it should be addressed.
+It is crucial to understand where [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) occurs and how it impacts your workload. Contention is a normal part of database operations. In many cases, it has limited impact on a workload. For example, a large number of contention events with a very short duration may not impact your workload. Similarly, a small number of contention events with longer duration may be acceptable if they occur outside the “user path”. However, if contention substantially contributes to [query latency]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#service-latency-sql-99th-percentile), it should be addressed.
 
 This page shows how to monitor and analyze two types of [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention): [lock contention]({% link {{ page.version.version }}/troubleshoot-lock-contention.md %}) and [serializable conflicts]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}). These types of contention are exposed via different observability touchpoints:
 
@@ -25,7 +25,7 @@ The remaining sections address analyzing contention once identified:
 The [CockroachDB Cloud Console]({% link cockroachcloud/cluster-overview-page.md %}) and [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) provide monitoring of contention using the following features:
 
 - [SQL Statement Contention graph](#sql-statement-contention-graph)
-- [SQL Activity](#sql-activity)
+- [SQL Activity pages](#sql-activity-pages)
 - [Insights page](#insights-page)
 
 {{site.data.alerts.callout_info}}
@@ -40,9 +40,9 @@ In the DB Console, in the cluster view, this rate is averaged across all nodes, 
 
 The following image from the DB Console was taken from a cluster running more than 50,000 queries per second with around 2 contention events per second. This contention is unlikely to have an impact on the workload.
 
-<img src="{{ 'images/v25.1/contention-1.png' | relative_url }}" alt="DB Console SQL Statement Contention graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/contention-1.png' | relative_url }}" alt="DB Console SQL Statement Contention graph" style="border:1px solid #eee;max-width:100%" />
 
-### SQL Activity
+### SQL Activity pages
 
 **SQL Activity** has [per statement](#statements-page) and [per transaction](#transactions-page) contention information.
 
@@ -54,7 +54,7 @@ The [**Contention Time** column]({% link {{ page.version.version }}/ui-statement
 
 The following image shows the **Statements** page with the top 3 statement fingerprints by Contention Time in a cluster containing the test data from the [Analyze using `crdb_internal` tables](#analyze-using-crdb_internal-tables) section.
 
-<img src="{{ 'images/v25.1/contention-2.png' | relative_url }}" alt="Statements page by Contention Time" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/contention-2.png' | relative_url }}" alt="Statements page by Contention Time" style="border:1px solid #eee;max-width:100%" />
 
 #### Transactions page
 
@@ -64,7 +64,7 @@ The [**Contention Time** column]({% link {{ page.version.version }}/ui-transacti
 
 The following image shows the **Transactions** page with the top 3 transactions fingerprints by Contention Time in a cluster containing the test data in the [Analyze using `crdb_internal` tables](#analyze-using-crdb_internal-tables) section.
 
-<img src="{{ 'images/v25.1/contention-3.png' | relative_url }}" alt="Transactions page by Contention Time" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/contention-3.png' | relative_url }}" alt="Transactions page by Contention Time" style="border:1px solid #eee;max-width:100%" />
 
 ### Insights page
 
@@ -111,7 +111,7 @@ CockroachDB Metric Name | Description | Type | Unit
 `txn.restarts.unknown` | Number of restarts due to a unknown reasons | COUNTER | COUNT
 `txn.restarts.writetooold` | Number of restarts due to a concurrent writer committing first | COUNTER | COUNT
 
-Correlate these metrics with information from the [Insights]({% link {{ page.version.version }}/ui-insights-page.md %}) and [SQL Activity]({% link {{ page.version.version }}/ui-overview.md %}#sql-activity) pages to identify the affected database.
+Correlate these metrics with information from the [Insights]({% link {{ page.version.version }}/ui-insights-page.md %}) and [SQL Activity]({% link {{ page.version.version }}/ui-overview.md %}#sql-activity-pages) pages to identify the affected database.
 
 ## Monitor using `crdb_internal` tables
 
@@ -144,7 +144,7 @@ The table columns are as follows:
 
 The transaction and statement fingerprint IDs (`*_txn_fingerprint_id` and `*_stmt_fingerprint_id`) columns are hexadecimal values that can be used to look up the SQL and other information from the [`crdb_internal.transaction_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_statistics) and [`crdb_internal.statement_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#statement_statistics) tables. These should not be confused with the transaction and statement IDs (`*_txn_id` and `*_stmt_id`), which are unique for each transaction and statement execution.
 
-The `crdb_internal.transaction_contention_events` table can be used to summarize the frequency and duration of contention events by database, schema, table and index. This can be useful for determining which workloads have the highest frequency and duration of contention events and which indexes they are occurring on. The table includes details on specific transactions and statements involved in contention, enabling deeper analysis.
+Use the `crdb_internal.transaction_contention_events` table to summarize the frequency and duration of contention events by database, schema, table, and index. This helps identify workloads with the highest frequency and duration of contention events and the indexes where they occur. The table includes details about specific transactions and statements involved in contention, enabling deeper analysis.
 
 ### Other tables
 
@@ -178,9 +178,9 @@ If contention affects more than 1% of queries, use the [`crdb_internal` table an
 
 To analyze contention causes, use [`crdb_internal.transaction_contention_events`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_contention_events), [`crdb_internal.transaction_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#transaction_statistics) and [`crdb_internal.statement_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#statement_statistics) tables.
 
-First, retrieve the frequency and duration of contention events for a specific time period. These can be summarized at a database, schema, table, and index level to make it easy to identify if any workload has significant lock contention. Since some contention is expected, compare the frequency and duration of contention events against overall workload volume to assess the impact.
+Retrieve the frequency and duration of contention events for a specific time period. Summarize the data at the database, schema, table, and index levels to identify workloads with significant lock contention. Because some contention is expected, compare the frequency and duration of contention events with the overall workload volume to assess their impact.
 
-Next, individual transactions and statements can be analyzed to understand the specific causes and impacts of the contention. The transaction and statement fingerprints can be used to look up detailed information from the `crdb_internal.transaction_statistics` and `crdb_internal.statement_statistics` tables, such as the specific SQL.
+Analyze individual transactions and statements to understand the specific causes and impacts of contention. Use transaction and statement fingerprints to look up detailed information from the `crdb_internal.transaction_statistics` and `crdb_internal.statement_statistics` tables, such as the specific SQL statements.
 
 ### Run `insights` workload
 
@@ -313,7 +313,7 @@ SELECT row_number() OVER (), *
 
 #### Query 4 blocking statement fingerprint IDs
 
-To get the statements associated with the blocking transaction (`\xebdfe9282ddfd5bd`) from `row_number 1`, we can query the `crdb_internal.transaction_statistics` table:
+To get the statements associated with the blocking transaction (`\xebdfe9282ddfd5bd`) from `row_number 1`, query the `crdb_internal.transaction_statistics` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -332,7 +332,7 @@ WHERE fingerprint_id = '\xebdfe9282ddfd5bd' LIMIT 1;
 
 #### Query 5 blocking statement SQL
 
-To get the SQL associated with the *blocking* statements, query the `crdb_internal.statement_statistics` table using the fingerprint IDs previously found.
+To get the SQL associated with the *blocking* statements, query the `crdb_internal.statement_statistics` table using the blocking fingerprint IDs found in [Query 4](#query-4-blocking-statement-fingerprint-ids).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -352,7 +352,7 @@ ORDER BY fingerprint_id
 
 #### Query 6 waiting statement SQL
 
-To get the SQL associated with the *waiting* statement (`\x883d49b568a3b746` of transaction `\x275ef4f9eea20099`), again query the `crdb_internal.statement_statistics` table.
+To get the SQL associated with the *waiting* statement, again query the `crdb_internal.statement_statistics` table. Filter by the waiting fingerprint IDs found in [Query 3](#query-3-blocking-and-waiting-transaction-fingerprint-ids) (for transaction, use `\x275ef4f9eea20099` and for statement, use `\x883d49b568a3b746`). 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -367,7 +367,7 @@ WHERE transaction_fingerprint_id='\x275ef4f9eea20099' and fingerprint_id = '\x88
   \x883d49b568a3b746          | insights | SELECT balance FROM insights_workload_table_0 ORDER BY balance DESC LIMIT _
 ~~~
 
-A similar process can be applied to the second set (`row_number 2`) of blocking and waiting transactions and statements.
+A similar process can be applied to the second set (`row_number 2` in [Query 3](#query-3-blocking-and-waiting-transaction-fingerprint-ids)) of blocking and waiting transactions and statements.
 
 This process provides a view of the actual statements that are involved in the highest frequency of contention events.
 
@@ -375,25 +375,25 @@ This process provides a view of the actual statements that are involved in the h
 
 This section applies a variation of the previously described analysis process to a hypothetical support scenario where high contention occurred during a period of increased errors.
 
-Review the [DB Console Metrics]({% link {{ page.version.version }}/ui-overview.md %}#metrics) graphs to get a high-level understanding of the contention events. The [SQL Statement Errors]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-errors) graph show an increase of errors during the time period of 9:16 to 9:23 UTC:
+Review the [DB Console Metrics]({% link {{ page.version.version }}/ui-overview.md %}#metrics) graphs to get a high-level understanding of the contention events. The [SQL Statement Errors]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-errors) graph shows an increase of errors during the time period of 9:16 to 9:23 UTC:
 
-<img src="{{ 'images/v25.1/contention-4.png' | relative_url }}" alt="DB Console SQL Statement Errors graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/contention-4.png' | relative_url }}" alt="DB Console SQL Statement Errors graph" style="border:1px solid #eee;max-width:100%" />
 
 The [SQL Statement Contention]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#sql-statement-contention) graph shows a corresponding increase between 9:16 and 9:23 UTC: 
 
-<img src="{{ 'images/v25.1/contention-5.png' | relative_url }}" alt="DB Console SQL Statement Contention graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/contention-5.png' | relative_url }}" alt="DB Console SQL Statement Contention graph" style="border:1px solid #eee;max-width:100%" />
 
 The [Transaction Restarts]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#transaction-restarts) graph also shows a corresponding increase between 9:16 and 9:23 UTC: 
 
-<img src="{{ 'images/v25.1/contention-6.png' | relative_url }}" alt="DB Console Transaction Restarts graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/contention-6.png' | relative_url }}" alt="DB Console Transaction Restarts graph" style="border:1px solid #eee;max-width:100%" />
 
-These graphs help to understand the incident at a high-level, but not the specific transactions that are involved. To understand that, query `crdb_internal.transaction_contention_events` table.
+These graphs help to understand the incident at a high-level, but not the specific transactions that are involved. To understand that, query the `crdb_internal.transaction_contention_events` table.
 
 ### `transaction_contention_events` for support scenario
 
 #### Query 1 frequency and duration
 
-Determine the frequency, total duration, and average duration of contention events per database, schema, table, and index for the time period. Internal contention events (e.g., to `system` tables) are excluded by omitting the fingerprints with the pattern `'0000000000000000'`.
+Find the frequency, total duration, and average duration of contention events per database, schema, table, and index for the time period. Internal contention events (e.g., to `system` tables) are excluded by omitting the fingerprints with the pattern `'0000000000000000'`.
 
 ~~~ sql
 SELECT COUNT(*) as cnt,
@@ -452,7 +452,7 @@ The results indicate that a single key (`"abcdefghijklmn"`) accounts for all of 
 
 #### Query 3 blocking and waiting transaction fingerprint IDs
 
-Next, determine which specific transactions and statements were involved in the contention events. Modify the query by updating the `database_name`, `table_name`, and `index_name`. Increase the limit to `5`.
+Determine which specific transactions and statements were involved in the contention events. Modify the query by updating the `database_name`, `table_name`, and `index_name`. Increase the limit to `5`.
 
 ~~~ sql
 With x AS (
@@ -490,6 +490,8 @@ To examine the statements associated with the two transaction fingerprints, quer
 
 #### Query 4 row 1 blocking statement fingerprint IDs
 
+To get the statement associated with the blocking transaction (`\x9b06dfa27c208be3`) from `row_number 1`, query the `crdb_internal.transaction_statistics` table.
+
 ~~~ sql
 SELECT fingerprint_id as blocking_txn_fingerprint_id, app_name, metadata->>'stmtFingerprintIDs' AS blocking_stmt_fingerprint_ids
 FROM crdb_internal.transaction_statistics
@@ -501,7 +503,7 @@ WHERE fingerprint_id = '\x9b06dfa27c208be3' LIMIT 1;
 
 #### Query 5 row 1 blocking statement metadata
 
-Instead of selecting the `metadata->>'query'` key as in [Query 5 blocking statement SQL](#query-5-blocking-statement-sql), select the whole `JSONB` `metadata` object. 
+Instead of only selecting the `metadata->>'query'` key as in [Query 5 blocking statement SQL](#query-5-blocking-statement-sql), select the whole `JSONB` `metadata` object to get more information about the statement (`\x346562eefa213c3c`).
 
 ~~~ sql
 SELECT fingerprint_id as blocking_stmt_fingerprint_id, app_name, jsonb_pretty(metadata) AS metadata
@@ -523,9 +525,11 @@ ORDER BY fingerprint_id;
                      |                       | }
 ~~~
 
-Note that in `metadata`, the key `"failed"` has the value of `true`.
+Note that in `metadata`, the key `"failed"` has the value of `true` indicating failed statement executions.
 
 #### Query 6 row 2 blocking statement fingerprint IDs
+
+To get the statement associated with the blocking transaction (`\x9b06f0a27c20af50`) from `row_number 2`, query the `crdb_internal.transaction_statistics` table.
 
 ~~~ sql
 SELECT fingerprint_id as blocking_txn_fingerprint_id, app_name, metadata->>'stmtFingerprintIDs' AS blocking_stmt_fingerprint_ids
@@ -537,6 +541,8 @@ WHERE fingerprint_id = '\x9b06f0a27c20af50' LIMIT 1;
 ~~~
 
 #### Query 7 row 2 blocking statement metadata
+
+Instead of only selecting the `metadata->>'query'` key as in [Query 5 blocking statement SQL](#query-5-blocking-statement-sql), select the whole `JSONB` `metadata` object to get more information about the statement (`\x34654deefa21188f`).
 
 ~~~ sql
 SELECT fingerprint_id as blocking_stmt_fingerprint_id, app_name, jsonb_pretty(metadata) AS metadata
@@ -558,13 +564,15 @@ ORDER BY fingerprint_id;
                      |                       | }
 ~~~
 
-Note that in `metadata`, the key `"failed"` has the value of `false`.
+Note that in `metadata`, the key `"failed"` has the value of `false` indicating successful statement executions.
 
-Transactions from row 1 and row 2 are both the `INSERT` or `UPDATE` operations with the first having failed executions (`"failed": true`) and the second successful (`"failed": false`).
+### Conclusion
 
-From this analysis, we can conclude that a large number of `INSERT` or `UPDATE` operations were operating on the same `userKey` (`"abcdefghijklmn"`) in the `UserOptions@UserOptions+userKey` index during the time period of the incident.
+Transactions from row 1 and row 2 executed the same SQL query. Both transactions involved [`INSERT`]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`]({% link {{ page.version.version }}/update.md %}) operations. Row 1 includes failed executions, while row 2 includes successful executions.
 
-The next steps would be to investigate what on the application side may have caused this large number of updates on a single key.
+This analysis indicates that a large number of `INSERT` or `UPDATE` operations targeted the same `userKey` (`"abcdefghijklmn"`) in the `UserOptions@UserOptions+userKey` index during the incident.
+
+Next, investigate what in the application (`app_name`=`permissions-api`) may have caused this large number of updates on a single key.
 
 ## Analyze using Insights page
 
