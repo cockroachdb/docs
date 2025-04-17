@@ -306,6 +306,10 @@ root                       |                                       | {admin}
 (11 rows)
 ~~~
 
+### Create a role that can bypass row-level security (RLS)
+
+[XXX](XXX): XXX
+
 ### Set the `SUBJECT` role option for certificate based authentication
 
 {% include {{page.version.version}}/sql/role-subject-option.md %}
