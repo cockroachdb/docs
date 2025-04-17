@@ -9,6 +9,12 @@
             ]
         },
         {
+            "title": "Deployment and Operations Skills Taxonomy",
+            "urls": [
+              "/${VERSION}/deployment-operations-skills-taxonomy.html"
+            ]
+        },
+        {
             "title": "Deploy Locally",
             "items": [
               {
