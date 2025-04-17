@@ -55,9 +55,9 @@ For a given user, table, and command:
 3.  Restrictive `USING` Combination: The `USING` expressions of all applicable `RESTRICTIVE` policies are combined with `AND`.
 4.  Final `USING` Filter: A row is visible/modifiable if `(Permissive OR combination)` is `TRUE` AND `(Restrictive AND combination)` is `TRUE`. If no permissive policies match, the first term is `FALSE`. If no restrictive policies match, the second term is `TRUE`.
 5.  `WITH CHECK` Evaluation (for `INSERT`/`UPDATE`):
-    *   Permissive `WITH CHECK` expressions are combined with `OR`.
-    *   Restrictive `WITH CHECK` expressions are combined with `AND`.
-    *   The row passes if `(Permissive OR combination)` is `TRUE` AND `(Restrictive AND combination)` is `TRUE`. If the check fails, an error is raised.
+    - Permissive `WITH CHECK` expressions are combined with `OR`.
+    - Restrictive `WITH CHECK` expressions are combined with `AND`.
+    - The row passes if `(Permissive OR combination)` is `TRUE` AND `(Restrictive AND combination)` is `TRUE`. If the check fails, an error is raised.
 
 Default Deny: If RLS is enabled but no policies apply to a given user/command combination, access is denied by default. It is common practice to define a permissive base policy or rely on restrictive policies for fine-grained control.
 
@@ -103,8 +103,8 @@ Syntax:
 DROP POLICY [ IF EXISTS ] policy_name ON table_name [ CASCADE | RESTRICT ];
 ~~~
 
-*   `IF EXISTS`: Suppresses error if the policy doesn't exist.
-*   `CASCADE`/`RESTRICT`: Standard dependency handling (usually not relevant for policies themselves).
+- `IF EXISTS`: Suppresses error if the policy doesn't exist.
+- `CASCADE`/`RESTRICT`: Standard dependency handling (usually not relevant for policies themselves).
 
 ### `CREATE POLICY`
 
@@ -124,22 +124,22 @@ CREATE POLICY policy_name ON table_name
 
 Components:
 
-*   `policy_name`: Unique identifier for the policy on the table.
-*   `table_name`: The table to which the policy applies.
-*   `AS { PERMISSIVE | RESTRICTIVE }`: (Default: `PERMISSIVE`)
-    *   `PERMISSIVE`: Policies are combined using `OR`. A row is accessible if *any* permissive policy grants access.
-    *   `RESTRICTIVE`: Policies are combined using `AND`. All restrictive policies must grant access for a row to be accessible. Restrictive policies are evaluated *after* permissive policies. If any restrictive policy denies access, the row is inaccessible, regardless of permissive policies.
-*   `FOR command`: (Default: `ALL`) Specifies the SQL command(s) the policy applies to (`SELECT`, `INSERT`, `UPDATE`, `DELETE`).
-*   `TO role_name | ...`: (Default: `PUBLIC`) Specifies the database role(s) to which the policy applies.
-*   `USING ( using_expression )`:
-    *   Applies to `SELECT`, `UPDATE`, `DELETE`. Also applies to `INSERT` for `INSERT ... ON CONFLICT DO UPDATE`.
-    *   Defines the filter condition. Only rows for which `using_expression` evaluates to `TRUE` are visible or available for modification. Rows evaluating to `FALSE` or `NULL` are silently excluded.
-    *   Evaluated *before* any data modification attempt.
-*   `WITH CHECK ( check_expression )`:
-    *   Applies to `INSERT`, `UPDATE`.
-    *   Defines a constraint condition. Rows being inserted or updated must satisfy `check_expression` (evaluate to `TRUE`).
-    *   Evaluated *after* the row data is prepared but *before* it is written.
-    *   If the expression evaluates to `FALSE` or `NULL`, the operation fails with a row-level security policy violation error.
+- `policy_name`: Unique identifier for the policy on the table.
+- `table_name`: The table to which the policy applies.
+- `AS { PERMISSIVE | RESTRICTIVE }`: (Default: `PERMISSIVE`)
+    - `PERMISSIVE`: Policies are combined using `OR`. A row is accessible if *any* permissive policy grants access.
+    - `RESTRICTIVE`: Policies are combined using `AND`. All restrictive policies must grant access for a row to be accessible. Restrictive policies are evaluated *after* permissive policies. If any restrictive policy denies access, the row is inaccessible, regardless of permissive policies.
+- `FOR command`: (Default: `ALL`) Specifies the SQL command(s) the policy applies to (`SELECT`, `INSERT`, `UPDATE`, `DELETE`).
+- `TO role_name | ...`: (Default: `PUBLIC`) Specifies the database role(s) to which the policy applies.
+- `USING ( using_expression )`:
+    - Applies to `SELECT`, `UPDATE`, `DELETE`. Also applies to `INSERT` for `INSERT ... ON CONFLICT DO UPDATE`.
+    - Defines the filter condition. Only rows for which `using_expression` evaluates to `TRUE` are visible or available for modification. Rows evaluating to `FALSE` or `NULL` are silently excluded.
+    - Evaluated *before* any data modification attempt.
+- `WITH CHECK ( check_expression )`:
+    - Applies to `INSERT`, `UPDATE`.
+    - Defines a constraint condition. Rows being inserted or updated must satisfy `check_expression` (evaluate to `TRUE`).
+    - Evaluated *after* the row data is prepared but *before* it is written.
+    - If the expression evaluates to `FALSE` or `NULL`, the operation fails with a row-level security policy violation error.
 
 Evaluation Context: Expressions (`USING`, `WITH CHECK`) can reference table columns and utilize session-specific functions (e.g., `current_user`, `session_user`) and variables.
 
@@ -181,10 +181,10 @@ ALTER POLICY policy_name ON table_name
 
 Capabilities:
 
-*   Rename the policy.
-*   Change the applicable roles.
-*   Modify the `USING` expression.
-*   Modify the `WITH CHECK` expression.
+- Rename the policy.
+- Change the applicable roles.
+- Modify the `USING` expression.
+- Modify the `WITH CHECK` expression.
 
 *Note: Cannot change the `PERMISSIVE`/`RESTRICTIVE` nature or the applicable command (`FOR`) via `ALTER`. Requires `DROP` and `CREATE`.*
 
@@ -226,9 +226,9 @@ Restrict access to specific rows within a table based on user roles, attributes,
 #### Scenario Example: Employee Data Access
 
 Consider an `employees` table containing sensitive salary information. We want to enforce the following rules:
-*   Employees can view their own record.
-*   Managers can view the records of their direct reports.
-*   Members of the `hr_department` role can view all records.
+- Employees can view their own record.
+- Managers can view the records of their direct reports.
+- Members of the `hr_department` role can view all records.
 
 #### Implementation Example
 
@@ -387,28 +387,28 @@ CREATE POLICY tenant_isolation ON invoices
 
 Explanation:
 
-*   `AS RESTRICTIVE`: Makes this policy mandatory. If other policies exist, they must *also* pass. For simple tenant isolation, this is often the safest default. If only this policy exists, `PERMISSIVE` would functionally be similar but `RESTRICTIVE` signals intent more clearly.
-*   `FOR ALL`: Covers all data modification and retrieval.
-*   `TO PUBLIC`: Applies the policy broadly. Roles should primarily manage *table-level* access (`GRANT`), while this policy handles *row-level* visibility.
-*   `USING`: Ensures queries only *see* rows matching the session's `tenant_id`. The `current_setting('var', true)` variant returns NULL if the setting is not defined, preventing accidental exposure if the context isn't set (NULL comparison yields NULL, denying access). The cast `::UUID` is necessary if `tenant_id` is UUID type.
-*   `WITH CHECK`: Critically important. Prevents users from `INSERT`ing rows with a `tenant_id` different from their session's `tenant_id`, or `UPDATE`ing a row to change its `tenant_id` across boundaries. Without this, a user could potentially insert data into another tenant's space.
+- `AS RESTRICTIVE`: Makes this policy mandatory. If other policies exist, they must *also* pass. For simple tenant isolation, this is often the safest default. If only this policy exists, `PERMISSIVE` would functionally be similar but `RESTRICTIVE` signals intent more clearly.
+- `FOR ALL`: Covers all data modification and retrieval.
+- `TO PUBLIC`: Applies the policy broadly. Roles should primarily manage *table-level* access (`GRANT`), while this policy handles *row-level* visibility.
+- `USING`: Ensures queries only *see* rows matching the session's `tenant_id`. The `current_setting('var', true)` variant returns NULL if the setting is not defined, preventing accidental exposure if the context isn't set (NULL comparison yields NULL, denying access). The cast `::UUID` is necessary if `tenant_id` is UUID type.
+- `WITH CHECK`: Critically important. Prevents users from `INSERT`ing rows with a `tenant_id` different from their session's `tenant_id`, or `UPDATE`ing a row to change its `tenant_id` across boundaries. Without this, a user could potentially insert data into another tenant's space.
 
 4. Verification (Conceptual):
 
-*   Session A: `SET app.current_tenant_id = 'tenant-A-uuid'; SELECT * FROM invoices;` -> Shows only invoices where `tenant_id = 'tenant-A-uuid'`.
-*   Session B: `SET app.current_tenant_id = 'tenant-B-uuid'; SELECT * FROM invoices;` -> Shows only invoices where `tenant_id = 'tenant-B-uuid'`.
-*   Session A: `INSERT INTO invoices (tenant_id, ...) VALUES ('tenant-B-uuid', ...);` -> Fails (violates `WITH CHECK` constraint).
-*   Session A: `INSERT INTO invoices (tenant_id, ...) VALUES ('tenant-A-uuid', ...);` -> Succeeds.
-*   Session A: `UPDATE invoices SET tenant_id = 'tenant-B-uuid' WHERE invoice_id = 123;` -> Fails (violates `WITH CHECK`).
+- Session A: `SET app.current_tenant_id = 'tenant-A-uuid'; SELECT * FROM invoices;` -> Shows only invoices where `tenant_id = 'tenant-A-uuid'`.
+- Session B: `SET app.current_tenant_id = 'tenant-B-uuid'; SELECT * FROM invoices;` -> Shows only invoices where `tenant_id = 'tenant-B-uuid'`.
+- Session A: `INSERT INTO invoices (tenant_id, ...) VALUES ('tenant-B-uuid', ...);` -> Fails (violates `WITH CHECK` constraint).
+- Session A: `INSERT INTO invoices (tenant_id, ...) VALUES ('tenant-A-uuid', ...);` -> Succeeds.
+- Session A: `UPDATE invoices SET tenant_id = 'tenant-B-uuid' WHERE invoice_id = 123;` -> Fails (violates `WITH CHECK`).
 
 #### Considerations
 
-*   Tenant Context Management: The reliability of setting and isolating the `app.current_tenant_id` (or equivalent mechanism) per session/request is paramount. This is typically handled in the application layer or connection pool middleware. Failure here bypasses RLS.
-*   Performance: The `USING (tenant_id = ...)` check is highly efficient if `tenant_id` is indexed. Avoid complex logic in tenant isolation policies; keep them simple and fast.
-*   `WITH CHECK` is Non-Negotiable: Omitting `WITH CHECK` creates a severe security vulnerability, allowing cross-tenant data insertion or modification.
-*   Superuser/Admin Access: Database superusers and roles with the `BYPASSRLS` attribute bypass RLS. Application-level administrative roles needing cross-tenant access might require specific functions or views designed with `SECURITY DEFINER` (use cautiously) or temporary privilege escalation managed outside standard RLS.
-*   Default Deny: If RLS is enabled (`FORCE`) and the `current_setting` is missing, the `USING` condition evaluates to NULL, denying access, which is generally the desired safe behavior.
-*   Testing: Rigorously test tenant isolation, including edge cases and attempts to circumvent the policies.
+- Tenant Context Management: The reliability of setting and isolating the `app.current_tenant_id` (or equivalent mechanism) per session/request is paramount. This is typically handled in the application layer or connection pool middleware. Failure here bypasses RLS.
+- Performance: The `USING (tenant_id = ...)` check is highly efficient if `tenant_id` is indexed. Avoid complex logic in tenant isolation policies; keep them simple and fast.
+- `WITH CHECK` is Non-Negotiable: Omitting `WITH CHECK` creates a severe security vulnerability, allowing cross-tenant data insertion or modification.
+- Superuser/Admin Access: Database superusers and roles with the `BYPASSRLS` attribute bypass RLS. Application-level administrative roles needing cross-tenant access might require specific functions or views designed with `SECURITY DEFINER` (use cautiously) or temporary privilege escalation managed outside standard RLS.
+- Default Deny: If RLS is enabled (`FORCE`) and the `current_setting` is missing, the `USING` condition evaluates to NULL, denying access, which is generally the desired safe behavior.
+- Testing: Rigorously test tenant isolation, including edge cases and attempts to circumvent the policies.
 
 ## Video demo: Row-level Security
 
