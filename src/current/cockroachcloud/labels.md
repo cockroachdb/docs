@@ -9,29 +9,34 @@ CockroachDB {{ site.data.products.cloud }} supports labels as a flexible way to 
 
 ## What are labels?
 
-Labels are customizable key-value pairs you can attach to CockroachDB {{ site.data.products.cloud }} resources. Unlike folders, which allow only one-to-many relationships, labels support many-to-many relationships—ideal for complex environments with overlapping ownership or multiple tagging criteria.
+Labels are customizable key-value pairs that you can attach to CockroachDB {{ site.data.products.cloud }} resources. Unlike folders, which allow only one-to-many relationships, labels support many-to-many relationships which is ideal for complex environments with overlapping ownership or multiple tagging criteria.
 
-### Example
+### Examples
 
-You might apply these labels to a cluster:
+- Team or cost center labels: Add labels based on team or cost center to distinguish resources owned by different teams (for example, `team:research` and `team:analytics`). You can use this type of label for cost accounting or budgeting.
 
-- `team:payments`
-- `env:production`
-- `application:checkout-service`
+- Environment or stage labels: For example, `environment:production` and `environment:test`.
 
-These labels help filter resources, allocate costs, and integrate with automated workflows.
+- State labels: For example, `state:active`, `state:readytodelete`, and `state:archive`.
+
+- Ownership labels: Used to identify the teams that are responsible for operations, for example, `team:shopping-cart`.
 
 ## Why use labels?
 
-- **Flexible Organization**: Tag clusters and folders by team, environment, application, or any category relevant to your workflows.
+- **Flexible Organization**: Tag clusters and folders by team, environment, application, or another category relevant to your workflows.
 - **Cost Allocation**: Analyze your invoice data by label values to track spending across departments or services.
 - **Automation**: Use labels in API calls and Terraform configurations to automate operations.
 - **Enhanced Reporting**: Export label metadata for use in external analytics tools.
 
-## Label structure
+## Requirements for labels
 
-- Labels use key-value pairs.
-- Each key can have multiple values.
+The labels applied to a resource must meet the following requirements:
+
+- Each resource can have up to 50 labels.
+- Label keys are required, and must start with a lowercase letter and can include lowercase letters, numbers, underscores, and dashes (up to 63 characters).
+- Label values can include only lowercase letters, numbers, dashes, and must be between 0 and 63 characters.
+- Keys are unique per resource. For example, if cluster A has a label `environment:production`, it cannot also have a label `environment:development`.
+- Across the organization, each key can have multiple values. For example, folder A can have a label `environment:development`, folder B can have a label `environment:testing`, and folder C can have a label `environment:production`.
 - Labels are visible across your organization once created.
 
 ## Edit labels
@@ -55,7 +60,7 @@ To add a label in the **Edit labels** window:
 1. Enter a label key and an optional label value. Autocomplete helps avoid typos and duplicates.
 1. Click **+ Add**. The label appears under **Labels applied**.
 1. Repeat steps 1 and 2 to add more labels.
-1. Click **Add/Update Labels** to apply the labels.
+1. Click **Add/Update Labels** to apply the changes. A success or failure notification will appear at the top right.
 
 ### Delete labels
 
@@ -63,16 +68,16 @@ To delete a label in the **Edit labels** window:
 
 1. Under **Labels applied**, click the **X** on the right of the label you want to delete.
 1. Repeat step 1 to delete more labels.
-1. Click **Update Labels** to remove the labels.
+1. Click **Update Labels** to apply the changes. A success or failure notification will appear at the top right.
 
 To change a label, delete the existing label and add a new one.
 
 ## Cost and billing integration
 
-Labels appear in invoices on the [Billing page]({% link cockroachcloud/billing-management.md %}#view-credits-balance).
+Labels appear in invoices on the [**Billing** page]({% link cockroachcloud/billing-management.md %}#view-credits-balance).
 
 ## Best Practices
 
 - Define a consistent labeling taxonomy (e.g., `team`, `env`, `app`) across your organization.
 - Use autocomplete in the console to prevent key duplication.
-- Review and remove unused or outdated labels regularly.
+- Regularly review and remove unused or outdated labels.
