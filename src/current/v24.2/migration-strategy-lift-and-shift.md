@@ -5,14 +5,14 @@ toc: true
 docs_area: migrate
 ---
 
-There are multiple strategies for [migrating off legacy technology]({% link {{ page.version.version }}/migration-overview.md %}) to CockroachDB.
+There are multiple strategies for [migrating off legacy technology]({% link molt/migration-overview.md %}) to CockroachDB.
 
-This page discusses the ["Lift and Shift" strategy]({% link {{ page.version.version }}/migration-overview.md %}#lift-and-shift) for migrating your database, which is a commonly used approach. This approach, which is also known as "Big Bang" (and by other names), refers to the process where your data is moved in its entirety from a source system to a target system within a defined period of time. This typically involves some application downtime and can involve some service degradation.
+This page discusses the ["Lift and Shift" strategy]({% link molt/migration-strategy.md %}#lift-and-shift) for migrating your database, which is a commonly used approach. This approach, which is also known as "Big Bang" (and by other names), refers to the process where your data is moved in its entirety from a source system to a target system within a defined period of time. This typically involves some application downtime and can involve some service degradation.
 
 Lift and Shift may not be the right approach if a strong application service continuity during the migration is required. It may be a viable method if application downtime is permitted.
 
 {{site.data.alerts.callout_info}}
-The information on this page assumes you have already reviewed the [migration overview]({% link {{ page.version.version }}/migration-overview.md %}).
+The information on this page assumes you have already reviewed the [migration overview]({% link molt/migration-overview.md %}).
 {{site.data.alerts.end}}
 
 ## Pros and Cons
@@ -25,20 +25,20 @@ Pros:
 - Less complex: If you can afford some downtime, the overall effort will usually be lower, and the chance of errors is lower.
 - Lower time start-to-finish: In general, the more downtime you can afford, the shorter the overall migration project timeframe can be.
 - Lower technical risk: It does not involve running multiple systems alongside each other for an extended period of time.
-- Easy to practice [dry runs]({% link {{ page.version.version }}/migration-overview.md %}#perform-a-dry-run) of import/export using testing/non-production systems.
+- Easy to practice [dry runs]({% link molt/migration-strategy.md %}#perform-a-dry-run) of import/export using testing/non-production systems.
 - Good import/export tooling is available (e.g., external tools like: [AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %}), [Qlik Replicate]({% link {{ page.version.version }}/qlik.md %}), [Striim]({% link {{ page.version.version }}/striim.md %}); or internal tools like [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}), [`COPY FROM`]({% link {{ page.version.version }}/copy.md %}), [`cockroach userdata`]({% link {{ page.version.version }}/cockroach-userfile-upload.md %})).
 - If your application already has regularly scheduled maintenance windows, your customers will not encounter application downtime.
 
 Cons:
 
-- All or nothing: It either works or does not work; once you start, you have to finish or [roll back]({% link {{ page.version.version }}/migration-overview.md %}#all-at-once-rollback).
-- Higher project risk: The project **must** be completed to meet a given [downtime / service degradation window]({% link {{ page.version.version }}/migration-overview.md %}#downtime-window).
+- All or nothing: It either works or does not work; once you start, you have to finish or [roll back]({% link molt/migration-strategy.md %}#all-at-once-rollback).
+- Higher project risk: The project **must** be completed to meet a given [downtime / service degradation window]({% link molt/migration-strategy.md %}#downtime-window).
 - Application service continuity requirements must be relaxed (that is, application downtime or increased latency may be needed).
 
 ## Process design considerations
 
 {{site.data.alerts.callout_info}}
-The high-level considerations in this section only refer to the data-loading portion of your migration. They assume you are following the steps in the overall migration process described in [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
+The high-level considerations in this section only refer to the data-loading portion of your migration. They assume you are following the steps in the overall migration process described in [Migration Overview]({% link molt/migration-overview.md %}).
 {{site.data.alerts.end}}
 
 Keep in mind the following considerations when designing a Lift and Shift data migration process.
@@ -120,7 +120,7 @@ For more information about import performance, see [Import Performance Best Prac
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Use the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Migrate with AWS Database Migration Service (DMS)]({% link {{ page.version.version }}/aws-dms.md %})
 - [AWS DMS documentation](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html)

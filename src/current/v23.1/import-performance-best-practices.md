@@ -162,7 +162,7 @@ If you cannot both split and sort your dataset, the performance of either split 
 ## See also
 
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Migrate from Oracle]({% link {{ page.version.version }}/migrate-from-oracle.md %})
 - [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
 - [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})

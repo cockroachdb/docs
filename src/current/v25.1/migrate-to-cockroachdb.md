@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-A migration to CockroachDB uses the [MOLT tools]({% link {{ page.version.version }}/migration-overview.md %}) to [convert your source schema](#step-2-prepare-the-source-schema), [load source data](#step-3-load-data-into-cockroachdb) into CockroachDB and immediately [replicate ongoing changes](#step-4-replicate-changes-to-cockroachdb), and [verify consistency](#step-5-stop-replication-and-verify-data) on the CockroachDB cluster before performing cutover.
+A migration to CockroachDB uses the [MOLT tools]({% link molt/migration-overview.md %}) to [convert your source schema](#step-2-prepare-the-source-schema), [load source data](#step-3-load-data-into-cockroachdb) into CockroachDB and immediately [replicate ongoing changes](#step-4-replicate-changes-to-cockroachdb), and [verify consistency](#step-5-stop-replication-and-verify-data) on the CockroachDB cluster before performing cutover.
 
 {% assign tab_names_html = "Load and replicate;Phased migration;Failback" %}
 {% assign html_page_filenames = "migrate-to-cockroachdb.html;migrate-in-phases.html;migrate-failback.html" %}
@@ -14,7 +14,7 @@ A migration to CockroachDB uses the [MOLT tools]({% link {{ page.version.version
 
 ## Before you begin
 
-- Review the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
+- Review the [Migration Overview]({% link molt/migration-overview.md %}).
 - Install the [MOLT (Migrate Off Legacy Technology)]({% link releases/molt.md %}#installation) tools.
 - Review the MOLT Fetch [setup]({% link molt/molt-fetch.md %}#setup) and [best practices]({% link molt/molt-fetch.md %}#best-practices).
 {% include molt/fetch-secure-cloud-storage.md %}
@@ -109,10 +109,10 @@ Perform a cutover by resuming application traffic, now to CockroachDB.
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %})
 - [Migration Failback]({% link {{ page.version.version }}/migrate-failback.md %})

@@ -8,11 +8,11 @@ CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/d
 
 1. Convert your database schema to an equivalent CockroachDB schema.
 
-	The simplest method is to use the [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) to convert your schema line-by-line. The tool accepts `.sql` files and will convert the syntax, identify [unimplemented features and syntax incompatibilities]({% link {{ site.current_cloud_version }}/migration-strategy.md %}#unimplemented-features-and-syntax-incompatibilities) in the schema, and suggest edits according to [CockroachDB best practices]({% link {{ site.current_cloud_version }}/migration-strategy.md %}#schema-design-best-practices).
+	The simplest method is to use the [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) to convert your schema line-by-line. The tool accepts `.sql` files and will convert the syntax, identify [unimplemented features and syntax incompatibilities]({% link molt/migration-strategy.md %}#unimplemented-features-and-syntax-incompatibilities) in the schema, and suggest edits according to [CockroachDB best practices]({% link molt/migration-strategy.md %}#schema-design-best-practices).
 
 	The Schema Conversion Tool requires a free [CockroachDB {{ site.data.products.cloud }} account]({% link cockroachcloud/create-an-account.md %}). If this is not an option for you, do one of the following: 
 	- Enable automatic schema creation when [loading data](#step-3-load-data-into-cockroachdb) with MOLT Fetch. The [`--table-handling drop-on-target-and-recreate`]({% link molt/molt-fetch.md %}#target-table-handling) option creates one-to-one [type mappings]({% link molt/molt-fetch.md %}#type-mapping) between the source database and CockroachDB and works well when the source schema is well-defined. 
-	- Manually convert the schema according to the [schema design best practices]({% link {{ site.current_cloud_version }}/migration-overview.md %}#schema-design-best-practices){% comment %}and data type mappings{% endcomment %}. You can also [export a partially converted schema]({% link cockroachcloud/migrations-page.md %}#export-the-schema) from the Schema Conversion Tool to finish the conversion manually.
+	- Manually convert the schema according to the [schema design best practices]({% link molt/migration-strategy.md %}#schema-design-best-practices){% comment %}and data type mappings{% endcomment %}. You can also [export a partially converted schema]({% link cockroachcloud/migrations-page.md %}#export-the-schema) from the Schema Conversion Tool to finish the conversion manually.
 
 	For additional help, contact your account team.
 

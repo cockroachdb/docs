@@ -14,7 +14,7 @@ This page outlines key decisions, infrastructure considerations, and best practi
 - [Size the target CockroachDB cluster](#capacity-planning).
 - Implement [application changes](#application-changes) to address necessary [schema changes](#schema-design-best-practices), [transaction contention](#handling-transaction-contention), and [unimplemented features](#unimplemented-features-and-syntax-incompatibilities).
 - [Prepare for migration](#prepare-for-migration) by running a [pre-mortem](#run-a-migration-pre-mortem), setting up [metrics](#set-up-monitoring-and-alerting), [loading test data](#load-test-data), [validating application queries](#validate-queries) for correctness and performance, performing a [migration dry run](#perform-a-dry-run), and reviewing your [cutover strategy](#cutover-strategy).
-
+{% assign variable = value %}
 {{site.data.alerts.callout_success}}
 For help migrating to CockroachDB, contact our <a href="mailto:sales@cockroachlabs.com">sales team</a>.
 {{site.data.alerts.end}}
@@ -48,7 +48,7 @@ The [MOLT tools]({% link molt/migration-overview.md %}) enable migrations with m
 Determine the size of the target CockroachDB cluster. To do this, consider your data volume and workload characteristics:
 
 - What is the total size of the data you will migrate?
-- How many active [application connections]({% link {{ page.version.version }}/recommended-production-settings.md %}#connection-pooling) will be running in the CockroachDB environment?
+- How many active [application connections]({% link {{ site.current_cloud_version }}/recommended-production-settings.md %}#connection-pooling) will be running in the CockroachDB environment?
 
 Use this information to size the CockroachDB cluster you will create. If you are migrating to a CockroachDB {{ site.data.products.cloud }} cluster, see [Plan Your Cluster]({% link cockroachcloud/plan-your-cluster.md %}) for details:
 
@@ -58,9 +58,9 @@ Use this information to size the CockroachDB cluster you will create. If you are
 
 If you are migrating to a CockroachDB {{ site.data.products.core }} cluster:
 
-- Refer to our [sizing methodology]({% link {{ page.version.version }}/recommended-production-settings.md %}#sizing) to determine the total number of vCPUs on the cluster and the number of vCPUs per node (which determines the number of nodes on the cluster).
-- Refer to our [storage recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage) to determine the amount of storage to provision on each node.
-- For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.core }} [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#connection-pooling).
+- Refer to our [sizing methodology]({% link {{ site.current_cloud_version }}/recommended-production-settings.md %}#sizing) to determine the total number of vCPUs on the cluster and the number of vCPUs per node (which determines the number of nodes on the cluster).
+- Refer to our [storage recommendations]({% link {{ site.current_cloud_version }}/recommended-production-settings.md %}#storage) to determine the amount of storage to provision on each node.
+- For guidance on sizing for connection pools, see the CockroachDB {{ site.data.products.core }} [Production Checklist]({% link {{ site.current_cloud_version }}/recommended-production-settings.md %}#connection-pooling).
 
 ### Application changes
 
@@ -75,9 +75,9 @@ As you develop your migration plan, consider the application changes that you wi
 
 #### Handling transaction contention
 
-Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You may encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration]({% link molt/migration-overview.md %}) and bulk load data.
+Optimize your queries against [transaction contention]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}#transaction-contention). You may encounter [transaction retry errors]({% link {{ site.current_cloud_version }}/transaction-retry-error-reference.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration]({% link molt/migration-overview.md %}) and bulk load data.
 
-Transaction retry errors are more frequent under CockroachDB's default [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}). If you are migrating an application that was built at a `READ COMMITTED` isolation level, you should first [enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation) on the CockroachDB cluster for compatibility.
+Transaction retry errors are more frequent under CockroachDB's default [`SERIALIZABLE` isolation level]({% link {{ site.current_cloud_version }}/demo-serializable.md %}). If you are migrating an application that was built at a `READ COMMITTED` isolation level, you should first [enable `READ COMMITTED` isolation]({% link {{ site.current_cloud_version }}/read-committed.md %}#enable-read-committed-isolation) on the CockroachDB cluster for compatibility.
 
 #### Unimplemented features and syntax incompatibilities
 
@@ -87,9 +87,9 @@ CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/d
 
 {% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
 
-If your source database uses any of the preceding features, you may need to implement workarounds in your schema design, in your [data manipulation language (DML)]({% link {{ page.version.version }}/sql-statements.md %}#data-manipulation-statements), or in your application code.
+If your source database uses any of the preceding features, you may need to implement workarounds in your schema design, in your [data manipulation language (DML)]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-manipulation-statements), or in your application code.
 
-For more details on the CockroachDB SQL implementation, see [SQL Feature Support]({% link {{ page.version.version }}/sql-feature-support.md %}).
+For more details on the CockroachDB SQL implementation, see [SQL Feature Support]({% link {{ site.current_cloud_version }}/sql-feature-support.md %}).
 
 ### Prepare for migration
 
@@ -110,13 +110,13 @@ Based on the error budget you [defined in your migration plan](#develop-a-migrat
 
 #### Load test data
 
-It's useful to load test data into CockroachDB so that you can [test your application queries](#validate-queries). Refer to the steps in [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %}).
+It's useful to load test data into CockroachDB so that you can [test your application queries](#validate-queries). Refer to the steps in [Migrate to CockroachDB in Phases]({% link molt/migrate-in-phases.md %}).
 
 #### Validate queries
 
 After you [load the test data](#load-test-data), validate your queries on CockroachDB. You can do this by [shadowing](#shadowing) or by [manually testing](#test-query-results-and-performance) the queries.
 
-Note that CockroachDB defaults to the [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) transaction isolation level. If you are migrating an application that was built at a `READ COMMITTED` isolation level on the source database, you must [enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation) on the CockroachDB cluster for compatibility.
+Note that CockroachDB defaults to the [`SERIALIZABLE`]({% link {{ site.current_cloud_version }}/demo-serializable.md %}) transaction isolation level. If you are migrating an application that was built at a `READ COMMITTED` isolation level on the source database, you must [enable `READ COMMITTED` isolation]({% link {{ site.current_cloud_version }}/read-committed.md %}#enable-read-committed-isolation) on the CockroachDB cluster for compatibility.
 
 ##### Shadowing
 
@@ -126,7 +126,7 @@ You can "shadow" your production workload by executing your source SQL statement
 
 You can manually validate your queries by testing a subset of "critical queries" on an otherwise idle CockroachDB cluster:
 
-- Check the application logs for error messages and the API response time. If application requests are slower than expected, use the **SQL Activity** page on the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/statements-page.md %}) or [DB Console]({% link {{ page.version.version }}/ui-statements-page.md %}) to find the longest-running queries that are part of that application request. If necessary, tune the queries according to our best practices for [SQL performance]({% link {{ page.version.version }}/performance-best-practices-overview.md %}).
+- Check the application logs for error messages and the API response time. If application requests are slower than expected, use the **SQL Activity** page on the [CockroachDB {{ site.data.products.cloud }} Console]({% link cockroachcloud/statements-page.md %}) or [DB Console]({% link {{ site.current_cloud_version }}/ui-statements-page.md %}) to find the longest-running queries that are part of that application request. If necessary, tune the queries according to our best practices for [SQL performance]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}).
 
 - Compare the results of the queries and check that they are identical in both the source database and CockroachDB. To do this, you can use [MOLT Verify]({% link molt/molt-verify.md %}).
 
@@ -134,7 +134,7 @@ Test performance on a CockroachDB cluster that is appropriately [sized](#capacit
 
 1. Run the application with single- or very low-concurrency and verify the app's performance is acceptable. The cluster should be provisioned with more than enough resources to handle this workload, because you need to verify that the queries will be fast enough when there are zero resource bottlenecks.
 
-1. Run stress tests with at least the production concurrency and rate, but ideally higher in order to verify that the system can handle unexpected spikes in load. This can also uncover [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) issues that will appear during spikes in app load, which may require [application design changes](#handling-transaction-contention) to avoid.
+1. Run stress tests with at least the production concurrency and rate, but ideally higher in order to verify that the system can handle unexpected spikes in load. This can also uncover [contention]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}#transaction-contention) issues that will appear during spikes in app load, which may require [application design changes](#handling-transaction-contention) to avoid.
 
 #### Perform a dry run
 
@@ -155,15 +155,15 @@ To safely cut over when using replication:
 1. When your [monitoring](#set-up-monitoring-and-alerting) indicates that replication is idle, use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the CockroachDB data.
 1. Start application traffic on CockroachDB.
 
-When you are ready to migrate, refer to [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}) or [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %}) for practical examples of the migration steps.
+When you are ready to migrate, refer to [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %}) or [Migrate to CockroachDB in Phases]({% link molt/migrate-in-phases.md %}) for practical examples of the migration steps.
 
 ## See also
 
 - [Migration Overview]({% link molt/migration-overview.md %})
-{% comment %}- [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})
-- [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %})
-- [Migration Failback]({% link {{ page.version.version }}/migrate-failback.md %}){% endcomment %}
-- [Schema Design Overview]({% link {{ page.version.version }}/schema-design-overview.md %})
-- [Primary key best practices]({% link {{ page.version.version }}/schema-design-table.md %}#primary-key-best-practices)
-- [Secondary index best practices]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices)
-- [Transaction contention best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention)
+- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
+- [Migrate to CockroachDB in Phases]({% link molt/migrate-in-phases.md %})
+- [Migration Failback]({% link molt/migrate-failback.md %})
+- [Schema Design Overview]({% link {{ site.current_cloud_version }}/schema-design-overview.md %})
+- [Primary key best practices]({% link {{ site.current_cloud_version }}/schema-design-table.md %}#primary-key-best-practices)
+- [Secondary index best practices]({% link {{ site.current_cloud_version }}/schema-design-indexes.md %}#best-practices)
+- [Transaction contention best practices]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}#transaction-contention)

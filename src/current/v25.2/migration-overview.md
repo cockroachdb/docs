@@ -16,7 +16,7 @@ This page has an overview of the following:
 ## Migration flow
 
 {{site.data.alerts.callout_success}}
-Before you begin the migration, review [Migration Strategy]({% link {{ page.version.version }}/migration-strategy.md %}).
+Before you begin the migration, review [Migration Strategy]({% link molt/migration-strategy.md %}).
 {{site.data.alerts.end}}
 
 A migration to CockroachDB generally follows this sequence:
@@ -73,9 +73,9 @@ MOLT [Fetch](#fetch) and [Verify](#verify) are CLI-based to maximize control, au
 
 The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) converts a source database schema to a CockroachDB-compatible schema:
 
-- Identifies [unimplemented features]({% link {{ site.current_cloud_version }}/migration-strategy.md %}#unimplemented-features-and-syntax-incompatibilities)
+- Identifies [unimplemented features]({% link molt/migration-strategy.md %}#unimplemented-features-and-syntax-incompatibilities)
 - Rewrites unsupported [DDL syntax]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements)
-- Applies CockroachDB [schema best practices]({% link {{ site.current_cloud_version }}/migration-strategy.md %}#schema-design-best-practices)
+- Applies CockroachDB [schema best practices]({% link molt/migration-strategy.md %}#schema-design-best-practices)
 
 ### Fetch
 
@@ -131,5 +131,5 @@ If issues arise post-cutover, run MOLT Fetch in `failback` mode to replicate cha
 - [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})
 - [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %})
 - [Migration Failback]({% link {{ page.version.version }}/migrate-failback.md %})
-- [Migration Strategy]({% link {{ page.version.version }}/migration-strategy.md %})
+- [Migration Strategy]({% link molt/migration-strategy.md %})
 - [MOLT Releases]({% link releases/molt.md %})

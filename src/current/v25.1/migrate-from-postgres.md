@@ -6,12 +6,12 @@ docs_area: migrate
 ---
 
 {{site.data.alerts.callout_info}}
-For current migration instructions using the [MOLT tools]({% link {{ page.version.version }}/migration-overview.md %}), refer to [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}).
+For current migration instructions using the [MOLT tools]({% link molt/migration-overview.md %}), refer to [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}).
 {{site.data.alerts.end}}
 
-This page describes basic considerations and provides a basic [example](#example-migrate-frenchtowns-to-cockroachdb) of migrating data from PostgreSQL to CockroachDB. The information on this page assumes that you have read [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}), which describes the broad phases and considerations of migrating a database to CockroachDB.
+This page describes basic considerations and provides a basic [example](#example-migrate-frenchtowns-to-cockroachdb) of migrating data from PostgreSQL to CockroachDB. The information on this page assumes that you have read [Migration Overview]({% link molt/migration-overview.md %}), which describes the broad phases and considerations of migrating a database to CockroachDB.
 
-The [PostgreSQL migration example](#example-migrate-frenchtowns-to-cockroachdb) on this page demonstrates how to update the PostgreSQL schema, perform an initial load of data, and validate the data. These steps are essential when [preparing for a full migration]({% link {{ page.version.version }}/migration-strategy.md %}#prepare-for-migration).
+The [PostgreSQL migration example](#example-migrate-frenchtowns-to-cockroachdb) on this page demonstrates how to update the PostgreSQL schema, perform an initial load of data, and validate the data. These steps are essential when [preparing for a full migration]({% link molt/migration-strategy.md %}#prepare-for-migration).
 
 {{site.data.alerts.callout_success}}
 If you need help migrating to CockroachDB, contact our <a href="mailto:sales@cockroachlabs.com">sales team</a>.
@@ -47,9 +47,9 @@ The [following example](#example-migrate-frenchtowns-to-cockroachdb) uses `IMPOR
 
 ## Example: Migrate `frenchtowns` to CockroachDB
 
-The following steps demonstrate converting a schema, performing an [initial load of data]({% link {{ page.version.version }}/migration-strategy.md %}#load-test-data), and [validating data consistency]({% link {{ page.version.version }}/migration-strategy.md %}#validate-queries) during a migration.
+The following steps demonstrate converting a schema, performing an [initial load of data]({% link molt/migration-strategy.md %}#load-test-data), and [validating data consistency]({% link molt/migration-strategy.md %}#validate-queries) during a migration.
 
-In the context of a full migration, these steps ensure that PostgreSQL data can be properly migrated to CockroachDB and your application queries tested against the cluster. For details, see the [Migration Overview]({% link {{ page.version.version }}/migration-strategy.md %}#prepare-for-migration).
+In the context of a full migration, these steps ensure that PostgreSQL data can be properly migrated to CockroachDB and your application queries tested against the cluster. For details, see [Migration Strategy]({% link molt/migration-strategy.md %}#prepare-for-migration).
 
 ### Before you begin
 
@@ -107,7 +107,7 @@ Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) t
 
 1. Review the `CREATE SEQUENCE` statements listed under **Suggestions**. Cockroach Labs does not recommend using a sequence to define a primary key column. For more information, see [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
 
-       For this example, **Acknowledge** the suggestion without making further changes. In practice, after [conducting the full migration]({% link {{ page.version.version }}/migration-overview.md %}) to CockroachDB, you would modify your CockroachDB schema to use unique and non-sequential primary keys.
+       For this example, **Acknowledge** the suggestion without making further changes. In practice, after [conducting the full migration]({% link molt/migration-overview.md %}) to CockroachDB, you would modify your CockroachDB schema to use unique and non-sequential primary keys.
 
 1. Click **Retry Migration**. The **Summary Report** now shows that there are no errors. This means that the schema is ready to migrate to CockroachDB.
 
@@ -286,13 +286,13 @@ Use [MOLT Verify]({% link molt/molt-verify.md %}) to check that the data on Post
        <nil> INF verification complete
        ~~~
 
-With the schema migrated and the initial data load verified, the next steps in a real-world migration are to ensure that you have made any necessary [application changes]({% link {{ page.version.version }}/migration-strategy.md %}#application-changes), [validate application queries]({% link {{ page.version.version }}/migration-strategy.md %}#validate-queries), and [perform a dry run]({% link {{ page.version.version }}/migration-strategy.md %}#perform-a-dry-run) before [conducting the full migration]({% link {{ page.version.version }}/migration-overview.md %}).
+With the schema migrated and the initial data load verified, the next steps in a real-world migration are to ensure that you have made any necessary [application changes]({% link molt/migration-strategy.md %}#application-changes), [validate application queries]({% link molt/migration-strategy.md %}#validate-queries), and [perform a dry run]({% link molt/migration-strategy.md %}#perform-a-dry-run) before [conducting the full migration]({% link molt/migration-overview.md %}).
 
-To learn more, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
+To learn more, see the [Migration Overview]({% link molt/migration-overview.md %}).
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Use the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Use the MOLT Verify tool]({% link molt/molt-verify.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
