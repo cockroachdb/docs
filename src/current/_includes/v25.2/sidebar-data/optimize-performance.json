@@ -58,6 +58,12 @@
         ]
       },
       {
+        "title": "Monitor and Analyze Transaction Contention",
+        "urls": [
+          "/${VERSION}/monitor-and-analyze-transaction-contention.html"
+        ]
+      },
+      {
         "title": "Performance Tuning Recipes",
         "urls": [
           "/${VERSION}/performance-recipes.html"

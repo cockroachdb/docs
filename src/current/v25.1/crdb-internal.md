@@ -298,6 +298,8 @@ WITH c AS (SELECT DISTINCT ON (table_id, index_id) table_id, index_id, num_conte
 
 The `crdb_internal.cluster_locks` schema contains information about [locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#concurrency-control) held by [transactions]({% link {{ page.version.version }}/transactions.md %}) on specific [keys]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range). Queries acquire locks on keys within transactions, or they wait until they can acquire locks until other transactions have released locks on those keys.
 
+{% include {{ page.version.version }}/crdb-internal-cluster-locks-warning.md %}
+
 For more information, see the following sections.
 
 - [Cluster locks columns](#cluster-locks-columns)
@@ -1179,21 +1181,15 @@ group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 
 Contains one row for each transaction [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) event.
 
+{% include {{ page.version.version }}/crdb-internal-transaction-contention-events-warning.md %}
+
 Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) to access. If you have the `VIEWACTIVITYREDACTED` privilege, `contending_key` will be redacted. If you have both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and `contending_key` will be redacted.
 
 Contention events are stored in memory. You can control the amount of contention events stored per node via the `sql.contention.event_store.capacity` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 The `sql.contention.event_store.duration_threshold` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) specifies the minimum contention duration to cause the contention events to be collected into the `crdb_internal.transaction_contention_events` table. The default value is `0`. If contention event collection is overwhelming the CPU or memory you can raise this value to reduce the load.
 
-Column | Type | Description
-------------|-----|------------
-`collection_ts` | `TIMESTAMPTZ NOT NULL` | The timestamp when the transaction [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) event was collected.
-`blocking_txn_id` | `UUID NOT NULL` | The ID of the blocking transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
-`blocking_txn_fingerprint_id` | `BYTES NOT NULL`| The ID of the blocking transaction fingerprint. To surface historical information about the transactions that caused the [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables to surface historical information about the transactions that caused the contention.
-`waiting_txn_id` | `UUID NOT NULL` | The ID of the waiting transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
-`waiting_txn_fingerprint_id` | `BYTES NOT NULL` | The ID of the waiting transaction fingerprint. To surface historical information about the transactions that caused the [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables.
-`contention_duration` | `INTERVAL NOT NULL` | The interval of time the waiting transaction spent waiting for the blocking transaction.
-`contending_key` | `BYTES NOT NULL` | The key on which the transactions contended.
+{% include {{ page.version.version }}/transaction-contention-events-columns.md %}
 
 #### Transaction contention - example
 
