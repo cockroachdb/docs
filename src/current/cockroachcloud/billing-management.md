@@ -133,7 +133,7 @@ If your organization has an annual contract with CockroachDB {{ site.data.produc
 
 Under the **Credits** section, you can see more information about each of your organization's contracts. Contracts are listed in the order in which they will be used.
 
-Under the **Spend over time** section, you can see a table of each of your organization's clusters and the costs they have accrued.
+The **Current billing period** section displays a table listing your organization's clusters and the Credits they have accrued. The table also includes the cluster type and associated [labels]({% link cockroachcloud/labels.md %}).
 
 ## View invoices
 
