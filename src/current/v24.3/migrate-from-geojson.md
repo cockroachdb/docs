@@ -122,7 +122,7 @@ IMPORT INTO underground_storage_tank CSV DATA ('http://localhost:3000/tanks.csv'
 - [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
 - [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Migrate from MySQL][mysql]
 - [Migrate from PostgreSQL][postgres]
 - [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})

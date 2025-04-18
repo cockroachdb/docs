@@ -34,7 +34,7 @@ A migration to CockroachDB generally follows this sequence:
 1. Finalize target schema: Recreate indexes or constraints on CockroachDB that you previously dropped to facilitate data load.
 1. Cut over to CockroachDB. Redirect application traffic to the CockroachDB cluster.
 
-For a practical example of the preceding steps, refer to [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}).
+For a practical example of the preceding steps, refer to [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %}).
 
 ## MOLT tools
 
@@ -103,10 +103,10 @@ MOLT Fetch supports multiple data migration modes. These can be combined based o
 
 |              Mode             |                                 Description                                  |                                                          Best For                                                          |
 |-------------------------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| `data-load`                   | Performs one-time load of source data into CockroachDB                       | Testing, migrations with planned downtime, [phased migrations]({% link {{ page.version.version }}/migrate-in-phases.md %}) |
-| `data-load-and-replication`   | Loads source data and starts continuous replication from the source database | [Migrations with minimal downtime]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})                        |
-| `replication-only`            | Starts replication from a previously loaded source                           | [Phased migrations]({% link {{ page.version.version }}/migrate-in-phases.md %}), post-load sync                            |
-| `failback`                    | Replicates changes on CockroachDB back to the original source                | [Rollback scenarios]({% link {{ page.version.version }}/migrate-failback.md %})                                            |
+| `data-load`                   | Performs one-time load of source data into CockroachDB                       | Testing, migrations with planned downtime, [phased migrations]({% link molt/migrate-in-phases.md %}) |
+| `data-load-and-replication`   | Loads source data and starts continuous replication from the source database | [Migrations with minimal downtime]({% link molt/migrate-to-cockroachdb.md %})                        |
+| `replication-only`            | Starts replication from a previously loaded source                           | [Phased migrations]({% link molt/migrate-in-phases.md %}), post-load sync                            |
+| `failback`                    | Replicates changes on CockroachDB back to the original source                | [Rollback scenarios]({% link molt/migrate-failback.md %})                                            |
 | `export-only` / `import-only` | Separates data export and import phases                                      | Large-scale migrations, custom storage pipelines                                                                           |
 | `direct-copy`                 | Loads data without intermediate storage using `COPY FROM`                    | Local testing, limited infra environments                                                                                  |
 
@@ -116,20 +116,20 @@ MOLT simplifies and streamlines the following migration patterns that use a repl
 
 ### Full migration with minimal downtime
 
-Run MOLT Fetch in `data-load-and-replication` mode to load the initial source data into CockroachDB. Continuous replication starts automatically after the initial load. When ready, pause application traffic to allow replication to drain, validate data consistency with MOLT Verify, then cut over to CockroachDB. For example steps, refer to [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}).
+Run MOLT Fetch in `data-load-and-replication` mode to load the initial source data into CockroachDB. Continuous replication starts automatically after the initial load. When ready, pause application traffic to allow replication to drain, validate data consistency with MOLT Verify, then cut over to CockroachDB. For example steps, refer to [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %}).
 
 ### Phased migration with minimal downtime
 
-Run MOLT Fetch in `data-load` mode to incrementally load and validate data in batches. After loading the initial source data, switch to `replication-only` mode to sync ongoing changes. When ready, pause application traffic to allow replication to drain, validate again with MOLT Verify, then cut over to CockroachDB. For example steps, refer to [Migrate in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %}).
+Run MOLT Fetch in `data-load` mode to incrementally load and validate data in batches. After loading the initial source data, switch to `replication-only` mode to sync ongoing changes. When ready, pause application traffic to allow replication to drain, validate again with MOLT Verify, then cut over to CockroachDB. For example steps, refer to [Migrate in Phases]({% link molt/migrate-in-phases.md %}).
 
 ## Migration failback
 
-If issues arise post-cutover, run MOLT Fetch in `failback` mode to replicate changes from CockroachDB back to the original source database. This ensures that data is consistent on the original source so that you can retry the migration later. For example steps, refer to [Migration Failback]({% link {{ page.version.version }}/migrate-failback.md %}).
+If issues arise post-cutover, run MOLT Fetch in `failback` mode to replicate changes from CockroachDB back to the original source database. This ensures that data is consistent on the original source so that you can retry the migration later. For example steps, refer to [Migration Failback]({% link molt/migrate-failback.md %}).
 
 ## See also
 
-- [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})
-- [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %})
-- [Migration Failback]({% link {{ page.version.version }}/migrate-failback.md %})
+- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
+- [Migrate to CockroachDB in Phases]({% link molt/migrate-in-phases.md %})
+- [Migration Failback]({% link molt/migrate-failback.md %})
 - [Migration Strategy]({% link molt/migration-strategy.md %})
 - [MOLT Releases]({% link releases/molt.md %})

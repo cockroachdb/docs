@@ -108,7 +108,7 @@ You might also see [multiple open connections](#excessive-number-of-connections)
 
 ### Data migration
 
-An initial data load during a migration may consume a high number of RUs. Generally in this case, optimized performance will also coincide with optimized RU consumption. For more information about migrations, refer to the [Migration Overview]({% link {{ site.current_cloud_version }}/migration-overview.md %}).
+An initial data load during a migration may consume a high number of RUs. Generally in this case, optimized performance will also coincide with optimized RU consumption. For more information about migrations, refer to the [Migration Overview]({% link molt/migration-overview.md %}).
 
 ### Changefeeds (CDC)
 

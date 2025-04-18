@@ -15,7 +15,7 @@ docs_area: deploy
 
 - Your application needs to maintain a high workload concurrency with minimal [transaction retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries), and it can tolerate potential [concurrency anomalies](#concurrency-anomalies). Predictable query performance at high concurrency is more valuable than guaranteed transaction [serializability]({% link {{ page.version.version }}/developer-basics.md %}#serializability-and-transaction-contention).
 
-- You are [migrating an application to CockroachDB]({% link {{ page.version.version }}/migration-overview.md %}) that was built at a `READ COMMITTED` isolation level on the source database, and it is not feasible to modify your application to use `SERIALIZABLE` isolation.
+- You are [migrating an application to CockroachDB]({% link molt/migration-overview.md %}) that was built at a `READ COMMITTED` isolation level on the source database, and it is not feasible to modify your application to use `SERIALIZABLE` isolation.
 
 Whereas `SERIALIZABLE` isolation guarantees data correctness by placing transactions into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}), `READ COMMITTED` isolation permits some [concurrency anomalies](#concurrency-anomalies) in exchange for minimizing transaction aborts, [retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries), and blocking. Compared to `SERIALIZABLE` transactions, `READ COMMITTED` transactions return fewer [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that require client-side handling. See [`READ COMMITTED` transaction behavior](#read-committed-transaction-behavior).
 
@@ -942,4 +942,4 @@ The following affect the performance of `READ COMMITTED` transactions:
 - [Serializable Transactions]({% link {{ page.version.version }}/demo-serializable.md %})
 - [What Write Skew Looks Like](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/)
 - [Read Committed RFC](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20230122_read_committed_isolation.md)
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
