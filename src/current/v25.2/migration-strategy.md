@@ -35,13 +35,13 @@ Create a document that summarizes the intent of the migration, the technical det
 
 It's important to fully [prepare the migration](#prepare-for-migration) in order to be certain that the migration can be completed successfully during the downtime window.
 
-- *Scheduled downtime* is made known to your users in advance. Once you have [prepared for the migration](#prepare-for-migration), you take the application offline, [conduct the migration]({% link {{ page.version.version }}/migration-overview.md %}), and bring the application back online on CockroachDB. To succeed, you should estimate the amount of downtime required to migrate your data, and ideally schedule the downtime outside of peak hours. Scheduling downtime is easiest if your application traffic is "periodic", meaning that it varies by the time of day, day of week, or day of month.
+- *Scheduled downtime* is made known to your users in advance. Once you have [prepared for the migration](#prepare-for-migration), you take the application offline, [conduct the migration]({% link molt/migration-overview.md %}), and bring the application back online on CockroachDB. To succeed, you should estimate the amount of downtime required to migrate your data, and ideally schedule the downtime outside of peak hours. Scheduling downtime is easiest if your application traffic is "periodic", meaning that it varies by the time of day, day of week, or day of month.
 
 - *Unscheduled downtime* impacts as few customers as possible, ideally without impacting their regular usage. If your application is intentionally offline at certain times (e.g., outside business hours), you can migrate the data without users noticing. Alternatively, if your application's functionality is not time-sensitive (e.g., it sends batched messages or emails), then you can queue requests while your system is offline, and process those requests after completing the migration to CockroachDB.
 
 - *Reduced functionality* takes some, but not all, application functionality offline. For example, you can disable writes but not reads while you migrate the application data, and queue data to be written after completing the migration.
 
-The [MOLT tools]({% link {{ page.version.version }}/migration-overview.md %}) enable migrations with minimal downtime. Refer to [Cutover strategy](#cutover-strategy).
+The [MOLT tools]({% link molt/migration-overview.md %}) enable migrations with minimal downtime. Refer to [Cutover strategy](#cutover-strategy).
 
 ### Capacity planning
 
@@ -75,7 +75,7 @@ As you develop your migration plan, consider the application changes that you wi
 
 #### Handling transaction contention
 
-Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You may encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration]({% link {{ page.version.version }}/migration-overview.md %}) and bulk load data.
+Optimize your queries against [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention). You may encounter [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration]({% link molt/migration-overview.md %}) and bulk load data.
 
 Transaction retry errors are more frequent under CockroachDB's default [`SERIALIZABLE` isolation level]({% link {{ page.version.version }}/demo-serializable.md %}). If you are migrating an application that was built at a `READ COMMITTED` isolation level, you should first [enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation) on the CockroachDB cluster for compatibility.
 
@@ -100,7 +100,7 @@ Once you have a migration plan, prepare the team, application, source database, 
 To minimize issues after cutover, compose a migration "pre-mortem":
 
 1. Clearly describe the roles and processes of each team member performing the migration.
-1. List the likely failure points and issues that you may encounter as you [conduct the migration]({% link {{ page.version.version }}/migration-overview.md %}).
+1. List the likely failure points and issues that you may encounter as you [conduct the migration]({% link molt/migration-overview.md %}).
 1. Rank potential issues by severity, and identify ways to reduce risk.
 1. Create a plan for implementing the actions that would most effectively reduce risk.
 
@@ -146,7 +146,7 @@ Performing a dry run is highly recommended. In addition to demonstrating how lon
 
 *Cutover* is the process of switching application traffic from the source database to CockroachDB. Once the source data is fully migrated to CockroachDB, you "flip the switch" to route application traffic to the new database, thus ending downtime.
 
-The MOLT toolkit enables [migrations with minimal downtime]({% link {{ page.version.version }}/migration-overview.md %}#migrations-with-minimal-downtime), using continuous replication of source changes to CockroachDB.
+The MOLT toolkit enables [migrations with minimal downtime]({% link molt/migration-strategy.md %}#migrations-with-minimal-downtime), using continuous replication of source changes to CockroachDB.
 
 To safely cut over when using replication:
 
@@ -159,11 +159,11 @@ When you are ready to migrate, refer to [Migrate to CockroachDB]({% link {{ page
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
+{% comment %}- [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})
 - [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %})
-- [Migration Failback]({% link {{ page.version.version }}/migrate-failback.md %})
+- [Migration Failback]({% link {{ page.version.version }}/migrate-failback.md %}){% endcomment %}
 - [Schema Design Overview]({% link {{ page.version.version }}/schema-design-overview.md %})
-[- [Primary key best practices]({% link {{ page.version.version }}/schema-design-table.md %}#primary-key-best-practices)
+- [Primary key best practices]({% link {{ page.version.version }}/schema-design-table.md %}#primary-key-best-practices)
 - [Secondary index best practices]({% link {{ page.version.version }}/schema-design-indexes.md %}#best-practices)
 - [Transaction contention best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention)

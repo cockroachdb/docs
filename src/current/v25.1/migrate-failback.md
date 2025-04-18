@@ -111,10 +111,10 @@ The following example watches the `employees` table for change events.
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})
 - [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %})

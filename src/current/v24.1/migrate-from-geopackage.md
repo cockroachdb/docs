@@ -114,7 +114,7 @@ IMPORT INTO busstops CSV DATA ('http://localhost:3000/busstops.csv') WITH skip =
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
 - [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
 - [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Migrate from MySQL][mysql]
 - [Migrate from PostgreSQL][postgres]
 - [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})

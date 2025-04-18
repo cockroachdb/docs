@@ -6,12 +6,12 @@ docs_area: migrate
 ---
 
 {{site.data.alerts.callout_info}}
-For current migration instructions using the [MOLT tools]({% link {{ page.version.version }}/migration-overview.md %}), refer to [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}).
+For current migration instructions using the [MOLT tools]({% link molt/migration-overview.md %}), refer to [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %}).
 {{site.data.alerts.end}}
 
-This page describes basic considerations and provides a basic [example](#example-migrate-world-to-cockroachdb) of migrating data from MySQL to CockroachDB. The information on this page assumes that you have read [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}), which describes the broad phases and considerations of migrating a database to CockroachDB.
+This page describes basic considerations and provides a basic [example](#example-migrate-world-to-cockroachdb) of migrating data from MySQL to CockroachDB. The information on this page assumes that you have read [Migration Overview]({% link molt/migration-overview.md %}), which describes the broad phases and considerations of migrating a database to CockroachDB.
 
-The [MySQL migration example](#example-migrate-world-to-cockroachdb) on this page demonstrates how to update the MySQL schema, perform an initial load of data, and validate the data. These steps are essential when [preparing for a full migration]({% link {{ page.version.version }}/migration-strategy.md %}#prepare-for-migration).
+The [MySQL migration example](#example-migrate-world-to-cockroachdb) on this page demonstrates how to update the MySQL schema, perform an initial load of data, and validate the data. These steps are essential when [preparing for a full migration]({% link molt/migration-strategy.md %}#prepare-for-migration).
 
 {{site.data.alerts.callout_success}}
 If you need help migrating to CockroachDB, contact our <a href="mailto:sales@cockroachlabs.com">sales team</a>.
@@ -19,7 +19,7 @@ If you need help migrating to CockroachDB, contact our <a href="mailto:sales@coc
 
 ## Syntax differences
 
-You will likely need to make application changes due to differences in syntax between MySQL and CockroachDB. Along with the [general considerations in the migration overview]({% link {{ page.version.version }}/migration-strategy.md %}#application-changes), also consider the following MySQL-specific information as you develop your migration plan.
+You will likely need to make application changes due to differences in syntax between MySQL and CockroachDB. Along with the [general considerations in the migration overview]({% link molt/migration-strategy.md %}#application-changes), also consider the following MySQL-specific information as you develop your migration plan.
 
 When [using the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}?filters=mysql#convert-a-schema), MySQL syntax that cannot automatically be converted will be displayed in the [**Summary Report**]({% link cockroachcloud/migrations-page.md %}?filters=mysql#summary-report). These may include the following.
 
@@ -94,9 +94,9 @@ The [following example](#example-migrate-world-to-cockroachdb) uses `IMPORT INTO
 
 ## Example: Migrate `world` to CockroachDB
 
-The following steps demonstrate converting a schema, performing an [initial load of data]({% link {{ page.version.version }}/migration-strategy.md %}#load-test-data), and [validating data consistency]({% link {{ page.version.version }}/migration-strategy.md %}#validate-queries) during a migration.
+The following steps demonstrate converting a schema, performing an [initial load of data]({% link molt/migration-strategy.md %}#load-test-data), and [validating data consistency]({% link molt/migration-strategy.md %}#validate-queries) during a migration.
 
-In the context of a full migration, these steps ensure that MySQL data can be properly migrated to CockroachDB and your application queries tested against the cluster. For details, see the [Migration Overview]({% link {{ page.version.version }}/migration-strategy.md %}#prepare-for-migration).
+In the context of a full migration, these steps ensure that MySQL data can be properly migrated to CockroachDB and your application queries tested against the cluster. For details, see [Migration Strategy]({% link molt/migration-strategy.md %}#prepare-for-migration).
 
 ### Before you begin
 
@@ -401,13 +401,13 @@ Use [MOLT Verify]({% link molt/molt-verify.md %}) to check that the data on MySQ
        <nil> INF verification complete
        ~~~
 
-With the schema migrated and the initial data load verified, the next steps in a real-world migration are to ensure that you have made any necessary [application changes]({% link {{ page.version.version }}/migration-strategy.md %}#application-changes), [validate application queries]({% link {{ page.version.version }}/migration-strategy.md %}#validate-queries), and [perform a dry run]({% link {{ page.version.version }}/migration-strategy.md %}#perform-a-dry-run) before [conducting the full migration]({% link {{ page.version.version }}/migration-overview.md %}).
+With the schema migrated and the initial data load verified, the next steps in a real-world migration are to ensure that you have made any necessary [application changes]({% link molt/migration-strategy.md %}#application-changes), [validate application queries]({% link molt/migration-strategy.md %}#validate-queries), and [perform a dry run]({% link molt/migration-strategy.md %}#perform-a-dry-run) before [conducting the full migration]({% link molt/migration-overview.md %}).
 
-To learn more, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
+To learn more, see the [Migration Overview]({% link molt/migration-overview.md %}).
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Use the Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Use the MOLT Verify tool]({% link molt/molt-verify.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})

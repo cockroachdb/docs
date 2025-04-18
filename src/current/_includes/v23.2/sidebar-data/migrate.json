@@ -5,7 +5,25 @@
     {
       "title": "Overview",
       "urls": [
-        "/${VERSION}/migration-overview.html"
+        "/molt/migration-overview.html"
+      ]
+    },
+    {
+      "title": "Migrate to CockroachDB",
+      "urls": [
+        "/molt/migrate-to-cockroachdb.html"
+      ]
+    },
+    {
+      "title": "Migrate in Phases",
+      "urls": [
+        "/molt/migrate-in-phases.html"
+      ]
+    },
+    {
+      "title": "Migration Failback",
+      "urls": [
+        "/molt/migrate-failback.html"
       ]
     },
     {
