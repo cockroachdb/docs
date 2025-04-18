@@ -85,7 +85,7 @@ Update your queries to resolve differences in functionality and SQL syntax.
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and is largely compatible with PostgreSQL syntax. However, the following PostgreSQL features do not yet exist in CockroachDB:
 
-{% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
+{% include {{ site.current_cloud_version }}/sql/unsupported-postgres-features.md %}
 
 If your source database uses any of the preceding features, you may need to implement workarounds in your schema design, in your [data manipulation language (DML)]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-manipulation-statements), or in your application code.
 
