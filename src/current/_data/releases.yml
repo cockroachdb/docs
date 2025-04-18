@@ -8789,7 +8789,7 @@
 
 - release_name: v25.2.0-beta.2
   major_version: v25.2
-  release_date: '2025-04-22'
+  release_date: '2025-04-23'
   release_type: Testing
   go_version: go1.23.7
   sha: fb81a5da71d404ce672fbaf3bea2b25b5d44fc80
