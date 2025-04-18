@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link {{site.current_cloud_version}}/migration-overview.md %}).
+MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link molt/migration-overview.md %}).
 
 MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to move the source data to cloud storage (Google Cloud Storage or Amazon S3), a local file server, or local memory. Once the data is exported, MOLT Fetch can load the data into a target CockroachDB database and replicate changes from the source database. For details, see [Usage](#usage).
 
@@ -282,7 +282,7 @@ In case you need to rename your [publication](https://www.postgresql.org/docs/cu
 Before using this option, the source PostgreSQL or MySQL database **must** be configured for continuous replication, as described in [Setup](#replication-setup). MySQL 5.7 and later are supported.
 {{site.data.alerts.end}}
 
-`data-load-and-replication` instructs MOLT Fetch to load the source data into CockroachDB, and replicate any subsequent changes on the source. 
+`data-load-and-replication` instructs MOLT Fetch to load the source data into CockroachDB, and replicate any subsequent changes on the source. This enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime).
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -322,7 +322,7 @@ Before using this option:
 - The `replicator` binary **must** be located either in the same directory as `molt` or in a directory beneath `molt`.
 {{site.data.alerts.end}}
 
-`replication-only` instructs MOLT Fetch to replicate ongoing changes on the source to CockroachDB, using the specified replication marker. This assumes you have already run [`--mode data-load`](#load-data) to load the source data into CockroachDB.
+`replication-only` instructs MOLT Fetch to replicate ongoing changes on the source to CockroachDB, using the specified replication marker. This assumes you have already run [`--mode data-load`](#load-data) to load the source data into CockroachDB. This enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime).
 
 - For a PostgreSQL source, you should have already created a replication slot when [loading data](#load-data). Specify the same replication slot name using `--pglogical-replication-slot-name`. For example:
 
@@ -617,7 +617,7 @@ To drop existing tables and create new tables before loading the data, use `drop
 --table-handling drop-on-target-and-recreate
 ~~~
 
-When using the `drop-on-target-and-recreate` option, MOLT Fetch creates a new CockroachDB table to load the source data if one does not already exist. To guide the automatic schema creation, you can [explicitly map source types to CockroachDB types](#type-mapping).
+When using the `drop-on-target-and-recreate` option, MOLT Fetch creates a new CockroachDB table to load the source data if one does not already exist. To guide the automatic schema creation, you can [explicitly map source types to CockroachDB types](#type-mapping). `drop-on-target-and-recreate` does **not** create indexes or constraints other than [`PRIMARY KEY`]({% link {{site.current_cloud_version}}/primary-key.md %}) and [`NOT NULL`]({% link {{site.current_cloud_version}}/not-null.md %}).
 
 #### Mismatch handling
 
@@ -1121,7 +1121,7 @@ DEBUG  [Sep 11 11:04:01]                                               httpReque
 ## See also
 
 - [MOLT Verify]({% link molt/molt-verify.md %})
-- [Migration Overview]({% link {{site.current_cloud_version}}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Migrate from PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %})
 - [Migrate from MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
 - [Migrate from CSV]({% link {{site.current_cloud_version}}/migrate-from-csv.md %})

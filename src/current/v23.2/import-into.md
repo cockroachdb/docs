@@ -158,7 +158,7 @@ You can control the `IMPORT` process's behavior using any of the following key-v
 
 For examples showing how to use these options, see the [Examples section]({% link {{ page.version.version }}/import-into.md %}#examples).
 
-For instructions and working examples showing how to migrate data from other databases and formats, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
+For instructions and working examples showing how to migrate data from other databases and formats, see the [Migration Overview]({% link molt/migration-overview.md %}).
 
 ## View and control import jobs
 
@@ -297,6 +297,6 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})

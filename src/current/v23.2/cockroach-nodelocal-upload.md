@@ -95,6 +95,5 @@ Then, you can use the file to [`IMPORT`]({% link {{ page.version.version }}/impo
 
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
-- [Import Data]({% link {{ page.version.version }}/migration-overview.md %})
 - [`IMPORT`]({% link {{ page.version.version }}/import.md %})
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
