@@ -10,7 +10,7 @@ Failback can be performed after you have loaded data into CockroachDB and are re
 {% assign tab_names_html = "Load and replicate;Phased migration;Failback" %}
 {% assign html_page_filenames = "migrate-to-cockroachdb.html;migrate-in-phases.html;migrate-failback.html" %}
 
-{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder=site.current_cloud_version %}
+{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder="molt" %}
 
 ## Before you begin
 
@@ -44,7 +44,7 @@ The following example watches the `employees` table for change events.
     Be mindful when specifying the connection strings: `--source` is the CockroachDB connection string and `--target` is the connection string of the database you migrated from.
     {{site.data.alerts.end}}
 
-    Use the `--stagingSchema` replication flag to provide the name of the staging schema. This is found in the `staging database name` message that is written at the beginning of the [replication task]({% link {{ site.current_cloud_version }}/migrate-in-phases.md %}#step-6-replicate-changes-to-cockroachdb).
+    Use the `--stagingSchema` replication flag to provide the name of the staging schema. This is found in the `staging database name` message that is written at the beginning of the [replication task]({% link molt/migrate-in-phases.md %}#step-6-replicate-changes-to-cockroachdb).
 
     <section class="filter-content" markdown="1" data-scope="postgres">
     {% include_cached copy-clipboard.html %}
@@ -116,5 +116,5 @@ The following example watches the `employees` table for change events.
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
 - [Migration Overview]({% link molt/migration-overview.md %})
-- [Migrate to CockroachDB]({% link {{ site.current_cloud_version }}/migrate-to-cockroachdb.md %})
-- [Migrate to CockroachDB in Phases]({% link {{ site.current_cloud_version }}/migrate-in-phases.md %})
+- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
+- [Migrate to CockroachDB in Phases]({% link molt/migrate-in-phases.md %})

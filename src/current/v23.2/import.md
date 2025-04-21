@@ -377,11 +377,11 @@ CSV DATA ('s3://{BUCKET NAME}/{customer-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS
 
 - [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
 - [Migration Overview]({% link molt/migration-overview.md %})
-- [Migrate from MySQL][mysql]
-- [Migrate from PostgreSQL][postgres]
+- [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql)
+- [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %})
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 
 {% comment %} Reference Links {% endcomment %}
 
-[postgres]: {% link {{ page.version.version }}/migrate-from-postgres.md %}
-[mysql]: {% link {{ page.version.version }}/migrate-from-mysql.md %}
+[postgres]: {% link molt/migrate-to-cockroachdb.md %}
+[mysql]: {% link molt/migrate-to-cockroachdb.md %}?filters=mysql

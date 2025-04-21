@@ -293,8 +293,7 @@
   sources: [':version/migrate-from-postgres.md']
 
 - destination: molt/migration-overview.md
-  sources: ['migration-overview.md']
-  versions: ['v23.1', 'v23.2', 'v24.1', 'v24.2', 'v24.3', 'v25.1', 'v25.2']
+  sources: [':version/migration-overview.md']
 
 - destination: molt/migration-overview.md
   sources: ['molt/molt-overview.md']
@@ -303,13 +302,13 @@
   sources: ['import-data.md']
   versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
 
-- destination: molt/molt-fetch.md
-  sources: [':version/molt-fetch.md']
-
 - destination: molt/migration-overview.md
   sources:
     - molt/live-migration-service.md
     - :version/live-migration-service.md
+
+- destination: molt/molt-fetch.md
+  sources: [':version/molt-fetch.md']
 
 - destination: molt/molt-verify.md
   sources: [':version/molt-verify.md']

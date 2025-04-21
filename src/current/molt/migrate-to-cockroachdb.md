@@ -10,7 +10,7 @@ A migration to CockroachDB uses the [MOLT tools]({% link molt/migration-overview
 {% assign tab_names_html = "Load and replicate;Phased migration;Failback" %}
 {% assign html_page_filenames = "migrate-to-cockroachdb.html;migrate-in-phases.html;migrate-failback.html" %}
 
-{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder=site.current_cloud_version %}
+{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder="molt" %}
 
 ## Before you begin
 
@@ -96,7 +96,7 @@ Start the initial load of data into the target database. Continuous replication 
 {% include molt/verify-output.md %}
 
 {{site.data.alerts.callout_success}}
-If you encountered issues with replication, you can now use [`failback`]({% link {{ site.current_cloud_version }}/migrate-failback.md %}) mode to replicate changes on CockroachDB back to the initial source database. In case you need to roll back the migration, this ensures that data is consistent on the initial source database.
+If you encountered issues with replication, you can now use [`failback`]({% link molt/migrate-failback.md %}) mode to replicate changes on CockroachDB back to the initial source database. In case you need to roll back the migration, this ensures that data is consistent on the initial source database.
 {{site.data.alerts.end}}
 
 ## Step 6. Modify the CockroachDB schema
@@ -114,5 +114,5 @@ Perform a cutover by resuming application traffic, now to CockroachDB.
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
 - [Migration Overview]({% link molt/migration-overview.md %})
-- [Migrate to CockroachDB in Phases]({% link {{ site.current_cloud_version }}/migrate-in-phases.md %})
-- [Migration Failback]({% link {{ site.current_cloud_version }}/migrate-failback.md %})
+- [Migrate to CockroachDB in Phases]({% link molt/migrate-in-phases.md %})
+- [Migration Failback]({% link molt/migrate-failback.md %})
