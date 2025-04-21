@@ -25,6 +25,10 @@ All CockroachDB {{ site.data.products.basic }} clusters, and CockroachDB {{ site
 
 When a CockroachDB {{ site.data.products.advanced }} cluster is nearing its EOS date, you will be reminded to upgrade the cluster at least 30 days before the EOS date to avoid losing support. {% capture who_can_upgrade %}A user with the Cluster Administrator or Cluster Operator [role]({% link cockroachcloud/authorization.md %}) can [upgrade a cluster]({% link cockroachcloud/upgrade-cockroach-version.md %}) directly from the CockroachDB Cloud Console. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can grant these roles.{% endcapture %}{{ who_can_upgrade }}
 
+{{site.data.alerts.callout_info}}
+CockroachDB self-hosted [Release Support Policy]({% link releases/release-support-policy.md %}) does not apply to CockroachDB Cloud. Cloud releases are supported independently, and do not follow the same LTS or End of Support timelines as CockroachDB self-hosted versions.   
+{{site.data.alerts.end}}
+
 ### Currently supported versions
 
 Version | Release Type | Support period | Release date | EOS date
