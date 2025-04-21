@@ -37,8 +37,8 @@ $ cockroach import --help
 
 ## Supported Formats
 
-- [`pgdump`]({% link {{ page.version.version }}/migrate-from-postgres.md %})
-- [`mysqldump`]({% link {{ page.version.version }}/migrate-from-mysql.md %})
+- [`pgdump`]({% link molt/migrate-to-cockroachdb.md %})
+- [`mysqldump`]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql)
 
 ## Flags
 
@@ -110,5 +110,5 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [`IMPORT`]({% link {{ page.version.version }}/import.md %})
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
-- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
-- [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %})
+- [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %})
+- [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql)

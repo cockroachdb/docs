@@ -269,9 +269,9 @@ props.setProperty("options", "-c sql_safe_updates=true -c statement_timeout=30")
 
 If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement instead. It is much faster and more efficient than making a series of [`INSERT`s]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`s]({% link {{ page.version.version }}/update.md %}). It bypasses the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
 
-For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}).
+For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %}).
 
-For more information about importing data from MySQL, see [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}).
+For more information about importing data from MySQL, see [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql).
 
 ### Use `reWriteBatchedInserts` for increased speed
 
