@@ -1120,8 +1120,6 @@ DEBUG  [Sep 11 11:04:01]                                               httpReque
 
 ## See also
 
-- [MOLT Verify]({% link molt/molt-verify.md %})
 - [Migration Overview]({% link molt/migration-overview.md %})
-- [Migrate from PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %})
-- [Migrate from MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
-- [Migrate from CSV]({% link {{site.current_cloud_version}}/migrate-from-csv.md %})
+- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
+- [MOLT Verify]({% link molt/molt-verify.md %})

@@ -25,8 +25,8 @@ For a demo of MOLT Verify, watch the following video:
 
 The following databases are currently supported:
 
-- [PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %})
-- [MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
+- PostgreSQL 12-14
+- MySQL 5.7, 8.0 and later
 - CockroachDB
 
 ## Installation
@@ -130,8 +130,6 @@ The following limitation is specific to MySQL:
 
 ## See also
 
-- [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [Migration Overview]({% link molt/migration-overview.md %})
-- [Migrate from PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %})
-- [Migrate from MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
-- [Migrate from CSV]({% link {{site.current_cloud_version}}/migrate-from-csv.md %})
+- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
+- [MOLT Fetch]({% link molt/molt-fetch.md %})
