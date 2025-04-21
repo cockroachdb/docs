@@ -83,13 +83,11 @@ Transaction retry errors are more frequent under CockroachDB's default [`SERIALI
 
 Update your queries to resolve differences in functionality and SQL syntax.
 
-CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and is largely compatible with PostgreSQL syntax. However, the following PostgreSQL features do not yet exist in CockroachDB:
+CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and is largely [compatible with PostgreSQL syntax]({% link {{ site.current_cloud_version }}/postgresql-compatibility.md %}).
 
-{% include {{ site.current_cloud_version }}/sql/unsupported-postgres-features.md %}
+For full compatibility with CockroachDB, you may need to implement workarounds in your schema design, in your [data manipulation language (DML)]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-manipulation-statements), or in your application code.
 
-If your source database uses any of the preceding features, you may need to implement workarounds in your schema design, in your [data manipulation language (DML)]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-manipulation-statements), or in your application code.
-
-For more details on the CockroachDB SQL implementation, see [SQL Feature Support]({% link {{ site.current_cloud_version }}/sql-feature-support.md %}).
+For more details on the CockroachDB SQL implementation, refer to [SQL Feature Support]({% link {{ site.current_cloud_version }}/sql-feature-support.md %}).
 
 ### Prepare for migration
 
