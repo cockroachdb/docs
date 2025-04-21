@@ -110,6 +110,11 @@ Based on the error budget you [defined in your migration plan](#develop-a-migrat
 
 It's useful to load test data into CockroachDB so that you can [test your application queries](#validate-queries). Refer to the steps in [Migrate to CockroachDB in Phases]({% link molt/migrate-in-phases.md %}).
 
+MOLT Fetch [supports both `IMPORT INTO` and `COPY FROM`]({% link molt/molt-fetch.md %}#data-movement) for loading data into CockroachDB:
+
+- Use `IMPORT INTO` for maximum throughput when the target tables can be offline. For a bulk data migration, most users should use `IMPORT INTO` because the tables will be offline anyway, and `IMPORT INTO` can [perform the data import much faster]({% link {{ site.current_cloud_version }}/import-performance-best-practices.md %}) than `COPY FROM`.
+- Use `COPY FROM` (or `--direct-copy`) when the target must remain queryable during load.
+
 #### Validate queries
 
 After you [load the test data](#load-test-data), validate your queries on CockroachDB. You can do this by [shadowing](#shadowing) or by [manually testing](#test-query-results-and-performance) the queries.
@@ -144,7 +149,7 @@ Performing a dry run is highly recommended. In addition to demonstrating how lon
 
 *Cutover* is the process of switching application traffic from the source database to CockroachDB. Once the source data is fully migrated to CockroachDB, you "flip the switch" to route application traffic to the new database, thus ending downtime.
 
-The MOLT toolkit enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime), using continuous replication of source changes to CockroachDB.
+MOLT enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime), using continuous replication of source changes to CockroachDB.
 
 To safely cut over when using replication:
 

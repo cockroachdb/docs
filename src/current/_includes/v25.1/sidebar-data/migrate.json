@@ -9,6 +9,12 @@
       ]
     },
     {
+      "title": "Migration Strategy",
+      "urls": [
+        "/molt/migration-strategy.html"
+      ]
+    },
+    {
       "title": "Migrate to CockroachDB",
       "urls": [
         "/molt/migrate-to-cockroachdb.html"
@@ -135,12 +141,6 @@
       "title": "Migrate from Oracle",
       "urls": [
         "/${VERSION}/migrate-from-oracle.html"
-      ]
-    },
-    {
-      "title": "Migration Strategy: Lift and Shift",
-      "urls": [
-        "/${VERSION}/migration-strategy-lift-and-shift.html"
       ]
     }
   ]
