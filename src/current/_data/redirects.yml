@@ -293,7 +293,8 @@
   sources: [':version/migrate-from-postgres.md']
 
 - destination: molt/migration-overview.md
-  sources: [':version/migration-overview.md']
+  sources: ['migration-overview.md']
+  versions: ['v23.1', 'v23.2', 'v24.1', 'v24.2', 'v24.3', 'v25.1', 'v25.2']
 
 - destination: molt/migration-overview.md
   sources: ['import-data.md']
