@@ -363,5 +363,5 @@ You can copy CSV data into CockroachDB using the following methods:
 - [`EXPORT`]({% link {{ page.version.version }}/export.md %})
 - [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %})
 {% comment %}
-- [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %})
+- [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %})
 {% endcomment %}

@@ -184,7 +184,7 @@ IMPORT PGDUMP 's3://{BUCKET NAME}/{customers.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}
     WITH ignore_unsupported_statements;
 ~~~
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`, and use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %}).
 
 ### Import a table from a PostgreSQL database dump
 
@@ -197,7 +197,7 @@ IMPORT TABLE employees
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` option may be needed. For more information, see the list of [import options](#import-options).
 
-For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}).
+For this command to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %}).
 
 ### Import a MySQL database dump
 
@@ -206,7 +206,7 @@ For this command to succeed, you need to have created the dump file with specifi
 IMPORT MYSQLDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}).
+For more detailed information about importing data from MySQL, see [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql).
 
 ### Import a table from a MySQL database dump
 
@@ -218,7 +218,7 @@ IMPORT TABLE employees
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` option may be needed. For more information, see the list of [import options](#import-options).
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}).
+For more detailed information about importing data from MySQL, see [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql).
 
 ### Import a limited number of rows
 
