@@ -297,6 +297,9 @@
   versions: ['v23.1', 'v23.2', 'v24.1', 'v24.2', 'v24.3', 'v25.1', 'v25.2']
 
 - destination: molt/migration-overview.md
+  sources: ['molt/molt-overview.md']
+
+- destination: molt/migration-overview.md
   sources: ['import-data.md']
   versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
 
