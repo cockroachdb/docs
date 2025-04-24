@@ -51,7 +51,7 @@ If you change your cluster's plan from {{ site.data.products.basic }} to {{ site
 
 Important capacity and pricing policies mentioned elsewhere are summarized here:
 
-- **Minimum and maximum provisioned capacity**: A CockroachDB {{ site.data.products.standard }} cluster must have a provisioned capacity of at minimum 2 vCPUs. For production workloads, we recommend at minimum 4 to 8 vCPUs. The maximum capacity for CockroachDB {{ site.data.products.standard }} is 60 vCPUs. To express interest in higher-capacity clusters, [talk to an expert](https://www.cockroachlabs.com/contact/).
+- **Minimum and maximum provisioned capacity**: A CockroachDB {{ site.data.products.standard }} cluster must have a provisioned capacity of at minimum 2 vCPUs. For production workloads, we recommend at minimum 4 to 8 vCPUs. The maximum capacity for CockroachDB {{ site.data.products.standard }} is 200 vCPUs. To express interest in higher-capacity clusters, [talk to an expert](https://www.cockroachlabs.com/contact/).
 
 - **Enforcing provisioned capacity limits**: CockroachDB {{ site.data.products.cloud }} enforces the cluster’s provisioned capacity, limiting application throughput if the workload exceeds the capacity limit. This can result in degraded performance and increased query latency. You can increase a cluster's capacity at any time.
 
