@@ -9,7 +9,7 @@ PAUSE JOBS (WITH x AS (SHOW CHANGEFEED JOBS) SELECT job_id FROM x WHERE status =
 
 This will change the status for each of the running changefeeds to `paused`, which can be verified with [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs).
 
-To resume all running changefeeds:
+To resume all paused changefeeds:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
