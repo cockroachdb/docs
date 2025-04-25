@@ -551,12 +551,6 @@ SQLSTATE: 0A000
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
 
-### Declarative schema changer does not track rows in `system.privileges`
-
-The [declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer) does not track rows in the `system.privileges` table, which prevents the declarative schema changer from successfully running the [`DROP OWNED BY`]({% link {{ page.version.version }}/drop-owned-by.md %}) statement.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88149)
-
 ### Size limits on statement input from SQL clients
 
 CockroachDB imposes a hard limit of 16MiB on the data input for a single statement passed to CockroachDB from a client (including the SQL shell). We do not recommend attempting to execute statements from clients with large input.
