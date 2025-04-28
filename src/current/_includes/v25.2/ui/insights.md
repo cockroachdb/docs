@@ -320,6 +320,7 @@ SELECT workload_index_recs();
 
 To display the query string that corresponds to the two fingerprint IDs, run a query that joins the `workload_index_recs` function with the [`crdb_internal.statement_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#statement_statistics) table.
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ss.index_recommendations, ss.aggregated_ts, ss.fingerprint_id, ss.app_name, ss.metadata->>'query' AS query -- Return data from the statement_statistics table
 FROM crdb_internal.statement_statistics AS ss
