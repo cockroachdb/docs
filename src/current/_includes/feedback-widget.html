@@ -1,5 +1,5 @@
 <!-- _includes/feedback-widget.html -->
-<div id="sticky-feedback-widget">
+<div id="sticky-feedback-widget" data-docs-area="{{ page.docs_area }}">
   <!-- Sticky button with star SVG icon -->
   <button id="sticky-rating-btn">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16" role="presentation" aria-hidden="true">
@@ -69,12 +69,12 @@
     border: 1.5px solid #4C0EFF;
     border-radius: 8px;
     padding: 10px 16px;
-    font-size: 12px; /* font size reduced from 14px */
+    font-size: 12px;
     font-weight: 500;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 4px; /* gap reduced from 6px */
+    gap: 4px;
     backdrop-filter: blur(4px);
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
   }
@@ -93,7 +93,7 @@
     position: fixed;
     bottom: 160px;
     right: 20px;
-    width: 320px; /* width reduced from 420px */
+    width: 320px;
     max-width: 90%;
     z-index: 10000;
   }
@@ -134,7 +134,7 @@
   }
 
   .star {
-    font-size: 24px; /* star size reduced from 30px */
+    font-size: 24px;
     color: #ccc;
     cursor: pointer;
     margin: 0 4px;
@@ -161,7 +161,7 @@
     margin: 12px 0;
     border: 1px solid #ddd;
     border-radius: 12px;
-    font-size: 12px; /* font size reduced from 14px */
+    font-size: 12px;
     box-sizing: border-box;
   }
 
@@ -180,7 +180,7 @@
     border: none;
     border-radius: 12px;
     padding: 10px 16px;
-    font-size: 12px; /* font size reduced from 14px */
+    font-size: 12px;
     cursor: pointer;
     margin-top: 10px;
     display: block;
@@ -219,13 +219,13 @@
   #feedback-window h3 {
     margin-top: 0;
     margin-bottom: 12px;
-    font-size: 16px; /* font size reduced from 18px */
+    font-size: 16px;
     color: #333;
   }
 
   #feedback-window h4 {
     margin-bottom: 8px;
-    font-size: 14px; /* font size reduced from 16px */
+    font-size: 14px;
     color: #333;
   }
 
@@ -238,83 +238,133 @@
 </style>
 
 <!-- Script -->
+<!-- Drop-in replacement for your existing <script>…</script> -->
+<!-- Drop-in replacement for your existing <script>…</script> -->
+<!-- Drop-in replacement for your existing <script>…</script> -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const stickyBtn = document.getElementById('sticky-rating-btn');
-    const feedbackOverlay = document.getElementById('feedback-overlay');
-    const feedbackWindow = document.getElementById('feedback-window');
-    const closeBtn = document.getElementById('feedback-close-btn');
-    const step1 = document.getElementById('step1');
-    const step2 = document.getElementById('step2');
-    const step3 = document.getElementById('step3');
-    const stars = document.querySelectorAll('.star');
-    const feedbackHeading = document.getElementById('feedback-heading');
-    const commentsField = document.getElementById('comments');
-    const emailField = document.getElementById('email');
+    const stickyBtn     = document.getElementById('sticky-rating-btn');
+    const feedbackOv    = document.getElementById('feedback-overlay');
+    const feedbackWin   = document.getElementById('feedback-window');
+    const closeBtn      = document.getElementById('feedback-close-btn');
+    const step1         = document.getElementById('step1');
+    const step2         = document.getElementById('step2');
+    const step3         = document.getElementById('step3');
+    const stars         = document.querySelectorAll('.star');
+    const headingEl     = document.getElementById('feedback-heading');
+    const commentsEl    = document.getElementById('comments');
+    const emailEl       = document.getElementById('email');
     const screenshotBtn = document.getElementById('screenshot-btn');
-    const screenshotField = document.getElementById('screenshot');
-    const submitBtn = document.getElementById('submit-btn');
-    let currentRating = 0;
-
+    const screenshotEl  = document.getElementById('screenshot');
+    const submitBtn     = document.getElementById('submit-btn');
+    let currentRating   = 0;
+  
     function resetWidget() {
       currentRating = 0;
-      stars.forEach(s => s.classList.remove('selected', 'hover'));
-      commentsField.value = '';
-      emailField.value = '';
-      screenshotField.value = '';
+      stars.forEach(s => s.classList.remove('hover','selected'));
+      commentsEl.value   = '';
+      emailEl.value      = '';
+      screenshotEl.value = '';
       step1.classList.add('active');
       step2.classList.remove('active');
       step3.classList.remove('active');
-      feedbackHeading.textContent = 'Tell us about your experience';
-      commentsField.placeholder = 'Tell us about your experience';
+      headingEl.textContent     = 'Tell us about your experience';
+      commentsEl.placeholder    = 'Tell us about your experience';
       screenshotBtn.textContent = 'Show us a screenshot';
     }
-
+  
     stickyBtn.addEventListener('click', () => {
       resetWidget();
-      feedbackOverlay.style.display = 'block';
+      feedbackOv.style.display = 'block';
     });
-
-    closeBtn.addEventListener('click', () => {
-      feedbackOverlay.style.display = 'none';
-    });
-
+    closeBtn.addEventListener('click', () => feedbackOv.style.display = 'none');
+  
     stars.forEach(star => {
       star.addEventListener('mouseover', () => {
-        const val = parseInt(star.getAttribute('data-value'), 10);
-        stars.forEach(s => s.classList.toggle('hover', parseInt(s.getAttribute('data-value'), 10) <= val));
+        const v = +star.dataset.value;
+        stars.forEach(s => s.classList.toggle('hover', +s.dataset.value <= v));
       });
-      star.addEventListener('mouseout', () => {
-        stars.forEach(s => s.classList.remove('hover'));
-      });
+      star.addEventListener('mouseout', () => stars.forEach(s => s.classList.remove('hover')));
       star.addEventListener('click', () => {
-        currentRating = parseInt(star.getAttribute('data-value'), 10);
-        stars.forEach(s => s.classList.toggle('selected', parseInt(s.getAttribute('data-value'), 10) <= currentRating));
+        currentRating = +star.dataset.value;
+        stars.forEach(s => s.classList.toggle('selected', +s.dataset.value <= currentRating));
         step1.classList.remove('active');
         step2.classList.add('active');
         if (currentRating <= 2) {
-          feedbackHeading.textContent = 'Tell us how we can improve';
-          commentsField.placeholder = 'Tell us how we can improve';
+          headingEl.textContent     = 'Tell us how we can improve';
+          commentsEl.placeholder    = 'Tell us how we can improve';
           screenshotBtn.textContent = 'Show us where the problem is';
         } else {
-          feedbackHeading.textContent = 'Tell us more about your experience';
-          commentsField.placeholder = 'Tell us more about your experience';
+          headingEl.textContent     = 'Tell us more about your experience';
+          commentsEl.placeholder    = 'Tell us more about your experience';
           screenshotBtn.textContent = 'Show us a screenshot';
         }
       });
     });
-
-    screenshotBtn.addEventListener('click', () => {
-      screenshotField.click();
-    });
-
-    submitBtn.addEventListener('click', () => {
+  
+    screenshotBtn.addEventListener('click', () => screenshotEl.click());
+  
+    // ─── Drop-in replacement for submit handler ──────────────────────────
+    submitBtn.addEventListener('click', async () => {
+      // Gather values
+      const pageURL    = window.location.href;
+      const pageTitle  = document.title;
+      const starRating = currentRating;
+      const comment    = commentsEl.value;
+      const email      = emailEl.value;
+  
+      // Determine docs_area (same logic as before)
+      const activeLis = Array.from(document.querySelectorAll('#sidebar li.active'));
+      const deepestLi = activeLis[activeLis.length - 1];
+      let tier1Li = deepestLi;
+      while (tier1Li && !tier1Li.classList.contains('tier-1')) {
+        tier1Li = tier1Li.parentElement.closest('li');
+      }
+      const tier1Title = tier1Li?.querySelector(':scope > a')?.textContent.trim() || '';
+      let docsArea = tier1Title;
+      if (tier1Title === 'Self-Hosted Deployments') {
+        let tier2Li = deepestLi;
+        if (!tier2Li.classList.contains('tier-2')) {
+          tier2Li = tier2Li.parentElement.closest('li.tier-2');
+        }
+        const tier2Text = tier2Li?.querySelector(':scope > a')?.textContent.trim();
+        if (tier2Text) docsArea = tier2Text;
+      }
+  
+      // Build multipart form
+      const formData = new FormData();
+      formData.append('page_url',    pageURL);
+      formData.append('page_title',  pageTitle);
+      formData.append('star_rating', starRating);
+      formData.append('comment',     comment);
+      formData.append('email',       email);
+      formData.append('docs_area',   docsArea);
+      if (screenshotEl.files[0]) {
+        formData.append('screenshot', screenshotEl.files[0]);
+      }
+  
+      try {
+        const resp = await fetch('/api/feedback', {
+          method:  'POST',
+          body:     formData
+        });
+        if (!resp.ok) {
+          console.error('Feedback API error:', resp.status, await resp.text());
+        }
+      } catch (err) {
+        console.error('Network error sending feedback:', err);
+      }
+  
+      // Transition to thank-you
       step2.classList.remove('active');
       step3.classList.add('active');
     });
-
-    feedbackWindow.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
+    // ────────────────────────────────────────────────────────────────────────
+  
+    feedbackWin.addEventListener('click', e => e.stopPropagation());
   });
-</script>
+  </script>
+  
+
+
+  
