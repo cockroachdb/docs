@@ -22,21 +22,20 @@ This page is a reference for the `CREATE LOGICALLY REPLICATED` SQL statement, wh
 
 ## Required privileges
 
-{% include_cached new-in.html version="v25.2" %} To run the `CREATE LOGICALLY REPLICATED` statement to create an LDR stream, the following privileges are required:
+{% include_cached new-in.html version="v25.2" %} Users need the following privileges to create an LDR stream with `CREATE LOGICALLY REPLICATED`:
 
-On the source cluster:
+- **Source connection string user:** Needs the `REPLICATIONSOURCE` privilege on the source table(s). This is the user specified in the [source connection string]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#step-2-connect-from-the-destination-to-the-source) in unidirectional or bidirectional streams.
+- **User starting the LDR stream on the destination:** Must have `CREATE` on the destination database **and** be the same user that is specified in the destination connection string for a bidirectional stream. The destination table will be created and the user given the `REPLICATIONDEST` privilege on the new table automatically.
+- **For reverse (bidirectional) setup:** The original source user must have `REPLICATIONDEST` on the tables in the original source cluster.
 
-- The table-level `REPLICATIONSOURCE` privilege on the source table(s).
+LDR from cluster A to B represents a _unidirectional_ setup from a source to a destination cluster. LDR from cluster B to A is the reverse stream for a _bidirectional_ setup:
 
-This is the user provided in the source URI when you start a LDR stream.
-
-On the destination cluster:
-
-- `CREATE` on the parent database of the new table, which allows for the automatic table creation.
-
-For bidirectional LDR:
-
-- The user in the original source URI, who begins the reverse LDR stream, requires the table-level `REPLICATIONDEST` privilege.
+Replication direction | Cluster | User role | Required privileges
+----------------------+---------+-----------+-------------------
+A ➔ B | A | User in source connection string. | `REPLICATIONSOURCE` on A's tables.
+A ➔ B | B | User running `CREATE LOGICALLY REPLICATED` from the destination cluster. The destination table will be created and the user given the `REPLICATIONDEST` privilege on the new table automatically.<br>**Note:** Must match the user in the destination connection string for bidirectional LDR. | `CREATE` on B's parent database.
+B ➔ A (reverse stream) | B | User in the new source connection string. | `REPLICATIONSOURCE` on B's tables.
+Reverse replication requirement | A | Original source connection string user. | `REPLICATIONDEST` on A's tables.
 
 Grant a table-level privilege with the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) statement to a [user or a role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles):
 

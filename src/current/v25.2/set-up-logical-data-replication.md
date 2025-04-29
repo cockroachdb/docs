@@ -101,44 +101,30 @@ If you are setting up bidirectional LDR, you **must** run this step on both clus
     CREATE USER {your_username} WITH PASSWORD '{your_password}';
     ~~~
 
-    Choose the appropriate privilege based on the SQL statement the user will run:
-    - [`CREATE LOGICAL REPLICATION STREAM`](#create-logical-replication-stream-existing-destination-table) (replicating into an **existing table**) 
-    - [`CREATE LOGICALLY REPLICATED`](#create-logically-replicated-automatically-creates-destination-table) (creating a **new table** as part of the replication). 
-        
-    For details on which syntax to use, refer to the [Syntax](#syntax) section at the beginning of this tutorial.
+1. Choose the appropriate privilege based on the SQL statement the user on the destination cluster will run. (For details on which syntax to use, refer to the [Syntax](#syntax) section at the beginning of this tutorial):
+    - [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %}) (replicating into an **existing table**). Grant the [`REPLICATIONDEST` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#replicationdest) on the **destination table**, which allows the user to stream data into the existing table:
 
-    {{site.data.alerts.callout_info}}
-    If you are setting up bidirectional LDR, each cluster must **authorize both stream directions** using the table-level privileges. Ensure that you also grant privileges to users running the LDR stream in the reverse direction (from the original destination to the original source).
-    {{site.data.alerts.end}}
+        {% include_cached copy-clipboard.html %}
+        ~~~sql
+        GRANT REPLICATIONDEST ON TABLE {your_db}.{your_schema}.{your_table} TO {your_username};
+        ~~~
+    - [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}) (creating a **new table** as part of the replication). Grant the [`CREATE` privilege]({% link {{ page.version.version }}/create-database.md %}#required-privileges) on the **parent database**, which allows the user to create a new table in the specified database, and the user will automatically have `REPLICATIONDEST` on the table they create:
 
-    #### `CREATE LOGICAL REPLICATION STREAM` (existing destination table):
+        {% include_cached copy-clipboard.html %}
+        ~~~sql
+        GRANT CREATE ON DATABASE {your_db} TO {your_username};
+        ~~~
 
-    {% include_cached new-in.html version="v25.2" %} Grant the [`REPLICATIONDEST` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#replicationdest) on the **destination table**:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~sql
-    GRANT REPLICATIONDEST ON TABLE {your_db}.{your_schema}.{your_table} TO {your_username};
-    ~~~
-
-    This privilege allows the user to stream data into the existing table.
-
-    #### `CREATE LOGICALLY REPLICATED` (automatically creates destination table):
-
-    {% include_cached new-in.html version="v25.2" %} Grant the [`CREATE` privilege]({% link {{ page.version.version }}/create-database.md %}#required-privileges) on the **parent database**:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~sql
-    GRANT CREATE ON DATABASE {your_db} TO {your_username};
-    ~~~
-
-    This allows the user to create a new table in the specified database, and the user will automatically have `REPLICATIONDEST` on the table they create.
-
-1. {% include_cached new-in.html version="v25.2" %} On the **source**, grant the user who will be [specified in the connection string to the source cluster](#step-2-connect-from-the-destination-to-the-source) the [`REPLICATIONSOURCE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#replicationsource):
+1. On the **source**, grant the user who will be [specified in the connection string to the source cluster](#step-2-connect-from-the-destination-to-the-source) the [`REPLICATIONSOURCE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#replicationsource):
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
     GRANT REPLICATIONSOURCE ON TABLE {your_db}.{your_schema}.{your_table} TO {your_username};
     ~~~
+
+1. (Optional) If you are setting up **bidirectional** LDR, each cluster must authorize both stream directions using the table-level privileges depending on the syntax you're using:
+    - [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %}) (setting up a reverse stream manually). Grant `REPLICATIONDEST` and `REPLICATIONSOURCE` to the users in the reverse direction.
+    - [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}) (setting up a bidirectional stream automatically). Grant the original source user `REPLICATIONDEST` on the tables.
 
 {{site.data.alerts.callout_info}}
 As of v25.2, the `REPLICATION` system privilege has been **deprecated** and replaced with the granular, table-level privileges: `REPLICATIONSOURCE` and `REPLICATIONDEST`.

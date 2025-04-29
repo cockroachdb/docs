@@ -20,21 +20,18 @@ If the table you're replicating does not contain [user-defined types]({% link {{
 
 ## Required privileges
 
+`CREATE LOGICAL REPLICATION STREAM` creates a one-way LDR stream only. To achieve bidirectional replication, you must manually create two separate streams, one in each direction, with the required privileges set on both clusters.
+
+LDR from cluster A to B represents a one-way stream from a source to a destination cluster. LDR from cluster B to A is the reverse stream for a bidirectional setup.
+
 {% include_cached new-in.html version="v25.2" %} To run the `CREATE LOGICAL REPLICATION STREAM` statement to create an LDR stream, the following privileges are required:
 
-On the source cluster:
-
-- The table-level `REPLICATIONSOURCE` privilege on the source table(s).
-
-This is the user provided in the source URI when you start a LDR stream.
-
-On the destination cluster:
-
-- The table-level `REPLICATIONDEST` privilege on the destination table(s).
-
-For bidirectional LDR:
-
-- The user in the original source URI, who begins the reverse LDR stream, requires the table-level `REPLICATIONDEST` privilege.
+LDR direction | Cluster | User role | Required privilege 
+----------------------+---------+-----------+--------------------
+A ➔ B | A | User in the LDR connection string. | `REPLICATIONSOURCE`
+A ➔ B | B | User running the command. | `REPLICATIONDEST`
+B ➔ A | B | User in the LDR connection string. | `REPLICATIONSOURCE`
+B ➔ A | A | User running the command. | `REPLICATIONDEST`
 
 Grant a table-level privilege with the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) statement to a [user or a role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles):
 
