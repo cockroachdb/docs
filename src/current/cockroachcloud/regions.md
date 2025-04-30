@@ -123,6 +123,7 @@ North America   | `us-central1`             | Iowa
                 | `us-west2`                | California
 South America   | `southamerica-east1`      | São Paulo
 Western Europe  | `europe-west1`            | St. Ghislain
+                | `europe-west3`            | Frankfurt
 
 </section>
 
