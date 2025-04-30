@@ -58,6 +58,8 @@ If you [deployed CockroachDB on Red Hat OpenShift]({% link {{ page.version.versi
 
 ## Disable auto-finalization
 
+{% include common/upgrade/disable-auto-finalization.md %}
+
 ## Troubleshooting
 
 {% include common/upgrade/troubleshooting-self-hosted.md %}
