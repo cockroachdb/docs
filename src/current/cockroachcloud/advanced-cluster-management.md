@@ -25,6 +25,10 @@ The [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) disp
 
 From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 
+## Edit labels
+
+You can [organize CockroachDB {{ site.data.products.cloud }} clusters using labels]({% link cockroachcloud/labels.md %}).
+
 ## Scale your cluster
 
 These sections show how to scale a {{ site.data.products.advanced }} cluster horizontally by adding or removing nodes or vertically by changing each node's storage and compute resources.
