@@ -6,13 +6,14 @@ toc: true
 
 In CockroachDB changefeeds, the _envelope_ is the structure of each [_message_]({% link {{ page.version.version }}/changefeed-messages.md %}). Changefeeds package _events_, triggered by an update to a row in a [watched table]({% link {{ page.version.version }}/change-data-capture-overview.md %}#watched-table), into messages according to the configured envelope. By default, changefeed messages use the `wrapped` envelope, which includes the primary key of the changed row and a top-level field indicating the value of the row after the change event (an `"after"` field with the new row values, or `NULL` for deletes).​ 
 
-You can use changefeed options to customize message contents in order to integrate with your downstream requirements. For example, the previous state of the row, the information of the cluster that the message is coming from, or the schema of the event payload in the message.
+You can use changefeed options to customize message contents in order to integrate with your downstream requirements. For example, the previous state of the row, the information of the cluster that the message is coming from, or the schema of the event payload in the message. Envelope configuration also allows you to manage the trade offs between event data and changefeed throughput.
 
 The possible envelope fields support use cases such as:
 
-- Enabling full-fidelity changefeed messages.
-- Routing events based on operation type.
-- Automatically generating or synchronizing schemas in downstream consumers.
+- [Auditing](#audit-changes-in-data) changes in data.
+- Enabling [full-fidelity changefeed messages](#enable-full-fidelity-message-envelopes).
+- Routing events based on [operation type](#route-events-based-on-operation-type).
+- Automatically [generating or synchronizing schemas](#add-envelope-schema-fields) in downstream consumers.
 
 This page covers:
 
@@ -36,7 +37,25 @@ The envelope of a changefeed message depends on the following:
 
 The envelope can contain any of the outlined fields. For more details, refer to the complete reference lists that explain each [envelope field](#field-reference) and [configurable option](#option-reference) to build a changefeed's envelope structure.
 
-The payload containing the change event's table data and metadata for the event. You can optionally include the state of the row before and after the change event and operation, origin, and timestamp information about the change:
+The default [`wrapped` envelope](#wrapped) will be similar to:
+
+~~~json
+{
+  "after": {
+    "after": { 
+      "col_a": "new_value",
+      // ... other columns ...
+    },
+  },
+  "key": [
+    // primary key for the row
+  ]
+}
+~~~
+
+You can optionally include the state of the row [before and after](#audit-changes-in-data) the change event and [operation](#route-events-based-on-operation-type), [origin](#preserve-the-origin-of-data), and [timestamp information](#updated) about the change. It is important to consider that increasing the size of each message significantly can have an impact on changefeed throughput.
+
+The payload containing the change event's table data and metadata for the event:
 
 ~~~json
 {
@@ -97,6 +116,7 @@ The use case examples in the following sections emit to a Kafka sink. Use the [O
 
 Each example uses the following table schema:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE TABLE public.products (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -114,12 +134,266 @@ CREATE TABLE public.products (
 The values that the `envelope` option accepts are compatible with different [changefeed sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}), and the structure of the message will vary depending on the sink.
 {{site.data.alerts.end}}
 
+### Audit changes in data
+
+You can include both the previous and updated states of a row in the message envelope to support use cases like auditing or applying change-based logic in downstream systems. Use the `diff` option with `CREATE CHANGEFEED` to include the previous state of the row:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH diff;
+~~~
+
+The `diff` option adds the `before` field to the envelope containing the state of the row before the change:
+
+~~~json
+{
+  "after": {
+    "category": "Home & Kitchen",
+    "created_at": "2025-04-01T17:55:46.812942",
+    "description": "Adjustable LED desk lamp with touch controls",
+    "id": "32856ed8-34d3-45a3-a449-412bdeaa277c",
+    "in_stock": true,
+    "name": "LED Desk Lamp",
+    "price": 26.30
+  },
+  "before": {
+    "category": "Home & Kitchen",
+    "created_at": "2025-04-01T17:55:46.812942",
+    "description": "Adjustable LED desk lamp with touch controls",
+    "id": "32856ed8-34d3-45a3-a449-412bdeaa277c",
+    "in_stock": true,
+    "name": "LED Desk Lamp",
+    "price": 22.30
+  }
+}
+~~~
+
+For an insert into the table, the `before` field contains `null`:
+
+~~~json
+{
+  "after": {
+    "category": "Electronics",
+    "created_at": "2025-04-23T13:48:40.981735",
+    "description": "Over-ear headphones with active noise cancellation",
+    "id": "3d8f4ca4-36e9-43b2-b057-d691624a4cba",
+    "in_stock": true,
+    "name": "Noise Cancelling Headphones",
+    "price": 129.50
+  },
+  "before": null
+}
+~~~
+
+### Route events based on operation type
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v25.2" %} You may want to route change events in a table based on the operation type (insert, update, delete), which can be useful for correctly applying or handling a change in a downstream system or replication pipeline. Use the `envelope=enriched` option with `CREATE CHANGEFEED` to include the `op` field in the envelope:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE products INTO 'external://kafka:9092' WITH envelope=enriched;
+~~~
+~~~json
+{
+  "after": {
+    "category": "Home & Kitchen",
+    "created_at": "2025-04-01T17:55:46.812942",
+    "description": "Adjustable LED desk lamp with touch controls",
+    "id": "32856ed8-34d3-45a3-a449-412bdeaa277c",
+    "in_stock": true,
+    "name": "LED Desk Lamp",
+    "price": 22.30
+  },
+  "op": "c",
+  "ts_ns": 1743792394409866000
+}
+~~~
+
+The `op` field can contain:
+
+- `c` for inserts.
+- `u` for updates.
+- `d` for deletes.
+
+### Add envelope schema fields
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v25.2" %} Adding the schema of the event payload to the message envelope allows you to:
+
+- Handle schema changes in downstream processing systems that require field types.
+- Detect and adapt to changes in the table schema over time.
+- Correctly parse and cast the data to deserialize into a different format.
+- Automatically generate or synchronize schemas in downstream systems.
+- Verify critical fields are present and set up alerts based on this.
+
+It is important to consider that adding the schema of the event payload can increase the size of each message significantly, which can have an impact on changefeed throughput.
+
+Use the `envelope=enriched, enriched_properties=schema` options with `CREATE CHANGEFEED` to include the `schema` top-level field and the schema fields and types:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE products INTO 'external://kafka:9092' WITH envelope=enriched, enriched_properties=schema;
+~~~
+~~~json
+{
+  "payload": {
+    "after": {
+      "category": "Home & Kitchen",
+      "created_at": "2025-04-01T17:55:46.812942",
+      "description": "Ceramic mug with 350ml capacity",
+      "id": "8320b051-3ff7-4aa8-9708-78142fde7e31",
+      "in_stock": true,
+      "name": "Coffee Mug",
+      "price": 12.50
+    },
+    "op": "c",
+    "ts_ns": 1745353048801146000
+  },
+  "schema": {
+    "fields": [
+      {
+        "field": "after",
+        "fields": [
+          {
+            "field": "id",
+            "optional": false,
+            "type": "string"
+          },
+          {
+            "field": "name",
+            "optional": false,
+            "type": "string"
+          },
+          {
+            "field": "description",
+            "optional": true,
+            "type": "string"
+          },
+          {
+            "field": "price",
+            "name": "decimal",
+            "optional": false,
+            "parameters": {
+              "precision": "10",
+              "scale": "2"
+            },
+            "type": "float64"
+          },
+          {
+            "field": "in_stock",
+            "optional": true,
+            "type": "boolean"
+          },
+          {
+            "field": "category",
+            "optional": true,
+            "type": "string"
+          },
+          {
+            "field": "created_at",
+            "name": "timestamp",
+            "optional": true,
+            "type": "string"
+          }
+        ],
+        "name": "products.after.value",
+        "optional": false,
+        "type": "struct"
+      },
+      {
+        "field": "ts_ns",
+        "optional": false,
+        "type": "int64"
+      },
+      {
+        "field": "op",
+        "optional": false,
+        "type": "string"
+      }
+    ],
+    "name": "cockroachdb.envelope",
+    "optional": false,
+    "type": "struct"
+  }
+}
+~~~
+
+### Preserve the origin of data
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v25.2" %} When you have multiple changefeeds running from your cluster, or your CockroachDB cluster is part of a multi-architecture system, it is useful to have metadata on the origin of changefeed data in the message envelope.
+
+Use the `envelope=enriched, enriched_properties=source` options with `CREATE CHANGEFEED` to include the `source` top-level field that contains metadata for the origin cluster and the changefeed job:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH envelope=enriched, enriched_properties=source;
+~~~
+~~~json
+{
+  "after": {
+    "category": "Electronics",
+    "created_at": "2025-04-24T14:59:28.96273",
+    "description": "Portable speaker with Bluetooth 5.0",
+    "id": "58390d92-2472-43e1-86bc-1642395e8dad",
+    "in_stock": true,
+    "name": "Bluetooth Speaker",
+    "price": 45.00
+  },
+  "op": "c",
+  "source": {
+    "changefeed_sink": "kafka",
+    "cluster_id": "38269e9c-9823-4568-875e-000000000000",
+    "cluster_name": "",
+    "database_name": "test",
+    "db_version": "v25.2.0-beta.2",
+    "job_id": "1066457644516704257",
+    "node_id": "2",
+    "node_name": "localhost",
+    "origin": "cockroachdb",
+    "primary_keys": [
+      "id"
+    ],
+    "schema_name": "public",
+    "source_node_locality": "",
+    "table_name": "products"
+  },
+  "ts_ns": 1745527444910044000
+}
+~~~
+
+For a sinkless changefeed,
+
+~~~sql
+CREATE CHANGEFEED FOR TABLE products WITH envelope=enriched, enriched_properties=source;
+~~~
+~~~
+{"key":"{\"id\": \"df8f23a0-f490-4e0e-a1d0-2d1f8bd5ddea\"}","table":"products","value":"{\"after\": {\"category\": \"Home \u0026 Kitchen\", \"created_at\": \"2025-04-24T14:59:28.96273\", \"description\": \"Premium ceramic mug with 400ml capacity and matte finish\", \"id\": \"df8f23a0-f490-4e0e-a1d0-2d1f8bd5ddea\", \"in_stock\": true, \"name\": \"Coffee Mug\", \"price\": 14.99}, \"op\": \"c\", \"source\": {\"changefeed_sink\": \"sinkless buffer\", \"cluster_id\": \"38269e9c-9823-4568-875e-d867e12156f2\", \"cluster_name\": \"\", \"database_name\": \"test\", \"db_version\": \"v25.2.0-beta.2\", \"job_id\": \"0\", \"node_id\": \"1\", \"node_name\": \"localhost\", \"origin\": \"cockroachdb\", \"primary_keys\": [\"id\"], \"schema_name\": \"public\", \"source_node_locality\": \"\", \"table_name\": \"products\"}, \"ts_ns\": 1745527520674943000}"}
+~~~
+
 ### Enable full fidelity message envelopes
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v25.2" %} A _full fidelity_ changefeed message envelope ensures complete information about every change event in the [watched tables]({% link {{ page.version.version }}/change-data-capture-overview.md %}#watched-table)—including the before and after state of a row, timestamps, and rich metadata like source and schema information. This type of configured envelope allows downstream consumers to replay, audit, debug, or analyze changes with no loss of context.
 
+It is important to consider that a full-fidelity envelope increases the size of each message significantly, which can have an impact on changefeed throughput.
+
 Use the `mvcc_timestamp`, `envelope=enriched, enriched_properties='source,schema'`, and `diff` options with `CREATE CHANGEFEED` to create a full-fidelity envelope:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH envelope=enriched, enriched_properties='source,schema', diff, mvcc_timestamp;
 ~~~
@@ -248,237 +522,6 @@ CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH envelope
 }
 ~~~
 
-### Route events based on operation type
-
-{% include_cached new-in.html version="v25.2" %} You may want to route change events in a table based on the operation type (insert, update, delete), which can be useful for correctly applying or handling a change in a downstream system or replication pipeline. Use the `envelope=enriched` option with `CREATE CHANGEFEED` to include the `op` field in the envelope:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE CHANGEFEED FOR TABLE products INTO 'external://kafka:9092' WITH envelope=enriched;
-~~~
-~~~json
-{
-  "after": {
-    "category": "Home & Kitchen",
-    "created_at": "2025-04-01T17:55:46.812942",
-    "description": "Adjustable LED desk lamp with touch controls",
-    "id": "32856ed8-34d3-45a3-a449-412bdeaa277c",
-    "in_stock": true,
-    "name": "LED Desk Lamp",
-    "price": 22.30
-  },
-  "op": "c",
-  "ts_ns": 1743792394409866000
-}
-~~~
-
-The `op` field can contain:
-
-- `c` for inserts.
-- `u` for updates.
-- `d` for deletes.
-
-### Add envelope schema fields
-
-{% include_cached new-in.html version="v25.2" %} Adding the schema of the event payload to the message envelope allows you to:
-
-- Handle schema changes in downstream processing systems that require field types.
-- Detect and adapt to changes in the table schema over time.
-- Correctly parse and cast the data to deserialize into a different format.
-- Automatically generate or synchronize schemas in downstream systems.
-- Verify critical fields are present and set up alerts based on this.
-
-Use the `envelope=enriched, enriched_properties=schema` options with `CREATE CHANGEFEED` to include the `schema` top-level field and the schema fields and types:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE CHANGEFEED FOR TABLE products INTO 'external://kafka:9092' WITH envelope=enriched, enriched_properties=schema;
-~~~
-~~~json
-{
-  "payload": {
-    "after": {
-      "category": "Home & Kitchen",
-      "created_at": "2025-04-01T17:55:46.812942",
-      "description": "Ceramic mug with 350ml capacity",
-      "id": "8320b051-3ff7-4aa8-9708-78142fde7e31",
-      "in_stock": true,
-      "name": "Coffee Mug",
-      "price": 12.50
-    },
-    "op": "c",
-    "ts_ns": 1745353048801146000
-  },
-  "schema": {
-    "fields": [
-      {
-        "field": "after",
-        "fields": [
-          {
-            "field": "id",
-            "optional": false,
-            "type": "string"
-          },
-          {
-            "field": "name",
-            "optional": false,
-            "type": "string"
-          },
-          {
-            "field": "description",
-            "optional": true,
-            "type": "string"
-          },
-          {
-            "field": "price",
-            "name": "decimal",
-            "optional": false,
-            "parameters": {
-              "precision": "10",
-              "scale": "2"
-            },
-            "type": "float64"
-          },
-          {
-            "field": "in_stock",
-            "optional": true,
-            "type": "boolean"
-          },
-          {
-            "field": "category",
-            "optional": true,
-            "type": "string"
-          },
-          {
-            "field": "created_at",
-            "name": "timestamp",
-            "optional": true,
-            "type": "string"
-          }
-        ],
-        "name": "products.after.value",
-        "optional": false,
-        "type": "struct"
-      },
-      {
-        "field": "ts_ns",
-        "optional": false,
-        "type": "int64"
-      },
-      {
-        "field": "op",
-        "optional": false,
-        "type": "string"
-      }
-    ],
-    "name": "cockroachdb.envelope",
-    "optional": false,
-    "type": "struct"
-  }
-}
-~~~
-
-### Preserve the origin of data
-
-{% include_cached new-in.html version="v25.2" %} When you have multiple changefeeds running from your cluster, or your CockroachDB cluster is part of a multi-architecture system, it is useful to have metadata on the origin of changefeed data in the message envelope.
-
-Use the `envelope=enriched, enriched_properties=source` options with `CREATE CHANGEFEED` to include the `source` top-level field that contains metadata for the origin cluster and the changefeed job:
-
-~~~sql
-CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH envelope=enriched, enriched_properties=source;
-~~~
-~~~json
-{
-  "after": {
-    "category": "Electronics",
-    "created_at": "2025-04-24T14:59:28.96273",
-    "description": "Portable speaker with Bluetooth 5.0",
-    "id": "58390d92-2472-43e1-86bc-1642395e8dad",
-    "in_stock": true,
-    "name": "Bluetooth Speaker",
-    "price": 45.00
-  },
-  "op": "c",
-  "source": {
-    "changefeed_sink": "kafka",
-    "cluster_id": "38269e9c-9823-4568-875e-000000000000",
-    "cluster_name": "",
-    "database_name": "test",
-    "db_version": "v25.2.0-beta.2",
-    "job_id": "1066457644516704257",
-    "node_id": "2",
-    "node_name": "localhost",
-    "origin": "cockroachdb",
-    "primary_keys": [
-      "id"
-    ],
-    "schema_name": "public",
-    "source_node_locality": "",
-    "table_name": "products"
-  },
-  "ts_ns": 1745527444910044000
-}
-~~~
-
-For a sinkless changefeed,
-
-~~~sql
-CREATE CHANGEFEED FOR TABLE products WITH envelope=enriched, enriched_properties=source;
-~~~
-~~~
-{"key":"{\"id\": \"df8f23a0-f490-4e0e-a1d0-2d1f8bd5ddea\"}","table":"products","value":"{\"after\": {\"category\": \"Home \u0026 Kitchen\", \"created_at\": \"2025-04-24T14:59:28.96273\", \"description\": \"Premium ceramic mug with 400ml capacity and matte finish\", \"id\": \"df8f23a0-f490-4e0e-a1d0-2d1f8bd5ddea\", \"in_stock\": true, \"name\": \"Coffee Mug\", \"price\": 14.99}, \"op\": \"c\", \"source\": {\"changefeed_sink\": \"sinkless buffer\", \"cluster_id\": \"38269e9c-9823-4568-875e-d867e12156f2\", \"cluster_name\": \"\", \"database_name\": \"test\", \"db_version\": \"v25.2.0-beta.2\", \"job_id\": \"0\", \"node_id\": \"1\", \"node_name\": \"localhost\", \"origin\": \"cockroachdb\", \"primary_keys\": [\"id\"], \"schema_name\": \"public\", \"source_node_locality\": \"\", \"table_name\": \"products\"}, \"ts_ns\": 1745527520674943000}"}
-~~~
-
-### Audit changes in data
-
-You can include both the previous and updated states of a row in the message envelope to support use cases like auditing or applying change-based logic in downstream systems. Use the `diff` option with `CREATE CHANGEFEED` to include the previous state of the row:
-
-~~~sql
-CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH diff;
-~~~
-
-The `diff` option adds the `before` field to the envelope containing the state of the row before the change:
-
-~~~json
-{
-  "after": {
-    "category": "Home & Kitchen",
-    "created_at": "2025-04-01T17:55:46.812942",
-    "description": "Adjustable LED desk lamp with touch controls",
-    "id": "32856ed8-34d3-45a3-a449-412bdeaa277c",
-    "in_stock": true,
-    "name": "LED Desk Lamp",
-    "price": 26.30
-  },
-  "before": {
-    "category": "Home & Kitchen",
-    "created_at": "2025-04-01T17:55:46.812942",
-    "description": "Adjustable LED desk lamp with touch controls",
-    "id": "32856ed8-34d3-45a3-a449-412bdeaa277c",
-    "in_stock": true,
-    "name": "LED Desk Lamp",
-    "price": 22.30
-  }
-}
-~~~
-
-For an insert into the table, the `before` field contains `null`:
-
-~~~json
-{
-  "after": {
-    "category": "Electronics",
-    "created_at": "2025-04-23T13:48:40.981735",
-    "description": "Over-ear headphones with active noise cancellation",
-    "id": "3d8f4ca4-36e9-43b2-b057-d691624a4cba",
-    "in_stock": true,
-    "name": "Noise Cancelling Headphones",
-    "price": 129.50
-  },
-  "before": null
-}
-~~~
-
 ## Option reference
 
 For a full list of options that modify the message envelope, refer to the following table:
@@ -486,9 +529,9 @@ For a full list of options that modify the message envelope, refer to the follow
 Option | Description | Sink support
 -------+-------------+-------------+-------------
 `diff` | Include a `"before"` field in each message, showing the state of the row before the change. Supported with `wrapped` or `enriched` envelopes. | All
-<span class="version-tag">New in v25.2:</span> `enriched_properties` | (Only applicable when `envelope=enriched` is set) Specify the type of metadata included in the message payload. Values:  `source`, `schema`. | Kafka, Pub/Sub, webhook, sinkless
+<span class="version-tag">New in v25.2:</span> `enriched_properties` (**Preview**) | (Only applicable when `envelope=enriched` is set) Specify the type of metadata included in the message payload. Values:  `source`, `schema`. | Kafka, Pub/Sub, webhook, sinkless
 `envelope=bare` | Emit an envelope without the `"after"` wrapper. The row's column data is at the top level of the message. Metadata that would typically be separate will be under a `"__crdb__"` field. Provides a more compact structure to the envelope. `bare` is the default envelope when using [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}). When `bare` is used with the Avro format, `record` will replace the `after` keyword. | All
-<span class="version-tag">New in v25.2:</span> `envelope=enriched` | Extend the envelope with additional metadata fields. With `enriched_properties`, includes a `"source"` field and/or a `"schema"` field with extra context. | Kafka, Pub/Sub, webhook, sinkless
+<span class="version-tag">New in v25.2:</span> `envelope=enriched` (**Preview**) | Extend the envelope with additional metadata fields. With `enriched_properties`, includes a `"source"` field and/or a `"schema"` field with extra context. | Kafka, Pub/Sub, webhook, sinkless
 `envelope=key_only` | Send only the primary key of the changed row and no value payload, which is more efficient if only the key of the changed row is needed. Not compatible with the `updated` option. | Kafka, sinkless
 `envelope=row`  | Emit the row data without any additional metadata field in the envelope. Not supported in Avro format or with the `diff` option. | Kafka, sinkless
 `envelope=wrapped` (default) | Produce changefeed messages in a wrapped structure with metadata and row data. `wrapped` includes an `"after"` field, and optionally a `"before"` field if `diff` is used. **Note:** Envelopes contain a primary key when your changefeed is emitting to a sink that does not have a message key as part of its protocol. By default, messages emitting to Kafka sinks do not have the primary key array, because the key is part of the message metadata. Use the `key_in_value` option to include a primary key array in messages emitted to Kafka sinks. | All
@@ -536,6 +579,10 @@ CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka' WITH key_in_value, 
 ~~~
 
 #### `enriched`
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v25.2" %} `enriched` introduces additional metadata to the envelope, which is further configurable with the `enriched_properties` option. This envelope option is supported for [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), Google Cloud Pub/Sub, and sinkless changefeeds.
 
@@ -730,4 +777,4 @@ Here `"__crdb__": {"key": [101]}` holds the primary key for the row, while the r
 
 ## See more
 
-- For more detail on the file naming format for cloud storage sinks, refer to [changefeed files]({% link {{ page.version.version }}/create-changefeed.md %}#files).
+- For more details on the file naming format for cloud storage sinks, refer to [changefeed files]({% link {{ page.version.version }}/create-changefeed.md %}#files).
