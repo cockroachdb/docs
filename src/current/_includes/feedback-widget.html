@@ -242,128 +242,160 @@
 <!-- Drop-in replacement for your existing <script>…</script> -->
 <!-- Drop-in replacement for your existing <script>…</script> -->
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const stickyBtn     = document.getElementById('sticky-rating-btn');
-    const feedbackOv    = document.getElementById('feedback-overlay');
-    const feedbackWin   = document.getElementById('feedback-window');
-    const closeBtn      = document.getElementById('feedback-close-btn');
-    const step1         = document.getElementById('step1');
-    const step2         = document.getElementById('step2');
-    const step3         = document.getElementById('step3');
-    const stars         = document.querySelectorAll('.star');
-    const headingEl     = document.getElementById('feedback-heading');
-    const commentsEl    = document.getElementById('comments');
-    const emailEl       = document.getElementById('email');
-    const screenshotBtn = document.getElementById('screenshot-btn');
-    const screenshotEl  = document.getElementById('screenshot');
-    const submitBtn     = document.getElementById('submit-btn');
-    let currentRating   = 0;
+  (() => {
+    document.addEventListener('DOMContentLoaded', () => {
+      /* ── DOM shortcuts ─────────────────────────────────────────────── */
+      const $  = (sel) => document.querySelector(sel);
+      const $$ = (sel) => Array.from(document.querySelectorAll(sel));
   
-    function resetWidget() {
-      currentRating = 0;
-      stars.forEach(s => s.classList.remove('hover','selected'));
-      commentsEl.value   = '';
-      emailEl.value      = '';
-      screenshotEl.value = '';
-      step1.classList.add('active');
-      step2.classList.remove('active');
-      step3.classList.remove('active');
-      headingEl.textContent     = 'Tell us about your experience';
-      commentsEl.placeholder    = 'Tell us about your experience';
-      screenshotBtn.textContent = 'Show us a screenshot';
-    }
+      const widgetRoot   = $('#sticky-feedback-widget');
+      const stickyBtn    = $('#sticky-rating-btn');
+      const feedbackOv   = $('#feedback-overlay');
+      const feedbackWin  = $('#feedback-window');
+      const closeBtn     = $('#feedback-close-btn');
+      const step1        = $('#step1');
+      const step2        = $('#step2');
+      const step3        = $('#step3');
+      const stars        = $$('.star');
+      const headingEl    = $('#feedback-heading');
+      const commentsEl   = $('#comments');
+      const emailEl      = $('#email');
+      const screenshotBtn= $('#screenshot-btn');
+      const screenshotEl = $('#screenshot');
+      const submitBtn    = $('#submit-btn');
   
-    stickyBtn.addEventListener('click', () => {
-      resetWidget();
-      feedbackOv.style.display = 'block';
-    });
-    closeBtn.addEventListener('click', () => feedbackOv.style.display = 'none');
+      /* ── Config ─────────────────────────────────────────────────────── */
+      const FEEDBACK_ENDPOINT =
+        widgetRoot?.dataset.feedbackEndpoint?.trim() ||
+        'https://us-central1-release-notes-automation-prod.cloudfunctions.net/feedback-widget/feedback';
   
-    stars.forEach(star => {
-      star.addEventListener('mouseover', () => {
-        const v = +star.dataset.value;
-        stars.forEach(s => s.classList.toggle('hover', +s.dataset.value <= v));
-      });
-      star.addEventListener('mouseout', () => stars.forEach(s => s.classList.remove('hover')));
-      star.addEventListener('click', () => {
-        currentRating = +star.dataset.value;
-        stars.forEach(s => s.classList.toggle('selected', +s.dataset.value <= currentRating));
-        step1.classList.remove('active');
-        step2.classList.add('active');
-        if (currentRating <= 2) {
-          headingEl.textContent     = 'Tell us how we can improve';
-          commentsEl.placeholder    = 'Tell us how we can improve';
-          screenshotBtn.textContent = 'Show us where the problem is';
-        } else {
-          headingEl.textContent     = 'Tell us more about your experience';
-          commentsEl.placeholder    = 'Tell us more about your experience';
-          screenshotBtn.textContent = 'Show us a screenshot';
-        }
-      });
-    });
+      let currentRating = 0;
   
-    screenshotBtn.addEventListener('click', () => screenshotEl.click());
+      /* ── Helpers ────────────────────────────────────────────────────── */
+      const showStep = (step) => [step1, step2, step3]
+        .forEach((s) => s.classList.toggle('active', s === step));
   
-    // ─── Drop-in replacement for submit handler ──────────────────────────
-    submitBtn.addEventListener('click', async () => {
-      // Gather values
-      const pageURL    = window.location.href;
-      const pageTitle  = document.title;
-      const starRating = currentRating;
-      const comment    = commentsEl.value;
-      const email      = emailEl.value;
+      const resetWidget = () => {
+        currentRating = 0;
+        stars.forEach((s) => s.classList.remove('hover', 'selected'));
+        commentsEl.value = '';
+        emailEl.value = '';
+        screenshotEl.value = '';
+        headingEl.textContent  = 'Tell us about your experience';
+        commentsEl.placeholder = 'Tell us about your experience';
+        screenshotBtn.textContent = 'Show us a screenshot';
+        showStep(step1);
+      };
   
-      // Determine docs_area (same logic as before)
-      const activeLis = Array.from(document.querySelectorAll('#sidebar li.active'));
-      const deepestLi = activeLis[activeLis.length - 1];
-      let tier1Li = deepestLi;
-      while (tier1Li && !tier1Li.classList.contains('tier-1')) {
-        tier1Li = tier1Li.parentElement.closest('li');
-      }
-      const tier1Title = tier1Li?.querySelector(':scope > a')?.textContent.trim() || '';
-      let docsArea = tier1Title;
-      if (tier1Title === 'Self-Hosted Deployments') {
-        let tier2Li = deepestLi;
-        if (!tier2Li.classList.contains('tier-2')) {
-          tier2Li = tier2Li.parentElement.closest('li.tier-2');
-        }
-        const tier2Text = tier2Li?.querySelector(':scope > a')?.textContent.trim();
-        if (tier2Text) docsArea = tier2Text;
-      }
+      const highlight = (val) =>
+        stars.forEach((s) => s.classList.toggle('hover', +s.dataset.value <= val));
   
-      // Build multipart form
-      const formData = new FormData();
-      formData.append('page_url',    pageURL);
-      formData.append('page_title',  pageTitle);
-      formData.append('star_rating', starRating);
-      formData.append('comment',     comment);
-      formData.append('email',       email);
-      formData.append('docs_area',   docsArea);
-      if (screenshotEl.files[0]) {
-        formData.append('screenshot', screenshotEl.files[0]);
-      }
-  
-      try {
-        const resp = await fetch('/api/feedback', {
-          method:  'POST',
-          body:     formData
+      const setRating = (val) => {
+        currentRating = val;
+        stars.forEach((s) => {
+          const sel = +s.dataset.value <= val;
+          s.classList.toggle('selected', sel);
+          s.setAttribute('aria-checked', sel);
         });
-        if (!resp.ok) {
-          console.error('Feedback API error:', resp.status, await resp.text());
+        showStep(step2);
+        const low = currentRating <= 2;
+        headingEl.textContent  = low ? 'Tell us how we can improve'
+                                     : 'Tell us more about your experience';
+        commentsEl.placeholder = headingEl.textContent;
+        screenshotBtn.textContent = low ? 'Show us where the problem is'
+                                        : 'Show us a screenshot';
+      };
+  
+      const determineDocsArea = () => {
+        const activeLis = $$('#sidebar li.active');
+        if (!activeLis.length) return '';
+        const deepestLi = activeLis.at(-1);
+        let tier1 = deepestLi;
+        while (tier1 && !tier1.classList.contains('tier-1')) {
+          tier1 = tier1.parentElement.closest('li');
         }
-      } catch (err) {
-        console.error('Network error sending feedback:', err);
-      }
+        const tier1Title = tier1?.querySelector(':scope > a')?.textContent.trim() || '';
+        if (tier1Title === 'Self-Hosted Deployments') {
+          let tier2 = deepestLi;
+          if (!tier2.classList.contains('tier-2')) {
+            tier2 = tier2.parentElement.closest('li.tier-2');
+          }
+          const tier2Text = tier2?.querySelector(':scope > a')?.textContent.trim();
+          return tier2Text || tier1Title;
+        }
+        return tier1Title;
+      };
   
-      // Transition to thank-you
-      step2.classList.remove('active');
-      step3.classList.add('active');
+      /* ── Open / close overlay ───────────────────────────────────────── */
+      stickyBtn.addEventListener('click', () => {
+        resetWidget();
+        feedbackOv.style.display = 'block';
+        stickyBtn.setAttribute('aria-expanded', 'true');
+        stars[0].focus();                           // focus into dialog
+      });
+  
+      const closeOverlay = () => {
+        feedbackOv.style.display = 'none';
+        stickyBtn.setAttribute('aria-expanded', 'false');
+        stickyBtn.focus();
+      };
+  
+      closeBtn.addEventListener('click', closeOverlay);
+      feedbackOv.addEventListener('click', closeOverlay);
+      feedbackWin.addEventListener('click', (e) => e.stopPropagation());
+  
+      /* ── Star interactions (mouse + keyboard) ───────────────────────── */
+      stars.forEach((star) => {
+        star.setAttribute('tabindex', '0');
+        star.setAttribute('role', 'radio');
+        star.setAttribute('aria-label', `${star.dataset.value} star`);
+        star.setAttribute('aria-checked', 'false');
+  
+        star.addEventListener('mouseover', () => highlight(+star.dataset.value));
+        star.addEventListener('mouseout', ()  => highlight(currentRating));
+        star.addEventListener('click',       () => setRating(+star.dataset.value));
+        star.addEventListener('keydown', (e) => {
+          if (['ArrowLeft','ArrowDown'].includes(e.key))  setRating(Math.max(1, currentRating-1));
+          if (['ArrowRight','ArrowUp'].includes(e.key))   setRating(Math.min(5, currentRating+1));
+          if (['Enter',' '].includes(e.key))              setRating(+star.dataset.value);
+        });
+      });
+  
+      /* ── Screenshot picker ──────────────────────────────────────────── */
+      screenshotBtn.addEventListener('click', () => screenshotEl.click());
+  
+      /* ── Submit handler ─────────────────────────────────────────────── */
+      submitBtn.addEventListener('click', async () => {
+        submitBtn.disabled = true;
+  
+        const formData = new FormData();
+        formData.append('page_url',    location.href);
+        formData.append('page_title',  document.title);
+        formData.append('star_rating', currentRating);
+        formData.append('comment',     commentsEl.value);
+        formData.append('email',       emailEl.value);
+        formData.append('docs_area',   determineDocsArea());
+        if (screenshotEl.files[0]) formData.append('screenshot', screenshotEl.files[0]);
+  
+        try {
+          const resp = await fetch(FEEDBACK_ENDPOINT, {
+            method: 'POST',
+            mode:   'cors',
+            body:   formData,
+          });
+          if (!resp.ok) console.error('Feedback API error:', resp.status, await resp.text());
+        } catch (err) {
+          console.error('Network error sending feedback:', err);
+        }
+  
+        showStep(step3);
+        setTimeout(closeOverlay, 4000);            // auto-close after thanks
+        submitBtn.disabled = false;
+      });
     });
-    // ────────────────────────────────────────────────────────────────────────
-  
-    feedbackWin.addEventListener('click', e => e.stopPropagation());
-  });
+  })();
   </script>
+  
   
 
 
