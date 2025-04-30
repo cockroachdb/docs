@@ -9,24 +9,24 @@ CockroachDB {{ site.data.products.cloud }} supports labels as a flexible way to 
 
 ## What are labels?
 
-Labels are customizable key-value pairs that you can attach to CockroachDB {{ site.data.products.cloud }} resources. Unlike folders, which allow only one-to-many relationships, labels support many-to-many relationships which is ideal for complex environments with overlapping ownership or multiple tagging criteria.
+Labels are customizable key-value pairs that you can attach to CockroachDB {{ site.data.products.cloud }} resources. Unlike folders, which allow one-to-many relationships, labels support many-to-many relationships, ideal for complex environments which require a variety of tagging criteria.
 
-### Examples
+## Common use cases
 
-- Team or cost center labels: Add labels based on team or cost center to distinguish resources owned by different teams (for example, `team:research` and `team:analytics`). You can use this type of label for cost accounting or budgeting.
+You can set labels for:
 
-- Environment or stage labels: For example, `environment:production` and `environment:test`.
+- **Environment tracking**: Distinguish between stages like `environment:production`, `environment:staging`, or `environment:test` to simplify deployment workflows and access control.
+- **Cost allocation**: Use labels like `team:analytics` or `cost_center:finance` to track usage and spending across departments in billing exports.
+- **Ownership and accountability**: Assign operational responsibility with labels such as `team:order-management` or `owner:platform-engineering`.
+- **Automation and lifecycle management**: Automate actions using labels like `state:active`, `state:archive`, or `state:ready-to-delete` in scripts and infrastructure-as-code tools.
+- **Custom organization**: Apply labels based on application, region, or any other criteria relevant to your workflows, e.g. the application, workload, or region applicable to a cluster.
 
-- State labels: For example, `state:active`, `state:readytodelete`, and `state:archive`.
+These labels can then be used to:
 
-- Ownership labels: Used to identify the teams that are responsible for operations, for example, `team:shopping-cart`.
-
-## Why use labels?
-
-- **Flexible Organization**: Tag clusters and folders by team, environment, application, or another category relevant to your workflows.
-- **Cost Allocation**: Analyze your invoice data by label values to track spending across departments or services.
-- **Automation**: Use labels in API calls and Terraform configurations to automate operations.
-- **Enhanced Reporting**: Export label metadata for use in external analytics tools.
+- Filter and group resources in the Console.
+- Power cost reports and analytics.
+- Drive automation through APIs or Terraform.
+- Provide consistent metadata across teams and environments.
 
 ## Requirements for labels
 
@@ -41,17 +41,17 @@ The labels applied to a resource must meet the following requirements:
 
 ## Edit labels
 
-You can apply labels to your cluster or folder through the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/).
+You can apply labels to your cluster or folder through the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) or using the CockroachDB Cloud API (refer to the schema for creating a [cluster](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/clusters) or [folder](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/folders)) or [Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs).
 
 Adding or deleting labels on a cluster requires the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role.
 
-    1. Navigate to the cluster on the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page) and click the menu button in the **Action** column. Alternatively, navigate to the [**Overview** page]({% link cockroachcloud/cluster-management.md %}#view-cluster-overview) for the cluster and click **Actions** in the top right corner.
-    1. In the dropdown menu, select **Edit labels** to open the **Edit labels** window.
+1. Navigate to the cluster on the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page) and click the menu button in the **Action** column. Alternatively, navigate to the [**Overview** page]({% link cockroachcloud/cluster-management.md %}#view-cluster-overview) for the cluster and click **Actions** in the top right corner.
+1. In the dropdown menu, select **Edit cluster labels** to open the **Edit labels** window.
 
 Adding or deleting labels on a folder requires the [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) role. 
 
-    1. Navigate to the folder on the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page) and click the menu button in the **Action** column.
-    1. In the dropdown menu, select **Edit labels** to open the **Edit labels** window.
+1. Navigate to the folder on the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page) and click the menu button in the **Action** column.
+1. In the dropdown menu, select **Edit folder labels** to open the **Edit labels** window.
 
 ### Add labels
 
@@ -79,5 +79,5 @@ Labels appear in invoices on the [**Billing** page]({% link cockroachcloud/billi
 ## Best Practices
 
 - Define a consistent labeling taxonomy (e.g., `team`, `env`, `app`) across your organization.
-- Use autocomplete in the console to prevent key duplication.
+- Use autocomplete in the console to prevent the duplication of keys.
 - Regularly review and remove unused or outdated labels.

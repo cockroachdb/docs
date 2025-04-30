@@ -14,7 +14,7 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
-## TBD
+## April 30, 2025
 
 You can now use the CockroachDB {{ site.data.products.cloud }} Console to [edit the labels of a cluster or folder]({% link cockroachcloud/labels.md %}).
 
