@@ -18,7 +18,7 @@ A JSONPath expression has the following generic structure:
 - `mode` is an optional mode (`lax` or `strict`) that determines how structural mismatches are tolerated. If not specified, the mode is `lax`. Refer to [Structural error handling](#structural-error-handling).
 - `$` is the root of the JSONPath, and must be the first element in a JSONPath expression. For an example, refer to [Access entire document](#access-entire-document).
 - `.key` is an optional key accessor that refers to a named field in a `JSONB` object. To access array elements, use `.key[index]` or `.key[*]`. Each successive key accessor navigates one level deeper into the structure. `.*` matches all fields in the current object.
-- `? (filter_exp)` is an optional filter expression that evaluates the path according to a [predicate check expression](#check-expression), only returning the results that match. For syntax details, refer to [Filter expressions](#filter-expressions).
+- `? (filter_exp)` is an optional filter expression that evaluates the path according to a [predicate check expression](#check-expressions), only returning the results that match. For syntax details, refer to [Filter expressions](#filter-expressions).
 - `method` is an optional [JSONPath method](#jsonpath-methods) that can be used to access or transform the current path value.
 
 The path is evaluated left to right, and each stage refines or filters the result.
@@ -27,13 +27,13 @@ The path is evaluated left to right, and each stage refines or filters the resul
 
 Use JSONPath functions to extract or evaluate target `JSONB` data according to a specified [path](#jsonpath-expression). For full details on JSONPath functions, refer to [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#  jsonpath-functions).
 
-|                  Function                 |                                                                                Description                                                                                 | If no match |
-|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `jsonb_path_exists(jsonb, jsonpath)`      | Returns true if any match is found.                                                                                                                                        | `false`     |
-| `jsonb_path_match(jsonb, jsonpath)`       | Returns true if the path expression evaluates to true. Only useful with [predicate check expressions](#predicate-check-expressions), as it expects a single Boolean value. | `false`     |
-| `jsonb_path_query(jsonb, jsonpath)`       | Returns all matches as a set of `JSONB` values.                                                                                                                            | `NULL`      |
-| `jsonb_path_query_array(jsonb, jsonpath)` | Returns all matches as a single `JSONB` array.                                                                                                                             | `[]`        |
-| `jsonb_path_query_first(jsonb, jsonpath)` | Returns the first match only.                                                                                                                                              | `NULL`      |
+|                  Function                 |                                                                           Description                                                                            | If no match |
+|-------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `jsonb_path_exists(jsonb, jsonpath)`      | Returns true if any match is found.                                                                                                                              | `false`     |
+| `jsonb_path_match(jsonb, jsonpath)`       | Returns true if the path expression evaluates to true. Only useful with [predicate check expressions](#check-expressions), as it expects a single Boolean value. | `false`     |
+| `jsonb_path_query(jsonb, jsonpath)`       | Returns all matches as a set of `JSONB` values.                                                                                                                  | `NULL`      |
+| `jsonb_path_query_array(jsonb, jsonpath)` | Returns all matches as a single `JSONB` array.                                                                                                                   | `[]`        |
+| `jsonb_path_query_first(jsonb, jsonpath)` | Returns the first match only.                                                                                                                                    | `NULL`      |
 
 Each function accepts two required and two optional arguments as follows:
 
@@ -155,7 +155,7 @@ SELECT jsonb_path_query(data, '$.season') FROM stats;
   "2023-24"
 ~~~
 
-To access nested keys, append key accessors to their parent keys. The following query returns the `stats` value for each element in the `players` array, using the [array accessor](#access-array-elements):
+To access nested keys, append key accessors to their parent keys. The following query returns the `stats` value for each element in the `players` array, using the [array accessor](#access-jsonb-array-elements):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -419,7 +419,7 @@ SELECT jsonb_path_query(data, '$.players[*] ? (@.team like_regex "^L.*")') FROM 
 
 ## Variables in JSONPath expressions
 
-Define a variable in a JSONPath expression by prefixing it with `$`. Then specify a value as an argument in the [JSONPath function](#jsonpath-function).
+Define a variable in a JSONPath expression by prefixing it with `$`. Then specify a value as an argument in the [JSONPath function](#jsonpath-functions).
 
 The following query filters players whose `ppg` is greater than the value of the `min` variable:
 
@@ -518,7 +518,7 @@ ERROR: jsonpath member accessor can only be applied to an object
 SQLSTATE: 2203A
 ~~~
 
-However, setting `silent` to `true` in a [JSONPath function](#jsonpath-function) suppresses any errors:
+However, setting `silent` to `true` in a [JSONPath function](#jsonpath-functions) suppresses any errors:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
