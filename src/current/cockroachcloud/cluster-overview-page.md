@@ -16,13 +16,14 @@ The **Cluster Overview** page displays key metrics about your CockroachDB {{ sit
 
 ## Cluster settings
 
-The **Cluster settings** panel displays the settings you chose during [cluster creation]({% link cockroachcloud/create-a-basic-cluster.md %}).
+The **Cluster settings** panel shows the settings selected during [cluster creation]({% link cockroachcloud/create-a-basic-cluster.md %}), as well as any [labels]({% link cockroachcloud/labels.md %}) added to the cluster after its creation.
 
 | Field     | Description                                                                                             |
 |-----------|---------------------------------------------------------------------------------------------------------|
 | Cloud     | The cluster's [cloud provider]({% link cockroachcloud/create-a-basic-cluster.md %}#step-2-select-the-cloud-provider). |
 | Plan type | The plan type used to create the cluster.                                                               |
-| Regions    | The cluster's [regions]({% link cockroachcloud/create-a-basic-cluster.md %}#step-3-select-the-regions).         |
+| Regions   | The cluster's [regions]({% link cockroachcloud/create-a-basic-cluster.md %}#step-3-select-the-regions). |
+| Labels    | The [labels]({% link cockroachcloud/labels.md %}) added to the cluster.       |
 
 ## Capacity used this month
 

@@ -14,6 +14,10 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## April 30, 2025
+
+You can now use the CockroachDB {{ site.data.products.cloud }} Console to [edit the labels of a cluster or folder]({% link cockroachcloud/labels.md %}).
+
 ## April 3, 2025
 
 You can now [change cluster plans between {{ site.data.products.basic }} and {{ site.data.products.standard }}]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}) from the CockroachDB {{ site.data.products.cloud }} Console.
