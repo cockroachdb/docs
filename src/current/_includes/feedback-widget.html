@@ -1,0 +1,402 @@
+<!-- _includes/feedback-widget.html -->
+<div id="sticky-feedback-widget" data-docs-area="{{ page.docs_area }}">
+  <!-- Sticky button with star SVG icon -->
+  <button id="sticky-rating-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16" role="presentation" aria-hidden="true">
+      <path fill="currentColor" d="M7.538 1.11a.5.5 0 0 1 .924 0l1.537 3.696a.5.5 0 0 0 .421.306l3.99.32a.5.5 0 0 1 .285.878l-3.04 2.604a.5.5 0 0 0-.16.496l.928 3.893a.5.5 0 0 1-.747.542L8.261 11.76a.5.5 0 0 0-.522 0l-3.415 2.086a.5.5 0 0 1-.747-.542l.928-3.893a.5.5 0 0 0-.16-.496L1.304 6.31a.5.5 0 0 1 .285-.878l3.99-.32A.5.5 0 0 0 6 4.806L7.538 1.11Z"></path>
+    </svg>
+    Rate This Page
+  </button>
+
+  <!-- Feedback overlay -->
+  <div id="feedback-overlay">
+    <div id="feedback-window">
+      <span id="feedback-close-btn">&times;</span>
+
+      <div id="star-container">
+        <div id="star-rating">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
+      </div>
+
+      <div id="step1" class="feedback-step active">
+        <p>Please select a star rating above.</p>
+      </div>
+
+      <div id="step2" class="feedback-step">
+        <h3 id="feedback-heading">Tell us about your experience</h3>
+        <textarea id="comments" placeholder="Tell us about your experience"></textarea>
+        <input type="email" id="email" placeholder="Email Address (Optional)" />
+        <button id="screenshot-btn">Show us a screenshot</button>
+        <input type="file" id="screenshot" accept="image/*" />
+        <button id="submit-btn">Send</button>
+      </div>
+
+      <div id="step3" class="feedback-step">
+        <h3>Thank you for your feedback!</h3>
+        <p>Your input helps us improve our documentation.</p>
+        <hr>
+        <h4>Explore More Documentation:</h4>
+        <ul id="doc-links">
+          <li><a href="https://www.cockroachlabs.com/docs/" target="_blank">CockroachDB Docs</a></li>
+          <li><a href="https://university.cockroachlabs.com/" target="_blank">Cockroach University</a></li>
+          <li><a href="https://forum.cockroachlabs.com/" target="_blank">Community Forums</a></li>
+          <li><a href="https://support.cockroachlabs.com/" target="_blank">CockroachDB Support</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Styles -->
+<style>
+  #sticky-feedback-widget {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    position: relative;
+    z-index: 9999;
+  }
+
+  #sticky-rating-btn {
+    position: fixed;
+    bottom: 120px;
+    right: 20px;
+    background-color: rgba(76, 14, 255, 0.05);
+    color: #4C0EFF;
+    border: 1.5px solid #4C0EFF;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    backdrop-filter: blur(4px);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  #sticky-rating-btn svg {
+    color: #4C0EFF;
+  }
+
+  #sticky-rating-btn:hover {
+    background-color: rgba(76, 14, 255, 0.1);
+    box-shadow: 0 2px 6px rgba(76, 14, 255, 0.2);
+  }
+
+  #feedback-overlay {
+    display: none;
+    position: fixed;
+    bottom: 160px;
+    right: 20px;
+    width: 320px;
+    max-width: 90%;
+    z-index: 10000;
+  }
+
+  #feedback-window {
+    position: relative;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    padding: 24px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  #feedback-close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+  }
+
+  #feedback-close-btn:hover {
+    color: #333;
+  }
+
+  #star-container {
+    text-align: center;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  #star-rating {
+    margin: 8px 0;
+  }
+
+  .star {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+    margin: 0 4px;
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+
+  .star.hover, .star.selected {
+    color: #FFD700;
+    transform: scale(1.3);
+  }
+
+  .feedback-step {
+    display: none;
+    text-align: center;
+  }
+
+  .feedback-step.active {
+    display: block;
+  }
+
+  textarea, input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin: 12px 0;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 12px;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  #screenshot {
+    display: none;
+  }
+
+  #screenshot-btn, #submit-btn {
+    background-color: #4C0EFF;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: block;
+  }
+
+  #submit-btn {
+    margin-top: 16px;
+    width: 100%;
+  }
+
+  #screenshot-btn:hover, #submit-btn:hover {
+    background-color: #3a0ccc;
+  }
+
+  #doc-links {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 16px;
+    text-align: left;
+  }
+
+  #doc-links li {
+    margin: 8px 0;
+  }
+
+  #doc-links a {
+    text-decoration: none;
+    color: #4C0EFF;
+    font-weight: 500;
+  }
+
+  #doc-links a:hover {
+    text-decoration: underline;
+  }
+
+  #feedback-window h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: #333;
+  }
+
+  #feedback-window h4 {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+  }
+
+  #feedback-window hr {
+    border: 0;
+    height: 1px;
+    background-color: #eee;
+    margin: 16px 0;
+  }
+</style>
+
+<!-- Script -->
+<!-- Drop-in replacement for your existing <script>…</script> -->
+<!-- Drop-in replacement for your existing <script>…</script> -->
+<!-- Drop-in replacement for your existing <script>…</script> -->
+<script>
+  (() => {
+    document.addEventListener('DOMContentLoaded', () => {
+      /* ── DOM shortcuts ─────────────────────────────────────────────── */
+      const $  = (sel) => document.querySelector(sel);
+      const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+  
+      const widgetRoot   = $('#sticky-feedback-widget');
+      const stickyBtn    = $('#sticky-rating-btn');
+      const feedbackOv   = $('#feedback-overlay');
+      const feedbackWin  = $('#feedback-window');
+      const closeBtn     = $('#feedback-close-btn');
+      const step1        = $('#step1');
+      const step2        = $('#step2');
+      const step3        = $('#step3');
+      const stars        = $$('.star');
+      const headingEl    = $('#feedback-heading');
+      const commentsEl   = $('#comments');
+      const emailEl      = $('#email');
+      const screenshotBtn= $('#screenshot-btn');
+      const screenshotEl = $('#screenshot');
+      const submitBtn    = $('#submit-btn');
+  
+      /* ── Config ─────────────────────────────────────────────────────── */
+      const FEEDBACK_ENDPOINT =
+        widgetRoot?.dataset.feedbackEndpoint?.trim() ||
+        'https://us-central1-release-notes-automation-prod.cloudfunctions.net/feedback-widget/api/feedback';
+  
+      let currentRating = 0;
+  
+      /* ── Helpers ────────────────────────────────────────────────────── */
+      const showStep = (step) => [step1, step2, step3]
+        .forEach((s) => s.classList.toggle('active', s === step));
+  
+      const resetWidget = () => {
+        currentRating = 0;
+        stars.forEach((s) => s.classList.remove('hover', 'selected'));
+        commentsEl.value = '';
+        emailEl.value = '';
+        screenshotEl.value = '';
+        headingEl.textContent  = 'Tell us about your experience';
+        commentsEl.placeholder = 'Tell us about your experience';
+        screenshotBtn.textContent = 'Show us a screenshot';
+        showStep(step1);
+      };
+  
+      const highlight = (val) =>
+        stars.forEach((s) => s.classList.toggle('hover', +s.dataset.value <= val));
+  
+      const setRating = (val) => {
+        currentRating = val;
+        stars.forEach((s) => {
+          const sel = +s.dataset.value <= val;
+          s.classList.toggle('selected', sel);
+          s.setAttribute('aria-checked', sel);
+        });
+        showStep(step2);
+        const low = currentRating <= 2;
+        headingEl.textContent  = low ? 'Tell us how we can improve'
+                                     : 'Tell us more about your experience';
+        commentsEl.placeholder = headingEl.textContent;
+        screenshotBtn.textContent = low ? 'Show us where the problem is'
+                                        : 'Show us a screenshot';
+      };
+  
+      const determineDocsArea = () => {
+        const activeLis = $$('#sidebar li.active');
+        if (!activeLis.length) return '';
+        const deepestLi = activeLis.at(-1);
+        let tier1 = deepestLi;
+        while (tier1 && !tier1.classList.contains('tier-1')) {
+          tier1 = tier1.parentElement.closest('li');
+        }
+        const tier1Title = tier1?.querySelector(':scope > a')?.textContent.trim() || '';
+        if (tier1Title === 'Self-Hosted Deployments') {
+          let tier2 = deepestLi;
+          if (!tier2.classList.contains('tier-2')) {
+            tier2 = tier2.parentElement.closest('li.tier-2');
+          }
+          const tier2Text = tier2?.querySelector(':scope > a')?.textContent.trim();
+          return tier2Text || tier1Title;
+        }
+        return tier1Title;
+      };
+  
+      /* ── Open / close overlay ───────────────────────────────────────── */
+      stickyBtn.addEventListener('click', () => {
+        resetWidget();
+        feedbackOv.style.display = 'block';
+        stickyBtn.setAttribute('aria-expanded', 'true');
+        stars[0].focus();                           // focus into dialog
+      });
+  
+      const closeOverlay = () => {
+        feedbackOv.style.display = 'none';
+        stickyBtn.setAttribute('aria-expanded', 'false');
+        stickyBtn.focus();
+      };
+  
+      closeBtn.addEventListener('click', closeOverlay);
+      feedbackOv.addEventListener('click', closeOverlay);
+      feedbackWin.addEventListener('click', (e) => e.stopPropagation());
+  
+      /* ── Star interactions (mouse + keyboard) ───────────────────────── */
+      stars.forEach((star) => {
+        star.setAttribute('tabindex', '0');
+        star.setAttribute('role', 'radio');
+        star.setAttribute('aria-label', `${star.dataset.value} star`);
+        star.setAttribute('aria-checked', 'false');
+  
+        star.addEventListener('mouseover', () => highlight(+star.dataset.value));
+        star.addEventListener('mouseout', ()  => highlight(currentRating));
+        star.addEventListener('click',       () => setRating(+star.dataset.value));
+        star.addEventListener('keydown', (e) => {
+          if (['ArrowLeft','ArrowDown'].includes(e.key))  setRating(Math.max(1, currentRating-1));
+          if (['ArrowRight','ArrowUp'].includes(e.key))   setRating(Math.min(5, currentRating+1));
+          if (['Enter',' '].includes(e.key))              setRating(+star.dataset.value);
+        });
+      });
+  
+      /* ── Screenshot picker ──────────────────────────────────────────── */
+      screenshotBtn.addEventListener('click', () => screenshotEl.click());
+  
+      /* ── Submit handler ─────────────────────────────────────────────── */
+      submitBtn.addEventListener('click', async () => {
+        submitBtn.disabled = true;
+  
+        const formData = new FormData();
+        formData.append('page_url',    location.href);
+        formData.append('page_title',  document.title);
+        formData.append('star_rating', currentRating);
+        formData.append('comment',     commentsEl.value);
+        formData.append('email',       emailEl.value);
+        formData.append('docs_area',   determineDocsArea());
+        if (screenshotEl.files[0]) formData.append('screenshot', screenshotEl.files[0]);
+  
+        try {
+          const resp = await fetch(FEEDBACK_ENDPOINT, {
+            method: 'POST',
+            mode:   'cors',
+            body:   formData,
+          });
+          if (!resp.ok) console.error('Feedback API error:', resp.status, await resp.text());
+        } catch (err) {
+          console.error('Network error sending feedback:', err);
+        }
+  
+        showStep(step3);
+        setTimeout(closeOverlay, 4000);            // auto-close after thanks
+        submitBtn.disabled = false;
+      });
+    });
+  })();
+  </script>
+  
+  
+
+
+  
