@@ -33,7 +33,7 @@ A ➔ B | B | User running the command. | `REPLICATIONDEST`
 B ➔ A | B | User in the LDR connection string. | `REPLICATIONSOURCE`
 B ➔ A | A | User running the command. | `REPLICATIONDEST`
 
-Grant a table-level privilege with the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) statement to a [user or a role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles):
+Grant the privilege at the table or [system level]({% link {{ page.version.version }}/grant.md %}#grant-system-level-privileges-on-the-entire-cluster) with the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) statement to a [user or a role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
