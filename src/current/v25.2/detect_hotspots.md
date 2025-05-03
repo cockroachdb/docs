@@ -1,6 +1,6 @@
 ---
 title: Detect Hotspots
-summary: Learn how to detect hotspots in CockroachDB.
+summary: Learn how to detect hotspots using real-time monitoring and historical logs in CockroachDB.
 toc: true
 ---
 
