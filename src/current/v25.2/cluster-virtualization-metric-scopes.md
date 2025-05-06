@@ -1610,9 +1610,9 @@ SERVER: n/a
 - `replicas`
 - `replicas.leaders`
 - `replicas.leaders_invalid_lease`
-- `replicas.leaders_not_leaseholders`
+- `replicas.leaders_not_leaseholders` [XXX](XXX): Does this metric go away in v25.2 with leader leases? It's still in the beta.3
 - `replicas.leaseholders`
-- `replicas.quiescent`
+- `replicas.quiescent` [XXX](XXX): Does this metric go away in v25.2 with leader leases? and/or can we at least remove it from docs?
 - `replicas.reserved`
 - `replicas.uninitialized`
 - `requests.backpressure.split`

@@ -224,6 +224,8 @@ During [rolling maintenance]({% link {{ page.version.version }}/upgrade-cockroac
 
 ### Heartbeat latency
 
+[XXX](XXX): DO WE HAVE A METRIC UNDER `storeliveness.heartbeat.*` that is analagous to this? or should folks just still use this metric?
+
 Monitor the cluster health for early signs of instability. If this metric exceeds 1 second, it is a sign of instability. 
 
 **Metric**

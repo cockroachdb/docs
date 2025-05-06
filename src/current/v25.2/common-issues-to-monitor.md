@@ -112,7 +112,7 @@ Issues at the storage layer, including an [inverted LSM]({% link {{ page.version
 
 #### Node health
 
-If [issues at the storage layer](#lsm-health) remain unresolved, affected nodes will miss their liveness heartbeats, causing the cluster to lose nodes and eventually become unresponsive.
+If [issues at the storage layer](#lsm-health) remain unresolved, affected nodes will eventually become unresponsive.
 
 - The [**Node status**]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-status) on the Cluster Overview page indicates whether nodes are online (`LIVE`) or have crashed (`SUSPECT` or `DEAD`).
 
@@ -273,7 +273,7 @@ Monitor storage capacity and disk performance:
 
 #### Storage capacity
 
-CockroachDB requires disk space in order to accept writes and report node liveness. When a node runs out of disk space, it [shuts down](#node-health) and cannot be restarted until space is freed up.
+CockroachDB requires disk space in order to accept writes. When a node runs out of disk space, it [shuts down](#node-health) and cannot be restarted until space is freed up.
 
 - The [**Capacity**]({% link {{ page.version.version }}/ui-storage-dashboard.md %}#capacity) graph on the Overview and Storage dashboards shows the available and used disk capacity in the CockroachDB [store]({% link {{ page.version.version }}/cockroach-start.md %}#store).
 
@@ -304,11 +304,11 @@ With insufficient disk I/O, you may also see:
 
 #### Node heartbeat latency
 
-Because each node needs to update a liveness record on disk, maxing out disk bandwidth can cause liveness heartbeats to be missed.
-
-- The [**Node Heartbeat Latency: 99th percentile**]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#node-heartbeat-latency-99th-percentile) and [**Node Heartbeat Latency: 90th percentile**]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#node-heartbeat-latency-90th-percentile) graphs on the [Distributed Dashboard]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}) show the time elapsed between [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) heartbeats.
+- The [**Node Heartbeat Latency: 99th percentile**]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#node-heartbeat-latency-99th-percentile) and [**Node Heartbeat Latency: 90th percentile**]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#node-heartbeat-latency-90th-percentile) graphs on the [Distributed Dashboard]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}) show the time elapsed between node heartbeats.
 
     {% include {{ page.version.version }}/prod-deployment/healthy-node-heartbeat-latency.md %}
+
+{% include_cached new-in.html version="v25.2" %} {% include {{ page.version.version }}/leader-leases-node-heartbeat-use-cases.md %}
 
 #### Command commit latency
 
