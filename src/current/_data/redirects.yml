@@ -873,6 +873,10 @@
   sources: ['cockroachcloud/serverless-cluster-management.md']
   versions: ['cockroachcloud']
 
+- destination: cockroachcloud/advanced-cluster-management.md
+  sources: ['cockroachcloud/cluster-management-advanced.md']
+  versions: ['cockroachcloud']
+
 - destination: cockroachcloud/connect-to-a-basic-cluster.md
   sources: ['cockroachcloud/connect-to-a-serverless-cluster.md']
 
