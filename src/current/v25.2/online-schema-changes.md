@@ -223,7 +223,7 @@ To enable this setting for the current [session]({% link {{ page.version.version
 SET autocommit_before_ddl = on;
 ~~~
 
-To enable it for all [users]({% link {{ page.version.version }}/alter-role.md %}):
+To enable it for [all users]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
