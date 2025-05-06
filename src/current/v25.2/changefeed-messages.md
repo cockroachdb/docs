@@ -531,6 +531,89 @@ CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH updated AS SELECT column, column
 
 For details on syntax and examples, refer to the [Change Data Capture Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page.
 
+### Specify a column as a Kafka header
+
+{% include_cached new-in.html version="v25.2" %} Use the `headers_json_column_name` option to specify a [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) column that the changefeed will emit as a Kafka header for each row. You can send metadata, such as routing or tracing information, at the protocol level in the header separate from the message payload. This allows for Kafka brokers or routers to filter the metadata the header contains without deserializing the payload.
+
+{{site.data.alerts.callout_info}}
+The `headers_json_column_name` option is supported with changefeeds emitting [JSON](#json) or [Avro](#avro) messages to [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}).
+{{site.data.alerts.end}}
+
+For example, define a table that updates customer records. This schema includes a `route_info` column of type `JSONB`, which will be used to store operation type, schema version, and message origin metadata for the Kafka header:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE customer_updates (
+    update_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    customer_id UUID NOT NULL,
+    operation_type STRING NOT NULL,
+    change_version STRING NOT NULL,
+    source_system STRING NOT NULL DEFAULT 'crdb_app',
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    change_description STRING,
+    route_info JSONB
+);
+~~~
+
+Insert example rows into the table, populating the `route_info` column with the `JSONB` data. The changefeed will emit this column as Kafka headers alongside the row changes:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSERT INTO customer_updates (
+    customer_id, operation_type, change_version, source_system, change_description, route_info
+) VALUES
+(gen_random_uuid(), 'insert', 'v1', 'crm_web', 'New customer created', '{"operation": "insert", "version": "v1", "origin": "crm_web"}'),
+(gen_random_uuid(), 'update', 'v2', 'crm_mobile', 'Updated phone number', '{"operation": "update", "version": "v2", "origin": "crm_mobile"}'),
+(gen_random_uuid(), 'delete', 'v1', 'crm_web', 'Customer deleted due to inactivity', '{"operation": "delete", "version": "v1", "origin": "crm_web"}'),
+(gen_random_uuid(), 'update', 'v2', 'support_portal', 'Changed mailing address', '{"operation": "update", "version": "v2", "origin": "support_portal"}'),
+(gen_random_uuid(), 'insert', 'v1', 'api_batch', 'Bulk customer import', '{"operation": "insert", "version": "v1", "origin": "api_batch"}');
+~~~
+
+Create a changefeed that emits messages from the `customer_updates` table to Kafka and define the `route_info` column in the `headers_json_column_name` option:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE customer_updates INTO 'kafka://localhost:9092' WITH headers_json_column_name = 'route_info';
+~~~
+
+The changefeed will emit each row’s `route_info` data as Kafka message headers, which Kafka brokers or stream processors can use to access the metadata without inspecting the payload.
+
+The Kafka topic receives the message payload containing the row-level change:
+
+~~~json
+{"after": {"change_description": "Updated phone number", "change_version": "v2", "customer_id": "5896dc90-a972-43e8-b69b-8b5a52691ce2", "operation_type": "update", "source_system": "crm_mobile", "update_id": "39a7bb4c-ee3b-4897-88fd-cfed94558e72", "updated_at": "2025-05-06T14:57:42.378814Z"}}
+{"after": {"change_description": "Bulk customer import", "change_version": "v1", "customer_id": "0fccf7a5-5f61-4d65-ad6b-55d8740a0874", "operation_type": "insert", "source_system": "api_batch", "update_id": "e058a098-89ba-48b0-a117-93b6b00c7eba", "updated_at": "2025-05-06T14:57:42.378814Z"}}
+{"after": {"change_description": "Changed mailing address", "change_version": "v2", "customer_id": "ccca656e-96b3-43b7-83ad-ee044627d67d", "operation_type": "update", "source_system": "support_portal", "update_id": "d0f730ce-d269-4bd5-9d2d-07c6fe65fc51", "updated_at": "2025-05-06T14:57:42.378814Z"}}
+. . .
+~~~
+
+You can query the `route_info` column to view the metadata that will be present in the Kafka headers for each corresponding message:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT 
+    update_id,
+    route_info->>'operation' AS operation,
+    route_info->>'version' AS version,
+    route_info->>'origin' AS origin
+FROM customer_updates;
+~~~
+~~~
+               update_id               | kafka_header_operation | kafka_header_version | kafka_header_origin
+---------------------------------------+------------------------+----------------------+----------------------
+  3366969e-4f9f-472d-9e07-ac65e12b1e19 | delete                 | v1                   | crm_web
+  39a7bb4c-ee3b-4897-88fd-cfed94558e72 | update                 | v2                   | crm_mobile
+  b9cd25ab-e44c-4bbc-a806-7cf701ad131e | insert                 | v1                   | crm_web
+  d0f730ce-d269-4bd5-9d2d-07c6fe65fc51 | update                 | v2                   | support_portal
+  e058a098-89ba-48b0-a117-93b6b00c7eba | insert                 | v1                   | api_batch
+(5 rows)
+~~~
+
+You may need to duplicate fields between the message envelope and headers to support efficient routing and filtering by intermediate systems, such as Kafka brokers, stream processors, or observability tools, but still maintain the full context of the change in the message for downstream applications.
+
+If you would like to filter the table columns that a changefeed emits, refer to the [CDC Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page. Or, if you would like to customize the message envelope, refer to the [Changefeed Message Envelope](#message-envelopes) page. 
+{% comment  %}update message envelope link to the new page once PR #19542 is merged{% endcomment %}
+
 ## Message formats
 
 {% include {{ page.version.version }}/cdc/message-format-list.md %}
