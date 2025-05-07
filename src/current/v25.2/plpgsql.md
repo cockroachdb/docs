@@ -351,6 +351,42 @@ BEGIN
 	RETURN;
 ~~~
 
+#### `RETURN NEXT` and `RETURN QUERY`
+
+Add `RETURN NEXT` or `RETURN QUERY` statements to a [set-returning function]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-set-of-results) to append rows to the result set. `RETURN NEXT` and `RETURN QUERY` statements can be combined in a single function to build the result set.
+
+Use `RETURN NEXT` within a set-returning function to append a row to the result set.
+
+In the following example, `RETURN NEXT` returns a new row during each loop iteration.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE FUNCTION get_numbers() RETURNS SETOF INT AS $$
+DECLARE
+	i INT := 1;
+BEGIN
+	WHILE i <= 5 LOOP
+		RETURN NEXT i;
+		i := i + 1;
+	END LOOP;
+END
+$$ LANGUAGE PLpgSQL;
+~~~
+
+Use `RETURN QUERY` within a set-returning function to append the results of a SQL query to the result set.
+
+In the following example, `RETURN QUERY` returns all qualifying rows from the `SELECT` query.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE FUNCTION get_even_numbers() RETURNS SETOF INT AS $$
+BEGIN
+	RETURN QUERY
+		SELECT i FROM generate_series(1, 10) AS i WHERE i % 2 = 0;
+END
+$$ LANGUAGE PLpgSQL;
+~~~
+
 #### `CONTINUE`
 
 Add a `CONTINUE` statement to end the current iteration of a [loop](#write-loops), skipping any statements below `CONTINUE` and beginning the next iteration of the loop. 
