@@ -21,6 +21,7 @@ Cursors differ from [keyset pagination]({% link {{ page.version.version }}/pagin
 Cursors are declared and used with the following keywords:
 
 - [`DECLARE`]({% link {{ page.version.version }}/sql-grammar.md %}#declare_cursor_stmt)
+- [`WITH HOLD`](#use-a-holdable-cursor)
 - [`FETCH`]({% link {{ page.version.version }}/sql-grammar.md %}#fetch_cursor_stmt)
 - [`CLOSE`]({% link {{ page.version.version }}/sql-grammar.md %}#close_cursor_stmt)
 
@@ -75,6 +76,63 @@ CLOSE rides_cursor;
 COMMIT;
 ~~~
 
+### Use a holdable cursor
+
+By default, a cursor closes when the transaction ends. The `WITH HOLD` clause defines a *holdable cursor*, which stays open after a `COMMIT` by writing its results into a buffer. Use `WITH HOLD` to access data across multiple transactions without redefining the cursor. 
+
+The following example uses a holdable cursor to return vehicles that are available for rides:
+
+Start a transaction and declare a cursor using `WITH HOLD` to keep it open after the `COMMIT`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BEGIN;
+DECLARE available_vehicles_cursor CURSOR WITH HOLD FOR
+  SELECT id, type, city, status FROM vehicles WHERE status = 'available';
+~~~
+
+Fetch the first two rows from the cursor:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+FETCH 2 FROM available_vehicles_cursor;
+~~~
+
+~~~
+                   id                  |  type   |   city    |  status
+---------------------------------------+---------+-----------+------------
+  bbbbbbbb-bbbb-4800-8000-00000000000b | scooter | amsterdam | available
+  22222222-2222-4200-8000-000000000002 | scooter | boston    | available
+~~~
+
+Commit the transaction:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+COMMIT;
+~~~
+
+Continue fetching rows from the cursor:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+FETCH 2 FROM available_vehicles_cursor;
+~~~
+
+~~~
+                   id                  |    type    |  city   |  status
+---------------------------------------+------------+---------+------------
+  33333333-3333-4400-8000-000000000003 | bike       | boston  | available
+  55555555-5555-4400-8000-000000000005 | skateboard | seattle | available
+~~~
+
+Close the cursor:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CLOSE available_vehicles_cursor;
+~~~
+
 ### View all open cursors
 
 {% include_cached copy-clipboard.html %}
@@ -83,10 +141,11 @@ SELECT * FROM pg_cursors;
 ~~~
 
 ~~~
-      name     |      statement      | is_holdable | is_binary | is_scrollable |         creation_time
----------------+---------------------+-------------+-----------+---------------+--------------------------------
-  rides_cursor | SELECT * FROM rides |      f      |     f     |       f       | 2023-03-30 15:24:37.568054+00
-(1 row)
+            name            |                               statement                                | is_holdable | is_binary | is_scrollable |         creation_time
+----------------------------+------------------------------------------------------------------------+-------------+-----------+---------------+--------------------------------
+  rides_cursor              | SELECT * FROM movr.rides                                               |      f      |     f     |       f       | 2025-05-07 21:12:53.32978+00
+  available_vehicles_cursor | SELECT id, type, city, status FROM vehicles WHERE status = 'available' |      t      |     f     |       f       | 2025-05-07 21:12:59.605647+00
+(2 rows)
 ~~~
 
 ## Known limitations
