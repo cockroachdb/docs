@@ -9,19 +9,64 @@ docs_area: reference.sql
 
 ## JSONPath expression
 
-A JSONPath expression has the following generic structure:
+A JSONPath expression consists of an optional [mode](#structural-error-handling) (`lax` or `strict`), followed by a scalar expression (such as `1 + 2`), a predicate expression (such as `1 != 2` or `exists($)`), or a path-based expression rooted at `$`. A path-based expression is composed of one or more [accessor](#accessor-operators) operators that are optionally interleaved with one or more [filter expressions](#filter-expressions) introduced by `?`. Expressions can optionally include scalar expressions, [predicate operators](#predicate-operators) for conditional logic, and a [method](#methods) applied to the current value. The path is evaluated left to right, and each stage refines or filters the result.
 
-~~~
-[mode] $[.key] [? (filter_exp)].[key].[method]
-~~~
+### Variables
 
-- `mode` is an optional mode (`lax` or `strict`) that determines how structural mismatches are tolerated. If not specified, the mode is `lax`. Refer to [Structural error handling](#structural-error-handling).
-- `$` is the root of the JSONPath, and must be the first element in a JSONPath expression. For an example, refer to [Access entire document](#access-entire-document).
-- `.key` is an optional key accessor that refers to a named field in a `JSONB` object. To access array elements, use `.key[index]` or `.key[*]`. Each successive key accessor navigates one level deeper into the structure. `.*` matches all fields in the current object.
-- `? (filter_exp)` is an optional filter expression that evaluates the path according to a [predicate check expression](#check-expressions), only returning the results that match. For syntax details, refer to [Filter expressions](#filter-expressions).
-- `method` is an optional [JSONPath method](#jsonpath-methods) that can be used to access or transform the current path value.
+Use the following variables in path and [filter expressions](#filter-expressions) to reference parts of the JSON document or external values.
 
-The path is evaluated left to right, and each stage refines or filters the result.
+| Variable |                                 Description                                 |             Example usage              |
+|----------|-----------------------------------------------------------------------------|----------------------------------------|
+| `$`      | Root of the JSON document.                                                  | `$.players[0]`                         |
+| `$var`   | A named variable defined in the `var` argument.                             | `@.price > $min` (with `{"min": 100}`) |
+| `@`      | Current item being evaluated in a [filter expression](#filter-expressions). | `@.team == "Lakers"`                   |
+
+### Operators
+
+#### Accessor operators
+
+Use the following operators in path expressions to navigate JSON objects and arrays.
+
+|    Operator    |                       Description                        |                 Example usage                  |
+|----------------|----------------------------------------------------------|------------------------------------------------|
+| `.key`         | Access a named field `key` in a JSON object.             | `$.players`                                    |
+| `.*`           | Access all fields in the current object.                 | `$.stats.*`                                    |
+| `.key[a]`      | Access a specific `a` element in an array field.         | `$.players[0]`                                 |
+| `.key[a to b]` | Access an index range from `a` to `b` in an array field. | `$.players[0 to 3]`                            |
+| `.key[last]`   | Access the last index element in an array field.         | `$.players[last]`                              |
+| `.key[*]`      | Access all elements in an array field.                   | `$.players[*]`                                 |
+| `.$var`        | Access the field named by a variable `var`.              | `$.players[0].$field` (with `$field = "name"`) |
+
+#### Predicate operators
+
+Use the following operators in [predicate check expressions](#check-expressions) to compare values, evaluate conditions, and combine logical clauses.
+
+|    Operator   |              Description               |           Example usage            |
+|---------------|----------------------------------------|------------------------------------|
+| `==`          | Equality                               | `@.team == "Lakers"`               |
+| `!=`          | Inequality                             | `@.name != "Luka"`                 |
+| `>`           | Greater than                           | `@.stats.ppg > 25`                 |
+| `<`           | Less than                              | `@.stats.ppg < 30`                 |
+| `>=`          | Greater than or equal to               | `@.stats.rpg >= 10`                |
+| `<=`          | Less than or equal to                  | `@.stats.apg <= 4`                 |
+| `starts with` | String prefix match                    | `@.name starts with "A"`           |
+| `like_regex`  | Regex string match                     | `@.name like_regex "^L.*"`         |
+| `is unknown`  | True if expression evaluates to `null` | `(@.age > 25) is unknown`          |
+| `!`           | Logical NOT                            | `!(@.team == "Mavericks")`         |
+| `&&`          | Logical AND                            | `@.ppg > 20 && @.team == "Lakers"` |
+| `||`          | Logical OR                             | `@.ppg > 20 || @.team == "Lakers"` |
+
+### Methods
+
+Append the following methods to a path (after `.`) to access or transform the value. For examples, refer to [Access using methods](#access-using-methods).
+
+|    Method   |                               Description                               |           Example usage            |
+|-------------|-------------------------------------------------------------------------|------------------------------------|
+| `size()`    | Returns the size of an array, or `1` for a scalar.                      | `$.players.size()`                 |
+| `type()`    | Returns the type of the current value as a string.                      | `$.players[0].stats.type()`        |
+| `abs()`     | Returns the absolute value of a number.                                 | `$.players[0].stats.bpg.abs()`     |
+| `floor()`   | Returns the nearest integer less than or equal to the current value.    | `$.players[1].stats.ppg.floor()`   |
+| `ceiling()` | Returns the nearest integer greater than or equal to the current value. | `$.players[1].stats.ppg.ceiling()` |
 
 ## JSONPath functions
 
@@ -41,37 +86,6 @@ Each function accepts two required and two optional arguments as follows:
 - `path` (required): A [JSONPath expression](#jsonpath-expression).
 - `vars`: An optional value referenced as a variable in the path.
 - `silent`: An optional Boolean that specifies whether to throw errors during execution. If not specified, this is `false`.
-
-## JSONPath operators
-
-Use the following operators in [predicate check expressions](#check-expressions) to compare values, evaluate conditions, and combine logical clauses.
-
-|    Operator   |              Description               |           Example usage            |
-|---------------|----------------------------------------|------------------------------------|
-| `==`          | Equality                               | `@.team == "Lakers"`               |
-| `!=`          | Inequality                             | `@.name != "Luka"`                 |
-| `>`           | Greater than                           | `@.stats.ppg > 25`                 |
-| `<`           | Less than                              | `@.stats.ppg < 30`                 |
-| `>=`          | Greater than or equal to               | `@.stats.rpg >= 10`                |
-| `<=`          | Less than or equal to                  | `@.stats.apg <= 4`                 |
-| `starts with` | String prefix match                    | `@.name starts with "A"`           |
-| `like_regex`  | Regex string match                     | `@.name like_regex "^L.*"`         |
-| `is unknown`  | True if expression evaluates to `null` | `(@.age > 25) is unknown`          |
-| `!`           | Logical NOT                            | `!(@.team == "Mavericks")`         |
-| `&&`          | Logical AND                            | `@.ppg > 20 && @.team == "Lakers"` |
-| `||`          | Logical OR                             | `@.ppg > 20 || @.team == "Lakers"` |
-
-## JSONPath methods
-
-Use the following methods to access or transform data in the path. For examples, refer to [Access using methods](#access-using-methods).
-
-|    Method   |                               Description                               |           Example usage            |
-|-------------|-------------------------------------------------------------------------|------------------------------------|
-| `size()`    | Returns the size of an array, or `1` for a scalar.                      | `$.players.size()`                 |
-| `type()`    | Returns the type of the current value as a string.                      | `$.players[0].stats.type()`        |
-| `abs()`     | Returns the absolute value of a number.                                 | `$.players[0].stats.bpg.abs()`     |
-| `floor()`   | Returns the nearest integer less than or equal to the current value.    | `$.players[1].stats.ppg.floor()`   |
-| `ceiling()` | Returns the nearest integer greater than or equal to the current value. | `$.players[1].stats.ppg.ceiling()` |
 
 ## Example setup
 
@@ -246,7 +260,7 @@ SELECT jsonb_path_query(data, '$.players[1 to 2, 0]') FROM stats;
 
 ### Access using methods
 
-You can use [JSONPath methods](#jsonpath-methods) to access or transform data in the path.
+You can use [JSONPath methods](#methods) to access or transform data in the path.
 
 The following query returns the type of each value in the `players` array, using the `type()` method:
 
@@ -295,7 +309,7 @@ Returns the floor of the PPG value.
 
 ## Check expressions
 
-A JSONPath expression can be a *predicate check expression* that returns a Boolean value. Use one or more [JSONPath operators](#jsonpath-operators) to specify conditions such as equality, logical expressions, and existence. 
+A JSONPath expression can be a *predicate check expression* that returns a Boolean value. Use one or more [predicate operators](#predicate-operators) to specify conditions such as equality, logical expressions, and existence. 
 
 Each of the following check expressions evaluates to true:
 
