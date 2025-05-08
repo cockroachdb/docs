@@ -78,15 +78,32 @@ COMMIT;
 
 ### Use a holdable cursor
 
-By default, a cursor closes when the transaction ends. The `WITH HOLD` clause defines a *holdable cursor*, which stays open after a `COMMIT` by writing its results into a buffer. Use `WITH HOLD` to access data across multiple transactions without redefining the cursor. 
+By default, a cursor closes when the transaction ends. The `WITH HOLD` clause defines a *holdable cursor*, which stays open after a `COMMIT` by writing its results into a buffer. Use `WITH HOLD` to access data across multiple transactions without redefining the cursor.
 
-The following example uses a holdable cursor to return vehicles that are available for rides:
+{{site.data.alerts.callout_info}}
+The `WITHOUT HOLD` clause specifies the default non-holdable cursor behavior.
+{{site.data.alerts.end}}
 
-Start a transaction and declare a cursor using `WITH HOLD` to keep it open after the `COMMIT`:
+A holdable cursor can be opened in both explicit and implicit transactions. The following example uses a holdable cursor to return vehicles that are available for rides.
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="explicit">Explicit</button>
+    <button class="filter-button" data-scope="implicit">Implicit</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="explicit">
+Start a transaction:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
+~~~
+</section>
+
+Declare a cursor using `WITH HOLD` to keep it open after the `COMMIT`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
 DECLARE available_vehicles_cursor CURSOR WITH HOLD FOR
   SELECT id, type, city, status FROM vehicles WHERE status = 'available';
 ~~~
@@ -105,12 +122,14 @@ FETCH 2 FROM available_vehicles_cursor;
   22222222-2222-4200-8000-000000000002 | scooter | boston    | available
 ~~~
 
+<section class="filter-content" markdown="1" data-scope="explicit">
 Commit the transaction:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 ~~~
+</section>
 
 Continue fetching rows from the cursor:
 
