@@ -876,9 +876,9 @@ Cockroach Labs recommends that you:
 
 ## Decommissioning and draining on CockroachDB {{ site.data.products.advanced }}
 
-Most of the guidance in this page is most relevant to manual deployments, although decommissioning and draining work the same way behind the scenes in a CockroachDB {{ site.data.products.advanced }} cluster. CockroachDB {{ site.data.products.advanced }} clusters have a `server.shutdown.connections.timeout` of 1800 seconds (30 minutes) and a termination grace period that is slightly longer. The termination grace period is not configurable, and adjusting `server.shutdown.connections.timeout` is generally not recommended.
+Most of the guidance in this page is most relevant to manual deployments, although decommissioning and draining work the same way behind the scenes in a CockroachDB {{ site.data.products.advanced }} cluster. CockroachDB {{ site.data.products.advanced }} clusters are deployed with the [server.shutdown.connections.timeout](#server-shutdown-connections-timeout) setting at its default value of `0s`, and have a termination grace period that is slightly longer than 30 minutes. This grace period is not configurable.
 
-Client applications or application servers that connect to CockroachDB {{ site.data.products.advanced }} clusters should use connection pools that have a maximum lifetime that is shorter than the [`server.shutdown.connections.timeout`](#server-shutdown-connections-timeout) setting.
+You can adjust the [`server.shutdown.connections.timeout`](#server-shutdown-connections-timeout) setting for client applications or application servers that connect to CockroachDB {{ site.data.products.advanced }} clusters. Ensure that the connection pool maximum lifetime is shorter than that value, as per the [Cluster settings](#server-shutdown-connections-timeout) guidance.
 
 ## See also
 

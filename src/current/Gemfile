@@ -6,7 +6,8 @@ source "https://rubygems.org"
 # docs-builder Docker image to keep things speedy in CI. See ci/README.md for
 # instructions.
 
-gem "jekyll", "~> 4.3"
+# Removed `gem "jekyll", "~> 4.3"`` until conflict with our use of ianjevins/jekyll-remote-include is resolved (DOC-13509)
+gem "jekyll", "4.3.4"
 gem "liquid-c", "~> 4.0.0"
 gem "redcarpet", "~> 3.6"
 gem "rss"
