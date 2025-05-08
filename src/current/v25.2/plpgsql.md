@@ -343,12 +343,25 @@ CREATE PROCEDURE p() AS $$
 
 #### `RETURN`
 
-Add a `RETURN` statement to a routine with an `OUT` parameter or `VOID` return type to exit the routine immediately.
+Add a `RETURN` statement to a routine with an `OUT` parameter, `RETURNS VOID` clause, or `RETURNS SETOF` clause to exit the routine immediately.
 
 ~~~ sql
 BEGIN
 	...
 	RETURN;
+~~~
+
+Add a `RETURN` statement in a scalar-returning function to return the result of an expression.
+
+In the following example, `RETURN` returns the square of the input argument.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE FUNCTION square(x INT) RETURNS INT AS $$
+BEGIN
+	RETURN x * x;
+END;
+$$ LANGUAGE PLpgSQL;
 ~~~
 
 #### `RETURN NEXT` and `RETURN QUERY`
