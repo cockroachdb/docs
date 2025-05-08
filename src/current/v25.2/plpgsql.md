@@ -353,7 +353,7 @@ BEGIN
 
 Add a `RETURN` statement in a scalar-returning function to return the result of an expression.
 
-In the following example, `RETURN` returns the square of the input argument.
+The following example uses `RETURN` to return the square of the input argument.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -366,7 +366,7 @@ $$ LANGUAGE PLpgSQL;
 
 #### `RETURN NEXT` and `RETURN QUERY`
 
-Add `RETURN NEXT` or `RETURN QUERY` statements to a [set-returning function]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-set-of-results) to append rows to the result set. `RETURN NEXT` and `RETURN QUERY` statements can be combined in a single function to build the result set.
+Add `RETURN NEXT` or `RETURN QUERY` statements to a [set-returning function]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-set-of-results) to append rows to the result set. You can combine `RETURN NEXT` and `RETURN QUERY` statements in a single function to build the result set.
 
 Use `RETURN NEXT` within a set-returning function to append a row to the result set.
 
