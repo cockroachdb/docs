@@ -264,7 +264,7 @@ The following screenshot shows the insight that displays after you run the query
 
 <img src="{{ 'images/v25.2/schema_insight.png' | relative_url }}" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
 
-CockroachDB uses the threshold of 6 executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.
+CockroachDB uses the threshold of six executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.
 
 - **Insights:** Contains one of the following insight types: **Create Index**, **Alter Index**, **Replace Index**, **Drop Unused Index**.
 - **Details:** Details for each insight. Different insight types display different details fields:
@@ -280,14 +280,16 @@ CockroachDB uses the threshold of 6 executions before offering an insight becaus
 {% include_cached feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-The SQL built-in function [`workload_index_recs`]({% link {{ page.version.version }}/functions-and-operators.md %}#workload_index_recs) returns index recommendations and the fingerprint IDs of the statements that the indexes will impact. The function returns two columns:
+The SQL built-in function [`workload_index_recs`]({% link {{ page.version.version }}/functions-and-operators.md %}#workload_index_recs) returns index recommendations and the fingerprint IDs of the statements they impact. The function returns two columns:
 
 - `index_rec` (`STRING`): Contains the index recommendation.
 - `fingerprint_ids` (`BYTES[]`): Contains the fingerprint IDs of the affected statements.
 
 You can use the `workload_index_recs` function to determine workload-level index recommendations.
 
-For example, after running the query mentioned in the [preceding **Schema Insights** view section](#schema-insights-example), run the related query below more than six times to generate another **Create Index** insight.
+By default, the function returns index recommendations sourced from all statement fingerprints in the [`crdb_internal.statement_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#statement_statistics) table. When passed an optional [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}) parameter, such as `SELECT workload_index_recs('2025-05-08 16:00:00+00')`, the function will provide index recommendations only for statements executed after `'2025-05-08 16:00:00+00'`.
+
+For example, after running the [query]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) mentioned in the preceding [**Schema Insights** tab](#schema-insights-tab) section, run the following related query more than six times to generate another **Create Index** insight.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -318,24 +320,28 @@ SELECT workload_index_recs();
   ("CREATE INDEX ON movr.public.rides (start_time) STORING (rider_id);","{""\\\\x95a325e25bdbdc06"",""\\\\x4784cb829aab2542""}")
 ~~~
 
-To display the query string that corresponds to the two fingerprint IDs, run a query that joins the `workload_index_recs` function with the [`crdb_internal.statement_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#statement_statistics) table.
+To display the query strings corresponding to the fingerprint IDs, run a query that joins the `workload_index_recs` function with the [`crdb_internal.statement_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#statement_statistics) table.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT ss.index_recommendations, ss.aggregated_ts, ss.fingerprint_id, ss.app_name, ss.metadata->>'query' AS query -- Return data from the statement_statistics table
-FROM crdb_internal.statement_statistics AS ss
+SELECT ss.index_recommendations,
+(ss.statistics->'statistics'->>'lastExecAt')::TIMESTAMPTZ AS lastExecAt, -- Time the statement was last execut
+ss.fingerprint_id,
+ss.app_name,
+ss.metadata->>'query' AS query
+FROM crdb_internal.statement_statistics AS ss -- Return data from the statement_statistics table
 JOIN (
-    SELECT unnest((rec).fingerprint_ids) AS fingerprint_id -- Return the array of fingerprint_ids as a set of rows
+    SELECT unnest((rec).fingerprint_ids) AS fingerprint_id -- Return each fingerprint ID from the array as a row
     FROM workload_index_recs() AS rec
 ) AS fids ON ss.fingerprint_id = fids.fingerprint_id
-ORDER BY ss.index_recommendations, ss.aggregated_ts;
+ORDER BY ss.index_recommendations, lastExecAt;
 ~~~
 
 ~~~
-                                index_recommendations                               |     aggregated_ts      |   fingerprint_id   |    app_name     |                                                                                                         query
-------------------------------------------------------------------------------------+------------------------+--------------------+-----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  {"creation : CREATE INDEX ON movr.public.rides (start_time) STORING (rider_id);"} | 2025-04-25 17:00:00+00 | \x4784cb829aab2542 | $ cockroach sql | SELECT name, count(rides.id) AS sum FROM users JOIN rides ON users.id = rides.rider_id WHERE rides.start_time BETWEEN _ AND _ GROUP BY name ORDER BY sum DESC LIMIT _
-  {"creation : CREATE INDEX ON movr.public.rides (start_time) STORING (rider_id);"} | 2025-04-28 19:00:00+00 | \x95a325e25bdbdc06 | $ cockroach sql | SELECT name, users.city, rides.city, count(rides.id) AS sum FROM users JOIN rides ON users.id = rides.rider_id WHERE rides.start_time BETWEEN _ AND _ GROUP BY name, users.city, rides.city ORDER BY sum DESC LIMIT _
+                                index_recommendations                               |          lastexecat           |   fingerprint_id   |     app_name     |                                                                                                         query
+------------------------------------------------------------------------------------+-------------------------------+--------------------+------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  {"creation : CREATE INDEX ON movr.public.rides (start_time) STORING (rider_id);"} | 2025-05-08 15:59:21.969934+00 | \x4784cb829aab2542 | $ cockroach demo | SELECT name, count(rides.id) AS sum FROM users JOIN rides ON users.id = rides.rider_id WHERE rides.start_time BETWEEN _ AND _ GROUP BY name ORDER BY sum DESC LIMIT _
+  {"creation : CREATE INDEX ON movr.public.rides (start_time) STORING (rider_id);"} | 2025-05-08 16:10:59.479173+00 | \x95a325e25bdbdc06 | $ cockroach demo | SELECT name, users.city, rides.city, count(rides.id) AS sum FROM users JOIN rides ON users.id = rides.rider_id WHERE rides.start_time BETWEEN _ AND _ GROUP BY name, users.city, rides.city ORDER BY sum DESC LIMIT _
 ~~~
 
 ## Search and filter
