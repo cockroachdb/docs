@@ -261,7 +261,7 @@ For details about when and how to change security certificates without restartin
 
 {% include common/tls-bad-cipher-warning.md %}
 
-Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.3 digital certificates for inter-node authentication, and your choice of TLS 1.2 and TLS 1.3 certificates for client-node authentication. These authentication methods require a certificate authority (CA) as well as keys and certificates for nodes, clients, and, optionally, the [DB Console](#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
+Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.3 digital certificates for inter-node authentication, and your choice of TLS 1.2 and TLS 1.3 certificates for client-node authentication (defaulting to TLS 1.3, if supported by the client). These authentication methods require a certificate authority (CA) as well as keys and certificates for nodes, clients, and, optionally, the [DB Console](#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
 
 To understand how CockroachDB uses digital certificates, let's first understand what each of these terms means.
 
