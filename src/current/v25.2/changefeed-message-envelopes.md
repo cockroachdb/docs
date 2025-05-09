@@ -599,15 +599,45 @@ CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka' WITH key_in_value, 
     {"after": {"category": "Electronics", "created_at": "2025-04-24T14:59:28.96273", "description": "Ergonomic wireless mouse with USB receiver", "id": "cb1a3e43-dccf-422f-a27d-ea027c233682", "in_stock": true, "name": "Wireless Mouse", "price": 29.99}, "op": "c", "ts_ns": 1745525261013511000}
     ~~~
 
-    
-- If you need to order messages when using `envelope=enriched`, you must also use `enriched_properties='source` with the `updated` option in order to include the [`"ts_hlc"` and `"ts_ns"`](#source) commit timestamps in the `"source"` field:
+- To order messages when using `envelope=enriched`, you must also use `enriched_properties='source'` with the `updated` option in order to include the [`"ts_hlc"` and `"ts_ns"`](#source) commit timestamps in the `"source"` field:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH envelope=enriched, enriched_properties=source, updated;
     ~~~
-    ~~~
-    {"after": {"category": "Home & Kitchen", "created_at": "2025-04-30T20:02:35.40316", "description": "Adjustable LED desk lamp with touch controls", "id": "4b36388a-f7e6-4b95-9f78-3aee9e2060d6", "in_stock": true, "name": "LED Desk Lamp", "price": 22.30}, "op": "c", "source": {"changefeed_sink": "kafka", "cluster_id": "585e6512-ea54-490a-8f1d-50c8d182a2e6", "cluster_name": "", "database_name": "test", "db_version": "v25.2.0-beta.2", "job_id": "1068153948173991937", "node_id": "1", "node_name": "localhost", "origin": "cockroachdb", "primary_keys": ["id"], "schema_name": "public", "source_node_locality": "", "table_name": "products", "ts_hlc": "1746045115619002000.0000000000", "ts_ns": 1746045115619002000}, "ts_ns": 1746045115679811000}
+    ~~~json
+    {
+			"after": {
+					"category": "Home & Kitchen",
+					"created_at": "2025-04-30T20:02:35.40316",
+					"description": "Adjustable LED desk lamp with touch controls",
+					"id": "4b36388a-f7e6-4b95-9f78-3aee9e2060d6",
+					"in_stock": true,
+					"name": "LED Desk Lamp",
+					"price": 22.30
+			},
+			"op": "c",
+			"source": {
+					"changefeed_sink": "kafka",
+					"cluster_id": "585e6512-ea54-490a-8f1d-50c8d182a2e6",
+					"cluster_name": "",
+					"database_name": "test",
+					"db_version": "v25.2.0-beta.2",
+					"job_id": "1068153948173991937",
+					"node_id": "1",
+					"node_name": "localhost",
+					"origin": "cockroachdb",
+					"primary_keys": [
+							"id"
+							],
+					"schema_name": "public",
+					"source_node_locality": "",
+					"table_name": "products",
+					"ts_hlc": "1746045115619002000.0000000000",
+					"ts_ns": 1746045115619002000
+			},
+			"ts_ns": 1746045115679811000
+			}
     ~~~
     
 - To add the origin of the change data and the schema of the payload, use the `envelope=enriched` and `enriched_properties='source,schema'`:
@@ -616,8 +646,109 @@ CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka' WITH key_in_value, 
     ~~~sql
     CREATE CHANGEFEED FOR TABLE products INTO 'external://kafka' WITH envelope=enriched, enriched_properties='source,schema';
     ~~~
-    ~~~
-    {"payload": {"after": {"category": "Electronics", "created_at": "2025-04-24T14:59:28.96273", "description": "Ergonomic wireless mouse with USB receiver", "id": "cb1a3e43-dccf-422f-a27d-ea027c233682", "in_stock": true, "name": "Wireless Mouse", "price": 29.99}, "op": "c", "source": {"changefeed_sink": "kafka", "cluster_id": "38269e9c-9823-4568-875e-d867e12156f2", "cluster_name": "", "database_name": "test", "db_version": "v25.2.0-beta.2", "job_id": "1066452286961614849", "node_id": "2", "node_name": "localhost", "origin": "cockroachdb", "primary_keys": ["id"], "schema_name": "public", "source_node_locality": "", "table_name": "products"}, "ts_ns": 1745525809913428000}, "schema": {"fields": [{"field": "after", "fields": [{"field": "id", "optional": false, "type": "string"}, {"field": "name", "optional": false, "type": "string"}, {"field": "description", "optional": true, "type": "string"}, {"field": "price", "name": "decimal", "optional": false, "parameters": {"precision": "10", "scale": "2"}, "type": "float64"}, {"field": "in_stock", "optional": true, "type": "boolean"}, {"field": "category", "optional": true, "type": "string"}, {"field": "created_at", "name": "timestamp", "optional": true, "type": "string"}], "name": "products.after.value", "optional": false, "type": "struct"}, {"field": "source", "fields": [{"field": "mvcc_timestamp", "optional": true, "type": "string"}, {"field": "ts_ns", "optional": true, "type": "int64"}, {"field": "ts_hlc", "optional": true, "type": "string"}, {"field": "table_name", "optional": false, "type": "string"}, {"field": "origin", "optional": false, "type": "string"}, {"field": "cluster_id", "optional": false, "type": "string"}, {"field": "node_id", "optional": false, "type": "string"}, {"field": "changefeed_sink", "optional": false, "type": "string"}, {"field": "schema_name", "optional": false, "type": "string"}, {"field": "node_name", "optional": false, "type": "string"}, {"field": "database_name", "optional": false, "type": "string"}, {"field": "source_node_locality", "optional": false, "type": "string"}, {"field": "primary_keys", "items": {"optional": false, "type": "string"}, "optional": false, "type": "array"}, {"field": "job_id", "optional": false, "type": "string"}, {"field": "db_version", "optional": false, "type": "string"}, {"field": "cluster_name", "optional": false, "type": "string"}], "name": "cockroachdb.source", "optional": true, "type": "struct"}, {"field": "ts_ns", "optional": false, "type": "int64"}, {"field": "op", "optional": false, "type": "string"}], "name": "cockroachdb.envelope", "optional": false, "type": "struct"}}
+    ~~~json
+    {
+			"payload": {
+				"after": {
+					"category": "Electronics",
+					"created_at": "2025-04-24T14:59:28.96273",
+					"description": "Ergonomic wireless mouse with USB receiver",
+					"id": "cb1a3e43-dccf-422f-a27d-ea027c233682",
+					"in_stock": true,
+					"name": "Wireless Mouse",
+					"price": 29.99
+				},
+				"op": "c",
+				"source": {
+					"changefeed_sink": "kafka",
+					"cluster_id": "38269e9c-9823-4568-875e-d867e12156f2",
+					"cluster_name": "",
+					"database_name": "test",
+					"db_version": "v25.2.0-beta.2",
+					"job_id": "1066452286961614849",
+					"node_id": "2",
+					"node_name": "localhost",
+					"origin": "cockroachdb",
+					"primary_keys": [
+						"id"
+					],
+					"schema_name": "public",
+					"source_node_locality": "",
+					"table_name": "products"
+				},
+				"ts_ns": 1745525809913428000
+			},
+			"schema": {
+				"fields": [
+					{
+						"field": "after",
+						"fields": [
+							{ "field": "id", "optional": false, "type": "string" },
+							{ "field": "name", "optional": false, "type": "string" },
+							{ "field": "description", "optional": true, "type": "string" },
+							{
+								"field": "price",
+								"name": "decimal",
+								"optional": false,
+								"parameters": {
+									"precision": "10",
+									"scale": "2"
+								},
+								"type": "float64"
+							},
+							{ "field": "in_stock", "optional": true, "type": "boolean" },
+							{ "field": "category", "optional": true, "type": "string" },
+							{
+								"field": "created_at",
+								"name": "timestamp",
+								"optional": true,
+								"type": "string"
+							}
+						],
+						"name": "products.after.value",
+						"optional": false,
+						"type": "struct"
+					},
+					{
+						"field": "source",
+						"fields": [
+							{ "field": "mvcc_timestamp", "optional": true, "type": "string" },
+							{ "field": "ts_ns", "optional": true, "type": "int64" },
+							{ "field": "ts_hlc", "optional": true, "type": "string" },
+							{ "field": "table_name", "optional": false, "type": "string" },
+							{ "field": "origin", "optional": false, "type": "string" },
+							{ "field": "cluster_id", "optional": false, "type": "string" },
+							{ "field": "node_id", "optional": false, "type": "string" },
+							{ "field": "changefeed_sink", "optional": false, "type": "string" },
+							{ "field": "schema_name", "optional": false, "type": "string" },
+							{ "field": "node_name", "optional": false, "type": "string" },
+							{ "field": "database_name", "optional": false, "type": "string" },
+							{ "field": "source_node_locality", "optional": false, "type": "string" },
+							{
+								"field": "primary_keys",
+								"items": {
+									"optional": false,
+									"type": "string"
+								},
+								"optional": false,
+								"type": "array"
+							},
+							{ "field": "job_id", "optional": false, "type": "string" },
+							{ "field": "db_version", "optional": false, "type": "string" },
+							{ "field": "cluster_name", "optional": false, "type": "string" }
+						],
+						"name": "cockroachdb.source",
+						"optional": true,
+						"type": "struct"
+					},
+					{ "field": "ts_ns", "optional": false, "type": "int64" },
+					{ "field": "op", "optional": false, "type": "string" }
+				],
+				"name": "cockroachdb.envelope",
+				"optional": false,
+				"type": "struct"
+			}
+		}
     ~~~
 
 #### `bare`
@@ -696,19 +827,18 @@ CREATE CHANGEFEED FOR TABLE vehicles INTO 'external://kafka' WITH envelope=row;
 
 ## Field reference
 
-CockroachDB provides multiple changefeed envelopes, each supported by different [sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) and [use cases](#use-cases).
+CockroachDB provides multiple changefeed envelopes, each supported by different [sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) and [use cases](#use-cases). For the [changefeed options](#option-reference) to enable each field, refer to the following descriptions:
 
 ### `"payload"`
 
-The change event data. `"payload"` is a wrapper only with [webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) sinks and when the [`enriched_properties`](#enriched-properties-option) options is used.
+The change event data. `"payload"` is included as a field in the following configurations:
 
-{{site.data.alerts.callout_info}}
-For [webhook sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink), the response format arrives as a batch of changefeed messages with a `"payload"` and `"length"`.
+- When the [`enriched_properties`](#enriched-properties-option) envelope option is specified.
+- When the changefeed is emitting to a [webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) sink. The messages emit as a batch with a `"payload"` wrapper around the change event data and a `"length"` field for the number of messages in the batch: 
 
-~~~
-{"payload": [{"after" : {"a" : 1, "b" : "a"}, "key": [1], "topic": "foo"}, {"after": {"a": 1, "b": "b"}, "key": [1], "topic": "foo" }], "length":2}
-~~~
-{{site.data.alerts.end}}
+    ~~~
+    {"payload": [{"after" : {"a" : 1, "b" : "a"}, "key": [1], "topic": "foo"}, {"after": {"a": 1, "b": "b"}, "key": [1], "topic": "foo" }], "length":2}
+    ~~~
 
 #### `"after"` 
 
@@ -728,7 +858,7 @@ A timestamp indicating when the change was committed. This field appears if the 
 
 #### `"op"` 
 
-{% include_cached new-in.html version="v25.2" %} The type of change operation. `"c"` for `INSERT`, `"u"` for `UPDATE`, `"d"` for `DELETE`.
+{% include_cached new-in.html version="v25.2" %} The type of change operation. `"c"` for `INSERT`, `"u"` for `UPDATE`, `"d"` for `DELETE`. This field emits if [`envelope=enriched`](#enriched-option) is enabled.
 
 #### `"source"` 
 
@@ -737,10 +867,11 @@ A timestamp indicating when the change was committed. This field appears if the 
 - `"changefeed_sink"`: The [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) type receiving the changefeed (e.g., `"kafka"`, `"sinkless buffer"`).
 - `"cluster_id"`: The [unique ID]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output).
 - `"cluster_name"`: The name, [if configured]({% link {{ page.version.version }}/cockroach-start.md %}#flags-cluster-name).
+- `"database_name"`: The name of the database.
 - `"db_version"`: The CockroachDB version.
 - `"job_id"`: The changefeed's [job]({% link {{ page.version.version }}/show-jobs.md %}) ID.
 - `"mvcc_timestamp"`: The [MVCC timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) of the change, as a string. This is CockroachDB’s timestamp for the version (a decimal number representing logical time). It is included if the [`mvcc_timestamp`](#mvcc-timestamp-option) option is set. Unlike [`"updated"`](#updated), which might be omitted for initial scans, `"mvcc_timestamp"` is always present on each message when enabled, including backfill events. This field is mainly used for low-level debugging or when exact internal timestamps are needed. (`"mvcc_timestamp"` will be a top-level field when the changefeed is not using the [`enriched`](#enriched) envelope.)
-- `"node_id"`: The node that emitted the changefeed message.
+- `"node_id"`: The ID of the node that emitted the changefeed message.
 - `"node_name"`: The name of the node that emitted the changefeed message.
 - `"origin"`: The identifier for the changefeed's origin, always `cockroachdb`.
 - `"primary_keys"`: An array of [primary key]({% link {{ page.version.version }}/primary-key.md %}) column name(s) for the changed row.
@@ -752,14 +883,16 @@ A timestamp indicating when the change was committed. This field appears if the 
 
 #### `"ts_ns"` 
 
-{% include_cached new-in.html version="v25.2" %} The processing time of the event by the changefeed job.
+{% include_cached new-in.html version="v25.2" %} The processing time of the event by the changefeed job. This field emits if [`envelope=enriched`](#enriched-option) is enabled.
+
+If you require timestamps to order messages based on the change event's commit time, then you must specify `envelope=enriched, enriched_properties=source, updated` when you create the changefeed, which will include `"ts_hlc"` and `"ts_ns"` in the [`"source"`](#source) field.
 
 #### `table`: 
 
 The name of the table that generated the change. This field appears in certain contexts:
 
 - In sinkless changefeeds (those created with [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) or `CREATE CHANGEFEED ... WITH sinkless`), the output includes a `"table"` field for each row change, because a single sinkless feed could cover multiple tables.
-- In the [`enriched`](#enriched) envelope, the [fully qualified table name]({% link {{ page.version.version }}/sql-name-resolution.md %}) is typically part of the [`"source"`](#source) field (as `"database"`, `"schema"`, `"table"` sub-fields), rather than a separate top-level `"table"` field.
+- In the [`enriched`](#enriched) envelope, the [fully qualified table name]({% link {{ page.version.version }}/sql-name-resolution.md %}) is typically part of the [`"source"`](#source) field (as `"database_name"`, `"schema_name"`, `"table_name"` sub-fields), rather than a separate top-level `"table"` field.
 
 {{site.data.alerts.callout_info}}
 When a changefeed targets a table with multiple column families, the family name is appended to the table name as part of the topic. Refer to [Tables with columns families in changefeeds]({% link {{ page.version.version }}/changefeeds-on-tables-with-column-families.md %}#message-format) for guidance.
@@ -786,7 +919,7 @@ Here `"__crdb__": {"key": [101]}` holds the primary key for the row, while the r
 {% include_cached new-in.html version="v25.2" %} The schema and type of each payload field. This is included when using [`envelope=enriched`](#enriched-option) with [`enriched_properties='schema'`](#enriched-properties-option). The `"schema"` field provides information needed to interpret the data. The following are present for each schema present in the envelope, depending on the configured options:
 
 - `"field"`: The name of field.
-- `"type"`: The type of the field.
+- `"type"`: The type of the field. If `"type"` is an `array`, then the `"items"` field defines the data type of the array elements.
 - `"optional"`: This is a boolean field that defines whether a field may be absent in the `"payload"` section of the envelope depending on the configuration.
 - `"name"`: The name of the described schema.
 

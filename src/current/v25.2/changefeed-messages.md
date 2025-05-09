@@ -165,7 +165,9 @@ In this example, with duplicates removed, an individual row is emitted in the sa
 The first time a message is delivered, it will be in the correct timestamp order, which follows the [per-key ordering guarantee](#per-key-ordering). However, when there are [duplicate messages](#duplicate-messages), the changefeed may **not** re-emit every row update. As a result, there may be gaps in a sequence of duplicate messages for a key.
 {{site.data.alerts.end}}
 
-To compare two different rows for [happens-before](https://wikipedia.org/wiki/Happened-before), compare the `updated` timestamp. This works across anything in the same cluster (tables, nodes, etc.).
+To compare two different rows for [happens-before](https://wikipedia.org/wiki/Happened-before), compare the `updated` timestamp. This works across anything in the same cluster (tables, nodes, etc.). 
+
+When you use the [`enriched` envelope]({% link {{ page.version.version }}/changefeed-message-envelopes.md %}#enriched), if you require timestamps to order messages based on the change event's commit time, then you must specify `envelope=enriched, enriched_properties=source, updated` when you create the changefeed, which will include `"ts_hlc"` and `"ts_ns"` in the [`"source"`]({% link {{ page.version.version }}/changefeed-message-envelopes.md %}#source) field. For more details on configuring envelope fields, refer to the [Changefeed Message Envelope]({% link {{ page.version.version }}/changefeed-message-envelopes.md %}) page.
 
 The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
 
