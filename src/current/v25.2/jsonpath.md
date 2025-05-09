@@ -41,20 +41,77 @@ Use the following operators in path expressions to navigate JSON objects and arr
 
 Use the following operators in [predicate check expressions](#check-expressions) to compare values, evaluate conditions, and combine logical clauses.
 
-|    Operator   |              Description               |           Example usage            |
-|---------------|----------------------------------------|------------------------------------|
-| `==`          | Equality                               | `@.team == "Lakers"`               |
-| `!=`          | Inequality                             | `@.name != "Luka"`                 |
-| `>`           | Greater than                           | `@.stats.ppg > 25`                 |
-| `<`           | Less than                              | `@.stats.ppg < 30`                 |
-| `>=`          | Greater than or equal to               | `@.stats.rpg >= 10`                |
-| `<=`          | Less than or equal to                  | `@.stats.apg <= 4`                 |
-| `starts with` | String prefix match                    | `@.name starts with "A"`           |
-| `like_regex`  | Regex string match                     | `@.name like_regex "^L.*"`         |
-| `is unknown`  | True if expression evaluates to `null` | `(@.age > 25) is unknown`          |
-| `!`           | Logical NOT                            | `!(@.team == "Mavericks")`         |
-| `&&`          | Logical AND                            | `@.ppg > 20 && @.team == "Lakers"` |
-| `||`          | Logical OR                             | `@.ppg > 20 || @.team == "Lakers"` |
+<table>
+  <thead>
+    <tr>
+      <th>Operator</th>
+      <th>Description</th>
+      <th>Example usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>==</code></td>
+      <td>Equality</td>
+      <td><code>@.team == "Lakers"</code></td>
+    </tr>
+    <tr>
+      <td><code>!=</code></td>
+      <td>Inequality</td>
+      <td><code>@.name != "Luka"</code></td>
+    </tr>
+    <tr>
+      <td><code>&gt;</code></td>
+      <td>Greater than</td>
+      <td><code>@.stats.ppg &gt; 25</code></td>
+    </tr>
+    <tr>
+      <td><code>&lt;</code></td>
+      <td>Less than</td>
+      <td><code>@.stats.ppg &lt; 30</code></td>
+    </tr>
+    <tr>
+      <td><code>&gt;=</code></td>
+      <td>Greater than or equal to</td>
+      <td><code>@.stats.rpg &gt;= 10</code></td>
+    </tr>
+    <tr>
+      <td><code>&lt;=</code></td>
+      <td>Less than or equal to</td>
+      <td><code>@.stats.apg &lt;= 4</code></td>
+    </tr>
+    <tr>
+      <td><code>starts with</code></td>
+      <td>String prefix match</td>
+      <td><code>@.name starts with "A"</code></td>
+    </tr>
+    <tr>
+      <td><code>like_regex</code></td>
+      <td>Regex string match</td>
+      <td><code>@.name like_regex "^L.*"</code></td>
+    </tr>
+    <tr>
+      <td><code>is unknown</code></td>
+      <td>True if expression evaluates to <code>null</code></td>
+      <td><code>(@.age &gt; 25) is unknown</code></td>
+    </tr>
+    <tr>
+      <td><code>!</code></td>
+      <td>Logical NOT</td>
+      <td><code>!(@.team == "Mavericks")</code></td>
+    </tr>
+    <tr>
+      <td><code>&amp;&amp;</code></td>
+      <td>Logical AND</td>
+      <td><code>@.ppg &gt; 20 &amp;&amp; @.team == "Lakers"</code></td>
+    </tr>
+    <tr>
+      <td><code>||</code></td>
+      <td>Logical OR</td>
+      <td><code>@.ppg &gt; 20 || @.team == "Lakers"</code></td>
+    </tr>
+  </tbody>
+</table>
 
 ### Methods
 
