@@ -5,36 +5,36 @@
     {
       "title": "Overview",
       "urls": [
-        "/${VERSION}/migration-overview.html"
+        "/molt/migration-overview.html"
+      ]
+    },
+    {
+      "title": "Migration Strategy",
+      "urls": [
+        "/molt/migration-strategy.html"
       ]
     },
     {
       "title": "Migrate to CockroachDB",
       "urls": [
-        "/${VERSION}/migrate-to-cockroachdb.html"
+        "/molt/migrate-to-cockroachdb.html"
       ]
     },
     {
       "title": "Migrate in Phases",
       "urls": [
-        "/${VERSION}/migrate-in-phases.html"
+        "/molt/migrate-in-phases.html"
       ]
     },
     {
       "title": "Migration Failback",
       "urls": [
-        "/${VERSION}/migrate-failback.html"
+        "/molt/migrate-failback.html"
       ]
     },
     {
       "title": "MOLT Tools",
       "items": [
-        {
-          "title": "Overview",
-          "urls": [
-            "/molt/molt-overview.html"
-          ]
-        },
         {
           "title": "Schema Conversion Tool",
           "urls": [
@@ -141,12 +141,6 @@
       "title": "Migrate from Oracle",
       "urls": [
         "/${VERSION}/migrate-from-oracle.html"
-      ]
-    },
-    {
-      "title": "Migration Strategy: Lift and Shift",
-      "urls": [
-        "/${VERSION}/migration-strategy-lift-and-shift.html"
       ]
     }
   ]

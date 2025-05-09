@@ -204,7 +204,7 @@ ALTER TABLE tpcc.district ADD CONSTRAINT fk_d_w_id_ref_warehouse FOREIGN KEY (d_
 ## See also
 
 - [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %})
-- [Migration Overview]({% link {{site.current_cloud_version}}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Migrate from CSV]({% link {{site.current_cloud_version}}/migrate-from-csv.md %})
 - [Import Performance Best Practices]({% link {{site.current_cloud_version}}/import-performance-best-practices.md %})
 - [Use the Built-in SQL Client]({% link {{site.current_cloud_version}}/cockroach-sql.md %})
