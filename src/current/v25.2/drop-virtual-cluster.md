@@ -24,7 +24,7 @@ The `DROP VIRTUAL CLUSTER` statement will delete all data related to the specifi
 `DROP VIRTUAL CLUSTER` requires one of the following privileges:
 
 - The `admin` role.
-- The `MANAGEVIRTUALCLUSTER` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) allows the user to run all the related `VIRTUAL CLUSTER` SQL statements for PCR.
+- The `MANAGEVIRTUALCLUSTER` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges).
 
 Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement:
 
