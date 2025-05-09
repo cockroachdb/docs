@@ -70,7 +70,7 @@ Append the following methods to a path (after `.`) to access or transform the va
 
 ## JSONPath functions
 
-Use JSONPath functions to extract or evaluate target `JSONB` data according to a specified [path](#jsonpath-expression). For full details on JSONPath functions, refer to [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#  jsonpath-functions).
+Use JSONPath functions to extract or evaluate target `JSONB` data according to a specified [path](#jsonpath-expression). For full details on JSONPath functions, refer to [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#jsonpath-functions).
 
 |                  Function                 |                                                                           Description                                                                            | If no match |
 |-------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
