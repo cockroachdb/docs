@@ -65,7 +65,7 @@ CREATE TABLE items (
 );
 ~~~
 
-### Prefix columns
+### Define prefix columns
 
 You can create a vector index with one or more *prefix columns* to pre-filter the search space. This is especially useful for tables containing millions of vectors or more. 
 
@@ -102,7 +102,7 @@ WHERE department_id = 100 AND category_id >= 200
 
 For an example, refer to [Create and query a vector index](#create-and-query-a-vector-index).
 
-### Vector index opclass
+### Specify an opclass
 
 You can optionally specify an opclass. If not specified, the default is `vector_l2_ops`:
 
