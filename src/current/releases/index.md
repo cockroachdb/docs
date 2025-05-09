@@ -23,10 +23,6 @@ indented in relation to the other Liquid. Please try to keep the indentation con
 
 ## Overview
 
-{{site.data.alerts.callout_info}}
-{% include common/license/evolving.md %}
-{{site.data.alerts.end}}
-
 This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB [releases](#downloads).
 
 A new major version of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production release, followed by a series of patch releases.
@@ -715,7 +711,8 @@ All binaries available on this page released prior to the release date of 24.3.0
 
 To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.
 
+ In late 2024, we retired our Core offering to consolidate on a single CockroachDB Enterprise offering under the CockroachDB Software License. This license is available at no charge for individual users and small businesses, and offers all users, free and paid, the full breadth of CockroachDB capabilities. For details, refer to the [CockroachDB licensing update](https://www.cockroachlabs.com/enterprise-license-update/) and [Licensing FAQs]({% link {{ page.version.version }}/licensing-faqs.md %}).
+
 ## Unsupported versions 
 
-Release notes for unsupported CockroachDB versions are found on the [Unsupported Versions]({% link releases/unsupported-versions.md %}) page.
-
+Release notes for CockroachDB versions that are no longer supported are available on the [Unsupported Versions]({% link releases/unsupported-versions.md %}) page.
