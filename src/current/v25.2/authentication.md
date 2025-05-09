@@ -261,7 +261,7 @@ For details about when and how to change security certificates without restartin
 
 {% include common/tls-bad-cipher-warning.md %}
 
-Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.3 digital certificates for inter-node authentication, and your choice of TLS 1.2 and TLS 1.3 certificates for client-node authentication. These authentication methods require a certificate authority (CA) as well as keys and certificates for nodes, clients, and, optionally, the [DB Console](#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
+Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.3 digital certificates for inter-node authentication, and your choice of TLS 1.2 and TLS 1.3 certificates for client-node authentication (defaulting to TLS 1.3, if supported by the client). These authentication methods require a certificate authority (CA) as well as keys and certificates for nodes, clients, and, optionally, the [DB Console](#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
 
 To understand how CockroachDB uses digital certificates, let's first understand what each of these terms means.
 
@@ -308,6 +308,11 @@ Let's see how the digital certificate is used in client-server communication: Th
 ## Supported cipher suites
 
 CockroachDB supports the [TLS 1.3 and TLS 1.2](https://wikipedia.org/wiki/Transport_Layer_Security) encryption for SQL clients. However, only cipher suites currently recommended by the IETF ([RFC 8447](https://datatracker.ietf.org/doc/html/rfc8447)) are enabled by default. The environment variable `COCKROACH_TLS_ENABLE_OLD_CIPHER_SUITES` can be used to revert to the cipher suite configuration used prior to version 22.2. You should set this environment variable only if you cannot use one of the default cipher suites, but you can use one of the disabled ones.
+
+By default, CockroachDB negotiates TLS 1.3 for client connections when supported by the client. If the client does not support TLS 1.3, the connection will fall back to TLS 1.2.
+
+To restrict your cluster to only allow connections using specific cipher suites, use the [`--tls-cipher-suites`]({% link {{ page.version.version }}/cockroach-start.md %}#tls-cipher-suites) startup flag with the `cockroach start` command. This setting applies to all incoming SQL, RPC, and HTTP connections.
+
 
 The following cipher suites are enabled by default:
 
