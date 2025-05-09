@@ -66,14 +66,6 @@ Further details about RLS evaluation include:
 
 Complex [policy expressions]({% link {{ page.version.version }}/create-policy.md %}) evaluated per-row can impact query performance. To limit the performance impacts of row-level security, optimize your policy expressions and consider [indexing]({% link {{ page.version.version }}/indexes.md %}) relevant columns.
 
-According to internal testing, row-level security had the following performance impacts on a write-heavy [`sysbench`](https://github.com/akopytov/sysbench) workload:
-
-| Number of policies | Percentage slowdown of the workload (approx.) |
-|--------------------|-----------------------------------------------|
-| 1                  | 110%                                          |
-| 10                 | 140%                                          |
-| 50                 | 200%                                          |
-
 ### Security privileges
 
 [Policy expressions]({% link {{ page.version.version }}/create-policy.md %}) execute with the [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) of the user invoking the query, unless functions marked [`SECURITY DEFINER`]({% link {{ page.version.version }}/create-function.md %}#create-a-security-definer-function) are used. 
@@ -111,14 +103,9 @@ If you use PCR, the target cluster will have all RLS policies applied to the dat
 
 ### Views
 
-When [views]({% link {{ page.version.version }}/views.md %}) are accessed, RLS policies on any underlying [tables]({% link {{ page.version.version }}/schema-design-table.md %}) are applied. [Policies]({% link {{ page.version.version }}/create-policy.md %}) can also be defined directly on views.
+When [views]({% link {{ page.version.version }}/views.md %}) are accessed, RLS policies on any underlying [tables]({% link {{ page.version.version }}/schema-design-table.md %}) are applied. [Policies]({% link {{ page.version.version }}/create-policy.md %}) can only be defined directly on tables, not views.
 
 Views use the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) of the view owner to determine row-level security filters, **not** the role of the user executing the view. This can cause issues because the view owner may have entirely different policies than the user executing the view.
-
-The following security attributes for views are unimplemented:
-
-- `security_invoker`, which would allow using the role of the user executing the view.
-- `security_barrier`, which instructs the [optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) to process policy filtering first, ensuring that [user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}) (UDFs) never receive rows violating RLS policies.
 
 ## Examples
 
@@ -139,7 +126,7 @@ For an example, see [`DROP POLICY`]({% link {{ page.version.version }}/drop-poli
 For examples, see:
 
 - [`ALTER TABLE ... (ENABLE, DISABLE) ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security).
-- [`ALTER TABLE ... (FORCE, UNFORCE) ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-unforce-row-level-security).
+- [`ALTER TABLE ... (FORCE, NO FORCE) ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-unforce-row-level-security).
 
 ### RLS for Data Security (Fine-Grained Access Control)
 
@@ -329,20 +316,6 @@ RESET ROLE;
 (5 rows)
 ~~~
 
-The following statement is executed by the user `alice`, and fails because it violates the `self_access` policy's `WITH CHECK` clause since Alice tries to update Bob's salary, and `manager_access` doesn't grant `UPDATE`.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET ROLE alice;
-UPDATE employees SET salary = 999999 WHERE username = 'bob';
-RESET ROLE;
-~~~
-
-~~~
-ERROR: user alice does not have UPDATE privilege on relation employees
-SQLSTATE: 42501
-~~~
-
 ### RLS for Multi-Tenant Isolation
 
 Multi-tenant isolation is used to enforce strict data separation between different tenants (customers, organizations) sharing the same database infrastructure and schema. Each tenant must only be able to see and modify their own data. This is a critical requirement for Software-as-a-Service (SaaS) applications.
@@ -449,9 +422,7 @@ For multi-tenant isolation to work properly in this example, you **must** also `
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER TABLE invoices ENABLE ROW LEVEL SECURITY;
--- Consider applying to owner/admins too unless bypassed explicitly
-ALTER TABLE invoices FORCE ROW LEVEL SECURITY;
+ALTER TABLE invoices ENABLE ROW LEVEL SECURITY, FORCE ROW LEVEL SECURITY;
 ~~~
 
 #### Define tenant isolation policies
@@ -460,7 +431,11 @@ The following policy enforces tenant isolation for all operations.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
--- CREATE POLICY tenant_isolation ON invoices AS RESTRICTIVE FOR ALL TO public USING (tenant_id = split_part(current_setting('application_name', true), '.', 2)::UUID) WITH CHECK (tenant_id = split_part(current_setting('application_name', true), '.', 2)::UUID);
+CREATE POLICY tenant_isolation_permissive ON invoices
+    AS PERMISSIVE
+    FOR ALL
+    TO public
+    USING (tenant_id = split_part(current_setting('application_name', true), '.', 2)::UUID);
 
 CREATE POLICY tenant_isolation ON invoices
     AS RESTRICTIVE
@@ -472,11 +447,12 @@ CREATE POLICY tenant_isolation ON invoices
 
 Explanation of policy:
 
-- `AS RESTRICTIVE`: Makes this policy mandatory. If other policies exist, they must *also* pass. For simple tenant isolation, this is often the safest default.
+- `AS PERMISSIVE`: Necessary because you need at least one permissive policy.
+- `AS RESTRICTIVE`: Makes the policy mandatory. If other policies exist, they must *also* pass. For simple tenant isolation, this is often the safest default.
 - `FOR ALL`: Covers all data modification and retrieval.
 - `TO PUBLIC`: Applies the policy broadly. Roles should primarily manage table-level access using `GRANT`, while this policy handles row-level visibility.
 - `USING`: Ensures queries only see rows matching the session's tenant ID, which is passed in using the `application_name` session variable and extracted using the `split_part` function.
-- `WITH CHECK`: Prevents users from `INSERT`ing rows with a tenant ID column different from their session's calculated tenant ID, or `UPDATE`ing a row to change its `tenant_id` column across tenant boundaries. Without this, a user could potentially insert data into another tenant's space.
+- `WITH CHECK`: Prevents users from `INSERT`ing rows with a tenant ID column different from their session's calculated tenant ID, or `UPDATE`ing a row to change its `tenant_id` column across tenant boundaries. Without this, a user could potentially insert data into another tenant's space. In this case, the `WITH CHECK` expression could have been omitted; it is only necessary if it's different than the `USING` expression, or if it applies to a command that doesn't do reads (e.g., for `INSERT`).
 
 #### Verify multi-tenant isolation policies
 
@@ -532,6 +508,10 @@ INSERT INTO invoices (tenant_id, customer_name, amount) VALUES ('9607a12c-3c2f-4
 
 The above statement succeeds.
 
+~~~
+INSERT 0 1
+~~~
+
 ### Video demo: Row-level Security
 
 For a demo showing how to combine Row-level security with [Multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) to constrain access to specific rows based on a user's geographic region, play the following video:
@@ -545,7 +525,7 @@ For a demo showing how to combine Row-level security with [Multi-region SQL]({% 
 - [`ALTER POLICY`]({% link {{ page.version.version }}/alter-policy.md %})
 - [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %})
 - [`ALTER TABLE {ENABLE, DISABLE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security)
-- [`ALTER TABLE {FORCE, UNFORCE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-unforce-row-level-security)
+- [`ALTER TABLE {FORCE, NO FORCE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-unforce-row-level-security)
 - [`CREATE ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-bypass-row-level-security-rls)
 - [`ALTER ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls)
 
@@ -554,7 +534,7 @@ For a demo showing how to combine Row-level security with [Multi-region SQL]({% 
 <!--
 
 {% include_cached copy-clipboard.html %}
-~~~ sql
+~~~
 RESET ROLE;
 DROP POLICY IF EXISTS hr_access ON employees CASCADE;
 DROP POLICY IF EXISTS manager_access ON employees CASCADE;

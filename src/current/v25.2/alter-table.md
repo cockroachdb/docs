@@ -60,7 +60,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`RENAME TO`](#rename-to) | Change the names of tables. | No
 [`RESET {storage parameter}`](#reset-storage-parameter) | Reset a storage parameter on a table to its default value. | Yes
 [`(ENABLE, DISABLE) ROW LEVEL SECURITY`](#enable-disable-row-level-security) |  Enable or disable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) for a table. | No
-[`(FORCE, UNFORCE) ROW LEVEL SECURITY`](#force-unforce-row-level-security) | Force the table owner to be subject to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies defined on a table. | No
+[`(FORCE, NO FORCE) ROW LEVEL SECURITY`](#force-unforce-row-level-security) | Force the table owner to be subject to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies defined on a table. | No
 [`SET {storage parameter}`](#set-storage-parameter) | Set a storage parameter on a table. | Yes
 [`SET LOCALITY`](#set-locality) |  Set the table locality for a table in a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}). | No
 [`SET SCHEMA`](#set-schema) |  Change the [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of a table. | No
@@ -491,7 +491,7 @@ The user must be a member of the [`admin`]({% link {{ page.version.version }}/se
 | `table_name`        | The name of the table which is having [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) enabled or disabled. |
 | `(ENABLE, DISABLE)` | Whether to enable or disable RLS.                                                                                                                  |
 
-### `{FORCE, UNFORCE} ROW LEVEL SECURITY`
+### `{FORCE, NO FORCE} ROW LEVEL SECURITY`
 
 `ALTER TABLE ... FORCE ROW LEVEL SECURITY` prevents table [owners]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) from bypassing [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) policies.
 
@@ -512,7 +512,7 @@ The user must be a member of the [`admin`]({% link {{ page.version.version }}/se
 | Parameter          | Description                                                                                                                                                                                          |
 |--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `table_name`       | The name of the table which is having [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) enabled or disabled.                                                   |
-| `(FORCE, UNFORCE)` | `FORCE` ensures that all access (even by the table owner) adheres to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies. `UNFORCE` removes that restriction. |
+| `(FORCE, NO FORCE)` | `FORCE` ensures that all access (even by the table owner) adheres to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies. `NO FORCE` removes that restriction. |
 
 ### `SET {storage parameter}`
 
@@ -3111,7 +3111,7 @@ To remove this restriction, and allow the table owner to bypass RLS policies, is
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER TABLE orders UNFORCE ROW LEVEL SECURITY;
+ALTER TABLE orders NO FORCE ROW LEVEL SECURITY;
 ~~~
 
 {{site.data.alerts.callout_danger}}

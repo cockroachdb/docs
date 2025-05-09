@@ -22,7 +22,7 @@ NB. This is commented out while we wait for a fix to DOC-12125
 
 {% include_cached copy-clipboard.html %}
 ~~~
-CREATE POLICY policy_name ON table_name
+CREATE POLICY [ IF NOT EXISTS ] policy_name ON table_name
     [ AS { PERMISSIVE | RESTRICTIVE } ]
     [ FOR { ALL | SELECT | INSERT | UPDATE | DELETE } ]
     [ TO { role_name | PUBLIC | CURRENT_USER | SESSION_USER } [, ...] ]
@@ -36,15 +36,36 @@ Parameter | Description
 ----------|------------
 `policy_name` | Unique identifier for the policy on the table.
 `table_name` | The [table]({% link {{ page.version.version }}/schema-design-table.md %}) to which the policy applies.
-`AS { PERMISSIVE, RESTRICTIVE }` | (**Default**: `PERMISSIVE`.) For `PERMISSIVE`, policies are combined using `OR`. A row is accessible if *any* permissive policy grants access. For `RESTRICTIVE`, policies are combined using `AND`.  The overall policy enforcement is determined by evaluating a logical expression of the form: `(permissive policies) AND (restrictive policies)`. This means that all restrictive policies must grant access for a row to be accessible, and restrictive policies are evaluated *after* permissive policies. If any restrictive policy denies access, the row is inaccessible, regardless of the permissive policies.
-`FOR { ALL, SELECT, INSERT, UPDATE, DELETE } ` | (**Default**: `ALL`.) Specifies the SQL statement(s) the policy applies to ([`SELECT`]({% link {{ page.version.version }}/select-clause.md %}), [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), [`DELETE`]({% link {{ page.version.version }}/delete.md %})).
+`AS { PERMISSIVE, RESTRICTIVE }` | (**Default**: `PERMISSIVE`.) For `PERMISSIVE`, policies are combined using `OR`. A row is accessible if *any* permissive policy grants access. For `RESTRICTIVE`, policies are combined using `AND`.  The overall policy enforcement is determined by evaluating a logical expression of the form: `(permissive policies) AND (restrictive policies)`. This means that all restrictive policies must grant access for a row to be accessible, and restrictive policies are evaluated *after* permissive policies. This means that you need to have at least one `PERMISSIVE` policy in place before applying `RESTRICTIVE` policies. If any restrictive policy denies access, the row is inaccessible, regardless of the permissive policies.
+`FOR { ALL, SELECT, INSERT, UPDATE, DELETE } ` | (**Default**: `ALL`.) Specifies the SQL statement(s) the policy applies to ([`SELECT`]({% link {{ page.version.version }}/select-clause.md %}), [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), [`DELETE`]({% link {{ page.version.version }}/delete.md %})). For details, see [Policies by statement type](#policies-by-statement-type).
 `TO { role_name, ...}`  | (**Default**: `PUBLIC`.) Specifies the database [role(s)]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) to which the policy applies.
 `USING ( using_expression )` | Defines the filter condition such that only rows for which the `using_expression` evaluates to `TRUE` are visible or available for modification. Rows evaluating to `FALSE` or `NULL` are silently excluded. Note this the expression is evaluated **before** any data modifications are attempted. The filter condition applies to [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}), [`DELETE`]({% link {{ page.version.version }}/delete.md %}), and [`INSERT`]({% link {{ page.version.version }}/insert.md %}) (for `INSERT ... ON CONFLICT DO UPDATE`).
 `WITH CHECK ( check_expression )` | Defines a constraint condition such that rows being inserted or updated must satisfy `check_expression` (i.e., must evaluate to `TRUE`). This expression is evaluated **after** the row data is prepared but **before** it is written. If the expression evaluates to `FALSE` or `NULL`, the operation fails with an RLS policy violation error. Applies to [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %}).
 
 {{site.data.alerts.callout_info}}
-THe `USING` and `WITH CHECK` expressions can reference table columns and use session-specific [functions]({% link {{ page.version.version }}/functions-and-operators.md %}) (e.g., `current_user()`, `session_user()`) and [variables]({% link {{ page.version.version }}/session-variables.md %}).
+The `USING` and `WITH CHECK` expressions can reference table columns and use session-specific [functions]({% link {{ page.version.version }}/functions-and-operators.md %}) (e.g., `current_user()`, `session_user()`) and [variables]({% link {{ page.version.version }}/session-variables.md %}). However, these expressions cannot contain a subexpression.
 {{site.data.alerts.end}}
+
+### Policies by statement type
+
+The following table shows which policies are applied to which statement types, with additional considerations listed after the table.
+
+| Command / clause pattern            | `SELECT` policy - `USING` (row that already exists) | `INSERT` policy - `WITH CHECK` (row being added) | `UPDATE` policy - `USING` (row before the change) | `UPDATE` policy - `WITH CHECK` (row after the change) | `DELETE` policy - `USING` (row to be removed) |
+|-------------------------------------|-----------------------------------------------------|--------------------------------------------------|---------------------------------------------------|-------------------------------------------------------|-----------------------------------------------|
+| `SELECT`                            | ✓                                                   | —                                                | —                                                 | —                                                     | —                                             |
+| `SELECT ... FOR UPDATE / FOR SHARE` | ✓                                                   | —                                                | ✓                                                 | —                                                     | —                                             |
+| `INSERT / MERGE ... THEN INSERT`    | —                                                   | ✓                                                | —                                                 | —                                                     | —                                             |
+| `INSERT ... RETURNING`              | ✓ ‡                                                 | ✓                                                | —                                                 | —                                                     | —                                             |
+| `UPDATE / MERGE ... THEN UPDATE`    | ✓ ‡                                                 | —                                                | ✓                                                 | ✓                                                     | —                                             |
+| `DELETE`                            | ✓ ‡                                                 | —                                                | —                                                 | —                                                     | ✓                                             |
+| `INSERT ... ON CONFLICT DO UPDATE`  | ✓                                                   | —                                                | ✓                                                 | ✓                                                     | —                                             |
+
+‡ The `SELECT` check is only evaluated when the statement actually needs to read from the relation, e.g., in a `WHERE`, `SET`, or `RETURNING` clause that references table columns.
+
+CockroachDB's behavior differs from that described in the table above in the following ways:
+
+- `SELECT` evaluation: CockroachDB always evaluates `SELECT` (`USING`) policies for `INSERT` and `UPDATE`, even when the statement doesn't reference table columns. This differs from PostgreSQL; this difference may be resolved in an upcoming release.
+- `ON CONFLICT ... DO NOTHING`: CockroachDB still runs constraint and row-level policy checks on the `VALUES` clause even when the candidate row is discarded because of a conflict, so `INSERT ... ON CONFLICT DO NOTHING` may reject rows that PostgreSQL would silently ignore. This is a known limitation described in [cockroachdb/cockroach#35370](https://github.com/cockroachdb/cockroach/issues/35370).
 
 ## Examples
 
@@ -75,7 +96,7 @@ CREATE POLICY user_orders_policy ON orders
 - [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %})
 - [`SHOW POLICIES`]({% link {{ page.version.version }}/show-policies.md %})
 - [`ALTER TABLE {ENABLE, DISABLE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security)
-- [`ALTER TABLE {FORCE, UNFORCE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-unforce-row-level-security)
+- [`ALTER TABLE {FORCE, NO FORCE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-unforce-row-level-security)
 - [`ALTER ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls)
 - [`CREATE ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-bypass-row-level-security-rls)
 

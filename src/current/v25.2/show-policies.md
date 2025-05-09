@@ -84,19 +84,7 @@ SHOW POLICIES FOR orders;
 
 ### Use `pg_policies` to view all row-level security policies in the system
 
-If you are the [`root` user]({% link {{ page.version.version }}/security-reference/authorization.md %}#root-user), you can view all RLS policies. This example uses the schema and policies from the [Row-level security overview]({% link {{ page.version.version }}/row-level-security.md %}).
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT current_user();
-~~~
-
-~~~
-  current_user
-----------------
-  root
-(1 row)
-~~~
+Use the following query to view all RLS policies. This example uses the schema and policies from the [Row-level security overview]({% link {{ page.version.version }}/row-level-security.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
