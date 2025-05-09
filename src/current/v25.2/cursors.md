@@ -78,13 +78,20 @@ COMMIT;
 
 ### Use a holdable cursor
 
-By default, a cursor closes when the transaction ends. The `WITH HOLD` clause defines a *holdable cursor*, which stays open after a `COMMIT` by writing its results into a buffer. Use `WITH HOLD` to access data across multiple transactions without redefining the cursor.
+By default, a cursor closes when the transaction ends. The `WITH HOLD` clause defines a *holdable cursor*, which behaves as follows:
+
+- A holdable cursor writes its results into a buffer, and stays open after a transaction commits. 
+- If a transaction aborts, all cursors opened within that transaction are also rolled back. However, holdable cursors from previously committed transactions remain open.
+- A holdable cursor can be opened in both explicit and implicit transactions.
+- If a holdable cursor results in an error as it is being persisted, it will cause the current transaction (implicit or explicit) to be rolled back.
+
+Use `WITH HOLD` to access data across multiple transactions without redefining the cursor.
 
 {{site.data.alerts.callout_info}}
 The `WITHOUT HOLD` clause specifies the default non-holdable cursor behavior.
 {{site.data.alerts.end}}
 
-A holdable cursor can be opened in both explicit and implicit transactions. The following example uses a holdable cursor to return vehicles that are available for rides.
+The following example uses a holdable cursor to return vehicles that are available for rides.
 
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="explicit">Explicit</button>
@@ -100,7 +107,7 @@ BEGIN;
 ~~~
 </section>
 
-Declare a cursor using `WITH HOLD` to keep it open after the `COMMIT`:
+Declare a cursor using `WITH HOLD` to keep it open after the transaction commits:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
