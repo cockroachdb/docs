@@ -533,85 +533,71 @@ For details on syntax and examples, refer to the [Change Data Capture Queries]({
 
 ### Specify a column as a Kafka header
 
-{% include_cached new-in.html version="v25.2" %} Use the `headers_json_column_name` option to specify a [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) column that the changefeed will emit as a Kafka header for each row. You can send metadata, such as routing or tracing information, at the protocol level in the header separate from the message payload. This allows for Kafka brokers or routers to filter the metadata the header contains without deserializing the payload.
+{% include_cached new-in.html version="v25.2" %} Use the `headers_json_column_name` option to specify a [JSONB]({% link {{ page.version.version }}/jsonb.md %}) column that the changefeed emits as Kafka headers for each row’s change event. You can send metadata, such as routing or tracing information, at the protocol level in the header, separate from the message payload. This allows for Kafka brokers or routers to filter the metadata the header contains without deserializing the payload.
+
+Headers enable efficient routing, filtering, and distributed tracing by intermediate systems, such as Kafka brokers, stream processors, or observability tools.
 
 {{site.data.alerts.callout_info}}
-The `headers_json_column_name` option is supported with changefeeds emitting [JSON](#json) or [Avro](#avro) messages to [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}).
+The `headers_json_column_name` option is supported with changefeeds emitting to [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}).
 {{site.data.alerts.end}}
 
-For example, define a table that updates customer records. This schema includes a `route_info` column of type `JSONB`, which will be used to store operation type, schema version, and message origin metadata for the Kafka header:
+For example, define a table that updates compliance events. This schema includes a `kafka_meta` column of type `JSONB`, used to store a trace ID and other metadata for the Kafka header:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE TABLE customer_updates (
-    update_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    customer_id UUID NOT NULL,
-    operation_type STRING NOT NULL,
-    change_version STRING NOT NULL,
-    source_system STRING NOT NULL DEFAULT 'crdb_app',
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    change_description STRING,
-    route_info JSONB
+CREATE TABLE compliance_events (
+    event_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL,
+    event_type STRING NOT NULL,
+    event_timestamp TIMESTAMPTZ NOT NULL DEFAULT now(),
+    details STRING,
+    kafka_meta JSONB
 );
 ~~~
 
-Insert example rows into the table, populating the `route_info` column with the `JSONB` data. The changefeed will emit this column as Kafka headers alongside the row changes:
+Insert example rows into the table, populating the `kafka_meta` column with the `JSONB` data. The changefeed will emit this column as Kafka headers alongside the row changes:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-INSERT INTO customer_updates (
-    customer_id, operation_type, change_version, source_system, change_description, route_info
+INSERT INTO compliance_events (
+    user_id, event_type, details, kafka_meta
 ) VALUES
-(gen_random_uuid(), 'insert', 'v1', 'crm_web', 'New customer created', '{"operation": "insert", "version": "v1", "origin": "crm_web"}'),
-(gen_random_uuid(), 'update', 'v2', 'crm_mobile', 'Updated phone number', '{"operation": "update", "version": "v2", "origin": "crm_mobile"}'),
-(gen_random_uuid(), 'delete', 'v1', 'crm_web', 'Customer deleted due to inactivity', '{"operation": "delete", "version": "v1", "origin": "crm_web"}'),
-(gen_random_uuid(), 'update', 'v2', 'support_portal', 'Changed mailing address', '{"operation": "update", "version": "v2", "origin": "support_portal"}'),
-(gen_random_uuid(), 'insert', 'v1', 'api_batch', 'Bulk customer import', '{"operation": "insert", "version": "v1", "origin": "api_batch"}');
+(gen_random_uuid(), 'policy_ack', 'User accepted data policy v2.1', '{"trace_id": "abc123", "compliance_level": "low"}'),
+(gen_random_uuid(), 'access_review', 'Admin approved elevated access for app A', '{"trace_id": "def456", "compliance_level": "high"}'),
+(gen_random_uuid(), 'policy_ack', 'User accepted retention policy update', '{"trace_id": "ghi789", "compliance_level": "medium"}'),
+(gen_random_uuid(), 'access_review', 'User confirmed access to sensitive dataset', '{"trace_id": "xyz123", "compliance_level": "high"}'),
+(gen_random_uuid(), 'policy_ack', 'Policy v3.0 acknowledged by contractor', '{"trace_id": "mno456", "compliance_level": "low"}');
 ~~~
 
-Create a changefeed that emits messages from the `customer_updates` table to Kafka and define the `route_info` column in the `headers_json_column_name` option:
+Create a changefeed that emits messages from the `compliance_events` table to Kafka and specify the `kafka_meta` column using the `headers_json_column_name` option:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE CHANGEFEED FOR TABLE customer_updates INTO 'kafka://localhost:9092' WITH headers_json_column_name = 'route_info';
+CREATE CHANGEFEED FOR TABLE compliance_events INTO 'kafka://localhost:9092' WITH headers_json_column_name = 'kafka_meta';
 ~~~
 
-The changefeed will emit each row’s `route_info` data as Kafka message headers, which Kafka brokers or stream processors can use to access the metadata without inspecting the payload.
+The changefeed will emit each row’s `kafka_meta` data as Kafka headers, which Kafka brokers or stream processors can use to access the metadata without inspecting the payload.
 
-The Kafka topic receives the message payload containing the row-level change:
+The Kafka topic receives the message payload with the row-level change, excluding the specified header column (`kafka_meta`):
 
 ~~~json
-{"after": {"change_description": "Updated phone number", "change_version": "v2", "customer_id": "5896dc90-a972-43e8-b69b-8b5a52691ce2", "operation_type": "update", "source_system": "crm_mobile", "update_id": "39a7bb4c-ee3b-4897-88fd-cfed94558e72", "updated_at": "2025-05-06T14:57:42.378814Z"}}
-{"after": {"change_description": "Bulk customer import", "change_version": "v1", "customer_id": "0fccf7a5-5f61-4d65-ad6b-55d8740a0874", "operation_type": "insert", "source_system": "api_batch", "update_id": "e058a098-89ba-48b0-a117-93b6b00c7eba", "updated_at": "2025-05-06T14:57:42.378814Z"}}
-{"after": {"change_description": "Changed mailing address", "change_version": "v2", "customer_id": "ccca656e-96b3-43b7-83ad-ee044627d67d", "operation_type": "update", "source_system": "support_portal", "update_id": "d0f730ce-d269-4bd5-9d2d-07c6fe65fc51", "updated_at": "2025-05-06T14:57:42.378814Z"}}
+{"after": {"details": "User accepted data policy v2.1", "event_id": "ee321dc6-388b-4416-a389-adfafab50ee4", "event_timestamp": "2025-05-09T21:20:29.203923Z", "event_type": "policy_ack", "user_id": "06ba6114-529c-4a99-9811-1dd3d12dad07"}}
+{"after": {"details": "User accepted retention policy update", "event_id": "59d391f8-c141-4dc9-9622-9079c3462201", "event_timestamp": "2025-05-09T21:20:29.203923Z", "event_type": "policy_ack", "user_id": "98213553-9c1a-43a6-a598-921c3c6c3b20"}}
+{"after": {"details": "Admin approved elevated access for app A", "event_id": "41cf0dbe-c0bc-48aa-9b60-ef343bcef9e1", "event_timestamp": "2025-05-09T21:20:29.203923Z", "event_type": "access_review", "user_id": "ed192798-f7ef-4fe8-a496-f22bb5738b04"}}
 . . .
 ~~~
 
-You can query the `route_info` column to view the metadata that will be present in the Kafka headers for each corresponding message:
+The Kafka headers will contain:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT 
-    update_id,
-    route_info->>'operation' AS operation,
-    route_info->>'version' AS version,
-    route_info->>'origin' AS origin
-FROM customer_updates;
-~~~
-~~~
-               update_id               | kafka_header_operation | kafka_header_version | kafka_header_origin
----------------------------------------+------------------------+----------------------+----------------------
-  3366969e-4f9f-472d-9e07-ac65e12b1e19 | delete                 | v1                   | crm_web
-  39a7bb4c-ee3b-4897-88fd-cfed94558e72 | update                 | v2                   | crm_mobile
-  b9cd25ab-e44c-4bbc-a806-7cf701ad131e | insert                 | v1                   | crm_web
-  d0f730ce-d269-4bd5-9d2d-07c6fe65fc51 | update                 | v2                   | support_portal
-  e058a098-89ba-48b0-a117-93b6b00c7eba | insert                 | v1                   | api_batch
-(5 rows)
-~~~
+Key (`event_id`) | Value (Kafka payload) | Headers
+------------------+-----------------------+--------
+`3e2a9b4a-f1e3-4202-b343-1a52e1ffb0d4` | `{"event_type": "policy_ack", "details": "User accepted data policy v2.1"}` | `trace_id=abc123, compliance_level=low`
+`7c90a289-2f91-4666-a8d5-962dc894e1c2` | `{"event_type": "access_review", "details": "Admin approved elevated access for app A"}` | `trace_id=def456, compliance_level=high`
+`1a6e0d3f-7191-4d99-9a36-7f4b85e5cd23` | `{"event_type": "policy_ack", "details": "User accepted retention policy update"} `| `trace_id=ghi789, compliance_level=medium` 
+`89af6b6e-f34d-4a1d-a69d-91d29526e9f7` | `{"event_type": "access_review", "details": "User confirmed access to sensitive dataset"}` | `trace_id=xyz123, compliance_level=high`
+`587cf30d-3f17-4942-8a01-f110ef8a5ae3` | `{"event_type": "policy_ack", "details": "Policy v3.0 acknowledged by contractor"}` | `trace_id=mno456, compliance_level=low` 
 
-You may need to duplicate fields between the message envelope and headers to support efficient routing and filtering by intermediate systems, such as Kafka brokers, stream processors, or observability tools, but still maintain the full context of the change in the message for downstream applications.
-
-If you would like to filter the table columns that a changefeed emits, refer to the [CDC Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page. Or, if you would like to customize the message envelope, refer to the [Changefeed Message Envelope](#message-envelopes) page. 
+If you would like to filter the table columns that a changefeed emits, refer to the [CDC Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page. To customize the message envelope, refer to the [Changefeed Message Envelope](#message-envelopes) page. 
 {% comment  %}update message envelope link to the new page once PR #19542 is merged{% endcomment %}
 
 ## Message formats
