@@ -631,6 +631,10 @@ SELECT jsonb_path_query('{}', '(1 + 2) * 3');
                  9
 ~~~
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/jsonpath-limitations.md %}
+
 ## See also
 
 - [JSONB]({% link {{ page.version.version }}/jsonb.md %})
