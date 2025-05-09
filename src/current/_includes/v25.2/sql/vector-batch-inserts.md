@@ -1,0 +1,1 @@
+Large batch inserts of [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) types can cause performance degradation. When inserting vectors, batching should be avoided.
