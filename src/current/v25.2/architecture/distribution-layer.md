@@ -239,7 +239,7 @@ The distribution layer's `DistSender` receives `BatchRequests` from its own node
 
 ### Distribution and replication layer
 
-The distribution layer routes `BatchRequests` to nodes containing ranges of data, which is ultimately routed to the Raft group leader or leaseholder, which are handled in the replication layer.
+The distribution layer routes `BatchRequests` to nodes containing ranges of data, which is ultimately routed to the Raft group leader and leaseholder, which are handled in the replication layer.
 
 ## What's next?
 

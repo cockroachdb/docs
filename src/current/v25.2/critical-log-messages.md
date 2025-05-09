@@ -44,6 +44,8 @@ toc: true
 
 ## Network
 
+[XXX](XXX): WHAT SHOULD WE REPLACE THIS WITH???
+
 - **Message**: `slow heartbeat took %s; err=context deadline exceeded`
 
     - **Severity**: Medium
@@ -51,6 +53,7 @@ toc: true
     - **Impact**: The node is unlikely to be able to service requests within a desirable period of time.
     - **Action**: Check if the node is resource constrained; the node may be overloaded, unable to connect to other nodes, CPU-constrained, or may not have sufficient disk throughput. 
     - **Related metrics**:
+        - [XXX](XXX): SHOULD WE REPLACE THIS WITH `storeliveness.heartbeat.failures` ? what about the latency? therre does not appear to be an analogous metric (that I could find)
         - `liveness.heartbeatfailures`: Number of failed node liveness heartbeats from this node
         - `liveness.heartbeatlatency`: Node liveness heartbeat latency
     - **See also**:
@@ -61,7 +64,7 @@ toc: true
 
     - **Severity**: Medium
     - **Description**: At the time of failure, there was a network-related issue that occurred in the environment that affected the listed node. 
-    - **Impact**: Any leaseholders that are on the affected node will be unavailable and other nodes will need to re-elect a new leaseholder. As leaseholder election can take up to 9 seconds, the SQL service latency can increase significantly during this time, if records are accessed from a leaseholder on the impacted node.
+    - **Impact**: Any leaseholders that are on the affected node will be unavailable and other nodes will need to re-elect a new leaseholder. As leaseholder election can take up to 9 seconds ([XXX](XXX): still true with leader leases?), the SQL service latency can increase significantly during this time, if records are accessed from a leaseholder on the impacted node.
     - **Action**: Check if the node has experienced one of the following:
         - The user has purposefully removed the node from the cluster.
         - Asymmetrical network partitioning.
@@ -81,6 +84,7 @@ toc: true
     - **Impact**: SQL service latency will likely increase. In the event of a network partition, ranges can be unavailable until an election is executed and in the extreme case there can be a cluster outage.
     - **Action**: Debug network connectivity.
     - **Related metrics**:
+        - [XXX](XXX): SHOULD WE REPLACE THIS WITH `storeliveness.heartbeat.failures` ? what about the latency? therre does not appear to be an analogous metric (that I could find)
         - `liveness.heartbeatfailures`: Number of failed node liveness heartbeats from this node
         - `liveness.heartbeatlatency`: Node liveness heartbeat latency
     - **See also**: [Network partition]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition)

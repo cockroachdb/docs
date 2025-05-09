@@ -53,7 +53,7 @@ In this case:
 
 1. Node 3 (the gateway node) receives the request to write to table 1.
 1. The leaseholder for table 1 is on node 1, so the request is routed there.
-1. The leaseholder is the same replica as the Raft leader (as is typical), so it simultaneously appends the write to its own Raft log and notifies its follower replicas on nodes 2 and 3.
+1. The leaseholder is the same replica as the Raft leader, so it simultaneously appends the write to its own Raft log and notifies its follower replicas on nodes 2 and 3.
 1. As soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leader and the write is committed to the key-values on the agreeing replicas. In this diagram, the follower on node 2 acknowledged the write, but it could just as well have been the follower on node 3. Also note that the follower not involved in the consensus agreement usually commits the write very soon after the others.
 1. Node 1 returns acknowledgement of the commit to node 3.
 1. Node 3 responds to the client.

@@ -129,7 +129,7 @@ The closed timestamps subsystem works by propagating information from leaseholde
 
 Once the follower replica has applied the abovementioned Raft commands, it has all the data necessary to serve reads with timestamps less than or equal to the closed timestamp.
 
-Note that closed timestamps are valid even if the leaseholder changes, since they are preserved across [lease transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#epoch-based-leases-table-data).  Once a lease transfer occurs, the new leaseholder will not break the closed timestamp promise made by the old leaseholder.
+Note that closed timestamps are valid even if the leaseholder changes, since they are preserved across [lease transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node).  Once a lease transfer occurs, the new leaseholder will not break the closed timestamp promise made by the old leaseholder.
 
 Closed timestamps provide the guarantees that are used to provide support for low-latency historical (stale) reads, also known as [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %}). Follower reads can be particularly useful in [multi-region deployments]({% link {{ page.version.version }}/multiregion-overview.md %}).
 

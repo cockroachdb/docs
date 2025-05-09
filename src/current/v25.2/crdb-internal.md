@@ -54,7 +54,6 @@ Table name | Description| Use in production
 [`index_usage_statistics`](#index_usage_statistics) | Contains statistics about the primary and secondary indexes used in statements.| ✓
 `invalid_objects` | Contains information about invalid objects in your cluster.| ✗
 `jobs` | Contains information about [jobs]({% link {{ page.version.version }}/show-jobs.md %}) running on your cluster.| ✗
-`kv_node_liveness` | Contains information about [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).| ✗
 `kv_node_status` | Contains information about node status at the [key-value layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).| ✗
 `kv_store_status` | Contains information about the key-value store for your cluster.| ✗
 `leases` | Contains information about [leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) in your cluster.| ✗
