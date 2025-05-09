@@ -106,8 +106,8 @@ For guidelines on how these parameters affect search accuracy and write performa
 
 Set the following storage parameters when you create a vector index:
 
-- `min_partition_size`: Minimum number of vectors in a partition before it is merged with another partition. This value must be greater than or equal to `1`. The default value is `16`.
-- `max_partition_size`: Maximum number of vectors in a partition before it is split into smaller partitions. This must be at least 4 times the value of `min_partition_size`. The default value is `128`.
+- `min_partition_size`: Minimum number of vectors in a partition before it is merged with another partition. This value must be greater than or equal to `1`, up to a maximum of `1024`. The default value is `16`.
+- `max_partition_size`: Maximum number of vectors in a partition before it is split into smaller partitions. This must be at least 4 times the value of `min_partition_size`, up to a maximum of `4096`. The default value is `128`.
 - `build_beam_size`: Beam size for index build (how many branches of the k-means tree are explored when assigning a vector to a partition). The default value is `8`. Cockroach Labs does not recommend changing this setting. It is more effective to increase `vector_search_beam_size`.
 
 For example, the following statement creates a vector index with a custom partition size:
@@ -117,7 +117,7 @@ For example, the following statement creates a vector index with a custom partit
 CREATE VECTOR INDEX ON items (category, embedding) WITH (min_partition_size=16, max_partition_size=128);
 ~~~
 
-Set the [`vector_search_beam_size` session setting]({% link {{ page.version.version }}/session-variables.md %}#vector-search-beam-size) to determine how many vector partitions will be considered during query execution. The default value is `32`, which represents the beam size and not the number of partitions that are explored.
+Set the [`vector_search_beam_size` session setting]({% link {{ page.version.version }}/session-variables.md %}#vector-search-beam-size) to determine how many vector partitions will be considered during query execution. The default value is `32`, which represents the number of partitions that are explored at each level of the k-means tree.
 
 For example:
 
@@ -132,7 +132,7 @@ Partition size and beam size interact to control both the precision of nearest n
 
 - A larger search beam improves accuracy by exploring more partitions, which increases the number of candidate vectors evaluated.
 
-- A larger partition improves accuracy by placing more vectors in each partition, which increases the number of candidate vectors retrieved for a given beam size. It also improves write performance by reducing the frequency of partition splits and merges.
+- A larger partition size improves accuracy by placing more vectors in each partition, which increases the number of candidate vectors retrieved for a given beam size. It also improves write performance by reducing the frequency of partition splits and merges.
 
 In both cases, read latency and CPU usage increase with size.
 
