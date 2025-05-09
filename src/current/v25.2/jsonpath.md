@@ -18,8 +18,8 @@ Use the following variables in path and [filter expressions](#filter-expressions
 | Variable |                                 Description                                 |             Example usage              |
 |----------|-----------------------------------------------------------------------------|----------------------------------------|
 | `$`      | Root of the JSON document.                                                  | `$.players[0]`                         |
-| `$var`   | A named variable defined in the `var` argument.                             | `@.price > $min` (with `{"min": 100}`) |
 | `@`      | Current item being evaluated in a [filter expression](#filter-expressions). | `@.team == "Lakers"`                   |
+| `$var`   | A named variable defined in the `var` argument.                             | `@.price > $min` (with `{"min": 100}`) |
 
 ### Operators
 
@@ -121,7 +121,7 @@ Append the following methods to a path (after `.`) to access or transform the va
 |-------------|-------------------------------------------------------------------------|------------------------------------|
 | `size()`    | Returns the size of an array, or `1` for a scalar.                      | `$.players.size()`                 |
 | `type()`    | Returns the type of the current value as a string.                      | `$.players[0].stats.type()`        |
-| `abs()`     | Returns the absolute value of a number.                                 | `$.players[0].stats.bpg.abs()`     |
+| `abs()`     | Returns the absolute value of a number.                                 | `$.players[0].stats.ppg.abs()`     |
 | `floor()`   | Returns the nearest integer less than or equal to the current value.    | `$.players[1].stats.ppg.floor()`   |
 | `ceiling()` | Returns the nearest integer greater than or equal to the current value. | `$.players[1].stats.ppg.ceiling()` |
 
@@ -141,8 +141,8 @@ Each function accepts two required and two optional arguments as follows:
 
 - `target` (required): A [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) value to access.
 - `path` (required): A [JSONPath expression](#jsonpath-expression).
-- `vars`: An optional value referenced as a variable in the path.
-- `silent`: An optional Boolean that specifies whether to throw errors during execution. If not specified, this is `false`.
+- `vars` (optional): A [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) value referenced as a variable in the path.
+- `silent` (optional): A Boolean value that specifies whether to throw errors during execution. If not specified, this is `false`.
 
 ## Example setup
 
@@ -391,20 +391,20 @@ SELECT jsonb_path_query(data, '(($.players[2].team != "Lakers") && ($.players[1]
 ~~~
 
 ~~~
-  jsonb_path_match
+  jsonb_path_query
 --------------------
-         t
+  true
 ~~~
 
 {{site.data.alerts.callout_info}}
-The preceding check expressions can be used with the `jsonb_path_match` [function](#jsonpath-functions) for an identical result.
+The preceding check expressions can be used with the `jsonb_path_match` [function](#jsonpath-functions) for a similar result.
 {{site.data.alerts.end}}
 
 ## Filter expressions
 
 A *filter expression* uses a [predicate check expression](#check-expressions) to return `JSONB` fields that match a condition.
 
-To write a filter expression, insert `?` into a JSONPath expression, followed by a check expression that uses `@` to reference each item selected by the preceding path step. The filter expression only returns items that evaluate to true. The path can optionally continue after the filter.
+To write a filter expression, insert `?` into a JSONPath expression, followed by a check expression that uses `@` to reference each item selected by the preceding path step. The filter expression only returns items that evaluate to true.
 
 For example, the following JSONPath expression selects all elements in an `items` array (`$.items[*]`), filters all items whose `price` value is greater than 100 (`(@.price > 100)`), and returns the `name` value for each filtered item (`.name`):
 
@@ -490,7 +490,7 @@ SELECT jsonb_path_query(data, '$.players[*] ? (@.team like_regex "^L.*")') FROM 
 
 ## Variables in JSONPath expressions
 
-Define a variable in a JSONPath expression by prefixing it with `$`. Then specify a value as an argument in the [JSONPath function](#jsonpath-functions).
+Define a variable in a JSONPath expression by prefixing it with `$`. Then specify a value in the `vars` argument of the [JSONPath function](#jsonpath-functions).
 
 The following query filters players whose `ppg` is greater than the value of the `min` variable:
 
