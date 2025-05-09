@@ -33,7 +33,7 @@ To enable the use of vector indexes, set the `feature.vector_index.enabled` [clu
 SET CLUSTER SETTING feature.vector_index.enabled = true;
 ~~~
 
-To enable the creation of vector indexes on non-empty tables, also disable the `sql_safe_updates` [session setting]({% link {{ page.version.version }}/session-variables.md %}#sql-safe-updates). This allows vector indexes to be backfilled on existing rows, during which **table writes are blocked** to ensure vector index consistency.
+To enable the creation of vector indexes on non-empty tables, also disable the `sql_safe_updates` [session setting]({% link {{ page.version.version }}/session-variables.md %}#sql-safe-updates). This allows vector indexes to be backfilled on existing rows, during which **table writes are blocked** to ensure vector index consistency. This blocking behavior is a [known limitation](#known-limitations) that is currently being tracked.
 
 {{site.data.alerts.callout_danger}}
 Adding a vector index to a non-empty table can temporarily disrupt workloads that perform continuous writes.
