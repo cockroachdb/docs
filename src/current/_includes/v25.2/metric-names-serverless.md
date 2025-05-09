@@ -45,9 +45,9 @@ Name | Description
 `jobs.changefeed.resume_retry_error` | Number of changefeed jobs which failed with a retryable error
 `keybytes` | Number of bytes taken up by keys
 `keycount` | Count of all keys
-`leases.epoch` | [XXX](XXX): Should go away with leader leases? Still in beta.3 Number of replica leaseholders using epoch-based leases
+`leases.epoch` | Number of replica leaseholders using epoch-based leases
 `leases.error` | Number of failed lease requests
-`leases.expiration` | [XXX](XXX): Should go away with leader leases? Still in beta.3 Number of replica leaseholders using expiration-based leases
+`leases.expiration` | Number of replica leaseholders using expiration-based leases
 `leases.success` | Number of successful lease requests
 `leases.transfers.error` | Number of failed lease transfers
 `leases.transfers.success` | Number of successful lease transfers
@@ -148,10 +148,10 @@ Name | Description
 `ranges.underreplicated` | Number of ranges with fewer live replicas than the replication target
 `ranges` | Number of ranges
 `rebalancing.writespersecond` | Number of keys written (i.e., applied by raft) per second to the store, averaged over a large time period as used in rebalancing decisions
-`replicas.leaders_not_leaseholders` | ([XXX](XXX): This seems like it should go away with the advent of leader leases?) Number of replicas that are Raft leaders whose range lease is held by another store
+`replicas.leaders_not_leaseholders` | Number of replicas that are Raft leaders whose range lease is held by another store
 `replicas.leaders` | Number of Raft leaders
 `replicas.leaseholders` | Number of lease holders
-`replicas.quiescent` | Number of quiesced replicas [XXX](XXX): Can this metric be removed from docs in a leader leases world v25.2+ ???
+`replicas.quiescent` | Number of quiesced replicas
 `replicas.reserved` | Number of replicas reserved for snapshots
 `replicas` | Number of replicas
 `requests.backpressure.split` | Number of backpressured writes waiting on a range split. A range will backpressure (roughly) non-system traffic when the range is above the configured size until the range splits. When the rate of this metric is nonzero over extended periods of time, it should be investigated why splits are not occurring.

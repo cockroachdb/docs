@@ -138,7 +138,7 @@ CockroachDB is considered a CAP-Consistent (CP) system under the [CAP theorem](h
 
 #### Co-location with Raft leadership
 
-The range lease is colocated with Raft leadership via the [Leader leases](#leader-leases) mechanism; this reduces network round trips since the leaseholder receiving the requests can simply propose the Raft commands to itself, rather than communicating them to another node.
+The range lease is always colocated with Raft leadership via the [Leader leases](#leader-leases) mechanism, except briefly during [lease transfers](#how-leases-are-transferred-from-a-dead-node). This reduces network round trips since the leaseholder receiving the requests can simply propose the Raft commands to itself, rather than communicating them to another node.
 
 It also increases robustness against network partitions and outages due to liveness failures.
 

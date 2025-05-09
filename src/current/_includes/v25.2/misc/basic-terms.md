@@ -24,7 +24,7 @@ The replica that holds the "range lease." This replica receives and coordinates 
 
 For most types of tables and queries, the leaseholder is the only replica that can serve consistent reads (reads that return "the latest" data).
 
-{% include_cached new-in.html version="v25.2" %} The leaseholder is always the same replica as the [Raft leader](#architecture-raft-leader). For more information, see [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
+{% include_cached new-in.html version="v25.2" %} The leaseholder is always the same replica as the [Raft leader](#architecture-raft-leader), except briefly during [lease transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node). For more information, see [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 
 ### Raft protocol
 <a name="architecture-raft"></a>

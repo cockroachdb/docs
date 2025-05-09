@@ -1,4 +1,4 @@
-Node liveness is no longer determined by heartbeating a single "liveness range"; instead it is determined using [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
+For the purposes of [Raft replication]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) and determining the [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder) of a [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), node health is no longer determined by heartbeating a single "liveness range"; instead it is determined using [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 
 However, node heartbeats of a single range are still used to determine:
 
