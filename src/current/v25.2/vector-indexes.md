@@ -58,29 +58,59 @@ You can also specify a vector index during table creation. For example:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE items (
-    category STRING,
+    department_id INT,
+    category_id INT,
     embedding VECTOR(1536),
     VECTOR INDEX (embedding)
 );
 ~~~
 
-You can create a vector index with a *prefix column* to pre-filter the search space. This is especially useful for tables containing millions of vectors or more. For an example, refer to [Create and query a vector index](#create-and-query-a-vector-index).
+### Prefix columns
+
+You can create a vector index with one or more *prefix columns* to pre-filter the search space. This is especially useful for tables containing millions of vectors or more. 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE items (
-    category STRING,
+    department_id INT,
+    category_id INT,
     embedding VECTOR(1536),
-    VECTOR INDEX (category, embedding)
+    VECTOR INDEX (department_id, category_id, embedding)
 );
 ~~~
+
+A vector index is only used if each prefix column is constrained to a specific value in the query. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WHERE department_id = 100 AND category_id = 200
+~~~
+
+You can filter on multiple prefix values using `IN`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WHERE (department_id, category_id) IN ((100, 200), (300, 400))
+~~~
+
+The following example will not use the vector index:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WHERE department_id = 100 AND category_id >= 200
+~~~
+
+For an example, refer to [Create and query a vector index](#create-and-query-a-vector-index).
+
+### Vector index opclass
 
 You can optionally specify an opclass. If not specified, the default is `vector_l2_ops`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE items (
-    category STRING,
+    department_id INT,
+    category_id INT,
     embedding VECTOR(1536),
     VECTOR INDEX embed_idx (embedding vector_l2_ops)
 );
@@ -199,23 +229,18 @@ In the following example, a vector index with a prefix column is used to optimiz
     --http-addr=localhost:8080
     ~~~
 
-1. In a separate terminal, [enable vector indexes](#enable-vector-indexes) on the cluster and session:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING feature.vector_index.enabled = true;
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET sql_safe_updates = false;
-    ~~~
-
-1. Open a SQL shell on the cluster:
+1. In a separate terminal, open a SQL shell on the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure
+    ~~~
+
+1. [Enable vector indexes](#enable-vector-indexes) on the cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING feature.vector_index.enabled = true;
     ~~~
 
 1. Create an `items` table that includes a `VECTOR` column called `embedding`, along with a vector index that uses `customer_id` as the prefix column:
@@ -238,7 +263,7 @@ In the following example, a vector index with a prefix column is used to optimiz
     python fast_insert.py
     ~~~
 
-    This process should take approximately 20 minutes.
+    This process should take approximately 5-10 minutes.
 
 1. When the script is finished executing, verify that `items` is populated:
 
