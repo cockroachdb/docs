@@ -374,15 +374,16 @@ In the following example, `RETURN NEXT` returns a new row during each loop itera
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE FUNCTION get_numbers() RETURNS SETOF INT AS $$
+CREATE FUNCTION get_numbers() RETURNS TABLE (n INT) AS $$
 DECLARE
 	i INT := 1;
 BEGIN
 	WHILE i <= 5 LOOP
-		RETURN NEXT i;
+		n := i;
+		RETURN NEXT;
 		i := i + 1;
 	END LOOP;
-END
+END;
 $$ LANGUAGE PLpgSQL;
 ~~~
 

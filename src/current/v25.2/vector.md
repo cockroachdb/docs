@@ -5,8 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-
-
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
@@ -16,7 +14,7 @@ The `VECTOR` data type stores fixed-length arrays of floating-point numbers, whi
 For details on valid `VECTOR` comparison operators, refer to [Syntax](#syntax). For the list of supported `VECTOR` functions, refer to [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#pgvector-functions).
 
 {{site.data.alerts.callout_info}}
-`VECTOR` functionality is compatible with the [`pgvector`](https://github.com/pgvector/pgvector) extension for PostgreSQL. Vector indexing is **not** supported at this time.
+`VECTOR` functionality is compatible with the [`pgvector`](https://github.com/pgvector/pgvector) extension for PostgreSQL.
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -74,6 +72,10 @@ INSERT INTO items (category, vector) VALUES
 	('clothing', '[0.0, 0.0, 1.0]');
 ~~~
 
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/sql/vector-batch-inserts.md %}
+{{site.data.alerts.end}}
+
 Use the [`<->` operator](#syntax) to sort values with the `electronics` category by their similarity to `[1.0, 0.0, 0.0]`, based on geographic distance.
 
 {% include_cached copy-clipboard.html %}
@@ -88,7 +90,10 @@ SELECT category, vector FROM items WHERE category = 'electronics' ORDER BY vecto
   electronics | [0.9,0.1,0]
 ~~~
 
+You can use a [vector index]({% link {{ page.version.version }}/vector-indexes.md %}) to make searches on large numbers of high-dimensional `VECTOR` rows more efficient.
+
 ## See also
 
+- [Vector Indexes]({% link {{ page.version.version }}/vector-indexes.md %})
 - [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#pgvector-functions)
 - [Data Types]({% link {{ page.version.version }}/data-types.md %})

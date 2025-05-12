@@ -886,6 +886,12 @@
               ]
             },
             {
+              "title": "JSONPath Queries",
+              "urls": [
+                "/${VERSION}/jsonpath.html"
+              ]
+            },
+            {
               "title": "Name Resolution",
               "urls": [
                 "/${VERSION}/sql-name-resolution.html"
