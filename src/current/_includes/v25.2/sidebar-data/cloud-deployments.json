@@ -570,6 +570,12 @@
                 ]
               },
               {
+                "title": "Physical Cluster Replication",
+                "urls": [
+                    "/cockroachcloud/physical-cluster-replication.html"
+                ]
+              },
+              {
                 "title": "Billing Management",
                 "urls": [
                    "/cockroachcloud/billing-management.html"
