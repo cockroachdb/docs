@@ -9071,13 +9071,12 @@
       a CockroachDB self-hosted cluster to this version,
       [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
-
-- release_name: v25.2.0-rc.1
+- release_name: v25.2.0
   major_version: v25.2
-  release_date: '2025-05-12'
-  release_type: Testing
+  release_date: '2025-05-09'
+  release_type: Production
   go_version: go1.23.7
-  sha: 4377500860ff39cc5ddf7954079ced214bd788dc
+  sha: TBD
   has_sql_only: true
   has_sha256sum: true
   mac:
@@ -9092,9 +9091,16 @@
     linux_intel_fips: true
     linux_arm_fips: false
   docker:
-    docker_image: cockroachdb/cockroach-unstable
+    docker_image: cockroachdb/cockroach
     docker_arm: true
     docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
   previous_release: v25.2.0-beta.3
+  cloud_only: true
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+      This version is currently available only for select
+      CockroachDB Cloud clusters. To request to upgrade
+      a CockroachDB self-hosted cluster to this version,
+      [contact support](https://support.cockroachlabs.com/hc/requests/new).
