@@ -20,7 +20,7 @@ CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.
 
 For release notes, refer to [What's New in v25.2]({% link releases/v25.2.md %}).
 
-To get started with version 25.2, refer to [Create a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) or [Upgrade a Cluster in CockroachDB Cloud]({% link cockroachcloud/upgrade-cockroach-version.md %}).
+To get started with v25.2, refer to [Create a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) or [Upgrade a Cluster in CockroachDB Cloud]({% link cockroachcloud/upgrade-cockroach-version.md %}).
 
 ## April 30, 2025
 
