@@ -432,6 +432,35 @@ Despite their logical equivalence, the transaction coordinator now works as quic
 
 Additionally, when other transactions encounter a transaction in `STAGING` state, they check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating that staging transaction's record. If the coordinator is still heartbeating the record, the other transactions will wait, on the theory that letting the coordinator update the transaction record with the result of the attempt to commit will be faster than going through the transaction status recovery process. This means that in practice, the transaction status recovery process is only used if the transaction coordinator dies due to an untimely crash.
 
+### Buffered writes
+
+{% include feature-phases/preview.md %}
+
+{% include_cached new-in.html version="v25.2" %} Buffered writes enhance transaction throughput and reduce operational cost by minimizing the number of round trips between the gateway node and other nodes during write operations.
+
+Buffered writes work by temporarily storing a transaction's writes on the [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) until the transaction [commits]({% link {{ page.version.version }}/commit.md %}). This approach reduces redundant writes, minimizes [pipeline](#transaction-pipelining) stalls, and allows the system to serve [read-your-writes](https://jepsen.io/consistency/models/read-your-writes) locally. Most importantly, it allows for passive use of the [1-phase commit (1PC) fast-path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions) which can lead to increased performance.
+
+Buffered writes are off by default. To turn them on for the current session, issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET kv.transaction.buffered_writes.enabled = true
+~~~
+
+Buffered writes update the transaction flow so that it has the following properties:
+
+1. Write buffering: Instead of sending each write operation immediately to the [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder), writes are now buffered on the gateway node until the transaction commits. The writes can then be issued in a single batch, reducing the number of total requests required to complete the transaction.
+1. Local read-your-writes: During the transaction, any read operation that targets a key with a buffered write is served from the buffer, avoiding [pipeline](#transaction-pipelining) stalls and reducing latency.
+1. 1-phase commit optimization (1PC): If all writes in the buffer target the same [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), the system can utilize the [1-phase commit fast path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions), further optimizing the commit process. Explicit transactions that formerly were not eligible for 1PC may become eligible because their writes have been buffered.
+1. Redundant write elimination: Within a single transaction, in many cases only the final write operation for each key is sent to the [Storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) at commit time, eliminating redundant operations.
+
+{{site.data.alerts.callout_info}}
+Buffered writes have the following limitations:
+
+- Users of [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation won't see a performance benefit. This limitation is likely to remain in place until the feature is [Generally Available (GA)]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#feature-availability-phases).
+- Some workloads could see an increase in [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}).
+{{site.data.alerts.end}}
+
 ## Non-blocking transactions
 
 CockroachDB supports low-latency, global reads of read-mostly data in [multi-region clusters]({% link {{ page.version.version }}/multiregion-overview.md %}) using _non-blocking transactions_: an extension of the [standard read-write transaction protocol](#overview) that allows a writing transaction to perform [locking](#concurrency-control) in a manner such that contending reads by other transactions can avoid waiting on its locks.
