@@ -15,13 +15,23 @@ In this tutorial, you will set up [**logical data replication (LDR)**]({% link {
 - _Unidirectional_ LDR from a source table to a destination table (cluster A to cluster B) in one LDR job.
 - _Bidirectional_ LDR for the same table from cluster A to cluster B and from cluster B to cluster A. In a bidirectional setup, each cluster operates as both a source and a destination in separate LDR jobs.
 
-Create the new table on the destination cluster automatically and conduct a fast, offline initial scan with the [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}) syntax. `CREATE LOGICALLY REPLICATED` accepts `unidirectional` or `bidirectional on` as an option in order to create one of the setups automatically. [Step 3](#step-3-start-ldr) outlines when to use the `CREATE LOGICALLY REPLICATED` or the `CREATE LOGICAL REPLICATION STREAM` syntax to start LDR.
-
-In the following diagram, **LDR stream 1** creates a unidirectional LDR setup, introducing **LDR stream 2** extends the setup to bidirectional.
+In the following diagram, **LDR stream 1** creates a unidirectional LDR setup. Introducing **LDR stream 2** extends the setup to bidirectional.
 
 <image src="{{ 'images/v25.2/bidirectional-stream.svg' | relative_url }}" alt="Diagram showing bidirectional LDR from cluster A to B and back again from cluster B to A." style="width:70%" />
 
 For more details on use cases, refer to the [Logical Data Replication Overview]({% link {{ page.version.version }}/logical-data-replication-overview.md %}).
+
+## Syntax
+
+LDR streams can be started using one of the following SQL statements, depending on your requirements:
+
+- [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}): Creates the new table on the destination cluster automatically, and conducts a fast, offline initial scan. `CREATE LOGICALLY REPLICATED` accepts `unidirectional` or `bidirectional on` as an option in order to create either one of the setups automatically. **The table cannot contain [user-defined types]({% link {{ page.version.version }}/enum.md %}) or [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies.** Follow [these steps](#create-logically-replicated) for setup instructions.
+- [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %}): Starts the LDR stream after you've created the matching table on the destination cluster. **If the table contains user-defined types or foreign key dependencies, you must use this syntax.** Allows for manual creation of unidirectional or bidirectional LDR. Follow [these steps](#create-logical-replication-stream) for setup instructions.
+
+Also, for both SQL statements, note:
+
+- It is necessary to use the [fully qualified]({% link {{ page.version.version }}/sql-name-resolution.md %}) table name for the source table and destination table in the statement.
+- {% include {{ page.version.version }}/ldr/multiple-tables.md %}
 
 ## Tutorial overview
 
@@ -53,7 +63,7 @@ You cannot use LDR on a table with a schema that contains:
 - Indexes with a [virtual computed column]({% link {{ page.version.version }}/computed-columns.md %})
 - Composite types in the [primary key]({% link {{ page.version.version }}/primary-key.md %})
 
-Additionally, for the `CREATE LOGICALLY REPLCATED` syntax, you cannot use LDR on a table with a schema that contains:
+Additionally, for the `CREATE LOGICALLY REPLICATED` syntax, you cannot use LDR on a table with a schema that contains:
 
 - [User-defined types]({% link {{ page.version.version }}/enum.md %}) 
 - [Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies
@@ -84,19 +94,43 @@ If you are setting up bidirectional LDR, you **must** run this step on both clus
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
-1. On the **destination**, create a user with the [`REPLICATION` system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) who will start the LDR job:
+1. On the **destination**, create a user who will start the LDR job:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    CREATE USER {your username} WITH PASSWORD '{your password}';
+    ~~~sql
+    CREATE USER {your_username} WITH PASSWORD '{your_password}';
     ~~~
+
+1. Choose the appropriate privilege based on the SQL statement the user on the destination cluster will run. (For details on which syntax to use, refer to the [Syntax](#syntax) section at the beginning of this tutorial):
+    - [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %}) (replicating into an **existing table**). Grant the [`REPLICATIONDEST` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#replicationdest) on the **destination table**, which allows the user to stream data into the existing table:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~sql
+        GRANT REPLICATIONDEST ON TABLE {your_db}.{your_schema}.{your_table} TO {your_username};
+        ~~~
+    - [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}) (creating a **new table** as part of the replication). Grant the [`CREATE` privilege]({% link {{ page.version.version }}/create-database.md %}#required-privileges) on the **parent database**, which allows the user to create a new table in the specified database, and the user will automatically have `REPLICATIONDEST` on the table they create:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~sql
+        GRANT CREATE ON DATABASE {your_db} TO {your_username};
+        ~~~
+
+1. On the **source**, grant the user who will be [specified in the connection string to the source cluster](#step-2-connect-from-the-destination-to-the-source) the [`REPLICATIONSOURCE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#replicationsource):
 
     {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    GRANT SYSTEM REPLICATION TO {your username};
+    ~~~sql
+    GRANT REPLICATIONSOURCE ON TABLE {your_db}.{your_schema}.{your_table} TO {your_username};
     ~~~
 
-    To change the password later, refer to [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}).
+1. (Optional) If you are setting up **bidirectional** LDR, each cluster must authorize both stream directions using the table-level privileges depending on the syntax you're using:
+    - [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %}) (setting up a reverse stream manually). Grant `REPLICATIONDEST` and `REPLICATIONSOURCE` to the users in the reverse direction.
+    - [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}) (setting up a bidirectional stream automatically). Grant the original source user `REPLICATIONDEST` on the tables.
+
+{{site.data.alerts.callout_info}}
+As of v25.2, the `REPLICATION` system privilege has been **deprecated** and replaced with the granular, table-level privileges: `REPLICATIONSOURCE` and `REPLICATIONDEST`.
+{{site.data.alerts.end}}
+
+To change the password later, refer to [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}).
 
 ## Step 2. Connect from the destination to the source
 
@@ -157,17 +191,10 @@ In this step, you'll start the LDR stream(s) from the destination cluster. You c
 - `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
 - `validated`: {% include {{ page.version.version }}/ldr/validated-description.md %}
 
-### Syntax
+LDR streams can be started using one of the following sections for instructions on creating an LDR stream. For details on which syntax to use, refer to the [Syntax](#syntax) section at the beginning of this tutorial:
 
-LDR streams can be started using one of the following SQL statements, depending on your requirements:
-
-- [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}): Creates the new table on the destination cluster automatically, and conducts a fast, offline initial scan. `CREATE LOGICALLY REPLICATED` accepts `unidirectional` or `bidirectional on` as an option in order to create either one of the setups automatically. **The table cannot contain a [user-defined types]({% link {{ page.version.version }}/enum.md %}) or [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies.** Follow [these steps](#create-logically-replicated) for setup instructions.
-- [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %}): Starts the LDR stream after you've created the matching table on the destination cluster. **If the table contains user-defined types or foreign key dependencies, you must use this syntax.** Allows for manual creation of unidirectional or bidirectional LDR. Follow [these steps](#create-logical-replication-stream) for setup instructions.
-
-Also, for both SQL statements, note:
-
-- It is necessary to use the [fully qualified]({% link {{ page.version.version }}/sql-name-resolution.md %}) table name for the source table and destination table in the statement.
-- {% include {{ page.version.version }}/ldr/multiple-tables.md %}
+- [`CREATE LOGICALLY REPLICATED`](#create-logically-replicated)
+- [`CREATE LOGICAL REPLICATION STREAM`](#create-logical-replication-stream)
 
 #### `CREATE LOGICALLY REPLICATED`
 
@@ -182,7 +209,7 @@ Use `CREATE LOGICALLY REPLICATED` to create either a unidirectional or bidirecti
 
 - Bidirectional LDR: This statement will first create the LDR jobs for the first stream. You must run it from the **destination** cluster that does not contain the table. Once the offline initial scan completes, the reverse stream will be initialized so that the original destination cluster can send changes to the original source.
 
-    Run the following from the **destination** cluster (i.e, the cluster that does not have the table currently):
+    Run the following from the **destination** cluster (i.e., the cluster that currently does not have the table):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -237,7 +264,7 @@ If you're setting up bidirectional LDR, both clusters will have a history retent
 
 ### DB Console
 
-You'll access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and monitor the status and metrics for the created LDR jobs. Depending on which cluster you would like to view, follow the instructions for either the source or destination.
+You can access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and monitor the status and metrics for the created LDR jobs. Depending on which cluster you would like to view, follow the instructions for either the source or destination.
 
 {{site.data.alerts.callout_success}}
 You can use the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}), the SQL shell, [Metrics Export]({% link {{ page.version.version }}/datadog.md %}#enable-metrics-collection) with Prometheus and Datadog, and [labels with some LDR metrics]({% link {{ page.version.version }}/multi-dimensional-metrics.md %}) to monitor the job.

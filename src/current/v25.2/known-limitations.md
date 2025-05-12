@@ -16,6 +16,10 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 
 {% include {{ page.version.version }}/known-limitations/vector-limitations.md %}
 
+### JSONPath
+
+{% include {{ page.version.version }}/known-limitations/jsonpath-limitations.md %}
+
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.
