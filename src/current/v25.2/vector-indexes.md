@@ -147,7 +147,7 @@ For example, the following statement creates a vector index with a custom partit
 CREATE VECTOR INDEX ON items (category, embedding) WITH (min_partition_size=16, max_partition_size=128);
 ~~~
 
-Set the [`vector_search_beam_size` session setting]({% link {{ page.version.version }}/session-vars.md %}#vector-search-beam-size) to determine how many vector partitions will be considered during query execution. The default value is `32`, which represents the number of partitions that are explored at each level of the k-means tree.
+Set the [`vector_search_beam_size` session setting]({% link {{ page.version.version }}/session-variables.md %}#vector-search-beam-size) to determine how many vector partitions will be considered during query execution. The default value is `32`, which represents the number of partitions that are explored at each level of the k-means tree.
 
 For example:
 
