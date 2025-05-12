@@ -46,7 +46,7 @@ Metric | Description
 Ranges | The number of ranges.
 Leaders | The number of ranges with leaders. If the number does not match the number of ranges for a long time, troubleshoot your cluster.
 Lease Holders | The number of ranges that have leases.
-Leaders w/o Leases | The number of Raft leaders without leases. If the number if non-zero for a long time, troubleshoot your cluster. [XXX](XXX): This seems meaningless now? but it is still in the UI in beta.3
+Leaders w/o Leases | The number of Raft leaders without leases. If the number if non-zero for a long time, troubleshoot your cluster.
 Unavailable | The number of unavailable ranges. If the number if non-zero for a long time, troubleshoot your cluster.
 Under-replicated | The number of under-replicated ranges. Non-voting replicas are not included in this value.
 
@@ -86,8 +86,6 @@ Metric | Description
 --------|----
 Replicas | The number of replicas.
 Quiescent | The number of replicas that haven't been accessed for a while.
-
-[XXX](XXX): Can this be deleted now, with Leader leases? According to design doc there is no more Raft quiescence
 
 ## Range Operations
 
@@ -235,8 +233,6 @@ The **Replication** dashboard shows other time series graphs that are important 
 - Average Queries per Store
 
 For monitoring CockroachDB, it is sufficient to use the [**Ranges**](#ranges), [**Replicas per Store**](#replicas-per-store), and [**Replica Quiescence**](#replica-quiescence) graphs.
-
-[XXX](XXX): We can remove this replica quiescence bit, right? I think the graph is still there in the beta.3 tho
 
 {% include {{ page.version.version }}/ui/ui-summary-events.md %}
 
