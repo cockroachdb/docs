@@ -144,9 +144,28 @@ It also increases robustness against network partitions and outages due to liven
 
 For more information, see [Leader leases](#leader-leases).
 
+#### Epoch-based leases
+
+{% include_cached new-in.html version="v25.2" %} Epoch-based leases are disabled by default in favor of [Leader leases](#leader-leases).
+
+To manage leases for table data, CockroachDB implements a notion of "epochs," which are defined as the period between a node joining a cluster and a node disconnecting from a cluster. To extend its leases, each node must periodically update its liveness record, which is stored on a system range key. When a node disconnects, it stops updating the liveness record, and the epoch is considered changed. This causes the node to [lose all of its leases](#how-leases-are-transferred-from-a-dead-node) a few seconds later when the liveness record expires.
+
+Because leases do not expire until a node disconnects from a cluster, leaseholders do not have to individually renew their own leases. Tying lease lifetimes to node liveness in this way lets us eliminate a substantial amount of traffic and Raft processing we would otherwise incur, while still tracking leases for every range.
+
+#### Expiration-based leases (meta and system ranges)
+
+A table's meta and system ranges (detailed in the [distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#meta-ranges)) are treated as normal key-value data, and therefore have leases just like table data.
+
+Unlike table data, system ranges use expiration-based leases; expiration-based leases expire at a particular timestamp (typically after a few seconds). However, as long as a node continues proposing Raft commands, it continues to extend the expiration of its leases. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
+
+Expiration-based leases are used:
+
+- By some system ranges, as described above.
+- Temporarily during some operations like lease transfers, until the new Raft leader can be fortified based on store liveness as described in [Leader leases](#leader-leases).
+
 #### Leader leases
 
-{% include {{ page.version.version }}/leader-leases-intro.md %}
+{% include_cached new-in.html version="v25.2" %} {% include {{ page.version.version }}/leader-leases-intro.md %}
 
 Leader leases rely on a shared, store-wide failure detection mechanism for triggering new Raft elections. [Stores]({% link {{ page.version.version }}/cockroach-start.md %}#store) participate in Raft leader elections by "fortifying" a candidate replica based on that replica's _store liveness_, as determined among a quorum of all the node's stores. A replica can **only** become the Raft leader if it is so fortified.
 

@@ -413,7 +413,6 @@ Symptoms of disk stalls include:
 
 - Bad cluster write performance, usually in the form of a substantial drop in QPS for a given workload.
 - [Node liveness issues](#node-liveness-issues).
-- ([XXX](XXX): Can this bullet just be deleted? It seems like with leader leases we cannot enter the state described here) Writes on one node come to a halt. This can happen because in rare cases, a node may be able to perform liveness checks (which involve writing to disk) even though it cannot write other data to disk due to one or more slow/stalled calls to `fsync`. Because the node is passing its liveness checks, it is able to hang onto its leases even though it cannot make progress on the ranges for which it is the leaseholder. This wedged node has a ripple effect on the rest of the cluster such that all processing of the ranges whose leaseholders are on that node basically grinds to a halt. As mentioned above, CockroachDB's disk stall detection will attempt to shut down the node when it detects this state.
 
 Causes of disk stalls include:
 
@@ -429,7 +428,7 @@ CockroachDB's built-in disk stall detection works as follows:
 
     - `file write stall detected: %s`
 
-- During node heartbeats, the [storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}) writes to disk.
+- During [store liveness]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases) heartbeats, the [storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}) writes to disk.
 
 {% include_cached new-in.html version="v25.2" %} {% include {{ page.version.version }}/leader-leases-node-heartbeat-use-cases.md %}
 
