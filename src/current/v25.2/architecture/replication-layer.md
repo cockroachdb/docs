@@ -128,9 +128,9 @@ When the leaseholder is sent a write request, a majority of the replica nodes mu
 
 If there is no leaseholder, any node receiving a request will attempt to become the leaseholder for the range.
 
-To extend its leases, each node must also remain the Raft leader as described in [Leader leases](#leader-leases). When a node disconnects, it stops updating its _store liveness_, causing the node to [lose all of its leases](#how-leases-are-transferred-from-a-dead-node).
+To extend its leases, each node must also remain the Raft leader, as described in [Leader leases](#leader-leases). When a node disconnects, it stops updating its _store liveness_, causing the node to [lose all of its leases](#how-leases-are-transferred-from-a-dead-node).
 
-A table's meta and system ranges (detailed in the [distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#meta-ranges)) are treated as normal key-value data, and therefore have leases just like table data.
+A table's meta and system ranges (detailed in [Distribution Layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#meta-ranges)) are treated as normal key-value data, and therefore have leases just like table data.
 
 When serving [strongly-consistent (aka "non-stale") reads]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#reading), leaseholders bypass Raft; for the leaseholder's writes to have been committed in the first place, they must have already achieved consensus, so a second consensus on the same data is unnecessary. This has the benefit of not incurring latency from networking round trips required by Raft and greatly increases the speed of reads (without sacrificing consistency).
 
@@ -142,7 +142,7 @@ The range lease is always colocated with Raft leadership via the [Leader leases]
 
 It also increases robustness against network partitions and outages due to liveness failures.
 
-For more information, see [Leader leases](#leader-leases).
+For more information, refer to [Leader leases](#leader-leases).
 
 #### Epoch-based leases
 
@@ -158,10 +158,7 @@ A table's meta and system ranges (detailed in the [distribution layer]({% link {
 
 Unlike table data, system ranges use expiration-based leases; expiration-based leases expire at a particular timestamp (typically after a few seconds). However, as long as a node continues proposing Raft commands, it continues to extend the expiration of its leases. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
 
-Expiration-based leases are used:
-
-- By some system ranges, as described above.
-- Temporarily during some operations like lease transfers, until the new Raft leader can be fortified based on store liveness as described in [Leader leases](#leader-leases).
+Expiration-based leases are also used temporarily during operations like lease transfers, until the new Raft leader can be fortified based on store liveness, as described in [Leader leases](#leader-leases).
 
 #### Leader leases
 
@@ -186,7 +183,7 @@ Based on Cockroach Labs' internal testing, leader leases provide the following u
 When a cluster needs to access a range on a leaseholder node that is dead, the lease must be transferred to a healthy node. The process is as follows:
 
 1. Detection of Node Failure: The _store liveness_ mechanism described in [Leader leases](#leader-leases) detects node failures through its store-wide heartbeating process. If a node becomes unresponsive, its store liveness support is withdrawn, marking it as unavailable.
-1. Raft Leadership Election: A Raft election is initiated to establish a new leader for the range. This step is necessary because lease acquisition can only occur on the Raft leader. The election process includes a store liveness component to fortify the new leader as described in [Leader leases](#leader-leases).
+1. Raft Leadership Election: A Raft election is initiated to establish a new leader for the range. This step is necessary because lease acquisition can only occur on the Raft leader. The election process includes a store liveness component to fortify the new leader, as described in [Leader leases](#leader-leases).
 1. Lease Acquisition: Once a new Raft leader is elected, the lease acquisition process can proceed. The new leader acquires the lease.
 
 The entire process, from detecting the node failure to acquiring the lease on a new node, should complete within a few seconds.

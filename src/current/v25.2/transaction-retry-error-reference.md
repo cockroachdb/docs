@@ -284,7 +284,7 @@ If you are encountering deadlocks:
 
 If you are using only default [transaction priorities]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities):
 
-- This error means your cluster has problems. You are likely overloading it. Investigate the source of the overload, and do something about it. The best place to start investigating is the [Overload Dashboard]({% link {{ page.version.version }}/ui-overload-dashboard.md %}).
+- This error means your cluster has problems. You are likely overloading it. Investigate the source of the overload, and do something about it. The best place to start investigating is the [**Overload Dashboard**]({% link {{ page.version.version }}/ui-overload-dashboard.md %}).
 
 If you are using [high- or low-priority transactions]({% link {{ page.version.version }}/transactions.md %}#transaction-priorities):
 
