@@ -259,7 +259,7 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 
 ### Create a table with secondary and GIN indexes
 
-In this example, we create secondary and GIN indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}) allow efficient access to the schemaless data in a [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) column.
+In this example, we create secondary and GIN indexes during table creation. [Secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}) allow efficient access to data with keys other than the primary key. [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}) allow efficient access to the schemaless data in a [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) column.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -304,9 +304,14 @@ In this example, we create secondary and GIN indexes during table creation. Seco
 (14 rows)
 ~~~
 
-[Learn more about indexes]({% link {{ page.version.version }}/indexes.md %}).
-
 ### Create a table with a vector index
+
+Enable vector indexes:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING feature.vector_index.enabled = true;
+~~~
 
 The following statement creates a table with a [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) column, along with a [vector index]({% link {{ page.version.version }}/vector-indexes.md %}) that makes vector search efficient.
 

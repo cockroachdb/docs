@@ -104,7 +104,7 @@ For an example, refer to [Create and query a vector index](#create-and-query-a-v
 
 ### Specify an opclass
 
-You can optionally specify an opclass. If not specified, the default is `vector_l2_ops`:
+You can optionally specify an opclass (operator class) that defines how the `VECTOR` data type is handled by the index. If not specified, the default is `vector_l2_ops`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -120,7 +120,7 @@ CREATE TABLE items (
 
 Vector indexes on `VECTOR` columns support the following comparison operator:
 
-- **L2 distance**: [`<->`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators)
+- **L2 distance**: [`<->`]({% link {{ page.version.version }}/vector.md %}#syntax)
 
 For usage, refer to the [Example](#example).
 
