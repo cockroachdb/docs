@@ -160,7 +160,7 @@ SET vector_search_beam_size = 16;
 
 Partition size and beam size interact to control both the precision of nearest neighbor search and the cost of maintaining the index. You can improve the accuracy of vector searches by increasing either the search beam size or partition size:
 
-- A larger search beam improves accuracy by exploring more partitions, which increases the number of candidate vectors evaluated.
+- A larger search beam size improves accuracy by exploring more partitions, which increases the number of candidate vectors evaluated.
 
 - A larger partition size improves accuracy by placing more vectors in each partition, which increases the number of candidate vectors retrieved for a given beam size. It also improves write performance by reducing the frequency of partition splits and merges.
 

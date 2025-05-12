@@ -90,7 +90,7 @@ SELECT category, vector FROM items WHERE category = 'electronics' ORDER BY vecto
   electronics | [0.9,0.1,0]
 ~~~
 
-You can use a [vector index]({% link {{ page.version.version }}/vector-indexes.md %}) to make searches on large numbers of high-dimensional [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) rows more efficient.
+You can use a [vector index]({% link {{ page.version.version }}/vector-indexes.md %}) to make searches on large numbers of high-dimensional `VECTOR` rows more efficient.
 
 ## See also
 
