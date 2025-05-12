@@ -9039,7 +9039,7 @@
 
 - release_name: v25.1.6
   major_version: v25.1
-  release_date: '2025-05-05'
+  release_date: '2025-04-30'
   release_type: Production
   go_version: go1.23.7
   sha: 9af34db410ad57b58a35d8251d7c4fe1ddfcec69
