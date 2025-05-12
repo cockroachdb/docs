@@ -59,7 +59,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`RENAME CONSTRAINT`](#rename-constraint) | Change constraints columns. | Yes
 [`RENAME TO`](#rename-to) | Change the names of tables. | No
 [`RESET {storage parameter}`](#reset-storage-parameter) | Reset a storage parameter on a table to its default value. | Yes
-[`(ENABLE, DISABLE) ROW LEVEL SECURITY`](#enable-disable-row-level-security) |  Enable or disable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) for a table. | No
+[`(ENABLE, DISABLE) ROW LEVEL SECURITY`](#enable-disable-row-level-security) |  Enable or disable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) for a table. | Yes
 [`(FORCE, NO FORCE) ROW LEVEL SECURITY`](#force-unforce-row-level-security) | Force the table owner to be subject to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies defined on a table. | No
 [`SET {storage parameter}`](#set-storage-parameter) | Set a storage parameter on a table. | Yes
 [`SET LOCALITY`](#set-locality) |  Set the table locality for a table in a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}). | No
@@ -495,12 +495,12 @@ The user must be a member of the [`admin`]({% link {{ page.version.version }}/se
 
 `ALTER TABLE ... FORCE ROW LEVEL SECURITY` prevents table [owners]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) from bypassing [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) policies.
 
-Use this statement when you need to ensure that all access, including by the table owner, adheres to the defined RLS policies. For example, in production or multi-tenant environments where all roles (including administrators) must operate under policy constraints.
+Use this statement when you need to ensure that all access, including by the table owner, adheres to the defined RLS policies. For example, in production or multi-tenant environments where all roles (including administrators) must operate under policy constraints. Note that this statement only has an affect if [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`](#enable-disable-row-level-security) is also set.
 
 For examples, see [Force and unforce row-level security](#force-and-unforce-row-level-security).
 
 {{site.data.alerts.callout_danger}}
-Users with the `BYPASSRLS` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) can still bypass RLS even when `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is enabled. To see the roles with this option, run: `SELECT rolname FROM pg_roles WHERE rolbypassrls = true;`.
+Users with the `BYPASSRLS` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) can still bypass RLS even when `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is enabled.
 {{site.data.alerts.end}}
 
 #### Required privileges
@@ -3115,7 +3115,7 @@ ALTER TABLE orders NO FORCE ROW LEVEL SECURITY;
 ~~~
 
 {{site.data.alerts.callout_danger}}
-Users with the `BYPASSRLS` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) can still bypass RLS even when `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is enabled. To see the roles with this option, run: `SELECT rolname FROM pg_roles WHERE rolbypassrls = true;`.
+Users with the `BYPASSRLS` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) can still bypass RLS even when `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is enabled.
 {{site.data.alerts.end}}
 
 ## See also

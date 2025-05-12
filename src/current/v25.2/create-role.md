@@ -318,13 +318,6 @@ CREATE ROLE can_bypassrls WITH BYPASSRLS;
 
 For instructions showing how to alter a role to add or remove the `BYPASSRLS` privilege, see [`ALTER ROLE`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls).
 
-To see all of the roles that can bypass RLS, execute the following query as an [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT rolname FROM pg_roles WHERE rolbypassrls = true
-~~~
-
 ### Set the `SUBJECT` role option for certificate based authentication
 
 {% include {{page.version.version}}/sql/role-subject-option.md %}

@@ -131,13 +131,6 @@ To disable the role's ability to bypass RLS, execute the following statement:
 ALTER ROLE carl WITH NOBYPASSRLS;
 ~~~
 
-To see all of the roles that can bypass RLS, execute the following query as an [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT rolname FROM pg_roles WHERE rolbypassrls = true
-~~~
-
 ### Set default session variable values for a role
 
 In the following example, the `root` user creates a role named `max`, and sets the default value of the `timezone` [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for the `max` role.

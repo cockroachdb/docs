@@ -37,7 +37,7 @@ For an example, see [RLS for Multi-Tenant Isolation](#rls-for-multi-tenant-isola
 
 At a high level, the steps for using row-level security (RLS) are as follows:
 
-1. Create [schema objects]({% link {{ page.version.version }}/schema-design-overview.md %}) and [insert data]({% link {{ page.version.version }}/insert-data.md %}). ([`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}), [`INSERT`]({% link {{ page.version.version }}/insert.md %}))
+1. Choose which [schema objects]({% link {{ page.version.version }}/schema-design-overview.md %}) need row-level security. You can re-use existing schemas, or create new ones and [insert data]({% link {{ page.version.version }}/insert-data.md %}). ([`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}), [`INSERT`]({% link {{ page.version.version }}/insert.md %}))
 2. [Create roles]({% link {{ page.version.version }}/create-role.md %}) & [grant access]({% link {{ page.version.version }}/grant.md %}) to schema objects by those roles. ([`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`GRANT`]({% link {{ page.version.version }}/grant.md %}))
 3. Enable row-level security on the schema objects. ([`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security))
 4. Define row-level security policies on the schema objects which are assigned to specific roles. ([`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}))
@@ -55,9 +55,9 @@ When row-level security is enabled on a table:
 
 Further details about RLS evaluation include:
 
-- All [policies]({% link {{ page.version.version }}/show-policies.md %}) apply to a specific set of [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles). For a policy to be applicable, it must match at least one of the roles assigned to it. If the policy is associated with the `PUBLIC` role, it applies to all roles. In order for reads or writes to succeed, there must be at least one permissive policy for the user's role. 
+- All [policies]({% link {{ page.version.version }}/show-policies.md %}) apply to a specific set of [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles). For a policy to be applicable, it must match at least one of the roles assigned to it. If the policy is associated with the `PUBLIC` role, it applies to all roles.
 - If RLS is enabled but no policies apply to a given combination of user and SQL statement, **access is denied by default**.
-- Permissive policies are combined using `OR` logic, while restrictive policies are combined using `AND` logic. The overall policy enforcement is determined by evaluating a logical expression of the form: `(permissive policies) AND (restrictive policies)`.
+- Permissive policies are combined using `OR` logic, while restrictive policies are combined using `AND` logic. The overall policy enforcement is determined by evaluating a logical expression of the form: `(permissive policies) AND (restrictive policies)`.  In order for reads or writes to succeed, there must be at least one permissive policy for the user's role.
 - The `USING` clause of [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}) filters rows during reads; the `WITH CHECK` clause validates writes, and defaults to `USING` if absent.
 
 ## Considerations
@@ -105,7 +105,7 @@ If you use PCR, the target cluster will have all RLS policies applied to the dat
 
 When [views]({% link {{ page.version.version }}/views.md %}) are accessed, RLS policies on any underlying [tables]({% link {{ page.version.version }}/schema-design-table.md %}) are applied. [Policies]({% link {{ page.version.version }}/create-policy.md %}) can only be defined directly on tables, not views.
 
-Views use the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) of the view owner to determine row-level security filters, **not** the role of the user executing the view. This can cause issues because the view owner may have entirely different policies than the user executing the view.
+Views will only show rows that the current [user]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) has access to on the table that the view is referencing.
 
 ## Examples
 
@@ -350,6 +350,7 @@ Populate the schema with data:
 ~~~ sql
 -- Insert the known tenants first to satisfy FK constraints
 INSERT INTO tenants (tenant_id, name) VALUES
+    ('ad7b4529-f5d6-4d0e-8b0f-91af455a70e5', 'Default Tenant'),
     ('9607a12c-3c2f-407b-ae3c-af903542395b', 'Tenant A Inc.'),
     ('8177c2fc-3b55-47b7-bf84-38bd3a3e9c0a', 'Tenant B Solutions');
 
@@ -435,7 +436,14 @@ CREATE POLICY tenant_isolation_permissive ON invoices
     AS PERMISSIVE
     FOR ALL
     TO public
-    USING (tenant_id = split_part(current_setting('application_name', true), '.', 2)::UUID);
+    USING (tenant_id = COALESCE(
+        -- Attempt to extract UUID after the '.' in application_name
+        -- Handle cases where setting is missing or improperly formatted
+        NULLIF(split_part(current_setting('application_name', true), '.', 2), '')::UUID,
+        -- If no tenant ID is successfully extracted, use the Default Tenant ID
+        'ad7b4529-f5d6-4d0e-8b0f-91af455a70e5'
+        )
+    );
 
 CREATE POLICY tenant_isolation ON invoices
     AS RESTRICTIVE
@@ -447,7 +455,7 @@ CREATE POLICY tenant_isolation ON invoices
 
 Explanation of policy:
 
-- `AS PERMISSIVE`: Necessary because you need at least one permissive policy.
+- `AS PERMISSIVE`: Necessary because you need at least one permissive policy. The permissive policy above has logic to show results for a default tenant ID if the `application_name` is omitted or improperly formatted.
 - `AS RESTRICTIVE`: Makes the policy mandatory. If other policies exist, they must *also* pass. For simple tenant isolation, this is often the safest default.
 - `FOR ALL`: Covers all data modification and retrieval.
 - `TO PUBLIC`: Applies the policy broadly. Roles should primarily manage table-level access using `GRANT`, while this policy handles row-level visibility.
