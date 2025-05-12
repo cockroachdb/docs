@@ -34,7 +34,7 @@ CREATE POLICY [ IF NOT EXISTS ] policy_name ON table_name
 
 Parameter | Description
 ----------|------------
-`IF NOT EXISTS` | Used to specify that the policy will only be created if one with the same `policy_name` does not already exist on `table_name`.
+`IF NOT EXISTS` | Used to specify that the policy will only be created if one with the same `policy_name` does not already exist on `table_name`. If a policy with that name does already exist, the statement will not return an error if this parameter is used.
 `policy_name` | Unique identifier for the policy on the table.
 `table_name` | The [table]({% link {{ page.version.version }}/schema-design-table.md %}) to which the policy applies.
 `AS { PERMISSIVE, RESTRICTIVE }` | (**Default**: `PERMISSIVE`.) For `PERMISSIVE`, policies are combined using `OR`. A row is accessible if *any* permissive policy grants access. For `RESTRICTIVE`, policies are combined using `AND`.  The overall policy enforcement is determined by evaluating a logical expression of the form: `(permissive policies) AND (restrictive policies)`. This means that all restrictive policies must grant access for a row to be accessible, and restrictive policies are evaluated *after* permissive policies. This means that you need to have at least one `PERMISSIVE` policy in place before applying `RESTRICTIVE` policies. If any restrictive policy denies access, the row is inaccessible, regardless of the permissive policies.
@@ -56,18 +56,16 @@ The following table shows which policies are applied to which statement types, w
 | `SELECT`                            | ✓                                                   | —                                                | —                                                 | —                                                     | —                                             |
 | `SELECT ... FOR UPDATE / FOR SHARE` | ✓                                                   | —                                                | ✓                                                 | —                                                     | —                                             |
 | `INSERT`                            | —                                                   | ✓                                                | —                                                 | —                                                     | —                                             |
-| `INSERT ... RETURNING`              | ✓ ‡                                                 | ✓                                                | —                                                 | —                                                     | —                                             |
-| `UPDATE`                            | ✓ ‡                                                 | —                                                | ✓                                                 | ✓                                                     | —                                             |
-| `DELETE`                            | ✓ ‡                                                 | —                                                | —                                                 | —                                                     | ✓                                             |
+| `INSERT ... RETURNING`              | ✓                                                   | ✓                                                | —                                                 | —                                                     | —                                             |
+| `UPDATE`                            | ✓                                                   | —                                                | ✓                                                 | ✓                                                     | —                                             |
+| `DELETE`                            | ✓                                                   | —                                                | —                                                 | —                                                     | ✓                                             |
 | `INSERT ... ON CONFLICT DO UPDATE`  | ✓                                                   | —                                                | ✓                                                 | ✓                                                     | —                                             |
 | `UPSERT`                            | ✓                                                   | —                                                | ✓                                                 | ✓                                                     | —                                             |
-
-‡ The `SELECT` check is only evaluated when the statement actually needs to read from the relation, e.g., in a `WHERE`, `SET`, or `RETURNING` clause that references table columns.
 
 Additional considerations include:
 
 - `SELECT` evaluation: CockroachDB always evaluates `SELECT` (`USING`) policies for `INSERT`, `UPDATE`, and `DELETE`, even when the statement doesn't reference table columns.
-- `ON CONFLICT ... DO NOTHING`: CockroachDB still runs constraint and row-level policy checks on the `VALUES` clause even when the candidate row is discarded because of a conflict. This is a known limitation described in [cockroachdb/cockroach#35370](https://github.com/cockroachdb/cockroach/issues/35370).
+- `ON CONFLICT ... DO NOTHING`: CockroachDB does not run the constraint and row-level policy checks on the `VALUES` clause if the candidate row has a conflict. This is a known limitation described in [cockroachdb/cockroach#35370](https://github.com/cockroachdb/cockroach/issues/35370).
 
 ## Examples
 
@@ -98,7 +96,7 @@ CREATE POLICY user_orders_policy ON orders
 - [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %})
 - [`SHOW POLICIES`]({% link {{ page.version.version }}/show-policies.md %})
 - [`ALTER TABLE {ENABLE, DISABLE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security)
-- [`ALTER TABLE {FORCE, NO FORCE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-unforce-row-level-security)
+- [`ALTER TABLE {FORCE, NO FORCE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security)
 - [`ALTER ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls)
 - [`CREATE ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-bypass-row-level-security-rls)
 

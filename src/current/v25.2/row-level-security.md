@@ -126,7 +126,7 @@ For an example, see [`DROP POLICY`]({% link {{ page.version.version }}/drop-poli
 For examples, see:
 
 - [`ALTER TABLE ... (ENABLE, DISABLE) ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security).
-- [`ALTER TABLE ... (FORCE, NO FORCE) ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-unforce-row-level-security).
+- [`ALTER TABLE ... (FORCE, NO FORCE) ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security).
 
 ### RLS for Data Security (Fine-Grained Access Control)
 
@@ -188,7 +188,7 @@ GRANT SELECT ON employees TO employee;
 
 #### Enable row-level security for fine-grained access control
 
-Next, enable row-level security using the [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security) statement. Optionally, you may want to ensure that the table owner is also subject to RLS using [`ALTER TABLE ... FORCE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-unforce-row-level-security).
+Next, enable row-level security using the [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security) statement. Optionally, you may want to ensure that the table owner is also subject to RLS using [`ALTER TABLE ... FORCE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -456,7 +456,7 @@ CREATE POLICY tenant_isolation ON invoices
 Explanation of policy:
 
 - `AS PERMISSIVE`: Necessary because you need at least one permissive policy. The permissive policy above has logic to show results for a default tenant ID if the `application_name` is omitted or improperly formatted.
-- `AS RESTRICTIVE`: Makes the policy mandatory. If other policies exist, they must *also* pass. For simple tenant isolation, this is often the safest default.
+- `AS RESTRICTIVE`: Makes the policy mandatory. If other policies exist, they must *also* pass. For simple tenant isolation, this is often the safest default. The restrictive policy above applies to the `app_dev` role, so that anyone assigned to the `app_dev` role must use the correctly formatted `application_name`, and is not allowed to fallback to the default tenant ID.
 - `FOR ALL`: Covers all data modification and retrieval.
 - `TO PUBLIC`: Applies the policy broadly. Roles should primarily manage table-level access using `GRANT`, while this policy handles row-level visibility.
 - `USING`: Ensures queries only see rows matching the session's tenant ID, which is passed in using the `application_name` session variable and extracted using the `split_part` function.
@@ -533,7 +533,7 @@ For a demo showing how to combine Row-level security with [Multi-region SQL]({% 
 - [`ALTER POLICY`]({% link {{ page.version.version }}/alter-policy.md %})
 - [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %})
 - [`ALTER TABLE {ENABLE, DISABLE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security)
-- [`ALTER TABLE {FORCE, NO FORCE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-unforce-row-level-security)
+- [`ALTER TABLE {FORCE, NO FORCE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security)
 - [`CREATE ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-bypass-row-level-security-rls)
 - [`ALTER ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls)
 
