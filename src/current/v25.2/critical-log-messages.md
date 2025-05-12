@@ -61,7 +61,7 @@ toc: true
 
     - **Severity**: Medium
     - **Description**: At the time of failure, there was a network-related issue that occurred in the environment that affected the listed node. 
-    - **Impact**: Any leaseholders that are on the affected node will be unavailable and other nodes will need to re-elect a new leaseholder. As leaseholder election can take up to 9 seconds, the SQL service latency can increase significantly during this time, if records are accessed from a leaseholder on the impacted node.
+    - **Impact**: Any leaseholders that are on the affected node will be unavailable and other nodes will need to re-elect a new leaseholder. As leaseholder election can take multiple seconds, the SQL service latency can increase significantly during this time, if records are accessed from a leaseholder on the impacted node.
     - **Action**: Check if the node has experienced one of the following:
         - The user has purposefully removed the node from the cluster.
         - Asymmetrical network partitioning.
