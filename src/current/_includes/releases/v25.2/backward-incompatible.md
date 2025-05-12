@@ -1,33 +1,10 @@
-Before [upgrading to CockroachDB v25.1]({% link v25.1/upgrade-cockroach-version.md %}), be sure to review the following backward-incompatible changes, as well as [key cluster setting changes](#v25-1-0-cluster-settings), and adjust your deployment as necessary.
+Before [upgrading to CockroachDB v25.2]({% link v25.2/upgrade-cockroach-version.md %}), be sure to review the following backward-incompatible changes, as well as [key cluster setting changes](#v25-2-0-cluster-settings), and adjust your deployment as necessary.
 
-- Bullet
-
-- Bullet
-
-- Bullet
-
-- Bullet
-
-- Bullet
-  - Removed `sql.schema_changer.running`, which is redundant with `jobs.schema_change.currently_running`.
-  - Removed `sql.schema_changer.successes`, which is redundant with `jobs.schema_change.resume_completed`.
-  - Removed `sql.schema_changer.retry_errors`, which is redundant with `jobs.schema_change.resume_retry_error`.
-  - Removed `sql.schema_changer.permanent_errors`, which is redundant with `jobs.schema_change.resume_failed`.
-
-- Bullet
-
-    This change is being made because CockroachDB does not have full support for multiple schema changes in a transaction, as described [here]({% link v25.1/online-schema-changes.md %}#schema-changes-within-transactions).
-
-    Users who do not desire the autocommit behavior can preserve the old behavior by changing the default value of `autocommit_before_ddl` with a command such as:
-
-    ``` ALTER ROLE ALL SET autocommit_before_ddl = false; ``` 
-  
-    [#][#]
-
-
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
-[#]: https://github.com/cockroachdb/cockroach/pull/
+- Removed the `storage.queue.store-failures` metric. [#139150](https://github.com/cockroachdb/cockroach/pull/139150)
+- Removed the `kv.snapshot_receiver.excise.enable` cluster setting. Excise is now enabled unconditionally. [#142651](https://github.com/cockroachdb/cockroach/pull/142651)
+- The cluster setting `changefeed.new_webhook_sink_enabled`/`changefeed.new_webhook_sink.enabled` is no longer supported. The new webhook sink has been enabled by default since v23.2, and the first version webhook sink has been removed. [#141940](https://github.com/cockroachdb/cockroach/pull/141940)
+- The cluster setting `changefeed.new_pubsub_sink_enabled`/`changefeed.new_pubsub_sink.enabled` is no longer supported. The new Google Cloud Pub/Sub sink has been enabled by default since v23.2, and the first version Pub/Sub sink has been removed. [#141948](https://github.com/cockroachdb/cockroach/pull/141948)
+- Removed the deprecated `--storage-engine` parameter from the CLI. [#139744](https://github.com/cockroachdb/cockroach/pull/139744)
+- Removed the **Paused Follower** graph from the **Replication** dashboard in the DB Console as followers are no longer paused by default from v25.1. [#141427](https://github.com/cockroachdb/cockroach/pull/141427)
+- The `server.client_cert_expiration_cache.capacity` cluster setting has been removed. The `security.certificate.expiration.client` and `security.certificate.ttl.client` metrics now report the lowest value observed for a user in the last 24 hours.
+- Removed the `ST_3DLength` function.
