@@ -5,6 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 {% include_cached new-in.html version="v25.2" %} JSONPath expressions and functions are used to query and filter [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) data. A [JSONPath expression](#jsonpath-expression) is a string that identifies one or more elements in a JSON document, and is used as a [JSONPath function](#jsonpath-functions) argument.
 
 ## JSONPath expression
