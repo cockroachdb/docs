@@ -29,7 +29,7 @@ To obtain a paid **Enterprise** license, <a href="mailto:sales@cockroachlabs.com
 [Sign up for a CockroachDB {{ site.data.products.cloud }} Console account](https://cockroachlabs.cloud/signup?experience=enterprise) if you do not already have one.
 
 {{site.data.alerts.callout_info}}
-Enterprise licenses generated prior to May 15th 2025 are not visible in the **Enterprise Licenses** page.
+Enterprise licenses generated prior to May 31st 2025 are not visible in the **Enterprise Licenses** page.
 {{site.data.alerts.end}}
 
 To obtain an **Enterprise Free** or **Enterprise Trial** license, take the following steps:
