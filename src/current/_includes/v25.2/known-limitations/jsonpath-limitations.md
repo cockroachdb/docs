@@ -1,0 +1,2 @@
+- The following keywords are only accepted in lowercase: `strict`, `lax`, `exists`, `like_regex`, `flag`, `is unknown`, `to`, `last`. [#144255](https://github.com/cockroachdb/cockroach/issues/144255)
+- Comparisons involving empty arrays (e.g., `SELECT jsonb_path_query('{"a": [1], "b": []}', '$.a == $.b');`) return `null`, rather than `false` as in PostgreSQL. [#145099](https://github.com/cockroachdb/cockroach/issues/145099)
