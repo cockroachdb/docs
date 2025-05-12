@@ -16,7 +16,7 @@ Get future release notes emailed to you:
 
 ## May 12, 2025
 
-CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a [Regular release]({% link releases/release-support-policy.md %}#release-types).
+CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a [Regular release]({% link releases/index.md %}#release-types).
 
 For release notes, refer to [What's New in v25.2]({% link releases/v25.2.md %}).
 
