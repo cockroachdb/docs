@@ -12,6 +12,10 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
+### Vector indexes
+
+{% include {{ page.version.version }}/known-limitations/vector-limitations.md %}
+
 ### JSONPath
 
 {% include {{ page.version.version }}/known-limitations/jsonpath-limitations.md %}
