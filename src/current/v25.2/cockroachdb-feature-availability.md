@@ -275,7 +275,7 @@ Command                                     | Description
 
 ### Leader leases
 
-{% include {{ page.version.version }}/leader-leases-intro.md %}
+{% include_cached new-in.html version="v25.2" %} {% include {{ page.version.version }}/leader-leases-intro.md %}
 
 For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 

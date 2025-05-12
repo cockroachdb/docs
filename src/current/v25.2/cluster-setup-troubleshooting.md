@@ -236,6 +236,8 @@ then you might have a network partition.
 
 {% include common/network-partitions.md %}
 
+{% include_cached new-in.html version="v25.2" %} With the introduction of [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases), most network partitions between a leaseholder and its followers should heal in a few seconds.
+
 **Solution:**
 
 To identify a network partition:
@@ -285,23 +287,6 @@ Failed running "sql"
 ~~~
 
 **Solution:** To successfully connect to the cluster, you must first either generate a client certificate or create a password for the user.
-
-#### Cannot create new connections to cluster for up to 40 seconds after a node dies
-
-When a node [dies abruptly and/or loses its network connection to the cluster](#node-liveness-issues), the following behavior can occur:
-
-1. For a period of up to 40 seconds, clients trying to connect with [username and password authentication]({% link {{ page.version.version }}/authentication.md %}#client-authentication) cannot create new connections to any of the remaining nodes in the cluster.
-1. Applications start timing out when trying to connect to the cluster during this window.
-
-The reason this happens is as follows:
-
-- Username and password information is stored in a system range.
-- Since all system ranges are located [near the beginning of the keyspace]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#monolithic-sorted-map-structure), the system range containing the username/password info can sometimes be colocated with another system range that is used to determine [node liveness](#node-liveness-issues).
-- If the username/password info and the node liveness record are stored together as described above, it can take extra time for the lease on this range to be transferred to another node. Normally, [lease transfers take a few seconds]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node), but in this case it may require multiple rounds of consensus to determine that the node in question is actually dead (the node liveness record check may be retried several times before failing).
-
-For more information about how lease transfers work when a node dies, see [How leases are transferred from a dead node]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node).
-
-The solution is to [use connection pooling]({% link {{ page.version.version }}/connection-pooling.md %}).
 
 ## Clock sync issues
 
@@ -428,7 +413,6 @@ Symptoms of disk stalls include:
 
 - Bad cluster write performance, usually in the form of a substantial drop in QPS for a given workload.
 - [Node liveness issues](#node-liveness-issues).
-- Writes on one node come to a halt. This can happen because in rare cases, a node may be able to perform liveness checks (which involve writing to disk) even though it cannot write other data to disk due to one or more slow/stalled calls to `fsync`. Because the node is passing its liveness checks, it is able to hang onto its leases even though it cannot make progress on the ranges for which it is the leaseholder. This wedged node has a ripple effect on the rest of the cluster such that all processing of the ranges whose leaseholders are on that node basically grinds to a halt. As mentioned above, CockroachDB's disk stall detection will attempt to shut down the node when it detects this state.
 
 Causes of disk stalls include:
 
@@ -444,7 +428,9 @@ CockroachDB's built-in disk stall detection works as follows:
 
     - `file write stall detected: %s`
 
-- During [node liveness heartbeats](#node-liveness-issues), the [storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}) writes to disk as part of the node liveness heartbeat process.
+- During [store liveness]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases) heartbeats, the [storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}) writes to disk.
+
+{% include_cached new-in.html version="v25.2" %} {% include {{ page.version.version }}/leader-leases-node-heartbeat-use-cases.md %}
 
 #### Disk utilization is different across nodes in the cluster
 
@@ -473,7 +459,7 @@ Because [compaction]({% link {{ page.version.version }}/architecture/storage-lay
 {% include {{page.version.version}}/storage/compaction-concurrency.md %}
 {{site.data.alerts.end}}
 
-If these issues remain unresolved, affected nodes will miss their liveness heartbeats, causing the cluster to lose nodes and eventually become unresponsive.
+If these issues remain unresolved, affected nodes will eventually become unresponsive.
 
 **Solution:** To diagnose and resolve an excessive workload concurrency issue:
 
@@ -601,13 +587,13 @@ To see which of your [localities]({% link {{ page.version.version }}/cockroach-s
 
 ## Node liveness issues
 
-"Node liveness" refers to whether a node in your cluster has been determined to be "dead" or "alive" by the rest of the cluster. This is achieved using checks that ensure that each node connected to the cluster is updating its liveness record. This information is shared with the rest of the cluster using an internal gossip protocol.
+"Node liveness" refers to whether a node in your cluster has been determined to be "dead" or "alive" by the rest of the cluster. {% include_cached new-in.html version="v25.2" %} With [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases), node liveness is managed based on [store]({% link {{ page.version.version }}/cockroach-start.md %}#store) liveness rather than through a centralized node liveness range (as in previous versions less than v25.2); this reduces single points of failure and improves resilience to [network partitions](#network-partition) and other faults.
 
 Common reasons for node liveness issues include:
 
-- Heavy I/O load on the node. Because each node needs to update a liveness record on disk, maxing out disk bandwidth can cause liveness heartbeats to be missed. See also: [Capacity planning issues](#capacity-planning-issues).
-- A [disk stall](#disk-stalls). This will cause node liveness issues for the same reasons as listed above.
-- [Insufficient CPU for the workload](#cpu-is-insufficient-for-the-workload). This can eventually cause nodes to miss their liveness heartbeats and become unresponsive.
+- Heavy I/O load on the node. Nodes running CockroachDB v25.2 and later no longer need to update a centralized node liveness record, but heavy I/O can still impact [store liveness]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases). See also: [Capacity planning issues](#capacity-planning-issues).
+- A [disk stall](#disk-stalls). This can cause node liveness issues for the same reasons as listed above.
+- [Insufficient CPU for the workload](#cpu-is-insufficient-for-the-workload): This can cause nodes to be marked as unresponsive.
 - [Networking issues](#networking-issues) with the node.
 
 The [DB Console][db_console] provides several ways to check for node liveness issues in your cluster:
@@ -616,22 +602,20 @@ The [DB Console][db_console] provides several ways to check for node liveness is
 - [Check command commit latency]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#command-commit-latency)
 
 {{site.data.alerts.callout_info}}
-For more information about how node liveness works, see [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}#epoch-based-leases-table-data).
+For more information about how node liveness works, see [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 {{site.data.alerts.end}}
 
 #### Impact of node failure is greater than 10 seconds
 
-When the cluster needs to access a range on a leaseholder node that is dead, that range's [lease must be transferred to a healthy node]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node). In theory, this process should take no more than a few seconds for liveness expiration plus the cost of several network roundtrips.
+{% include_cached new-in.html version="v25.2" %} With [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases), the impact of a node failure is significantly reduced. The dependency on a single node liveness range that existed in versions less than v25.2 has been eliminated. Leader leases use a store-wide failure detection mechanism that ensures that lease transfers occur more efficiently.
 
-In production, lease transfer upon node failure can take longer than expected. In {{ page.version.version }}, this is observed in the following scenarios:
-
-- **The leaseholder node for the liveness range fails.** The liveness range is a system range that [stores the liveness record]({% link {{ page.version.version }}/architecture/replication-layer.md %}#epoch-based-leases-table-data) for each node on the cluster. If a node fails and is also the leaseholder for the liveness range, operations cannot proceed until the liveness range is [transferred to a new leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node) and the liveness record is made available to other nodes. This can cause momentary cluster unavailability.
+- **Lease Transfer Efficiency:** When a node fails, the [lease transfer process]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node) is expedited due to the decentralized store liveness checks. This process should complete within a few seconds, as there is no longer a dependency on a single node liveness range.
 
 - **Network or DNS issues cause connection issues between nodes.** If there is no live server for the IP address or DNS lookup, connection attempts to a node will not return an immediate error, but will hang [until timing out]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#grpc). This can cause unavailability and prevent a speedy movement of leases and recovery. CockroachDB avoids contacting unresponsive nodes or DNS during certain performance-critical operations, and the connection issue should generally resolve in 10-30 seconds. However, an attempt to contact an unresponsive node could still occur in other scenarios that are not yet addressed.
 
-- **A node's disk stalls.** A [disk stall](#disk-stalls) on a node can cause write operations to stall indefinitely, also causes the node's heartbeats to fail since the storage engine cannot write to disk as part of the heartbeat, and may cause read requests to fail if they are waiting for a conflicting write to complete. Lease acquisition from this node can stall indefinitely until the node is shut down or recovered. Pebble detects most stalls and will terminate the `cockroach` process after 20 seconds, but there are gaps in its detection. In v22.1.2+ and v22.2+, each lease acquisition attempt on an unresponsive node [times out after a few seconds]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node). However, CockroachDB can still appear to stall as these timeouts are occurring.
+- **A node's disk stalls.** A [disk stall](#disk-stalls) on a node can cause write operations to stall indefinitely. Pebble detects most stalls and will terminate the `cockroach` process after 20 seconds, but there are gaps in its detection. Each lease acquisition attempt on an unresponsive node [times out after a few seconds]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node). However, CockroachDB can still appear to stall as these timeouts are occurring.
 
-- **Otherwise unresponsive nodes.** Internal deadlock due to faulty code, resource exhaustion, OS/hardware issues, and other arbitrary failures can make a node unresponsive. This can cause leases to become stuck in certain cases, such as when a response from the previous leaseholder is needed in order to move the lease.
+- **Otherwise unresponsive nodes.** Internal deadlock due to faulty code, resource exhaustion, OS/hardware issues, and other arbitrary failures can make a node unresponsive.
 
 **Solution:** If you are experiencing intermittent network or connectivity issues, first [shut down the affected nodes]({% link {{ page.version.version }}/node-shutdown.md %}) temporarily so that nodes phasing in and out do not cause disruption.
 

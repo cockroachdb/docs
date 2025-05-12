@@ -173,7 +173,7 @@ Disks must be able to achieve {% include {{ page.version.version }}/prod-deploym
 - The optimal configuration for striping more than one device is [RAID 10](https://wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
 
 {{site.data.alerts.callout_info}}
-Disk I/O especially affects [performance on write-heavy workloads]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#network-and-i-o-bottlenecks). For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues) and [node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).
+Disk I/O especially affects [performance on write-heavy workloads]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#network-and-i-o-bottlenecks). For more information, see [capacity planning issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#capacity-planning-issues).
 {{site.data.alerts.end}}
 
 ##### Node density testing configuration

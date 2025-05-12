@@ -40,7 +40,7 @@ A third replica type, the "non-voting" replica, does not participate in Raft ele
 
 For the current values of the Raft election timeout, the Raft proposal timeout, and other important intervals, see [Important values and timeouts](#important-values-and-timeouts).
 
-Once a node receives a `BatchRequest` for a range it contains, it converts those KV operations into Raft commands. Those commands are proposed to the Raft group leader––which is what makes it ideal for the [leaseholder](#leases) and the Raft leader to be one in the same––and written to the Raft log.
+Once a node receives a `BatchRequest` for a range it contains, it converts those KV operations into Raft commands. Those commands are proposed to the Raft group leader––which is also the [leaseholder](#leases)––and written to the Raft log.
 
 For a great overview of Raft, we recommend [The Secret Lives of Data](http://thesecretlivesofdata.com/raft/).
 
@@ -122,9 +122,15 @@ To limit the impact of snapshot ingestion on a node with a [provisioned rate]({%
 
 A single node in the Raft group acts as the leaseholder, which is the only node that can serve reads or propose writes to the Raft group leader (both actions are received as `BatchRequests` from [`DistSender`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#distsender)).
 
-CockroachDB attempts to elect a leaseholder who is also the Raft group leader, which can also optimize the speed of writes. When the leaseholder is sent a write request, a majority of the replica nodes must be able to communicate with each other to coordinate the write. This ensures that the most recent write is always available to subsequent reads.
+CockroachDB ensures that the leaseholder is also the Raft group leader via the [Leader leases](#leader-leases) mechanism. This optimizes the speed of writes, and makes the cluster more robust against network partitions and node liveness failures.
 
-If there is no leaseholder, any node receiving a request will attempt to become the leaseholder for the range. To prevent two nodes from acquiring the lease, the requester includes a copy of the last valid lease it had; if another node became the leaseholder, its request is ignored.
+When the leaseholder is sent a write request, a majority of the replica nodes must be able to communicate with each other to coordinate the write. This ensures that the most recent write is always available to subsequent reads.
+
+If there is no leaseholder, any node receiving a request will attempt to become the leaseholder for the range.
+
+To extend its leases, each node must also remain the Raft leader, as described in [Leader leases](#leader-leases). When a node disconnects, it stops updating its _store liveness_, causing the node to [lose all of its leases](#how-leases-are-transferred-from-a-dead-node).
+
+A table's meta and system ranges (detailed in [Distribution Layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#meta-ranges)) are treated as normal key-value data, and therefore have leases just like table data.
 
 When serving [strongly-consistent (aka "non-stale") reads]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#reading), leaseholders bypass Raft; for the leaseholder's writes to have been committed in the first place, they must have already achieved consensus, so a second consensus on the same data is unnecessary. This has the benefit of not incurring latency from networking round trips required by Raft and greatly increases the speed of reads (without sacrificing consistency).
 
@@ -132,11 +138,15 @@ CockroachDB is considered a CAP-Consistent (CP) system under the [CAP theorem](h
 
 #### Co-location with Raft leadership
 
-The range lease is completely separate from Raft leadership, and so without further efforts, Raft leadership and the range lease might not be held by the same replica. However, we can optimize query performance by making the same node both Raft leader and the leaseholder; it reduces network round trips if the leaseholder receiving the requests can simply propose the Raft commands to itself, rather than communicating them to another node.
+The range lease is always colocated with Raft leadership via the [Leader leases](#leader-leases) mechanism, except briefly during [lease transfers](#how-leases-are-transferred-from-a-dead-node). This reduces network round trips since the leaseholder receiving the requests can simply propose the Raft commands to itself, rather than communicating them to another node.
 
-To achieve this, each lease renewal or transfer also attempts to collocate them. In practice, that means that the mismatch is rare and self-corrects quickly.
+It also increases robustness against network partitions and outages due to liveness failures.
 
-#### Epoch-based leases (table data)
+For more information, refer to [Leader leases](#leader-leases).
+
+#### Epoch-based leases
+
+{% include_cached new-in.html version="v25.2" %} Epoch-based leases are disabled by default in favor of [Leader leases](#leader-leases).
 
 To manage leases for table data, CockroachDB implements a notion of "epochs," which are defined as the period between a node joining a cluster and a node disconnecting from a cluster. To extend its leases, each node must periodically update its liveness record, which is stored on a system range key. When a node disconnects, it stops updating the liveness record, and the epoch is considered changed. This causes the node to [lose all of its leases](#how-leases-are-transferred-from-a-dead-node) a few seconds later when the liveness record expires.
 
@@ -146,21 +156,19 @@ Because leases do not expire until a node disconnects from a cluster, leaseholde
 
 A table's meta and system ranges (detailed in the [distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#meta-ranges)) are treated as normal key-value data, and therefore have leases just like table data.
 
-However, unlike table data, system ranges cannot use epoch-based leases because that would create a circular dependency: system ranges are already being used to implement epoch-based leases for table data. Therefore, system ranges use expiration-based leases instead. Expiration-based leases expire at a particular timestamp (typically after a few seconds). However, as long as a node continues proposing Raft commands, it continues to extend the expiration of its leases. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
+Unlike table data, system ranges use expiration-based leases; expiration-based leases expire at a particular timestamp (typically after a few seconds). However, as long as a node continues proposing Raft commands, it continues to extend the expiration of its leases. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
+
+Expiration-based leases are also used temporarily during operations like lease transfers, until the new Raft leader can be fortified based on store liveness, as described in [Leader leases](#leader-leases).
 
 #### Leader leases
 
-
-
-{% include feature-phases/preview.md %}
-
-{% include {{ page.version.version }}/leader-leases-intro.md %}
+{% include_cached new-in.html version="v25.2" %} {% include {{ page.version.version }}/leader-leases-intro.md %}
 
 Leader leases rely on a shared, store-wide failure detection mechanism for triggering new Raft elections. [Stores]({% link {{ page.version.version }}/cockroach-start.md %}#store) participate in Raft leader elections by "fortifying" a candidate replica based on that replica's _store liveness_, as determined among a quorum of all the node's stores. A replica can **only** become the Raft leader if it is so fortified.
 
 After the fortified Raft leader is chosen, it is then also established as the leaseholder. Support for the lease is provided as long as the Raft leader's store liveness remains supported by a quorum of stores in the Raft group. This provides the fortified Raft leader with a guarantee that it will not lose leadership until **after** it has lost store liveness support. This guarantee enables a number of improvements to the performance and resiliency of CockroachDB's Raft implementation that were prevented by the need to handle cases where Raft leadership and range leases were not colocated.
 
-Importantly, since Leader leases rely on a quorum of stores in the Raft group, they remove the need for the single point of failure (SPOF) that was the [node liveness range]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues), As a result, Leader leases are not vulnerable to the scenario possible under the previous leasing regime where a leaseholder was [partitioned]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition) from its followers (including a follower that was the Raft leader) but still heartbeating the node liveness range. Before Leader leases, this scenario would result in an indefinite outage that lasted as long as the lease was held by the partitioned node.
+Importantly, since Leader leases rely on a quorum of stores in the Raft group, they remove the need for the single point of failure (SPOF) that was the node liveness range. As a result, Leader leases are not vulnerable to the scenario possible under the previous leasing regime (prior to CockroachDB v25.2) where a leaseholder was [partitioned]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition) from its followers (including a follower that was the Raft leader) but still heartbeating the node liveness range. Before Leader leases, this scenario would result in an indefinite outage that lasted as long as the lease was held by the partitioned node.
 
 Based on Cockroach Labs' internal testing, leader leases provide the following user-facing benefits:
 
@@ -168,29 +176,19 @@ Based on Cockroach Labs' internal testing, leader leases provide the following u
 - Outages caused by liveness failures last less than 1 second, since liveness is now determined by a store-level detection mechanism, not a single node liveness range.
 - Performance is equivalent (within less than 1%) to epoch-based leases on a 100 node cluster of 32 vCPU machines with 8 stores each.
 
-To enable Leader leases for testing with your workload, use the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `kv.raft.leader_fortification.fraction_enabled`, which controls the fraction of ranges for which the Raft leader fortification protocol is enabled. Leader fortification is needed for a range to use a Leader lease. It can be set to `0.0` to disable leader fortification and, by extension, Leader leases. It can be set to `1.0` to enable leader fortification for all ranges and, by extension, use Leader leases for all ranges that do not require expiration-based leases. It can be set to a value between `0.0` and `1.0` to gradually roll out Leader leases across the ranges in a cluster.
+{% include {{ page.version.version }}/leader-leases-node-heartbeat-use-cases.md %}
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET CLUSTER SETTING kv.raft.leader_fortification.fraction_enabled = 1.0
-~~~
+### How leases are transferred from a dead node
 
-#### How leases are transferred from a dead node
+When a cluster needs to access a range on a leaseholder node that is dead, the lease must be transferred to a healthy node. The process is as follows:
 
-When the cluster needs to access a range on a leaseholder node that is dead, that range's lease must be transferred to a healthy node. This process is as follows:
+1. Detection of Node Failure: The _store liveness_ mechanism described in [Leader leases](#leader-leases) detects node failures through its store-wide heartbeating process. If a node becomes unresponsive, its store liveness support is withdrawn, marking it as unavailable.
+1. Raft Leadership Election: A Raft election is initiated to establish a new leader for the range. This step is necessary because lease acquisition can only occur on the Raft leader. The election process includes a store liveness component to fortify the new leader, as described in [Leader leases](#leader-leases).
+1. Lease Acquisition: Once a new Raft leader is elected, the lease acquisition process can proceed. The new leader acquires the lease.
 
-1. The dead node's liveness record, which is stored in a system range, has an expiration time of `{{site.data.constants.cockroach_range_lease_duration}}`, and is heartbeated half as often (`{{site.data.constants.cockroach_range_lease_duration}} / 2`). When the node dies, the amount of time the cluster has to wait for the record to expire varies, but should be no more than a few seconds.
-1. A healthy node attempts to acquire the lease. This is rejected because lease acquisition can only happen on the Raft leader, which the healthy node is not (yet). Therefore, a Raft election must be held.
-1. The rejected attempt at lease acquisition [unquiesces]({% link {{ page.version.version }}/ui-replication-dashboard.md %}#replica-quiescence) ("wakes up") the range associated with the lease.
-1. What happens next depends on whether the lease is on [table data](#epoch-based-leases-table-data) or [meta ranges or system ranges](#expiration-based-leases-meta-and-system-ranges):
-    - If the lease is on [meta or system ranges](#expiration-based-leases-meta-and-system-ranges), the node that unquiesced the range checks if the Raft leader is alive according to the liveness record. If the leader is not alive, it kicks off a campaign to try and win Raft leadership so it can become the leaseholder.
-    - If the lease is on [table data](#epoch-based-leases-table-data), the "is the leader alive?" check described above is skipped and an election is called immediately. The check is skipped since it would introduce a circular dependency on the liveness record used for table data, which is itself stored in a system range.
-1. The Raft election is held and a new leader is chosen from among the healthy nodes.
-1. The lease acquisition can now be processed by the newly elected Raft leader.
+The entire process, from detecting the node failure to acquiring the lease on a new node, should complete within a few seconds.
 
-This process should take no more than a few seconds for liveness expiration plus the cost of 2 network roundtrips: 1 for Raft leader election, and 1 for lease acquisition.
-
-Finally, note that the process described above is lazily initiated: it only occurs when a new request comes in for the range associated with the lease.
+This process is lazily initiated and only occurs when a new request is made that requires access to the range associated with the lease on the dead node.
 
 #### Leaseholder rebalancing
 
@@ -240,7 +238,7 @@ Whenever there are changes to a cluster's number of nodes, the members of Raft g
 
 - **Nodes added**: The new node communicates information about itself to other nodes, indicating that it has space available. The cluster then rebalances some replicas onto the new node.
 
-- **Nodes going offline**: If a member of a Raft group ceases to respond, after 5 minutes, the cluster begins to rebalance by replicating the data the downed node held onto other nodes.
+- **Nodes going offline**: If a member of a Raft group ceases to respond, the cluster begins to rebalance by replicating the data the downed node held onto other nodes.
 
 Rebalancing is achieved by using a snapshot of a replica from the leaseholder, and then sending the data to another node over [gRPC]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#grpc). After the transfer has been completed, the node with the new replica joins that range's Raft group; it then detects that its latest timestamp is behind the most recent entries in the Raft log and it replays all of the actions in the Raft log on itself.
 
@@ -272,7 +270,6 @@ Constant | Default value | Notes
 [Raft](#raft) proposal timeout | {{site.data.constants.cockroach_raft_reproposal_timeout_ticks}} * {{site.data.constants.cockroach_raft_tick_interval}} | Controlled by `COCKROACH_RAFT_REPROPOSAL_TIMEOUT_TICKS`, which is then multiplied by the default tick interval to determine the value.
 [Lease interval](#how-leases-are-transferred-from-a-dead-node) | {{site.data.constants.cockroach_range_lease_duration}} | Controlled by `COCKROACH_RANGE_LEASE_DURATION`.
 [Lease acquisition timeout](#how-leases-are-transferred-from-a-dead-node) | {{site.data.constants.cockroach_range_lease_acquisition_timeout}} |
-[Node heartbeat interval](#how-leases-are-transferred-from-a-dead-node) | {{site.data.constants.cockroach_range_lease_duration}} / 2 | Used to determine if you're having [node liveness issues]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues).  This is calculated as one half of the lease interval.
 Raft tick interval | {{site.data.constants.cockroach_raft_tick_interval}} | Controlled by `COCKROACH_RAFT_TICK_INTERVAL`. Used to calculate various replication-related timeouts.
 
 ## Interactions with other layers
