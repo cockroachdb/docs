@@ -44,8 +44,8 @@ The Metrics page provides dashboards for all types of CockroachDB metrics.
 - [Runtime dashboard]({% link {{ page.version.version }}/ui-runtime-dashboard.md %}) has metrics about node count, CPU time, and memory usage.
 - [SQL dashboard]({% link {{ page.version.version }}/ui-sql-dashboard.md %}) has metrics about SQL connections, byte traffic, queries, transactions, and service latency.
 - [Storage dashboard]({% link {{ page.version.version }}/ui-storage-dashboard.md %}) has metrics about storage capacity and file descriptors.
-- [Replication dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}) has metrics about how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
-- [Distributed dashboard]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}) has metrics about distribution tasks across the cluster, including RPCs, transactions, and node heartbeats.
+- [Replication dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}) has metrics about how data is replicated across the cluster, e.g., range status, replicas per store, etc.
+- [Distributed dashboard]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}) has metrics about distribution tasks across the cluster, including RPCs and transactions.
 - [Queues dashboard]({% link {{ page.version.version }}/ui-queues-dashboard.md %}) has metrics about the health and performance of various queueing systems in CockroachDB, including the garbage collection and Raft log queues.
 - [Slow requests dashboard]({% link {{ page.version.version }}/ui-slow-requests-dashboard.md %}) has metrics about important cluster tasks that take longer than expected to complete, including Raft proposals and lease acquisitions.
 - [Changefeeds dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}) has metrics about the [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) created across your cluster.

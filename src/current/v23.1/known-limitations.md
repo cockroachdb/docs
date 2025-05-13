@@ -64,12 +64,6 @@ CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`]({% link {{ pa
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
 
-### Declarative schema changer does not track rows in `system.privileges`
-
-The [declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer) does not track rows in the `system.privileges` table, which prevents the declarative schema changer from successfully running the [`DROP OWNED BY`]({% link {{ page.version.version }}/drop-owned-by.md %}) statement.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88149)
-
 ### `null_ordered_last` does not produce correct results with tuples
 
 By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable]({% link {{ page.version.version }}/set-vars.md %}) was added, which changes the default to order `NULL`s after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it is broken when the ordering column is a tuple.

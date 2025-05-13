@@ -177,9 +177,6 @@ sys_cgocalls 3501
 # HELP sys_cpu_sys_percent Current system cpu percentage
 # TYPE sys_cpu_sys_percent gauge
 sys_cpu_sys_percent 1.098855319644276e-10
-# HELP replicas_quiescent Number of quiesced replicas
-# TYPE replicas_quiescent gauge
-replicas_quiescent{store="1"} 20
 ...
 ~~~
 

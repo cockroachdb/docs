@@ -259,7 +259,7 @@ For performance recommendations on primary keys, see the [Schema Design: Create 
 
 ### Create a table with secondary and GIN indexes
 
-In this example, we create secondary and GIN indexes during table creation. Secondary indexes allow efficient access to data with keys other than the primary key. [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}) allow efficient access to the schemaless data in a [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) column.
+In this example, we create secondary and GIN indexes during table creation. [Secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}) allow efficient access to data with keys other than the primary key. [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}) allow efficient access to the schemaless data in a [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) column.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -285,29 +285,61 @@ In this example, we create secondary and GIN indexes during table creation. Seco
 ~~~
 
 ~~~
-  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
--------------+----------------+------------+--------------+-------------+-----------+---------+-----------
-  vehicles   | index_status   |    true    |            1 | status           | ASC       |  false  |  false
-  vehicles   | index_status   |    true    |            2 | city             | ASC       |  false  |   true
-  vehicles   | index_status   |    true    |            3 | id               | ASC       |  false  |   true
-  vehicles   | ix_vehicle_ext |    true    |            1 | ext              | ASC       |  false  |  false
-  vehicles   | ix_vehicle_ext |    true    |            2 | city             | ASC       |  false  |   true
-  vehicles   | ix_vehicle_ext |    true    |            3 | id               | ASC       |  false  |   true
-  vehicles   | vehicles_pkey  |   false    |            1 | city             | ASC       |  false  |  false
-  vehicles   | vehicles_pkey  |   false    |            2 | id               | ASC       |  false  |  false
-  vehicles   | vehicles_pkey  |   false    |            3 | type             | N/A       |  true   |  false
-  vehicles   | vehicles_pkey  |   false    |            4 | owner_id         | N/A       |  true   |  false
-  vehicles   | vehicles_pkey  |   false    |            5 | creation_time    | N/A       |  true   |  false
-  vehicles   | vehicles_pkey  |   false    |            6 | status           | N/A       |  true   |  false
-  vehicles   | vehicles_pkey  |   false    |            7 | current_location | N/A       |  true   |  false
-  vehicles   | vehicles_pkey  |   false    |            8 | ext              | N/A       |  true   |  false
+  table_name |   index_name   | non_unique | seq_in_index |   column_name    |    definition    | direction | storing | implicit | visible | visibility
+-------------+----------------+------------+--------------+------------------+------------------+-----------+---------+----------+---------+-------------
+  vehicles   | index_status   |     t      |            1 | status           | status           | ASC       |    f    |    f     |    t    |          1
+  vehicles   | index_status   |     t      |            2 | city             | city             | ASC       |    f    |    t     |    t    |          1
+  vehicles   | index_status   |     t      |            3 | id               | id               | ASC       |    f    |    t     |    t    |          1
+  vehicles   | ix_vehicle_ext |     t      |            1 | ext              | ext              | ASC       |    f    |    f     |    t    |          1
+  vehicles   | ix_vehicle_ext |     t      |            2 | city             | city             | ASC       |    f    |    t     |    t    |          1
+  vehicles   | ix_vehicle_ext |     t      |            3 | id               | id               | ASC       |    f    |    t     |    t    |          1
+  vehicles   | primary        |     f      |            1 | city             | city             | ASC       |    f    |    f     |    t    |          1
+  vehicles   | primary        |     f      |            2 | id               | id               | ASC       |    f    |    f     |    t    |          1
+  vehicles   | primary        |     f      |            3 | type             | type             | N/A       |    t    |    f     |    t    |          1
+  vehicles   | primary        |     f      |            4 | owner_id         | owner_id         | N/A       |    t    |    f     |    t    |          1
+  vehicles   | primary        |     f      |            5 | creation_time    | creation_time    | N/A       |    t    |    f     |    t    |          1
+  vehicles   | primary        |     f      |            6 | status           | status           | N/A       |    t    |    f     |    t    |          1
+  vehicles   | primary        |     f      |            7 | current_location | current_location | N/A       |    t    |    f     |    t    |          1
+  vehicles   | primary        |     f      |            8 | ext              | ext              | N/A       |    t    |    f     |    t    |          1
 (14 rows)
 ~~~
 
-We also have other resources on indexes:
+### Create a table with a vector index
 
-- Create indexes for existing tables using [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}).
-- [Learn more about indexes]({% link {{ page.version.version }}/indexes.md %}).
+Enable vector indexes:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING feature.vector_index.enabled = true;
+~~~
+
+The following statement creates a table with a [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) column, along with a [vector index]({% link {{ page.version.version }}/vector-indexes.md %}) that makes vector search efficient.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE items (
+     id uuid DEFAULT gen_random_uuid(),
+     embedding VECTOR (1536),
+     VECTOR INDEX (embedding)
+);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW INDEX FROM items;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~
+  table_name |      index_name      | non_unique | seq_in_index | column_name | definition | direction | storing | implicit | visible | visibility
+-------------+----------------------+------------+--------------+-------------+------------+-----------+---------+----------+---------+-------------
+  items2     | items2_embedding_idx |     t      |            1 | embedding   | embedding  | ASC       |    f    |    f     |    t    |          1
+  items2     | items2_embedding_idx |     t      |            2 | rowid       | rowid      | ASC       |    f    |    t     |    t    |          1
+  items2     | items2_pkey          |     f      |            1 | rowid       | rowid      | ASC       |    f    |    f     |    t    |          1
+  items2     | items2_pkey          |     f      |            2 | id          | id         | N/A       |    t    |    f     |    t    |          1
+  items2     | items2_pkey          |     f      |            3 | embedding   | embedding  | N/A       |    t    |    f     |    t    |          1
+(5 rows)
+~~~
 
 ### Create a table with auto-generated unique row IDs
 
@@ -973,6 +1005,7 @@ To set `exclude_data_from_backup` on an existing table, see the [Exclude a table
 
 ## See also
 
+- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
 - [`INSERT`]({% link {{ page.version.version }}/insert.md %})
 - [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
 - [`DELETE`]({% link {{ page.version.version }}/delete.md %})

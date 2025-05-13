@@ -18,6 +18,12 @@ To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
 
+## April 25, 2025
+
+MOLT Fetch/Verify 1.2.5 is [available](#installation).
+
+- During data export, MOLT Fetch now treats empty `STRING` values on source Oracle databases as `NULL` values on the target database. This is because Oracle does not differentiate between empty `STRING` and `NULL` values.
+
 ## April 7, 2025
 
 MOLT Fetch/Verify 1.2.4 is [available](#installation).

@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.db_console
 ---
 
-The **Replication** dashboard in the DB Console lets you monitor the replication metrics for your cluster, such as range status, replicas per store, and replica quiescence.
+The **Replication** dashboard in the DB Console lets you monitor the replication metrics for your cluster, such as range status, replicas per store, etc.
 
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Replication**.
 
@@ -17,7 +17,7 @@ The **Replication** dashboard is distinct from the [**Physical Cluster Replicati
 
 - **Range**: CockroachDB stores all user data and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
 - **Range Replica:** CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
-- **Range Lease:** For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range.
+- **Range Lease:** For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range. {% include_cached new-in.html version="v25.2" %} The [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases) system ensures that the leaseholder is always the [Raft leader]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft), except briefly during [lease transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node).
 - **Under-replicated Ranges:** <a name="under-replicated-ranges"></a> When a cluster is first initialized, the few default starting ranges have a single replica. As more nodes become available, the cluster replicates these ranges to other nodes until the number of replicas for each range reaches the desired [replication factor]({% link {{ page.version.version }}/configure-replication-zones.md %}#num_replicas) (3 by default). If a range has fewer replicas than the replication factor, the range is said to be "under-replicated". [Non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas), if configured, are not counted when calculating replication status.
 - **Unavailable Ranges:** <a name="unavailable-ranges"></a> If a majority of a range's replicas are on nodes that are unavailable, then the entire range is unavailable and will be unable to process queries.
 

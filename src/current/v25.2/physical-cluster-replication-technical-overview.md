@@ -43,7 +43,7 @@ You can start a PCR stream with the `READ VIRTUAL CLUSTER` option, which allows 
 
 1. The system virtual cluster on the standby also creates a `readonly` virtual cluster alongside the replicating virtual cluster. The `readonly` virtual cluster will be offline initially.
 1. After the initial scan of the primary completes, the standby's replicating virtual cluster has a complete snapshot of the latest data on the primary. The PCR job will then start the `readonly` virtual cluster.
-1. When the startup completes, the `readonly` virtual cluster will be available to serve read queries. The queries will read from historial data on the replicating virtual cluster. The historical time is determined by the [`replicated_time`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) of the PCR job (the latest time at which the standby cluster has consistent data). The `replicated_time` will move forward as the PCR job continues to run.
+1. When the startup completes, the `readonly` virtual cluster will be available to serve read queries. The queries will read from historical data on the replicating virtual cluster. The historical time is determined by the [`replicated_time`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) of the PCR job (the latest time at which the standby cluster has consistent data). The `replicated_time` will move forward as the PCR job continues to run.
 
 ### During the PCR stream
 

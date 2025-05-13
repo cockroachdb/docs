@@ -422,7 +422,7 @@ The `min_checkpoint_frequency` option controls how often nodes flush their progr
 
 ## Schema Changes
 
-In v22.1, CockroachDB introduced the [declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer). When schema changes happen that use the declarative schema changer by default, changefeeds will **not** emit duplicate records for the table that is being altered. It will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
+For some schema changes, changefeeds will **not** emit duplicate records for the table that is being altered. Instead, the changefeed will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
 
 ### Avro schema changes
 
@@ -437,10 +437,6 @@ Schema validation tools should ignore the `__crdb__` field. This is an internal 
 ### Schema changes with column backfill
 
 When schema changes with column backfill (e.g., adding a column with a default, adding a [stored computed column]({% link {{ page.version.version }}/computed-columns.md %}), adding a `NOT NULL` column, dropping a column) are made to watched rows, CockroachDB emits a copy of the table using the new schema.
-
-{{site.data.alerts.callout_info}}
-Schema changes that do **not** use the declarative schema changer by default will trigger a changefeed to emit a copy of the table being altered as well as a copy of the table using the new schema. For a list of supported schema changes, refer to the [Declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer) section.
-{{site.data.alerts.end}}
 
 The following example demonstrates the messages you will receive after creating a changefeed and then applying a schema change to the watched table:
 
@@ -488,7 +484,7 @@ After the schema change, the changefeed will emit a copy of the table with the n
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
-If the schema change does **not** use the declarative schema changer by default, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
+For some schema changes, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
 
 ~~~json
 [1]	{"id": 1, "name": "Petee H"}
@@ -534,6 +530,75 @@ CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH updated AS SELECT column, column
 ~~~
 
 For details on syntax and examples, refer to the [Change Data Capture Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page.
+
+### Specify a column as a Kafka header
+
+{% include_cached new-in.html version="v25.2" %} Use the `headers_json_column_name` option to specify a [JSONB]({% link {{ page.version.version }}/jsonb.md %}) column that the changefeed emits as Kafka headers for each row’s change event. You can send metadata, such as routing or tracing information, at the protocol level in the header, separate from the message payload. This allows for Kafka brokers or routers to filter the metadata the header contains without deserializing the payload.
+
+Headers enable efficient routing, filtering, and distributed tracing by intermediate systems, such as Kafka brokers, stream processors, or observability tools.
+
+{{site.data.alerts.callout_info}}
+The `headers_json_column_name` option is supported with changefeeds emitting to [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}).
+{{site.data.alerts.end}}
+
+For example, define a table that updates compliance events. This schema includes a `kafka_meta` column of type `JSONB`, used to store a trace ID and other metadata for the Kafka header:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE compliance_events (
+    event_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL,
+    event_type STRING NOT NULL,
+    event_timestamp TIMESTAMPTZ NOT NULL DEFAULT now(),
+    details STRING,
+    kafka_meta JSONB
+);
+~~~
+
+Insert example rows into the table, populating the `kafka_meta` column with the `JSONB` data. The changefeed will emit this column as Kafka headers alongside the row changes:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSERT INTO compliance_events (
+    user_id, event_type, details, kafka_meta
+) VALUES
+(gen_random_uuid(), 'policy_ack', 'User accepted data policy v2.1', '{"trace_id": "abc123", "compliance_level": "low"}'),
+(gen_random_uuid(), 'access_review', 'Admin approved elevated access for app A', '{"trace_id": "def456", "compliance_level": "high"}'),
+(gen_random_uuid(), 'policy_ack', 'User accepted retention policy update', '{"trace_id": "ghi789", "compliance_level": "medium"}'),
+(gen_random_uuid(), 'access_review', 'User confirmed access to sensitive dataset', '{"trace_id": "xyz123", "compliance_level": "high"}'),
+(gen_random_uuid(), 'policy_ack', 'Policy v3.0 acknowledged by contractor', '{"trace_id": "mno456", "compliance_level": "low"}');
+~~~
+
+Create a changefeed that emits messages from the `compliance_events` table to Kafka and specify the `kafka_meta` column using the `headers_json_column_name` option:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE compliance_events INTO 'kafka://localhost:9092' WITH headers_json_column_name = 'kafka_meta';
+~~~
+
+The changefeed will emit each row’s `kafka_meta` data as Kafka headers, which Kafka brokers or stream processors can use to access the metadata without inspecting the payload.
+
+The Kafka topic receives the message payload with the row-level change, excluding the specified header column (`kafka_meta`):
+
+~~~json
+{"after": {"details": "User accepted data policy v2.1", "event_id": "ee321dc6-388b-4416-a389-adfafab50ee4", "event_timestamp": "2025-05-09T21:20:29.203923Z", "event_type": "policy_ack", "user_id": "06ba6114-529c-4a99-9811-1dd3d12dad07"}}
+{"after": {"details": "User accepted retention policy update", "event_id": "59d391f8-c141-4dc9-9622-9079c3462201", "event_timestamp": "2025-05-09T21:20:29.203923Z", "event_type": "policy_ack", "user_id": "98213553-9c1a-43a6-a598-921c3c6c3b20"}}
+{"after": {"details": "Admin approved elevated access for app A", "event_id": "41cf0dbe-c0bc-48aa-9b60-ef343bcef9e1", "event_timestamp": "2025-05-09T21:20:29.203923Z", "event_type": "access_review", "user_id": "ed192798-f7ef-4fe8-a496-f22bb5738b04"}}
+. . .
+~~~
+
+The Kafka headers will contain:
+
+Key (`event_id`) | Value (Kafka payload) | Headers
+------------------+-----------------------+--------
+`3e2a9b4a-f1e3-4202-b343-1a52e1ffb0d4` | `{"event_type": "policy_ack", "details": "User accepted data policy v2.1"}` | `trace_id=abc123, compliance_level=low`
+`7c90a289-2f91-4666-a8d5-962dc894e1c2` | `{"event_type": "access_review", "details": "Admin approved elevated access for app A"}` | `trace_id=def456, compliance_level=high`
+`1a6e0d3f-7191-4d99-9a36-7f4b85e5cd23` | `{"event_type": "policy_ack", "details": "User accepted retention policy update"} `| `trace_id=ghi789, compliance_level=medium` 
+`89af6b6e-f34d-4a1d-a69d-91d29526e9f7` | `{"event_type": "access_review", "details": "User confirmed access to sensitive dataset"}` | `trace_id=xyz123, compliance_level=high`
+`587cf30d-3f17-4942-8a01-f110ef8a5ae3` | `{"event_type": "policy_ack", "details": "Policy v3.0 acknowledged by contractor"}` | `trace_id=mno456, compliance_level=low` 
+
+If you would like to filter the table columns that a changefeed emits, refer to the [CDC Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page. To customize the message envelope, refer to the [Changefeed Message Envelope](#message-envelopes) page. 
+{% comment  %}update message envelope link to the new page once PR #19542 is merged{% endcomment %}
 
 ## Message formats
 

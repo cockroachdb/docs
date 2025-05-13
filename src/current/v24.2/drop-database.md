@@ -9,8 +9,6 @@ The `DROP DATABASE` [statement]({% link {{ page.version.version }}/sql-statement
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
-{% include {{ page.version.version }}/misc/declarative-schema-changer-note.md %}
-
 ## Required privileges
 
 The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the database and on all tables in the database.

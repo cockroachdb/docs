@@ -62,34 +62,6 @@ If a schema change fails, the schema change job will be cleaned up automatically
 
 For advice about how to avoid running out of space during an online schema change, refer to [Estimate your storage capacity before performing online schema changes](#estimate-your-storage-capacity-before-performing-online-schema-changes).
 
-## Declarative schema changer
-
-CockroachDB only guarantees atomicity for schema changes within single statement transactions, either implicit transactions or in an explicit transaction with a single schema change statement. The declarative schema changer is the next iteration of how schema changes will be performed in CockroachDB. By planning schema change operations in a more principled manner, the declarative schema changer will ultimately make transactional schema changes possible. You can identify jobs that are using the declarative schema changer by running [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) and finding jobs with a `job_type` of `NEW SCHEMA CHANGE`.
-
-The following statements use the declarative schema changer by default:
-
-- [`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %})
-- [`DROP SCHEMA`]({% link {{ page.version.version }}/drop-schema.md %})
-- [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
-- [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})
-- [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
-- [`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %})
-- [`ALTER TABLE ... ADD CONSTRAINT ... CHECK`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
-- [`ALTER TABLE ... ADD CONSTRAINT ... CHECK ... NOT VALID`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
-- [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
-- [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY ... NOT VALID`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
-- [`ALTER TABLE ... VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
-- [`ALTER TABLE ... DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint)
-- [`CREATE SEQUENCE`]({% link {{page.version.version}}/create-sequence.md %})
-
-Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-defaults-use-declarative-schema-changer) and the `use_declarative_schema_changer` [session variable]({% link {{ page.version.version }}/set-vars.md %}#use_declarative_schema_changer).
-
-{{site.data.alerts.callout_danger}}
-Declarative schema changer statements and legacy schema changer statements operating on the same objects cannot exist within the same transaction. Either split the transaction into multiple transactions, or disable the cluster setting or session variable.
-{{site.data.alerts.end}}
-
-{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
-
 ## Best practices for online schema changes
 
 ### Estimate your storage capacity before performing online schema changes

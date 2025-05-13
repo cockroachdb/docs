@@ -33,6 +33,16 @@ Okta disables deprovisioned users and does not support deleting them.
 
 <a id="scim-group-push"></a>
 
+### Supported features 
+
+* Create users
+* Update user attributes
+* Deactivate users
+* Import users
+* Import groups
+* Profile sourcing (Management of certain user fields from the IdP)
+* Group push
+
 ### SCIM Group Push with Okta
 
 User accounts are provisioned in CockroachDB {{ site.data.products.cloud }} based on assignments in the SCIM app integration. Assigning an IAM group to the app integration is equivalent to assigning each of the group's members individually. However, depending on your IdP, assigning a group to the app integration may or may not automatically create a corresponding group in CockroachDB {{ site.data.products.cloud }} or keep its list of members in sync. Additional configuration of your IdP may be required. If you use Okta, you must enable [Group Push](#automate-group-management) to create and link groups in CockroachDB {{ site.data.products.cloud }}.
@@ -69,7 +79,25 @@ The exact steps and requirements for enabling SCIM provisioning depend upon your
 - The endpoint to the CockroachDB {{ site.data.products.cloud }} SCIM API, `https://cockroachlabs.cloud/api/scim/v2`.
 - The API token of a CockroachDB {{ site.data.products.cloud }} service account with the [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) role.
 
-To add SCIM provisioning to a SAML app integration in Okta:
+
+Depending on your setup, you can configure SCIM either via the Okta Integration Network (OIN) for a standardized app or manually for a custom SAML app integration.
+
+### Add SCIM integration using Okta Integration Network (OIN)
+
+1. Log in to Okta Admin Dashboard as an admin user.
+1. Click **Applications** > **Browse App Catalog**.
+1. Search for **Cockroach Labs** > Click **Add**.
+1. Enter an **Application label**. 
+1. **Entity ID** and **ACS URL** should be "NA".
+1. Click **Next** > Click **Done**.
+1. Go to **Provisioning** Tab and click **Configure API Integration**.
+1. Check **Enable API integration**.
+1. Provide <b>API authentication token</b>: the API token for a CockroachDB {{ site.data.products.cloud }} <a href="managing-access.html#create-a-service-account">service account</a> with the <a href="authorization.html#org-administrator"><b>Org Administrator</b></a> role.
+1. **Test API Credentials** > Click **Save**.
+1. Click **To App**. This tab controls assignment of Okta identities to CockroachDB {{ site.data.products.cloud }}. To allow provisioning and deprovisioning of users, ensure that **Create Users** and **Deactivate Users** are selected, and make any other desired changes.
+1. Optionally, click **To Okta**. This tab allows you to import a CockroachDB {{ site.data.products.cloud }} organization's existing users into Okta. This helps to maintain an updated list of IAM users when an organization creates IAM users in a variety of ways. Refer to Okta's documentation about mapping individual fields. Make any desired changes.
+
+### Add SCIM provisioning to a SAML app integration in Okta
 
 1. Log in to Okta Admin Dashboard as an admin user.
 1. Click **Applications** and edit the [SAML]({% link cockroachcloud/configure-cloud-org-sso.md %}#saml) app integration for your CockroachDB {{ site.data.products.cloud }} organization.

@@ -10,7 +10,7 @@ The **Logical Data Replication** dashboard in the DB Console lets you monitor me
 To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) for the destination cluster, click **Metrics** on the left-hand navigation bar, and select **Logical Data Replication** from the **Dashboard** dropdown.
 
 {{site.data.alerts.callout_info}}
-The **Logical Data Replication** dashboard is distinct from the [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}), which tracks metrics related to how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
+The **Logical Data Replication** dashboard is distinct from the [**Replication** dashboard]({% link {{ page.version.version }}/ui-replication-dashboard.md %}), which tracks metrics related to how data is replicated across the cluster, e.g., range status, replicas per store, etc.
 {{site.data.alerts.end}}
 
 ## Dashboard navigation

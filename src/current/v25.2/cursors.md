@@ -21,6 +21,7 @@ Cursors differ from [keyset pagination]({% link {{ page.version.version }}/pagin
 Cursors are declared and used with the following keywords:
 
 - [`DECLARE`]({% link {{ page.version.version }}/sql-grammar.md %}#declare_cursor_stmt)
+- [`WITH HOLD`](#use-a-holdable-cursor)
 - [`FETCH`]({% link {{ page.version.version }}/sql-grammar.md %}#fetch_cursor_stmt)
 - [`CLOSE`]({% link {{ page.version.version }}/sql-grammar.md %}#close_cursor_stmt)
 
@@ -75,6 +76,89 @@ CLOSE rides_cursor;
 COMMIT;
 ~~~
 
+### Use a holdable cursor
+
+By default, a cursor closes when the transaction ends. The `WITH HOLD` clause defines a *holdable cursor*, which behaves as follows:
+
+- A holdable cursor writes its results into a buffer, and stays open after a transaction commits. 
+- If a transaction aborts, all cursors opened within that transaction are also rolled back. However, holdable cursors from previously committed transactions remain open.
+- A holdable cursor can be opened in both explicit and implicit transactions.
+- If a holdable cursor results in an error as it is being persisted, it will cause the current transaction (implicit or explicit) to be rolled back.
+
+Use `WITH HOLD` to access data across multiple transactions without redefining the cursor.
+
+{{site.data.alerts.callout_info}}
+The `WITHOUT HOLD` clause specifies the default non-holdable cursor behavior.
+{{site.data.alerts.end}}
+
+The following example uses a holdable cursor to return vehicles that are available for rides.
+
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="explicit">Explicit</button>
+    <button class="filter-button" data-scope="implicit">Implicit</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="explicit">
+Start a transaction:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BEGIN;
+~~~
+</section>
+
+Declare a cursor using `WITH HOLD` to keep it open after the transaction commits:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+DECLARE available_vehicles_cursor CURSOR WITH HOLD FOR
+  SELECT id, type, city, status FROM vehicles WHERE status = 'available';
+~~~
+
+Fetch the first two rows from the cursor:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+FETCH 2 FROM available_vehicles_cursor;
+~~~
+
+~~~
+                   id                  |  type   |   city    |  status
+---------------------------------------+---------+-----------+------------
+  bbbbbbbb-bbbb-4800-8000-00000000000b | scooter | amsterdam | available
+  22222222-2222-4200-8000-000000000002 | scooter | boston    | available
+~~~
+
+<section class="filter-content" markdown="1" data-scope="explicit">
+Commit the transaction:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+COMMIT;
+~~~
+</section>
+
+Continue fetching rows from the cursor:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+FETCH 2 FROM available_vehicles_cursor;
+~~~
+
+~~~
+                   id                  |    type    |  city   |  status
+---------------------------------------+------------+---------+------------
+  33333333-3333-4400-8000-000000000003 | bike       | boston  | available
+  55555555-5555-4400-8000-000000000005 | skateboard | seattle | available
+~~~
+
+Close the cursor:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CLOSE available_vehicles_cursor;
+~~~
+
 ### View all open cursors
 
 {% include_cached copy-clipboard.html %}
@@ -83,10 +167,11 @@ SELECT * FROM pg_cursors;
 ~~~
 
 ~~~
-      name     |      statement      | is_holdable | is_binary | is_scrollable |         creation_time
----------------+---------------------+-------------+-----------+---------------+--------------------------------
-  rides_cursor | SELECT * FROM rides |      f      |     f     |       f       | 2023-03-30 15:24:37.568054+00
-(1 row)
+            name            |                               statement                                | is_holdable | is_binary | is_scrollable |         creation_time
+----------------------------+------------------------------------------------------------------------+-------------+-----------+---------------+--------------------------------
+  rides_cursor              | SELECT * FROM movr.rides                                               |      f      |     f     |       f       | 2025-05-07 21:12:53.32978+00
+  available_vehicles_cursor | SELECT id, type, city, status FROM vehicles WHERE status = 'available' |      t      |     f     |       f       | 2025-05-07 21:12:59.605647+00
+(2 rows)
 ~~~
 
 ## Known limitations

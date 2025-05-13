@@ -162,6 +162,14 @@ You can add a custom authentication method to connect to any IdP that supports [
 
 ### OIDC
 
+#### Supported features
+
+* IdP-initiated SSO
+* SP-initiated SSO
+* Just-In-Time provisioning
+
+#### Configuration steps
+
 To configure a custom OIDC authentication method, you need the following information from your IdP:
 
 - Issuer URL
@@ -193,7 +201,31 @@ These instructions work for Okta. If you use a different IdP, refer to its docum
 1. The authentication method has been added but is disabled. To enable it, toggle **Enable**.
 1. Optionally, [configure advanced settings](#configure-advanced-settings) for the new authentication method.
 
+#### SP-initiated SSO
+1. Navigate to CockroachDB Cloud Console via your organization's vanity URL.
+2. Select the appropriate login method which uses OIDC. You will be redirected to your IdP (e.g. Okta).
+3. Log in using your IdP credentials.
+4. You will then be automatically redirected and logged into your CockroachDB Cloud Console organization.
+
 ### SAML
+
+#### Supported features
+
+* IdP-initiated SSO
+* SP-initiated SSO
+* Just-In-Time provisioning
+
+#### Supported SAML Attributes
+
+   CockroachDB Cloud expects the following SAML attribute mappings from your IdP:
+   
+   | Name      | Value            |
+   | --------- | ---------------- |
+   | email     | user.email       |
+   | name      | user.displayName |
+
+
+#### Configuration steps
 
 To configure a custom SAML authentication method, you need the following information from your IdP:
 
@@ -233,6 +265,13 @@ After SAML is configured, your users can sign in to the CockroachDB {{ site.data
 
 - **Service provider-initiated flow**: Users sign in to the CockroachDB {{ site.data.products.cloud }} Console directly, using your custom sign-in URL.
 - **Identity provider-initiated flow**: Users sign in to the CockroachDB {{ site.data.products.cloud }} Console from within your IdP (for example, by accessing its tile in Okta).
+
+#### SP-initiated SSO
+1. Navigate to CockroachDB Cloud Console via your organization's vanity URL.
+2. Select the appropriate login method which uses SAML. You will be redirected to your IdP (e.g. Okta).
+3. Log in using your IdP credentials.
+4. You will then be automatically redirected and logged into your CockroachDB Cloud Console organization.
+
 
 ## Require SSO
 
