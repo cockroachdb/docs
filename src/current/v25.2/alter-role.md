@@ -54,7 +54,6 @@ CREATE ROLE carl;
 ~~~
 
 ~~~ sql
--- sqlchecker: ignore
 ALTER ROLE carl WITH LOGIN PASSWORD 'An0ther$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
 ~~~
 
@@ -301,16 +300,3 @@ ALTER ROLE max WITH SUBJECT 'CN=myName2,OU=myOrgUnit2,O=myOrg2,L=myLocality2,ST=
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
 - [Authorization Best Practices]({% link {{ page.version.version }}/security-reference/authorization.md %}#authorization-best-practices)
 - [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`]({% link {{ page.version.version }}/show-default-session-variables-for-role.md %})
-
-<!-- Sqlchecker test cleanup block. NB. This must always come last. Be sure to comment this out when finished writing the doc. -->
-
-<!--
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-DROP ROLE carl;
-DROP ROLE max;
-DROP DATABASE movr;
-~~~
-
--->

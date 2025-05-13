@@ -12,7 +12,9 @@ The `DROP POLICY` statement removes an existing [row-level security (RLS)]({% li
 
 <!--
 
-NB. This is commented out while we wait for a fix to DOC-12125
+NB. This was waiting on a fix to DOC-12125 when this doc was being
+written. Now there is additional followup work (tracked in DOC-13653)
+to update the parameters and potentially the diagram.
 
 <div>
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_policy_stmt.html %}
@@ -31,7 +33,7 @@ DROP POLICY [ IF EXISTS ] policy_name ON table_name [ CASCADE | RESTRICT ];
 | `policy_name`       | Unique identifier for the policy on the table.                                                         |
 | `table_name`        | The [table]({% link {{ page.version.version }}/schema-design-table.md %}) to which the policy applies. |
 | `IF EXISTS`         | Suppresses an error if the policy doesn't exist.                                                       |
-| `CASCADE, RESTRICT` | Standard dependency handling (not relevant for policies themselves).                           |
+| `CASCADE, RESTRICT` | Standard dependency handling (not relevant for policies themselves).                                   |
 
 ## Examples
 
@@ -41,7 +43,7 @@ To drop an existing policy, issue the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-DROP POLICY IF EXISTS {your_policy} ON orders;
+DROP POLICY IF EXISTS your_policy ON orders;
 ~~~
 
 ## See also
@@ -50,6 +52,6 @@ DROP POLICY IF EXISTS {your_policy} ON orders;
 - [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %})
 - [`ALTER POLICY`]({% link {{ page.version.version }}/alter-policy.md %})
 - [`SHOW POLICIES`]({% link {{ page.version.version }}/show-policies.md %})
-- [`ALTER TABLE {ENABLE, DISABLE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security)
+- [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-row-level-security)
 - [`ALTER ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls)
 - [`CREATE ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-bypass-row-level-security-rls)

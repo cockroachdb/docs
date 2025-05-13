@@ -12,7 +12,9 @@ The `SHOW POLICIES` statement lists the [row-level security (RLS)]({% link {{ pa
 
 <!--
 
-NB. This is commented out while we wait for a fix to DOC-12125
+NB. This was waiting on a fix to DOC-12125 when this doc was being
+written. Now there is additional followup work (tracked in DOC-13653)
+to update the parameters and potentially the diagram.
 
 <div>
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_policies_stmt.html %}
@@ -21,7 +23,7 @@ NB. This is commented out while we wait for a fix to DOC-12125
 
 {% include_cached copy-clipboard.html %}
 ~~~
-SHOW POLICIES FOR {table_name}
+SHOW POLICIES FOR table_name;
 ~~~
 
 ## Parameters
@@ -32,12 +34,12 @@ SHOW POLICIES FOR {table_name}
 
 ## Examples
 
-In this example, we will create a table, a role, and some policies to view:
+In this example, you will create a table, a role, and some policies to view:
 
 - The `user_orders_policy` is a permissive policy allowing any user to access their own orders.
 - The `archived_orders_policy` is a restrictive policy ensuring that customer service roles can only view non-archived orders that are assigned to them.
 
-First, create the table, enable RLS, and add a role and policies:
+Create the table, enable RLS, and add a role and policies:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -84,7 +86,7 @@ SHOW POLICIES FOR orders;
 
 ### Use `pg_policies` to view all row-level security policies in the system
 
-Use the following query to view all RLS policies. This example uses the schema and policies from the [Row-level security overview]({% link {{ page.version.version }}/row-level-security.md %}).
+Use the following query to view all RLS policies. This example uses the schema and policies from the [Row-Level Security Overview]({% link {{ page.version.version }}/row-level-security.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -108,20 +110,6 @@ SELECT * FROM pg_policies;
 - [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %})
 - [`ALTER POLICY`]({% link {{ page.version.version }}/alter-policy.md %})
 - [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %})
-- [`ALTER TABLE {ENABLE, DISABLE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security)
+- [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-row-level-security)
 - [`ALTER ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls)
 - [`CREATE ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-bypass-row-level-security-rls)
-
-<!-- Sqlchecker test cleanup block. NB. This must always come last. Be sure to comment this out when finished writing the doc. -->
-
-<!--
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-DROP POLICY IF EXISTS user_orders_policy ON orders CASCADE;
-DROP POLICY IF EXISTS archived_orders_policy ON orders CASCADE;
-DROP ROLE IF EXISTS customer_service;
-DROP TABLE IF EXISTS orders CASCADE;
-~~~
-
--->

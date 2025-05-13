@@ -105,7 +105,6 @@ After creating roles, you must [grant them privileges to databases]({% link {{ p
 ### Create a role that can log in to the database
 
 ~~~ sql
--- sqlchecker: ignore
 CREATE ROLE can_login WITH LOGIN PASSWORD '$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
 ~~~
 
@@ -316,7 +315,7 @@ To create a [role]({% link {{ page.version.version }}/security-reference/authori
 CREATE ROLE can_bypassrls WITH BYPASSRLS;
 ~~~
 
-For instructions showing how to alter a role to add or remove the `BYPASSRLS` privilege, see [`ALTER ROLE`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls).
+For instructions showing how to alter a role to add or remove the `BYPASSRLS` privilege, refer to [`ALTER ROLE`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls).
 
 ### Set the `SUBJECT` role option for certificate based authentication
 
@@ -342,23 +341,3 @@ CREATE ROLE maxroach WITH SUBJECT 'CN=myName,OU=myOrgUnit,O=myOrg,L=myLocality,S
 - [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %})
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
-
-<!-- Sqlchecker test cleanup block. NB. This must always come last. Be sure to comment this out when finished writing the doc. -->
-
-<!--
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-DROP ROLE no_options;
-DROP ROLE no_password;
-DROP ROLE can_bypassrls;
-DROP ROLE can_create_role;
-DROP ROLE can_create_db;
-DROP ROLE can_control_job;
-DROP ROLE can_manage_queries;
-DROP ROLE can_control_changefeed;
-DROP ROLE can_modify_cluster_setting;
-DROP ROLE maxroach;
-~~~
-
--->

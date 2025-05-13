@@ -6,7 +6,7 @@ keywords: security, row level security, RLS
 docs_area: develop
 ---
 
-Row Level Security (_RLS_) is a security feature that allows organizations to restrict access to specific rows of data in a database based on user [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles), [permissions]({% link {{ page.version.version }}/security-reference/authorization.md %}#authorization-models), or other criteria.
+*Row-level Security* (RLS) is a security feature that allows organizations to restrict access to specific rows of data in a database based on user [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles), [permissions]({% link {{ page.version.version }}/security-reference/authorization.md %}#authorization-models), or other criteria.
 
 Row-level security complements standard SQL privileges ([`GRANT`]({% link {{ page.version.version }}/grant.md %})/[`REVOKE`]({% link {{ page.version.version }}/revoke.md %})) by allowing administrators to define policies that determine precisely which rows users can view or modify within a specific table.
 
@@ -25,13 +25,13 @@ For example, RLS allows a financial institution to restrict access to customer r
 
 RLS embeds access control logic directly into the database and eliminates the need for manual filtering in application code. This centralized enforcement prevents inconsistencies, reduces security attack surface, and simplifies compliance with data access regulations.
 
-For an example, see [RLS for Data Security (Fine-Grained Access Control)](#rls-for-data-security-fine-grained-access-control).
+For an example, refer to [RLS for Data Security (Fine-Grained Access Control)](#rls-for-data-security-fine-grained-access-control).
 
 ### Designing multi-tenant applications
 
-In multi-tenant applications such as typical Software-as-a-Service (SaaS) deployments, isolating data between tenants within shared tables is a requirement. Row-Level Security (RLS) provides a database-level mechanism for enforcing this isolation. SaaS providers can utilize RLS policies to ensure tenants can only access their own data, eliminating the need for complex and potentially insecure application-layer filtering logic based on tenant IDs.
+In multi-tenant applications such as typical Software-as-a-Service (SaaS) deployments, isolating data between tenants within shared tables is a requirement. Row-level Security (RLS) provides a database-level mechanism for enforcing this isolation. SaaS providers can utilize RLS policies to ensure tenants can only access their own data, eliminating the need for complex and potentially insecure application-layer filtering logic based on tenant IDs.
 
-For an example, see [RLS for Multi-Tenant Isolation](#rls-for-multi-tenant-isolation).
+For an example, refer to [RLS for Multi-Tenant Isolation](#rls-for-multi-tenant-isolation).
 
 ## How to use row-level security
 
@@ -39,10 +39,10 @@ At a high level, the steps for using row-level security (RLS) are as follows:
 
 1. Choose which [schema objects]({% link {{ page.version.version }}/schema-design-overview.md %}) need row-level security. You can re-use existing schemas, or create new ones and [insert data]({% link {{ page.version.version }}/insert-data.md %}). ([`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}), [`INSERT`]({% link {{ page.version.version }}/insert.md %}))
 2. [Create roles]({% link {{ page.version.version }}/create-role.md %}) & [grant access]({% link {{ page.version.version }}/grant.md %}) to schema objects by those roles. ([`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}), [`GRANT`]({% link {{ page.version.version }}/grant.md %}))
-3. Enable row-level security on the schema objects. ([`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security))
+3. Enable row-level security on the schema objects. ([`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-row-level-security))
 4. Define row-level security policies on the schema objects which are assigned to specific roles. ([`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}))
 
-For detailed examples showing how to use row-level security, see the [examples](#examples).
+For demonstrations showing how to use row-level security, refer to the [examples](#examples).
 
 ## How row-level security policies are evaluated
 
@@ -87,7 +87,7 @@ The following SQL language features bypass row-level security:
 
 ### Change data capture (CDC)
 
-[CDC]({% link {{ page.version.version }}/change-data-capture-overview.md %}) messages that are emitted from a table will not be filtered using RLS policies. Furthermore, [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}) are not supported on tables using RLS, and will fail with the error message: `CDC queries are not supported on tables with row-level security enabled`
+[CDC]({% link {{ page.version.version }}/change-data-capture-overview.md %}) messages that are emitted from a table will not be filtered using RLS policies. Furthermore, [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}) are not supported on tables using RLS, and will fail with the error message: `CDC queries are not supported on tables with row-level security enabled`.
 
 ### Backup and restore
 
@@ -99,7 +99,7 @@ The following SQL language features bypass row-level security:
 
 LDR's [limitations with respect to schema changes]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#schema-changes) also apply to RLS, since RLS policies amount to a schema change.
 
-If you use PCR, the target cluster will have all RLS policies applied to the data because PCR performs byte for byte replication.
+If you use PCR, the target cluster will have all RLS policies applied to the data because PCR performs byte-for-byte replication.
 
 ### Views
 
@@ -111,28 +111,28 @@ Views will only show rows that the current [user]({% link {{ page.version.versio
 
 ### Create a policy
 
-For an example, see [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}).
+Refer to [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}).
 
 ### Alter a policy
 
-For an example, see [`ALTER POLICY`]({% link {{ page.version.version }}/alter-policy.md %}).
+Refer to [`ALTER POLICY`]({% link {{ page.version.version }}/alter-policy.md %}).
 
 ### Drop a policy
 
-For an example, see [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %}).
+Refer to [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %}).
 
 ### Enable or disable row-level security
 
-For examples, see:
+For examples, refer to:
 
-- [`ALTER TABLE ... (ENABLE, DISABLE) ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security).
-- [`ALTER TABLE ... (FORCE, NO FORCE) ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security).
+- [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-row-level-security).
+- [`ALTER TABLE ... FORCE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security).
 
-### RLS for Data Security (Fine-Grained Access Control)
+### RLS for data security (fine-grained access control)
 
-In a fine-grained access control scenario, we want to restrict access to specific rows within a table based on user [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles), attributes, or relationships defined within the data itself. This goes beyond table-level [`GRANT`]({% link {{ page.version.version }}/grant.md %}) permissions. Common examples include restricting access to salary information, personal data, or region-specific records.
+In a fine-grained access control scenario, you will want to restrict access to specific rows within a table based on user [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles), attributes, or relationships defined within the data itself. This goes beyond table-level [`GRANT`]({% link {{ page.version.version }}/grant.md %}) permissions. Common examples include restricting access to salary information, personal data, or region-specific records.
 
-For example, imagine an `employees` table containing sensitive salary information. We want to enforce the following rules:
+For example, imagine an `employees` table containing sensitive salary information. You want to enforce the following rules:
 
 - Employees can view their own record.
 - Managers can view the records of their direct reports.
@@ -140,7 +140,7 @@ For example, imagine an `employees` table containing sensitive salary informatio
 
 #### Set up fine-grained access control schema
 
-First, define the `hr_department` role and `employees` table, add some data, and grant basic table access:
+Define the `hr_department` role and `employees` table, add some data, and grant basic table access:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -188,7 +188,7 @@ GRANT SELECT ON employees TO employee;
 
 #### Enable row-level security for fine-grained access control
 
-Next, enable row-level security using the [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security) statement. Optionally, you may want to ensure that the table owner is also subject to RLS using [`ALTER TABLE ... FORCE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security).
+Enable row-level security using the [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-row-level-security) statement. Optionally, you may want to ensure that the table owner is also subject to RLS using [`ALTER TABLE ... FORCE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -199,7 +199,7 @@ ALTER TABLE employees ENABLE ROW LEVEL SECURITY;
 
 #### Define row-level security policies for fine-grained access control
 
-Next, define RLS policies on the table. Policy 1 allows HR full access to the table:
+Define RLS policies on the table. The following policy allows HR full access to the table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -210,7 +210,7 @@ CREATE POLICY hr_access ON employees
     WITH CHECK (true); -- No check restriction for HR
 ~~~
 
-Policy 2 allows employees to view their own record.
+The following policy allows employees to view their own record.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -218,10 +218,10 @@ CREATE POLICY self_access ON employees
     AS PERMISSIVE -- Combine with other permissive policies (like manager access)
     FOR SELECT
     TO employee
-    USING (username = current_user);
+    USING (username = CURRENT_USER);
 ~~~
 
-Policy 3 allows managers to view their direct reports' records. This requires a way to look up the manager's username. In this example, we use the `current_user` special form of the [function with the same name]({% link {{ page.version.version }}/functions-and-operators.md %}#special-syntax-forms).
+The following policy allows managers to view their direct reports' records. This requires a way to look up the manager's username. In this example, we use the `CURRENT_USER` special form of the [function with the same name]({% link {{ page.version.version }}/functions-and-operators.md %}#special-syntax-forms).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -229,7 +229,7 @@ CREATE POLICY manager_access ON employees
     AS PERMISSIVE
     FOR SELECT -- Only for viewing
     TO manager
-    USING (manager_username = current_user);
+    USING (manager_username = CURRENT_USER);
     -- No WITH CHECK needed as it's SELECT-only
 ~~~
 
@@ -316,7 +316,7 @@ RESET ROLE;
 (5 rows)
 ~~~
 
-### RLS for Multi-Tenant Isolation
+### RLS for multi-tenant isolation
 
 Multi-tenant isolation is used to enforce strict data separation between different tenants (customers, organizations) sharing the same database infrastructure and schema. Each tenant must only be able to see and modify their own data. This is a critical requirement for Software-as-a-Service (SaaS) applications.
 
@@ -324,7 +324,7 @@ For example, imagine a SaaS application serving multiple tenants, with all invoi
 
 #### Create multi-tenant schema
 
-First, create the schema and index for the `tenants` and `invoices` tables. Next, add an index on `tenant_id` for increased lookup performance.
+Create the schema and index for the `tenants` and `invoices` tables. Next, add an index on `tenant_id` for increased lookup performance.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -391,6 +391,8 @@ INSERT INTO invoices (tenant_id, customer_name, amount) VALUES
 
 #### Define user roles for app developer
 
+The following statements create an app developer role, and grant it permissions.
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE ROLE app_dev;
@@ -400,7 +402,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON invoices TO app_dev;
 
 #### Define how the application sets the tenant ID for the session
 
-Next, each application will need to set the tenant context for the session. In this example, we will use the `application_name` session variable to pass in a tenant ID which will later be extracted from the variable.
+Each application will need to set the tenant context for the session. In this example, you will use the `application_name` session variable to pass in a tenant ID that will later be extracted from the variable.
 
 Specifically, the UUID following the period in `application_name` is the tenant ID. We will use the `current_setting()` function in our RLS policies to extract the ID.
 
@@ -415,7 +417,7 @@ SET application_name = 'my_cool_app.9607a12c-3c2f-407b-ae3c-af903542395b';
 
 #### Enable row-level security for multi-tenant isolation
 
-To enable row-level security for the `invoices` table, issue the statements below.
+To enable row-level security for the `invoices` table, issue the following statements.
 
 {{site.data.alerts.callout_danger}}
 For multi-tenant isolation to work properly in this example, you **must** also `FORCE ROW LEVEL SECURITY` so that the policies also apply to the table owner.
@@ -492,7 +494,7 @@ SET application_name = 'my_cool_app.8177c2fc-3b55-47b7-bf84-38bd3a3e9c0a';
 SELECT * FROM invoices;
 ~~~
 
-Tenant A should not be able to make changes to the `invoice` table for rows which don't have a `tenant_id` column matching its ID.
+Tenant A should not be able to make changes to the `invoice` table for rows that don't have a `tenant_id` column matching its ID.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -500,7 +502,7 @@ SET application_name = 'my_cool_app.9607a12c-3c2f-407b-ae3c-af903542395b';
 INSERT INTO invoices (tenant_id, customer_name, amount) VALUES ('8177c2fc-3b55-47b7-bf84-38bd3a3e9c0a'::UUID, 'Customer Three', 123.45);
 ~~~
 
-The above statement fails because it violates the policy's `WITH CHECK` constraint, and the following error is signalled:
+The preceding statement fails because it violates the policy's `WITH CHECK` constraint, and the following error is signaled:
 
 ~~~
 ERROR:  new row violates row-level security policy for table "invoices"
@@ -514,7 +516,7 @@ SET application_name = 'my_cool_app.9607a12c-3c2f-407b-ae3c-af903542395b';
 INSERT INTO invoices (tenant_id, customer_name, amount) VALUES ('9607a12c-3c2f-407b-ae3c-af903542395b'::UUID, 'Customer Three', 678.90);
 ~~~
 
-The above statement succeeds.
+The preceding statement succeeds.
 
 ~~~
 INSERT 0 1
@@ -522,7 +524,7 @@ INSERT 0 1
 
 ### Video demo: Row-level Security
 
-For a demo showing how to combine Row-level security with [Multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) to constrain access to specific rows based on a user's geographic region, play the following video:
+For a demo showing how to combine row-level security with [Multi-region SQL]({% link {{ page.version.version }}/multiregion-overview.md %}) to constrain access to specific rows based on a user's geographic region, play the following video:
 
 {% include_cached youtube.html video_id="ZG8RsfwMaa8" %}
 
@@ -532,38 +534,7 @@ For a demo showing how to combine Row-level security with [Multi-region SQL]({% 
 - [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %})
 - [`ALTER POLICY`]({% link {{ page.version.version }}/alter-policy.md %})
 - [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %})
-- [`ALTER TABLE {ENABLE, DISABLE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security)
-- [`ALTER TABLE {FORCE, NO FORCE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security)
+- [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-row-level-security)
+- [`ALTER TABLE ... FORCE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#force-row-level-security)
 - [`CREATE ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-bypass-row-level-security-rls)
 - [`ALTER ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls)
-
-<!-- Sqlchecker test cleanup block. NB. This must always come last. Be sure to comment this out when finished writing the doc. -->
-
-<!--
-
-{% include_cached copy-clipboard.html %}
-~~~
-RESET ROLE;
-DROP POLICY IF EXISTS hr_access ON employees CASCADE;
-DROP POLICY IF EXISTS manager_access ON employees CASCADE;
-DROP POLICY IF EXISTS self_access ON employees CASCADE;
-REVOKE ALL ON employees FROM hr_department;
-REVOKE ALL ON employees FROM manager;
-REVOKE ALL ON employees FROM employee;
-REVOKE ALL ON invoices FROM app_dev;
-REVOKE ALL ON tenants FROM app_dev;
-DROP ROLE hr_department;
-DROP ROLE manager;
-DROP ROLE employee;
-DROP ROLE edward;
-DROP ROLE alice;
-DROP ROLE bob;
-DROP ROLE carol;
-DROP ROLE david;
-DROP TABLE IF EXISTS employees CASCADE;
-DROP POLICY IF EXISTS tenant_isolation ON invoices CASCADE;
-DROP TABLE IF EXISTS tenants, invoices CASCADE;
-DROP ROLE app_dev;
-~~~
-
--->

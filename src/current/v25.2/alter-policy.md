@@ -16,17 +16,19 @@ Allowed changes to a policy using `ALTER POLICY` include:
 - Modify the [`WITH CHECK` expression](#parameters).
 
 {{site.data.alerts.callout_info}}
-You cannot use `ALTER POLICY` to change the `PERMISSIVE` or `RESTRICTIVE` nature of the policy, nor its applicable `FOR` command (as defined by `CREATE POLICY ... ON ... { PERMISSIVE | RESTRICTIVE } ... FOR { ALL | SELECT | ... }`). If you want to make these changes, you must start over with [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %}) and [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}). For an example, see [Replace a policy]({% link {{ page.version.version }}/drop-policy.md %}#replace-a-policy).
+You cannot use `ALTER POLICY` to change the `PERMISSIVE`, `RESTRICTIVE`, or `FOR` clauses of a policy, as defined in `CREATE POLICY ... ON ... { PERMISSIVE | RESTRICTIVE } ... FOR { ALL | SELECT | ... }`. To make these changes, drop the policy with [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %}) and issue a new [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}) statement.
 {{site.data.alerts.end}}
 
 ## Syntax
 
 <!--
 
-NB. This is commented out while we wait for a fix to DOC-12125
+NB. This was waiting on a fix to DOC-12125 when this doc was being
+written. Now there is additional followup work (tracked in DOC-13653)
+to update the parameters and potentially the diagram.
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_policy_stmt.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_policy.html %}
 </div>
 
 -->
@@ -47,14 +49,14 @@ Parameter | Description
 ----------|------------
 `policy_name` | The identifier of the existing policy to be modified. Must be unique for the specified `table_name`.
 `ON table_name` | The name of the table on which the policy `policy_name` is defined.
-`RENAME TO { new_policy_name }` | The new identifier for the policy. The `new_policy_name` must be a unique name on `table_name`.
-`TO { role_name | PUBLIC | CURRENT_USER | SESSION_USER } [, ...]` | Specifies the database [role(s)]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) to which the altered policy applies. These role(s) replace the existing set of roles for the policy (`PUBLIC` refers to all roles). `CURRENT_USER` and `SESSION_USER` refer to the current execution context's user (also available via [functions]({% link {{ page.version.version }}/functions-and-operators.md %}) `current_user()` and `session_user()`).
-`USING ( using_expression )` | Replaces the previous value of this expression. For details about this expression, see [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}#parameters).
-`WITH CHECK ( check_expression )` | Replaces the previous value of this expression. For details about this expression, see [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}#parameters).
+`new_policy_name` | The new identifier for the policy. The `new_policy_name` must be a unique name on `table_name`.
+`TO (role_name | PUBLIC | CURRENT_USER | SESSION_USER) [, ...]` | Specifies the database [role(s)]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) to which the altered policy applies. These role(s) replace the existing set of roles for the policy. `PUBLIC` refers to all roles. `CURRENT_USER` and `SESSION_USER` refer to the current execution context's user (also available via [functions]({% link {{ page.version.version }}/functions-and-operators.md %}) `current_user()` and `session_user()`).
+`USING ( using_expression )` | Replaces the previous value of this expression. For details about this expression, refer to [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}#parameters).
+`WITH CHECK ( check_expression )` | Replaces the previous value of this expression. For details about this expression, refer to [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}#parameters).
 
-## Examples
+## Example
 
-In this example, we start by only allowing users to see or modify their own rows in an `orders` table. Then, as the schema is updated due to business requirements, we must refine the policy to take into account the new requirements.
+In this example, you will start by only allowing users to see or modify their own rows in an `orders` table. Then, as the schema is updated due to business requirements, you will refine the policy to take into account the new requirements.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -65,14 +67,14 @@ The original policy on the table was as follows:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-    CREATE POLICY user_orders_policy ON orders
-        FOR ALL
-        TO PUBLIC
-        USING ( user_id = current_user )
-        WITH CHECK ( user_id = current_user );
+CREATE POLICY user_orders_policy ON orders
+    FOR ALL
+    TO PUBLIC
+    USING ( user_id = CURRENT_USER )
+    WITH CHECK ( user_id = CURRENT_USER );
 ~~~
 
-However, the `orders` table schema has been updated to include an `is_archived` flag, and the initial policy needs refinement.
+However, the `orders` table schema will be updated to include an `is_archived` flag, and the initial policy will need refinement.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -84,7 +86,7 @@ CREATE INDEX idx_orders_user_id_is_archived ON orders(user_id, is_archived); -- 
 The policy requirements have changed as follows:
 
 1. The policy should now only apply to users belonging to the `customer_service` role, not `PUBLIC`.
-1. Users (in `customer_service`) should only be able to view and modify orders that are **not** archived (`is_archived = FALSE`). Archived orders should be invisible/immutable via this policy.
+1. Users in `customer_service` should only be able to view and modify orders that are **not** archived (`is_archived = FALSE`). Archived orders should be invisible/immutable via this policy.
 
 This assumes the `customer_service` role has been created:
 
@@ -98,21 +100,18 @@ This leads to the following `ALTER POLICY` statement:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER POLICY user_orders_policy ON orders
-    -- 1. Change the applicable role(s)
     TO customer_service
-    -- 2. Update the USING clause to filter out archived orders
-    USING ( user_id = current_user AND is_archived = FALSE )
-    -- 3. Update the WITH CHECK clause to prevent archiving/modifying archived orders via this policy
-    WITH CHECK ( user_id = current_user AND is_archived = FALSE );
+    USING ( user_id = CURRENT_USER AND is_archived = FALSE )
+    WITH CHECK ( user_id = CURRENT_USER AND is_archived = FALSE );
 ~~~
 
 The changes to the `ALTER POLICY` statement can be explained as follows:
 
 - `TO customer_service`: Restricts the policy's application from all users (`PUBLIC`) to only those who are members of the `customer_service` role. Other users will no longer be affected by this specific policy (they would need other applicable policies or RLS would deny access by default).
-- `USING ( user_id = current_user AND is_archived = FALSE )`: Modifies the visibility rule. Now, `customer_service` users can only see rows matching their `user_id` *and* where `is_archived` is false.
-- `WITH CHECK ( user_id = current_user AND is_archived = FALSE )`: Modifies the constraint for `INSERT`/`UPDATE`. Users attempting modifications must satisfy the `user_id` match, and the resulting row must have `is_archived = FALSE`. This prevents them from inserting archived orders or updating an order to set `is_archived = TRUE` via operations governed by this policy.
+- `USING ( user_id = CURRENT_USER AND is_archived = FALSE )`: Modifies the visibility rule. Now, `customer_service` users can only see rows that match their `user_id` *and* are not archived.
+- `WITH CHECK ( user_id = CURRENT_USER AND is_archived = FALSE )`: Modifies the constraint for `INSERT`/`UPDATE`. Users attempting modifications must match the `user_id`, and the resulting row must not be archived. This prevents the user from inserting archived orders or updating an order to set `is_archived = TRUE` via operations governed by this policy.
 
-This `ALTER POLICY` statement reflects a typical evolution: refining role targeting and adapting the policy logic to accommodate schema changes and evolving access control requirements.
+The preceding `ALTER POLICY` statement represents a typical use case: it refines role targeting and adapts the policy logic to accommodate schema changes and evolving access control requirements.
 
 ## See also
 
@@ -120,19 +119,6 @@ This `ALTER POLICY` statement reflects a typical evolution: refining role target
 - [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %})
 - [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %})
 - [`SHOW POLICIES`]({% link {{ page.version.version }}/show-policies.md %})
-- [`ALTER TABLE {ENABLE, DISABLE} ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-disable-row-level-security)
+- [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`]({% link {{ page.version.version }}/alter-table.md %}#enable-row-level-security)
 - [`ALTER ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/alter-role.md %}#allow-a-role-to-bypass-row-level-security-rls)
 - [`CREATE ROLE ... WITH BYPASSRLS`]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-bypass-row-level-security-rls)
-
-<!-- Sqlchecker test cleanup block. NB. This must always come last. Be sure to comment this out when finished writing the doc. -->
-
-<!--
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-DROP POLICY IF EXISTS user_orders_policy ON orders CASCADE;
-DROP TABLE IF EXISTS orders CASCADE;
-DROP USER customer_service;
-~~~
-
--->
