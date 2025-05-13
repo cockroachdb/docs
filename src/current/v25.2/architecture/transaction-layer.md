@@ -434,13 +434,13 @@ Additionally, when other transactions encounter a transaction in `STAGING` state
 
 ### Buffered writes
 
-{% include_cached new-in.html version="v25.2" %} Buffered Writes enhance transaction throughput and reduce operational cost by minimizing the number of round-trips between the gateway node and other nodes during write operations.
-
 {% include feature-phases/preview.md %}
 
-Buffered Writes work by temporarily storing a transaction's writes on the [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) until the transaction [commits](#parallel-commits). This approach reduces redundant writes, minimizes [pipeline](#transaction-pipelining) stalls, and allows the system to serve read-your-writes locally. Most importantly, it allows for passive use of the [1-phase commit (1PC) fast-path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions) which can lead to increased performance.
+{% include_cached new-in.html version="v25.2" %} Buffered writes enhance transaction throughput and reduce operational cost by minimizing the number of round trips between the gateway node and other nodes during write operations.
 
-Buffered Writes update the transaction flow so that it has the following properties:
+Buffered writes work by temporarily storing a transaction's writes on the [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) until the transaction [commits]({% link {{ page.version.version }}/commit.md %}). This approach reduces redundant writes, minimizes [pipeline](#transaction-pipelining) stalls, and allows the system to serve [read-your-writes](https://jepsen.io/consistency/models/read-your-writes) locally. Most importantly, it allows for passive use of the [1-phase commit (1PC) fast-path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions) which can lead to increased performance.
+
+Buffered writes update the transaction flow so that it has the following properties:
 
 1. Write buffering: Instead of sending each write operation immediately to the [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder), writes are now buffered on the gateway node until the transaction commits. The writes can then be issued in a single batch, reducing the number of total requests required to complete the transaction.
 1. Local read-your-writes: During the transaction, any read operation that targets a key with a buffered write can be served directly from the buffer, avoiding [pipeline](#transaction-pipelining) stalls and reducing latency.
@@ -448,9 +448,7 @@ Buffered Writes update the transaction flow so that it has the following propert
 1. 1-phase commit optimization (1PC): If all writes in the buffer target the same [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), the system can utilize the [1-phase commit fast path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions), further optimizing the commit process. Explicit transactions that formerly were not eligible for 1PC may become eligible because their writes have been buffered.
 1. Redundant write elimination: Within a single transaction, in many cases only the final write operation for each key is sent to the [Storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) at commit time, eliminating redundant operations.
 
-Buffered Writes are off by default. They can be enabled using either a [session setting]({% link {{ page.version.version }}/session-variables.md %}) or a [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
-
-To turn them on for the current session, issue the following statement:
+Buffered writes are off by default. To turn them on for the current session, issue the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -458,10 +456,10 @@ SET kv.transaction.buffered_writes.enabled = true
 ~~~
 
 {{site.data.alerts.callout_info}}
-Buffered Writes has the following limitations:
+Buffered writes have the following limitations:
 
 - Users of [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}) isolation won't see a performance benefit. This limitation is likely to remain in place until the feature is [Generally Available (GA)]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#feature-availability-phases).
-- Some workloads could see an increase in [transaction retries]({% link {{ page.version.version }}/transactions.md %}#transaction-retries).
+- Some workloads could see an increase in [transaction retry errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}).
 {{site.data.alerts.end}}
 
 ## Non-blocking transactions
