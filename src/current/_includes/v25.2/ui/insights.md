@@ -280,16 +280,18 @@ CockroachDB uses the threshold of six executions before offering an insight beca
 {% include_cached feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-The SQL built-in function [`workload_index_recs`]({% link {{ page.version.version }}/functions-and-operators.md %}#workload_index_recs) returns index recommendations and the fingerprint IDs of the statements they impact. The function returns two columns:
+{% include_cached new-in.html version="v25.2" %} The SQL built-in function [`workload_index_recs`]({{ link_prefix }}functions-and-operators.html#workload_index_recs) returns index recommendations and the fingerprint IDs of the statements they impact. The function returns two columns:
 
 - `index_rec` (`STRING`): Contains the index recommendation.
 - `fingerprint_ids` (`BYTES[]`): Contains the fingerprint IDs of the affected statements.
 
 You can use the `workload_index_recs` function to determine workload-level index recommendations.
 
-By default, the function returns index recommendations sourced from all statement fingerprints in the [`crdb_internal.statement_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#statement_statistics) table. When passed an optional [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}) parameter, such as `SELECT workload_index_recs('2025-05-08 16:00:00+00')`, the function will provide index recommendations only for statements executed after `'2025-05-08 16:00:00+00'`.
+By default, the function returns index recommendations sourced from all statement fingerprints in the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#statement_statistics) table. When passed an optional [`TIMESTAMPTZ`]({{ link_prefix }}timestamp.html) parameter, the function will provide workload-level index recommendations only for statements executed after the timestamp. For example, `SELECT workload_index_recs('2025-05-08 16:00:00+00');` returns index recommendations for statements executed after `'2025-05-08 16:00:00+00'`.
 
-For example, after running the [query]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) mentioned in the preceding [**Schema Insights** tab](#schema-insights-tab) section, run the following related query more than six times to generate another **Create Index** insight.
+#### `workload_index_recs` example
+
+After running the [query]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) mentioned in the preceding [**Schema Insights** tab](#schema-insights-tab) section, run the following related query more than six times to generate another **Create Index** insight.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -320,7 +322,7 @@ SELECT workload_index_recs();
   ("CREATE INDEX ON movr.public.rides (start_time) STORING (rider_id);","{""\\\\x95a325e25bdbdc06"",""\\\\x4784cb829aab2542""}")
 ~~~
 
-To display the query strings corresponding to the fingerprint IDs, run a query that joins the `workload_index_recs` function with the [`crdb_internal.statement_statistics`]({% link {{ page.version.version }}/crdb-internal.md %}#statement_statistics) table.
+To display the query strings corresponding to the fingerprint IDs, run a query that joins the `workload_index_recs` function with the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#statement_statistics) table.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
