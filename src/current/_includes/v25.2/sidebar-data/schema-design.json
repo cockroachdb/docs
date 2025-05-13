@@ -93,6 +93,12 @@
             "urls": [
               "/${VERSION}/spatial-indexes.html"
             ]
+          },
+          {
+            "title": "Vector Indexes",
+            "urls": [
+              "/${VERSION}/vector-indexes.html"
+            ]
           }
         ]
       },

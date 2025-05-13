@@ -158,6 +158,7 @@ For an example that uses unique indexes but applies to all indexes on `REGIONAL 
 - [GIN Indexes]({% link {{ page.version.version }}/inverted-indexes.md %})
 - [Partial Indexes]({% link {{ page.version.version }}/partial-indexes.md %})
 - [Spatial Indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
+- [Vector Indexes]({% link {{ page.version.version }}/vector-indexes.md %})
 - [Hash-sharded Indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %})
 - [Expression Indexes]({% link {{ page.version.version }}/expression-indexes.md %})
 - [Select from a specific index]({% link {{ page.version.version }}/select-clause.md %}#select-from-a-specific-index)
