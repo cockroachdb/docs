@@ -279,6 +279,12 @@ Command                                     | Description
 
 For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 
+### Buffered Writes
+
+Buffered Writes enhance transaction throughput and reduce operational cost by minimizing the number of round-trips between the client and the database during write operations.
+
+For more information, see [Buffered writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#buffered-writes).
+
 ## See Also
 
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
