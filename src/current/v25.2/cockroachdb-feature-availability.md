@@ -277,12 +277,6 @@ Command                                     | Description
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
-### Leader leases
-
-{% include_cached new-in.html version="v25.2" %} {% include {{ page.version.version }}/leader-leases-intro.md %}
-
-For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
-
 ## See Also
 
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
