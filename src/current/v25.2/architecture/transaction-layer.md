@@ -434,19 +434,19 @@ Additionally, when other transactions encounter a transaction in `STAGING` state
 
 ### Buffered writes
 
-{% include_cached new-in.html version="v25.2" %} Buffered Writes enhance transaction throughput and reduce operational cost by minimizing the number of round-trips between the client and the database during write operations.
+{% include_cached new-in.html version="v25.2" %} Buffered Writes enhance transaction throughput and reduce operational cost by minimizing the number of round-trips between the gateway node and other nodes during write operations.
 
 {% include feature-phases/preview.md %}
 
-Buffered Writes work by temporarily storing a transaction's writes on the client-side ([gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node)) until the transaction [commits](#parallel-commits). This approach reduces redundant writes, minimizes [pipeline](#transaction-pipelining) stalls, and allows for passive use of the [1-phase commit (1PC) fast-path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions). By deferring writes until commit time, the system can serve read-your-writes locally, resulting in further potential performance gains.
+Buffered Writes work by temporarily storing a transaction's writes on the [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) until the transaction [commits](#parallel-commits). This approach reduces redundant writes, minimizes [pipeline](#transaction-pipelining) stalls, and allows the system to serve read-your-writes locally. Most importantly, it allows for passive use of the [1-phase commit (1PC) fast-path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions) which can lead to increased performance.
 
 Buffered Writes update the transaction flow so that it has the following properties:
 
-1. Write buffering: Instead of sending each write operation immediately to the [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder), writes are buffered on the client-side until the transaction commits. This reduces the number of write operations sent to the [Distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
+1. Write buffering: Instead of sending each write operation immediately to the [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder), writes are now buffered on the gateway node until the transaction commits. The writes can then be issued in a single batch, reducing the number of total requests required to complete the transaction.
 1. Local read-your-writes: During the transaction, any read operation that targets a key with a buffered write can be served directly from the buffer, avoiding [pipeline](#transaction-pipelining) stalls and reducing latency.
 1. Write batching: At commit time, buffered writes are batched and sent to the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}), reducing the frequency of write operations and improving throughput.
-1. 1-phase commit optimization (1PC): If all writes in the buffer target the same [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), the system can utilize the [1-phase commit fast path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions), further optimizing the commit process.
-1. Redundant write elimination: Within a single transaction, only the final write operation for each key is sent to the [Storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) at commit time, eliminating redundant operations.
+1. 1-phase commit optimization (1PC): If all writes in the buffer target the same [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), the system can utilize the [1-phase commit fast path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions), further optimizing the commit process. Explicit transactions that formerly were not eligible for 1PC may become eligible because their writes have been buffered.
+1. Redundant write elimination: Within a single transaction, in many cases only the final write operation for each key is sent to the [Storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) at commit time, eliminating redundant operations.
 
 Buffered Writes are off by default. They can be enabled using either a [session setting]({% link {{ page.version.version }}/session-variables.md %}) or a [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
@@ -455,13 +455,6 @@ To turn them on for the current session, issue the following statement:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SET kv.transaction.buffered_writes.enabled = true
-~~~
-
-To turn them on for the entire cluster, issue the following statement:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET CLUSTER SETTING kv.transaction.buffered_writes.enabled = true;
 ~~~
 
 {{site.data.alerts.callout_info}}
