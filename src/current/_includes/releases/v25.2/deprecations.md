@@ -1,5 +1,3 @@
-The following deprecations are announced in v25.1.
+The following deprecations are announced in v25.2.
 
-- Bullet
-
-[#]: https://github.com/cockroachdb/cockroach/pull/
+- The [`ui.display_timezone` cluster setting]({% link v25.2/cluster-settings.md %}#setting-ui-display-timezone) is now deprecated and will be removed in a future release. If it has been set, its value will automatically be applied to the new setting `ui.default_timezone`, which takes precedence. For further detail, refer to [DB Console timezone configuration]({% link v25.2/ui-overview.md %}#db-console-timezone-configuration).

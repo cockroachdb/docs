@@ -23,10 +23,6 @@ indented in relation to the other Liquid. Please try to keep the indentation con
 
 ## Overview
 
-{{site.data.alerts.callout_info}}
-{% include common/license/evolving.md %}
-{{site.data.alerts.end}}
-
 This page explains the types and naming of CockroachDB releases and provides access to the release notes and downloads for all CockroachDB [releases](#downloads).
 
 A new major version of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production release, followed by a series of patch releases.
@@ -113,6 +109,7 @@ As of 2024, CockroachDB is released under a staged delivery process. New release
 
 | Version | Release Type | GA date |
 | :---: | :---: | :---: |
+| [v25.2](#v25-2) | Regular | 2025-05-12 |
 | [v25.1](#v25-1) | Innovation | 2025-02-18 |
 | [v24.3](#v24-3) | Regular | 2024-11-18 |
 | [v24.2]({% link releases/unsupported-versions.md %}#v24-2) | Innovation | 2024-08-12 |
@@ -126,11 +123,10 @@ The following releases and their descriptions represent proposed plans that are 
 
 | Version | Release Type | Expected GA date |
 | :---: | :---: | :---: |
-| v25.2 | Regular    | 2025 Q2    |
 | v25.3 | Innovation | 2025 Q3    |
 | v25.4 | Regular    | 2025 Q4    |
 | v26.1 | Innovation | 2026 Q1    |
-
+| v26.2 | Regular    | 2026 Q2    |
 
 ## Downloads
 
@@ -715,7 +711,8 @@ All binaries available on this page released prior to the release date of 24.3.0
 
 To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.
 
+In late 2024, Cockroach Labs retired its Core offering to consolidate on a single CockroachDB Enterprise offering under the CockroachDB Software License. This license is available at no charge for individual users and small businesses, and offers all users, free and paid, the full breadth of CockroachDB capabilities. For details, refer to the [CockroachDB licensing update](https://www.cockroachlabs.com/enterprise-license-update/) and [Licensing FAQs]({% link {{site.versions["stable"]}}/licensing-faqs.md %}).
+
 ## Unsupported versions 
 
-Release notes for unsupported CockroachDB versions are found on [Unsupported Versions]({% link releases/unsupported-versions.md %}).
-
+Release notes for CockroachDB versions that are no longer supported are available on the [Unsupported Versions]({% link releases/unsupported-versions.md %}) page.
