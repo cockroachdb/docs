@@ -1,5 +1,5 @@
 ---
-title: Known Limitations in CockroachDB v25.1
+title: Known Limitations in CockroachDB v25.2
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 keywords: limitations, known limitations, unsupported features, PostgreSQL compatibility
@@ -12,9 +12,13 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
-{{site.data.alerts.callout_info}}
-Limitations will be added as they are discovered.
-{{site.data.alerts.end}}
+### Vector indexes
+
+{% include {{ page.version.version }}/known-limitations/vector-limitations.md %}
+
+### JSONPath
+
+{% include {{ page.version.version }}/known-limitations/jsonpath-limitations.md %}
 
 ### Security and privileges
 

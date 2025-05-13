@@ -343,12 +343,62 @@ CREATE PROCEDURE p() AS $$
 
 #### `RETURN`
 
-Add a `RETURN` statement to a routine with an `OUT` parameter or `VOID` return type to exit the routine immediately.
+Add a `RETURN` statement to a routine with an `OUT` parameter, `RETURNS VOID` clause, or `RETURNS SETOF` clause to exit the routine immediately.
 
 ~~~ sql
 BEGIN
 	...
 	RETURN;
+~~~
+
+Add a `RETURN` statement in a scalar-returning function to return the result of an expression.
+
+The following example uses `RETURN` to return the square of the input argument.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE FUNCTION square(x INT) RETURNS INT AS $$
+BEGIN
+	RETURN x * x;
+END;
+$$ LANGUAGE PLpgSQL;
+~~~
+
+#### `RETURN NEXT` and `RETURN QUERY`
+
+Add `RETURN NEXT` or `RETURN QUERY` statements to a [set-returning function]({% link {{ page.version.version }}/create-function.md %}#create-a-function-that-returns-a-set-of-results) to append rows to the result set. You can combine `RETURN NEXT` and `RETURN QUERY` statements in a single function to build the result set.
+
+Use `RETURN NEXT` within a set-returning function to append a row to the result set.
+
+In the following example, `RETURN NEXT` returns a new row during each loop iteration.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE FUNCTION get_numbers() RETURNS TABLE (n INT) AS $$
+DECLARE
+	i INT := 1;
+BEGIN
+	WHILE i <= 5 LOOP
+		n := i;
+		RETURN NEXT;
+		i := i + 1;
+	END LOOP;
+END;
+$$ LANGUAGE PLpgSQL;
+~~~
+
+Use `RETURN QUERY` within a set-returning function to append the results of a SQL query to the result set.
+
+In the following example, `RETURN QUERY` returns all qualifying rows from the `SELECT` query.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE FUNCTION get_even_numbers() RETURNS SETOF INT AS $$
+BEGIN
+	RETURN QUERY
+		SELECT i FROM generate_series(1, 10) AS i WHERE i % 2 = 0;
+END
+$$ LANGUAGE PLpgSQL;
 ~~~
 
 #### `CONTINUE`
