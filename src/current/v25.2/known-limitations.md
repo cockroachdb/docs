@@ -20,6 +20,12 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 
 {% include {{ page.version.version }}/known-limitations/jsonpath-limitations.md %}
 
+### Security and privileges
+
+#### Row-level security policy checks on the `VALUES` clause for `ON CONFLICT ... DO NOTHING`
+
+{% include {{ page.version.version }}/known-limitations/rls-values-on-conflict-do-nothing.md %}
+
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.

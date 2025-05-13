@@ -50,9 +50,12 @@ Subcommand | Description | Can combine with other subcommands?
 [`ALTER COLUMN`](#alter-column) | Change an existing column. | Yes
 [`ALTER PRIMARY KEY`](#alter-primary-key) | Change the [primary key]({% link {{ page.version.version }}/primary-key.md %}) of a table. | Yes
 [`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for a table. | No
+[`DISABLE ROW LEVEL SECURITY`](#disable-row-level-security) |  Disable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) for a table. | Yes
 [`DROP COLUMN`](#drop-column) | Remove columns from tables. | Yes
 [`DROP CONSTRAINT`](#drop-constraint) | Remove constraints from columns. | Yes
+[`ENABLE ROW LEVEL SECURITY`](#enable-row-level-security) |  Enable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) for a table. | Yes
 [`EXPERIMENTAL_AUDIT`](#experimental_audit) | Enable per-table audit logs, for security purposes. | Yes
+[`FORCE / NO FORCE ROW LEVEL SECURITY`](#force-row-level-security) | Force the table owner to be subject to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies defined on a table. | Yes
 [`OWNER TO`](#owner-to) |  Change the owner of the table. | No
 [`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition a table. | Yes
 [`RENAME COLUMN`](#rename-column) | Change the names of columns. | Yes
@@ -467,6 +470,66 @@ Parameter | Description |
 `storage_parameter_key`    | The name of the storage parameter you are changing. See [Table storage parameters](#table-storage-parameters) for a list of available parameters. |
 
 For usage, see [Synopsis](#synopsis).
+
+### `ENABLE ROW LEVEL SECURITY`
+
+[Row-level security]({% link {{ page.version.version }}/row-level-security.md %}) must be explicitly enabled per [table]({% link {{ page.version.version }}/schema-design-table.md %}). Typically, this is controlled by the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) that owns the table.
+
+For examples, see [Enable row-level security](#enable-row-level-security).
+
+{% include {{ page.version.version }}/sql/row-level-security-enabled.md %}
+
+#### Required privileges
+
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles.
+
+#### Parameters
+
+| Parameter    | Description                                                                                                                                        |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `table_name` | The name of the table which is having [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) enabled or disabled. |
+| `ENABLE`     | Whether to enable RLS.                                                                                                                             |
+
+### `DISABLE ROW LEVEL SECURITY`
+
+This statement disables [Row-level security]({% link {{ page.version.version }}/row-level-security.md %}) per [table]({% link {{ page.version.version }}/schema-design-table.md %}). Typically, this is controlled by the [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) that owns the table.
+
+For examples, refer to [Disable row-level security](#disable-row-level-security).
+
+#### Required privileges
+
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles.
+
+#### Parameters
+
+| Parameter    | Description                                                                                                                                        |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `table_name` | The name of the table which is having [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) enabled or disabled. |
+| `DISABLE`    | Whether to disable RLS.                                                                                                                            |
+
+### `FORCE / NO FORCE ROW LEVEL SECURITY`
+
+`ALTER TABLE ... FORCE ROW LEVEL SECURITY` prevents table [owners]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) from bypassing [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) policies.
+
+Use this statement when you need to ensure that all access, including by the table owner, adheres to the defined RLS policies. Note that this statement only has an affect if [`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`](#enable-row-level-security) is also set.
+
+For examples, refer to [Force row-level security](#force-row-level-security).
+
+{{site.data.alerts.callout_danger}}
+Users with the `BYPASSRLS` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) can still bypass RLS even when `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is enabled.
+{{site.data.alerts.end}}
+
+#### Required privileges
+
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles.
+
+#### Parameters
+
+| Parameter    | Description                                                                                                                                                                         |
+|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `table_name` | The name of the table on which [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) is enabled or disabled.                                      |
+| `FORCE`      | `FORCE` ensures that all access (even by the table owner) adheres to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies.                    |
+| `NO FORCE`   | `NO FORCE` removes the restriction that all access (even by the table owner) adheres to [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies. |
 
 ### `SET {storage parameter}`
 
@@ -3030,6 +3093,46 @@ To ensure that the data added to the `vehicles` table prior to the creation of t
 
 {{site.data.alerts.callout_info}}
 If present in a [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) statement, the table is considered validated because an empty table trivially meets its constraints.
+{{site.data.alerts.end}}
+
+### Enable row-level security
+
+To enable [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) (RLS) on a table, issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+~~~
+
+{% include {{ page.version.version }}/sql/row-level-security-enabled.md %}
+
+### Disable row-level security
+
+To disable row-level security, use the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE orders DISABLE ROW LEVEL SECURITY;
+~~~
+
+### Force row-level security
+
+To ensure that all access, including by the table [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership), adheres to the defined [row-level security]({% link {{ page.version.version }}/row-level-security.md %}) policies, issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE orders FORCE ROW LEVEL SECURITY;
+~~~
+
+To remove this restriction, and allow the table owner to bypass RLS policies, issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE orders NO FORCE ROW LEVEL SECURITY;
+~~~
+
+{{site.data.alerts.callout_danger}}
+Users with the `BYPASSRLS` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) can still bypass RLS even when `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is enabled.
 {{site.data.alerts.end}}
 
 ## See also
