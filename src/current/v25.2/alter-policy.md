@@ -16,7 +16,7 @@ Allowed changes to a policy using `ALTER POLICY` include:
 - Modify the [`WITH CHECK` expression](#parameters).
 
 {{site.data.alerts.callout_info}}
-You cannot use `ALTER POLICY` to change the `PERMISSIVE`, `RESTRICTIVE`, or `FOR` clauses of a policy, as defined in `CREATE POLICY ... ON ... { PERMISSIVE | RESTRICTIVE } ... FOR { ALL | SELECT | ... }`. To make these changes, drop the policy with [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %}) and issue a new [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}) statement.
+You cannot use `ALTER POLICY` to change the `PERMISSIVE`, `RESTRICTIVE`, or `FOR` clauses of a policy, as defined in `CREATE POLICY ... ON ... ( PERMISSIVE | RESTRICTIVE ) ... FOR ( ALL | SELECT | ... )`. To make these changes, drop the policy with [`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %}) and issue a new [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}) statement.
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -38,7 +38,7 @@ to update the parameters and potentially the diagram.
 ALTER POLICY policy_name ON table_name RENAME TO new_policy_name;
 
 ALTER POLICY policy_name ON table_name
-    [ TO { role_name | PUBLIC | CURRENT_USER | SESSION_USER } [, ...] ]
+    [ TO ( role_name | PUBLIC | CURRENT_USER | SESSION_USER ) [, ...] ]
     [ USING ( using_expression ) ]
     [ WITH CHECK ( check_expression ) ];
 ~~~

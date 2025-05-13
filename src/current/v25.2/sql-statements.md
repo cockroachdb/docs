@@ -18,7 +18,6 @@ Statement | Usage
 [`ALTER FUNCTION`]({% link {{ page.version.version }}/alter-function.md %}) | Modify a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
 [`ALTER INDEX`]({% link {{ page.version.version }}/alter-index.md %}) | Apply a schema change to an index.
 [`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %}) | Configure the replication zone for a partition.
-[`ALTER POLICY`]({% link {{ page.version.version }}/alter-policy.md %}) | Alter a [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policy.
 [`ALTER PROCEDURE`]({% link {{ page.version.version }}/alter-procedure.md %}) | Modify a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`ALTER RANGE`]({% link {{ page.version.version }}/alter-range.md %}) | Configure the replication zone for a system range.
 [`ALTER SCHEMA`]({% link {{ page.version.version }}/alter-schema.md %}) | Alter a user-defined schema.
@@ -32,7 +31,6 @@ Statement | Usage
 [`CREATE DATABASE`]({% link {{ page.version.version }}/create-database.md %}) | Create a new database.
 [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %}) | Create a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
 [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) | Create an index for a table.
-[`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}) | Create a [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policy.
 [`CREATE PROCEDURE`]({% link {{ page.version.version }}/create-procedure.md %}) | Create a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`CREATE SCHEMA`]({% link {{ page.version.version }}/create-schema.md %}) | Create a user-defined schema.
 [`CREATE SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %}) | Create a new sequence.
@@ -45,7 +43,6 @@ Statement | Usage
 [`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %}) | Remove a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}) from a database.
 [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}) | Remove an index for a table.
 [`DROP OWNED BY`]({% link {{ page.version.version }}/drop-owned-by.md %}) | Drop all objects owned by and any [grants]({% link {{ page.version.version }}/grant.md %}) on objects not owned by a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles).
-[`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %}) | Drop a [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policy.
 [`DROP PROCEDURE`]({% link {{ page.version.version }}/drop-procedure.md %}) | Remove a [stored procedure]({% link {{ page.version.version }}/stored-procedures.md %}).
 [`DROP SCHEMA`]({% link {{ page.version.version }}/drop-schema.md %}) | Drop a user-defined schema.
 [`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %}) | Remove a sequence.
@@ -63,7 +60,6 @@ Statement | Usage
 [`SHOW FULL TABLE SCANS`]({% link {{ page.version.version }}/show-full-table-scans.md %}) | List recent queries that used a full table scan.
 [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %}) | View index information for a table or database.
 [`SHOW LOCALITY`]({% link {{ page.version.version }}/show-locality.md %}) | View the locality of the current node.
-[`SHOW POLICIES`]({% link {{ page.version.version }}/show-policies.md %}) | Show the [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policies for a table.
 [`SHOW PARTITIONS`]({% link {{ page.version.version }}/show-partitions.md %}) | List partitions in a database.
 [`SHOW REGIONS`]({% link {{ page.version.version }}/show-regions.md %}) | List the [cluster regions]({% link {{ page.version.version }}/multiregion-overview.md %}#cluster-regions) or [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) in a [multi-region cluster]({% link {{ page.version.version }}/multiregion-overview.md %}).
 [`SHOW SUPER REGIONS`]({% link {{ page.version.version }}/show-super-regions.md %}) | List the [super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) associated with a database in a [multi-region cluster]({% link {{ page.version.version }}/multiregion-overview.md %}).
@@ -101,14 +97,18 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
+[`ALTER POLICY`]({% link {{ page.version.version }}/alter-policy.md %}) | Alter a [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policy.
+[`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}) | Create a [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policy.
 [`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}) | Create SQL [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles), which are groups containing any number of roles and users as members.
 [`CREATE USER`]({% link {{ page.version.version }}/create-user.md %}) | Create SQL users, which lets you control [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on your databases and tables.
+[`DROP POLICY`]({% link {{ page.version.version }}/drop-policy.md %}) | Drop a [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policy.
 [`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %}) | Remove one or more SQL [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles).
 [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %}) | Remove one or more SQL users.
 [`GRANT`]({% link {{ page.version.version }}/grant.md %}) | Grant privileges to [users and roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles), or add a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles) or [user]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users) as a member to a role.
 [`REASSIGN OWNED`]({% link {{ page.version.version }}/reassign-owned.md %}) | Change the [ownership]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) of all database objects in the current database that are currently owned by a specific [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users).
 [`REVOKE`]({% link {{ page.version.version }}/revoke.md %}) | Revoke privileges from [users]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users) or [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles), or revoke a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles) or [user's]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users) membership to a role.
 [`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}) | View privileges granted to users.
+[`SHOW POLICIES`]({% link {{ page.version.version }}/show-policies.md %}) | Show the [row-level security (RLS)]({% link {{ page.version.version }}/row-level-security.md %}) policies for a table.
 [`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %}) | Lists the roles for all databases.
 [`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %}) | Lists the users for all databases.
 [`SHOW DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/show-default-privileges.md %}) | Show the default privileges for objects created by specific roles/users in the current database.
