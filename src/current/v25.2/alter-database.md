@@ -398,7 +398,7 @@ In CockroachDB, the following are aliases for `ALTER DATABASE ... SET {session v
 
 - `ALTER ROLE ALL IN DATABASE ... SET {session variable}`
 
-For more information, see [`ALTER ROLE ALL ...`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users).
+For more information, refer to [`ALTER ROLE ALL ...`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users).
 
 ### `SET PRIMARY REGION`
 
