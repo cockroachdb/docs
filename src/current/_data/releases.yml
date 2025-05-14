@@ -9067,7 +9067,7 @@
 
 - release_name: v25.2.0-rc.1
   major_version: v25.2
-  release_date: '2025-05-12'
+  release_date: '2025-05-11'
   release_type: Testing
   go_version: go1.23.7
   sha: 4377500860ff39cc5ddf7954079ced214bd788dc
