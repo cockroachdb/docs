@@ -24,13 +24,15 @@ The replica that holds the "range lease." This replica receives and coordinates 
 
 For most types of tables and queries, the leaseholder is the only replica that can serve consistent reads (reads that return "the latest" data).
 
+{% include_cached new-in.html version="v25.2" %} The leaseholder is always the same replica as the [Raft leader](#architecture-raft-leader), except briefly during [lease transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node). For more information, refer to [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
+
 ### Raft protocol
 <a name="architecture-raft"></a>
 The [consensus protocol]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) employed in CockroachDB that ensures that your data is safely stored on multiple nodes and that those nodes agree on the current state even if some of them are temporarily disconnected.
 
 ### Raft leader
 <a name="architecture-raft-leader"></a>
-For each range, the replica that is the "leader" for write requests. The leader uses the Raft protocol to ensure that a majority of replicas (the leader and enough followers) agree, based on their Raft logs, before committing the write. The Raft leader is almost always the same replica as the leaseholder.
+For each range, the replica that is the "leader" for write requests. The leader uses the Raft protocol to ensure that a majority of replicas (the leader and enough followers) agree, based on their Raft logs, before committing the write. {% include_cached new-in.html version="v25.2" %} The Raft leader is always the same replica as the [leaseholder](#architecture-raft-leader). For more information, refer to [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 
 ### Raft log
 A time-ordered log of writes to a range that its replicas have agreed on. This log exists on-disk with each replica and is the range's source of truth for consistent replication.
