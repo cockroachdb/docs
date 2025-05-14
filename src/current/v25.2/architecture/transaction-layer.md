@@ -450,8 +450,7 @@ SET kv.transaction.buffered_writes.enabled = true
 Buffered writes update the transaction flow so that it has the following properties:
 
 1. Write buffering: Instead of sending each write operation immediately to the [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder), writes are now buffered on the gateway node until the transaction commits. The writes can then be issued in a single batch, reducing the number of total requests required to complete the transaction.
-1. Local read-your-writes: During the transaction, any read operation that targets a key with a buffered write can be served directly from the buffer, avoiding [pipeline](#transaction-pipelining) stalls and reducing latency.
-1. Write batching: At commit time, buffered writes are batched and sent to the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}), reducing the frequency of write operations and improving throughput.
+1. Local read-your-writes: During the transaction, any read operation that targets a key with a buffered write is served from the buffer, avoiding [pipeline](#transaction-pipelining) stalls and reducing latency.
 1. 1-phase commit optimization (1PC): If all writes in the buffer target the same [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), the system can utilize the [1-phase commit fast path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions), further optimizing the commit process. Explicit transactions that formerly were not eligible for 1PC may become eligible because their writes have been buffered.
 1. Redundant write elimination: Within a single transaction, in many cases only the final write operation for each key is sent to the [Storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}) at commit time, eliminating redundant operations.
 
