@@ -11,7 +11,7 @@ When this session variable is enabled, any user/role management operations issue
 To accelerate user/role management operations across your entire application, you have the following options:
 
 1. Set the session variable in all sessions by [passing it in the client connection string]({% link {{ page.version.version }}/connection-parameters.md %}#supported-options-parameters).
-1. Apply the `allow_role_memberships_to_change_during_transaction` setting globally to an entire cluster using the [`ALTER ROLE ALL`]({% link {{ page.version.version }}/alter-role.md %}) statement:
+1. Apply the `allow_role_memberships_to_change_during_transaction` setting globally to an entire cluster using the [`ALTER ROLE ALL`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
