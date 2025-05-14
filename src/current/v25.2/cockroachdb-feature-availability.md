@@ -283,7 +283,7 @@ For more information, see [Architecture > Replication Layer > Leader leases]({% 
 
 Buffered Writes enhance transaction throughput and reduce operational cost by minimizing the number of round-trips between the client and the database during write operations.
 
-For more information, see [Buffered writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#buffered-writes).
+For more information, refer to [Buffered writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#buffered-writes).
 
 ## See Also
 
