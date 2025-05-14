@@ -55,6 +55,10 @@ A [vector index]({% link {{ page.version.version }}/vector-indexes.md %}) enable
 
 [JSONPath]({% link {{ page.version.version }}/jsonpath.md %}) expressions and functions can be used to query and filter [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) data, using [JSONPath expressions]({% link {{ page.version.version }}/jsonpath.md %}#jsonpath-expression) as arguments in [JSONPath functions]({% link {{ page.version.version }}/jsonpath.md %}#jsonpath-functions).
 
+### Workload-level index recommendations
+
+The SQL built-in function [workload_index_recs]({% link {{ page.version.version }}/ui-insights-page.md %}#workload_index_recs-function) returns index recommendations and the fingerprint IDs of the statements they impact.
+
 ### Triggers
 
 [Triggers]({% link {{ page.version.version }}/triggers.md %}) are in Preview. A trigger executes a function when one or more specified SQL operations is performed on a table. Triggers respond to data changes by adding logic within the database, rather than in an application. They can be used to modify data before it is inserted, maintain data consistency across rows or tables, or record an update to a row.
@@ -272,12 +276,6 @@ Command                                     | Description
 --------------------------------------------+-------------
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
-
-### Leader leases
-
-{% include_cached new-in.html version="v25.2" %} {% include {{ page.version.version }}/leader-leases-intro.md %}
-
-For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 
 ## See Also
 
