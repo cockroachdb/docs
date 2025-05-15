@@ -13,7 +13,7 @@ MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-in
 
 The following source databases are currently supported:
 
-- PostgreSQL 11-14
+- PostgreSQL 11-15
 - MySQL 5.7, 8.0 and later
 - CockroachDB
 
@@ -77,6 +77,11 @@ Complete the following items before using MOLT Fetch:
 - To prevent connections from terminating prematurely during data export, set the following to high values on the source database:
 
 	- **Maximum allowed number of connections.** MOLT Fetch can export data across multiple connections. The number of connections it will create is the number of shards ([`--export-concurrency`](#global-flags)) multiplied by the number of tables ([`--table-concurrency`](#global-flags)) being exported concurrently.
+
+		{{site.data.alerts.callout_info}}
+		Only tables with [primary key]({% link {{ site.current_cloud_version }}/primary-key.md %}) types of [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) can be sharded.
+		{{site.data.alerts.end}}
+
 	- **Maximum lifetime of a connection.**
 
 - If a PostgreSQL database is set as a [source](#source-and-target-databases), ensure that [`idle_in_transaction_session_timeout`](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT) on PostgreSQL is either disabled or set to a value longer than the duration of data export. Otherwise, the connection will be prematurely terminated. To estimate the time needed to export the PostgreSQL tables, you can [perform a dry run](#perform-a-dry-run) and sum the value of [`molt_fetch_table_export_duration_ms`](#metrics) for all exported tables.
