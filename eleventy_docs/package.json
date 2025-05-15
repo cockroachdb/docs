@@ -1,0 +1,16 @@
+{
+  "name": "eleventy_docs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx eleventy --serve",
+    "build": "npx eleventy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.0"
+  }
+}

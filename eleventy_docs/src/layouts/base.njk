@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ title | default("Cockroach Labs Docs") }}</title>
+    <link rel="stylesheet" href="/assets/style.css">
+  </head>
+  <body>
+    <header>
+      <h1><a href="/">{{ title | default("Cockroach Labs Docs") }}</a></h1>
+    </header>
+    <main>
+      {{ content | safe }}
+    </main>
+    <footer>
+      <p>© {{ now("utc").year }} Cockroach Labs</p>
+    </footer>
+  </body>
+</html>
