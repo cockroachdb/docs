@@ -438,8 +438,7 @@ Key (`event_id`) | Value (Kafka payload) | Headers
 `89af6b6e-f34d-4a1d-a69d-91d29526e9f7` | `{"event_type": "access_review", "details": "User confirmed access to sensitive dataset"}` | `trace_id=xyz123, compliance_level=high`
 `587cf30d-3f17-4942-8a01-f110ef8a5ae3` | `{"event_type": "policy_ack", "details": "Policy v3.0 acknowledged by contractor"}` | `trace_id=mno456, compliance_level=low` 
 
-If you would like to filter the table columns that a changefeed emits, refer to the [CDC Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page. To customize the message envelope, refer to the [Changefeed Message Envelope](#message-envelopes) page. 
-{% comment  %}update message envelope link to the new page once PR #19542 is merged{% endcomment %}
+If you would like to filter the table columns that a changefeed emits, refer to the [CDC Queries]({% link {{ page.version.version }}/cdc-queries.md %}) page. To customize the message envelope, refer to the [Changefeed Message Envelope]({% link {{ page.version.version }}/changefeed-message-envelopes.md %}) page. 
 
 ## Message formats
 
