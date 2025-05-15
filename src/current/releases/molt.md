@@ -5,7 +5,7 @@ toc: true
 docs_area: releases
 ---
 
-This page has details about each release of the following [MOLT (Migrate Off Legacy Technology) tools]({% link molt/molt-overview.md %}):
+This page has details about each release of the following [MOLT (Migrate Off Legacy Technology) tools]({% link molt/migration-overview.md %}):
 
 - [Fetch]({% link molt/molt-fetch.md %})
 - [Verify]({% link molt/molt-verify.md %})
