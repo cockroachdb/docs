@@ -20,17 +20,29 @@ If the table you're replicating does not contain [user-defined types]({% link {{
 
 ## Required privileges
 
-`CREATE LOGICAL REPLICATION STREAM` requires one of the following privileges:
+`CREATE LOGICAL REPLICATION STREAM` creates a one-way LDR stream only. To achieve bidirectional replication, you must manually create two separate streams, one in each direction, with the required privileges set on both clusters.
 
-- The [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role).
-- The [`REPLICATION` system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges).
+LDR from cluster A to B represents a one-way stream from a source to a destination cluster. LDR from cluster B to A is the reverse stream for a bidirectional setup.
 
-Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement:
+{% include_cached new-in.html version="v25.2" %} To run the `CREATE LOGICAL REPLICATION STREAM` statement to create an LDR stream, the following privileges are required:
+
+LDR direction | Cluster | User role | Required privilege 
+----------------------+---------+-----------+--------------------
+A ➔ B | A | User in the LDR connection string. | `REPLICATIONSOURCE`
+A ➔ B | B | User running the command. | `REPLICATIONDEST`
+B ➔ A | B | User in the LDR connection string. | `REPLICATIONSOURCE`
+B ➔ A | A | User running the command. | `REPLICATIONDEST`
+
+Grant the privilege at the table or [system level]({% link {{ page.version.version }}/grant.md %}#grant-system-level-privileges-on-the-entire-cluster) with the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) statement to a [user or a role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT SYSTEM REPLICATION TO user;
+GRANT REPLICATIONSOURCE ON TABLE database.public.tablename TO user/role;
 ~~~
+
+{{site.data.alerts.callout_info}}
+As of v25.2, the [`REPLICATION` system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) is **deprecated** and will be removed in a future release. Use `REPLICATIONSOURCE` and `REPLICATIONDEST` for authorization at the table level.
+{{site.data.alerts.end}}
 
 ## Synopsis
 

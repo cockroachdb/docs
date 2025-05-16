@@ -58,11 +58,13 @@ This specific information can help you understand the root cause of the connecti
 
 {{site.data.alerts.callout_info}}
 {% include common/network-partitions.md %}
+
+{% include_cached new-in.html version="v25.2" %} With the introduction of [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases), most network partitions between a leaseholder and its followers should heal in a few seconds.
 {{site.data.alerts.end}}
 
 ### Node liveness status
 
-Hover over a node's ID in the row and column headers to show the node's liveness status, such as `healthy` or `suspect`. Node liveness status is also indicated by the colored circle next to the Node ID: green for `healthy` or red for `suspect`.
+Hover over a node's ID in the row and column headers to show the node's [liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) status, such as `healthy` or `suspect`. Node liveness status is also indicated by the colored circle next to the Node ID: green for `healthy` or red for `suspect`.
 
 If a `suspect` node stays offline for the duration set by [`server.time_until_store_dead`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-time-until-store-dead) (5 minutes by default), the [cluster considers the node "dead"]({% link {{ page.version.version }}/node-shutdown.md %}#process-termination) and the node is removed from the matrix.
 

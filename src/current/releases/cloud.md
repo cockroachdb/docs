@@ -14,6 +14,18 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## May 12, 2025
+
+CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a [Regular release]({% link releases/index.md %}#release-types).
+
+For release notes, refer to [What's New in v25.2]({% link releases/v25.2.md %}).
+
+To get started with v25.2, refer to [Create a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) or [Upgrade a Cluster in CockroachDB Cloud]({% link cockroachcloud/upgrade-cockroach-version.md %}).
+
+## April 30, 2025
+
+You can now use the CockroachDB {{ site.data.products.cloud }} Console to [edit the labels of a cluster or folder]({% link cockroachcloud/labels.md %}).
+
 ## April 3, 2025
 
 You can now [change cluster plans between {{ site.data.products.basic }} and {{ site.data.products.standard }}]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}) from the CockroachDB {{ site.data.products.cloud }} Console.

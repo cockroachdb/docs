@@ -33,7 +33,7 @@ Parameter | Description
 `SET {session variable}` | Set default [session variable]({% link {{ page.version.version }}/set-vars.md %}) values for a role.
 `RESET {session variable}`<br>`RESET ALL` <a name="parameters-reset"></a> |  Reset one session variable or all session variables to the default value.
 `IN DATABASE database_name` | Specify a database for which to apply session variable defaults.<br>When `IN DATABASE` is not specified, the default session variable values apply for a role in all databases.<br>In order for a session to initialize session variable values to database defaults, the database must be specified as a [connection parameter]({% link {{ page.version.version }}/connection-parameters.md %}). Database default values will not appear if the database is set after connection with `USE <dbname>`/`SET database=<dbname>`.
-`ROLE ALL ...`/`USER ALL ...` |  Apply session variable settings to all roles.<br>Exception: The `root` user is exempt from session variable settings.
+`ROLE ALL ...`/`USER ALL ...` |  Apply session variable settings to all roles.<br>Exception: The `root` user is exempt from session variable settings. This is a failsafe; if you make a mistake with a session variable setting, you can still log in as `root` and be unaffected.
 
 ### Role options
 
@@ -50,7 +50,11 @@ The following statements are run by the `root` user that is a member of the `adm
 The following example allows a role to log in to the database with a [password]({% link {{ page.version.version }}/authentication.md %}#client-authentication):
 
 ~~~ sql
-root@:26257/defaultdb> ALTER ROLE carl WITH LOGIN PASSWORD 'An0ther$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
+CREATE ROLE carl;
+~~~
+
+~~~ sql
+ALTER ROLE carl WITH LOGIN PASSWORD 'An0ther$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
 ~~~
 
 ### Prevent a role from using password authentication
@@ -59,7 +63,7 @@ The following statement prevents the user from using password authentication and
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-root@:26257/defaultdb> ALTER ROLE carl WITH PASSWORD NULL;
+ALTER ROLE carl WITH PASSWORD NULL;
 ~~~
 
 ### Allow a role to create other roles and manage authentication methods for the new roles
@@ -67,7 +71,7 @@ root@:26257/defaultdb> ALTER ROLE carl WITH PASSWORD NULL;
 The following example allows the role to [create other roles]({% link {{ page.version.version }}/create-role.md %}) and [manage authentication methods]({% link {{ page.version.version }}/authentication.md %}#client-authentication) for them:
 
 ~~~ sql
-root@:26257/defaultdb> ALTER ROLE carl WITH CREATEROLE CREATELOGIN;
+ALTER ROLE carl WITH CREATEROLE CREATELOGIN;
 ~~~
 
 ### Allow a role to create and rename databases
@@ -75,7 +79,7 @@ root@:26257/defaultdb> ALTER ROLE carl WITH CREATEROLE CREATELOGIN;
 The following example allows the role to [create]({% link {{ page.version.version }}/create-database.md %}) or [rename]({% link {{ page.version.version }}/alter-database.md %}#rename-to) databases:
 
 ~~~ sql
-root@:26257/defaultdb> ALTER ROLE carl WITH CREATEDB;
+ALTER ROLE carl WITH CREATEDB;
 ~~~
 
 ### Allow a role to pause, resume, and cancel non-admin jobs
@@ -83,7 +87,7 @@ root@:26257/defaultdb> ALTER ROLE carl WITH CREATEDB;
 The following example allows the role to [pause]({% link {{ page.version.version }}/pause-job.md %}), [resume]({% link {{ page.version.version }}/resume-job.md %}), and [cancel]({% link {{ page.version.version }}/cancel-job.md %}) jobs:
 
 ~~~ sql
-root@:26257/defaultdb> ALTER ROLE carl WITH CONTROLJOB;
+ALTER ROLE carl WITH CONTROLJOB;
 ~~~
 
 ### Allow a role to see and cancel non-admin queries and sessions
@@ -91,7 +95,7 @@ root@:26257/defaultdb> ALTER ROLE carl WITH CONTROLJOB;
 The following example allows the role to cancel [queries]({% link {{ page.version.version }}/cancel-query.md %}) and [sessions]({% link {{ page.version.version }}/cancel-session.md %}) for other non-`admin` roles:
 
 ~~~ sql
-root@:26257/defaultdb> ALTER ROLE carl WITH CANCELQUERY VIEWACTIVITY;
+ALTER ROLE carl WITH CANCELQUERY VIEWACTIVITY;
 ~~~
 
 ### Allow a role to control changefeeds
@@ -99,7 +103,7 @@ root@:26257/defaultdb> ALTER ROLE carl WITH CANCELQUERY VIEWACTIVITY;
 The following example allows the role to run [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}):
 
 ~~~ sql
-root@:26257/defaultdb> ALTER ROLE carl WITH CONTROLCHANGEFEED;
+ALTER ROLE carl WITH CONTROLCHANGEFEED;
 ~~~
 
 ### Allow a role to modify cluster settings
@@ -107,7 +111,23 @@ root@:26257/defaultdb> ALTER ROLE carl WITH CONTROLCHANGEFEED;
 The following example allows the role to modify [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}):
 
 ~~~ sql
-root@:26257/defaultdb> ALTER ROLE carl WITH MODIFYCLUSTERSETTING;
+ALTER ROLE carl WITH MODIFYCLUSTERSETTING;
+~~~
+
+### Allow a role to bypass row-level security (RLS)
+
+To allow a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles) to bypass [row-level security]({% link {{ page.version.version }}/row-level-security.md %}), execute the following statement to grant the [`BYPASSRLS`]({% link {{ page.version.version }}/security-reference/authorization.md %}#bypassrls) privilege:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER ROLE carl WITH BYPASSRLS;
+~~~
+
+To disable the role's ability to bypass RLS, execute the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER ROLE carl WITH NOBYPASSRLS;
 ~~~
 
 ### Set default session variable values for a role
@@ -115,17 +135,17 @@ root@:26257/defaultdb> ALTER ROLE carl WITH MODIFYCLUSTERSETTING;
 In the following example, the `root` user creates a role named `max`, and sets the default value of the `timezone` [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for the `max` role.
 
 ~~~ sql
-root@:26257/defaultdb> CREATE ROLE max WITH LOGIN;
+CREATE ROLE max WITH LOGIN;
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> ALTER ROLE max SET timezone = 'America/New_York';
+ALTER ROLE max SET timezone = 'America/New_York';
 ~~~
 
 This statement does not affect the default `timezone` value for any role other than `max`:
 
 ~~~ sql
-root@:26257/defaultdb> SHOW timezone;
+SHOW timezone;
 ~~~
 
 ~~~
@@ -138,7 +158,7 @@ root@:26257/defaultdb> SHOW timezone;
 To see the default `timezone` value for the `max` role, run the `SHOW` statement as a member of the `max` role:
 
 ~~~ sql
-max@:26257/defaultdb> SHOW timezone;
+SHOW timezone;
 ~~~
 
 ~~~
@@ -155,21 +175,21 @@ max@:26257/defaultdb> SHOW timezone;
 In the following example, the `root` user creates a role named `max` and a database named `movr`, and sets the default value of the `statement_timeout` [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for the `max` role in the `movr` database.
 
 ~~~ sql
-root@:26257/defaultdb> CREATE DATABASE movr;
+CREATE DATABASE IF NOT EXISTS movr;
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> CREATE ROLE max WITH LOGIN;
+CREATE ROLE IF NOT EXISTS max WITH LOGIN;
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> ALTER ROLE max IN DATABASE movr SET statement_timeout = '10s';
+ALTER ROLE max IN DATABASE movr SET statement_timeout = '10s';
 ~~~
 
 This statement does not affect the default `statement_timeout` value for any role other than `max`, or in any database other than `movr`.
 
 ~~~ sql
-root@:26257/defaultdb> SHOW statement_timeout;
+SHOW statement_timeout;
 ~~~
 
 ~~~
@@ -186,7 +206,7 @@ cockroach sql --url 'postgresql://max@localhost:26257/movr?sslmode=disable'
 ~~~
 
 ~~~ sql
-max@:26257/movr> SHOW statement_timeout;
+SHOW statement_timeout;
 ~~~
 
 ~~~
@@ -203,11 +223,11 @@ max@:26257/movr> SHOW statement_timeout;
 In the following example, the `root` user creates a database named `movr`, and sets the default value of the `timezone` [session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) for all roles in that database.
 
 ~~~ sql
-root@:26257/defaultdb> CREATE DATABASE movr;
+CREATE DATABASE IF NOT EXISTS movr;
 ~~~
 
 ~~~ sql
-root@:26257/defaultdb> ALTER ROLE ALL IN DATABASE movr SET timezone = 'America/New_York';
+ALTER ROLE ALL IN DATABASE movr SET timezone = 'America/New_York';
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -217,7 +237,7 @@ This statement is identical to [`ALTER DATABASE movr SET timezone = 'America/New
 This statement does not affect the default `timezone` value for any database other than `movr`:
 
 ~~~ sql
-root@:26257/defaultdb> SHOW timezone;
+SHOW timezone;
 ~~~
 
 ~~~
@@ -230,7 +250,7 @@ root@:26257/defaultdb> SHOW timezone;
 To see the default `timezone` value for the `max` role, run the `SHOW` statement as a member of the `max` role:
 
 ~~~ sql
-root@:26257/movr> SHOW timezone;
+SHOW timezone;
 ~~~
 
 ~~~
@@ -255,6 +275,8 @@ ALTER ROLE ALL SET sql.spatial.experimental_box2d_comparison_operators.enabled =
 ALTER ROLE
 ~~~
 
+The `root` user is exempt from session variable settings changes. This is a failsafe; if you make a mistake with a session variable setting, you can still log in as `root` and be unaffected.
+
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 {% include {{page.version.version}}/sql/show-default-session-variables-for-role.md %}
@@ -265,7 +287,7 @@ ALTER ROLE
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER ROLE maxroach WITH SUBJECT 'CN=myName2,OU=myOrgUnit2,O=myOrg2,L=myLocality2,ST=myState2,C=myCountry2' LOGIN;
+ALTER ROLE max WITH SUBJECT 'CN=myName2,OU=myOrgUnit2,O=myOrg2,L=myLocality2,ST=myState2,C=myCountry2' LOGIN;
 ~~~
 
 {% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}

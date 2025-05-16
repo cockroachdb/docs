@@ -100,7 +100,7 @@ Metric | Description
 
 <img src="{{ 'images/v22.1/ui_node_heartbeat_99.png' | relative_url }}" alt="DB Console node heartbeat latency: 99th percentile graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Node Heartbeat Latency: 99th percentile** graph displays the 99th percentile of time elapsed between [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) heartbeats on the cluster over a one-minute period.
+The **Node Heartbeat Latency: 99th percentile** graph displays the 99th percentile of time elapsed between node heartbeats on the cluster over a one-minute period.
 
 Hovering over the graph displays values for the following metrics:
 
@@ -108,17 +108,21 @@ Metric | Description
 --------|----
 `<node>` | The 99th percentile of time elapsed between [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) heartbeats on the cluster over a one-minute period for that node, as calculated from the `liveness.heartbeatlatency` metric.
 
+{% include_cached new-in.html version="v25.2" %} {% include {{ page.version.version }}/leader-leases-node-heartbeat-use-cases.md %}
+
 ## Node Heartbeat Latency: 90th percentile
 
 <img src="{{ 'images/v22.1/ui_node_heartbeat_90.png' | relative_url }}" alt="DB Console node heartbeat latency: 90th percentile graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Node Heartbeat Latency: 90th percentile** graph displays the 90th percentile of time elapsed between [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) heartbeats on the cluster over a one-minute period.
+The **Node Heartbeat Latency: 90th percentile** graph displays the 90th percentile of time elapsed between node heartbeats on the cluster over a one-minute period.
 
 Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
-`<node>` | The 90th percentile of time elapsed between [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) heartbeats on the cluster over a one-minute period for that node, as calculated from the `liveness.heartbeatlatency` metric.
+`<node>` | The 90th percentile of time elapsed between  node heartbeats on the cluster over a one-minute period for that node, as calculated from the `liveness.heartbeatlatency` metric.
+
+{% include_cached new-in.html version="v25.2" %} {% include {{ page.version.version }}/leader-leases-node-heartbeat-use-cases.md %}
 
 {% include {{ page.version.version }}/ui/ui-summary-events.md %}
 

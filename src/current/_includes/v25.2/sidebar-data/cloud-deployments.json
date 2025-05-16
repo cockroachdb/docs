@@ -292,10 +292,16 @@
                         ]
                     },
                     {
-                    "title": "Organize CockroachDB Cloud Clusters Using Folders",
-                    "urls": [
-                        "/cockroachcloud/folders.html"
-                    ]
+                        "title": "Organize CockroachDB Cloud Clusters Using Folders",
+                        "urls": [
+                            "/cockroachcloud/folders.html"
+                        ]
+                    },
+                    {
+                        "title": "Organize CockroachDB Cloud Resources Using Labels",
+                        "urls": [
+                            "/cockroachcloud/labels.html"
+                        ]
                     }
                 ]
             },
