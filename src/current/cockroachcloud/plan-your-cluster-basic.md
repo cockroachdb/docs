@@ -29,7 +29,7 @@ Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of c
 
 ## Free vs. paid usage
 
-CockroachDB {{ site.data.products.basic }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each non-contract CockroachDB {{ site.data.products.cloud }} organization is given 50 million [Request Units](#request-units) and 10 GiB of storage (equivalent to $15 of resource consumption) for free each month. Every monthly billing cycle, this free monthly resource benefit can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization. The free usage appears as a $15 deduction on your monthly invoice.
+CockroachDB {{ site.data.products.basic }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each non-contract CockroachDB {{ site.data.products.cloud }} organization is given $15 of resource consumption (equivalent to 50 million [Request Units](#request-units) and 10 GiB of storage) for free each month. Every monthly billing cycle, this free monthly resource benefit can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization. The free usage appears as a $15 deduction on your monthly invoice.
 
 {{site.data.alerts.callout_info}}
 Contract customers are not elegible for the free monthly resource benefit.
