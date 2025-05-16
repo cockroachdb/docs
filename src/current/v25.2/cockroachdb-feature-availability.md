@@ -87,9 +87,9 @@ The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores
 
 [Organizing CockroachDB {{ site.data.products.cloud }} clusters using folders]({% link cockroachcloud/folders.md %}) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing.
 
-### Logical data replication (LDR) for CockroachDB {{ site.data.products.core }}
+### `validated` mode in logical data replication (LDR)
 
-**Logical data replication (LDR)** continuously replicates tables between active CockroachDB clusters. Both source and destination cluster can receive application reads and writes, with LDR enabling bidirectional replication for eventual consistency in the replicating tables. The active-active setup between clusters can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Setting up LDR between a source and destination CockroachDB {{ site.data.products.core }} cluster is in preview.
+The `validated` write mode in LDR is in preview. The `validated` mode of LDR attempts to apply the write in a similar way to a user-run query, which would re-run all constraint validations relevant to the destination table(s). If the change violates foreign key dependencies, unique constraints, or other constraints, the row will be put in the [dead letter queue (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq) instead. Like the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}), `validated` mode does not recognize deletion tombstones. For more details, refer to [Set Up Logical Data Replication]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#modes).
 
 ### Read on standby cluster in physical cluster replication (PCR) for CockroachDB {{ site.data.products.core }}
  
