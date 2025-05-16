@@ -5,8 +5,6 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-
 Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
@@ -39,7 +37,7 @@ When the LDR job starts, it will create a DLQ table with each replicating table 
 
 - The destination table was dropped.
 - The destination cluster is unavailable.
-- Tables schemas do not match.
+- Table schemas do not match.
 
 In `validated` mode, rows are also sent to the DLQ when:
 
@@ -211,5 +209,3 @@ If you're running [row-level TTL]({% link {{ page.version.version }}/row-level-t
 ## See also
 
 - [Set Up Logical Data Replication]({% link {{ page.version.version }}/set-up-logical-data-replication.md %})
-
-{% comment  %}Add more links as pages publish{% endcomment %}
