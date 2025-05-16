@@ -5,8 +5,6 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-
 Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
@@ -33,6 +31,17 @@ Also, for both SQL statements, note:
 - It is necessary to use the [fully qualified]({% link {{ page.version.version }}/sql-name-resolution.md %}) table name for the source table and destination table in the statement.
 - {% include {{ page.version.version }}/ldr/multiple-tables.md %}
 
+### Modes
+
+_Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
+
+- `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
+- `validated` (**Preview**): {% include {{ page.version.version }}/ldr/validated-description.md %} 
+
+    {{site.data.alerts.callout_info}}
+    `validated` mode is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}) and subject to change. To share feedback or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+    {{site.data.alerts.end}}
+
 ## Tutorial overview
 
 If you're setting up bidirectional LDR, both clusters will act as a source and a destination in the respective LDR jobs. The high-level steps for setting up bidirectional or unidirectional LDR:
@@ -52,9 +61,15 @@ You'll need:
     - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Step 2. Connect from the destination to the source](#step-2-connect-from-the-destination-to-the-source).
 - LDR replicates at the table level, which means clusters can contain other tables that are not part of the LDR job. (For [`CREATE LOGICAL REPLICATION STREAM`](#create-logical-replication-stream) only): If both clusters are empty, create the tables that you need to replicate with **identical** schema definitions (excluding indexes) on both clusters. If one cluster already has an existing table that you'll replicate, ensure the other cluster's table definition matches. For more details on the supported schemas, refer to [Schema Validation](#schema-validation).
 
-### Schema validation
+## Schema validation
 
-Before you start LDR, you must ensure that all column names, types, constraints, and unique indexes on the destination table match with the source table.
+Before you start LDR, ensure the schema of the destination table matches the source table in all of the following:
+
+- Columns names and types
+- Constraints
+- Unique indexes
+
+### Unsupported schema features
 
 You cannot use LDR on a table with a schema that contains:
 
@@ -63,14 +78,24 @@ You cannot use LDR on a table with a schema that contains:
 - Indexes with a [virtual computed column]({% link {{ page.version.version }}/computed-columns.md %})
 - Composite types in the [primary key]({% link {{ page.version.version }}/primary-key.md %})
 
-Additionally, for the `CREATE LOGICALLY REPLICATED` syntax, you cannot use LDR on a table with a schema that contains:
+Unsupported with [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}):
 
-- [User-defined types]({% link {{ page.version.version }}/enum.md %}) 
+- [User-defined types]({% link {{ page.version.version }}/enum.md %})
 - [Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies
 
-For more details, refer to the LDR [Known limitations]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#known-limitations).
+### Foreign key constraints
 
-When you run LDR in [`immediate` mode](#modes), you cannot replicate a table with [foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}). In [`validated` mode](#modes), foreign key constraints **must** match. All constraints are enforced at the time of SQL/application write.
+Mode | Foreign key support
+-----+--------------------
+`immediate` | Cannot replicate tables with [foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}).
+`validated` | Foreign keys **must** match exactly. Constraints are enforced on every SQL write.
+
+### `validated` mode considerations
+
+To improve usability of `validated` mode, consider:
+
+- Avoid tables containing foreign keys. LDR uses a [_last write wins_]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#kv-level-conflicts) model, which is well defined for individual rows, but not multiple rows. As a result, LDR cannot resolve multi-row constraints automatically.
+- Unique indexes increase the risk of the messages being sent to the [DLQ]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq).
 
 ## Step 1. Prepare the cluster
 
@@ -186,15 +211,12 @@ You can use the `cockroach encode-uri` command to generate a connection string c
 
 In this step, you'll start the LDR stream(s) from the destination cluster. You can replicate one or multiple tables in a single LDR job. You cannot replicate system tables in LDR, which means that you must manually apply configurations and cluster settings, such as [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) and user permissions on the destination cluster.
 
-<a id="modes"></a>_Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
-
-- `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
-- `validated`: {% include {{ page.version.version }}/ldr/validated-description.md %}
-
-LDR streams can be started using one of the following sections for instructions on creating an LDR stream. For details on which syntax to use, refer to the [Syntax](#syntax) section at the beginning of this tutorial:
+LDR streams can be started using one of the following syntaxes: 
 
 - [`CREATE LOGICALLY REPLICATED`](#create-logically-replicated)
 - [`CREATE LOGICAL REPLICATION STREAM`](#create-logical-replication-stream)
+
+For more details on which syntax to use, refer to the [Syntax](#syntax) section at the beginning of this tutorial before proceeding.
 
 #### `CREATE LOGICALLY REPLICATED`
 

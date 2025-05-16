@@ -5,8 +5,6 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-
 Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
@@ -70,10 +68,12 @@ Option | Description
 
 ## LDR modes
 
-_Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
-
 - `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
-- `validated`: {% include {{ page.version.version }}/ldr/validated-description.md %}
+- `validated` (**Preview**): {% include {{ page.version.version }}/ldr/validated-description.md %} 
+
+    {{site.data.alerts.callout_info}}
+    `validated` mode is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}) and subject to change. To share feedback or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+    {{site.data.alerts.end}}
 
 ## Bidirectional LDR
 
