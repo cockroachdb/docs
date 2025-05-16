@@ -92,7 +92,7 @@ This section supplements the details in [Costs across CockroachDB Cloud plans](#
 
 <section class="filter-content" markdown="1" data-scope="basic">
 
-For CockroachDB Basic, compute cost is usage-based through its consumption of [Request Units]({% link cockroachcloud/resource-usage-basic.md %}#understand-resource-consumption). For non-contract customers, the first 50 million Request Units and 10 GiB of storage (equivalent to [$15 of resource consumption]({% link cockroachcloud/plan-your-cluster-basic.md %}#free-vs-paid-usage)) spent each month is free and credited back on a monthly invoice.
+For CockroachDB Basic, compute cost is usage-based through its consumption of [Request Units]({% link cockroachcloud/resource-usage-basic.md %}#understand-resource-consumption). For non-contract customers, the first [$15 of resource consumption]({% link cockroachcloud/plan-your-cluster-basic.md %}#free-vs-paid-usage) (equivalent to 50 million Request Units and 10 GiB of storage) spent each month is free and credited back on their monthly invoice.
 
 </section>
 
