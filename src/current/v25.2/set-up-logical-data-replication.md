@@ -73,41 +73,29 @@ Before you start LDR, ensure the schema of the destination table matches the sou
 
 You cannot use LDR on a table with a schema that contains:
 
-Feature type | Unsupported schema feature
--------------+---------------------------
-Indexes | <ul><li>[Partial indexes]({% link {{ page.version.version }}/partial-indexes.md %})</li><li>[Hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %})</li><li>Indexes with a [virtual computed column]({% link {{ page.version.version }}/computed-columns.md %})</li></ul>
-Table design | <ul><li>[Column families]({% link {{ page.version.version }}/column-families.md %})</li><li>Composite types in the [primary key]({% link {{ page.version.version }}/primary-key.md %})</li></ul>
-Data types (`CREATE LOGICALLY REPLICATED` only) | <ul><li>[User-defined types]({% link {{ page.version.version }}/enum.md %})</li><li>[Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies</li></ul>
-
-### Foreign key constraints
-
-### `validated` mode considerations
-
-
-
-
-
-
-Before you start LDR, you must ensure that all column names, types, constraints, and unique indexes on the destination table match with the source table.
-
-You cannot use LDR on a table with a schema that contains:
-
 - [Column families]({% link {{ page.version.version }}/column-families.md %})
 - [Partial indexes]({% link {{ page.version.version }}/partial-indexes.md %}) and [hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %})
 - Indexes with a [virtual computed column]({% link {{ page.version.version }}/computed-columns.md %})
 - Composite types in the [primary key]({% link {{ page.version.version }}/primary-key.md %})
 
-Additionally, for the `CREATE LOGICALLY REPLICATED` syntax, you cannot use LDR on a table with a schema that contains:
+Unsupported with [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}):
 
-- [User-defined types]({% link {{ page.version.version }}/enum.md %}) 
+- [User-defined types]({% link {{ page.version.version }}/enum.md %})
 - [Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies
 
-For more details, refer to the LDR [Known limitations]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#known-limitations).
+### Foreign key constraints
 
-When you run LDR in [`immediate` mode](#modes), you cannot replicate a table with [foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}). In [`validated` mode](#modes), foreign key constraints **must** match. All constraints are enforced at the time of SQL/application write.
+Mode | Foreign key support
+-----+--------------------
+`immediate` | Cannot replicate tables with [foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}).
+`validated` | Foreign keys **must** match exactly. Constraints are enforced on every SQL write.
 
-For validated mode, we Recommend that you do not have unique indexes on the target cluster since it will increase your chances of DLQ.
-For validated mode, we recommend that you do not have foreign keys. Since Last Write Wins is only well defined for individual rows, any validation that depends on multiple rows can't be automatically resolved by the Last Write Win algorithim.
+### `validated` mode considerations
+
+To improve usability of `validated` mode, consider:
+
+- Avoid tables containing foreign keys. LDR uses a [_last write wins_]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#kv-level-conflicts) model, which is well defined for individual rows, but not multiple rows. As a result, LDR cannot resolve multi-row constraints automatically.
+- Unique indexes increase the risk of the messages being sent to the [DLQ]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#dead-letter-queue-dlq).
 
 ## Step 1. Prepare the cluster
 
