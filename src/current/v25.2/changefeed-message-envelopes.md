@@ -6,7 +6,7 @@ toc: true
 
 In CockroachDB, the changefeed _envelope_ is the structure of each [message]({% link {{ page.version.version }}/changefeed-messages.md %}) emitted to the [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). Changefeeds package _events_, triggered by an update to a row in a [watched table]({% link {{ page.version.version }}/change-data-capture-overview.md %}#watched-table), into messages according to the configured envelope. By default, changefeed messages use the [`wrapped` envelope](#wrapped), which includes the primary key of the changed row and a top-level field indicating the value of the row after the change event.​ 
 
-You can use changefeed [options](#option-reference) to customize message contents in order to integrate with your downstream requirements. For example, the previous state of the row, the origin cluster's metadata, or the schema of the event payload in the message. Envelope configuration also allows you to prioritize change event metadata versus changefeed throughput.
+You can use changefeed [options](#option-reference) to customize message contents in order to integrate with your downstream requirements. For example, the [previous state of the row](#audit-changes-in-data), the [origin cluster's metadata](#preserve-the-origin-of-data), or the [schema of the event payload](#add-envelope-schema-fields) in the message. Envelope configuration also allows you to prioritize change event metadata versus changefeed throughput.
 
 The possible envelope fields support use cases such as:
 
@@ -17,7 +17,6 @@ The possible envelope fields support use cases such as:
 
 This page covers:
 
-- [Overview](#overview) for a brief summary of the CockroachDB changefeed envelope fields.
 - [Use case](#use-cases) examples.
 - Reference lists:
     - The [options](#option-reference) to configure the envelope.
@@ -26,82 +25,6 @@ This page covers:
 {{site.data.alerts.callout_info}}
 You can also specify the _format_ of changefeed messages, such as Avro. For more details, refer to [Message formats]({% link {{ page.version.version }}/changefeed-messages.md %}#message-formats).
 {{site.data.alerts.end}}
-
-## Overview
-
-The envelope of a changefeed message depends on the following:
-
-- The [configured envelope and changefeed options](#option-reference)
-- The [sink]({% link {{ page.version.version }}/changefeed-sinks.md %})
-- The [message format]({% link {{ page.version.version }}/changefeed-messages.md %}#message-formats)
-
-The envelope can contain any of the outlined fields in this section. For more details, refer to the complete reference lists that explain each [envelope field](#field-reference) and [configurable option](#option-reference) to build a changefeed's envelope structure.
-
-The default [`wrapped` envelope](#wrapped) will be similar in structure to:
-
-~~~json
-{
-	"after": { 
-		"col_a": "new_value",
-		// ... other columns ...
-	},
-},
-~~~
-
-You can optionally include the state of the row [before and after](#audit-changes-in-data) the change event and [operation](#route-events-based-on-operation-type), [origin](#preserve-the-origin-of-data), and [timestamp metadata](#updated) about the change. It is important to consider that increasing the size of each message can have an impact on changefeed throughput.
-
-When you include metadata options, this part of the message will be similar in structure to:
-
-~~~json
-// ...
-    "after": { 
-      "col_a": "new_value",
-      // ... other columns ...
-    },
-    "before": { 
-      "col_a": "old_value",
-      // ... other columns ...
-    },
-    "op": "c", 
-    "source": {
-      // ... Metadata source fields
-    },
-    "ts_ns": 1745527444910044000
-// ...
-~~~
-
-You can optionally include the schema definition of the payload, which will mark a field's data type. It will also describe whether the field is always present (`false`), or can be missing from the envelope (`true`) depending on the configuration. The structure of the schema definition in the message will be similar to:
-
-~~~json
-// ...
-  "schema": {
-    "type": "struct",
-    "name": "cockroachdb.envelope",  // Schema identifier
-    "optional": false,
-    "fields": [
-      {
-        "field": "before",
-        "type": "struct",
-        "optional": true,
-        "fields": [
-          // Schema for row before change (same as the table schema)
-        ]
-      },
-      {
-        "field": "after",
-        "type": "struct",
-        "optional": true,
-        "fields": [
-          // Schema for row after change (same as the table schema)
-        ]
-      },
-      {
-        "field": "op",
-        "type": "string",
-        "optional": false  // Operation type
-      },
-// ... Schema definition of additional fields source, ts_ns ...
-~~~
 
 ## Use cases
 
@@ -124,7 +47,7 @@ CREATE TABLE public.products (
 ~~~
 
 {{site.data.alerts.callout_info}}
-The values that the `envelope` option accepts are compatible with different [changefeed sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}), and the structure of the message will vary depending on the sink.
+The values that the `envelope` option accepts are compatible with different [changefeed sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}), and the structure of the message will vary depending on the sink and [message format]({% link {{ page.version.version }}/changefeed-messages.md %}#message-formats).
 {{site.data.alerts.end}}
 
 ### Audit changes in data
