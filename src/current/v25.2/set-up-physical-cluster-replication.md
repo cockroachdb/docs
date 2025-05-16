@@ -105,7 +105,7 @@ Connect to your primary cluster's system virtual cluster using [`cockroach sql`]
 
 ### Create a replication user and password
 
-The standby cluster connects to the primary cluster's system virtual cluster using an identity with the `REPLICATION` privilege. Connect to the primary cluster's system virtual cluster and create a user with a password:
+The standby cluster connects to the primary cluster's system virtual cluster using an identity with the `REPLICATIONSOURCE` privilege. Connect to the primary cluster's system virtual cluster and create a user with a password:
 
 1. From the primary's system virtual cluster SQL shell, create a user and password:
 
@@ -114,14 +114,14 @@ The standby cluster connects to the primary cluster's system virtual cluster usi
     CREATE USER {your username} WITH PASSWORD '{your password}';
     ~~~
 
-1. Grant the [`REPLICATION` system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) to your user:
+1. Grant the [`REPLICATIONSOURCE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) to your user:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    GRANT SYSTEM REPLICATION TO {your username};
+    GRANT SYSTEM REPLICATIONSOURCE TO {your username};
     ~~~
 
-    If you need to change the password later, refer to [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}).
+If you need to change the password later, refer to [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}).
 
 ### Connect to the primary virtual cluster (optional)
 
@@ -200,17 +200,6 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
     --certs-dir "certs"
     ~~~
 
-1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) to the cluster:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING cluster.organization = 'your organization';
-    ~~~
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING enterprise.license = 'your enterprise license';
-    ~~~
-
 1. Set the `kv.rangefeed.enabled` cluster setting to `true`. The replication job connects to a long-lived request, a _rangefeed_, which pushes changes as they happen:
 
     {% include_cached copy-clipboard.html %}
@@ -236,7 +225,7 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
 
 ### Create a user for the standby cluster
 
-If you would like to access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to observe your replication, you will need to create a user:
+Create a user to run the PCR stream and access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to observe the job:
 
 1. Create a user:
 
@@ -249,7 +238,7 @@ If you would like to access the [DB Console]({% link {{ page.version.version }}/
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    GRANT admin TO {your username};
+    GRANT SYSTEM REPLICATIONDEST, MANAGEVIRTUALCLUSTER TO {your username};
     ~~~
 
     Open the DB Console in your web browser: `https://{node IP or hostname}:8080/`, where you will be prompted for these credentials. Refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}) for more detail on tracking relevant metrics for your replication stream.
