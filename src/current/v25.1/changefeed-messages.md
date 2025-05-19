@@ -120,7 +120,7 @@ CREATE CHANGEFEED FOR TABLE rides INTO 'external://kafka' WITH diff, envelope=wr
 
 ### `bare`
 
-`bare` removes the `after` key from the changefeed message and stores any metadata in a `crdb` field. When used with [`avro`](#avro) format, `record` will replace the `after` key.
+`bare` removes the `after` key from the changefeed message and stores any metadata in a `crdb` field. When used with [`avro`]({% link {{ page.version.version }}/changefeed-messages.md %}#avro) format, `record` will replace the `after` key.
 
 - Cloud storage sink:
 
@@ -181,7 +181,7 @@ CREATE CHANGEFEED FOR TABLE rides INTO 'external://kafka' WITH diff, envelope=wr
 
 ### `row`
 
-`row` emits the row without any additional metadata fields in the message. This envelope option is only supported for [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) or sinkless changefeeds. `row` does not support [`avro`](#avro) format—if you are using `avro`, refer to the [`bare`](#bare) envelope option.
+`row` emits the row without any additional metadata fields in the message. This envelope option is only supported for [Kafka sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) or sinkless changefeeds. `row` does not support [`avro`]({% link {{ page.version.version }}/changefeed-messages.md %}#avro) format—if you are using `avro`, refer to the [`bare`](#bare) envelope option.
 
 - Kafka sink:
 

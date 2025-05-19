@@ -352,4 +352,4 @@ You can use the **Schema** tab to view the schema for a specific topic.
 ## See also
 
 - [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %})
-- [Responses]({% link {{ page.version.version }}/changefeed-messages.md %}#responses)
+- [Messages]({% link {{ page.version.version }}/changefeed-messages.md %})
