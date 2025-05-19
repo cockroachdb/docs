@@ -467,7 +467,7 @@ When toggling the `sql.metrics.database_name.enabled` and `sql.metrics.applicati
 {{site.data.alerts.callout_info}}
 Child metrics (metrics with the `database` and `application_name` labels) are independent from the parent (aggregated metric). The child metrics are initialized when the cluster settings are enabled.
 
-For this reason, child `COUNTER` metrics may not always add up to the parent `COUNTER` metric. For an example, refer to [Examples 1 through 6](#1-all-cluster-settings-disabled) through 6
+For this reason, child `COUNTER` metrics may not always add up to the parent `COUNTER` metric. For an example, refer to [Examples 1 through 6](#1-all-cluster-settings-disabled).
     
 For `GAUGE` metrics, values may be different and potentially unexpected depending on when a setting is enabled. For an example, refer to [7. `GAUGE` metric example](#7-gauge-metric-example).
 {{site.data.alerts.end}}
