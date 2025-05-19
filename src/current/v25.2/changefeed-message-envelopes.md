@@ -300,7 +300,7 @@ CREATE CHANGEFEED FOR TABLE products INTO 'kafka://localhost:9092' WITH envelope
 
 It is important to consider that a full-fidelity envelope increases the size of each message significantly, which can have an impact on changefeed throughput.
 
-Use the [`mvcc_timestamp`](#mvcc-timestamp-option), [`envelope=enriched, enriched_properties='source,schema'`](#enriched-properties-option), [`diff`](#diff-option), and [`key_in_value`](#key-in-value-option) (for Kafka) options with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) to create a full-fidelity envelope:
+Use the [`mvcc_timestamp`](#mvcc-timestamp-option), [`envelope=enriched, enriched_properties='source,schema'`](#enriched-properties-option), [`diff`](#diff-option), [`updated`](#updated-option), and [`key_in_value`](#key-in-value-option) (for Kafka) options with [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) to create a full-fidelity envelope:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
