@@ -57,7 +57,7 @@ Further details about RLS evaluation include:
 
 - All [policies]({% link {{ page.version.version }}/show-policies.md %}) apply to a specific set of [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles). For a policy to be applicable, it must match at least one of the roles assigned to it. If the policy is associated with the `PUBLIC` role, it applies to all roles.
 - If RLS is enabled but no policies apply to a given combination of user and SQL statement, **access is denied by default**.
-- Permissive policies are combined using `OR` logic, while restrictive policies are combined using `AND` logic. The overall policy enforcement is determined by evaluating a logical expression of the form: `(permissive policies) AND (restrictive policies)`.  In order for reads or writes to succeed, there must be at least one permissive policy for the user's role.
+- Permissive policies are combined using `OR` logic, while restrictive policies are combined using `AND` logic. The overall policy enforcement is determined by evaluating a logical expression of the form: `(permissive policies) AND (restrictive policies)`. In order for reads or writes to succeed, there must be at least one permissive policy for the user's role.
 - The `USING` clause of [`CREATE POLICY`]({% link {{ page.version.version }}/create-policy.md %}) filters rows during reads; the `WITH CHECK` clause validates writes, and defaults to `USING` if absent.
 
 ## Considerations
