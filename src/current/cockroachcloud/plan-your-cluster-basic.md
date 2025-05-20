@@ -29,10 +29,10 @@ Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of c
 
 ## Free vs. paid usage
 
-CockroachDB {{ site.data.products.basic }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each non-contract CockroachDB {{ site.data.products.cloud }} organization is given $15 of resource consumption (equivalent to 50 million [Request Units](#request-units) and 10 GiB of storage) for free each month. Every monthly billing cycle, this free monthly resource benefit can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization. The free usage appears as a $15 deduction on your monthly invoice.
+CockroachDB {{ site.data.products.basic }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each pay-as-you-go CockroachDB {{ site.data.products.cloud }} organization - those paying monthly by credit card or marketplace - is given $15 of resource consumption (equivalent to 50 million [Request Units](#request-units) and 10 GiB of storage) for free each month. Every monthly billing cycle, this free monthly resource benefit can be spent across all CockroachDB {{ site.data.products.basic }} clusters in an organization. The free usage appears as a $15 deduction on your monthly invoice.
 
 {{site.data.alerts.callout_info}}
-Contract customers are not elegible for the free monthly resource benefit.
+Customers with annual or multi-year contracts are not eligible for the free monthly resource benefit.
 {{site.data.alerts.end}}
 
 Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You must [set resource limits]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) if you've already created one free CockroachDB {{ site.data.products.basic }} cluster. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.

@@ -545,7 +545,7 @@ The following changes were made to CockroachDB {{ site.data.products.serverless 
 
 - The price of [Request Units (RUs)]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) increased from $1 per 10M RU to $2 per 10M RUs.
 - The price of storage decreased from $1 per 1 GiB storage to $0.50 per 1 GiB storage.
-- Free resources are allocated on a per-organization basis instead of a per-cluster basis. All All non-contract organizations will now receive 50M Request Units per month and 10 GiB of storage for free. Free resources do not apply to contract customers.
+- Free resources are allocated on a per-organization basis instead of a per-cluster basis. All non-contract organizations will now receive 50M Request Units per month and 10 GiB of storage for free. Free resources do not apply to customers with annual or multi-year contracts.
 - All resources are available instantly at the beginning of each month (burst and baseline RUs are now deprecated).
 - You can now [set separate RU and storage limits]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) for your clusters, or set a spend limit that will be divided between resources automatically.
 - You can now [set unlimited resources]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) for a cluster so your workload is never restricted.
