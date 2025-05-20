@@ -65,6 +65,12 @@
               ]
             },
             {
+              "title": "<code>ALTER POLICY</code>",
+              "urls": [
+                "/${VERSION}/alter-policy.html"
+              ]
+            },
+            {
               "title": "<code>ALTER PROCEDURE</code>",
               "urls": [
                 "/${VERSION}/alter-procedure.html"
@@ -221,6 +227,12 @@
               ]
             },
             {
+              "title": "<code>CREATE POLICY</code>",
+              "urls": [
+                "/${VERSION}/create-policy.html"
+              ]
+            },
+            {
               "title": "<code>CREATE PROCEDURE</code>",
               "urls": [
                 "/${VERSION}/create-procedure.html"
@@ -340,6 +352,12 @@
                  "/${VERSION}/drop-owned-by.html"
                ]
              },
+            {
+              "title": "<code>DROP POLICY</code>",
+              "urls": [
+                "/${VERSION}/drop-policy.html"
+              ]
+            },
             {
                "title": "<code>DROP TRIGGER</code>",
                "urls": [
@@ -695,6 +713,12 @@
               ]
             },
             {
+              "title": "<code>SHOW POLICIES</code>",
+              "urls": [
+                "/${VERSION}/show-policies.html"
+              ]
+            },
+            {
               "title": "<code>SHOW RANGES</code>",
               "urls": [
                 "/${VERSION}/show-ranges.html"
@@ -883,6 +907,12 @@
               "title": "Common Table Expressions",
               "urls": [
                 "/${VERSION}/common-table-expressions.html"
+              ]
+            },
+            {
+              "title": "JSONPath Queries",
+              "urls": [
+                "/${VERSION}/jsonpath.html"
               ]
             },
             {

@@ -363,6 +363,7 @@ The CockroachDB [DB Console]({% link {{ page.version.version }}/ui-overview.md %
 
 ## What's next?
 
+- [Create a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?experience=enterprise) where you can [generate and manage licenses]({% link {{ page.version.version }}/licensing-faqs.md %}) for CockroachDB installations
 - Learn more about [CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}) and the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [Install the client driver]({% link {{ page.version.version }}/install-client-drivers.md %}) for your preferred language
 - [Build an app with CockroachDB]({% link {{ page.version.version }}/example-apps.md %})

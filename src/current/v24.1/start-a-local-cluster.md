@@ -386,6 +386,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
 ## What's next?
 
+- [Create a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?experience=enterprise) where you can [generate and manage licenses]({% link {{ page.version.version }}/licensing-faqs.md %}) for CockroachDB installations
 - [Install the client driver]({% link {{ page.version.version }}/install-client-drivers.md %}) for your preferred language
 - Learn more about [CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}) and the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [Build an app with CockroachDB]({% link {{ page.version.version }}/example-apps.md %})

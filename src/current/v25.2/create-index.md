@@ -44,10 +44,11 @@ Parameter | Description
 ----------|------------
 `UNIQUE` | Apply the [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %}) to the indexed columns.<br><br>This causes the system to check for existing duplicate values on index creation. It also applies the `UNIQUE` constraint at the table level, so the system checks for duplicate values when inserting or updating data.
 `INVERTED` | Create a [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}) on the schemaless data in the specified [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) column.<br><br> You can also use the PostgreSQL-compatible syntax `USING GIN`. For more details, see [GIN Indexes]({% link {{ page.version.version }}/inverted-indexes.md %}#creation).
+`VECTOR` | Create a [vector index]({% link {{ page.version.version }}/vector-indexes.md %}) on the specifed [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) column.<br><br>For more details, refer to [Vector Indexes]({% link {{ page.version.version }}/vector-indexes.md %}).
 `IF NOT EXISTS` | Create a new index only if an index of the same name does not already exist; if one does exist, do not return an error.
 `opt_index_name`<br>`index_name` | The name of the index to create, which must be unique to its table and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers).<br><br>If you do not specify a name, CockroachDB uses the format `<table>_<columns>_key/idx`. `key` indicates the index applies the `UNIQUE` constraint; `idx` indicates it does not. Example: `accounts_balance_idx`
 `table_name` | The name of the table you want to create the index on.
-`USING name` | An optional clause for compatibility with third-party tools. Accepted values for `name` are `btree`, `gin`, and `gist`, with `btree` for a standard secondary index, `gin` as the PostgreSQL-compatible syntax for a [GIN index](#create-gin-indexes), and `gist` for a [spatial index]({% link {{ page.version.version }}/spatial-indexes.md %}).
+`USING name` | An optional clause for compatibility with third-party tools. Accepted values for `name` are `btree`, `gin`, and `gist`, with `btree` for a standard secondary index, `gin` as the PostgreSQL-compatible syntax for a [GIN index](#create-gin-indexes), `gist` for a [spatial index]({% link {{ page.version.version }}/spatial-indexes.md %}), and `cspann` for a [vector index]({% link {{ page.version.version }}/vector-indexes.md %}). `hnsw` is aliased to `cspann` for compatibility with [`pgvector`](https://github.com/pgvector/pgvector) syntax.
 `name` | The name of the column you want to index. For [multi-region tables]({% link {{ page.version.version }}/multiregion-overview.md %}#table-localities), you can use the `crdb_region` column within the index in the event the original index may contain non-unique entries across multiple, unique regions.
 `ASC` or `DESC`| Sort the column in ascending (`ASC`) or descending (`DESC`) order in the index. How columns are sorted affects query results, particularly when using `LIMIT`.<br><br>__Default:__ `ASC`
 `STORING ...`| Store (but do not sort) each column whose name you include.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).  Note that columns that are part of a table's [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %}) cannot be specified as `STORING` columns in secondary indexes on the table.<br><br>`COVERING` and `INCLUDE` are aliases for `STORING` and work identically.
@@ -174,6 +175,17 @@ CREATE INDEX geom_idx_2
 {{site.data.alerts.callout_danger}}
 Most users should not change the default spatial index settings. There is a risk that you will get worse performance by changing the default settings. For more information , see [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %}).
 {{site.data.alerts.end}}
+
+### Create vector indexes
+
+{% include_cached new-in.html version="v25.2" %} You can create [vector indexes]({% link {{ page.version.version }}/vector-indexes.md %}) on [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) columns.
+
+To create a vector index on a `VECTOR` column named `embedding`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE VECTOR INDEX ON items (embedding);
+~~~
 
 ### Store columns
 
