@@ -40,7 +40,6 @@ Okta disables deprovisioned users and does not support deleting them.
 * Deactivate users
 * Import users
 * Import groups
-* Profile sourcing (Management of certain user fields from the IdP)
 * Group push
 
 ### SCIM Group Push with Okta
