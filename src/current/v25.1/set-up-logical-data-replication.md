@@ -29,7 +29,7 @@ If you're setting up bidirectional LDR, both clusters will act as a source and a
 
 1. Prepare the clusters with the required settings, users, and privileges according to the LDR setup.
 1. Set up [external connection(s)]({% link {{ page.version.version }}/create-external-connection.md %}) on the destination to hold the connection URI for the source.
-1. Start LDR from the destination cluster with your required modes and syntax.
+1. Start LDR from the destination cluster with your required syntax and options.
 1. Check the status of the LDR job in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}).
 
 ## Before you begin
@@ -52,15 +52,26 @@ You cannot use LDR on a table with a schema that contains:
 - [Partial indexes]({% link {{ page.version.version }}/partial-indexes.md %}) and [hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %})
 - Indexes with a [virtual computed column]({% link {{ page.version.version }}/computed-columns.md %})
 - Composite types in the [primary key]({% link {{ page.version.version }}/primary-key.md %})
+- [Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies
 
 Additionally, for the `CREATE LOGICALLY REPLCATED` syntax, you cannot use LDR on a table with a schema that contains:
 
 - [User-defined types]({% link {{ page.version.version }}/enum.md %}) 
-- [Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies
 
 For more details, refer to the LDR [Known limitations]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#known-limitations).
 
-When you run LDR in [`immediate` mode](#modes), you cannot replicate a table with [foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}). In [`validated` mode](#modes), foreign key constraints **must** match. All constraints are enforced at the time of SQL/application write.
+#### Unique secondary indexes
+
+In LDR, the presence of unique [secondary index]({% link {{ page.version.version }}/schema-design-indexes.md %}) constraints on the destination table can increase the likelihood of rows being sent to the [_dead letter queue_ (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}). The two clusters in LDR operate independently, so writes to one cluster can conflict with writes to the other.
+
+If the application modifies the same row in both clusters, LDR resolves the conflict using _last write wins_ (LWW) conflict resolution. [`UNIQUE` constraints]({% link {{ page.version.version }}/unique.md %}) are validated locally in each cluster, therefore if a replicated write violates a `UNIQUE` constraint on the destination cluster—possibly because a conflicting write was already applied to the row—the replicating row will be applied to the DLQ. 
+
+For example, consider a table with a unique `email` column. If an application attempts to insert (`gen_random_uuid()`, `user@email.com`) into both clusters simultaneously, the insert will succeed in both clusters, but the records will have different [primary keys]({% link {{ page.version.version }}/primary-key.md %}). When the rows are replicated, LDR will DLQ the row in the peer cluster. 
+
+To reduce DLQ entries and allow LDR to be eventually consistent, we recommend:
+
+- For **unidirectional** LDR, validate unique index constraints on the source cluster only. 
+- For **bidirectional** LDR, remove unique index constraints on both clusters.
 
 ## Step 1. Prepare the cluster
 
@@ -152,11 +163,6 @@ You can use the `cockroach encode-uri` command to generate a connection string c
 
 In this step, you'll start the LDR stream(s) from the destination cluster. You can replicate one or multiple tables in a single LDR job. You cannot replicate system tables in LDR, which means that you must manually apply configurations and cluster settings, such as [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) and user permissions on the destination cluster.
 
-<a id="modes"></a>_Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
-
-- `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
-- `validated`: {% include {{ page.version.version }}/ldr/validated-description.md %}
-
 ### Syntax
 
 LDR streams can be started using one of the following SQL statements, depending on your requirements:
@@ -206,8 +212,6 @@ Ensure you've created the table on the destination cluster with a matching schem
 ~~~ sql
 CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.source_table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.destination_table_name};
 ~~~
-
-You can change the default `mode` using the `WITH mode = validated` syntax.
 
 If you would like to add multiple tables to the LDR job, ensure that the table name in the source table list and destination table list are in the same order:
 

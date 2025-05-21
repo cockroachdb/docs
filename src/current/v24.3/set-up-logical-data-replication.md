@@ -22,7 +22,7 @@ If you're setting up bidirectional LDR, both clusters will act as a source and a
 
 1. Prepare the tables on each cluster with the prerequisites for starting LDR.
 1. Set up an [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) on cluster B (which will be the destination cluster initially) to hold the connection URI for cluster A.
-1. Start LDR from cluster B with your required modes.
+1. Start LDR from cluster B with your required options.
 1. (Optional) Run Steps 1 to 3 again with cluster B as the source and A as the destination, which starts LDR streaming from cluster B to A.
 1. Check the status of the LDR job in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}).
 
@@ -35,10 +35,6 @@ You'll need:
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
     - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Step 2. Connect from the destination to the source](#step-2-connect-from-the-destination-to-the-source).
 - LDR replicates at the table level, which means clusters can contain other tables that are not part of the LDR job. If both clusters are empty, create the tables that you need to replicate with **identical** schema definitions (excluding indexes) on both clusters. If one cluster already has an existing table that you'll replicate, ensure the other cluster's table definition matches. For more details on the supported schemas, refer to [Schema Validation](#schema-validation).
-
-{% comment  %}To add later, after further dev work{{site.data.alerts.callout_info}}
-If you need to run LDR through a load balancer, use the load balancer IP address as the SQL advertise address on each cluster. It is important to note that using a load balancer with LDR can impair performance.
-{{site.data.alerts.end}}{% endcomment %}
 
 To create bidirectional LDR, you can complete the [optional step](#step-4-optional-set-up-bidirectional-ldr) to start the second LDR job that sends writes from the table on cluster B to the table on cluster A.
 
@@ -55,7 +51,20 @@ You cannot use LDR on a table with a schema that contains the following:
 
 For more details, refer to the LDR [Known limitations]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#known-limitations).
 
-When you run LDR in [`immediate` mode](#modes), you cannot replicate a table with [foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}). In [`validated` mode](#modes), foreign key constraints **must** match. All constraints are enforced at the time of SQL/application write.
+LDR does not support replicating a table with [foreign key constraints]({% link {{ page.version.version }}/foreign-key.md %}). 
+
+#### Unique secondary indexes
+
+In LDR, the presence of unique [secondary index]({% link {{ page.version.version }}/schema-design-indexes.md %}) constraints on the destination table can increase the likelihood of rows being sent to the [_dead letter queue_ (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}). The two clusters in LDR operate independently, so writes to one cluster can conflict with writes to the other.
+
+If the application modifies the same row in both clusters, LDR resolves the conflict using _last write wins_ (LWW) conflict resolution. [`UNIQUE` constraints]({% link {{ page.version.version }}/unique.md %}) are validated locally in each cluster, therefore if a replicated write violates a `UNIQUE` constraint on the destination cluster—possibly because a conflicting write was already applied to the row—the replicating row will be applied to the DLQ. 
+
+For example, consider a table with a unique `email` column. If an application attempts to insert (`gen_random_uuid()`, `user@email.com`) into both clusters simultaneously, the insert will succeed in both clusters, but the records will have different [primary keys]({% link {{ page.version.version }}/primary-key.md %}). When the rows are replicated, LDR will DLQ the row in the peer cluster. 
+
+To reduce DLQ entries and allow LDR to be eventually consistent, we recommend:
+
+- For **unidirectional** LDR, validate unique index constraints on the source cluster only. 
+- For **bidirectional** LDR, remove unique index constraints on both clusters.
 
 ## Step 1. Prepare the cluster
 
@@ -117,19 +126,12 @@ You can use the `cockroach encode-uri` command to generate a connection string c
 
 In this step, you'll start the LDR job from the destination cluster. You can replicate one or multiple tables in a single LDR job. You cannot replicate system tables in LDR, which means that you must manually apply configurations and cluster settings, such as [row-level TTL]({% link {{ page.version.version }}/row-level-ttl.md %}) and user permissions on the destination cluster.
 
-<a id="modes"></a>_Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
-
-- `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
-- `validated`: {% include {{ page.version.version }}/ldr/validated-description.md %}
-
 1. From the **destination** cluster, start LDR. Use the fully qualified table name for the source and destination tables:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.source_table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.destination_table_name};
     ~~~
-
-    You can change the default `mode` using the `WITH mode = validated` syntax.
 
     If you would like to add multiple tables to the LDR job, ensure that the table name in the source table list and destination table list are in the same order:
 
