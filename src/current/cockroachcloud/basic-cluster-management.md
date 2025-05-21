@@ -35,7 +35,7 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 1. On the **Edit cluster** page, navigate to **Capacity**.
 1. Under the **Estimate cost based on usage** section, select a time period in which your workload was active.
 
-    Your used [RUs]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrued costs and monthly cost estimate do not account for the [free resources]({% link cockroachcloud/plan-your-cluster-basic.md %}#free-vs-paid-usage) granted to each non-contract organization, which you would have to use up before being charged.
+    Your used [RUs]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrued costs and monthly cost estimate do not account for the [$15 of free resources each month]({% link cockroachcloud/plan-your-cluster-basic.md %}#free-vs-paid-usage) granted to each organization (excluding those with annual or multi-year contracts), which you would have to use up before being charged.
 
 ## Edit cluster capacity
 
