@@ -5,8 +5,6 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-
 Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
@@ -66,14 +64,6 @@ Option | Description
 `cursor` | Emits any changes after the specified timestamp. LDR will not perform an initial backfill with the `cursor` option, it will stream any changes after the specified timestamp. The LDR job will encounter an error if you specify a `cursor` timestamp that is before the configured [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) window for that table. **Warning:** Apply the `cursor` option carefully to LDR streams. Using a timestamp in error could cause data loss.
 <a id="discard-ttl-deletes-option"></a>`discard` | ([**Unidirectional LDR only**]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#use-cases)) Ignore [TTL deletes]({% link {{ page.version.version }}/row-level-ttl.md %}) in an LDR stream with `discard = ttl-deletes`. **Note**: To ignore row-level TTL deletes in an LDR stream, it is necessary to set the [`ttl_disable_changefeed_replication`]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) storage parameter on the source table. Refer to the [Ignore row-level TTL deletes](#ignore-row-level-ttl-deletes) example.
 `label` | Tracks LDR metrics at the job level. Add a user-specified string with `label`. Refer to [Metrics labels]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}#metrics-labels).
-`mode` | Determines how LDR replicates the data to the destination cluster. Possible values: `immediate`, `validated`. For more details, refer to [LDR modes](#ldr-modes).
-
-## LDR modes
-
-_Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
-
-- `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
-- `validated`: {% include {{ page.version.version }}/ldr/validated-description.md %}
 
 ## Bidirectional LDR
 

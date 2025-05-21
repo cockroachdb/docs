@@ -6,8 +6,6 @@ docs_area: manage
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-
 Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
