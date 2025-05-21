@@ -165,12 +165,11 @@ CockroachDB comes with a number of [built-in workloads]({% link {{ page.version.
 
 1. SSH to the VM where you want to run TPC-C.
 
-1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
+1. Download [CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}), extract the binary, and copy it into the `PATH`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
+    tar -xz cockroach-{{ page.release_info.version }}.linux-amd64.tgz
     ~~~
 
     {% include_cached copy-clipboard.html %}

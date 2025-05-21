@@ -55,17 +55,16 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 1. Install HAProxy:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  $ apt-get install haproxy
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ apt-get install haproxy
+    ~~~
 
-1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
+1. Download [CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}), and extract the binary:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
+    tar -xz cockroach-{{ page.release_info.version }}.linux-amd64.tgz
     ~~~
 
 1. Copy the binary into the `PATH`:
@@ -75,7 +74,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-  If you get a permissions error, prefix the command with `sudo`.
+    If you get a permissions error, prefix the command with `sudo`.
 
 1. Run the [`cockroach gen haproxy`]({% link {{ page.version.version }}/cockroach-gen.md %}) command, specifying the address of any CockroachDB node:
 
@@ -90,10 +89,10 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 1. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  $ haproxy -f haproxy.cfg
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ haproxy -f haproxy.cfg
+    ~~~
 
 1. Repeat these steps for each additional instance of HAProxy you want to run.
 
