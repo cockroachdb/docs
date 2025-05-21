@@ -41,7 +41,7 @@ CREATE CHANGEFEED FOR TABLE tbl FAMILY f_1, TABLE tbl FAMILY f_2;
 
 ## Message format
 
-The response will follow a typical [changefeed message format]({% link {{ page.version.version }}/changefeed-messages.md %}#responses), but with the family name appended to the table name with a `.`, in the format `table.family`:
+The response will follow a typical [changefeed message format]({% link {{ page.version.version }}/changefeed-messages.md %}), but with the family name appended to the table name with a `.`, in the format `table.family`:
 
 ~~~
 {"after":{"column":"value"},"key":[1],"topic":"table.family"}
