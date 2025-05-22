@@ -95,7 +95,12 @@ There are some supported schema changes, which you can perform during LDR **with
 Allowlist schema change | Exceptions
 -------------------+-----------
 [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) | <ul><li>[Hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %})</li><li>Indexes with a [computed column]({% link {{ page.version.version }}/computed-columns.md %})</li><li>[Partial indexes]({% link {{ page.version.version }}/partial-indexes.md %})</li><li>[Unique indexes]({% link {{ page.version.version }}/unique.md %})</li></ul>
+<span class="version-tag">New in v25.2:</span> [`ALTER INDEX ... RENAME`]({% link {{ page.version.version }}/alter-index.md %}#rename-to) | N/A
+<span class="version-tag">New in v25.2:</span> [`ALTER INDEX ... NOT VISIBLE`]({% link {{ page.version.version }}/alter-index.md %}#not-visible) | N/A
 [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}) | N/A
+<span class="version-tag">New in v25.2:</span> [`ALTER TABLE ... ALTER COLUMN ... SET DEFAULT`]({% link {{ page.version.version }}/alter-table.md %}#alter-column) | N/A
+<span class="version-tag">New in v25.2:</span> [`ALTER TABLE ... ALTER COLUMN ... DROP DEFAULT`]({% link {{ page.version.version }}/alter-table.md %}#alter-column) | N/A
+<span class="version-tag">New in v25.2:</span> [`ALTER TABLE ... ALTER COLUMN ... SET VISIBLE`]({% link {{ page.version.version }}/alter-table.md %}#set-the-visibility-of-a-column) | N/A
 [Zone configuration]({% link {{ page.version.version }}/show-zone-configurations.md %}) changes | N/A
 [`ALTER TABLE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone) | N/A
 [`ALTER TABLE ... SET/RESET {TTL storage parameters}`]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) | <ul><li>`ALTER TABLE SET (ttl_expire_after = "")`</li><li>`ALTER TABLE RESET (ttl_expire_after = "")`</li><li>`ALTER TABLE RESET (ttl)`</li></ul>
