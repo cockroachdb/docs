@@ -12,12 +12,11 @@ For each additional node you want to add to the cluster, complete the following 
 
 1. SSH to the machine where you want the node to run.
 
-1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
+1. Download [CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}), extract the binary, and copy it into the `PATH`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
+    tar -xz cockroach-{{ page.release_info.version }}.linux-amd64.tgz
     ~~~
 
 1. Copy the binary into the `PATH`:

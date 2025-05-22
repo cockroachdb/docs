@@ -1,11 +1,10 @@
 1. SSH to one of the `n2-standard-4` instances in the `us-west1-a` zone.
 
-1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
+1. Download [CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}), extract the binary, and copy it into the `PATH`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
+    tar -xz cockroach-{{ page.release_info.version }}.linux-amd64.tgz
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -31,12 +30,11 @@
 
 1. SSH to one of the `n2-standard-4` instances in the `us-west2-a` zone.
 
-1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
+1. Download [CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}), extract the binary, and copy it into the `PATH`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
+    tar -xz cockroach-{{ page.release_info.version }}.linux-amd64.tgz
     ~~~
 
     {% include_cached copy-clipboard.html %}
