@@ -438,7 +438,7 @@ Additionally, when other transactions encounter a transaction in `STAGING` state
 
 {% include_cached new-in.html version="v25.2" %} Buffered writes enhance transaction throughput and reduce operational cost by minimizing the number of round trips between the gateway node and other nodes during write operations.
 
-Buffered writes work by temporarily storing a transaction's writes on the [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) until the transaction [commits]({% link {{ page.version.version }}/commit.md %}). This approach reduces redundant writes, minimizes [pipeline](#transaction-pipelining) stalls, and allows the system to serve [read-your-writes](https://jepsen.io/consistency/models/read-your-writes) locally. Most importantly, it allows for passive use of the [1-phase commit (1PC) fast-path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions) which can lead to increased performance.
+Buffered writes work by temporarily storing a transaction's writes on the [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) until the transaction [commits]({% link {{ page.version.version }}/commit-transaction.md %}). This approach reduces redundant writes, minimizes [pipeline](#transaction-pipelining) stalls, and allows the system to serve [read-your-writes](https://jepsen.io/consistency/models/read-your-writes) locally. Most importantly, it allows for passive use of the [1-phase commit (1PC) fast-path]({% link {{ page.version.version }}/ui-distributed-dashboard.md %}#kv-transactions) which can lead to increased performance.
 
 Buffered writes are off by default. To turn them on for the current session, issue the following statement:
 
