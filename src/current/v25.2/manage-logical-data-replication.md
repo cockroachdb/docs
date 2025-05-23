@@ -5,8 +5,6 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-
 Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
@@ -22,7 +20,7 @@ In LDR, conflicts are detected at both the [KV]({% link {{ page.version.version 
 
 ### KV level conflicts
 
-LDR uses _last write wins (LWW)_ conflict resolution based on the [MVCC timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) of the replicating write. LDR will resolve conflicts by inserting the row with the latest MVCC timestamp. Conflicts at the KV level are detected in both `immediate` and `validated` mode.
+LDR uses _last write wins (LWW)_ conflict resolution based on the [MVCC timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) of the replicating write. LDR will resolve conflicts by inserting the row with the latest MVCC timestamp.
 
 Conflicts at the KV level are detected when there is either:
 
@@ -31,20 +29,11 @@ Conflicts at the KV level are detected when there is either:
 
 ### SQL level conflicts
 
-In `validated` mode, when a conflict cannot apply due to violating [constraints]({% link {{ page.version.version }}/constraints.md %}), for example, a foreign key constraint or schema constraint, it will be retried for up to a minute and then put in the [DLQ](#dead-letter-queue-dlq) if it could not be resolved. 
+When a conflict cannot apply due to violating [constraints]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#schema-validation), for example, a schema constraint, LDR will send the row to the [DLQ](#dead-letter-queue-dlq).
 
 ### Dead letter queue (DLQ)
 
-When the LDR job starts, it will create a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ will contain the writes that LDR cannot apply after the retry period, which could occur if:
-
-- The destination table was dropped.
-- The destination cluster is unavailable.
-- Tables schemas do not match.
-
-In `validated` mode, rows are also sent to the DLQ when:
-
-- [Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies are not met where there are foreign key constraints in the schema.
-- Unique indexes and other constraints are not met.
+When the LDR job starts, it will create a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ will contain the writes that LDR cannot apply after the retry period of a minute, which could occur if there is a unique index on the destination table (for more details, refer to [Unique seconday indexes]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#unique-secondary-indexes)).
 
 {{site.data.alerts.callout_info}}
 LDR will not pause when the writes are sent to the DLQ, you must manage the DLQ manually.
@@ -102,7 +91,12 @@ There are some supported schema changes, which you can perform during LDR **with
 Allowlist schema change | Exceptions
 -------------------+-----------
 [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) | <ul><li>[Hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %})</li><li>Indexes with a [computed column]({% link {{ page.version.version }}/computed-columns.md %})</li><li>[Partial indexes]({% link {{ page.version.version }}/partial-indexes.md %})</li><li>[Unique indexes]({% link {{ page.version.version }}/unique.md %})</li></ul>
+<span class="version-tag">New in v25.2:</span> [`ALTER INDEX ... RENAME`]({% link {{ page.version.version }}/alter-index.md %}#rename-to) | N/A
+<span class="version-tag">New in v25.2:</span> [`ALTER INDEX ... NOT VISIBLE`]({% link {{ page.version.version }}/alter-index.md %}#not-visible) | N/A
 [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}) | N/A
+<span class="version-tag">New in v25.2:</span> [`ALTER TABLE ... ALTER COLUMN ... SET DEFAULT`]({% link {{ page.version.version }}/alter-table.md %}#alter-column) | N/A
+<span class="version-tag">New in v25.2:</span> [`ALTER TABLE ... ALTER COLUMN ... DROP DEFAULT`]({% link {{ page.version.version }}/alter-table.md %}#alter-column) | N/A
+<span class="version-tag">New in v25.2:</span> [`ALTER TABLE ... ALTER COLUMN ... SET VISIBLE`]({% link {{ page.version.version }}/alter-table.md %}#set-the-visibility-of-a-column) | N/A
 [Zone configuration]({% link {{ page.version.version }}/show-zone-configurations.md %}) changes | N/A
 [`ALTER TABLE ... CONFIGURE ZONE`]({% link {{ page.version.version }}/alter-table.md %}#configure-zone) | N/A
 [`ALTER TABLE ... SET/RESET {TTL storage parameters}`]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters) | <ul><li>`ALTER TABLE SET (ttl_expire_after = "")`</li><li>`ALTER TABLE RESET (ttl_expire_after = "")`</li><li>`ALTER TABLE RESET (ttl)`</li></ul>
