@@ -33,11 +33,7 @@ When a conflict cannot apply due to violating [constraints]({% link {{ page.vers
 
 ### Dead letter queue (DLQ)
 
-When the LDR job starts, it will create a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ will contain the writes that LDR cannot apply after the retry period of a minute, which could occur if:
-
-- The destination table is unavailable.
-- Table schemas do not match.
-- There is a unique index on the destination table (for more details, refer to [Unique seconday indexes]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#unique-secondary-indexes)).
+When the LDR job starts, it will create a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ will contain the writes that LDR cannot apply after the retry period of a minute, which could occur if there is a unique index on the destination table (for more details, refer to [Unique seconday indexes]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#unique-secondary-indexes)).
 
 {{site.data.alerts.callout_info}}
 LDR will not pause when the writes are sent to the DLQ, you must manage the DLQ manually.
