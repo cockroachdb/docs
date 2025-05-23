@@ -62,13 +62,13 @@ For more details, refer to the LDR [Known limitations]({% link {{ page.version.v
 
 #### Unique secondary indexes
 
-In LDR, the presence of unique [secondary index]({% link {{ page.version.version }}/schema-design-indexes.md %}) constraints on the destination table can increase the likelihood of rows being sent to the [_dead letter queue_ (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}). The two clusters in LDR operate independently, so writes to one cluster can conflict with writes to the other.
+LDR cannot guarantee that the [_dead letter queue_ (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}) will remain empty if the destination table has a unique [secondary index]({% link {{ page.version.version }}/schema-design-indexes.md %}). The two clusters in LDR operate independently, so writes to one cluster can conflict with writes to the other.
 
-If the application modifies the same row in both clusters, LDR resolves the conflict using _last write wins_ (LWW) conflict resolution. [`UNIQUE` constraints]({% link {{ page.version.version }}/unique.md %}) are validated locally in each cluster, therefore if a replicated write violates a `UNIQUE` constraint on the destination cluster—possibly because a conflicting write was already applied to the row—the replicating row will be applied to the DLQ. 
+If the application modifies the same row in both clusters, LDR resolves the conflict using _last write wins_ (LWW) conflict resolution. [`UNIQUE` constraints]({% link {{ page.version.version }}/unique.md %}) are validated locally in each cluster, therefore if a replicated write violates a `UNIQUE` constraint on the destination cluster (possibly because a conflicting write was already applied to the row) the replicating row will be applied to the DLQ. 
 
-For example, consider a table with a unique `email` column. If an application attempts to insert (`gen_random_uuid()`, `user@email.com`) into both clusters simultaneously, the insert will succeed in both clusters, but the records will have different [primary keys]({% link {{ page.version.version }}/primary-key.md %}). When the rows are replicated, LDR will DLQ the row in the peer cluster. 
+For example, consider a table with a unique `email` column. If an application attempts to insert (`gen_random_uuid()`, `user@email.com`) into both clusters simultaneously, the insert will succeed in both clusters, but the records will have different [primary keys]({% link {{ page.version.version }}/primary-key.md %}) and the same email address, which violates the `UNIQUE` constraint. When the rows are replicated, LDR will DLQ the row in the peer cluster. 
 
-To reduce DLQ entries and allow LDR to be eventually consistent, we recommend:
+To prevent expected DLQ entries and allow LDR to be eventually consistent, we recommend:
 
 - For **unidirectional** LDR, validate unique index constraints on the source cluster only. 
 - For **bidirectional** LDR, remove unique index constraints on both clusters.
