@@ -39,7 +39,6 @@ When the LDR job starts, it will create a DLQ table with each replicating table 
 
 - The destination table is unavailable.
 - [Loss of quorum]({% link {{ page.version.version }}/architecture/replication-layer.md %}#overview) of the underlying [ranges]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#range) in the destination table.
-- Table schemas do not match.
 - There is a unique index on the destination table (for more details, refer to [Unique seconday indexes]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#unique-secondary-indexes)).
 
 {{site.data.alerts.callout_info}}
