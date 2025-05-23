@@ -59,6 +59,10 @@ You can disable the use of implicit credentials when accessing external cloud st
 
 ### Example file URLs
 
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/backups/external-storage-check-tip.md %}
+{{site.data.alerts.end}}
+
 Example URLs for [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), [`RESTORE`]({% link {{ page.version.version }}/restore.md %}),  or [`EXPORT`]({% link {{ page.version.version }}/export.md %}) given a bucket or container name of `acme-co` and an `employees` subdirectory:
 
 Location     | Example
