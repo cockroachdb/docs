@@ -216,8 +216,8 @@ You will need to run [`ALTER TABLE ... ADD CONSTRAINT`]({% link {{ page.version.
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from CSV][csv]
-- [Migrate from MySQL][mysql]
-- [Migrate from PostgreSQL][postgres]
+- [Migrate from MySQL]({% link molt/migrate-to-cockroachdb.md %}?filters=mysql)
+- [Migrate from PostgreSQL]({% link molt/migrate-to-cockroachdb.md %})
 - [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

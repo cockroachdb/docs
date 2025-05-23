@@ -37,7 +37,7 @@ Complete the following items before using Striim:
     - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**]({% link cockroachcloud/migrations-page.md %}) to convert and export your schema. Ensure that any schema changes are also reflected on your tables.
 
     {{site.data.alerts.callout_info}}
-    All tables must have an explicitly defined primary key. For more guidance, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#schema-design-best-practices).
+    All tables must have an explicitly defined primary key. For more guidance, see [Migration Strategy]({% link molt/migration-strategy.md %}#schema-design-best-practices).
     {{site.data.alerts.end}}
 
 ## Migrate and replicate data to CockroachDB
@@ -110,7 +110,7 @@ To perform continuous replication of ongoing changes, create a Striim applicatio
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %})
 - [Third-Party Tools Supported by Cockroach Labs]({% link {{ page.version.version }}/third-party-database-tools.md %})
