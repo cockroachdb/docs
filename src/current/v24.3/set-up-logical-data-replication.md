@@ -48,6 +48,7 @@ You cannot use LDR on a table with a schema that contains the following:
 - [Partial indexes]({% link {{ page.version.version }}/partial-indexes.md %}) and [hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %})
 - Indexes with a [virtual computed column]({% link {{ page.version.version }}/computed-columns.md %})
 - Composite types in the [primary key]({% link {{ page.version.version }}/primary-key.md %})
+- [Foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies
 
 For more details, refer to the LDR [Known limitations]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#known-limitations).
 
