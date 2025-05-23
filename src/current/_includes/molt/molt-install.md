@@ -9,7 +9,7 @@ The following binaries are included:
 - `molt`
 - `replicator`. To use replication features, `replicator` **must** be located either in the same directory as `molt` or in a directory beneath `molt`.
 
-To display the current version of each binary, run `molt --version` and `replicator --version`, respectively.
+To display the current version of each binary, run `molt --version` and `replicator --version`.
 
 For previous binaries, refer to the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions.html). {% if page.name != "molt.md" %}For release details, refer to the [MOLT changelog]({% link releases/molt.md %}).{% endif %}
 
