@@ -24,7 +24,7 @@ MOLT Fetch/Verify 1.2.6 is [available](#installation).
 
 - Fixed a bug in [`--direct-copy` mode]({% link molt/molt-fetch.md %}#direct-copy) that occurred when [`--case-sensitive`]({% link molt/molt-fetch.md %}#global-flags) was set to `false` (default). Previously, the `COPY` query could use incorrect column names in some cases when transferring data, thus causing errors. The correct column names are now used.
 - Fixed a bug in how origin messages were handled during replication from PostgreSQL sources. This allows replication to successfully continue.
-- `ENUM` values can now be replicated from MySQL sources.
+- `ENUM` types can now be replicated from MySQL 8.0 sources.
 
 ## April 25, 2025
 
