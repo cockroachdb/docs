@@ -37,7 +37,6 @@ When a conflict cannot apply due to violating [constraints]({% link {{ page.vers
 
 When the LDR job starts, it will create a DLQ table with each replicating table so that unresolved conflicts can be tracked. The DLQ will contain the writes that LDR cannot apply after the retry period of a minute, which could occur if:
 
-- The destination table is unavailable.
 - [Loss of quorum]({% link {{ page.version.version }}/architecture/replication-layer.md %}#overview) of the underlying [ranges]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#range) in the destination table.
 - There is a unique index on the destination table (for more details, refer to [Unique seconday indexes]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}#unique-secondary-indexes)).
 
