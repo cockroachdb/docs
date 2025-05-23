@@ -26,6 +26,10 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 
 {% include {{ page.version.version }}/known-limitations/rls-values-on-conflict-do-nothing.md %}
 
+#### Row-level security metadata leakage
+
+{% include {{ page.version.version }}/known-limitations/rls-visibility-issue.md %}
+
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.
