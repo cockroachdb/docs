@@ -66,6 +66,20 @@ You can use either:
 - `SYSTEM TIME` to specify a [timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}).
 - `LATEST` to specify the most recent replicated timestamp.
 
+When a virtual cluster is [`ready`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) after initiating the cutover process, you must start the service so that the virtual cluster is ready to accept SQL connections:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER VIRTUAL CLUSTER main START SERVICE SHARED;
+~~~
+
+To stop the `shared` service for a virtual cluster and prevent it from accepting SQL connections:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER VIRTUAL CLUSTER main STOP SERVICE;
+~~~
+
 ### Start the cutback process
 
 To [cut back]({% link {{ page.version.version }}/cutover-replication.md %}#cutback) to a cluster that was previously the primary cluster, use the `ALTER VIRTUAL CLUSTER` syntax:
@@ -80,22 +94,6 @@ The original primary virtual cluster may be almost up to date with the promoted 
 {{site.data.alerts.callout_info}}
 If you started the original PCR stream on an existing cluster without virtualization enabled, refer to the [Cut back after PCR from an existing cluster]({% link {{ page.version.version }}/cutover-replication.md %}) section for instructions.
 {{site.data.alerts.end}}
-
-### Start a virtual cluster
-
-When a virtual cluster is [`ready`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) after initiating the cutover process, you must start the service so that the virtual cluster is ready to accept SQL connections:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER VIRTUAL CLUSTER main START SERVICE SHARED;
-~~~
-
-To stop the `shared` service for a virtual cluster and prevent it from accepting SQL connections:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER VIRTUAL CLUSTER main STOP SERVICE;
-~~~
 
 ## See also
 

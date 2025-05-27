@@ -65,8 +65,6 @@ You can use either:
 - `SYSTEM TIME` to specify a [timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}).
 - `LATEST` to specify the most recent replicated timestamp.
 
-### Start a virtual cluster
-
 When a virtual cluster is [`ready`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) after initiating the cutover process, you must start the service so that the virtual cluster is ready to accept SQL connections:
 
 {% include_cached copy-clipboard.html %}
