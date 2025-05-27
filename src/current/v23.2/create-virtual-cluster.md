@@ -61,6 +61,14 @@ Value | Description
 `sslmode=verify-full` | The `verify-full` secure connection type.
 `sslrootcert={primary cert}` | The path to the primary cluster's CA certificate on the standby cluster.
 
+## Capabilities
+
+{{site.data.alerts.callout_info}}
+Cockroach Labs does not recommend changing the default capabilities of created virtual clusters.
+{{site.data.alerts.end}}
+
+_Capabilities_ control what a virtual cluster can do. The [configuration profile]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#start-the-standby-cluster) included at startup creates the `template` virtual cluster with the same set of capabilities per CockroachDB version. When you start a replication stream, you can specify the `template` VC with `LIKE` to ensure other virtual clusters on the standby cluster will work in the same way. `LIKE` will refer to a virtual cluster on the CockroachDB cluster you're running the statement from.
+
 ## Examples
 
 ### Start a replication stream
