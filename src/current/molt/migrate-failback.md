@@ -14,14 +14,12 @@ Failback can be performed after you have loaded data into CockroachDB and are re
 
 ## Before you begin
 
-- [Enable rangefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) in the CockroachDB SQL shell:
+[Enable rangefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) in the CockroachDB SQL shell:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING kv.rangefeed.enabled = true;
-    ~~~
-
-- Ensure that your CockroachDB deployment has a valid [Enterprise license]({% link {{ site.current_cloud_version }}/licensing-faqs.md %}).
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING kv.rangefeed.enabled = true;
+~~~
 
 Select the source dialect you migrated to CockroachDB:
 

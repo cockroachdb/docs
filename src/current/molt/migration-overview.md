@@ -29,8 +29,8 @@ A migration to CockroachDB generally follows this sequence:
 1. Convert the source schema: Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) to generate CockroachDB-compatible [DDL]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements). Apply the converted schema to the target database. Drop constraints and indexes to facilitate data load.
 1. Load data into CockroachDB: Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to bulk-ingest your source data.
 1. (Optional) Verify consistency before replication: Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the data loaded into CockroachDB is consistent with the source.
-1. Replicate ongoing changes: Enable continuous replication with [MOLT Fetch]({% link {{ page.version.version }}/molt-fetch.md %}#replicate-changes) to keep CockroachDB in sync with the source.
-1. Verify consistency before cutover: Use [MOLT Verify]({% link {{ page.version.version }}/molt-verify.md %}) to confirm that the CockroachDB data is consistent with the source.
+1. Replicate ongoing changes: Enable continuous replication with [MOLT Fetch]({% link molt/molt-fetch.md %}#replicate-changes) to keep CockroachDB in sync with the source.
+1. Verify consistency before cutover: Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the CockroachDB data is consistent with the source.
 1. Finalize target schema: Recreate indexes or constraints on CockroachDB that you previously dropped to facilitate data load.
 1. Cut over to CockroachDB. Redirect application traffic to the CockroachDB cluster.
 
@@ -58,13 +58,13 @@ MOLT [Fetch](#fetch) and [Verify](#verify) are CLI-based to maximize control, au
   <tr>
     <td class="comparison-chart__feature"><a href="#fetch"><b>Fetch</b></a></td>
     <td>Initial data load; optional continuous replication</td>
-    <td>PostgreSQL 11-15, MySQL 5.7-8.0+, CockroachDB</td>
+    <td>PostgreSQL 11-16, MySQL 5.7-8.0+, CockroachDB</td>
     <td>GA</td>
   </tr>
   <tr>
     <td class="comparison-chart__feature"><a href="#verify"><b>Verify</b></a></td>
     <td>Schema and data validation</td>
-    <td>PostgreSQL 12-15, MySQL 5.7-8.0+, CockroachDB</td>
+    <td>PostgreSQL 12-16, MySQL 5.7-8.0+, CockroachDB</td>
     <td><a href="{% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}">Preview</a></td>
   </tr>
 </table>
@@ -96,7 +96,6 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 - Table structure verification
 - Column definition verification
 - Row-level data verification
-{% comment %}- Continuous, live, or one-time verification{% endcomment %}
 
 ## Migration modes
 

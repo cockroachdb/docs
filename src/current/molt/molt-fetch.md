@@ -13,7 +13,7 @@ MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-in
 
 The following source databases are currently supported:
 
-- PostgreSQL 11-15
+- PostgreSQL 11-16
 - MySQL 5.7, 8.0 and later
 - CockroachDB
 
