@@ -27,8 +27,8 @@ CockroachDB has two implementations of changefeeds:
 <table class="comparison-chart">
   <tr>
     <th></th>
-    <th>Basic changefeeds</th>
-    <th>Enterprise changefeeds</th>
+    <th>Sinkless changefeeds</th>
+    <th>Changefeeds</th>
   </tr>
 
   <tr>
@@ -44,7 +44,7 @@ CockroachDB has two implementations of changefeeds:
       <b>Product availability</b>
     </td>
     <td>All products</td>
-    <td>CockroachDB {{ site.data.products.basic }}, {{ site.data.products.standard }}, {{ site.data.products.advanced }}, or with an <a href="licensing-faqs.html#types-of-licenses">{{ site.data.products.enterprise }} license</a> in CockroachDB {{ site.data.products.core }}.</td>
+    <td>All products</td>
   </tr>
 
   <tr>
@@ -52,15 +52,15 @@ CockroachDB has two implementations of changefeeds:
       <b>Message delivery</b>
     </td>
     <td>Streams indefinitely until underlying SQL connection is closed.</td>
-    <td>Maintains connection to configured <a href="{% link {{ page.version.version }}/changefeed-sinks.md %}">sink</a>: <br>Amazon S3, Azure Event Hubs, Azure Storage, Confluent Cloud, Google Cloud Pub/Sub, Google Cloud Storage, HTTP, Kafka, Webhook.</td>
+    <td>Maintains connection to configured <a href="{% link {{ page.version.version }}/changefeed-sinks.md %}">sink</a></td>
   </tr>
 
   <tr>
     <td class="comparison-chart__feature">
       <b>SQL statement</b>
     </td>
-    <td>Create with <a href="changefeed-for.html"><code>EXPERIMENTAL CHANGEFEED FOR</code></a></td>
-    <td>Create with <a href="create-changefeed.html"><code>CREATE CHANGEFEED</code></a></td>
+    <td>Create with <a href="create-changefeed.html"><code>CREATE CHANGEFEED FOR TABLE table_name;</code></a></td>
+    <td>Create with <a href="create-changefeed.html"><code>CREATE CHANGEFEED FOR TABLE table_name INTO 'sink';</code></a></td>
   </tr>
 
   <tr>
@@ -75,7 +75,7 @@ CockroachDB has two implementations of changefeeds:
     <td class="comparison-chart__feature">
       <b>Filter change data</b>
     </td>
-    <td>Not supported</td>
+    <td>Use <a href="{% link {{ page.version.version }}/cdc-queries.md %}">CDC queries</a> to define the emitted change data.</td>
     <td>Use <a href="{% link {{ page.version.version }}/cdc-queries.md %}">CDC queries</a> to define the emitted change data.</td>
   </tr>
 
@@ -128,7 +128,7 @@ To get started with changefeeds in CockroachDB, refer to:
 - [Create and Configure Changefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}): Learn about the fundamentals of using SQL statements to create and manage Enterprise and basic changefeeds.
 - [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}): The downstream system to which the changefeed emits changes. Learn about the supported sinks and configuration capabilities.
 - [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %}): The change events that emit from the changefeed to your sink. Learn about how messages are ordered at your sink and the options to configure and format messages.
-- [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}): Step-by-step examples for connecting to each changefeed sink.
+- [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}): Step-by-step examples for connecting to each changefeed sink or running sinkless changefeeds.
 
 ### Authenticate to your changefeed sink
 
