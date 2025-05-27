@@ -60,7 +60,39 @@ LDR cannot guarantee that the [_dead letter queue_ (DLQ)]({% link {{ page.versio
 
 If the application modifies the same row in both clusters, LDR resolves the conflict using _last write wins_ (LWW) conflict resolution. [`UNIQUE` constraints]({% link {{ page.version.version }}/unique.md %}) are validated locally in each cluster, therefore if a replicated write violates a `UNIQUE` constraint on the destination cluster (possibly because a conflicting write was already applied to the row) the replicating row will be applied to the DLQ. 
 
-For example, consider a table with a unique `email` column. If an application attempts to insert (`gen_random_uuid()`, `user@email.com`) into both clusters simultaneously, the insert will succeed in both clusters, but the records will have different [primary keys]({% link {{ page.version.version }}/primary-key.md %}) and the same email address, which violates the `UNIQUE` constraint. When the rows are replicated, LDR will DLQ the row in the peer cluster. 
+For example, consider a table with a unique `name` column where the following operations occur in this order in a source and destination cluster running LDR:
+
+On the **source cluster**:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSERT INTO city (1, nyc); -- timestamp 1
+UPDATE city SET name = 'philly' WHERE id = 1; -- timestamp 2
+INSERT INTO city (100, nyc); -- timestamp 3
+~~~
+
+LDR replicates the write to the **destination cluster**: 
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSERT INTO city (100, nyc); -- timestamp 4
+~~~
+
+_Timestamp 5:_ Range containing primary key `1` on the destination cluster is unavailable for a few minutes due to a network partition.
+
+_Timestamp 6:_ On the destination cluster, LDR attempts to replicate the row `(1, nyc)`, but it enters the retry queue for 1 minute due to the unavailable range. LDR adds `1, nyc` to the DLQ after having retried for 1 minute and observing the `UNIQUE` constraint violation:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSERT INTO city (1, nyc); -- timestamp 6
+~~~
+
+_Timestamp 7:_ LDR continues replication writes:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSERT INTO city (1, philly); -- timestamp 7
+~~~
 
 To prevent expected DLQ entries and allow LDR to be eventually consistent, we recommend:
 
