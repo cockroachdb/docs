@@ -251,6 +251,10 @@
   sources: ['grant-roles.md']
   versions: ['v21.1']
 
+- destination: how-does-a-changefeed-work.md
+  sources: ['how-does-an-enterprise-changefeed-work.md']
+  versions: ['v25.2']
+
 - destination: kubernetes-overview.md
   sources: ['operate-cockroachdb-kubernetes.md']
   versions: ['v21.2']
