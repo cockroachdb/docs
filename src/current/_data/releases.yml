@@ -9148,7 +9148,6 @@
   previous_release: v24.3.12
 
 
-<<<<<<< HEAD
 - release_name: v25.1.7
   major_version: v25.1
   release_date: '2025-05-28'
@@ -9184,8 +9183,6 @@
       [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 
-=======
->>>>>>> e6811d429 (Kathryn comments, merge upstream)
 - release_name: v24.3.14
   major_version: v24.3
   release_date: '2025-05-28'
