@@ -35,13 +35,15 @@ Create a document that summarizes the intent of the migration, the technical det
 
 It's important to fully [prepare the migration](#prepare-for-migration) in order to be certain that the migration can be completed successfully during the downtime window.
 
-- *Scheduled downtime* is made known to your users in advance. Once you have [prepared for the migration](#prepare-for-migration), you take the application offline, [conduct the migration]({% link molt/migration-overview.md %}), and bring the application back online on CockroachDB. To succeed, you should estimate the amount of downtime required to migrate your data, and ideally schedule the downtime outside of peak hours. Scheduling downtime is easiest if your application traffic is "periodic", meaning that it varies by the time of day, day of week, or day of month.
+- *Planned downtime* is made known to your users in advance. Once you have [prepared for the migration](#prepare-for-migration), you take the application offline, [conduct the migration]({% link molt/migration-overview.md %}), and bring the application back online on CockroachDB. To succeed, you should estimate the amount of downtime required to migrate your data, and ideally schedule the downtime outside of peak hours. Scheduling downtime is easiest if your application traffic is "periodic", meaning that it varies by the time of day, day of week, or day of month.
 
-- *Unscheduled downtime* impacts as few customers as possible, ideally without impacting their regular usage. If your application is intentionally offline at certain times (e.g., outside business hours), you can migrate the data without users noticing. Alternatively, if your application's functionality is not time-sensitive (e.g., it sends batched messages or emails), then you can queue requests while your system is offline, and process those requests after completing the migration to CockroachDB.
+	Migrations with planned downtime are only recommended if you can complete the bulk data load (e.g., using the MOLT Fetch [`data-load` mode]({% link molt/migration-overview.md %}#migration-modes)) within the downtime window. Otherwise, you can [minimize downtime using continuous replication]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime).
+
+- *Minimal downtime* impacts as few customers as possible, ideally without impacting their regular usage. If your application is intentionally offline at certain times (e.g., outside business hours), you can migrate the data without users noticing. Alternatively, if your application's functionality is not time-sensitive (e.g., it sends batched messages or emails), then you can queue requests while your system is offline, and process those requests after completing the migration to CockroachDB. 
+
+	MOLT enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime), using continuous replication of source changes to CockroachDB.
 
 - *Reduced functionality* takes some, but not all, application functionality offline. For example, you can disable writes but not reads while you migrate the application data, and queue data to be written after completing the migration.
-
-The [MOLT tools]({% link molt/migration-overview.md %}) enable migrations with minimal downtime. Refer to [Cutover strategy](#cutover-strategy).
 
 ### Capacity planning
 

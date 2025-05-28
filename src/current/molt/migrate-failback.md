@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-Failback can be performed after you have loaded data into CockroachDB and are replicating ongoing changes. Failing back to the source database ensures that—in case you need to roll back the migration—data remains consistent on the source.
+If issues arise during the migration, you can start MOLT Fetch in `failback` mode after stopping replication and before sending new writes to CockroachDB. Failing back to the source database ensures that data remains consistent on the source, in case you need to roll back the migration.
 
 {% assign tab_names_html = "Load and replicate;Phased migration;Failback" %}
 {% assign html_page_filenames = "migrate-to-cockroachdb.html;migrate-in-phases.html;migrate-failback.html" %}
