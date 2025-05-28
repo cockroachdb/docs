@@ -17,8 +17,6 @@ The `ALTER VIRTUAL CLUSTER` statement initiates a [_failover_](#start-the-failov
 
 {% include_cached new-in.html version="v25.2" %} To run the `ALTER VIRTUAL CLUSTER` statement from the standby cluster, users require the `REPLICATIONDEST` system [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}) **and** the `MANAGEVIRTUALCLUSTER` privilege. 
 
-{% include_cached new-in.html version="v25.2" %} The `ALTER VIRTUAL CLUSTER ... SET REPLICATION SOURCE` statement requires the `REPLICATIONSOURCE` system privilege and the `MANAGEVIRTUALCLUSTER` privilege.
-
 Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement to grant the necessary privileges, for example:
 
 {% include_cached copy-clipboard.html %}

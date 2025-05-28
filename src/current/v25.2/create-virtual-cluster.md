@@ -94,19 +94,6 @@ CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connectio
 
 This will create a `main` virtual cluster in the standby cluster. The standby's system virtual cluster will connect to the primary cluster to initiate the PCR job. For details on the PCR stream, refer to the [Responses]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) for `SHOW VIRTUAL CLUSTER`.
 
-### Specify a retention window for a PCR stream
-
-When you initiate a PCR stream, you can specify a retention window to protect data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection). The retention window controls how far in the past you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) to:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connection string to primary}' WITH RETENTION '36h';
-~~~
-
-This will initiate a PCR stream from the primary cluster into the standby cluster's new `main` virtual cluster. The `RETENTION` option allows you to specify a timestamp in the past for failover to the standby cluster. After failover, the standby `main` virtual cluster will be transactionally consistent to any timestamp within that retention window.
-
-{% include {{ page.version.version }}/physical-replication/retention.md %}
-
 ### Start a PCR stream with read from standby
 
 {{site.data.alerts.callout_info}}
