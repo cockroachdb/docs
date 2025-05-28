@@ -277,6 +277,18 @@ Command                                     | Description
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
 
+### Leader leases
+
+{% include {{ page.version.version }}/leader-leases-intro.md %}
+
+For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
+
+### Buffered Writes
+
+Buffered Writes enhance transaction throughput and reduce operational cost by minimizing the number of round-trips between the [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) and the other nodes during write operations.
+
+For more information, refer to [Buffered writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#buffered-writes).
+
 ## See Also
 
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
