@@ -9215,8 +9215,4 @@
       This version is currently available only for select
       CockroachDB Cloud clusters. To request to upgrade
       a CockroachDB self-hosted cluster to this version,
-<<<<<<< HEAD
       [contact support](https://support.cockroachlabs.com/hc/requests/new).
-=======
-      [contact support](https://support.cockroachlabs.com/hc/requests/new).
->>>>>>> a01d8eab0 (Append cloud-only yaml)
