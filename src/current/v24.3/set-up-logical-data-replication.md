@@ -56,7 +56,7 @@ LDR does not support replicating a table with [foreign key constraints]({% link 
 
 #### Unique secondary indexes
 
-LDR cannot guarantee that the [_dead letter queue_ (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}) will remain empty if the destination table has a unique [secondary index]({% link {{ page.version.version }}/schema-design-indexes.md %}). The two clusters in LDR operate independently, so writes to one cluster can conflict with writes to the other.
+When the destination table includes unique [secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}), it can cause rows to enter the [_dead letter queue_ (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}). The two clusters in LDR operate independently, so writes to one cluster can conflict with writes to the other.
 
 If the application modifies the same row in both clusters, LDR resolves the conflict using _last write wins_ (LWW) conflict resolution. [`UNIQUE` constraints]({% link {{ page.version.version }}/unique.md %}) are validated locally in each cluster, therefore if a replicated write violates a `UNIQUE` constraint on the destination cluster (possibly because a conflicting write was already applied to the row) the replicating row will be applied to the DLQ. 
 
@@ -66,6 +66,7 @@ On the **source cluster**:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+-- writes to the source table
 INSERT INTO city (1, nyc); -- timestamp 1
 UPDATE city SET name = 'philly' WHERE id = 1; -- timestamp 2
 INSERT INTO city (100, nyc); -- timestamp 3
@@ -75,22 +76,25 @@ LDR replicates the write to the **destination cluster**:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+-- replicates to the destination table
 INSERT INTO city (100, nyc); -- timestamp 4
 ~~~
 
 _Timestamp 5:_ Range containing primary key `1` on the destination cluster is unavailable for a few minutes due to a network partition.
 
-_Timestamp 6:_ On the destination cluster, LDR attempts to replicate the row `(1, nyc)`, but it enters the retry queue for 1 minute due to the unavailable range. LDR adds `1, nyc` to the DLQ after having retried for 1 minute and observing the `UNIQUE` constraint violation:
+_Timestamp 6:_ On the destination cluster, LDR attempts to replicate the row `(1, nyc)`, but it enters the retry queue for 1 minute due to the unavailable range. LDR adds `1, nyc` to the DLQ table after retrying and observing the `UNIQUE` constraint violation:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+-- writes to the DLQ
 INSERT INTO city (1, nyc); -- timestamp 6
 ~~~
 
-_Timestamp 7:_ LDR continues replication writes:
+_Timestamp 7:_ LDR continues to replicate writes:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+-- replicates to the destination table
 INSERT INTO city (1, philly); -- timestamp 7
 ~~~
 
