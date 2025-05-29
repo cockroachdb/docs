@@ -22,9 +22,11 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 
 ### Security and privileges
 
-#### Row-level security policy checks on the `VALUES` clause for `ON CONFLICT ... DO NOTHING`
+#### Row-level security
 
 {% include {{ page.version.version }}/known-limitations/rls-values-on-conflict-do-nothing.md %}
+
+{% include {{ page.version.version }}/known-limitations/rls-visibility-issue.md %}
 
 ## Limitations from {{ previous_version }} and earlier
 

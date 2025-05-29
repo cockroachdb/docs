@@ -44,8 +44,8 @@ Subcommand | Description
 [`OWNER TO`](#owner-to) |  Change the owner of a database.
 [`PLACEMENT`](#placement) | Configure the replica placement policy for a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}).
 [`RENAME TO`](#rename-to) | Change the name of a database.
-[`RESET {session variable}`](#reset-session-variable) |  Reset the session variable values for the database to the system defaults. This syntax is identical to [`ALTER ROLE ALL IN DATABASE ... RESET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}).
-[`SET {session variable}`](#set-session-variable) |  Set the default session variable values for the database. This syntax is identical to [`ALTER ROLE ALL IN DATABASE ... SET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}).
+[`RESET {session variable}`](#reset-session-variable) |  Reset the session variable values for the database to the system defaults. This syntax is identical to [`ALTER ROLE ALL IN DATABASE ... RESET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users).
+[`SET {session variable}`](#set-session-variable) |  Set the default session variable values for the database. This syntax is identical to [`ALTER ROLE ALL IN DATABASE ... SET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users).
 [`SET PRIMARY REGION`](#set-primary-region) |  Set the primary region of a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}).
 [`SET SECONDARY REGION`](#set-secondary-region) |  Set the [secondary region of a multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions) for failover purposes.
 [`SURVIVE {ZONE,REGION} FAILURE`](#survive-zone-region-failure) |  Add a survival goal to a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}).
@@ -369,7 +369,7 @@ For usage, see [Synopsis](#synopsis).
 
 In CockroachDB, the following are aliases for `ALTER DATABASE ... RESET {session variable}`:
 
-- [`ALTER ROLE ALL IN DATABASE ... RESET {session variable}`]({% link {{ page.version.version }}/alter-role.md %})
+- [`ALTER ROLE ALL IN DATABASE ... RESET {session variable}`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users)
 
 ### `SET {session variable}`
 
@@ -397,6 +397,8 @@ For usage, see [Synopsis](#synopsis).
 In CockroachDB, the following are aliases for `ALTER DATABASE ... SET {session variable}`:
 
 - `ALTER ROLE ALL IN DATABASE ... SET {session variable}`
+
+For more information, refer to [`ALTER ROLE ALL ...`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users).
 
 ### `SET PRIMARY REGION`
 
