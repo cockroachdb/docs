@@ -7,7 +7,7 @@ docs_area: migrate
 
 The MOLT (Migrate Off Legacy Technology) toolkit enables safe, minimal-downtime database migrations to CockroachDB. MOLT combines schema transformation, distributed data load, continuous replication, and row-level validation into a highly configurable workflow that adapts to diverse production environments.
 
-This page has an overview of the following:
+This page provides an overview of the following:
 
 - Overall [migration flow](#migration-flow)
 - [MOLT tools](#molt-tools)
@@ -32,13 +32,13 @@ A migration to CockroachDB generally follows this sequence:
 1. (Optional) Verify consistency before replication: Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the data loaded into CockroachDB is consistent with the source.
 1. Replicate ongoing changes: Enable continuous replication with [MOLT Fetch]({% link molt/molt-fetch.md %}#replicate-changes) to keep CockroachDB in sync with the source.
 1. Verify consistency before cutover: Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the CockroachDB data is consistent with the source.
-1. Cut over to CockroachDB. Redirect application traffic to the CockroachDB cluster.
+1. Cut over to CockroachDB: Redirect application traffic to the CockroachDB cluster.
 
 For a practical example of the preceding steps, refer to [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %}).
 
 ## MOLT tools
 
-[MOLT (Migrate Off Legacy Technology)]({% link releases/molt.md %}) is a set of tools for schema conversion, data load, replication, and validation. Migrations with MOLT are resilient, restartable, and scale to large data sets.
+[MOLT (Migrate Off Legacy Technology)]({% link releases/molt.md %}) is a set of tools for schema conversion, data load, replication, and validation. Migrations with MOLT are resilient, restartable, and scalable to large data sets.
 
 MOLT [Fetch](#fetch) and [Verify](#verify) are CLI-based to maximize control, automation, and visibility during the data load and replication stages.
 
@@ -71,7 +71,7 @@ MOLT [Fetch](#fetch) and [Verify](#verify) are CLI-based to maximize control, au
 
 ### Schema Conversion Tool
 
-The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) converts a source database schema to a CockroachDB-compatible schema. The tool:
+The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) converts a source database schema to a CockroachDB-compatible schema. The tool performs the following actions:
 
 - Identifies [unimplemented features]({% link molt/migration-strategy.md %}#unimplemented-features-and-syntax-incompatibilities)
 - Rewrites unsupported [DDL syntax]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements)
@@ -87,15 +87,15 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 - [Continuous replication]({% link molt/molt-fetch.md %}#replicate-changes), enabling you to minimize downtime before cutover.
 - [Schema transformation rules]({% link molt/molt-fetch.md %}#transformations).
 - After exporting data with `IMPORT INTO`, safe [continuation]({% link molt/molt-fetch.md %}#fetch-continuation) to retry failed or interrupted tasks from specific checkpoints.
-- [Failback]({% link molt/molt-fetch.md %}#fail-back-to-source-database) to replicate changes from CockroachDB back to the original source via a secure changefeed.
+- [Failback]({% link molt/molt-fetch.md %}#fail-back-to-source-database), which replicates changes from CockroachDB back to the original source via a secure changefeed.
 
 ### Verify
 
-[MOLT Verify]({% link molt/molt-verify.md %}) checks for data and schema discrepancies between the source database and CockroachDB. It performs:
+[MOLT Verify]({% link molt/molt-verify.md %}) checks for data and schema discrepancies between the source database and CockroachDB. It performs the following verifications:
 
-- Table structure verification
-- Column definition verification
-- Row-level data verification
+- Table structure
+- Column definition
+- Row-level data
 
 ## Migration modes
 
@@ -108,7 +108,7 @@ MOLT Fetch supports [multiple data migration modes]({% link molt/molt-fetch.md %
 | `--mode replication-only`                   | Starts replication from a previously loaded source                           | [Phased migrations]({% link molt/migrate-in-phases.md %}), post-load sync                            |
 | `--mode failback`                           | Replicates changes on CockroachDB back to the original source                | [Rollback scenarios]({% link molt/migrate-failback.md %})                                            |
 | `--mode export-only` / `--mode import-only` | Separates data export and import phases                                      | Large-scale migrations, custom storage pipelines                                                     |
-| `--direct-copy`                             | Loads data without intermediate storage using `COPY FROM`                    | Local testing, limited infra environments                                                            |
+| `--direct-copy`                             | Loads data directly using `COPY FROM`, without intermediate storage                    | Local testing, limited infrastructure environments                                                            |
 
 ## Migrations with minimal downtime
 

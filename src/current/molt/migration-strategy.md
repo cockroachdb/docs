@@ -26,10 +26,10 @@ Consider the following as you plan your migration:
 - Who will lead and perform the migration? Which teams are involved, and which aspects are they responsible for?
 - Which internal and external parties do you need to inform about the migration?
 - Which external or third-party tools (e.g., microservices, analytics, payment processors, aggregators, CRMs) must be tested and migrated along with your application?
-- When is the best time to perform this migration to be minimally disruptive to the database's users?
+- When is the best time to perform this migration to minimize disruption to database users?
 - What is your target date for completing the migration?
 
-Create a document that summarizes the intent of the migration, the technical details, and the team members involved.
+Create a document summarizing the migration's purpose, technical details, and team members involved.
 
 ### Approach to downtime
 
@@ -39,7 +39,7 @@ It's important to fully [prepare the migration](#prepare-for-migration) in order
 
 	Migrations with planned downtime are only recommended if you can complete the bulk data load (e.g., using the MOLT Fetch [`data-load` mode]({% link molt/migration-overview.md %}#migration-modes)) within the downtime window. Otherwise, you can [minimize downtime using continuous replication]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime).
 
-- *Minimal downtime* impacts as few customers as possible, ideally without impacting their regular usage. If your application is intentionally offline at certain times (e.g., outside business hours), you can migrate the data without users noticing. Alternatively, if your application's functionality is not time-sensitive (e.g., it sends batched messages or emails), then you can queue requests while your system is offline, and process those requests after completing the migration to CockroachDB. 
+- *Minimal downtime* impacts as few customers as possible, ideally without impacting their regular usage. If your application is intentionally offline at certain times (e.g., outside business hours), you can migrate the data without users noticing. Alternatively, if your application's functionality is not time-sensitive (e.g., it sends batched messages or emails), you can queue requests while the system is offline and process them after completing the migration to CockroachDB. 
 
 	MOLT enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime), using continuous replication of source changes to CockroachDB.
 
@@ -47,7 +47,7 @@ It's important to fully [prepare the migration](#prepare-for-migration) in order
 
 ### Capacity planning
 
-Determine the size of the target CockroachDB cluster. To do this, consider your data volume and workload characteristics:
+To size the target CockroachDB cluster, consider your data volume and workload characteristics:
 
 - What is the total size of the data you will migrate?
 - How many active [application connections]({% link {{ site.current_cloud_version }}/recommended-production-settings.md %}#connection-pooling) will be running in the CockroachDB environment?
@@ -66,7 +66,7 @@ If you are migrating to a CockroachDB {{ site.data.products.core }} cluster:
 
 ### Application changes
 
-As you develop your migration plan, consider the application changes that you will need to make. These may relate to the following:
+As you develop your migration plan, consider the application changes that you will need to make. These may include the following changes:
 
 - [Handling transaction contention.](#handling-transaction-contention)
 - [Unimplemented features and syntax incompatibilities.](#unimplemented-features-and-syntax-incompatibilities)
@@ -87,7 +87,7 @@ Update your queries to resolve differences in functionality and SQL syntax.
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and is largely [compatible with PostgreSQL syntax]({% link {{ site.current_cloud_version }}/postgresql-compatibility.md %}).
 
-For full compatibility with CockroachDB, you may need to implement workarounds in your schema design, in your [data manipulation language (DML)]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-manipulation-statements), or in your application code.
+For full compatibility with CockroachDB, you may need to implement workarounds in your schema design, [data manipulation language (DML)]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-manipulation-statements), or application code.
 
 For more details on the CockroachDB SQL implementation, refer to [SQL Feature Support]({% link {{ site.current_cloud_version }}/sql-feature-support.md %}).
 
@@ -106,7 +106,7 @@ To minimize issues after cutover, compose a migration "pre-mortem":
 
 #### Set up monitoring and alerting
 
-Based on the error budget you [defined in your migration plan](#develop-a-migration-plan), identify the metrics that you can use to measure your success criteria and set up monitoring for the migration. These metrics may be identical to those you normally use in production, but can also be specific to your migration needs.
+Based on the error budget you [defined in your migration plan](#develop-a-migration-plan), identify the metrics that you can use to measure your success criteria and set up monitoring for the migration. These metrics may match those used in production or be specific to your migration goals.
 
 #### Load test data
 
@@ -119,7 +119,7 @@ MOLT Fetch [supports both `IMPORT INTO` and `COPY FROM`]({% link molt/molt-fetch
 
 #### Validate queries
 
-After you [load the test data](#load-test-data), validate your queries on CockroachDB. You can do this by [shadowing](#shadowing) or by [manually testing](#test-query-results-and-performance) the queries.
+After you [load the test data](#load-test-data), validate your queries on CockroachDB by [shadowing](#shadowing) or [manually testing](#test-query-results-and-performance) them.
 
 Note that CockroachDB defaults to the [`SERIALIZABLE`]({% link {{ site.current_cloud_version }}/demo-serializable.md %}) transaction isolation level. If you are migrating an application that was built at a `READ COMMITTED` isolation level on the source database, you must [enable `READ COMMITTED` isolation]({% link {{ site.current_cloud_version }}/read-committed.md %}#enable-read-committed-isolation) on the CockroachDB cluster for compatibility.
 
@@ -139,7 +139,7 @@ Test performance on a CockroachDB cluster that is appropriately [sized](#capacit
 
 1. Run the application with single- or very low-concurrency and verify the app's performance is acceptable. The cluster should be provisioned with more than enough resources to handle this workload, because you need to verify that the queries will be fast enough when there are zero resource bottlenecks.
 
-1. Run stress tests with at least the production concurrency and rate, but ideally higher in order to verify that the system can handle unexpected spikes in load. This can also uncover [contention]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}#transaction-contention) issues that will appear during spikes in app load, which may require [application design changes](#handling-transaction-contention) to avoid.
+1. Run stress tests at or above production concurrency and rate to verify the system can handle unexpected load spikes. This can also reveal [contention]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}#transaction-contention) issues that may arise during peak usage and require [application design changes](#handling-transaction-contention).
 
 #### Perform a dry run
 
@@ -149,7 +149,7 @@ Performing a dry run is highly recommended. In addition to demonstrating how lon
 
 ### Cutover strategy
 
-*Cutover* is the process of switching application traffic from the source database to CockroachDB. Once the source data is fully migrated to CockroachDB, you "flip the switch" to route application traffic to the new database, thus ending downtime.
+*Cutover* is the process of switching application traffic from the source database to CockroachDB. Once the source data is fully migrated to CockroachDB, switch application traffic to the new database to end downtime.
 
 MOLT enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime), using continuous replication of source changes to CockroachDB.
 
