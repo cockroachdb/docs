@@ -19,7 +19,7 @@ Physical cluster replication is only supported in CockroachDB {{ site.data.produ
 
 ## Required privileges
 
-{% include_cached new-in.html version="v25.2" %} The following [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}) are required to start a PCR stream with `CREATE VIRTUAL CLUSTER`:
+{% include_cached new-in.html version="v25.2" %} The following [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) are required to start a PCR stream with `CREATE VIRTUAL CLUSTER`:
 
 - The `REPLICATIONDEST` and `MANAGEVIRTUALCLUSTER` system privileges: The user starting the PCR stream from the standby cluster.
 - The `REPLICATIONSOURCE` system privilege: The user specified in the connection string for the primary cluster.

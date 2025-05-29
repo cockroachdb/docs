@@ -105,7 +105,7 @@ Connect to your primary cluster's system virtual cluster using [`cockroach sql`]
 
 ### Create a replication user and password
 
-The standby cluster connects to the primary cluster's system virtual cluster using an identity with the `REPLICATIONSOURCE` privilege. Connect to the primary cluster's system virtual cluster and create a user with a password:
+The standby cluster connects to the primary cluster's system virtual cluster using an identity with the `REPLICATIONSOURCE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges). Connect to the primary cluster's system virtual cluster and create a user with a password:
 
 1. From the primary's system virtual cluster SQL shell, create a user and password:
 
