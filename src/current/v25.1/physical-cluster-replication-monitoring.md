@@ -50,7 +50,6 @@ id | name | source_tenant_name |              source_cluster_uri                
 You can use the [**Physical Cluster Replication** dashboard]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}) of the standby cluster's [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to monitor:
 
 - [Logical bytes]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#logical-bytes)
-- [SST bytes]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#sst-bytes)
 - [Replication Lag]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#replication-lag)
 
 ## Prometheus
