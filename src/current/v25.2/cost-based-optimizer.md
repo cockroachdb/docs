@@ -320,9 +320,9 @@ To change the type of plan that is cached, use the [`plan_cache_mode`]({% link {
 
 The following modes can be set:
 
+- `auto` (default): Automatically determine whether to use custom or generic query plans for prepared statements. Custom plans are used for the first five statement executions. Subsequent executions use a generic plan if its estimated cost is not significantly higher than the average cost of the preceding custom plans.
 - `force_custom_plan`: Force the use of custom plans.
 - `force_generic_plan`: Force the use of generic plans.
-- `auto` (default): Automatically determine whether to use custom or generic query plans for prepared statements. Custom plans are used for the first five statement executions. Subsequent executions use a generic plan if its estimated cost is not significantly higher than the average cost of the preceding custom plans.
 
 {{site.data.alerts.callout_info}}
 Generic plans are always used for non-prepared statements that do not contain placeholders or [stable functions]({% link {{ page.version.version }}/functions-and-operators.md %}#function-volatility), regardless of the `plan_cache_mode` setting.
