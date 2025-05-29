@@ -233,19 +233,15 @@ Field | Description
 
 #### Write Ahead Log (WAL) Failover
 
-{% include_cached new-in.html version="v24.1" %} On a CockroachDB [node]({% link {{ page.version.version }}/architecture/overview.md %}#node) with [multiple stores](#store), you can mitigate some effects of [disk stalls]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disk-stalls) by configuring the node to failover each store's [write-ahead log (WAL)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#memtable-and-write-ahead-log) to another store's data directory using the `--wal-failover` flag.
-
-Failing over the WAL may allow some operations against a store to continue to complete despite temporary unavailability of the underlying storage. For example, if the node's primary store is stalled, and the node can't read from or write to it, the node can still write to the WAL on another store. This can give the node a chance to eventually catch up once the disk stall has been resolved.
-
-When WAL failover is enabled, CockroachDB will take the the following actions:
-
-- At node startup, each store is assigned another store to be its failover destination.
-- CockroachDB will begin monitoring the latency of all WAL writes. If latency to the WAL exceeds the value of the [cluster setting `storage.wal_failover.unhealthy_op_threshold`]({% link {{page.version.version}}/cluster-settings.md %}#setting-storage-wal-failover-unhealthy-op-threshold), the node will attempt to write WAL entries to a secondary store's volume.
-- CockroachDB will update the [store status endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#store-status-endpoint) at `/_status/stores` so you can monitor the store's status.
+{% include_cached new-in.html version="v24.1" %} {% include {{ page.version.version }}/wal-failover-intro.md %}
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
+
+This page has basic instructions on how to enable WAL failover, disable WAL failover, and monitor WAL failover.
+
+For more detailed instructions showing how to use, test, and monitor WAL failover, as well as descriptions of how WAL failover works in multi-store configurations, see [WAL Failover]({% link {{ page.version.version }}/wal-failover.md %}).
 
 ##### Enable WAL failover
 
@@ -264,14 +260,7 @@ Therefore, if you enable WAL failover and log to local disks, you must also upda
 1. When `buffering` is enabled, `buffered-writes` must be explicitly disabled as shown in the following example. This is necessary because `buffered-writes` does not provide true asynchronous disk access, but rather a small buffer. If the small buffer fills up, it can cause internal routines performing logging operations to hang. This will in turn cause internal routines doing other important work to hang, potentially affecting cluster stability.
 1. The recommended logging configuration for using file-based logging with WAL failover is as follows:
 
-      ~~~
-      file-defaults:
-        buffered-writes: false
-        buffering:
-          max-staleness: 1s
-          flush-trigger-size: 256KiB
-          max-buffer-size: 50MiB
-      ~~~
+    {% include {{ page.version.version }}/wal-failover-log-config.md %}
 
 As an alternative to logging to local disks, you can configure [remote log sinks]({% link {{page.version.version}}/logging-use-cases.md %}#network-logging) that are not correlated with the availability of your cluster's local disks. However, this will make troubleshooting using [`cockroach debug zip`]({% link {{ page.version.version}}/cockroach-debug-zip.md %}) more difficult, since the output of that command will not include the (remotely stored) log files.
 
@@ -284,18 +273,7 @@ To disable WAL failover, you must [restart the node]({% link {{ page.version.ver
 
 ##### Monitor WAL failover
 
-You can monitor if WAL failover occurs using the following metrics:
-
-- `storage.wal.failover.secondary.duration`: Cumulative time spent (in nanoseconds) writing to the secondary WAL directory. Only populated when WAL failover is configured.
-- `storage.wal.failover.primary.duration`: Cumulative time spent (in nanoseconds) writing to the primary WAL directory. Only populated when WAL failover is configured.
-- `storage.wal.failover.switch.count`: Count of the number of times WAL writing has switched from primary to secondary store, and vice versa.
-
-The `storage.wal.failover.secondary.duration` is the primary metric to monitor. You should expect this metric to be `0` unless a WAL failover occurs. If a WAL failover occurs, you probably care about how long it remains non-zero because it provides an indication of the health of the primary store.
-
-You can access these metrics via the following methods:
-
-- The [Custom Chart Debug Page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) in [DB Console]({% link v24.1/ui-custom-chart-debug-page.md %}).
-- By [monitoring CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}).
+{% include {{ page.version.version }}/wal-failover-metrics.md %}
 
 ### Logging
 

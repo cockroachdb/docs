@@ -1,0 +1,3 @@
+- Size = minimum 25 GiB
+- IOPS = 1/10th of the disk for the "user data" store
+- Bandwidth = 1/10th of the disk for the "user data" store

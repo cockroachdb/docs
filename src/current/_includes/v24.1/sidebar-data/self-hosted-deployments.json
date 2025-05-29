@@ -556,7 +556,13 @@
                        "urls": [
                          "/${VERSION}/ui-key-visualizer.html"
                        ]
-                   }
+                      },
+                      {
+                        "title": "WAL Failover",
+                        "urls": [
+                          "/${VERSION}/wal-failover.html"
+                        ]
+                      }
                ]
           },
           {
