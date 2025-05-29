@@ -75,10 +75,6 @@ The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %})
 
 CockroachDB {{ site.data.products.standard }} is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand]({% link cockroachcloud/plan-your-cluster.md %}), along with enterprise-level security and availability. Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
 
-### Generic query plans
-
-[Generic query plans]({% link {{ page.version.version }}/cost-based-optimizer.md %}#query-plan-type) are generated and optimized once without considering specific placeholder values, and are not regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) and must be re-optimized. This approach eliminates most of the query latency attributed to planning.
-
 ### Vector search
 
 The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores fixed-length arrays of floating-point numbers, which represent data points in multi-dimensional space. Vector search is often used in AI applications such as Large Language Models (LLMs) that rely on vector representations.

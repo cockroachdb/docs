@@ -11,7 +11,7 @@ docs_area: reference.sql
 Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-The `DROP VIRTUAL CLUSTER` statement removes virtual clusters. Virtual clusters are used only as part of the [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
+The `DROP VIRTUAL CLUSTER` statement removes virtual clusters in order to restart a **physical cluster replication (PCR)** stream. Virtual clusters are used only as part of the [PCR]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
@@ -24,7 +24,7 @@ The `DROP VIRTUAL CLUSTER` statement will delete all data related to the specifi
 `DROP VIRTUAL CLUSTER` requires one of the following privileges:
 
 - The `admin` role.
-- The `MANAGEVIRTUALCLUSTER` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) allows the user to run all the related `VIRTUAL CLUSTER` SQL statements for PCR.
+- The `MANAGEVIRTUALCLUSTER` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges).
 
 Use the [`GRANT SYSTEM`]({% link {{ page.version.version }}/grant.md %}) statement:
 
@@ -49,13 +49,20 @@ Parameter | Description
 
 ## Examples
 
-### Remove a virtual cluster
+### Restart a PCR stream
 
-To remove a virtual cluster from a CockroachDB cluster:
+To restart a PCR stream, drop the virtual cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 DROP VIRTUAL CLUSTER IF EXISTS main;
+~~~
+
+Next, restart the PCR stream with the [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) syntax:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connection string to primary}';
 ~~~
 
 ### Remove a virtual cluster without waiting for garbage collection

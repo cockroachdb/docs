@@ -109,7 +109,7 @@ Click **Create cluster**. Your cluster will be created in a few seconds.
 - [Manage access]({% link cockroachcloud/managing-access.md %})
 - [Learn CockroachDB SQL]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
 - Explore our [example apps]({% link {{site.current_cloud_version}}/example-apps.md %}) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
-- [Migrate your existing data]({% link {{site.current_cloud_version}}/migration-overview.md %}).
+- [Migrate your existing data]({% link molt/migration-overview.md %}).
 - Build a simple CRUD application in [Go]({% link {{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.md %}), [Java]({% link {{site.current_cloud_version}}/build-a-java-app-with-cockroachdb.md %}), [Node.js]({% link {{site.current_cloud_version}}/build-a-nodejs-app-with-cockroachdb.md %}), or [Python]({% link {{site.current_cloud_version}}/build-a-python-app-with-cockroachdb.md %}).
 - For examples of applications that use free CockroachDB {{ site.data.products.cloud }} clusters, check out the following [Hack the North](https://hackthenorth.com/) projects:
     - [flock](https://devpost.com/software/flock-figure-out-what-film-to-watch-with-friends)

@@ -41,7 +41,7 @@ Complete the following items before starting the DMS migration:
 
 - Manually create all schema objects in the target CockroachDB cluster. If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, you can [use the **Schema Conversion Tool**]({% link cockroachcloud/migrations-page.md %}) to convert and export your schema.
 
-    - All tables must have an explicitly defined primary key. For more guidance, see the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#schema-design-best-practices).
+    - All tables must have an explicitly defined primary key. For more guidance, see [Migration Strategy]({% link molt/migration-strategy.md %}#schema-design-best-practices).
 
     - Drop all [constraints]({% link {{ page.version.version }}/constraints.md %}) per the [AWS DMS best practices](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_BestPractices.html#CHAP_BestPractices.Performance). You can recreate them after the [full load completes](#step-3-verify-the-migration). AWS DMS can create a basic schema, but does not create [indexes]({% link {{ page.version.version }}/indexes.md %}) or constraints such as [foreign keys]({% link {{ page.version.version }}/foreign-key.md %}) and [defaults]({% link {{ page.version.version }}/default-value.md %}).
 
@@ -412,7 +412,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
 ## See Also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})
 - [AWS DMS documentation](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html)

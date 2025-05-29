@@ -5,23 +5,21 @@ toc: true
 docs_area: migrate
 ---
 
-Failback can be performed after you have loaded data into CockroachDB and are replicating ongoing changes. Failing back to the source database ensures that—in case you need to roll back the migration—data remains consistent on the source.
+If issues arise during the migration, you can start MOLT Fetch in `failback` mode after stopping replication and before sending new writes to CockroachDB. Failing back to the source database ensures that data remains consistent on the source, in case you need to roll back the migration.
 
 {% assign tab_names_html = "Load and replicate;Phased migration;Failback" %}
 {% assign html_page_filenames = "migrate-to-cockroachdb.html;migrate-in-phases.html;migrate-failback.html" %}
 
-{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder=page.version.version %}
+{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder="molt" %}
 
 ## Before you begin
 
-- [Enable rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) in the CockroachDB SQL shell:
+[Enable rangefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) in the CockroachDB SQL shell:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING kv.rangefeed.enabled = true;
-    ~~~
-
-- Ensure that your CockroachDB deployment has a valid [Enterprise license]({% link {{ page.version.version }}/licensing-faqs.md %}).
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING kv.rangefeed.enabled = true;
+~~~
 
 Select the source dialect you migrated to CockroachDB:
 
@@ -44,7 +42,7 @@ The following example watches the `employees` table for change events.
     Be mindful when specifying the connection strings: `--source` is the CockroachDB connection string and `--target` is the connection string of the database you migrated from.
     {{site.data.alerts.end}}
 
-    Use the `--stagingSchema` replication flag to provide the name of the staging schema. This is found in the `staging database name` message that is written at the beginning of the [replication task]({% link {{ page.version.version }}/migrate-in-phases.md %}#step-6-replicate-changes-to-cockroachdb).
+    Use the `--stagingSchema` replication flag to provide the name of the staging schema. This is found in the `staging database name` message that is written at the beginning of the [replication task]({% link molt/migrate-in-phases.md %}#step-6-replicate-changes-to-cockroachdb).
 
     <section class="filter-content" markdown="1" data-scope="postgres">
     {% include_cached copy-clipboard.html %}
@@ -83,7 +81,7 @@ The following example watches the `employees` table for change events.
     }
     ~~~
 
-    `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, use the command `base64 -i ./client.crt | jq -R -r '@uri'`).
+    `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, use the command `base64 -i ./client.crt | jq -R -r '@uri'`).
 
     {{site.data.alerts.callout_success}}
     For details on the default changefeed settings and how to override them, refer to [Changefeed override settings]({% link molt/molt-fetch.md %}#changefeed-override-settings).
@@ -111,10 +109,10 @@ The following example watches the `employees` table for change events.
 
 ## See also
 
-- [MOLT Overview]({% link molt/molt-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})
-- [Migrate to CockroachDB in Phases]({% link {{ page.version.version }}/migrate-in-phases.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
+- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
+- [Migrate to CockroachDB in Phases]({% link molt/migrate-in-phases.md %})
