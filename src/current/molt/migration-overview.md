@@ -73,9 +73,9 @@ MOLT [Fetch](#fetch) and [Verify](#verify) are CLI-based to maximize control, au
 
 The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) converts a source database schema to a CockroachDB-compatible schema. The tool performs the following actions:
 
-- Identifies [unimplemented features]({% link molt/migration-strategy.md %}#unimplemented-features-and-syntax-incompatibilities)
-- Rewrites unsupported [DDL syntax]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements)
-- Applies CockroachDB [schema best practices]({% link molt/migration-strategy.md %}#schema-design-best-practices)
+- Identifies [unimplemented features]({% link molt/migration-strategy.md %}#unimplemented-features-and-syntax-incompatibilities).
+- Rewrites unsupported [DDL syntax]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements).
+- Applies CockroachDB [schema best practices]({% link molt/migration-strategy.md %}#schema-design-best-practices).
 
 ### Fetch
 
@@ -93,22 +93,22 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 
 [MOLT Verify]({% link molt/molt-verify.md %}) checks for data and schema discrepancies between the source database and CockroachDB. It performs the following verifications:
 
-- Table structure
-- Column definition
-- Row-level data
+- Table structure.
+- Column definition.
+- Row-level data.
 
 ## Migration modes
 
 MOLT Fetch supports [multiple data migration modes]({% link molt/molt-fetch.md %}#fetch-mode). These can be combined based on your testing and cutover strategy.
 
-|                     Mode                    |                                 Description                                  |                                               Best For                                               |
-|---------------------------------------------|------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
-| `--mode data-load`                          | Performs one-time load of source data into CockroachDB                       | Testing, migrations with [planned downtime]({% link molt/migration-strategy.md %}#approach-to-downtime), [phased migrations]({% link molt/migrate-in-phases.md %}) |
-| `--mode data-load-and-replication`          | Loads source data and starts continuous replication from the source database | [Migrations with minimal downtime]({% link molt/migrate-to-cockroachdb.md %})                        |
-| `--mode replication-only`                   | Starts replication from a previously loaded source                           | [Phased migrations]({% link molt/migrate-in-phases.md %}), post-load sync                            |
-| `--mode failback`                           | Replicates changes on CockroachDB back to the original source                | [Rollback scenarios]({% link molt/migrate-failback.md %})                                            |
-| `--mode export-only` / `--mode import-only` | Separates data export and import phases                                      | Large-scale migrations, custom storage pipelines                                                     |
-| `--direct-copy`                             | Loads data directly using `COPY FROM`, without intermediate storage                    | Local testing, limited infrastructure environments                                                            |
+|                     Mode                    |                                 Description                                  |                                                                                        Best For                                                                                        |
+|---------------------------------------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--mode data-load`                          | Performs one-time load of source data into CockroachDB                       | Testing, migrations with [planned downtime]({% link molt/migration-strategy.md %}#approach-to-downtime), migrations with [minimal downtime]({% link molt/migrate-to-cockroachdb.md %}) |
+| `--mode data-load-and-replication`          | Loads source data and starts continuous replication from the source database | [Migrations with minimal downtime]({% link molt/migrate-to-cockroachdb.md %})                                                                                                          |
+| `--mode replication-only`                   | Starts replication from a previously loaded source                           | [Migrations with minimal downtime]({% link molt/migrate-to-cockroachdb.md %}), post-load sync                                                                                          |
+| `--mode failback`                           | Replicates changes on CockroachDB back to the original source                | [Rollback scenarios]({% link molt/migrate-failback.md %})                                                                                                                              |
+| `--mode export-only` / `--mode import-only` | Separates data export and import phases                                      | Local performance testing                                                                                                                                                              |
+| `--direct-copy`                             | Loads data directly using `COPY FROM`, without intermediate storage          | Local testing, limited-infrastructure environments                                                                                                                                     |
 
 ## Migrations with minimal downtime
 
