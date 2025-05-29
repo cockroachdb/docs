@@ -22,6 +22,8 @@ When the results of a query are reused multiple times within a larger query, a v
 
 A view is also advisable when the results must be up-to-date; a view always retrieves the current data from the tables that the view query mentions.
 
+{% include_cached new-in.html version="v25.2" %} Use `CREATE TABLE t AS ...` with the [`AS OF SYSTEM TIME` clause](#populate-create-table-as-with-historical-data-using-as-of-system-time) to leverage [historical reads]({% link {{ page.version.version }}/as-of-system-time.md %}) to reduce contention and improve performance.
+
 {{site.data.alerts.callout_info}}
 The default rules for [column families]({% link {{ page.version.version }}/column-families.md %}) apply.
 {{site.data.alerts.end}}
@@ -76,7 +78,7 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
  `create_as_col_qual_list` | An optional column definition, which may include [primary key constraints]({% link {{ page.version.version }}/primary-key.md %}) and [column family assignments]({% link {{ page.version.version }}/column-families.md %}).
  `family_def` | An optional [column family definition]({% link {{ page.version.version }}/column-families.md %}). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.
  `create_as_constraint_def` | An optional [primary key constraint]({% link {{ page.version.version }}/primary-key.md %}).
- `select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) to provide the data.
+ `select_stmt` | A [selection query]({% link {{ page.version.version }}/select-clause.md %}) to provide the data.
  `opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables]({% link {{ page.version.version }}/temporary-tables.md %}).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgreSQL compatibility.<br><br>**Support for temporary tables is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#temporary-objects)**.
  `opt_with_storage_parameter_list` |  A comma-separated list of [spatial index tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
  `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgreSQL compatibility. CockroachDB only supports session-scoped [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
@@ -287,6 +289,90 @@ You can define the [column families]({% link {{ page.version.version }}/column-f
 (1 row)
 ~~~
 
+### Populate `CREATE TABLE AS` with historical data using `AS OF SYSTEM TIME`
+
+{% include_cached new-in.html version="v25.2" %} CockroachDB supports creating a table using historical data using the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause. You can use this to create a new table based on the state of an existing table as of a specific [timestamp]({% link {{ page.version.version }}/timestamp.md %}) in the past. This is useful for:
+
+- Generating static datasets for reporting or analytical workloads without increasing contention on production tables or otherwise impacting performance.
+- Analyzing data changes over time.
+- Preserving historical data for regulatory or investigative purposes.
+- Undoing an [accidental table deletion](#undo-an-accidental-table-deletion).
+
+{{site.data.alerts.callout_info}}
+The timestamp must be within the [garbage collection (GC) window]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) of the source table for the data to be available.
+{{site.data.alerts.end}}
+
+The following example creates a new table from the [`movr`]({% link {{ page.version.version }}/movr.md %}) dataset at the most recent timestamp that can perform a [follower read]({% link {{ page.version.version }}/follower-reads.md %}).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE analysis_vehicle_location_histories
+  AS SELECT * FROM movr.vehicle_location_histories
+  AS OF SYSTEM TIME follower_read_timestamp();
+~~~
+
+~~~
+NOTICE: CREATE TABLE ... AS does not copy over indexes, default expressions, or constraints; the new table has a hidden rowid primary key column
+CREATE TABLE AS
+~~~
+
+#### Undo an accidental table deletion
+
+The following steps use a table from the [`movr`]({% link {{ page.version.version }}/movr.md %}) dataset to show how to undo an accidental table deletion using `CREATE TABLE AS ... AS OF SYSTEM TIME`.
+
+1. Get a timestamp before the table is deleted in an upcoming step:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT now();
+    ~~~
+
+    ~~~
+                  now
+    --------------------------------
+      2025-06-17 15:04:15.82632+00
+    (1 row)
+    ~~~
+
+1. Wait a few seconds to simulate time passing (adjust as needed):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT pg_sleep(5);
+    ~~~
+
+    ~~~
+      pg_sleep
+    ------------
+         t
+    (1 row)
+    ~~~
+
+1. Drop the original table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    DROP TABLE movr.vehicle_location_histories;
+    ~~~
+
+    ~~~
+    DROP TABLE
+    ~~~
+
+1. Restore the table using the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause and the timestamp you obtained before dropping the table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE movr.vehicle_location_histories AS SELECT * FROM movr.vehicle_location_histories AS OF SYSTEM TIME '2025-06-17 15:04:15.82632+00';
+    ~~~
+
+    ~~~
+    NOTICE: CREATE TABLE ... AS does not copy over indexes, default expressions, or constraints; the new table has a hidden rowid primary key column
+    CREATE TABLE AS
+    ~~~
+
+For more information about historical reads at a given timestamp, refer to [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
+
 ## See also
 
 - [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
@@ -299,3 +385,6 @@ You can define the [column families]({% link {{ page.version.version }}/column-f
 - [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key)
 - [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %})
+- [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %})
+- [Disaster Recovery Planning]({% link {{ page.version.version }}/disaster-recovery-planning.md %})
