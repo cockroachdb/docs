@@ -64,7 +64,7 @@ Start the initial load of data into the target database. Continuous replication 
 	--non-interactive \
 	--mode data-load-and-replication \
 	--pglogical-replication-slot-name cdc_slot \
-	--replicator-flags '--metricsAddr: 30005'
+	--replicator-flags '--metricsAddr :30005'
 	~~~
 	</section>
 
@@ -79,12 +79,12 @@ Start the initial load of data into the target database. Continuous replication 
 	--table-handling truncate-if-exists \
 	--non-interactive \
 	--mode data-load-and-replication \
-	--replicator-flags '--metricsAddr: 30005'
+	--replicator-flags '--metricsAddr :30005'
 	~~~
 	</section>
 
 	{{site.data.alerts.callout_info}}
-	`--metricsAddr` enables a Prometheus-compatible metrics endpoint (e.g., on port `30005`) where replication metrics will be served. 
+	`--metricsAddr` enables a Prometheus-compatible metrics endpoint at `http://{host}:{port}/_/varz` where replication metrics will be served. In this example, the endpoint is `http://localhost:30005/_/varz`.
 	{{site.data.alerts.end}}
 
 {% include molt/fetch-data-load-output.md %}

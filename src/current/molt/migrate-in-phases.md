@@ -113,7 +113,7 @@ The following example specifies that the `employees` table should be watched for
 	--non-interactive \
 	--mode replication-only \
 	--pglogical-replication-slot-name cdc_slot \
-	--replicator-flags '--metricsAddr: 30005'
+	--replicator-flags '--metricsAddr :30005'
 	~~~
 	</section>
 
@@ -128,12 +128,12 @@ The following example specifies that the `employees` table should be watched for
 	--table-filter 'employees' \
 	--non-interactive \
 	--mode replication-only \
-	--replicator-flags '--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29 --metricsAddr: 30005'
+	--replicator-flags '--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29 --metricsAddr :30005'
 	~~~
 	</section>
 
 	{{site.data.alerts.callout_info}}
-	`--metricsAddr` enables a Prometheus-compatible metrics endpoint (e.g., on port `30005`) where replication metrics will be served. 
+	`--metricsAddr` enables a Prometheus-compatible metrics endpoint at `http://{host}:{port}/_/varz` where replication metrics will be served. In this example, the endpoint is `http://localhost:30005/_/varz`.
 	{{site.data.alerts.end}}
 	
 {% include molt/fetch-replication-output.md %}
