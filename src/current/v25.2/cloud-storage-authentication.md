@@ -11,6 +11,10 @@ Cockroach Labs supports different levels of authentication to cloud storage. Whe
 We recommend using IAM roles for users to authenticate to cloud storage resources. For more detail, see the assume role and workload identity sections for [Amazon S3]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#set-up-amazon-s3-assume-role) and [Google Cloud Storage](cloud-storage-authentication.html?filters=gcs#set-up-google-cloud-storage-assume-role).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/backups/external-storage-check-tip.md %}
+{{site.data.alerts.end}}
+
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
   <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
