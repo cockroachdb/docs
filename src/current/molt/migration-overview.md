@@ -28,8 +28,8 @@ A migration to CockroachDB generally follows this sequence:
 1. Prepare the source database: Configure users, permissions, and replication settings as needed.
 1. Convert the source schema: Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) to generate CockroachDB-compatible [DDL]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements). Apply the converted schema to the target database. Drop constraints and indexes to facilitate data load.
 1. Load data into CockroachDB: Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to bulk-ingest your source data.
-1. Finalize target schema: Recreate indexes or constraints on CockroachDB that you previously dropped to facilitate data load.
 1. (Optional) Verify consistency before replication: Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the data loaded into CockroachDB is consistent with the source.
+1. Finalize target schema: Recreate indexes or constraints on CockroachDB that you previously dropped to facilitate data load.
 1. Replicate ongoing changes: Enable continuous replication with [MOLT Fetch]({% link molt/molt-fetch.md %}#replicate-changes) to keep CockroachDB in sync with the source.
 1. Verify consistency before cutover: Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the CockroachDB data is consistent with the source.
 1. Cut over to CockroachDB: Redirect application traffic to the CockroachDB cluster.

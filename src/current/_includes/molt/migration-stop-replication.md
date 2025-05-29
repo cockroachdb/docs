@@ -1,9 +1,7 @@
 1. Stop application traffic to your source database. **This begins downtime.**
 
 1. Wait for replication to drain, which means that all transactions that occurred on the source database have been fully processed and replicated to CockroachDB. There are two ways to determine that replication has fully drained:
-
 	- When replication is caught up, you will not see new `upserted rows` logs.
-
 	- If you set up the replication metrics endpoint with `--metricsAddr` in the preceding steps, use the following Prometheus alert expression to observe when the combined rate of upserts and deletes is `0` for each schema:
 
 		~~~
