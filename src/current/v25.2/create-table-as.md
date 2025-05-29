@@ -22,6 +22,8 @@ When the results of a query are reused multiple times within a larger query, a v
 
 A view is also advisable when the results must be up-to-date; a view always retrieves the current data from the tables that the view query mentions.
 
+{% include_cached new-in.html version="v25.2" %} Use `CREATE TABLE t AS ...` with the [`AS OF SYSTEM TIME` clause](#as-of-system-time-clause) to leverage [historical reads]({% link {{ page.version.version }}/as-of-system-time.md %}) to reduce contention and improve performance.
+
 {{site.data.alerts.callout_info}}
 The default rules for [column families]({% link {{ page.version.version }}/column-families.md %}) apply.
 {{site.data.alerts.end}}
@@ -80,6 +82,7 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
  `opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables]({% link {{ page.version.version }}/temporary-tables.md %}).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgreSQL compatibility.<br><br>**Support for temporary tables is [in preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#temporary-objects)**.
  `opt_with_storage_parameter_list` |  A comma-separated list of [spatial index tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters]({% link {{ page.version.version }}/spatial-indexes.md %}#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
  `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgreSQL compatibility. CockroachDB only supports session-scoped [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
+`AS OF SYSTEM TIME {timestamp}` <a name="as-of-system-time-clause"></a> | **New in v25.2** Used to [create a new table from an existing table as of a historical timestamp](#create-a-new-table-from-an-existing-table-as-of-a-historical-timestamp).
 
 ## Known limitations
 
@@ -287,6 +290,62 @@ You can define the [column families]({% link {{ page.version.version }}/column-f
 (1 row)
 ~~~
 
+### Create a new table from an existing table as of a historical timestamp
+
+[XXX](XXX): EDIT THIS SECTION MOAR
+
+{% include_cached new-in.html version="v25.2" %} Using `CREATE TABLE t AS ...` with the [`AS OF SYSTEM TIME` clause](#as-of-system-time-clause) leverages [historical reads]({% link {{ page.version.version }}/as-of-system-time.md %}) for reducing contention and improving performance. This feature allows you to create a table from a historical snapshot of itself or another table, which can be useful for audit purposes or to reduce contention in a high-transaction environment. For more information, see [Create a new table from an existing table as of a historical timestamp](#create-a-new-table-from-an-existing-table-as-of-a-historical-timestamp).
+
+Benefits of using `CREATE TABLE {t} AS SELECT FROM {u} AS OF SYSTEM TIME {timestamp}` include:
+
+- Minimize performance impact: Using `AS OF SYSTEM TIME` reduces contention by offloading read operations to a historical snapshot, avoiding locks on live tables.
+- Maintain consistency: Historical reads provide a consistent view of the data at the specified timestamp, which is crucial for accurate reporting and analysis.
+
+For more information, see the following examples.
+
+- [Example 1: Create a Historical Snapshot](#example-1-create-a-historical-snapshot)
+- [Example 2: Use Historical Data for Analysis](#example-2-use-historical-data-for-analysis)
+- [Example 3: Compare Current and Historical Data](#example-3-compare-current-and-historical-data)
+- [Example 4: Create a Backup for Auditing](#example-4-create-a-backup-for-auditing)
+
+#### Example 1: Create a Historical Snapshot
+
+In this example, `historical_vehicles` is a snapshot of the `vehicles` table as it existed at midnight on October 1, 2023. This can be useful for reporting or auditing without affecting the current operational workload.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE IF NOT EXISTS historical_vehicles AS SELECT * FROM vehicles AS OF SYSTEM TIME '2023-10-01 00:00:00';
+~~~
+
+#### Example 2: Use Historical Data for Analysis
+
+Here, `historical_rides` is created to analyze ride data from September 15, 2023, at noon. This allows analysts to run complex queries on the snapshot without impacting the ongoing transactions in the `rides` table.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE IF NOT EXISTS historical_rides AS SELECT * FROM rides AS OF SYSTEM TIME '2023-09-15 12:00:00';
+~~~
+
+#### Example 3: Compare Current and Historical Data
+
+This statement creates a `historical_drivers` table to compare driver counts as of August 1, 2023 with current counts, helping identify trends without locking the `drivers` table.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE IF NOT EXISTS historical_drivers AS SELECT  * FROM drivers AS OF SYSTEM TIME '2023-08-01 00:00:00';
+~~~
+
+#### Example 4: Create a Backup for Auditing
+
+In this example, a `users_backup` table is created from a snapshot of the `users` table as of July 1, 2023. This is useful for audit trails and compliance checks without impacting the performance of the `users` table.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE IF NOT EXISTS users_backup AS SELECT * FROM users AS OF SYSTEM TIME '2023-07-01 00:00:00';
+~~~
+
+### Key Considerations
+
 ## See also
 
 - [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
@@ -299,3 +358,4 @@ You can define the [column families]({% link {{ page.version.version }}/column-f
 - [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key)
 - [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %})
