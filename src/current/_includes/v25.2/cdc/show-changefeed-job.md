@@ -10,7 +10,7 @@ SHOW CHANGEFEED JOBS;
 (2 rows)
 ~~~
 
-To show an individual {{ site.data.products.enterprise }} changefeed:
+To show an individual changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
