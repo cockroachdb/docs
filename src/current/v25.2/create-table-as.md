@@ -290,6 +290,42 @@ You can define the [column families]({% link {{ page.version.version }}/column-f
 (1 row)
 ~~~
 
+### CREATE TABLE AS with Historical Reads
+
+[XXX](XXX): EDIT THIS AND MERGE WITH THE FOLLOWING SECTION
+
+CockroachDB now supports creating a table using historical data via the `AS OF SYSTEM TIME` clause. This feature allows users to create a new table based on the state of an existing table at a specific point in the past. This is particularly useful for auditing purposes or for analyzing data changes over time without affecting current operations.
+
+#### Syntax
+```sql
+CREATE TABLE new_table_name AS
+SELECT * FROM existing_table_name
+AS OF SYSTEM TIME 'timestamp';
+```
+
+#### Key Points:
+- **Historical Snapshot**: The `AS OF SYSTEM TIME` clause enables the creation of a table from a snapshot of the data as it existed at the specified `timestamp`.
+- **Consistency**: The historical read provides a consistent view of the data as of the specified time, ensuring that all data reflects the state at that exact moment.
+- **Use Cases**: This feature is useful for:
+  - Auditing and compliance checks by preserving historical data states.
+  - Analyzing trends or changes in data over time.
+  - Creating backups of data at specific historical points for comparison or analysis.
+
+#### Considerations:
+- **Performance**: Creating a table with historical data involves reading from a snapshot. Depending on the size of the dataset and the timestamp's recency, performance may vary.
+- **Limitations**: 
+  - The `AS OF SYSTEM TIME` clause cannot be used to create tables with data from future timestamps.
+  - Ensure that the specified timestamp is within the GC (Garbage Collection) window of the source table to avoid data unavailability.
+- **Example**:
+  ```sql
+  CREATE TABLE historical_data AS
+  SELECT * FROM current_data
+  AS OF SYSTEM TIME '2023-10-01 00:00:00';
+  ```
+  This creates a new table `historical_data` containing the state of `current_data` as of midnight on October 1, 2023.
+
+For more detailed information on using `AS OF SYSTEM TIME`, refer to the [CockroachDB documentation on historical reads]().
+
 ### Create a new table from an existing table as of a historical timestamp
 
 [XXX](XXX): EDIT THIS SECTION MOAR
