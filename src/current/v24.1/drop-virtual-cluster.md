@@ -9,9 +9,7 @@ docs_area: reference.sql
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-
-
-The `DROP VIRTUAL CLUSTER` statement removes virtual clusters. Virtual clusters are used only as part of the [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
+The `DROP VIRTUAL CLUSTER` statement removes virtual clusters in order to restart a **physical cluster replication (PCR)** stream. Virtual clusters are used only as part of the [PCR]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
@@ -49,13 +47,20 @@ Parameter | Description
 
 ## Examples
 
-### Remove a virtual cluster
+### Restart a PCR stream
 
-To remove a virtual cluster from a CockroachDB cluster:
+To restart a PCR stream, drop the virtual cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 DROP VIRTUAL CLUSTER IF EXISTS main;
+~~~
+
+Next, restart the PCR stream with the [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) syntax:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connection string to primary}';
 ~~~
 
 ### Remove a virtual cluster without waiting for garbage collection
