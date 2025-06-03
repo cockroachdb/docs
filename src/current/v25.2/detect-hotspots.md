@@ -56,7 +56,7 @@ To identify a [hotspot]({% link {{ page.version.version }}/understand-hotspots.m
 
 For example:
 
-<img src="{{ 'images/v25.2/detect-hotspots-6.png' | relative_url }}" alt="kv.concurrency.latch_conflict_wait_durations-avg" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/detect-hotspots-latch-conflict-wait-durations.png' | relative_url }}" alt="kv.concurrency.latch_conflict_wait_durations-avg" style="border:1px solid #eee;max-width:100%" />
 
 - Is there a node with a maximum value that is a clear outlier in the cluster for the latch conflict wait durations metric?
 
@@ -69,7 +69,7 @@ For example:
 - CPU usage typically increases with traffic volume.
 - Check if the CPU usage of the hottest node is 20% or more above the cluster average. For example, node `n5`, represented by the green line in the following **CPU Percent** graph, hovers at around 87% at time 17:35 compared to other nodes that hover around 20% to 25%.
   
-<img src="{{ 'images/v25.2/detect-hotspots-1.png' | relative_url }}" alt="graph of CPU Percent utilization per node showing hot key" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/detect-hotspots-cpu-percent.png' | relative_url }}" alt="graph of CPU Percent utilization per node showing hot key" style="border:1px solid #eee;max-width:100%" />
 
 - Is there a node with a maximum value that is a clear outlier in the cluster for the CPU percent metric?
 
@@ -86,7 +86,7 @@ For example:
 
 - For example, node `n5`, represented by the green line in the following **Runnable Goroutine per CPU** graph, hovers above 3 at 17:35, compared to other nodes hovering around 0.0.
 
-<img src="{{ 'images/v25.2/detect-hotspots-2.png' | relative_url }}" alt="graph of Runnable Goroutines per CPU per node showing node overload" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v25.2/detect-hotspots-goroutines.png' | relative_url }}" alt="graph of Runnable Goroutines per CPU per node showing node overload" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_success}}
 Compare the **Runnable Goroutines per CPU** graph and the **CPU Percent** graph at the same timestamp to spot sharp increases.
@@ -136,16 +136,16 @@ There may be false positives of the `popular key detected` log.
 
 ### B. `clear direction detected`
 
-- To check whether a `clear direction detected` log exists, examine the unstructured message of the `popular key detected` log. Does it end in `clear direction detected`?
+- To determine whether a `clear direction detected` log exists, check the unstructured message of the `popular key detected` log. Does it end with `clear direction detected`?
 
-- The outlier was CPU percent or the Runnable Goroutines per CPU metric, a `popular key detected` log exists. Does a `clear direction detected` log exist?
+- The outlier was CPU percent or the Runnable Goroutines per CPU metric. A `popular key detected` log exists. Does a `clear direction detected` log exist?
 
   - If **Yes**, it is an [index hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#index-hotspot). Proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
-  - If **No**, investigate some other reason for CPU skew.
+  - If **No**, investigate other possible causes for CPU skew.
 
 ## Step 3. Find hot ranges log
 
-A hot ranges log is a log of an event of type `hot_ranges_stats` emitted to the [`HEALTH` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). Because this log is corresponds to an event type, it includes a structured message such as:
+A hot ranges log is a log of an event of type `hot_ranges_stats` emitted to the [`HEALTH` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). Because this log corresponds to an event type, it includes a structured message such as:
 
 ```
 I250602 04:46:54.752464 2023 2@util/log/event_log.go:39 ⋮ [T1,Vsystem,n5] 31977 ={"Timestamp":1748839613749807000,"EventType":"hot_ranges_stats","RangeID":1115,"Qps":0,"LeaseholderNodeID":5,"WritesPerSecond":0.0012048123820978134,"CPUTimePerSecond":251.30338109510822,"Databases":["kv"],"Tables":["kv"],"Indexes":["kv_pkey"]}
@@ -163,3 +163,12 @@ To mitigate a [hot key]({% link {{ page.version.version }}/understand-hotspots.m
 ## Mitigation 2 - hot index
 
 To mitigate a hot index, update the index schema using the values noted for `Databases`, `Tables`, and `Indexes` in the hot ranges log. Refer to [Resolving index hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}#resolving-index-hotspots).
+
+## See also
+
+- [Understand Hotspots]({% link {{ page.version.version }}/understand-hotspots.md %})
+- [**Metrics** page]({% link {{ page.version.version }}/ui-overview.md %}#metrics)
+- [**Advanced Debug Custom Chart** page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %})
+- [Logging channels]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels)
+- [Load-based splitting]({% link {{ page.version.version }}/load-based-splitting.md %})
+- [**SQL Activity Statements** page]({% link {{ page.version.version }}/ui-statements-page.md %})
