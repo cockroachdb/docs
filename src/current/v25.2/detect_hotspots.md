@@ -4,79 +4,162 @@ summary: Learn how to detect hotspots using real-time monitoring and historical 
 toc: true
 ---
 
-This page provides practical guidance on identifying common [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) in CockroachDB clusters, using real-time monitoring and historical logs.
+This page provides practical guidance for identifying common [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) in CockroachDB clusters using real-time monitoring and historical logs.
+
+## Before you begin
+
+- Review the [Understand hotspots page]({% link {{ page.version.version }}/understand-hotspots.md %}) for definitions and concepts.
+- Ensure you have access to the DB Console Metrics and the relevant logs.
+- Confirm that you have the necessary permissions to modify the application or schema.
+
+## Troubleshooting overview
+
+Identify potential hotspots and optimize query and schema performance. The following sections provide details for each step.
 
 ```
 [Start]
    |
-[Is there a KV Latch Contention Alert?]
+[Is there a node outlier in metrics?]
    |
-   |-- Yes --> [Does popular key log exist?]
+   |-- Yes --> [Is the outlier in the latch conflict wait durations metric?]
    |             |
-   |             |-- Yes (write hotspot) --> [(A) Find hot ranges log, find table index] → [Mitigate hot key (find queries and refactor app)]
-   |             |
-   |             |-- No  --> [Some other reason for latch contention]
+   |             |-- Yes --> [Does a popular key detected log exist?]
+   |                           |
+   |                           |-- Yes (write hotspot) --> [Find hot ranges log, find table and index] ------|
+   |                           |                                                                             |
+   |                           |-- No  --> [Some other reason for latch conflict]                            |
+   |                                                                                                         |
+   |-- Yes --> [Is the outlier in the CPU percent or the Runnable Goroutines per CPU metric?]                |
+   |             |                                                                                           |
+   |             |-- Yes --> [Does a popular key detected log exist?]                                        |
+   |                           |                                                                             v
+   |                           |-- Yes (read hotspot)  --> [Find hot ranges log, find table and index] --> [Mitigate hot key (find queries and refactor app)]
+   |                           |
+   |                           |-- No --> [Does a clear direction detected log exist?]
+   |                                        |                                
+   |                                        |-- Yes (index hotspot) --> [Find hot ranges log, find table and index] --> [Mitigate hot index (change schema)]
+   |                                        |
+   |                                        |-- No  --> [Some other reason for CPU skew]
    |
-   |
-   |-- No  --> [Is there a CPU metrics Alert?]
-                  |
-                  |-- Yes --> [Does popular key log exist?]
-                                |
-                                |-- Yes (read hotspot) → [Go to (A) Find hot ranges log]
-                                |
-                                |-- No --> [Does clear access log exist?]
-                                             |                                
-                                             |-- Yes --> [(B) Find hot ranges log, find table index] → [Mitigate hot index (change schema)]
-                                             |
-                                             |-- No  --> [Some other reason for CPU skew]
+   |-- No  --> [Some other reason for metrics outlier]
 ```
 
-This guide helps diagnose and mitigate issues related to KV latch contention and CPU usage alerts in a CockroachDB cluster. Use this workflow to identify potential hotspots and optimize query and schema performance.
+## Step 1. Check for a node outlier in metrics
 
-## Before you begin
+To identify a [hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}), monitor the following metrics on the [DB Console **Metrics** page]({% link {{ page.version.version }}/ui-overview.md %}#metrics) and the [DB Console **Advanced Debug Custom Chart** page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}). A node with a maximum value that is a clear outlier in the cluster may indicate a potential hotspot.
 
-- Ensure you have access to the DB Console and relevant logs.
-- Confirm that you have the necessary permissions to view metrics and modify the application or schema.
+### A. Latch conflict wait durations
 
-## Troubleshooting Steps
+- On the [DB Console **Advanced Debug Custom Chart** page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}), if a virtual cluster dropdown is present in the upper right corner, select `system`.
+- Create a custom chart to monitor the `kv.concurrency.latch_conflict_wait_durations-avg` metric, which tracks time spent on [latch acquisition]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#latch-manager) waiting for conflicts with other latches. For example, a [sequence]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-sequence) that writes to the same row must wait to acquire the latch.
+- To display the metric per node, select the `PER NODE/STORE` checkbox. 
 
-### 1. Check for KV Latch Contention Alert
+For example:
 
-If a KV latch contention alert is triggered:
+<img src="{{ 'images/v25.2/detect-hotspots-6.png' | relative_url }}" alt="kv.concurrency.latch_conflict_wait_durations-avg" style="border:1px solid #eee;max-width:100%" />
 
-- **Check if a popular key log exists:**
-  - **Yes (write hotspot):**
-    1. Locate the hot ranges log.
-    2. Identify the associated table and index.
-    3. Mitigate the hot key:
-       - Locate queries that target the hotspot.
-       - Refactor the application logic to distribute the load more evenly.
-  - **No:**
-    - Investigate other potential causes of latch contention.
+- Is there a node with a maximum value that is a clear outlier in the cluster for the latch conflict wait durations metric?
 
-If no KV latch contention alert is present, proceed to the next step.
+  - If **Yes**, note the ID of the [hot node]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) and the time range when it was hot. Proceed to check for a [`popular key detected `log](#a-popular-key-detected).
+  - If **No**, check for a node outlier in [CPU percent](#b-cpu-percent) metric. 
 
-### 2. Check for CPU Metrics Alert
+### B. CPU percent
 
-If a CPU metrics alert is triggered:
+- On the DB Console **Metrics** page **Hardware** dashboard, monitor the [**CPU Percent** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent).
+- CPU usage typically increases with traffic volume.
+- Check if the CPU usage of the hottest node is 20% or more above the cluster average. For example, node `n5`, represented by the green line in the following **CPU Percent** graph, hovers at around 87% at time 17:35 compared to other nodes that hover around 20% to 25%.
+  
+<img src="{{ 'images/v25.2/detect-hotspots-1.png' | relative_url }}" alt="graph of CPU Percent utilization per node showing hot key" style="border:1px solid #eee;max-width:100%" />
 
-- **Check if a popular key log exists:**
-  - **Yes (read hotspot):**
-    - Refer to the steps above:
-      1. Locate the hot ranges log.
-      2. Identify the associated table and index.
-      3. Mitigate the hot key:
-         - Locate queries that target the hotspot.
-         - Refactor the application logic.
+- Is there a node with a maximum value that is a clear outlier in the cluster for the CPU percent metric?
 
-- **If no popular key log exists, check for a clear access log:**
-  - **Yes (hot index):**
-    1. Locate the hot ranges log.
-    2. Identify the associated table and index.
-    3. Mitigate the hot index:
-       - Modify the schema to balance index usage, such as splitting or reorganizing indexes.
+  - If **Yes**, note the ID of the [hot node]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) and the time range when it was hot. Proceed to check for a [`popular key detected `log](#a-popular-key-detected).
+  - If **No**, check for a node outlier in [Runnable Goroutines per CPU](#c-runnable-goroutines-per-cpu) metric.  
 
-  - **No:**
-    - Investigate other potential causes of CPU skew.
+### C. Runnable Goroutines per CPU
 
-If no CPU metrics alert is present, no further action is needed.
+- On the DB Console **Metrics** page **Runtime** dashboard, monitor the [**Runnable Goroutines Per CPU** graph]({% link {{ page.version.version }}/ui-runtime-dashboard.md %}#runnable-goroutines-per-cpu).
+- Check if there is a significant difference between the average and maximum values of the nodes. Nodes typically hover near `0.0`, unless a node is at or near its system-configured limit of 32.
+- The **Runnable Goroutines per CPU** graph rises more sharply than the [**CPU Percent** graph](#1-cpu-percent). The goroutines graph increases gradually until a node approaches its limit, after which it rises sharply. The following image shows the general shapes of the two graphs.
+
+<img src="{{ 'images/v25.2/detect-hotspots-cpu-goroutine-graphs.png' | relative_url }}" alt="comparison of CPU percent and Runnable Goroutines per CPU graphs" style="border:1px solid #eee;max-width:100%" />
+
+- For example, node `n5`, represented by the green line in the following **Runnable Goroutine per CPU** graph, hovers above 3 at 17:35, compared to other nodes hovering around 0.0.
+
+<img src="{{ 'images/v25.2/detect-hotspots-2.png' | relative_url }}" alt="graph of Runnable Goroutines per CPU per node showing node overload" style="border:1px solid #eee;max-width:100%" />
+
+{{site.data.alerts.callout_success}}
+Compare the **Runnable Goroutines per CPU** graph and the **CPU Percent** graph at the same timestamp to spot sharp increases.
+{{site.data.alerts.end}}
+
+- Is there a node with a maximum value that is a clear outlier in the cluster for Runnable Goroutines per CPU metric?
+
+  - If **Yes**, note the ID of the [hot node]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) and the time range when it was hot. Proceed to check for a [`popular key detected `log](#a-popular-key-detected).
+  - If **No**, investigate other reasons for the metrics outlier. 
+
+## Step 2. Check for existence of `no split key found` log
+
+The [`no split key found` log]({% link {{ page.version.version }}/load-based-splitting.md %}#monitor-load-based-splitting) is emitted in the [`KV_DISTRIBUTION` log channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). This log is not associated with a specific event type, but includes an unstructured message such as:
+
+<a id="no-split-key-found-log-example"></a>
+
+```
+I250523 21:59:25.755283 31560 13@kv/kvserver/split/decider.go:298 ⋮ [T1,Vsystem,n5,s5,r1115/3:‹/Table/106/1/{113338-899841…}›] 2979  no split key found: insufficient counters = 0, imbalance = 20, most popular key occurs in 36% of samples, access balance right-biased 98%, popular key detected, clear direction detected
+```
+
+The unstructured message ends in either of these string combinations:
+
+1. `popular key detected, clear direction detected`
+1. `popular key detected, no clear direction`
+1. `no popular key, clear direction detected`
+1. `no popular key, no clear direction`
+
+### A. `popular key detected`
+
+- To check whether a `popular key detected` log exists, search for `popular key detected` in the `KV_DISTRIBUTION` logs on the hot node you noted in Step 1 in the time range that you noted. In the [preceding log example](#no-split-key-found-log-example), the log is on node 5, `n5` in the tag section in square brackets, and at timestamp `250523 21:59:25.755283`.
+
+- Once you identify a relevant log, note the range ID in the tag section. In the [preceding log example](#no-split-key-found-log-example), the range is 1115 (`r1115`), as shown in the tag section in square brackets.
+
+{{site.data.alerts.callout_info}}
+There may be false positives of the `popular key detected` log.
+{{site.data.alerts.end}}
+
+- The outlier was in the latch conflict wait durations metric. Does a `popular key detected` log exist?
+
+  - If **Yes**, it is a [write hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#write-hotspot). Note the range ID of `popular key detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
+  - If **No**, investigate other reasons for the latch conflict wait durations metric outlier.
+
+- The outlier was CPU percent or the Runnable Goroutines per CPU metric. Does a `popular key detected` log exist?
+
+  - If **Yes**, it is a [read hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#read-hotspot). Note the range ID of `popular key detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
+  - If **No**, note the range ID of `popular key detected` log and proceed to check whether the log is also a [`clear direction detected` log](#b-clear-direction-detected).
+
+### B. `clear direction detected`
+
+- To check whether a `clear direction detected` log exists, examine the unstructured message of the `popular key detected` log. Does it end in `clear direction detected`?
+
+- The outlier was CPU percent or the Runnable Goroutines per CPU metric, a `popular key detected` log exists. Does a `clear direction detected` log exist?
+
+  - If **Yes**, it is an [index hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#index-hotspot). Proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
+  - If **No**, investigate some other reason for CPU skew.
+
+## Step 3. Find hot ranges log
+
+A hot ranges log is a log of an event of type `hot_ranges_stats` emitted to the [`HEALTH` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). Because this log is corresponds to an event type, it includes a structured message such as:
+
+```
+I250602 04:46:54.752464 2023 2@util/log/event_log.go:39 ⋮ [T1,Vsystem,n5] 31977 ={"Timestamp":1748839613749807000,"EventType":"hot_ranges_stats","RangeID":1115,"Qps":0,"LeaseholderNodeID":5,"WritesPerSecond":0.0012048123820978134,"CPUTimePerSecond":251.30338109510822,"Databases":["kv"],"Tables":["kv"],"Indexes":["kv_pkey"]}
+```
+
+- To find the relevant hot ranges log, search for `"EventType":"hot_ranges_stats"` and `"RangeID":{range ID from popular key detected log}` and `"LeaseholderNodeID":{node ID from metric outlier}` in the noted time range of the metric outlier.
+- Once you find the relevant hot ranges log, note the values for `Databases`, `Tables`, and `Indexes`.
+- For a write hotspot or read hotspot, proceed to [Mitigation for hot key](#mitigation-1-hot-key).
+- For an index hotspot, proceed to [Mitigation for hot index](#mitigation-2-hot-index).
+
+## Mitigation 1 - hot key
+
+To mitigate a [hot key]({% link {{ page.version.version }}/understand-hotspots.md %}#row-hotspot) (whether a write hotspot or read hotspot), identify the problematic queries, and then refactor your application accordingly. Use the [SQL Activity Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) in the DB Console to help identify the corresponding statements by the values noted for `Databases`, `Tables`, and `Indexes` in the hot ranges log.
+
+## Mitigation 2 - hot index
+
+To mitigate a hot index, update the index schema using the values noted for `Databases`, `Tables`, and `Indexes` in the hot ranges log. Refer to [Resolving index hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}#resolving-index-hotspots).
