@@ -29,7 +29,7 @@ Identify potential hotspots and optimize query and schema performance. The follo
    |                           |                                                                             |
    |                           |-- No  --> [Some other reason for latch conflict]                            |
    |                                                                                                         |
-   |-- Yes --> [Is the outlier in the CPU percent or the Runnable Goroutines per CPU metric?]                |
+   |-- Yes --> [Is the outlier in the CPU percent metric?]                |
    |             |                                                                                           |
    |             |-- Yes --> [Does a popular key detected log exist?]                                        |
    |                           |                                                                             v
@@ -74,38 +74,22 @@ For example:
 - Is there a node with a maximum value that is a clear outlier in the cluster for the CPU percent metric?
 
   - If **Yes**, note the ID of the [hot node]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) and the time range when it was hot. Proceed to check for a [`popular key detected `log](#a-popular-key-detected).
-  - If **No**, check for a node outlier in [Runnable Goroutines per CPU](#c-runnable-goroutines-per-cpu) metric.  
-
-### C. Runnable Goroutines per CPU
-
-- On the DB Console **Metrics** page **Runtime** dashboard, monitor the [**Runnable Goroutines Per CPU** graph]({% link {{ page.version.version }}/ui-runtime-dashboard.md %}#runnable-goroutines-per-cpu).
-- Check if there is a significant difference between the average and maximum values of the nodes. Nodes typically hover near `0.0`, unless a node is at or near its system-configured limit of 32.
-- The **Runnable Goroutines per CPU** graph rises more sharply than the [**CPU Percent** graph](#b-cpu-percent). The goroutines graph increases gradually until a node approaches its limit, after which it rises sharply. The following image shows the general shapes of the two graphs.
-
-<img src="{{ 'images/v25.2/detect-hotspots-cpu-goroutine-graphs.png' | relative_url }}" alt="comparison of CPU percent and Runnable Goroutines per CPU graphs" style="border:1px solid #eee;max-width:100%" />
-
-- For example, node `n5`, represented by the green line in the following **Runnable Goroutine per CPU** graph, hovers above 3 at 17:35, compared to other nodes hovering around 0.0.
-
-<img src="{{ 'images/v25.2/detect-hotspots-goroutines.png' | relative_url }}" alt="graph of Runnable Goroutines per CPU per node showing node overload" style="border:1px solid #eee;max-width:100%" />
-
-{{site.data.alerts.callout_success}}
-Compare the **Runnable Goroutines per CPU** graph and the **CPU Percent** graph at the same timestamp to spot sharp increases.
-{{site.data.alerts.end}}
-
-- Is there a node with a maximum value that is a clear outlier in the cluster for Runnable Goroutines per CPU metric?
-
-  - If **Yes**, note the ID of the [hot node]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) and the time range when it was hot. Proceed to check for a [`popular key detected `log](#a-popular-key-detected).
-  - If **No**, investigate other reasons for the metrics outlier. 
+  - If **No**, investigate other possible causes for the metrics outlier.
 
 ## Step 2. Check for existence of `no split key found` log
 
 The [`no split key found` log]({% link {{ page.version.version }}/load-based-splitting.md %}#monitor-load-based-splitting) is emitted in the [`KV_DISTRIBUTION` log channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). This log is not associated with a specific event type, but includes an unstructured message such as:
 
-<a id="no-split-key-found-log-example"></a>
-
 ```
 I250523 21:59:25.755283 31560 13@kv/kvserver/split/decider.go:298 ⋮ [T1,Vsystem,n5,s5,r1115/3:‹/Table/106/1/{113338-899841…}›] 2979  no split key found: insufficient counters = 0, imbalance = 20, most popular key occurs in 36% of samples, access balance right-biased 98%, popular key detected, clear direction detected
 ```
+
+In the preceding log example, the tag section in square brackets provides the following information:
+
+- node ID: the node ID is 5 from `n5`.
+- range ID: the range is 1115 from `r1115`.
+
+The timestamp is at the beginning of the log is `250523 21:59:25.755283`.
 
 The unstructured message ends in either of these string combinations:
 
@@ -116,9 +100,9 @@ The unstructured message ends in either of these string combinations:
 
 ### A. `popular key detected`
 
-- To check whether a `popular key detected` log exists, search for `popular key detected` in the `KV_DISTRIBUTION` logs on the hot node you noted in Step 1 in the time range that you noted. In the [preceding log example](#no-split-key-found-log-example), the log is on node 5, `n5` in the tag section in square brackets, and at timestamp `250523 21:59:25.755283`.
+- To check whether a `popular key detected` log exists, search for `popular key detected` in the `KV_DISTRIBUTION` logs on the hot node you noted in Step 1 in the time range that you noted.
 
-- Once you identify a relevant log, note the range ID in the tag section. In the [preceding log example](#no-split-key-found-log-example), the range is 1115 (`r1115`), as shown in the tag section in square brackets.
+- Once you identify a relevant log, note the range ID in the tag section of the log.
 
 {{site.data.alerts.callout_info}}
 There may be false positives of the `popular key detected` log.
@@ -129,16 +113,16 @@ There may be false positives of the `popular key detected` log.
   - If **Yes**, it is a [write hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#write-hotspot). Note the range ID of `popular key detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
   - If **No**, investigate other reasons for the latch conflict wait durations metric outlier.
 
-- The outlier was CPU percent or the Runnable Goroutines per CPU metric. Does a `popular key detected` log exist?
+- The outlier was in the CPU percent metric. Does a `popular key detected` log exist?
 
   - If **Yes**, it is a [read hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#read-hotspot). Note the range ID of `popular key detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
   - If **No**, note the range ID of `popular key detected` log and proceed to check whether the log is also a [`clear direction detected` log](#b-clear-direction-detected).
 
 ### B. `clear direction detected`
 
-- To determine whether a `clear direction detected` log exists, check the unstructured message of the `popular key detected` log. Does it end with `clear direction detected`?
+- To determine whether a `clear direction detected` log exists, check whether any `no split key found` logs for the hot node identified in Step 1, within the noted time range, have an unstructured message that ends with `clear direction detected`.
 
-- The outlier was CPU percent or the Runnable Goroutines per CPU metric. A `popular key detected` log exists. Does a `clear direction detected` log exist?
+- Does a `clear direction detected` log exist?
 
   - If **Yes**, it is an [index hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#index-hotspot). Proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
   - If **No**, investigate other possible causes for CPU skew.
@@ -151,7 +135,10 @@ A hot ranges log is a log of an event of type `hot_ranges_stats` emitted to the 
 I250602 04:46:54.752464 2023 2@util/log/event_log.go:39 ⋮ [T1,Vsystem,n5] 31977 ={"Timestamp":1748839613749807000,"EventType":"hot_ranges_stats","RangeID":1115,"Qps":0,"LeaseholderNodeID":5,"WritesPerSecond":0.0012048123820978134,"CPUTimePerSecond":251.30338109510822,"Databases":["kv"],"Tables":["kv"],"Indexes":["kv_pkey"]}
 ```
 
-- To find the relevant hot ranges log, search for `"EventType":"hot_ranges_stats"` and `"RangeID":{range ID from popular key detected log}` and `"LeaseholderNodeID":{node ID from metric outlier}` in the noted time range of the metric outlier.
+- To find the relevant hot ranges log, within the noted time range of the metric outlier, search for
+  - `"EventType":"hot_ranges_stats"` and
+  - `"RangeID":{range ID from popular key detected log}` and
+  - `"LeaseholderNodeID":{node ID from metric outlier}`.
 - Once you find the relevant hot ranges log, note the values for `Databases`, `Tables`, and `Indexes`.
 - For a write hotspot or read hotspot, proceed to [Mitigation for hot key](#mitigation-1-hot-key).
 - For an index hotspot, proceed to [Mitigation for hot index](#mitigation-2-hot-index).
