@@ -64,7 +64,7 @@ For more details, refer to the LDR [Known limitations]({% link {{ page.version.v
 
 When the destination table includes unique [secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}), it can cause rows to enter the [_dead letter queue_ (DLQ)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}). The two clusters in LDR operate independently, so writes to one cluster can conflict with writes to the other.
 
-If the application modifies the same row in both clusters, LDR resolves the conflict using _last write wins_ (LWW) conflict resolution. [`UNIQUE` constraints]({% link {{ page.version.version }}/unique.md %}) are validated locally in each cluster, therefore if a replicated write violates a `UNIQUE` constraint on the destination cluster (possibly because a conflicting write was already applied to the row) the replicating row will be applied to the DLQ. 
+If the application modifies the same row in both clusters, LDR resolves the conflict using [_last write wins_ (LWW)]({% link {{ page.version.version }}/manage-logical-data-replication.md %}#conflict-resolution) conflict resolution. [`UNIQUE` constraints]({% link {{ page.version.version }}/unique.md %}) are validated locally in each cluster, therefore if a replicated write violates a `UNIQUE` constraint on the destination cluster (possibly because a conflicting write was already applied to the row) the replicating row will be applied to the DLQ. 
 
 For example, consider a table with a unique `name` column where the following operations occur in this order in a source and destination cluster running LDR:
 
@@ -86,7 +86,7 @@ LDR replicates the write to the **destination cluster**:
 INSERT INTO city (100, nyc); -- timestamp 4
 ~~~
 
-_Timestamp 5:_ Range containing primary key `1` on the destination cluster is unavailable for a few minutes due to a network partition.
+_Timestamp 5:_ [Range]({% link {{ page.version.version }}/architecture/glossary.md %}#range) containing primary key `1` on the destination cluster is unavailable for a few minutes due to a [network partition]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition).
 
 _Timestamp 6:_ On the destination cluster, LDR attempts to replicate the row `(1, nyc)`, but it enters the retry queue for 1 minute due to the unavailable range. LDR adds `1, nyc` to the DLQ table after retrying and observing the `UNIQUE` constraint violation:
 
