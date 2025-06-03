@@ -80,7 +80,7 @@ For example:
 
 - On the DB Console **Metrics** page **Runtime** dashboard, monitor the [**Runnable Goroutines Per CPU** graph]({% link {{ page.version.version }}/ui-runtime-dashboard.md %}#runnable-goroutines-per-cpu).
 - Check if there is a significant difference between the average and maximum values of the nodes. Nodes typically hover near `0.0`, unless a node is at or near its system-configured limit of 32.
-- The **Runnable Goroutines per CPU** graph rises more sharply than the [**CPU Percent** graph](#1-cpu-percent). The goroutines graph increases gradually until a node approaches its limit, after which it rises sharply. The following image shows the general shapes of the two graphs.
+- The **Runnable Goroutines per CPU** graph rises more sharply than the [**CPU Percent** graph](#b-cpu-percent). The goroutines graph increases gradually until a node approaches its limit, after which it rises sharply. The following image shows the general shapes of the two graphs.
 
 <img src="{{ 'images/v25.2/detect-hotspots-cpu-goroutine-graphs.png' | relative_url }}" alt="comparison of CPU percent and Runnable Goroutines per CPU graphs" style="border:1px solid #eee;max-width:100%" />
 
