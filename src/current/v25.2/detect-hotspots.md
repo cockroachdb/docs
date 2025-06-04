@@ -78,20 +78,22 @@ For example:
 
 ## Step 2. Check for existence of `no split key found` log
 
-The [`no split key found` log]({% link {{ page.version.version }}/load-based-splitting.md %}#monitor-load-based-splitting) is emitted in the [`KV_DISTRIBUTION` log channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). This log is not associated with a specific event type, but includes an unstructured message such as:
+The [`no split key found` log]({% link {{ page.version.version }}/load-based-splitting.md %}#monitor-load-based-splitting) is emitted in the [`KV_DISTRIBUTION` log channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). This log is only emitted when a single replica begins using a significant percentage of the resources on the node where it resides.
+
+This log is not associated with a specific event type but includes an unstructured message, for example:
 
 ```
 I250523 21:59:25.755283 31560 13@kv/kvserver/split/decider.go:298 ⋮ [T1,Vsystem,n5,s5,r1115/3:‹/Table/106/1/{113338-899841…}›] 2979  no split key found: insufficient counters = 0, imbalance = 20, most popular key occurs in 36% of samples, access balance right-biased 98%, popular key detected, clear direction detected
 ```
 
-In the preceding log example, the tag section in square brackets provides the following information:
+In the preceding log example, the square-bracketed tag section provides the following information:
 
-- node ID: the node ID is 5 from `n5`.
-- range ID: the range is 1115 from `r1115`.
+- node ID: `n5` indicates the node ID is 5.
+- range ID: `r1115` indicates the range ID is 1115.
 
-The timestamp is at the beginning of the log is `250523 21:59:25.755283`.
+The timestamp at the beginning of the log is `250523 21:59:25.755283`.
 
-The unstructured message ends in either of these string combinations:
+The unstructured message ends with one of the following string combinations:
 
 1. `popular key detected, clear direction detected`
 1. `popular key detected, no clear direction`
@@ -100,7 +102,9 @@ The unstructured message ends in either of these string combinations:
 
 ### A. `popular key detected`
 
-- To check whether a `popular key detected` log exists, search for `popular key detected` in the `KV_DISTRIBUTION` logs on the hot node you noted in Step 1 in the time range that you noted.
+`popular key detected` indicates that a significant percentage of reads or writes target a single row within the range of data.
+
+- To check for a `popular key detected` log, search for `popular key detected` in the `KV_DISTRIBUTION` logs on the hot node you noted in Step 1, within the noted time range.
 
 - Once you identify a relevant log, note the range ID in the tag section of the log.
 
@@ -110,21 +114,23 @@ There may be false positives of the `popular key detected` log.
 
 - The outlier was in the latch conflict wait durations metric. Does a `popular key detected` log exist?
 
-  - If **Yes**, it is a [write hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#write-hotspot). Note the range ID of `popular key detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
+  - If **Yes**, it may be a [write hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#write-hotspot). Note the range ID of `popular key detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
   - If **No**, investigate other reasons for the latch conflict wait durations metric outlier.
 
 - The outlier was in the CPU percent metric. Does a `popular key detected` log exist?
 
-  - If **Yes**, it is a [read hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#read-hotspot). Note the range ID of `popular key detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
+  - If **Yes**, it may be a [read hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#read-hotspot). Note the range ID of `popular key detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
   - If **No**, note the range ID of `popular key detected` log and proceed to check whether the log is also a [`clear direction detected` log](#b-clear-direction-detected).
 
 ### B. `clear direction detected`
+
+`clear direction detected` indicates that the rows touched in the range are steadily increasing or decreasing within the index.
 
 - To determine whether a `clear direction detected` log exists, check whether any `no split key found` logs for the hot node identified in Step 1, within the noted time range, have an unstructured message that ends with `clear direction detected`.
 
 - Does a `clear direction detected` log exist?
 
-  - If **Yes**, it is an [index hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#index-hotspot). Proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
+  - If **Yes**, it may be an [index hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#index-hotspot). Proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
   - If **No**, investigate other possible causes for CPU skew.
 
 ## Step 3. Find hot ranges log
