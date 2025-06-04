@@ -87,9 +87,7 @@ CockroachDB requires TCP communication on two ports:
 
 1. SSH to the first VM where you want to run a CockroachDB node.
 
-1. Visit [Releases]({% link releases/index.md %}?filters=windows) to download and CockroachDB for Linux. Select the architecture of the VM, either Intel or ARM. Releases are rolled out gradually, so the latest version may not yet be available.
-
-1. Extract the binary you downloaded, then optionally copy it into a location in your `PATH`. If you choose to copy it into a system directory, you may need to use `sudo`.
+1. [Install CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}).
 
 1. Start CockroachDB using the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 

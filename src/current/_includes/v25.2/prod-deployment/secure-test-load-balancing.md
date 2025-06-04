@@ -10,21 +10,7 @@ For comprehensive guidance on benchmarking CockroachDB with TPC-C, refer to [Per
 
     This should be a machine that is not running a CockroachDB node, and it should already have a `certs` directory containing `ca.crt`, `client.root.crt`, and `client.root.key` files.
 
-1. Download [CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}), extract the binary, and copy it into the `PATH`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    tar -xz cockroach-{{ page.release_info.version }}.linux-amd64.tgz
-    ~~~
-
-1. Copy the binary into the `PATH`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
-
-    If you get a permissions error, prefix the command with `sudo`.
+1. [Install CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}).
 
 1. Use the [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) command to load the initial schema and data, pointing it at the IP address of the load balancer:
 
