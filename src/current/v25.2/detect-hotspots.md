@@ -16,33 +16,7 @@ This page provides practical guidance for identifying common [hotspots]({% link 
 
 Identify potential hotspots and optimize query and schema performance. The following sections provide details for each step.
 
-```
-[Start]
-   |
-[Is there a node outlier in metrics?]
-   |
-   |-- Yes --> [Is the outlier in the latch conflict wait durations metric?]
-   |             |
-   |             |-- Yes --> [Does a popular key detected log exist?]
-   |                           |
-   |                           |-- Yes (write hotspot) --> [Find hot ranges log, find table and index] ------|
-   |                           |                                                                             |
-   |                           |-- No  --> [Some other reason for latch conflict]                            |
-   |                                                                                                         |
-   |-- Yes --> [Is the outlier in the CPU percent metric?]                |
-   |             |                                                                                           |
-   |             |-- Yes --> [Does a popular key detected log exist?]                                        |
-   |                           |                                                                             v
-   |                           |-- Yes (read hotspot)  --> [Find hot ranges log, find table and index] --> [Mitigate hot key (find queries and refactor app)]
-   |                           |
-   |                           |-- No --> [Does a clear direction detected log exist?]
-   |                                        |                                
-   |                                        |-- Yes (index hotspot) --> [Find hot ranges log, find table and index] --> [Mitigate hot index (change schema)]
-   |                                        |
-   |                                        |-- No  --> [Some other reason for CPU skew]
-   |
-   |-- No  --> [Some other reason for metrics outlier]
-```
+<img src="{{ 'images/v25.2/detect-hotspots-workflow.svg' | relative_url }}" alt="Troubleshoot hotspots workflow" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 1. Check for a node outlier in metrics
 
