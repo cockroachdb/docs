@@ -1,0 +1,5 @@
+Both {% if page.name == "stored-procedures.md" %}stored procedures{% else %}[stored procedures]({% link {{ page.version.version }}/stored-procedures.md %}){% endif %} and {% if page.name == "user-defined-functions.md" %}user-defined functions{% else %}[user-defined functions]({% link {{ page.version.version }}/user-defined-functions.md %}){% endif %} are types of *routines*. However, they differ in the following ways:
+
+- Functions return a value, and procedures do not return a value.
+- Procedures must be invoked using a [`CALL`]({% link {{ page.version.version }}/call.md %}) statement. Functions can be invoked in nearly any context, such as `SELECT`, `FROM`, and `WHERE` clauses, [`DEFAULT`]({% link {{ page.version.version }}/default-value.md %}) expressions, and [computed column]({% link {{ page.version.version }}/computed-columns.md %}) expressions.
+- Functions have [volatility]({% link {{ page.version.version }}/functions-and-operators.md %}#function-volatility) settings, and procedures do not.
