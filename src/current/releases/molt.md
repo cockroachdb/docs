@@ -5,7 +5,7 @@ toc: true
 docs_area: releases
 ---
 
-This page has details about each release of the following [MOLT (Migrate Off Legacy Technology) tools]({% link molt/molt-overview.md %}):
+This page has details about each release of the following [MOLT (Migrate Off Legacy Technology) tools]({% link molt/migration-overview.md %}):
 
 - [Fetch]({% link molt/molt-fetch.md %})
 - [Verify]({% link molt/molt-verify.md %})
@@ -17,6 +17,14 @@ Cockroach Labs recommends using the latest available version of each tool. See [
 To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
+
+## May 22, 2025
+
+MOLT Fetch/Verify 1.2.6 is [available](#installation).
+
+- Fixed a bug in [`--direct-copy` mode]({% link molt/molt-fetch.md %}#direct-copy) that occurred when [`--case-sensitive`]({% link molt/molt-fetch.md %}#global-flags) was set to `false` (default). Previously, the `COPY` query could use incorrect column names in some cases during data transfer, causing errors. The query now uses the correct column names.
+- Fixed a bug in how origin messages were handled during replication from PostgreSQL sources. This allows replication to successfully continue.
+- `ENUM` types can now be replicated from MySQL 8.0 sources.
 
 ## April 25, 2025
 
@@ -41,6 +49,7 @@ MOLT Fetch/Verify 1.2.4 is [available](#installation).
 MOLT Fetch/Verify 1.2.3 is [available](#installation).
 
 - MOLT Fetch users can now set [`--table-concurrency`]({% link molt/molt-fetch.md %}#global-flags) and [`--export-concurrency`]({% link molt/molt-fetch.md %}#global-flags) to values greater than `1` for MySQL sources.
+- MOLT Fetch now supports case-insensitive comparison of table and column names by default. Previously, case-sensitive comparisons could result in `no matching table on target` errors. To disable case-sensitive comparisons explicitly, set [`--case-sensitive=false`]({% link molt/molt-fetch.md %}#global-flags). If `=` is **not** included (e.g., `--case-sensitive false`), this is interpreted as `--case-sensitive` (i.e., `--case-sensitive=true`).
 
 ## February 5, 2025
 

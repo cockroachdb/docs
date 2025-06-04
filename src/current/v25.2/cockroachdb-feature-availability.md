@@ -75,10 +75,6 @@ The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %})
 
 CockroachDB {{ site.data.products.standard }} is our new, [enterprise-ready plan](https://www.cockroachlabs.com/pricing), recommended for most applications. You can start small with [provisioned capacity that can scale on demand]({% link cockroachcloud/plan-your-cluster.md %}), along with enterprise-level security and availability. Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
 
-### Generic query plans
-
-[Generic query plans]({% link {{ page.version.version }}/cost-based-optimizer.md %}#query-plan-type) are generated and optimized once without considering specific placeholder values, and are not regenerated on subsequent executions, unless the plan becomes stale due to [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) or new [table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) and must be re-optimized. This approach eliminates most of the query latency attributed to planning.
-
 ### Vector search
 
 The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores fixed-length arrays of floating-point numbers, which represent data points in multi-dimensional space. Vector search is often used in AI applications such as Large Language Models (LLMs) that rely on vector representations.
@@ -86,10 +82,6 @@ The [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) data type stores
 ### CockroachDB Cloud Folders
 
 [Organizing CockroachDB {{ site.data.products.cloud }} clusters using folders]({% link cockroachcloud/folders.md %}) is in preview. Folders allow you to organize and manage access to your clusters according to your organization's requirements. For example, you can create top-level folders for each business unit in your organization, and within those folders, organize clusters by geographic location and then by  level of maturity, such as production, staging, and testing.
-
-### Logical data replication (LDR) for CockroachDB {{ site.data.products.core }}
-
-**Logical data replication (LDR)** continuously replicates tables between active CockroachDB clusters. Both source and destination cluster can receive application reads and writes, with LDR enabling bidirectional replication for eventual consistency in the replicating tables. The active-active setup between clusters can provide protection against cluster, datacenter, or region failure while still achieving single-region low latency reads and writes in the individual CockroachDB clusters. Setting up LDR between a source and destination CockroachDB {{ site.data.products.core }} cluster is in preview.
 
 ### Read on standby cluster in physical cluster replication (PCR) for CockroachDB {{ site.data.products.core }}
  
@@ -276,6 +268,18 @@ Command                                     | Description
 --------------------------------------------+-------------
 [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %})     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach sqlfmt`]({% link {{ page.version.version }}/cockroach-sqlfmt.md %}) | Reformat SQL queries for enhanced clarity.
+
+### Leader leases
+
+{% include {{ page.version.version }}/leader-leases-intro.md %}
+
+For more information, see [Architecture > Replication Layer > Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
+
+### Buffered Writes
+
+Buffered Writes enhance transaction throughput and reduce operational cost by minimizing the number of round-trips between the [gateway node]({% link {{ page.version.version }}/architecture/sql-layer.md %}#gateway-node) and the other nodes during write operations.
+
+For more information, refer to [Buffered writes]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#buffered-writes).
 
 ## See Also
 

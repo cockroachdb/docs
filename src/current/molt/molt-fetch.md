@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link {{site.current_cloud_version}}/migration-overview.md %}).
+MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link molt/migration-overview.md %}).
 
 MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to move the source data to cloud storage (Google Cloud Storage or Amazon S3), a local file server, or local memory. Once the data is exported, MOLT Fetch can load the data into a target CockroachDB database and replicate changes from the source database. For details, see [Usage](#usage).
 
@@ -13,7 +13,7 @@ MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-in
 
 The following source databases are currently supported:
 
-- PostgreSQL 11-14
+- PostgreSQL 11-16
 - MySQL 5.7, 8.0 and later
 - CockroachDB
 
@@ -77,6 +77,11 @@ Complete the following items before using MOLT Fetch:
 - To prevent connections from terminating prematurely during data export, set the following to high values on the source database:
 
 	- **Maximum allowed number of connections.** MOLT Fetch can export data across multiple connections. The number of connections it will create is the number of shards ([`--export-concurrency`](#global-flags)) multiplied by the number of tables ([`--table-concurrency`](#global-flags)) being exported concurrently.
+
+		{{site.data.alerts.callout_info}}
+		Only tables with [primary key]({% link {{ site.current_cloud_version }}/primary-key.md %}) types of [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) can be sharded.
+		{{site.data.alerts.end}}
+
 	- **Maximum lifetime of a connection.**
 
 - If a PostgreSQL database is set as a [source](#source-and-target-databases), ensure that [`idle_in_transaction_session_timeout`](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT) on PostgreSQL is either disabled or set to a value longer than the duration of data export. Otherwise, the connection will be prematurely terminated. To estimate the time needed to export the PostgreSQL tables, you can [perform a dry run](#perform-a-dry-run) and sum the value of [`molt_fetch_table_export_duration_ms`](#metrics) for all exported tables.
@@ -162,6 +167,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--allow-tls-mode-disable`                           | Allow insecure connections to databases. Secure SSL/TLS connections should be used by default. This should be enabled **only** if secure SSL/TLS connections to the source or target database are not possible.                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `--assume-role`                                      | Service account to use for assume role authentication. `--use-implicit-auth` must be included. For example, `--assume-role='user-test@cluster-ephemeral.iam.gserviceaccount.com' --use-implicit-auth`. For details, refer to [Cloud Storage Authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}).                                                                                                                                                                                                                                                                                         |
 | `--bucket-path`                                      | The path within the [cloud storage](#cloud-storage) bucket where intermediate files are written (e.g., `'s3://bucket/path'` or `'gs://bucket/path'`). Only the URL path is used; query parameters (e.g., credentials) are ignored. To pass in query parameters, use the appropriate flags: `--assume-role`, `--import-region`, `--use-implicit-auth`.                                                                                                                                                                                                                                                                             |
+| `--case-sensitive`                                   | Toggle case sensitivity when comparing table and column names on the source and target. To disable case sensitivity, set `--case-sensitive=false`. If `=` is **not** included (e.g., `--case-sensitive false`), the flag is interpreted as `--case-sensitive` (i.e., `--case-sensitive=true`).<br><br>**Default:** `false`                                                                                                                                                                                                                                                                                                            |
 | `--changefeeds-path`                                 | Path to a JSON file that contains changefeed override settings for [failback](#fail-back-to-source-database), when enabled with `--mode failback`. If not specified, an insecure default configuration is used, and `--allow-tls-mode-disable` must be included. For details, see [Fail back to source database](#fail-back-to-source-database).                                                                                                                                                                                                                                                                                  |
 | `--cleanup`                                          | Whether to delete intermediate files after moving data using [cloud or local storage](#data-path). **Note:** Cleanup does not occur on [continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `--compression`                                      | Compression method for data when using [`IMPORT INTO`](#data-movement) (`gzip`/`none`).<br><br>**Default:** `gzip`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -182,7 +188,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 | `--log-file`                                         | Write messages to the specified log filename. If no filename is provided, messages write to `fetch-{datetime}.log`. If `"stdout"` is provided, messages write to `stdout`.                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `--logging`                                          | Level at which to log messages (`trace`/`debug`/`info`/`warn`/`error`/`fatal`/`panic`).<br><br>**Default:** `info`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `--metrics-listen-addr`                              | Address of the Prometheus metrics endpoint, which has the path `{address}/metrics`. For details on important metrics to monitor, see [Metrics](#metrics).<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `--mode`                                             | Configure the MOLT Fetch behavior: `data-load`, `data-load-and-replication`, `replication-only`, `export-only`, or `import-only`. For details, refer to [Fetch mode](#fetch-mode).<br><br>**Default:** `data-load`                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `--mode`                                             | Configure the MOLT Fetch behavior: `data-load`, `data-load-and-replication`, `replication-only`, `export-only`, `import-only`, or `failback`. For details, refer to [Fetch mode](#fetch-mode).<br><br>**Default:** `data-load`                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `--non-interactive`                                  | Run the fetch task without interactive prompts. This is recommended **only** when running `molt fetch` in an automated process (i.e., a job or continuous integration).                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `--pglogical-publication-name`                       | If set, the name of the [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) that will be created or used for replication. Used in [`replication-only`](#replicate-changes) mode.<br><br>**Default:** `molt_fetch`                                                                                                                                                                                                                                                                                                                                                                         |
 | `--pglogical-publication-and-slot-drop-and-recreate` | If set, drops the [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) and slots if they exist and then recreates them. Used in [`replication-only`](#replicate-changes) mode.                                                                                                                                                                                                                                                                                                                                                                                                             |
@@ -282,7 +288,7 @@ In case you need to rename your [publication](https://www.postgresql.org/docs/cu
 Before using this option, the source PostgreSQL or MySQL database **must** be configured for continuous replication, as described in [Setup](#replication-setup). MySQL 5.7 and later are supported.
 {{site.data.alerts.end}}
 
-`data-load-and-replication` instructs MOLT Fetch to load the source data into CockroachDB, and replicate any subsequent changes on the source. 
+`data-load-and-replication` instructs MOLT Fetch to load the source data into CockroachDB, and replicate any subsequent changes on the source. This enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime).
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -322,7 +328,7 @@ Before using this option:
 - The `replicator` binary **must** be located either in the same directory as `molt` or in a directory beneath `molt`.
 {{site.data.alerts.end}}
 
-`replication-only` instructs MOLT Fetch to replicate ongoing changes on the source to CockroachDB, using the specified replication marker. This assumes you have already run [`--mode data-load`](#load-data) to load the source data into CockroachDB.
+`replication-only` instructs MOLT Fetch to replicate ongoing changes on the source to CockroachDB, using the specified replication marker. This assumes you have already run [`--mode data-load`](#load-data) to load the source data into CockroachDB. This enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime).
 
 - For a PostgreSQL source, you should have already created a replication slot when [loading data](#load-data). Specify the same replication slot name using `--pglogical-replication-slot-name`. For example:
 
@@ -617,7 +623,7 @@ To drop existing tables and create new tables before loading the data, use `drop
 --table-handling drop-on-target-and-recreate
 ~~~
 
-When using the `drop-on-target-and-recreate` option, MOLT Fetch creates a new CockroachDB table to load the source data if one does not already exist. To guide the automatic schema creation, you can [explicitly map source types to CockroachDB types](#type-mapping).
+When using the `drop-on-target-and-recreate` option, MOLT Fetch creates a new CockroachDB table to load the source data if one does not already exist. To guide the automatic schema creation, you can [explicitly map source types to CockroachDB types](#type-mapping). `drop-on-target-and-recreate` does **not** create indexes or constraints other than [`PRIMARY KEY`]({% link {{site.current_cloud_version}}/primary-key.md %}) and [`NOT NULL`]({% link {{site.current_cloud_version}}/not-null.md %}).
 
 #### Mismatch handling
 
@@ -1120,8 +1126,6 @@ DEBUG  [Sep 11 11:04:01]                                               httpReque
 
 ## See also
 
+- [Migration Overview]({% link molt/migration-overview.md %})
+- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
-- [Migration Overview]({% link {{site.current_cloud_version}}/migration-overview.md %})
-- [Migrate from PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %})
-- [Migrate from MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
-- [Migrate from CSV]({% link {{site.current_cloud_version}}/migrate-from-csv.md %})

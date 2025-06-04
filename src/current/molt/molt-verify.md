@@ -9,7 +9,7 @@ docs_area: migrate
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-MOLT Verify checks for data discrepancies between a source database and CockroachDB during a [database migration]({% link {{site.current_cloud_version}}/migration-overview.md %}).
+MOLT Verify checks for data discrepancies between a source database and CockroachDB during a [database migration]({% link molt/migration-overview.md %}).
 
 The tool performs the following verifications to ensure data integrity during a migration:
 
@@ -25,8 +25,8 @@ For a demo of MOLT Verify, watch the following video:
 
 The following databases are currently supported:
 
-- [PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %})
-- [MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
+- PostgreSQL 12-16
+- MySQL 5.7, 8.0 and later
 - CockroachDB
 
 ## Installation
@@ -115,7 +115,7 @@ When verification completes, the output displays a summary message like the foll
 
 ## Docker usage
 
-{% include {{ page.version.version }}/molt/molt-docker.md %}
+{% include molt/molt-docker.md %}
 
 ## Known limitations
 
@@ -130,8 +130,6 @@ The following limitation is specific to MySQL:
 
 ## See also
 
+- [Migration Overview]({% link molt/migration-overview.md %})
+- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
-- [Migration Overview]({% link {{site.current_cloud_version}}/migration-overview.md %})
-- [Migrate from PostgreSQL]({% link {{site.current_cloud_version}}/migrate-from-postgres.md %})
-- [Migrate from MySQL]({% link {{site.current_cloud_version}}/migrate-from-mysql.md %})
-- [Migrate from CSV]({% link {{site.current_cloud_version}}/migrate-from-csv.md %})
