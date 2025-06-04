@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-Changefeeds offer different levels of configurability. Changefeeds emitting to a sink allow for active changefeed jobs to be [paused](#pause), [resumed](#resume), and [canceled](#cancel). Sinkless changefeeds streams changes directly to the SQL session.
+Changefeeds offer different levels of configurability. Changefeeds emitting to a sink allow for active changefeed jobs to be [paused](#pause), [resumed](#resume), and [canceled](#cancel). Sinkless changefeeds stream changes directly to the SQL session.
 
 This page describes:
 
