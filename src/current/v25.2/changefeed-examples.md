@@ -5,11 +5,11 @@ toc: true
 docs_area: stream_data
 ---
 
-This page provides step-by-step examples for using Core and {{ site.data.products.enterprise }} changefeeds. Creating {{ site.data.products.enterprise }} changefeeds is available on CockroachDB {{ site.data.products.basic }}, {{ site.data.products.standard }}, {{ site.data.products.advanced }}, and with an [{{ site.data.products.enterprise }} license](licensing-faqs.html#types-of-licenses) on CockroachDB {{ site.data.products.core }} clusters. Basic changefeeds are available in all products.
+This page provides quick setup guides for connecting changefeeds to sinks and for using sinkless changefeeds.
 
-For a summary of Core and {{ site.data.products.enterprise }} changefeed features, refer to the [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page.
+For a summary of changefeed features, refer to the [Change Data Capture Overview]({% link {{ page.version.version }}/change-data-capture-overview.md %}) page.
 
-{{ site.data.products.enterprise }} changefeeds can connect to the following sinks:
+Changefeeds can emit messages to the following sinks:
 
 - [Kafka](#create-a-changefeed-connected-to-kafka)
 - [Google Cloud Pub/Sub](#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink)
@@ -22,14 +22,12 @@ Refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-si
 
 {% include {{ page.version.version }}/cdc/recommendation-monitoring-pts.md %}
 
-Use the following filters to show usage examples for either **Enterprise** or **Core** changefeeds:
-
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="enterprise">Enterprise Changefeeds</button>
-  <button class="filter-button" data-scope="core">Basic Changefeeds</button>
+  <button class="filter-button" data-scope="cf">Changefeeds</button>
+  <button class="filter-button" data-scope="sinkless">Sinkless changefeeds</button>
 </div>
 
-<section class="filter-content" markdown="1" data-scope="enterprise">
+<section class="filter-content" markdown="1" data-scope="cf">
 
 Before you run the examples, verify that you have the `CHANGEFEED` privilege in order to create and manage changefeed jobs. Refer to [Required privileges]({% link {{ page.version.version }}/create-changefeed.md %}#required-privileges) for more details.
 
@@ -40,8 +38,6 @@ Before you run the examples, verify that you have the `CHANGEFEED` privilege in 
 ## Create a changefeed connected to Kafka
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink. The changefeed will watch two tables.
-
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
@@ -181,8 +177,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ## Create a changefeed connected to Kafka using Avro
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records. The changefeed will watch two tables.
-
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
@@ -485,8 +479,6 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. The changefeed watches two tables. Note that you can set up changefeeds for any of [these cloud storage providers]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink).
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
-
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
     {% include_cached copy-clipboard.html %}
@@ -602,8 +594,6 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ## Create a changefeed connected to a webhook sink
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
-
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#obtain-a-license).
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
@@ -773,24 +763,23 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="core">
+<section class="filter-content" markdown="1" data-scope="sinkless">
 
-Basic changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
+Sinkless changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
-## Create a basic changefeed
+## Create a sinkless changefeed
 
-{% include {{ page.version.version }}/cdc/create-core-changefeed.md %}
+{% include {{ page.version.version }}/cdc/create-sinkless-changefeed.md %}
 
-## Create a basic changefeed using Avro
+## Create a sinkless changefeed using Avro
 
-{% include {{ page.version.version }}/cdc/create-core-changefeed-avro.md %}
+{% include {{ page.version.version }}/cdc/create-sinkless-changefeed-avro.md %}
 
-For further information on basic changefeeds, see [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}).
+For further information on sinkless changefeeds, refer to the [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}#create-a-sinkless-changefeed) page.
 
 </section>
 
 ## See also
 
-- [`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %})
 - [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
 - [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %})

@@ -55,14 +55,6 @@ Option | Description
 -------+------------
 `bidirectional on` / `unidirectional` | (**Required**) Specifies whether the LDR stream will be unidirectional or bidirectional. With `bidirectional on` specified, LDR will set up two LDR streams between the clusters. Refer to the examples for [unidirectional](#unidirectional) and [bidirectional](#bidirectional).
 `label` | Tracks LDR metrics at the job level. Add a user-specified string with `label`. For more details, refer to [Metrics labels]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}#metrics-labels).
-`mode` | Determines how LDR replicates the data to the destination cluster. Possible values: `immediate`, `validated`. For more details, refer to [LDR modes](#ldr-modes).
-
-## LDR modes
-
-_Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
-
-- `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
-- `validated`: {% include {{ page.version.version }}/ldr/validated-description.md %}
 
 ## Examples
 
@@ -74,7 +66,7 @@ From the destination cluster of the LDR stream, run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE LOGICALLY REPLICATED TABLE {database.public.destination_table_name} FROM TABLE {database.public.source_table_name} ON 'external://source' WITH unidirectional, mode=validated;
+CREATE LOGICALLY REPLICATED TABLE {database.public.destination_table_name} FROM TABLE {database.public.source_table_name} ON 'external://source' WITH unidirectional;
 ~~~
 
 Include the following: 
