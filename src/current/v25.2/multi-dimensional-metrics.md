@@ -437,11 +437,14 @@ changefeed_flush_hist_nanos_count{node_id="1",scope="office_dogs"} 2
 
 ## Enable `database` and `application_name` labels
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 The following cluster settings enable the `database` and `application_name` labels for certain metrics, along with their internal counterparts if they exist:
 
 - [`sql.metrics.database_name.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-metrics-database-name-enabled)
 - [`sql.metrics.application_name.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-metrics-application-name-enabled)
-
 
 By default, these cluster settings are disabled. To enable them, use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement. Because these labels use aggregate metrics, you must enable the [`server.child_metrics.enabled`](#enable-child-metrics) cluster setting to use them.
 
