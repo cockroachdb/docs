@@ -547,7 +547,7 @@ SET CLUSTER SETTING sql.metrics.database_name.enabled = false;
 SET CLUSTER SETTING sql.metrics.application_name.enabled = true;
 ~~~
 
-The aggregated metric and a child metric with only the `application_name` label are emitted. Note that even though the aggregated metric has increased, the child metric with `application_name` label has a value less than the child metric with `database` label in the preceding example. This is because the labeled metrics have been reset, while the aggregated metric was not reset.
+The aggregated metric and a child metric with only the `application_name` label are emitted. Note that even though the aggregated metric has increased, the child metric with `application_name` label has a value less than the child metric with `database` label in the [preceding example](#3-child-metrics-and-database_name-label-enabled). This is because the labeled metrics have been reset, while the aggregated metric was not reset.
 
 ~~~
 sql_select_count{node_id="1"} 14077
@@ -593,7 +593,7 @@ sql_select_count{node_id="1",database="movr",application_name="movr"} 8703
 
 Changes to cluster settings may take time to reinitialize affected metrics. As a result, some `GAUGE` metrics might briefly show unexpected values.
 
-This example uses the `GAUGE` metric `sql.txn.open`. `GAUGE` values for both aggregated and child metrics increase and decrease as transactions are opened and closed, respectively.
+`GAUGE` values for both aggregated and child metrics increase and decrease as transactions are opened and closed. This example uses the `GAUGE` metric `sql.txn.open`.
 
 Consider the following scenario:
 
