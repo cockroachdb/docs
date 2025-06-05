@@ -200,17 +200,6 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
     --certs-dir "certs"
     ~~~
 
-1. Add your cluster organization and [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses) to the cluster:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING cluster.organization = 'your organization';
-    ~~~
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING enterprise.license = 'your enterprise license';
-    ~~~
-
 1. Set the `kv.rangefeed.enabled` cluster setting to `true`. The replication job connects to a long-lived request, a _rangefeed_, which pushes changes as they happen:
 
     {% include_cached copy-clipboard.html %}

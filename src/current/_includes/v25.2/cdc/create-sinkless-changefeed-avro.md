@@ -1,4 +1,4 @@
-In this example, you'll set up a basic changefeed for a single-node cluster that emits Avro records. CockroachDB's Avro binary encoding convention uses the [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/docs/serializer-formatter.html) to store Avro schemas.
+In this example, you'll set up a sinkless changefeed for a single-node cluster that emits Avro records. CockroachDB's Avro binary encoding convention uses the [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/docs/serializer-formatter.html) to store Avro schemas.
 
 1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
@@ -28,36 +28,36 @@ In this example, you'll set up a basic changefeed for a single-node cluster that
     $ cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable" --format=csv
     ~~~
 
-    {% include {{ page.version.version }}/cdc/core-url.md %}
+    {% include {{ page.version.version }}/cdc/sinkless-url.md %}
 
-    {% include {{ page.version.version }}/cdc/core-csv.md %}
+    {% include {{ page.version.version }}/cdc/sinkless-csv.md %}
 
 1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
+    SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
 1. Create table `bar`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > CREATE TABLE bar (a INT PRIMARY KEY);
+    CREATE TABLE bar (a INT PRIMARY KEY);
     ~~~
 
 1. Insert a row into the table:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > INSERT INTO bar VALUES (0);
+    INSERT INTO bar VALUES (0);
     ~~~
 
 1. Start the basic changefeed:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > EXPERIMENTAL CHANGEFEED FOR bar WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
+    CREATE CHANGEFEED FOR TABLE bar WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
 
     ~~~
@@ -69,16 +69,16 @@ In this example, you'll set up a basic changefeed for a single-node cluster that
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure -e "INSERT INTO bar VALUES (1)"
+    cockroach sql --insecure -e "INSERT INTO bar VALUES (1)"
     ~~~
 
-1. Back in the terminal where the basic changefeed is streaming, the output will appear:
+1. Back in the terminal where the changefeed is streaming, the output will appear:
 
     ~~~
     bar,\000\000\000\000\001\002\002,\000\000\000\000\002\002\002\002
     ~~~
 
-    Note that records may take a couple of seconds to display in the basic changefeed.
+    Note that records may take a couple of seconds to display in the changefeed.
 
 1. To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
 

@@ -251,6 +251,10 @@
   sources: ['grant-roles.md']
   versions: ['v21.1']
 
+- destination: how-does-a-changefeed-work.md
+  sources: ['how-does-an-enterprise-changefeed-work.md']
+  versions: ['v25.2']
+
 - destination: kubernetes-overview.md
   sources: ['operate-cockroachdb-kubernetes.md']
   versions: ['v21.2']
@@ -286,25 +290,29 @@
   - 'migrate-from-serverless-to-dedicated.md'
   versions: ['cockroachcloud']
 
-- destination: migrate-to-cockroachdb.md?filters=mysql
-  sources: ['migrate-from-mysql.md']
-  versions: ['v25.1']
+- destination: molt/migrate-to-cockroachdb.md?filters=mysql
+  sources: [':version/migrate-from-mysql.md']
 
-- destination: migrate-to-cockroachdb.md
-  sources: ['migrate-from-postgres.md']
-  versions: ['v25.1']
+- destination: molt/migrate-to-cockroachdb.md
+  sources: [':version/migrate-from-postgres.md']
 
-- destination: migration-overview.md
+- destination: molt/migration-overview.md
+  sources: [':version/migration-overview.md']
+
+- destination: molt/migration-overview.md
+  sources: ['molt/molt-overview.md']
+
+- destination: molt/migration-overview.md
   sources: ['import-data.md']
   versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
 
-- destination: molt/molt-fetch.md
-  sources: [':version/molt-fetch.md']
-
-- destination: molt/molt-overview.md
+- destination: molt/migration-overview.md
   sources:
     - molt/live-migration-service.md
     - :version/live-migration-service.md
+
+- destination: molt/molt-fetch.md
+  sources: [':version/molt-fetch.md']
 
 - destination: molt/molt-verify.md
   sources: [':version/molt-verify.md']

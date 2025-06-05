@@ -5,16 +5,16 @@ toc: true
 docs_area: migrate
 ---
 
-A phased migration to CockroachDB uses the [MOLT tools]({% link molt/molt-overview.md %}) to [convert your source schema](#step-2-prepare-the-source-schema), incrementally [load source data](#step-3-load-data-into-cockroachdb) and [verify the results](#step-4-verify-the-data-load), and finally [replicate ongoing changes](#step-6-replicate-changes-to-cockroachdb) before performing cutover.
+A phased migration to CockroachDB uses the [MOLT tools]({% link molt/migration-overview.md %}) to [convert your source schema](#step-2-prepare-the-source-schema), incrementally [load source data](#step-3-load-data-into-cockroachdb) and [verify the results](#step-4-verify-the-data-load), and finally [replicate ongoing changes](#step-6-replicate-changes-to-cockroachdb) before performing cutover.
 
 {% assign tab_names_html = "Load and replicate;Phased migration;Failback" %}
 {% assign html_page_filenames = "migrate-to-cockroachdb.html;migrate-in-phases.html;migrate-failback.html" %}
 
-{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder=page.version.version %}
+{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder="molt" %}
 
 ## Before you begin
 
-- Review the [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}).
+- Review the [Migration Overview]({% link molt/migration-overview.md %}).
 - Install the [MOLT (Migrate Off Legacy Technology)]({% link releases/molt.md %}#installation) tools.
 - Review the MOLT Fetch [setup]({% link molt/molt-fetch.md %}#setup) and [best practices]({% link molt/molt-fetch.md %}#best-practices).
 {% include molt/fetch-secure-cloud-storage.md %}
@@ -37,7 +37,7 @@ Select the source dialect you will migrate to CockroachDB:
 ## Step 3. Load data into CockroachDB
 
 {{site.data.alerts.callout_success}}
-To optimize performance of [data load](#step-3-load-data-into-cockroachdb), Cockroach Labs recommends dropping any [constraints]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint) and [indexes]({% link {{site.current_cloud_version}}/drop-index.md %}) on the target CockroachDB database. You can [recreate them after the data is loaded](#step-5-modify-the-cockroachdb-schema).
+To optimize performance of [data load](#step-3-load-data-into-cockroachdb), Cockroach Labs recommends dropping any [constraints]({% link {{ site.current_cloud_version }}/alter-table.md %}#drop-constraint) and [indexes]({% link {{site.current_cloud_version}}/drop-index.md %}) on the target CockroachDB database. You can [recreate them after the data is loaded](#step-5-modify-the-cockroachdb-schema).
 {{site.data.alerts.end}}
 
 Perform an initial load of data into the target database. This can be a subset of the source data that you wish to verify, or it can be the entire dataset.
@@ -112,7 +112,8 @@ The following example specifies that the `employees` table should be watched for
 	--table-filter 'employees' \
 	--non-interactive \
 	--mode replication-only \
-	--pglogical-replication-slot-name cdc_slot
+	--pglogical-replication-slot-name cdc_slot \
+	--replicator-flags '--metricsAddr: 30005'
 	~~~
 	</section>
 
@@ -127,10 +128,14 @@ The following example specifies that the `employees` table should be watched for
 	--table-filter 'employees' \
 	--non-interactive \
 	--mode replication-only \
-	--replicator-flags '--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29'
+	--replicator-flags '--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29 --metricsAddr: 30005'
 	~~~
 	</section>
 
+	{{site.data.alerts.callout_info}}
+	`--metricsAddr` enables a Prometheus-compatible metrics endpoint (e.g., on port `30005`) where replication metrics will be served. 
+	{{site.data.alerts.end}}
+	
 {% include molt/fetch-replication-output.md %}
 
 ## Step 7. Stop replication and verify data
@@ -140,7 +145,7 @@ The following example specifies that the `employees` table should be watched for
 1. Repeat [Step 4](#step-4-verify-the-data-load) to verify the updated data.
 
 {{site.data.alerts.callout_success}}
-If you encountered issues with replication, you can now use [`failback`]({% link {{ page.version.version }}/migrate-failback.md %}) mode to replicate changes on CockroachDB back to the initial source database. In case you need to roll back the migration, this ensures that data is consistent on the initial source database.
+If you encountered issues with replication, you can now use [`failback`]({% link molt/migrate-failback.md %}) mode to replicate changes on CockroachDB back to the initial source database. In case you need to roll back the migration, this ensures that data is consistent on the initial source database.
 {{site.data.alerts.end}}
 
 ## Step 8. Cutover
@@ -149,10 +154,10 @@ Perform a cutover by resuming application traffic, now to CockroachDB.
 
 ## See also
 
-- [MOLT Overview]({% link molt/molt-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
-- [Migrate to CockroachDB]({% link {{ page.version.version }}/migrate-to-cockroachdb.md %})
-- [Migration Failback]({% link {{ page.version.version }}/migrate-failback.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
+- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
+- [Migration Failback]({% link molt/migrate-failback.md %})
