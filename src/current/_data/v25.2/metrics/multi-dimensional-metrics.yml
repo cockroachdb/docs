@@ -252,3 +252,93 @@
 
 - multi_dimensional_metric_id: sql.exec.latency.detail
   feature: detailed-latency
+
+- multi_dimensional_metric_id: sql.crud_query.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.crud_query.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.delete.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.delete.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.distsql.contended_queries.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.distsql.cumulative_contention_nanos
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.failure.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.failure.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.full.scan.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.full.scan.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.insert.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.insert.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.select.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.select.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.service.latency
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.service.latency.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.statements.active
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.statements.active.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.begin.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.begin.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.commit.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.commit.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.latency
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.latency.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.rollback.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txn.rollback.count.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txns.open
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.txns.open.internal
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.update.count
+  feature: database-and-application_name-labels
+
+- multi_dimensional_metric_id: sql.update.count.internal
+  feature: database-and-application_name-labels
