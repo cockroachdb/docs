@@ -1050,3 +1050,17 @@
     - v24.2/cockroachdb-in-comparison.md
     - v24.3/cockroachdb-in-comparison.md
     - v25.1/cockroachdb-in-comparison.md
+
+- destination: https://www.cockroachlabs.com/pricing/
+  sources:
+    - stable/choose-a-deployment-option.md
+    - v21.2/choose-a-deployment-option.md
+    - v22.1/choose-a-deployment-option.md
+    - v22.2/choose-a-deployment-option.md
+    - v23.1/choose-a-deployment-option.md
+    - v23.2/choose-a-deployment-option.md
+    - v24.1/choose-a-deployment-option.md
+    - v24.2/choose-a-deployment-option.md
+    - v24.3/choose-a-deployment-option.md
+    - v25.1/choose-a-deployment-option.md
+    - v25.2/choose-a-deployment-option.md
