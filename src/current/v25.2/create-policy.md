@@ -66,7 +66,6 @@ The following table shows which policies are applied to which statement types, w
 
 Additional considerations include:
 
-- `SELECT` evaluation: CockroachDB always evaluates `SELECT` (`USING`) policies for `INSERT`, `UPDATE`, and `DELETE`, even when the statement doesn't reference table columns.
 - {% include {{ page.version.version }}/known-limitations/rls-values-on-conflict-do-nothing.md %} This is a [known limitation](#known-limitations).
 
 ## Examples
