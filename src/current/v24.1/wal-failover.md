@@ -29,6 +29,10 @@ When a disk stalls on a node, it could be due to complete hardware failure or it
 
 WAL failover uses a secondary disk to fail over WAL writes to when transient disk stalls occur. This limits the write impact to a few hundreds of milliseconds (the [failover threshold, which is configurable](#unhealthy-op-threshold)). Note that WAL failover **only preserves availability of writes**. If reads to the underlying storage are also stalled, operations that read and do not find data in the block cache or page cache will stall.
 
+The following diagram shows how WAL failover works at a high level. For more information about the WAL, memtables, and SSTables, refer to the [Architecture &raquo; Storage Layer documentation]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
+
+<img src="{{ 'images/v24.1/wal-failover-overview.png' | relative_url }}" alt="WAL failover overview diagram"  style="border:1px solid #eee;max-width:100%" />
+
 ## Create and configure a cluster to be ready for WAL failover
 
 The steps to provision a cluster that has a single data store versus a multi-store cluster are slightly different. In this section, we will provide high-level instructions for setting up each of these configurations. We will use [GCE](https://cloud.google.com/compute/docs) as the environment. You will need to translate these instructions into the steps used by the deployment tools in your environment.
@@ -354,7 +358,7 @@ For a [side disk on a single-store config](#single-store-config), pass `--wal-fa
 
 Use remote log sinks, or if you use file-based logging, enable asynchronous buffering of `file-groups` log sinks:
 
-{% include {{ page.version.version }}/misc/logging-flags.md %}
+{% include {{ page.version.version }}/wal-failover-log-config.md %}
 
 Change the value of `COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT` by setting it as follows:
 
@@ -372,6 +376,10 @@ If a disk stalls for less than the duration of [`COCKROACH_ENGINE_MAX_SYNC_DURAT
 If a disk stalls for longer than the duration of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables), a WAL failover will trigger. Following that, since the duration of [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](#important-environment-variables) has been exceeded, the node will go down.
 
 In a [multi-store](#multi-store-config) cluster, if a disk for a store has a transient stall, WAL will failover to the second store's disk. When the stall on the first disk clears, the WAL will failback to the first disk. WAL failover will daisy-chain from store _A_ to store _B_ to store _C_.
+
+The following diagram shows the behavior of WAL writes during a disk stall with and without WAL failover enabled.
+
+<img src="{{ 'images/v24.1/wal-failover-behavior.png' | relative_url }}" alt="how long WAL writes take during a disk stall with and without WAL failover enabled"  style="border:1px solid #eee;max-width:100%" />
 
 ## FAQs
 
@@ -463,6 +471,12 @@ CockroachDB will monitor the latencies of the primary storage device in the back
 Store _A_ will failover to store _B_, store _B_ will failover to store _C_, and store _C_ will failover to store _A_, but store A will never failover to store C.
 
 However, the WAL failback operation will not cascade back until **all drives are available** - that is, if store _A_'s disk unstalls while store _B_ is still stalled, store _C_ will not failback to store _A_ until _B_ also becomes available again. In other words, _C_ must failback to _B_, which must then failback to _A_.
+
+## Video demo: WAL failover
+
+For a demo of WAL Failover in CockroachDB and what happens when you enable or disable it, play the following video:
+
+{% include_cached youtube.html video_id="R-BuPePPU-k" %}
 
 ## See also
 
