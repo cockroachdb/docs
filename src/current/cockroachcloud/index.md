@@ -18,11 +18,11 @@ To get started right away, you can [sign up for a CockroachDB {{ site.data.produ
 
 When you create a cluster in CockroachDB {{ site.data.products.cloud }}, you select its plan. A CockroachDB {{ site.data.products.cloud }} organization can include clusters of each plan. This section provides an overview of each plan. For a more detailed comparison, refer to [CockroachDB Pricing](https://www.cockroachlabs.com/pricing) and [Understand CockroachDB Cloud Costs]({% link cockroachcloud/costs.md %}).
 
-- **CockroachDB {{ site.data.products.basic }}**: Usage-based. CockroachDB Serverless clusters are now on CockroachDB {{ site.data.products.basic }}.
+- **CockroachDB {{ site.data.products.basic }}**: Usage-based. Ideal for smaller, bursty applications which require up to 30K RU/second, or approx 60 vCPUs. CockroachDB Serverless clusters are now on CockroachDB {{ site.data.products.basic }}.
 
-- **CockroachDB {{ site.data.products.standard }}**: A new plan in [Preview]({% link {{ site.current_cloud_version}}/cockroachdb-feature-availability.md %}#features-in-preview). Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
+- **CockroachDB {{ site.data.products.standard }}**: A new plan in [Preview]({% link {{ site.current_cloud_version}}/cockroachdb-feature-availability.md %}#features-in-preview). Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. Ideal for consistent workloads up to 200 vCPUs. You can easily switch a CockroachDB {{ site.data.products.basic }} cluster to CockroachDB {{ site.data.products.standard }} in place.
 
-- **CockroachDB {{ site.data.products.advanced }}**: Fully pre-provisioned, with additional security and compliance features. CockroachDB Dedicated clusters are now on CockroachDB {{ site.data.products.advanced }}. CockroachDB Dedicated Advanced clusters are now on CockroachDB {{ site.data.products.advanced }} with enhanced security features enabled.
+- **CockroachDB {{ site.data.products.advanced }}**: Fully pre-provisioned, with additional security and compliance features. Ideal for high scale applications whihc require more than 200vcpus with sophisticated security requirements. CockroachDB Dedicated clusters are now on CockroachDB {{ site.data.products.advanced }}. CockroachDB Dedicated Advanced clusters are now on CockroachDB {{ site.data.products.advanced }} with enhanced security features enabled.
 
 ## Next steps
 
