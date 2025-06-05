@@ -4,7 +4,7 @@ summary: Test the connection of each node to your cloud storage location.
 toc: true
 ---
 
-{% include_cached new-in.html version="v25.1" %} The `CHECK EXTERNAL CONNECTION` tests the connection from each node in the cluster to an external cloud storage location. `CHECK EXTERNAL CONNECTION` will measure the time it takes each node to write a file, read it, and delete it from the specified storage location. You can adjust the number and concurrency of the tests run as well as the size of the file to write and read for each test.
+{% include_cached new-in.html version="v25.1" %} The `CHECK EXTERNAL CONNECTION` tests the connection from each node in the cluster to an external cloud storage location. `CHECK EXTERNAL CONNECTION` will measure the time it takes each node to write a file, read it, and delete it from the specified storage location. You can adjust the number and concurrency of the test runs as well as the size of the file to write and read for each test.
 
 {{site.data.alerts.callout_info}}
 `CHECK EXTERNAL CONNECTION` supports testing the connection to [**cloud storage**]({% link {{ page.version.version }}/use-cloud-storage.md %}) locations. 
@@ -20,7 +20,7 @@ toc: true
 
 Parameter | Description
 ----------+------------
-`connection_uri` | The URI to the external storage. Specify  the [provider's URI]({% link {{ page.version.version }}/use-cloud-storage.md %}) (e.g., `gs://bucket_name?AUTH...'`) or a user-defined [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) (e.g., `external://gcs`).
+`connection_uri` | The URI to the external storage. Specify the [provider's URI]({% link {{ page.version.version }}/use-cloud-storage.md %}) (e.g., `gs://bucket_name?AUTH...`) or a user-defined [external connection]({% link {{ page.version.version }}/create-external-connection.md %}) (e.g., `external://gcs`).
 
 ## Options
 
