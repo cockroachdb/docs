@@ -1,1 +1,1 @@
-You can test the connection to your external storage from each node in the cluster with [`CHECK EXTERNAL CONNECTION`]({% link {{ page.version.version }}/check-external-connection.md %}).
+You can test the connection from each node in the cluster to your external storage with the [`CHECK EXTERNAL CONNECTION`]({% link {{ page.version.version }}/check-external-connection.md %}) statement.
