@@ -15,7 +15,6 @@ The following source databases are currently supported:
 
 - PostgreSQL 11-16
 - MySQL 5.7, 8.0 and later
-- CockroachDB
 
 ## Installation
 
@@ -899,6 +898,10 @@ You can use the `cdc_cursor` value with an external change data capture (CDC) to
 ### Metrics
 
 By default, MOLT Fetch exports [Prometheus](https://prometheus.io/) metrics at `127.0.0.1:3030/metrics`. You can configure this endpoint with the `--metrics-listen-addr` [flag](#global-flags).
+
+{{site.data.alerts.callout_info}}
+If [replication](#fetch-mode) is active, metrics from the `replicator` process are enabled by setting the `--metricsAddr` [replication flag](#replication-flags), and are served at `http://host:port/_/varz`.
+{{site.data.alerts.end}}
 
 Cockroach Labs recommends monitoring the following metrics:
 

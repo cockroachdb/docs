@@ -23,11 +23,10 @@ For a demo of MOLT Verify, watch the following video:
 
 ## Supported databases
 
-The following databases are currently supported:
+The following source databases are currently supported:
 
 - PostgreSQL 12-16
 - MySQL 5.7, 8.0 and later
-- CockroachDB
 
 ## Installation
 
