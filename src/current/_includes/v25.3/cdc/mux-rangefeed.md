@@ -1,0 +1,3 @@
+`MuxRangefeed` is enabled by default.
+
+`MuxRangefeed` is a subsystem that improves the performance of rangefeeds with scale. It significantly reduces the overhead of running rangefeeds. Without `MuxRangefeed`, the number of RPC streams is proportional with the number of ranges in a table. For example, a large table could have tens of thousands of ranges. With `MuxRangefeed`, this proportion improves so that the number of RPC streams is relative to the number of nodes in a cluster.

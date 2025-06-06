@@ -1,0 +1,3 @@
+Review the [limitations of online schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}#known-limitations). CockroachDB [doesn't guarantee the atomicity of schema changes within transactions with multiple statements]({% link {{ page.version.version }}/online-schema-changes.md %}#schema-changes-within-transactions).
+
+    Cockroach Labs recommends that you perform schema changes outside explicit transactions. When a database [schema management tool]({% link {{ page.version.version }}/third-party-database-tools.md %}#schema-migration-tools) manages transactions on your behalf, include one schema change operation per transaction.

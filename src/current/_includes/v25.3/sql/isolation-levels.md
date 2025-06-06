@@ -1,0 +1,7 @@
+Isolation is an element of [ACID transactions](https://en.wikipedia.org/wiki/ACID) that determines how concurrency is controlled, and ultimately guarantees consistency. CockroachDB offers two transaction isolation levels: [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) and [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %}).
+
+By default, CockroachDB executes all transactions at the strongest ANSI transaction isolation level: `SERIALIZABLE`, which permits no concurrency anomalies. To place all transactions in a serializable ordering, `SERIALIZABLE` isolation may require [transaction restarts]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) and [client-side retry handling]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling). For a demonstration of how `SERIALIZABLE` prevents anomalies such as write skew, refer to [Serializable Transactions]({% link {{ page.version.version }}/demo-serializable.md %}).
+
+`READ COMMITTED` permits some concurrency anomalies in exchange for minimizing transaction aborts and removing the need for client-side retries. Depending on your workload requirements, this may be desirable. For more information, refer to [Read Committed Transactions]({% link {{ page.version.version }}/read-committed.md %}).
+
+{% include {{ page.version.version }}/sql/mixed-isolation-levels.md %}

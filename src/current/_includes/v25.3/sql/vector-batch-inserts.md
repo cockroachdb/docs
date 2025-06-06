@@ -1,0 +1,1 @@
+Large batch inserts of [`VECTOR`]({% link {{ page.version.version }}/vector.md %}) types can cause performance degradation. When inserting vectors, batching should be avoided. For an example, refer to [Create and query a vector index]({% link {{ page.version.version }}/vector-indexes.md %}#create-and-query-a-vector-index).
