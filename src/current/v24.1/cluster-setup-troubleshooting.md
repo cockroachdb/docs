@@ -420,6 +420,10 @@ Different filesystems may treat the ballast file differently. Make sure to test 
 
 A _disk stall_ is any disk operation that does not terminate in a reasonable amount of time. This usually manifests as write-related system calls such as [`fsync(2)`](https://man7.org/linux/man-pages/man2/fdatasync.2.html) (aka `fdatasync`) taking a lot longer than expected (e.g., more than 20 seconds). The mitigation in almost all cases is to [restart the node]({% link {{ page.version.version }}/cockroach-start.md %}) with the stalled disk. CockroachDB's internal disk stall monitoring will attempt to shut down a node when it sees a disk stall that lasts longer than 20 seconds. At that point the node should be restarted by your [orchestration system]({% link {{ page.version.version }}/recommended-production-settings.md %}#orchestration-kubernetes).
 
+{{site.data.alerts.callout_success}}
+In cloud environments, transient disk stalls are common, often lasting on the order of several seconds. If you deploy a CockroachDB {{ site.data.products.core }} cluster in the cloud, we strongly recommend enabling [WAL failover]({% link {{ page.version.version }}/cockroach-start.md %}#write-ahead-log-wal-failover).
+{{site.data.alerts.end}}
+
 Symptoms of disk stalls include:
 
 - Bad cluster write performance, usually in the form of a substantial drop in QPS for a given workload.
