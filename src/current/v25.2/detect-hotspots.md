@@ -10,7 +10,6 @@ This page provides practical guidance for identifying common [hotspots]({% link 
 
 - Review the [Understand hotspots page]({% link {{ page.version.version }}/understand-hotspots.md %}) for definitions and concepts.
 - Ensure you have access to the DB Console Metrics and the relevant logs.
-- Confirm that you have the necessary permissions to modify the application or schema.
 
 ## Troubleshooting overview
 
@@ -48,7 +47,7 @@ For example:
 - Is there a node with a maximum value that is a clear outlier in the cluster for the CPU percent metric?
 
   - If **Yes**, note the ID of the [hot node]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) and the time range when it was hot. Proceed to check for a [`popular key detected `log](#a-popular-key-detected).
-  - If **No**, investigate other possible causes for the metrics outlier.
+  - If **No**, and the metrics outlier appears in a metric other than CPU percent or latch conflict wait duration, consider causes other than a hotspot.
 
 ## Step 2. Check for existence of `no split key found` log
 
