@@ -15,6 +15,10 @@ You can validate a backup of a [cluster]({% link {{ page.version.version }}/back
 
 The options that give the most validation coverage will increase the runtime of the check. That is, `verify_backup_table_data` will take a longer time to validate a backup compared to `check_files` or `schema_only` alone. Despite that, each of these validation options provide a quicker way to validate a backup over running a "regular" restore.
 
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/backups/external-storage-check-tip.md %}
+{{site.data.alerts.end}}
+
 ## Recommendations
 
 Cockroach Labs recommends implementing the following validation plan to test your backups:
