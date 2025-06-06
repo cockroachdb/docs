@@ -66,6 +66,10 @@ You can set your retention duration **once**. After you have adjusted the retent
 - You cannot restore a backup of a multi-region database into a single-region database.
 - For details on managed backups and enabling CMEK in {{ site.data.products.advanced }} clusters, refer to [Backup and restore operations on a cluster with CMEK]({% link cockroachcloud/cmek.md %}#backup-and-restore-operations-on-a-cluster-with-cmek).
 
+### Required permissions to restore managed backups
+
+{% include cockroachcloud/backups/managed-backup-perms.md %}
+
 ## Cloud Console
 
 ### View backups
