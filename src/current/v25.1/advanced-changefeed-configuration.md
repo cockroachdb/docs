@@ -63,13 +63,13 @@ Adjusting `kv.closed_timestamp.target_duration` could have a detrimental impact 
 
 `kv.closed_timestamp.target_duration` controls the target [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) lag duration, which determines how far behind the current time CockroachDB will attempt to maintain the closed timestamp. For example, with the default value of `3s`, if the current time is `12:30:00` then CockroachDB will attempt to keep the closed timestamp at `12:29:57` by possibly retrying or aborting ongoing writes that are below this time.
 
-A changefeed aggregates checkpoints across all ranges, and once the timestamp on all the ranges advances, the changefeed can then [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). In the context of changefeeds, `kv.closed_timestamp.target_duration` affects how old the checkpoints will be, which will determine the latency before changefeeds can consider the history of an event complete.
+A changefeed aggregates checkpoints across all ranges, and once the timestamp on all the ranges advances, the changefeed can then [checkpoint]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}). In the context of changefeeds, `kv.closed_timestamp.target_duration` affects how old the checkpoints will be, which will determine the latency before changefeeds can consider the history of an event complete.
 
 #### `kv.rangefeed.closed_timestamp_refresh_interval`
 
 **Default:** `3s`
 
-This setting controls the interval at which [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) updates are delivered to [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) and in turn emitted as a [changefeed checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}).
+This setting controls the interval at which [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) updates are delivered to [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) and in turn emitted as a [changefeed checkpoint]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}).
 
 Increasing the interval value will lengthen the delay between each checkpoint, which will increase the latency of changefeed checkpoints, but reduce the impact on SQL latency due to [overload]({% link {{ page.version.version }}/admission-control.md %}#use-cases-for-admission-control) on the cluster. This happens because every range with a rangefeed has to emit a checkpoint event with this `3s` interval. As an example, 1 million ranges would result in 330,000 events per second, which would use more CPU resources.
 
@@ -117,7 +117,7 @@ Before tuning these settings, we recommend reading details on our [changefeed at
 
 ### Pausing changefeeds and garbage collection
 
-By default, [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) will protect changefeed data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) up to the time of the [_checkpoint_]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). Protected timestamps will protect changefeed data from garbage collection if the downstream [changefeed sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) is unavailable until you either [cancel]({% link {{ page.version.version }}/cancel-job.md %}) the changefeed or the sink becomes available once again.
+By default, [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) will protect changefeed data from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) up to the time of the [_checkpoint_]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}). Protected timestamps will protect changefeed data from garbage collection if the downstream [changefeed sink]({% link {{ page.version.version }}/changefeed-sinks.md %}) is unavailable until you either [cancel]({% link {{ page.version.version }}/cancel-job.md %}) the changefeed or the sink becomes available once again.
 
 However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads.
 
@@ -175,7 +175,7 @@ When designing a system that needs to emit a lot of changefeed messages, whether
 
 When a changefeed emits a [resolved]({% link {{ page.version.version }}/create-changefeed.md %}#resolved) message, it force flushes all outstanding messages that have buffered, which will diminish your changefeed's throughput while the flush completes. Therefore, if you are aiming for higher throughput, we suggest setting the duration higher (e.g., 10 minutes), or **not** using the `resolved` option.
 
-If you are setting the `resolved` option when you are aiming for high throughput, you must also consider the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option, which defaults to `30s`. This option controls how often nodes flush their progress to the [coordinating changefeed node]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}). As a result, `resolved` messages will not be emitted more frequently than the configured `min_checkpoint_frequency`. Set this option to at least as long as your `resolved` option duration.
+If you are setting the `resolved` option when you are aiming for high throughput, you must also consider the [`min_checkpoint_frequency`]({% link {{ page.version.version }}/create-changefeed.md %}#min-checkpoint-frequency) option, which defaults to `30s`. This option controls how often nodes flush their progress to the [coordinating changefeed node]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}). As a result, `resolved` messages will not be emitted more frequently than the configured `min_checkpoint_frequency`. Set this option to at least as long as your `resolved` option duration.
 
 ### Batching and buffering messages
 

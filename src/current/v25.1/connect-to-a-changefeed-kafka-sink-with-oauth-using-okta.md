@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-CockroachDB {{ site.data.products.enterprise }} [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can stream change data out to [Apache Kafka](https://kafka.apache.org/) using OAuth authentication.
+CockroachDB [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can stream change data out to [Apache Kafka](https://kafka.apache.org/) using OAuth authentication.
 
 {% include {{ page.version.version }}/cdc/oauth-description.md %}
 

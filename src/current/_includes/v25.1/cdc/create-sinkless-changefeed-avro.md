@@ -28,9 +28,9 @@ In this example, you'll set up a basic changefeed for a single-node cluster that
     $ cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable" --format=csv
     ~~~
 
-    {% include {{ page.version.version }}/cdc/core-url.md %}
+    {% include {{ page.version.version }}/cdc/sinkless-url.md %}
 
-    {% include {{ page.version.version }}/cdc/core-csv.md %}
+    {% include {{ page.version.version }}/cdc/sinkless-csv.md %}
 
 1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 

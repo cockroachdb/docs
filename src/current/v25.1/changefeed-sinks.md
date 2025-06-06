@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-{{ site.data.products.enterprise }} changefeeds emit messages to configurable downstream sinks. This page details the URIs, parameters, and configurations available for each changefeed sink.
+Changefeeds emit messages to configurable downstream sinks. This page details the URIs, parameters, and configurations available for each changefeed sink.
 
 CockroachDB supports the following sinks:
 
