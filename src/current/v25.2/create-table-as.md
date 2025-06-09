@@ -296,6 +296,7 @@ You can define the [column families]({% link {{ page.version.version }}/column-f
 - Generating static datasets for reporting or analytical workloads without increasing contention on production tables or otherwise impacting performance.
 - Analyzing data changes over time.
 - Preserving historical data for regulatory or investigative purposes.
+- Undoing an [accidental table deletion](#undo-an-accidental-table-deletion).
 
 {{site.data.alerts.callout_info}}
 The timestamp must be within the [garbage collection (GC) window]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) of the source table for the data to be available.
@@ -310,10 +311,58 @@ CREATE TABLE analysis_vehicle_location_histories
   AS OF SYSTEM TIME follower_read_timestamp();
 ~~~
 
-~~~
-NOTICE: CREATE TABLE ... AS does not copy over indexes, default expressions, or constraints; the new table has a hidden rowid primary key column
-CREATE TABLE AS
-~~~
+#### Undo an accidental table deletion
+
+The following steps show how to undo an accidental table deletion using `CREATE TABLE AS ... AS OF SYSTEM TIME`.
+
+1. Create and populate a table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE customers (
+        id INT PRIMARY KEY,
+        name STRING
+    );
+
+    INSERT INTO customers (id, name) VALUES (1, 'Alice'), (2, 'Bob');
+    ~~~
+
+1. Get a timestamp from before the table is deleted:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT now();
+    ~~~
+
+    ~~~
+    2025-06-09 19:55:40.286833+00
+    ~~~
+
+1. Wait a few seconds to simulate time passing (adjust as needed):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT pg_sleep(5);
+    ~~~
+
+1. Drop the original table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    DROP TABLE customers;
+    ~~~
+
+1. Restore the table using the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE customers_restored AS SELECT * FROM customers AS OF SYSTEM TIME '2025-06-09 19:55:40.286833+00';
+    ~~~
+
+    ~~~
+    NOTICE: CREATE TABLE ... AS does not copy over indexes, default expressions, or constraints; the new table has a hidden rowid primary key column
+    CREATE TABLE AS
+    ~~~
 
 For more information about historical reads at a given timestamp, refer to [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
 
