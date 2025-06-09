@@ -31,7 +31,7 @@ This list is not exhaustive. Any Prometheus-compatible third-party tool can cons
 | [Amazon CloudWatch](#amazon-cloudwatch-logs) | ✔ | ✔ | ✔ |
 | [GCP Logging](#gcp-logging) | ✔ | ✔ | ✔ |
 
-This list is not exhaustive. Any third-party tool that can consume logs from [network-based or file-based sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) can also consume logs from a CockroachDB {{ site.data.products.core }} cluster.
+This list is not exhaustive. Any third-party tool that can consume logs from [file-based or network sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) can also consume logs from a CockroachDB {{ site.data.products.core }} cluster.
 
 ## Monitoring integration resources
 
