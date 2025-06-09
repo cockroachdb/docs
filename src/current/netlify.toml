@@ -6,6 +6,7 @@
   [build.environment]
     NODE_VERSION = "18.14.0"
     RUBY_VERSION = "3.2.1"
+    SECRETS_SCAN_OMIT_PATHS = "node_modules/**"
   [build.processing.html]
     pretty_urls = true
 
