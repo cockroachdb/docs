@@ -8720,10 +8720,10 @@
   previous_release: v25.2.0
 - release_name: v25.3.0-alpha.1
   major_version: v25.3
-  release_date: '2025-12-31'
+  release_date: '2025-06-09'
   release_type: Testing
-  go_version: go1.22.0
-  sha: 0123456789abcde0123456789abcde0123456789
+  go_version: go1.23.7
+  sha: 6843e110b2e0519a66262715c6dafe6a82be209f
   has_sql_only: true
   has_sha256sum: true
   mac:
