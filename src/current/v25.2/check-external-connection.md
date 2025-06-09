@@ -36,14 +36,14 @@ Field | Value | Description
 ------|-------|------------
 `node` | `INT` | The node ID.
 `locality` | `STRING` | The [locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality) of the node.
-`ok` | `BOOL` | The success of the test run.
+`ok` | `BOOL` | Whether the test run succeeded.
 `error` | `STRING` | Errors encountered during the test run.
 `transferred` | `STRING` | The size of the file transferred during the test.
 `read_speed` | `STRING` | The speed at which the node read the test file.
 `write_speed` | `STRING` | The speed at which the node wrote the test file.
-`can_delete` | `BOOL` | The success of file deletion.
+`can_delete` | `BOOL` | Whether file deletion succeeded.
 
-## Examples
+## Test an external connection
 
 Specify the connection URI to the [external storage location]({% link {{ page.version.version }}/use-cloud-storage.md %}), or a created [external connection]({% link {{ page.version.version }}/create-external-connection.md %}):
 
