@@ -22,6 +22,8 @@ When the results of a query are reused multiple times within a larger query, a v
 
 A view is also advisable when the results must be up-to-date; a view always retrieves the current data from the tables that the view query mentions.
 
+{% include_cached new-in.html version="v25.2" %} Use `CREATE TABLE t AS ...` with the [`AS OF SYSTEM TIME` clause](#populate-create-table-as-with-historical-data-using-as-of-system-time) to leverage [historical reads]({% link {{ page.version.version }}/as-of-system-time.md %}) to reduce contention and improve performance.
+
 {{site.data.alerts.callout_info}}
 The default rules for [column families]({% link {{ page.version.version }}/column-families.md %}) apply.
 {{site.data.alerts.end}}
@@ -287,6 +289,83 @@ You can define the [column families]({% link {{ page.version.version }}/column-f
 (1 row)
 ~~~
 
+### Populate `CREATE TABLE AS` with historical data using `AS OF SYSTEM TIME`
+
+{% include_cached new-in.html version="v25.2" %} CockroachDB supports creating a table using historical data using the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause. You can use this to create a new table based on the state of an existing table as of a specific [timestamp]({% link {{ page.version.version }}/timestamp.md %}) in the past. This is useful for:
+
+- Generating static datasets for reporting or analytical workloads without increasing contention on production tables or otherwise impacting performance.
+- Analyzing data changes over time.
+- Preserving historical data for regulatory or investigative purposes.
+- Undoing an [accidental table deletion](#undo-an-accidental-table-deletion).
+
+{{site.data.alerts.callout_info}}
+The timestamp must be within the [garbage collection (GC) window]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) of the source table for the data to be available.
+{{site.data.alerts.end}}
+
+The syntax for creating a new table from a historical table at a given timestamp is as follows; this example creates a new table at the most recent timestamp that can perform a [follower read]({% link {{ page.version.version }}/follower-reads.md %}).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE analysis_vehicle_location_histories
+  AS SELECT * FROM vehicle_location_histories
+  AS OF SYSTEM TIME follower_read_timestamp();
+~~~
+
+#### Undo an accidental table deletion
+
+The following steps show how to undo an accidental table deletion using `CREATE TABLE AS ... AS OF SYSTEM TIME`.
+
+1. Create and populate a table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE customers (
+        id INT PRIMARY KEY,
+        name STRING
+    );
+
+    INSERT INTO customers (id, name) VALUES (1, 'Alice'), (2, 'Bob');
+    ~~~
+
+1. Get a timestamp from before the table is deleted:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT now();
+    ~~~
+
+    ~~~
+    2025-06-09 19:55:40.286833+00
+    ~~~
+
+1. Wait a few seconds to simulate time passing (adjust as needed):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT pg_sleep(5);
+    ~~~
+
+1. Drop the original table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    DROP TABLE customers;
+    ~~~
+
+1. Restore the table using the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE customers_restored AS SELECT * FROM customers AS OF SYSTEM TIME '2025-06-09 19:55:40.286833+00';
+    ~~~
+
+    ~~~
+    NOTICE: CREATE TABLE ... AS does not copy over indexes, default expressions, or constraints; the new table has a hidden rowid primary key column
+    CREATE TABLE AS
+    ~~~
+
+For more information about historical reads at a given timestamp, refer to [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
+
 ## See also
 
 - [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
@@ -299,3 +378,6 @@ You can define the [column families]({% link {{ page.version.version }}/column-f
 - [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key)
 - [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %})
+- [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %})
+- [Disaster Recovery Planning]({% link {{ page.version.version }}/disaster-recovery-planning.md %})
