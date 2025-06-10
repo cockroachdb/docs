@@ -71,25 +71,42 @@ This benefit is further amplified by [load-based rebalancing]({% link {{ page.ve
 
 ## Monitor load-based splitting
 
+### Log message
+
 The [`INFO`]({% link {{ page.version.version }}/logging.md %}#info) log message
 
 ~~~
 no split key found: ...
 ~~~
 
-indicates that CockroachDB wants to [split the range]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) due to load, but couldn’t find a key to split at.
+indicates that CockroachDB attempted to [split the range]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) due to load, but could not find a key to split at.
 
-Usually this log message can be ignored, unless it repeatedly shows up, which can indicate there is a load imbalance problem in the cluster. If there is a load imbalance problem, it could be because a [hot range]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) cannot be split (because it's really a [hot key]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}#range-report)).
+This log message can usually be ignored. However, if it appears repeatedly, it may indicate a load imbalance in the cluster. A load imbalance might occur if a [hot range]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-range) cannot be split because it is effectively a [hot key]({% link {{ page.version.version }}/understand-hotspots.md %}#row-hotspot). For more information about how to reduce hotspots (including hot ranges) on your cluster, refer to [Understand hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}).
 
-You can see how often a split key cannot be found over time by looking at the following [time-series metric]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint):
+The log message ends with one of the following string combinations, indicating the observed load pattern:
 
-- `kv.loadsplitter.nosplitkey`
+1. `popular key detected, clear direction detected`
+1. `popular key detected, no clear direction`
+1. `no popular key, clear direction detected`
+1. `no popular key, no clear direction`
 
-This metric is directly related to the log message described above.
+These indicate the following conditions:
 
-For more information about how to reduce hotspots (including hot ranges) on your cluster, refer to [Understand hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}).
+* `popular key detected` indicates that a significant percentage of reads or writes targets a single row within the range of data.
+* `clear direction detected` indicates that accesses within the range progress steadily in one direction, either increasing or decreasing key order.
+
+### Metrics
+
+These [time-series metrics]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) are directly related to the log message described above. You can monitor how often the load-based splitter fails to find a split key, and whether this is due to a popular key or a clear access direction.
+
+Metric | Description
+-------|-------------
+`kv.loadsplitter.nosplitkey` | Load-based splitter could not find a split key.
+`kv.loadsplitter.popularkey` | Load-based splitter could not find a split key and the most popular sampled split key occurs in >= 25% of the samples.
+`kv.loadsplitter.cleardirection` | Load-based splitter observed an access direction greater than 80% decreasing (left) or increasing (right) in the samples.
 
 ## See also
 
 - [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %})
 - [Load-based replica rebalancing]({% link {{ page.version.version }}/architecture/replication-layer.md %}#load-based-replica-rebalancing)
+- [Understand hotspots]({% link {{ page.version.version }}/understand-hotspots.md %})
