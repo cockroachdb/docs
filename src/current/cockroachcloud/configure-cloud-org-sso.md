@@ -219,10 +219,11 @@ These instructions work for Okta. If you use a different IdP, refer to its docum
 
    CockroachDB Cloud expects the following SAML attribute mappings from your IdP:
    
-   | Name      | Value            |
-   | --------- | ---------------- |
-   | email     | user.email       |
-   | name      | user.displayName |
+| Name  | Value             |
+|-------|-------------------|
+| email | `user.email`      |
+| name  | `user.displayName`|
+
 
 
 #### Configuration steps

@@ -284,7 +284,7 @@ This is the usage for any data leaving CockroachDB such as SQL data being sent t
 
 ### Change data capture (changefeeds)
 
-For change data capture (CDC), all CockroachDB {{ site.data.products.cloud }} clusters can use [Enterprise changefeeds]({% link {{ site.current_cloud_version}}/how-does-an-enterprise-changefeed-work.md %}).
+For change data capture (CDC), all CockroachDB {{ site.data.products.cloud }} clusters can use [changefeeds]({% link {{ site.current_cloud_version}}/how-does-a-changefeed-work.md %}).
 
 <section class="filter-content" markdown="1" data-scope="basic">
 
