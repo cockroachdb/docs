@@ -160,6 +160,15 @@ Unlike table data, system ranges use expiration-based leases; expiration-based l
 
 Expiration-based leases are also used temporarily during operations like lease transfers, until the new Raft leader can be fortified based on store liveness, as described in [Leader leases](#leader-leases).
 
+#### Leader‑leaseholder splits
+
+[Epoch-based leases](#epoch-based-leases) (unlike [Leader leases](#leader-leases)) are vulnerable to _leader-leaseholder splits_. These can occur when a leaseholder's Raft log has fallen behind other replicas in its group and it cannot acquire Raft leadership. Coupled with a [network partition]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#network-partition), this split can cause permanent unavailability of the range if (1) the stale leaseholder continues heartbeating the [liveness range](#liveness-range) to hold its lease but (2) cannot reach the leader to propose writes.
+
+Symptoms of leader-leaseholder splits include a [stalled Raft log]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#requests-stuck-in-raft) on the leaseholder and [increased disk usage]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#disks-filling-up) on follower replicas buffering pending Raft entries. Remediations include:
+
+- Restarting the affected nodes.
+- Fixing the network partition (or slow networking) between nodes.
+
 #### Leader leases
 
 {% include {{ page.version.version }}/leader-leases-intro.md %}
