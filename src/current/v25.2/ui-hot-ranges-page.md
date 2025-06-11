@@ -15,9 +15,27 @@ When optimizing or troubleshooting statement performance, this page can help you
 
 To view this page, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Hot Ranges** in the left-hand navigation.
 
+## Select nodes
+
+In the **Select Nodes** filter, choose one or more nodes with high activity, such as high CPU usage, to investigate potential hotspots. Filtering fewer nodes can help identify the hottest ranges more quickly and improve page load time.
+
+Selecting a region, such as `us-east1`, selects all nodes in that region.
+
+In the **Select Nodes** search box, enter numbers to search for specific node IDs. For example, in a cluster with 12 nodes, entering `1` returns checkboxes for node IDs `n1`, `n10`, `n11`, and `n12`. 
+
+Click **Apply** to view the [hot ranges list](#hot-ranges-list) for the selected nodes.
+
 ## Filter hot ranges
 
-Use the **Filter** menu to filter the [hot ranges list](#hot-ranges-list) on any combination of: node ID, store ID, database, table, index, or locality.
+After [selecting nodes](#select-nodes), use the **Filter** menu to filter the [hot ranges list](#hot-ranges-list) by any combination of database, table, index, or store ID.
+
+In the **Databases** dropdown list, filter by zero or more databases.
+
+In the **Table** and **Index** search boxes, enter the complete name of a table or index to return results. For example, in the [`movr` database]({% link {{ page.version.version }}/movr.md %}), search for the exact index name `users_pkey` to return results. Entering a partial index name, such as `user` or `users` returns no results.
+
+In the **Store ID** search box, enter numbers to search for specific store IDs. For example, in a cluster with 12 stores, entering `1` returns results for store IDs `1`, `10`, `11`, and `12`.
+
+Click **Apply** to view the filtered [hot ranges list](#hot-ranges-list).
 
 ## Hot ranges list
 
