@@ -45,7 +45,9 @@ When a user or service account is first added to an organization, they are grant
 
 To learn more, refer to [Manage organization users]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users).
 
-The following CockroachDB {{ site.data.products.cloud }} organization roles can be granted:
+{% include_cached cockroachcloud/org-roles/cloud-roles-table.md %}
+
+The following sections describe available CockroachDB {{ site.data.products.cloud }} roles in more detail:
 
 ### Organization Member
 
