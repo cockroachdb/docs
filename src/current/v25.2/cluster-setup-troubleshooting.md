@@ -238,7 +238,7 @@ then you might have a network partition.
 
 {% include_cached new-in.html version="v25.2" %} With the introduction of [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases), most network partitions between a leaseholder and its followers should heal in a few seconds.
 
-If a network partition occurs during one of the infrequent cluster operations that still use [epoch-based leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#epoch-based-leases) and a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-split) occurs, there can be range unavailability if (1) the stale leaseholder continues heartbeating the [liveness range](#liveness-range) to hold its lease but (2) cannot reach the Raft leader to propose writes.
+If a network partition occurs during one of the infrequent cluster operations that still use [epoch-based leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#epoch-based-leases) and a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-splits) occurs, there can be range unavailability if (1) the stale leaseholder continues heartbeating the [liveness range](#liveness-range) to hold its lease but (2) cannot reach the Raft leader to propose writes.
 
 **Solution:**
 
@@ -374,7 +374,7 @@ Like any database system, if you run out of disk space the system will no longer
 - [Why is disk usage increasing despite lack of writes?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-disk-usage-increasing-despite-lack-of-writes)
 - [Can I reduce or disable the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data)
 
-In rare cases, disk usage can increase on nodes with [Raft followers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) due to a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-split).
+In rare cases, disk usage can increase on nodes with [Raft followers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) due to a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-splits).
 
 ###### Automatic ballast files
 
