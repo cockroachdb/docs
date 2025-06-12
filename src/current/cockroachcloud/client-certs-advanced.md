@@ -163,7 +163,7 @@ Add a CA certificate to your cluster's trust store for client authentication. Cl
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI): The CockroachDB certificate Trust Store]({% link {{site.current_cloud_version}}/security-reference/transport-layer-security.md %}#the-cockroachdb-certificate-trust-store)
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
+The [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -243,7 +243,7 @@ Clients must be provisioned with client certificates signed by the cluster's CA 
 This section shows how to replace the CA certificate used by your cluster for certificate-based client authentication. To roll out a new CA certificate gradually instead of following this procedure directly, CockroachDB supports the ability to include multiple CA certificates for a cluster by concatenating them in PEM format. This allows clients to connect as long as the client certificate is signed by either the old CA certificate or the new one. PEM format requires a blank line in between certificates.
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
+The [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -322,7 +322,7 @@ After this operation is performed, clients can no longer authenticate with certi
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
+The [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) Organization role is required to manage the CA certificate for a CockroachDB {{ site.data.products.advanced }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">

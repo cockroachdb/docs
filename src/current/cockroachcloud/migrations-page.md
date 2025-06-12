@@ -24,7 +24,7 @@ To view this page, select a cluster from the [**Clusters** page]({% link cockroa
 
 To access the **Migrations** page, as user must have either of the following roles:
 
-- [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator)
+- [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin)
 - [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator)
 
 ## Convert a schema

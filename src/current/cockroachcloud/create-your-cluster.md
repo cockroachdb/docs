@@ -13,7 +13,7 @@ CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview](
 
 This page guides you through the process of creating a CockroachDB {{ site.data.products.standard }} cluster using the [Cloud Console](https://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a Standard cluster]({% link cockroachcloud/cloud-api.md %}#create-a-standard-cluster) in the API documentation.
 
-If you need permission to create a cluster, contact an CockroachDB {{ site.data.products.cloud }} Org Administrator.
+If you need permission to create a cluster, contact an CockroachDB {{ site.data.products.cloud }} Organization Admin.
 
 {{site.data.alerts.callout_success}}
 To create and connect to a 30-day free CockroachDB {{ site.data.products.standard }} cluster and run your first query, refer to the [Quickstart]({% link cockroachcloud/quickstart-trial-cluster.md %}).
