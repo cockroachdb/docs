@@ -28,7 +28,7 @@ The settings and information about the organization are found on the **Informati
 ## Manage an organization's users
 ### Invite team members to an organization
 
-An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can invite team members to CockroachDB {{ site.data.products.cloud }}. To invite team members:
+An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can invite team members to CockroachDB {{ site.data.products.cloud }}. To invite team members:
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a team member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 1. On the **Access Management** page, under the *Members* tab, click **Invite**.
@@ -48,14 +48,14 @@ To edit a user's role, perform the following steps:
 
 1. On the **Access Management** page, locate the team member's details whose role you want to change. The **Role** column lists current organization roles granted to each user.
 1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
-1. A number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is one of **Organization**, the name of a particular [folder]({% link cockroachcloud/folders.md %}), or the name of a particular cluster. If the role is Cluster Administrator, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
+1. A number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is one of **Organization**, the name of a particular [folder]({% link cockroachcloud/folders.md %}), or the name of a particular cluster. If the role is Cluster Admin, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
 
     {{site.data.alerts.callout_info}}
     When editing roles for a group in the **Groups** tab, the fields for that group's inherited roles are read-only, because inherited roles cannot be edited directly. Instead, you must either remove the role from the parent group from which it is inherited, or remove the member from the parent group.
     {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can revoke the Org Administrator role from their own user, but cannot subsequently re-grant the administrator role to themselves.
+An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can revoke the Organization Admin role from their own user, but cannot subsequently re-grant the administrator role to themselves.
 {{site.data.alerts.end}}
 
 ### Remove a team member
@@ -109,7 +109,7 @@ Service accounts, like users, are given only the **Org Member** role by default 
 
 1. On the **Access Management** page, select the **Service Accounts** tab.
 1. In the row for the target service account, click, click the three-dots **Action** button and select **Edit Roles**.
-1. A number of fine-grained roles can be assigned to a given service account. These are the same [roles that can be assigned to users]({% link cockroachcloud/authorization.md %}#organization-user-roles). Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
+1. A number of fine-grained roles can be assigned to a given service account. These are the same [roles that can be assigned to users]({% link cockroachcloud/authorization.md %}#organization-user-roles). Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Admin, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
 
     The fields for a group's inherited roles are read-only, because inherited roles cannot be edited directly. Instead, you must either remove the role from the parent group from which it is inherited, or remove the member from the parent group.
 
@@ -241,7 +241,7 @@ To list all the users in your cluster, use the [`SHOW USERS`]({% link {{site.cur
 <section class="filter-content" markdown="1" data-scope="console">
 
 {{site.data.alerts.callout_info}}
-Only users with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator), or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-administrator) can change a user's password. If you do not have the required permissions, ask a user with one of the required roles to change the password.
+Only users with the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin), or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) can change a user's password. If you do not have the required permissions, ask a user with one of the required roles to change the password.
 {{site.data.alerts.end}}
 
 To change a user's password:

@@ -55,20 +55,20 @@ Operations that violate these restrictions result in an error.
 
 ### Folders and role assignment
 
-A role granted on a folder is inherited on its descendant folders and clusters. All existing organizational roles, such as [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator), can be granted at the folder scope.
+A role granted on a folder is inherited on its descendant folders and clusters. All existing organizational roles, such as [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator), can be granted at the folder scope.
 
 A role granted directly on a cluster is unchanged if the cluster is moved into or out of a folder.
 
 The following roles, when granted at the organization level, allow reading of the entire folder hierarchy:
 
-- Org Administrator
-- Cluster Administrator
+- Organization Admin
+- Cluster Admin
 - Cluster Operator
 - Cluster Developer
 
 The following roles allow creation of clusters at the level of the hierarchy where they are granted:
 
-- Cluster Administrator
+- Cluster Admin
 - Cluster Creator
 
 The following additional roles explicitly allow management of folders and their contents:
@@ -86,7 +86,7 @@ Your user account must have the following roles to manage access to folders:
 - [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin)
 
 {{site.data.alerts.callout_success}}
-An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can grant themselves, another user, or a service account the Folder Admin role.
+An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can grant themselves, another user, or a service account the Folder Admin role.
 {{site.data.alerts.end}}
 
 ## Grant the `FOLDER_ADMIN` or `FOLDER_MOVER` role
@@ -126,7 +126,7 @@ Your service account must have the following roles on the organization, the fold
 1. Set **Scope** to the folder you just created. The role is granted on all of the folder's descendants.
 1. Set **Role** to **Folder Admin** or **Folder Mover**.
 
-    To access a folder's clusters, a user or service account must also have the **Cluster Administrator**, **Cluster Creator**, or **Cluster Operator** role on the folder. The role may be granted by inheritance or directly on a cluster.
+    To access a folder's clusters, a user or service account must also have the **Cluster Admin**, **Cluster Creator**, or **Cluster Operator** role on the folder. The role may be granted by inheritance or directly on a cluster.
 
 1. Click **Confirm**.
 
@@ -134,9 +134,9 @@ Your service account must have the following roles on the organization, the fold
 
 Your service account must have one of the following roles to read a folder's contents:
 
-- [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator).
+- [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin).
 - [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) or [Folder Mover]({% link cockroachcloud/authorization.md %}#folder-mover).
-- [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator), [Cluster Developer]({%link cockroachcloud/authorization.md %}#cluster-developer), [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator), or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator).
+- [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin), [Cluster Developer]({%link cockroachcloud/authorization.md %}#cluster-developer), [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator), or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator).
 
 1. To list the clusters and folders at the level of the organization, go to **Clusters**.
 1. To list the clusters and folders in a folder, click the folder name.
@@ -146,7 +146,7 @@ Your service account must have one of the following roles to read a folder's con
 
 Your service account must have the following roles on the organization or the folder:
 
-- [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator)
+- [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator)
 
 1. Go to the **Clusters** page. The folders and clusters at the root of the organization are shown.
 1. Browse to the folder where you want to create the cluster.
