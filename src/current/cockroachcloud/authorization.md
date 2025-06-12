@@ -21,21 +21,18 @@ In CockroachDB {{ site.data.products.cloud }}, an organization corresponds to an
 
 CockroachDB {{ site.data.products.cloud }} has a hierarchical authorization model, where roles can be assigned at different scopes:
 
-1. Organization: Each CockroachDB {{ site.data.products.cloud }} organization has a set of [roles](#organization-user-roles) defined on it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
-1. Folder: [roles](#organization-user-roles) can be assigned on folders. Role inheritance is transitive; a role granted on the organization or a folder is inherited by descendent resources.
+1. Organization: A CockroachDB {{ site.data.products.cloud }} organization assigns privileges based on [roles](#organization-user-roles) assigned to a {{ site.data.products.cloud }} Console user account, which allow these accounts to perform administrative tasks relating to the management of clusters, Console user management, SQL user management, and billing.
+1. Folder: {{ site.data.products.cloud }} Console [roles](#organization-user-roles) can be assigned to a folder containing a group of clusters. Role inheritance is transitive; a role granted on the organization or a folder is inherited by descendent resources.
 
     {{site.data.alerts.callout_success}}
-    Organizing clusters using folders is available in [Preview]({% link v23.1/cockroachdb-feature-availability.md %}#feature-availability-phases). To learn more, refer to [Organize {{ site.data.products.db }} Clusters Using Folders]({% link cockroachcloud/folders.md %}).
+    Organizing clusters using folders is available in [Preview]({% link {{site.current_cloud_version}}/cockroachdb-feature-availability.md %}#feature-availability-phases). To learn more, refer to [Organize {{ site.data.products.db }} Clusters Using Folders]({% link cockroachcloud/folders.md %}).
     {{site.data.alerts.end}}
 
-1. Cluster: Each CockroachDB cluster defines its own set of [SQL users]({% link {{ site.current_cloud_version }}/security-reference/authorization.md %}#create-and-manage-users) and [roles]({% link {{ site.current_cloud_version }}/security-reference/authorization.md %}#roles) which manage permission to execute SQL statements on the cluster.
+1. Cluster: Each CockroachDB cluster defines its own set of [SQL users]({% link {{ site.current_cloud_version }}/security-reference/authorization.md %}#create-and-manage-users) and [roles]({% link {{ site.current_cloud_version }}/security-reference/authorization.md %}#roles) which manage permission to execute SQL statements on the cluster. 
 
 The levels within the hierarchy intersect, because administering SQL-level users on specific clusters within an organization is an organization-level function.
 
-For the main pages covering users and roles at the SQL level within a specific database cluster, refer to:
-
-- [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
-- [Managing Cluster User Authorization]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
+SQL users are assigned a separate set of roles and privileges that are specific to data management on the cluster, independent of the {{ site.data.products.cloud }} Console roles and privileges described on this page. For the main pages covering users and roles at the SQL level within a specific database cluster, refer to the main [Authorization in CockroachDB documentation]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
 
 ## Organization user roles
 
@@ -51,27 +48,27 @@ The following sections describe available CockroachDB {{ site.data.products.clou
 
 ### Organization Member
 
-This default role is granted to all organization users when they are invited or provisioned. It grants no permissions to perform cluster or organization actions.
+The **Organization Member** role is assigned by default to all organization users when they are invited or provisioned. This role grants no additional permissions.
 
-### Org Administrator
+### Organization Admin
 
-Org Administrators can:
+The **Organization Admin** role grants the following permissions:
 
 - [Invite users to join that organization]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization).
 - [Create service accounts]({% link cockroachcloud/managing-access.md %}#create-a-service-account).
 - Grant and revoke roles for both [users]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users) and [service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 
-Org Administrators automatically receive [email alerts]({% link cockroachcloud/alerts-page.md %}) about planned cluster maintenance and when CockroachDB {{ site.data.products.cloud }} detects that a cluster is overloaded or experiencing issues. In addition, Org Administrators can subscribe other members to the email alerts, and can configure how alerts work for the organization.
+Organization Admins automatically receive [email alerts]({% link cockroachcloud/alerts-page.md %}) about planned cluster maintenance and when CockroachDB {{ site.data.products.cloud }} detects that a cluster is overloaded or experiencing issues. In addition, Organization Admins can subscribe other members to the email alerts, and configure how alerts work for the organization.
 
-This role can be granted only at the scope of the organization.
+This role can be assigned only at the organization scope.
 
 ### Billing Coordinator
 
-Users with this role in an organization can [manage billing for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
+The **Billing Coordinator** role is granted permissions to [manage billing for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
 
 ### Cluster Operator
 
-Cluster Operators can perform a variety of cluster functions:
+The **Cluster Operator** role is granted permissions that are dependent on whether it is assigned to a user or a service account.
 
 - *Users* with this role can perform the following *console operations*:
 
@@ -113,7 +110,7 @@ This role can be granted at the scope of the organization, on an individual clus
 
 ### Cluster Administrator
 
-Cluster Administrators can perform all of the [Cluster Operator actions](#cluster-operator), as well as:
+The **Cluster Administrator** role is granted all of the [Cluster Operator actions](#cluster-operator) permissions, as well as the following:
 
 - [Provision SQL users for a cluster using the console]({% link cockroachcloud/managing-access.md %}#create-a-sql-user).
 - [Create Service Accounts]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role).
@@ -127,13 +124,13 @@ This role can be granted at the scope of the organization, on an individual clus
 
 ### Cluster Creator
 
-Cluster Creators can create clusters in an organization. A cluster's creator is automatically granted the [Cluster Administrator](#cluster-administrator) role for that cluster upon creation.
+The **Cluster Creator** role is granted permission to create clusters in an organization. A cluster's creator is automatically granted the [Cluster Administrator](#cluster-administrator) role for that cluster upon creation.
 
 This role can be granted at the scope of the organization or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 
 ### Cluster Developer
 
-Users with this role can view cluster details and access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console), allowing them to [export a connection string from the cluster page UI]({% link cockroachcloud/authentication.md %}#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster) for the cluster.
+The **Cluster Developer** role is granted permission to view cluster details and access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console), allowing them to [export a connection string from the cluster page UI]({% link cockroachcloud/authentication.md %}#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster) for the cluster.
 
 This role can be granted at the scope of the organization, on an individual cluster, or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 
@@ -151,7 +148,7 @@ This role can be granted at the scope of the organization, on an individual clus
 
 Service accounts authenticate with API keys to the CockroachDB {{ site.data.products.cloud }} API, rather than to the CockroachDB {{ site.data.products.cloud }} Console UI.
 
-Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users, but note that some actions are available in the console but not the API, or vice versa (For example, in the [Cluster Operator Role](#cluster-operator)).
+Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [roles](#organization-user-roles) as users, but note that some actions are available in the console but not the API, or vice versa (For example, in the [Cluster Operator Role](#cluster-operator)).
 
 Refer to [Manage Service Accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 
