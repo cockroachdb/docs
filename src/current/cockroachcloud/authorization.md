@@ -36,7 +36,7 @@ SQL users are assigned a separate set of roles and privileges that are specific 
 
 ## Organization user roles
 
-When a user or service account is first added to an organization, they are granted the default role, **Org Member**, which grants no permission and only indicates membership in the organization. Org or Cluster Administrators may [edit the roles assigned to organization users]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role) in the CockroachDB {{ site.data.products.cloud }} console's [**Access Management** page](https://cockroachlabs.cloud/access), or using the CockroachDB {{ site.data.products.cloud }} API or Terraform Provider.
+When a user or service account is first added to an organization, they are granted the default role, **Org Member**, which grants no permission and only indicates membership in the organization. Org or Cluster Admins may [edit the roles assigned to organization users]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role) in the CockroachDB {{ site.data.products.cloud }} console's [**Access Management** page](https://cockroachlabs.cloud/access), or using the CockroachDB {{ site.data.products.cloud }} API or Terraform Provider.
 
 {% include_cached cockroachcloud/first-org-user-roles.md %}
 
@@ -100,7 +100,7 @@ The **Cluster Operator** role is granted permissions that are dependent on wheth
   - [View and configure a cluster's Egress Rules]({% link cockroachcloud/egress-perimeter-controls.md %}).
   - [Configure the export of metrics to DataDog or Amazon CloudWatch]({% link cockroachcloud/export-metrics.md %}).
 
-This role can be considered a more restricted alternative to [Cluster Administrator](#cluster-administrator), as it grants all of the permissions of that role, except that it does **not** allow users to:
+This role can be considered a more restricted alternative to [Cluster Admin](#cluster-admin), as it grants all of the permissions of that role, except that it does **not** allow users to:
 
 - Manage cluster-scoped roles on organization users.
 - Manage SQL users from the cloud console.
@@ -108,15 +108,15 @@ This role can be considered a more restricted alternative to [Cluster Administra
 
 This role can be granted at the scope of the organization, on an individual cluster, or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 
-### Cluster Administrator
+### Cluster Admin
 
-The **Cluster Administrator** role is granted all of the [Cluster Operator actions](#cluster-operator) permissions, as well as the following:
+The **Cluster Admin** role is granted all of the [Cluster Operator actions](#cluster-operator) permissions, as well as the following:
 
 - [Provision SQL users for a cluster using the console]({% link cockroachcloud/managing-access.md %}#create-a-sql-user).
 - [Create Service Accounts]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role).
-- Edit cluster-scope role assignments (specifically, the Cluster Administrator, Cluster Operator, and Cluster Developer roles) on [users]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role), and [service accounts]({% link cockroachcloud/managing-access.md %}#edit-roles-on-a-service-account).
+- Edit cluster-scope role assignments (specifically, the Cluster Admin, Cluster Operator, and Cluster Developer roles) on [users]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role), and [service accounts]({% link cockroachcloud/managing-access.md %}#edit-roles-on-a-service-account).
 - [Edit or delete a cluster]({% link cockroachcloud/cluster-management.md %}).
-- Cluster Administrators for the whole organization (rather than scoped to a single cluster) can [create new clusters]({% link cockroachcloud/create-your-cluster.md %}).
+- Cluster Admins for the whole organization (rather than scoped to a single cluster) can [create new clusters]({% link cockroachcloud/create-your-cluster.md %}).
 - Access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console).
 - Configure a cluster's [maintenance window]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window).
 
@@ -124,13 +124,13 @@ This role can be granted at the scope of the organization, on an individual clus
 
 ### Cluster Creator
 
-The **Cluster Creator** role is granted permission to create clusters in an organization. A cluster's creator is automatically granted the [Cluster Administrator](#cluster-administrator) role for that cluster upon creation.
+The **Cluster Creator** role is granted permission to create clusters in an organization. A cluster's creator is automatically granted the [Cluster Admin](#cluster-admin) role for that cluster upon creation.
 
 This role can be granted at the scope of the organization or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 
 ### Cluster Developer
 
-The **Cluster Developer** role is granted permission to view cluster details and access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console), allowing them to [export a connection string from the cluster page UI]({% link cockroachcloud/authentication.md %}#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster) for the cluster.
+The **Cluster Developer** role is granted permission to view cluster details and access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console), allowing them to [export a connection string from the cluster page UI]({% link cockroachcloud/authentication.md %}#the-connection-string), although they will still need a Cluster Admin to [provision their SQL credentials]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster) for the cluster.
 
 This role can be granted at the scope of the organization, on an individual cluster, or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 

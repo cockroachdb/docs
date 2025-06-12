@@ -44,7 +44,7 @@ If your organization includes members whose identity you don't manage, such as p
 
 ### Autoprovisioning
 
-Autoprovisioning is a self-service mechanism that removes the need for a new user to be [invited by an Org Admin]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization). When it is enabled, the first time a user successfully authentications using that method, CockroachDB {{ site.data.products.cloud }} organization account is automatically created for them. Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Org Administrator** role]({% link cockroachcloud/authorization.md %}#org-administrator).
+Autoprovisioning is a self-service mechanism that removes the need for a new user to be [invited by an Org Admin]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization). When it is enabled, the first time a user successfully authentications using that method, CockroachDB {{ site.data.products.cloud }} organization account is automatically created for them. Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin).
 
 Autoprovisioning is disabled by default, but can be enabled per SSO authentication method.
 
@@ -104,7 +104,7 @@ If Cloud Organization SSO is enabled, then deprovisioning a user at the level of
 
 To remove a user's access to CockroachDB {{ site.data.products.cloud }} manually (such as when a user changes teams but does not leave the organization entirely), you can [remove their CockroachDB {{ site.data.products.cloud }} user identity from your {{ site.data.products.db}} organization]({% link cockroachcloud/managing-access.md %}#remove-a-team-member).
 
-#### Can Org Administrators require a particular authentication method for their CockroachDB {{ site.data.products.cloud }} organization?
+#### Can Organization Admins require a particular authentication method for their CockroachDB {{ site.data.products.cloud }} organization?
 
 Yes. When Cloud Organization SSO is enabled for your CockroachDB {{ site.data.products.cloud }} organization, only the [authentication methods you have enabled]({% link cockroachcloud/configure-cloud-org-sso.md %}#enable-or-disable-an-authentication-method) are displayed to your users.
 
@@ -117,7 +117,7 @@ After SAML is configured, your users can sign in to the CockroachDB {{ site.data
 
 #### What default role is assigned to users when autoprovisioning is enabled in a CockroachDB {{ site.data.products.cloud }} organization?
 
-Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Org Administrator** role]({% link cockroachcloud/authorization.md %}#org-administrator).
+Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin).
 
 ## What's next?
 - [Configure Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %})
