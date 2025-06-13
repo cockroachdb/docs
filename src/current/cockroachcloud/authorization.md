@@ -110,7 +110,7 @@ This role can be granted at the scope of the organization, on an individual clus
 
 ### Cluster Admin
 
-The **Cluster Admin** role is granted all of the [Cluster Operator actions](#cluster-operator) permissions, as well as the following:
+The **Cluster Admin** role is granted all of the [Cluster Operator](#cluster-operator) permissions, as well as the following:
 
 - [Provision SQL users for a cluster using the console]({% link cockroachcloud/managing-access.md %}#create-a-sql-user).
 - [Create Service Accounts]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role).
