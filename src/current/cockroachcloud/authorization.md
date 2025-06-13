@@ -64,11 +64,11 @@ This role can be assigned only at the organization scope.
 
 ### Billing Coordinator
 
-The **Billing Coordinator** role is granted permissions to [manage billing for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
+The **Billing Coordinator** role grants permissions to [manage billing for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
 
 ### Cluster Operator
 
-The **Cluster Operator** role is granted permissions that are dependent on whether it is assigned to a user or a service account.
+The **Cluster Operator** role grants permissions that are dependent on whether it is assigned to a user or a service account.
 
 - *Users* with this role can perform the following *console operations*:
 
@@ -110,7 +110,7 @@ This role can be granted at the scope of the organization, on an individual clus
 
 ### Cluster Admin
 
-The **Cluster Admin** role is granted all of the [Cluster Operator](#cluster-operator) permissions, as well as the following:
+The **Cluster Admin** role grants all of the [Cluster Operator](#cluster-operator) permissions, as well as the following:
 
 - [Provision SQL users for a cluster using the console]({% link cockroachcloud/managing-access.md %}#create-a-sql-user).
 - [Create Service Accounts]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role).
@@ -124,13 +124,13 @@ This role can be granted at the scope of the organization, on an individual clus
 
 ### Cluster Creator
 
-The **Cluster Creator** role is granted permission to create clusters in an organization. A cluster's creator is automatically granted the [Cluster Admin](#cluster-admin) role for that cluster upon creation.
+The **Cluster Creator** role grants permissions to create clusters in an organization. A cluster's creator is automatically granted the [Cluster Admin](#cluster-admin) role for that cluster upon creation.
 
 This role can be granted at the scope of the organization or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 
 ### Cluster Developer
 
-The **Cluster Developer** role is granted permission to view cluster details and access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console), allowing them to [export a connection string from the cluster page UI]({% link cockroachcloud/authentication.md %}#the-connection-string), although they will still need a Cluster Admin to [provision their SQL credentials]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster) for the cluster.
+The **Cluster Developer** role grants permissions to view cluster details and access the [DB Console]({% link cockroachcloud/network-authorization.md %}#db-console), allowing them to [export a connection string from the cluster page UI]({% link cockroachcloud/authentication.md %}#the-connection-string), although they will still need a Cluster Admin to [provision their SQL credentials]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster) for the cluster.
 
 This role can be granted at the scope of the organization, on an individual cluster, or on a folder. If granted on a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
 
