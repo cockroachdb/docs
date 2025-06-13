@@ -135,7 +135,7 @@ To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink f
 1. Select the **SQL User**. If you have only one SQL user, it is automatically selected.
 
     {{site.data.alerts.callout_info}}
-    If you forget your SQL user's password, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+    If you forget your SQL user's password, an [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
     {{site.data.alerts.end}}
 
 1. Select the **Database**. If you have only one database, it is automatically selected.

@@ -48,7 +48,7 @@ Your cluster's [configured capacity]({% link cockroachcloud/create-a-basic-clust
 
 Cockroach Labs recommends setting your resource limits to about 30% higher than your expected usage to prevent cluster disruption. To learn about tuning your workload to reduce costs, refer to [Understand your Resource Usage]({% link cockroachcloud/resource-usage.md %}).
 
-Each [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
+Each [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
 
 ## Multi-region clusters
 
