@@ -7,9 +7,9 @@ docs_area: reference.security
 
 Authorization, generally, is the control over **who** (users/roles) can perform **which actions** (e.g read, write, update, delete, grant, etc.) to **which resources or targets** (databases, functions, tables, clusters, schemas, rows, users, jobs, etc.).
 
-This page describes authorization of SQL users on particular [CockroachDB database clusters]({% link {{ page.version.version }}/architecture/glossary.md %}#cluster). This is distinct from authorization of CockroachDB {{ site.data.products.cloud }} users on CockroachDB {{ site.data.products.cloud }} organizations.
+This page describes authorization of SQL users on particular [CockroachDB database clusters]({% link {{ page.version.version }}/architecture/glossary.md %}#cluster). This page describes authorization of SQL users on particular [CockroachDB database clusters]({% link {{ page.version.version }}/architecture/glossary.md %}#cluster). This is distinct from authorization of CockroachDB {{ site.data.products.cloud }} Console users on CockroachDB {{ site.data.products.cloud }} organizations.
 
-Learn more: [Overview of the CockroachDB {{ site.data.products.cloud }} authorization model]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-authorization-model)
+Learn more about the [CockroachDB {{ site.data.products.cloud }} authorization model]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-authorization-model)
 
 ## Authorization models
 
