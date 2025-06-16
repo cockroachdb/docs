@@ -44,7 +44,7 @@ If your organization includes members whose identity you don't manage, such as p
 
 ### Autoprovisioning
 
-Autoprovisioning is a self-service mechanism that removes the need for a new user to be [invited by an Org Admin]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization). When it is enabled, the first time a user successfully authentications using that method, CockroachDB {{ site.data.products.cloud }} organization account is automatically created for them. Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin).
+Autoprovisioning is a self-service mechanism that removes the need for a new user to be [invited by an Organization Admin]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization). When it is enabled, the first time a user successfully authentications using that method, CockroachDB {{ site.data.products.cloud }} organization account is automatically created for them. Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which adds no permissions to perform cluster or organization actions. Additional roles can be assigned by a user with the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin).
 
 Autoprovisioning is disabled by default, but can be enabled per SSO authentication method.
 
@@ -117,7 +117,7 @@ After SAML is configured, your users can sign in to the CockroachDB {{ site.data
 
 #### What default role is assigned to users when autoprovisioning is enabled in a CockroachDB {{ site.data.products.cloud }} organization?
 
-Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin).
+Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which adds no permissions to perform cluster or organization actions. Additional roles can be assigned by a user with the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin).
 
 ## What's next?
 - [Configure Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %})

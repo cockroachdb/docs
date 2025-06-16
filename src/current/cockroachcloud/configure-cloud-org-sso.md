@@ -44,7 +44,7 @@ Before you enable Cloud Organization SSO, notify your members about what to expe
 - Which authentication methods they can use and whether they have autoprovisioning enabled.
 - Some members may need to be re-added to your organization:
   - All members of your CockroachDB {{ site.data.products.cloud }} organization who were using [Basic SSO]({% link cockroachcloud/cloud-org-sso.md %}#basic-sso) rather than an email and password must sign in again to regain access to your organization. After signing in, members retain the same access they had before the migration.
-  - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited or [provisioned using SCIM]({% link cockroachcloud/configure-scim-provisioning.md %}). If a re-invited member previously had the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role, it must be granted to them again.
+  - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited or [provisioned using SCIM]({% link cockroachcloud/configure-scim-provisioning.md %}). If a re-invited member previously had the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role, it must be assigned to them again.
 
 During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
 
@@ -60,7 +60,7 @@ If your migration fails with the error: `Cloud Organization SSO cannot be enable
 
 For your migration to succeed, you must ensure that at least one admin belongs to no other CockroachDB {{ site.data.products.cloud }} organization than the one to be migrated. If all admins belong to multiple organizations, the migration will fail with the generic error `Cloud Organization SSO cannot be enabled`.
 
-If all of your administrators belong to multiple organizations, you can create a temporary user in your SSO provider or directly in CockroachDB {{ site.data.products.cloud }}. Grant the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin) to the temporary user, and use this temporary admin to enable Cloud Organization SSO. After migration, you should delete this temporary user or revoke the **Organization Admin** role.
+If all of your administrators belong to multiple organizations, you can create a temporary user in your SSO provider or directly in CockroachDB {{ site.data.products.cloud }}. Assign the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin) to the temporary user, and use this temporary admin to enable Cloud Organization SSO. After migration, you should delete this temporary user or revoke the **Organization Admin** role.
 
 ## Enable Cloud Organization SSO
 
@@ -142,7 +142,7 @@ By default, members can access your CockroachDB {{ site.data.products.cloud }} o
 
 Autoprovisioning allows members to sign up for an account without waiting for an invitation. By default, autoprovisioning is disabled, and a member must exist in the SSO provider and must be [invited by a user with the **Organization Admin** role]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization) before they can create an account. When autoprovisioning is enabled, no invitation is required.
 
-Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin).
+Autoprovisioned accounts are initially assigned the [**Organization Member** role]({% link cockroachcloud/authorization.md %}#organization-member), which adds no permissions to perform cluster or organization actions. Additional roles can be assigned by a user with the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin).
 
 If a member's identity is removed from the SSO provider, they can no longer log in to CockroachDB {{ site.data.products.cloud }}, but their account is not automatically deprovisioned. If you require automatic deprovisioning or other centralized account automation features, refer to [SCIM Provisioning]({% link cockroachcloud/configure-scim-provisioning.md %}).
 
