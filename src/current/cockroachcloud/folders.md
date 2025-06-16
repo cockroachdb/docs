@@ -55,18 +55,18 @@ Operations that violate these restrictions result in an error.
 
 ### Folders and role assignment
 
-A role granted on a folder is inherited on its descendant folders and clusters. All existing organizational roles, such as [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator), can be granted at the folder scope.
+A role assigned to a folder is inherited on its descendant folders and clusters. All existing organizational roles, such as [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator), can be assigned at the folder scope.
 
-A role granted directly on a cluster is unchanged if the cluster is moved into or out of a folder.
+A role assigned directly on a cluster is unchanged if the cluster is moved into or out of a folder.
 
-The following roles, when granted at the organization level, allow reading of the entire folder hierarchy:
+The following roles, when assigned at the organization scope, allow reading of the entire folder hierarchy:
 
 - Organization Admin
 - Cluster Admin
 - Cluster Operator
 - Cluster Developer
 
-The following roles allow creation of clusters at the level of the hierarchy where they are granted:
+The following roles allow creation of clusters at the level of the hierarchy where they are assigned:
 
 - Cluster Admin
 - Cluster Creator
@@ -86,22 +86,22 @@ Your user account must have the following roles to manage access to folders:
 - [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin)
 
 {{site.data.alerts.callout_success}}
-An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can grant themselves, another user, or a service account the Folder Admin role.
+An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can assign themselves, another user, or a service account the Folder Admin role.
 {{site.data.alerts.end}}
 
-## Grant the `FOLDER_ADMIN` or `FOLDER_MOVER` role
+## Assign the `FOLDER_ADMIN` or `FOLDER_MOVER` role
 
-Folders inherit roles granted higher in the hierarchy, and folders at the root level inherit roles granted at the organization scope. To create a folder, a team member must have the `FOLDER_ADMIN` role on its parent folder. To create a folder at the root level, a team member must have the `FOLDER_ADMIN` role at the level of the organization.
+Folders inherit roles assigned higher in the hierarchy, and folders at the root level inherit roles assigned at the organization scope. To create a folder, a team member must have the `FOLDER_ADMIN` role on its parent folder. To create a folder at the root level, a team member must have the `FOLDER_ADMIN` role at the level of the organization.
 
 {{site.data.alerts.callout_success}}
 To create clusters in a folder, the member must also have the `CLUSTER_ADMIN` or `CLUSTER_CREATOR` role on that folder or by inheritance.
 {{site.data.alerts.end}}
 
-To grant the `FOLDER_ADMIN` role:
+To assign the `FOLDER_ADMIN` role:
 
 1. On the **Access Management** page, locate the team member's details whose role you want to change.
 1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
-1. Set **Scope** to **Organization** or to a folder in the hierarchy. The role is granted on all of the folder's descendants.
+1. Set **Scope** to **Organization** or to a folder in the hierarchy. The role is assigned on all of the folder's descendants.
 1. Set **Role** to **Folder Admin** or **Folder Mover**.
 1. Click **Confirm**.
 
@@ -123,10 +123,10 @@ Your service account must have the following roles on the organization, the fold
 
 1. To manage access to a folder, go to **Organization** > **Access Management**.
 1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
-1. Set **Scope** to the folder you just created. The role is granted on all of the folder's descendants.
+1. Set **Scope** to the folder you just created. The role is assigned on all of the folder's descendants.
 1. Set **Role** to **Folder Admin** or **Folder Mover**.
 
-    To access a folder's clusters, a user or service account must also have the **Cluster Admin**, **Cluster Creator**, or **Cluster Operator** role on the folder. The role may be granted by inheritance or directly on a cluster.
+    To access a folder's clusters, a user or service account must also have the **Cluster Admin**, **Cluster Creator**, or **Cluster Operator** role on the folder. The role may be assigned by inheritance or directly on a cluster.
 
 1. Click **Confirm**.
 
@@ -155,11 +155,11 @@ Your service account must have the following roles on the organization or the fo
     If you do not have permission to create folders at this location, you will see only **Create cluster**.
     {{site.data.alerts.end}}
 1. Configure the cluster as desired, then click **Create Cluster**.
-1. To grant others roles directly on the newly-created cluster:
+1. To assign others roles directly on the newly-created cluster:
     1. Go to **Organization** > **Access Management**.
     1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
     1. Set **Scope** to the folder you just created.
-    1. Set **Role** to the role you want to grant.
+    1. Set **Role** to the role you want to assign.
     1. Click **Confirm**.
 
 ## Move a cluster into or out of a folder
@@ -171,7 +171,7 @@ Your service account must have permission to move clusters at both the source an
 Folder Movers can move clusters within the folder hierarchy even if they do not have a role that allows them to connect to the cluster, such as Cluster Creator or Cluster Operator.
 
 {{site.data.alerts.callout_info}}
-When you move a cluster into or out of a folder, users or service accounts who had access to the previous location through inheritance may lose access. Roles granted directly on a cluster do not change when the cluster is moved.
+When you move a cluster into or out of a folder, users or service accounts who had access to the previous location through inheritance may lose access. Roles assigned directly on a cluster do not change when the cluster is moved.
 {{site.data.alerts.end}}
 
 To move a cluster from the organization level into a folder, or to move it from one folder to another:
@@ -198,7 +198,7 @@ Your service account must have permission to move folders at both the source and
 - [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) or [Folder Mover]({% link cockroachcloud/authorization.md %}#folder-mover)
 
 {{site.data.alerts.callout_info}}
-When you move a folder, users or service accounts who had access to the previous location through inheritance may lose access to its descendant folders and clusters. Roles granted directly on a folder or a cluster do not change when the folder or cluster is moved.
+When you move a folder, users or service accounts who had access to the previous location through inheritance may lose access to its descendant folders and clusters. Roles assigned directly on a folder or a cluster do not change when the folder or cluster is moved.
 {{site.data.alerts.end}}
 
 To move a folder and its contents into another folder:

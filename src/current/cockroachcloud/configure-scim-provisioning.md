@@ -53,7 +53,7 @@ Depending on what it supports, your IdP may provide a mechanism to sync IAM grou
 1. You can configure the SCIM app integration to selectively synchronize details about an IAM group to CockroachDB {{ site.data.products.cloud }}, including the group's name and membership list. In Okta, this group is said to be _pushed_.
 1. Within CockroachDB {{ site.data.products.cloud }}, you can assign roles to a pushed group, and those roles are automatically assigned to the individual group members with provisioned accounts in CockroachDB {{ site.data.products.cloud }}.
 1. A user account is only ever automatically provisioned in CockroachDB {{ site.data.products.cloud }} based on assignments in the SCIM app integration.
-   - If a group is pushed but not assigned to the SCIM app in Okta, roles can be granted to the group in CockroachDB {{ site.data.products.cloud }}, and group members who are already provisioned in CockroachDB {{ site.data.products.cloud }} or who are assigned to the app integration in the future, automatically receive those roles.
+   - If a group is pushed but not assigned to the SCIM app in Okta, roles can be assigned to the group in CockroachDB {{ site.data.products.cloud }}, and group members who are already provisioned in CockroachDB {{ site.data.products.cloud }} or who are assigned to the app integration in the future, automatically receive those roles.
    - If a group is assigned to the SCIM app in Okta but is not pushed, the group does not appear in CockroachDB {{ site.data.products.cloud }}, but user accounts are automatically provisioned for its members.
 
 1. When details about a pushed IAM group change, such as the group's name or membership, these changes are automatically reflected in CockroachDB {{ site.data.products.cloud }}, unless group push is subsequently disabled for the group.
@@ -202,10 +202,10 @@ To view details about a group:
 
 ### Manage a group's roles
 
-Within CockroachDB {{ site.data.products.cloud }}, you can grant [roles]({% link cockroachcloud/authorization.md %}#organization-user-roles) to a pushed group, and those roles are automatically granted to the group's members who have accounts in CockroachDB {{ site.data.products.cloud }}.
+Within CockroachDB {{ site.data.products.cloud }}, you can assign {{ site.data.products.cloud }} Console [roles]({% link cockroachcloud/authorization.md %}#organization-user-roles) to a pushed group, and those roles are automatically assigned to the group's members who have accounts in CockroachDB {{ site.data.products.cloud }}.
 
-- When you push a group whose members already exist in CockroachDB {{ site.data.products.cloud }} and assign roles to the group, those members are granted the group's roles, in addition to roles explicitly granted to them.
-- When the group's membership changes in your IdP, those changes are synchronized with the group in CockroachDB {{ site.data.products.cloud }}. If a CockroachDB {{ site.data.products.cloud }} account is added to or removed from the group in your IdP, they gain or lose roles granted to the group in CockroachDB {{ site.data.products.cloud }}.
+- When you push a group whose members already exist in CockroachDB {{ site.data.products.cloud }} and assign roles to the group, those members are assigned the group's roles, in addition to roles explicitly assigned to them.
+- When the group's membership changes in your IdP, those changes are synchronized with the group in CockroachDB {{ site.data.products.cloud }}. If a CockroachDB {{ site.data.products.cloud }} account is added to or removed from the group in your IdP, they gain or lose roles assigned to the group in CockroachDB {{ site.data.products.cloud }}.
 
 This section shows how to view and manage a group's roles in the CockroachDB {{ site.data.products.cloud }} Console or using the [Cloud API]({% link cockroachcloud/cloud-api.md %}).
 
@@ -218,7 +218,7 @@ This section shows how to view and manage a group's roles in the CockroachDB {{ 
 
 1. In CockroachDB {{ site.data.products.cloud }} Console, click **Access Management > Groups**.
 1. In a group's row, click the three-dots **Action** button, then click **Edit Roles**.
-1. The group's granted roles are shown. Add or remove roles, then click **Confirm**.
+1. The group's assigned roles are shown. Add or remove roles, then click **Confirm**.
 
    {{site.data.alerts.callout_info}}
    The fields for inherited roles are read-only, because inherited roles cannot be edited directly. Instead, you must either remove the role from the parent group from which it is inherited, or remove the child group from the parent group.

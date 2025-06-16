@@ -398,7 +398,7 @@ The side disk should have the following properties:
 
 WAL failover should be enabled for any cloud deployments on AWS, GCP, or Azure.
 
-It's also a good practice in on-premise deployments; however, it is at the discretion of the DBA or Cluster Admin.
+It's also a good practice in on-premise deployments; however, it is at the discretion of the DBA or cluster administrator.
 
 ### 4. What is the best practice `storage.max_sync_duration`?
 

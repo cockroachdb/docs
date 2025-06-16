@@ -20,7 +20,7 @@ The **Migrations** page on the CockroachDB {{ site.data.products.cloud }} Consol
 
 To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Migration** in the **Data** section of the left side navigation.
 
-## Required privileges
+## Required permissions
 
 To access the **Migrations** page, as user must have either of the following roles:
 

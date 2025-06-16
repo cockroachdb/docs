@@ -8,7 +8,7 @@ docs_area: manage
 This page details procedures for managing CockroachDB {{ site.data.products.cloud }} access to CockroachDB {{ site.data.products.cloud }}.
 Before proceeding, it is recommended to review the concepts related to the two levels of CockroachDB {{ site.data.products.cloud }} access management model (the organization level and the SQL level in a cluster), which are detailed in [CockroachDB {{ site.data.products.cloud }} Access Management Overview and FAQ]({% link cockroachcloud/authorization.md %}).
 
-Access management tasks for the organization level are performed in the CockroachDB {{ site.data.products.cloud }} console **Access Management** page, found at `https://cockroachlabs.cloud/access`. This page allows organization administrators to invite users to the CockroachDB {{ site.data.products.cloud }} organization, create service accounts, and manage the access roles granted to both. Users with Cluster Admin role on a cluster can also manage the access role grants on that cluster. Roles can be granted at different scopes (levels) of the resource hierarchy.
+Access management tasks for the organization level are performed in the CockroachDB {{ site.data.products.cloud }} console **Access Management** page, found at `https://cockroachlabs.cloud/access`. This page allows organization administrators to invite users to the CockroachDB {{ site.data.products.cloud }} organization, create service accounts, and manage the access roles assigned to both. Users with Cluster Admin role on a cluster can also manage the access role assignments on that cluster. Roles can be assigned at different scopes (levels) of the resource hierarchy.
 
 Access management tasks for SQL level in a cluster are a bit distributed. SQL users on particular clusters can be created in the console's 'SQL user' page for a specific cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`, or with the `ccloud` command line utility's [`cluster user create`]({% link cockroachcloud/ccloud-get-started.md %}#create-a-sql-user-using-ccloud-cluster-user-create) command, or with a SQL client. However, the SQL roles that govern permissions in the cluster for SQL users must be managed with a SQL client. Furthermore, SQL users created with the console or with `ccloud` utility are granted the `admin` SQL role on the cluster by default; this makes it important from a security perspective to immediately modify this user if needed, revoking the `admin` role and replacing it with a SQL role with privileges required for its task, according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
 
@@ -32,7 +32,7 @@ An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a team member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 1. On the **Access Management** page, under the *Members* tab, click **Invite**.
-1. In the **Email Address** field, enter the email address of the team member you want to invite. By default, a user is assigned the [Organization member]({% link cockroachcloud/authorization.md %}#organization-member) role; this default role grants no access. After the user is invited, you will be able to [grant additional roles](#change-a-team-members-roles).
+1. In the **Email Address** field, enter the email address of the team member you want to invite. By default, a user is assigned the [Organization member]({% link cockroachcloud/authorization.md %}#organization-member) role; this default role adds no permissions. After the user is invited, you will be able to [assign additional roles](#change-a-team-members-roles).
 1. If required, you could invite multiple users at the same time by adding a row per email address using **+ Add Member**.
 
 It is also possible to enable [autoprovisioning]({% link cockroachcloud/cloud-org-sso.md %}#autoprovisioning) for your organization, which removes the need to invite team members.
@@ -46,7 +46,7 @@ In the CockroachDB {{ site.data.products.cloud }} Console, users must be assigne
 
 To edit a user's role, perform the following steps:
 
-1. On the **Access Management** page, locate the team member's details whose role you want to change. The **Role** column lists current organization roles granted to each user.
+1. On the **Access Management** page, locate the team member's details whose role you want to change. The **Role** column lists current roles assigned to each user.
 1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
 1. A number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is one of **Organization**, the name of a particular [folder]({% link cockroachcloud/folders.md %}), or the name of a particular cluster. If the role is Cluster Admin, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
 
@@ -55,7 +55,7 @@ To edit a user's role, perform the following steps:
     {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can revoke the Organization Admin role from their own user, but cannot subsequently re-grant the administrator role to themselves.
+An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can revoke the Organization Admin role from their own user, but cannot subsequently re-assign the administrator role to themselves.
 {{site.data.alerts.end}}
 
 ### Remove a team member
@@ -102,7 +102,7 @@ The access management model for service accounts is unified with the [user model
 1. Confirm creation of the service account.
 
 {{site.data.alerts.callout_info}}
-Service accounts, like users, are given only the **Org Member** role by default upon creation. This role grants no access in the organization. After it is created, you can grant additional roles to the service account.
+Service accounts, like users, are given only the **Organization Member** role by default upon creation. This role assigns no access in the organization. After it is created, you can assign additional roles to the service account.
 {{site.data.alerts.end}}
 
 ### Edit roles on a service account
