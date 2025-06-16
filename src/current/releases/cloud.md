@@ -259,7 +259,7 @@ In addition, this release includes the following features:
 <h3 id="2024-03-20-security-updates"> Security updates </h3>
 
 - All CockroachDB {{ site.data.products.cloud }} organizations have been migrated to use [fine-grained roles]({% link cockroachcloud/authorization.md %}#organization-user-roles). The following deprecated legacy roles have been removed:
-    - Organization Admin (Legacy)
+    - Org Administrator (Legacy)
     - Org Developer (Legacy)
 
 ## March 19, 2024
@@ -482,7 +482,7 @@ In addition, this release includes the following features:
 
     - Cluster Operator
     - Billing Coordinator
-    - Organization Admin
+    - Org Administrator
 
     To enroll your organization in the new authorization model, contact your Cockroach Labs account team.
 

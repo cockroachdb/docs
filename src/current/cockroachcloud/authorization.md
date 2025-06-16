@@ -33,12 +33,12 @@ CockroachDB {{ site.data.products.cloud }} has a hierarchical authorization mode
 The levels within the hierarchy intersect, because administering SQL-level users on specific clusters within an organization is an organization-level function.
 
 {{site.data.alerts.callout_info}}
-SQL users are assigned a distinct set of roles and privileges that are specific to data management on the cluster, independent of the {{ site.data.products.cloud }} Console roles and privileges described on this page. For the main pages covering users and roles at the SQL level within a specific database cluster, refer to the main [Authorization in CockroachDB documentation]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
-{{site.data.alerts.end}}
+SQL users are granted a distinct set of roles and privileges that are specific to data management on the cluster, independent of the {{ site.data.products.cloud }} Console roles and permissions described on this page. For the main pages covering users and roles at the SQL level within a specific database cluster, refer to the main [Authorization in CockroachDB documentation]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
+{{site.data.alerts.end}}. The [GRANT]({% link {{site.current_cloud_version}}/grant.md %}) SQL statement cannot be used to assign {{ site.data.products.cloud }} Console roles and permissions.
 
 ## Organization user roles
 
-When a user or service account is first added to an organization, they are granted the default Console role, **Organization Member**, which adds no permissions and only indicates membership in the organization. Users with the Organization or Cluster Admin role may [edit the roles assigned to organization users]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role) in the CockroachDB {{ site.data.products.cloud }} Console's [**Access Management** page](https://cockroachlabs.cloud/access), or using the CockroachDB {{ site.data.products.cloud }} API or Terraform Provider.
+When a user or service account is first added to an organization, they are assigned the default Console role, **Organization Member**, which adds no permissions and only indicates membership in the organization. Users with the Organization or Cluster Admin role may [edit the roles assigned to organization users]({% link cockroachcloud/managing-access.md %}#change-a-team-members-role) in the CockroachDB {{ site.data.products.cloud }} Console's [**Access Management** page](https://cockroachlabs.cloud/access), or using the CockroachDB {{ site.data.products.cloud }} API or Terraform Provider.
 
 {% include_cached cockroachcloud/first-org-user-roles.md %}
 
@@ -50,7 +50,7 @@ The following sections describe the available CockroachDB {{ site.data.products.
 
 ### Organization Member
 
-The **Organization Member** role is assigned by default to all organization users when they are invited or provisioned. This role grants no additional permissions.
+The **Organization Member** role is assigned by default to all organization users when they are invited or provisioned. This role gives no additional permissions.
 
 ### Organization Admin
 
@@ -58,7 +58,7 @@ The **Organization Admin** role allows users to perform the following actions:
 
 - [Invite users to join that organization]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization).
 - [Create service accounts]({% link cockroachcloud/managing-access.md %}#create-a-service-account).
-- Grant and revoke {{ site.data.products.cloud }} Console roles for both [users]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users) and [service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
+- Assign and revoke {{ site.data.products.cloud }} Console roles for both [users]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users) and [service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 
 Organization Admins automatically receive [email alerts]({% link cockroachcloud/alerts-page.md %}) about planned cluster maintenance and when CockroachDB {{ site.data.products.cloud }} detects that a cluster is overloaded or experiencing issues. In addition, Organization Admins can subscribe other members to the email alerts, and configure how alerts work for the organization.
 
@@ -102,7 +102,7 @@ The **Cluster Operator** role allows actions that are dependent on whether it is
   - [View and configure a cluster's Egress Rules]({% link cockroachcloud/egress-perimeter-controls.md %}).
   - [Configure the export of metrics to DataDog or Amazon CloudWatch]({% link cockroachcloud/export-metrics.md %}).
 
-This role can be considered a more restricted alternative to [Cluster Admin](#cluster-admin), as it grants all of the permissions of that role but does **not** allow users to:
+This role can be considered a more restricted alternative to [Cluster Admin](#cluster-admin), as it gives all of the permissions of that role but does **not** allow users to:
 
 - Manage cluster-scoped roles on organization users.
 - Manage SQL users from the cloud console.
