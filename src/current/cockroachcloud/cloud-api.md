@@ -587,7 +587,7 @@ For details about returned fields, refer to the [response example and schema](ht
 
 ## Change the resources for a CockroachDB Advanced cluster
 
-To change the hardware specifications (e.g., number of vCPUs or number of nodes) for a CockroachDB Advanced cluster, use the `/v1/clusters/{cluster_id}` endpoint with the `PATCH` method.
+To change the hardware specifications (e.g., number of vCPUs or number of nodes) for a CockroachDB Advanced cluster, use the `/v1/clusters/{cluster_id}` endpoint with the `PATCH` method. The API endpoint spawns a job to handle the change in resources. The duration of this job can vary depending on the amount of storage and the cloud provider.
 
 For example, to change the number of vCPUs per node to 8:
 
@@ -596,7 +596,6 @@ For example, to change the number of vCPUs per node to 8:
 curl --request PATCH \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
   --header 'Authorization: Bearer {secret_key}' \
-  --header 'Content-Type: application/json' \
   --json '{
     "spec": {
       "dedicated": {
@@ -617,7 +616,6 @@ To change the number of nodes in a region:
 curl --request PATCH \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
   --header 'Authorization: Bearer {secret_key}' \
-  --header 'Content-Type: application/json' \
   --json '{
     "spec": {
       "dedicated": {
