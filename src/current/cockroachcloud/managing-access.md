@@ -46,7 +46,7 @@ In the CockroachDB {{ site.data.products.cloud }} Console, users must be assigne
 
 To edit a user's role, perform the following steps:
 
-1. On the **Access Management** page, locate the team member's details whose role you want to change. The **Role** column lists current roles assigned to each user.
+1. On the **Access Management** page, locate the team member whose role you want to change. The **Role** column lists current roles assigned to each user.
 1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
 1. A number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is one of **Organization**, the name of a particular [folder]({% link cockroachcloud/folders.md %}), or the name of a particular cluster. If the role is Cluster Admin, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
 
@@ -66,7 +66,7 @@ An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-
 
 ### Revoke a pending invite
 
-1. On the **Access Management** page, locate the team member's details whose pending invite you want to revoke.
+1. On the **Access Management** page, locate the team member whose pending invite you want to revoke.
 1. In the **Action** column, click the three dots to view the allowed actions.
 1. Click **Revoke Invite**.
 
