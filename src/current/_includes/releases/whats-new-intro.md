@@ -20,6 +20,12 @@
   {% endunless %}
 {% endfor %}
 
+{% comment %}Check if this major version has been released{% endcomment %}
+{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.major_version" | first %}
+{% if rd.release_date != "N/A" %}
+  {% assign released = true %}
+{% endif %}
+
 {% comment %}Some old pages don't have feature highlights and won't get LTS{% endcomment %}
 {% if page.major_version == 'v1.0' or
       page.major_version == 'v1.1' or
@@ -89,13 +95,15 @@ CockroachDB {{ page.major_version }} is an [Innovation Release]({% link releases
 CockroachDB {{ page.major_version }}{% if lts == true %} [(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %} is a required [Regular Release]({% link releases/release-support-policy.md %}#support-types).
   {% endif %}
 
-Refer to [Major release types]({% link releases/release-support-policy.md %}#support-types) before installing or upgrading for release timing and support details.{% if no_highlights == false %} To learn what’s new in this release, refer to its [Feature Highlights](#feature-highlights).{% endif %}
+Refer to [Major release types]({% link releases/release-support-policy.md %}#support-types) before installing or upgrading for release timing and support details.{% if no_highlights == false and released == true %} To learn what's new in this release, refer to its [Feature Highlights](#feature-highlights).{% endif %}
 
 On this page, you can read about changes and find downloads for all production and testing releases of CockroachDB {{ page.major_version }}{% if lts == true %}&nbsp;[(LTS)]({% link releases/release-support-policy.md %}#support-phases){% endif %}
 
-
+{% comment %}Only show these bullet points if the version has been released{% endcomment %}
+{% if released == true %}
 {% comment %}v1.0 has no #v1-0-0 anchor, and before GA other releases also do not.{% endcomment %}
 - For key feature enhancements in {{ page.major_version }} and other upgrade considerations, refer to the notes for {% if include.major_version.release_date != 'N/A' and page.major_version != 'v1.0' %}[{{ page.major_version }}.0](#{{ page.major_version | replace: '.', '-' }}-0){% else %}{{ page.major_version }} on this page{% endif %}.
+{% endif %}
 {% endif %}{% comment %}End GA-only content{% endcomment %}
 - For details about release types, naming, and licensing, refer to the [Releases]({% link releases/index.md %}) page.
 - Be sure to also review the [Release Support Policy]({% link releases/release-support-policy.md %}).
