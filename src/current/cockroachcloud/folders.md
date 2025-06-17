@@ -99,7 +99,7 @@ To create clusters in a folder, the member must also have the `CLUSTER_ADMIN` or
 
 To assign the `FOLDER_ADMIN` role:
 
-1. On the **Access Management** page, locate the team member's details whose role you want to change.
+1. On the **Access Management** page, locate the team member whose role you want to change.
 1. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
 1. Set **Scope** to **Organization** or to a folder in the hierarchy. The role is assigned on all of the folder's descendants.
 1. Set **Role** to **Folder Admin** or **Folder Mover**.
