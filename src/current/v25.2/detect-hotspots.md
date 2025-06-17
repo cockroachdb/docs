@@ -4,7 +4,7 @@ summary: Learn how to detect hotspots using real-time monitoring and historical 
 toc: true
 ---
 
-This page provides practical guidance for identifying common [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) in CockroachDB clusters using real-time monitoring and historical logs.
+This page provides practical guidance on identifying common [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) in CockroachDB clusters using real-time monitoring and historical logs. This tutorial assumes that you have identified a metrics outlier in your cluster. It focuses on CPU and latch contention metrics to help you identify hot-key and hot-index scenarios.
 
 ## Before you begin
 
@@ -23,7 +23,7 @@ To identify a [hotspot]({% link {{ page.version.version }}/understand-hotspots.m
 
 ### A. Latch conflict wait durations
 
-- On the [DB Console **Advanced Debug Custom Chart** page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}), if a virtual cluster dropdown is present in the upper right corner, select `system`.
+- Navigate to [DB Console **Advanced Debug Custom Chart** page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}).
 - Create a custom chart to monitor the `kv.concurrency.latch_conflict_wait_durations-avg` metric, which tracks time spent on [latch acquisition]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#latch-manager) waiting for conflicts with other latches. For example, a [sequence]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-sequence) that writes to the same row must wait to acquire the latch.
 - To display the metric per node, select the `PER NODE/STORE` checkbox. 
 
@@ -33,12 +33,13 @@ For example:
 
 - Is there a node with a maximum value that is a clear outlier in the cluster for the latch conflict wait durations metric?
 
-  - If **Yes**, note the ID of the [hot node]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) and the time range when it was hot. Proceed to check for a [`popular key detected `log](#a-popular-key-detected).
+  - If **Yes**, note the ID of the [hot node]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) and the time period when it was hot. Proceed to check for a [`popular key detected `log](#a-popular-key-detected).
   - If **No**, check for a node outlier in [CPU percent](#b-cpu-percent) metric. 
 
 ### B. CPU percent
 
-- On the DB Console **Metrics** page **Hardware** dashboard, monitor the [**CPU Percent** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent).
+- Navigate to the DB Console **Metrics** page **Hardware** dashboard.
+- Monitor the [**CPU Percent** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent).
 - CPU usage typically increases with traffic volume.
 - Check if the CPU usage of the hottest node is 20% or more above the cluster average. For example, node `n5`, represented by the green line in the following **CPU Percent** graph, hovers at around 87% at time 17:35 compared to other nodes that hover around 20% to 25%.
   
@@ -46,7 +47,7 @@ For example:
 
 - Is there a node with a maximum value that is a clear outlier in the cluster for the CPU percent metric?
 
-  - If **Yes**, note the ID of the [hot node]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) and the time range when it was hot. Proceed to check for a [`popular key detected `log](#a-popular-key-detected).
+  - If **Yes**, note the ID of the [hot node]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-node) and the time period when it was hot. Proceed to check for a [`popular key detected `log](#a-popular-key-detected).
   - If **No**, and the metrics outlier appears in a metric other than CPU percent or latch conflict wait duration, consider causes other than a hotspot.
 
 ## Step 2. Check for existence of `no split key found` log
@@ -75,35 +76,35 @@ The unstructured message ends with one of the following string combinations:
 
 ### A. `popular key detected`
 
-`popular key detected` indicates that a significant percentage of reads or writes target a single row within the range of data.
+The `popular key detected` log indicates that a significant percentage of reads or writes target a single row within a range.
 
-- To check for a `popular key detected` log, search for `popular key detected` in the `KV_DISTRIBUTION` logs on the hot node you noted in Step 1, within the noted time range.
+- To check for a `popular key detected` log, search the `KV_DISTRIBUTION` logs on the hot node from Step 1 within the noted time period.
 
 - Once you identify a relevant log, note the range ID in the tag section of the log.
 
 {{site.data.alerts.callout_info}}
-There may be false positives of the `popular key detected` log.
+The `popular key detected` log may produce false positives.
 {{site.data.alerts.end}}
 
-- The outlier was in the latch conflict wait durations metric. Does a `popular key detected` log exist?
+- If the outlier appears in the latch conflict wait durations metric, does a `popular key detected` log exist?
 
   - If **Yes**, it may be a [write hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#write-hotspot). Note the range ID of `popular key detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
   - If **No**, investigate other reasons for the latch conflict wait durations metric outlier.
 
-- The outlier was in the CPU percent metric. Does a `popular key detected` log exist?
+- If the outlier appears in the CPU percent metric, does a `popular key detected` log exist?
 
-  - If **Yes**, it may be a [read hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#read-hotspot). Note the range ID of `popular key detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
-  - If **No**, note the range ID of `popular key detected` log and proceed to check whether the log is also a [`clear direction detected` log](#b-clear-direction-detected).
+  - If **Yes**, it may be a [read hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#read-hotspot), because the write hotspot was ruled out with the latch conflict wait durations metric. The order of operations in this troubleshooting process matters. Note the range ID of `popular key detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
+  - If **No**, check whether a [`clear direction detected` log](#b-clear-direction-detected) exists.
 
 ### B. `clear direction detected`
 
-`clear direction detected` indicates that the rows touched in the range are steadily increasing or decreasing within the index.
+The `clear direction detected` log indicates that the rows touched in the range are steadily increasing or decreasing within the index.
 
-- To determine whether a `clear direction detected` log exists, check whether any `no split key found` logs for the hot node identified in Step 1, within the noted time range, have an unstructured message that ends with `clear direction detected`.
+- To determine whether a `clear direction detected` log exists, check whether any `no split key found` logs for the hot node identified in Step 1, within the noted time period, have an unstructured message that ends with `clear direction detected`.
 
 - Does a `clear direction detected` log exist?
 
-  - If **Yes**, it may be an [index hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#index-hotspot). Proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
+  - If **Yes**, it may be an [index hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#index-hotspot). Note the range ID of `clear direction detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
   - If **No**, investigate other possible causes for CPU skew.
 
 ## Step 3. Find hot ranges log
@@ -116,7 +117,7 @@ I250602 04:46:54.752464 2023 2@util/log/event_log.go:39 ⋮ [T1,Vsystem,n5] 3197
 
 - To find the relevant hot ranges log, within the noted time range of the metric outlier, search for
   - `"EventType":"hot_ranges_stats"` and
-  - `"RangeID":{range ID from popular key detected log}` and
+  - `"RangeID":{range ID from popular key detected log or clear direction log}` and
   - `"LeaseholderNodeID":{node ID from metric outlier}`.
 - Once you find the relevant hot ranges log, note the values for `Databases`, `Tables`, and `Indexes`.
 - For a write hotspot or read hotspot, proceed to [Mitigation for hot key](#mitigation-1-hot-key).
@@ -124,7 +125,10 @@ I250602 04:46:54.752464 2023 2@util/log/event_log.go:39 ⋮ [T1,Vsystem,n5] 3197
 
 ## Mitigation 1 - hot key
 
-To mitigate a [hot key]({% link {{ page.version.version }}/understand-hotspots.md %}#row-hotspot) (whether a write hotspot or read hotspot), identify the problematic queries, and then refactor your application accordingly. Use the [SQL Activity Statements page]({% link {{ page.version.version }}/ui-statements-page.md %}) in the DB Console to help identify the corresponding statements by the values noted for `Databases`, `Tables`, and `Indexes` in the hot ranges log.
+To mitigate a [hot key]({% link {{ page.version.version }}/understand-hotspots.md %}#row-hotspot) (whether a write hotspot or read hotspot), identify the problematic queries and refactor your application accordingly. Use the `Databases`, `Tables`, and `Indexes` values from the hot ranges log to filter the following DB Console pages by the time period of the metric outlier and log emission:
+
+- The [**Databases** Index Details page]({% link {{ page.version.version }}/ui-databases-page.md %}#index-details-page) includes an **Index Usage** section that shows statement fingerprints using that index.
+- The [**SQL Activity Statements** page]({% link {{ page.version.version }}/ui-statements-page.md %}) shows statement fingerprints that can be filtered.
 
 ## Mitigation 2 - hot index
 
@@ -138,3 +142,4 @@ To mitigate a hot index, update the index schema using the values noted for `Dat
 - [Logging channels]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels)
 - [Load-based splitting]({% link {{ page.version.version }}/load-based-splitting.md %})
 - [**SQL Activity Statements** page]({% link {{ page.version.version }}/ui-statements-page.md %})
+- [**Databases** Index Details page]({% link {{ page.version.version }}/ui-databases-page.md %}#index-details-page)
