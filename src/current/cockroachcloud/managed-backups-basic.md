@@ -30,6 +30,8 @@ For details on viewing and managing the backups, refer to the [Cloud Console](#r
 
 - Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
 
+{% include cockroachcloud/backups/costs-link.md %}
+
 ## Cloud Console
 
 ### View backups
