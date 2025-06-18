@@ -253,7 +253,7 @@
 
 - destination: how-does-a-changefeed-work.md
   sources: ['how-does-an-enterprise-changefeed-work.md']
-  versions: ['v25.2', 'v25.1']
+  versions: ['v25.2', 'v25.1', 'v24.3']
 
 - destination: kubernetes-overview.md
   sources: ['operate-cockroachdb-kubernetes.md']
