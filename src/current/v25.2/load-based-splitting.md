@@ -79,21 +79,21 @@ The [`INFO`]({% link {{ page.version.version }}/logging.md %}#info) log message
 no split key found: ...
 ~~~
 
-indicates that CockroachDB attempted to [split the range]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) due to load, but could not find a key to split at.
+indicates that CockroachDB attempted to [split the range]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) due to load, but could not identify a key at which to split.
 
-This log message can usually be ignored. However, if it appears repeatedly, it may indicate a load imbalance in the cluster. A load imbalance might occur if a [hot range]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-range) cannot be split because it is effectively a [hot key]({% link {{ page.version.version }}/understand-hotspots.md %}#row-hotspot). For more information about how to reduce hotspots (including hot ranges) on your cluster, refer to [Understand hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}).
+You can usually ignore this log message. However, if it appears repeatedly, it may indicate a load imbalance in the cluster. A load imbalance might occur if a range cannot be split because it contains a [hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}). For more information about how to reduce hotspots on your cluster, refer to [Understand hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}).
 
-The log message ends with one of the following string combinations, indicating the observed load pattern:
+The log message ends with one of the following patterns that describe the observed load:
 
 1. `popular key detected, clear direction detected`
 1. `popular key detected, no clear direction`
 1. `no popular key, clear direction detected`
 1. `no popular key, no clear direction`
 
-These indicate the following conditions:
+Each pattern indicates the following condition:
 
 * `popular key detected` indicates that a significant percentage of reads or writes targets a single row within the range of data.
-* `clear direction detected` indicates that accesses within the range progress steadily in one direction, either increasing or decreasing key order.
+* `clear direction detected` indicates that accesses within the range progress steadily in one direction, either increasing or decreasing key order, which generally indicates an [index hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#index-hotspot).
 
 ### Metrics
 
