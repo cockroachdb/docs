@@ -22,7 +22,7 @@ CockroachDB is officially integrated with the following third-party monitoring p
 | [Kibana](#kibana) |  |  | ✔ |
 | [Prometheus](#prometheus) | ✔ | ✔ | ✔ |
 
-This list is not exhaustive. Any Prometheus-compatible third-party tool can consume metrics from a CockroachDB Advanced or {{ site.data.products.core }} cluster. For example, because Amazon CloudWatch is Prometheus-compatible, it can consume metrics from a CockroachDB {{ site.data.products.core }} cluster.
+This list is not exhaustive. Any Prometheus-compatible third-party tool can consume metrics from a CockroachDB Advanced or {{ site.data.products.core }} cluster. For example, because [Amazon CloudWatch is Prometheus-compatible](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-Setup-configure-ECS.html), it can consume metrics from a CockroachDB {{ site.data.products.core }} cluster.
 
 ### Logs
 
