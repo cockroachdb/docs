@@ -12,7 +12,6 @@
 |  westeurope (West Europe) | `INSERT into system.locations VALUES ('region', 'westeurope', 52.3667, 4.9)` |
 |  japanwest (Japan West) | `INSERT into system.locations VALUES ('region', 'japanwest', 34.6939, 135.5022)` |
 |  japaneast (Japan East) | `INSERT into system.locations VALUES ('region', 'japaneast', 35.68, 139.77)` |
-|  brazilsouth (Brazil South) | `INSERT into system.locations VALUES ('region', 'brazilsouth', -23.55, -46.633)` |
 |  australiaeast (Australia East) | `INSERT into system.locations VALUES ('region', 'australiaeast', -33.86, 151.2094)` |
 |  australiasoutheast (Australia Southeast) | `INSERT into system.locations VALUES ('region', 'australiasoutheast', -37.8136, 144.9631)` |
 |  southindia (South India) | `INSERT into system.locations VALUES ('region', 'southindia', 12.9822, 80.1636)` |

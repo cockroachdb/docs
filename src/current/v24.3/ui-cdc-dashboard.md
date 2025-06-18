@@ -73,7 +73,7 @@ Metric | Description
 
 ## Max Checkpoint Latency
 
-This graph displays the most any changefeed's persisted [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) is behind the present time. Larger values indicate issues with successfully ingesting or emitting changes. If errors cause a changefeed to restart, or the changefeed is [paused]({% link {{ page.version.version }}/pause-job.md %}) and unpaused, emitted data up to the last checkpoint may be re-emitted.
+This graph displays the most any changefeed's persisted [checkpoint]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}) is behind the present time. Larger values indicate issues with successfully ingesting or emitting changes. If errors cause a changefeed to restart, or the changefeed is [paused]({% link {{ page.version.version }}/pause-job.md %}) and unpaused, emitted data up to the last checkpoint may be re-emitted.
 
 {{site.data.alerts.callout_info}}
 In v23.1 and earlier, the **Max Checkpoint Latency** graph was named **Max Changefeed Latency**. If you want to customize charts, including how metrics are named, use the [**Custom Chart** debug page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}).
