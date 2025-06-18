@@ -26,7 +26,7 @@ MOLT Fetch/Verify 1.2.7 is [available](#installation).
 - Upgraded the MOLT parser to support new syntax that is valid in CockroachDB v25.2.
 - Added more granular replication counter metrics to track data counts at each stage of the mutation pipeline, helping to diagnose data correctness issues.
 
-### Bug fixes
+#### Bug fixes
 
 - MOLT Fetch [failback]({% link molt/migrate-failback.md %}) now reliably creates changefeeds with a sorted list of table names so that create changefeed operations can be properly deduplicated.
 - Fixed an issue where shard connections failed to recognize custom types (e.g., `ENUM`) in primary keys during table migration. This occurred because the type map from the original `pgx.Conn` was not cloned. The type map is now properly cloned and attached to each shard connection.
