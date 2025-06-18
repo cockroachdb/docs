@@ -12,22 +12,7 @@ For each additional node you want to add to the cluster, complete the following 
 
 1. SSH to the machine where you want the node to run.
 
-1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
-    ~~~
-
-1. Copy the binary into the `PATH`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
-
-    If you get a permissions error, prefix the command with `sudo`.
+1. [Install CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}).
 
 1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command, passing the new node's address as the `--advertise-addr` flag and pointing `--join` to the three existing nodes (also include `--locality` if you set it earlier).
 
@@ -52,21 +37,7 @@ For each additional node you want to add to the cluster, complete the following 
 
 1. SSH to the machine where you want the node to run. Ensure you are logged in as the `root` user.
 
-1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl -o cockroach-{{ page.release_info.version }}.linux-amd64.tgz https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz; tar xzvf cockroach-{{ page.release_info.version }}.linux-amd64.tgz
-    ~~~
-
-1. Copy the binary into the `PATH`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
-
-    If you get a permissions error, prefix the command with `sudo`.
+1. [Install CockroachDB for Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}).
 
 1. Create the Cockroach directory:
 
