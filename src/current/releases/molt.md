@@ -24,12 +24,12 @@ MOLT Fetch/Verify 1.2.7 is [available](#installation).
 
 - Updated the MOLT [Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) with the following timing metrics to better diagnose performance: Source Side Queries, Convert Source Side Queries to Datums, Writing Datums to Pipe, Preparing CSV files to be uploaded, Uploading CSV files to S3/GCP/local.
 - Upgraded the MOLT parser to support new syntax that is valid in CockroachDB v25.2.
-- Added more granular replication counter metrics to track data counts at each point of the mutation pipeline. This makes it easier to diagnose data correctness issues.
+- Added more granular replication counter metrics to track data counts at each stage of the mutation pipeline, helping to diagnose data correctness issues.
 
 ### Bug fixes
 
 - MOLT Fetch [failback]({% link molt/migrate-failback.md %}) now reliably creates changefeeds with a sorted list of table names so that create changefeed operations can be properly deduplicated.
-- Previously, when migrating tables with custom types (e.g., `ENUM`) in the primary key, shard connections failed to recognize these types because the type map from the original `pgx.Conn` was not copied during cloning. The type map is now properly cloned and attached to each shard connection.
+- Fixed an issue where shard connections failed to recognize custom types (e.g., `ENUM`) in primary keys during table migration. This occurred because the type map from the original `pgx.Conn` was not cloned. The type map is now properly cloned and attached to each shard connection.
 - Fixed a bug that could cause an integer overflow, which impacts retrieving the correct shards for exporting data.
 
 ## May 22, 2025
