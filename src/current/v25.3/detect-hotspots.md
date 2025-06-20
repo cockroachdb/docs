@@ -82,10 +82,6 @@ The `popular key detected` log indicates that a significant percentage of reads 
 
 - Once you identify a relevant log, note the range ID in the tag section of the log.
 
-{{site.data.alerts.callout_info}}
-The `popular key detected` log may produce false positives.
-{{site.data.alerts.end}}
-
 - If the outlier appears in the latch conflict wait durations metric, does a `popular key detected` log exist?
 
   - If **Yes**, it may be a [write hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#write-hotspot). Note the range ID of `popular key detected` log and proceed to find the corresponding [hot ranges log](#step-3-find-hot-ranges-log).
