@@ -33,7 +33,7 @@ Once you create a SQL user, the **Connect to cluster** dialog will show informat
 1. Copy the `JDBC_DATABASE_URL` environment variable command provided and save it in a secure location.
 
     {{site.data.alerts.callout_info}}
-    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Administrator can reset it. Refer to: [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster)
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Admin can reset it. Refer to: [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster)
     {{site.data.alerts.end}}
 
 ## Configure the connection environment variable
@@ -115,7 +115,7 @@ Once you create a SQL user, the **Connect to cluster** dialog will show informat
 1. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
 
     {{site.data.alerts.callout_info}}
-    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Administrator can reset it. Refer to: [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster)
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Admin can reset it. Refer to: [Managing SQL users on a cluster]({% link cockroachcloud/managing-access.md %}#manage-sql-users-on-a-cluster)
     {{site.data.alerts.end}}
 
 ## Configure the connection environment variable
