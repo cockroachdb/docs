@@ -8,6 +8,8 @@ In distributed SQL, hotspots refer to bottlenecks that limit a cluster's ability
 
 The page also offers best practices for [reducing hotspots](#reduce-hotspots), including a [video demo](#video-demo).
 
+To troubleshoot common hotspots, refer to the [Detect Hotspots page]({% link {{ page.version.version }}/detect-hotspots.md %}).
+
 ## Terminology
 
 ### Hotspot
@@ -335,5 +337,6 @@ For a demo on hotspot reduction, watch the following video:
 
 ## See also
 
+- [Detect Hotspots]({% link {{ page.version.version }}/detect-hotspots.md %})
 - [Performance Tuning Recipes: Hotspots]({% link {{ page.version.version }}/performance-recipes.md %}#hotspots)
 - [Single hot node]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#single-hot-node)

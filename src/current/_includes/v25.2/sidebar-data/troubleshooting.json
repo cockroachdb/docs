@@ -57,6 +57,12 @@
         ]
       },
       {
+        "title": "Detect Hotspots",
+        "urls": [
+          "/${VERSION}/detect-hotspots.html"
+        ]
+      },
+      {
         "title": "Replication Reports",
         "urls": [
           "/${VERSION}/query-replication-reports.html"
