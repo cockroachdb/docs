@@ -160,7 +160,7 @@ The [`cockroach node status`]({% link {{ page.version.version }}/cockroach-node.
 
 Each node in a CockroachDB cluster exports granular time-series metrics at two available endpoints:
 
-- [`http://<host>:<http-port>/_status/vars`]({% link {{ page.version.version }}/prometheus-endpoint.md %}#status-vars)
+- [`http://<host>:<http-port>/_status/vars`]({% link {{ page.version.version }}/prometheus-endpoint.md %}#_status-vars)
 - {% include_cached new-in.html version="v25.3" %}[`http://<host>:<http-port>/metrics`]({% link {{ page.version.version }}/prometheus-endpoint.md %}#metrics)
 
 For more information, refer to the [Prometheus Endpoint page]({% link {{ page.version.version }}/prometheus-endpoint.md %}).
