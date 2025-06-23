@@ -33,8 +33,8 @@ CockroachDB {{ site.data.products.cloud }} has a hierarchical authorization mode
 The levels within the hierarchy intersect, because administering SQL-level users on specific clusters within an organization is an organization-level function.
 
 {{site.data.alerts.callout_info}}
-SQL users are granted a distinct set of roles and privileges that are specific to data management on the cluster, independent of the {{ site.data.products.cloud }} Console roles and permissions described on this page. For the main pages covering users and roles at the SQL level within a specific database cluster, refer to the main [Authorization in CockroachDB documentation]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
-{{site.data.alerts.end}}. The [GRANT]({% link {{site.current_cloud_version}}/grant.md %}) SQL statement cannot be used to assign {{ site.data.products.cloud }} Console roles and permissions.
+SQL users are granted a distinct set of roles and privileges that are specific to data management on the cluster, independent of the {{ site.data.products.cloud }} user roles and permissions described on this page. For the main pages covering users and roles at the SQL level within a specific database cluster, refer to the main [Authorization in CockroachDB documentation]({% link {{site.current_cloud_version}}/security-reference/authorization.md %})
+{{site.data.alerts.end}}. The [GRANT]({% link {{site.current_cloud_version}}/grant.md %}) SQL statement cannot be used to assign {{ site.data.products.cloud }} roles and permissions.
 
 ## Organization user roles
 
@@ -46,7 +46,7 @@ To learn more, refer to [Manage organization users]({% link cockroachcloud/manag
 
 {% include_cached cockroachcloud/org-roles/cloud-roles-table.md %}
 
-The following sections describe the available CockroachDB {{ site.data.products.cloud }} Console roles in more detail:
+The following sections describe the available CockroachDB {{ site.data.products.cloud }} roles in more detail:
 
 ### Organization Member
 
@@ -58,7 +58,7 @@ The **Organization Admin** role allows users to perform the following actions:
 
 - [Invite users to join that organization]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization).
 - [Create service accounts]({% link cockroachcloud/managing-access.md %}#create-a-service-account).
-- Assign and revoke {{ site.data.products.cloud }} Console roles for both [users]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users) and [service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
+- Assign and revoke {{ site.data.products.cloud }} roles for both [users]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users) and [service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 
 Organization Admins automatically receive [email alerts]({% link cockroachcloud/alerts-page.md %}) about planned cluster maintenance and when CockroachDB {{ site.data.products.cloud }} detects that a cluster is overloaded or experiencing issues. In addition, Organization Admins can subscribe other members to the email alerts, and configure how alerts work for the organization.
 
