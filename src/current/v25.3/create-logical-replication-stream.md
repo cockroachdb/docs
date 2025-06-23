@@ -13,7 +13,7 @@ The `CREATE LOGICAL REPLICATION STREAM` statement starts [**logical data replica
 This page is a reference for the `CREATE LOGICAL REPLICATION STREAM` SQL statement, which includes information on its parameters and possible options. For a step-by-step guide to set up LDR, refer to the [Set Up Logical Data Replication]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}) page.
 
 {{site.data.alerts.callout_success}}
-If the table you're replicating does not contain [user-defined types]({% link {{ page.version.version }}/enum.md %}) or [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies, we recommend using the [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}) syntax that provides a fast, offline initial scan and automatic table setup on the destination cluster.
+If the table you're replicating does not contain [user-defined types]({% link {{ page.version.version }}/enum.md %}), we recommend using the [`CREATE LOGICALLY REPLICATED`]({% link {{ page.version.version }}/create-logically-replicated.md %}) syntax that provides a fast, offline initial scan and automatic table setup on the destination cluster.
 {{site.data.alerts.end}}
 
 ## Required privileges

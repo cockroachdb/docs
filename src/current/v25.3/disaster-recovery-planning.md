@@ -304,6 +304,8 @@ To give yourself more time to recover and clean up the corrupted data, put your 
 
 If you are within the [garbage collection window]({% link {{ page.version.version }}/configure-replication-zones.md %}#gc-ttlseconds), run [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) queries and use [`CREATE TABLE AS … SELECT * FROM`]({% link {{ page.version.version }}/create-table-as.md %}) to create comparison data and run differentials to find the offending rows to fix.
 
+Alternatively, you can use [`CREATE TABLE AS ... AS OF SYSTEM TIME`]({% link {{ page.version.version }}/create-table-as.md %}#populate-create-table-as-with-historical-data-using-as-of-system-time) to generate a copy of the data as of a specific [timestamp]({% link {{ page.version.version }}/timestamp.md %}). This also requires being within the garbage collection window.
+
 If you are outside of the garbage collection window, you will need to use a [backup]({% link {{ page.version.version }}/backup.md %}) to run comparisons.
 
 ### Restore to a point in time

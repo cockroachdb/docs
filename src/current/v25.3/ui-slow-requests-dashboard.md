@@ -29,7 +29,7 @@ Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
-Slow Raft Proposals | The number of requests that have been stuck for longer than usual in [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft), as tracked by the `requests.slow.raft` metric.
+Slow Raft Proposals | The number of requests that have been stuck for longer than usual in [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft), as tracked by the `requests.slow.raft` metric. This can be a symptom of a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-splits).
 
 ## Slow DistSender RPCs
 

@@ -51,6 +51,8 @@ You can set your retention duration **once**. After you have adjusted the retent
 
 {% include cockroachcloud/backups/retention-settings.md %}
 
+{% include cockroachcloud/backups/costs-link.md %}
+
 {% include cockroachcloud/backups/retention-deleted-cluster.md %}
 
 ## Upgrades and downgrades
