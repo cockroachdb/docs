@@ -158,35 +158,12 @@ The [`cockroach node status`]({% link {{ page.version.version }}/cockroach-node.
 
 ### Prometheus endpoint
 
-Every node of a CockroachDB cluster exports granular time-series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}), an open source tool for storing, aggregating, and querying time-series data. The Prometheus format is human-readable and can be processed to work with other third-party monitoring systems such as [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd). Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), collect metrics from a cluster's Prometheus endpoint.
+Each node in a CockroachDB cluster exports granular time-series metrics at two available endpoints:
 
-To access the Prometheus endpoint of a cluster running on `localhost:8080`:
+- [`http://<host>:<http-port>/_status/vars`]({% link {{ page.version.version }}/prometheus-endpoint.md %}#status-vars)
+- {% include_cached new-in.html version="v25.3" %}[`http://<host>:<http-port>/metrics`]({% link {{ page.version.version }}/prometheus-endpoint.md %}#metrics)
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ curl http://localhost:8080/_status/vars
-~~~
-
-~~~
-# HELP gossip_infos_received Number of received gossip Info objects
-# TYPE gossip_infos_received counter
-gossip_infos_received 0
-# HELP sys_cgocalls Total number of cgo calls
-# TYPE sys_cgocalls gauge
-sys_cgocalls 3501
-# HELP sys_cpu_sys_percent Current system cpu percentage
-# TYPE sys_cpu_sys_percent gauge
-sys_cpu_sys_percent 1.098855319644276e-10
-...
-~~~
-
-{{site.data.alerts.callout_info}}
-In addition to using the exported time-series data to monitor a cluster via an external system, you can write alerting rules against them to make sure you are promptly notified of critical events or issues that may require intervention or investigation. See [Events to alert on](#events-to-alert-on) for more details.
-{{site.data.alerts.end}}
-
-If you rely on external tools for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
-
-When storage of time-series metrics is disabled, the DB Console Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
+For more information, refer to the [Prometheus Endpoint page]({% link {{ page.version.version }}/prometheus-endpoint.md %}).
 
 ### Critical nodes endpoint
 
