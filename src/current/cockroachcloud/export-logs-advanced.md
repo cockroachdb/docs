@@ -547,6 +547,7 @@ Where:
 ## Limitations
 
 - CockroachDB {{ site.data.products.advanced }} clusters hosted on AWS can only export logs to Amazon CloudWatch. Similarly, CockroachDB {{ site.data.products.advanced }} clusters hosted on GCP can only export logs to GCP Cloud Logging, and CockroachDB {{ site.data.products.advanced }} clusters hosted on Azure can only export logs to Azure Monitor.
+- The log export feature does not guarantee 100% log delivery or at-least-once delivery.
 
 ## CockroachDB {{ site.data.products.advanced }} log export Frequently Asked Questions (FAQ)
 
@@ -568,7 +569,9 @@ No, logs for each region in your cluster are exported to the corresponding cloud
 
 ### What log channels are supported?
 
-Currently, the following CockroachDB [log channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels) are supported for export in this manner: `SESSIONS`, `OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`. Other log channels are not exportable from CockroachDB {{ site.data.products.advanced }}.
+You can export the following CockroachDB [log channels]({% link {{site.current_cloud_version}}/logging-overview.md %}#logging-channels): `SESSIONS`, `OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`.
+
+Log channels, such as `DEV`, `KV_DISTRIBUTION`, `SQL_INTERNAL_PERF`, and `TELEMETRY`, cannot be exported from CockroachDB {{ site.data.products.advanced }}. These are for Cockroach Labs internal use cases and are not meant for external use. If you need access to additional logs, contact [Support](https://support.cockroachlabs.com/hc/).
 
 ### Is it possible to include SQL audit logs as part of the log export capability?
 

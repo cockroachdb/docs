@@ -11,7 +11,8 @@ jobs:
 
     - name: Get changed files
       id: changed_files
-      uses: tj-actions/changed-files@v41.0.0
+      # This is v41.0.0. Hardcoded the commit because the tag was compromised.
+      uses: tj-actions/changed-files@cc08e170f4447237bcaf8acaacfa615b9cb86612
 
     - name: Calculate changed files to pass to Vale
       id: calc_changed_files

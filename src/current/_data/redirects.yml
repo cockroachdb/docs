@@ -251,16 +251,17 @@
   sources: ['grant-roles.md']
   versions: ['v21.1']
 
+- destination: how-does-a-changefeed-work.md
+  sources: ['how-does-an-enterprise-changefeed-work.md']
+  versions: ['v25.2', 'v25.1', 'v24.3']
+
 - destination: kubernetes-overview.md
   sources: ['operate-cockroachdb-kubernetes.md']
   versions: ['v21.2']
 
-- destination: plan-your-cluster-serverless.md
-  sources:
-    - 'planning-your-serverless-cluster.md'
-    - 'learn-about-pricing.md'
-    - 'learn-about-request-units.md'
-  versions: ['cockroachcloud']
+- destination: log-sql-activity-to-datadog.md
+  sources: ['log-sql-statistics-to-datadog.md']
+  versions: ['v23.1', 'v23.2', 'v24.1', 'v24.2', 'v24.3', 'v25.1']
 
 - destination: logging-overview.md
   sources: ['debug-and-error-logs.md']
@@ -276,23 +277,42 @@
   sources: ['cloud-deployment.md']
   versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
 
+- destination: plan-your-cluster-serverless.md
+  sources:
+    - 'planning-your-serverless-cluster.md'
+    - 'learn-about-pricing.md'
+    - 'learn-about-request-units.md'
+  versions: ['cockroachcloud']
+
 - destination: provision-a-cluster-with-terraform.md
   sources:
   - 'migrate-from-free-to-dedicated.md'
   - 'migrate-from-serverless-to-dedicated.md'
   versions: ['cockroachcloud']
 
-- destination: migration-overview.md
+- destination: molt/migrate-to-cockroachdb.md?filters=mysql
+  sources: [':version/migrate-from-mysql.md']
+
+- destination: molt/migrate-to-cockroachdb.md
+  sources: [':version/migrate-from-postgres.md']
+
+- destination: molt/migration-overview.md
+  sources: [':version/migration-overview.md']
+
+- destination: molt/migration-overview.md
+  sources: ['molt/molt-overview.md']
+
+- destination: molt/migration-overview.md
   sources: ['import-data.md']
   versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
 
-- destination: molt/molt-fetch.md
-  sources: [':version/molt-fetch.md']
-
-- destination: molt/molt-overview.md
+- destination: molt/migration-overview.md
   sources:
     - molt/live-migration-service.md
     - :version/live-migration-service.md
+
+- destination: molt/molt-fetch.md
+  sources: [':version/molt-fetch.md']
 
 - destination: molt/molt-verify.md
   sources: [':version/molt-verify.md']
@@ -861,6 +881,10 @@
   sources: ['cockroachcloud/serverless-cluster-management.md']
   versions: ['cockroachcloud']
 
+- destination: cockroachcloud/advanced-cluster-management.md
+  sources: ['cockroachcloud/cluster-management-advanced.md']
+  versions: ['cockroachcloud']
+
 - destination: cockroachcloud/connect-to-a-basic-cluster.md
   sources: ['cockroachcloud/connect-to-a-serverless-cluster.md']
 
@@ -1026,3 +1050,4 @@
     - v24.2/cockroachdb-in-comparison.md
     - v24.3/cockroachdb-in-comparison.md
     - v25.1/cockroachdb-in-comparison.md
+

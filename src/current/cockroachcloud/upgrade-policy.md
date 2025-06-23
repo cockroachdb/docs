@@ -25,13 +25,19 @@ All CockroachDB {{ site.data.products.basic }} clusters, and CockroachDB {{ site
 
 When a CockroachDB {{ site.data.products.advanced }} cluster is nearing its EOS date, you will be reminded to upgrade the cluster at least 30 days before the EOS date to avoid losing support. {% capture who_can_upgrade %}A user with the Cluster Administrator or Cluster Operator [role]({% link cockroachcloud/authorization.md %}) can [upgrade a cluster]({% link cockroachcloud/upgrade-cockroach-version.md %}) directly from the CockroachDB Cloud Console. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can grant these roles.{% endcapture %}{{ who_can_upgrade }}
 
+{{site.data.alerts.callout_info}}
+This page describes the support of CockroachDB versions on CockroachDB Cloud, which is not affected by LTS or End of Support timelines specified for CockroachDB Self-Hosted.
+
+The CockroachDB Self-Hosted [Release Support Policy]({% link releases/release-support-policy.md %}) does not apply to CockroachDB Cloud.
+{{site.data.alerts.end}}
+
 ### Currently supported versions
 
 Version | Release Type | Support period | Release date | EOS date
 :------:|:------------:|:--------------:|:------------:|:---------:
+v25.2   | Regular      | 12 months      | 2025-05-12   | 2026-05-12
 v25.1   | Innovation   | 6 months       | 2025-02-18   | 2025-08-18
 v24.3   | Regular      | 12 months      | 2024-11-18   | 2025-11-18
-v24.1   | Regular      | 12 months      | 2024-05-20   | 2025-05-20
 
 To review a version's release notes, click its link in the Version column.
 
@@ -41,6 +47,7 @@ For expected future versions, refer to [Upcoming releases]({% link releases/inde
 
 Version | Release Type | Support period | Release date | EOS date
 :------:|:------------:|:--------------:|:------------:|:--------:
+v24.1   | Regular      | 12 months      | 2024-05-20   | 2025-05-20
 v24.2   | Innovation   | 6 months       | 2024-08-12   | 2025-02-12
 v23.2   | Regular      | 12 months      | 2024-02-05   | 2025-02-05
 v23.1   | Regular      | 12 months      | 2023-05-15   | 2024-05-15

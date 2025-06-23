@@ -134,7 +134,7 @@
       	    {
       	      "title": "Migration Overview",
       	      "urls": [
-      		      "/{{site.current_cloud_version}}/migration-overview.html"
+      		      "/molt/migration-overview.html"
       	      ]
       	    },
             {
@@ -146,13 +146,13 @@
       	    {
       	      "title": "Migrate from PostgreSQL",
       	      "urls": [
-      		      "/{{site.current_cloud_version}}/migrate-from-postgres.html"
+      		      "/molt/migrate-to-cockroachdb.html"
       	      ]
       	    },
       	    {
       	      "title": "Migrate from MySQL",
       	      "urls": [
-      		      "/{{site.current_cloud_version}}/migrate-from-mysql.html"
+      		      "/molt/migrate-to-cockroachdb.html?filters=mysql"
       	      ]
       	    },
       	    {

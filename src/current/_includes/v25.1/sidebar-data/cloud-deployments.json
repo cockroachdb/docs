@@ -58,6 +58,12 @@
                 "urls": [
                     "/cockroachcloud/provision-a-cluster-with-terraform.html"
                 ]
+            },
+            {
+                "title": "Change a Cluster's Plan Between Basic and Standard",
+                "urls": [
+                    "/cockroachcloud/change-plan-between-basic-and-standard.html"
+                ]
             }
         ]
     },
@@ -107,10 +113,16 @@
             ]
             },
             {
-            "title": "Migrate from Standard or Basic to Advanced",
+            "title": "Migrate from Standard to Advanced",
             "urls": [
                 "/cockroachcloud/migrate-from-standard-to-advanced.html"
             ]
+            },
+            {
+                "title": "Change a Cluster's Plan Between Basic and Standard",
+                "urls": [
+                    "/cockroachcloud/change-plan-between-basic-and-standard.html"
+                ]
             }
         ]
     },
@@ -160,7 +172,7 @@
             ]
             },
             {
-            "title": "Migrate from Standard or Basic to Advanced",
+            "title": "Migrate from Standard to Advanced",
             "urls": [
                 "/cockroachcloud/migrate-from-standard-to-advanced.html"
             ]
@@ -280,10 +292,16 @@
                         ]
                     },
                     {
-                    "title": "Organize CockroachDB Cloud Clusters Using Folders",
-                    "urls": [
-                        "/cockroachcloud/folders.html"
-                    ]
+                        "title": "Organize CockroachDB Cloud Clusters Using Folders",
+                        "urls": [
+                            "/cockroachcloud/folders.html"
+                        ]
+                    },
+                    {
+                        "title": "Organize CockroachDB Cloud Resources Using Labels",
+                        "urls": [
+                            "/cockroachcloud/labels.html"
+                        ]
                     }
                 ]
             },
@@ -317,6 +335,11 @@
                         "title": "SQL Audit Logging",
                         "urls": [
                             "/cockroachcloud/sql-audit-logging.html"
+                        ]
+                    },                    {
+                        "title": "View Organization Audit Logs in Cloud Console",
+                        "urls": [
+                            "/cockroachcloud/organization-audit-logs-in-cloud-console.html"
                         ]
                     },
                     {

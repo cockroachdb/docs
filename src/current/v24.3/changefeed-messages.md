@@ -59,7 +59,7 @@ For [webhook sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#we
 
 [Webhook message batching]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink-configuration) is subject to the same key [ordering guarantee](#ordering-and-delivery-guarantees) as other sinks. Therefore, as messages are batched, you will not receive two batches at the same time with overlapping keys. You may receive a single batch containing multiple messages about one key, because ordering is maintained for a single key within its batch.
 
-Refer to [changefeed files]({% link {{ page.version.version }}/create-changefeed.md %}#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
+Refer to [changefeed files]({% link {{ page.version.version }}/create-changefeed.md %}#files) for more detail on the file naming format for changefeeds that emit to a sink.
 
 ## Message envelopes
 
@@ -264,7 +264,7 @@ As an example, you run the following sequence of SQL statements to create a chan
     {"after": {"id": 4, "name": "Danny", "office": "los angeles"}, "key": [4], "updated": "1701102561022789676.0000000000"}
     ~~~
 
-    The messages received at the sink are in order by timestamp **for each key**. Here, the update for key `[1]` is emitted before the insertion of key `[2]` even though the timestamp for the update to key `[1]` is higher. That is, if you follow the sequence of updates for a particular key at the sink, they will be in the correct timestamp order. However, if a changefeed starts to re-emit messages after the last [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}), it may not emit all duplicate messages between the first duplicate message and new updates to the table. For details on when changefeeds might re-emit messages, refer to [Duplicate messages](#duplicate-messages).
+    The messages received at the sink are in order by timestamp **for each key**. Here, the update for key `[1]` is emitted before the insertion of key `[2]` even though the timestamp for the update to key `[1]` is higher. That is, if you follow the sequence of updates for a particular key at the sink, they will be in the correct timestamp order. However, if a changefeed starts to re-emit messages after the last [checkpoint]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}), it may not emit all duplicate messages between the first duplicate message and new updates to the table. For details on when changefeeds might re-emit messages, refer to [Duplicate messages](#duplicate-messages).
 
     The `updated` option adds an `updated` timestamp to each emitted row. You can also use the [`resolved` option](#resolved-messages) to emit a `resolved` timestamp message to each Kafka partition, or to a separate file at a cloud storage sink. A `resolved` timestamp guarantees that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
@@ -344,9 +344,9 @@ In some unusual situations you may receive a delete message for a row without fi
 
 ## Resolved messages
 
-When you create a changefeed with the [`resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#resolved), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-and-delivery-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until the changefeed job has reached a [checkpoint]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}).
+When you create a changefeed with the [`resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#resolved), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-and-delivery-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until the changefeed job has reached a [checkpoint]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}).
 
-When you specify the `resolved` option at changefeed creation, the [job's coordinating node]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) will receive a resolved timestamp file.
+When you specify the `resolved` option at changefeed creation, the [job's coordinating node]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) will receive a resolved timestamp file.
 
 There are three different ways to configure resolved timestamp messages:
 
@@ -422,7 +422,7 @@ The `min_checkpoint_frequency` option controls how often nodes flush their progr
 
 ## Schema Changes
 
-In v22.1, CockroachDB introduced the [declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer). When schema changes happen that use the declarative schema changer by default, changefeeds will **not** emit duplicate records for the table that is being altered. It will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
+For some schema changes, changefeeds will **not** emit duplicate records for the table that is being altered. Instead, the changefeed will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
 
 ### Avro schema changes
 
@@ -437,10 +437,6 @@ Schema validation tools should ignore the `__crdb__` field. This is an internal 
 ### Schema changes with column backfill
 
 When schema changes with column backfill (e.g., adding a column with a default, adding a [stored computed column]({% link {{ page.version.version }}/computed-columns.md %}), adding a `NOT NULL` column, dropping a column) are made to watched rows, CockroachDB emits a copy of the table using the new schema.
-
-{{site.data.alerts.callout_info}}
-Schema changes that do **not** use the declarative schema changer by default will trigger a changefeed to emit a copy of the table being altered as well as a copy of the table using the new schema. For a list of supported schema changes, refer to the [Declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer) section.
-{{site.data.alerts.end}}
 
 The following example demonstrates the messages you will receive after creating a changefeed and then applying a schema change to the watched table:
 
@@ -488,7 +484,7 @@ After the schema change, the changefeed will emit a copy of the table with the n
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
-If the schema change does **not** use the declarative schema changer by default, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
+For some schema changes, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
 
 ~~~json
 [1]	{"id": 1, "name": "Petee H"}
@@ -547,7 +543,7 @@ The following sections outline the limitations and type mapping for relevant for
 
 ### Avro
 
-The following sections provide information on Avro usage with CockroachDB changefeeds. Creating a changefeed using Avro is available in Core and {{ site.data.products.enterprise }} changefeeds with the [`confluent_schema_registry`](create-changefeed.html#confluent-schema-registry) option.
+The following sections provide information on Avro usage with CockroachDB changefeeds. Creating a changefeed using Avro is available with the [`confluent_schema_registry`](create-changefeed.html#confluent-schema-registry) option.
 
 #### Avro limitations
 

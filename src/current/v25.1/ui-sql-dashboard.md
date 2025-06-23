@@ -41,7 +41,7 @@ The **SQL Connection Rate** is an average of the number of connection attempts p
 
 - In the cluster view, the graph shows the total number of times a SQL transaction was upgraded to a stronger isolation level across all nodes.
 
-If this metric is non-zero, then transactions at weaker isolation levels (such as [`READ COMMITTED`]({% link {{ page.version.version }}/read-committed.md %})) are being upgraded to [`SERIALIZABLE`]({% link {{ page.version.version }}/demo-serializable.md %}) instead. To ensure that `READ COMMITTED` transactions run as `READ COMMITTED`, see [Enable `READ COMMITTED` isolation]({% link {{ page.version.version }}/read-committed.md %}#enable-read-committed-isolation).
+If this metric is non-zero, then transactions are being [upgraded to stronger isolation levels]({% link {{ page.version.version }}/transactions.md %}#isolation-level-upgrades).
 
 ## Open SQL Transactions
 
@@ -121,15 +121,23 @@ You can [identify the specific statements]({% link {{ page.version.version }}/ui
 
 ## Connection Latency: 99th Percentile
 
-Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication.
+Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication. This metric characterizes the database connection latency which can affect the application performance, for example, by having slow startup times. Connection failures are not recorded in these metrics.
 
 - In the node view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency for the node. Over the last minute this node established 99% of connections within this time, not including network latency between the node and the client.
 
-- In the cluster view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster established 99% of connections within this time, not including network latency between the node and the client.
+- In the cluster view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the nodes of the cluster established 99% of connections within this time, not including network latency between the node and the client.
+
+Metrics: `sql.conn.latency-p99`
 
 ## Connection Latency: 90th Percentile
 
-Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication.
+Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication. This metric characterizes the database connection latency which can affect the application performance, for example, by having slow startup times. Connection failures are not recorded in these metrics.
+
+- In the node view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency for the node. Over the last minute this node established 90% of connections within this time, not including network latency between the node and the client.
+
+- In the cluster view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the nodes of the cluster established 90% of connections within this time, not including network latency between the node and the client.
+
+Metrics: `sql.conn.latency-p90`
 
 ## Service Latency: SQL, 99.99th percentile
 

@@ -14,9 +14,25 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## May 12, 2025
+
+CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a [Regular release]({% link releases/index.md %}#release-types).
+
+For release notes, refer to [What's New in v25.2]({% link releases/v25.2.md %}).
+
+To get started with v25.2, refer to [Create a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) or [Upgrade a Cluster in CockroachDB Cloud]({% link cockroachcloud/upgrade-cockroach-version.md %}).
+
+## April 30, 2025
+
+You can now use the CockroachDB {{ site.data.products.cloud }} Console to [edit the labels of a cluster or folder]({% link cockroachcloud/labels.md %}).
+
+## April 3, 2025
+
+You can now [change cluster plans between {{ site.data.products.basic }} and {{ site.data.products.standard }}]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}) from the CockroachDB {{ site.data.products.cloud }} Console.
+
 ## February 18, 2025
 
-CockroachDB v25.1 is now generally available for select CockroachDB Cloud clusters. CockroachDB v25.1 is a [Regular release]({% link releases/release-support-policy.md %}#regular-releases). Refer to [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to v25.1]({% link cockroachcloud/upgrade-cockroach-version.md %}).
+CockroachDB v25.1 is now generally available for select CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.1 is an [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases). Refer to [Create a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) or [Upgrade to v25.1]({% link cockroachcloud/upgrade-cockroach-version.md %}).
 
 ## January 16, 2025
 
@@ -33,6 +49,10 @@ CockroachDB v25.1 is now generally available for select CockroachDB Cloud cluste
 - CockroachDB {{ site.data.products.cloud }} is now available as a pay-as-you-go offering on the Google Cloud Marketplace. This allows Google Cloud customers to pay for CockroachDB {{ site.data.products.cloud }} charges via their Google Cloud accounts, with no up-front commitments. For more detail, refer to:
   - [CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go) on the Google Cloud Marketplace.
   - [Subscribe through the Google Cloud Marketplace]({% link cockroachcloud/billing-management.md %}?filters=gcp#subscribe-through-aws-marketplace) in the CockroachDB {{ site.data.products.cloud }} documentation.
+
+## December 3, 2024
+
+You can now use the CockroachDB {{ site.data.products.cloud }} Console to [view and filter audit logs]({% link cockroachcloud/organization-audit-logs-in-cloud-console.md %}), providing greater visibility into user activity across your CockroachDB {{ site.data.products.cloud }} organization.
 
 ## December 1, 2024
 
@@ -525,7 +545,7 @@ The following changes were made to CockroachDB {{ site.data.products.serverless 
 
 - The price of [Request Units (RUs)]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) increased from $1 per 10M RU to $2 per 10M RUs.
 - The price of storage decreased from $1 per 1 GiB storage to $0.50 per 1 GiB storage.
-- Free resources are allocated on a per-organization basis instead of a per-cluster basis. All All non-contract organizations will now receive 50M Request Units per month and 10 GiB of storage for free. Free resources do not apply to contract customers.
+- Free resources are allocated on a per-organization basis instead of a per-cluster basis. All non-contract organizations will now receive 50M Request Units per month and 10 GiB of storage for free. Free resources do not apply to customers with annual or multi-year contracts.
 - All resources are available instantly at the beginning of each month (burst and baseline RUs are now deprecated).
 - You can now [set separate RU and storage limits]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) for your clusters, or set a spend limit that will be divided between resources automatically.
 - You can now [set unlimited resources]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) for a cluster so your workload is never restricted.

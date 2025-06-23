@@ -424,7 +424,7 @@ The `min_checkpoint_frequency` option controls how often nodes flush their progr
 
 ## Schema Changes
 
-In v22.1, CockroachDB introduced the [declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer). When schema changes happen that use the declarative schema changer by default, changefeeds will **not** emit duplicate records for the table that is being altered. It will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
+For some schema changes, changefeeds will **not** emit duplicate records for the table that is being altered. Instead, the changefeed will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
 
 ### Avro schema changes
 
@@ -439,10 +439,6 @@ Schema validation tools should ignore the `__crdb__` field. This is an internal 
 ### Schema changes with column backfill
 
 When schema changes with column backfill (e.g., adding a column with a default, adding a [stored computed column]({% link {{ page.version.version }}/computed-columns.md %}), adding a `NOT NULL` column, dropping a column) are made to watched rows, CockroachDB emits a copy of the table using the new schema.
-
-{{site.data.alerts.callout_info}}
-Schema changes that do **not** use the declarative schema changer by default will trigger a changefeed to emit a copy of the table being altered as well as a copy of the table using the new schema. For a list of supported schema changes, refer to the [Declarative schema changer]({% link {{ page.version.version }}/online-schema-changes.md %}#declarative-schema-changer) section.
-{{site.data.alerts.end}}
 
 The following example demonstrates the messages you will receive after creating a changefeed and then applying a schema change to the watched table:
 
@@ -490,7 +486,7 @@ After the schema change, the changefeed will emit a copy of the table with the n
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
-If the schema change does **not** use the declarative schema changer by default, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
+For some schema changes, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
 
 ~~~json
 [1]	{"id": 1, "name": "Petee H"}

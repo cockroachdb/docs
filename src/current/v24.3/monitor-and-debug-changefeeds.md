@@ -6,7 +6,7 @@ docs_area: stream_data
 ---
 
 {{site.data.alerts.callout_info}}
-Monitoring is only available for [{{ site.data.products.enterprise }} changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}#stream-row-level-changes-with-changefeeds).
+Monitoring is only available for [changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}#stream-row-level-changes-with-changefeeds) that emit messages to a [sink]({% link {{ page.version.version }}/changefeed-sinks.md %}).
 {{site.data.alerts.end}}
 
 Changefeeds work as jobs in CockroachDB, which allows for [monitoring](#monitor-a-changefeed) and [debugging](#debug-a-changefeed) through the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) [**Jobs**]({% link {{ page.version.version }}/ui-jobs-page.md %}) page and [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) SQL statements using the job ID.
@@ -28,7 +28,7 @@ We recommend monitoring changefeeds with [Prometheus]({% link {{ page.version.ve
 
 ## Monitor a changefeed
 
-Changefeed progress is exposed as a high-water timestamp that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
+Changefeed progress is exposed as a [high-water timestamp]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}) that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
 
 - On the [**Changefeeds** dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}) of the DB Console.
 - On the [**Jobs** page]({% link {{ page.version.version }}/ui-jobs-page.md %}) of the DB Console. Hover over the high-water timestamp to view the [system time]({% link {{ page.version.version }}/as-of-system-time.md %}).
@@ -75,10 +75,6 @@ If you are running a changefeed with the [`confluent_schema_registry`]({% link {
 - `changefeed.schema_registry.registrations`: The number of registration attempts with the schema registry.
 
 ### Using changefeed metrics labels
-
-{{site.data.alerts.callout_info}}
-An {{ site.data.products.enterprise }} license is required to use metrics labels in changefeeds.
-{{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/cdc/metrics-labels.md %}
 
@@ -136,7 +132,7 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 | Metric           |  Description | Unit | Type
 -------------------+--------------+------+--------------------------------------------
 `changefeed.admit_latency` | Difference between the event's MVCC timestamp and the time the event is put into the memory buffer. | Nanoseconds | Histogram
-`changefeed.aggregator_progress` | The earliest timestamp up to which any [aggregator]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) is guaranteed to have emitted all values for which it is responsible. **Note:** This metric may regress when a changefeed restarts due to a transient error. Consider tracking the `changefeed.checkpoint_progress` metric, which will not regress. | Timestamp | Gauge
+`changefeed.aggregator_progress` | The earliest timestamp up to which any [aggregator]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}) is guaranteed to have emitted all values for which it is responsible. **Note:** This metric may regress when a changefeed restarts due to a transient error. Consider tracking the `changefeed.checkpoint_progress` metric, which will not regress. | Timestamp | Gauge
 `changefeed.backfill_count` | Number of changefeeds currently executing a backfill ([schema change]({% link {{ page.version.version }}/changefeed-messages.md %}#schema-changes) or initial scan). | Changefeeds | Gauge
 `changefeed.backfill_pending_ranges` | Number of [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) in an ongoing backfill that are yet to be fully emitted. | Ranges | Gauge
 `changefeed.checkpoint_hist_nanos` | Time spent checkpointing changefeed progress. | Nanoseconds | Histogram
@@ -149,11 +145,11 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `changefeed.flushed_bytes` | Bytes emitted by all changefeeds. This may differ from `emitted_bytes` when [`compression`]({% link {{ page.version.version }}/create-changefeed.md %}#compression) is enabled. | Bytes | Counter
 `changefeed.flush_hist_nanos` | Time spent flushing messages across all changefeeds. | Nanoseconds | Histograms
 `changefeed.flushes` | Total number of flushes for a changefeed. | Flushes | Counter
-<a name="lagging-ranges-metric"></a>`changefeed.lagging_ranges` | Number of ranges which are behind in a changefeed. This is calculated based on the options: <ul><li>[`lagging_ranges_threshold`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-threshold), which is the amount of time that a range checkpoint needs to be in the past to be considered lagging.</li><li>[`lagging_ranges_polling_interval`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-polling-interval), which is the frequency at which lagging ranges are polled and the metric is updated.</li></ul><br>**Note:** Ranges undergoing an [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for longer than the `lagging_ranges_threshold` duration are considered to be lagging. Starting a changefeed with an initial scan on a large table will likely increment the metric for each range in the table. As ranges complete the initial scan, the number of ranges lagging behind will decrease. | Nanoseconds | Gauge
+<a name="lagging-ranges-metric"></a>`changefeed.lagging_ranges` | Number of ranges which are behind in a changefeed. This is calculated based on the options: <ul><li>[`lagging_ranges_threshold`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-threshold), which is the amount of time that a range checkpoint needs to be in the past to be considered lagging.</li><li>[`lagging_ranges_polling_interval`]({% link {{ page.version.version }}/create-changefeed.md %}#lagging-ranges-polling-interval), which is the frequency at which lagging ranges are polled and the metric is updated.</li></ul>**Note:** Ranges undergoing an [initial scan]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for longer than the `lagging_ranges_threshold` duration are considered to be lagging. Starting a changefeed with an initial scan on a large table will likely increment the metric for each range in the table. As ranges complete the initial scan, the number of ranges lagging behind will decrease. | Nanoseconds | Gauge
 `changefeed.message_size_hist` | Distribution in the size of emitted messages. | Bytes | Histogram
 `changefeed.running` | Number of currently running changefeeds, including sinkless changefeeds. | Changefeeds | Gauge
 `changefeed.sink_batch_hist_nanos` | Time messages spend batched in the sink buffer before being flushed and acknowledged. | Nanoseconds | Histogram
-<span class="version-tag">New in v24.3:</span> `changefeed.total_ranges` | Total number of ranges that are watched by [aggregator processors]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) participating in the changefeed job. `changefeed.total_ranges` shares the same polling interval as the [`changefeed.lagging_ranges`](#lagging-ranges-metric) metric, which is controlled by the `lagging_ranges_polling_interval` option. For more details, refer to [Lagging ranges](#lagging-ranges).
+<span class="version-tag">New in v24.3:</span> `changefeed.total_ranges` | Total number of ranges that are watched by [aggregator processors]({% link {{ page.version.version }}/how-does-a-changefeed-work.md %}) participating in the changefeed job. `changefeed.total_ranges` shares the same polling interval as the [`changefeed.lagging_ranges`](#lagging-ranges-metric) metric, which is controlled by the `lagging_ranges_polling_interval` option. For more details, refer to [Lagging ranges](#lagging-ranges).
 
 ### Monitoring and measuring changefeed latency
 
@@ -196,7 +192,7 @@ If your changefeed is experiencing elevated latency, you can use these metrics t
 
 ### Using logs
 
-For {{ site.data.products.enterprise }} changefeeds, [use log information]({% link {{ page.version.version }}/logging-overview.md %}) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
+For changefeeds, [use log information]({% link {{ page.version.version }}/logging-overview.md %}) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
 
 ~~~
 I190312 18:56:53.535646 585 vendor/github.com/Shopify/sarama/client.go:123  [kafka-producer] Initializing new client
@@ -208,7 +204,7 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
 
 ### Using `SHOW CHANGEFEED JOBS`
 
- For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
+For changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

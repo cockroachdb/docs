@@ -37,9 +37,11 @@ Geographic Area | Region Name      | Location
 Asia Pacific    | `ap-south-1`     | Mumbai
                 | `ap-southeast-1` | Singapore
 North America   | `us-east-1`      | N. Virginia
+                | `us-east-2`      | Ohio
                 | `us-west-2`      | Oregon
 Western Europe  | `eu-central-1`   | Frankfurt
                 | `eu-west-1`      | Ireland
+                | `eu-west-2`      | London
 </section>
 
 <section class="filter-content" markdown="1" data-scope="advanced">
@@ -123,6 +125,8 @@ North America   | `us-central1`             | Iowa
                 | `us-west2`                | California
 South America   | `southamerica-east1`      | São Paulo
 Western Europe  | `europe-west1`            | St. Ghislain
+                | `europe-west2`            | London
+                | `europe-west3`            | Frankfurt
 
 </section>
 

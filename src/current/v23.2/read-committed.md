@@ -15,7 +15,7 @@ docs_area: deploy
 
 - Your application needs to maintain a high workload concurrency with minimal [transaction retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries), and it can tolerate potential [concurrency anomalies](#concurrency-anomalies). Predictable query performance at high concurrency is more valuable than guaranteed transaction [serializability]({% link {{ page.version.version }}/developer-basics.md %}#serializability-and-transaction-contention).
 
-- You are [migrating an application to CockroachDB]({% link {{ page.version.version }}/migration-overview.md %}) that was built at a `READ COMMITTED` isolation level on the source database, and it is not feasible to modify your application to use `SERIALIZABLE` isolation.
+- You are [migrating an application to CockroachDB]({% link molt/migration-overview.md %}) that was built at a `READ COMMITTED` isolation level on the source database, and it is not feasible to modify your application to use `SERIALIZABLE` isolation.
 
 Whereas `SERIALIZABLE` isolation guarantees data correctness by placing transactions into a [serializable ordering]({% link {{ page.version.version }}/demo-serializable.md %}), `READ COMMITTED` isolation permits some [concurrency anomalies](#concurrency-anomalies) in exchange for minimizing transaction aborts, [retries]({% link {{ page.version.version }}/developer-basics.md %}#transaction-retries), and blocking. Compared to `SERIALIZABLE` transactions, `READ COMMITTED` transactions return fewer [serialization errors]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) that require client-side handling. See [`READ COMMITTED` transaction behavior](#read-committed-transaction-behavior).
 
@@ -34,7 +34,7 @@ To make `READ COMMITTED` isolation available to use on a cluster, enable the fol
 SET CLUSTER SETTING sql.txn.read_committed_isolation.enabled = 'true';
 ~~~
 
-In v23.2, `sql.txn.read_committed_isolation.enabled` is `false` by default. As a result, `READ COMMITTED` transactions are [automatically upgraded to `SERIALIZABLE`]({% link {{ page.version.version }}/transactions.md %}#aliases) unless this setting is enabled. **This differs in v24.1 and later**, where `sql.txn.read_committed_isolation.enabled` is `true` by default.
+In v23.2, `sql.txn.read_committed_isolation.enabled` is `false` by default. As a result, `READ COMMITTED` transactions are [automatically upgraded to `SERIALIZABLE`]({% link {{ page.version.version }}/transactions.md %}#isolation-level-upgrades) unless this setting is enabled. **This differs in v24.1 and later**, where `sql.txn.read_committed_isolation.enabled` is `true` by default.
 
 {{site.data.alerts.callout_success}}
 Because of this change, upgrading to a later CockroachDB version may affect your application behavior. Check the [**Upgrades of SQL Transaction Isolation Level**]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#upgrades-of-sql-transaction-isolation-level) graph in the DB Console to see whether any transactions are being upgraded to `SERIALIZABLE`. On v24.1 and later, `READ COMMITTED` transactions will run as `READ COMMITTED` unless you set `sql.txn.read_committed_isolation.enabled` explicitly to `false`.
@@ -942,4 +942,4 @@ The following affect the performance of `READ COMMITTED` transactions:
 - [Serializable Transactions]({% link {{ page.version.version }}/demo-serializable.md %})
 - [What Write Skew Looks Like](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/)
 - [Read Committed RFC](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20230122_read_committed_isolation.md)
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})

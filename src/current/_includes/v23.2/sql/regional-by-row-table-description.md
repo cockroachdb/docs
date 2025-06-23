@@ -13,3 +13,7 @@ To take advantage of regional by row tables:
 For instructions showing how to set a table's locality to `REGIONAL BY ROW` and configure the home regions of its rows, see [`ALTER TABLE ... SET LOCALITY`]({% link {{ page.version.version }}/alter-table.md %}#crdb_region).
 
 For more information on regional by row tables, see the [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/regional-by-row/).
+
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
+{{site.data.alerts.end}}

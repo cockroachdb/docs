@@ -20,7 +20,9 @@ If you experience an issue when using CockroachDB, try these steps to resolve th
 
 - If you see discrepancies in metrics, refer to [Differences in Metrics between Third-Party Monitoring Integrations and DB Console]({% link {{ page.version.version }}/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console.md %}).
 
-- [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}) let you query the status of your cluster's data replication, data placement, and zone constraint conformance.
+- The [critical nodes endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint) lets you query the status of your cluster's data replication, data placement, and zone constraint conformance.
+
+- If you believe [replicas]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica) are not behaving as specified by your zone configurations, whether in terms of data placement or zone constraint conformance, see [Troubleshoot Replication Zones]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %}).
 
 - If you cannot resolve the issue yourself, the following tools can help you move forward:
   - [Support Resources]({% link {{ page.version.version }}/support-resources.md %}) identify ways you can get help with troubleshooting.

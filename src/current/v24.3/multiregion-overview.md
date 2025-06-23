@@ -135,6 +135,10 @@ If you are using [super regions](#super-regions) in your cluster, there are addi
 </ul>
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/known-limitations/secondary-regions-with-regional-by-row-tables.md %}
+{{site.data.alerts.end}}
+
 ## Survival goals
 
 A _survival goal_ dictates how many simultaneous failure(s) a database can survive. All tables within the same database operate with the **same survival goal**. Each database can have its own survival goal setting.
@@ -180,3 +184,4 @@ For more information, see [Zone Config Extensions]({% link {{ page.version.versi
 - [`SET SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-secondary-region)
 - [`ALTER DATABASE ... DROP SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#drop-secondary-region)
 - [Zone Config Extensions]({% link {{ page.version.version }}/zone-config-extensions.md %})
+- [Troubleshoot Replication Zones]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %})

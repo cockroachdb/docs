@@ -46,4 +46,4 @@ Egress traffic from a private cluster to non-cloud external resources will alway
 
 ## Limitations
 
-- An existing cluster can't be migrated in-place to a private cluster. Instead, migrate the existing cluster's data to a new private cluster. Refer to [Migrate Your Database to CockroachDB]({% link {{ site.current_cloud_version }}/migration-overview.md %}).
+- An existing cluster can't be migrated in-place to a private cluster. Instead, migrate the existing cluster's data to a new private cluster. Refer to [Migrate Your Database to CockroachDB]({% link molt/migration-overview.md %}).

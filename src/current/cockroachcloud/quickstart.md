@@ -202,7 +202,7 @@ Now that you have a CockroachDB {{ site.data.products.standard }} cluster runnin
 - [Learn CockroachDB SQL]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
 - [Create and manage SQL users]({% link cockroachcloud/managing-access.md %}).
 - Explore our [example apps]({% link {{site.current_cloud_version}}/example-apps.md %}) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
-- [Migrate your existing data]({% link {{site.current_cloud_version}}/migration-overview.md %}).
+- [Migrate your existing data]({% link molt/migration-overview.md %}).
 
 This page highlights just one way you can get started with CockroachDB. For information on other options that are available when creating a CockroachDB cluster, see the following:
 
