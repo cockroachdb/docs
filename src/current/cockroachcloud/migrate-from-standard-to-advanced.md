@@ -9,23 +9,23 @@ docs_area: migrate
 CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
-This page has instructions for migrating data from a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster to a CockroachDB {{ site.data.products.advanced }} cluster, by exporting to CSV and using [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}). You may want to migrate to CockroachDB {{ site.data.products.advanced }} if you want a single-tenant cluster with no shared resources.
+This page has instructions for migrating data from a CockroachDB {{ site.data.products.standard }} cluster to a CockroachDB {{ site.data.products.advanced }} cluster, by exporting to CSV and using [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}). You may want to migrate to CockroachDB {{ site.data.products.advanced }} if you want a single-tenant cluster with no shared resources.
 
-The steps below use sample data from the [`tpcc` workload]({% link {{site.current_cloud_version}}/cockroach-workload.md %}#workloads).
+The following steps use sample data from the [`tpcc` workload]({% link {{site.current_cloud_version}}/cockroach-workload.md %}#workloads).
 
-## Before you start
+## Before you begin
 
 These instructions assume you already have the following:
 
-- A [CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster]({% link cockroachcloud/quickstart.md %}) from which you want to migrate data.
-- A [paid CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/quickstart-trial-cluster.md %}). Your first paid CockroachDB {{ site.data.products.advanced }} cluster is free for a 30-day trial.
+- A [CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/quickstart.md %}) from which you want to migrate data.
+- A [CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/quickstart-trial-cluster.md %}).
 - [Cloud storage]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}).
 
 ## Step 1. Export data to cloud storage
 
-First, upload your CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} data to a cloud storage location where the CockroachDB {{ site.data.products.advanced }} cluster can access it.
+First, upload your CockroachDB {{ site.data.products.standard }} data to a cloud storage location where the CockroachDB {{ site.data.products.advanced }} cluster can access it.
 
-1. [Connect to your CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/connect-to-a-basic-cluster.md %}) and run the [`EXPORT`]({% link {{site.current_cloud_version}}/export.md %}) statement for each table you need to migrate. For example, the following statement exports the `warehouse` table from the [`tpcc`]({% link {{site.current_cloud_version}}/cockroach-workload.md %}#workloads) database to an Amazon S3 bucket:
+1. [Connect to your CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and run the [`EXPORT`]({% link {{site.current_cloud_version}}/export.md %}) statement for each table you need to migrate. For example, the following statement exports the `warehouse` table from the [`tpcc`]({% link {{site.current_cloud_version}}/cockroach-workload.md %}#workloads) database to an Amazon S3 bucket:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -34,7 +34,7 @@ First, upload your CockroachDB {{ site.data.products.standard }} or {{ site.data
       FROM TABLE tpcc.warehouse;
     ~~~
 
-    Note that we uploaded the table in CSV format to a `migration-data` directory in the S3 bucket.
+    This command uploads the table in CSV format to a `migration-data` directory in the S3 bucket.
 
     The output shows the programmatically generated filename, which you'll reference when you [import the CSV](#step-2-import-the-csv):
 
@@ -50,7 +50,7 @@ First, upload your CockroachDB {{ site.data.products.standard }} or {{ site.data
     0,8,17,13,11,SF,640911111,0.0806,300000.00
     ~~~
 
-1. Repeat this step for each table you want to migrate. For example, let's export one more table (`district`) from the `tpcc` database:
+1. Repeat this step for each table you want to migrate. For example, export one more table (`district`) from the `tpcc` database:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -81,26 +81,26 @@ First, upload your CockroachDB {{ site.data.products.standard }} or {{ site.data
     ~~~
 
     {{site.data.alerts.callout_success}}
-    For more information about using cloud storage with CockroachDB, see [Use Cloud Storage]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}).
+    For more information about using cloud storage with CockroachDB, refer to [Use Cloud Storage]({% link {{site.current_cloud_version}}/use-cloud-storage.md %}).
     {{site.data.alerts.end}}
 
 ## Step 2. Import the CSV
 
 {{site.data.alerts.callout_success}}
-For best practices for optimizing import performance in CockroachDB, see [Import Performance Best Practices]({% link {{site.current_cloud_version}}/import-performance-best-practices.md %}).
+For best practices for optimizing import performance in CockroachDB, refer to [Import Performance Best Practices]({% link {{site.current_cloud_version}}/import-performance-best-practices.md %}).
 {{site.data.alerts.end}}
 
 1. [Connect to your CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and [create the database]({% link {{site.current_cloud_version}}/create-database.md %}) you want to import the tables into. For example:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE DATABASE tpcc;
+    CREATE DATABASE tpcc;
     ~~~
 
 1. Write a [`CREATE TABLE`]({% link {{site.current_cloud_version}}/create-table.md %}) statement that matches the schema of the table data you're importing.
 
     {{site.data.alerts.callout_success}}
-    You can use the [`SHOW CREATE TABLE`]({% link {{site.current_cloud_version}}/show-create.md %}#show-the-create-table-statement-for-a-table) statement in the CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster to view the `CREATE` statement for the table you're migrating.
+    You can use the [`SHOW CREATE TABLE`]({% link {{site.current_cloud_version}}/show-create.md %}#show-the-create-table-statement-for-a-table) statement in the CockroachDB {{ site.data.products.standard }} cluster to view the `CREATE` statement for the table you're migrating.
     {{site.data.alerts.end}}
 
     {% include v20.2/misc/csv-import-callout.md %}
@@ -139,7 +139,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
     (1 row)
     ~~~
 
-1. Repeat the above for each CSV file you want to import. For example, let's import the `tpcc.district` data:
+1. Repeat the previous command for each CSV file you want to import. For example, import the `tpcc.district` data:
 
     Issue the following statement to create a new `district` table:
 
@@ -167,7 +167,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
     {% include copy-clipboard.html %}
     ~~~ sql
     IMPORT INTO tpcc.district (d_id, d_w_id, d_name, d_street_1, d_street_2, d_city, d_state, d_zip, d_tax, d_ytd, d_next_o_id)
-      CSV DATA ('s3://{BUCKET NAME}/migration-data/{EXPORT FILENAME}?AWS_ACCESS_KEY_ID={ACCESS_KEY}&AWS_SECRET_ACCESS_KEY={SECRET_KEY}')
+      CSV DATA ('s3://{BUCKET NAME}/migration-data/{EXPORT FILENAME}?AWS_ACCESS_KEY_ID={ACCESS_KEY}&AWS_SECRET_ACCESS_KEY={SECRET_KEY}');
     ~~~
 
     ~~~
@@ -177,11 +177,11 @@ For best practices for optimizing import performance in CockroachDB, see [Import
     (1 row)
     ~~~
 
-1. _(Optional)_ To verify that the data was imported, use [`SHOW TABLES`]({% link {{site.current_cloud_version}}/show-tables.md %}):
+1. **(Optional)** To verify that the data was imported, use [`SHOW TABLES`]({% link {{site.current_cloud_version}}/show-tables.md %}):
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SHOW TABLES FROM tpcc;
+    SHOW TABLES FROM tpcc;
     ~~~
 
     ~~~
@@ -201,14 +201,10 @@ Once all of the tables you want to migrate have been imported into the Cockroach
 ALTER TABLE tpcc.district ADD CONSTRAINT fk_d_w_id_ref_warehouse FOREIGN KEY (d_w_id) REFERENCES tpcc.warehouse(w_id);
 ~~~
 
-~~~
-ALTER TABLE
-~~~
-
 ## See also
 
-- [`IMPORT`]({% link {{site.current_cloud_version}}/import-into.md %})
-- [Migration Overview]({% link {{site.current_cloud_version}}/migration-overview.md %})
+- [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Migrate from CSV]({% link {{site.current_cloud_version}}/migrate-from-csv.md %})
 - [Import Performance Best Practices]({% link {{site.current_cloud_version}}/import-performance-best-practices.md %})
 - [Use the Built-in SQL Client]({% link {{site.current_cloud_version}}/cockroach-sql.md %})

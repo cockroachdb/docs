@@ -47,10 +47,16 @@
       "title": "Monitor Changefeeds",
       "items": [
         {
-          "title": "Monitor and Debug Changefeeds",
-          "urls": [
-            "/${VERSION}/monitor-and-debug-changefeeds.html"
-          ]
+            "title": "Overview",
+            "urls": [
+                "/${VERSION}/monitor-and-debug-changefeeds.html"
+            ]
+        },
+        {
+            "title": "Monitoring Guide",
+            "urls": [
+            "/${VERSION}/changefeed-monitoring-guide.html"
+            ]
         },
         {
           "title": "Protect Changefeed Data",
@@ -133,9 +139,9 @@
     "title": "Technical Overview",
     "items": [
         {
-          "title": "How Does an Enterprise Changefeed Work?",
+          "title": "How Does a Changefeed Work?",
           "urls": [
-            "/${VERSION}/how-does-an-enterprise-changefeed-work.html"
+            "/${VERSION}/how-does-a-changefeed-work.html"
           ]
         }
       ]

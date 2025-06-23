@@ -24,7 +24,7 @@ A node with a high CPU utilization, an *overloaded* node, has a limited ability 
 
 - A persistently high CPU utilization of all nodes in a CockroachDB cluster suggests the current compute resources may be insufficient to support the user workload's concurrency requirements. If confirmed, the number of processors (vCPUs or cores) in the CockroachDB cluster needs to be adjusted to sustain the required level of workload concurrency. For a prompt resolution, either add cluster nodes or throttle the workload concurrency, for example, by reducing the number of concurrent connections to not exceed 4 active statements per vCPU or core.
 
-### Hot node (hot spot)
+### Hot node (hotspot)
 
 Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect the cluster's performance and stability, with some nodes getting overloaded while others remain relatively underutilized.
 
@@ -38,7 +38,7 @@ Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect t
 
 **Action**
 
-- Refer to [Hot spots]({% link {{ page.version.version }}/performance-recipes.md %}#hot-spots).
+- Refer to [Understand hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}).
 
 ### Node memory utilization
 

@@ -9,6 +9,12 @@
             ]
         },
         {
+            "title": "Deployment and Operations Skills Taxonomy",
+            "urls": [
+              "/${VERSION}/deployment-operations-skills-taxonomy.html"
+            ]
+        },
+        {
             "title": "Deploy Locally",
             "items": [
               {
@@ -680,9 +686,9 @@
                 ]
               },
               {
-                "title": "Log SQL Statistics to Datadog",
+                "title": "Log SQL Activity to Datadog",
                 "urls": [
-                  "/${VERSION}/log-sql-statistics-to-datadog.html"
+                  "/${VERSION}/log-sql-activity-to-datadog.html"
                 ]
               }
             ]

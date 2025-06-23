@@ -301,7 +301,7 @@ To determine an appropriate termination grace period:
 
 ### Size and replication factor
 
-Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If fewer nodes are available than the replication factor, CockroachDB will automatically reduce the replication factor (for example, from 5 to 3) to try to allow the decommission to succeed. However, the replication factor will not be reduced lower than 3. If three nodes are not available, the decommissioning process will hang indefinitely until nodes are added or you update the zone configurations to use a replication factor of 1.
+Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If fewer nodes are available than the replication factor, CockroachDB will automatically reduce the replication factor (for example, from 5 to 3) to try to allow the decommission to succeed. However, the replication factor will not be reduced lower than 3. If three nodes are not available, the decommissioning process will hang indefinitely until nodes are added or you update the [zone configurations]({% link {{ page.version.version }}/configure-replication-zones.md %}#num_replicas) to use a replication factor of 1.
 
 Note that when you decommission a node and immediately add another node, CockroachDB does **not** simply move all of the replicas from the decommissioned node to the newly added node. Instead, replicas are placed across all nodes in the cluster. This speeds up the decommissioning process by spreading the load. The new node will eventually "catch up" with the rest of the cluster.
 

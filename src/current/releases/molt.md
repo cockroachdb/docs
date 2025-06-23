@@ -5,7 +5,7 @@ toc: true
 docs_area: releases
 ---
 
-This page has details about each release of the following [MOLT (Migrate Off Legacy Technology) tools]({% link molt/molt-overview.md %}):
+This page has details about each release of the following [MOLT (Migrate Off Legacy Technology) tools]({% link molt/migration-overview.md %}):
 
 - [Fetch]({% link molt/molt-fetch.md %})
 - [Verify]({% link molt/molt-verify.md %})
@@ -18,11 +18,52 @@ To download the latest MOLT Fetch/Verify binary:
 
 {% include molt/molt-install.md %}
 
+## June 19, 2025
+
+MOLT Fetch/Verify 1.2.7 is [available](#installation).
+
+- Updated the MOLT [Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) with the following timing metrics to better diagnose performance: Source Side Queries, Convert Source Side Queries to Datums, Writing Datums to Pipe, Preparing CSV files to be uploaded, Uploading CSV files to S3/GCP/local.
+- Upgraded the MOLT parser to support new syntax that is valid in CockroachDB v25.2.
+- Added more granular replication counter metrics to track data counts at each stage of the mutation pipeline, helping to diagnose data correctness issues.
+
+#### Bug fixes
+
+- MOLT Fetch [failback]({% link molt/migrate-failback.md %}) now reliably creates changefeeds with a sorted list of table names so that create changefeed operations can be properly deduplicated.
+- Fixed an issue where shard connections failed to recognize custom types (e.g., `ENUM`) in primary keys during table migration. This occurred because the type map from the original `pgx.Conn` was not cloned. The type map is now properly cloned and attached to each shard connection.
+- Fixed a bug that could cause an integer overflow, which impacts retrieving the correct shards for exporting data.
+
+## May 22, 2025
+
+MOLT Fetch/Verify 1.2.6 is [available](#installation).
+
+- Fixed a bug in [`--direct-copy` mode]({% link molt/molt-fetch.md %}#direct-copy) that occurred when [`--case-sensitive`]({% link molt/molt-fetch.md %}#global-flags) was set to `false` (default). Previously, the `COPY` query could use incorrect column names in some cases during data transfer, causing errors. The query now uses the correct column names.
+- Fixed a bug in how origin messages were handled during replication from PostgreSQL sources. This allows replication to successfully continue.
+- `ENUM` types can now be replicated from MySQL 8.0 sources.
+
+## April 25, 2025
+
+MOLT Fetch/Verify 1.2.5 is [available](#installation).
+
+- During data export, MOLT Fetch now treats empty `STRING` values on source Oracle databases as `NULL` values on the target database. This is because Oracle does not differentiate between empty `STRING` and `NULL` values.
+
+## April 7, 2025
+
+MOLT Fetch/Verify 1.2.4 is [available](#installation).
+
+- MOLT Fetch now supports PostgreSQL 11.
+- MOLT Fetch [failback]({% link molt/molt-fetch.md %}#fail-back-to-source-database) to CockroachDB is now disallowed.
+- MOLT Verify can now compare tables that are named differently on the source and target schemas.
+- The `molt` logging date format is now period-delimited for Windows compatibility.
+- During replication, an index is now created on all tables by default, improving replication performance. Because index creation can cause the replication process to initialize more slowly, this behavior can be disabled using the `--stageDisableCreateTableReaderIndex` [replication flag]({% link molt/molt-fetch.md %}#replication-flags).
+- Added a failback metric that tracks the time to write a source commit to the staging schema for a given mutation.
+- Added a failback metric that tracks the time to write a source commit to the target database for a given mutation.
+
 ## February 26, 2025
 
 MOLT Fetch/Verify 1.2.3 is [available](#installation).
 
 - MOLT Fetch users can now set [`--table-concurrency`]({% link molt/molt-fetch.md %}#global-flags) and [`--export-concurrency`]({% link molt/molt-fetch.md %}#global-flags) to values greater than `1` for MySQL sources.
+- MOLT Fetch now supports case-insensitive comparison of table and column names by default. Previously, case-sensitive comparisons could result in `no matching table on target` errors. To disable case-sensitive comparisons explicitly, set [`--case-sensitive=false`]({% link molt/molt-fetch.md %}#global-flags). If `=` is **not** included (e.g., `--case-sensitive false`), this is interpreted as `--case-sensitive` (i.e., `--case-sensitive=true`).
 
 ## February 5, 2025
 

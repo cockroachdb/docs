@@ -58,6 +58,12 @@
                 "urls": [
                     "/cockroachcloud/provision-a-cluster-with-terraform.html"
                 ]
+            },
+            {
+                "title": "Change a Cluster's Plan Between Basic and Standard",
+                "urls": [
+                    "/cockroachcloud/change-plan-between-basic-and-standard.html"
+            ]
             }
         ]
     },
@@ -107,9 +113,15 @@
             ]
             },
             {
-            "title": "Migrate from Standard or Basic to Advanced",
-            "urls": [
-                "/cockroachcloud/migrate-from-standard-to-advanced.html"
+                "title": "Migrate from Standard to Advanced",
+                "urls": [
+                    "/cockroachcloud/migrate-from-standard-to-advanced.html"
+            ]
+            },
+            {
+                "title": "Change a Cluster's Plan Between Basic and Standard",
+                "urls": [
+                    "/cockroachcloud/change-plan-between-basic-and-standard.html"
             ]
             }
         ]
@@ -160,9 +172,9 @@
             ]
             },
             {
-            "title": "Migrate from Standard or Basic to Advanced",
-            "urls": [
-                "/cockroachcloud/migrate-from-standard-to-advanced.html"
+                "title": "Migrate from Standard to Advanced",
+                "urls": [
+                    "/cockroachcloud/migrate-from-standard-to-advanced.html"
             ]
             }
         ]

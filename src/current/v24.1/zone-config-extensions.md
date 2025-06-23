@@ -44,3 +44,4 @@ For instructions showing how to use Zone Config Extensions, see [Use Zone Config
 - [`SET LOCALITY`]({% link {{ page.version.version }}/alter-table.md %}#set-locality)
 - [`ADD REGION`]({% link {{ page.version.version }}/alter-database.md %}#add-region)
 - [`SET PRIMARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region)
+- [Troubleshoot Replication Zones]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %})

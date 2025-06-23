@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-{{ site.data.products.enterprise }} changefeeds emit messages to configurable downstream sinks. This page details the URIs, parameters, and configurations available for each changefeed sink.
+Changefeeds emit messages to configurable downstream sinks. This page details the URIs, parameters, and configurations available for each changefeed sink.
 
 CockroachDB supports the following sinks:
 
@@ -514,7 +514,7 @@ URI Parameter      | Storage | Description
 `AZURE_TENANT_ID`| Azure Blob Storage | Directory (tenant) ID for your App Registration.
 `CREDENTIALS`      | GCS | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
 `file_size`        | All | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
-<a name ="partition-format"></a>`partition_format` | All | Specify how changefeed [file paths]({% link {{ page.version.version }}/create-changefeed.md %}#general-file-format) are partitioned in cloud storage sinks. Use `partition_format` with the following values: <br><br><ul><li>`daily` is the default behavior that organizes directories by dates (`2022-05-18/`, `2022-05-19/`, etc.).</li><li>`hourly` will further organize directories by hour within each date directory (`2022-05-18/06`, `2022-05-18/07`, etc.).</li><li>`flat` will not partition the files at all.</ul><br>For example: `CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&partition_format=hourly'` <br><br> **Default:** `daily`
+<a name ="partition-format"></a>`partition_format` | All | Specify how changefeed [file paths]({% link {{ page.version.version }}/create-changefeed.md %}#general-file-format) are partitioned in cloud storage sinks. Use `partition_format` with the following values: <ul><li>`daily` is the default behavior that organizes directories by dates (`2022-05-18/`, `2022-05-19/`, etc.).</li><li>`hourly` will further organize directories by hour within each date directory (`2022-05-18/06`, `2022-05-18/07`, etc.).</li><li>`flat` will not partition the files at all.</ul>For example: `CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&partition_format=hourly'` <br><br> **Default:** `daily`
 `S3_STORAGE_CLASS` | AWS S3 | Specify the S3 storage class for files created by the changefeed. See [Create a changefeed with an S3 storage class]({% link {{ page.version.version }}/create-changefeed.md %}#create-a-changefeed-with-an-s3-storage-class) for the available classes and an example. <br><br>**Default:** `STANDARD`
 `topic_prefix`     | All | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 's3://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 

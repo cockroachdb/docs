@@ -108,12 +108,6 @@ Depending on how you are filtering or adapting the message envelope with a CDC q
 
 Refer to [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) for examples on using the foundational syntax to create a changefeed. For information on sinks, refer to the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) page.
 
-{{site.data.alerts.callout_success}}
-To optimize the `SELECT` query you run in your changefeed statement, use the [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) statement to view a statement plan.
-
-Note that `EXPLAIN` does not have access to [`cdc_prev`](#emit-the-previous-state-of-a-row), therefore you will receive an error if your `SELECT` query contains `cdc_prev`.
-{{site.data.alerts.end}}
-
 ### Filter columns
 
 To only emit data from specific columns in a table, you can use `SELECT {columns}` to define the table's columns.

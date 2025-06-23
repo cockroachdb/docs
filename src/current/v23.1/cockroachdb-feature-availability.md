@@ -70,9 +70,9 @@ The [schema-conversion summary report]({% link cockroachcloud/migrations-page.md
 
 The [SQL Shell]({% link cockroachcloud/sql-shell.md %}) in the CockroachDB {{ site.data.products.cloud }} Console is in preview. The SQL Shell enables you to run [queries]({% link {{ page.version.version }}/selection-queries.md %}) on your CockroachDB {{ site.data.products.cloud }} cluster directly from your browser.
 
-### Log SQL Statistics to Datadog
+### Log SQL Activity to Datadog
 
-Configure [logging of `sampled_query` events to Datadog]({% link {{ page.version.version }}/log-sql-statistics-to-datadog.md %}) for finer granularity and long-term retention of SQL statistics. The [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) contain common SQL event and execution details for sessions, transactions, and statements.
+Configure [logging of `sampled_query` events to Datadog]({% link {{ page.version.version }}/log-sql-activity-to-datadog.md %}) for finer granularity and long-term retention of SQL activity. The [`sampled_query` events]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) contain common SQL event and execution details for sessions, transactions, and statements.
 
 CockroachDB supports a built-in integration with [Datadog](https://www.datadoghq.com/) which sends query events as logs via the [Datadog HTTP API](https://docs.datadoghq.com/api/latest/logs/). This integration is the recommended path to achieve high throughput data ingestion, which will in turn provide more query events for greater workload observability.
 

@@ -29,6 +29,10 @@ The [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}) disp
 
 From the **Overview** page, you can connect to your cluster. For more information, refer to [Connect to Your CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 
+## Edit labels
+
+You can [organize CockroachDB {{ site.data.products.cloud }} clusters using labels]({% link cockroachcloud/labels.md %}).
+
 ## Add a region to your cluster
 
 1. Navigate to the cluster's **Overview** page.
@@ -106,11 +110,17 @@ When the upgrade occurs, your cluster status will be listed as `Available (Maint
 
 For manual upgrades to a newer major version of CockroachDB, refer to [Upgrade a cluster in CockroachDB Cloud]({% link cockroachcloud/upgrade-cockroach-version.md %}).
 
+## Change a cluster's plan
+
+To change your cluster's plan between {{ site.data.products.basic }} and {{ site.data.products.standard }}, refer to [Change a Cluster's Plan Between Standard and Basic]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}).
+
+To change from {{ site.data.products.standard }} to {{ site.data.products.advanced }}, refer to [Migrate from Standard or Basic to Advanced]({% link cockroachcloud/migrate-from-standard-to-advanced.md %}).
+
 ## Restore data from a backup
 
 Refer to [Managed Backups]({% link cockroachcloud/managed-backups.md %}) for instructions to restore your cluster from an automatic cluster backup.
 
-You can also [back up and restore]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) your CockroachDB {{ site.data.products.serverless }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
+You can also [back up and restore]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) your CockroachDB {{ site.data.products.basic }} or {{ site.data.products.standard }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) to [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
 
 ## Enable deletion protection
 
