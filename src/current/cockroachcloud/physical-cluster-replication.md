@@ -34,6 +34,9 @@ You'll need the following:
     {{site.data.alerts.callout_success}}
     We recommend [enabling Prometheus metrics export]({% link cockroachcloud/export-metrics.md %}) on your cluster before starting a PCR stream. For details on metrics to track, refer to [Monitor the PCR stream](#step-2-monitor-the-pcr-stream).
     {{site.data.alerts.end}}
+
+{% comment  %}Move to in the tutorial for now?{% endcomment %}
+
 - **[Cloud API Access]({% link cockroachcloud/managing-access.md %}#api-access).**
 
     To set up and manage PCR on CockroachDB {{ site.data.products.advanced }} clusters, you'll use the `'https://cockroachlabs.cloud/api/v1/replication-streams'` endpoint. Access to the `replication-streams` endpoint requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) with the correct permissions.
@@ -50,6 +53,52 @@ You'll need the following:
     We recommend creating service accounts with the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege), and giving each application that accesses the API its own service account and API key. This allows fine-grained access to the cluster and PCR streams.
     {{site.data.alerts.end}}
 
+
+### Step 1. Create the clusters
+
+To use PCR, it is necessary to set the **standby** cluster with the `support_physical_cluster_replication` field to `true`, which indicates that a cluster should start using an architecture that supports PCR. For details on supported cluster cloud provider and region setup, refer to [Configuration](#configuration).
+
+<!-- 
+{% comment  %}Do we want to call out that its highly recommended that you start your primary cluster with the 'support_physical_cluster_replication' field to 'true', but that you can still start PCR from an existing cluster if you must?
+
+We should also note that an existing cluster that was started without the support_physical_cluster_replication flag can be the source of a PCR stream, but never the target.{% endcomment %}
+-->
+
+
+
+1. Send a `POST` request to create the primary cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' --header "Authorization: Bearer api_secret_key" --header 'Content-Type: application/json' --data '{"name": "primary_cluster_name", "provider": "AWS", "spec": {"dedicated": {"cockroachVersion": "v24.3", "hardware": {"disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, "storage_gib": 16}, "region_nodes": {"us-east-1": 3}, "support_physical_cluster_replication": true}}}'
+    ~~~
+
+
+<!---
+Do you have to start the primary with the flag
+
+
+
+in order to do failback, yes
+9:54
+i think in our docs we just want to say that both need to have the flag
+-->
+
+    Ensure that you replace each of the values for the cluster specification as per your requirements. For details on the cluster specifications, refer to [Create a cluster]({% link cockroachcloud/cloud-api.md %}#create-a-cluster). Also, replace `api_secret_key` with your API secret key. You can include `support_physical_cluster_replication` set to `true`, but it is not a requirement for the primary cluster.
+
+1. Send a `POST` request to create the standby cluster that includes your necessary cluster specification. Ensure that you include `support_physical_cluster_replication` set to `true`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' --header "Authorization: Bearer api_secret_key" --header 'Content-Type: application/json' --data '{"name": "standby_cluster_name", "provider": "AWS", "spec": {"dedicated": {"cockroachVersion": "v24.3", "hardware": {"disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, "storage_gib": 16}, "region_nodes": {"us-east-2": 3}, "support_physical_cluster_replication": true}}}'
+    ~~~
+
+    If you're creating clusters in AWS or Azure, you must start the primary and standby clusters in different regions.
+
+{{site.data.alerts.callout_success}}
+We recommend [enabling Prometheus metrics export]({% link cockroachcloud/export-metrics.md %}) on your cluster before starting a PCR stream. For details on metrics to track, refer to [Monitor the PCR stream](#step-3-monitor-the-pcr-stream).
+{{site.data.alerts.end}}
+
 ### Step 1. Start the PCR stream
 
 {{site.data.alerts.callout_info}}
@@ -58,12 +107,13 @@ We recommend using an empty standby cluster when starting PCR. When you initiate
 
 With the primary and standby clusters set up, you can now start a PCR stream.
 
-1. Send a `POST` request to the `/v1/replication-streams` endpoint to start the PCR stream:
+1. Send a `POST` request to the `/v1/physical-replication-streams` endpoint to start the PCR stream:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request POST --url 'https://cockroachlabs.cloud/api/v1/replication-streams' --header "Authorization: Bearer api_secret_key" --json '{"source_cluster_id": "primary_cluster_id","target_cluster_id": "standby_cluster_id"}'
+curl --request POST --url 'https://cockroachlabs.cloud/api/v1/physical-replication-streams' --header "Authorization: Bearer api_secret_key" --json '{"primary_cluster_id": "primary_cluster_id","standby_cluster_id": "standby_cluster_id"}'
 ~~~
+
 
 Replace:
 
@@ -83,15 +133,15 @@ You will receive the response:
 {
   "id": "c3d35c84-a4ea-41b3-8452-553c5ded3b85",
   "status": "STARTING",
-  "source_cluster_id": "3fabc29e-5ced-48d9-b31e-000000000000",
-  "target_cluster_id": "f9b1d580-9be3-47f8-ac28-000000000000",
+  "primary_cluster_id": "3fabc29e-5ced-48d9-b31e-000000000000",
+  "standby_cluster_id": "f9b1d580-9be3-47f8-ac28-000000000000",
   "created_at": "2025-05-01T18:57:50.038137Z"
 }
 ~~~
 
 - `"id"`: The PCR stream's job ID.
 - `"status"`: The status of the PCR stream. For descriptions, refer to [Status](#status).
-- `"source_cluster_id"`, `"target_cluster_id"`: The cluster IDs of the primary and standby clusters.
+- `"primary_cluster_id"`, `"standby_cluster_id"`: The cluster IDs of the primary and standby clusters.
 - `"created_at"`: The time at which the PCR stream was created.
 
 To start PCR between clusters, CockroachDB {{ site.data.products.cloud }} sets up VPC peering between clusters and validates the connectivity. As a result, it may take around 5 minutes to initialize the PCR job during which the status will be `STARTING`.
@@ -102,7 +152,7 @@ For monitoring the current status of the PCR stream, send a `GET` request to the
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request GET "https://cockroachlabs.cloud/api/v1/replication-streams/job_id" --header "Authorization: Bearer api_secret_key" 
+curl --request GET "https://cockroachlabs.cloud/api/v1/physical-replication-streams/job_id" --header "Authorization: Bearer api_secret_key" 
 ~~~
 
 Replace:
@@ -116,8 +166,8 @@ This will return a response similar to:
 {
   "id": "c3d35c84-a4ea-41b3-8452-553c5ded3b85",
   "status": "REPLICATING",
-  "source_cluster_id": "3fabc29e-5ced-48d9-b31e-000000000000",
-  "target_cluster_id": "f9b1d580-9be3-47f8-ac28-000000000000",
+  "primary_cluster_id": "3fabc29e-5ced-48d9-b31e-000000000000",
+  "standby_cluster_id": "f9b1d580-9be3-47f8-ac28-000000000000",
   "created_at": "2025-05-01T18:57:50.038137Z",
   "retained_time": "2025-05-01T19:02:36.462825Z",
   "replicated_time": "2025-05-01T19:05:25Z",
@@ -127,7 +177,7 @@ This will return a response similar to:
 
 - `"id"`: The ID of the PCR stream.
 - `"status"`: The status of the PCR stream. For descriptions, refer to [Status](#status).
-- `"source_cluster_id"`, `"target_cluster_id"`: The cluster IDs of the primary and standby clusters.
+- `"primary_cluster_id"`, `"standby_cluster_id"`: The cluster IDs of the primary and standby clusters.
 - `"created_at"`: The time at which the PCR stream was created.
 - `"retained_time"`: The timestamp indicating the lower bound that the PCR stream can failover to. The tracked replicated time and the advancing [protected timestamp]({% link {{ site.current_cloud_version }}/architecture/storage-layer.md %}#protected-timestamps) allows PCR to also track [_retained time_](#technical-reference).
 - `"replicated_time"`: The latest time at which the standby cluster has consistent data. This field will be present when the PCR stream is in the `REPLICATING` [state](#status).
@@ -166,14 +216,14 @@ To fail over to the latest consistent time, you only need to include `"status": 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request PATCH --url "https://cockroachlabs.cloud/api/v1/replication-streams/7487d7a6-868b-4c6f-aa60-cc306cc525fe" --header "Authorization: Bearer api_secret_key" --json '{"status": "FAILING_OVER"}'
+curl --request PATCH --url "https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id}" --header "Authorization: Bearer api_secret_key" --json '{"status": "FAILING_OVER"}'
 ~~~
 ~~~json
 {
   "id": "c3d35c84-a4ea-41b3-8452-553c5ded3b85",
   "status": "FAILING_OVER",
-  "source_cluster_id": "3fabc29e-5ced-48d9-b31e-8cc02e8da594",
-  "target_cluster_id": "f9b1d580-9be3-47f8-ac28-ed2f943ad5e9",
+  "primary_cluster_id": "3fabc29e-5ced-48d9-b31e-000000000000",
+  "standby_cluster_id": "f9b1d580-9be3-47f8-ac28-000000000000",
   "created_at": "2025-05-01T18:57:50.038137Z"
 }
 ~~~
@@ -184,14 +234,14 @@ To specify a timestamp, send a `PATCH` request to the `/v1/replication-streams` 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request PATCH "https://cockroachlabs.cloud/api/v1/replication-streams/job_id" --header "Authorization: Bearer api_secret_key" --json '{"status": "STARTING", "failover_at": "2025-05-01T19:39:39.731939Z"}'
+curl --request PATCH "https://cockroachlabs.cloud/api/v1/physical-replication-streams/job_id" --header "Authorization: Bearer api_secret_key" --json '{"status": "STARTING", "failover_at": "2025-05-01T19:39:39.731939Z"}'
 ~~~
 ~~~json
 {
   "id": "30cb4c91-9a46-4b62-865f-d0a035278ef8",
   "status": "FAILING_OVER",
-  "source_cluster_id": "3fabc29e-5ced-48d9-b31e-8cc02e8da594",
-  "target_cluster_id": "f9b1d580-9be3-47f8-ac28-ed2f943ad5e9",
+  "primary_cluster_id": "3fabc29e-5ced-48d9-b31e-000000000000",
+  "standby_cluster_id": "f9b1d580-9be3-47f8-ac28-000000000000",
   "created_at": "2025-05-01T19:39:31.306821Z",
   "failover_at": "2025-05-01T19:39:39.731939Z"
 }
@@ -205,20 +255,20 @@ Run a `GET` request to check when the failover is complete:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request GET "https://cockroachlabs.cloud/api/v1/replication-streams/job_id" --header "Authorization: Bearer api_secret_key" 
+curl --request GET "https://cockroachlabs.cloud/api/v1/physical-replication-streams/job_id" --header "Authorization: Bearer api_secret_key" 
 ~~~
 ~~~json
 {
   "id": "c3d35c84-a4ea-41b3-8452-553c5ded3b85",
   "status": "COMPLETED",
-  "source_cluster_id": "3fabc29e-5ced-48d9-b31e-8cc02e8da594",
-  "target_cluster_id": "f9b1d580-9be3-47f8-ac28-ed2f943ad5e9",
+  "primary_cluster_id": "3fabc29e-5ced-48d9-b31e-000000000000",
+  "standby_cluster_id": "f9b1d580-9be3-47f8-ac28-000000000000",
   "created_at": "2025-05-01T18:57:50.038137Z",
-  "activation_at": "2025-05-01T19:28:10Z"
+  "activated_at": "2025-05-01T19:28:10Z"
 }
 ~~~
 
-- `activation_at`: The CockroachDB system time at which failover is finalized, which could be different from the time that failover was requested. This field will return a response when the PCR stream is in [`COMPLETED` status](#status).
+- `activated_at`: The CockroachDB system time at which failover is finalized, which could be different from the time that failover was requested. This field will return a response when the PCR stream is in [`COMPLETED` status](#status).
 
 {{site.data.alerts.callout_info}}
 PCR replicates on the cluster level, which means that the job also replicates all system tables. Users that need to access the standby cluster after failover should use the user roles for the primary cluster, because the standby cluster is a copy of the primary cluster. PCR overwrites all previous system tables on the standby cluster.
@@ -226,7 +276,7 @@ PCR replicates on the cluster level, which means that the job also replicates al
 
 ### Fail back to the primary cluster
 
-To fail back from the standby to the primary cluster, start another PCR stream with the standby cluster as the `sourceClusterId` and the original primary cluster as the `target_cluster_id`. 
+To fail back from the standby to the primary cluster, start another PCR stream with the standby cluster as the `primary_cluster_id` and the original primary cluster as the `standby_cluster_id`. You can only fail back to the original primary cluster if the cluster was created with the `"support_physical_cluster_replication"` set to `true`.
 
 ## Technical reference
 
