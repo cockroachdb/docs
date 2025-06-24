@@ -90,14 +90,14 @@ The log message ends with one of the following patterns that describe the observ
 1. `no popular key, clear direction detected`
 1. `no popular key, no clear direction`
 
-Each pattern indicates the following condition:
+These patterns may indicate either or both of the following conditions:
 
-* `popular key detected` indicates that a significant percentage of reads or writes targets a single row within the range of data.
-* `clear direction detected` indicates that accesses within the range progress steadily in one direction, either increasing or decreasing key order, which generally indicates an [index hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#index-hotspot).
+- `popular key detected` indicates that a significant percentage of reads or writes targets a single row within the range of data.
+- `clear direction detected` indicates that accesses within the range progress steadily in one direction, either increasing or decreasing key order, which generally indicates an [index hotspot]({% link {{ page.version.version }}/understand-hotspots.md %}#index-hotspot).
 
 ### Metrics
 
-These [time-series metrics]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) are directly related to the log message described above. You can monitor how often the load-based splitter fails to find a split key, and whether this is due to a popular key or a clear access direction.
+These [time-series metrics]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) correlate with the potential conditions described in the load-based splitting [log message](#log-message). You can monitor how often the load-based splitter fails to find a split key, and whether this is due to a popular key or a clear access direction.
 
 Metric | Description
 -------|-------------
