@@ -21,7 +21,7 @@ This page describes the monitoring and observability tools that are built into C
 CockroachDB includes several tools to help you monitor your cluster's workloads and performance.
 
 {{site.data.alerts.callout_danger}}
-If a cluster becomes unavailable, most of the monitoring tools in the following sections become unavailable. In that case, Cockroach Labs recommends that you consult the [cluster logs]({% link {{ page.version.version }}/logging-overview.md %}). To maintain access to a cluster's historical metrics when the cluster is unavailable, configure a [third-party monitoring tool]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}) like Prometheus or Datadog to collect metrics periodically from the [Prometheus endpoint](#prometheus-endpoint). The metrics are stored outside the cluster, and can be used to help troubleshoot what led up to an outage.
+If a cluster becomes unavailable, most of the monitoring tools in the following sections become unavailable. In that case, Cockroach Labs recommends that you consult the [cluster logs]({% link {{ page.version.version }}/logging-overview.md %}). To maintain access to a cluster's historical metrics when the cluster is unavailable, configure a [third-party monitoring tool]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}) like Prometheus or Datadog to collect metrics periodically from the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}). The metrics are stored outside the cluster, and can be used to help troubleshoot what led up to an outage.
 {{site.data.alerts.end}}
 
 ### DB Console
@@ -36,7 +36,7 @@ The [Metrics dashboards]({% link {{ page.version.version }}/ui-overview-dashboar
 
 To learn more, refer to [Overview Dashboard]({% link {{ page.version.version }}/ui-overview-dashboard.md %}).
 
-Each cluster automatically exposes its metrics at an [endpoint in Prometheus format](#prometheus-endpoint), enabling you to collect them in an external tool like Datadog or your own Prometheus, Grafana, and AlertManager instances. These tools:
+Each cluster automatically exposes its metrics at an [endpoint in Prometheus format]({% link {{ page.version.version }}/prometheus-endpoint.md %}), enabling you to collect them in an external tool like Datadog or your own Prometheus, Grafana, and AlertManager instances. These tools:
 
 - Collect metrics from the cluster's Prometheus endpoint at an interval you define.
 - Store historical metrics according to your data retention requirements.
@@ -45,17 +45,17 @@ Each cluster automatically exposes its metrics at an [endpoint in Prometheus for
 
 Metrics collected by the DB Console are stored within the cluster, and the SQL queries that create the reports on the Metrics dashboards also impose load on the cluster. To avoid this additional load, or if you rely on external tools for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
 
-When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint](#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
+When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
 
 #### SQL Activity pages
 
 The SQL Activity pages, which are located within **SQL Activity** in DB Console, provide information about SQL [statements]({% link {{ page.version.version }}/ui-statements-page.md %}), [transactions]({% link {{ page.version.version }}/ui-transactions-page.md %}), and [sessions]({% link {{ page.version.version }}/ui-sessions-page.md %}).
 
-The information on the SQL Activity pages comes from the cluster's [`crdb_internal` system catalog](#crdb_internal-system-catalog). It is not exported via the cluster's [Prometheus endpoint](#prometheus-endpoint).
+The information on the SQL Activity pages comes from the cluster's [`crdb_internal` system catalog](#crdb_internal-system-catalog). It is not exported via the cluster's [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}).
 
 ### Cluster API
 
-The [Cluster API]({% link {{ page.version.version }}/cluster-api.md %}) is a REST API that runs in the cluster and provides much of the same information about your cluster and nodes as is available from the [DB Console](#db-console) or the [Prometheus endpoint](#prometheus-endpoint), and is accessible from each node at the same address and port as the DB Console.
+The [Cluster API]({% link {{ page.version.version }}/cluster-api.md %}) is a REST API that runs in the cluster and provides much of the same information about your cluster and nodes as is available from the [DB Console](#db-console) or the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}), and is accessible from each node at the same address and port as the DB Console.
 
 If the cluster is unavailable, the Cluster API is also unavailable.
 
@@ -140,7 +140,7 @@ Otherwise, it returns an HTTP `200 OK` status response code with an empty body:
 {{site.data.alerts.callout_info}}
 The JSON endpoints are deprecated in favor of the [Cluster API](#cluster-api).
 
-The `/_status/vars` metrics endpoint is in Prometheus format and is not deprecated. For more information, refer to [Prometheus endpoint](#prometheus-endpoint).
+The `/_status/vars` metrics endpoint is in Prometheus format and is not deprecated. For more information, refer to [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}).
 {{site.data.alerts.end}}
 
 Several endpoints return raw status meta information in JSON at `http://<host>:<http-port>/#/debug`. You can investigate and use these endpoints, but note that they are subject to change.
@@ -1014,7 +1014,7 @@ curl http://localhost:8080/_status/stores/1
 
 In addition to actively monitoring the overall health and performance of a cluster, it is also essential to configure alerting rules that promptly send notifications when CockroachDB experiences events that require investigation or intervention.
 
-Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), also support event-based alerting using metrics collected from a cluster's [Prometheus endpoint](#prometheus-endpoint). Refer to the documentation for an integration for more details. This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus's open source [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) service.
+Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), also support event-based alerting using metrics collected from a cluster's [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}). Refer to the documentation for an integration for more details. This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus's open source [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) service.
 
 ### Alertmanager
 

@@ -63,7 +63,7 @@ You can monitor protected timestamps relating to particular CockroachDB jobs wit
 - `jobs.{job_type}.protected_age_sec` tracks the oldest protected timestamp record protecting `{job_type}` jobs. As this metric increases, garbage accumulation increases. Garbage collection will not progress on a table, database, or cluster if the protected timestamp record is present.
 - `jobs.{job_type}.protected_record_count` tracks the	number of protected timestamp records held by `{job_type}` jobs.
 
-For a full list of the available job types, access your cluster's [`/_status/vars`]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) endpoint.
+For a full list of the available job types, access your cluster's [`/_status/vars`]({% link {{ page.version.version }}/prometheus-endpoint.md %}) endpoint.
 
 See the following pages for details on metrics:
 

@@ -17,7 +17,7 @@ You can access the [Prometheus Endpoint](#prometheus-endpoint) to track and aler
 
 ## Prometheus endpoint
 
-You can access the [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) (`http://<host>:<http-port>/_status/vars`) for backup and restore metrics.
+You can access the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) (`http://<host>:<http-port>/_status/vars`) for backup and restore metrics.
 
 Refer to the [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}) tutorial for guidance on installing and setting up Prometheus and Alertmanager to track metrics.
 

@@ -81,7 +81,7 @@ indicates that CockroachDB wants to [split the range]({% link {{ page.version.ve
 
 Usually this log message can be ignored, unless it repeatedly shows up, which can indicate there is a load imbalance problem in the cluster. If there is a load imbalance problem, it could be because a [hot range]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) cannot be split (because it's really a [hot key]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}#range-report)).
 
-You can see how often a split key cannot be found over time by looking at the following [time-series metric]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint):
+You can see how often a split key cannot be found over time by looking at the following [time-series metric]({% link {{ page.version.version }}/prometheus-endpoint.md %}):
 
 - `kv.loadsplitter.nosplitkey`
 

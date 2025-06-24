@@ -1,4 +1,4 @@
-To measure metrics per changefeed, you can define a "metrics label" for one or multiple changefeed(s). The changefeed(s) will increment each [changefeed metric]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#metrics). Metrics label information is sent with time-series metrics to `http://{host}:{http-port}/_status/vars`, viewable via the [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint). An aggregated metric of all changefeeds is also measured.
+To measure metrics per changefeed, you can define a "metrics label" for one or multiple changefeed(s). The changefeed(s) will increment each [changefeed metric]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#metrics). Metrics label information is sent with time-series metrics to `http://{host}:{http-port}/_status/vars`, viewable via the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}). An aggregated metric of all changefeeds is also measured.
 
 It is necessary to consider the following when applying metrics labels to changefeeds:
 
