@@ -1,5 +1,7 @@
 For the purposes of [Raft replication]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) and determining the [leaseholder]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-leaseholder) of a [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), node health is no longer determined by heartbeating a single "liveness range"; instead it is determined using [Leader leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leases).
 
+<a name="liveness-range"></a>
+
 However, node heartbeats of a single range are still used to determine:
 
 - Whether a node is still a member of a cluster (this is used by [`cockroach node decommission`]({% link {{ page.version.version }}/cockroach-node.md %}#node-decommission)).
