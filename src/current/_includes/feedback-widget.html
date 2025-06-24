@@ -55,12 +55,7 @@
               </div>
             </div>
           </div>
-          <button id="screenshot-btn" type="button">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-            </svg>
-            Show us where the problem is
-          </button>
+          
           <input type="file" id="screenshot" accept="image/*" />
         </div>
 
@@ -435,34 +430,29 @@
     background: #3a0ccc;
   }
 
-  #screenshot-btn, #submit-btn {
-    background-color: #4C0EFF;
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    padding: 10px 16px;
-    font-size: 12px;
-    cursor: pointer;
-    margin-top: 10px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    justify-content: center;
-  }
+  
 
   #submit-btn {
-    margin-top: 16px;
-    width: 100%;
-  }
+  background-color: #4C0EFF;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: 16px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
 
-  #screenshot-btn svg {
-    color: currentColor;
-    flex-shrink: 0;
-  }
+#submit-btn:hover {
+  background-color: #3a0ccc;
+}
 
-  #screenshot-btn:hover, #submit-btn:hover {
-    background-color: #3a0ccc;
-  }
+  
 
   #doc-links {
     list-style-type: none;
@@ -556,7 +546,7 @@
       const headingEl      = $('#feedback-heading');
       const commentsEl     = $('#comments');
       const emailEl        = $('#email');
-      const screenshotBtn  = $('#screenshot-btn');
+      
       const screenshotEl   = $('#screenshot');
       const submitBtn      = $('#submit-btn');
       const dropzone       = $('#screenshot-dropzone');
@@ -599,7 +589,7 @@
         cropModal.style.display = 'none';
         headingEl.textContent  = 'Tell us about your experience';
         commentsEl.placeholder = 'Tell us about your experience';
-        screenshotBtn.textContent = 'Show us where the problem is';
+        
         showStep(step1);
       };
   
@@ -631,25 +621,7 @@
         setTimeout(() => messageEl.remove(), 4000);
       };
   
-/* ── html2canvas capture + crop pop-up ──────────────────────────── */
-screenshotBtn.addEventListener('click', async () => {
-  try {
-    const captureScale = window.devicePixelRatio || 1;
-    const canvas = await html2canvas(document.body, {
-      useCORS: true,
-      backgroundColor: null,
-      scale: captureScale,
-      allowTaint: false,
-      removeContainer: true,
-      imageTimeout: 0
-    });
-    showCropModal(canvas);
-    showUserMessage('Page captured! Now select the problem area by dragging.', 'success');
-  } catch (err) {
-    console.error('html2canvas failed:', err);
-    screenshotEl.click();  // fallback
-  }
-});
+
 
 /* ── Crop UI draw (simple high quality) ───────────────────────────── */
 const showCropModal = (sourceCanvas) => {
