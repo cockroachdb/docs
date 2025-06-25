@@ -580,6 +580,9 @@
       const cropClose      = $('#crop-close');
       const cropCancel     = $('#crop-cancel');
       const cropConfirm    = $('#crop-confirm');
+      const screenshotHintEl   = document.querySelector('.screenshot-hint');
+const dropzoneLabelEl    = document.querySelector('#screenshot-placeholder span');
+
   
       /* ── Config ─────────────────────────────────────────────────────── */
       const FEEDBACK_ENDPOINT =
@@ -777,34 +780,59 @@ const confirmCrop = () => {
       });
   
       /* ── Star-rating interactions ───────────────────────────────────── */
-      const highlight = (val) =>
-        stars.forEach(s => s.classList.toggle('hover', +s.dataset.value <= val));
-      const setRating = (val) => {
-        currentRating = val;
-        stars.forEach(s => {
-          const sel = +s.dataset.value <= val;
-          s.classList.toggle('selected', sel);
-          s.setAttribute('aria-checked', sel);
-        });
-        showStep(step2);
-        const low = currentRating <= 2;
-        headingEl.textContent   = low ? 'Tell us how we can improve' : 'Tell us more about your experience';
-        commentsEl.placeholder  = headingEl.textContent;
-      };
-      stars.forEach(star => {
-        star.setAttribute('tabindex','0');
-        star.setAttribute('role','radio');
-        star.setAttribute('aria-label',`${star.dataset.value} star`);
-        star.setAttribute('aria-checked','false');
-        star.addEventListener('mouseover', ()=> highlight(+star.dataset.value));
-        star.addEventListener('mouseout',  ()=> highlight(currentRating));
-        star.addEventListener('click',     ()=> setRating(+star.dataset.value));
-        star.addEventListener('keydown', e => {
-          if (['ArrowLeft','ArrowDown'].includes(e.key))  setRating(Math.max(1, currentRating-1));
-          if (['ArrowRight','ArrowUp'].includes(e.key))   setRating(Math.min(5, currentRating+1));
-          if (['Enter',' '].includes(e.key))              setRating(+star.dataset.value);
-        });
-      });
+
+const highlight = (val) =>
+  stars.forEach(s => s.classList.toggle('hover', +s.dataset.value <= val));
+
+// ── Enhanced setRating() ──
+const setRating = (val) => {
+  currentRating = val;
+  stars.forEach(s => {
+    const sel = +s.dataset.value <= val;
+    s.classList.toggle('selected', sel);
+    s.setAttribute('aria-checked', sel);
+  });
+
+  // move to feedback form
+  showStep(step2);
+
+  const low = currentRating <= 2;
+
+  // 1) Heading & textarea placeholder
+  const promptText = low
+    ? 'Tell us how we can improve'
+    : 'Tell us more about your experience';
+  headingEl.textContent  = promptText;
+  commentsEl.placeholder = promptText;
+
+  // 2) Screenshot hint below dropzone
+  screenshotHintEl.textContent = low
+    ? 'Please attach a screenshot of the area where you encountered the problem.'
+    : 'Feel free to attach a screenshot of your experience (optional).';
+
+  // 3) Dropzone placeholder line
+  dropzoneLabelEl.textContent = low
+    ? 'Drop image here or click to browse the problem area'
+    : 'Drop image here or click to browse';
+};
+
+// ── Wire up each star (accessibility + interactions) ──
+stars.forEach(star => {
+  star.setAttribute('tabindex', '0');
+  star.setAttribute('role', 'radio');
+  star.setAttribute('aria-label', `${star.dataset.value} star`);
+  star.setAttribute('aria-checked', 'false');
+
+  star.addEventListener('mouseover', () => highlight(+star.dataset.value));
+  star.addEventListener('mouseout',  () => highlight(currentRating));
+  star.addEventListener('click',     () => setRating(+star.dataset.value));
+
+  star.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowDown'].includes(e.key))  setRating(Math.max(1, currentRating - 1));
+    if (['ArrowRight','ArrowUp'].includes(e.key))   setRating(Math.min(5, currentRating + 1));
+    if (['Enter',' '].includes(e.key))              setRating(+star.dataset.value);
+  });
+});
   
       /* ── Determine docs area from sidebar ──────────────────────────── */
       const determineDocsArea = () => {
