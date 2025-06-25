@@ -32,6 +32,10 @@ For details on viewing and managing the backups, refer to the [Cloud Console](#r
 
 {% include cockroachcloud/backups/costs-link.md %}
 
+### Required permissions to restore managed backups
+
+{% include cockroachcloud/backups/managed-backup-perms.md %}
+
 ## Cloud Console
 
 ### View backups
