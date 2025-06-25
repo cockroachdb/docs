@@ -10,7 +10,7 @@ toc: true
 
 CockroachDB **physical cluster replication (PCR)** continuously sends all data at the cluster level from a _primary_ cluster to an independent _standby_ cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster.
 
-PCR provides a **two-datacenter resiliency strategy** where clusters are limited to two regions. In a disaster recovery scenario, you can [fail over](#fail-over-to-the-standby-cluster) from the unavailable primary cluster to the standby cluster. This will stop the PCR stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic.
+PCR provides a **two-datacenter resiliency strategy** where clusters are limited to two regions. In a disaster recovery scenario, you can [fail over](#fail-over-to-the-standby-cluster) from the unavailable primary cluster to the available standby cluster. This will stop the PCR stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic.
 
 ## Set up PCR on CockroachDB {{ site.data.products.advanced }}
 
@@ -26,7 +26,7 @@ You can also refer to instructions for [failover](#fail-over-to-the-standby-clus
 
 You'll need the following:
 
-- **Two CockroachDB {{ site.data.products.advanced }} clusters.** To set up PCR successfully, configure your clusters as per the following:
+- **Two CockroachDB {{ site.data.products.advanced }} clusters with the [`support_physical_cluster_replication` flag enabled](#step-1-create-the-clusters).** To set up PCR successfully, configure your clusters as per the following:
     - Clusters must be in the same cloud (AWS, GCP, or Azure).
     - Clusters must be single [region]({% link cockroachcloud/regions.md %}) (multiple availability zones per cluster is supported).
     - The primary and standby cluster in AWS and Azure must be in different regions.
@@ -226,7 +226,7 @@ curl --request PATCH "https://cockroachlabs.cloud/api/v1/physical-replication-st
 }
 ~~~
 
-- `failover_at`: The requested timestamp for failover. If you used `"status":"FAILING_OVER"` to initiate the failover and omitted `failover_at`, the failover time will default to the latest consistent replicated time.
+- `failover_at`: The requested timestamp for failover. You can use `"status":"FAILING_OVER"` to initiate the failover and omit `failover_at`, the failover time will default to the latest consistent replicated time.
 
 After the failover is complete, both clusters can receive traffic and operate as separate clusters. It is necessary to redirect application traffic manually.
 
@@ -255,7 +255,7 @@ PCR replicates on the cluster level, which means that the job also replicates al
 
 ### Fail back to the primary cluster
 
-To fail back from the standby to the primary cluster, start another PCR stream with the standby cluster as the `primary_cluster_id` and the original primary cluster as the `standby_cluster_id`. You can only fail back to the original primary cluster if the cluster was created with the `"support_physical_cluster_replication"` set to `true`.
+To fail back from the standby to the primary cluster, start another PCR stream with the standby cluster as the `primary_cluster_id` and the original primary cluster as the `standby_cluster_id`.
 
 ## Technical reference
 
