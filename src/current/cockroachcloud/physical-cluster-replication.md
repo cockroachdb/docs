@@ -1,5 +1,5 @@
 ---
-title: Physical Cluster Replication
+title: Physical Cluster Replication for Resiliency
 summary: Set up physical cluster replication (PCR) in a Cloud deployment.
 toc: true
 ---
@@ -10,7 +10,7 @@ toc: true
 
 CockroachDB **physical cluster replication (PCR)** continuously sends all data at the cluster level from a _primary_ cluster to an independent _standby_ cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster.
 
-PCR can provide a two-datacenter resiliency strategy where clusters are limited to two regions. In a disaster recovery scenario, you can [fail over](#step-3-fail-over-to-the-standby-cluster) from the unavailable primary cluster to the standby cluster. This will stop the PCR stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic.
+PCR provides a **two-datacenter resiliency strategy** where clusters are limited to two regions. In a disaster recovery scenario, you can [fail over](#fail-over-to-the-standby-cluster) from the unavailable primary cluster to the standby cluster. This will stop the PCR stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic.
 
 ## Set up PCR on CockroachDB {{ site.data.products.advanced }}
 
@@ -19,6 +19,8 @@ In this guide, you'll use the [{{ site.data.products.cloud }} API]({% link cockr
 {{site.data.alerts.callout_info}}
 PCR is supported on CockroachDB {{ site.data.products.advanced }} and CockroachDB self-hosted clusters. For a guide to setting up PCR on CockroachDB self-hosted, refer to the [Set Up Physical Cluster Replication]({% link {{ site.current_cloud_version }}/set-up-physical-cluster-replication.md %}) tutorial.
 {{site.data.alerts.end}}
+
+You can also refer to instructions for [failover](#fail-over-to-the-standby-cluster) and [failback](#fail-back-to-the-primary-cluster).
 
 ### Before you begin
 
@@ -32,13 +34,9 @@ You'll need the following:
     - Clusters can have different [node topology]({% link cockroachcloud/plan-your-cluster-advanced.md %}#cluster-topology) and [hardware configurations]({% link cockroachcloud/plan-your-cluster-advanced.md %}#cluster-sizing-and-scaling). To avoid performance constraints (failover and redirecting application traffic to a standby), we recommend configuring the primary and standby clusters with similar hardware.
 
     {{site.data.alerts.callout_success}}
-    We recommend [enabling Prometheus metrics export]({% link cockroachcloud/export-metrics.md %}) on your cluster before starting a PCR stream. For details on metrics to track, refer to [Monitor the PCR stream](#step-2-monitor-the-pcr-stream).
+    We recommend [enabling Prometheus metrics export]({% link cockroachcloud/export-metrics.md %}) on your cluster before starting a PCR stream. For details on metrics to track, refer to [Monitor the PCR stream](#step-3-monitor-the-pcr-stream).
     {{site.data.alerts.end}}
-
-{% comment  %}Move to in the tutorial for now?{% endcomment %}
-
 - **[Cloud API Access]({% link cockroachcloud/managing-access.md %}#api-access).**
-
     To set up and manage PCR on CockroachDB {{ site.data.products.advanced }} clusters, you'll use the `'https://cockroachlabs.cloud/api/v1/replication-streams'` endpoint. Access to the `replication-streams` endpoint requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) with the correct permissions.
 
     The following describes the required roles for the `replication-streams` endpoint methods. These can be assigned at the [organization]({% link cockroachcloud/authorization.md %}#organization-user-roles), [folder]({% link cockroachcloud/folders.md %}), or cluster scope:
@@ -49,48 +47,30 @@ You'll need the following:
     `GET` | [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), [Cluster Developer]({% link cockroachcloud/authorization.md %}#cluster-developer) | Retrieve information for the PCR stream. Required on either the primary or standby cluster.
     `PATCH` | [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) | Update the PCR stream to fail over. Required on either the primary or standby cluster.
 
+    Using the same cluster roles on each cluster will provide the best visibility into the PCR stream.
+
     {{site.data.alerts.callout_success}}
     We recommend creating service accounts with the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege), and giving each application that accesses the API its own service account and API key. This allows fine-grained access to the cluster and PCR streams.
     {{site.data.alerts.end}}
 
-
 ### Step 1. Create the clusters
 
-To use PCR, it is necessary to set the **standby** cluster with the `support_physical_cluster_replication` field to `true`, which indicates that a cluster should start using an architecture that supports PCR. For details on supported cluster cloud provider and region setup, refer to [Configuration](#configuration).
-
-<!-- 
-{% comment  %}Do we want to call out that its highly recommended that you start your primary cluster with the 'support_physical_cluster_replication' field to 'true', but that you can still start PCR from an existing cluster if you must?
-
-We should also note that an existing cluster that was started without the support_physical_cluster_replication flag can be the source of a PCR stream, but never the target.{% endcomment %}
--->
-
-
+To use PCR, it is necessary to set the `support_physical_cluster_replication` field to `true`, which indicates that a cluster should start using an architecture that supports PCR. For details on supported cluster cloud provider and region setup, refer to the [prerequisites section](#before-you-begin).
 
 1. Send a `POST` request to create the primary cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' --header "Authorization: Bearer api_secret_key" --header 'Content-Type: application/json' --data '{"name": "primary_cluster_name", "provider": "AWS", "spec": {"dedicated": {"cockroachVersion": "v24.3", "hardware": {"disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, "storage_gib": 16}, "region_nodes": {"us-east-1": 3}, "support_physical_cluster_replication": true}}}'
+    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' --header "Authorization: Bearer api_secret_key" --header 'Content-Type: application/json' --data '{"name": "primary_cluster_name", "provider": "AWS", "spec": {"dedicated": {"cockroachVersion": "v25.2", "hardware": {"disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, "storage_gib": 16}, "region_nodes": {"us-east-1": 3}, "support_physical_cluster_replication": true}}}'
     ~~~
 
-
-<!---
-Do you have to start the primary with the flag
-
-
-
-in order to do failback, yes
-9:54
-i think in our docs we just want to say that both need to have the flag
--->
-
-    Ensure that you replace each of the values for the cluster specification as per your requirements. For details on the cluster specifications, refer to [Create a cluster]({% link cockroachcloud/cloud-api.md %}#create-a-cluster). Also, replace `api_secret_key` with your API secret key. You can include `support_physical_cluster_replication` set to `true`, but it is not a requirement for the primary cluster.
+    Ensure that you replace each of the values for the cluster specification as per your requirements. For details on the cluster specifications, refer to [Create a cluster]({% link cockroachcloud/cloud-api.md %}#create-a-cluster). Also, replace `api_secret_key` with your API secret key.
 
 1. Send a `POST` request to create the standby cluster that includes your necessary cluster specification. Ensure that you include `support_physical_cluster_replication` set to `true`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' --header "Authorization: Bearer api_secret_key" --header 'Content-Type: application/json' --data '{"name": "standby_cluster_name", "provider": "AWS", "spec": {"dedicated": {"cockroachVersion": "v24.3", "hardware": {"disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, "storage_gib": 16}, "region_nodes": {"us-east-2": 3}, "support_physical_cluster_replication": true}}}'
+    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' --header "Authorization: Bearer api_secret_key" --header 'Content-Type: application/json' --data '{"name": "standby_cluster_name", "provider": "AWS", "spec": {"dedicated": {"cockroachVersion": "v25.2", "hardware": {"disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, "storage_gib": 16}, "region_nodes": {"us-east-2": 3}, "support_physical_cluster_replication": true}}}'
     ~~~
 
     If you're creating clusters in AWS or Azure, you must start the primary and standby clusters in different regions.
@@ -99,7 +79,7 @@ i think in our docs we just want to say that both need to have the flag
 We recommend [enabling Prometheus metrics export]({% link cockroachcloud/export-metrics.md %}) on your cluster before starting a PCR stream. For details on metrics to track, refer to [Monitor the PCR stream](#step-3-monitor-the-pcr-stream).
 {{site.data.alerts.end}}
 
-### Step 1. Start the PCR stream
+### Step 2. Start the PCR stream
 
 {{site.data.alerts.callout_info}}
 We recommend using an empty standby cluster when starting PCR. When you initiate the PCR stream, CockroachDB {{ site.data.products.cloud }} will take a full cluster backup of the standby cluster, delete all data from the standby, and then start the PCR stream, which ensures that the standby will be fully consistent with the primary during PCR.
@@ -114,7 +94,6 @@ With the primary and standby clusters set up, you can now start a PCR stream.
 curl --request POST --url 'https://cockroachlabs.cloud/api/v1/physical-replication-streams' --header "Authorization: Bearer api_secret_key" --json '{"primary_cluster_id": "primary_cluster_id","standby_cluster_id": "standby_cluster_id"}'
 ~~~
 
-
 Replace:
 
 - `api_secret_key` with your API secret key.
@@ -127,7 +106,7 @@ You can find the cluster IDs in the cluster creation output, or in the URL of th
 Once you have started PCR, the standby cluster cannot accept writes and reads, therefore the [Cloud Console]({% link cockroachcloud/cluster-overview-page.md %}) and SQL shell will be unavailable prior to failover.
 {{site.data.alerts.end}}
 
-You will receive the response:
+You will receive a response similar to:
 
 ~~~ json
 {
@@ -146,9 +125,9 @@ You will receive the response:
 
 To start PCR between clusters, CockroachDB {{ site.data.products.cloud }} sets up VPC peering between clusters and validates the connectivity. As a result, it may take around 5 minutes to initialize the PCR job during which the status will be `STARTING`.
 
-### Step 2. Monitor the PCR stream
+### Step 3. Monitor the PCR stream
 
-For monitoring the current status of the PCR stream, send a `GET` request to the `/v1/replication-streams` endpoint along with the ID of the PCR stream:
+For monitoring the current status of the PCR stream, send a `GET` request to the `/v1/physical-replication-streams` endpoint along with the ID of the PCR stream:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -202,7 +181,7 @@ For continual monitoring of PCR, track the following metrics with [Prometheus]({
 - `physical_replication.sst_bytes`: The SST bytes (compressed) sent to the [KV layer]({% link {{ site.current_cloud_version }}/architecture/storage-layer.md %}) by all PCR streams.
 - `physical_replication.replicated_time_seconds`: The replicated time of the PCR stream in seconds since the Unix epoch.
 
-### Step 3. Fail over to the standby cluster
+### Fail over to the standby cluster
 
 Failing over from the primary cluster to the standby cluster will stop the PCR stream, reset the standby cluster to a point in time where all ingested data is consistent, and mark the standby as ready to accept application traffic. You can schedule the failover to:
 
@@ -280,7 +259,7 @@ To fail back from the standby to the primary cluster, start another PCR stream w
 
 ## Technical reference
 
-The replication happens at the byte level, which means that the job is unaware of databases, tables, row boundaries, and so on. However, when a [failover](#step-3-fail-over-to-the-standby-cluster) to the standby cluster is initiated, the PCR job ensures that the cluster is in a transactionally consistent state as of a certain point in time. Beyond the application data, the job will also replicate users, privileges, and schema changes.
+The replication happens at the byte level, which means that the job is unaware of databases, tables, row boundaries, and so on. However, when a [failover](#fail-over-to-the-standby-cluster) to the standby cluster is initiated, the PCR job ensures that the cluster is in a transactionally consistent state as of a certain point in time. Beyond the application data, the job will also replicate users, privileges, and schema changes.
 
 At startup, the PCR job will set up VPC peering between the primary and standby {{ site.data.products.advanced }} clusters and validate the connectivity.
 
@@ -296,7 +275,7 @@ The tracked replicated time and the advancing protected timestamp provide the PC
 
 _Replication lag_ is the time between the most up-to-date replicated time and the actual time. While the PCR stream keeps as current as possible to the actual time, this replication lag window is where there is potential for data loss.
 
-For the [failover process](#step-3-fail-over-to-the-standby-cluster), the standby cluster waits until it has reached the specified failover time, which can be in the past (up to the retained time), the latest consistent timestamp, or in the future (up to 1 hour). Once that timestamp has been reached, the PCR stream stops and any data in the standby cluster that is **above** the failover time is removed. Depending on how much data the standby needs to revert, this can affect the duration of [RTO (recovery time objective)]({% link {{ site.current_cloud_version }}/disaster-recovery-overview.md %}).
+For the [failover process](#fail-over-to-the-standby-cluster), the standby cluster waits until it has reached the specified failover time, which can be in the past (up to the retained time), the latest consistent timestamp, or in the future (up to 1 hour). Once that timestamp has been reached, the PCR stream stops and any data in the standby cluster that is **above** the failover time is removed. Depending on how much data the standby needs to revert, this can affect the duration of [RTO (recovery time objective)]({% link {{ site.current_cloud_version }}/disaster-recovery-overview.md %}).
 
 After reverting any necessary data, the standby cluster is promoted as available to serve traffic.
 
