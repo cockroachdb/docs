@@ -66,7 +66,7 @@ The following table shows which policies are applied to which statement types, w
 
 - ✓: Always applied.
 - (a): A `USING` policy failure causes the statement to fail. Normally, `USING` filters out rows silently.
-- (b): Like ✓(a), but only applied when the statement references row columns (`WHERE`, `SET`, or `RETURNING`). If the policy is violated, the statement fails.
+- (b): Like ✓(a), but only applied when the statement references row columns (`WHERE`, `SET`, or `RETURNING`). If the `USING` policy is violated, the statement fails.
 
 In other words, during writes, the `SELECT` policy is always applied to the existing row. For the new row being inserted or updated, it's only applied if that row is referenced in the `WHERE`, `SET`, or `RETURNING` clause, since those clauses require reading from it.
 
