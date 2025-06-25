@@ -103,7 +103,7 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
     ~~~
 
 1. Point your browser to `http://<hostname of machine running prometheus>:9090`, where you can use the Prometheus UI to query, aggregate, and graph CockroachDB time series metrics.
-  - Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, point your browser to `http://<hostname of a CockroachDB node>:8080/_status/vars`.
+  - Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, point your browser to the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}).
   - For more details on using the Prometheus UI, see their [official documentation](https://prometheus.io/docs/introduction/getting_started/).
 
 ## Step 4. Send notifications with Alertmanager

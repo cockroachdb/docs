@@ -1107,7 +1107,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when a node has been down for 15 minutes or more.
 
-- **How to detect:** If a node is down, its `_status/vars` endpoint will return a `Connection refused` error. Otherwise, the `liveness_livenodes` metric will be the total number of live nodes in the cluster.
+- **How to detect:** If a node is down, its Prometheus endpoint will return a `Connection refused` error. Otherwise, the `liveness_livenodes` metric will be the total number of live nodes in the cluster.
 
 - **Rule definition:** Use the `InstanceDead` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
@@ -1115,7 +1115,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert if a node has restarted more than once in the last 10 minutes.
 
-- **How to detect:** Calculate this using the number of times the `sys_uptime` metric in the node's `_status/vars` output was reset back to zero. The `sys_uptime` metric gives you the length of time, in seconds, that the `cockroach` process has been running.
+- **How to detect:** Calculate this using the number of times the `sys_uptime` metric in the node's Prometheus endpoint output was reset back to zero. The `sys_uptime` metric gives you the length of time, in seconds, that the `cockroach` process has been running.
 
 - **Rule definition:** Use the `InstanceFlapping` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
@@ -1123,7 +1123,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when a node has less than 15% of free space remaining.
 
-- **How to detect:** Divide the `capacity` metric by the `capacity_available` metric in the node's `_status/vars` output.
+- **How to detect:** Divide the `capacity` metric by the `capacity_available` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `StoreDiskLow` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
@@ -1133,13 +1133,13 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when a node is not executing SQL despite having connections.
 
-- **How to detect:** The `sql_conns` metric in the node's `_status/vars` output will be greater than `0` while the `sql_query_count` metric will be `0`. You can also break this down by statement type using `sql_select_count`, `sql_insert_count`, `sql_update_count`, and `sql_delete_count`.
+- **How to detect:** The `sql_conns` metric in the node's Prometheus endpoint output will be greater than `0` while the `sql_query_count` metric will be `0`. You can also break this down by statement type using `sql_select_count`, `sql_insert_count`, `sql_update_count`, and `sql_delete_count`.
 
 #### CA certificate expires soon
 
 - **Rule:** Send an alert when the CA certificate on a node will expire in less than a year.
 
-- **How to detect:** Calculate this using the `security_certificate_expiration_ca` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `security_certificate_expiration_ca` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `CACertificateExpiresSoon` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
@@ -1147,7 +1147,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when a node's certificate will expire in less than a year.
 
-- **How to detect:** Calculate this using the `security_certificate_expiration_node` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `security_certificate_expiration_node` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `NodeCertificateExpiresSoon` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
@@ -1161,7 +1161,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when the number of ranges with fewer live replicas than needed for quorum is non-zero for too long.
 
-- **How to detect:** Calculate this using the `ranges_unavailable` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `ranges_unavailable` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `UnavailableRanges` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
 
@@ -1169,7 +1169,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when a replica stops serving traffic due to other replicas being offline for too long.
 
-- **How to detect:** Calculate this using the `kv_replica_circuit_breaker_num_tripped_replicas` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `kv_replica_circuit_breaker_num_tripped_replicas` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `TrippedReplicaCircuitBreakers` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
 
@@ -1177,7 +1177,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when the number of ranges with replication below the [replication factor]({% link {{ page.version.version }}/configure-replication-zones.md %}#num_replicas) is non-zero for too long.
 
-- **How to detect:** Calculate this using the `ranges_underreplicated` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `ranges_underreplicated` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `UnderreplicatedRanges` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
 
@@ -1185,7 +1185,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when requests are taking a very long time in replication. This can be a symptom of a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-splits).
 
-- **How to detect:** Calculate this using the `requests_slow_raft` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `requests_slow_raft` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `RequestsStuckInRaft` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
 
@@ -1193,7 +1193,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when a cluster is getting close to the [open file descriptor limit]({% link {{ page.version.version }}/recommended-production-settings.md %}#file-descriptors-limit).
 
-- **How to detect:** Calculate this using the `sys_fd_softlimit` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `sys_fd_softlimit` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `HighOpenFDCount` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
 

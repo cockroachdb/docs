@@ -104,7 +104,7 @@ Multiple changefeeds can be added to a label:
 CREATE CHANGEFEED FOR TABLE movr.vehicle_location_histories INTO 'kafka://host:port' WITH metrics_label=vehicles;
 ~~~
 
-`http://{host}:{http-port}/_status/vars` shows the defined changefeed(s) by label and the aggregated metric for all changefeeds. This output also shows the `default` scope, which will include changefeeds started without a metrics label:
+The [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) shows the defined changefeed(s) by label and the aggregated metric for all changefeeds. This output also shows the `default` scope, which will include changefeeds started without a metrics label:
 
 ~~~
 changefeed_running 4

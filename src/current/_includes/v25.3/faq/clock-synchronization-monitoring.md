@@ -1,4 +1,4 @@
-As explained in more detail [in our monitoring documentation]({% link {{ page.version.version }}/prometheus-endpoint.md %}), each CockroachDB node exports a wide variety of metrics at `http://<host>:<http-port>/_status/vars` in the format used by the popular Prometheus timeseries database. Two of these metrics export how close each node's clock is to the clock of all other nodes:
+As explained in more detail [in our monitoring documentation]({% link {{ page.version.version }}/prometheus-endpoint.md %}), each CockroachDB node exports a wide variety of metrics in the format used by the popular Prometheus timeseries database. Two of these metrics export how close each node's clock is to the clock of all other nodes:
 
 Metric | Definition
 -------|-----------
