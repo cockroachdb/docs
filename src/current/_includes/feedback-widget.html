@@ -786,6 +786,7 @@ const highlight = (val) =>
 
 // ── Enhanced setRating() ──
 const setRating = (val) => {
+  // 1) record rating & update star visuals
   currentRating = val;
   stars.forEach(s => {
     const sel = +s.dataset.value <= val;
@@ -793,28 +794,43 @@ const setRating = (val) => {
     s.setAttribute('aria-checked', sel);
   });
 
-  // move to feedback form
+  // 2) show the feedback form (step 2)
   showStep(step2);
 
-  const low = currentRating <= 3;
+  // 3) identify all the fields we only need for low ratings
+  const extras = [
+    commentsEl,
+    emailEl,
+    document.getElementById('screenshot-section'),
+    screenshotHintEl
+  ];
 
-  // 1) Heading & textarea placeholder
-  const promptText = low
-    ? 'Tell us how we can improve'
-    : 'Tell us more about your experience';
-  headingEl.textContent  = promptText;
-  commentsEl.placeholder = promptText;
+  // 4) hide extras for 4★+; show for 1–3★
+  if (val >= 4) {
+    extras.forEach(el => el && (el.style.display = 'none'));
+  } else {
+    extras.forEach(el => el && (el.style.display = 'block'));
+  }
 
-  // 2) Screenshot hint below dropzone
-  screenshotHintEl.textContent = low
-    ? 'Please attach a screenshot of the area where you encountered the problem.'
-    : 'Feel free to attach a screenshot of your experience (optional).';
+  // 5) set heading text
+  if (val >= 4) {
+    // high ratings: simple thank-you
+    headingEl.textContent = 'Thank you for your feedback!';
+    // clear placeholder in case textarea is accidentally shown
+    commentsEl.placeholder = '';
+  } else {
+    // low ratings: invite comments
+    headingEl.textContent      = 'Tell us how we can improve';
+    commentsEl.placeholder     = 'Tell us how we can improve';
+  }
 
-  // 3) Dropzone placeholder line
-  dropzoneLabelEl.textContent = low
+  // 6) always refresh dropzone label (even if hidden)
+  dropzoneLabelEl.textContent = val <= 3
     ? 'Drop image here or click to browse the problem area'
     : 'Drop image here or click to browse';
 };
+
+
 
 // ── Wire up each star (accessibility + interactions) ──
 stars.forEach(star => {
