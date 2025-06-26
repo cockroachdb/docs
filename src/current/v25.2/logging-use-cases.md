@@ -94,6 +94,20 @@ I210517 17:38:20.403619 586 2@util/log/event_log.go:32 ⋮ [n1] 168 ={"Timestamp
 `runtime_stats` events are typically used for troubleshooting. To monitor your cluster's health, see [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %}).
 {{site.data.alerts.end}}
 
+#### Example: Hot ranges stats
+
+Each node checks for [hot ranges]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-range) every minute. If a single [replica]({% link {{ page.version.version }}/architecture/overview.md %}#replica) exceeds 250 ms of CPU time per second, a [`hot_ranges_stats`]({% link {{ page.version.version }}/eventlog.md %}#hot_ranges_stats) event is recorded. In [virtual clusters]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) and [CockroachDB Standard and Basic deployments]({% link cockroachcloud/index.md %}), nodes perform this check every 5 minutes at the cluster level. In addition to these conditional logs, `hot_ranges_stats` logs are automatically emitted every 4 hours.
+
+~~~
+I250602 04:46:54.752464 2023 2@util/log/event_log.go:39 ⋮ [T1,Vsystem,n5] 31977 ={"Timestamp":1748839613749807000,"EventType":"hot_ranges_stats","RangeID":1115,"Qps":0,"LeaseholderNodeID":5,"WritesPerSecond":0.0012048123820978134,"CPUTimePerSecond":251.30338109510822,"Databases":["kv"],"Tables":["kv"],"Indexes":["kv_pkey"]}
+~~~
+
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) for details on the fields.
+
+{{site.data.alerts.callout_info}}
+`hot_ranges_stats` events are typically used for troubleshooting [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}).
+{{site.data.alerts.end}}
+
 ### SQL_SCHEMA
 
 The [`SQL_SCHEMA`]({% link {{ page.version.version }}/logging.md %}#sql_schema) channel logs changes to the SQL logical schema resulting from DDL operations.
