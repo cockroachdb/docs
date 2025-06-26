@@ -93,6 +93,8 @@ For clusters with [maintenance windows]({% link cockroachcloud/advanced-cluster-
 
 ## Configure alerts
 
+Managing alerts requires the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role.
+
 To enable alerts:
 
 1. Under **Configure CockroachDB {{ site.data.products.cloud }} alerts**, toggle the **Alerts are on** switch.
@@ -105,6 +107,8 @@ You can use an email alias to send alerts to a monitoring tool such as [Alertman
 {{site.data.alerts.end}}
 
 ## Send a test alert
+
+Sending test alerts requires the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role.
 
 To send a test alert:
 
