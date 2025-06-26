@@ -15,7 +15,7 @@ Logical data replication is only supported in CockroachDB {{ site.data.products.
 Once the offline initial scan completes, the new table will come online and is ready to serve queries. In a [bidirectional]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#use-cases) setup, the second LDR stream will also initialize after the offline initial scan completes.
 
 {{site.data.alerts.callout_danger}}
-If the table to be replicated contains [user-defined types]({% link {{ page.version.version }}/enum.md %}) or [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies, you must use the [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %}) statement instead. You can set up unidirectional or bidirectional LDR manually with `CREATE LOGICAL REPLICATION STREAM`. 
+If the table to be replicated contains [user-defined types]({% link {{ page.version.version }}/enum.md %}), you must use the [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %}) statement instead. You can set up unidirectional or bidirectional LDR manually with `CREATE LOGICAL REPLICATION STREAM`. 
 {{site.data.alerts.end}}
 
 This page is a reference for the `CREATE LOGICALLY REPLICATED` SQL statement, which includes information on its parameters and options. For a step-by-step guide to set up LDR, refer to the [Set Up Logical Data Replication]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}) page.
