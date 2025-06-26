@@ -27,7 +27,7 @@ Click **Apply** to view the [hot ranges list](#hot-ranges-list) for the selected
 
 ## Filter hot ranges
 
-After [selecting nodes](#select-nodes), use the **Filter** menu to filter the [hot ranges list](#hot-ranges-list) by any combination of databases, table, index, or store IDs.
+After [selecting nodes](#select-nodes), use the **Filter** menu to filter the [hot ranges list](#hot-ranges-list). You can choose to view all hot ranges across a specific table, index, store ID, and one or more databases.
 
 In the **Databases** dropdown list, you can choose to filter by specific databases (optional).
 
