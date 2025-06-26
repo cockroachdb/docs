@@ -4,7 +4,7 @@ summary: Learn how to detect hotspots using real-time monitoring and historical 
 toc: true
 ---
 
-This page provides practical guidance on identifying common [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) in CockroachDB clusters using real-time monitoring and historical logs. This tutorial assumes that you have identified a [metrics outlier](#step-1-check-for-a-node-outlier-in-metrics) in your cluster. It focuses on CPU and latch contention metrics to help you identify [hot key](#mitigation-1---hot-key) and [hot index](#mitigation-2---hot-index) scenarios.
+This page provides practical guidance on identifying common [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) in CockroachDB clusters using real-time monitoring and historical logs. This tutorial assumes that you have identified a [metrics outlier](#step-1-check-for-a-node-outlier-in-metrics) in your cluster. It focuses on CPU and latch contention metrics to help you identify [hot key](#mitigation-1-hot-key) and [hot index](#mitigation-2-hot-index) scenarios.
 
 ## Before you begin
 
