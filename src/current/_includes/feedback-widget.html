@@ -890,21 +890,43 @@ stars.forEach(star => {
         formData.append('docs_area',  determineDocsArea());
         if (currentFile) formData.append('screenshot', currentFile);
         try {
-          const resp = await fetch(FEEDBACK_ENDPOINT, {
-            method: 'POST',
-            mode:   'cors',
-            body:   formData,
-          });
-          if (resp.ok) {
-            showUserMessage('Feedback sent successfully!', 'success');
-          } else {
-            console.error('Feedback API error:', resp.status, await resp.text());
-            showUserMessage('Failed to send feedback. Please try again.', 'error');
-          }
-        } catch (err) {
-          console.error('Network error sending feedback:', err);
-          showUserMessage('Network error. Please check your connection and try again.', 'error');
-        }
+  const resp = await fetch(FEEDBACK_ENDPOINT, {
+    method: 'POST',
+    mode:   'cors',
+    body:   formData,
+  });
+  if (resp.ok) {
+    showUserMessage('Feedback sent successfully!', 'success');
+  } else {
+    const status = resp.status;
+    const body   = await resp.text();
+    console.error(`Feedback API error ${status}:`, body);
+
+    if (status >= 400 && status < 500) {
+      // Client-side error
+      showUserMessage(
+        'There was a problem with your submission. Please check your inputs and try again.',
+        'info'
+      );
+    } else if (status >= 500) {
+      // Server-side error
+      showUserMessage(
+        'We’re sorry—our feedback service is temporarily unavailable. Please try again later.',
+        'error'
+      );
+    } else {
+      // Fallback for unexpected status codes
+      showUserMessage('Failed to send feedback. Please try again.', 'error');
+    }
+  }
+} catch (err) {
+  console.error('Network error sending feedback:', err);
+  showUserMessage(
+    'Network error. Please check your connection and try again.',
+    'error'
+  );
+}
+
         closeOverlay();
         submitBtn.disabled = false;
         submitBtn.textContent = 'Send';
