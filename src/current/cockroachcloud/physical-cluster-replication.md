@@ -37,9 +37,9 @@ You'll need the following:
     We recommend [enabling Prometheus metrics export]({% link cockroachcloud/export-metrics.md %}) on your cluster before starting a PCR stream. For details on metrics to track, refer to [Monitor the PCR stream](#step-3-monitor-the-pcr-stream).
     {{site.data.alerts.end}}
 - **[Cloud API Access]({% link cockroachcloud/managing-access.md %}#api-access).**
-    To set up and manage PCR on CockroachDB {{ site.data.products.advanced }} clusters, you'll use the `'https://cockroachlabs.cloud/api/v1/replication-streams'` endpoint. Access to the `replication-streams` endpoint requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) with the correct permissions.
+    To set up and manage PCR on CockroachDB {{ site.data.products.advanced }} clusters, you'll use the `'https://cockroachlabs.cloud/api/v1/replication-streams'` endpoint. Access to the `physical-replication-streams` endpoint requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) with the correct permissions.
 
-    The following describes the required roles for the `replication-streams` endpoint methods. These can be assigned at the [organization]({% link cockroachcloud/authorization.md %}#organization-user-roles), [folder]({% link cockroachcloud/folders.md %}), or cluster scope:
+    The following describes the required roles for the `physical-replication-streams` endpoint methods. These can be assigned at the [organization]({% link cockroachcloud/authorization.md %}#organization-user-roles), [folder]({% link cockroachcloud/folders.md %}), or cluster scope:
 
     Method | Required roles | Description
     -------+----------------+------------
