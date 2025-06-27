@@ -67,7 +67,7 @@ Optionally, you can restrict the AWS accounts that can connect to your cluster p
 
 Your service account must have one of the following roles on the cluster, either directly or by inheritance:
 
-- [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) to add or remove private endpoint trusted owners. The Cluster Administrator role includes all of the capabilities of the Cluster Operator role.
+- [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) to add or remove private endpoint trusted owners. The Cluster Admin role includes all of the capabilities of the Cluster Operator role.
 - [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) to list or get details about private endpoint trusted owners.
 
 ### Add a private endpoint trusted owner
