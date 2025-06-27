@@ -592,9 +592,12 @@ const dropzoneLabelEl    = document.querySelector('#screenshot-placeholder span'
 
   
       /* ── Config ─────────────────────────────────────────────────────── */
-      const FEEDBACK_ENDPOINT =
-        widgetRoot?.dataset.feedbackEndpoint?.trim() ||
-        'https://us-central1-release-notes-automation-prod.cloudfunctions.net/feedback-widget/api/feedback';
+      let feedbackData = '';
+if (widgetRoot && widgetRoot.dataset && widgetRoot.dataset.feedbackEndpoint) {
+  feedbackData = widgetRoot.dataset.feedbackEndpoint.trim();
+}
+const FEEDBACK_ENDPOINT = feedbackData ||
+  'https://us-central1-release-notes-automation-prod.cloudfunctions.net/feedback-widget/api/feedback';
   
       let currentRating = 0;
       let currentFile = null;
