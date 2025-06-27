@@ -1,0 +1,936 @@
+<!-- _includes/feedback-widget.html -->
+<div id="sticky-feedback-widget" data-docs-area="{{ page.docs_area }}">
+  <!-- Sticky button with star SVG icon -->
+  <button id="sticky-rating-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16" role="presentation" aria-hidden="true">
+      <path fill="currentColor" d="M7.538 1.11a.5.5 0 0 1 .924 0l1.537 3.696a.5.5 0 0 0 .421.306l3.99.32a.5.5 0 0 1 .285.878l-3.04 2.604a.5.5 0 0 0-.16.496l.928 3.893a.5.5 0 0 1-.747.542L8.261 11.76a.5.5 0 0 0-.522 0l-3.415 2.086a.5.5 0 0 1-.747-.542l.928-3.893a.5.5 0 0 0-.16-.496L1.304 6.31a.5.5 0 0 1 .285-.878l3.99-.32A.5.5 0 0 0 6 4.806L7.538 1.11Z"></path>
+    </svg>
+    Rate This Page
+  </button>
+
+  <!-- Feedback overlay -->
+  <div id="feedback-overlay">
+    <div id="feedback-window">
+      <span id="feedback-close-btn">&times;</span>
+
+      <div id="star-container">
+        <div id="star-rating">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
+      </div>
+
+      <div id="step1" class="feedback-step active">
+        <p>Please select a star rating above.</p>
+      </div>
+
+      <div id="step2" class="feedback-step">
+        <h3 id="feedback-heading">Tell us about your experience</h3>
+        <textarea id="comments" placeholder="Tell us about your experience"></textarea>
+        <input type="email" id="email" placeholder="Email Address (Optional)" />
+        
+        <!-- Enhanced screenshot section with drag & drop and cropping -->
+        <!-- Enhanced screenshot section with drag & drop and cropping -->
+<div id="screenshot-section">
+  <div
+    id="screenshot-dropzone"
+    title="Attach a screenshot of the area where you encountered the issue"
+    aria-label="Drop or click to attach a screenshot of the problem area"
+  >
+    <div id="screenshot-placeholder">
+      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+      </svg>
+      <span>Drop image here or click to browse</span>
+    </div>
+    <div id="screenshot-preview" style="display: none;">
+      <img
+        id="preview-image"
+        src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+        alt="Screenshot preview"
+      />
+      <div id="preview-info">
+        <span id="file-name"></span>
+        <span id="file-checkmark">✓</span>
+        <button id="remove-file" type="button">×</button>
+      </div>
+    </div>
+  </div>
+  <!-- Hint text to nudge the user -->
+  <p class="screenshot-hint">
+    Please attach a screenshot of the area where you encountered the problem.
+  </p>
+  <input type="file" id="screenshot" accept="image/*" />
+</div>
+
+
+        <!-- Screenshot cropping modal -->
+        <div id="crop-modal" style="display: none;">
+          <div id="crop-overlay">
+            <div id="crop-container">
+              <div id="crop-header">
+                <h3>Select the problem area</h3>
+                <button id="crop-close" type="button">×</button>
+              </div>
+              <div id="crop-canvas-container">
+                <canvas id="crop-canvas"></canvas>
+                <div id="crop-selection"></div>
+              </div>
+              <div id="crop-controls">
+                <button id="crop-cancel" type="button">Cancel</button>
+                <button id="crop-confirm" type="button">Use This Area</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button id="submit-btn">Send</button>
+      </div>
+
+      <div id="step3" class="feedback-step">
+        <h3>Thank you for your feedback!</h3>
+        <p>Your input helps us improve our documentation.</p>
+        <hr>
+        <h4>Explore More Documentation:</h4>
+        <ul id="doc-links">
+          <li><a href="https://www.cockroachlabs.com/docs/" target="_blank">CockroachDB Docs</a></li>
+          <li><a href="https://university.cockroachlabs.com/" target="_blank">Cockroach University</a></li>
+          <li><a href="https://forum.cockroachlabs.com/" target="_blank">Community Forums</a></li>
+          <li><a href="https://support.cockroachlabs.com/" target="_blank">CockroachDB Support</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Styles -->
+<style>
+  #sticky-feedback-widget {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    position: relative;
+    z-index: 9999;
+  }
+
+  #sticky-rating-btn {
+    position: fixed;
+    bottom: 120px;
+    right: 20px;
+    background-color: rgba(76, 14, 255, 0.05);
+    color: #4C0EFF;
+    border: 1.5px solid #4C0EFF;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    backdrop-filter: blur(4px);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  #sticky-rating-btn svg {
+    color: #4C0EFF;
+  }
+
+  #sticky-rating-btn:hover {
+    background-color: rgba(76, 14, 255, 0.1);
+    box-shadow: 0 2px 6px rgba(76, 14, 255, 0.2);
+  }
+
+  #feedback-overlay {
+    display: none;
+    position: fixed;
+    bottom: 160px;
+    right: 20px;
+    width: 320px;
+    max-width: 90%;
+    z-index: 10000;
+  }
+
+  #feedback-window {
+    position: relative;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    padding: 24px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  #feedback-close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+  }
+
+  #feedback-close-btn:hover {
+    color: #333;
+  }
+
+  #star-container {
+    text-align: center;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  #star-rating {
+    margin: 8px 0;
+  }
+
+  .star {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+    margin: 0 4px;
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+
+  .star.hover, .star.selected {
+    color: #FFD700;
+    transform: scale(1.3);
+  }
+
+  .feedback-step {
+    display: none;
+    text-align: center;
+  }
+
+  .feedback-step.active {
+    display: block;
+  }
+
+  textarea, input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin: 12px 0;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 12px;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  #screenshot {
+    display: none;
+  }
+
+  #screenshot-section {
+    margin: 16px 0;
+  }
+
+  #screenshot-dropzone {
+    border: 2px dashed #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    margin-bottom: 12px;
+  }
+
+  #screenshot-dropzone:hover {
+    border-color: #4C0EFF;
+    background-color: rgba(76, 14, 255, 0.02);
+  }
+
+  #screenshot-dropzone.drag-over {
+    border-color: #4C0EFF;
+    background-color: rgba(76, 14, 255, 0.05);
+  }
+
+  #screenshot-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 12px;
+  }
+
+  #screenshot-placeholder svg {
+    color: #999;
+  }
+
+  #screenshot-preview {
+    position: relative;
+  }
+
+  #preview-image {
+    max-width: 100%;
+    max-height: 120px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  #preview-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    font-size: 11px;
+  }
+
+  #file-name {
+    color: #333;
+    font-weight: 500;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #file-checkmark {
+    color: #22c55e;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  #remove-file {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+  }
+
+  #remove-file:hover {
+    background-color: #e5e7eb;
+    color: #333;
+  }
+
+  /* Crop modal styles */
+  #crop-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 20000;
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  
+
+  #crop-overlay {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  #crop-container {
+    background: white;
+    border-radius: 12px;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  #crop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+  }
+
+  #crop-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+  }
+
+  #crop-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+  }
+
+  #crop-close:hover {
+    color: #333;
+  }
+
+  #crop-canvas-container {
+    position: relative;
+    max-width: 800px;
+    max-height: 600px;
+    overflow: hidden;
+    margin: 20px;
+  }
+
+  #crop-canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    cursor: crosshair;
+  }
+
+  #crop-selection {
+    position: absolute;
+    border: 2px solid #4C0EFF;
+    background: rgba(76, 14, 255, 0.1);
+    pointer-events: none;
+    display: none;
+  }
+
+  #crop-controls {
+    display: flex;
+    gap: 12px;
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    justify-content: flex-end;
+  }
+
+  #crop-cancel, #crop-confirm {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+  }
+
+  #crop-cancel {
+    background: #f3f4f6;
+    color: #374151;
+  }
+
+  #crop-cancel:hover {
+    background: #e5e7eb;
+  }
+
+  #crop-confirm {
+    background: #4C0EFF;
+    color: white;
+  }
+
+  #crop-confirm:hover {
+    background: #3a0ccc;
+  }
+
+  
+
+  #submit-btn {
+  background-color: #4C0EFF;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: 16px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+#submit-btn:hover {
+  background-color: #3a0ccc;
+}
+
+  
+
+  #doc-links {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 16px;
+    text-align: left;
+  }
+
+  #doc-links li {
+    margin: 8px 0;
+  }
+
+  #doc-links a {
+    text-decoration: none;
+    color: #4C0EFF;
+    font-weight: 500;
+  }
+
+  #doc-links a:hover {
+    text-decoration: underline;
+  }
+
+  #feedback-window h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: #333;
+  }
+
+  #feedback-window h4 {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+  }
+
+  #feedback-window hr {
+    border: 0;
+    height: 1px;
+    background-color: #eee;
+    margin: 16px 0;
+  }
+
+  /* Base toast positioning & look */
+.user-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  z-index: 10001;
+  max-width: 300px;
+  color: white;
+  font-weight: 500;
+  /* Remove the old right:20px; */
+}
+
+/* Success state: purple instead of green */
+.user-message.success {
+  background: #4C0EFF; /* your purple theme */
+}
+
+/* Error state (optional): keep red or adjust */
+.user-message.error {
+  background: #EF4444;
+}
+
+/* Info state (optional): use purple tint or remove */
+.user-message.info {
+  background: rgba(76, 14, 255, 0.1);
+  color: #4C0EFF;
+}
+
+
+  .screenshot-hint {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+</style>
+
+<!-- Script -->
+<!-- 1. Load html2canvas before your widget script -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<!-- 2. Feedback-widget script with html2canvas drop-in capture -->
+<script>
+  (() => {
+    document.addEventListener('DOMContentLoaded', () => {
+      /* ── DOM shortcuts ─────────────────────────────────────────────── */
+      const $  = (sel) => document.querySelector(sel);
+      const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+  
+      const widgetRoot     = $('#sticky-feedback-widget');
+      const stickyBtn      = $('#sticky-rating-btn');
+      const feedbackOv     = $('#feedback-overlay');
+      const feedbackWin    = $('#feedback-window');
+      const closeBtn       = $('#feedback-close-btn');
+      const step1          = $('#step1');
+      const step2          = $('#step2');
+      const step3          = $('#step3');
+      const stars          = $$('.star');
+      const headingEl      = $('#feedback-heading');
+      const commentsEl     = $('#comments');
+      const emailEl        = $('#email');
+      
+      const screenshotEl   = $('#screenshot');
+      const submitBtn      = $('#submit-btn');
+      const dropzone       = $('#screenshot-dropzone');
+      const placeholder    = $('#screenshot-placeholder');
+      const preview        = $('#screenshot-preview');
+      const previewImg     = $('#preview-image');
+      const fileName       = $('#file-name');
+      const removeBtn      = $('#remove-file');
+      const cropModal      = $('#crop-modal');
+      const cropCanvas     = $('#crop-canvas');
+      const cropSelection  = $('#crop-selection');
+      const cropClose      = $('#crop-close');
+      const cropCancel     = $('#crop-cancel');
+      const cropConfirm    = $('#crop-confirm');
+      const screenshotHintEl   = document.querySelector('.screenshot-hint');
+const dropzoneLabelEl    = document.querySelector('#screenshot-placeholder span');
+
+  
+      /* ── Config ─────────────────────────────────────────────────────── */
+      const FEEDBACK_ENDPOINT =
+        widgetRoot?.dataset.feedbackEndpoint?.trim() ||
+        'https://us-central1-release-notes-automation-prod.cloudfunctions.net/feedback-widget/api/feedback';
+  
+      let currentRating = 0;
+      let currentFile = null;
+      let isSelecting = false;
+      let startX = 0, startY = 0;
+      let cropData = null;
+  
+      /* ── Helpers ────────────────────────────────────────────────────── */
+      const showStep = (step) => [step1, step2, step3]
+        .forEach((s) => s.classList.toggle('active', s === step));
+  
+      const resetWidget = () => {
+        currentRating = 0;
+        currentFile = null;
+        cropData = null;
+        stars.forEach((s) => s.classList.remove('hover', 'selected'));
+        commentsEl.value = '';
+        emailEl.value = '';
+        screenshotEl.value = '';
+        resetFilePreview();
+        cropModal.style.display = 'none';
+        headingEl.textContent  = 'Tell us about your experience';
+        commentsEl.placeholder = 'Tell us about your experience';
+        
+        showStep(step1);
+      };
+  
+      const resetFilePreview = () => {
+        placeholder.style.display = 'flex';
+        preview.style.display = 'none';
+        previewImg.src = '';
+        fileName.textContent = '';
+        dropzone.classList.remove('drag-over');
+      };
+  
+      const showFilePreview = (file) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          previewImg.src = e.target.result;
+          fileName.textContent = file.name;
+          placeholder.style.display = 'none';
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+        currentFile = file;
+      };
+  
+      const showUserMessage = (message, type = 'info') => {
+        const messageEl = document.createElement('div');
+        messageEl.className = `user-message ${type}`;
+        messageEl.textContent = message;
+        document.body.appendChild(messageEl);
+        setTimeout(() => messageEl.remove(), 4000);
+      };
+  
+
+
+/* ── Crop UI draw (simple high quality) ───────────────────────────── */
+const showCropModal = (sourceCanvas) => {
+  const ctx = cropCanvas.getContext('2d');
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+
+  // Use larger max dimensions but keep it simple
+  const maxW = 1000, maxH = 750;
+  let { width, height } = sourceCanvas;
+  let displayScale = 1;
+  
+  if (width > maxW || height > maxH) {
+    displayScale = Math.min(maxW/width, maxH/height);
+    width  = Math.round(width  * displayScale);
+    height = Math.round(height * displayScale);
+  }
+
+  // Simple canvas setup - no device ratio complications
+  cropCanvas.width = width;
+  cropCanvas.height = height;
+  cropCanvas.style.width = `${width}px`;
+  cropCanvas.style.height = `${height}px`;
+  
+  ctx.drawImage(sourceCanvas, 0, 0, width, height);
+
+  cropData = { 
+    sourceCanvas, 
+    displayScale: displayScale,
+    originalWidth: sourceCanvas.width,
+    originalHeight: sourceCanvas.height
+  };
+  cropModal.style.display = 'block';
+  cropSelection.style.display = 'none';
+};
+
+const handleCropSelection = (e) => {
+  const rect = cropCanvas.getBoundingClientRect();
+  const x = e.clientX - rect.left, y = e.clientY - rect.top;
+  if (e.type === 'mousedown') {
+    isSelecting = true; startX = x; startY = y;
+    cropSelection.style.display = 'block';
+    cropSelection.style.left = `${x}px`;
+    cropSelection.style.top  = `${y}px`;
+    cropSelection.style.width  = '0px';
+    cropSelection.style.height = '0px';
+  } else if (e.type === 'mousemove' && isSelecting) {
+    const w = Math.abs(x - startX), h = Math.abs(y - startY);
+    const left = Math.min(x, startX), top = Math.min(y, startY);
+    cropSelection.style.left   = `${left}px`;
+    cropSelection.style.top    = `${top}px`;
+    cropSelection.style.width  = `${w}px`;
+    cropSelection.style.height = `${h}px`;
+  } else if (e.type === 'mouseup') {
+    isSelecting = false;
+  }
+};
+
+const confirmCrop = () => {
+  const sel = cropSelection.getBoundingClientRect();
+  const cvs = cropCanvas.getBoundingClientRect();
+  if (sel.width < 10 || sel.height < 10) {
+    return showUserMessage('Please select a larger area to crop', 'error');
+  }
+  
+  // Convert display coordinates to original canvas coordinates
+  const x = Math.round((sel.left - cvs.left) / cropData.displayScale);
+  const y = Math.round((sel.top  - cvs.top ) / cropData.displayScale);
+  const w = Math.round(sel.width  / cropData.displayScale);
+  const h = Math.round(sel.height / cropData.displayScale);
+  
+  // Create output canvas at original resolution
+  const out = document.createElement('canvas');
+  out.width = w; 
+  out.height = h;
+  const ctx = out.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  
+  // Extract from original high-resolution canvas
+  ctx.drawImage(cropData.sourceCanvas, x, y, w, h, 0, 0, w, h);
+  
+  out.toBlob(blob => {
+    const file = new File([blob], 'screenshot-crop.png', { type: 'image/png' });
+    handleFile(file);
+    cropModal.style.display = 'none';
+    showUserMessage('Screenshot cropped successfully!', 'success');
+  }, 'image/png');
+};
+  
+      const handleFile = (file) => {
+        if (!file.type.startsWith('image/')) return;
+        showFilePreview(file);
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        screenshotEl.files = dt.files;
+      };
+  
+      // drag/drop & file-picker
+      dropzone.addEventListener('dragover',   e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+      dropzone.addEventListener('dragleave',  e => { e.preventDefault(); dropzone.classList.remove('drag-over'); });
+      dropzone.addEventListener('drop',       e => { e.preventDefault(); dropzone.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
+      dropzone.addEventListener('click',      () => screenshotEl.click());
+      screenshotEl.addEventListener('change', e => { if (e.target.files.length) handleFile(e.target.files[0]); });
+      removeBtn.addEventListener('click',     e => { e.stopPropagation(); resetFilePreview(); screenshotEl.value=''; currentFile=null; });
+  
+      // crop-modal events
+      cropCanvas.addEventListener('mousedown', handleCropSelection);
+      cropCanvas.addEventListener('mousemove', handleCropSelection);
+      cropCanvas.addEventListener('mouseup',   handleCropSelection);
+      cropCanvas.addEventListener('mouseleave',()=> isSelecting=false);
+      cropClose.addEventListener('click',    () => cropModal.style.display='none');
+      cropCancel.addEventListener('click',   () => cropModal.style.display='none');
+      cropConfirm.addEventListener('click',  confirmCrop);
+  
+      /* ── Overlay open/close ────────────────────────────────────────── */
+      stickyBtn.addEventListener('click', () => {
+        resetWidget();
+        feedbackOv.style.display = 'block';
+        stickyBtn.setAttribute('aria-expanded','true');
+        stars[0].focus();
+      });
+      const closeOverlay = () => {
+        feedbackOv.style.display = 'none';
+        stickyBtn.setAttribute('aria-expanded','false');
+        stickyBtn.focus();
+      };
+      closeBtn.addEventListener('click', closeOverlay);
+      document.addEventListener('click', e => {
+        if (feedbackOv.style.display==='block'
+            && !feedbackWin.contains(e.target)
+            && !stickyBtn.contains(e.target)) {
+          closeOverlay();
+        }
+      });
+  
+      /* ── Star-rating interactions ───────────────────────────────────── */
+
+const highlight = (val) =>
+  stars.forEach(s => s.classList.toggle('hover', +s.dataset.value <= val));
+
+// ── Enhanced setRating() ──
+const setRating = (val) => {
+  // 1) record rating & update star visuals
+  currentRating = val;
+  stars.forEach(s => {
+    const sel = +s.dataset.value <= val;
+    s.classList.toggle('selected', sel);
+    s.setAttribute('aria-checked', sel);
+  });
+
+  // 2) show the feedback form (step 2)
+  showStep(step2);
+
+  // 3) identify all the fields we only need for low ratings
+  const extras = [
+    commentsEl,
+    emailEl,
+    document.getElementById('screenshot-section'),
+    screenshotHintEl
+  ];
+
+  // 4) hide extras for 4★+; show for 1–3★
+  if (val >= 4) {
+    extras.forEach(el => el && (el.style.display = 'none'));
+  } else {
+    extras.forEach(el => el && (el.style.display = 'block'));
+  }
+
+  // 5) set heading text
+  if (val >= 4) {
+    // high ratings: simple thank-you
+    headingEl.textContent = 'Thank you for your feedback!';
+    // clear placeholder in case textarea is accidentally shown
+    commentsEl.placeholder = '';
+  } else {
+    // low ratings: invite comments
+    headingEl.textContent      = 'Tell us how we can improve';
+    commentsEl.placeholder     = 'Tell us how we can improve';
+  }
+
+  // 6) always refresh dropzone label (even if hidden)
+  dropzoneLabelEl.textContent = val <= 3
+    ? 'Drop image here or click to browse the problem area'
+    : 'Drop image here or click to browse';
+};
+
+
+
+// ── Wire up each star (accessibility + interactions) ──
+stars.forEach(star => {
+  star.setAttribute('tabindex', '0');
+  star.setAttribute('role', 'radio');
+  star.setAttribute('aria-label', `${star.dataset.value} star`);
+  star.setAttribute('aria-checked', 'false');
+
+  star.addEventListener('mouseover', () => highlight(+star.dataset.value));
+  star.addEventListener('mouseout',  () => highlight(currentRating));
+  star.addEventListener('click',     () => setRating(+star.dataset.value));
+
+  star.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowDown'].includes(e.key))  setRating(Math.max(1, currentRating - 1));
+    if (['ArrowRight','ArrowUp'].includes(e.key))   setRating(Math.min(5, currentRating + 1));
+    if (['Enter',' '].includes(e.key))              setRating(+star.dataset.value);
+  });
+});
+  
+      /* ── Determine docs area from sidebar ──────────────────────────── */
+      const determineDocsArea = () => {
+        const activeLis = $$('#sidebar li.active');
+        if (!activeLis.length) return '';
+        const deepestLi = activeLis.at(-1);
+        let tier1 = deepestLi;
+        while (tier1 && !tier1.classList.contains('tier-1')) {
+          tier1 = tier1.parentElement.closest('li');
+        }
+        const tier1Title = tier1?.querySelector(':scope > a')?.textContent.trim() || '';
+        if (tier1Title === 'Self-Hosted Deployments') {
+          let tier2 = deepestLi;
+          if (!tier2.classList.contains('tier-2')) {
+            tier2 = tier2.parentElement.closest('li.tier-2');
+          }
+          return tier2?.querySelector(':scope > a')?.textContent.trim() || tier1Title;
+        }
+        return tier1Title;
+      };
+  
+      /* ── Submit feedback ───────────────────────────────────────────── */
+      submitBtn.addEventListener('click', async () => {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        const formData = new FormData();
+        formData.append('page_url',   location.href);
+        formData.append('page_title', document.title);
+        formData.append('star_rating', currentRating);
+        formData.append('comment',    commentsEl.value);
+        formData.append('email',      emailEl.value);
+        formData.append('docs_area',  determineDocsArea());
+        if (currentFile) formData.append('screenshot', currentFile);
+        try {
+  const resp = await fetch(FEEDBACK_ENDPOINT, {
+    method: 'POST',
+    mode:   'cors',
+    body:   formData,
+  });
+  if (resp.ok) {
+    showUserMessage('Feedback sent successfully!', 'success');
+  } else {
+    const status = resp.status;
+    const body   = await resp.text();
+    console.error(`Feedback API error ${status}:`, body);
+
+    if (status >= 400 && status < 500) {
+      // Client-side error
+      showUserMessage(
+        'There was a problem with your submission. Please check your inputs and try again.',
+        'info'
+      );
+    } else if (status >= 500) {
+      // Server-side error
+      showUserMessage(
+        'We’re sorry—our feedback service is temporarily unavailable. Please try again later.',
+        'error'
+      );
+    } else {
+      // Fallback for unexpected status codes
+      showUserMessage('Failed to send feedback. Please try again.', 'error');
+    }
+  }
+} catch (err) {
+  console.error('Network error sending feedback:', err);
+  showUserMessage(
+    'Network error. Please check your connection and try again.',
+    'error'
+  );
+}
+
+        closeOverlay();
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send';
+      });
+    });
+  })();
+</script>
