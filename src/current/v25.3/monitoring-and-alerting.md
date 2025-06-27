@@ -21,7 +21,7 @@ This page describes the monitoring and observability tools that are built into C
 CockroachDB includes several tools to help you monitor your cluster's workloads and performance.
 
 {{site.data.alerts.callout_danger}}
-If a cluster becomes unavailable, most of the monitoring tools in the following sections become unavailable. In that case, Cockroach Labs recommends that you consult the [cluster logs]({% link {{ page.version.version }}/logging-overview.md %}). To maintain access to a cluster's historical metrics when the cluster is unavailable, configure a [third-party monitoring tool]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}) like Prometheus or Datadog to collect metrics periodically from the [Prometheus endpoint](#prometheus-endpoint). The metrics are stored outside the cluster, and can be used to help troubleshoot what led up to an outage.
+If a cluster becomes unavailable, most of the monitoring tools in the following sections become unavailable. In that case, Cockroach Labs recommends that you consult the [cluster logs]({% link {{ page.version.version }}/logging-overview.md %}). To maintain access to a cluster's historical metrics when the cluster is unavailable, configure a [third-party monitoring tool]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}) like Prometheus or Datadog to collect metrics periodically from the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}). The metrics are stored outside the cluster, and can be used to help troubleshoot what led up to an outage.
 {{site.data.alerts.end}}
 
 ### DB Console
@@ -36,7 +36,7 @@ The [Metrics dashboards]({% link {{ page.version.version }}/ui-overview-dashboar
 
 To learn more, refer to [Overview Dashboard]({% link {{ page.version.version }}/ui-overview-dashboard.md %}).
 
-Each cluster automatically exposes its metrics at an [endpoint in Prometheus format](#prometheus-endpoint), enabling you to collect them in an external tool like Datadog or your own Prometheus, Grafana, and AlertManager instances. These tools:
+Each cluster automatically exposes its metrics at an [endpoint in Prometheus format]({% link {{ page.version.version }}/prometheus-endpoint.md %}), enabling you to collect them in an external tool like Datadog or your own Prometheus, Grafana, and AlertManager instances. These tools:
 
 - Collect metrics from the cluster's Prometheus endpoint at an interval you define.
 - Store historical metrics according to your data retention requirements.
@@ -45,17 +45,17 @@ Each cluster automatically exposes its metrics at an [endpoint in Prometheus for
 
 Metrics collected by the DB Console are stored within the cluster, and the SQL queries that create the reports on the Metrics dashboards also impose load on the cluster. To avoid this additional load, or if you rely on external tools for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
 
-When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint](#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
+When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
 
 #### SQL Activity pages
 
 The SQL Activity pages, which are located within **SQL Activity** in DB Console, provide information about SQL [statements]({% link {{ page.version.version }}/ui-statements-page.md %}), [transactions]({% link {{ page.version.version }}/ui-transactions-page.md %}), and [sessions]({% link {{ page.version.version }}/ui-sessions-page.md %}).
 
-The information on the SQL Activity pages comes from the cluster's [`crdb_internal` system catalog](#crdb_internal-system-catalog). It is not exported via the cluster's [Prometheus endpoint](#prometheus-endpoint).
+The information on the SQL Activity pages comes from the cluster's [`crdb_internal` system catalog](#crdb_internal-system-catalog). It is not exported via the cluster's [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}).
 
 ### Cluster API
 
-The [Cluster API]({% link {{ page.version.version }}/cluster-api.md %}) is a REST API that runs in the cluster and provides much of the same information about your cluster and nodes as is available from the [DB Console](#db-console) or the [Prometheus endpoint](#prometheus-endpoint), and is accessible from each node at the same address and port as the DB Console.
+The [Cluster API]({% link {{ page.version.version }}/cluster-api.md %}) is a REST API that runs in the cluster and provides much of the same information about your cluster and nodes as is available from the [DB Console](#db-console) or the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}), and is accessible from each node at the same address and port as the DB Console.
 
 If the cluster is unavailable, the Cluster API is also unavailable.
 
@@ -140,7 +140,7 @@ Otherwise, it returns an HTTP `200 OK` status response code with an empty body:
 {{site.data.alerts.callout_info}}
 The JSON endpoints are deprecated in favor of the [Cluster API](#cluster-api).
 
-The `/_status/vars` metrics endpoint is in Prometheus format and is not deprecated. For more information, refer to [Prometheus endpoint](#prometheus-endpoint).
+The `/_status/vars` metrics endpoint is in Prometheus format and is not deprecated. For more information, refer to [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}).
 {{site.data.alerts.end}}
 
 Several endpoints return raw status meta information in JSON at `http://<host>:<http-port>/#/debug`. You can investigate and use these endpoints, but note that they are subject to change.
@@ -158,35 +158,12 @@ The [`cockroach node status`]({% link {{ page.version.version }}/cockroach-node.
 
 ### Prometheus endpoint
 
-Every node of a CockroachDB cluster exports granular time-series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}), an open source tool for storing, aggregating, and querying time-series data. The Prometheus format is human-readable and can be processed to work with other third-party monitoring systems such as [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd). Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), collect metrics from a cluster's Prometheus endpoint.
+Each node in a CockroachDB cluster exports granular time-series metrics at two available endpoints:
 
-To access the Prometheus endpoint of a cluster running on `localhost:8080`:
+- [`http://<host>:<http-port>/_status/vars`]({% link {{ page.version.version }}/prometheus-endpoint.md %}#_status-vars)
+- {% include_cached new-in.html version="v25.3" %}[`http://<host>:<http-port>/metrics`]({% link {{ page.version.version }}/prometheus-endpoint.md %}#metrics)
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ curl http://localhost:8080/_status/vars
-~~~
-
-~~~
-# HELP gossip_infos_received Number of received gossip Info objects
-# TYPE gossip_infos_received counter
-gossip_infos_received 0
-# HELP sys_cgocalls Total number of cgo calls
-# TYPE sys_cgocalls gauge
-sys_cgocalls 3501
-# HELP sys_cpu_sys_percent Current system cpu percentage
-# TYPE sys_cpu_sys_percent gauge
-sys_cpu_sys_percent 1.098855319644276e-10
-...
-~~~
-
-{{site.data.alerts.callout_info}}
-In addition to using the exported time-series data to monitor a cluster via an external system, you can write alerting rules against them to make sure you are promptly notified of critical events or issues that may require intervention or investigation. See [Events to alert on](#events-to-alert-on) for more details.
-{{site.data.alerts.end}}
-
-If you rely on external tools for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
-
-When storage of time-series metrics is disabled, the DB Console Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
+For more information, refer to the [Prometheus Endpoint page]({% link {{ page.version.version }}/prometheus-endpoint.md %}).
 
 ### Critical nodes endpoint
 
@@ -1037,7 +1014,7 @@ curl http://localhost:8080/_status/stores/1
 
 In addition to actively monitoring the overall health and performance of a cluster, it is also essential to configure alerting rules that promptly send notifications when CockroachDB experiences events that require investigation or intervention.
 
-Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), also support event-based alerting using metrics collected from a cluster's [Prometheus endpoint](#prometheus-endpoint). Refer to the documentation for an integration for more details. This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus's open source [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) service.
+Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), also support event-based alerting using metrics collected from a cluster's [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}). Refer to the documentation for an integration for more details. This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus's open source [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) service.
 
 ### Alertmanager
 
@@ -1130,7 +1107,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when a node has been down for 15 minutes or more.
 
-- **How to detect:** If a node is down, its `_status/vars` endpoint will return a `Connection refused` error. Otherwise, the `liveness_livenodes` metric will be the total number of live nodes in the cluster.
+- **How to detect:** If a node is down, its Prometheus endpoint will return a `Connection refused` error. Otherwise, the `liveness_livenodes` metric will be the total number of live nodes in the cluster.
 
 - **Rule definition:** Use the `InstanceDead` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
@@ -1138,7 +1115,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert if a node has restarted more than once in the last 10 minutes.
 
-- **How to detect:** Calculate this using the number of times the `sys_uptime` metric in the node's `_status/vars` output was reset back to zero. The `sys_uptime` metric gives you the length of time, in seconds, that the `cockroach` process has been running.
+- **How to detect:** Calculate this using the number of times the `sys_uptime` metric in the node's Prometheus endpoint output was reset back to zero. The `sys_uptime` metric gives you the length of time, in seconds, that the `cockroach` process has been running.
 
 - **Rule definition:** Use the `InstanceFlapping` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
@@ -1146,7 +1123,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when a node has less than 15% of free space remaining.
 
-- **How to detect:** Divide the `capacity` metric by the `capacity_available` metric in the node's `_status/vars` output.
+- **How to detect:** Divide the `capacity` metric by the `capacity_available` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `StoreDiskLow` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
@@ -1156,13 +1133,13 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when a node is not executing SQL despite having connections.
 
-- **How to detect:** The `sql_conns` metric in the node's `_status/vars` output will be greater than `0` while the `sql_query_count` metric will be `0`. You can also break this down by statement type using `sql_select_count`, `sql_insert_count`, `sql_update_count`, and `sql_delete_count`.
+- **How to detect:** The `sql_conns` metric in the node's Prometheus endpoint output will be greater than `0` while the `sql_query_count` metric will be `0`. You can also break this down by statement type using `sql_select_count`, `sql_insert_count`, `sql_update_count`, and `sql_delete_count`.
 
 #### CA certificate expires soon
 
 - **Rule:** Send an alert when the CA certificate on a node will expire in less than a year.
 
-- **How to detect:** Calculate this using the `security_certificate_expiration_ca` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `security_certificate_expiration_ca` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `CACertificateExpiresSoon` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
@@ -1170,7 +1147,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when a node's certificate will expire in less than a year.
 
-- **How to detect:** Calculate this using the `security_certificate_expiration_node` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `security_certificate_expiration_node` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `NodeCertificateExpiresSoon` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
@@ -1184,7 +1161,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when the number of ranges with fewer live replicas than needed for quorum is non-zero for too long.
 
-- **How to detect:** Calculate this using the `ranges_unavailable` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `ranges_unavailable` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `UnavailableRanges` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
 
@@ -1192,7 +1169,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when a replica stops serving traffic due to other replicas being offline for too long.
 
-- **How to detect:** Calculate this using the `kv_replica_circuit_breaker_num_tripped_replicas` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `kv_replica_circuit_breaker_num_tripped_replicas` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `TrippedReplicaCircuitBreakers` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
 
@@ -1200,7 +1177,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when the number of ranges with replication below the [replication factor]({% link {{ page.version.version }}/configure-replication-zones.md %}#num_replicas) is non-zero for too long.
 
-- **How to detect:** Calculate this using the `ranges_underreplicated` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `ranges_underreplicated` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `UnderreplicatedRanges` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
 
@@ -1208,7 +1185,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when requests are taking a very long time in replication. This can be a symptom of a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-splits).
 
-- **How to detect:** Calculate this using the `requests_slow_raft` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `requests_slow_raft` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `RequestsStuckInRaft` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
 
@@ -1216,7 +1193,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - **Rule:** Send an alert when a cluster is getting close to the [open file descriptor limit]({% link {{ page.version.version }}/recommended-production-settings.md %}#file-descriptors-limit).
 
-- **How to detect:** Calculate this using the `sys_fd_softlimit` metric in the node's `_status/vars` output.
+- **How to detect:** Calculate this using the `sys_fd_softlimit` metric in the node's Prometheus endpoint output.
 
 - **Rule definition:** Use the `HighOpenFDCount` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
 
