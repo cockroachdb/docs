@@ -861,24 +861,45 @@ stars.forEach(star => {
 });
   
       /* ── Determine docs area from sidebar ──────────────────────────── */
-      const determineDocsArea = () => {
-        const activeLis = $$('#sidebar li.active');
-        if (!activeLis.length) return '';
-        const deepestLi = activeLis.at(-1);
-        let tier1 = deepestLi;
-        while (tier1 && !tier1.classList.contains('tier-1')) {
-          tier1 = tier1.parentElement.closest('li');
-        }
-        const tier1Title = tier1?.querySelector(':scope > a')?.textContent.trim() || '';
-        if (tier1Title === 'Self-Hosted Deployments') {
-          let tier2 = deepestLi;
-          if (!tier2.classList.contains('tier-2')) {
-            tier2 = tier2.parentElement.closest('li.tier-2');
-          }
-          return tier2?.querySelector(':scope > a')?.textContent.trim() || tier1Title;
-        }
-        return tier1Title;
-      };
+      function determineDocsArea() {
+  const activeLis = Array.from(document.querySelectorAll('#sidebar li.active'));
+  if (activeLis.length === 0) return '';
+
+  const deepestLi = activeLis[activeLis.length - 1];
+  let tier1 = deepestLi;
+  while (tier1 && !tier1.classList.contains('tier-1')) {
+    tier1 = tier1.parentElement.closest('li');
+  }
+
+  // ----- replace optional-chain for tier1Title -----
+  let tier1Title = '';
+  if (tier1) {
+    const a1 = tier1.querySelector(':scope > a');
+    if (a1 && a1.textContent) {
+      tier1Title = a1.textContent.trim();
+    }
+  }
+
+  if (tier1Title === 'Self-Hosted Deployments') {
+    let tier2 = deepestLi;
+    if (!tier2.classList.contains('tier-2')) {
+      tier2 = tier2.parentElement.closest('li.tier-2');
+    }
+
+    // ----- replace optional-chain for tier2Title -----
+    let tier2Title = '';
+    if (tier2) {
+      const a2 = tier2.querySelector(':scope > a');
+      if (a2 && a2.textContent) {
+        tier2Title = a2.textContent.trim();
+      }
+    }
+    return tier2Title || tier1Title;
+  }
+
+  return tier1Title;
+}
+
   
       /* ── Submit feedback ───────────────────────────────────────────── */
       submitBtn.addEventListener('click', async () => {
