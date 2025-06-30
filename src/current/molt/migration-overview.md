@@ -58,13 +58,13 @@ MOLT [Fetch](#fetch) and [Verify](#verify) are CLI-based to maximize control, au
   <tr>
     <td class="comparison-chart__feature"><a href="#fetch"><b>Fetch</b></a></td>
     <td>Initial data load; optional continuous replication</td>
-    <td>PostgreSQL 11-16, MySQL 5.7-8.0+, CockroachDB</td>
+    <td>PostgreSQL 11-16, MySQL 5.7-8.0+, Oracle Database 19c (Enterprise Edition) and 21c (Express Edition), CockroachDB</td>
     <td>GA</td>
   </tr>
   <tr>
     <td class="comparison-chart__feature"><a href="#verify"><b>Verify</b></a></td>
     <td>Schema and data validation</td>
-    <td>PostgreSQL 12-16, MySQL 5.7-8.0+, CockroachDB</td>
+    <td>PostgreSQL 12-16, MySQL 5.7-8.0+, Oracle Database 19c (Enterprise Edition) and 21c (Express Edition), CockroachDB</td>
     <td><a href="{% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}">Preview</a></td>
   </tr>
 </table>
