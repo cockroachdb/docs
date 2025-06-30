@@ -5,28 +5,28 @@ The following table describes the high level permissions given by each Cockroach
 |  | Org. Member | Org. Admin | Billing Coord. | Cluster Creator | Cluster Operator | Cluster Admin | Cluster Developer | Folder Admin | Folder Mover |
 |---|-------------|-------------|------------------|------------------|-------------------|----------------|--------------------|----------------|----------------|
 | **User/Access Management** |  |  |  |  |  |  |  |  |  |
-| Apply roles at the [folder]({% link cockroachcloud/folders.md %}) scope | — | — | — | — | — | — | — | ✓ | — |
 | Assign and revoke roles | — | ✓ | — | — | — | ✓ | — | — | — |
-| Assign user roles | — | — | — | — | — | ✓ | — | — | — |
+| Assign {{ site.data.products.cloud }} user and service account roles | — | — | — | — | — | ✓ | — | — | — |
 | Manage SQL users | — | — | — | — | — | ✓ | — | — | — |
-| Manage users and service accounts | — | ✓ | — | — | — | ✓ | — | — | — |
+| Manage {{ site.data.products.cloud }} users and service accounts | — | ✓ | — | — | — | ✓ | — | — | — |
+| Apply roles at the [folder]({% link cockroachcloud/folders.md %}) scope | — | — | — | — | — | — | — | ✓ | — |
 | **Cluster & Infrastructure** |  |  |  |  |  |  |  |  |  |
-| Configure [maintenance windows]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) | — | — | — | — | ✓ | ✓ | — | — | — |
 | Create cluster or [private cluster]({% link cockroachcloud/private-clusters.md %}) | — | — | — | ✓ | — | — | — | — | — |
-| Create/edit/delete cluster | — | — | — | — | — | ✓ | — | — | — |
-| Edit/delete clusters created by this user | — | — | — | ✓ | — | — | — | — | — |
+| Create / edit / delete cluster | — | — | — | — | — | ✓ | — | — | — |
+| Edit / delete clusters created by this user | — | — | — | ✓ | — | — | — | — | — |
 | Create / delete / manage [folders]({% link cockroachcloud/folders.md %}) | — | — | — | — | — | — | — | ✓ | — |
 | Move cluster between [folders]({% link cockroachcloud/folders.md %}) | — | — | — | — | — | — | — | — | ✓ |
 | Scale nodes | — | — | — | — | ✓ | ✓ | — | — | — |
 | Upgrade CockroachDB | — | — | — | — | ✓ | ✓ | — | — | — |
-| Use the [{{ site.data.products.cloud }}Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}) | — | — | — | ✓ | — | ✓ | — | — | — |
+| Configure [maintenance windows]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) | — | — | — | — | ✓ | ✓ | — | — | — |
+| Use the [{{ site.data.products.cloud }} Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}) | — | — | — | ✓ | — | ✓ | — | — | — |
 | **Monitoring & Observability** |  |  |  |  |  |  |  |  |  |
-| Send [test alerts]({% link cockroachcloud/alerts-page.md %}#send-a-test-alert) | — | — | — | — | ✓ | — | — | — | — |
+| View cluster details | — | — | — | — | — | — | ✓ | — | — |
 | View [audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %}) | — | — | — | — | ✓ | — | — | — | — |
 | View [insights]({% link cockroachcloud/insights-page.md %}) | — | — | — | — | ✓ | ✓ | — | — | — |
 | View [jobs]({% link cockroachcloud/jobs-page.md %}) | — | — | — | — | ✓ | — | — | — | — |
 | View [metrics]({% link cockroachcloud/metrics.md %}) | — | — | — | — | ✓ | ✓ | — | — | — |
-| View cluster details | — | — | — | — | — | — | ✓ | — | — |
+| Send [test alerts]({% link cockroachcloud/alerts-page.md %}#send-a-test-alert) | — | — | — | — | ✓ | — | — | — | — |
 | Access [DB console]({% link cockroachcloud/network-authorization.md %}#db-console) | — | — | — | — | ✓ | ✓ | ✓ | — | — |
 | **Security** |  |  |  |  |  |  |  |  |  |
 | Configure [cluster SSO]({% link cockroachcloud/cloud-sso-sql.md %}) | — | — | — | — | ✓ | ✓ | — | — | — |
@@ -37,9 +37,9 @@ The following table describes the high level permissions given by each Cockroach
 | Manage databases | — | — | — | — | ✓ | ✓ | — | — | — |
 | View / restore [backups]({% link cockroachcloud/backup-and-restore-overview.md %}) | — | — | — | — | ✓ | ✓ | — | — | — |
 | **Billing & Licensing** |  |  |  |  |  |  |  |  |  |
-| [Manage billing]({% link cockroachcloud/billing-management.md %}) | — | — | ✓ | — | — | — | — | — | — |
+| Manage [billing]({% link cockroachcloud/billing-management.md %}) | — | — | ✓ | — | — | — | — | — | — |
 | Manage [email alerts]({% link cockroachcloud/alerts-page.md %}#configure-alerts) | — | ✓ | — | — | — | — | — | — | — |
-| Manage [enterprise licenses]({% link {{ site.current_cloud_version }}/licensing-faqs.md %}#obtain-a-license) | — | ✓ | — | — | — | — | — | — | — |
+| Manage CockroachDB [Self-Hosted cluster licenses]({% link {{ site.current_cloud_version }}/licensing-faqs.md %}#obtain-a-license) | — | ✓ | — | — | — | — | — | — | — |
 
 </div>
 
