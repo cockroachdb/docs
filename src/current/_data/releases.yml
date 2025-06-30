@@ -8883,7 +8883,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.19
-  cloud_only: true
 
 
 - release_name: v25.1.8
