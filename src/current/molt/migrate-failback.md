@@ -5,54 +5,131 @@ toc: true
 docs_area: migrate
 ---
 
-If issues arise during the migration, you can start MOLT Fetch in `failback` mode after stopping replication and before sending new writes to CockroachDB. Failing back to the source database ensures that data remains consistent on the source, in case you need to roll back the migration.
+If issues arise during migration, run MOLT Fetch in `failback` mode after stopping replication and before writing to CockroachDB. This ensures that data remains consistent on the source in case you need to roll back the migration.
 
-{% assign tab_names_html = "Load and replicate;Phased migration;Failback" %}
-{% assign html_page_filenames = "migrate-to-cockroachdb.html;migrate-in-phases.html;migrate-failback.html" %}
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
 
-{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder="molt" %}
+## Prepare the CockroachDB cluster
 
-## Before you begin
-
-[Enable rangefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) in the CockroachDB SQL shell:
+[Enable rangefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) on the CockroachDB cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
 
-Select the source dialect you migrated to CockroachDB:
+<section class="filter-content" markdown="1" data-scope="oracle">
+## Grant Oracle user permissions
 
-<div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
-    <button class="filter-button" data-scope="mysql">MySQL</button>
-</div>
+You should have already created a migration user on the source database with the necessary privileges. Refer to [Create migration user on source database]({% link molt/migrate-data-load-replicate-only.md %}?filters=oracle#create-migration-user-on-source-database).
 
-## Step 1. Stop replication to CockroachDB
+Grant the Oracle user additional `INSERT` and `UPDATE` privileges on the tables to fail back:
 
-Cancel replication to CockroachDB by entering `ctrl-c` to issue a `SIGTERM` signal to the `fetch` process. This returns an exit code `0`.
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.employees TO MIGRATION_USER;
+GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.payments TO MIGRATION_USER;
+GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.orders TO MIGRATION_USER;
+~~~
+</section>
 
-## Step 2. Fail back from CockroachDB
+## Configure failback
 
-The following example watches the `employees` table for change events.
+Configure the MOLT Fetch connection strings and filters for `failback` mode, ensuring that the CockroachDB changefeed is correctly targeting your original source.
 
-1. Issue the [MOLT Fetch]({% link molt/molt-fetch.md %}) command to fail back to the source database, specifying `--mode failback`. For details on this mode, refer to the [MOLT Fetch]({% link molt/molt-fetch.md %}#fail-back-to-source-database) page.
+### Connection strings
 
-    {{site.data.alerts.callout_success}}
-    Be mindful when specifying the connection strings: `--source` is the CockroachDB connection string and `--target` is the connection string of the database you migrated from.
-    {{site.data.alerts.end}}
+In `failback` mode, the `--source` and `--target` connection strings are reversed from other migration modes: 
 
-    Use the `--stagingSchema` replication flag to provide the name of the staging schema. This is found in the `staging database name` message that is written at the beginning of the [replication task]({% link molt/migrate-in-phases.md %}#step-6-replicate-changes-to-cockroachdb).
+`--source` is the CockroachDB connection string. For example:
+
+~~~
+--target 'postgres://crdb_user@localhost:26257/defaultdb?sslmode=verify-full'
+~~~
+
+`--target` is the connection string of the database you migrated from.
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+For example:
+
+~~~
+--source 'postgres://postgres:postgres@localhost:5432/molt?sslmode=verify-full'
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+For example:
+
+~~~
+--source 'mysql://user:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt'
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+For example:
+
+~~~
+--source 'oracle://C%23%23MIGRATION_USER:password@host:1521/ORCLPDB1'
+~~~
+
+{{site.data.alerts.callout_info}}
+With Oracle Multitenant deployments, `--source-cdb` is **not** necessary for `failback`.
+{{site.data.alerts.end}}
+</section>
+
+### Secure changefeed for failback
+
+`failback` mode creates a [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) and sets up a [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) to pass change events from CockroachDB to the failback target. In production, you should override the [default insecure changefeed]({% link molt/molt-fetch.md %}#default-insecure-changefeed) with secure settings. 
+
+Provide these overrides in a JSON file. At minimum, the JSON should include the base64-encoded client certificate ([`client_cert`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#client-cert)), key ([`client_key`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#client-key)), and CA ([`ca_cert`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#ca-cert)) for the webhook sink.
+
+{% include_cached copy-clipboard.html %}
+~~~ json
+{
+  "sink_query_parameters": "client_cert={base64 cert}&client_key={base64 key}&ca_cert={base64 CA cert}"
+}
+~~~
+
+{{site.data.alerts.callout_success}}
+In the `molt fetch` command, use `--replicator-flags` to specify the paths to the server certificate and key for the webhook sink. Refer to [Replication flags](#replication-flags).
+{{site.data.alerts.end}}
+
+Pass the JSON file path to `molt` via `--changefeeds-path`. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ 
+--changefeeds-path 'changefeed-secure.json'
+~~~
+
+Because the changefeed runs inside the CockroachDB cluster, the `--changefeeds-path` file must reference a webhook endpoint address reachable by the cluster, not necessarily your local workstation.
+
+For details, refer to [Changefeed override settings]({% link molt/molt-fetch.md %}#changefeed-override-settings).
+
+### Replication flags
+
+{% include molt/fetch-replicator-flags.md %}
+
+## Fail back from CockroachDB
+
+Start failback to the source database.
+
+1. Cancel replication to CockroachDB by entering `ctrl-c` to issue a `SIGTERM` signal to the `fetch` process. This returns an exit code `0`.
+
+1. Issue the [MOLT Fetch]({% link molt/molt-fetch.md %}) command to fail back to the source database, specifying `--mode failback`. In this example, we filter the `migration_schema` schema and the `employees`, `payments`, and `orders` tables, configure the staging schema with `--replicator-flags`, and use `--changefeeds-path` to provide the secure changefeed override.
 
     <section class="filter-content" markdown="1" data-scope="postgres">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     molt fetch \
-    --source 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full' \
-    --target 'postgres://postgres:postgres@localhost:5432/molt?sslmode=verify-full' \
-    --table-filter 'employees' \
-    --non-interactive \
-    --replicator-flags "--stagingSchema _replicator_1739996035106984000" \
+    --source $SOURCE \
+    --target $TARGET \
+    --schema-filter 'migration_schema' \
+    --table-filter 'employees|payments|orders' \
+    --replicator-flags '--stagingSchema _replicator_1739996035106984000 --tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key' \
     --mode failback \
     --changefeeds-path 'changefeed-secure.json'
     ~~~
@@ -62,30 +139,29 @@ The following example watches the `employees` table for change events.
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     molt fetch \
-    --source 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full' \
-    --target 'mysql://user:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt' \
-    --table-filter 'employees' \
-    --non-interactive \
-    --replicator-flags "--stagingSchema _replicator_1739996035106984000" \
+    --source $SOURCE \
+    --target $TARGET \
+    --schema-filter 'migration_schema' \
+    --table-filter 'employees|payments|orders' \
+    --replicator-flags '--stagingSchema _replicator_1739996035106984000 --tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key' \
     --mode failback \
     --changefeeds-path 'changefeed-secure.json'
     ~~~
     </section>
 
-    `--changefeeds-path` specifies a path to `changefeed-secure.json`, which should contain the following setting override:
-
+    <section class="filter-content" markdown="1" data-scope="oracle">
     {% include_cached copy-clipboard.html %}
-    ~~~ json
-    {
-        "sink_query_parameters": "client_cert={base64 cert}&client_key={base64 key}&ca_cert={base64 CA cert}"
-    }
+    ~~~ shell
+    molt fetch \
+    --source $SOURCE \
+    --target $TARGET \
+    --schema-filter 'migration_schema' \
+    --table-filter 'employees|payments|orders' \
+    --replicator-flags '--stagingSchema _replicator_1739996035106984000 --tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key --userscript table_filter.ts' \
+    --mode failback \
+    --changefeeds-path 'changefeed-secure.json'
     ~~~
-
-    `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, use the command `base64 -i ./client.crt | jq -R -r '@uri'`).
-
-    {{site.data.alerts.callout_success}}
-    For details on the default changefeed settings and how to override them, refer to [Changefeed override settings]({% link molt/molt-fetch.md %}#changefeed-override-settings).
-    {{site.data.alerts.end}}
+    </section>
 
 1. Check the output to observe `fetch progress`.
 
@@ -110,9 +186,7 @@ The following example watches the `employees` table for change events.
 ## See also
 
 - [Migration Overview]({% link molt/migration-overview.md %})
+- [Migration Strategy]({% link molt/migration-strategy.md %})
 - [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
-- [Migration Overview]({% link molt/migration-overview.md %})
-- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
-- [Migrate to CockroachDB in Phases]({% link molt/migrate-in-phases.md %})

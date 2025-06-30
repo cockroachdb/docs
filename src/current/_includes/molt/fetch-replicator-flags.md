@@ -1,0 +1,90 @@
+In the `molt fetch` command, use `--replicator-flags` to pass options to the included `replicator` process that handles continuous replication. For details on all available flags, refer to the [MOLT Fetch documentation]({% link molt/molt-fetch.md %}#replication-flags).
+
+{% if page.name == "migrate-data-load-replicate-only.md" %}
+<section class="filter-content" markdown="1" data-scope="postgres">
+|       Flag      |                                                  Description                                                   |
+|-----------------|----------------------------------------------------------------------------------------------------------------|
+| `--metricsAddr` | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`. |
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+|        Flag        |                                                  Description                                                   |
+|--------------------|----------------------------------------------------------------------------------------------------------------|
+| `--defaultGTIDSet` | **Required.** Default GTID set for changefeed.                                                                 |
+| `--metricsAddr`    | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`. |
+
+Replication from MySQL requires `--defaultGTIDSet`, which specifies the MySQL GTID set. To find your GTID record, run the following command on MySQL: 
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT source_uuid, min(interval_start), max(interval_end) 
+FROM mysql.gtid_executed 
+GROUP BY source_uuid;
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+|         Flag        |                                                             Description                                                              |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| `--scn`             | **Required.** Snapshot System Change Number (SCN) for the initial changefeed starting point.                                         |
+| `--backfillFromSCN` | **Required.** SCN of the earliest active transaction at the time of the snapshot. Ensures no transactions are skipped.               |
+| `--metricsAddr`     | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                       |
+| `--userscript`      | Path to a userscript that enables table filtering from Oracle sources. Refer to [Table filter userscript](#table-filter-userscript). |
+
+Replication from Oracle requires `--scn` and `--backfillFromSCN`, which specify the snapshot SCN and the earliest active transaction SCN, respectively. To find these values, refer to the message `replication-only mode should include the following replicator flags` in the [data load](#load-data-into-cockroachdb) output.
+</section>
+
+{% elsif page.name == "migrate-failback.md" %}
+|        Flag        |                                                         Description                                                          |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------|
+| `--stagingSchema`  | **Required.** Staging schema name for the changefeed checkpoint table.                                                       |
+| `--tlsCertificate` | Path to the server TLS certificate for the webhook sink. Refer to [Secure failback changefeed](#secure-failback-changefeed). |
+| `--tlsPrivateKey`  | Path to the server TLS private key for the webhook sink. Refer to [Secure failback changefeed](#secure-failback-changefeed). |
+| `--metricsAddr`    | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.               |
+
+- Failback requires `--stagingSchema`, which specifies the staging schema name used as a checkpoint. MOLT Fetch [logs the staging schema name]({% link molt/migrate-data-load-replicate-only.md %}#replicate-changes-to-cockroachdb) when it starts replication:
+
+	~~~ shell
+	staging database name: _replicator_1749699789613149000
+	~~~
+
+- When configuring a [secure changefeed](#secure-changefeed-for-failback) for failback, you **must** include `--tlsCertificate` and `--tlsPrivateKey`, which specify the paths to the server certificate and private key for the webhook sink connection.
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+- Oracle migrations using `--table-filter` must also include `--userscript`. Refer to [Table filter userscript](#table-filter-userscript).
+</section>
+
+{% elsif page.name == "migrate-replicate-only.md" %}
+|        Flag       |                                                  Description                                                   |
+|-------------------|----------------------------------------------------------------------------------------------------------------|
+| `--stagingSchema` | **Required.** Staging schema name for the changefeed checkpoint table.                                         |
+| `--metricsAddr`   | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`. |
+
+Resuming replication requires `--stagingSchema`, which specifies the staging schema name used as a checkpoint. MOLT Fetch [logs the staging schema name]({% link molt/migrate-data-load-replicate-only.md %}#replicate-changes-to-cockroachdb) when it starts replication:
+
+~~~ shell
+staging database name: _replicator_1749699789613149000
+~~~
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+{{site.data.alerts.callout_info}}
+Oracle migrations using `--table-filter` must also include `--userscript`. Refer to [Table filter userscript]({% link molt/migrate-data-load-replicate-only.md %}#table-filter-userscript).
+{{site.data.alerts.end}}
+</section>
+
+{% elsif page.name == "migrate-data-load-and-replication" %}
+|       Flag      |                                                  Description                                                   |
+|-----------------|----------------------------------------------------------------------------------------------------------------|
+| `--metricsAddr` | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`. |
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+{{site.data.alerts.callout_info}}
+Oracle migrations using `--table-filter` must also include `--userscript`. Refer to [Table filter userscript](#table-filter-userscript).
+{{site.data.alerts.end}}
+</section>
+
+{% else %}
+|       Flag      |                                                  Description                                                   |
+|-----------------|----------------------------------------------------------------------------------------------------------------|
+| `--metricsAddr` | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`. |
+{% endif %}
