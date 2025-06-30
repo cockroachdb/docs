@@ -1,16 +1,47 @@
 The following table describes the high level permissions given by each CockroachDB {{ site.data.products.cloud }} user role. Permissions are additive, so a user with multiple roles is given all permissions in each area across all assigned roles.
 
-| **Role name** | **User management** | **Billing management** | **Cluster management** | **Database management** | **Monitoring & observability** | **Security & access** | **Backup & restore** | **Folder management** | **Other permissions** |
-|---|---|---|---|---|---|---|---|---|---|
-| `Organization Member` | None | None | None | None | None | None | None | None | None |
-| `Organization Admin` | Manage users and service accounts, assign and revoke roles | None | None | None | None | None | None | None | Manage [enterprise (self-hosted) licenses]({% link {{ site.current_cloud_version }}/licensing-faqs.md %}#obtain-a-license), manage [email alerts]({% link cockroachcloud/alerts-page.md %}#configure-alerts) |
-| `Billing Coordinator` | None | [Manage billing]({% link cockroachcloud/billing-management.md %}) | None | None | None | None | None | None | None |
-| `Cluster Operator` | None | None | Scale nodes, upgrade CockroachDB | Manage databases | View [metrics]({% link cockroachcloud/metrics.md %}) / [insights]({% link cockroachcloud/insights-page.md %}) / [audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %}) / [jobs]({% link cockroachcloud/jobs-page.md %}) | Manage [network authorization]({% link cockroachcloud/network-authorization.md %}), configure [cluster SSO]({% link cockroachcloud/cloud-sso-sql.md %}), view PCI status | View / restore [backups]({% link cockroachcloud/backup-and-restore-overview.md %}) | None | Access [DB console]({% link cockroachcloud/network-authorization.md %}#db-console), configure [maintenance windows]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window), send [test alerts]({% link cockroachcloud/alerts-page.md %}#send-a-test-alert) |
-| `Cluster Admin` | Manage SQL users, manage service accounts, assign user roles | None | Create / edit / delete cluster, create [private clusters]({% link cockroachcloud/private-clusters.md %}), scale nodes, upgrade CockroachDB, use the [{{ site.data.products.cloud }}Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}) | Manage databases | View [metrics]({% link cockroachcloud/metrics.md %}) / [insights]({% link cockroachcloud/insights-page.md %}) | Manage [network authorization]({% link cockroachcloud/network-authorization.md %}) and [egress perimeter controls]({% link cockroachcloud/egress-perimeter-controls.md %}), configure [cluster SSO]({% link cockroachcloud/cloud-sso-sql.md %}), view PCI status | View / restore [backups]({% link cockroachcloud/backup-and-restore-overview.md %}) | None, unless role is assigned with organization scope | Access [DB console]({% link cockroachcloud/network-authorization.md %}#db-console), configure [maintenance windows]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) |
-| `Cluster Creator` | None | None | Create cluster or [private cluster]({% link cockroachcloud/private-clusters.md %}) (either one assigns `Cluster Admin` role for that cluster),  edit / delete clusters created by this user, use the [{{ site.data.products.cloud }}Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}) on clusters created by this user | None | None | None, unless role is assigned with organization scope | None | None, unless role is assigned with organization scope | None |
-| `Cluster Developer` | None | None | None | None | None | None | None | None | Access [DB console]({% link cockroachcloud/network-authorization.md %}#db-console), view cluster details |
-| `Folder Admin` | Apply roles at the [folder]({% link cockroachcloud/folders.md %}) scope | None | None | None | None | None | None | Create / delete / manage [folders]({% link cockroachcloud/folders.md %}) | None |
-| `Folder Mover` | None | None | Move cluster between [folders]({% link cockroachcloud/folders.md %}) | None | None | None | None | None | None |
+<div class="roles-table" markdown="1">
+
+|  | Org. Member | Org. Admin | Billing Coord. | Cluster Creator | Cluster Operator | Cluster Admin | Cluster Developer | Folder Admin | Folder Mover |
+|---|-------------|-------------|------------------|------------------|-------------------|----------------|--------------------|----------------|----------------|
+| **User/Access Management** |  |  |  |  |  |  |  |  |  |
+| Apply roles at the [folder]({% link cockroachcloud/folders.md %}) scope | — | — | — | — | — | — | — | ✓ | — |
+| Assign and revoke roles | — | ✓ | — | — | — | ✓ | — | — | — |
+| Assign user roles | — | — | — | — | — | ✓ | — | — | — |
+| Manage SQL users | — | — | — | — | — | ✓ | — | — | — |
+| Manage users and service accounts | — | ✓ | — | — | — | ✓ | — | — | — |
+| **Cluster & Infrastructure** |  |  |  |  |  |  |  |  |  |
+| Configure [maintenance windows]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) | — | — | — | — | ✓ | ✓ | — | — | — |
+| Create cluster or [private cluster]({% link cockroachcloud/private-clusters.md %}) | — | — | — | ✓ | — | — | — | — | — |
+| Create/edit/delete cluster | — | — | — | — | — | ✓ | — | — | — |
+| Edit/delete clusters created by this user | — | — | — | ✓ | — | — | — | — | — |
+| Create / delete / manage [folders]({% link cockroachcloud/folders.md %}) | — | — | — | — | — | — | — | ✓ | — |
+| Move cluster between [folders]({% link cockroachcloud/folders.md %}) | — | — | — | — | — | — | — | — | ✓ |
+| Scale nodes | — | — | — | — | ✓ | ✓ | — | — | — |
+| Upgrade CockroachDB | — | — | — | — | ✓ | ✓ | — | — | — |
+| Use the [{{ site.data.products.cloud }}Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}) | — | — | — | ✓ | — | ✓ | — | — | — |
+| **Monitoring & Observability** |  |  |  |  |  |  |  |  |  |
+| Send [test alerts]({% link cockroachcloud/alerts-page.md %}#send-a-test-alert) | — | — | — | — | ✓ | — | — | — | — |
+| View [audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %}) | — | — | — | — | ✓ | — | — | — | — |
+| View [insights]({% link cockroachcloud/insights-page.md %}) | — | — | — | — | ✓ | ✓ | — | — | — |
+| View [jobs]({% link cockroachcloud/jobs-page.md %}) | — | — | — | — | ✓ | — | — | — | — |
+| View [metrics]({% link cockroachcloud/metrics.md %}) | — | — | — | — | ✓ | ✓ | — | — | — |
+| View cluster details | — | — | — | — | — | — | ✓ | — | — |
+| Access [DB console]({% link cockroachcloud/network-authorization.md %}#db-console) | — | — | — | — | ✓ | ✓ | ✓ | — | — |
+| **Security** |  |  |  |  |  |  |  |  |  |
+| Configure [cluster SSO]({% link cockroachcloud/cloud-sso-sql.md %}) | — | — | — | — | ✓ | ✓ | — | — | — |
+| Manage [egress perimeter controls]({% link cockroachcloud/egress-perimeter-controls.md %}) | — | — | — | — | — | ✓ | — | — | — |
+| Manage [network authorization]({% link cockroachcloud/network-authorization.md %}) | — | — | — | — | ✓ | ✓ | — | — | — |
+| View PCI status | — | — | — | — | ✓ | ✓ | — | — | — |
+| **Database & Data** |  |  |  |  |  |  |  |  |  |
+| Manage databases | — | — | — | — | ✓ | ✓ | — | — | — |
+| View / restore [backups]({% link cockroachcloud/backup-and-restore-overview.md %}) | — | — | — | — | ✓ | ✓ | — | — | — |
+| **Billing & Licensing** |  |  |  |  |  |  |  |  |  |
+| [Manage billing]({% link cockroachcloud/billing-management.md %}) | — | — | ✓ | — | — | — | — | — | — |
+| Manage [email alerts]({% link cockroachcloud/alerts-page.md %}#configure-alerts) | — | ✓ | — | — | — | — | — | — | — |
+| Manage [enterprise licenses]({% link {{ site.current_cloud_version }}/licensing-faqs.md %}#obtain-a-license) | — | ✓ | — | — | — | — | — | — | — |
+
+</div>
 
 Some roles can be assigned to users at specific levels of scope to provide more granular permission control:
 
