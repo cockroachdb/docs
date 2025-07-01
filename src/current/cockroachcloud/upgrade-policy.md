@@ -35,9 +35,9 @@ The CockroachDB Self-Hosted [Release Support Policy]({% link releases/release-su
 
 Version | Release Type | Support period | Release date | EOS date
 :------:|:------------:|:--------------:|:------------:|:---------:
+v25.2   | Regular      | 12 months      | 2025-05-12   | 2026-05-12
 v25.1   | Innovation   | 6 months       | 2025-02-18   | 2025-08-18
 v24.3   | Regular      | 12 months      | 2024-11-18   | 2025-11-18
-v24.1   | Regular      | 12 months      | 2024-05-20   | 2025-05-20
 
 To review a version's release notes, click its link in the Version column.
 
@@ -47,6 +47,7 @@ For expected future versions, refer to [Upcoming releases]({% link releases/inde
 
 Version | Release Type | Support period | Release date | EOS date
 :------:|:------------:|:--------------:|:------------:|:--------:
+v24.1   | Regular      | 12 months      | 2024-05-20   | 2025-05-20
 v24.2   | Innovation   | 6 months       | 2024-08-12   | 2025-02-12
 v23.2   | Regular      | 12 months      | 2024-02-05   | 2025-02-05
 v23.1   | Regular      | 12 months      | 2023-05-15   | 2024-05-15
