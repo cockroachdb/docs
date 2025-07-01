@@ -6,7 +6,7 @@
   sha: 96f4c50a69272cfd5a32e65889f5f72033502ed2
   docker:
     docker_image: cockroachdb/cockroach-unstable
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160414
   major_version: v1.0
@@ -17,7 +17,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160407
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160421
   major_version: v1.0
@@ -28,7 +28,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160414
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160428
   major_version: v1.0
@@ -39,7 +39,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160421
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160505
   major_version: v1.0
@@ -50,7 +50,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160428
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160512
   major_version: v1.0
@@ -61,7 +61,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160505
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160519
   major_version: v1.0
@@ -72,7 +72,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160512
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160526
   major_version: v1.0
@@ -83,7 +83,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160519
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160602
   major_version: v1.0
@@ -94,7 +94,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160526
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160609
   major_version: v1.0
@@ -105,7 +105,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160602
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160616
   major_version: v1.0
@@ -116,7 +116,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160609
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160629
   major_version: v1.0
@@ -127,7 +127,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160616
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160714
   major_version: v1.0
@@ -138,7 +138,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160629
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160721
   major_version: v1.0
@@ -149,7 +149,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160714
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160728
   major_version: v1.0
@@ -160,7 +160,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160721
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160829
   major_version: v1.0
@@ -171,7 +171,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160728
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160908
   major_version: v1.0
@@ -182,7 +182,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160829
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160915
   major_version: v1.0
@@ -193,7 +193,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160908
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160929
   major_version: v1.0
@@ -204,7 +204,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160915
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161006
   major_version: v1.0
@@ -215,7 +215,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160929
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161013
   major_version: v1.0
@@ -226,7 +226,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161006
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161027
   major_version: v1.0
@@ -237,7 +237,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161013
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161103
   major_version: v1.0
@@ -248,7 +248,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161027
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161201
   major_version: v1.0
@@ -259,7 +259,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161103
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161208
   major_version: v1.0
@@ -270,7 +270,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161201
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161215
   major_version: v1.0
@@ -281,7 +281,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161208
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170105
   major_version: v1.0
@@ -292,7 +292,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161215
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170112
   major_version: v1.0
@@ -303,7 +303,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170105
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170126
   major_version: v1.0
@@ -314,7 +314,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170112
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170209
   major_version: v1.0
@@ -325,7 +325,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170126
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170216
   major_version: v1.0
@@ -336,7 +336,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170209
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170223
   major_version: v1.0
@@ -347,7 +347,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170216
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170309
   major_version: v1.0
@@ -358,7 +358,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170223
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170323
   major_version: v1.0
@@ -369,7 +369,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170309
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170330
   major_version: v1.0
@@ -381,7 +381,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: beta-20170323
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170413
   major_version: v1.0
@@ -393,7 +393,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: beta-20170330
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170420
   major_version: v1.0
@@ -405,7 +405,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: beta-20170413
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0-rc.1
   major_version: v1.0
@@ -417,7 +417,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: beta-20170420
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0-rc.2
   major_version: v1.0
@@ -429,7 +429,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.0-rc.1
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0
   major_version: v1.0
@@ -441,7 +441,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0-rc.2
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.1
   major_version: v1.0
@@ -453,7 +453,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170601
   major_version: v1.1
@@ -464,7 +464,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170608
   major_version: v1.1
@@ -476,7 +476,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170601
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.2
   major_version: v1.0
@@ -488,7 +488,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0.1
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170622
   major_version: v1.1
@@ -500,7 +500,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170608
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170629
   major_version: v1.1
@@ -512,7 +512,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170622
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.3
   major_version: v1.0
@@ -524,7 +524,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0.2
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170713
   major_version: v1.1
@@ -536,7 +536,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170629
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170720
   major_version: v1.1
@@ -548,7 +548,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170713
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.4
   major_version: v1.0
@@ -560,7 +560,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0.3
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170803
   major_version: v1.1
@@ -572,7 +572,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170720
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170810
   major_version: v1.1
@@ -584,7 +584,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170803
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170817
   major_version: v1.1
@@ -596,7 +596,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170810
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.5
   major_version: v1.0
@@ -608,7 +608,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0.4
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-beta.20170907
   major_version: v1.1
@@ -620,7 +620,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170817
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.6
   major_version: v1.0
@@ -632,7 +632,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0.5
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-beta.20170921
   major_version: v1.1
@@ -644,7 +644,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-beta.20170907
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-beta.20170928
   major_version: v1.1
@@ -656,7 +656,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-beta.20170921
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.0-rc.1
   major_version: v1.1
@@ -668,7 +668,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-beta.20170928
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.0
   major_version: v1.1
@@ -680,7 +680,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.0-rc.1
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.1
   major_version: v1.1
@@ -692,7 +692,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.0
-  is_not_downloadable: true
+ 
 
 - release_name: v1.2-alpha.20171026
   major_version: v2.0
@@ -703,7 +703,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.2
   major_version: v1.1
@@ -715,7 +715,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.1
-  is_not_downloadable: true
+ 
 
 - release_name: v1.2-alpha.20171113
   major_version: v2.0
@@ -726,7 +726,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: v1.2-alpha.20171026
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.3
   major_version: v1.1
@@ -738,7 +738,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.2
-  is_not_downloadable: true
+ 
 
 - release_name: v1.2-alpha.20171204
   major_version: v2.0
@@ -750,7 +750,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.2-alpha.20171113
-  is_not_downloadable: true
+ 
 
 - release_name: v1.2-alpha.20171211
   major_version: v2.0
@@ -762,7 +762,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.2-alpha.20171204
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-alpha.20171218
   major_version: v2.0
@@ -774,7 +774,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.2-alpha.20171211
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.4
   major_version: v1.1
@@ -786,7 +786,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.3
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-alpha.20180129
   major_version: v2.0
@@ -798,7 +798,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.0-alpha.20171218
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.5
   major_version: v1.1
@@ -810,7 +810,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.4
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.7
   major_version: v1.0
@@ -822,7 +822,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0.6
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-beta.20180305
   major_version: v2.0
@@ -834,7 +834,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.0-alpha.20180129
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.6
   major_version: v1.1
@@ -846,7 +846,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.5
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-beta.20180312
   major_version: v2.0
@@ -858,7 +858,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.0-beta.20180305
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-beta.20180319
   major_version: v2.0
@@ -870,7 +870,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.0-beta.20180312
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.7
   major_version: v1.1
@@ -882,7 +882,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.6
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-beta.20180326
   major_version: v2.0
@@ -894,7 +894,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.0-beta.20180319
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-rc.1
   major_version: v2.0
@@ -906,7 +906,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.0-beta.20180326
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.0
   major_version: v2.0
@@ -918,7 +918,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0-rc.1
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-alpha.20180416
   major_version: v2.1
@@ -929,7 +929,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.8
   major_version: v1.1
@@ -941,7 +941,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.7
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.1
   major_version: v2.0
@@ -953,7 +953,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.0
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-alpha.20180507
   major_version: v2.1
@@ -965,7 +965,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-alpha.20180416
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.2
   major_version: v2.0
@@ -977,7 +977,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.1
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-alpha.20180604
   major_version: v2.1
@@ -989,7 +989,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-alpha.20180507
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.3
   major_version: v2.0
@@ -1001,7 +1001,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.2
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-alpha.20180702
   major_version: v2.1
@@ -1013,7 +1013,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-alpha.20180604
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.4
   major_version: v2.0
@@ -1025,7 +1025,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.3
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-alpha.20180730
   major_version: v2.1
@@ -1037,7 +1037,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-alpha.20180702
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.5
   major_version: v2.0
@@ -1049,7 +1049,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.4
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20180827
   major_version: v2.1
@@ -1061,7 +1061,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-alpha.20180730
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20180904
   major_version: v2.1
@@ -1073,7 +1073,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20180827
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20180910
   major_version: v2.1
@@ -1085,7 +1085,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20180904
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20180917
   major_version: v2.1
@@ -1097,7 +1097,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20180910
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20180924
   major_version: v2.1
@@ -1109,7 +1109,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20180917
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.9
   major_version: v1.1
@@ -1121,7 +1121,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.8
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.6
   major_version: v2.0
@@ -1133,7 +1133,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.5
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20181001
   major_version: v2.1
@@ -1145,7 +1145,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20180924
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20181008
   major_version: v2.1
@@ -1157,7 +1157,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20181001
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20181015
   major_version: v2.1
@@ -1169,7 +1169,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20181008
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-rc.1
   major_version: v2.1
@@ -1181,7 +1181,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20181015
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-rc.2
   major_version: v2.1
@@ -1193,7 +1193,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-rc.1
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0
   major_version: v2.1
@@ -1205,7 +1205,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.0-rc.2
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.1
   major_version: v2.1
@@ -1217,7 +1217,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.0
-  is_not_downloadable: true
+ 
 
 - release_name: v2.2.0-alpha.20181119
   major_version: v19.1
@@ -1228,7 +1228,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.7
   major_version: v2.0
@@ -1240,7 +1240,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.6
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.2
   major_version: v2.1
@@ -1252,7 +1252,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.1
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.3
   major_version: v2.1
@@ -1264,7 +1264,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.2
-  is_not_downloadable: true
+ 
 
 - release_name: v2.2.0-alpha.20181217
   major_version: v19.1
@@ -1276,7 +1276,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.2.0-alpha.20181119
-  is_not_downloadable: true
+ 
 
 - release_name: v2.2.0-alpha.20190114
   major_version: v19.1
@@ -1288,7 +1288,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.2.0-alpha.20181217
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.4
   major_version: v2.1
@@ -1300,7 +1300,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.3
-  is_not_downloadable: true
+ 
 
 - release_name: v2.2.0-alpha.20190211
   major_version: v19.1
@@ -1312,7 +1312,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.2.0-alpha.20190114
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.5
   major_version: v2.1
@@ -1324,7 +1324,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.4
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-beta.20190225
   major_version: v19.1
@@ -1336,7 +1336,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.2.0-alpha.20190211
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-beta.20190304
   major_version: v19.1
@@ -1348,7 +1348,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.1.0-beta.20190225
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.6
   major_version: v2.1
@@ -1360,7 +1360,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.5
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-beta.20190318
   major_version: v19.1
@@ -1372,7 +1372,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.1.0-beta.20190304
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-rc.1
   major_version: v19.1
@@ -1384,7 +1384,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.1.0-beta.20190318
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-rc.2
   major_version: v19.1
@@ -1396,7 +1396,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.1.0-rc.1
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-rc.3
   major_version: v19.1
@@ -1408,7 +1408,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.1.0-rc.2
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-rc.4
   major_version: v19.1
@@ -1420,7 +1420,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.1.0-rc.3
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0
   major_version: v19.1
@@ -1432,7 +1432,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.0-rc.4
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.7
   major_version: v2.1
@@ -1444,7 +1444,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.6
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.1
   major_version: v19.1
@@ -1456,7 +1456,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.0
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-alpha.20190606
   major_version: v19.2
@@ -1467,7 +1467,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.2
   major_version: v19.1
@@ -1479,7 +1479,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.1
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-alpha.20190701
   major_version: v19.2
@@ -1491,7 +1491,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-alpha.20190606
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.8
   major_version: v2.1
@@ -1503,7 +1503,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.7
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.3
   major_version: v19.1
@@ -1515,7 +1515,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.2
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-alpha.20190805
   major_version: v19.2
@@ -1527,7 +1527,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-alpha.20190701
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.4
   major_version: v19.1
@@ -1539,7 +1539,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.3
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.9
   major_version: v2.1
@@ -1551,7 +1551,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.8
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.5
   major_version: v19.1
@@ -1563,7 +1563,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.4
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-beta.20190930
   major_version: v19.2
@@ -1575,7 +1575,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-alpha.20190805
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-beta.20191014
   major_version: v19.2
@@ -1587,7 +1587,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-beta.20190930
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-rc.1
   major_version: v19.2
@@ -1599,7 +1599,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-beta.20191014
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-rc.2
   major_version: v19.2
@@ -1611,7 +1611,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-rc.1
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-rc.3
   major_version: v19.2
@@ -1623,7 +1623,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-rc.2
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-rc.4
   major_version: v19.2
@@ -1635,7 +1635,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-rc.3
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0
   major_version: v19.2
@@ -1648,7 +1648,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.0-rc.4
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0-alpha.20191118
   major_version: v20.1
@@ -1672,7 +1672,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.0
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.10
   major_version: v2.1
@@ -1684,7 +1684,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.9
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.6
   major_version: v19.1
@@ -1696,7 +1696,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.5
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.2
   major_version: v19.2
@@ -1709,7 +1709,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.1
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0-alpha20191216
   major_version: v20.1
@@ -1733,7 +1733,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.6
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.11
   major_version: v2.1
@@ -1745,7 +1745,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.10
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0-alpha.20200123
   major_version: v20.1
@@ -1770,7 +1770,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.2
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.8
   major_version: v19.1
@@ -1782,7 +1782,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.7
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.4
   major_version: v19.2
@@ -1795,7 +1795,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.3
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0-beta.1
   major_version: v20.1
@@ -1832,7 +1832,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.4
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0-beta.3
   major_version: v20.1
@@ -1869,7 +1869,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.5
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0-rc.1
   major_version: v20.1
@@ -1905,7 +1905,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.8
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0
   major_version: v20.1
@@ -1930,7 +1930,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.6
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.1
   major_version: v20.1
@@ -1978,7 +1978,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.9
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.8
   major_version: v19.2
@@ -1991,7 +1991,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.7
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.3
   major_version: v20.1
@@ -2016,7 +2016,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.8
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.11
   major_version: v19.1
@@ -2029,7 +2029,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.10
-  is_not_downloadable: true
+ 
 
 - release_name: v20.2.0-alpha.2
   major_version: v20.2
@@ -2067,7 +2067,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.9
-  is_not_downloadable: true
+ 
 
 - release_name: v20.2.0-alpha.3
   major_version: v20.2
@@ -2165,7 +2165,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.10
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.7
   major_version: v20.1
@@ -2333,7 +2333,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.11
-  is_not_downloadable: true
+ 
 
 - release_name: v20.2.4
   major_version: v20.2
