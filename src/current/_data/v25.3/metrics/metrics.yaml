@@ -10371,7 +10371,7 @@ layers:
       derivative: NONE
       how_to_use: This metric provides an essential characterization of the data processing points across cluster nodes.
       essential: true
-  - name: SQL_2
+  - name: SQL
     metrics:
     - name: txnwaitqueue.deadlocks_total
       exported_name: txnwaitqueue_deadlocks_total
