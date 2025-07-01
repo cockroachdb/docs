@@ -47,20 +47,20 @@ The **Usage** column explains why each metric is important to visualize and how 
 
         {% comment %} Transforms to match datadog_id {% endcomment %}
             {% assign input_metric = metric.name %}
-            {% assign match1 = site.data[version].metrics.datadog-cockroachdb | where: "datadog_id", input_metric | first %}
+            {% assign metrics_datadog = site.data[version].metrics.datadog-cockroachdb %}
+            {% assign match1 = metrics_datadog | where: "datadog_id", input_metric | first %}
             {% assign input_metric = metric.name | replace: "-", "." %}
-            {% assign match2 = site.data[version].metrics.datadog-cockroachdb | where: "datadog_id", input_metric | first %}
+            {% assign match2 = metrics_datadog | where: "datadog_id", input_metric | first %}
             {% assign input_metric = metric.name | append: ".count" %}
-            {% assign match3 = site.data[version].metrics.datadog-cockroachdb | where: "datadog_id", input_metric | first %}
+            {% assign match3 = metrics_datadog | where: "datadog_id", input_metric | first %}
             {% assign input_metric = metric.name | replace: "_", "." %}
-            {% assign match4 = site.data[version].metrics.datadog-cockroachdb | where: "datadog_id", input_metric | first %}
+            {% assign match4 = metrics_datadog | where: "datadog_id", input_metric | first %}
             {% assign input_metric = metric.name | replace: "-", "_" | append: ".count"  %}
-            {% assign match5 = site.data[version].metrics.datadog-cockroachdb | where: "datadog_id", input_metric | first %}
+            {% assign match5 = metrics_datadog | where: "datadog_id", input_metric | first %}
             {% assign input_metric = metric.name | replace: "-", "_" %}
-            {% assign match6 = site.data[version].metrics.datadog-cockroachdb | where: "datadog_id", input_metric | first %}
+            {% assign match6 = metrics_datadog | where: "datadog_id", input_metric | first %}
             {% assign input_metric = metric.name | append: ".total" %}
-            {% assign match7 = site.data[version].metrics.datadog-cockroachdb | where: "datadog_id", input_metric | first %}
-
+            {% assign match7 = metrics_datadog | where: "datadog_id", input_metric | first %}
         <tr>
             <td><div id="{{ metric.name }}" class="anchored"><code>{{ metric.name }}</code></div>
             <br>{% if metric.labeled_name %}<code>metrics</code> endpoint:<br><code>{{ metric.labeled_name }}</code>{% endif %}
