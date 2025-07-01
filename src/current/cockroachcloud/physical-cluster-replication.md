@@ -43,9 +43,9 @@ You'll need the following:
 
     Method | Required roles | Description
     -------+----------------+------------
-    `POST` | [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) | Create a PCR stream. Required on the primary and standby clusters.
-    `GET` | [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), [Cluster Developer]({% link cockroachcloud/authorization.md %}#cluster-developer) | Retrieve information for the PCR stream. Required on either the primary or standby cluster.
-    `PATCH` | [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) | Update the PCR stream to fail over. Required on either the primary or standby cluster.
+    `POST` | [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) | Create a PCR stream. Required on the primary and standby clusters.
+    `GET` | [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), [Cluster Developer]({% link cockroachcloud/authorization.md %}#cluster-developer) | Retrieve information for the PCR stream. Required on either the primary or standby cluster.
+    `PATCH` | [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) | Update the PCR stream to fail over. Required on either the primary or standby cluster.
 
     Using the same cluster roles on each cluster will provide the best visibility into the PCR stream.
 
