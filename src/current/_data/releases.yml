@@ -9105,7 +9105,7 @@
 
 - release_name: v25.3.0-beta.1
   major_version: v25.3
-  release_date: '2025-06-30'
+  release_date: '2025-07-02'
   release_type: Testing
   go_version: go1.23.7
   sha: 0f1b7069d057d671e6ff3ad3b88de0e1ea227f45
