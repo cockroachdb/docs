@@ -30,6 +30,8 @@ Private clusters are not available for [CockroachDB {{ site.data.products.advanc
 On GCP, new CockroachDB {{ site.data.products.advanced }} clusters are private by default.
 On AWS, newly CockroachDB {{ site.data.products.advanced }} with enhanced security features clusters deployed on AWS are private by default.
 
+Creation of private clusters, as well as {{ site.data.products.cloud }} clusters in general, requires the [Cluster Admin](({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator) role.
+
 {{site.data.alerts.callout_info}}
 An existing cluster can't be migrated in-place to a private cluster.
 {{site.data.alerts.end}}

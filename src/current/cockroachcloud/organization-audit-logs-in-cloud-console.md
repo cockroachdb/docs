@@ -12,7 +12,7 @@ CockroachDB {{ site.data.products.cloud }} captures audit logs when many types o
 
 To access the **Audit Logs** page:
 
-1. Navigate to the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) and log in as a user with the [Organization Admin role]({% link cockroachcloud/authorization.md %}#org-administrator).
+1. Navigate to the [CockroachDB {{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/) and log in as a user with the [Organization Admin role]({% link cockroachcloud/authorization.md %}#organization-admin).
 1. In the top navigation bar, open the **Organization** menu and select **Audit Logs**.
 
 ## Filter audit logs
