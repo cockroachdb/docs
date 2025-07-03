@@ -133,8 +133,10 @@ The **Usage** column explains why each metric is important to visualize and how 
           {% assign input_metric = metric.name | append: ".total" %}
           {% assign match7 = metrics_datadog | where: "datadog_id", input_metric | first %}
         
+          {% assign metric_link = metric.name | replace: "_", "-" | replace: ".", "-" %}
+
         <tr>
-            <td><div id="{{ metric.name }}" class="anchored"><code>{{ metric.name }}</code></div>
+            <td><div id="{{ metric_link }}" class="anchored"><code>{{ metric.name }}</code></div>
             <br>{% if metric.labeled_name %}<code>metrics</code> endpoint:<br><code>{{ metric.labeled_name }}</code>{% endif %}
             </td>
             <td>
@@ -160,6 +162,42 @@ The **Usage** column explains why each metric is important to visualize and how 
     {% endif %}{% comment %}essential_metrics_total > 0{% endcomment %}
   {% endif %}{% comment %}if category_name != ""{% endcomment %}
 {% endfor %}{% comment %}for category_name in category_names_array{% endcomment %}
+
+{% comment %} Add category for metrics that are not in metrics.yaml{% endcomment %}
+{% if include.deployment == 'self-hosted' %}
+  {% assign essential_metrics = site.data[version].metrics.available-metrics-not-in-metrics-list | where: "essential", true %}
+## Expiration of license and certificates
+
+<table markdown="1">
+    <thead>
+        <tr>
+            <th>CockroachDB Metric Name</th>
+            <th>[Datadog Integration Metric Name]({{ datadog_link }})<br>(add `{{ datadog_prefix }}.` prefix)</th>
+            <th>Description</th>
+            <th>Usage</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        {% for metric in essential_metrics %}
+        
+          {% assign metric_link = metric.metric_id | replace: "_", "-" | replace: ".", "-" %}
+
+        <tr>
+            <td><div id="{{ metric_link }}" class="anchored"><code>{{ metric.metric_id }}</code></div>
+            <br>{% if metric.labeled_name %}<code>metrics</code> endpoint:<br><code>{{ metric.labeled_name }}</code>{% endif %}
+            </td>
+            <td><code>{{ metric.metric_id }}</code>
+            </td>
+            <td>{{ metric.description }}</td>
+            <td>{{ metric.how_to_use }}</td>
+        </tr>
+
+        {% endfor %}{% comment %}for metric in essential_metrics{% endcomment %}
+
+    </tbody>
+</table>
+{% endif %}{% comment %}if include.deployment == 'self-hosted'{% endcomment %}
 
 ## See also
 
