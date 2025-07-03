@@ -13,10 +13,6 @@ The `CREATE VIRTUAL CLUSTER` statement creates a new virtual cluster. It is supp
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
-{{site.data.alerts.callout_info}}
-Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
-{{site.data.alerts.end}}
-
 ## Required privileges
 
 {% include_cached new-in.html version="v25.2" %} The following [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) are required to start a PCR stream with `CREATE VIRTUAL CLUSTER`:
