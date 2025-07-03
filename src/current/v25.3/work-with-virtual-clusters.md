@@ -105,7 +105,7 @@ I230815 19:31:07.290757 922 sql/temporary_schema.go:554 ⋮ [T4,demo,n1] 148  fo
 
 When cluster virtualization is enabled, metrics are also scoped to a virtual cluster or to the system virtual cluster, and are labeled accordingly. All metrics are visible from the system virtual cluster, but metrics scoped to the system virtual cluster are not visible from a virtual cluster. Metrics related to SQL activity and jobs are visible only from a virtual cluster.
 
-For example, in the output of the `_status/vars` HTTP endpoint on a cluster with a virtual cluster named `demo`, the metric `sql_txn_commit_count` is shown separately for the `demo` virtual cluster and the system virtual cluster:
+For example, in the output of the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) on a cluster with a virtual cluster named `demo`, the metric `sql_txn_commit_count` is shown separately for the `demo` virtual cluster and the system virtual cluster:
 
 ~~~ none
 sql_txn_commit_count{tenant="system"} 0

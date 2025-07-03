@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.metrics
 ---
 
-Multi-dimensional metrics are additional [Prometheus]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) time series with extra labels. This page will help you understand the potential size of the Prometheus scrape payload for your workload when multi-dimensional metrics are enabled. The number of multi-dimensional metrics can significantly increase based on their associated labels, which increases cardinality.
+Multi-dimensional metrics are additional [Prometheus]({% link {{ page.version.version }}/prometheus-endpoint.md %}) time series with extra labels. This page will help you understand the potential size of the Prometheus scrape payload for your workload when multi-dimensional metrics are enabled. The number of multi-dimensional metrics can significantly increase based on their associated labels, which increases cardinality.
 
 The export of multi-dimensional metrics can be enabled by two [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}):
 
@@ -475,7 +475,7 @@ For this reason, child `COUNTER` metrics may not always add up to the parent `CO
 For `GAUGE` metrics, values may be different and potentially unexpected depending on when a setting is enabled. For an example, refer to [7. `GAUGE` metric example](#7-gauge-metric-example).
 {{site.data.alerts.end}}
 
-These labels affect only the metrics emitted via [Prometheus export]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint). They are not visible in the [DB Console Metrics dashboards]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#metrics-dashboards).
+These labels affect only the metrics emitted via [Prometheus export]({% link {{ page.version.version }}/prometheus-endpoint.md %}). They are not visible in the [DB Console Metrics dashboards]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#metrics-dashboards).
 
 The system retains up to 5,000 recently used label combinations.
 
