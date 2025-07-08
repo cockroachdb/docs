@@ -175,6 +175,10 @@ Cockroach Labs recommends that you avoid _increasing_ the period of time that DB
 
 ### Disable time-series storage
 
+{{site.data.alerts.callout_info}}
+Even if you rely on external tools for storing and visualizing your cluster's time-series metrics, CockroachDB continues to store time-series metrics for its [DB Console Metrics dashboards]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#metrics-dashboards). These stored time-series metrics may be used to generate a [tsdump]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}), which is critical during escalations to Cockroach Labs support.
+{{site.data.alerts.end}}
+
 Disabling time-series storage is recommended only if you exclusively use a third-party tool such as [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}) for time-series monitoring. Prometheus and other such tools do not rely on CockroachDB-stored time-series data; instead, they ingest metrics exported by CockroachDB from memory and then store the data themselves.
 
 When storage of time-series metrics is disabled, the DB Console Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
