@@ -7,8 +7,6 @@ docs_area: reference.sql
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
-
-Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
 The `DROP VIRTUAL CLUSTER` statement removes virtual clusters in order to restart a **physical cluster replication (PCR)** stream. Virtual clusters are used only as part of the [PCR]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) workflow.

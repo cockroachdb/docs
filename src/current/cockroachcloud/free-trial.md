@@ -35,7 +35,7 @@ A payment method must be added to the account to be elegible for this benefit, t
 
 ## Free trial notifications
 
-During your free trial, you will receive email notifications from Cockroach Labs with information about the status of your trial. These emails are sent to Org Administrators and Billing Coordinators.
+During your free trial, you will receive email notifications from Cockroach Labs with information about the status of your trial. These emails are sent to Organization Admins and Billing Coordinators.
 
 An email is sent when:
 
