@@ -483,7 +483,7 @@ Changefeed has fallen behind. This is determined by the end-to-end lag between a
 Changefeed jobs should not be paused for a long time because [the protected timestamp prevents garbage collection]({% link {{ page.version.version }}/protect-changefeed-data.md %}). To protect against an operational error, this alert guards against an inadvertently forgotten pause. 
 
 **Metric**
-<br>[`jobs.changefeed.currently_paused`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#changefeed-currently-paused)
+<br>[`jobs.changefeed.currently_paused`]({% link {{ page.version.version }}/essential-metrics-{{ include.deployment }}.md %}#jobs-changefeed-currently-paused)
 
 **Rule**
 <br>WARNING:  `jobs.changefeed.currently_paused` is greater than `0` for more than `15 minutes`
