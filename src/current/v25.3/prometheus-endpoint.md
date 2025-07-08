@@ -4,20 +4,18 @@ summary: Export granular time-series metrics in Prometheus format to monitor a c
 toc: true
 ---
 
-Each node in a CockroachDB cluster exports granular time-series metrics at two available endpoints:
+Each node in a CockroachDB cluster exports granular time-series metrics to two available Prometheus-compatible endpoints:
 
 - [`http://<host>:<http-port>/_status/vars`](#_status-vars)
-- {% include_cached new-in.html version="v25.3" %}[`http://<host>:<http-port>/metrics`](#metrics): an enhanced endpoint that includes additional static labels
+- {% include_cached new-in.html version="v25.3" %}[`http://<host>:<http-port>/metrics`](#metrics): an enhanced endpoint with additional static labels
 
-The metrics are formatted for integration with [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying time-series data. For details on how to pull these metrics into Prometheus, refer to [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}). The Prometheus format is human-readable and can be processed to work with other Prometheus-compatible third-party monitoring systems such as [Sysdig](https://sysdig.com/integrations/prometheus/) and [Google Cloud Managed Service for Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus). Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), collect metrics from a cluster's Prometheus endpoint.
+The metrics are formatted for integration with [Prometheus](https://prometheus.io/), an open-source tool for storing, aggregating, and querying time-series data. For details on how to pull these metrics into Prometheus, refer to [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}). The Prometheus format is human-readable and can be processed to work with other Prometheus-compatible third-party monitoring systems, such as [Sysdig](https://sysdig.com/integrations/prometheus/) and [Google Cloud Managed Service for Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus). Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), collect metrics from the cluster's Prometheus endpoint.
 
 {{site.data.alerts.callout_info}}
-In addition to using the exported time-series data to monitor a cluster through an external system, you can write alerting rules to ensure prompt notification of critical events or issues that may require intervention or investigation. Refer to [Essential Alerts]({% link {{ page.version.version }}/essential-alerts-self-hosted.md %}) for more details.
+In addition to using the exported time-series data to monitor a cluster through an external system, you can write alerting rules to ensure prompt notification of critical events or issues requiring intervention or investigation. Refer to [Essential Alerts]({% link {{ page.version.version }}/essential-alerts-self-hosted.md %}) for more details.
 {{site.data.alerts.end}}
 
-If you rely on external tools for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
-
-When storage of time-series metrics is disabled, the [DB Console Metrics dashboards]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#metrics-dashboards) in the DB Console are still available, but their visualizations are blank. This occurs because the dashboards rely on data that is no longer available.
+Even if you rely on external tools for storing and visualizing your cluster's time-series metrics, CockroachDB continues to store time-series metrics for its [DB Console Metrics dashboards]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#metrics-dashboards). These stored time-series metrics may be used to generate a [tsdump]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}), which is critical during escalations to Cockroach Labs support.
 
 ## `_status/vars`
 
@@ -156,4 +154,5 @@ security_certificate_expiration{node_id="1",tenant="demoapp",certificate_type="n
 - [Third-party Monitoring Integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %})
 - [Monitor CockroachDB Self-Hosted Clusters with Datadog]({% link {{ page.version.version }}/datadog.md %})
 - [Monitor CockroachDB with Kibana]({% link {{ page.version.version }}/kibana.md %})
+- [Essential Metrics]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %})
 - [Essential Alerts]({% link {{ page.version.version }}/essential-alerts-self-hosted.md %})
