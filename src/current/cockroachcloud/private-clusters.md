@@ -13,7 +13,7 @@ By default, CockroachDB {{ site.data.products.cloud }} has safeguards in place t
 - Ingress traffic to a cluster is routed through a load balancer, and it is possible to restrict inbound connections using a combination of [IP allowlisting]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting) and [private connectivity]({% link cockroachcloud/connect-to-your-cluster.md %}#establish-private-connectivity).
 - Egress traffic from a cluster, such as [exports]({% link {{ site.current_cloud_version }}/export.md %}), [backups]({% link {{ site.current_cloud_version }}/backup.md %}), and [Change Data Capture (CDC)]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}), use public subnets by default.
 
-A CockroachDB {{ site.data.products.advanced }} cluster with [enhanced security features enabled]({% link cockroachcloud/create-an-advanced-cluster.md %}) is a _private cluster_. Its nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
+A CockroachDB {{ site.data.products.advanced }} cluster with [advanced security features enabled]({% link cockroachcloud/create-an-advanced-cluster.md %}) is a _private cluster_. Its nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
 
 A private cluster has one private network per cluster region, and each node is connected to the private network for its region. A NAT gateway is connected to each private network and provides a static egress public IP address.
 
@@ -28,7 +28,9 @@ Private clusters are not available for [CockroachDB {{ site.data.products.advanc
 ## Create a private cluster
 
 On GCP, new CockroachDB {{ site.data.products.advanced }} clusters are private by default.
-On AWS, newly CockroachDB {{ site.data.products.advanced }} with enhanced security features clusters deployed on AWS are private by default.
+On AWS, newly CockroachDB {{ site.data.products.advanced }} with advanced security features clusters deployed on AWS are private by default.
+
+Creation of private clusters, as well as {{ site.data.products.cloud }} clusters in general, requires the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator) role.
 
 {{site.data.alerts.callout_info}}
 An existing cluster can't be migrated in-place to a private cluster.

@@ -15,7 +15,7 @@ The **Insights** page of the CockroachDB {{ site.data.products.cloud }} Console 
 - Identify SQL statements with [high retry counts]({% link {{ site.current_cloud_version }}/transactions.md %}#automatic-retries), [slow execution]({% link {{ site.current_cloud_version }}/query-behavior-troubleshooting.md %}#identify-slow-queries), or [suboptimal plans]({% link {{ site.current_cloud_version }}/cost-based-optimizer.md %}).
 - Identify [indexes]({% link {{ site.current_cloud_version }}/indexes.md %}) that should be created, altered, replaced, or dropped to improve performance.
 
-To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Insights** in the **Monitoring** section of the left side navigation.
+Viewing the insights page requires the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role. To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Insights** in the **Monitoring** section of the left side navigation.
 
 {% include {{version_prefix}}ui/insights.md version_prefix=version_prefix %}
 

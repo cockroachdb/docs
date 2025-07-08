@@ -15,7 +15,7 @@ CockroachDB {{ site.data.products.cloud }} meets or exceeds the requirements of 
 
 ## PCI DSS
 
-CockroachDB {{ site.data.products.advanced }} has been certified by a PCI Qualified Security Assessor (QSA) as a PCI DSS Level 1 Service Provider. When configured appropriately, CockroachDB {{ site.data.products.advanced }} meets the requirements of PCI DSS 3.2.1. PCI DSS is mandated by credit card issuers but administered by the [Payment Card Industry Security Standards Council](https://www.pcisecuritystandards.org/). Many organizations that do not store cardholder data still rely on compliance with PCI DSS to help protect other sensitive or confidential data or metadata.
+CockroachDB {{ site.data.products.advanced }} has been certified by a PCI Qualified Security Assessor (QSA) as a PCI DSS Level 1 Service Provider. When configured appropriately, CockroachDB {{ site.data.products.advanced }} meets the requirements of PCI DSS 4.0. PCI DSS is mandated by credit card issuers but administered by the [Payment Card Industry Security Standards Council](https://www.pcisecuritystandards.org/). Many organizations that do not store cardholder data still rely on compliance with PCI DSS to help protect other sensitive or confidential data or metadata.
 
 Features to support PCI DSS are not yet available on Azure.
 

@@ -16,7 +16,7 @@ This section describes how SCIM provisioning works if you use Okta. Depending on
 If your IdP is Okta, then it may be helpful to read Okta's [article about SCIM](https://developer.okta.com/docs/concepts/scim/), as well as [Configure provisioning for an app integration
 ](https://help.okta.com/en-us/Content/Topics/Provisioning/lcm/lcm-provision-application.htm) in the Okta documentation. Otherwise, refer to your IdP's documentation about configuring SCIM.
 
-To configure SCIM provisioning, an IAM admin creates a SCIM app integration in your IdP and configures it to authenticate to CockroachDB {{ site.data.products.cloud }} using a CockroachDB {{ site.data.products.cloud }} service account with the [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) role.
+To configure SCIM provisioning, an IAM admin creates a SCIM app integration in your IdP and configures it to authenticate to CockroachDB {{ site.data.products.cloud }} using a CockroachDB {{ site.data.products.cloud }} service account with the [**Organization Admin**]({% link cockroachcloud/authorization.md %}#organization-admin) role.
 
 From then on, the app integration works as follows.
 
@@ -53,7 +53,7 @@ Depending on what it supports, your IdP may provide a mechanism to sync IAM grou
 1. You can configure the SCIM app integration to selectively synchronize details about an IAM group to CockroachDB {{ site.data.products.cloud }}, including the group's name and membership list. In Okta, this group is said to be _pushed_.
 1. Within CockroachDB {{ site.data.products.cloud }}, you can assign roles to a pushed group, and those roles are automatically assigned to the individual group members with provisioned accounts in CockroachDB {{ site.data.products.cloud }}.
 1. A user account is only ever automatically provisioned in CockroachDB {{ site.data.products.cloud }} based on assignments in the SCIM app integration.
-   - If a group is pushed but not assigned to the SCIM app in Okta, roles can be granted to the group in CockroachDB {{ site.data.products.cloud }}, and group members who are already provisioned in CockroachDB {{ site.data.products.cloud }} or who are assigned to the app integration in the future, automatically receive those roles.
+   - If a group is pushed but not assigned to the SCIM app in Okta, roles can be assigned to the group in CockroachDB {{ site.data.products.cloud }}, and group members who are already provisioned in CockroachDB {{ site.data.products.cloud }} or who are assigned to the app integration in the future, automatically receive those roles.
    - If a group is assigned to the SCIM app in Okta but is not pushed, the group does not appear in CockroachDB {{ site.data.products.cloud }}, but user accounts are automatically provisioned for its members.
 
 1. When details about a pushed IAM group change, such as the group's name or membership, these changes are automatically reflected in CockroachDB {{ site.data.products.cloud }}, unless group push is subsequently disabled for the group.
@@ -62,10 +62,10 @@ To learn more about Group Push, refer to [Automate Group Management](#automate-g
 
 ## Requirements
 
-1. As a user with the [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) role:
+1. As a user with the [**Organization Admin**]({% link cockroachcloud/authorization.md %}#organization-admin) role:
 
    1. [Enable Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %}#enable-cloud-organization-sso).
-   1. [Create a service account]({% link cockroachcloud/managing-access.md %}#create-a-service-account) with the [**Org Administrator** role]({% link cockroachcloud/authorization.md %}#org-administrator) and make a note of its API token. This is the bearer token the IdP will use to authenticate to the CockroachDB {{ site.data.products.cloud }} API.
+   1. [Create a service account]({% link cockroachcloud/managing-access.md %}#create-a-service-account) with the [**Organization Admin** role]({% link cockroachcloud/authorization.md %}#organization-admin) and make a note of its API token. This is the bearer token the IdP will use to authenticate to the CockroachDB {{ site.data.products.cloud }} API.
 
 1. If your IdP is Okta, SCIM provisioning can be enabled only on a [custom SAML authentication method]({% link cockroachcloud/configure-cloud-org-sso.md %}#saml). This requirement is imposed by Okta, and is not part of the SCIM or SAML protocols.
 
@@ -76,7 +76,7 @@ Individual IdPs may impose different requirements, and the exact steps and requi
 The exact steps and requirements for enabling SCIM provisioning depend upon your IdP. At a minimum, you must provide your IdP two pieces of information:
 
 - The endpoint to the CockroachDB {{ site.data.products.cloud }} SCIM API, `https://cockroachlabs.cloud/api/scim/v2`.
-- The API token of a CockroachDB {{ site.data.products.cloud }} service account with the [**Org Administrator**]({% link cockroachcloud/authorization.md %}#org-administrator) role.
+- The API token of a CockroachDB {{ site.data.products.cloud }} service account with the [**Organization Admin**]({% link cockroachcloud/authorization.md %}#organization-admin) role.
 
 
 Depending on your setup, you can configure SCIM either via the Okta Integration Network (OIN) for a standardized app or manually for a custom SAML app integration.
@@ -91,7 +91,7 @@ Depending on your setup, you can configure SCIM either via the Okta Integration 
 1. Click **Next** > Click **Done**.
 1. Go to **Provisioning** Tab and click **Configure API Integration**.
 1. Check **Enable API integration**.
-1. Provide <b>API authentication token</b>: the API token for a CockroachDB {{ site.data.products.cloud }} <a href="managing-access.html#create-a-service-account">service account</a> with the <a href="authorization.html#org-administrator"><b>Org Administrator</b></a> role.
+1. Provide <b>API authentication token</b>: the API token for a CockroachDB {{ site.data.products.cloud }} <a href="managing-access.html#create-a-service-account">service account</a> with the <a href="authorization.html#organization-admin"><b>Organization Admin</b></a> role.
 1. **Test API Credentials** > Click **Save**.
 1. Click **To App**. This tab controls assignment of Okta identities to CockroachDB {{ site.data.products.cloud }}. To allow provisioning and deprovisioning of users, ensure that **Create Users** and **Deactivate Users** are selected, and make any other desired changes.
 1. Optionally, click **To Okta**. This tab allows you to import a CockroachDB {{ site.data.products.cloud }} organization's existing users into Okta. This helps to maintain an updated list of IAM users when an organization creates IAM users in a variety of ways. Refer to Okta's documentation about mapping individual fields. Make any desired changes.
@@ -106,7 +106,7 @@ Depending on your setup, you can configure SCIM either via the Okta Integration 
 1. In the integration's settings page, click **Provisioning** again, then click **Edit**.
 1. Click **Integrations**. This tab controls the app integration's authentication to the CockroachDB {{ site.data.products.cloud }} API. Set:
 
-    <ul><li><b>SCIM connector base URL</b>: <code>https://cockroachlabs.cloud/api/scim/v2</code></li><li><b>API authentication token</b>: the API token for a CockroachDB {{ site.data.products.cloud }} <a href="managing-access.html#create-a-service-account">service account</a> with the <a href="authorization.html#org-administrator"><b>Org Administrator</b></a> role</li><li><b>Unique identifier field for users</b>: <code>userName</code></li><li><b>Authentication Mode</b>: <b>HTTP Header</b></li></ul>
+    <ul><li><b>SCIM connector base URL</b>: <code>https://cockroachlabs.cloud/api/scim/v2</code></li><li><b>API authentication token</b>: the API token for a CockroachDB {{ site.data.products.cloud }} <a href="managing-access.html#create-a-service-account">service account</a> with the <a href="authorization.html#organization-admin"><b>Organization Admin</b></a> role</li><li><b>Unique identifier field for users</b>: <code>userName</code></li><li><b>Authentication Mode</b>: <b>HTTP Header</b></li></ul>
 
 1. Click **Test Connector Configuration**.
 1. Click **Save**.
@@ -202,10 +202,10 @@ To view details about a group:
 
 ### Manage a group's roles
 
-Within CockroachDB {{ site.data.products.cloud }}, you can grant [roles]({% link cockroachcloud/authorization.md %}#organization-user-roles) to a pushed group, and those roles are automatically granted to the group's members who have accounts in CockroachDB {{ site.data.products.cloud }}.
+Within CockroachDB {{ site.data.products.cloud }}, you can assign {{ site.data.products.cloud }} Console [roles]({% link cockroachcloud/authorization.md %}#organization-user-roles) to a pushed group, and those roles are automatically assigned to the group's members who have accounts in CockroachDB {{ site.data.products.cloud }}.
 
-- When you push a group whose members already exist in CockroachDB {{ site.data.products.cloud }} and assign roles to the group, those members are granted the group's roles, in addition to roles explicitly granted to them.
-- When the group's membership changes in your IdP, those changes are synchronized with the group in CockroachDB {{ site.data.products.cloud }}. If a CockroachDB {{ site.data.products.cloud }} account is added to or removed from the group in your IdP, they gain or lose roles granted to the group in CockroachDB {{ site.data.products.cloud }}.
+- When you push a group whose members already exist in CockroachDB {{ site.data.products.cloud }} and assign roles to the group, those members are assigned the group's roles, in addition to roles explicitly assigned to them.
+- When the group's membership changes in your IdP, those changes are synchronized with the group in CockroachDB {{ site.data.products.cloud }}. If a CockroachDB {{ site.data.products.cloud }} account is added to or removed from the group in your IdP, they gain or lose roles assigned to the group in CockroachDB {{ site.data.products.cloud }}.
 
 This section shows how to view and manage a group's roles in the CockroachDB {{ site.data.products.cloud }} Console or using the [Cloud API]({% link cockroachcloud/cloud-api.md %}).
 
@@ -218,7 +218,7 @@ This section shows how to view and manage a group's roles in the CockroachDB {{ 
 
 1. In CockroachDB {{ site.data.products.cloud }} Console, click **Access Management > Groups**.
 1. In a group's row, click the three-dots **Action** button, then click **Edit Roles**.
-1. The group's granted roles are shown. Add or remove roles, then click **Confirm**.
+1. The group's assigned roles are shown. Add or remove roles, then click **Confirm**.
 
    {{site.data.alerts.callout_info}}
    The fields for inherited roles are read-only, because inherited roles cannot be edited directly. Instead, you must either remove the role from the parent group from which it is inherited, or remove the child group from the parent group.
