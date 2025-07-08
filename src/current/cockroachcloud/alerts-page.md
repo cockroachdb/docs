@@ -9,14 +9,14 @@ The **Alerts** page allows you to enable email alerts, send test alerts, and vie
 
 {{site.data.alerts.callout_info}}
 
-The **Alerts** page is applicable for CockroachDB {{ site.data.products.advanced }} clusters in your CockroachDB {{ site.data.products.cloud }} organization. For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters in your organization, all [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) automatically receive email alerts when your cluster reaches 50%, 75%, and 100% of your [resource limits]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#resource-limits).
+The **Alerts** page is applicable for CockroachDB {{ site.data.products.advanced }} clusters in your CockroachDB {{ site.data.products.cloud }} organization. For CockroachDB {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters in your organization, all [Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) automatically receive email alerts when your cluster reaches 50%, 75%, and 100% of your [resource limits]({% link {{site.current_cloud_version}}/architecture/glossary.md %}#resource-limits).
 {{site.data.alerts.end}}
 
 ## Automatic alerts
 
 ### Cluster Maintenance
 
-[Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) receive email alerts when:
+[Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) receive email alerts when:
 
 - A cluster is scheduled for an automatic [patch version upgrade]({% link cockroachcloud/upgrade-policy.md %}#patch-version-upgrades) and again after the upgrade is complete.
 - When a cluster is scheduled for [maintenance]({% link cockroachcloud/advanced-cluster-management.md %}#set-a-maintenance-window) that could temporarily impact the cluster's performance.
@@ -93,6 +93,8 @@ For clusters with [maintenance windows]({% link cockroachcloud/advanced-cluster-
 
 ## Configure alerts
 
+Managing alerts requires the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) role.
+
 To enable alerts:
 
 1. Under **Configure CockroachDB {{ site.data.products.cloud }} alerts**, toggle the **Alerts are on** switch.
@@ -105,6 +107,8 @@ You can use an email alias to send alerts to a monitoring tool such as [Alertman
 {{site.data.alerts.end}}
 
 ## Send a test alert
+
+Sending test alerts requires the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role.
 
 To send a test alert:
 

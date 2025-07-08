@@ -186,7 +186,7 @@ to [view the tables, indexes, and transactions with the most time under contenti
 
 Hotspots are a symptom of *resource contention* and can create problems as requests increase, including excessive [transaction contention](#transaction-contention).
 
-For a detailed explanation of hotspot causes and mitigation strategies, refer to the [Understanding Hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) page.
+For a detailed explanation of hotspot causes and mitigation strategies, refer to the [Understand Hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}) and the [Detect Hotspots]({% link {{ page.version.version }}/detect-hotspots.md %}) pages.
 
 #### Indicators that your cluster has hotspots
 

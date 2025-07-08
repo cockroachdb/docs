@@ -44,11 +44,11 @@ The CockroachDB versions on this page are no longer supported. For more informat
     {% assign is_innovation = false %}
     {% assign in_lts_period = false %}
     {% assign ga_support_expired = false %}
-    {% assign version_past_unsupported_date = false %}
+    {% assign version_past_binary_removal_date = false %}
     
     {% comment %} Check if the version is past its unsupported date {% endcomment %}
-    {% if v.binaries_unsupported_date != "N/A" and v.binaries_unsupported_date <= current_date %}
-        {% assign version_past_unsupported_date = true %}
+    {% if v.binary_removal_date != "N/A" and v.binary_removal_date <= current_date %}
+        {% assign version_past_binary_removal_date = true %}
     {% endif %}
     
     {% comment %} Check if the version has been released {% endcomment %}
@@ -218,7 +218,7 @@ CockroachDB {{ v.major_version }} is partially supported. Pre-LTS patches (befor
                         {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
                     <td colspan="{% if v_linux_arm == true %}2{% else %}1{% endif %}"><span>{{ r.cloud_only_message_short }}</span></td>
                           {% continue %}
-                        {% elsif version_past_unsupported_date == true %} {% comment %} Suppress download links for outdated versions or if past unsupported date. {% endcomment %}
+                        {% elsif version_past_binary_removal_date == true %} {% comment %} Suppress download links for outdated versions or if past unsupported date. {% endcomment %}
                     <td colspan="{% if v_linux_arm == true %}2{% else %}1{% endif %}"><span>{{ is_not_downloadable_message }}</span></td>
                           {% continue %}
                         {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
@@ -230,7 +230,7 @@ CockroachDB {{ v.major_version }} is partially supported. Pre-LTS patches (befor
                         {% endif %}
                         {% if r.linux.linux_arm == true and v_linux_arm == true %}
                         {% comment %}Don't print column because of previous colspan=2{% endcomment %}
-                            {% if r.withdrawn == true or r.cloud_only == true or version_past_unsupported_date == true %}
+                            {% if r.withdrawn == true or r.cloud_only == true or version_past_binary_removal_date == true %}
                                 {% break %}
                             {% else %}
                         <td>
@@ -290,7 +290,7 @@ CockroachDB {{ v.major_version }} is partially supported. Pre-LTS patches (befor
                     {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
                     <td colspan="{% if v_mac_arm == true %}2{% else %}1{% endif %}"><span>{{ r.cloud_only_message_short }}</span></td>
                       {% continue %}
-                    {% elsif version_past_unsupported_date == true %} {% comment %} Suppress download links for outdated versions or if past unsupported date. {% endcomment %}
+                    {% elsif version_past_binary_removal_date == true %} {% comment %} Suppress download links for outdated versions or if past unsupported date. {% endcomment %}
                     <td colspan="{% if v_mac_arm == true %}2{% else %}1{% endif %}"><span>{{ is_not_downloadable_message }}</span></td>
                           {% continue %}
                     {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
@@ -302,7 +302,7 @@ CockroachDB {{ v.major_version }} is partially supported. Pre-LTS patches (befor
                     {% endif %}
                     {% if r.mac.mac_arm == true and v_mac_arm == true %}
                         {% comment %}Don't print column because of previous colspan=2{% endcomment %}
-                        {% if r.withdrawn == true or r.cloud_only == true  or version_past_unsupported_date == true %}
+                        {% if r.withdrawn == true or r.cloud_only == true  or version_past_binary_removal_date == true %}
                             {% break %}
                         {% else %}
                     <td>
@@ -358,7 +358,7 @@ CockroachDB {{ v.major_version }} is partially supported. Pre-LTS patches (befor
                         {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
                     <td><span>{{ r.cloud_only_message_short }}</span></td>
                           {% continue %}
-                        {% elsif  version_past_unsupported_date == true %} {% comment %} Suppress download links for outdated versions or if past unsupported date. {% endcomment %}
+                        {% elsif  version_past_binary_removal_date == true %} {% comment %} Suppress download links for outdated versions or if past unsupported date. {% endcomment %}
                     <td><span>{{ is_not_downloadable_message }}</span></td>
                           {% continue %}
                         {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
@@ -446,7 +446,7 @@ CockroachDB {{ v.major_version }} is partially supported. Pre-LTS patches (befor
                         <span class="badge badge-gray">Withdrawn</span></td>{% comment %} Suppress download links for withdrawn releases, spans Intel and ARM columns {% endcomment %}
                     {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases, spans Intel and ARM columns {% endcomment %}
                         <span>{{ r.cloud_only_message_short }}</span></td>
-                    {% elsif version_past_unsupported_date == true %} {% comment %} Suppress download links for outdated versions or if past unsupported date. {% endcomment %}
+                    {% elsif version_past_binary_removal_date == true %} {% comment %} Suppress download links for outdated versions or if past unsupported date. {% endcomment %}
                         <span>{{ is_not_downloadable_message }}</span></td>
                           {% continue %}
                     {% else %}
@@ -514,7 +514,7 @@ CockroachDB {{ v.major_version }} is partially supported. Pre-LTS patches (befor
                     {% elsif r.cloud_only == true %} {% comment %} Suppress download links for Cloud-first releases {% endcomment %}
                     <td><span>{{ r.cloud_only_message_short }}</span></td>
                         {% continue %}
-                    {% elsif version_past_unsupported_date == true %} {% comment %} Suppress download links for outdated versions or if past unsupported date. {% endcomment %}
+                    {% elsif version_past_binary_removal_date == true %} {% comment %} Suppress download links for outdated versions or if past unsupported date. {% endcomment %}
                     <td><span>{{ is_not_downloadable_message }}</span></td>
                         {% continue %}
                     {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
