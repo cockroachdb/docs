@@ -13,10 +13,6 @@ The `CREATE VIRTUAL CLUSTER` statement creates a new virtual cluster. It is supp
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
-{{site.data.alerts.callout_info}}
-Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
-{{site.data.alerts.end}}
-
 ## Required privileges
 
 `CREATE VIRTUAL CLUSTER` requires one of the following privileges:
