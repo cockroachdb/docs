@@ -117,7 +117,7 @@ CockroachDB allows you to trace [transactions]({% link {{ page.version.version }
 
 To enable tracing for a subset of transactions and emit relevant traces to the [`SQL_EXEC` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels), configure the following cluster settings:
 
-- {% include_cached new-in.html version="v25.3.0" %}[`sql.trace.txn.sample_rate`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-trace-txn-sample-rate): Specifies the probability (between `0.0` and `1.0`) that a given transaction will have tracing enabled. A value of `0.1` means that approximately 10% of transactions are traced. The default is `1`, meaning 100% transactions are sampled.
+- {% include_cached new-in.html version="v25.3.0" %}[`sql.trace.txn.sample_rate`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-trace-txn-sample-rate): Specifies the probability (between `0.0` and `1.0`) that a given transaction will have tracing enabled. A value of `0.1` means that approximately 10% of transactions are traced. The default is `1`, meaning 100% of transactions are sampled.
 - [`sql.trace.txn.enable_threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-trace-txn-enable-threshold): Specifies a duration threshold. A trace is emitted only if a sampled transaction's execution time exceeds this value.
 
 To emit a trace to the logs, both conditions must be met:
