@@ -117,15 +117,15 @@ CockroachDB allows you to trace [transactions]({% link {{ page.version.version }
 
 To enable tracing for a subset of transactions and emit relevant traces to the [`SQL_EXEC` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels), configure the following cluster settings:
 
-- {% include_cached new-in.html version="v25.3.0" %}[`sql.trace.txn.sample_rate`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-trace-txn-sample-rate): Specifies the probability (between `0.0` and `1.0`) that a given transaction will have tracing enabled. A value of `0.1` means that approximately 10% of transactions are traced. The default is `1`, meaning 100% of transactions are sampled.
-- [`sql.trace.txn.enable_threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-trace-txn-enable-threshold): Specifies a duration threshold. A trace is emitted only if a sampled transaction's execution time exceeds this value.
+- {% include_cached new-in.html version="v25.3.0" %}[`sql.trace.txn.sample_rate`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-trace-txn-sample-rate): Specifies the probability (between `0.0` and `1.0`) that a given transaction will have tracing enabled. A value of `0.01` means that approximately 1% of transactions are traced. The default is `1`, which means 100% of transactions are sampled.
+- [`sql.trace.txn.enable_threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-trace-txn-enable-threshold): Specifies a duration threshold. A trace is emitted only if a sampled transaction's execution time exceeds this value. When set to `0` (default), tracing is disabled regardless of whether the value of `sql.trace.txn.sample_rate` is greater than `0`.
 
-To emit a trace to the logs, both conditions must be met:
+To emit a trace to the logs, the following conditions must be met:
 
 1. The transaction is selected based on the sampling probability.
 1. Its execution duration exceeds the configured threshold.
 
-This approach minimizes overhead by tracing a fraction of the workload and emitting traces only for transactions of potential interest.
+This approach minimizes overhead by tracing a fraction of the workload and emitting traces only for potentially relevant transactions.
 
 #### Configuration example
 
