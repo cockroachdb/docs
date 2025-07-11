@@ -99,6 +99,8 @@ Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and
 
 Perform a cutover by resuming application traffic, now to CockroachDB.
 
+{% include molt/molt-troubleshooting.md %}
+
 ## See also
 
 - [Migration Overview]({% link molt/migration-overview.md %})

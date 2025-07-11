@@ -10,9 +10,9 @@ Convert the source schema into a CockroachDB-compatible schema. CockroachDB supp
 	CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);
 	~~~
 
-	- MOLT Fetch can automatically create a matching CockroachDB schema using the [`drop-on-target-and-recreate`](#table-handling-mode) option.
+	- MOLT Fetch can automatically create a matching CockroachDB schema using the {% if page.name != "migration-strategy.md" %}[`drop-on-target-and-recreate`](#table-handling-mode){% else %}[`drop-on-target-and-recreate`]({% link molt/molt-fetch.md %}#target-table-handling){% endif %} option.
 
-	- If you create the target schema manually, review how MOLT Fetch handles [type mismatches]({% link molt/molt-fetch.md %}#mismatch-handling). You can use the [MOLT Schema Conversion Tool](#schema-conversion-tool) to create a matching schema.
+	- If you create the target schema manually, review how MOLT Fetch handles [type mismatches]({% link molt/molt-fetch.md %}#mismatch-handling). You can use the {% if page.name != "migration-strategy.md" %}[MOLT Schema Conversion Tool](#schema-conversion-tool){% else %}[MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}){% endif %} to create a matching schema.
 
 	<section class="filter-content" markdown="1" data-scope="oracle">
 	- By default, table and column names are case-insensitive in MOLT Fetch. If using the [`--case-sensitive`]({% link molt/molt-fetch.md %}#global-flags) flag, schema, table, and column names must match Oracle's default uppercase identifiers. Use quoted names on the target to preserve case. For example, the following CockroachDB SQL statement will error:

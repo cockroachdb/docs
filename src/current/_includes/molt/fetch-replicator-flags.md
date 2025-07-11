@@ -35,12 +35,12 @@ Replication from Oracle requires `--scn` and `--backfillFromSCN`, which specify 
 </section>
 
 {% elsif page.name == "migrate-failback.md" %}
-|        Flag        |                                                         Description                                                          |
-|--------------------|------------------------------------------------------------------------------------------------------------------------------|
-| `--stagingSchema`  | **Required.** Staging schema name for the changefeed checkpoint table.                                                       |
-| `--tlsCertificate` | Path to the server TLS certificate for the webhook sink. Refer to [Secure failback changefeed](#secure-failback-changefeed). |
-| `--tlsPrivateKey`  | Path to the server TLS private key for the webhook sink. Refer to [Secure failback changefeed](#secure-failback-changefeed). |
-| `--metricsAddr`    | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.               |
+|        Flag        |                                                             Description                                                              |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| `--stagingSchema`  | **Required.** Staging schema name for the changefeed checkpoint table.                                                               |
+| `--tlsCertificate` | Path to the server TLS certificate for the webhook sink. Refer to [Secure failback for changefeed](#secure-changefeed-for-failback). |
+| `--tlsPrivateKey`  | Path to the server TLS private key for the webhook sink. Refer to [Secure failback for changefeed](#secure-changefeed-for-failback). |
+| `--metricsAddr`    | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                       |
 
 - Failback requires `--stagingSchema`, which specifies the staging schema name used as a checkpoint. MOLT Fetch [logs the staging schema name]({% link molt/migrate-data-load-replicate-only.md %}#replicate-changes-to-cockroachdb) when it starts replication:
 
