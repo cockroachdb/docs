@@ -14,7 +14,7 @@ To use the CockroachDB Cloud API to change your cluster's plan, refer to [Use th
 
 ## Before you begin
 
-You'll need the [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role on the running {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster in order to change the cluster's [plan]({% link cockroachcloud/index.md %}#plans).
+You'll need the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role on the running {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster in order to change the cluster's [plan]({% link cockroachcloud/index.md %}#plans).
 
 For changing plans from {{ site.data.products.standard }} to {{ site.data.products.basic }}, you must disable {{ site.data.products.standard }}-only features before starting the plan change.
 
