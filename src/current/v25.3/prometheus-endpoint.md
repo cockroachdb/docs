@@ -113,7 +113,7 @@ sql_count{node_id="1",tenant="demoapp",query_type="delete",query_internal="true"
 
 ### Static labels
 
-One common use of static labels is to allow segmentation of a metric across various facets for later querying and aggregation. For example, rather than emitting separate metrics for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` statements, the single metric `sql_count` uses the `query_type` label to distinguish among these operations. This enables operators to easily aggregate across query types (e.g., summing all SQL operations) or filter for a specific type by using the appropriate value for the `query_type` label.
+One common use of static labels is to allow segmentation of a metric across various facets for later querying and aggregation. For example, rather than emitting separate metrics for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` statements, the single metric `sql_count` uses the `query_type` label to distinguish between these operations. This enables operators to easily aggregate across query types (e.g., summing all SQL operations) or filter for a specific type using the appropriate value for the `query_type` label.
 
 The following tables contrast unlabeled metrics from the `_status/vars` endpoint with their labeled counterparts from the `metrics` endpoint:
 
@@ -124,17 +124,17 @@ Unlabeled metrics from the `_status/vars` endpoint | Labeled metrics from the `m
 `sql_update_count` | `sql_count{query_type="update"}`
 `sql_delete_count` | `sql_count{query_type="delete"}`
 
-At metrics query time, labels provide a smoother user experience:
+At metrics query time, labels provide a more seamless user experience:
 
 Unlabeled sum query from the `_status/vars` endpoint | Labeled sum query from the `metrics` endpoint
 -----------------------------------------------|-------------------------------
 `sum(sql_insert_count, sql_delete_count, sql_select_count)` | `sum(sql_count)`
-This query must be modified if new types are added because they will have new metric names. | This query is resilient to new type additions.
-Related metrics can be found via autocomplete in a third-party tool, but it may be unclear. | All label values can be found through a third-party query engine and used to easily construct a graph with individual lines for each label value.
+This query must be updated if new types are added, as each will have a unique metric name. | This query is resilient to new type additions.
+Related metrics can be found via autocomplete in a third-party tool, but the results may be ambiguous. | All label values can be found through a third-party query engine and used to easily construct a graph with individual lines for each label value.
 
-In other cases, label values can represent distinct categories not meant to be aggregated. For example, certificate expiration metrics differ only by the specific certificate type they refer to. Operators are unlikely to sum or average these, but may still want to display them side by side on a dashboard for visibility.
+In other cases, label values can represent distinct categories not intended for aggregation. For example, certificate expiration metrics differ only by the specific certificate type they represent. Operators are unlikely to sum or average these, but may still want to display them side by side on a dashboard for visibility.
 
-In this case, a single metric name like `security_certificate_expiration` is reused, with the certificate type expressed as a label. The output from the `metrics` endpoint will be similar to the following:
+In this case, a single metric name like `security_certificate_expiration` is reused, with the certificate type expressed as a label. The `metrics` endpoint returns output similar to the following:
 
 ~~~
 # HELP security_certificate_expiration Expiration for the CA certificate
@@ -150,7 +150,7 @@ security_certificate_expiration{node_id="1",tenant="demoapp",certificate_type="u
 security_certificate_expiration{node_id="1",tenant="demoapp",certificate_type="node"} 1.840654953e+09
 ~~~
 
-This approach avoids a proliferation of metric names while allowing third-party tools to display each certificate's expiration as a separate line in a unified graph or table.
+This approach avoids a proliferation of metric names and allows third-party tools to display each certificate’s expiration as a separate line in a single graph or table.
 
 ## See also
 
