@@ -46,12 +46,6 @@ When migrating from Oracle Multitenant (PDB/CDB), this should be a [common user]
 
 Grant the migration user privileges to connect, read metadata, and `SELECT` and `FLASHBACK` the tables you plan to migrate. The tables should all reside in a single schema (e.g., `migration_schema`). For details, refer to [Schema and table filtering](#schema-and-table-filtering).
 
-<div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="multi-tenant">Multi-tenant</button>
-    <button class="filter-button" data-scope="single-tenant">Single-tenant</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="multi-tenant">
 ##### Oracle Multitenant (PDB/CDB) user privileges
 
 Connect to the Oracle CDB as a DBA and grant the following:
@@ -96,9 +90,7 @@ GRANT SELECT ON V_$TRANSACTION TO C##MIGRATION_USER;
 GRANT SELECT ON migration_schema.tbl TO C##MIGRATION_USER;
 GRANT FLASHBACK ON migration_schema.tbl TO C##MIGRATION_USER;
 ~~~
-</section>
 
-<section class="filter-content" markdown="1" data-scope="single-tenant">
 ##### Single-tenant Oracle user privileges
 
 Connect to the Oracle database as a DBA and grant the following:
@@ -129,7 +121,6 @@ GRANT SELECT ON DBA_TABLES TO MIGRATION_USER;
 GRANT SELECT ON migration_schema.tbl TO MIGRATION_USER;
 GRANT FLASHBACK ON migration_schema.tbl TO MIGRATION_USER;
 ~~~
-</section>
 </section>
 
 {% if page.name != "migrate-bulk-load.md" %}

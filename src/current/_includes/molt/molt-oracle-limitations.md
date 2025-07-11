@@ -1,4 +1,3 @@
-<section class="filter-content" markdown="1" data-scope="oracle">
 ## Limitations
 
 - Migrations must be performed from a single Oracle schema. You **must** include `--schema-filter` so that MOLT Fetch only loads data from the specified schema. Refer to [Schema and table filtering](#schema-and-table-filtering).
@@ -21,4 +20,3 @@
 {% endif %}
 
 - Oracle advises against `LONG RAW` columns and [recommends converting them to `BLOB`](https://www.orafaq.com/wiki/LONG_RAW#History). `LONG RAW` can only store binary values up to 2GB, and only one `LONG RAW` column per table is supported.
-</section>
