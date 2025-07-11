@@ -15,7 +15,7 @@ The metrics are formatted for integration with [Prometheus](https://prometheus.i
 In addition to using the exported time-series data to monitor a cluster through an external system, you can write alerting rules to ensure prompt notification of critical events or issues requiring intervention or investigation. Refer to [Essential Alerts]({% link {{ page.version.version }}/essential-alerts-self-hosted.md %}) for more details.
 {{site.data.alerts.end}}
 
-Even if you rely on external tools for storing and visualizing your cluster's time-series metrics, CockroachDB continues to store time-series metrics for its [DB Console Metrics dashboards]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#metrics-dashboards). These stored time-series metrics may be used to generate a [tsdump]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}), which is critical during escalations to Cockroach Labs support.
+Even if you rely on external tools for storing and visualizing your cluster's time-series metrics, CockroachDB continues to store time-series metrics for its [DB Console Metrics dashboards]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#metrics-dashboards), unless you manually [disable this collection]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data). These stored time-series metrics may be used to generate a [tsdump]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}), which may be critical during escalations to Cockroach Labs support.
 
 ## `_status/vars`
 
@@ -113,7 +113,9 @@ sql_count{node_id="1",tenant="demoapp",query_type="delete",query_internal="true"
 
 ### Static labels
 
-Static labels allow segmentation of a metric across various facets for later querying and aggregation.
+One common use of static labels is to allow segmentation of a metric across various facets for later querying and aggregation. For example, rather than emitting separate metrics for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` statements, the single metric `sql_count` uses the `query_type` label to distinguish among these operations. This enables operators to easily aggregate across query types (e.g., summing all SQL operations) or filter for a specific type by using the appropriate value for the `query_type` label.
+
+The following tables contrast unlabeled metrics from the `_status/vars` endpoint with their labeled counterparts from the `metrics` endpoint:
 
 Unlabeled metrics from the `_status/vars` endpoint | Labeled metrics from the `metrics` endpoint
 -----------------------------------------------|-----------------------------------------
@@ -130,9 +132,9 @@ Unlabeled sum query from the `_status/vars` endpoint | Labeled sum query from th
 This query must be modified if new types are added because they will have new metric names. | This query is resilient to new type additions.
 Related metrics can be found via autocomplete in a third-party tool, but it may be unclear. | All label values can be found through a third-party query engine and used to easily construct a graph with individual lines for each label value.
 
-Another common scenario occurs when each label value represents a disjoint set of categories. An example here is the various certificate expiration metrics, which differ only by the specific certificate they refer to. Operators are unlikely to aggregate these, but may still want to view all certificate expiration metrics on a dashboard.
+In other cases, label values can represent distinct categories not meant to be aggregated. For example, certificate expiration metrics differ only by the specific certificate type they refer to. Operators are unlikely to sum or average these, but may still want to display them side by side on a dashboard for visibility.
 
-For example, the output from the `metrics` endpoint will be similar to the following:
+In this case, a single metric name like `security_certificate_expiration` is reused, with the certificate type expressed as a label. The output from the `metrics` endpoint will be similar to the following:
 
 ~~~
 # HELP security_certificate_expiration Expiration for the CA certificate
@@ -147,6 +149,8 @@ security_certificate_expiration{node_id="1",tenant="demoapp",certificate_type="c
 security_certificate_expiration{node_id="1",tenant="demoapp",certificate_type="ui-ca"} 0
 security_certificate_expiration{node_id="1",tenant="demoapp",certificate_type="node"} 1.840654953e+09
 ~~~
+
+This approach avoids a proliferation of metric names while allowing third-party tools to display each certificate's expiration as a separate line in a unified graph or table.
 
 ## See also
 
