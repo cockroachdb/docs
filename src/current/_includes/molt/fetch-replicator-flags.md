@@ -51,7 +51,7 @@ Replication from Oracle requires `--scn` and `--backfillFromSCN`, which specify 
 - When configuring a [secure changefeed](#secure-changefeed-for-failback) for failback, you **must** include `--tlsCertificate` and `--tlsPrivateKey`, which specify the paths to the server certificate and private key for the webhook sink connection.
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-- Oracle migrations using `--table-filter` must also include `--userscript`. Refer to [Table filter userscript](#table-filter-userscript).
+- Oracle migrations using `--table-filter` must also include `--userscript`. Refer to [Table filter userscript]({% link molt/migrate-data-load-replicate-only.md %}#table-filter-userscript).
 </section>
 
 {% elsif page.name == "migrate-replicate-only.md" %}

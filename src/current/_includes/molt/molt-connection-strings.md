@@ -1,4 +1,4 @@
-Define the connection strings for the [source](#source-connection-string) and [target](#target-connection-string) databases, and keep them [secure](#secure-connection-strings).
+Define the connection strings for the [source](#source-connection-string) and [target](#target-connection-string) databases, and keep them [secure](#secure-connections).
 
 #### Source connection string
 

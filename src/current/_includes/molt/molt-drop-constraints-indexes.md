@@ -5,7 +5,7 @@ To optimize [data load](#load-data-into-cockroachdb) performance, drop all non-`
 - [Secondary indexes]({% link {{ site.current_cloud_version }}/schema-design-indexes.md %})
 - [`CHECK`]({% link {{ site.current_cloud_version }}/check.md %})
 - [`DEFAULT`]({% link {{ site.current_cloud_version }}/default-value.md %})
-- [`NOT NULL`]({% link {{ site.current_cloud_version }}/not-null.md %}) (you do not need to drop this constraint when using `drop-on-target-and-recreate` for [table handling](#target-table-handling))
+- [`NOT NULL`]({% link {{ site.current_cloud_version }}/not-null.md %}) (you do not need to drop this constraint when using `drop-on-target-and-recreate` for [table handling](#table-handling-mode))
 
 {{site.data.alerts.callout_danger}}
 Do **not** drop [`PRIMARY KEY`]({% link {{ site.current_cloud_version }}/primary-key.md %}) constraints.

@@ -7,7 +7,7 @@
 - A source table is missing a primary key.
 - A source and table primary key have mismatching types.
 - A [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) primary key has a different [collation]({% link {{site.current_cloud_version}}/collate.md %}) on the source and target.
-- A source and target column have mismatching types that are not [allowable mappings](#type-mapping).
+- A source and target column have mismatching types that are not [allowable mappings]({% link molt/molt-fetch.md %}#type-mapping).
 - A target table is missing a column that is in the corresponding source table.
 - A source column is nullable, but the corresponding target column is not nullable (i.e., the constraint is more strict on the target).
 
@@ -41,7 +41,7 @@ GRANT SELECT, FLASHBACK ON migration_schema.orders TO C##MIGRATION_USER;
 
 If the Oracle migration user lacks privileges on certain tables, you may receive errors stating that the table or view does not exist. Either use `--table-filter` to [limit the tables to be migrated](#schema-and-table-filtering), or grant the migration user `SELECT` privileges on all objects in the schema. Refer to [Create migration user on source database](#create-migration-user-on-source-database).
 
-{% if page.name != "migration-bulk-load.md" %}
+{% if page.name != "migrate-bulk-load.md" %}
 ##### Missing redo logs or unavailable SCN
 
 If the Oracle redo log files are too small or do not retain enough history, you may get errors indicating that required log files are missing for a given SCN range, or that a specific SCN is unavailable.

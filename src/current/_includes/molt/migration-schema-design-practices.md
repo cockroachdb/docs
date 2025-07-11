@@ -10,7 +10,7 @@ Convert the source schema into a CockroachDB-compatible schema. CockroachDB supp
 	CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);
 	~~~
 
-	- MOLT Fetch can automatically create a matching CockroachDB schema using the [`drop-on-target-and-recreate`](#target-table-handling) option.
+	- MOLT Fetch can automatically create a matching CockroachDB schema using the [`drop-on-target-and-recreate`](#table-handling-mode) option.
 
 	- If you create the target schema manually, review how MOLT Fetch handles [type mismatches]({% link molt/molt-fetch.md %}#mismatch-handling). You can use the [MOLT Schema Conversion Tool](#schema-conversion-tool) to create a matching schema.
 
