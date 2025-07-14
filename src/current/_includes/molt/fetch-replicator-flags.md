@@ -29,7 +29,6 @@ Replication from Oracle requires `--scn` and `--backfillFromSCN`, which specify 
 </section>
 
 {% elsif page.name == "migrate-replicate-only.md" %}
-
 |        Flag       |                                                  Description                                                   |
 |-------------------|----------------------------------------------------------------------------------------------------------------|
 | `--stagingSchema` | **Required.** Staging schema name for the changefeed checkpoint table.                                         |
@@ -54,7 +53,6 @@ When using `--table-filter`, you must also include `--userscript`. Refer to [Tab
 </section>
 
 {% elsif page.name == "migrate-data-load-and-replication.md" %}
-
 |       Flag      |                                                  Description                                                   |
 |-----------------|----------------------------------------------------------------------------------------------------------------|
 | `--metricsAddr` | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`. |

@@ -67,7 +67,14 @@
 	{"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["migration_schema.employees","migration_schema.payments","migration_schema.payments"],"cdc_cursor":"4c658ae6-e8ad-11ef-8449-0242ac140006:1-29","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
 	~~~
 
-	This message includes a `cdc_cursor` value. You must set `--defaultGTIDSet` this value when starting [`replication-only` mode](#replicate-changes-to-cockroachdb).
+	{% if page.name != "migrate-bulk-load.md" %}
+	This message includes a `cdc_cursor` value. You must set `--defaultGTIDSet` to this value when starting [`replication-only` mode](#replicate-changes-to-cockroachdb):
+
+	{% include_cached copy-clipboard.html %}
+	~~~ 
+	--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29
+	~~~
+	{% endif %}
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="oracle">
