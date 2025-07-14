@@ -5,16 +5,16 @@ toc: true
 docs_area: migrate
 ---
 
+{% assign tab_names_html = "Load and replicate;Replicate separately" %}
+{% assign html_page_filenames = "migrate-data-load-and-replication.html;migrate-data-load-replicate-only.html" %}
+
+{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder="molt" %}
+
 Use `data-load-and-replication` mode to perform a one-time bulk load of source data and start continuous replication in a single command.
 
 {{site.data.alerts.callout_success}}
 You can also [load and replicate separately]({% link molt/migrate-data-load-replicate-only.md %}) using `data-load` and `replicate-only`.
 {{site.data.alerts.end}}
-
-{% assign tab_names_html = "Load and replicate;Replicate separately" %}
-{% assign html_page_filenames = "migrate-data-load-and-replication.html;migrate-data-load-replicate-only.html" %}
-
-{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder="molt" %}
 
 {% include molt/molt-setup.md %}
 
@@ -52,7 +52,7 @@ Start the initial load of data into the target database. Continuous replication 
     --table-filter 'employees|payments|orders' \
     --bucket-path 's3://migration/data/cockroach' \
     --table-handling truncate-if-exists \
-    --replicator-flags '--metricsAddr :30005' \
+    --replicator-flags '--metricsAddr :30005 --userscript table_filter.ts' \
     --mode data-load-and-replication
     ~~~
     </section>

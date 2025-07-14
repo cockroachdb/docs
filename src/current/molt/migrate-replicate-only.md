@@ -46,7 +46,7 @@ These steps assume that you previously started replication. Refer to [Load and R
 	--target $TARGET \
 	--table-filter 'employees|payments|orders' \
 	--non-interactive \
-	--replicator-flags '--stagingSchema _replicator_1749699789613149000 --metricsAddr :30005' \
+	--replicator-flags '--stagingSchema _replicator_1749699789613149000 --metricsAddr :30005 --userscript table_filter.ts' \
 	--mode replication-only
 	~~~
 	</section>

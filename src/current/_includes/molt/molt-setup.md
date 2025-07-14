@@ -1,10 +1,3 @@
-## Before you begin
-
-- Create a CockroachDB [{{ site.data.products.cloud }}]({% link cockroachcloud/create-your-cluster.md %}) or [{{ site.data.products.core }}]({% link {{ site.current_cloud_version }}/install-cockroachdb-mac.md %}) cluster.
-- Install the [MOLT (Migrate Off Legacy Technology)]({% link releases/molt.md %}#installation) tools.
-- Review the MOLT Fetch [best practices]({% link molt/molt-fetch.md %}#best-practices).
-- Review [Migration Strategy]({% link molt/migration-strategy.md %}).
-
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="postgres">PostgreSQL</button>
     <button class="filter-button" data-scope="mysql">MySQL</button>
@@ -15,11 +8,20 @@
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
-
-{% include molt/oracle-migration-prerequisites.md %}
-
-{% include molt/molt-oracle-limitations.md %}
 </section>
+
+## Before you begin
+
+- Create a CockroachDB [{{ site.data.products.cloud }}]({% link cockroachcloud/create-your-cluster.md %}) or [{{ site.data.products.core }}]({% link {{ site.current_cloud_version }}/install-cockroachdb-mac.md %}) cluster.
+- Install the [MOLT (Migrate Off Legacy Technology)]({% link releases/molt.md %}#installation) tools.
+- Review the MOLT Fetch [best practices]({% link molt/molt-fetch.md %}#best-practices).
+- Review [Migration Strategy]({% link molt/migration-strategy.md %}).
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+{% include molt/oracle-migration-prerequisites.md %}
+</section>
+
+{% include molt/molt-limitations.md %}
 
 ## Prepare the source database
 

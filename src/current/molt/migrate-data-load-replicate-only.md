@@ -5,16 +5,16 @@ toc: true
 docs_area: migrate
 ---
 
+{% assign tab_names_html = "Load and replicate;Replicate separately" %}
+{% assign html_page_filenames = "migrate-data-load-and-replication.html;migrate-data-load-replicate-only.html" %}
+
+{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder="molt" %}
+
 Perform an initial bulk load of the source data using `data-load` mode, then use `replication-only` mode to replicate ongoing changes to the target.
 
 {{site.data.alerts.callout_success}}
 You can also [load and replicate in a single command]({% link molt/migrate-data-load-and-replication.md %}) using `data-load-and-replication`.
 {{site.data.alerts.end}}
-
-{% assign tab_names_html = "Load and replicate;Replicate separately" %}
-{% assign html_page_filenames = "migrate-data-load-and-replication.html;migrate-data-load-replicate-only.html" %}
-
-{% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder="molt" %}
 
 {% include molt/molt-setup.md %}
 
@@ -112,7 +112,7 @@ With initial load complete, start replication of ongoing changes on the source t
 	--target $TARGET \
 	--table-filter 'employees|payments|orders' \
 	--non-interactive \
-	--replicator-flags '--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29 --metricsAddr :30005' \
+	--replicator-flags '--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29 --metricsAddr :30005 --userscript table_filter.ts' \
 	--mode replication-only
 	~~~
 	</section>

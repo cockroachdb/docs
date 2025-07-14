@@ -48,7 +48,7 @@ In `failback` mode, the `--source` and `--target` connection strings are reverse
 `--source` is the CockroachDB connection string. For example:
 
 ~~~
---target 'postgres://crdb_user@localhost:26257/defaultdb?sslmode=verify-full'
+--source 'postgres://crdb_user@localhost:26257/defaultdb?sslmode=verify-full'
 ~~~
 
 `--target` is the connection string of the database you migrated from.
@@ -57,7 +57,7 @@ In `failback` mode, the `--source` and `--target` connection strings are reverse
 For example:
 
 ~~~
---source 'postgres://postgres:postgres@localhost:5432/molt?sslmode=verify-full'
+--target 'postgres://postgres:postgres@localhost:5432/molt?sslmode=verify-full'
 ~~~
 </section>
 
@@ -65,7 +65,7 @@ For example:
 For example:
 
 ~~~
---source 'mysql://user:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt'
+--target 'mysql://user:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt'
 ~~~
 </section>
 
@@ -73,7 +73,7 @@ For example:
 For example:
 
 ~~~
---source 'oracle://C%23%23MIGRATION_USER:password@host:1521/ORCLPDB1'
+--target 'oracle://C%23%23MIGRATION_USER:password@host:1521/ORCLPDB1'
 ~~~
 
 {{site.data.alerts.callout_info}}

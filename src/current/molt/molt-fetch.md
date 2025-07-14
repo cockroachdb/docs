@@ -346,20 +346,12 @@ Before using this option:
 	In case you want to run `replication-only` without already having loaded data (e.g., for testing), also include `--pglogical-publication-and-slot-drop-and-recreate` to ensure that the publication and replication slot are created in the correct order. For details on this flag, refer to [Global flags](#global-flags).
 	{{site.data.alerts.end}}
 
-- For a MySQL source, first get your GTID record:
+
+- For a MySQL source, replication requires specifying a starting GTID set with the `--defaultGTIDSet` replication flag. After the initial data load completes, locate the [`cdc_cursor`](#cdc-cursor) value in the `fetch complete` log output and use it as the GTID set. For example:
 
 	{% include_cached copy-clipboard.html %}
-	~~~ sql
-	SELECT source_uuid, min(interval_start), max(interval_end)
-	  FROM mysql.gtid_executed
-	  GROUP BY source_uuid;
-	~~~
-
-	In the `molt fetch` command, specify a GTID set using the [`--defaultGTIDSet` replication flag](#mysql-replication-flags) and the format `source_uuid:min(interval_start)-max(interval_end)`. For example:
-
-	{% include_cached copy-clipboard.html %}
-	~~~
-	--mode replication-only 
+	~~~ shell
+	--mode replication-only \
 	--replicator-flags "--defaultGTIDSet b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21"
 	~~~
 
@@ -932,7 +924,9 @@ A change data capture (CDC) cursor is written to the output as `cdc_cursor` at t
 {"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":1,"tables":["public.employees"],"cdc_cursor":"0/3F41E40","net_duration_ms":4879.890041,"net_duration":"000h 00m 04s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
 ~~~
 
-You can use the `cdc_cursor` value with an external change data capture (CDC) tool to continuously replicate subsequent changes on the source data to CockroachDB.
+Use the `cdc_cursor` value as the starting GTID set for MySQL replication by passing it to the `--defaultGTIDSet` replication flag (refer to [Replication flags](#replication-flags)).
+
+You can also use the `cdc_cursor` value with an external change data capture (CDC) tool to continuously replicate subsequent changes from the source database to CockroachDB.
 
 ### Metrics
 
