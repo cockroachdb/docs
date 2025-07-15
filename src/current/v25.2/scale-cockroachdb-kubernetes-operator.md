@@ -1,0 +1,96 @@
+---
+title: Cluster Scaling with the Kubernetes Operator
+summary: How to scale a secure CockroachDB cluster deployed with the Kubernetes Operator.
+toc: true
+toc_not_nested: true
+secure: true
+docs_area: deploy
+---
+
+This page explains how to add and remove CockroachDB nodes on Kubernetes.
+
+## Add nodes
+
+Before scaling up CockroachDB, note the following [topology recommendations](recommended-production-settings.html#topology):
+
+* Each CockroachDB node (running in its own pod) should run on a separate Kubernetes worker node.
+* Each availability zone should have the same number of CockroachDB nodes.
+
+If your cluster has 3 CockroachDB nodes distributed across 3 availability zones (as in our [deployment example](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster)), we recommend scaling up by a multiple of 3 to retain an even distribution of nodes. You should therefore scale up to a minimum of 6 CockroachDB nodes, with 2 nodes in each zone.
+
+1. Run `kubectl get nodes` to list the worker nodes in your Kubernetes cluster. There should be at least as many worker nodes as pods you plan to add. This ensures that no more than one pod will be placed on each worker node.
+
+2. If you need to add worker nodes, resize your cluster by specifying the desired number of worker nodes in each zone. Using Google Kubernetes Engine as an example:
+
+    ```shell
+    $ gcloud container clusters resize {cluster-name} --region {region-name} --num-nodes 2
+    ```
+
+    This example distributes 2 worker nodes across the default 3 zones, raising the total to 6 worker nodes.
+
+3. Update `cockroachdb.crdbCluster.regions.code.nodes` in the values file used to [deploy the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster), with the target size of the CockroachDB cluster in the specified region. This value refers to the number of CockroachDB nodes, each running in one pod:
+
+    ```yaml
+    cockroachdb:
+      crdbCluster:
+        regions:
+        - code: us-central1
+          cloudProvider: gcp
+          domain: cluster.domain.us-central
+          nodes: 6
+    ```
+
+4. Apply the new settings to the cluster:
+
+    ```shell
+    $ helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
+    ```
+
+5. Verify that the new pods were successfully started:
+
+    ```shell
+    $ kubectl get pods
+
+    NAME                                  READY   STATUS    RESTARTS   AGE
+    cockroach-operator-655fbf7847-zn9v8   1/1     Running   0          30m
+    cockroachdb-0                         1/1     Running   0          24m
+    cockroachdb-1                         1/1     Running   0          24m
+    cockroachdb-2                         1/1     Running   0          24m
+    cockroachdb-3                         1/1     Running   0          30s
+    cockroachdb-4                         1/1     Running   0          30s
+    cockroachdb-5                         1/1     Running   0          30s
+    ```
+
+    Each pod should be running in one of the 6 worker nodes.
+
+## Remove nodes
+
+If your nodes are distributed across 3 availability zones (as in our [deployment example](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster)), we recommend scaling down by a multiple of 3 to retain an even distribution. If your cluster has 6 CockroachDB nodes, you should therefore scale down to 3, with 1 node in each zone.
+
+{{site.data.alerts.callout_danger}}
+Do not scale down to fewer than 3 nodes. This is considered an anti-pattern on CockroachDB and will cause errors. Before scaling down CockroachDB, note that each availability zone should have the same number of CockroachDB nodes.
+{{site.data.alerts.end}}
+
+1. Update `cockroachdb.crdbCluster.regions.code.nodes` in the values file used to [deploy the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster), with the target size of the CockroachDB cluster. For instance, to scale a cluster in Google Cloud down to 3 nodes:
+
+    ```yaml
+    cockroachdb:
+      crdbCluster:
+        regions:
+        - code: us-central1
+          cloudProvider: gcp
+          domain: cluster.domain.us-central
+          nodes: 3
+    ```
+
+2. Apply the new settings to the cluster:
+
+    ```shell
+    $ helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
+    ```
+
+3. Verify that the pods were successfully removed:
+
+    ```shell
+    $ kubectl get pods
+    ```
