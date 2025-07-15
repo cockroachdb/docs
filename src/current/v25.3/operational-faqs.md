@@ -77,7 +77,9 @@ For more information about how MVCC works, see [MVCC]({% link {{ page.version.ve
 
 ### The data could be in the process of being compacted
 
-When MVCC garbage is deleted by garbage collection, the data is still not yet physically removed from the filesystem by the [Storage Layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}). Removing data from the filesystem requires rewriting the files containing the data using a process also known as [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction), which can be expensive. The storage engine has heuristics to compact data and remove deleted rows when enough garbage has accumulated to warrant a compaction. It strives to always restrict the overhead of obsolete data (called the space amplification) to at most 10%. If a lot of data was just deleted, it may take the storage engine some time to compact the files and restore this property.
+<a name="space-amplification"></a>
+
+When MVCC garbage is deleted by garbage collection, the data is still not yet physically removed from the filesystem by the [Storage Layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}). Removing data from the filesystem requires rewriting the files containing the data using a process also known as [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction), which can be expensive. The storage engine has heuristics to compact data and remove deleted rows when enough garbage has accumulated to warrant a compaction. It strives to limit the overhead of this obsolete data (called the _space amplification_) to a small fixed percentage. If a lot of data was just deleted, it may take the storage engine some time to compact the files and restore this property.
 
 {% include {{page.version.version}}/storage/free-up-disk-space.md %}
 
