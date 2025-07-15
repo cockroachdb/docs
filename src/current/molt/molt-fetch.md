@@ -158,6 +158,7 @@ Cockroach Labs **strongly** recommends the following:
 | `--crdb-pts-refresh-interval`                        | The frequency at which the protected timestamp's validity is extended. This interval maintains protection of the data snapshot until data export from a CockroachDB source is completed. For example, if set to `10m`, the protected timestamp's expiration will be extended by the duration specified in `--crdb-pts-duration` (e.g., `24h`) every 10 minutes while export is not complete. <br><br>**Default:** `10m0s`                                                                                                                                                                                                         |
 | `--direct-copy`                                      | Enables [direct copy](#direct-copy), which copies data directly from source to target without using an intermediate store.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `--export-concurrency`                               | Number of shards to export at a time, each on a dedicated thread. This only applies when exporting data from the source database, not when loading data into the target database. Only tables with [primary key]({% link {{ site.current_cloud_version }}/primary-key.md %}) types of [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) can be sharded. The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`.<br><br>**Default:** `4` |
+| `--filter-path`                                      | Path to a JSON file defining row-level filters for data load. Refer to [Selective data movement](#selective-data-movement).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `--fetch-id`                                         | Restart fetch task corresponding to the specified ID. If `--continuation-file-name` or `--continuation-token` are not specified, fetch restarts for all failed tables.                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `--flush-rows`                                       | Number of rows before the source data is flushed to intermediate files. **Note:** If `--flush-size` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `--flush-size`                                       | Size (in bytes) before the source data is flushed to intermediate files. **Note:** If `--flush-rows` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                                                                                                                                                     |
@@ -179,6 +180,7 @@ Cockroach Labs **strongly** recommends the following:
 | `--replicator-flags`                                 | If continuous [replication](#load-data-and-replicate-changes) is enabled with `--mode data-load-and-replication`, `--mode replication-only`, or `--mode failback`, specify [replication flags](#replication-flags) to override. For example: `--replicator-flags "--tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key"`                                                                                                                                                                                                                                                                                        |
 | `--row-batch-size`                                   | Number of rows per shard to export at a time. See [Best practices](#best-practices).<br><br>**Default:** `100000`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `--schema-filter`                                    | Move schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `--skip-pk-match`                                    | Skip primary-key matching to allow data load when source or target tables have missing or mismatched primary keys. Disables sharding and bypasses `--export-concurrency` and `--row-batch-size` settings. Refer to [Skip primary key matching](#skip-primary-key-matching).                                                                                                                                                                                                                                                                                                                                                       |
 | `--table-concurrency`                                | Number of tables to export at a time. The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`.<br><br>**Default:** `4`                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `--table-exclusion-filter`                           | Exclude tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>This value **cannot** be set to `'.*'`, which would cause every table to be excluded. <br><br>**Default:** Empty string                                                                                                                                                                                                                                                                                                                                                                                   |
 | `--table-filter`                                     | Move tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -606,6 +608,55 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 --table-filter '.*user.*' --table-exclusion-filter '.*temp.*'
 ~~~
 
+### Selective data movement
+
+Use `--filter-path` to specify the path to a JSON file that defines row-level filtering for data load. This enables you to move a subset of data in a table, rather than all data in the table.
+
+{% include_cached copy-clipboard.html %}
+~~~
+--filter-path 'data-filter.json'
+~~~
+
+{{site.data.alerts.callout_info}}
+The `--filter-path` flag applies only when loading data with [`data-load`](#load-data) or [`data-load-and-replication`](#load-data-and-replicate-changes). It is ignored for replication.
+{{site.data.alerts.end}}
+
+The JSON file should contain one or more entries in `filters`, each with a `resource_specifier` (`schema` and `table`) and a SQL expression `expr`. For example, the following example exports only rows from `public.t1` where `v > 100`:
+
+~~~ json
+{
+  "filters": [
+    {
+      "resource_specifier": {
+        "schema": "public",
+        "table": "t1"
+      },
+      "expr": "v > 100"
+    }
+  ]
+}
+~~~
+
+`expr` is case-sensitive and must be valid in your source dialect. For example, when using Oracle as the source, quote all identifiers and escape embedded quotes:
+
+~~~ json
+{
+  "filters": [
+    {
+      "resource_specifier": {
+        "schema": "C##FETCHORACLEFILTERTEST",
+        "table": "FILTERTBL"
+      },
+      "expr": "ABS(\"X\") > 10 AND CEIL(\"X\") < 100 AND FLOOR(\"X\") > 0 AND ROUND(\"X\", 2) < 100.00 AND TRUNC(\"X\", 0) > 0 AND MOD(\"X\", 2) = 0 AND FLOOR(\"X\" / 3) > 1"
+    }
+  ]
+}
+~~~
+
+{{site.data.alerts.callout_info}}
+If the expression references columns that are not indexed, MOLT Fetch will emit a warning like: `filter expression ‘v > 100' contains column ‘v' which is not indexed. This may lead to performance issues.`
+{{site.data.alerts.end}}
+
 ### Target table handling
 
 `--table-handling` defines how MOLT Fetch loads data on the CockroachDB tables that [match the selection](#schema-and-table-selection).
@@ -645,6 +696,10 @@ This does not apply when [`drop-on-target-and-recreate`](#target-table-handling)
 
 - A source table is missing a primary key.
 - A source and table primary key have mismatching types.
+	{{site.data.alerts.callout_success}}
+	This restriction can be bypassed with [`--skip-pk-match`](#skip-primary-key-matching).
+	{{site.data.alerts.end}}
+
 - A [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) primary key has a different [collation]({% link {{site.current_cloud_version}}/collate.md %}) on the source and target.
 - A source and target column have mismatching types that are not [allowable mappings](#type-mapping).
 - A target table is missing a column that is in the corresponding source table.
@@ -655,6 +710,32 @@ This does not apply when [`drop-on-target-and-recreate`](#target-table-handling)
 - A target table has a column that is not in the corresponding source table.
 - A source column has a `NOT NULL` constraint, and the corresponding target column is nullable (i.e., the constraint is less strict on the target).
 - A [`DEFAULT`]({% link {{site.current_cloud_version}}/default-value.md %}), [`CHECK`]({% link {{site.current_cloud_version}}/check.md %}), [`FOREIGN KEY`]({% link {{site.current_cloud_version}}/foreign-key.md %}), or [`UNIQUE`]({% link {{site.current_cloud_version}}/unique.md %}) constraint is specified on a target column and not on the source column.
+
+#### Skip primary key matching
+
+`--skip-pk-match` removes the [requirement that source and target tables share matching primary keys](#exit-early) for data load. When this flag is set:
+
+- The data load proceeds even if the source or target table lacks a primary key, or if their keys do not match.
+- Sharding is disabled. Each table is exported in a single batch within one shard, bypassing `--export-concurrency` and `--row-batch-size`. As a result, memory usage and execution time may increase due to full table scans.
+- If the source table contains duplicate rows but the target has [`PRIMARY KEY`]({% link {{ site.current_cloud_version }}/primary-key.md %}) or [`UNIQUE`]({% link {{ site.current_cloud_version }}/unique.md %}) constraints, duplicate rows are deduplicated during import.
+
+When `--skip-pk-match` is set, all tables are treated as if they lack a primary key, and are thus exported in a single unsharded batch. To avoid performance issues, use this flag with `--table-filter` to target only tables **without** a primary key.
+
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt fetch \
+  --mode data-load \
+  --table-filter 'nopktbl' \
+  --skip-pk-match
+~~~
+
+Example log output when `--skip-pk-match` is enabled:
+
+~~~json
+{"level":"info","message":"sharding is skipped for table public.nopktbl - flag skip-pk-check is specified and thus no PK for source table is specified"}
+~~~
 
 #### Type mapping
 
