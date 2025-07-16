@@ -75,7 +75,7 @@ Complete the following items before using MOLT Fetch:
 ## Best practices
 
 {{site.data.alerts.callout_success}}
-To verify that your connections and configuration work properly, run MOLT Fetch in a staging environment before moving any data in production. Use a test or development environment that is as similar as possible to production.
+To verify that your connections and configuration work properly, run MOLT Fetch in a staging environment before migrating any data in production. Use a test or development environment that closely resembles production.
 {{site.data.alerts.end}}
 
 - To prevent connections from terminating prematurely during data export, set the following to high values on the source database:

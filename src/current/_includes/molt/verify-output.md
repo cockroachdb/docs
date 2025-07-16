@@ -1,4 +1,4 @@
-1. Issue the [MOLT Verify]({% link molt/molt-verify.md %}) command, specifying the source and target [connection strings](#connection-strings) and the tables to validate.
+1. Run the [MOLT Verify]({% link molt/molt-verify.md %}) command, specifying the source and target [connection strings](#connection-strings) and the tables to validate.
 
 	<section class="filter-content" markdown="1" data-scope="postgres">
 	{% include_cached copy-clipboard.html %}
@@ -30,7 +30,7 @@
 	~~~
 
 	{{site.data.alerts.callout_info}}
-	With Oracle Multitenant deployments, `--source-cdb` is **not** necessary for `verify`.
+	With Oracle Multitenant deployments, while `--source-cdb` is required for `fetch`, it  is **not** necessary for `verify`.
 	{{site.data.alerts.end}}
 	</section>
 

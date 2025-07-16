@@ -4,10 +4,10 @@ To create a user `crdb_user` in the default database (you will pass this usernam
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE USER crdb_user WITH PASSWORD '{password}';
+CREATE USER crdb_user WITH PASSWORD 'password';
 ~~~
 
-Grant the necessary permissions to run either [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}#required-privileges) on the target tables, depending on the MOLT Fetch [data load mode](#data-load-mode)) you will use.
+Grant the necessary privileges to run either [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}#required-privileges) on the target tables, depending on the MOLT Fetch [data load mode](#data-load-mode) you will use.
 
 #### `IMPORT INTO` privileges
 

@@ -1,6 +1,6 @@
 ---
 title: Load and Replicate Separately
-summary: Learn how to migrate data from a PostgreSQL or MySQL database into a CockroachDB cluster.
+summary: Learn how to migrate data from a source database (such as PostgreSQL, MySQL, or Oracle) into a CockroachDB cluster.
 toc: true
 docs_area: migrate
 ---
@@ -87,7 +87,7 @@ With initial load complete, start replication of ongoing changes on the source t
 <a id="replication-flags"></a>
 {% include molt/fetch-replicator-flags.md %}
 
-1. Issue the [MOLT Fetch]({% link molt/molt-fetch.md %}) command to start replication on CockroachDB, specifying [`--mode replication-only`]({% link molt/molt-fetch.md %}#fetch-mode). For details on `--replicator-flags`, refer to [Replication flags](#replication-flags). In this example, the `--metricsAddr :30005` replication flag enables a Prometheus endpoint at `http://localhost:30005/_/varz` where replication metrics will be served. You can use these metrics to [verify that replication has drained](#stop-replication-and-verify-data) in a later step.
+1. Run the [MOLT Fetch]({% link molt/molt-fetch.md %}) command to start replication on CockroachDB, specifying [`--mode replication-only`]({% link molt/molt-fetch.md %}#fetch-mode). In this example, the `--metricsAddr :30005` replication flag enables a Prometheus endpoint at `http://localhost:30005/_/varz` where replication metrics will be served. You can use these metrics to [verify that replication has drained](#stop-replication-and-verify-data) in a later step.
 
 	<section class="filter-content" markdown="1" data-scope="postgres">
 	Be sure to specify the same `--pglogical-replication-slot-name` value that you provided in [Load data into CockroachDB](#load-data-into-cockroachdb).

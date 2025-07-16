@@ -5,7 +5,7 @@
 `molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
 
 - A source table is missing a primary key.
-- A source and table primary key have mismatching types.
+- A source primary key and target primary key have mismatching types.
 - A [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) primary key has a different [collation]({% link {{site.current_cloud_version}}/collate.md %}) on the source and target.
 - A source and target column have mismatching types that are not [allowable mappings]({% link molt/molt-fetch.md %}#type-mapping).
 - A target table is missing a column that is in the corresponding source table.
@@ -20,7 +20,7 @@
 <section class="filter-content" markdown="1" data-scope="oracle">
 ##### ORA-01950: no privileges on tablespace
 
-If you receive `ORA-01950: no privileges on tablespace 'USERS'`, the Oracle migration user does not have sufficient quota on the tablespace used to store its values (by default, this is `USERS`, but can vary). Grant a quota to the schema. For example:
+If you receive `ORA-01950: no privileges on tablespace 'USERS'`, it means the Oracle table owner (`migration_schema` in the preceding examples) does not have sufficient quota on the tablespace used to store its data. By default, this tablespace is `USERS`, but it can vary. To resolve this issue, grant a quota to the table owner. For example:
 
 ~~~ sql
 -- change UNLIMITED to a suitable limit for the table owner
@@ -62,15 +62,15 @@ If the `replicator` process is lagging significantly behind the current Oracle S
 If you shut down `molt` or `replicator` unexpectedly (e.g., with `kill -9` or a system crash), Oracle sessions opened by these tools may remain active.
 
 - Check your operating system for any running `molt` or `replicator` processes and terminate them manually.
-- Once both processes are confirmed stopped, ask a DBA to check for lingering Oracle sessions with:
+- After confirming that both processes have stopped, ask a DBA to check for active Oracle sessions using:
 
     ~~~ sql
     SELECT sid, serial#, username, status, osuser, machine, program
     FROM v$session
-    WHERE username = 'C##CDB_USER';
+    WHERE username = 'C##MIGRATION_USER';
     ~~~
 
-    Wait for any remaining sessions to show an `INACTIVE` status, then terminate them using:
+    Wait until any remaining sessions display an `INACTIVE` status, then terminate them using:
 
     ~~~ sql
     ALTER SYSTEM KILL SESSION 'sid,serial#' IMMEDIATE;

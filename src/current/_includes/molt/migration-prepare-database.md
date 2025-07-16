@@ -1,6 +1,6 @@
 #### Create migration user on source database
 
-Create a dedicated migration user (e.g., `MIGRATION_USER`) on the source database. This user is responsible for reading data from source tables during the migration.
+Create a dedicated migration user (e.g., `MIGRATION_USER`) on the source database. This user is responsible for reading data from source tables during the migration. You will pass this username in the [source connection string](#source-connection-string).
 
 <section class="filter-content" markdown="1" data-scope="postgres">
 {% include_cached copy-clipboard.html %}
@@ -12,7 +12,7 @@ Grant the user privileges to connect, view schema objects, and select the tables
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT CONNECT, RESOURCE ON DATABASE source_database TO MIGRATION_USER;
+GRANT CONNECT ON DATABASE source_database TO MIGRATION_USER;
 GRANT USAGE ON SCHEMA migration_schema TO MIGRATION_USER;
 GRANT SELECT ON ALL TABLES IN SCHEMA migration_schema TO MIGRATION_USER;
 ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT SELECT ON TABLES TO MIGRATION_USER;
@@ -37,7 +37,7 @@ FLUSH PRIVILEGES;
 <section class="filter-content" markdown="1" data-scope="oracle">
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE USER MIGRATION_USER IDENTIFIED BY '{password}';
+CREATE USER MIGRATION_USER IDENTIFIED BY 'password';
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -164,7 +164,7 @@ CREATE TABLE migration_schema."_replicator_sentinel" (
 );
 ~~~
 
-Grant permissions to modify the checkpoint table. In Oracle Multitenant, grant the permissions on the PDB:
+Grant privileges to modify the checkpoint table. In Oracle Multitenant, grant the privileges on the PDB:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

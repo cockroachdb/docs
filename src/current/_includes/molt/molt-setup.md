@@ -45,7 +45,7 @@ When you run `molt fetch`, you can configure the following options for data load
 - [Intermediate file storage](#intermediate-file-storage): Export data to cloud storage or a local file server.
 - [Table handling mode](#table-handling-mode): Determine how existing target tables are initialized before load.
 - [Schema and table filtering](#schema-and-table-filtering): Specify schema and table names to migrate.
-- [Data load mode](#data-load-mode): Choose between `IMPORT INTO` or `COPY FROM`.
+- [Data load mode](#data-load-mode): Choose between `IMPORT INTO` and `COPY FROM`.
 - [Metrics](#metrics): Configure metrics collection during the load.
 {% if page.name != "migrate-bulk-load.md" %}
 - [Replication flags](#replication-flags): Configure the `replicator` process.

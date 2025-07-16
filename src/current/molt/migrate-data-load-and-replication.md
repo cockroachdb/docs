@@ -1,6 +1,6 @@
 ---
 title: Load and Replicate
-summary: Learn how to migrate data from a PostgreSQL or MySQL database into a CockroachDB cluster.
+summary: Learn how to migrate data from a source database (such as PostgreSQL, MySQL, or Oracle) into a CockroachDB cluster.
 toc: true
 docs_area: migrate
 ---

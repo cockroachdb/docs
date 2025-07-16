@@ -1,4 +1,4 @@
-MOLT Fetch can restrict which schemas (or users) and tables are migrated by using the `--schema-filter`, `--table-filter`, and `--table-exclusion-filter` flags:
+MOLT Fetch can restrict which schemas (or users) and tables are migrated by using the following filter flags:
 
 |      Filter type       |            Flag            |                                                                   Description                                                                   |
 |------------------------|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|

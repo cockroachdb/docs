@@ -6,7 +6,7 @@ MOLT Fetch can write intermediate files to either a cloud storage bucket or a lo
 | Local file server | `--local-path`<br>`--local-path-listen-addr`<br>`--local-path-crdb-access-addr` | Write to `--local-path` on a local file server at `--local-path-listen-addr`; if the target CockroachDB cluster cannot reach this address, specify a publicly accessible address with `--local-path-crdb-access-addr`. No additional authentication is required.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
 {{site.data.alerts.callout_success}}
-Cloud storage is often preferable to a local file server, which can require considerable disk space.
+Cloud storage is often preferred over a local file server, which may require significant disk space.
 {{site.data.alerts.end}}
 
 #### Cloud storage authentication

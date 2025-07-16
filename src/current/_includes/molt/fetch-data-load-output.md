@@ -68,7 +68,7 @@
 	~~~
 
 	{% if page.name != "migrate-bulk-load.md" %}
-	This message includes a `cdc_cursor` value. You must set `--defaultGTIDSet` to this value when starting [`replication-only` mode](#replicate-changes-to-cockroachdb):
+	This message includes a `cdc_cursor` value. You must set the `--defaultGTIDSet` replication flag to this value when starting [`replication-only` mode](#replicate-changes-to-cockroachdb):
 
 	{% include_cached copy-clipboard.html %}
 	~~~ 
@@ -85,7 +85,7 @@
 
 	{% if page.name == "migrate-data-load-replicate-only.md" %}
 	<section class="filter-content" markdown="1" data-scope="oracle">
-	The following message contains the appropriate `--backfillFromSCN` and `--scn` values to set when [starting`replication-only` mode](#replicate-changes-to-cockroachdb):
+	The following message shows the appropriate values for the `--backfillFromSCN` and `--scn` replication flags to use when [starting`replication-only` mode](#replicate-changes-to-cockroachdb):
 
 	{% include_cached copy-clipboard.html %}
 	~~~ 

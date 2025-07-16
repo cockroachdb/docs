@@ -34,10 +34,10 @@ Replication from Oracle requires `--scn` and `--backfillFromSCN`, which specify 
 | `--stagingSchema` | **Required.** Staging schema name for the changefeed checkpoint table.                                         |
 | `--metricsAddr`   | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`. |
 
-Resuming replication requires `--stagingSchema`, which specifies the staging schema name used as a checkpoint. MOLT Fetch [logs the staging schema name]({% link molt/migrate-data-load-replicate-only.md %}#replicate-changes-to-cockroachdb) when it starts replication:
+Resuming replication requires `--stagingSchema`, which specifies the staging schema name used as a checkpoint. MOLT Fetch [logs the staging schema name]({% link molt/migrate-data-load-replicate-only.md %}#replicate-changes-to-cockroachdb) as the `staging database name` when it starts replication. For example:
 
-~~~ shell
-staging database name: _replicator_1749699789613149000
+~~~ json
+	{"level":"info","time":"2025-02-10T14:28:13-05:00","message":"staging database name: _replicator_1749699789613149000"}
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="mysql">
