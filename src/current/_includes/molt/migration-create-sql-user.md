@@ -1,4 +1,4 @@
-Create a migration user in the CockroachDB cluster that has the necessary privileges.
+Create a SQL user in the CockroachDB cluster that has the necessary privileges.
 
 To create a user `crdb_user` in the default database (you will pass this username in the [target connection string](#target-connection-string)):
 
@@ -7,7 +7,43 @@ To create a user `crdb_user` in the default database (you will pass this usernam
 CREATE USER crdb_user WITH PASSWORD 'password';
 ~~~
 
-Grant the necessary privileges to run either [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}#required-privileges) on the target tables, depending on the MOLT Fetch [data load mode](#data-load-mode) you will use.
+Grant database-level privileges for schema creation within the target database:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT ALL ON DATABASE defaultdb TO crdb_user;
+~~~
+
+Grant user privileges to create internal MOLT tables like `_molt_fetch_exceptions` in the public schema: 
+
+{{site.data.alerts.callout_info}}
+Ensure that you are connected to the target database.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT CREATE ON SCHEMA public TO crdb_user;
+~~~
+
+If you manually created the target schema (i.e., [`drop-on-target-and-recreate`](#table-handling-mode) will not be used), grant the following privileges on the schema:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA migration_schema TO crdb_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO crdb_user;
+~~~
+
+Grant the same privileges for internal MOLT tables:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO crdb_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO crdb_user;
+~~~
+
+Depending on the MOLT Fetch [data load mode](#data-load-mode) you will use, grant the necessary privileges to run either [`IMPORT INTO`](#import-into-privileges) or [`COPY FROM`](#copy-from-privileges) on the target tables:
 
 #### `IMPORT INTO` privileges
 
@@ -27,14 +63,13 @@ GRANT EXTERNALIOIMPLICITACCESS TO crdb_user;
 
 #### `COPY FROM` privileges
 
-Make the user a member of the [`admin` role]({% link {{site.current_cloud_version}}/security-reference/authorization.md %}#admin-role):
+Grant [`admin`]({% link {{site.current_cloud_version}}/security-reference/authorization.md %}#admin-role) privileges to the user:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER USER crdb_user WITH ADMIN OPTION;
+GRANT admin TO crdb_user;
 ~~~
 
-<section class="filter-content" markdown="1" data-scope="oracle">
 {% if page.name != "migrate-bulk-load.md" %}
 #### Replication privileges
 
@@ -42,8 +77,6 @@ Grant permissions to create the staging schema for replication:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT admin TO crdb_user;
+ALTER USER crdb_user CREATEDB;
 ~~~
 {% endif %}
-</section>
-

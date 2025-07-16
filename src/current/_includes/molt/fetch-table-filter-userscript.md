@@ -1,11 +1,13 @@
 #### Table filter userscript
 
-When migrating only a subset of tables using `--table-filter`, you **must** supply a userscript that filters change events to those tables. For example, save the following as `table_filter.ts`:
+When loading a subset of tables using `--table-filter`, you **must** provide a TypeScript userscript to specify which tables to replicate.
+
+For example, the following `table_filter.ts` userscript filters change events to the specified source tables:
 
 ~~~ ts
 import * as api from "replicator@v1";
 
-// List the source tables (matching source names) to include in replication
+// List the source tables (matching source names and casing) to include in replication
 const allowedTables = ["EMPLOYEES", "PAYMENTS", "ORDERS"];
 
 // Update this to your target CockroachDB database and schema name

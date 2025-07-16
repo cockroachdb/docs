@@ -5,7 +5,7 @@ Create a dedicated migration user (e.g., `MIGRATION_USER`) on the source databas
 <section class="filter-content" markdown="1" data-scope="postgres">
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE USER MIGRATION_USER WITH PASSWORD 'password';
+CREATE USER migration_user WITH PASSWORD 'password';
 ~~~
 
 Grant the user privileges to connect, view schema objects, and select the tables you migrate.
@@ -22,7 +22,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT SELECT ON TABLES TO MI
 <section class="filter-content" markdown="1" data-scope="mysql">
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE USER MIGRATION_USER@'%' IDENTIFIED BY 'password';
+CREATE USER 'migration_user'@'%' IDENTIFIED BY 'password';
 ~~~
 
 Grant the user privileges to select only the tables you migrate:
@@ -44,7 +44,7 @@ CREATE USER MIGRATION_USER IDENTIFIED BY 'password';
 When migrating from Oracle Multitenant (PDB/CDB), this should be a [common user](https://docs.oracle.com/database/121/ADMQS/GUID-DA54EBE5-43EF-4B09-B8CC-FAABA335FBB8.htm). Prefix the username with `C##` (e.g., `C##MIGRATION_USER`).
 {{site.data.alerts.end}}
 
-Grant the migration user privileges to connect, read metadata, and `SELECT` and `FLASHBACK` the tables you plan to migrate. The tables should all reside in a single schema (e.g., `migration_schema`). For details, refer to [Schema and table filtering](#schema-and-table-filtering).
+Grant the user privileges to connect, read metadata, and `SELECT` and `FLASHBACK` the tables you plan to migrate. The tables should all reside in a single schema (e.g., `migration_schema`). For details, refer to [Schema and table filtering](#schema-and-table-filtering).
 
 ##### Oracle Multitenant (PDB/CDB) user privileges
 
@@ -71,7 +71,7 @@ GRANT SELECT ON DBA_SYNONYMS TO C##MIGRATION_USER;
 GRANT SELECT ON DBA_TABLES TO C##MIGRATION_USER;
 ~~~
 
-Connect to the Oracle PDB as a DBA and grant the following:
+Connect to the Oracle PDB (not the CDB) as a DBA and grant the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -87,8 +87,7 @@ GRANT SELECT ON V_$SESSION TO C##MIGRATION_USER;
 GRANT SELECT ON V_$TRANSACTION TO C##MIGRATION_USER;
 
 -- Grant these two for every table to migrate in the migration_schema
-GRANT SELECT ON migration_schema.tbl TO C##MIGRATION_USER;
-GRANT FLASHBACK ON migration_schema.tbl TO C##MIGRATION_USER;
+GRANT SELECT, FLASHBACK ON migration_schema.tbl TO C##MIGRATION_USER;
 ~~~
 
 ##### Single-tenant Oracle user privileges
@@ -118,8 +117,7 @@ GRANT SELECT ON DBA_SYNONYMS TO MIGRATION_USER;
 GRANT SELECT ON DBA_TABLES TO MIGRATION_USER;
 
 -- Grant these two for every table to migrate in the migration_schema
-GRANT SELECT ON migration_schema.tbl TO MIGRATION_USER;
-GRANT FLASHBACK ON migration_schema.tbl TO MIGRATION_USER;
+GRANT SELECT, FLASHBACK ON migration_schema.tbl TO MIGRATION_USER;
 ~~~
 </section>
 
@@ -195,7 +193,11 @@ GRANT LOGMINING TO C##MIGRATION_USER;
 GRANT EXECUTE ON DBMS_LOGMNR TO C##MIGRATION_USER;
 ~~~
 
-The user is responsible for querying redo logs from LogMiner, querying active transaction information to obtain the starting point for initial ongoing replication, and updating the internal `_replicator_sentinel` table previously created on the Oracle source schema by the DBA.
+The user must:
+
+- Query [redo logs from LogMiner](#verify-logminer-privileges).
+- Retrieve active transaction information to determine the starting point for ongoing replication.
+- Update the internal [`_replicator_sentinel` table](#create-source-sentinel-table) created on the Oracle source schema by the DBA.
 
 ##### Verify LogMiner privileges
 

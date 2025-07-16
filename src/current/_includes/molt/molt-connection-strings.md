@@ -12,7 +12,7 @@ The `--source` flag specifies the connection string for the source database:
 For example:
 
 ~~~
---source 'postgres://postgres:postgres@localhost:5432/molt?sslmode=verify-full'
+--source 'postgres://migration_user:password@localhost:5432/molt?sslmode=verify-full'
 ~~~
 </section>
 
@@ -24,7 +24,7 @@ For example:
 For example:
 
 ~~~
---source 'mysql://user:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt'
+--source 'mysql://migration_user:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt'
 ~~~
 </section>
 
@@ -33,7 +33,7 @@ For example:
 --source 'oracle://{username}:{password}@{host}:{port}/{service_name}'
 ~~~
 
-In [Oracle Multitenant](https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/CDBs-and-PDBs.html), `--source` specifies the connection string for the PDB. `--source-cdb` specifies the connection string for the CDB. The username in both `--source` and `--source-cdb` is the common user that owns the tables you will migrate.
+In [Oracle Multitenant](https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/CDBs-and-PDBs.html), `--source` specifies the connection string for the PDB. `--source-cdb` specifies the connection string for the CDB. The username specified in both `--source` and `--source-cdb` must be a common user with the privileges described in [Create migration user on source database](#create-migration-user-on-source-database).
 
 ~~~
 --source 'oracle://{username}:{password}@{host}:{port}/{PDB_service_name}'
@@ -59,7 +59,7 @@ The `--target` flag specifies the connection string for the target CockroachDB d
 For example:
 
 ~~~
---target 'postgres://crdb_user@localhost:26257/defaultdb?sslmode=verify-full'
+--target 'postgres://crdb_user:password@localhost:26257/defaultdb?sslmode=verify-full'
 ~~~
 
 For details, refer to [Connect using a URL]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url).

@@ -31,6 +31,7 @@ These steps assume that you previously started replication. Refer to [Load and R
 	molt fetch \
 	--source $SOURCE \ 
 	--target $TARGET \
+	--schema-filter 'migration_schema' \
 	--table-filter 'employees|payments|orders' \
 	--pglogical-replication-slot-name cdc_slot \
 	--replicator-flags '--stagingSchema _replicator_1749699789613149000 --metricsAddr :30005' \
@@ -44,6 +45,7 @@ These steps assume that you previously started replication. Refer to [Load and R
 	molt fetch \
 	--source $SOURCE \ 
 	--target $TARGET \
+	--schema-filter 'migration_schema' \
 	--table-filter 'employees|payments|orders' \
 	--non-interactive \
 	--replicator-flags '--stagingSchema _replicator_1749699789613149000 --metricsAddr :30005 --userscript table_filter.ts' \

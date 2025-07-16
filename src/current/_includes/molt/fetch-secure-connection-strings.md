@@ -14,13 +14,13 @@ To keep your database credentials out of shell history and logs, follow these be
 		Use the encoded password in your `--source` connection string. For example:
 
 		~~~
-		--source 'postgres://postgres:a%2452%26@localhost:5432/replicationload'
+		--source 'postgres://migration_user:a%2452%26@localhost:5432/replicationload'
 		~~~
 		
 - Provide your connection strings as environment variables.	For example:
 
 	~~~ shell
-	export SOURCE="postgres://postgres:postgres@localhost:5432/molt?sslmode=verify-full"
+	export SOURCE="postgres://migration_user:a%2452%26@localhost:5432/molt?sslmode=verify-full"
 	export TARGET="postgres://root@localhost:26257/molt?sslmode=verify-full"
 	~~~
 

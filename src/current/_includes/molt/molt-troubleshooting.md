@@ -75,4 +75,6 @@ If you shut down `molt` or `replicator` unexpectedly (e.g., with `kill -9` or a 
     ~~~ sql
     ALTER SYSTEM KILL SESSION 'sid,serial#' IMMEDIATE;
     ~~~
+
+    Replace `sid` and `serial#` in the preceding statement with the values returned by the `SELECT` query.
 </section>

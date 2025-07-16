@@ -161,6 +161,10 @@ Start failback to the source database.
     --mode failback \
     --changefeeds-path 'changefeed-secure.json'
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    With Oracle Multitenant deployments, while `--source-cdb` is required for other `fetch` modes, it is **not** necessary for `failback`.
+    {{site.data.alerts.end}}
     </section>
 
 1. Check the output to observe `fetch progress`.

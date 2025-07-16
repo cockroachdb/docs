@@ -16,6 +16,6 @@ You can also use the [sample Grafana dashboard](https://molt.cockroachdb.com/mol
 
 {% if page.name != "migrate-bulk-load.md" %}
 {{site.data.alerts.callout_info}}
-Metrics from the `replicator` process are enabled by setting the `--metricsAddr` [replication flag](#replication-flags), and are served at `http://{host}:{port}/_/varz`. <section class="filter-content" markdown="1" data-scope="oracle">To view Oracle-specific metrics from `replicator`, import [this Grafana dashboard](https://github.com/cockroachdb/replicator/blob/54504b889c062f6073c1c2b7e7563627b51bb864/scripts/dashboard/replicator_oracle_source.json).</section>
+Metrics from the `replicator` process are enabled by setting the `--metricsAddr` [replication flag](#replication-flags), and are served at `http://{host}:{port}/_/varz`. <section class="filter-content" markdown="1" data-scope="oracle">To view Oracle-specific metrics from `replicator`, import [this Grafana dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).</section>
 {{site.data.alerts.end}}
 {% endif %}

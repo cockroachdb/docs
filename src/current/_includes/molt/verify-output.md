@@ -30,7 +30,7 @@
 	~~~
 
 	{{site.data.alerts.callout_info}}
-	With Oracle Multitenant deployments, while `--source-cdb` is required for `fetch`, it  is **not** necessary for `verify`.
+	With Oracle Multitenant deployments, while `--source-cdb` is required for `fetch`, it is **not** necessary for `verify`.
 	{{site.data.alerts.end}}
 	</section>
 
