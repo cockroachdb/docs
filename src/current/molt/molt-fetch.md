@@ -610,16 +610,12 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 
 ### Selective data movement
 
-Use `--filter-path` to specify the path to a JSON file that defines row-level filtering for data load. This enables you to move a subset of data in a table, rather than all data in the table.
+Use `--filter-path` to specify the path to a JSON file that defines row-level filtering for data load. This enables you to move a subset of data in a table, rather than all data in the table. To apply row-level filters during replication, you need a [userscript](#filter-path-userscript-for-replication).
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --filter-path 'data-filter.json'
 ~~~
-
-{{site.data.alerts.callout_info}}
-The `--filter-path` flag applies only when loading data with [`data-load`](#load-data) or [`data-load-and-replication`](#load-data-and-replicate-changes). It is ignored for replication.
-{{site.data.alerts.end}}
 
 The JSON file should contain one or more entries in `filters`, each with a `resource_specifier` (`schema` and `table`) and a SQL expression `expr`. For example, the following example exports only rows from `public.t1` where `v > 100`:
 
@@ -656,6 +652,34 @@ The JSON file should contain one or more entries in `filters`, each with a `reso
 {{site.data.alerts.callout_info}}
 If the expression references columns that are not indexed, MOLT Fetch will emit a warning like: `filter expression ‘v > 100' contains column ‘v' which is not indexed. This may lead to performance issues.`
 {{site.data.alerts.end}}
+
+#### `--filter-path` userscript for replication
+
+The `--filter-path` flag applies **only** when loading data, and is ignored for replication. For example, when `--filter-path` is combined with [`--mode data-load-and-replication`](#load-data-and-replicate-changes), rows are only filtered on data load. During subsequent replication, all rows on the migrated tables will appear on the target. 
+
+To use `--filter-path` with replication, create and save a TypeScript userscript (e.g., `filter-script.ts`). The following script ensures that only rows where `v > 100` are replicated to `defaultdb.public.t1`:
+
+{% include_cached copy-clipboard.html %}
+~~~ ts
+import * as api from "replicator@v1";
+function disp(doc, meta) {
+    if (Number(doc.v) > 100) {
+        return { "defaultdb.public.t1" : [ doc ] };
+    }
+}
+// Always put target schema.
+api.configureSource("defaultdb.public", {
+    deletesTo: disp,
+    dispatch: disp,
+});
+~~~
+
+When you run `molt fetch`, apply the userscript with the `--userscript` [replication flag](#replication-flags):
+
+{% include_cached copy-clipboard.html %}
+~~~ 
+--replicator-flags "--userscript 'filter-script.ts'"
+~~~
 
 ### Target table handling
 
