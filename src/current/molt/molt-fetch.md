@@ -715,7 +715,7 @@ This does not apply when [`drop-on-target-and-recreate`](#target-table-handling)
 
 `--skip-pk-match` removes the [requirement that source and target tables share matching primary keys](#exit-early) for data load. When this flag is set:
 
-- The data load proceeds even if the source or target table lacks a primary key, or if their keys do not match.
+- The data load proceeds even if the source or target table lacks a primary key, or if their primary key columns do not match.
 - Sharding is disabled. Each table is exported in a single batch within one shard, bypassing `--export-concurrency` and `--row-batch-size`. As a result, memory usage and execution time may increase due to full table scans.
 - If the source table contains duplicate rows but the target has [`PRIMARY KEY`]({% link {{ site.current_cloud_version }}/primary-key.md %}) or [`UNIQUE`]({% link {{ site.current_cloud_version }}/unique.md %}) constraints, duplicate rows are deduplicated during import.
 
