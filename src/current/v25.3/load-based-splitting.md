@@ -97,7 +97,7 @@ These patterns may indicate either or both of the following conditions:
 
 ### Metrics
 
-These [time-series metrics]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) correlate with the potential conditions described in the load-based splitting [log message](#log-message). You can monitor how often the load-based splitter fails to find a split key, and whether this is due to a popular key or a clear access direction.
+These [time-series metrics]({% link {{ page.version.version }}/prometheus-endpoint.md %}) correlate with the potential conditions described in the load-based splitting [log message](#log-message). You can monitor how often the load-based splitter fails to find a split key, and whether this is due to a popular key or a clear access direction.
 
 Metric | Description
 -------|-------------

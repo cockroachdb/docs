@@ -98,7 +98,7 @@ A *mixed* API includes both stable and unstable features.
 [cockroach-commands]: {% link {{ page.version.version }}/cockroach-commands.md %}
 [cockroach-sql]: {% link {{ page.version.version }}/cockroach-sql.md %}
 [health-endpoints]: {% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-endpoints
-[prometheus-endpoint]: {% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint
+[prometheus-endpoint]: {% link {{ page.version.version }}/prometheus-endpoint.md %}
 [cluster-api]: {% link {{ page.version.version }}/cluster-api.md %}
 [db-console]: {% link {{ page.version.version }}/ui-overview.md %}
 [logging-overview]: {% link {{ page.version.version }}/logging-overview.md %}

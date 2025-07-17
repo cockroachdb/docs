@@ -159,7 +159,7 @@ For more information about TTL-related cluster settings, see [View TTL-related c
 
 ## TTL metrics
 
-The table below lists the metrics you can use to monitor the effectiveness of your TTL settings. These metrics are visible on the [Advanced Debug Page]({% link {{ page.version.version }}/ui-debug-pages.md %}), as well as at the `_status/vars` endpoint which can be scraped by [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}).
+The table below lists the metrics you can use to monitor the effectiveness of your TTL settings. These metrics are visible on the [Advanced Debug Page]({% link {{ page.version.version }}/ui-debug-pages.md %}), as well as at the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) which can be scraped by [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}).
 
 | Name                                      | Description                                                      | Measurement          | Type      |
 |-------------------------------------------+------------------------------------------------------------------+----------------------+-----------|
