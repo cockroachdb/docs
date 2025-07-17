@@ -104,7 +104,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 
 - Ensure that the machine running MOLT Fetch is large enough to handle the amount of data being migrated. Fetch performance can sometimes be limited by available resources, but should always be making progress. To identify possible resource constraints, observe the `molt_fetch_rows_exported` [metric](#metrics) for decreases in the number of rows being processed. You can use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view metrics.
 
-- Before moving data, Cockroach Labs recommends dropping any [constraints]({% link {{ site.current_cloud_version }}/alter-table.md %}#drop-constraint) and [indexes]({% link {{site.current_cloud_version}}/drop-index.md %}) on the target CockroachDB database. Doing so will optimize performance. You can recreate [constraints]({% link {{ site.current_cloud_version }}/alter-table.md %}#add-constraint) and [indexes]({% link {{site.current_cloud_version}}/create-index.md %}) after the data is loaded.
+- {% include molt/molt-drop-constraints-indexes.md %}
 
 ## Security recommendations
 
