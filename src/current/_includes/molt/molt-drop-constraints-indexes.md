@@ -1,4 +1,4 @@
-To optimize [data load](#load-data-into-cockroachdb) performance, drop all non-`PRIMARY KEY` [constraints]({% link {{ site.current_cloud_version }}/alter-table.md %}#drop-constraint) and [indexes]({% link {{site.current_cloud_version}}/drop-index.md %}) on the target CockroachDB database before migrating:
+To optimize data load performance, drop all non-`PRIMARY KEY` [constraints]({% link {{ site.current_cloud_version }}/alter-table.md %}#drop-constraint) and [indexes]({% link {{site.current_cloud_version}}/drop-index.md %}) on the target CockroachDB database before migrating:
 {% if page.name == "molt-fetch.md" %}
 	- [`FOREIGN KEY`]({% link {{ site.current_cloud_version }}/foreign-key.md %})
 	- [`UNIQUE`]({% link {{ site.current_cloud_version }}/unique.md %})
