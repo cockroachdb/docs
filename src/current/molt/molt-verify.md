@@ -27,6 +27,7 @@ The following source databases are currently supported:
 
 - PostgreSQL 12-16
 - MySQL 5.7, 8.0 and later
+- Oracle Database 19c (Enterprise Edition) and 21c (Express Edition)
 
 ## Installation
 
@@ -130,5 +131,5 @@ The following limitation is specific to MySQL:
 ## See also
 
 - [Migration Overview]({% link molt/migration-overview.md %})
-- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
+- [Migration Strategy]({% link molt/migration-strategy.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
