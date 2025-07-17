@@ -89,7 +89,7 @@ Get started by creating a new CockroachDB [Basic](#create-a-basic-cluster), [Sta
 To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -184,7 +184,7 @@ For details about returned fields, refer to the [response example and schema](ht
 To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -286,7 +286,7 @@ For details about returned fields, refer to the [response example and schema](ht
 To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -396,7 +396,7 @@ For details about returned fields, refer to the [response example and schema](ht
 To retrieve detailed information about a specific cluster, make a `GET` request to the `/v1/clusters/{cluster_id}` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -423,7 +423,7 @@ For details about returned fields, refer to the [response example and schema](ht
 To retrieve information about a cluster's nodes, including the node status, make a `GET` request to the `/v1/clusters/{cluster_id}/nodes` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -478,7 +478,7 @@ The `spend_limit` field, which was deprecated in Serverless, is not supported on
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -537,7 +537,7 @@ You can decrease the provisioned capacity only three times within a 7-day period
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -585,6 +585,50 @@ If the request was successful, the API returns the updated cluster details.
 
 For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-) in the API reference.
 
+## Change the resources for a CockroachDB Advanced cluster
+
+To change the hardware specifications (e.g., number of vCPUs or number of nodes) for a CockroachDB Advanced cluster, use the `/v1/clusters/{cluster_id}` endpoint with the `PATCH` method. The API endpoint spawns a job to handle the change in resources. The duration of this job can vary depending on the amount of storage and the cloud provider.
+
+For example, to change the number of vCPUs per node to 8:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request PATCH \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
+  --header 'Authorization: Bearer {secret_key}' \
+  --json '{
+    "spec": {
+      "dedicated": {
+        "hardware": {
+          "machine_spec": {
+            "num_virtual_cpus": 8
+          }
+        }
+      }
+    }
+  }'
+~~~
+
+To change the number of nodes in a region:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request PATCH \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
+  --header 'Authorization: Bearer {secret_key}' \
+  --json '{
+    "spec": {
+      "dedicated": {
+        "region_nodes": {
+          "us-east-1": 5
+        }
+      }
+    }
+  }'
+~~~
+
+Where `{cluster_id}` is the ID of your cluster and `{secret_key}` is your API key.
+
 ## Change a cluster's plan
 
 This section shows how to change a cluster's plan using the CockroachDB {{ site.data.products.cloud }} API. To use Terraform instead, refer to [Provision a cluster with Terraform]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}#change-a-clusters-plan).
@@ -609,7 +653,7 @@ To change a cluster's plan between CockroachDB {{ site.data.products.advanced }}
 To delete a cluster, send a `DELETE` request to the `/v1/clusters/{cluster_id}` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 Deleting a cluster will permanently delete the cluster and all the data within the cluster.
@@ -642,7 +686,7 @@ If the `DELETE` request was successful the client will not receive a response pa
 To export audit logs for activities and events related to your Cloud organization, send a `GET` request to the `/v1/auditlogevents` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -687,7 +731,7 @@ Where:
 To list all active clusters within an organization, send a `GET` request to the `/v1/clusters` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -728,7 +772,7 @@ If the request was successful, the client will receive a list of all clusters wi
 To list the [available regions]({% link cockroachcloud/regions.md %}) for creating new clusters, send a `GET` request to the `/v1/clusters/available-regions?provider={cloud_provider}` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -762,7 +806,7 @@ Where:
 To list the SQL users in a cluster, send a `GET` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -808,7 +852,7 @@ Where:
 To create a SQL user, send a `POST` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
@@ -853,7 +897,7 @@ Ensure that you store the password securely, as it cannot be retrieved later. If
 To delete a SQL user, send a `DELETE` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -889,7 +933,7 @@ Deleting a SQL user cannot be undone.
 To change a SQL user's password send a `PUT` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}/password` endpoint.
 
 {{site.data.alerts.callout_success}}
-The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+The service account associated with the secret key must have the Cluster Admin or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}

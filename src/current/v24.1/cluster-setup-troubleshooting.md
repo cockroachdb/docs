@@ -420,6 +420,10 @@ Different filesystems may treat the ballast file differently. Make sure to test 
 
 A _disk stall_ is any disk operation that does not terminate in a reasonable amount of time. This usually manifests as write-related system calls such as [`fsync(2)`](https://man7.org/linux/man-pages/man2/fdatasync.2.html) (aka `fdatasync`) taking a lot longer than expected (e.g., more than 20 seconds). The mitigation in almost all cases is to [restart the node]({% link {{ page.version.version }}/cockroach-start.md %}) with the stalled disk. CockroachDB's internal disk stall monitoring will attempt to shut down a node when it sees a disk stall that lasts longer than 20 seconds. At that point the node should be restarted by your [orchestration system]({% link {{ page.version.version }}/recommended-production-settings.md %}#orchestration-kubernetes).
 
+{{site.data.alerts.callout_success}}
+In cloud environments, transient disk stalls are common, often lasting on the order of several seconds. If you deploy a CockroachDB {{ site.data.products.core }} cluster in the cloud, we strongly recommend enabling [WAL failover]({% link {{ page.version.version }}/cockroach-start.md %}#write-ahead-log-wal-failover).
+{{site.data.alerts.end}}
+
 Symptoms of disk stalls include:
 
 - Bad cluster write performance, usually in the form of a substantial drop in QPS for a given workload.
@@ -583,6 +587,18 @@ If you still see under-replicated/unavailable ranges on the Cluster Overview pag
 1.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
 1. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}). Please be sure to include the full Range Report and error message when you submit the issue.
 
+#### Check for under-replicated or unavailable data
+
+To see if any data is under-replicated or unavailable in your cluster, follow the steps described in [Critical nodes endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint).
+
+#### Check for replication zone constraint violations
+
+To see if any of your cluster's [data placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) are being violated, follow the steps described in [Check for critical localities](#check-for-critical-localities).
+
+#### Check for critical localities
+
+To see which of your [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) (if any) are critical, follow the steps described in the [Critical nodes endpoint documentation]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#critical-nodes-endpoint). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
+
 ## Node liveness issues
 
 "Node liveness" refers to whether a node in your cluster has been determined to be "dead" or "alive" by the rest of the cluster. This is achieved using checks that ensure that each node connected to the cluster is updating its liveness record. This information is shared with the rest of the cluster using an internal gossip protocol.
@@ -628,18 +644,6 @@ If you are running a version of CockroachDB that is affected by an issue describ
 If your cluster is in a partially-available state due to a recent node or network failure, the internal logging table `system.eventlog` might be unavailable. This can cause the logging of [notable events]({% link {{ page.version.version }}/eventlog.md %}) (e.g., the execution of SQL statements) to the `system.eventlog` table to fail to complete, contributing to cluster unavailability. If this occurs, you can set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `server.eventlog.enabled` to `false` to disable writing notable log events to this table, which may help to recover your cluster.
 
 Even with `server.eventlog.enabled` set to `false`, notable log events are still sent to configured [log sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) as usual.
-
-## Check for under-replicated or unavailable data
-
-To see if any data is under-replicated or unavailable in your cluster, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
-
-## Check for replication zone constraint violations
-
-To see if any of your cluster's [data placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) are being violated, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
-
-## Check for critical localities
-
-To see which of your [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) (if any) are critical, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
 
 ## Something else?
 

@@ -1,0 +1,1 @@
+A savepoint defined with the name `cockroach_restart` is a "retry savepoint" and is used to implement [advanced client-side transaction retries]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}). For more information, see [Retry savepoints]({% link {{ page.version.version }}/advanced-client-side-transaction-retries.md %}#retry-savepoints).

@@ -14,9 +14,25 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## May 12, 2025
+
+CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a [Regular release]({% link releases/index.md %}#release-types).
+
+For release notes, refer to [What's New in v25.2]({% link releases/v25.2.md %}).
+
+To get started with v25.2, refer to [Create a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) or [Upgrade a Cluster in CockroachDB Cloud]({% link cockroachcloud/upgrade-cockroach-version.md %}).
+
+## April 30, 2025
+
+You can now use the CockroachDB {{ site.data.products.cloud }} Console to [edit the labels of a cluster or folder]({% link cockroachcloud/labels.md %}).
+
+## April 3, 2025
+
+You can now [change cluster plans between {{ site.data.products.basic }} and {{ site.data.products.standard }}]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}) from the CockroachDB {{ site.data.products.cloud }} Console.
+
 ## February 18, 2025
 
-CockroachDB v25.1 is now generally available for select CockroachDB Cloud clusters. CockroachDB v25.1 is a [Regular release]({% link releases/release-support-policy.md %}#regular-releases). Refer to [Create a CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/create-your-cluster.md %}) or [Upgrade to v25.1]({% link cockroachcloud/upgrade-cockroach-version.md %}).
+CockroachDB v25.1 is now generally available for select CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.1 is an [Innovation release]({% link releases/release-support-policy.md %}#innovation-releases). Refer to [Create a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) or [Upgrade to v25.1]({% link cockroachcloud/upgrade-cockroach-version.md %}).
 
 ## January 16, 2025
 
@@ -33,6 +49,10 @@ CockroachDB v25.1 is now generally available for select CockroachDB Cloud cluste
 - CockroachDB {{ site.data.products.cloud }} is now available as a pay-as-you-go offering on the Google Cloud Marketplace. This allows Google Cloud customers to pay for CockroachDB {{ site.data.products.cloud }} charges via their Google Cloud accounts, with no up-front commitments. For more detail, refer to:
   - [CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go) on the Google Cloud Marketplace.
   - [Subscribe through the Google Cloud Marketplace]({% link cockroachcloud/billing-management.md %}?filters=gcp#subscribe-through-aws-marketplace) in the CockroachDB {{ site.data.products.cloud }} documentation.
+
+## December 3, 2024
+
+You can now use the CockroachDB {{ site.data.products.cloud }} Console to [view and filter audit logs]({% link cockroachcloud/organization-audit-logs-in-cloud-console.md %}), providing greater visibility into user activity across your CockroachDB {{ site.data.products.cloud }} organization.
 
 ## December 1, 2024
 
@@ -64,7 +84,7 @@ The new official [Cockroach Labs Okta app integration]({% link cockroachcloud/co
 
 <h3 id="2024-10-28-general-updates"> General updates </h3>
 
-- [CockroachDB v24.3.0-beta.2]({% link releases/v24.3.md %}#v24-3-0-beta-2) is available to CockroachDB {{ site.data.products.advanced }} clusters as a Pre-Production Preview release for testing and experimentation. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.advanced }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. To learn more, refer to [Upgrade a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/upgrade-cockroach-version.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+- [CockroachDB v24.3.0-beta.2]({% link releases/v24.3.md %}#v24-3-0-beta-2) is available to CockroachDB {{ site.data.products.advanced }} clusters as a Pre-Production Preview release for testing and experimentation. An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can upgrade your CockroachDB {{ site.data.products.advanced }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. To learn more, refer to [Upgrade a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/upgrade-cockroach-version.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 ## October 22, 2024
 
@@ -198,7 +218,7 @@ In addition, this release includes the following features:
 <h3 id="2024-05-12-security-updates"> Security updates </h3>
 
 - [Folders]({% link cockroachcloud/folders.md %}) are now available in [preview](https://www.cockroachlabs.com/docs/stable/cockroachdb-feature-availability).
-- The initial [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) is now automatically assigned the [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) role.
+- The initial [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) is now automatically assigned the [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) role.
 - A [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) can now view all users and service accounts.
 
 ## April 18, 2024
@@ -226,7 +246,7 @@ In addition, this release includes the following features:
 
 <h3 id="2024-04-17-general-updates"> General updates </h3>
 
-- [CockroachDB v24.1.0-beta.1](https://www.cockroachlabs.com/docs/releases/v24.1#v24-1-0-beta-1) is available to CockroachDB {{ site.data.products.dedicated }} clusters as a Pre-Production Preview release for testing and experimentation. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. To learn more, refer to [Upgrade to v24.1 Pre-Production Preview]({% link cockroachcloud/upgrade-cockroach-version.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+- [CockroachDB v24.1.0-beta.1](https://www.cockroachlabs.com/docs/releases/v24.1#v24-1-0-beta-1) is available to CockroachDB {{ site.data.products.dedicated }} clusters as a Pre-Production Preview release for testing and experimentation. An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. To learn more, refer to [Upgrade to v24.1 Pre-Production Preview]({% link cockroachcloud/upgrade-cockroach-version.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 ## April 9, 2024
 
@@ -288,13 +308,13 @@ In addition, this release includes the following features:
 
 <h3 id="2023-12-21-general-updates"> General updates </h3>
 
-- [CockroachDB v23.2.0-rc.1](https://www.cockroachlabs.com/docs/releases/v23.2#v23-2-0-rc-1) is available to CockroachDB {{ site.data.products.dedicated }} clusters as a Pre-Production Preview release for testing and experimentation. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. For clusters previously upgraded to the v23.2.0-beta.3 Pre-Production Preview release, v23.2.0-rc.1 will be applied automatically as a patch upgrade unless you choose to manually upgrade. To learn more, refer to [Upgrade to v23.2 Pre-Production Preview]({% link cockroachcloud/upgrade-cockroach-version.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+- [CockroachDB v23.2.0-rc.1](https://www.cockroachlabs.com/docs/releases/v23.2#v23-2-0-rc-1) is available to CockroachDB {{ site.data.products.dedicated }} clusters as a Pre-Production Preview release for testing and experimentation. An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. For clusters previously upgraded to the v23.2.0-beta.3 Pre-Production Preview release, v23.2.0-rc.1 will be applied automatically as a patch upgrade unless you choose to manually upgrade. To learn more, refer to [Upgrade to v23.2 Pre-Production Preview]({% link cockroachcloud/upgrade-cockroach-version.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 ## December 19, 2023
 
 <h3 id="2023-12-19-general-updates"> General updates </h3>
 
-- [CockroachDB v23.2.0-beta.3](https://www.cockroachlabs.com/docs/releases/v23.2#v23-2-0-beta-3) is available to CockroachDB {{ site.data.products.dedicated }} clusters as a Pre-Production Preview release for testing and experimentation. An [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. To learn more, refer to [Upgrade to v23.2 Pre-Production Preview]({% link cockroachcloud/upgrade-cockroach-version.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
+- [CockroachDB v23.2.0-beta.3](https://www.cockroachlabs.com/docs/releases/v23.2#v23-2-0-beta-3) is available to CockroachDB {{ site.data.products.dedicated }} clusters as a Pre-Production Preview release for testing and experimentation. An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can upgrade your CockroachDB {{ site.data.products.dedicated }} cluster from the CockroachDB {{ site.data.products.cloud }} Console. To learn more, refer to [Upgrade to v23.2 Pre-Production Preview]({% link cockroachcloud/upgrade-cockroach-version.md %}) and the [CockroachDB {{ site.data.products.cloud }} Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
 
 ## December 14, 2023
 
@@ -346,7 +366,7 @@ In addition, this release includes the following features:
 
 <h3 id="2023-09-27-general-changes"> General changes </h3>
 
-- The {{ site.data.products.cloud }} Console's [SQL Shell]({% link cockroachcloud/sql-shell.md %}) is now available in [preview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability) to all CockroachDB {{ site.data.products.cloud }} users with the [Cluster Administrator role]({% link cockroachcloud/managing-access.md %}).
+- The {{ site.data.products.cloud }} Console's [SQL Shell]({% link cockroachcloud/sql-shell.md %}) is now available in [preview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability) to all CockroachDB {{ site.data.products.cloud }} users with the [Cluster Admin role]({% link cockroachcloud/managing-access.md %}).
 
 ## September 22, 2023
 
@@ -525,7 +545,7 @@ The following changes were made to CockroachDB {{ site.data.products.serverless 
 
 - The price of [Request Units (RUs)]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units) increased from $1 per 10M RU to $2 per 10M RUs.
 - The price of storage decreased from $1 per 1 GiB storage to $0.50 per 1 GiB storage.
-- Free resources are allocated on a per-organization basis instead of a per-cluster basis. All All non-contract organizations will now receive 50M Request Units per month and 10 GiB of storage for free. Free resources do not apply to contract customers.
+- Free resources are allocated on a per-organization basis instead of a per-cluster basis. All non-contract organizations will now receive 50M Request Units per month and 10 GiB of storage for free. Free resources do not apply to customers with annual or multi-year contracts.
 - All resources are available instantly at the beginning of each month (burst and baseline RUs are now deprecated).
 - You can now [set separate RU and storage limits]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) for your clusters, or set a spend limit that will be divided between resources automatically.
 - You can now [set unlimited resources]({% link cockroachcloud/basic-cluster-management.md %}#edit-cluster-capacity) for a cluster so your workload is never restricted.
@@ -549,7 +569,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 - CockroachDB {{ site.data.products.cloud }} is transitioning to a new [authorization model]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-authorization-model) that offers fine-grained access-control (FGAC), meaning that users can be given access to exactly the actions and resources required to perform their tasks. Changes include [cluster-level roles]({% link cockroachcloud/authorization.md %}#organization-user-roles) and consistent access management across users and service accounts. This feature is in [limited access](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability), and you can enroll your organization by contacting your account team. For more information, see [Managing Access (Authorization) in CockroachDB Cloud]({% link cockroachcloud/managing-access.md %}).
 
-- You can now use client certificates to authenticate to CockroachDB {{ site.data.products.dedicated }} clusters. First, a [cluster administrator]({% link cockroachcloud/authorization.md %}#organization-user-roles) needs to upload a CA certificate for the cluster using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) or [Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). After that, individual users can be assigned client certificates signed by the uploaded CA certificate, which they can then use to connect to the cluster. This feature is in [limited access](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability), and you can enroll your organization by contacting your account team.
+- You can now use client certificates to authenticate to CockroachDB {{ site.data.products.dedicated }} clusters. First, a [Cluster Admin]({% link cockroachcloud/authorization.md %}#organization-user-roles) needs to upload a CA certificate for the cluster using the [Cloud API]({% link cockroachcloud/cloud-api.md %}) or [Terraform provider]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). After that, individual users can be assigned client certificates signed by the uploaded CA certificate, which they can then use to connect to the cluster. This feature is in [limited access](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability), and you can enroll your organization by contacting your account team.
 
 <h3 id="2023-05-01-bug-fixes"> Bug fixes </h3>
 
@@ -581,7 +601,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 <h3 id="2023-04-10-security-changes"> Security updates </h3>
 
-- [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) of organizations that have [enabled Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %}) can now reset the passwords of other users in their organization who authenticate using passwords rather than an SSO authentication method.
+- [Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) of organizations that have [enabled Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %}) can now reset the passwords of other users in their organization who authenticate using passwords rather than an SSO authentication method.
 
 <h3 id="2023-04-10-bug-fixes"> Bug fixes </h3>
 
@@ -599,7 +619,7 @@ For an in-depth explanation of CockroachDB {{ site.data.products.serverless }} p
 
 <h3 id="2023-03-06-security-changes"> Security updates </h3>
 
-- The [**Migrations** page]({% link cockroachcloud/migrations-page.md %}) is now limited to [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator).
+- The [**Migrations** page]({% link cockroachcloud/migrations-page.md %}) is now limited to [Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin).
 
 ## February 9, 2023
 
@@ -1122,7 +1142,7 @@ New CockroachDB {{ site.data.products.cloud }} clusters will now run CockroachDB
 
 - You can now [restore databases and tables]({% link cockroachcloud/managed-backups.md %}) from backups of CockroachDB {{ site.data.products.cloud }} clusters. This feature is only available to clusters running the paid version of CockroachDB {{ site.data.products.cloud }}.
 - [reCAPTCHA](https://www.google.com/recaptcha/about/) has been added to the sign up process for new users signing up with an email and password. Some users may need to complete an image challenge.
-- An email will now be sent to [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) when a [30-day free trial of CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/quickstart-trial-cluster.md %}) is nearing its end and once it has expired.
+- An email will now be sent to [Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) when a [30-day free trial of CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/quickstart-trial-cluster.md %}) is nearing its end and once it has expired.
 
 ## January 22, 2021
 
@@ -1180,8 +1200,8 @@ At this time, you cannot use the Console to scale up a single-node cluster or sc
 <h3 id="2020-05-04-general-changes">General changes</h3>
 
 - Updated the layout of the <a href="https://cockroachlabs.cloud/signup?referralId=docs_cc_release_notes" rel="noopener" target="_blank">Sign up</a> page.
-- [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) can now [update their {{ site.data.products.cloud }} organization's name](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization).
-- [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) can now [delete their {{ site.data.products.cloud }} Organization](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization).
+- [CockroachDB {{ site.data.products.cloud }} Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) can now [update their {{ site.data.products.cloud }} organization's name](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization).
+- [CockroachDB {{ site.data.products.cloud }} Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) can now [delete their {{ site.data.products.cloud }} Organization](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization).
 
 ## April 6, 2020
 

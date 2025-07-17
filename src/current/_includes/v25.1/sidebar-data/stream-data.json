@@ -139,9 +139,9 @@
     "title": "Technical Overview",
     "items": [
         {
-          "title": "How Does an Enterprise Changefeed Work?",
+          "title": "How Does a Changefeed Work?",
           "urls": [
-            "/${VERSION}/how-does-an-enterprise-changefeed-work.html"
+            "/${VERSION}/how-does-a-changefeed-work.html"
           ]
         }
       ]

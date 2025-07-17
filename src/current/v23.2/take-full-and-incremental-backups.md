@@ -153,15 +153,7 @@ If you are taking backups on a regular cadence, we recommend [creating a schedul
 
 ### Recommendations for incremental backup frequency
 
-Incremental backups form chains between full backups. Each incremental backup contains only the data that has changed since a base set of backups. This base set of backups must include one full backup and can include many incremental backups, which are smaller and faster to produce than full backups. You can take incremental backups either as of a given timestamp or with full [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}).
-
-Cockroach Labs recommends taking incremental backups every 10 minutes. CockroachDB supports up to 400 incremental backups between full backups. This may vary based on your specific use-case, so we recommend testing within your own environment and workloads. This can look like:
-
-- A full backup taken daily with incrementals taken every hour for a total of 24 incremental backups.
-- A full backup taken daily with incrementals taken every 10 minutes for a total of 144 incremental backups.
-- A full backup taken daily with incrementals taken every 5 minutes for a total of 288 incremental backups.
-- A full backup taken weekly with incrementals taken every hour for a total of 168 incremental backups.
-- A full backup taken weekly with incrementals taken every 30 minutes for a total of 336 incremental backups.
+Incremental backups form chains between full backups. Each incremental backup contains only the data that has changed since a base set of backups. This base set of backups must include one full backup and can include multiple incremental backups, which are typically smaller and faster to run than full backups. You can take incremental backups either as of a given timestamp or with full [revision history]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %}). Cockroach Labs supports up to 48 incremental backups between full backups.
 
 ### Garbage collection and backups
 
@@ -384,7 +376,7 @@ To create a table with `exclude_data_from_backup`, see [Create a table with data
 - [Take and Restore Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %})
 - [Take and Restore Locality-aware Backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %})
 - [Take Backups with Revision History and Restore from a Point-in-time]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %})
-- [`IMPORT`]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migration Overview]({% link molt/migration-overview.md %})
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [Expire Past Backups]({% link {{ page.version.version }}/expire-past-backups.md %})

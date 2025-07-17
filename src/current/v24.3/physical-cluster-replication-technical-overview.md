@@ -5,10 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{{site.data.alerts.callout_info}}
-Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
-{{site.data.alerts.end}}
-
 [**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) automatically and continuously streams data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. Each cluster contains: a _system virtual cluster_ and an application [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}):
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
@@ -43,7 +39,7 @@ The stream initialization proceeds as follows:
 
 1. The system virtual cluster on the standby also creates a `readonly` virtual cluster alongside the replicating virtual cluster. The `readonly` virtual cluster will be offline initially.
 1. After the initial scan of the primary completes, the standby's replicating virtual cluster has a complete snapshot of the latest data on the primary. The PCR job will then start the `readonly` virtual cluster.
-1. When the startup completes, the `readonly` virtual cluster will be available to serve read queries. The queries will read from historial data on the replicating virtual cluster. The historical time is determined by the [`replicated_time`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) of the PCR job (the latest time at which the standby cluster has consistent data). The `replicated_time` will move forward as the PCR job continues to run.
+1. When the startup completes, the `readonly` virtual cluster will be available to serve read queries. The queries will read from historical data on the replicating virtual cluster. The historical time is determined by the [`replicated_time`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) of the PCR job (the latest time at which the standby cluster has consistent data). The `replicated_time` will move forward as the PCR job continues to run.
 
 ### During the PCR stream
 
@@ -52,7 +48,7 @@ The replication happens at the byte level, which means that the job is unaware o
 During the job, [rangefeeds]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) are periodically emitting resolved timestamps, which is the time where the ingested data is known to be consistent. Resolved timestamps provide a guarantee that there are no new writes from before that timestamp. This allows the standby cluster to move the [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) forward as the replicated timestamp advances. This information is sent to the primary cluster, which allows for [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) to continue as the replication stream on the standby cluster advances.
 
 {{site.data.alerts.callout_info}}
-If the primary cluster does not receive replicated time information from the standby after 24 hours, it cancels the replication job. This ensures that an inactive replication job will not prevent garbage collection. The time at which the job is removed is configurable with [`ALTER VIRTUAL CLUSTER virtual_cluster EXPIRATION WINDOW = duration`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) syntax.
+If the primary cluster does not receive replicated time information from the standby after 24 hours, it cancels the replication job. This ensures that an inactive replication job will not prevent garbage collection.
 {{site.data.alerts.end}}
 
 ### Failover and promotion process
@@ -71,4 +67,4 @@ When a PCR stream is started with a `readonly` virtual cluster, the job will del
 
 After reverting any necessary data, the standby virtual cluster is promoted as available to serve traffic and the replication job ends.
 
-For details on failing back to the primary cluster following a failover, refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-to-the-primary-cluster).
+For details on failing back to the primary cluster following a failover, refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#failback).

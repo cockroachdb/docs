@@ -311,3 +311,4 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 - [Low Latency Reads and Writes in a Multi-Region Cluster]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %})
 - [Configure Replication Zones]({% link {{ page.version.version }}/configure-replication-zones.md %})
 - [Non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas)
+- [Troubleshoot Replication Zones]({% link {{ page.version.version}}/troubleshoot-replication-zones.md %})

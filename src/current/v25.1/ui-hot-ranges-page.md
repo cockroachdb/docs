@@ -9,9 +9,9 @@ docs_area: reference.db_console
 On a secure cluster, this area of the DB Console can only be accessed by users belonging to the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) or a SQL user with the [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewclustermetadata) [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) defined. The [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) [system privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) **do not** grant access to this page.
 {{site.data.alerts.end}}
 
-The **Hot Ranges** page of the DB Console provides details about ranges receiving a high number of reads or writes. These are known as *hot ranges*.
+The **Hot Ranges** page of the DB Console provides details about ranges receiving a high number of reads or writes. These are known as [*hot ranges*]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-range).
 
-When [optimizing]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots) or [troubleshooting]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#single-hot-node) statement performance, this page can help you identify nodes, ranges, or tables that are experiencing hot spots.
+When optimizing or troubleshooting statement performance, this page can help you identify nodes, ranges, or tables that are experiencing [hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}).
 
 To view this page, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Hot Ranges** in the left-hand navigation.
 
@@ -26,7 +26,7 @@ The **Hot ranges** list displays the ranges with the highest queries per second 
 {{site.data.alerts.callout_info}}
 Hot ranges are not necessarily problematic. Some ranges naturally experience higher QPS than others. For example, a range for a frequently accessed table will have a higher QPS.
 
-However, a significant increase in traffic can also indicate a *hot spot* on the range that should be reduced. For more information, see [Hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots).
+However, a significant increase in traffic can also indicate a *hotspot* on the range that should be reduced. For more information, refer to [Understand hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-range).
 {{site.data.alerts.end}}
 
 To view the [Range Report](#range-report) for a hot range, click its range ID.
@@ -52,13 +52,13 @@ Locality | The locality of the node where the range data is found.
 
 The **Range Report** is typically used for [advanced debugging]({% link {{ page.version.version }}/ui-debug-pages.md %}#even-more-advanced-debugging) purposes.
 
-If your aim is to [reduce hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots), refer to the following fields:
+If your aim is to [reduce hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}#reduce-hotspots), refer to the following fields:
 
 - `Key Range` shows the interval of the [key space]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-descriptors) that is "hottest" (i.e., read by the processor). This is expressed as a span of key values.
 - `Lease Holder QPS` shows the queries executed per second on the node that holds the [range lease]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases). If a hot range is not properly using [load-based splitting]({% link {{ page.version.version }}/load-based-splitting.md %}), this will be greater than the value configured by the `kv.range_split.load_qps_threshold` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) (`2500` by default).
 
 ## See also
 
-- [Hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots)
+- [Understand Hotspots]({% link {{ page.version.version }}/understand-hotspots.md %})
 - [Hash-sharded Indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %})
 - [Architecture Overview]({% link {{ page.version.version }}/architecture/overview.md %})

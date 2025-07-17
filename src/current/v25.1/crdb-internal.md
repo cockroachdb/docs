@@ -298,9 +298,12 @@ WITH c AS (SELECT DISTINCT ON (table_id, index_id) table_id, index_id, num_conte
 
 The `crdb_internal.cluster_locks` schema contains information about [locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#concurrency-control) held by [transactions]({% link {{ page.version.version }}/transactions.md %}) on specific [keys]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range). Queries acquire locks on keys within transactions, or they wait until they can acquire locks until other transactions have released locks on those keys.
 
+{% include {{ page.version.version }}/crdb-internal-cluster-locks-warning.md %}
+
 For more information, see the following sections.
 
 - [Cluster locks columns](#cluster-locks-columns)
+- [Lock strengths](#lock-strengths)
 - [Cluster locks - basic example](#cluster-locks-basic-example)
 - [Cluster locks - intermediate example](#cluster-locks-intermediate-example)
 - [Blocked vs. blocking transactions](#blocked-vs-blocking-transactions)
@@ -324,7 +327,7 @@ The `crdb_internal.cluster_locks` table has the following columns that describe 
 | `lock_key_pretty` | [`STRING`]({% link {{ page.version.version }}/string.md %})       | A string representation of the key this lock is being acquired on.                                                                                                            |
 | `txn_id`          | [`UUID`]({% link {{ page.version.version }}/uuid.md %})           | The ID of the [transaction]({% link {{ page.version.version }}/transactions.md %}) that is acquiring this lock.                                                                                                   |
 | `ts`              | [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) | The [timestamp]({% link {{ page.version.version }}/timestamp.md %}) at which this lock was acquired.                                                                                                              |
-| `lock_strength`   | [`STRING`]({% link {{ page.version.version }}/string.md %})       | The strength of this lock. Allowed values: `"Exclusive"` or `"None"` (read-only requests don't need an exclusive lock).                                                                                                         |
+| `lock_strength`   | [`STRING`]({% link {{ page.version.version }}/string.md %})       | The strength of this lock. Allowed values: `None`, `Shared`, `Exclusive`, or `Intent`. For more information, refer to [Lock strengths](#lock-strengths). |
 | `durability`      | [`STRING`]({% link {{ page.version.version }}/string.md %})       | Whether the lock is one of: `Replicated` or `Unreplicated`. For more information about lock replication, see [types of locking]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writing). |
 | `granted`         | [`BOOLEAN`]({% link {{ page.version.version }}/bool.md %})        | Whether this lock has been granted to the [transaction]({% link {{ page.version.version }}/transactions.md %}) requesting it.                                                                                     |
 | `contended`       | [`BOOLEAN`]({% link {{ page.version.version }}/bool.md %})        | Whether multiple [transactions]({% link {{ page.version.version }}/transactions.md %}) are trying to acquire a lock on this key.                                                                                  |
@@ -333,6 +336,17 @@ The `crdb_internal.cluster_locks` table has the following columns that describe 
 {{site.data.alerts.callout_success}}
 You can see the types and default values of columns in this and other tables using [`SHOW COLUMNS FROM {table}`]({% link {{ page.version.version }}/show-columns.md %}).
 {{site.data.alerts.end}}
+
+#### Lock strengths
+
+Lock strengths in CockroachDB define how transactions interact with data, balancing concurrency and consistency to prevent conflicts and ensure isolation. The `lock_strength` column can have one of the following values:
+
+- `None`: Used for standard reads that do not acquire locks. A [simple `SELECT * WHERE id = x`]({% link {{ page.version.version }}/select-clause.md %}) corresponds to lock strength `None`.
+- `Shared`: Allows multiple transactions to read the same key simultaneously but prevents exclusive locks or writes. `Shared` locks are acquired through [`SELECT * WHERE id = x FOR SHARE`]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths).
+- `Exclusive`: Grants exclusive access to a key, blocking all other reads and writes. `Exclusive` locks are acquired using [`SELECT * WHERE id = x FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}#lock-strengths).
+- `Intent`: Temporary lock placed on a key during a transaction’s write operation ([`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`UPDATE`]({% link {{ page.version.version }}/update.md %})). It conflicts with shared locks, exclusive locks, and non-locking readers at higher timestamps.
+
+For a detailed explanation of how CockroachDB handles transaction locks, refer to [Writes and reads (phase 1)]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#writes-and-reads-phase-1).
 
 #### Cluster locks - basic example
 
@@ -1167,21 +1181,15 @@ group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 
 Contains one row for each transaction [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) event.
 
+{% include {{ page.version.version }}/crdb-internal-transaction-contention-events-warning.md %}
+
 Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) (or the legacy `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options)) to access. If you have the `VIEWACTIVITYREDACTED` privilege, `contending_key` will be redacted. If you have both `VIEWACTIVITY` and `VIEWACTIVITYREDACTED`, the latter takes precedence and `contending_key` will be redacted.
 
 Contention events are stored in memory. You can control the amount of contention events stored per node via the `sql.contention.event_store.capacity` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 The `sql.contention.event_store.duration_threshold` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) specifies the minimum contention duration to cause the contention events to be collected into the `crdb_internal.transaction_contention_events` table. The default value is `0`. If contention event collection is overwhelming the CPU or memory you can raise this value to reduce the load.
 
-Column | Type | Description
-------------|-----|------------
-`collection_ts` | `TIMESTAMPTZ NOT NULL` | The timestamp when the transaction [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) event was collected.
-`blocking_txn_id` | `UUID NOT NULL` | The ID of the blocking transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
-`blocking_txn_fingerprint_id` | `BYTES NOT NULL`| The ID of the blocking transaction fingerprint. To surface historical information about the transactions that caused the [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables to surface historical information about the transactions that caused the contention.
-`waiting_txn_id` | `UUID NOT NULL` | The ID of the waiting transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
-`waiting_txn_fingerprint_id` | `BYTES NOT NULL` | The ID of the waiting transaction fingerprint. To surface historical information about the transactions that caused the [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention), you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables.
-`contention_duration` | `INTERVAL NOT NULL` | The interval of time the waiting transaction spent waiting for the blocking transaction.
-`contending_key` | `BYTES NOT NULL` | The key on which the transactions contended.
+{% include {{ page.version.version }}/transaction-contention-events-columns.md %}
 
 #### Transaction contention - example
 

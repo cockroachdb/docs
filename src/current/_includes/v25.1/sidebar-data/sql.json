@@ -161,6 +161,12 @@
               ]
             },
             {
+                "title": "<code>CHECK EXTERNAL CONNECTION</code>",
+                "urls": [
+                  "/${VERSION}/check-external-connection.html"
+                ]
+            },
+            {
               "title": "<code>COMMENT ON</code>",
               "urls": [
                 "/${VERSION}/comment-on.html"

@@ -19,6 +19,10 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 The **Overview** page displays details about the selected CockroachDB {{ site.data.products.basic }} cluster. For more information, see [Cluster Overview Page]({% link cockroachcloud/cluster-overview-page.md %}).
 
+## Edit labels
+
+You can [organize CockroachDB {{ site.data.products.cloud }} clusters using labels]({% link cockroachcloud/labels.md %}).
+
 ## Estimate usage cost
 
 {{site.data.alerts.callout_info}}
@@ -31,7 +35,7 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 1. On the **Edit cluster** page, navigate to **Capacity**.
 1. Under the **Estimate cost based on usage** section, select a time period in which your workload was active.
 
-    Your used [RUs]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrued costs and monthly cost estimate do not account for the [free resources]({% link cockroachcloud/plan-your-cluster-basic.md %}#free-vs-paid-usage) granted to each non-contract organization, which you would have to use up before being charged.
+    Your used [RUs]({% link cockroachcloud/plan-your-cluster-basic.md %}#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrued costs and monthly cost estimate do not account for the [$15 of free resources each month]({% link cockroachcloud/plan-your-cluster-basic.md %}#free-vs-paid-usage) granted to each organization (excluding those with annual or multi-year contracts), which you would have to use up before being charged.
 
 ## Edit cluster capacity
 
@@ -84,6 +88,12 @@ A CockroachDB {{ site.data.products.basic }} cluster cannot be moved from one re
 1. [Back up your existing cluster's data]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}).
 1. [Create a new CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/create-a-basic-cluster.md %}) in the desired region.
 1. Once the new cluster is set up, [restore your data]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}) from the backup into the new cluster.
+
+## Change a cluster's plan
+
+To change your cluster's plan between {{ site.data.products.basic }} and {{ site.data.products.standard }}, refer to [Change a Cluster's Plan Between Standard and Basic]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}).
+
+To change from {{ site.data.products.basic }} to {{ site.data.products.advanced }}, refer to [Migrate from Standard or Basic to Advanced]({% link cockroachcloud/migrate-from-standard-to-advanced.md %}).
 
 ## Restore data from a backup
 

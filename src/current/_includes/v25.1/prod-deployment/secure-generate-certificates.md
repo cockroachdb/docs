@@ -1,4 +1,4 @@
-You can use `cockroach cert` commands, [`openssl` commands]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}), or [Auto TLS cert generation]({% link {{ page.version.version }}/auto-tls.md %}) (alpha) to generate security certificates. This section features the `cockroach cert` commands.
+You can use `cockroach cert` commands or [`openssl` commands]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}) to generate security certificates. This section features the `cockroach cert` commands.
 
 Locally, you'll need to [create the following certificates and keys]({% link {{ page.version.version }}/cockroach-cert.md %}):
 

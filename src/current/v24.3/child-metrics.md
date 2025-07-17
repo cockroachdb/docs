@@ -18,6 +18,8 @@ The metrics and their potential child metrics are determined by the specific fea
 SET CLUSTER SETTING server.child_metrics.enabled = true;
 ~~~
 
+{% include_cached new-in.html version="v24.3.10" %} The [cluster setting `server.child_metrics.include_aggregate.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-child-metrics-include-aggregate-enabled) (default: `true`) reports an aggregate time series for applicable child metrics. When set to `false`, it stops reporting the aggregate time series, preventing double counting when querying those metrics.
+
 ## All clusters
 
 An RPC (Remote Procedure Call) connection is a communication method used in distributed systems, like CockroachDB, to allow one program to request a service from a program located in another computer on a network without having to understand the network's details. In the context of CockroachDB, RPC connections are used for inter-node communication. For instance, if Node 1 sends a request to Node 2, and Node 2 dials back (sends request back to Node 1), it ensures that communication is healthy in both directions. This is referred to as a "bidirectionally connected" and "heartbeating" RPC connection.

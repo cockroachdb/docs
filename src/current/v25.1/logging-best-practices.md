@@ -68,7 +68,7 @@ The various [log formats]({% link {{ page.version.version }}/log-formats.md %}) 
 
 ## Use logs for performance tuning
 
-Use the `SQL_EXEC` and `SQL_PERF` [log channels]({% link {{ page.version.version }}/logging.md %}#logging-channels) to examine SQL queries and filter slow queries in order to optimize or troubleshoot performance. Refer to [Performance tuning]({% link {{ page.version.version }}/logging-use-cases.md %}#performance-tuning). It is also possible to [log SQL statistics to Datadog]({% link {{ page.version.version }}/log-sql-statistics-to-datadog.md %}), which uses the `TELEMETRY` channel.
+Use the `SQL_EXEC` and `SQL_PERF` [log channels]({% link {{ page.version.version }}/logging.md %}#logging-channels) to examine SQL queries and filter slow queries in order to optimize or troubleshoot performance. Refer to [Performance tuning]({% link {{ page.version.version }}/logging-use-cases.md %}#performance-tuning). It is also possible to [log SQL activity to Datadog]({% link {{ page.version.version }}/log-sql-activity-to-datadog.md %}), which uses the `TELEMETRY` channel.
 
 ## Use logs for security and compliance
 
