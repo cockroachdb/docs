@@ -354,7 +354,7 @@ Set up your cluster for WAL failover with either [multiple stores](#multi-store-
 
 For [multiple stores](#multi-store-config), pass `--wal-failover=among-stores` to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}).
 
-For a [side disk on a single-store config](#single-store-config), pass `--wal-failover={ path-to-side-drive-directory }` to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}).
+For a [side disk on a single-store config](#single-store-config), pass `--wal-failover={ path-to-my-side-disk-for-wal-failover }` to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}).
 
 Use remote log sinks, or if you use file-based logging, enable asynchronous buffering of `file-groups` log sinks:
 
