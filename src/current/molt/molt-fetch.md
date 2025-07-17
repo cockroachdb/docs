@@ -721,7 +721,7 @@ This does not apply when [`drop-on-target-and-recreate`](#target-table-handling)
 - A source table is missing a primary key.
 - A source and table primary key have mismatching types.
 	{{site.data.alerts.callout_success}}
-	This restriction can be bypassed with [`--skip-pk-match`](#skip-primary-key-matching).
+	These restrictions (missing or mismatching primary keys) can be bypassed with [`--skip-pk-match`](#skip-primary-key-matching).
 	{{site.data.alerts.end}}
 
 - A [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) primary key has a different [collation]({% link {{site.current_cloud_version}}/collate.md %}) on the source and target.
