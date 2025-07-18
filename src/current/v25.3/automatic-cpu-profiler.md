@@ -45,3 +45,7 @@ Enabling the automatic CPU profile capture on a cluster will add overhead to the
   - [P99 latency]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#service-latency-sql-99th-percentile)
   - P50 latency by creating a [custom chart]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) for the `sql.exec.latency-p50` metric
   - [CPU usage]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent)
+
+## See also
+
+- [Automatic Go Execution Tracer]({% link {{ page.version.version }}/automatic-go-execution-tracer.md %})
