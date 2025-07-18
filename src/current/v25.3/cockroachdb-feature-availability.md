@@ -47,6 +47,10 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
+### Value separation
+
+[Value separation]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) reduces write amplification by storing large values separately from the LSM in blob files. Value separation is available as a Public Preview feature. This feature can reduce write amplification by up to 50% for large-value workloads, while introducing minor read overhead and a slight increase in disk space usage.
+
 
 ### `database` and `application_name` labels for certain metrics
 
