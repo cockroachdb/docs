@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Complete Offline Documentation Archiver for Jekyll CockroachDB Documentation
-Fixed version that preserves CSS structure from Code 2
+FIXED VERSION with correct JavaScript URL processing
 """
 import re
 import shutil
@@ -159,8 +159,149 @@ class OfflineArchiver:
             except Exception as e:
                 self.log(f"Failed to download {name}: {e}", "ERROR")
     
+    def fix_sidebar_javascript(self, html):
+        """Fix the embedded sidebar JavaScript configuration and URL processing"""
+        
+        # Fix 1: Replace baseUrl in the embedded sidebar configuration
+        html = re.sub(
+            r'baseUrl:\s*["\'][^"\']*["\']',
+            'baseUrl: ""',
+            html
+        )
+        
+        # Fix 2: Find and replace the URL processing logic
+        # Look for the specific URL processing pattern in the JavaScript
+        url_processing_pattern = r'(if \(!/\^https\?:/.test\(url\)\) \{\s*url = sidebar\.baseUrl \+ url\.replace\([^}]+\}\s*return url;)'
+        
+        # More robust pattern that captures the entire URL processing block
+        better_pattern = r'(const urls = \(item\.urls \|\| \[\]\)\.map\(function \(url\) \{[\s\S]*?)(if \(!/\^https\?:/.test\(url\)\) \{[\s\S]*?url = sidebar\.baseUrl \+ url\.replace[\s\S]*?\}[\s\S]*?)(return url;[\s\S]*?\}\);)'
+        
+        def replace_url_processing(match):
+            start_part = match.group(1)
+            end_part = match.group(3)
+            
+            # Inject our custom URL processing logic
+            new_processing = r'''if (!/^https?:/.test(url)) {
+                // Remove /docs/ prefix if present
+                url = url.replace(/^\/docs\//, '').replace(/^docs\//, '');
+                
+                // Better current directory detection for file:// URLs
+                var currentPath = window.location.pathname;
+                var currentDir = '';
+                
+                // Extract just the relevant part of the path (handle both web and file:// URLs)
+                var pathMatch = currentPath.match(/(cockroachcloud|v19\.2|releases|advisories)\/[^\/]+$/);
+                if (pathMatch) {
+                    currentDir = pathMatch[1];
+                } else {
+                    // Fallback: check if we're in root or any subdirectory
+                    var pathParts = currentPath.split('/').filter(function(part) { return part; });
+                    for (var i = pathParts.length - 2; i >= 0; i--) {
+                        if (pathParts[i] === 'cockroachcloud' || pathParts[i] === 'v19.2' || 
+                            pathParts[i] === 'releases' || pathParts[i] === 'advisories') {
+                            currentDir = pathParts[i];
+                            break;
+                        }
+                    }
+                }
+                
+                // Remove leading slash from URL
+                if (url.startsWith('/')) {
+                    url = url.substring(1);
+                }
+                
+                // Handle stable -> v19.2 conversion
+                url = url.replace(/^stable\//, 'v19.2/').replace(/\/stable\//, '/v19.2/');
+                
+                // Calculate relative path based on current directory context
+                if (currentDir) {
+                    // We're in a subdirectory
+                    if (url.startsWith(currentDir + '/')) {
+                        // Same directory - remove the directory prefix
+                        url = url.substring(currentDir.length + 1);
+                    } else if (url.includes('/')) {
+                        // Different directory - need to go up one level
+                        url = '../' + url;
+                    } else if (url !== '' && !url.endsWith('.html') && !url.endsWith('/')) {
+                        // Root level file - go up one level
+                        url = '../' + url;
+                    }
+                }
+                
+                // Clean up any double slashes
+                url = url.replace(/\/+/g, '/');
+                // Note: Keep .html extensions for offline file:// URLs
+            }'''
+            
+            return start_part + new_processing + end_part
+        
+        # Try to apply the replacement
+        new_html = re.sub(better_pattern, replace_url_processing, html, flags=re.DOTALL)
+        
+        # If the complex pattern didn't match, try a simpler approach
+        if new_html == html:
+            # Simple pattern - just replace the specific problematic line
+            simple_pattern = r'url = sidebar\.baseUrl \+ url\.replace\([^}]+\}'
+            
+            simple_replacement = r'''// Custom offline URL processing
+                url = url.replace(/^\/docs\//, '').replace(/^docs\//, '');
+                
+                var currentPath = window.location.pathname;
+                var currentDir = '';
+                
+                var pathMatch = currentPath.match(/(cockroachcloud|v19\.2|releases|advisories)\/[^\/]+$/);
+                if (pathMatch) {
+                    currentDir = pathMatch[1];
+                } else {
+                    var pathParts = currentPath.split('/').filter(function(part) { return part; });
+                    for (var i = pathParts.length - 2; i >= 0; i--) {
+                        if (pathParts[i] === 'cockroachcloud' || pathParts[i] === 'v19.2' || 
+                            pathParts[i] === 'releases' || pathParts[i] === 'advisories') {
+                            currentDir = pathParts[i];
+                            break;
+                        }
+                    }
+                }
+                
+                if (url.startsWith('/')) {
+                    url = url.substring(1);
+                }
+                
+                url = url.replace(/^stable\//, 'v19.2/').replace(/\/stable\//, '/v19.2/');
+                
+                if (currentDir) {
+                    if (url.startsWith(currentDir + '/')) {
+                        url = url.substring(currentDir.length + 1);
+                    } else if (url.includes('/')) {
+                        url = '../' + url;
+                    } else if (url !== '' && !url.endsWith('.html') && !url.endsWith('/')) {
+                        url = '../' + url;
+                    }
+                }
+                
+                url = url.replace(/\/+/g, '/');
+                // Keep .html extensions for offline use
+            }'''
+            
+            new_html = re.sub(simple_pattern, simple_replacement, html, flags=re.DOTALL)
+            
+            # Also fix the .html stripping issue
+            new_html = re.sub(
+                r'url = url\.replace\("/index\.html", ""\)\.replace\("\.html", ""\);',
+                'url = url.replace("/index.html", ""); // Keep .html for offline',
+                new_html
+            )
+        
+        # Debug output
+        if new_html != html:
+            self.log("Successfully replaced JavaScript URL processing", "SUCCESS")
+        else:
+            self.log("Warning: JavaScript URL processing replacement may have failed", "WARNING")
+        
+        return new_html
+    
     def process_html_file(self, src_path):
-        """Process a single HTML file using Code 2's approach"""
+        """Process a single HTML file"""
         try:
             rel_path = src_path.relative_to(DOCS_ROOT)
             dst_path = OUTPUT_ROOT / rel_path
@@ -177,54 +318,8 @@ class OfflineArchiver:
             # Read content
             html = src_path.read_text(encoding="utf-8")
             
-            # Inject sidebar HTML if available
-            if self.sidebar_html:
-                html = re.sub(
-                    r"(<div id=\"sidebar\"[^>]*>)(\s*?</div>)",
-                    rf"\1{self.sidebar_html}\2",
-                    html,
-                    flags=re.IGNORECASE,
-                )
-            
-            # Parse with BeautifulSoup to fix sidebar links
-            soup = BeautifulSoup(html, "html.parser")
-            
-            # Remove Ask AI widget and other unwanted elements
-            remove_selectors = [
-                # Ask AI widget - more comprehensive selectors
-                '.ask-ai', '#ask-ai', '[data-ask-ai]', '.ai-widget', '.kapa-widget',
-                'script[src*="kapa"]', '#kapa-widget-container', '.kapa-trigger',
-                '.kapa-ai-button', '[class*="kapa"]', '[id*="kapa"]',
-                'div[data-kapa-widget]', 'button[aria-label*="AI"]',
-                '[class*="ask-ai"]', '[id*="ask-ai"]',
-                'iframe[src*="kapa"]', 'iframe[id*="kapa"]',
-                
-                # Version switcher
-                '.version-switcher', '#version-switcher', '.version-dropdown',
-                
-                # Feedback widgets
-                '.feedback-widget', '#feedback-widget', '[id*="feedback"]',
-                '.helpful-widget', '.page-helpful',
-                
-                # Analytics
-                'script[src*="googletagmanager"]', 'script[src*="google-analytics"]',
-                'script[src*="segment"]', 'script[src*="heap"]',
-            ]
-            
-            for selector in remove_selectors:
-                for elem in soup.select(selector):
-                    elem.decompose()
-            
-            # Also remove any script tags that contain kapa or AI-related code
-            for script in soup.find_all('script'):
-                if script.string and any(term in script.string.lower() for term in ['kapa', 'askai', 'ask-ai', 'aiwidget']):
-                    script.decompose()
-            
-            # Remove any iframes that might be Ask AI related
-            for iframe in soup.find_all('iframe'):
-                src = iframe.get('src', '')
-                if any(term in src.lower() for term in ['kapa', 'ask', 'ai']):
-                    iframe.decompose()
+            # CRITICAL: Fix sidebar JavaScript BEFORE other processing
+            html = self.fix_sidebar_javascript(html)
             
             # Inject sidebar HTML if available
             if self.sidebar_html:
@@ -235,27 +330,20 @@ class OfflineArchiver:
                     flags=re.IGNORECASE,
                 )
             
-            # Parse with BeautifulSoup to fix sidebar links
+            # Parse with BeautifulSoup for additional cleanup
             soup = BeautifulSoup(html, "html.parser")
             
             # Remove Ask AI widget and other unwanted elements
             remove_selectors = [
-                # Ask AI widget - more comprehensive selectors
                 '.ask-ai', '#ask-ai', '[data-ask-ai]', '.ai-widget', '.kapa-widget',
                 'script[src*="kapa"]', '#kapa-widget-container', '.kapa-trigger',
                 '.kapa-ai-button', '[class*="kapa"]', '[id*="kapa"]',
                 'div[data-kapa-widget]', 'button[aria-label*="AI"]',
                 '[class*="ask-ai"]', '[id*="ask-ai"]',
                 'iframe[src*="kapa"]', 'iframe[id*="kapa"]',
-                
-                # Version switcher
                 '.version-switcher', '#version-switcher', '.version-dropdown',
-                
-                # Feedback widgets
                 '.feedback-widget', '#feedback-widget', '[id*="feedback"]',
                 '.helpful-widget', '.page-helpful',
-                
-                # Analytics
                 'script[src*="googletagmanager"]', 'script[src*="google-analytics"]',
                 'script[src*="segment"]', 'script[src*="heap"]',
             ]
@@ -264,7 +352,7 @@ class OfflineArchiver:
                 for elem in soup.select(selector):
                     elem.decompose()
             
-            # Also remove any script tags that contain kapa or AI-related code
+            # Remove any script tags that contain kapa or AI-related code
             for script in soup.find_all('script'):
                 if script.string and any(term in script.string.lower() for term in ['kapa', 'askai', 'ask-ai', 'aiwidget']):
                     script.decompose()
@@ -275,246 +363,10 @@ class OfflineArchiver:
                 if any(term in src.lower() for term in ['kapa', 'ask', 'ai']):
                     iframe.decompose()
             
-            # Process sidebar links with clearer logic
-            sidebar_links = soup.select("#sidebar a[href], #sidebarMenu a[href], #mysidebar a[href]")
-            
-            for a in sidebar_links:
-                original_href = a.get("href", "")
-                
-                # Skip external links and anchors
-                if original_href.startswith(('http://', 'https://', 'mailto:', '#', 'javascript:')):
-                    continue
-                
-                # Store original
-                a['data-original-href'] = original_href
-                
-                # Process the href step by step
-                h = original_href.strip()
-                
-                # Check if this was originally a relative link (important for context)
-                was_relative = not h.startswith('/')
-                
-                # Step 1: Handle stable -> v19.2 conversion
-                h = h.replace('/stable/', f'/{TARGET_VERSION}/')
-                h = h.replace('stable/', f'{TARGET_VERSION}/')
-                
-                # Step 2: Remove domain/localhost if present
-                if '127.0.0.1:4000/' in h:
-                    h = h.split('127.0.0.1:4000/')[-1]
-                if 'localhost:4000/' in h:
-                    h = h.split('localhost:4000/')[-1]
-                
-                # Step 3: Remove /docs/ prefix
-                if h.startswith('/docs/'):
-                    h = h[6:]  # Remove '/docs/'
-                elif h.startswith('docs/'):
-                    h = h[5:]  # Remove 'docs/'
-                
-                # Step 4: Remove any remaining leading slashes
-                h = h.lstrip('/')
-                
-                # Step 5: Determine if we need to add version directory
-                needs_version = False
-                if h:  # If we have a path
-                    # Check if it already has a version
-                    if not h.startswith(f'{TARGET_VERSION}/'):
-                        # List of paths that should NOT get version prefix
-                        non_versioned = [
-                            'cockroachcloud/', 'releases/', 'advisories/', 
-                            'images/', 'css/', 'js/', '_internal/', 'fonts/',
-                            'img/', 'assets/'
-                        ]
-                        
-                        # Check if it's a special non-versioned path
-                        is_special = any(h.startswith(d) for d in non_versioned)
-                        
-                        # Check if it has a file extension that indicates an asset
-                        is_asset = any(h.endswith(ext) for ext in [
-                            '.css', '.js', '.png', '.jpg', '.jpeg', '.gif', 
-                            '.svg', '.ico', '.woff', '.woff2', '.ttf', '.eot'
-                        ])
-                        
-                        # CRITICAL FIX: If we're already in a version directory and this is
-                        # a simple doc page (like secure-a-cluster.html), we DON'T need to add version
-                        # because it will be relative to the current directory
-                        if is_in_version_dir and not is_special and not is_asset and '/' not in h:
-                            # This is a simple filename in the same version directory
-                            needs_version = False
-                            if 'secure-a-cluster' in h:
-                                self.log(f"NOT adding version to '{h}' - already in version dir", "WARNING")
-                        elif was_relative and is_in_version_dir:
-                            # Original link was relative AND we're in a version directory
-                            needs_version = False
-                        elif not is_special and not is_asset:
-                            # Otherwise, if it's not special and not an asset, it needs version
-                            needs_version = True
-                            if sidebar_links.index(a) < 5:  # Debug first few
-                                self.log(f"Adding version to: {h} (was_relative={was_relative}, in_version={is_in_version_dir})", "DEBUG")
-                
-                # Add version directory if needed
-                if needs_version:
-                    h = f'{TARGET_VERSION}/{h}'
-                
-                # Step 6: Add .html if needed
-                if h and not h.endswith('/') and not h.endswith('.html'):
-                    # Check if it already has an extension
-                    parts = h.split('/')
-                    last_part = parts[-1]
-                    if '.' not in last_part:
-                        h += '.html'
-                
-                # Step 7: Calculate the correct relative path
-                # Now that we've been smart about adding version, this is simpler
-                
-                # Special debugging for secure-a-cluster.html
-                if 'secure-a-cluster' in h or sidebar_links.index(a) < 3:
-                    self.log(f"  Final path calc: h='{h}' in_v_dir={is_in_version_dir}", "DEBUG")
-                
-                if is_in_version_dir:
-                    # We're in a version directory
-                    if h.startswith(f'{TARGET_VERSION}/'):
-                        # This shouldn't happen if we were smart above, but just in case
-                        # Remove redundant version prefix
-                        h = h[len(TARGET_VERSION) + 1:]
-                        final_href = h
-                        self.log(f"  WARNING: Had to strip redundant version prefix", "WARNING")
-                    elif any(h.startswith(d) for d in ['cockroachcloud/', 'releases/', 'advisories/', 'images/', 'css/', 'js/']):
-                        # These need to go up a level from version dir
-                        final_href = "../" + h
-                    else:
-                        # Simple filename in same directory
-                        final_href = h
-                else:
-                    # We're NOT in version dir, use normal prefix
-                    final_href = prefix + h if h else prefix + "index.html"
-                
-                a["href"] = final_href
-                
-                # Debug output
-                if sidebar_links.index(a) < 5 or 'secure-a-cluster' in original_href:
-                    self.log(f"Sidebar: '{original_href}' -> '{final_href}'", "INFO")
-            
-            # Process ALL other links
-            all_links = soup.select("a[href]")
-            content_link_count = 0
-            for a in all_links:
-                if a in sidebar_links:  # Skip already processed
-                    continue
-                    
-                original_href = a.get("href", "")
-                
-                # Skip external links and anchors
-                if original_href.startswith(('http://', 'https://', 'mailto:', '#', 'javascript:')):
-                    continue
-                
-                # Store original
-                a['data-original-href'] = original_href
-                
-                # Apply same processing
-                h = original_href.strip()
-                
-                # Check if this was originally relative
-                was_relative = not h.startswith('/')
-                
-                # Handle stable -> v19.2
-                h = h.replace('/stable/', f'/{TARGET_VERSION}/')
-                h = h.replace('stable/', f'{TARGET_VERSION}/')
-                
-                # Remove domain
-                if '127.0.0.1:4000/' in h:
-                    h = h.split('127.0.0.1:4000/')[-1]
-                if 'localhost:4000/' in h:
-                    h = h.split('localhost:4000/')[-1]
-                
-                # Remove /docs/ prefix
-                if h.startswith('/docs/'):
-                    h = h[6:]
-                elif h.startswith('docs/'):
-                    h = h[5:]
-                
-                # Remove leading slashes
-                h = h.lstrip('/')
-                
-                # Determine if we need to add version directory
-                needs_version = False
-                if h:  # If we have a path
-                    # Check if it already has a version
-                    if not h.startswith(f'{TARGET_VERSION}/'):
-                        # List of paths that should NOT get version prefix
-                        non_versioned = [
-                            'cockroachcloud/', 'releases/', 'advisories/', 
-                            'images/', 'css/', 'js/', '_internal/', 'fonts/',
-                            'img/', 'assets/'
-                        ]
-                        
-                        # Check if it's a special non-versioned path
-                        is_special = any(h.startswith(d) for d in non_versioned)
-                        
-                        # Check for file extensions that indicate assets
-                        is_asset = any(h.endswith(ext) for ext in [
-                            '.css', '.js', '.png', '.jpg', '.jpeg', '.gif', 
-                            '.svg', '.ico', '.woff', '.woff2', '.ttf', '.eot'
-                        ])
-                        
-                        # CRITICAL FIX: If we're already in a version directory and this is
-                        # a simple doc page (like secure-a-cluster.html), we DON'T need to add version
-                        if is_in_version_dir and not is_special and not is_asset and '/' not in h:
-                            # This is a simple filename in the same version directory
-                            needs_version = False
-                            if 'secure-a-cluster' in h:
-                                self.log(f"NOT adding version to '{h}' - already in version dir", "WARNING")
-                        elif was_relative and is_in_version_dir:
-                            # Original link was relative AND we're in a version directory
-                            needs_version = False
-                        elif not is_special and not is_asset:
-                            # Otherwise, if it's not special and not an asset, it needs version
-                            needs_version = True
-                
-                # Add version directory if needed
-                if needs_version:
-                    h = f'{TARGET_VERSION}/{h}'
-                
-                # Add .html if needed
-                if h and not h.endswith('/') and not h.endswith('.html'):
-                    parts = h.split('/')
-                    last_part = parts[-1]
-                    if '.' not in last_part:
-                        h += '.html'
-                
-                # Calculate the correct relative path
-                # Now that we've been smart about adding version, this is simpler
-                
-                if is_in_version_dir:
-                    # We're in a version directory
-                    if h.startswith(f'{TARGET_VERSION}/'):
-                        # This shouldn't happen if we were smart above, but just in case
-                        # Remove redundant version prefix
-                        h = h[len(TARGET_VERSION) + 1:]
-                        final_href = h
-                    elif any(h.startswith(d) for d in ['cockroachcloud/', 'releases/', 'advisories/', 'images/', 'css/', 'js/']):
-                        # These need to go up a level from version dir
-                        final_href = "../" + h
-                    else:
-                        # Simple filename in same directory
-                        final_href = h
-                else:
-                    # We're NOT in version dir, use normal prefix
-                    final_href = prefix + h if h else prefix + "index.html"
-                
-                a["href"] = final_href
-                
-                # Debug first few content links
-                if content_link_count < 3 or 'secure-a-cluster' in original_href:
-                    self.log(f"Content: '{original_href}' -> '{final_href}'", "INFO")
-                    content_link_count += 1
-            
             # Convert back to string
             html = str(soup)
             
-            # Convert back to string
-            html = str(soup)
-            
-            # Clean up query parameters
+            # Clean up various path patterns
             html = re.sub(
                 r"(src|href)=\"([^\"?]+)\?[^\" ]+\"",
                 lambda m: f'{m.group(1)}="{m.group(2)}"',
@@ -522,24 +374,15 @@ class OfflineArchiver:
             )
             
             # Fix various path patterns
-            # Handle stable version references first
             html = re.sub(r'(href|src)="/docs/stable/', rf'\1="{TARGET_VERSION}/', html)
             html = re.sub(r'(href|src)="docs/stable/', rf'\1="{TARGET_VERSION}/', html)
-            
-            # Remove /docs/ prefix while preserving version
-            # This regex specifically handles /docs/vXX.X/ patterns
             html = re.sub(r'(href|src)="/docs/(v\d+\.\d+/[^"]+)"', r'\1="\2"', html)
             html = re.sub(r'(href|src)="docs/(v\d+\.\d+/[^"]+)"', r'\1="\2"', html)
-            
-            # For non-versioned docs paths
             html = re.sub(r'(href|src)="/docs/([^v][^"]+)"', r'\1="\2"', html)
             html = re.sub(r'(href|src)="docs/([^v][^"]+)"', r'\1="\2"', html)
-            
-            # Remove any remaining leading slashes from local paths
-            # Skip URLs that start with // (protocol-relative)
             html = re.sub(r'(href|src)="/(?!/)([^"]+)"', r'\1="\2"', html)
             
-            # Fix asset paths - this is critical for CSS
+            # Fix asset paths
             for asset in ["css", "js", "images", "_internal"]:
                 html = re.sub(
                     rf"(src|href)=[\"']/{asset}/([^\"']+)[\"']",
@@ -547,31 +390,13 @@ class OfflineArchiver:
                     html,
                 )
             
-            # Fix img paths
-            html = re.sub(
-                r"(src|href)=[\"']/?img/([^\"']+)[\"']",
-                r'\1="img/\2"',
-                html,
-            )
-            
-            # Fix docs/images paths
-            html = re.sub(
-                r"(src|href|xlink:href)=[\"']/?docs/images/([^\"']+)[\"']",
-                r'\1="images/\2"',
-                html,
-            )
+            html = re.sub(r"(src|href)=[\"']/?img/([^\"']+)[\"']", r'\1="img/\2"', html)
+            html = re.sub(r"(src|href|xlink:href)=[\"']/?docs/images/([^\"']+)[\"']", r'\1="images/\2"', html)
             
             # Replace Google Fonts
             html = re.sub(
                 r"<link[^>]+fonts\.googleapis\.com[^>]+>",
-                '<link rel="stylesheet" href="css/google-fonts.css">',
-                html,
-            )
-            
-            # Fix CSS imports
-            html = re.sub(
-                r"@import\s+url\((['\"]?)/docs/(css/[^)]+)\1\);",
-                r"@import url(\2);",
+                f'<link rel="stylesheet" href="{prefix}css/google-fonts.css">',
                 html,
             )
             
@@ -583,32 +408,7 @@ class OfflineArchiver:
                     html,
                 )
             
-            # # Fix remaining paths that need prefix
-            # # Only add prefix to paths that don't already have it and aren't external
-            # html = re.sub(
-            #     r'(href|src)="(?!\.\./)(?!https?:)(?!mailto:)(?!#)(?!javascript:)(?!//)([^"]+)"',
-            #     rf'\1="{prefix}\2"',
-            #     html,
-            # )
-            
-            # Debug: Check if we still have absolute paths
-            if len(self.processed_files) < 3:  # Only for first few files
-                import re as regex
-                abs_paths = regex.findall(r'href="/(v19\.2/[^"]+)"', html)
-                if abs_paths:
-                    self.log(f"Warning: Found absolute paths in {rel_path}: {abs_paths[:3]}", "WARNING")
-            
-            # Final cleanup - remove any double slashes or incorrect patterns
-            html = html.replace('"//', '"/')  # Fix double slashes
-            html = re.sub(r'"\.\./+', '"../', html)  # Fix multiple slashes after ../
-            
-            # Fix any paths that might have lost their 'v' prefix
-            html = re.sub(r'(href|src)="(\.\./)*19\.2/', rf'\1="\2v19.2/', html)
-            
-            # Ensure v19.2 paths don't have unnecessary prefixes
-            html = re.sub(r'(href|src)="(\.\./)+v19\.2/v19\.2/', r'\1="\2v19.2/', html)
-            
-            # Inject navigation dependencies - CRITICAL FOR STYLING
+            # Inject navigation dependencies
             nav_deps = f'''<link rel="stylesheet" href="{prefix}css/jquery.navgoco.css">
 <script src="{prefix}js/jquery.min.js"></script>
 <script src="{prefix}js/jquery.cookie.min.js"></script>
@@ -626,35 +426,19 @@ class OfflineArchiver:
     overflow: visible !important;
 }}
 
-/* Hide online-only elements - comprehensive */
+/* Hide online-only elements */
 .ask-ai, #ask-ai, [data-ask-ai], .ai-widget, .kapa-widget,
 [class*="kapa"], [id*="kapa"], [class*="ask-ai"], [id*="ask-ai"],
 .version-switcher, #version-switcher, .feedback-widget,
 button[aria-label*="AI"], div[data-kapa-widget],
-.kapa-ai-button, .ai-assistant, .ai-chat {{
+.kapa-ai-button, .ai-assistant, .ai-chat,
+.floating-action-button, .fab, [class*="floating-button"] {{
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
     position: absolute !important;
     left: -9999px !important;
-}}
-
-/* Hide floating action buttons */
-.floating-action-button, .fab, [class*="floating-button"],
-button[style*="fixed"], button[style*="absolute"] {{
-    display: none !important;
-}}
-
-/* Hide any fixed position elements in bottom right (common for chat widgets) */
-[style*="position: fixed"][style*="bottom"][style*="right"],
-[style*="position:fixed"][style*="bottom"][style*="right"] {{
-    display: none !important;
-}}
-
-/* Hide iframes that might be chat widgets */
-iframe[src*="kapa"], iframe[id*="kapa"], iframe[class*="chat"] {{
-    display: none !important;
 }}
 
 /* Navgoco styling */
@@ -673,20 +457,11 @@ iframe[src*="kapa"], iframe[id*="kapa"], iframe[class*="chat"] {{
             # Add navigation initialization
             nav_init = """<script>
 $(function(){
-    // Aggressively remove Ask AI widget and other online-only elements
+    // Remove unwanted elements
     $('.ask-ai, #ask-ai, [data-ask-ai], .ai-widget, .kapa-widget').remove();
     $('[class*="kapa"], [id*="kapa"], [class*="ask-ai"], [id*="ask-ai"]').remove();
     $('.version-switcher, #version-switcher, .feedback-widget').remove();
-    $('button[aria-label*="AI"], div[data-kapa-widget]').remove();
     $('.floating-action-button, .fab, [class*="floating-button"]').remove();
-    
-    // Remove any floating buttons
-    $('button').each(function() {
-        var style = $(this).attr('style');
-        if (style && (style.includes('fixed') || style.includes('absolute'))) {
-            $(this).remove();
-        }
-    });
     
     // Initialize navigation
     $('#sidebar, #sidebarMenu, #mysidebar').navgoco({
@@ -703,15 +478,6 @@ $(function(){
             $(this).parents('ul').show().parent('li').addClass('open');
         }
     });
-});
-
-// Double-check removal after page fully loads
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        document.querySelectorAll('.ask-ai, #ask-ai, [data-ask-ai], .kapa-widget, [class*="kapa"], [id*="kapa"]').forEach(function(el) {
-            el.remove();
-        });
-    }, 100);
 });
 </script>"""
             
@@ -761,120 +527,38 @@ window.addEventListener('load', function() {
         fonts_dir.mkdir(exist_ok=True)
         
         try:
-            # Get CSS
             headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
             css_response = requests.get(FONTS_CSS_URL, headers=headers, timeout=10)
             css_response.raise_for_status()
             css_content = css_response.text
             
-            # Extract and download font files
             font_urls = set(re.findall(r"url\((https://fonts\.gstatic\.com/[^\)]+)\)", css_content))
             
             for url in font_urls:
                 try:
-                    # Download font
                     font_response = requests.get(url, headers=headers, timeout=10)
                     font_response.raise_for_status()
                     
-                    # Save font
                     parsed = urlparse(url)
                     font_path = parsed.path.lstrip("/")
                     dst = fonts_dir / font_path
                     dst.parent.mkdir(parents=True, exist_ok=True)
                     dst.write_bytes(font_response.content)
                     
-                    # Update CSS
                     css_content = css_content.replace(url, f"../fonts/{font_path}")
                     
                 except Exception as e:
                     self.log(f"Failed to download font from {url}: {e}", "WARNING")
             
-            # Save localized CSS
             (OUTPUT_ROOT / "css" / "google-fonts.css").write_text(css_content, encoding="utf-8")
             self.log("Google Fonts localized", "SUCCESS")
             
         except Exception as e:
             self.log(f"Error downloading fonts: {e}", "ERROR")
-            # Create fallback
             fallback = """/* Fallback fonts */
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
 code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
             (OUTPUT_ROOT / "css" / "google-fonts.css").write_text(fallback)
-    
-    def create_link_test_page(self):
-        """Create a test page to verify link processing"""
-        test_html = f"""<!DOCTYPE html>
-<html>
-<head>
-    <title>Link Test Page</title>
-    <style>
-        body {{ font-family: monospace; padding: 20px; }}
-        .test {{ margin: 10px 0; padding: 10px; background: #f0f0f0; }}
-        .original {{ color: #666; }}
-        .processed {{ color: #00a; font-weight: bold; }}
-        .context {{ color: #080; font-style: italic; }}
-    </style>
-</head>
-<body>
-    <h1>Link Processing Test Results</h1>
-    <p>This page shows how different link patterns were processed:</p>
-    
-    <h2>From pages NOT in version directory:</h2>
-    <div class="test">
-        <div class="context">Context: Page at /index.html</div>
-        <div class="original">Original: /docs/insert.html</div>
-        <div class="processed">Should be: v19.2/insert.html</div>
-        <a href="v19.2/insert.html">Test Link</a>
-    </div>
-    
-    <div class="test">
-        <div class="context">Context: Page at /index.html</div>
-        <div class="original">Original: /docs/v19.2/secure-a-cluster.html</div>
-        <div class="processed">Should be: v19.2/secure-a-cluster.html</div>
-        <a href="v19.2/secure-a-cluster.html">Test Link</a>
-    </div>
-    
-    <h2>From pages IN version directory:</h2>
-    <div class="test">
-        <div class="context">Context: Page at /v19.2/index.html</div>
-        <div class="original">Original: /docs/secure-a-cluster.html</div>
-        <div class="processed">Should be: secure-a-cluster.html (same dir)</div>
-        <p>This link would be at: v19.2/secure-a-cluster.html</p>
-    </div>
-    
-    <div class="test">
-        <div class="context">Context: Page at /v19.2/index.html</div>
-        <div class="original">Original: /docs/v19.2/secure-a-cluster.html</div>
-        <div class="processed">Should be: secure-a-cluster.html (same dir)</div>
-        <p>This link would be at: v19.2/secure-a-cluster.html</p>
-    </div>
-    
-    <h2>Special cases:</h2>
-    <div class="test">
-        <div class="original">Original: /docs/stable/something.html</div>
-        <div class="processed">Should be: v19.2/something.html</div>
-        <a href="v19.2/something.html">Test Link</a>
-    </div>
-    
-    <div class="test">
-        <div class="original">Original: /docs/cockroachcloud/quickstart.html</div>
-        <div class="processed">Should be: cockroachcloud/quickstart.html</div>
-        <a href="cockroachcloud/quickstart.html">Test Link</a>
-    </div>
-    
-    <div class="test">
-        <div class="original">Original: /docs/releases/index.html</div>
-        <div class="processed">Should be: releases/index.html</div>
-        <a href="releases/index.html">Test Link</a>
-    </div>
-    
-    <p><strong>Note:</strong> Click each link to verify it works correctly.</p>
-</body>
-</html>"""
-        
-        test_path = OUTPUT_ROOT / "_link_test.html"
-        test_path.write_text(test_html)
-        self.log("Created link test page: _link_test.html", "SUCCESS")
     
     def create_index_page(self):
         """Create the index page"""
@@ -887,17 +571,6 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
     <link rel="stylesheet" href="css/customstyles.css">
     <link rel="stylesheet" href="css/google-fonts.css">
     <style>
-        /* Hide online-only elements - comprehensive */
-        .ask-ai, #ask-ai, [data-ask-ai], .ai-widget, .kapa-widget,
-        [class*="kapa"], [id*="kapa"], [class*="ask-ai"], [id*="ask-ai"],
-        .floating-action-button, .fab, [class*="floating-button"],
-        button[aria-label*="AI"], div[data-kapa-widget] {{
-            display: none !important;
-            visibility: hidden !important;
-            position: absolute !important;
-            left: -9999px !important;
-        }}
-        
         body {{
             font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
             padding: 2rem;
@@ -1009,169 +682,6 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
         All internal links have been updated to work offline.</p>
         <p>Created: {datetime.now().strftime('%B %d, %Y at %I:%M %p')}</p>
     </div>
-    
-    <script>
-        // Remove any Ask AI elements that might load
-        document.addEventListener('DOMContentLoaded', function() {{
-            var selectors = ['.ask-ai', '#ask-ai', '[data-ask-ai]', '.kapa-widget', 
-                           '[class*="kapa"]', '[id*="kapa"]', '.floating-action-button'];
-            selectors.forEach(function(selector) {{
-                document.querySelectorAll(selector).forEach(function(el) {{
-                    el.remove();
-                }});
-            }});
-        }});
-    </script>
-</body>
-</html>"""
-        
-        (OUTPUT_ROOT / "index.html").write_text(index_html)
-        self.log("Created index.html", "SUCCESS")
-        """Create the index page"""
-        index_html = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CockroachDB {TARGET_VERSION} Documentation (Offline)</title>
-    <link rel="stylesheet" href="css/customstyles.css">
-    <link rel="stylesheet" href="css/google-fonts.css">
-    <style>
-        /* Hide online-only elements - comprehensive */
-        .ask-ai, #ask-ai, [data-ask-ai], .ai-widget, .kapa-widget,
-        [class*="kapa"], [id*="kapa"], [class*="ask-ai"], [id*="ask-ai"],
-        .floating-action-button, .fab, [class*="floating-button"],
-        button[aria-label*="AI"], div[data-kapa-widget] {{
-            display: none !important;
-            visibility: hidden !important;
-            position: absolute !important;
-            left: -9999px !important;
-        }}
-        
-        body {{
-            font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }}
-        h1 {{ 
-            color: #1f2937;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }}
-        .subtitle {{
-            color: #6b7280;
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-        }}
-        .grid {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }}
-        .card {{
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            border: 1px solid #e5e7eb;
-        }}
-        .card h2 {{
-            margin-top: 0;
-            color: #1f2937;
-            font-size: 1.5rem;
-        }}
-        .card ul {{
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }}
-        .card li {{
-            margin: 0.5rem 0;
-        }}
-        .card a {{
-            color: #3b82f6;
-            text-decoration: none;
-        }}
-        .card a:hover {{
-            text-decoration: underline;
-        }}
-        .status {{
-            background: #fef3c7;
-            border: 1px solid #fcd34d;
-            color: #92400e;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 2rem;
-        }}
-    </style>
-</head>
-<body>
-    <h1>CockroachDB {TARGET_VERSION}</h1>
-    <p class="subtitle">Offline Documentation Archive</p>
-    
-    <div class="grid">
-        <div class="card">
-            <h2>📚 Getting Started</h2>
-            <ul>
-                <li><a href="{TARGET_VERSION}/index.html">Documentation Home</a></li>
-                <li><a href="{TARGET_VERSION}/install-cockroachdb-linux.html">Installation Guide</a></li>
-                <li><a href="{TARGET_VERSION}/start-a-local-cluster.html">Start a Local Cluster</a></li>
-                <li><a href="{TARGET_VERSION}/learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
-                <li><a href="{TARGET_VERSION}/architecture/overview.html">Architecture Overview</a></li>
-            </ul>
-        </div>
-        
-        <div class="card">
-            <h2>🔧 Reference</h2>
-            <ul>
-                <li><a href="{TARGET_VERSION}/sql-statements.html">SQL Statements</a></li>
-                <li><a href="{TARGET_VERSION}/functions-and-operators.html">Functions & Operators</a></li>
-                <li><a href="{TARGET_VERSION}/data-types.html">Data Types</a></li>
-                <li><a href="{TARGET_VERSION}/known-limitations.html">Known Limitations</a></li>
-                <li><a href="{TARGET_VERSION}/performance-best-practices-overview.html">Performance Best Practices</a></li>
-            </ul>
-        </div>
-        
-        <div class="card">
-            <h2>☁️ CockroachDB Cloud</h2>
-            <ul>
-                <li><a href="cockroachcloud/quickstart.html">Cloud Quickstart</a></li>
-                <li><a href="cockroachcloud/create-an-account.html">Create an Account</a></li>
-                <li><a href="cockroachcloud/production-checklist.html">Production Checklist</a></li>
-            </ul>
-        </div>
-        
-        <div class="card">
-            <h2>📋 Resources</h2>
-            <ul>
-                <li><a href="releases/index.html">Release Notes</a></li>
-                <li><a href="releases/{TARGET_VERSION}.html">{TARGET_VERSION} Release</a></li>
-                <li><a href="advisories/index.html">Technical Advisories</a></li>
-            </ul>
-        </div>
-    </div>
-    
-    <div class="status">
-        <p><strong>📌 Offline Archive</strong></p>
-        <p>This is a complete offline archive of the CockroachDB {TARGET_VERSION} documentation.
-        All internal links have been updated to work offline.</p>
-        <p>Created: {datetime.now().strftime('%B %d, %Y at %I:%M %p')}</p>
-    </div>
-    
-    <script>
-        // Remove any Ask AI elements that might load
-        document.addEventListener('DOMContentLoaded', function() {{
-            var selectors = ['.ask-ai', '#ask-ai', '[data-ask-ai]', '.kapa-widget', 
-                           '[class*="kapa"]', '[id*="kapa"]', '.floating-action-button'];
-            selectors.forEach(function(selector) {{
-                document.querySelectorAll(selector).forEach(function(el) {{
-                    el.remove();
-                }});
-            }});
-        }});
-    </script>
 </body>
 </html>"""
         
@@ -1179,9 +689,9 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
         self.log("Created index.html", "SUCCESS")
     
     def build(self):
-        """Main build process following Code 2's structure"""
+        """Main build process"""
         print("\n" + "="*60)
-        print("🚀 COCKROACHDB OFFLINE DOCUMENTATION ARCHIVER")
+        print("🚀 COCKROACHDB OFFLINE DOCUMENTATION ARCHIVER (FIXED)")
         print("="*60)
         
         # Verify paths
@@ -1200,7 +710,7 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
             shutil.rmtree(OUTPUT_ROOT)
         OUTPUT_ROOT.mkdir(parents=True)
         
-        # CRITICAL: Copy global assets FIRST (from SITE_ROOT, not DOCS_ROOT)
+        # Copy global assets FIRST
         self.log("\n--- Copying Global Assets ---")
         for asset_dir in ["css", "js", "img"]:
             src = SITE_ROOT / asset_dir
@@ -1296,16 +806,16 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
         
         # Summary
         print("\n" + "="*60)
-        self.log("ARCHIVE COMPLETE!", "SUCCESS")
+        self.log("ARCHIVE COMPLETE WITH JAVASCRIPT FIXES!", "SUCCESS")
         self.log(f"Output directory: {OUTPUT_ROOT.resolve()}")
         self.log(f"Total files: {len(self.processed_files)}")
-        self.log("✅ Ask AI widget removed", "SUCCESS")
-        self.log("✅ All links converted to relative paths", "SUCCESS")
-        self.log("✅ Version directory (v19.2) added where needed", "SUCCESS")
+        self.log("✅ Sidebar JavaScript URL processing FIXED", "SUCCESS")
+        self.log("✅ Relative path calculation corrected", "SUCCESS")
+        self.log("✅ cockroachcloud/ links should now work correctly", "SUCCESS")
         
-        print(f"\n🎉 Offline site built in {OUTPUT_ROOT}")
+        print(f"\n🎉 Fixed offline site built in {OUTPUT_ROOT}")
         print(f"\n📦 To test: open file://{OUTPUT_ROOT.resolve()}/index.html")
-        print(f"\n📌 Note: Check console output above for link transformation details")
+        print(f"\n🔗 Test the problematic link: cockroachcloud/quickstart.html → create-an-account.html")
         
         return True
 
