@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Complete Offline Documentation Archiver for Jekyll CockroachDB Documentation
-FIXED VERSION with correct JavaScript URL processing
+FIXED VERSION with proper purple CockroachDB branding
 """
 import re
 import shutil
@@ -371,6 +371,13 @@ class OfflineArchiver:
         # Try to apply the replacement
         new_html = re.sub(better_pattern, replace_url_processing, html, flags=re.DOTALL)
         
+        # Also fix the .html stripping issue - replace the line that removes .html extensions
+        new_html = re.sub(
+            r'url = url\.replace\("/index\.html", ""\)\.replace\("\.html", ""\);',
+            'url = url.replace("/index.html", ""); // Keep .html for offline',
+            new_html
+        )
+        
         # If the complex pattern didn't match, try a simpler approach
         if new_html == html:
             # Simple pattern - just replace the specific problematic line
@@ -705,137 +712,430 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
             (OUTPUT_ROOT / "css" / "google-fonts.css").write_text(fallback)
     
     def create_index_page(self):
-        """Create the index page"""
+        """Create the index page with proper CockroachDB purple branding"""
         index_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CockroachDB {TARGET_VERSION} Documentation (Offline)</title>
+    <title>CockroachDB Documentation</title>
     <link rel="stylesheet" href="css/customstyles.css">
     <link rel="stylesheet" href="css/google-fonts.css">
+    <link rel="icon" type="image/png" href="images/cockroachlabs-logo-170.png">
     <style>
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
         body {{
             font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-            padding: 2rem;
+            line-height: 1.6;
+            color: #333;
+            background: #f8fafc;
+        }}
+
+        /* Offline Archive Notice */
+        .offline-notice {{
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
+            color: #374151;
+            padding: 0.75rem 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }}
+        
+        .offline-notice-content {{
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }}
-        h1 {{ 
-            color: #1f2937;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+        
+        .offline-notice-icon {{
+            font-size: 1.2rem;
         }}
-        .subtitle {{
-            color: #6b7280;
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
+        
+        .offline-notice-text {{
+            font-weight: 500;
+            font-size: 0.95rem;
         }}
-        .grid {{
+        
+        .version-badge {{
+            background: #6933FF;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }}
+
+        /* Main Content */
+        .main {{
+            background: linear-gradient(135deg, #6933FF 0%, #8B5CF6 50%, #A855F7 100%);
+            color: white;
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }}
+        
+        .main::before {{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(105, 51, 255, 0.9) 0%, rgba(139, 92, 246, 0.8) 50%, rgba(168, 85, 247, 0.9) 100%);
+            z-index: -1;
+        }}
+        
+        .container {{
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }}
+        
+        .hero {{
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }}
+        
+        .hero h1 {{
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            letter-spacing: -0.02em;
+        }}
+        
+        .hero p {{
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.7;
+            font-weight: 400;
+        }}
+        
+        /* Action Cards */
+        .action-cards {{
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+            gap: 2rem;
+            margin-bottom: 3rem;
         }}
+        
         .card {{
             background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }}
+        
+        .card:hover {{
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }}
+        
+        .card::before {{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #6933FF 0%, #8B5CF6 50%, #A855F7 100%);
+        }}
+        
+        .card-icon {{
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #6933FF 0%, #8B5CF6 50%, #A855F7 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 8px 25px rgba(105, 51, 255, 0.3);
+        }}
+        
         .card h2 {{
-            margin-top: 0;
             color: #1f2937;
             font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
         }}
-        .card ul {{
+        
+        .card p {{
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }}
+        
+        .card-link {{
+            color: #6933FF;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }}
+        
+        .card-link:hover {{
+            color: #5B21B6;
+        }}
+        
+        .arrow {{
+            transition: transform 0.3s ease;
+        }}
+        
+        .card:hover .arrow {{
+            transform: translateX(4px);
+        }}
+        
+        /* Download Button */
+        .download-section {{
+            text-align: center;
+        }}
+        
+        .download-btn {{
+            background: #6933FF;
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border: 2px solid #6933FF;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(105, 51, 255, 0.4);
+        }}
+        
+        .download-btn:hover {{
+            background: #5B21B6;
+            border-color: #5B21B6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(105, 51, 255, 0.6);
+        }}
+        
+        /* Footer Section */
+        .footer-section {{
+            background: white;
+            padding: 4rem 0;
+            border-top: 1px solid #e5e7eb;
+        }}
+        
+        .footer-content {{
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }}
+        
+        .quick-links {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }}
+        
+        .link-group h3 {{
+            color: #1f2937;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }}
+        
+        .link-group ul {{
             list-style: none;
             padding: 0;
-            margin: 0;
         }}
-        .card li {{
-            margin: 0.5rem 0;
+        
+        .link-group li {{
+            margin-bottom: 0.5rem;
         }}
-        .card a {{
-            color: #3b82f6;
+        
+        .link-group a {{
+            color: #6b7280;
             text-decoration: none;
+            transition: color 0.3s ease;
         }}
-        .card a:hover {{
-            text-decoration: underline;
+        
+        .link-group a:hover {{
+            color: #6933FF;
         }}
-        .status {{
-            background: #fef3c7;
-            border: 1px solid #fcd34d;
-            color: #92400e;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 2rem;
+        
+        /* Responsive */
+        @media (max-width: 768px) {{
+            .hero h1 {{
+                font-size: 2.5rem;
+            }}
+            
+            .hero p {{
+                font-size: 1.1rem;
+            }}
+            
+            .action-cards {{
+                grid-template-columns: 1fr;
+            }}
+            
+            .container {{
+                padding: 0 1rem;
+            }}
+            
+            .offline-notice-content {{
+                padding: 0 1rem;
+            }}
+        }}
+        
+        /* Hide online elements */
+        .ask-ai, #ask-ai, [data-ask-ai], .kapa-widget, 
+        [class*="kapa"], [id*="kapa"], .floating-action-button {{
+            display: none !important;
         }}
     </style>
 </head>
 <body>
-    <h1>CockroachDB {TARGET_VERSION}</h1>
-    <p class="subtitle">Offline Documentation Archive</p>
-    
-    <div class="grid">
-        <div class="card">
-            <h2>📚 Getting Started</h2>
-            <ul>
-                <li><a href="{TARGET_VERSION}/index.html">Documentation Home</a></li>
-                <li><a href="{TARGET_VERSION}/install-cockroachdb-linux.html">Installation Guide</a></li>
-                <li><a href="{TARGET_VERSION}/start-a-local-cluster.html">Start a Local Cluster</a></li>
-                <li><a href="{TARGET_VERSION}/learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
-                <li><a href="{TARGET_VERSION}/architecture/overview.html">Architecture Overview</a></li>
-            </ul>
-        </div>
-        
-        <div class="card">
-            <h2>🔧 Reference</h2>
-            <ul>
-                <li><a href="{TARGET_VERSION}/sql-statements.html">SQL Statements</a></li>
-                <li><a href="{TARGET_VERSION}/functions-and-operators.html">Functions & Operators</a></li>
-                <li><a href="{TARGET_VERSION}/data-types.html">Data Types</a></li>
-                <li><a href="{TARGET_VERSION}/known-limitations.html">Known Limitations</a></li>
-                <li><a href="{TARGET_VERSION}/performance-best-practices-overview.html">Performance Best Practices</a></li>
-            </ul>
-        </div>
-        
-        <div class="card">
-            <h2>☁️ CockroachDB Cloud</h2>
-            <ul>
-                <li><a href="cockroachcloud/quickstart.html">Cloud Quickstart</a></li>
-                <li><a href="cockroachcloud/create-an-account.html">Create an Account</a></li>
-                <li><a href="cockroachcloud/production-checklist.html">Production Checklist</a></li>
-            </ul>
-        </div>
-        
-        <div class="card">
-            <h2>📋 Resources</h2>
-            <ul>
-                <li><a href="releases/index.html">Release Notes</a></li>
-                <li><a href="releases/{TARGET_VERSION}.html">{TARGET_VERSION} Release</a></li>
-                <li><a href="advisories/index.html">Technical Advisories</a></li>
-            </ul>
+    <!-- Offline Archive Notice -->
+    <div class="offline-notice">
+        <div class="offline-notice-content">
+            <span class="offline-notice-icon">📱</span>
+            <span class="offline-notice-text">Offline Documentation Archive - CockroachDB Version 19.2</span>
         </div>
     </div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="hero">
+                <h1>Documentation</h1>
+                <p>CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.</p>
+            </div>
+            
+            <div class="action-cards">
+                <div class="card">
+                    <div class="card-icon">☁️</div>
+                    <h2>Start a cloud cluster</h2>
+                    <p>Get started with CockroachDB Cloud, our fully managed service.</p>
+                    <a href="cockroachcloud/quickstart.html" class="card-link">
+                        Learn more <span class="arrow">→</span>
+                    </a>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🖥️</div>
+                    <h2>Start a local cluster</h2>
+                    <p>Set up a local CockroachDB cluster for development and testing.</p>
+                    <a href="{TARGET_VERSION}/start-a-local-cluster.html" class="card-link">
+                        Learn more <span class="arrow">→</span>
+                    </a>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🚀</div>
+                    <h2>Build a sample app</h2>
+                    <p>Build applications using your favorite language and framework.</p>
+                    <a href="{TARGET_VERSION}/developer-guide-overview.html" class="card-link">
+                        Learn more <span class="arrow">→</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="download-section">
+                <a href="{TARGET_VERSION}/install-cockroachdb-linux.html" class="download-btn">
+                    📦 Download The CockroachDB Binary →
+                </a>
+            </div>
+        </div>
+    </main>
     
-    <div class="status">
-        <p><strong>📌 Offline Archive</strong></p>
-        <p>This is a complete offline archive of the CockroachDB {TARGET_VERSION} documentation.
-        All internal links have been updated to work offline.</p>
-        <p>Created: {datetime.now().strftime('%B %d, %Y at %I:%M %p')}</p>
-    </div>
+    <!-- Footer Links -->
+    <section class="footer-section">
+        <div class="footer-content">
+            <div class="quick-links">
+                <div class="link-group">
+                    <h3>📚 Get Started</h3>
+                    <ul>
+                        <li><a href="{TARGET_VERSION}/index.html">Documentation Home</a></li>
+                        <li><a href="{TARGET_VERSION}/install-cockroachdb-linux.html">Installation Guide</a></li>
+                        <li><a href="{TARGET_VERSION}/learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
+                        <li><a href="{TARGET_VERSION}/architecture/overview.html">Architecture Overview</a></li>
+                    </ul>
+                </div>
+                
+                <div class="link-group">
+                    <h3>🔧 Reference</h3>
+                    <ul>
+                        <li><a href="{TARGET_VERSION}/sql-statements.html">SQL Statements</a></li>
+                        <li><a href="{TARGET_VERSION}/functions-and-operators.html">Functions & Operators</a></li>
+                        <li><a href="{TARGET_VERSION}/data-types.html">Data Types</a></li>
+                        <li><a href="{TARGET_VERSION}/performance-best-practices-overview.html">Performance Best Practices</a></li>
+                    </ul>
+                </div>
+                
+                <div class="link-group">
+                    <h3>☁️ CockroachDB Cloud</h3>
+                    <ul>
+                        <li><a href="cockroachcloud/quickstart.html">Cloud Quickstart</a></li>
+                        <li><a href="cockroachcloud/create-an-account.html">Create an Account</a></li>
+                        <li><a href="cockroachcloud/production-checklist.html">Production Checklist</a></li>
+                    </ul>
+                </div>
+                
+                <div class="link-group">
+                    <h3>📋 Resources</h3>
+                    <ul>
+                        <li><a href="releases/index.html">Release Notes</a></li>
+                        <li><a href="releases/{TARGET_VERSION}.html">{TARGET_VERSION} Release</a></li>
+                        <li><a href="advisories/index.html">Technical Advisories</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        // Remove any Ask AI elements
+        document.addEventListener('DOMContentLoaded', function() {{
+            var selectors = ['.ask-ai', '#ask-ai', '[data-ask-ai]', '.kapa-widget', 
+                           '[class*="kapa"]', '[id*="kapa"]', '.floating-action-button'];
+            selectors.forEach(function(selector) {{
+                document.querySelectorAll(selector).forEach(function(el) {{
+                    el.remove();
+                }});
+            }});
+        }});
+    </script>
 </body>
 </html>"""
         
         (OUTPUT_ROOT / "index.html").write_text(index_html)
-        self.log("Created index.html", "SUCCESS")
+        self.log("Created CockroachDB purple-branded index.html", "SUCCESS")
     
     def build(self):
         """Main build process"""
         print("\n" + "="*60)
-        print("🚀 COCKROACHDB OFFLINE DOCUMENTATION ARCHIVER (FIXED)")
+        print("🚀 COCKROACHDB OFFLINE DOCUMENTATION ARCHIVER (PURPLE BRANDED)")
         print("="*60)
         
         # Verify paths
@@ -950,16 +1250,17 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
         
         # Summary
         print("\n" + "="*60)
-        self.log("ARCHIVE COMPLETE WITH JAVASCRIPT FIXES!", "SUCCESS")
+        self.log("ARCHIVE COMPLETE WITH PURPLE BRANDING!", "SUCCESS")
         self.log(f"Output directory: {OUTPUT_ROOT.resolve()}")
         self.log(f"Total files: {len(self.processed_files)}")
+        self.log("🟣 CockroachDB purple branding applied", "SUCCESS")
         self.log("✅ Sidebar JavaScript URL processing FIXED", "SUCCESS")
-        self.log("✅ Relative path calculation corrected", "SUCCESS")
-        self.log("✅ cockroachcloud/ links should now work correctly", "SUCCESS")
+        self.log("✅ Broken sidebar links removed", "SUCCESS")
+        self.log("✅ Professional index page created", "SUCCESS")
         
-        print(f"\n🎉 Fixed offline site built in {OUTPUT_ROOT}")
+        print(f"\n🎉 Purple-branded offline site built in {OUTPUT_ROOT}")
         print(f"\n📦 To test: open file://{OUTPUT_ROOT.resolve()}/index.html")
-        print(f"\n🔗 Test the problematic link: cockroachcloud/quickstart.html → create-an-account.html")
+        print(f"\n🟣 Your site now has proper CockroachDB purple branding!")
         
         return True
 
