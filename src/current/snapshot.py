@@ -63,6 +63,84 @@ class OfflineArchiver:
         }.get(level, "")
         print(f"[{timestamp}] {prefix} {message}")
     
+    def clean_sidebar_data(self, sidebar_data):
+        """Remove broken links from sidebar data"""
+        def check_file_exists(url):
+            """Check if a file exists for a given URL"""
+            if url.startswith(('http://', 'https://', '#', 'mailto:', 'javascript:')):
+                return True  # External links are always valid
+            
+            # Normalize URL to file path
+            file_url = url.strip()
+            
+            # Handle root/empty URLs
+            if file_url in ['/', '', 'index', 'index.html']:
+                return True  # Root index always exists
+            
+            # Remove leading slash and docs prefix
+            if file_url.startswith('/docs/'):
+                file_url = file_url[6:]
+            elif file_url.startswith('docs/'):
+                file_url = file_url[5:]
+            file_url = file_url.lstrip('/')
+            
+            # Handle stable -> v19.2
+            file_url = file_url.replace('/stable/', f'/{TARGET_VERSION}/')
+            file_url = file_url.replace('stable/', f'{TARGET_VERSION}/')
+            
+            # Convert ${VERSION} placeholder
+            file_url = file_url.replace('${VERSION}', TARGET_VERSION)
+            
+            # Add .html if needed
+            if file_url and not file_url.endswith('/') and not file_url.endswith('.html'):
+                if '.' not in file_url.split('/')[-1]:  # No extension
+                    file_url += '.html'
+            
+            # Check if file exists
+            file_path = DOCS_ROOT / file_url
+            exists = file_path.exists()
+            
+            if not exists:
+                self.log(f"Removing broken link: {url} -> {file_path}", "WARNING")
+            
+            return exists
+        
+        def clean_item(item):
+            """Recursively clean an item and its children"""
+            if isinstance(item, dict):
+                # Clean URLs if present
+                if 'urls' in item:
+                    item['urls'] = [url for url in item['urls'] if check_file_exists(url)]
+                    # If no valid URLs left, this item is invalid
+                    if not item['urls']:
+                        return None
+                
+                # Clean child items if present
+                if 'items' in item:
+                    cleaned_items = []
+                    for child in item['items']:
+                        cleaned_child = clean_item(child)
+                        if cleaned_child is not None:
+                            cleaned_items.append(cleaned_child)
+                    item['items'] = cleaned_items
+                    
+                    # If no URLs and no valid children, remove this item
+                    if 'urls' not in item and not item['items']:
+                        return None
+                
+                return item
+            
+            return item
+        
+        # Clean the sidebar data
+        cleaned_items = []
+        for item in sidebar_data:
+            cleaned_item = clean_item(item)
+            if cleaned_item is not None:
+                cleaned_items.append(cleaned_item)
+        
+        return cleaned_items
+
     def load_sidebar(self):
         """Load and prepare the sidebar HTML"""
         self.log(f"Loading sidebar from: {SIDEBAR_HTML_PATH}")
@@ -83,6 +161,49 @@ class OfflineArchiver:
                     break
         
         if self.sidebar_html:
+            # Extract and clean sidebar data
+            self.log("Cleaning sidebar data (removing broken links)...")
+            
+            # Parse the sidebar HTML to extract the JavaScript data
+            import re
+            import json
+            
+            # Extract the sidebar items from the JavaScript
+            items_match = re.search(r'items:\s*(\[[\s\S]*?\])\s*};', self.sidebar_html)
+            if items_match:
+                try:
+                    # Parse the JavaScript array as JSON (with some cleaning)
+                    items_str = items_match.group(1)
+                    # Clean up JavaScript to make it valid JSON
+                    items_str = re.sub(r'(\w+):', r'"\1":', items_str)  # Quote keys
+                    items_str = re.sub(r',\s*}', '}', items_str)  # Remove trailing commas
+                    items_str = re.sub(r',\s*]', ']', items_str)  # Remove trailing commas in arrays
+                    
+                    sidebar_data = json.loads(items_str)
+                    
+                    # Clean the sidebar data
+                    cleaned_data = self.clean_sidebar_data(sidebar_data)
+                    
+                    # Replace the items in the HTML
+                    cleaned_items_str = json.dumps(cleaned_data, indent=2)
+                    self.sidebar_html = re.sub(
+                        r'items:\s*\[[\s\S]*?\]',
+                        f'items:{cleaned_items_str}',
+                        self.sidebar_html
+                    )
+                    
+                    self.log(f"Cleaned sidebar data: removed broken links", "SUCCESS")
+                    
+                except Exception as e:
+                    self.log(f"Could not clean sidebar data: {e}", "WARNING")
+            
+            # Simplify isVersionDirectory function for v19.2 only
+            self.sidebar_html = re.sub(
+                r'isVersionDirectory:\s*function\s*\([^}]*\{[^}]*\}',
+                'isVersionDirectory: function (d) { return d === "v19.2" || d === "stable"; }',
+                self.sidebar_html
+            )
+            
             # Clean the sidebar HTML of any Ask AI elements
             sidebar_soup = BeautifulSoup(self.sidebar_html, "html.parser")
             
