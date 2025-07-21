@@ -185,46 +185,58 @@ class OfflineArchiver:
                 // Remove /docs/ prefix if present
                 url = url.replace(/^\/docs\//, '').replace(/^docs\//, '');
                 
-                // Better current directory detection for file:// URLs
-                var currentPath = window.location.pathname;
-                var currentDir = '';
-                
-                // Extract just the relevant part of the path (handle both web and file:// URLs)
-                var pathMatch = currentPath.match(/(cockroachcloud|v19\.2|releases|advisories)\/[^\/]+$/);
-                if (pathMatch) {
-                    currentDir = pathMatch[1];
+                // Handle root/home URLs
+                if (url === '/' || url === '' || url === 'index' || url === 'index.html') {
+                    // For docs home, determine if we need to go up directories
+                    var currentPath = window.location.pathname;
+                    var pathMatch = currentPath.match(/(cockroachcloud|v19\.2|releases|advisories)\/[^\/]+$/);
+                    if (pathMatch) {
+                        url = '../index.html';  // Go up to main index
+                    } else {
+                        url = 'index.html';     // Stay at current level
+                    }
                 } else {
-                    // Fallback: check if we're in root or any subdirectory
-                    var pathParts = currentPath.split('/').filter(function(part) { return part; });
-                    for (var i = pathParts.length - 2; i >= 0; i--) {
-                        if (pathParts[i] === 'cockroachcloud' || pathParts[i] === 'v19.2' || 
-                            pathParts[i] === 'releases' || pathParts[i] === 'advisories') {
-                            currentDir = pathParts[i];
-                            break;
+                    // Better current directory detection for file:// URLs
+                    var currentPath = window.location.pathname;
+                    var currentDir = '';
+                    
+                    // Extract just the relevant part of the path (handle both web and file:// URLs)
+                    var pathMatch = currentPath.match(/(cockroachcloud|v19\.2|releases|advisories)\/[^\/]+$/);
+                    if (pathMatch) {
+                        currentDir = pathMatch[1];
+                    } else {
+                        // Fallback: check if we're in root or any subdirectory
+                        var pathParts = currentPath.split('/').filter(function(part) { return part; });
+                        for (var i = pathParts.length - 2; i >= 0; i--) {
+                            if (pathParts[i] === 'cockroachcloud' || pathParts[i] === 'v19.2' || 
+                                pathParts[i] === 'releases' || pathParts[i] === 'advisories') {
+                                currentDir = pathParts[i];
+                                break;
+                            }
                         }
                     }
-                }
-                
-                // Remove leading slash from URL
-                if (url.startsWith('/')) {
-                    url = url.substring(1);
-                }
-                
-                // Handle stable -> v19.2 conversion
-                url = url.replace(/^stable\//, 'v19.2/').replace(/\/stable\//, '/v19.2/');
-                
-                // Calculate relative path based on current directory context
-                if (currentDir) {
-                    // We're in a subdirectory
-                    if (url.startsWith(currentDir + '/')) {
-                        // Same directory - remove the directory prefix
-                        url = url.substring(currentDir.length + 1);
-                    } else if (url.includes('/')) {
-                        // Different directory - need to go up one level
-                        url = '../' + url;
-                    } else if (url !== '' && !url.endsWith('.html') && !url.endsWith('/')) {
-                        // Root level file - go up one level
-                        url = '../' + url;
+                    
+                    // Remove leading slash from URL
+                    if (url.startsWith('/')) {
+                        url = url.substring(1);
+                    }
+                    
+                    // Handle stable -> v19.2 conversion
+                    url = url.replace(/^stable\//, 'v19.2/').replace(/\/stable\//, '/v19.2/');
+                    
+                    // Calculate relative path based on current directory context
+                    if (currentDir) {
+                        // We're in a subdirectory
+                        if (url.startsWith(currentDir + '/')) {
+                            // Same directory - remove the directory prefix
+                            url = url.substring(currentDir.length + 1);
+                        } else if (url.includes('/')) {
+                            // Different directory - need to go up one level
+                            url = '../' + url;
+                        } else if (url !== '' && !url.endsWith('.html') && !url.endsWith('/')) {
+                            // Root level file - go up one level
+                            url = '../' + url;
+                        }
                     }
                 }
                 
@@ -246,36 +258,47 @@ class OfflineArchiver:
             simple_replacement = r'''// Custom offline URL processing
                 url = url.replace(/^\/docs\//, '').replace(/^docs\//, '');
                 
-                var currentPath = window.location.pathname;
-                var currentDir = '';
-                
-                var pathMatch = currentPath.match(/(cockroachcloud|v19\.2|releases|advisories)\/[^\/]+$/);
-                if (pathMatch) {
-                    currentDir = pathMatch[1];
+                // Handle root/home URLs
+                if (url === '/' || url === '' || url === 'index' || url === 'index.html') {
+                    var currentPath = window.location.pathname;
+                    var pathMatch = currentPath.match(/(cockroachcloud|v19\.2|releases|advisories)\/[^\/]+$/);
+                    if (pathMatch) {
+                        url = '../index.html';
+                    } else {
+                        url = 'index.html';
+                    }
                 } else {
-                    var pathParts = currentPath.split('/').filter(function(part) { return part; });
-                    for (var i = pathParts.length - 2; i >= 0; i--) {
-                        if (pathParts[i] === 'cockroachcloud' || pathParts[i] === 'v19.2' || 
-                            pathParts[i] === 'releases' || pathParts[i] === 'advisories') {
-                            currentDir = pathParts[i];
-                            break;
+                    var currentPath = window.location.pathname;
+                    var currentDir = '';
+                    
+                    var pathMatch = currentPath.match(/(cockroachcloud|v19\.2|releases|advisories)\/[^\/]+$/);
+                    if (pathMatch) {
+                        currentDir = pathMatch[1];
+                    } else {
+                        var pathParts = currentPath.split('/').filter(function(part) { return part; });
+                        for (var i = pathParts.length - 2; i >= 0; i--) {
+                            if (pathParts[i] === 'cockroachcloud' || pathParts[i] === 'v19.2' || 
+                                pathParts[i] === 'releases' || pathParts[i] === 'advisories') {
+                                currentDir = pathParts[i];
+                                break;
+                            }
                         }
                     }
-                }
-                
-                if (url.startsWith('/')) {
-                    url = url.substring(1);
-                }
-                
-                url = url.replace(/^stable\//, 'v19.2/').replace(/\/stable\//, '/v19.2/');
-                
-                if (currentDir) {
-                    if (url.startsWith(currentDir + '/')) {
-                        url = url.substring(currentDir.length + 1);
-                    } else if (url.includes('/')) {
-                        url = '../' + url;
-                    } else if (url !== '' && !url.endsWith('.html') && !url.endsWith('/')) {
-                        url = '../' + url;
+                    
+                    if (url.startsWith('/')) {
+                        url = url.substring(1);
+                    }
+                    
+                    url = url.replace(/^stable\//, 'v19.2/').replace(/\/stable\//, '/v19.2/');
+                    
+                    if (currentDir) {
+                        if (url.startsWith(currentDir + '/')) {
+                            url = url.substring(currentDir.length + 1);
+                        } else if (url.includes('/')) {
+                            url = '../' + url;
+                        } else if (url !== '' && !url.endsWith('.html') && !url.endsWith('/')) {
+                            url = '../' + url;
+                        }
                     }
                 }
                 
