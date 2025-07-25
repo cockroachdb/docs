@@ -31,8 +31,6 @@ The following source databases are currently supported:
 
 ## Installation
 
-To install MOLT Verify, download the binary that matches your system. To download the latest binary:
-
 {% include molt/molt-install.md %}
 
 # Setup
