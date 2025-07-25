@@ -14,8 +14,6 @@ Cockroach Labs recommends using the latest available version of each tool. See [
 
 ## Installation
 
-To download the latest MOLT Fetch/Verify binary:
-
 {% include molt/molt-install.md %}
 
 ## July 24, 2025
