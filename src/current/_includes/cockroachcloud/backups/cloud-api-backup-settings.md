@@ -1,9 +1,3 @@
-You can use the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}) to [view](#get-information-on-backup-settings) and [modify](#modify-backup-settings-on-a-cluster) managed backup settings.
-
-{{site.data.alerts.callout_info}}
-The [service account]({% link cockroachcloud/authorization.md %}#service-accounts) associated with the secret key must have the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) role.
-{{site.data.alerts.end}}
-
 ### Get information on backup settings
 
 To retrieve information about a specific cluster, make a `GET` request to the `/v1/clusters/{cluster_id}/backups/config` endpoint.
