@@ -75,3 +75,11 @@ To restore a cluster:
     {{site.data.alerts.end}}
 
 1. Click **Restore**.
+
+## Cloud API
+
+{% include cockroachcloud/backups/cloud-api-managed-backup-intro.md %}
+
+{% include cockroachcloud/backups/cloud-api-backup-view.md %}
+
+{% include cockroachcloud/backups/cloud-api-restore-endpoint.md %}

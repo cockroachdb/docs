@@ -132,7 +132,11 @@ To restore a cluster:
 
 ## Cloud API
 
-{% include cockroachcloud/backups/cloud-api-get-put.md %}
+{% include cockroachcloud/backups/cloud-api-managed-backup-intro.md %}
+
+{% include cockroachcloud/backups/cloud-api-backup-settings.md %}
+
+{% include cockroachcloud/backups/cloud-api-restore-endpoint.md %}
 
 ## CockroachDB Cloud Terraform provider
 
