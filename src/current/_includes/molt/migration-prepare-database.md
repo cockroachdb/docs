@@ -243,7 +243,7 @@ CURRENT_SCN
 1 row selected.
 ~~~
 
-Add the redo logs to LogMiner:
+Add the redo log files to LogMiner, using the redo log file paths you queried:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
