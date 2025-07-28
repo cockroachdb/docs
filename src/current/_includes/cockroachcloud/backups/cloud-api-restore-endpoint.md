@@ -1,4 +1,4 @@
-### Restore a managed backup
+### Restore from a managed backup
 
 You can use the `/v1/clusters/{cluster_id}/restores` endpoint to restore the contents of a managed backup at the cluster, database, or table level.
 
@@ -11,7 +11,7 @@ On Standard and Basic clusters, restore operations can only be performed into th
 #### Restore a cluster
 
 {{site.data.alerts.callout_danger}}
-The restore completely erases all data in the destination cluster. All cluster data is replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress.
+The restore operation completely erases all data in the destination cluster. All cluster data is replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress.
 
 This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when designing your system of privilege grants.
 {{site.data.alerts.end}}
@@ -73,7 +73,7 @@ If the request was successful, the client will receive a response containing JSO
 
 #### Restore a database
 
-To restore a managed backup of a database to a cluster, send a `POST` request to the `/v1/clusters/{cluster_id}/restores` endpoint of `"type": "DATABASE"`. Specify the name of the source database in `objects.database`:
+To restore a database from a managed backup to a cluster, send a `POST` request to the `/v1/clusters/{cluster_id}/restores` endpoint of `"type": "DATABASE"`. Specify the name of the source database in `objects.database`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -90,7 +90,7 @@ curl --request POST \
 }'
 ~~~
 
-By default the database will be restored into the original database name from the cluster backup. To restore the database contents into a new database, include the field `restore_opts.new_db_name` with the new database name:
+By default the database will be restored into the original database name from the managed backup. To restore the database contents into a new database, include the field `restore_opts.new_db_name` with the new database name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -110,7 +110,7 @@ curl --request POST \
 }'
 ~~~
 
-To restore a specific backup rather than the most recently created managed backup, include the `backup_id` field specifying a backup ID:
+To restore from a specific backup rather than the most recently created managed backup, include the `backup_id` field specifying a backup ID:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -165,7 +165,7 @@ If the request was successful, the client will receive a response containing JSO
 
 #### Restore a table
 
-To restore a managed backup of a table to a cluster, send a `POST` request to the `/v1/clusters/{cluster_id}/restores` endpoint of `"type": "DATABASE"`. Specify the fully qualified name of the source database in `objects`:
+To restore a table from a managed backup to a cluster, send a `POST` request to the `/v1/clusters/{cluster_id}/restores` endpoint of `"type": "TABLE"`. Specify the fully qualified name of the source table in `objects`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -184,7 +184,7 @@ curl --request POST \
 }'
 ~~~
 
-By default the table will be restored into the original database name from the cluster backup. To restore the table into a different database, include the field `restore_opts.into_name` with the database name. The following example restores the `tpcc.public.warehouse` table from the most recent managed backup into `tpcc2.public.warehouse` on the cluster:
+By default the table will be restored into the original database name from the managed backup. To restore the table into a different database, include the field `restore_opts.into_name` with the desired database name. The following example restores the `tpcc.public.warehouse` table from the most recent managed backup into `tpcc2.public.warehouse` on the cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -206,7 +206,7 @@ curl --request POST \
 }'
 ~~~
 
-To restore a specific backup rather than the most recently created managed backup, include the `backup_id` field specifying a backup ID:
+To restore from a specific backup rather than the most recently created managed backup, include the `backup_id` field specifying a backup ID:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
