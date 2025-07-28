@@ -24,7 +24,7 @@ The following define the categories of non-retryable errors:
 - The changefeed cannot convert the data to the specified [output format]({% link {{ page.version.version }}/changefeed-messages.md %}). For example, there are [Avro]({% link {{ page.version.version }}/changefeed-messages.md %}#avro) types that changefeeds do not support, or a [CDC query]({% link {{ page.version.version }}/cdc-queries.md %}) is using an unsupported or malformed expression.
 - The terminal error happens as part of established changefeed behavior. For example, you have specified the [`schema_change_policy=stop` option]({% link {{ page.version.version }}/create-changefeed.md %}#schema-change-policy) and a schema change happens.
 
-We recommend monitoring changefeeds with [Prometheus]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) to avoid accumulation of garbage after a changefeed encounters an error. See [Garbage collection and changefeeds]({% link {{ page.version.version }}/protect-changefeed-data.md %}) for more detail on how changefeeds interact with [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) and garbage collection. In addition, see the [Recommended changefeed metrics to track](#recommended-changefeed-metrics-to-track) section for the essential metrics to track on a changefeed.
+We recommend monitoring changefeeds with [Prometheus]({% link {{ page.version.version }}/prometheus-endpoint.md %}) to avoid accumulation of garbage after a changefeed encounters an error. See [Garbage collection and changefeeds]({% link {{ page.version.version }}/protect-changefeed-data.md %}) for more detail on how changefeeds interact with [protected timestamps]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps) and garbage collection. In addition, see the [Recommended changefeed metrics to track](#recommended-changefeed-metrics-to-track) section for the essential metrics to track on a changefeed.
 
 ## Monitor a changefeed
 
@@ -104,7 +104,7 @@ Multiple changefeeds can be added to a label:
 CREATE CHANGEFEED FOR TABLE movr.vehicle_location_histories INTO 'kafka://host:port' WITH metrics_label=vehicles;
 ~~~
 
-`http://{host}:{http-port}/_status/vars` shows the defined changefeed(s) by label and the aggregated metric for all changefeeds. This output also shows the `default` scope, which will include changefeeds started without a metrics label:
+The [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) shows the defined changefeed(s) by label and the aggregated metric for all changefeeds. This output also shows the `default` scope, which will include changefeeds started without a metrics label:
 
 ~~~
 changefeed_running 4
