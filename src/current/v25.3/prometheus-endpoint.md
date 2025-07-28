@@ -7,7 +7,7 @@ toc: true
 Each node in a CockroachDB cluster exports granular time-series metrics to two available Prometheus-compatible endpoints:
 
 - [`http://<host>:<http-port>/_status/vars`](#_status-vars)
-- {% include_cached new-in.html version="v25.3" %}[`http://<host>:<http-port>/metrics`](#metrics): an enhanced endpoint with additional static labels
+- {% include_cached new-in.html version="v25.3" %}[`http://<host>:<http-port>/metrics`](#metrics): an enhanced endpoint with additional [static labels](#static-labels)
 
 The metrics are formatted for integration with [Prometheus](https://prometheus.io/), an open-source tool for storing, aggregating, and querying time-series data. For details on how to pull these metrics into Prometheus, refer to [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}). The Prometheus format is human-readable and can be processed to work with other Prometheus-compatible third-party monitoring systems, such as [Sysdig](https://sysdig.com/integrations/prometheus/) and [Google Cloud Managed Service for Prometheus](https://cloud.google.com/stackdriver/docs/managed-prometheus). Many of the [third-party monitoring integrations]({% link {{ page.version.version }}/third-party-monitoring-tools.md %}), such as [Datadog]({% link {{ page.version.version }}/datadog.md %}) and [Kibana]({% link {{ page.version.version }}/kibana.md %}), collect metrics from the cluster's Prometheus endpoint.
 
@@ -113,7 +113,7 @@ sql_count{node_id="1",tenant="demoapp",query_type="delete",query_internal="true"
 
 ### Static labels
 
-One common use of static labels is to allow segmentation of a metric across various facets for later querying and aggregation. For example, rather than emitting separate metrics for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` statements, the single metric `sql_count` uses the `query_type` label to distinguish between these operations. This enables operators to easily aggregate across query types (e.g., summing all SQL operations) or filter for a specific type using the appropriate value for the `query_type` label.
+One common use of static labels is to allow segmentation of a metric across various facets for later querying and aggregation. For example, rather than emitting separate metrics for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` statements, the single metric `sql_count` uses the `query_type` label to distinguish between these operations. This enables operators to easily aggregate across query types (e.g., summing a metric for all SQL operations) or filter for a specific type using the appropriate value for the `query_type` label.
 
 The following tables contrast unlabeled metrics from the `_status/vars` endpoint with their labeled counterparts from the `metrics` endpoint:
 
