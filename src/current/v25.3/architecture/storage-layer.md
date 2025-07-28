@@ -102,9 +102,18 @@ A certain amount of read amplification is expected in a normally functioning Coc
 
 {% include_cached new-in.html version="v25.3" %}
 
+{% include feature-phases/preview.md %}
+
 The storage engine implements a performance optimization called _value separation_. When the engine encounters a key-value pair with a sufficiently large value component, it stores the key in the [LSM](#log-structured-merge-trees) alongside a pointer to the value's location in a _blob file_ which is located outside the LSM. This indirection allows [compactions](#compaction) of the LSM to skip rewriting large values over and over; instead, compactions can copy a pointer to the large value's location.
 
 Value separation is especially beneficial for workloads with large values relative to key size (for example, [Raft log]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) entries). It reduces [write amplification](#write-amplification) by about 50%, at the cost of about 20% in [space amplification]({% link {{ page.version.version }}/operational-faqs.md %}#space-amplification). What this means in practice is that the storage engine uses far less [IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops) and storage bandwidth overall, which are expensive, at the cost of an increase in storage capacity, which is much cheaper.
+
+To enable this feature, set the following [cluster setting]({% link {{ page.version.version }}/set-cluster-setting.md %}):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING storage.value_separation.enabled = true;
+~~~
 
 To monitor this feature, see [the documentation for the metrics in the `storage.value_separation.*` namespace]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#storage-value-separation).
 
