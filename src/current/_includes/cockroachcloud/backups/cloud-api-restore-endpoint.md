@@ -87,7 +87,7 @@ curl --request POST \
             "database": "tpcc"
         }
     ]
-}
+}'
 ~~~
 
 By default the database will be restored into the original database name from the cluster backup. To restore the database contents into a new database, include the field `restore_opts.new_db_name` with the new database name:
@@ -107,7 +107,7 @@ curl --request POST \
     "restore_opts": {
         "new_db_name": "tpcc2"
     }
-}
+}'
 ~~~
 
 To restore a specific backup rather than the most recently created managed backup, include the `backup_id` field specifying a backup ID:
@@ -125,8 +125,28 @@ curl --request POST \
             "database": "tpcc"
         }
     ],
-}
+}'
 ~~~
+
+{% if page.name == "managed-backups-advanced.md" %}
+To restore a database from a managed backup into a different cluster, send the restore request to the target cluster ID. Specify the ID of the backup's cluster as `source_cluster_id`. Both the source cluster and the target cluster must use the Advanced plan.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request POST \
+--url 'https://cockroachlabs.cloud/api/v1/clusters/{target_cluster_id}/restores' \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "source_cluster_id": "{source_cluster_id}",
+    "type": "DATABASE",
+    "objects": [
+        {
+            "database": "tpcc"
+        }
+    ],
+}'
+~~~
+{% endif %}
 
 You can specify additional options for the restore operations in the `restore_opts` object. For more information, see the [API endpoint documentation](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/restores-config).
 
@@ -161,7 +181,7 @@ curl --request POST \
             "table": "warehouse"
         }
     ]
-}
+}'
 ~~~
 
 By default the table will be restored into the original database name from the cluster backup. To restore the table into a different database, include the field `restore_opts.into_name` with the database name. The following example restores the `tpcc.public.warehouse` table from the most recent managed backup into `tpcc2.public.warehouse` on the cluster:
@@ -183,7 +203,7 @@ curl --request POST \
     "restore_opts": {
         "into_db": "tpcc2"
     }
-}
+}'
 ~~~
 
 To restore a specific backup rather than the most recently created managed backup, include the `backup_id` field specifying a backup ID:
@@ -203,8 +223,30 @@ curl --request POST \
             "table": "warehouse"
         }
     ]
-}
+}'
 ~~~
+
+{% if page.name == "managed-backups-advanced.md" %}
+To restore a table from a managed backup into a different cluster, send the restore request to the target cluster ID. Specify the ID of the backup's cluster as `source_cluster_id`. Both the source cluster and the target cluster must use the Advanced plan.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request POST \
+--url 'https://cockroachlabs.cloud/api/v1/clusters/{target_cluster_id}/restores' \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "source_cluster_id": "{source_cluster_id}",
+    "type": "TABLE",
+    "objects": [
+        {
+            "database": "tpcc",
+            "schema": "public",
+            "table": "warehouse"
+        }
+    ]
+}'
+~~~
+{% endif %}
 
 You can specify additional options for the restore operations in the `restore_opts` object. For more information, see the [API endpoint documentation](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/restores-config).
 
