@@ -1,7 +1,7 @@
 {% if page.name == "managed-backups-basic.md" %}
-You can use the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}) to [view managed backups](#view-managed-backups) and [restore clusters/databases/tables](#restore-a-managed-backup) from a managed backup.
+You can use the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}) to [view managed backups](#view-managed-backups) or [restore clusters/databases/tables](#restore-a-managed-backup) from a managed backup.
 {% else %}
-You can use the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}) to [view](#get-information-on-backup-settings) or [modify managed backup settings](#modify-backup-settings-on-a-cluster), [view managed backups](#view-managed-backups), and [restore clusters/databases/tables](#restore-a-managed-backup) from a managed backup.
+You can use the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}) to [view](#get-information-on-backup-settings) and [modify managed backup settings](#modify-backup-settings-on-a-cluster), [view managed backups](#view-managed-backups), or [restore clusters/databases/tables](#restore-a-managed-backup) from a managed backup.
 {% endif %}
 
 {{site.data.alerts.callout_info}}
