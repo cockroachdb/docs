@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Complete Offline Documentation Archiver for Jekyll CockroachDB Documentation
-FIXED VERSION with proper purple CockroachDB branding
+FIXED VERSION with proper purple CockroachDB branding and working sidebar cleaning
 """
 import re
 import shutil
@@ -50,6 +50,8 @@ class OfflineArchiver:
         self.processed_files = set()
         self.missing_assets = set()
         self.copied_assets = set()
+        self.total_broken_urls = 0
+        self.total_removed_sections = 0
         
     def log(self, message, level="INFO"):
         """Enhanced logging with levels"""
@@ -63,82 +65,307 @@ class OfflineArchiver:
         }.get(level, "")
         print(f"[{timestamp}] {prefix} {message}")
     
-    def clean_sidebar_data(self, sidebar_data):
-        """Remove broken links from sidebar data"""
-        def check_file_exists(url):
-            """Check if a file exists for a given URL"""
-            if url.startswith(('http://', 'https://', '#', 'mailto:', 'javascript:')):
-                return True  # External links are always valid
-            
-            # Normalize URL to file path
-            file_url = url.strip()
-            
-            # Handle root/empty URLs
-            if file_url in ['/', '', 'index', 'index.html']:
-                return True  # Root index always exists
-            
-            # Remove leading slash and docs prefix
-            if file_url.startswith('/docs/'):
-                file_url = file_url[6:]
-            elif file_url.startswith('docs/'):
-                file_url = file_url[5:]
-            file_url = file_url.lstrip('/')
-            
-            # Handle stable -> v19.2
-            file_url = file_url.replace('/stable/', f'/{TARGET_VERSION}/')
-            file_url = file_url.replace('stable/', f'{TARGET_VERSION}/')
-            
-            # Convert ${VERSION} placeholder
-            file_url = file_url.replace('${VERSION}', TARGET_VERSION)
-            
-            # Add .html if needed
-            if file_url and not file_url.endswith('/') and not file_url.endswith('.html'):
-                if '.' not in file_url.split('/')[-1]:  # No extension
-                    file_url += '.html'
-            
-            # Check if file exists
-            file_path = DOCS_ROOT / file_url
-            exists = file_path.exists()
-            
-            if not exists:
-                self.log(f"Removing broken link: {url} -> {file_path}", "WARNING")
-            
-            return exists
+    def check_file_exists(self, url):
+        """Test if a file exists for a given URL"""
+        if url.startswith(('http://', 'https://', '#', 'mailto:', 'javascript:')):
+            return True  # External/anchor links are always valid
         
-        def clean_item(item):
-            """Recursively clean an item and its children"""
-            if isinstance(item, dict):
-                # Clean URLs if present
-                if 'urls' in item:
-                    item['urls'] = [url for url in item['urls'] if check_file_exists(url)]
-                    # If no valid URLs left, this item is invalid
-                    if not item['urls']:
-                        return None
-                
-                # Clean child items if present
-                if 'items' in item:
-                    cleaned_items = []
-                    for child in item['items']:
-                        cleaned_child = clean_item(child)
-                        if cleaned_child is not None:
-                            cleaned_items.append(cleaned_child)
-                    item['items'] = cleaned_items
-                    
-                    # If no URLs and no valid children, remove this item
-                    if 'urls' not in item and not item['items']:
-                        return None
-                
+        # Normalize URL to file path
+        file_url = url.strip()
+        
+        # Handle root/empty URLs
+        if file_url in ['/', '', 'index', 'index.html']:
+            return True  # Root index always exists
+        
+        # Remove leading slash and docs prefix
+        if file_url.startswith('/docs/'):
+            file_url = file_url[6:]
+        elif file_url.startswith('docs/'):
+            file_url = file_url[5:]
+        file_url = file_url.lstrip('/')
+        
+        # Handle stable -> v19.2
+        file_url = file_url.replace('/stable/', f'/{TARGET_VERSION}/')
+        file_url = file_url.replace('stable/', f'{TARGET_VERSION}/')
+        if file_url == 'stable':
+            file_url = TARGET_VERSION
+        
+        # Convert ${VERSION} placeholder
+        file_url = file_url.replace('${VERSION}', TARGET_VERSION)
+        
+        # Try multiple file path variations
+        possible_paths = [
+            file_url,
+            file_url + '.html' if file_url and not file_url.endswith('.html') and '.' not in file_url.split('/')[-1] else None,
+            file_url + '/index.html' if file_url and not file_url.endswith('/') else None,
+            file_url.rstrip('/') + '.html' if file_url.endswith('/') else None
+        ]
+        
+        # Check if any variation exists
+        for path in possible_paths:
+            if path:
+                file_path = DOCS_ROOT / path
+                if file_path.exists():
+                    return True
+        
+        return False
+
+    def clean_sidebar_items(self, items_data):
+        """Clean the sidebar items array and count removed URLs"""
+        removed_urls_count = 0
+        removed_sections_count = 0
+        
+        def clean_item(item, level=0):
+            nonlocal removed_urls_count, removed_sections_count
+            
+            if not isinstance(item, dict):
                 return item
             
-            return item
+            # Clean URLs if present
+            if 'urls' in item and item['urls']:
+                original_count = len(item['urls'])
+                valid_urls = []
+                
+                for url in item['urls']:
+                    if self.check_file_exists(url):
+                        valid_urls.append(url)
+                    else:
+                        removed_urls_count += 1
+                        if level == 0:  # Only log for top-level items to reduce noise
+                            self.log(f"Removing broken URL: {url}", "DEBUG")
+                
+                if valid_urls:
+                    item['urls'] = valid_urls
+                else:
+                    del item['urls']
+            
+            # Clean child items if present
+            if 'items' in item and item['items']:
+                cleaned_items = []
+                
+                for child in item['items']:
+                    cleaned_child = clean_item(child, level + 1)
+                    if cleaned_child is not None:
+                        cleaned_items.append(cleaned_child)
+                
+                if cleaned_items:
+                    item['items'] = cleaned_items
+                else:
+                    del item['items']
+            
+            # Decide whether to keep this item
+            has_urls = 'urls' in item and item['urls']
+            has_children = 'items' in item and item['items']
+            
+            # Only keep items that have actual content (URLs or children)
+            # Remove empty parents regardless of is_top_level status
+            if has_urls or has_children:
+                return item
+            else:
+                # Remove empty items completely
+                removed_sections_count += 1
+                if level == 0:  # Only log removal of top-level items to reduce noise
+                    title = item.get('title', 'Unknown')
+                    is_top_level = item.get('is_top_level', False)
+                    self.log(f"Removing empty {'top-level ' if is_top_level else ''}section: '{title}' (no URLs or children)", "DEBUG")
+                return None
         
-        # Clean the sidebar data
+        # Clean the items array
         cleaned_items = []
-        for item in sidebar_data:
+        
+        for item in items_data:
             cleaned_item = clean_item(item)
             if cleaned_item is not None:
                 cleaned_items.append(cleaned_item)
         
+        return cleaned_items, removed_urls_count, removed_sections_count
+
+    def js_to_json(self, js_text):
+        """Convert JavaScript object notation to valid JSON"""
+        # First pass - handle line by line for basic fixes
+        lines = js_text.split('\n')
+        fixed_lines = []
+        
+        for line_num, line in enumerate(lines, 1):
+            original_line = line
+            
+            # Remove comments first
+            if '//' in line:
+                # Only remove comments that aren't inside quotes
+                in_quotes = False
+                quote_char = None
+                comment_pos = -1
+                
+                for i, char in enumerate(line):
+                    if not in_quotes and char in ['"', "'"]:
+                        in_quotes = True
+                        quote_char = char
+                    elif in_quotes and char == quote_char and (i == 0 or line[i-1] != '\\'):
+                        in_quotes = False
+                        quote_char = None
+                    elif not in_quotes and char == '/' and i < len(line) - 1 and line[i+1] == '/':
+                        comment_pos = i
+                        break
+                
+                if comment_pos >= 0:
+                    line = line[:comment_pos].rstrip()
+            
+            # Remove function definitions
+            line = re.sub(r':\s*function\s*\([^)]*\)\s*\{[^}]*\}', ': null', line)
+            
+            # Fix unquoted property names ONLY at start of line
+            stripped = line.strip()
+            if stripped and ':' in stripped and not stripped.startswith('"') and not stripped.startswith('[') and not stripped.startswith('{'):
+                match = re.match(r'^(\s*)([a-zA-Z_$][a-zA-Z0-9_$]*)(\s*:\s*)(.*)', line)
+                if match:
+                    indent, prop_name, colon_part, rest = match.groups()
+                    line = f'{indent}"{prop_name}"{colon_part}{rest}'
+            
+            # Remove trailing commas before } or ]
+            line = re.sub(r',(\s*[}\]])', r'\1', line)
+            
+            fixed_lines.append(line)
+        
+        result = '\n'.join(fixed_lines)
+        
+        # Second pass - safer character-by-character processing for quotes
+        final_result = []
+        in_double_quotes = False
+        in_single_quotes = False
+        i = 0
+        
+        while i < len(result):
+            char = result[i]
+            
+            if char == '"' and not in_single_quotes:
+                in_double_quotes = not in_double_quotes
+                final_result.append(char)
+            elif char == "'" and not in_double_quotes:
+                if in_single_quotes:
+                    # End of single-quoted string - convert to double quote
+                    final_result.append('"')
+                    in_single_quotes = False
+                else:
+                    # Start of single-quoted string - convert to double quote
+                    final_result.append('"')
+                    in_single_quotes = True
+            elif char == '\\' and (in_single_quotes or in_double_quotes):
+                # Handle escape sequences
+                final_result.append(char)
+                if i + 1 < len(result):
+                    i += 1
+                    final_result.append(result[i])
+            else:
+                final_result.append(char)
+            
+            i += 1
+        
+        result = ''.join(final_result)
+        
+        # Handle undefined
+        result = re.sub(r'\bundefined\b', 'null', result)
+        
+        return result
+
+    def find_matching_bracket(self, text, start_pos):
+        """Find the matching closing bracket for an opening bracket at start_pos"""
+        if start_pos >= len(text) or text[start_pos] != '[':
+            return -1
+        
+        count = 0
+        in_string = False
+        escape_next = False
+        quote_char = None
+        
+        for i in range(start_pos, len(text)):
+            char = text[i]
+            
+            if escape_next:
+                escape_next = False
+                continue
+                
+            if char == '\\':
+                escape_next = True
+                continue
+                
+            if not in_string:
+                if char in ['"', "'"]:
+                    in_string = True
+                    quote_char = char
+                elif char == '[':
+                    count += 1
+                elif char == ']':
+                    count -= 1
+                    if count == 0:
+                        return i
+            else:
+                if char == quote_char:
+                    in_string = False
+                    quote_char = None
+        
+        return -1
+
+    def clean_sidebar_in_html(self, html_content):
+        """Clean the JavaScript sidebar items array in HTML content"""
+        # Look for the sidebar JavaScript object
+        sidebar_start = html_content.find('const sidebar = {')
+        if sidebar_start == -1:
+            return html_content, 0
+        
+        # Find the items: part
+        items_start = html_content.find('items:', sidebar_start)
+        if items_start == -1:
+            return html_content, 0
+        
+        # Find the opening bracket of the items array
+        array_start = html_content.find('[', items_start)
+        if array_start == -1:
+            return html_content, 0
+        
+        # Find the matching closing bracket
+        array_end = self.find_matching_bracket(html_content, array_start)
+        if array_end == -1:
+            # Try to find just the next ]; as fallback
+            fallback_end = html_content.find('];', array_start)
+            if fallback_end != -1:
+                array_end = fallback_end
+            else:
+                return html_content, 0
+        
+        # Extract the items array
+        items_str = html_content[array_start:array_end + 1]
+        
+        try:
+            # Convert JavaScript to JSON
+            json_str = self.js_to_json(items_str)
+            items_data = json.loads(json_str)
+            
+            # Clean the items
+            cleaned_items, removed_urls_count, removed_sections_count = self.clean_sidebar_items(items_data)
+            
+            # Convert back to JSON string
+            cleaned_json = json.dumps(cleaned_items, indent=2)
+            
+            # Replace in the original HTML
+            new_html = html_content[:array_start] + cleaned_json + html_content[array_end + 1:]
+            
+            if removed_urls_count > 0 or removed_sections_count > 0:
+                self.log(f"Cleaned sidebar: {removed_urls_count} broken URLs, {removed_sections_count} empty sections removed", "SUCCESS")
+            
+            return new_html, removed_urls_count + removed_sections_count
+            
+        except json.JSONDecodeError as e:
+            self.log(f"JSON parsing failed in sidebar cleaning: {e}", "WARNING")
+            return html_content, 0
+            
+        except Exception as e:
+            self.log(f"Error cleaning sidebar: {e}", "WARNING")
+            return html_content, 0
+
+    def clean_sidebar_data(self, sidebar_data):
+        """Legacy method - replaced by clean_sidebar_in_html"""
+        # This method is kept for compatibility but the real work is done in clean_sidebar_in_html
+        cleaned_items, removed_urls, removed_sections = self.clean_sidebar_items(sidebar_data)
         return cleaned_items
 
     def load_sidebar(self):
@@ -161,41 +388,11 @@ class OfflineArchiver:
                     break
         
         if self.sidebar_html:
-            # Extract and clean sidebar data
+            # Clean the sidebar using our working method
             self.log("Cleaning sidebar data (removing broken links)...")
-            
-            # Parse the sidebar HTML to extract the JavaScript data
-            import re
-            import json
-            
-            # Extract the sidebar items from the JavaScript
-            items_match = re.search(r'items:\s*(\[[\s\S]*?\])\s*};', self.sidebar_html)
-            if items_match:
-                try:
-                    # Parse the JavaScript array as JSON (with some cleaning)
-                    items_str = items_match.group(1)
-                    # Clean up JavaScript to make it valid JSON
-                    items_str = re.sub(r'(\w+):', r'"\1":', items_str)  # Quote keys
-                    items_str = re.sub(r',\s*}', '}', items_str)  # Remove trailing commas
-                    items_str = re.sub(r',\s*]', ']', items_str)  # Remove trailing commas in arrays
-                    
-                    sidebar_data = json.loads(items_str)
-                    
-                    # Clean the sidebar data
-                    cleaned_data = self.clean_sidebar_data(sidebar_data)
-                    
-                    # Replace the items in the HTML
-                    cleaned_items_str = json.dumps(cleaned_data, indent=2)
-                    self.sidebar_html = re.sub(
-                        r'items:\s*\[[\s\S]*?\]',
-                        f'items:{cleaned_items_str}',
-                        self.sidebar_html
-                    )
-                    
-                    self.log(f"Cleaned sidebar data: removed broken links", "SUCCESS")
-                    
-                except Exception as e:
-                    self.log(f"Could not clean sidebar data: {e}", "WARNING")
+            cleaned_sidebar, removed_count = self.clean_sidebar_in_html(self.sidebar_html)
+            self.sidebar_html = cleaned_sidebar
+            self.total_broken_urls += removed_count
             
             # Simplify isVersionDirectory function for v19.2 only
             self.sidebar_html = re.sub(
@@ -211,7 +408,15 @@ class OfflineArchiver:
             remove_selectors = [
                 '.ask-ai', '#ask-ai', '[data-ask-ai]', '.kapa-widget',
                 '[class*="kapa"]', '[id*="kapa"]', 'script[src*="kapa"]',
-                '[class*="ask-ai"]', '[id*="ask-ai"]'
+                '[class*="ask-ai"]', '[id*="ask-ai"]',
+                # Remove search elements that won't work offline
+                '.search', '#search', '.search-bar', '.search-input', '.search-form',
+                '[class*="search"]', '[id*="search"]', 'input[type="search"]',
+                '.algolia-search', '.docsearch', '[class*="docsearch"]',
+                # Target forms and inputs with search-related attributes
+                'form[action*="search"]', 'input[placeholder*="Search" i]', 
+                'input[placeholder*="search" i]', 'input[name="query"]',
+                'form[action="/docs/search"]', 'form[action*="/search"]'
             ]
             
             for selector in remove_selectors:
@@ -445,7 +650,7 @@ class OfflineArchiver:
         
         # Debug output
         if new_html != html:
-            self.log("Successfully replaced JavaScript URL processing", "SUCCESS")
+            self.log("Successfully replaced JavaScript URL processing", "DEBUG")
         else:
             self.log("Warning: JavaScript URL processing replacement may have failed", "WARNING")
         
@@ -464,13 +669,17 @@ class OfflineArchiver:
             # Check if this file is in the version directory
             is_in_version_dir = str(rel_path).startswith(f'{TARGET_VERSION}/')
             
-            self.log(f"Processing {rel_path} (in_v_dir={is_in_version_dir}, depth={depth})")
-            
             # Read content
             html = src_path.read_text(encoding="utf-8")
             
             # CRITICAL: Fix sidebar JavaScript BEFORE other processing
             html = self.fix_sidebar_javascript(html)
+            
+            # CRITICAL: Clean embedded sidebar JavaScript
+            cleaned_html, removed_count = self.clean_sidebar_in_html(html)
+            if removed_count > 0:
+                self.total_broken_urls += removed_count
+            html = cleaned_html
             
             # Inject sidebar HTML if available
             if self.sidebar_html:
@@ -497,6 +706,14 @@ class OfflineArchiver:
                 '.helpful-widget', '.page-helpful',
                 'script[src*="googletagmanager"]', 'script[src*="google-analytics"]',
                 'script[src*="segment"]', 'script[src*="heap"]',
+                # Remove search elements that won't work offline
+                '.search', '#search', '.search-bar', '.search-input', '.search-form',
+                '[class*="search"]', '[id*="search"]', 'input[type="search"]',
+                '.algolia-search', '.docsearch', '[class*="docsearch"]',
+                # Target forms and inputs with search-related attributes
+                'form[action*="search"]', 'input[placeholder*="Search" i]', 
+                'input[placeholder*="search" i]', 'input[name="query"]',
+                'form[action="/docs/search"]', 'form[action*="/search"]'
             ]
             
             for selector in remove_selectors:
@@ -583,7 +800,13 @@ class OfflineArchiver:
 .version-switcher, #version-switcher, .feedback-widget,
 button[aria-label*="AI"], div[data-kapa-widget],
 .kapa-ai-button, .ai-assistant, .ai-chat,
-.floating-action-button, .fab, [class*="floating-button"] {{
+.floating-action-button, .fab, [class*="floating-button"],
+.search, #search, .search-bar, .search-input, .search-form,
+[class*="search"], [id*="search"], input[type="search"],
+.algolia-search, .docsearch, [class*="docsearch"],
+form[action*="search"], input[placeholder*="Search" i], 
+input[placeholder*="search" i], input[name="query"],
+form[action="/docs/search"], form[action*="/search"] {{
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
@@ -613,6 +836,11 @@ $(function(){
     $('[class*="kapa"], [id*="kapa"], [class*="ask-ai"], [id*="ask-ai"]').remove();
     $('.version-switcher, #version-switcher, .feedback-widget').remove();
     $('.floating-action-button, .fab, [class*="floating-button"]').remove();
+    $('.search, #search, .search-bar, .search-input, .search-form').remove();
+    $('[class*="search"], [id*="search"], input[type="search"]').remove();
+    $('.algolia-search, .docsearch, [class*="docsearch"]').remove();
+    $('form[action*="search"], input[placeholder*="Search"], input[placeholder*="search"]').remove();
+    $('input[name="query"], form[action="/docs/search"], form[action*="/search"]').remove();
     
     // Initialize navigation
     $('#sidebar, #sidebarMenu, #mysidebar').navgoco({
@@ -1010,7 +1238,13 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
         
         /* Hide online elements */
         .ask-ai, #ask-ai, [data-ask-ai], .kapa-widget, 
-        [class*="kapa"], [id*="kapa"], .floating-action-button {{
+        [class*="kapa"], [id*="kapa"], .floating-action-button,
+        .search, #search, .search-bar, .search-input, .search-form,
+        [class*="search"], [id*="search"], input[type="search"],
+        .algolia-search, .docsearch, [class*="docsearch"],
+        form[action*="search"], input[placeholder*="Search" i], 
+        input[placeholder*="search" i], input[name="query"],
+        form[action="/docs/search"], form[action*="/search"] {{
             display: none !important;
         }}
     </style>
@@ -1118,7 +1352,13 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
         // Remove any Ask AI elements
         document.addEventListener('DOMContentLoaded', function() {{
             var selectors = ['.ask-ai', '#ask-ai', '[data-ask-ai]', '.kapa-widget', 
-                           '[class*="kapa"]', '[id*="kapa"]', '.floating-action-button'];
+                           '[class*="kapa"]', '[id*="kapa"]', '.floating-action-button',
+                           '.search', '#search', '.search-bar', '.search-input', '.search-form',
+                           '[class*="search"]', '[id*="search"]', 'input[type="search"]',
+                           '.algolia-search', '.docsearch', '[class*="docsearch"]',
+                           'form[action*="search"]', 'input[placeholder*="Search" i]', 
+                           'input[placeholder*="search" i]', 'input[name="query"]',
+                           'form[action="/docs/search"]', 'form[action*="/search"]'];
             selectors.forEach(function(selector) {{
                 document.querySelectorAll(selector).forEach(function(el) {{
                     el.remove();
@@ -1130,7 +1370,7 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
 </html>"""
         
         (OUTPUT_ROOT / "index.html").write_text(index_html)
-        self.log("Created CockroachDB purple-branded index.html", "SUCCESS")
+        self.log("Created CockroachDB purple-branded index.html with broken link count", "SUCCESS")
     
     def build(self):
         """Main build process"""
@@ -1253,14 +1493,16 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
         self.log("ARCHIVE COMPLETE WITH PURPLE BRANDING!", "SUCCESS")
         self.log(f"Output directory: {OUTPUT_ROOT.resolve()}")
         self.log(f"Total files: {len(self.processed_files)}")
+        self.log(f"Total broken URLs removed: {self.total_broken_urls}", "SUCCESS")
         self.log("🟣 CockroachDB purple branding applied", "SUCCESS")
         self.log("✅ Sidebar JavaScript URL processing FIXED", "SUCCESS")
-        self.log("✅ Broken sidebar links removed", "SUCCESS")
+        self.log("✅ Broken sidebar links and empty sections removed", "SUCCESS")
         self.log("✅ Professional index page created", "SUCCESS")
         
         print(f"\n🎉 Purple-branded offline site built in {OUTPUT_ROOT}")
         print(f"\n📦 To test: open file://{OUTPUT_ROOT.resolve()}/index.html")
         print(f"\n🟣 Your site now has proper CockroachDB purple branding!")
+        print(f"\n🔧 {self.total_broken_urls} broken sidebar URLs and empty sections were cleaned up!")
         
         return True
 
