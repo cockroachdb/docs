@@ -15,21 +15,38 @@
       ]
     },
     {
-      "title": "Migrate to CockroachDB",
-      "urls": [
-        "/molt/migrate-to-cockroachdb.html"
-      ]
-    },
-    {
-      "title": "Migrate in Phases",
-      "urls": [
-        "/molt/migrate-in-phases.html"
-      ]
-    },
-    {
-      "title": "Migration Failback",
-      "urls": [
-        "/molt/migrate-failback.html"
+      "title": "Migration Flows",
+      "items": [
+        {
+          "title": "Bulk Load",
+          "urls": [
+            "/molt/migrate-bulk-load.html"
+          ]
+        },
+        {
+          "title": "Load and Replicate",
+          "urls": [
+            "/molt/migrate-data-load-and-replication.html"
+          ]
+        },
+        {
+          "title": "Load and Replicate Separately",
+          "urls": [
+            "/molt/migrate-data-load-replicate-only.html"
+          ]
+        },
+        {
+          "title": "Resume Replication",
+          "urls": [
+            "/molt/migrate-replicate-only.html"
+          ]
+        },
+        {
+          "title": "Failback",
+          "urls": [
+            "/molt/migrate-failback.html"
+          ]
+        }
       ]
     },
     {
@@ -135,12 +152,6 @@
             "/${VERSION}/import-performance-best-practices.html"
           ]
         }
-      ]
-    },
-    {
-      "title": "Migrate from Oracle",
-      "urls": [
-        "/${VERSION}/migrate-from-oracle.html"
       ]
     }
   ]
