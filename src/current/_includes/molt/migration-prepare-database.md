@@ -243,13 +243,21 @@ CURRENT_SCN
 1 row selected.
 ~~~
 
-Load the redo logs into LogMiner, replacing `{current-scn}` with the SCN you queried:
+Add the redo log files to LogMiner, using the redo log file paths you queried:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXEC DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '/opt/oracle/oradata/ORCLCDB/redo01.log', OPTIONS => DBMS_LOGMNR.NEW);
+EXEC DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '/opt/oracle/oradata/ORCLCDB/redo02.log', OPTIONS => DBMS_LOGMNR.ADDFILE);
+EXEC DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '/opt/oracle/oradata/ORCLCDB/redo03.log', OPTIONS => DBMS_LOGMNR.ADDFILE);
+~~~
+
+Start LogMiner, specifying the SCN you queried:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 EXEC DBMS_LOGMNR.START_LOGMNR(
-  STARTSCN => {current-scn},
-  ENDSCN   => 2358840,
+  STARTSCN => 2358840,
   OPTIONS  => DBMS_LOGMNR.DICT_FROM_ONLINE_CATALOG
 );
 ~~~
