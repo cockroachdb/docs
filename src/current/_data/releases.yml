@@ -9217,7 +9217,7 @@
 
 - release_name: v24.3.16
   major_version: v24.3
-  release_date: '2025-07-23'
+  release_date: '2025-07-28'
   release_type: Production
   go_version: go1.23.7
   sha: 3705b047131b82ff6b584369c9f9fe278f60ca2c
@@ -9245,7 +9245,7 @@
 
 - release_name: v24.1.21
   major_version: v24.1
-  release_date: '2025-07-23'
+  release_date: '2025-07-28'
   release_type: Production
   go_version: go1.23.7
   sha: 1a78511371ecb81db7afb19bfb5ec66ad49a85f3
@@ -9273,7 +9273,7 @@
   
 - release_name: v25.1.9
   major_version: v25.1
-  release_date: '2025-07-23'
+  release_date: '2025-07-28'
   release_type: Production
   go_version: go1.23.7
   sha: 2fcef9301ac20e8cb084cf7e2c2c24bede0ee1e7
