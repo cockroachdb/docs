@@ -6,7 +6,7 @@ toc: true
 
 CockroachDB supports authentication and authorization using LDAP-compatible directory services, such as Active Directory and Microsoft Entra ID. This allows you to integrate your cluster with your organization's existing identity infrastructure for centralized user management and access control.
 
-This page describes how to configure CockroachDB user authentication using LDAP. You can additionally configure CockroachDB to use the same directory service for user [authorization]({% link v24.3/ldap-authorization.md %}) (role-based access control), which assigns CockroachDB roles to users based on their group memberships in the directory.
+This page describes how to configure CockroachDB user authentication using LDAP. You can additionally configure CockroachDB to use the same directory service for user [authorization]({% link {{ page.version.version }}/ldap-authorization.md %}) (role-based access control), which assigns CockroachDB roles to users based on their group memberships in the directory.
 
 ## Overview
 
@@ -21,7 +21,7 @@ While LDAP configuration is cluster-specific, each request to authenticate a use
   - If a matching record was found, the cluster attempts to verify the user's identity through another LDAP request, this time using the credentials (username and password) provided by that user.
   - If this LDAP bind operation succeeds, the user is authenticated to the CockroachDB cluster.
 1. Authorize the user (optional)
-  - If [LDAP authorization]({% link v24.3/ldap-authorization.md %}) is also enabled, an additional request is sent to retrieve the groups to which the user is assigned, using configurable criteria.
+  - If [LDAP authorization]({% link {{ page.version.version }}/ldap-authorization.md %}) is also enabled, an additional request is sent to retrieve the groups to which the user is assigned, using configurable criteria.
   - If group memberships are found, any existing CockroachDB roles that match these group names are assigned to the user.
 
 These requests use a node's existing connection to the LDAP server, if one is open. Otherwise, the node establishes a new connection. The connection remains open for handling additional LDAP requests until it is closed by the LDAP server, based on its timeout setting.
