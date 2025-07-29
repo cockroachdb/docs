@@ -29,7 +29,7 @@ You can identify high-latency SQL statements on the [**Insights**]({% link {{ pa
 
 You can also enable the [slow query log]({% link {{ page.version.version }}/logging-use-cases.md %}#sql_perf) to log all queries whose latency exceeds a configured threshold, as well as queries that perform a full table or index scan.
 
-You can collect richer diagnostics of a high-latency statement by creating a [diagnostics bundle]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) when a statement fingerprint exceeds a certain latency. Identify slow transactions in an active workload by [selectively logging traces of transactions](#log-traces-for-transactions) that exceed a configured latency threshold.
+You can collect richer diagnostics of a high-latency statement by creating a [diagnostics bundle]({% link {{ page.version.version }}/ui-statements-page.md %}#diagnostics) when a statement fingerprint exceeds a certain latency. To identify slow transactions in an active workload, you can [selectively log traces of transactions](#log-traces-for-transactions) that exceed a configured latency threshold.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
@@ -111,11 +111,11 @@ docker run -d --name jaeger \
 
 ### Log traces for transactions
 
-CockroachDB allows you to trace [transactions]({% link {{ page.version.version }}/transactions.md %}) to help troubleshoot performance issues. [Tracing]({% link {{ page.version.version }}/show-trace.md %}#trace-description) is controlled through two cluster settings that govern when a transaction trace is captured and emitted.
+CockroachDB allows you to trace [transactions]({% link {{ page.version.version }}/transactions.md %}) to help troubleshoot performance issues. [Tracing]({% link {{ page.version.version }}/show-trace.md %}#trace-description) is controlled through the following cluster settings that govern when a transaction trace is captured and emitted.
 
 #### Trace sampling and emission
 
-To enable tracing for a subset of transactions and emit relevant traces to the [`SQL_EXEC` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels), configure the following cluster settings:
+To enable tracing for a subset of transactions and emit relevant traces to the [`SQL_EXEC` logging channel]({% link {{ page.version.version }}/logging.md %}#sql_exec), configure the following cluster settings:
 
 - {% include_cached new-in.html version="v25.3.0" %}[`sql.trace.txn.sample_rate`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-trace-txn-sample-rate): Specifies the probability (between `0.0` and `1.0`) that a given transaction will have tracing enabled. A value of `0.01` means that approximately 1% of transactions are traced. The default is `1`, which means 100% of transactions are sampled.
 - [`sql.trace.txn.enable_threshold`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-trace-txn-enable-threshold): Specifies a duration threshold. A trace is emitted only if a sampled transaction's execution time exceeds this value. When set to `0` (default), tracing is disabled regardless of whether the value of `sql.trace.txn.sample_rate` is greater than `0`.
@@ -127,18 +127,20 @@ To emit a trace to the logs, the following conditions must be met:
 
 This approach minimizes overhead by tracing a fraction of the workload and emitting traces only for potentially relevant transactions.
 
-#### Configuration example
+#### Trace configuration example
+
+To configure the trace sampling probability and duration, set the following cluster settings:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
--- Enable trace sampling at 1%
+-- Enable trace sampling at a rate of 1%
 SET CLUSTER SETTING sql.trace.txn.sample_rate = 0.01;
 
--- Emit traces for sampled transactions that exceed 1s
+-- Emit traces for sampled transactions that run longer than 1s
 SET CLUSTER SETTING sql.trace.txn.enable_threshold = '1s';
 ~~~
 
-With this configuration, approximately 1% of transactions are traced, and only those running longer than 1s will have their traces written to the logs. In the `SQL_EXEC` log, a line similar to the following precedes the trace:
+With this configuration, approximately 1% of transactions are traced, and only those running longer than 1s will have their traces written to the logs. In the [`SQL_EXEC` log]({% link {{ page.version.version }}/logging.md %}#sql_exec), a line similar to the following precedes the trace:
 
 ~~~
 SQL txn took 2.004362083s, exceeding threshold of 1s:
