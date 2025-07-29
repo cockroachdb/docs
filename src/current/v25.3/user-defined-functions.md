@@ -113,6 +113,12 @@ SELECT add(3,5) as sum;
 (1 row)
 ~~~
 
+### Call a UDF from a view
+
+You can include UDF calls in a view definition. Each time the view is queried, the function executes.
+
+Refer to [Create a view that references routines]({% link {{ page.version.version }}/create-view.md %}#create-a-view-that-references-routines).
+
 ### Create a UDF using PL/pgSQL
 
 {% include {{ page.version.version }}/sql/udf-plpgsql-example.md %}
