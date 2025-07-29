@@ -2571,6 +2571,10 @@ SELECT crdb_region, id FROM {table};
 UPDATE {table} SET crdb_region = 'eu-west' WHERE id IN (...)
 ~~~
 
+{{site.data.alerts.callout_success}}
+{% include_cached new-in.html version="v25.3" %} CockroachDB can also [infer a row's home region from a foreign key constraint](#infer-a-rows-home-region-from-a-foreign-key).
+{{site.data.alerts.end}}
+
 To add a new row to a regional by row table, you must choose one of the following options.
 
 - Let CockroachDB set the row's home region automatically. It will use the region of the [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) from which the row is inserted.
@@ -2614,6 +2618,170 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
+#### Infer a row's home region from a foreign key
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+The [`infer_rbr_region_col_using_constraint` table storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters) lets a `REGIONAL BY ROW` child table automatically set the hidden `crdb_region` column by looking up the referenced parent row. The parameter must be set to the name of a [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) constraint on the child table that includes the `crdb_region` column.
+
+{{site.data.alerts.callout_info}}
+`infer_rbr_region_col_using_constraint` and [auto-rehoming](#turn-on-auto-rehoming-for-regional-by-row-tables) are mutually exclusive. Enable one mode per `REGIONAL BY ROW` table, not both.
+{{site.data.alerts.end}}
+
+1. Start a [multi-node, multi-region `cockroach demo` cluster]({% link {{ page.version.version }}/cockroach-demo.md %}):
+
+	{% include_cached copy-clipboard.html %}
+	~~~ shell
+	cockroach demo --global --nodes 9 --insecure
+	~~~
+
+	The command opens an interactive SQL shell connected to the temporary, in-memory cluster that is running with three simulated regions.
+
+1. In the SQL shell, create a multi-region `demo` database:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	CREATE DATABASE demo PRIMARY REGION "us-east1" REGIONS "us-west1", "europe-west1";
+	USE demo;
+	~~~
+
+1. Verify the regions that are available to the `demo` database:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SHOW REGIONS FROM DATABASE demo;
+	~~~
+
+	~~~
+	  database |    region    | primary | secondary |  zones
+	-----------+--------------+---------+-----------+----------
+	  demo     | us-east1     |    t    |     f     | {b,c,d}
+	  demo     | europe-west1 |    f    |     f     | {b,c,d}
+	  demo     | us-west1     |    f    |     f     | {a,b,c}
+	(3 rows)
+	~~~
+
+1. Enable the cluster setting to use `infer_rbr_region_col_using_constraint`:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SET CLUSTER SETTING feature.infer_rbr_region_col_using_constraint.enabled = true;
+	~~~
+
+1. Create a `parent` table that is `REGIONAL BY ROW`:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	CREATE TABLE parent (
+	  id INT PRIMARY KEY,
+	  data TEXT
+	) LOCALITY REGIONAL BY ROW;
+	~~~
+
+1. Create a `child` table whose rows should live in the same region as their parent rows. The table's foreign key includes `crdb_region`, and the `infer_rbr_region_col_using_constraint` parameter is set to the name of the foreign key (`fk_parent`):
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	CREATE TABLE child (
+	  id INT PRIMARY KEY,
+	  parent_id INT,
+	  info TEXT,
+	  CONSTRAINT fk_parent FOREIGN KEY (crdb_region, parent_id) REFERENCES parent (crdb_region, id)
+	  ) WITH (infer_rbr_region_col_using_constraint = 'fk_parent')
+	  LOCALITY REGIONAL BY ROW;
+	~~~
+
+1. Insert a row into `parent` that lives in the primary region (`us-east1`):
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	INSERT INTO parent (id, data, crdb_region) VALUES (1, 'east row', 'us-east1');
+	~~~
+
+1. Run the following command to view information about all 9 nodes in the cluster:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ 
+	\demo ls
+	~~~
+
+	~~~
+	node 1:
+	   (webui)    http://127.0.0.1:8080
+
+	  Application tenant:
+	   (cli)      cockroach sql --insecure -d cluster:demoapp/movr
+	   (sql)      postgresql://root@127.0.0.1:26257/movr?options=-ccluster%3Ddemoapp&sslmode=disable
+	   (sql/jdbc) jdbc:postgresql://127.0.0.1:26257/movr?options=-ccluster%3Ddemoapp&sslmode=disable&user=root
+	   (sql/unix) postgresql://root:unused@/defaultdb?host=%2FUsers%2Fryankuo%2F.cockroach-demo&options=-ccluster%3Ddemoapp&port=26257
+	   (rpc)      127.0.0.1:26357
+
+	...
+
+	node 9:
+	   (webui)    http://127.0.0.1:8088
+
+	  Application tenant:
+	   (cli)      cockroach sql --insecure -p 26265 -d cluster:demoapp/movr
+	   (sql)      postgresql://root@127.0.0.1:26265/movr?options=-ccluster%3Ddemoapp&sslmode=disable
+	   (sql/jdbc) jdbc:postgresql://127.0.0.1:26265/movr?options=-ccluster%3Ddemoapp&sslmode=disable&user=root
+	   (sql/unix) postgresql://root:unused@/defaultdb?host=%2FUsers%2Fryankuo%2F.cockroach-demo&options=-ccluster%3Ddemoapp&port=26265
+	   (rpc)      127.0.0.1:26365
+	~~~
+
+1. In a new terminal, connect to a node in a non-primary region (i.e., `us-west1` or `europe-west1`). This should be one of nodes 4-9. The following example connects to node 9:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ shell
+	cockroach sql --insecure -p 26265 -d cluster:demoapp/demo
+	~~~
+
+	{{site.data.alerts.callout_success}}
+	You can use the [**Network Latency** Page]({% link {{ page.version.version }}/ui-network-latency-page.md %}) in the DB Console to cross-reference nodes and their regions. Open any of the `webui` URLs in the preceding step's output.
+	{{site.data.alerts.end}}
+
+1. Verify that node 9 is in a non-primary region:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SHOW LOCALITY;
+	~~~
+
+	~~~
+	          locality
+	----------------------------
+	  region=europe-west1,az=d
+	~~~
+
+1. Insert a row into the `child` table from node 9:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	INSERT INTO child (id, parent_id, info) VALUES (10, 1, 'west gateway');
+	~~~
+
+1. View the value of the hidden `crdb_region` column. Even though the row was inserted from the `europe-west1` gateway region, CockroachDB uses the `fk_parent` constraint to look up and copy the parent row's region (`us-east1`) into the child row:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SELECT id, parent_id, crdb_region FROM child;
+	~~~
+
+	~~~
+	  id | parent_id | crdb_region
+	-----+-----------+--------------
+	  10 |         1 | us-east1
+	~~~
+
+1. If you later need to disable the behavior, reset the storage parameter:
+
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	ALTER TABLE child RESET (infer_rbr_region_col_using_constraint);
+	~~~
+
 #### Turn on auto-rehoming for `REGIONAL BY ROW` tables
 
 {{site.data.alerts.callout_info}}
@@ -2635,6 +2803,7 @@ Once enabled, the auto-rehoming behavior described here has the following limita
 
 - It **will only apply to newly created `REGIONAL BY ROW` tables**, using an `ON UPDATE` expression that is added to the [`crdb_region`](#crdb_region) column. Existing `REGIONAL BY ROW` tables will not be auto-rehomed.
 - The [`crdb_region`](#crdb_region) column from a [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) table cannot be referenced as a [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) from another table.
+- Auto-rehoming **cannot** be combined with the [`infer_rbr_region_col_using_constraint` table storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters), which requires `crdb_region` to participate in a foreign key and therefore remain stable.
 
 To enable auto-rehoming for an existing `REGIONAL BY ROW` table, manually update it using an [`ALTER TABLE ... ALTER COLUMN`](#alter-column) statement with an `ON UPDATE` expression:
 
@@ -2642,6 +2811,10 @@ To enable auto-rehoming for an existing `REGIONAL BY ROW` table, manually update
 ~~~ sql
 ALTER TABLE {table} ALTER COLUMN crdb_region SET ON UPDATE rehome_row()::db.public.crdb_internal_region;
 ~~~
+
+{{site.data.alerts.callout_info}}
+[`infer_rbr_region_col_using_constraint`](#infer-a-rows-home-region-from-a-foreign-key) and auto-rehoming are mutually exclusive. Enable one mode per `REGIONAL BY ROW` table, not both.
+{{site.data.alerts.end}}
 
 ##### Example
 
