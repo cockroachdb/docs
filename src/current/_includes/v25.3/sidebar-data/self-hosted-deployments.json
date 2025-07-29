@@ -356,6 +356,12 @@
                     ]
                   },
                   {
+                    "title": "Prometheus Endpoint",
+                    "urls": [
+                      "/${VERSION}/prometheus-endpoint.html"
+                    ]
+                  },
+                  {
                     "title": "Use Prometheus and Alertmanager",
                     "urls": [
                       "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
