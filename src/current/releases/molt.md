@@ -14,9 +14,25 @@ Cockroach Labs recommends using the latest available version of each tool. See [
 
 ## Installation
 
-To download the latest MOLT Fetch/Verify binary:
-
 {% include molt/molt-install.md %}
+
+## July 24, 2025
+
+MOLT Fetch/Verify 1.3.0 is [available](#installation).
+
+- Oracle is now supported on Fetch Docker images and standalone binaries.
+- Oracle is now supported on Replicator Docker images and standalone binaries.
+- Azure Blob Storage is now supported as an intermediate data store for Fetch.
+- Added a `--skip-pk-match` flag that lets you run the initial data load even when the source or target table is missing a primary key, or the keys do not match. When this flag is set, Fetch treats every table as keyless, disables sharding, and exports each table in a single batch, ignoring `export-concurrency` and `row-batch-size`. Querying the entire table at once may lead to high memory usage or long-running queries. Duplicate source rows are automatically removed during import when the target has primary key or unique constraints.
+- Replication now uses checkpoint polling by default. This is because polling (which periodically queries the staging table for updates) performs comparably to checkpoint streaming (which uses an internal changefeed from the staging table to broadcast real-time updates). To use checkpoint streaming, set `--enableCheckpointStream`. `--disableCheckpointStream` is deprecated and should be removed from replication commands.
+- Replaced the `--copierChannel` and `--stageCopierChannelSize` replication flags with a single `--targetApplyQueueSize` flag, which controls downstream apply throughput and memory usage. This feature applies only to CockroachDB and PostgreSQL (`pglogical`) sources.
+- Added support for compressed changefeed payloads, improving performance of changefeed-to-Replicator communication. This only affects failback workflows from CockroachDB v25.2 and later.
+- Improved apply-side performance by switching to a faster JSON decoder.
+- Improved batch-accumulation performance by removing unnecessary sorting.
+
+#### Bug fixes
+
+- Fixed a bug where some error logs were not displayed when replicating to the target database.
 
 ## June 19, 2025
 

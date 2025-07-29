@@ -1,23 +1,37 @@
-1. Use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the consistency of the data between the source database and CockroachDB.
+1. Run the [MOLT Verify]({% link molt/molt-verify.md %}) command, specifying the source and target [connection strings](#connection-strings) and the tables to validate.
 
 	<section class="filter-content" markdown="1" data-scope="postgres">
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	molt verify \
-	--source 'postgres://postgres:postgres@localhost:5432/molt?sslmode=verify-full' \
-	--target 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full' \
-	--table-filter 'employees' \
+	--source $SOURCE \ 
+	--target $TARGET \
+	--table-filter 'employees|payments|orders'
 	~~~
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="mysql">
+	{% include_cached copy-clipboard.html %} 
+	~~~ shell
+	molt verify \
+	--source $SOURCE \ 
+	--target $TARGET \
+	--table-filter 'employees|payments|orders'
+	~~~
+	</section>
+
+	<section class="filter-content" markdown="1" data-scope="oracle">
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	molt verify \
-	--source 'mysql://user:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt' \
-	--target 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full' \
-	--table-filter 'employees'
+	--source $SOURCE \ 
+	--target $TARGET \
+	--table-filter 'employees|payments|orders'
 	~~~
+
+	{{site.data.alerts.callout_info}}
+	With Oracle Multitenant deployments, while `--source-cdb` is required for `fetch`, it is **not** necessary for `verify`.
+	{{site.data.alerts.end}}
 	</section>
 
 1. Check the output to observe `verify` progress.
