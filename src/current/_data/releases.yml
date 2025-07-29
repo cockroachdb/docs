@@ -9301,7 +9301,7 @@
   
 - release_name: v25.2.3
   major_version: v25.2
-  release_date: '2025-07-23'
+  release_date: '2025-07-28'
   release_type: Production
   go_version: go1.23.7
   sha: adfe5601ff6cb72c0f65090995978ca9ebbdc647
