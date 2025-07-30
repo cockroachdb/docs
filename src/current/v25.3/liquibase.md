@@ -332,7 +332,7 @@ Liquibase does not [retry transactions]({% link {{ page.version.version }}/trans
 
 Suppose that you want to change the primary key of the `accounts` table from a simple, incrementing [integer]({% link {{ page.version.version }}/int.md %}) (in this case, `id`) to an auto-generated [UUID]({% link {{ page.version.version }}/uuid.md %}), to follow some [CockroachDB best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices). You can make these changes to the schema by creating and executing an additional changeset:
 
-1. Create a SQL file to add a new UUID-typed column to the table:
+1. Create a SQL file to add a new [UUID]({% link {{ page.version.version }}/uuid.md %})-typed column to the table:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
