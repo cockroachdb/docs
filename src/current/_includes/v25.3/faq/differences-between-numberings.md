@@ -1,5 +1,5 @@
 
-| Property                             | UUID generated with `uuid_v4()`         | INT generated with `unique_rowid()`           | Sequences                      |
+| Property                             | [UUID]({% link {{ page.version.version }}/uuid.md %}) generated with `uuid_v4()`         | INT generated with `unique_rowid()`           | Sequences                      |
 |--------------------------------------|-----------------------------------------|-----------------------------------------------|--------------------------------|
 | Size                                 | 16 bytes                                | 8 bytes                                       | 1 to 8 bytes                   |
 | Ordering properties                  | Unordered                               | Highly time-ordered                           | Highly time-ordered            |
