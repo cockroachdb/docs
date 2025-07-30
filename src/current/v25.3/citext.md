@@ -24,6 +24,10 @@ SELECT 'Roach'::CITEXT = 'roach'::CITEXT;
 
 With `CITEXT`, equality operators (`=`, `!=`, `<>`), ordering operators (`<`, `>`, etc.), and [`STRING` functions]({% link {{ page.version.version }}/functions-and-operators.md %}#string-and-byte-functions), treat values as case-insensitive by default. Refer to the [example](#example).
 
+{{site.data.alerts.callout_info}}
+Unlike in PostgreSQL, `CITEXT` on CockroachDB is case-insensitive for all Unicode characters that have a defined uppercase/lowercase mapping (e.g., `'É' = 'é'`).
+{{site.data.alerts.end}}
+
 Aside from comparisons, `CITEXT` behaves like [`STRING`]({% link {{ page.version.version }}/string.md %}).
 
 ## Syntax
