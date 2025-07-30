@@ -42,8 +42,8 @@ This list is not exhaustive. Any third-party tool that can consume logs from [fi
 
 | CockroachDB Deployment | Integration | Metrics Source | Tutorial |
 | ---------------------- | ----------- | -------------- | -------- |
-| {{ site.data.products.standard }} | [Amazon CloudWatch metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=aws-metrics-export) |
-| {{ site.data.products.advanced }} | [Amazon CloudWatch metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=aws-metrics-export) |
+| {{ site.data.products.standard }} | [Amazon CloudWatch metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=aws-metrics-export) |
+| {{ site.data.products.advanced }} | [Amazon CloudWatch metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=aws-metrics-export) |
 
 <a id="amazon-cloudwatch-logs"></a>
 #### Logs
@@ -57,9 +57,9 @@ This list is not exhaustive. Any third-party tool that can consume logs from [fi
 
 | CockroachDB Deployment | Integration | Metrics Source | Tutorial |
 | ---------------------- | ----------- | -------------- | -------- |
-| {{ site.data.products.standard }} | [CockroachDB {{ site.data.products.cloud }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) |
-| {{ site.data.products.advanced }} | [CockroachDB {{ site.data.products.cloud }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export) |
-| {{ site.data.products.core }} | [CockroachDB check for Datadog Agent](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Monitor CockroachDB {{ site.data.products.core }} with Datadog]({% link {{ page.version.version }}/datadog.md %}) |
+| {{ site.data.products.standard }} | [CockroachDB {{ site.data.products.cloud }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=datadog-metrics-export) |
+| {{ site.data.products.advanced }} | [CockroachDB {{ site.data.products.cloud }} integration for Datadog](https://docs.datadoghq.com/integrations/cockroachdb_dedicated/) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=datadog-metrics-export) |
+| {{ site.data.products.core }} | [CockroachDB check for Datadog Agent](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Monitor CockroachDB {{ site.data.products.core }} with Datadog]({% link {{ page.version.version }}/datadog.md %}) |
 
 ### DBmarlin
 
@@ -78,15 +78,15 @@ This list is not exhaustive. Any third-party tool that can consume logs from [fi
 
 | CockroachDB Deployment | Integration | Metrics Source | Tutorial |
 | ---------------------- | ----------- | -------------- | -------- |
-| {{ site.data.products.core }} | [CockroachDB module for Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Monitor CockroachDB {{ site.data.products.core }} with Kibana]({% link {{ page.version.version }}/kibana.md %}) |
+| {{ site.data.products.core }} | [CockroachDB module for Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Monitor CockroachDB {{ site.data.products.core }} with Kibana]({% link {{ page.version.version }}/kibana.md %}) |
 
 ### Prometheus
 
 | CockroachDB Deployment | Integration | Metrics Source | Tutorial |
 | ---------------------- | ----------- | -------------- | -------- |
-| {{ site.data.products.standard }} | [Prometheus](https://prometheus.io/) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) |
-| {{ site.data.products.advanced }} | [Prometheus](https://prometheus.io/) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export) |
-| {{ site.data.products.core }} | [Prometheus](https://prometheus.io/) | [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) | [Monitor CockroachDB {{ site.data.products.core }} with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}) |
+| {{ site.data.products.standard }} | [Prometheus](https://prometheus.io/) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Export Metrics From a CockroachDB {{ site.data.products.standard }} Cluster]({% link cockroachcloud/export-metrics.md %}?filters=prometheus-metrics-export) |
+| {{ site.data.products.advanced }} | [Prometheus](https://prometheus.io/) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics-advanced.md %}?filters=prometheus-metrics-export) |
+| {{ site.data.products.core }} | [Prometheus](https://prometheus.io/) | [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) | [Monitor CockroachDB {{ site.data.products.core }} with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}) |
 
 ## See Also
 
