@@ -14,6 +14,25 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## July 31, 2025
+
+### Customer-Managed Encryption Keys (CMEK) for CockroachDB Advanced for Azure
+
+This release introduces Customer-Managed Encryption Keys (CMEK) for CockroachDB Cloud Advanced clusters on Microsoft Azure. This feature provides enhanced data security and supports PCI DSS compliance.
+
+CMEK enables customers to control the encryption keys used to protect their data at rest within CockroachDB Cloud on Azure. Keys are managed via the customer's Azure Key Vault.
+
+Key benefits:
+
+- **Enhanced Data Security**: Customers control key lifecycle (creation, rotation, revocation), improving data protection.
+- **PCI DSS Compliance**: Addresses PCI DSS Requirement 3 for protecting stored cardholder data.
+- **Operational Control**: Provides greater control and visibility over data encryption strategy.
+- **Data Revocation Capability**: Enables immediate data access revocation by disabling the encryption key in Azure Key Vault.
+
+This functionality is critical for organizations handling sensitive data and seeking PCI DSS compliance on the Azure Advanced Tier of CockroachDB Cloud.
+
+For more information, refer to [Customer-Managed Encryption Keys (CMEK) Overview]({% link cockroachcloud/cmek.md %}) and [Manage CMEK for CockroachDB Advanced]({% link cockroachcloud/managing-cmek.md %}).
+
 ## May 12, 2025
 
 CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a [Regular release]({% link releases/index.md %}#release-types).
