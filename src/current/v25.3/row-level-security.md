@@ -404,7 +404,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON invoices TO app_dev;
 
 Each application will need to set the tenant context for the session. In this example, you will use the `application_name` session variable to pass in a tenant ID that will later be extracted from the variable.
 
-Specifically, the UUID following the period in `application_name` is the tenant ID. We will use the `current_setting()` function in our RLS policies to extract the ID.
+Specifically, the [UUID]({% link {{ page.version.version }}/uuid.md %}) following the period in `application_name` is the tenant ID. We will use the `current_setting()` function in our RLS policies to extract the ID.
 
 {{site.data.alerts.callout_danger}}
 For multi-tenancy to work correctly, this setting **must** be reliably managed by the application layer and passed in the connection string.
