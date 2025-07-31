@@ -94,19 +94,41 @@ SET CLUSTER SETTING server.ldap_authentication.client.tls_certificate = '<PEM_EN
 SET CLUSTER SETTING server.ldap_authentication.client.tls_key = '<PEM_ENCODED_KEY>';
 ~~~
 
-### Step 4: Sync database users
+### Step 4: Configure user provisioning
 
 {{site.data.alerts.callout_info}}
 LDAP authentication cannot be used for the `root` user or other [reserved identities]({% link {{ page.version.version }}/security-reference/authorization.md %}#reserved-identities). Credentials for `root` must be managed separately using password authentication to ensure continuous administrative access regardless of LDAP availability.
 {{site.data.alerts.end}}
 
-Before LDAP authentication can be used for a user, the username must be created directly in CockroachDB. You will need to establish an automated method for keeping users in sync with the directory server, creating and dropping them as needed.
+CockroachDB supports two approaches for managing LDAP users:
 
-For Active Directory deployments, the CockroachDB username can typically be set to match the `sAMAccountName` field from the `user` object. This field name would need to be specified in the HBA configuration using `ldapsearchattribute=sAMAccountName`.
+#### Option 1: Automatic user provisioning (recommended)
+
+With automatic user provisioning enabled, CockroachDB creates users automatically during their first successful LDAP authentication. This eliminates the need to manually create and maintain user accounts.
+
+To enable automatic user provisioning:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING server.provisioning.ldap.enabled = true;
+~~~
+
+When automatic provisioning is enabled:
+
+- Users are created automatically upon successful LDAP authentication
+- All auto-provisioned users receive a `PROVISIONSRC` role option set to `ldap:<ldap_server>`
+- The `estimated_last_login_time` is tracked for auditing purposes
+- Auto-provisioned users cannot change their own passwords (managed via LDAP only)
+
+For Active Directory deployments, the CockroachDB username will match the `sAMAccountName` field from the `user` object. This field name should be specified in the HBA configuration using `ldapsearchattribute=sAMAccountName`.
 
 {{site.data.alerts.callout_info}}
 SQL usernames must comply with CockroachDB's [username requirements]({% link {{ page.version.version }}/create-user.md %}#user-names). Ensure that the values in the field you are using for `ldapsearchattribute` meet these requirements.
 {{site.data.alerts.end}}
+
+#### Option 2: Manual user management
+
+Alternatively, you can manually manage users by creating them before LDAP authentication is used. This approach provides explicit control over user creation.
 
 To create a single user:
 
@@ -161,11 +183,74 @@ cockroach sql --url "postgresql://username:ldap_password@host:26257" --certs-dir
 
 ### DB Console connection with LDAP authentication
 
-If LDAP authentication is configured, DB Console access will also use this configuration, allowing users to log in with their SQL username and LDAP password. During a login attempt, the system checks if LDAP authentication is configured for the user in the HBA configuration. If so, it validates the credentials against the LDAP server. If LDAP authentication fails or is not configured, the system falls back to password authentication.
+If LDAP authentication is configured, DB Console access will also use this configuration, allowing users to log in with their SQL username and LDAP password. During a login attempt, the system checks if LDAP authentication is configured for the user in the HBA configuration. If so, it validates the credentials against the LDAP server. If automatic user provisioning is enabled, users will be created automatically during their first successful login. If LDAP authentication fails or is not configured, the system falls back to password authentication.
 
 {{site.data.alerts.callout_info}}
 Authorization (role-based access control) is not applied when logging in to DB Console.
 {{site.data.alerts.end}}
+
+## Managing auto-provisioned users
+
+When automatic user provisioning is enabled, you can identify and manage auto-provisioned users using the following methods:
+
+### Viewing provisioned users
+
+Auto-provisioned users can be identified by their `PROVISIONSRC` role option:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- View all users with their role options (now displayed as arrays)
+SHOW USERS;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Query for users provisioned from a specific LDAP server
+SELECT * FROM [SHOW USERS] AS u 
+WHERE EXISTS (
+  SELECT 1 FROM unnest(u.options) AS opt 
+  WHERE opt LIKE 'PROVISIONSRC=ldap:%'
+);
+~~~
+
+### Login time tracking
+
+The `estimated_last_login_time` column tracks when users last authenticated:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW USERS;
+~~~
+
+Example output:
+~~~ 
+     username    |                options                | member_of | estimated_last_login_time  
+-----------------+---------------------------------------+-----------+----------------------------
+  admin          | {}                                    | {}        | NULL  
+  root           | {}                                    | {admin}   | 2025-07-13 11:51:29.406216+00  
+  sourav.sarangi | {PROVISIONSRC=ldap:example.com}       | {}        | 2025-07-13 11:52:34.406216+00  
+~~~
+
+{{site.data.alerts.callout_info}}
+`estimated_last_login_time` is computed on a best effort basis and may not capture every login event due to asynchronous updates.
+{{site.data.alerts.end}}
+
+### Restrictions on auto-provisioned users
+
+Users created through automatic provisioning have specific restrictions:
+
+- **Password changes**: Auto-provisioned users cannot change their own passwords using `ALTER USER`, even if the cluster setting `sql.auth.change_own_password.enabled` is true.
+- **PROVISIONSRC modification**: The `PROVISIONSRC` role option cannot be modified or removed once set.
+- **Authentication method**: These users must authenticate through LDAP; password-based authentication is not available.
+
+Attempting to change the password of an auto-provisioned user will result in an error:
+
+~~~ sql
+ALTER USER provisioned_user WITH PASSWORD 'newpassword';
+~~~
+~~~ 
+ERROR: user "provisioned_user" with PROVISIONSRC cannot change password
+~~~
 
 ## Troubleshooting
 
@@ -197,3 +282,8 @@ Potential issues to investigate may pertain to:
 3. Use a restricted service account for directory searches.
 4. Regularly audit LDAP group memberships.
 5. Monitor authentication logs for unusual patterns.
+6. **Auto-provisioning considerations**:
+   - When enabling automatic user provisioning, ensure your LDAP search filters are restrictive to prevent unauthorized user creation.
+   - Regularly review auto-provisioned users using the `SHOW USERS` command to identify accounts that may need deprovisioning.
+   - If using LDAP Authorization, ensure all group roles are created before enabling auto-provisioning to maintain proper access control.
+   - The `estimated_last_login_time` can help identify dormant accounts that may need manual removal.
