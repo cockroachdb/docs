@@ -11,7 +11,7 @@ When enabled:
 1. When a client connects to the cluster using LDAP, the cluster looks up the user's group membership in the LDAP service.
 1. Each LDAP group is mapped to a cluster role using the group's Common Name (CN) in the LDAP service.
 1. The user is granted each corresponding role, and roles that no longer match the user's groups are revoked.
-1. If [automatic user provisioning]({% link {{ page.version.version }}/ldap-authentication.md %}#option-1-automatic-user-provisioning-recommended) is enabled, users are created automatically during their first authentication.
+1. {% include_cached new-in.html version="v25.3" %}If [automatic user provisioning]({% link {{ page.version.version }}/ldap-authentication.md %}#option-1-automatic-user-provisioning-recommended) is enabled, users are created automatically during their first authentication.
 
 ## Prerequisites
 

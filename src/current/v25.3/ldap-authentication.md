@@ -104,6 +104,8 @@ CockroachDB supports two approaches for managing LDAP users:
 
 #### Option 1: Automatic user provisioning (recommended)
 
+{% include_cached new-in.html version="v25.3" %}
+
 With automatic user provisioning enabled, CockroachDB creates users automatically during their first successful LDAP authentication. This eliminates the need to manually create and maintain user accounts.
 
 To enable automatic user provisioning:
@@ -199,7 +201,7 @@ Auto-provisioned users can be identified by their `PROVISIONSRC` role option:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
--- View all users with their role options (now displayed as arrays)
+-- View all users with their role options
 SHOW USERS;
 ~~~
 
@@ -215,6 +217,8 @@ WHERE EXISTS (
 
 ### Login time tracking
 
+{% include_cached new-in.html version="v25.3" %}
+
 The `estimated_last_login_time` column tracks when users last authenticated:
 
 {% include_cached copy-clipboard.html %}
@@ -228,7 +232,7 @@ Example output:
 -----------------+---------------------------------------+-----------+----------------------------
   admin          | {}                                    | {}        | NULL  
   root           | {}                                    | {admin}   | 2025-06-01 11:51:29.406216+00  
-  edgar.codd     | {PROVISIONSRC=ldap:example.com}       | {}        | 2025-07-01 11:52:34.406216+00  
+  e.codd         | {PROVISIONSRC=ldap:example.com}       | {}        | 2025-08-04 19:18:00.201402+00  
 ~~~
 
 {{site.data.alerts.callout_info}}
