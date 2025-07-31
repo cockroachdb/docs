@@ -9,7 +9,7 @@ curl --request GET \
 --header 'Authorization: Bearer {secret_key}' \
 ~~~
 
-If the request was successful, the client will receive a JSON response listing backups with their unique `{id}` and `{as_of_time}` creation timestamp:
+If the request is successful, the client recieves a JSON response listing backups with their unique `{id}`. The `{as_of_time}` timestamp describes the system time of the cluster when the backup was created:
 
 ~~~ json
 {
