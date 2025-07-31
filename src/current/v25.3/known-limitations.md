@@ -1,5 +1,5 @@
 ---
-title: Known Limitations in CockroachDB v25.2
+title: Known Limitations in CockroachDB v25.3
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 keywords: limitations, known limitations, unsupported features, PostgreSQL compatibility
@@ -11,14 +11,6 @@ docs_area: releases
 ## New limitations in {{ page.version.version }}
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
-
-### Vector indexes
-
-{% include {{ page.version.version }}/known-limitations/vector-limitations.md %}
-
-### JSONPath
-
-{% include {{ page.version.version }}/known-limitations/jsonpath-limitations.md %}
 
 ### Security and privileges
 
@@ -37,6 +29,10 @@ This section describes limitations from previous CockroachDB versions that still
 #### Syntax and behavior differences from PostgreSQL
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. For a list of known differences in syntax and behavior between CockroachDB and PostgreSQL, see [Features that differ from PostgreSQL]({% link {{ page.version.version }}/postgresql-compatibility.md %}#features-that-differ-from-postgresql).
+
+#### JSONPath limitations
+
+{% include {{ page.version.version }}/known-limitations/jsonpath-limitations.md %}
 
 #### `AS OF SYSTEM TIME` limitations
 
@@ -179,6 +175,10 @@ See: https://github.com/cockroachdb/cockroach/issues/46414
 {% include {{page.version.version}}/known-limitations/cannot-refresh-materialized-views-inside-transactions.md %}
 
 ### Schemas and indexes
+
+#### Vector index limitations
+
+{% include {{ page.version.version }}/known-limitations/vector-limitations.md %}
 
 #### Online schema change limitations
 
