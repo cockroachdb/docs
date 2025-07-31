@@ -91,14 +91,6 @@ SELECT username FROM logins WHERE username::STRING < 'Xavi';
 (1 row)
 ~~~
 
-## Supported casting and conversion
-
-`CITEXT` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to the following data types:
-
-Type | Details
------|--------
-`STRING` | Preserves case information when casting to `STRING`.
-
 ## See also
 
 - [Data Types]({% link {{ page.version.version }}/data-types.md %})
