@@ -12,13 +12,21 @@ docs_area: releases
 
 This section describes newly identified limitations in CockroachDB {{ page.version.version }}.
 
-### Security and privileges
+### Row-level security filtering
 
-#### Row-level security
+{% include {{ page.version.version }}/known-limitations/rls-update-set-where-returning.md %}
 
-{% include {{ page.version.version }}/known-limitations/rls-values-on-conflict-do-nothing.md %}
+### DistSQL
 
-{% include {{ page.version.version }}/known-limitations/rls-visibility-issue.md %}
+{% include {{ page.version.version }}/known-limitations/distsql-heterogeneous-endianness.md %}
+
+### Multi-region
+
+{% include {{ page.version.version }}/known-limitations/enforce-home-region-limitations.md %}
+
+### Geospatial
+
+{% include {{ page.version.version }}/known-limitations/geospatial-heterogeneous-architectures.md %}
 
 ## Limitations from {{ previous_version }} and earlier
 
@@ -355,6 +363,12 @@ Refer to [`OID` best practices]({% link {{ page.version.version }}/oid.md %}#bes
 {% include {{ page.version.version }}/known-limitations/jsonb-limitations.md %}
 
 ### Security and privileges
+
+#### Row-level security
+
+{% include {{ page.version.version }}/known-limitations/rls-values-on-conflict-do-nothing.md %}
+
+{% include {{ page.version.version }}/known-limitations/rls-visibility-issue.md %}
 
 #### `GRANT`/`REVOKE` limitations
 
