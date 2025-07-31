@@ -115,10 +115,10 @@ SET CLUSTER SETTING server.provisioning.ldap.enabled = true;
 
 When automatic provisioning is enabled:
 
-- Users are created automatically upon successful LDAP authentication
-- All auto-provisioned users receive a `PROVISIONSRC` role option set to `ldap:<ldap_server>`
-- The `estimated_last_login_time` is tracked for auditing purposes
-- Auto-provisioned users cannot change their own passwords (managed via LDAP only)
+- Users are created automatically upon successful LDAP authentication.
+- All auto-provisioned users receive a `PROVISIONSRC` role option set to `ldap:<ldap_server>`.
+- The `estimated_last_login_time` is tracked for auditing purposes.
+- Auto-provisioned users cannot change their own passwords (managed via LDAP only).
 
 For Active Directory deployments, the CockroachDB username will match the `sAMAccountName` field from the `user` object. This field name should be specified in the HBA configuration using `ldapsearchattribute=sAMAccountName`.
 
@@ -227,12 +227,12 @@ Example output:
      username    |                options                | member_of | estimated_last_login_time  
 -----------------+---------------------------------------+-----------+----------------------------
   admin          | {}                                    | {}        | NULL  
-  root           | {}                                    | {admin}   | 2025-07-13 11:51:29.406216+00  
-  sourav.sarangi | {PROVISIONSRC=ldap:example.com}       | {}        | 2025-07-13 11:52:34.406216+00  
+  root           | {}                                    | {admin}   | 2025-06-01 11:51:29.406216+00  
+  edgar.codd     | {PROVISIONSRC=ldap:example.com}       | {}        | 2025-07-01 11:52:34.406216+00  
 ~~~
 
 {{site.data.alerts.callout_info}}
-`estimated_last_login_time` is computed on a best effort basis and may not capture every login event due to asynchronous updates.
+`estimated_last_login_time` is computed on a best-effort basis and may not capture every login event due to asynchronous updates.
 {{site.data.alerts.end}}
 
 ### Restrictions on auto-provisioned users

@@ -81,7 +81,7 @@ We recommend that you explicitly specify which groups should be mapped to Cockro
 Create CockroachDB roles that match your LDAP group names and grant appropriate privileges to each role. Remember that role names must comply with CockroachDB's [identifier requirements]({% link {{ page.version.version }}/create-user.md %}#user-names).
 
 {{site.data.alerts.callout_info}}
-If automatic user provisioning is enabled, group roles **must be created before authentication begins**. Auto-provisioned users will only receive roles for groups that already exist as CockroachDB roles.
+If [automatic user provisioning]({% link {{ page.version.version }}/ldap-authentication.md %}#option-1-automatic-user-provisioning-recommended) is enabled, group roles **must be created before authentication begins**. Auto-provisioned users will only receive roles for groups that already exist as CockroachDB roles.
 {{site.data.alerts.end}}
 
 For example, if you've configured the group filter to allow `crdb_analysts` and `crdb_developers`:
@@ -99,7 +99,7 @@ GRANT ALL ON DATABASE app TO crdb_developers;
 ### Step 3: Confirm configuration
 
 1. On the LDAP server, set up test users with memberships in groups that should be synced to CockroachDB users.
-1. **If automatic user provisioning is disabled**, create the matching test users when logged in as an admin to CockroachDB:
+1. If [automatic user provisioning]({% link {{ page.version.version }}/ldap-authentication.md %}#option-1-automatic-user-provisioning-recommended) is disabled, create the matching test users when logged in as an admin to CockroachDB:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -108,7 +108,7 @@ GRANT ALL ON DATABASE app TO crdb_developers;
     CREATE ROLE username3 LOGIN;
     ~~~
 
-    **If automatic user provisioning is enabled**, users will be created automatically during their first login.
+    If automatic user provisioning is enabled, users will be created automatically during their first login.
 
 1. Log in to CockroachDB as each test user (refer to [Connect to a cluster using LDAP]({% link {{ page.version.version }}/ldap-authentication.md %}#connect-to-a-cluster-using-ldap)).
 1. Using your admin credentials, log in to the CockroachDB SQL shell and run `SHOW USERS;` to view and verify users and their role assignments.
