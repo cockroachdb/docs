@@ -7,7 +7,7 @@ secure: true
 docs_area: deploy
 ---
 
-This page shows you how to start and stop a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster.
+This page describes how to start and stop a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster.
 
 ## Prerequisites and best practices
 
@@ -30,19 +30,19 @@ The Helm chart consists of two sub-charts:
 
 ### Network
 
-Service Name Indication (SNI) is an extension to the TLS protocol which allows a client to indicate which hostname it is attempting to connect to at the start of the TCP handshake process. The server can present multiple certificates on the same IP address and TCP port number, and one server can serve multiple secure websites or API services even if they use different certificates.
+Service Name Indication (SNI) is an extension to the TLS protocol that allows a client to indicate which hostname it is attempting to connect to at the start of the TCP handshake process. The server can present multiple certificates on the same IP address and TCP port number, and one server can serve multiple secure websites or API services even if they use different certificates.
 
-Due to its order of operations, the PostgreSQL wire protocol's implementation of TLS is not compatible with SNI-based routing in the Kubernetes ingress controller. Instead, use a TCP load balancer for CockroachDB that is not shared with other services.
+Due to its order of operations, the PostgreSQL wire protocol's implementation of TLS is incompatible with SNI-based routing in the Kubernetes ingress controller. Instead, use a TCP load balancer for CockroachDB that is not shared with other services.
 
-If you want to secure your cluster to use TLS certificates for all network communications, Helm must be installed with RBAC privileges or else you will get an "attempt to grant extra privileges" error.
+If you want to secure your cluster to use TLS certificates for all network communications, Helm must be installed with RBAC privileges. Otherwise, you will get an `attempt to grant extra privileges` error.
 
 ### Localities
 
-CockroachDB clusters use locality labels to determine an efficient distribution of replicas. This is especially important in the case of multi-region deployments. In cloud provider deployments such as EKS/AKS/GKE, the `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` labels are applied implicitly to Kubernetes nodes and populated by the regions and zones specific to the cloud provider. Other locality labels can be arbitrarily defined for further granularity, such as province, datacenter, rack, etc., but these need to be applied individually to the Kubernetes node when initialized so that CockroachDB can understand where the node lives and distribute replicas accordingly.
+CockroachDB clusters use locality labels to efficiently distribute replicas. This is especially important in multi-region deployments. In cloud provider deployments (e.g., [GKE](#hosted-gke), [EKS](#hosted-eks), or [AKS](#hosted-aks)), the [`topology.kubernetes.io/region`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesioregion) and [`topology.kubernetes.io/zone`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) labels are applied implicitly to Kubernetes nodes and populated by the regions and zones specific to the cloud provider. For further granularity, you can define arbitrary locality labels (e.g., `province`, `datacenter`, `rack`), but these need to be applied individually to the Kubernetes node when initialized so that CockroachDB can understand where the node lives and distribute replicas accordingly.
 
-In the case of baremetal Kubernetes deployments, you must plan a hierarchy of locality labels that suit your CockroachDB node distribution, then apply these labels individually to nodes when they are initialized. Most of these values can be set arbitrarily, but region and zone locations must be set in the reserved `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` namespace, respectively.
+On bare metal Kubernetes deployments, you must plan a hierarchy of locality labels that suit your CockroachDB node distribution, then apply these labels individually to nodes when they are initialized. Although you can set most of these values arbitrarily, you must set region and zone locations in the reserved `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` namespaces, respectively.
 
-For more information on how locality labels are used by CockroachDB, see the [--locality flag documentation](cockroach-start.html#locality).
+For more information on how locality labels are used by CockroachDB, refer to the [`--locality` documentation](cockroach-start.html#locality).
 
 ### Architecture
 
@@ -50,7 +50,7 @@ The operator is only supported in environments with an ARM64 or AMD64 architectu
 
 ### Resources
 
-When starting Kubernetes, select machines with at least 4 vCPUs and 16 GiB of memory, and provision at least 2 vCPUs and 8 Gi of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload.
+When starting Kubernetes, select machines with at least 4 vCPUs and 16 GiB of memory, and provision at least 2 vCPUs and 8 GiB of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload.
 
 ### Storage
 
@@ -60,8 +60,8 @@ Kubernetes deployments use external persistent volumes that are often replicated
 
 You can use the hosted [Google Kubernetes Engine (GKE)](#hosted-gke) service, hosted [Amazon Elastic Kubernetes Service (EKS)](#hosted-eks), or [Microsoft Azure Kubernetes Service (AKS)](#hosted-aks) to quickly start Kubernetes.
 
-{{site.data.alerts.callout_info}}
-GKE/EKS/AKS are not required to run CockroachDB on Kubernetes. Any cluster hardware with the minimum recommended Kubernetes version and at least 3 pods, each presenting sufficient resources to start a CockroachDB node, can also be used. However, note that support for other deployments may vary.
+{{site.data.alerts.callout_success}}
+Cloud providers such as GKE, EKS, and AKS are not required to run CockroachDB on Kubernetes. You can use any cluster hardware with the minimum recommended Kubernetes version and at least 3 pods, each presenting sufficient resources to start a CockroachDB node. However, note that support for other deployments may vary.
 {{site.data.alerts.end}}
 
 ### Hosted GKE
@@ -72,7 +72,7 @@ GKE/EKS/AKS are not required to run CockroachDB on Kubernetes. Any cluster hardw
 
     The documentation offers the choice of using Google's Cloud Shell product or using a local shell on your machine. Choose to use a local shell if you want to be able to view the DB Console using the steps in this guide.
 
-2. From your local workstation, start the Kubernetes cluster, specifying one of the available [regions](https://cloud.google.com/compute/docs/regions-zones#available) (e.g., `us-east1`):
+1. From your local workstation, start the Kubernetes cluster, specifying one of the available [regions](https://cloud.google.com/compute/docs/regions-zones#available) (e.g., `us-east1`):
 
     Since this region can differ from your default `gcloud` region, be sure to include the `--region` flag to run `gcloud` commands against this cluster.
 
@@ -99,7 +99,7 @@ GKE/EKS/AKS are not required to run CockroachDB on Kubernetes. Any cluster hardw
     Account: [your.google.cloud.email@example.org]
     ```
 
-    This command returns your email address in all lowercase. However, in the next step, you must enter the address using the accurate capitalization. For example, if your address is YourName@example.com, you must use YourName@example.com and not yourname@example.com.
+    The preceding command returns your email address in all lowercase. However, in the next step, you must enter the address using the accurate capitalization. For example, if your address is `YourName@example.com`, you must use `YourName@example.com` and not `yourname@example.com`.
 
 4. [Create the RBAC roles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#prerequisites_for_using_role-based_access_control) CockroachDB needs for running on GKE, using the address from the previous step:
 
@@ -147,9 +147,9 @@ GKE/EKS/AKS are not required to run CockroachDB on Kubernetes. Any cluster hardw
 
 1. Complete the **Before you begin**, **Define environment variables**, and **Create a resource groups** steps described in the [AKS quickstart guide](https://learn.microsoft.com/azure/aks/learn/quick-kubernetes-deploy-cli). This includes setting up the Azure CLI and the `az` tool, which is the command-line tool to create and manage Azure cloud resources. 
 
-    Set the environment variables as desired for your CRDB deployment. For these instructions, set the `MY_AKS_CLUSTER_NAME` variable to `cockroachdb`.
+    Set the environment variables as desired for your CockroachDB deployment. For these instructions, set the `MY_AKS_CLUSTER_NAME` variable to `cockroachdb`.
 
-    Do not follow the **Create an AKS cluster** steps or following sections of the quickstart guide, as these topics will be described specifically for CRDB in this documentation.
+    Do not follow the **Create an AKS cluster** steps or following sections of the quickstart guide, as these topics will be described specifically for CockroachDB in this documentation.
 
 2. From your workstation, create the Kubernetes cluster:
 
@@ -161,7 +161,7 @@ GKE/EKS/AKS are not required to run CockroachDB on Kubernetes. Any cluster hardw
       --generate-ssh-keys
     ```
 
-3. Create an application in your Azure tenant and create a secret named `azure-cluster-identity-credentials-secret` which contains `AZURE_CLIENT_ID` and `AZURE_CLIENT_SECRET` to hold the application credentials. The following example YAML can be used to define this application:
+3. Create an application in your Azure tenant and create a secret named `azure-cluster-identity-credentials-secret` that contains `AZURE_CLIENT_ID` and `AZURE_CLIENT_SECRET` to hold the application credentials. You can use the following example YAML to define this application:
 
     ```shell
     apiVersion: v1
@@ -175,13 +175,13 @@ GKE/EKS/AKS are not required to run CockroachDB on Kubernetes. Any cluster hardw
           azure_client_secret: s3cr3t
     ```
 
-    See the [Azure.Identity documentation](https://learn.microsoft.com/dotnet/api/azure.identity.environmentcredential?view=azure-dotnet) for more information on how to use these variables.
+    For more information on how to use these variables, refer to the [`Azure.Identity` documentation](https://learn.microsoft.com/dotnet/api/azure.identity.environmentcredential?view=azure-dotnet).
 
-### Baremetal/other deployments
+### Bare metal deployments
 
-For baremetal deployments, the specific Kubernetes infrastructure deployment steps should be similar to those described in [Hosted GKE](#hosted-gke) and [Hosted EKS](#hosted-eks).
+For bare metal deployments, the specific Kubernetes infrastructure deployment steps should be similar to those described in [Hosted GKE](#hosted-gke) and [Hosted EKS](#hosted-eks).
 
-* Be prepared to apply labels to your Kubernetes nodes upon initialization, that can be used by CockroachDB as [locality labels](#localities). In other cloud provider deployments, some of these labels are applied automatically by the provider. These must be applied manually in a baremetal deployment.
+- You must plan a hierarchy of [locality labels](#localities) that suit your CockroachDB node distribution, then apply these labels individually to nodes when they are initialized. Although you can set most of these values arbitrarily, you must set region and zone locations in the reserved `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` namespaces, respectively.
 
 ## Step 2. Start CockroachDB
 
@@ -193,7 +193,7 @@ For baremetal deployments, the specific Kubernetes infrastructure deployment ste
     $ git clone https://github.com/cockroachdb/helm-charts.git
     ```
 
-2. Set your environment variables. This step is optional but recommended in order to use the example commands and templates described in these instructions. Note the default Kubernetes namespace of `cockroach-ns`.
+2. Set your environment variables. This step is optional but recommended in order to use the example commands and templates described in the following instructions. Note the default Kubernetes namespace of `cockroach-ns`.
 
     ```shell
     $ export CRDBOPERATOR=crdb-operator
@@ -210,9 +210,9 @@ For baremetal deployments, the specific Kubernetes infrastructure deployment ste
 
 ### Initialize the cluster
 
-1. Open `cockroachdb-parent/charts/cockroachdb/values.yaml`, a values file that tells Helm how to configure the Kubernetes cluster, in your text editor of choice.
+1. Open `cockroachdb-parent/charts/cockroachdb/values.yaml`, a values file that tells Helm how to configure the Kubernetes cluster, in your text editor.
 
-2. Modify the `cockroachdb.crdbCluster.regions` section to describe the number of nodes to deploy and what region(s) to deploy them in. The default configuration uses `k3d`, replace with the `cloudProvider` of choice (`gcp`, `aws`, `azure`). For other deployments such as baremetal, the `cloudProvider` field is optional and can be removed altogether. The following example initializes three nodes on Google Cloud in the `us-central1` region:
+2. Modify the `cockroachdb.crdbCluster.regions` section to describe the number of nodes to deploy and what region(s) to deploy them in. Replace the default `cloudProvider` with the appropriate value (`gcp`, `aws`, `azure`). For bare metal deployments, you can remove the `cloudProvider` field. The following example initializes three nodes on Google Cloud in the `us-central1` region:
 
     ```yaml
     cockroachdb:
@@ -226,12 +226,12 @@ For baremetal deployments, the specific Kubernetes infrastructure deployment ste
 
     If you intend to deploy CockroachDB nodes across multiple different regions, follow the additional steps described in [Deploy across multiple regions](#deploy-across-multiple-regions).
 
-3. Modify the values file with the CPU and memory requests and limits for each node to use, in the `cockroachdb.crdbCluster.resources` section. The default values are 4vCPU and 16GB of memory but this section must be uncommented similar to the following example:
+3. Uncomment and modify `cockroachdb.crdbCluster.resources` in the values file with the CPU and memory requests and limits for each node to use. The default values are 4vCPU and 16GB of memory:
 
-    See [Resource management](configure-cockroachdb-kubernetes-operator.html) for more information on configuring node resource allocation.
+    For more information on configuring node resource allocation, refer to [Resource management](configure-cockroachdb-kubernetes-operator.html)
 
 4. Modify the TLS configuration as desired. For a secure deployment, set `cockroachdb.tls.enabled` in the values file to `true`. You can either use the default self-signer utility to generate all certificates, provide a custom CA certificate and generate other certificates, or use your own certificates.
-    - **All self-signed certificates**: By default, the certificates are created by the self-signer utility which requires no configuration beyond setting a custom certificate duration if desired. This utility creates self-signed certificates for the nodes and root client which are stored in a secret. You can see these certificates by running `kubectl get secrets`:
+    - **All self-signed certificates**: By default, the certificates are created by the self-signer utility, which requires no configuration beyond setting a custom certificate duration if desired. This utility creates self-signed certificates for the nodes and root client which are stored in a secret. You can see these certificates by running `kubectl get secrets`:
         
         ```shell
         $ kubectl get secrets
@@ -252,7 +252,7 @@ For baremetal deployments, the specific Kubernetes infrastructure deployment ste
         $ cockroach cert create-ca --certs-dir=certs --ca-key=my-safe-directory/ca.key
         ```
         
-        Set `cockroachdb.tls.selfSigner.caProvided` to true and specify the secret where the certificate is stored:
+        Set `cockroachdb.tls.selfSigner.caProvided` to `true` and specify the secret where the certificate is stored:
         
         ```yaml
         cockroachdb:
@@ -261,13 +261,13 @@ For baremetal deployments, the specific Kubernetes infrastructure deployment ste
             selfSigner:
               enabled: true
               caProvided: true
-              caSecret: <ca-secret-name>
+              caSecret: {ca-secret-name}
         ```
         
         {{site.data.alerts.callout_info}}
         If you are deploying on OpenShift you must also set `cockroachdb.tls.selfSigner.securityContext.enabled` to `false` to mitigate stricter security policies.
         {{site.data.alerts.end}}
-    - **All custom certificates**: Set up your certificates and load them into your Kubernetes cluster as Secrets using the following commands:
+    - **All custom certificates**: Set up your certificates and load them into your Kubernetes cluster as secrets using the following commands:
         
         ```shell
         $ mkdir certs
@@ -311,7 +311,7 @@ For baremetal deployments, the specific Kubernetes infrastructure deployment ste
             secretName: cockroachdb-ca
         ```
         
-        If your certificates are stored in tls secrets such as secrets generated by cert-manager, the secret will contain files named: `ca.crt`, `tls.crt`, and `tls.key`.
+        If your certificates are stored in TLS secrets, such as secrets generated by `cert-manager`, the secret will contain files named: `ca.crt`, `tls.crt`, and `tls.key`.
         
         For CockroachDB, rename these files as applicable to match the following naming scheme: `ca.crt`, `node.crt`, `node.key`, `client.root.crt`, and `client.root.key`.
         
@@ -332,11 +332,11 @@ For baremetal deployments, the specific Kubernetes infrastructure deployment ste
         - `{node_secret_name}`: The name of the Kubernetes secret that contains the generated client certificate and key.
         - `{client_secret_name}`: The name of the Kubernetes secret that contains the generated node certificate and key.
         
-        See [Example: Authenticate with cockroach cert](#example-authenticate-with-cockroach-cert) for a more detailed walkthrough of a TLS configuration with manual certificates.
+        For a detailed tutorial of a TLS configuration with manual certificates, refer to [Example: Authenticate with cockroach cert](#example-authenticate-with-cockroach-cert).
 
-5. Review [locality labels](#localities) as needed for your Kubernetes host. These labels are written as a list of Kubernetes node values where the locality information of each node is stored, defined in `cockroachdb.crdbCluster.localityLabels`. When CockroachDB is initialized on a node, these values are processed as though they are provided through the [cockroach start –locality](cockroach-start#locality) flag. 
+5. In `cockroachdb.crdbCluster.localityLabels`, provide [locality labels](#localities) that specify where the locality information of each Kubernetes node is stored. When CockroachDB is initialized on a node, it processes these values as though they are provided through the [`cockroach start --locality`](cockroach-start#locality) flag. 
 
-    If no locality labels are provided in `cockroachdb.crdbCluster.localityLabels`, the default locality labels are `region` and `zone`, stored in `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` respectively. Cloud providers like EKS/AKS/GKE auto-populate these values describing the node’s region and zone, so for cloud provider deployments the locality labels can be left as-is:
+    It is not necessary to modify `cockroachdb.crdbCluster.localityLabels` in cloud provider deployments, in which the [`topology.kubernetes.io/region`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesioregion) and [`topology.kubernetes.io/zone`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) locality labels are applied implicitly to Kubernetes nodes and populated by the regions and zones specific to the cloud provider.
 
     ```yaml
     cockroachdb:
@@ -344,7 +344,7 @@ For baremetal deployments, the specific Kubernetes infrastructure deployment ste
         localityLabels: []
     ```
 
-    For baremetal deployments, you can use the default `localityLabels` configuration to use the default values for `region` and `zone` (`topology.kubernetes.io/region` and `topology.kubernetes.io/zone`), but will need to be set manually these values manually when the node is initialized because there is no cloud provider to do so automatically.
+    For bare metal deployments, you can also use the default `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` values. However, since these values cannot be set implicitly from a cloud provider, you need to set them manually when initializing the node.
 
     To add more granular levels of locality to your nodes, add custom locality levels as values in the `cockroachdb.crdbCluster.localityLabels` list. Any custom `localityLabels` configuration overrides the default `region` and `zone` configuration, so if you append an additional locality level but wish to keep the `region` and `zone` labels you must declare them manually.
 
@@ -359,7 +359,7 @@ For baremetal deployments, the specific Kubernetes infrastructure deployment ste
           - example.datacenter.locality
     ```
 
-    In this example, if a Kubernetes node is initialized in the `us-central1` region, `us-central1-c` zone, and `dc2` datacenter, its `cockroach start –locality` command would be similar to the following command:
+    In this example, if a Kubernetes node is initialized in the `us-central1` region, `us-central1-c` zone, and `dc2` datacenter, its `cockroach start --locality` flag would be equivalent to the following:
 
     ```shell
     cockroach start --locality region=us-central1,zone=us-central1-c,example.datacenter.locality=dc2
@@ -394,10 +394,10 @@ The Helm chart supports specifying multiple region definitions in `cockroachdb.c
 
 For each region, modify the `regions` configuration as described in [Initialize the cluster](#initialize-the-cluster) and perform `helm install` against the respective Kubernetes cluster. While applying the installation in a given region, do the following:
 
-* Verify that the domain matches `cockroachdb.clusterDomain` in the values file
+* Verify that the domain matches `cockroachdb.clusterDomain` in the values file.
 * Ensure that `cockroachdb.crdbCluster.regions` captures the information for regions that have already been deployed, including the current region. This allows CockroachDB in the current region to connect to clusters deployed in the existing regions.
 
-The following example shows a configuration across two regions with 3 nodes in each cluster:
+The following example shows a configuration across two regions, `us-central1` and `us-east1`, with 3 nodes in each cluster:
 
 ```yaml
 cockroachdb:
@@ -420,14 +420,14 @@ cockroachdb:
 
 To use the CockroachDB SQL client, follow these steps to launch a secure pod running the `cockroach` binary.
 
-1. Download the secure client k8s application:
+1. Download the secure client Kubernetes application:
 
     ```shell
     $ curl -O https://raw.githubusercontent.com/cockroachdb/helm-charts/master/examples/client-secure.yaml
     ```
 
     {{site.data.alerts.callout_danger}}
-    Be mindful that this client tool logs into CockroachDB as root using the root certificates.
+    This client tool logs into CockroachDB as `root` using the root certificates.
     {{site.data.alerts.end}}
 
 2. Edit the yaml file with the following values:
@@ -494,7 +494,7 @@ To use the CockroachDB SQL client, follow these steps to launch a secure pod run
 
 To access the cluster's [DB Console](ui-overview.html):
 
-1. On secure clusters, [certain pages of the DB Console](ui-overview.html#db-console-access) can only be accessed by admin users.
+1. On secure clusters, [certain pages of the DB Console](ui-overview.html#db-console-access) can only be accessed by `admin` users.
 
     Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
@@ -524,16 +524,16 @@ To access the cluster's [DB Console](ui-overview.html):
     Forwarding from 127.0.0.1:8080 -> 8080
     ```
 
-    The port-forward command must be run on the same machine as the web browser in which you want to view the DB Console. If you have been running these commands from a cloud instance or other non-local shell, you will not be able to view the UI without configuring kubectl locally and running the above port-forward command on your local machine.
+    Run the `port-forward` command on the same machine as the web browser in which you want to view the DB Console. If you have been running these commands from a cloud instance or other non-local shell, you will not be able to view the UI without configuring `kubectl` locally and running the preceding `port-forward` command on your local machine.
 
-5. Go to [https://localhost:8080](https://localhost:8080/) and log in with the username and password you created earlier.
+5. Go to [`https://localhost:8080`](https://localhost:8080/) and log in with the username and password you created earlier.
 
     {{site.data.alerts.callout_info}}
-    If you are using Google Chrome, and you are getting an error about not being able to reach `localhost` because its certificate has been revoked, go to `chrome://flags/#allow-insecure-localhost`, enable "Allow invalid certificates for resources loaded from localhost", and then restart the browser. Enabling this Chrome feature degrades security for all sites running on `localhost`, not just CockroachDB's DB Console, so be sure to enable the feature only temporarily.
+    If you are using Google Chrome, and get an error about not being able to reach `localhost` because its certificate has been revoked, go to `chrome://flags/#allow-insecure-localhost`, enable "Allow invalid certificates for resources loaded from localhost", and then restart the browser. This degrades security for all sites running on `localhost`, not just CockroachDB's DB Console, so enable the feature only temporarily.
     {{site.data.alerts.end}}
 
-6. In the UI, verify that the cluster is running as expected:
-    1. View the [Node List](ui-cluster-overview-page.html#node-list) to ensure that all nodes successfully joined the cluster.
+6. In the DB Console, verify that the cluster is running as expected:
+    1. View the [**Node List**](ui-cluster-overview-page.html#node-list) to ensure that all nodes successfully joined the cluster.
     2. Click the **Databases** tab on the left to verify that `bank` is listed.
 
 ## Next steps
@@ -550,9 +550,9 @@ Read the following pages for detailed information on cluster scaling, certificat
 
 ## Appendix
 
-### Example: Authenticate with `cockroach cert`
+### Authenticate with `cockroach cert`
 
-This example uses [cockroach cert commands](cockroach-cert.html) to generate and sign the CockroachDB node and client certificates. To learn more about the supported methods of signing certificates, refer to [Authentication](authentication.html#using-digital-certificates-with-cockroachdb).
+The following example uses [cockroach cert commands](cockroach-cert.html) to generate and sign the CockroachDB node and client certificates. To learn more about the supported methods of signing certificates, refer to [Authentication](authentication.html#using-digital-certificates-with-cockroachdb).
 
 1. Create two directories:
 
