@@ -295,6 +295,7 @@ SHOW USERS;
 ~~~
 
 Example output:
+
 ~~~ 
      username    |                options                | member_of | estimated_last_login_time  
 -----------------+---------------------------------------+-----------+----------------------------
