@@ -9,7 +9,7 @@ docs_area: deploy
 
 This guide describes how to migrate an existing CockroachDB cluster managed via StatefulSet to the enterprise operator.
 
-These instructions assume that you are migrating from a StatefulSet cluster that was configured using the Helm chart per the following command:
+These instructions assume that you are migrating from a StatefulSet cluster that was configured using the Helm chart with the following command:
 
 ```shell
 helm upgrade --install --set operator.enabled=false crdb-test --debug ./cockroachdb
@@ -17,10 +17,10 @@ helm upgrade --install --set operator.enabled=false crdb-test --debug ./cockroac
 
 If your existing cluster was created using the public operator, refer to the [public operator migration guide](migrate-cockroachdb-kubernetes-operator.html).
 
-This migration process is designed to allow migration to occur without affecting cluster availability, and preserving existing disks so data doesn’t need to be replicated into empty volumes. Note that this process scales down the StatefulSet by one node before adding each operator-managed pod, so the maximum cluster capacity will be reduced by one node periodically throughout the migration.
+This migration can be completed without affecting cluster availability, and preserves existing disks so that data doesn't need to be replicated into empty volumes. The process scales down the StatefulSet by one node before adding each operator-managed pod, so the maximum cluster capacity will be reduced by one node periodically throughout the migration.
 
-{{site.data.alerts.callout_info}}
-This migration process is currently only recommended to run in a non-production environment. We are actively working on a rollback procedure but are looking for early feedback on this process.
+{{site.data.alerts.callout_danger}}
+This migration process is only recommended for non-production environments at this time.
 {{site.data.alerts.end}}
 
 ## Step 1. Prepare the migration helper
@@ -32,7 +32,7 @@ $ make bin/migration-helper
 $ export PATH=$PATH:$(pwd)/bin
 ```
 
-Export environment variables about the existing deployment:
+Export environment variables for the existing deployment:
 
 ```shell
 # Set STS_NAME to the cockroachdb statefulset deployed via helm chart.
@@ -62,7 +62,7 @@ The operator uses slightly different certificates than the CockroachDB Helm char
 $ bin/migration-helper migrate-certs --statefulset-name $STS_NAME --namespace $NAMESPACE
 ```
 
-Generate a manifest for each crdbnode and the crdbcluster based on the state of the StatefulSet. We do this because we want the new pods and their associated PVCs to have the same names as the original StatefulSet-managed pods and PVCs. This means that the new operator-managed pods will use the original PVCs rather than replicate data into empty nodes.
+Generate a manifest for each crdbnode and the crdbcluster based on the state of the StatefulSet. The new pods and their associated PVCs must have the same names as the original StatefulSet-managed pods and PVCs. The new operator-managed pods will then use the original PVCs, rather than replicate data into empty nodes.
 
 ```shell
 $ mkdir -p manifests
@@ -71,15 +71,15 @@ $ bin/migration-helper build-manifest helm --statefulset-name $STS_NAME --namesp
 
 ## Step 3. Replace statefulset pods with operator nodes
 
-To migrate seamlessly from the CockroachDB Helm chart to the operator, we’ll scale down StatefulSet-managed pods and replace them with crdbnode objects, one by one. Then we’ll create the crdbcluster object that manages the crdbnodes.
+To migrate seamlessly from the CockroachDB Helm chart to the operator, scale down StatefulSet-managed pods and replace them with crdbnode objects, one by one. Then we’ll create the crdbcluster object that manages the crdbnodes.
 
-First, create objects in kubectl that will eventually be owned by the crdbcluster:
+Create objects with `kubectl` that will eventually be owned by the crdbcluster:
 
 ```shell
 $ kubectl create priorityclass crdb-critical --value 500000000
 ```
 
-Install the crdb-operator with Helm:
+Install the `crdb-operator` with Helm:
 
 ```shell
 $ helm upgrade --install crdb-operator ./cockroachdb-parent/charts/operator
@@ -93,7 +93,7 @@ For each pod in the StatefulSet, perform the following steps:
     $ kubectl scale statefulset/$STS_NAME --replicas=4
     ```
 
-2. Create the crdbnode corresponding to the StatefulSet pod you just scaled down. The manifests are labeled as `crdbnode-X.yaml` where `X` is shared with each `&lt;STS_NAME>-X` StatefulSet pod, so note whichever pod was scaled down and specify the corresponding manifest in the following command:
+2. Create the `crdbnode` resource that corresponds to the StatefulSet pod you just scaled down. Each manifest is labeled with the pattern `crdbnode-X.yaml`, where `X` corresponds to a StatefulSet pod named `{STS_NAME}-X`. Note the pod that was scaled down and specify its manifest in a command like the following:
 
     ```shell
     $ kubectl apply -f manifests/crdbnode-4.yaml
@@ -102,7 +102,7 @@ For each pod in the StatefulSet, perform the following steps:
 3. Wait for the new pod to become ready. If it doesn’t, check the operator logs for errors.
 
 4. Before moving on to the next replica migration, verify that there are no underreplicated ranges:
-    1. Set up port forwarding to access the CockroachDB node’s HTTP interface. Note that CockroachDB’s UI runs on port 8080 by default:
+    1. Set up port forwarding to access the CockroachDB node’s HTTP interface. Note that the DB Console runs on port 8080 by default:
 
         ```shell
         $ kubectl port-forward pod/cockroachdb-4 8080:8080
@@ -120,7 +120,7 @@ Repeat these steps until the StatefulSet has zero replicas.
 
 The Helm chart creates a public Service that exposes both SQL and gRPC connections over a single power. However, the operator uses a different port for gRPC communication. To ensure compatibility, update the public Service to reflect the correct gRPC port used by the operator.
 
-Apply the updated service manifest:
+Apply the updated Service manifest:
 
 ```shell
 $ kubectl apply -f manifests/public-service.yaml

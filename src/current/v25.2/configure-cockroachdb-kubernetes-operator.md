@@ -9,7 +9,7 @@ docs_area: deploy
 
 This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage.
 
-On a production cluster, the resources you allocate to CockroachDB should be proportionate to your machine types and workload. We recommend that you determine and set these values before deploying the cluster, but you can also update the values on a running cluster.
+On a production cluster, the resources you allocate to CockroachDB should be proportionate to your machine types and workload. Cockroach Labs recommends that you determine and set these values before deploying the cluster, but you can also update the values on a running cluster.
 
 {{site.data.alerts.callout_info}}
 Run `kubectl describe nodes` to see the available resources on the instances that you have provisioned.
@@ -20,12 +20,12 @@ Run `kubectl describe nodes` to see the available resources on the instances tha
 You can set the CPU and memory resources allocated to the CockroachDB container on each pod.
 
 {{site.data.alerts.callout_info}}
-1 CPU in Kubernetes is equivalent to 1 vCPU or 1 hyperthread. For best practices on provisioning CPU and memory for CockroachDB, see the [Production Checklist](recommended-production-settings.html#hardware).
+1 CPU in Kubernetes is equivalent to 1 vCPU or 1 hyperthread. For best practices on provisioning CPU and memory for CockroachDB, refer to the [Production Checklist](recommended-production-settings.html#hardware).
 {{site.data.alerts.end}}
 
 Specify CPU and memory values in `cockroachdb.crdbCluster.resources.limits` and `cockroachdb.crdbCluster.resources.requests` in the values file used to [deploy the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster):
 
-```yaml
+~~~yaml
 cockroachdb:
   crdbCluster:
     resources:
@@ -35,7 +35,7 @@ cockroachdb:
       requests:
         cpu: 4000m
         memory: 16Gi
-```
+~~~
 
 Apply the new settings to the cluster:
 
@@ -55,7 +55,7 @@ For more information on how Kubernetes handles resources, see the [Kubernetes do
 
 Each CockroachDB node reserves a portion of its available memory for its cache and for storing temporary data for SQL queries. For more information on these settings, see the [Production Checklist](recommended-production-settings.html#cache-and-sql-memory-size).
 
-The Kubernetes operator dynamically sets cache size and SQL memory size each to 25% (the recommended percent) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. These values can be modified by adding the `cache` or `max-sql-memory` fields to `cockroachdb.crdbCluster.flags`, which is equivalent to appending `--cache` or `--max-sql-memory` as [cockroach start flags](cockroach-start.html#flags).
+The Kubernetes operator dynamically sets cache size and SQL memory size each to 25% (the recommended percentage) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. These values can be modified by adding the `cache` or `max-sql-memory` fields to `cockroachdb.crdbCluster.flags`, which is equivalent to appending `--cache` or `--max-sql-memory` as [cockroach start flags](cockroach-start.html#flags).
 
 ## Persistent storage
 
@@ -109,7 +109,7 @@ The Operator separates network traffic into three ports:
 
 <table>
   <tr>
-   <td><strong>Protocol</strong>
+   <th>Protocol
    </td>
    <td><strong>Default</strong>
    </td>
