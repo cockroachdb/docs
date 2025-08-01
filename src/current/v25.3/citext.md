@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CITEXT` [data type]({% link {{ page.version.version }}/data-types.md %}) represents a case-insensitive string. Like `STRING` values, `CITEXT` values preserve their casing when stored and retrieved. Unlike `STRING` values, comparisons between `CITEXT` values are case-insensitive for all Unicode characters that have a defined uppercase/lowercase mapping (e.g., `'É' = 'é'`).
+The `CITEXT` [data type]({% link {{ page.version.version }}/data-types.md %}) represents a case-insensitive string. Like `STRING` values, `CITEXT` values preserve their casing when stored and retrieved. Unlike `STRING` values, comparisons between `CITEXT` values are case-insensitive for all [Unicode characters](https://en.wikipedia.org/wiki/List_of_Unicode_characters) that have a defined uppercase/lowercase mapping (e.g., `'É' = 'é'`).
 
 Equality operators (`=`, `!=`, `<>`) and ordering operators (`<`, `>`, etc.) treat `CITEXT` values as case-insensitive by default. Refer to the [example](#example). 
 
