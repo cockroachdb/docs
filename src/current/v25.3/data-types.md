@@ -16,6 +16,7 @@ Type | Description | Example
 [`BOOL`]({% link {{ page.version.version }}/bool.md %}) | A Boolean value. | `true`
 [`BYTES`]({% link {{ page.version.version }}/bytes.md %}) | A string of binary characters. | `b'\141\061\142\062\143\063'`
 [`COLLATE`]({% link {{ page.version.version }}/collate.md %}) | The `COLLATE` feature lets you sort [`STRING`]({% link {{ page.version.version }}/string.md %}) values according to language- and country-specific rules, known as collations.  | `'a1b2c3' COLLATE en`
+[`CITEXT`]({% link {{ page.version.version }}/citext.md %}) | Case-insensitive text. | `'Roach'`
 [`DATE`]({% link {{ page.version.version }}/date.md %}) | A date.  | `DATE '2016-01-25'`
 [`ENUM`]({% link {{ page.version.version }}/enum.md %}) |  A user-defined data type comprised of a set of static values. | `ENUM ('club, 'diamond', 'heart', 'spade')`
 [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}) | An exact, fixed-point number.  | `1.2345`
