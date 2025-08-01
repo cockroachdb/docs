@@ -20,6 +20,7 @@ To use this feature, select a cluster from the [**Clusters** page](cluster-manag
 - The SQL Shell does not yet support sessions.
 - The SQL Shell is not available for CockroachDB {{ site.data.products.advanced }} clusters with [additional security add-ons configured]({% link cockroachcloud/managing-access.md %}).
 - The SQL Shell is available to CockroachDB {{ site.data.products.cloud }} users with the [Cluster Admin role]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features).
+- The SQL Shell does not support the [`CALL` statement]({% link {{ site.current_cloud_version }}/call.md %}) used to invoke a stored procedure.
 
 ## Overview
 
