@@ -178,7 +178,7 @@ Cockroach Labs **strongly** recommends the following:
 | `--replicator-flags`                                 | If continuous [replication](#load-data-and-replicate-changes) is enabled with `--mode data-load-and-replication`, `--mode replication-only`, or `--mode failback`, specify [replication flags](#replication-flags) to override. For example: `--replicator-flags "--tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key"`                                                                                                                                                                                                                                                                                        |
 | `--row-batch-size`                                   | Number of rows per shard to export at a time. See [Best practices](#best-practices).<br><br>**Default:** `100000`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `--schema-filter`                                    | Move schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `--skip-pk-match`                                    | Skip primary-key matching to allow data load when source or target tables have missing or mismatched primary keys. Disables sharding and bypasses `--export-concurrency` and `--row-batch-size` settings. Refer to [Skip primary key matching](#skip-primary-key-matching).<br><br>**Default:** `false`                                                                                                                                                                                                                                                                                                                           |
+| `--skip-pk-check`                                    | Skip primary-key matching to allow data load when source or target tables have missing or mismatched primary keys. Disables sharding and bypasses `--export-concurrency` and `--row-batch-size` settings. Refer to [Skip primary key matching](#skip-primary-key-matching).<br><br>**Default:** `false`                                                                                                                                                                                                                                                                                                                           |
 | `--table-concurrency`                                | Number of tables to export at a time. The number of concurrent threads is the product of `--export-concurrency` and `--table-concurrency`.<br><br>**Default:** `4`                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `--table-exclusion-filter`                           | Exclude tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>This value **cannot** be set to `'.*'`, which would cause every table to be excluded. <br><br>**Default:** Empty string                                                                                                                                                                                                                                                                                                                                                                                   |
 | `--table-filter`                                     | Move tables that match a specified [POSIX regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -719,7 +719,7 @@ This does not apply when [`drop-on-target-and-recreate`](#target-table-handling)
 - A source table is missing a primary key.
 - A source and table primary key have mismatching types.
 	{{site.data.alerts.callout_success}}
-	These restrictions (missing or mismatching primary keys) can be bypassed with [`--skip-pk-match`](#skip-primary-key-matching).
+	These restrictions (missing or mismatching primary keys) can be bypassed with [`--skip-pk-check`](#skip-primary-key-matching).
 	{{site.data.alerts.end}}
 
 - A [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) primary key has a different [collation]({% link {{site.current_cloud_version}}/collate.md %}) on the source and target.
@@ -735,13 +735,13 @@ This does not apply when [`drop-on-target-and-recreate`](#target-table-handling)
 
 #### Skip primary key matching
 
-`--skip-pk-match` removes the [requirement that source and target tables share matching primary keys](#exit-early) for data load. When this flag is set:
+`--skip-pk-check` removes the [requirement that source and target tables share matching primary keys](#exit-early) for data load. When this flag is set:
 
 - The data load proceeds even if the source or target table lacks a primary key, or if their primary key columns do not match.
 - Sharding is disabled. Each table is exported in a single batch within one shard, bypassing `--export-concurrency` and `--row-batch-size`. As a result, memory usage and execution time may increase due to full table scans.
 - If the source table contains duplicate rows but the target has [`PRIMARY KEY`]({% link {{ site.current_cloud_version }}/primary-key.md %}) or [`UNIQUE`]({% link {{ site.current_cloud_version }}/unique.md %}) constraints, duplicate rows are deduplicated during import.
 
-When `--skip-pk-match` is set, all tables are treated as if they lack a primary key, and are thus exported in a single unsharded batch. To avoid performance issues, use this flag with `--table-filter` to target only tables **without** a primary key.
+When `--skip-pk-check` is set, all tables are treated as if they lack a primary key, and are thus exported in a single unsharded batch. To avoid performance issues, use this flag with `--table-filter` to target only tables **without** a primary key.
 
 For example:
 
@@ -750,10 +750,10 @@ For example:
 molt fetch \
   --mode data-load \
   --table-filter 'nopktbl' \
-  --skip-pk-match
+  --skip-pk-check
 ~~~
 
-Example log output when `--skip-pk-match` is enabled:
+Example log output when `--skip-pk-check` is enabled:
 
 ~~~json
 {"level":"info","message":"sharding is skipped for table public.nopktbl - flag skip-pk-check is specified and thus no PK for source table is specified"}
