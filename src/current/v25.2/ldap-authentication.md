@@ -107,7 +107,7 @@ SET CLUSTER SETTING server.ldap_authentication.client.tls_key = '<PEM_ENCODED_KE
 Before LDAP authentication can be used for a user, the username must be created directly in CockroachDB. You will need to establish an automated method for keeping users in sync with the directory server, creating and dropping them as needed.
 
 {{site.data.alerts.callout_info}}
-As of v25.3, CockroachDB can automatically provision users during their first successful LDAP authentication. Refer to the [latest version]({% link stable/ldap-authentication.md %}) of this page.
+As of v25.3, CockroachDB can automatically provision users during their first successful LDAP authentication. Refer to the [latest version]({% link {{ site.versions.stable }}/ldap-authentication.md %}) of this page.
 {{site.data.alerts.end}}
 
 For Active Directory deployments, the CockroachDB username can typically be set to match the `sAMAccountName` field from the `user` object. This field name would need to be specified in the HBA configuration using `ldapsearchattribute=sAMAccountName`.
