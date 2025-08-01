@@ -115,7 +115,7 @@ SELECT add(3,5) as sum;
 
 ### Call a UDF from a view
 
-You can include UDF calls in a view definition. The function is invoked each time the view is queried. A [materialized view]({% link {{ page.version.version }}/views.md %}#materialized-views) will invoke the function only when the view is created or refreshed.
+You can include UDF calls in a [view]({% link {{ page.version.version }}/views.md %}) definition. The function is invoked each time the view is queried. A [materialized view]({% link {{ page.version.version }}/views.md %}#materialized-views) will invoke the function only when the view is created or refreshed.
 
 Refer to [Create a view that references routines]({% link {{ page.version.version }}/create-view.md %}#create-a-view-that-references-routines).
 
