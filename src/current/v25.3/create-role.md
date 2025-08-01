@@ -68,10 +68,10 @@ $ cockroach sql --certs-dir=certs
 ~~~
 
 ~~~
-username | options | member_of
----------+---------+------------
-admin    |         | {}
-root     |         | {admin}
+username | options | member_of | estimated_last_login_time
+---------+---------+-----------+------------------------------
+admin    | {}      | {}        | NULL
+root     | {}      | {admin}   | NULL
 (2 rows)
 ~~~
 
@@ -92,11 +92,11 @@ SHOW ROLES;
 ~~~
 
 ~~~
- username  | options | member_of
- ----------+---------+------------
-admin      |         | {}
-no_options | NOLOGIN | {}
-root       |         | {admin}
+username   | options   | member_of | estimated_last_login_time
+-----------+-----------+-----------+------------------------------
+admin      | {}        | {}        | NULL
+no_options | {NOLOGIN} | {}        | NULL
+root       | {}        | {admin}   | NULL
 (3 rows)
 ~~~
 
@@ -113,12 +113,12 @@ SHOW ROLES;
 ~~~
 
 ~~~
- username  |                options                | member_of
------------+---------------------------------------+------------
-admin      |                                       | {}
-can_login  | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-no_options | NOLOGIN                               | {}
-root       |                                       | {admin}
+ username  |                     options                     | member_of | estimated_last_login_time
+-----------+-------------------------------------------------+-----------+------------------------------
+admin      | {}                                              | {}        | NULL
+can_login  | {VALID UNTIL=2025-10-10 00:00:00+00:00}         | {}        | NULL
+no_options | {NOLOGIN}                                       | {}        | NULL
+root       | {}                                              | {admin}   | NULL
 (4 rows)
 ~~~
 
@@ -136,13 +136,13 @@ SHOW ROLES;
 ~~~
 
 ~~~
- username  |                options                | member_of
------------+---------------------------------------+------------
-admin      |                                       | {}
-can_login  | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-no_options | NOLOGIN                               | {}
-no_password| NOLOGIN                               | {}
-root       |                                       | {admin}
+ username  |                     options                     | member_of | estimated_last_login_time
+-----------+-------------------------------------------------+-----------+------------------------------
+admin      | {}                                              | {}        | NULL
+can_login  | {VALID UNTIL=2025-10-10 00:00:00+00:00}         | {}        | NULL
+no_options | {NOLOGIN}                                       | {}        | NULL
+no_password| {NOLOGIN}                                       | {}        | NULL
+root       | {}                                              | {admin}   | NULL
 (5 rows)
 ~~~
 
@@ -159,14 +159,14 @@ SHOW ROLES;
 ~~~
 
 ~~~
-   username     |                options                | member_of
-----------------+---------------------------------------+------------
-admin           |                                       | {}
-can_create_role | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
-can_login       | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-no_options      | NOLOGIN                               | {}
-no_password     | NOLOGIN                               | {}
-root            |                                       | {admin}
+   username     |                     options                     | member_of | estimated_last_login_time
+----------------+-------------------------------------------------+-----------+------------------------------
+admin           | {}                                              | {}        | NULL
+can_create_role | {CREATELOGIN,CREATEROLE,NOLOGIN}                | {}        | NULL
+can_login       | {VALID UNTIL=2025-10-10 00:00:00+00:00}         | {}        | NULL
+no_options      | {NOLOGIN}                                       | {}        | NULL
+no_password     | {NOLOGIN}                                       | {}        | NULL
+root            | {}                                              | {admin}   | NULL
 (6 rows)
 ~~~
 
@@ -183,15 +183,15 @@ SHOW ROLES;
 ~~~
 
 ~~~
-      username        |                options                | member_of
-----------------------+---------------------------------------+------------
-admin                 |                                       | {}
-can_create_db         | CREATEDB, NOLOGIN                     | {}
-can_create_role       | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
-can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-no_options            | NOLOGIN                               | {}
-no_password           | NOLOGIN                               | {}
-root                  |                                       | {admin}
+      username        |                     options                     | member_of | estimated_last_login_time
+----------------------+-------------------------------------------------+-----------+------------------------------
+admin                 | {}                                              | {}        | NULL
+can_create_db         | {CREATEDB,NOLOGIN}                              | {}        | NULL
+can_create_role       | {CREATELOGIN,CREATEROLE,NOLOGIN}                | {}        | NULL
+can_login             | {VALID UNTIL=2025-10-10 00:00:00+00:00}         | {}        | NULL
+no_options            | {NOLOGIN}                                       | {}        | NULL
+no_password           | {NOLOGIN}                                       | {}        | NULL
+root                  | {}                                              | {admin}   | NULL
 (7 rows)
 ~~~
 
@@ -208,17 +208,17 @@ SHOW ROLES;
 ~~~
 
 ~~~
-      username        |                options                | member_of
-----------------------+---------------------------------------+------------
-admin                 |                                       | {}
-can_control_job       | CONTROLJOB, NOLOGIN                   | {}
-can_create_db         | CREATEDB, NOLOGIN                     | {}
-can_create_role       | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
-can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-manage_auth_for_roles | CREATELOGIN, NOLOGIN                  | {}
-no_options            | NOLOGIN                               | {}
-no_password           | NOLOGIN                               | {}
-root                  |                                       | {admin}
+      username        |                     options                     | member_of | estimated_last_login_time
+----------------------+-------------------------------------------------+-----------+------------------------------
+admin                 | {}                                              | {}        | NULL
+can_control_job       | {CONTROLJOB,NOLOGIN}                            | {}        | NULL
+can_create_db         | {CREATEDB,NOLOGIN}                              | {}        | NULL
+can_create_role       | {CREATELOGIN,CREATEROLE,NOLOGIN}                | {}        | NULL
+can_login             | {VALID UNTIL=2025-10-10 00:00:00+00:00}         | {}        | NULL
+manage_auth_for_roles | {CREATELOGIN,NOLOGIN}                           | {}        | NULL
+no_options            | {NOLOGIN}                                       | {}        | NULL
+no_password           | {NOLOGIN}                                       | {}        | NULL
+root                  | {}                                              | {admin}   | NULL
 (8 rows)
 ~~~
 
@@ -235,17 +235,17 @@ SHOW ROLES;
 ~~~
 
 ~~~
-      username        |                options                | member_of
-----------------------+---------------------------------------+------------
-admin                 |                                       | {}
-can_control_job       | CONTROLJOB, NOLOGIN                   | {}
-can_create_db         | CREATEDB, NOLOGIN                     | {}
-can_create_role       | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
-can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-can_manage_queries    | CANCELQUERY, NOLOGIN, VIEWACTIVITY    | {}
-no_options            | NOLOGIN                               | {}
-no_password           | NOLOGIN                               | {}
-root                  |                                       | {admin}
+      username        |                     options                     | member_of | estimated_last_login_time
+----------------------+-------------------------------------------------+-----------+------------------------------
+admin                 | {}                                              | {}        | NULL
+can_control_job       | {CONTROLJOB,NOLOGIN}                            | {}        | NULL
+can_create_db         | {CREATEDB,NOLOGIN}                              | {}        | NULL
+can_create_role       | {CREATELOGIN,CREATEROLE,NOLOGIN}                | {}        | NULL
+can_login             | {VALID UNTIL=2025-10-10 00:00:00+00:00}         | {}        | NULL
+can_manage_queries    | {CANCELQUERY,NOLOGIN,VIEWACTIVITY}              | {}        | NULL
+no_options            | {NOLOGIN}                                       | {}        | NULL
+no_password           | {NOLOGIN}                                       | {}        | NULL
+root                  | {}                                              | {admin}   | NULL
 (9 rows)
 ~~~
 
@@ -262,18 +262,18 @@ SHOW ROLES;
 ~~~
 
 ~~~
-       username        |                options                | member_of
------------------------+---------------------------------------+------------
-admin                  |                                       | {}
-can_control_changefeed | CONTROLCHANGEFEED, NOLOGIN            | {}
-can_control_job        | CONTROLJOB, NOLOGIN                   | {}
-can_create_db          | CREATEDB, NOLOGIN                     | {}
-can_create_role        | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
-can_login              | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-can_manage_queries     | CANCELQUERY, NOLOGIN, VIEWACTIVITY    | {}
-no_options             | NOLOGIN                               | {}
-no_password            | NOLOGIN                               | {}
-root                   |                                       | {admin}
+       username        |                     options                     | member_of | estimated_last_login_time
+-----------------------+-------------------------------------------------+-----------+------------------------------
+admin                  | {}                                              | {}        | NULL
+can_control_changefeed | {CONTROLCHANGEFEED,NOLOGIN}                     | {}        | NULL
+can_control_job        | {CONTROLJOB,NOLOGIN}                            | {}        | NULL
+can_create_db          | {CREATEDB,NOLOGIN}                              | {}        | NULL
+can_create_role        | {CREATELOGIN,CREATEROLE,NOLOGIN}                | {}        | NULL
+can_login              | {VALID UNTIL=2025-10-10 00:00:00+00:00}         | {}        | NULL
+can_manage_queries     | {CANCELQUERY,NOLOGIN,VIEWACTIVITY}              | {}        | NULL
+no_options             | {NOLOGIN}                                       | {}        | NULL
+no_password            | {NOLOGIN}                                       | {}        | NULL
+root                   | {}                                              | {admin}   | NULL
 (10 rows)
 ~~~
 
@@ -290,19 +290,19 @@ SHOW ROLES;
 ~~~
 
 ~~~
-         username          |                options                | member_of
----------------------------+---------------------------------------+------------
-admin                      |                                       | {}
-can_control_changefeed     | CONTROLCHANGEFEED, NOLOGIN            | {}
-can_control_job            | CONTROLJOB, NOLOGIN                   | {}
-can_create_db              | CREATEDB, NOLOGIN                     | {}
-can_create_role            | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
-can_login                  | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-can_manage_queries         | CANCELQUERY, NOLOGIN, VIEWACTIVITY    | {}
-can_modify_cluster_setting | MODIFYCLUSTERSETTING, NOLOGIN         | {}
-no_options                 | NOLOGIN                               | {}
-no_password                | NOLOGIN                               | {}
-root                       |                                       | {admin}
+         username          |                     options                     | member_of | estimated_last_login_time
+---------------------------+-------------------------------------------------+-----------+------------------------------
+admin                      | {}                                              | {}        | NULL
+can_control_changefeed     | {CONTROLCHANGEFEED,NOLOGIN}                     | {}        | NULL
+can_control_job            | {CONTROLJOB,NOLOGIN}                            | {}        | NULL
+can_create_db              | {CREATEDB,NOLOGIN}                              | {}        | NULL
+can_create_role            | {CREATELOGIN,CREATEROLE,NOLOGIN}                | {}        | NULL
+can_login                  | {VALID UNTIL=2025-10-10 00:00:00+00:00}         | {}        | NULL
+can_manage_queries         | {CANCELQUERY,NOLOGIN,VIEWACTIVITY}              | {}        | NULL
+can_modify_cluster_setting | {MODIFYCLUSTERSETTING,NOLOGIN}                  | {}        | NULL
+no_options                 | {NOLOGIN}                                       | {}        | NULL
+no_password                | {NOLOGIN}                                       | {}        | NULL
+root                       | {}                                              | {admin}   | NULL
 (11 rows)
 ~~~
 

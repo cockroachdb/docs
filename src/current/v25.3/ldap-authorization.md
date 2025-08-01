@@ -4,13 +4,18 @@ summary: Learn how to configure role-based access control (authorization) using 
 toc: true
 ---
 
-You can configure your cluster to assign [roles]({% link {{ page.version.version }}/ldap-authentication.md %}) based on a user's group membership in an LDAP service, such as Active Directory or Microsoft Entra ID.
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
-When enabled:
+You can configure your cluster to assign [roles]({% link {{ page.version.version }}/ldap-authentication.md %}) based on a user's group membership in an LDAP service, such as Active Directory or Microsoft Entra ID. Users will inherit the privileges that you have configured for the roles they are assigned. 
+
+If LDAP authorization is enabled:
 
 1. When a client connects to the cluster using LDAP, the cluster looks up the user's group membership in the LDAP service.
 1. Each LDAP group is mapped to a cluster role using the group's Common Name (CN) in the LDAP service.
 1. The user is granted each corresponding role, and roles that no longer match the user's groups are revoked.
+1. {% include_cached new-in.html version="v25.3" %}In conjunction with [automatic user provisioning]({% link {{ page.version.version }}/ldap-authentication.md %}#option-1-automatic-user-provisioning-recommended) if enabled, users are created automatically during their first authentication and simultaneously receive specified role memberships.
 
 ## Prerequisites
 
@@ -91,10 +96,14 @@ CREATE ROLE crdb_developers;
 GRANT ALL ON DATABASE app TO crdb_developers;
 ~~~
 
+{{site.data.alerts.callout_info}}
+If you are going to use [automatic user provisioning]({% link {{ page.version.version }}/ldap-authentication.md %}#option-1-automatic-user-provisioning-recommended) in conjunction with LDAP authorization, be sure to complete the creation of group roles before enabling automatic user provisioning. Auto-provisioned users will only receive roles for groups that already exist as CockroachDB roles.
+{{site.data.alerts.end}}
+
 ### Step 3: Confirm configuration
 
 1. On the LDAP server, set up test users with memberships in groups that should be synced to CockroachDB users.
-1. When logged in as an admin to CockroachDB, create the matching test users:
+1. If [automatic user provisioning]({% link {{ page.version.version }}/ldap-authentication.md %}#option-1-automatic-user-provisioning-recommended) is not enabled, create the matching test users when logged in as an admin to CockroachDB:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -103,8 +112,25 @@ GRANT ALL ON DATABASE app TO crdb_developers;
     CREATE ROLE username3 LOGIN;
     ~~~
 
-1. Log in to CockroachDB as each test user (refer to [Connect to a cluster using LDAP]({% link {{ page.version.version }}/ldap-authentication.md %})#connect-to-a-cluster-using-ldap).
-1. Using your admin credentials, log in to the CockroachDB SQL shell and run `SHOW ROLES;` to view and verify users and their role assignments.
+    If automatic user provisioning is enabled, users will be created automatically during their first login.
+
+1. Log in to CockroachDB as each test user (refer to [Connect to a cluster using LDAP]({% link {{ page.version.version }}/ldap-authentication.md %}#connect-to-a-cluster-using-ldap)).
+1. Using your admin credentials, log in to the CockroachDB SQL shell and run `SHOW USERS;` to view and verify users and their role assignments.
+
+    For auto-provisioned users, you can identify them by their `PROVISIONSRC` role option:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    -- View all users and their role assignments
+    SHOW USERS;
+    
+    -- Filter for auto-provisioned users
+    SELECT * FROM [SHOW USERS] AS u 
+    WHERE EXISTS (
+        SELECT 1 FROM unnest(u.options) AS opt 
+        WHERE opt LIKE 'PROVISIONSRC=ldap:%'
+    );
+    ~~~
 
 ## Troubleshooting
 

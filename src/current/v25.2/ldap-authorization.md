@@ -4,6 +4,10 @@ summary: Learn how to configure role-based access control (authorization) using 
 toc: true
 ---
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 You can configure your cluster to assign [roles]({% link {{ page.version.version }}/ldap-authentication.md %}) based on a user's group membership in an LDAP service, such as Active Directory or Microsoft Entra ID.
 
 When enabled:

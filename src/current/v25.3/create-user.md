@@ -73,10 +73,10 @@ $ cockroach sql --certs-dir=certs
 ~~~
 
 ~~~
-username | options | member_of
----------+---------+------------
-admin    |         | {}
-root     |         | {admin}
+username | options | member_of | estimated_last_login_time
+---------+---------+-----------+------------------------------
+admin    | {}      | {}        | NULL
+root     | {}      | {admin}   | NULL
 (2 rows)
 ~~~
 
@@ -97,11 +97,11 @@ root@:26257/defaultdb> SHOW USERS;
 ~~~
 
 ~~~
- username  | options | member_of
--------------+---------+------------
-admin      |         | {}
-no_options |         | {}
-root       |         | {admin}
+ username  | options | member_of | estimated_last_login_time
+-----------+---------+-----------+------------------------------
+admin      | {}      | {}        | NULL
+no_options | {}      | {}        | NULL
+root       | {}      | {admin}   | NULL
 (3 rows)
 ~~~
 
@@ -121,12 +121,12 @@ root@:26257/defaultdb> SHOW USERS;
 ~~~
 
 ~~~
-  username    |                options                | member_of
---------------+---------------------------------------+------------
-admin         |                                       | {}
-no_options    |                                       | {}
-root          |                                       | {admin}
-with_password | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+  username    |                  options                  | member_of | estimated_last_login_time
+--------------+-------------------------------------------+-----------+------------------------------
+admin         | {}                                        | {}        | NULL
+no_options    | {}                                        | {}        | NULL
+root          | {}                                        | {admin}   | NULL
+with_password | {VALID UNTIL=2025-10-10 00:00:00+00:00}   | {}        | NULL
 (4 rows)
 ~~~
 
@@ -144,13 +144,13 @@ root@:26257/defaultdb> SHOW USERS;
 ~~~
 
 ~~~
-  username    |                options                | member_of
---------------+---------------------------------------+------------
-admin         |                                       | {}
-no_options    |                                       | {}
-no_password   |                                       | {}
-root          |                                       | {admin}
-with_password | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+  username    |                  options                  | member_of | estimated_last_login_time
+--------------+-------------------------------------------+-----------+------------------------------
+admin         | {}                                        | {}        | NULL
+no_options    | {}                                        | {}        | NULL
+no_password   | {}                                        | {}        | NULL
+root          | {}                                        | {admin}   | NULL
+with_password | {VALID UNTIL=2025-10-10 00:00:00+00:00}   | {}        | NULL
 (5 rows)
 ~~~
 
@@ -167,14 +167,14 @@ root@:26257/defaultdb> SHOW USERS;
 ~~~
 
 ~~~
-    username     |                options                | member_of
------------------+---------------------------------------+------------
-admin            |                                       | {}
-can_create_users | CREATELOGIN, CREATEROLE               | {}
-no_options       |                                       | {}
-no_password      |                                       | {}
-root             |                                       | {admin}
-with_password    | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+    username     |                  options                  | member_of | estimated_last_login_time
+-----------------+-------------------------------------------+-----------+------------------------------
+admin            | {}                                        | {}        | NULL
+can_create_users | {CREATELOGIN,CREATEROLE}                  | {}        | NULL
+no_options       | {}                                        | {}        | NULL
+no_password      | {}                                        | {}        | NULL
+root             | {}                                        | {admin}   | NULL
+with_password    | {VALID UNTIL=2025-10-10 00:00:00+00:00}   | {}        | NULL
 (6 rows)
 ~~~
 
@@ -191,15 +191,15 @@ root@:26257/defaultdb> SHOW USERS;
 ~~~
 
 ~~~
-      username        |                options                | member_of
-----------------------+---------------------------------------+------------
-admin                 |                                       | {}
-can_create_db         | CREATEDB                              | {}
-can_create_users      | CREATELOGIN, CREATEROLE               | {}
-no_options            |                                       | {}
-no_password           |                                       | {}
-root                  |                                       | {admin}
-with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+      username        |                  options                  | member_of | estimated_last_login_time
+----------------------+-------------------------------------------+-----------+------------------------------
+admin                 | {}                                        | {}        | NULL
+can_create_db         | {CREATEDB}                                | {}        | NULL
+can_create_users      | {CREATELOGIN,CREATEROLE}                  | {}        | NULL
+no_options            | {}                                        | {}        | NULL
+no_password           | {}                                        | {}        | NULL
+root                  | {}                                        | {admin}   | NULL
+with_password         | {VALID UNTIL=2025-10-10 00:00:00+00:00}   | {}        | NULL
 (7 rows)
 ~~~
 
@@ -216,16 +216,16 @@ root@:26257/defaultdb> SHOW USERS;
 ~~~
 
 ~~~
-      username        |                options                | member_of
-----------------------+---------------------------------------+------------
-admin                 |                                       | {}
-can_control_job       | CONTROLJOB                            | {}
-can_create_db         | CREATEDB                              | {}
-can_create_users      | CREATELOGIN, CREATEROLE               | {}
-no_options            |                                       | {}
-no_password           |                                       | {}
-root                  |                                       | {admin}
-with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+      username        |                  options                  | member_of | estimated_last_login_time
+----------------------+-------------------------------------------+-----------+------------------------------
+admin                 | {}                                        | {}        | NULL
+can_control_job       | {CONTROLJOB}                              | {}        | NULL
+can_create_db         | {CREATEDB}                                | {}        | NULL
+can_create_users      | {CREATELOGIN,CREATEROLE}                  | {}        | NULL
+no_options            | {}                                        | {}        | NULL
+no_password           | {}                                        | {}        | NULL
+root                  | {}                                        | {admin}   | NULL
+with_password         | {VALID UNTIL=2025-10-10 00:00:00+00:00}   | {}        | NULL
 (8 rows)
 ~~~
 
@@ -242,17 +242,17 @@ root@:26257/defaultdb> SHOW USERS;
 ~~~
 
 ~~~
-      username        |                options                | member_of
-----------------------+---------------------------------------+------------
-admin                 |                                       | {}
-can_control_job       | CONTROLJOB                            | {}
-can_create_db         | CREATEDB                              | {}
-can_create_users      | CREATELOGIN, CREATEROLE               | {}
-can_manage_queries    | CANCELQUERY, VIEWACTIVITY             | {}
-no_options            |                                       | {}
-no_password           |                                       | {}
-root                  |                                       | {admin}
-with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+      username        |                  options                  | member_of | estimated_last_login_time
+----------------------+-------------------------------------------+-----------+------------------------------
+admin                 | {}                                        | {}        | NULL
+can_control_job       | {CONTROLJOB}                              | {}        | NULL
+can_create_db         | {CREATEDB}                                | {}        | NULL
+can_create_users      | {CREATELOGIN,CREATEROLE}                  | {}        | NULL
+can_manage_queries    | {CANCELQUERY,VIEWACTIVITY}                | {}        | NULL
+no_options            | {}                                        | {}        | NULL
+no_password           | {}                                        | {}        | NULL
+root                  | {}                                        | {admin}   | NULL
+with_password         | {VALID UNTIL=2025-10-10 00:00:00+00:00}   | {}        | NULL
 (9 rows)
 ~~~
 
@@ -269,18 +269,18 @@ root@:26257/defaultdb> SHOW USERS;
 ~~~
 
 ~~~
-       username        |                options                | member_of
------------------------+---------------------------------------+------------
-admin                  |                                       | {}
-can_control_changefeed | CONTROLCHANGEFEED                     | {}
-can_control_job        | CONTROLJOB                            | {}
-can_create_db          | CREATEDB                              | {}
-can_create_users       | CREATELOGIN, CREATEROLE               | {}
-can_manage_queries     | CANCELQUERY, VIEWACTIVITY             | {}
-no_options             |                                       | {}
-no_password            |                                       | {}
-root                   |                                       | {admin}
-with_password          | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+       username        |                  options                  | member_of | estimated_last_login_time
+-----------------------+-------------------------------------------+-----------+------------------------------
+admin                  | {}                                        | {}        | NULL
+can_control_changefeed | {CONTROLCHANGEFEED}                       | {}        | NULL
+can_control_job        | {CONTROLJOB}                              | {}        | NULL
+can_create_db          | {CREATEDB}                                | {}        | NULL
+can_create_users       | {CREATELOGIN,CREATEROLE}                  | {}        | NULL
+can_manage_queries     | {CANCELQUERY,VIEWACTIVITY}                | {}        | NULL
+no_options             | {}                                        | {}        | NULL
+no_password            | {}                                        | {}        | NULL
+root                   | {}                                        | {admin}   | NULL
+with_password          | {VALID UNTIL=2025-10-10 00:00:00+00:00}   | {}        | NULL
 (10 rows)
 ~~~
 
@@ -297,19 +297,19 @@ root@:26257/defaultdb> SHOW USERS;
 ~~~
 
 ~~~
-         username          |                options                | member_of
----------------------------+---------------------------------------+------------
-admin                      |                                       | {}
-can_control_changefeed     | CONTROLCHANGEFEED                     | {}
-can_control_job            | CONTROLJOB                            | {}
-can_create_db              | CREATEDB                              | {}
-can_create_users           | CREATELOGIN, CREATEROLE               | {}
-can_manage_queries         | CANCELQUERY, VIEWACTIVITY             | {}
-can_modify_cluster_setting | MODIFYCLUSTERSETTING                  | {}
-no_options                 |                                       | {}
-no_password                |                                       | {}
-root                       |                                       | {admin}
-with_password              | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+         username          |                  options                  | member_of | estimated_last_login_time
+---------------------------+-------------------------------------------+-----------+------------------------------
+admin                      | {}                                        | {}        | NULL
+can_control_changefeed     | {CONTROLCHANGEFEED}                       | {}        | NULL
+can_control_job            | {CONTROLJOB}                              | {}        | NULL
+can_create_db              | {CREATEDB}                                | {}        | NULL
+can_create_users           | {CREATELOGIN,CREATEROLE}                  | {}        | NULL
+can_manage_queries         | {CANCELQUERY,VIEWACTIVITY}                | {}        | NULL
+can_modify_cluster_setting | {MODIFYCLUSTERSETTING}                    | {}        | NULL
+no_options                 | {}                                        | {}        | NULL
+no_password                | {}                                        | {}        | NULL
+root                       | {}                                        | {admin}   | NULL
+with_password              | {VALID UNTIL=2025-10-10 00:00:00+00:00}   | {}        | NULL
 (11 rows)
 ~~~
 
