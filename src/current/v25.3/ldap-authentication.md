@@ -4,15 +4,19 @@ summary: Learn how to configure CockroachDB for user authentication using LDAP-c
 toc: true
 ---
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 CockroachDB supports authentication and authorization using LDAP-compatible directory services, such as Active Directory and Microsoft Entra ID. This allows you to integrate your cluster with your organization's existing identity infrastructure for centralized user management and access control.
 
-This page describes how to configure CockroachDB user authentication using LDAP. You can additionally configure CockroachDB to use the same directory service for user [authorization]({% link v24.3/ldap-authorization.md %}) (role-based access control), which assigns CockroachDB roles to users based on their group memberships in the directory.
+This page describes how to configure CockroachDB user authentication using LDAP. You can additionally configure CockroachDB to use the same directory service for user [authorization]({% link {{ page.version.version }}/ldap-authorization.md %}) (role-based access control), which assigns CockroachDB roles to users based on their group memberships in the directory.
 
 ## Overview
 
 LDAP authentication in CockroachDB works with LDAP-compatible directory services, including Microsoft Entra ID, Active Directory, and OpenLDAP. Secure LDAPS connectivity over TLS is required.
 
-While LDAP configuration is cluster-specific, each request to authenticate a user in CockroachDB is handled by the node that receives it. When LDAP is enabled, the node handles each authentication request  using a "search and bind" approach:
+While LDAP configuration is cluster-specific, each request to authenticate a user in CockroachDB is handled by the node that receives it. When LDAP is enabled, the node handles each authentication request using a "search and bind" approach:
 
 1. Find the user record
   - The node connects to the LDAP server using a dedicated directory access account.
@@ -21,12 +25,16 @@ While LDAP configuration is cluster-specific, each request to authenticate a use
   - If a matching record was found, the cluster attempts to verify the user's identity through another LDAP request, this time using the credentials (username and password) provided by that user.
   - If this LDAP bind operation succeeds, the user is authenticated to the CockroachDB cluster.
 1. Authorize the user (optional)
-  - If [LDAP authorization]({% link v24.3/ldap-authorization.md %}) is also enabled, an additional request is sent to retrieve the groups to which the user is assigned, using configurable criteria.
+  - If [LDAP authorization]({% link {{ page.version.version }}/ldap-authorization.md %}) is also enabled, an additional request is sent to retrieve the groups to which the user is assigned, using configurable criteria.
   - If group memberships are found, any existing CockroachDB roles that match these group names are assigned to the user.
 
 These requests use a node's existing connection to the LDAP server, if one is open. Otherwise, the node establishes a new connection. The connection remains open for handling additional LDAP requests until it is closed by the LDAP server, based on its timeout setting.
 
-Because CockroachDB maintains no more than one LDAP connection per node, for a cluster with `n` nodes, you can expect up to `n` concurrent LDAP connections. 
+Because CockroachDB maintains no more than one LDAP connection per node, for a cluster with `n` nodes, you can expect up to `n` concurrent LDAP connections.
+
+{{site.data.alerts.callout_info}}
+LDAP authentication cannot be used for the `root` user or other [reserved identities]({% link {{ page.version.version }}/security-reference/authorization.md %}#reserved-identities). Credentials for `root` must be managed separately using password authentication to ensure continuous administrative access regardless of LDAP availability.
+{{site.data.alerts.end}}
 
 ## Configuration
 
@@ -36,14 +44,15 @@ Because CockroachDB maintains no more than one LDAP connection per node, for a c
 - Network connectivity on port 636 for LDAPS.
 - A service account (bind DN) with permissions to search the directory for basic information about users and groups. For example, in Microsoft Entra ID, a [service principal](https://learn.microsoft.com/entra/architecture/secure-service-accounts) with the Directory Readers role.
 - The LDAP server's CA certificate, if using a custom CA not already trusted by the CockroachDB host.
+- Verification that the attribute values that will become CockroachDB usernames meet the CockroachDB [requirements for usernames]({% link {{ page.version.version }}/create-user.md %}#user-names).
 
 Before you begin, it may be useful to enable authentication logging, which can help you confirm successful configuration or troubleshoot issues. For details, refer to [Troubleshooting](#troubleshooting).
 
 ### Step 1: Enable redaction of sensitive cluster settings
 
-You will set LDAP bind credentials for the service account that enables this integration using the cluster setting `server.host_based_authentication.configuration`. You will also configure the mapping of external identities to CockroachDB SQL users using the cluster settings `server.identity_map.configuration`.
+For this integration, you will need to store LDAP bind credentials for the service account that enables the integration in the cluster setting `server.host_based_authentication.configuration`. You will also configure the mapping of external identities to CockroachDB SQL users with the cluster setting `server.identity_map.configuration`. In addition, for a custom CA configuration, you may need to store certificate and key details in specified cluster settings. 
 	
-To redact these two settings, refer to [Sensitive settings]({% link {{ page.version.version }}/cluster-settings.md %}#sensitive-settings).
+It is highly recommended that you redact these settings, so that only authorized users, such as members of the `admin` role, can view them. To enable this redaction and learn about its permission scheme, refer to [Sensitive settings]({% link {{ page.version.version }}/cluster-settings.md %}#sensitive-settings).
 
 ### Step 2: Configure Host-Based Authentication (HBA)
 
@@ -79,14 +88,14 @@ If you also intend to configure LDAP Authorization, you will need to include an 
 
 If, for LDAPS, you are using a certificate signed by a custom Certificate Authority (CA) that is not in the system's trusted CA store, you will need to configure the CA certificate. This step is only necessary when using certificates signed by your organization's private CA or other untrusted CA.
 
-Set the custom CA certificate:
+**Set the custom CA certificate:**
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SET CLUSTER SETTING server.ldap_authentication.domain_ca = '<PEM_ENCODED_CA_CERT>';
+SET CLUSTER SETTING server.ldap_authentication.domain.custom_ca = '<PEM_ENCODED_CA_CERT>';
 ~~~
 
-Configure a client certificate for mTLS if required:
+**Configure a client certificate for mTLS if required:**
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -94,43 +103,46 @@ SET CLUSTER SETTING server.ldap_authentication.client.tls_certificate = '<PEM_EN
 SET CLUSTER SETTING server.ldap_authentication.client.tls_key = '<PEM_ENCODED_KEY>';
 ~~~
 
-### Step 4: Configure user provisioning
+### Step 4: Configure user creation
 
-{{site.data.alerts.callout_info}}
-LDAP authentication cannot be used for the `root` user or other [reserved identities]({% link {{ page.version.version }}/security-reference/authorization.md %}#reserved-identities). Credentials for `root` must be managed separately using password authentication to ensure continuous administrative access regardless of LDAP availability.
-{{site.data.alerts.end}}
-
-CockroachDB supports two approaches for managing LDAP users:
+CockroachDB supports two approaches for the creation of users who will authenticate via LDAP:
 
 #### Option 1: Automatic user provisioning (recommended)
 
 {% include_cached new-in.html version="v25.3" %}
 
-With automatic user provisioning enabled, CockroachDB creates users automatically during their first successful LDAP authentication. This eliminates the need to manually create and maintain user accounts.
+With automatic user provisioning, CockroachDB creates users automatically during their first successful LDAP authentication. This eliminates the need for custom scrpting to create user accounts.
 
-To enable automatic user provisioning:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET CLUSTER SETTING server.provisioning.ldap.enabled = true;
-~~~
-
-When automatic provisioning is enabled:
+When enabled:
 
 - Users are created automatically upon successful LDAP authentication.
 - All auto-provisioned users receive a `PROVISIONSRC` role option set to `ldap:<ldap_server>`.
 - The `estimated_last_login_time` is tracked for auditing purposes.
 - Auto-provisioned users cannot change their own passwords (managed via LDAP only).
 
-For Active Directory deployments, the CockroachDB username will match the `sAMAccountName` field from the `user` object. This field name should be specified in the HBA configuration using `ldapsearchattribute=sAMAccountName`.
+For Active Directory deployments, the CockroachDB username will match the `sAMAccountName` field from the `user` object. This field name should be specified in the HBA configuration using `ldapsearchattribute=sAMAccountName`. Ensure that the values in the field you are using for `ldapsearchattribute` meet the CockroachDB [requirements for usernames]({% link {{ page.version.version }}/create-user.md %}#user-names).
 
 {{site.data.alerts.callout_info}}
-SQL usernames must comply with CockroachDB's [username requirements]({% link {{ page.version.version }}/create-user.md %}#user-names). Ensure that the values in the field you are using for `ldapsearchattribute` meet these requirements.
+Before you enable automatic user provisioning, it is recommended that you enable [LDAP Authorization]({% link {{ page.version.version }}/ldap-authorization.md %}). This will ensure that upon initial login, new CockroachDB users are members of the intended CockroachDB roles, with the privileges they confer, according to users' group memberships in the directory. Otherwise, functionality may be limited for a new user until your alternative process applies roles or privileges.
+
+If you choose to manage CockroachDB role memberships and privileges directly, you could script the required [`GRANT`]({% link {{ page.version.version }}/grant.md %}) commands to be [executed]({% link {{ page.version.version }}/cockroach-sql.md %}#general) as needed. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+cockroach sql --execute="GRANT SYSTEM MODIFYCLUSTERSETTING TO e.cobb" --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
+~~~
 {{site.data.alerts.end}}
 
-#### Option 2: Manual user management
+**To enable automatic user provisioning:**
 
-Alternatively, you can manually manage users by creating them before LDAP authentication is used. This approach provides explicit control over user creation.
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING server.provisioning.ldap.enabled = true;
+~~~
+
+#### Option 2: Manual/scripted user creation
+
+Alternatively, you can manage users by directly creating them before LDAP authentication is used. This approach provides explicit control over user creation.
 
 To create a single user:
 
@@ -201,19 +213,80 @@ Auto-provisioned users can be identified by their `PROVISIONSRC` role option:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
--- View all users with their role options
-SHOW USERS;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
--- Query for users provisioned from a specific LDAP server
+-- View all auto-provisioned users (users with PROVISIONSRC role option)
 SELECT * FROM [SHOW USERS] AS u 
 WHERE EXISTS (
   SELECT 1 FROM unnest(u.options) AS opt 
   WHERE opt LIKE 'PROVISIONSRC=ldap:%'
 );
 ~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- View all manually created users (users without PROVISIONSRC role option)
+SELECT * FROM [SHOW USERS] AS u 
+WHERE NOT EXISTS (
+  SELECT 1 FROM unnest(u.options) AS opt 
+  WHERE opt LIKE 'PROVISIONSRC=ldap:%'
+);
+~~~
+
+### Cleaning up users removed from Active Directory
+
+Auto-provisioned users who have been removed or deactivated in Active Directory will not be automatically removed from CockroachDB. To identify and clean up these orphaned accounts:
+
+**Step 1: Export auto-provisioned users from CockroachDB**
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Export list of auto-provisioned usernames for comparison with Active Directory
+SELECT u.username FROM [SHOW USERS] AS u 
+WHERE EXISTS (
+  SELECT 1 FROM unnest(u.options) AS opt 
+  WHERE opt LIKE 'PROVISIONSRC=ldap:%'
+);
+~~~
+
+**Step 2: Cross-reference with Active Directory**
+
+Use your organization's directory tools to verify which of these users still exist in Active Directory. For example, you might use PowerShell with Active Directory cmdlets:
+
+```powershell
+# Example PowerShell script to check if users exist in AD
+$cockroachUsers = @("user1", "user2", "user3")  # Replace with actual usernames
+$orphanedUsers = @()
+
+foreach ($user in $cockroachUsers) {
+    try {
+        Get-ADUser -Identity $user -ErrorAction Stop | Out-Null
+    } catch {
+        $orphanedUsers += $user
+        Write-Host "User not found in AD: $user"
+    }
+}
+```
+
+**Step 3: Remove orphaned users**
+
+Before dropping users confirmed to no longer exist in Active Directory, check for any privileges that were granted directly to the user:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Check for direct grants to the user (privileges inherited through roles won't block DROP USER)  
+SHOW GRANTS FOR username;
+~~~
+
+If any direct grants exist, revoke them before dropping the user. For users confirmed to no longer exist in Active Directory:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Remove users that no longer exist in Active Directory
+DROP USER username1, username2, username3;
+~~~
+
+{{site.data.alerts.callout_info}}
+Users cannot be dropped if they have direct privilege grants or own database objects. For complete requirements, see [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %}). When using both automatic user provisioning and LDAP Authorization, consider granting privileges primarily through roles (mapped to AD groups) rather than directly to users to simplify cleanup operations.
+{{site.data.alerts.end}}
 
 ### Login time tracking
 
