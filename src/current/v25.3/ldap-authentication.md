@@ -125,12 +125,7 @@ For Active Directory deployments, the CockroachDB username will match the `sAMAc
 {{site.data.alerts.callout_info}}
 Before you enable automatic user provisioning, it is recommended that you enable [LDAP Authorization]({% link {{ page.version.version }}/ldap-authorization.md %}). This will ensure that upon initial login, new CockroachDB users are members of the intended CockroachDB roles, with the privileges they confer, according to users' group memberships in the directory. Otherwise, functionality may be limited for a new user until your alternative process applies roles or privileges.
 
-If you choose to manage CockroachDB role memberships and privileges directly, you could script the required [`GRANT`]({% link {{ page.version.version }}/grant.md %}) commands to be [executed]({% link {{ page.version.version }}/cockroach-sql.md %}#general) as needed. For example:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-cockroach sql --execute="GRANT SYSTEM MODIFYCLUSTERSETTING TO e.cobb" --host=<servername> --port=<port> --user=<user> --database=<db> --certs-dir=path/to/certs
-~~~
+If you choose to manage CockroachDB role memberships and privileges directly, you could script the required [`GRANT`]({% link {{ page.version.version }}/grant.md %}) commands to be [executed]({% link {{ page.version.version }}/cockroach-sql.md %}#general) as needed.
 {{site.data.alerts.end}}
 
 **To enable automatic user provisioning:**
