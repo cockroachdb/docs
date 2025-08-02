@@ -171,6 +171,87 @@
             ]
           },
           {
+            "title": "Deploy in Kubernetes with CockroachDB Operator",
+            "items": [
+                {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/kubernetes-operator-overview.html"
+                    ]
+                  },
+                  {
+                    "title": "CockroachDB Operator Deployment Guide",
+                    "urls": [
+                      "/${VERSION}/deploy-cockroachdb-with-kubernetes-operator.html"
+                    ]
+                  },
+                  {
+                    "title": "Migrate from Other Kubernetes Deployments",
+                    "items": [
+                    {
+                        "title": "Migrate from Helm StatefulSet",
+                        "urls": [
+                        "/${VERSION}/migrate-cockroachdb-kubernetes-helm.html"
+                        ]
+                    },
+                    {
+                        "title": "Migrate from Public Operator",
+                        "urls": [
+                        "/${VERSION}/migrate-cockroachdb-kubernetes-operator.html"
+                        ]
+                    }
+                    ]
+                  },
+                  {
+                      "title": "Operate CockroachDB with Kubernetes",
+                      "items": [
+                      {
+                          "title": "Pod Scheduling",
+                          "urls": [
+                          "/${VERSION}/schedule-cockroachdb-kubernetes-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Resource Management",
+                          "urls": [
+                          "/${VERSION}/configure-cockroachdb-kubernetes-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Certificate Management",
+                          "urls": [
+                          "/${VERSION}/secure-cockroachdb-kubernetes-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Cluster Scaling",
+                          "urls": [
+                          "/${VERSION}/scale-cockroachdb-kubernetes-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Cluster Monitoring",
+                          "urls": [
+                          "/${VERSION}/monitor-cockroachdb-kubernetes-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Cluster Upgrades",
+                          "urls": [
+                          "/${VERSION}/upgrade-cockroachdb-kubernetes-operator.html"
+                          ]
+                      },
+                      {
+                          "title": "Kubernetes Performance",
+                          "urls": [
+                          "/${VERSION}/kubernetes-operator-performance.html"
+                          ]
+                      }
+                      ]
+                  }
+            ]
+          },
+          {
             "title": "Multi-Region for Self-Hosted Deployments",
             "items": [
                 {
