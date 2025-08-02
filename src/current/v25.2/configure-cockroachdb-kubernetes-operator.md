@@ -1,6 +1,6 @@
 ---
-title: Resource Management with the Kubernetes Operator
-summary: Allocate CPU, memory, and storage resources for a cluster deployed with the Kubernetes Operator.
+title: Resource Management with the CockroachDB Operator
+summary: Allocate CPU, memory, and storage resources for a cluster deployed with the CockroachDB operator.
 toc: true
 toc_not_nested: true
 secure: true
@@ -25,7 +25,7 @@ You can set the CPU and memory resources allocated to the CockroachDB container 
 
 Specify CPU and memory values in `cockroachdb.crdbCluster.resources.limits` and `cockroachdb.crdbCluster.resources.requests` in the values file used to [deploy the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster):
 
-~~~yaml
+~~~ yaml
 cockroachdb:
   crdbCluster:
     resources:
@@ -39,11 +39,12 @@ cockroachdb:
 
 Apply the new settings to the cluster:
 
-```shell
-$ helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
-```
+{% include_cached copy-clipboard.html %}
+~~~ shell
+helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
+~~~
 
-We recommend using identical values for `resources.requests` and `resources.limits`. When setting the new values, note that not all of a pod's resources will be available to the CockroachDB container. This is because a fraction of the CPU and memory is reserved for Kubernetes.
+Cockroach Labs recommends using identical values for `resources.requests` and `resources.limits`. When setting the new values, note that not all of a pod's resources will be available to the CockroachDB container. This is because a fraction of the CPU and memory is reserved for Kubernetes.
 
 {{site.data.alerts.callout_info}}
 If no resource limits are specified, the pods will be able to consume the maximum available CPUs and memory. However, to avoid overallocating resources when another memory-intensive workload is on the same instance, always set resource requests and limits explicitly.
@@ -55,7 +56,7 @@ For more information on how Kubernetes handles resources, see the [Kubernetes do
 
 Each CockroachDB node reserves a portion of its available memory for its cache and for storing temporary data for SQL queries. For more information on these settings, see the [Production Checklist](recommended-production-settings.html#cache-and-sql-memory-size).
 
-The Kubernetes operator dynamically sets cache size and SQL memory size each to 25% (the recommended percentage) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. These values can be modified by adding the `cache` or `max-sql-memory` fields to `cockroachdb.crdbCluster.flags`, which is equivalent to appending `--cache` or `--max-sql-memory` as [cockroach start flags](cockroach-start.html#flags).
+The CockroachDB operator dynamically sets cache size and SQL memory size each to 25% (the recommended percentage) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. These values can be modified by adding the `cache` or `max-sql-memory` fields to `cockroachdb.crdbCluster.flags`, which is equivalent to appending `--cache` or `--max-sql-memory` as [cockroach start flags](cockroach-start.html#flags).
 
 ## Persistent storage
 
@@ -63,7 +64,7 @@ When you start your cluster, Kubernetes dynamically provisions and mounts a pers
 
 The storage capacity of each volume is set in `cockroachdb.crdbCluster.dataStore.volumeClaimTemplate.spec.resources` in the values file used to [deploy the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster):
 
-```yaml
+~~~ yaml
 cockroachdb:
   crdbCluster:
     dataStore:
@@ -72,7 +73,7 @@ cockroachdb:
           resources:
             requests:
               storage: "10Gi"
-```
+~~~
 
 You should provision an appropriate amount of disk storage for your workload. For recommendations on this, see the [Production Checklist](recommended-production-settings.html#storage).
 
@@ -82,7 +83,7 @@ If you discover that you need more capacity, you can expand the persistent volum
 
 Specify a new volume size in the values file used to [deploy the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster):
 
-```yaml
+~~~ yaml
 cockroachdb:
   crdbCluster:
     dataStore:
@@ -91,79 +92,44 @@ cockroachdb:
           resources:
             requests:
               storage: "100Gi"
-```
+~~~
 
 Apply the new settings to the cluster:
 
-```shell
-$ helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
-```
+{% include_cached copy-clipboard.html %}
+~~~ shell
+helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
+~~~
 
-The Operator updates all nodes and triggers a rolling restart of the pods with the new storage capacity.
+The CockroachDB operator updates all nodes and triggers a rolling restart of the pods with the new storage capacity.
 
 To verify that the storage capacity has been updated, run `kubectl get pvc` to view the persistent volume claims (PVCs). It will take a few minutes before the PVCs are completely updated.
 
 ## Network ports
 
-The Operator separates network traffic into three ports:
+The CockroachDB operator separates network traffic into three ports:
 
-<table>
-  <tr>
-   <th>Protocol
-   </td>
-   <td><strong>Default</strong>
-   </td>
-   <td><strong>Description</strong>
-   </td>
-   <td><strong>Custom Resource Field</strong>
-   </td>
-  </tr>
-  <tr>
-   <td>gRPC
-   </td>
-   <td>26258
-   </td>
-   <td>Used for node connections
-   </td>
-   <td><code>service.ports.grpc</code>
-   </td>
-  </tr>
-  <tr>
-   <td>HTTP
-   </td>
-   <td>8080
-   </td>
-   <td>Used to <a href="ui-overview.html#db-console-access">access the DB Console</a>
-   </td>
-   <td><code>service.ports.http</code>
-   </td>
-  </tr>
-  <tr>
-   <td>SQL
-   </td>
-   <td>26257
-   </td>
-   <td>Used for SQL shell access
-   </td>
-   <td><code>service.ports.sql</code>
-   </td>
-  </tr>
-</table>
+| Protocol   | Default Port| Description                   | Custom Resource Field            |
+|------------|-------------|-------------------------------|----------------------------------|
+| gRPC       | 26258       | Used for node connections     | service.ports.grpc    |
+| HTTP       | 8080        | Used to access the DB Console | service.ports.http    |
+| SQL        | 26257       | Used for SQL shell access     | service.ports.sql     |
 
-Specify alternate port numbers in `cockroachdb.crdbCluster.service.ports` of the Operator's [custom resource](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster) (for example, to match the default port `5432` on PostgreSQL):
+Specify alternate port numbers in `cockroachdb.crdbCluster.service.ports` of the CockroachDB operator's [custom resource](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster) (for example, to match the default port `5432` on PostgreSQL):
 
-```yaml
+~~~ yaml
 cockroachdb:
   crdbCluster:
     service:
       ports:
         sql: 5432
-```
+~~~
 
 Apply the new settings to the cluster:
 
-```shell
-$ helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
-```
+{% include_cached copy-clipboard.html %}
+~~~ shell
+helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
+~~~
 
-The Operator updates all nodes and triggers a rolling restart of the pods with the new port settings.
+The CockroachDB operator updates all nodes and triggers a rolling restart of the pods with the new port settings.

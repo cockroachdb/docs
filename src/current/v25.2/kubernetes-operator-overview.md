@@ -1,6 +1,6 @@
 ---
-title: Kubernetes Operator Overview
-summary: An overview of deployment and management of a CockroachDB cluster using our Kubernetes Operator.
+title: CockroachDB Operator Overview
+summary: An overview of deployment and management of a CockroachDB cluster using the CockroachDB operator with Kubernetes.
 toc: true
 toc_not_nested: true
 secure: true
