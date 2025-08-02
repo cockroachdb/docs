@@ -1,13 +1,13 @@
 ---
-title: Upgrade a cluster in Kubernetes with the Operator
-summary: How to upgrade a secure CockroachDB cluster deployed with the Kubernetes operator.
+title: Upgrade a cluster in Kubernetes with the CockroachDB Operator
+summary: How to upgrade a secure CockroachDB cluster deployed with the CockroachDB operator.
 toc: true
 toc_not_nested: true
 secure: true
 docs_area: deploy
 ---
 
-This page describes how to upgrade a CockroachDB cluster that is [deployed on a Kubernetes cluster](deploy-cockroachdb-with-kubernetes-operator.html).
+This page describes how to upgrade a CockroachDB cluster that is [deployed on a Kubernetes cluster](deploy-cockroachdb-with-kubernetes-operator.html) with the CockroachDB operator.
 
 ## Overview
 
@@ -30,29 +30,31 @@ To upgrade from one patch release to another within the same major version, perf
 
 1. Change the container image in the custom resource:
 
-    ```yaml
+    ~~~ yaml
     cockroachdb:
       crdbCluster:
         image:
           name: cockroachdb/cockroach:v25.2.2
-    ```
+    ~~~
 
-2. Apply the new settings to the cluster:
+1. Apply the new settings to the cluster:
 
-    ```shell
-    $ helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
-    ```
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
+    ~~~
 
-    The Operator will perform the staged update.
+    The operator will perform the staged update.
 
-3. To check the status of the rolling upgrade, run `kubectl get pods`.
+1. To check the status of the rolling upgrade, run `kubectl get pods`.
 
-4. Verify that all pods have been upgraded:
+1. Verify that all pods have been upgraded:
 
-    ```shell
-    $ kubectl get pods \
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
-    ```
+    ~~~
 
 You can also check the CockroachDB version of each node in the [DB Console](ui-cluster-overview-page.html#node-details).
 
@@ -66,33 +68,35 @@ To perform a major upgrade:
 
 1. Change the container image in the values file:
 
-    ```yaml
+    ~~~ yaml
     cockroachdb:
       crdbCluster:
         image:
           name: cockroachdb/cockroach:v25.1.4
-    ```
+    ~~~
 
-2. Apply the new settings to the cluster:
+1. Apply the new settings to the cluster:
 
-    ```shell
-    $ helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
-    ```
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
+    ~~~
 
-    The Operator will perform the staged update.
+    The operator will perform the staged update.
 
-3. To check the status of the rolling upgrade, run `kubectl get pods`.
+1. To check the status of the rolling upgrade, run `kubectl get pods`.
 
-4. Verify that all pods have been upgraded:
+1. Verify that all pods have been upgraded:
 
-    ```shell
-    $ kubectl get pods \
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
-    ```
+    ~~~
 
-5. If auto-finalization is enabled (the default), finalization begins as soon as the last node rejoins the cluster. When finalization finishes, the upgrade is complete.
+1. If auto-finalization is enabled (the default), finalization begins as soon as the last node rejoins the cluster. When finalization finishes, the upgrade is complete.
 
-6. If auto-finalization is disabled, follow your organization's testing procedures to decide whether to [finalize the upgrade](#finalize-a-major-version-upgrade-manually) or [roll back](#roll-back-a-major-version-upgrade) the upgrade. After finalization begins, you can no longer roll back to the cluster's previous major version.
+1. If auto-finalization is disabled, follow your organization's testing procedures to decide whether to [finalize the upgrade](#finalize-a-major-version-upgrade-manually) or [roll back](#roll-back-a-major-version-upgrade) the upgrade. After finalization begins, you can no longer roll back to the cluster's previous major version.
 
 ### Finalize a major-version upgrade manually
 
@@ -104,29 +108,31 @@ To roll back to the previous major version before an upgrade is finalized:
 
 1. Change the container image in the custom resource to use the previous major version:
 
-    ```yaml
+    ~~~ yaml
     cockroachdb:
       crdbCluster:
         image:
           name: cockroachdb/cockroach:v24.3
-    ```
+    ~~~
 
-2. Apply the new settings to the cluster:
+1. Apply the new settings to the cluster:
 
-    ```shell
-    $ helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
-    ```
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
+    ~~~
 
-    The Operator will perform the staged rollback.
+    The operator will perform the staged rollback.
 
-3. To check the status of the rollback, run `kubectl get pods`.
+1. To check the status of the rollback, run `kubectl get pods`.
 
-4. Verify that all pods have been rolled back:
+1. Verify that all pods have been rolled back:
 
-    ```shell
-    $ kubectl get pods \
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
-    ```
+    ~~~
 
 Rollbacks do not require finalization.
 

@@ -171,7 +171,7 @@
             ]
           },
           {
-            "title": "Deploy with Kubernetes Operator",
+            "title": "Deploy in Kubernetes with CockroachDB Operator",
             "items": [
                 {
                     "title": "Overview",
@@ -180,22 +180,22 @@
                     ]
                   },
                   {
-                    "title": "Cluster Deployment",
+                    "title": "CockroachDB Operator Deployment Guide",
                     "urls": [
                       "/${VERSION}/deploy-cockroachdb-with-kubernetes-operator.html"
                     ]
                   },
                   {
-                    "title": "Migrate from existing Kubernetes deployments",
+                    "title": "Migrate from Other Kubernetes Deployments",
                     "items": [
                     {
-                        "title": "Helm StatefulSet migration",
+                        "title": "Migrate from Helm StatefulSet",
                         "urls": [
                         "/${VERSION}/migrate-cockroachdb-kubernetes-helm.html"
                         ]
                     },
                     {
-                        "title": "Legacy operator migration",
+                        "title": "Migrate from Public Operator",
                         "urls": [
                         "/${VERSION}/migrate-cockroachdb-kubernetes-operator.html"
                         ]
@@ -203,7 +203,7 @@
                     ]
                   },
                   {
-                      "title": "Operate on Kubernetes",
+                      "title": "Operate CockroachDB with Kubernetes",
                       "items": [
                       {
                           "title": "Pod Scheduling",

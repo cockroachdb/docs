@@ -1,6 +1,6 @@
 ---
-title: Cluster Monitoring with the Kubernetes Operator
-summary: How to monitor a secure CockroachDB cluster deployed with the Kubernetes operator.
+title: Cluster Monitoring with the CockroachDB Operator
+summary: How to monitor a secure CockroachDB cluster deployed with the CockroachDB operator.
 toc: true
 toc_not_nested: true
 docs_area: deploy
@@ -20,26 +20,29 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 
 1. From your local workstation, edit the cockroachdb service to add the prometheus: cockroachdb label:
 
-    ```shell
-    $ kubectl label svc cockroachdb prometheus=cockroachdb
-
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl label svc cockroachdb prometheus=cockroachdb
+    ~~~
+    ~~~ shell
     service/cockroachdb labeled
-    ```
+    ~~~
 
     This ensures that only the cockroachdb (not the cockroach-public service) is being monitored by a Prometheus job.
 
-2. Determine the latest version of [CoreOS's Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/releases/) and run the following to download and apply the latest `bundle.yaml` definition file:
+1. Determine the latest version of [CoreOS's Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/releases/) and run the following to download and apply the latest `bundle.yaml` definition file:
 
     {{site.data.alerts.callout_info}}
     Be sure to specify the latest [CoreOS Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/releases/) version in the following command, in place of this example's use of version `v0.82.0`.
     {{site.data.alerts.end}}
 
-    ```shell
-    $ kubectl apply \
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl apply \
     -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.82.0/bundle.yaml \
     --server-side
-
-
+    ~~~
+    ~~~ shell
     customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com serverside-applied
     customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com serverside-applied
     customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com serverside-applied
@@ -52,49 +55,55 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     deployment.apps/prometheus-operator serverside-applied
     serviceaccount/prometheus-operator serverside-applied
     service/prometheus-operator serverside-applied
-    ```
+    ~~~
 
-3. Confirm that the `prometheus-operator` has started:
+1. Confirm that the `prometheus-operator` has started:
 
-    ```shell
-    $ kubectl get deploy prometheus-operator
-
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl get deploy prometheus-operator
+    ~~~
+    ~~~ shell
     NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
     prometheus-operator   1/1     1            1           27s
-    ```
+    ~~~
 
-4. Download our Prometheus manifest:
+1. Download our Prometheus manifest:
 
-    ```shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/prometheus.yaml
-    ```
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/prometheus.yaml
+    ~~~
 
-5. Apply the Prometheus manifest. This creates the various objects necessary to run a Prometheus instance:
+1. Apply the Prometheus manifest. This creates the various objects necessary to run a Prometheus instance:
 
-    ```shell
-    $ kubectl apply -f prometheus.yaml
-
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl apply -f prometheus.yaml
+    ~~~
+    ~~~ shell
     serviceaccount/prometheus created
     clusterrole.rbac.authorization.k8s.io/prometheus created
     clusterrolebinding.rbac.authorization.k8s.io/prometheus created
     servicemonitor.monitoring.coreos.com/cockroachdb created
     prometheus.monitoring.coreos.com/cockroachdb created
-    ```
+    ~~~
 
-6. Access the Prometheus UI locally and verify that CockroachDB is feeding data into Prometheus:
+1. Access the Prometheus UI locally and verify that CockroachDB is feeding data into Prometheus:
     1. Port-forward from your local machine to the pod running Prometheus:
 
-        ```shell
-        $ kubectl port-forward prometheus-cockroachdb-0 9090
-        ```
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        kubectl port-forward prometheus-cockroachdb-0 9090
+        ~~~
 
-    2. Go to [http://localhost:9090](http://localhost:9090/) in your browser.
+    1. Go to [http://localhost:9090](http://localhost:9090/) in your browser.
 
-    3. To verify that each CockroachDB node is connected to Prometheus, go to **Status > Targets**. The screen should look like this:
+    1. To verify that each CockroachDB node is connected to Prometheus, go to **Status > Targets**. The screen should look like this:
 
         <img src="{{ 'images/v25.2/kubernetes-prometheus-targets.png' | relative_url }}" alt="Prometheus targets" style="border:1px solid #eee;max-width:100%" />
 
-    4. To verify that data is being collected, go to **Graph**, enter the `sys_uptime` variable in the field, click **Execute**, and then click the **Graph** tab. The screen should like this:
+    1. To verify that data is being collected, go to **Graph**, enter the `sys_uptime` variable in the field, click **Execute**, and then click the **Graph** tab. The screen should like this:
 
         <img src="{{ 'images/v25.2/kubernetes-prometheus-graph.png' | relative_url }}" alt="Prometheus graph" style="border:1px solid #eee;max-width:100%" />
 
@@ -110,112 +119,123 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. Download our [alertmanager-config.yaml](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager-config.yaml) configuration file:
 
-    ```shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager-config.yaml
-    ```
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager-config.yaml
+    ~~~
 
-2. Edit the `alertmanager-config.yaml` file to [specify the desired receivers for notifications](https://prometheus.io/docs/alerting/configuration/#receiver). Initially, the file contains a placeholder web hook.
+1. Edit the `alertmanager-config.yaml` file to [specify the desired receivers for notifications](https://prometheus.io/docs/alerting/configuration/#receiver). Initially, the file contains a placeholder web hook.
 
-3. Add this configuration to the Kubernetes cluster as a secret, renaming it to `alertmanager.yaml` and labeling it to make it easier to find:
+1. Add this configuration to the Kubernetes cluster as a secret, renaming it to `alertmanager.yaml` and labeling it to make it easier to find:
 
-    ```shell
-    $ kubectl create secret generic alertmanager-cockroachdb \
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl create secret generic alertmanager-cockroachdb \
     --from-file=alertmanager.yaml=alertmanager-config.yaml
-
+    ~~~
+    ~~~ shell
     secret/alertmanager-cockroachdb created
-    ```
-    ```shell
-    $ kubectl label secret alertmanager-cockroachdb app=cockroachdb
-
+    ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl label secret alertmanager-cockroachdb app=cockroachdb
+    ~~~
+    ~~~ shell
     secret/alertmanager-cockroachdb labeled
-    ```
+    ~~~
 
     {{site.data.alerts.callout_danger}}
     The name of the secret, `alertmanager-cockroachdb`, must match the name used in the `alertmanager.yaml` file. If they differ, the Alertmanager instance will start without configuration, and nothing will happen.
     {{site.data.alerts.end}}
 
-4. Use our [alertmanager.yaml](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alertmanager.yaml) file to create the various objects necessary to run an Alertmanager instance, including a ClusterIP service so that Prometheus can forward alerts:
+1. Use our [alertmanager.yaml](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alertmanager.yaml) file to create the various objects necessary to run an Alertmanager instance, including a ClusterIP service so that Prometheus can forward alerts:
 
-    ```shell
-    $ kubectl apply \
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl apply \
     -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager.yaml
-
+    ~~~
+    ~~~ shell
     alertmanager.monitoring.coreos.com/cockroachdb created
     service/alertmanager-cockroachdb created
-    ```
+    ~~~
 
-5. Verify that Alertmanager is running:
+1. Verify that Alertmanager is running:
     1. Port-forward from your local machine to the pod running Alertmanager:
 
-        ```shell
-        $ kubectl port-forward alertmanager-cockroachdb-0 9093
-        ```
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        kubectl port-forward alertmanager-cockroachdb-0 9093
+        ~~~
 
-    2. Go to [http://localhost:9093](http://localhost:9093/) in your browser. The screen should look like this:
+    1. Go to [http://localhost:9093](http://localhost:9093/) in your browser. The screen should look like this:
 
         <img src="{{ 'images/v25.2/kubernetes-alertmanager-home.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
-6. Ensure that the Alertmanagers are visible to Prometheus by opening [http://localhost:9090/status](http://localhost:9090/status). The screen should look like this:
+1. Ensure that the Alertmanagers are visible to Prometheus by opening [http://localhost:9090/status](http://localhost:9090/status). The screen should look like this:
 
     <img src="{{ 'images/v25.2/kubernetes-prometheus-alertmanagers.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
-7. Add CockroachDB's starter [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alert-rules.yaml):
+1. Add CockroachDB's starter [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alert-rules.yaml):
 
-    ```shell
-    $ kubectl apply \
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl apply \
     -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alert-rules.yaml
-
+    ~~~
+    ~~~ shell
     prometheusrule.monitoring.coreos.com/prometheus-cockroachdb-rules created
-    ```
+    ~~~
 
-8. Ensure that the rules are visible to Prometheus by opening [http://localhost:9090/rules](http://localhost:9090/rules). The screen should look like this:
+1. Ensure that the rules are visible to Prometheus by opening [http://localhost:9090/rules](http://localhost:9090/rules). The screen should look like this:
 
     <img src="{{ 'images/v25.2/kubernetes-prometheus-alertrules.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
-9. Verify that the `TestAlertManager` example alert is firing by opening [http://localhost:9090/alerts](http://localhost:9090/alerts). The screen should look like this:
+1. Verify that the `TestAlertManager` example alert is firing by opening [http://localhost:9090/alerts](http://localhost:9090/alerts). The screen should look like this:
 
     <img src="{{ 'images/v25.2/kubernetes-prometheus-alerts.png' | relative_url }}" alt="Alertmanager" style="border:1px solid #eee;max-width:100%" />
 
-10. To remove the example alert:
+1. To remove the example alert:
     1. Use the `kubectl edit` command to open the rules for editing:
 
-        ```shell
-        $ kubectl edit prometheusrules prometheus-cockroachdb-rules
-        ```
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        kubectl edit prometheusrules prometheus-cockroachdb-rules
+        ~~~
 
-    2. Remove the `dummy.rules` block and save the file:
+    1. Remove the `dummy.rules` block and save the file:
 
-        ```yaml
+        ~~~ yaml
         - name: rules/dummy.rules
           rules:
           - alert: TestAlertManager
             expr: vector(1)
-        ```
+        ~~~
 
-## Monitor the Operator
+## Monitor the operator
 
-The CockroachDB Operator automatically exposes [Prometheus-style metrics](https://prometheus.io/docs/concepts/metric_types/) that you can monitor to observe its operations.
+The CockroachDB operator automatically exposes [Prometheus-style metrics](https://prometheus.io/docs/concepts/metric_types/) that you can monitor to observe its operations.
 
-Metrics can be collected from the Operator via HTTP requests (port 8080 by default) against the `/metrics` endpoint. The response will describe the current node metrics, for example:
+Metrics can be collected from the operator via HTTP requests (port 8080 by default) against the `/metrics` endpoint. The response will describe the current node metrics, for example:
 
-```json
+~~~json
 ...
-# HELP node_decommissioning Whether a CRDB node is decommissioning.
+# HELP node_decommissioning Whether a CockroachDB node is decommissioning.
 # TYPE node_decommissioning gauge
 node_decommissioning{node="cockroachdb-nvq2l"} 0
 node_decommissioning{node="cockroachdb-pmp45"} 0
 node_decommissioning{node="cockroachdb-q6784"} 0
 node_decommissioning{node="cockroachdb-r4wz8"} 0
 ...
-```
+~~~
 
 ## Configure logging
 
-You can use the Operator to configure the CockroachDB logging system. This allows you to output logs to [configurable log sinks](configure-logs.html#configure-log-sinks) such as file or network logging destinations.
+You can use the operator to configure the CockroachDB logging system. This allows you to output logs to [configurable log sinks](configure-logs.html#configure-log-sinks) such as file or network logging destinations.
 
 The logging configuration is defined in a [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) object, using a key named `logs.yaml`. For example:
 
-```yaml
+~~~ yaml
 apiVersion: v1
 data:
   logs.yaml: |
@@ -239,39 +259,39 @@ kind: ConfigMap
 metadata:
   name: logconfig
   namespace: cockroach-ns
-```
+~~~
 
 The above configuration overrides the [default logging configuration](configure-logs.html#default-logging-configuration) and reflects our recommended Kubernetes logging configuration:
 
-* Save debug-level logs (the `DEV` [log channel](logging-overview.html#logging-channels)) to disk for troubleshooting.
-* Send operational- and security-level logs to a [network collector](logging-use-cases.html#network-logging), in this case [Fluentd](configure-logs.html#fluentd-logging-format).
+- Save debug-level logs (the `DEV` [log channel](logging-overview.html#logging-channels)) to disk for troubleshooting.
+- Send operational- and security-level logs to a [network collector](logging-use-cases.html#network-logging), in this case [Fluentd](configure-logs.html#fluentd-logging-format).
 
 The ConfigMap `name` must match the `cockroachdb.crdbCluster.loggingConfigMapName` object in the values file used to [deploy the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster):
 
-```yaml
+~~~ yaml
 cockroachdb:
   crdbCluster:
     loggingConfigMapName: logconfig
-```
+~~~
 
-By default, the Operator also modifies the [default logging configuration](configure-logs.html#default-logging-configuration) with the following:
+By default, the operator also modifies the [default logging configuration](configure-logs.html#default-logging-configuration) with the following:
 
-```yaml
+~~~ yaml
 sinks:
   stderr:
     channels: {INFO: "HEALTH, OPS", WARNING: "STORAGE, DEV"}
       redact: true
-```
+~~~
 
 This outputs logging events in the [OPS](logging.html#ops) channel to a `cockroach-stderr.log` file.
 
 ### Example: Configuring a troubleshooting log file on pods
 
-In this example, CockroachDB has already been deployed on a Kubernetes cluster. We override the [default logging configuration](configure-logs.html#default-logging-configuration) to output [DEV](logging.html#dev) logs to a `cockroach-dev.log` file.
+In this example, CockroachDB has already been deployed on a Kubernetes cluster. Override the [default logging configuration](configure-logs.html#default-logging-configuration) to output [DEV](logging.html#dev) logs to a `cockroach-dev.log` file.
 
 1. Create a ConfigMap named `logconfig`. Note that `namespace` is set to the `cockroach-ns` namespace:
 
-    ```yaml
+    ~~~ yaml
     apiVersion: v1
     data:
       logs.yaml: |
@@ -284,7 +304,7 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
     metadata:
       name: logconfig
       namespace: cockroach-ns
-    ```
+    ~~~
 
     For simplicity, also name the YAML file `logconfig.yaml`.
 
@@ -294,35 +314,40 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
 
     This configuration outputs `DEV` logs that have severity [WARNING](logging.html#logging-levels-severities) to a `cockroach-dev.log` file on each pod.
 
-2. Apply the ConfigMap to the cluster:
+1. Apply the ConfigMap to the cluster:
 
-    ```shell
-    $ kubectl apply -f logconfig.yaml
-
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl apply -f logconfig.yaml
+    ~~~
+    ~~~ shell
     configmap/logconfig created
-    ```
+    ~~~
 
-3. Add the `name` of the ConfigMap in `loggingConfigMapName` to the values file:
+1. Add the `name` of the ConfigMap in `loggingConfigMapName` to the values file:
 
-    ```yaml
+    ~~~ yaml
     cockroachdb:
       crdbCluster:
         loggingConfigMapName: logconfig
-    ```
+    ~~~
 
-4. Apply the new settings to the cluster:
+1. Apply the new settings to the cluster:
 
-    ```shell
-    $ helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
-    ```
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
+    ~~~
 
     The changes will be rolled out to each pod.
 
-5. See the log files available on a pod:
+1. See the log files available on a pod:
 
-    ```shell
-    $ kubectl exec cockroachdb-2 -- ls cockroach-data/logs
-
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl exec cockroachdb-2 -- ls cockroach-data/logs
+    ~~~
+    ~~~ shell
     cockroach-dev.cockroachdb-2.unknownuser.2022-05-02T19_03_03Z.000001.log
     cockroach-dev.log
     cockroach-health.cockroachdb-2.unknownuser.2022-05-02T18_53_01Z.000001.log
@@ -336,10 +361,11 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
     cockroach.cockroachdb-2.unknownuser.2022-05-02T18_52_48Z.000001.log
     cockroach.log
     ...
-    ```
+    ~~~
 
-6. View a specific log file:
+1. View a specific log file:
 
-    ```shell
-    $ kubectl exec cockroachdb-2 -- cat cockroach-data/logs/cockroach-dev.log
-    ```
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl exec cockroachdb-2 -- cat cockroach-data/logs/cockroach-dev.log
+    ~~~

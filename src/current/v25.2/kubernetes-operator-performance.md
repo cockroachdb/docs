@@ -1,6 +1,6 @@
 ---
-title: CockroachDB Performance with the Kubernetes Operator
-summary: How running CockroachDB in Kubernetes affects its performance and how to get the best possible performance when running in Kubernetes using the operator.
+title: Performance with the CockroachDB Operator
+summary: How running CockroachDB in Kubernetes affects its performance and how to get the best possible performance when running in Kubernetes using the CockroachDB operator.
 toc: true
 docs_area: deploy
 ---
@@ -13,7 +13,7 @@ Before you focus on optimizing a Kubernetes-orchestrated CockroachDB cluster:
 
 1. Before deploying on Kubernetes, ensure that performance is optimized for your workload on identical hardware. You may find that you first need to [modify your workload](performance-best-practices-overview.html) or use [different machine specs](recommended-production-settings.html#hardware) to achieve the performance you need.
 
-2. Read the documentation for [deploying CockroachDB on a Kubernetes cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster) to familiarize yourself with the necessary Kubernetes terminology and deployment abstractions.
+1. Read the documentation for [deploying CockroachDB on a Kubernetes cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster) to familiarize yourself with the necessary Kubernetes terminology and deployment abstractions.
 
 ## Performance factors
 
@@ -45,7 +45,7 @@ Kubernetes exposes the disk types used by its volume provisioner via its [`Stora
 
 To do this, pick a volume provisioner from the list in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/), modify the example YAML file to specify the disk type you want, then run `kubectl create -f {your-storage-class-file}.yaml`. For example, in order to use the `pd-ssd` disk type on Google Compute Engine or Google Kubernetes Engine, you can use a `StorageClass` file like the following:
 
-```yaml
+~~~ yaml
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -53,21 +53,23 @@ metadata:
 provisioner: kubernetes.io/gce-pd
 parameters:
   type: pd-ssd
-```
+~~~
 
-You can then use this new disk type either by configuring the CockroachDB YAML file to request it or by making it the default. You may also want to set additional parameters as documented in the list of Kubernetes storage classes, such as configuring the `iopsPerGB` if you're creating a `StorageClass` for AWS's `io1` Provisioned IOPS volume type.
+You may also want to set additional parameters as documented in the list of Kubernetes [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/), such as configuring the `iopsPerGB` if you're creating a `StorageClass` for AWS's `io1` Provisioned IOPS volume type.
+
+You can configure this new disk type to only be used by CockroachDB nodes or as the default for all volumes in your cluster:
 
 #### Configure the disk type used by CockroachDB
 
 To use a new `StorageClass` without making it the default in your cluster, modify your application's YAML file to ask for it. In the CockroachDB configuration, that means adding `storageClassName` to `cockroachdb.crdbCluster.dataStore.volumeClaimTemplates`:
 
-```yaml
+~~~ yaml
 cockroachdb:
   crdbCluster:
     dataStore:
       volumeClaimTemplate:
         storageClassName: <your-ssd-class-name>
-```
+~~~
 
 When running `kubectl create -f` on your modified YAML file, Kubernetes should create volumes using the specified `storageClassName`.
 
@@ -75,29 +77,35 @@ When running `kubectl create -f` on your modified YAML file, Kubernetes should c
 
 To make a new `StorageClass` the default for all volumes in your cluster, run the following `kubectl` commands.
 
-```shell
-$ kubectl get storageclasses
-
+{% include_cached copy-clipboard.html %}
+~~~ shell
+kubectl get storageclasses
+~~~
+~~~ shell
 NAME                 PROVISIONER
 ssd                  kubernetes.io/gce-pd
 standard (default)   kubernetes.io/gce-pd
-```
-```shell
-$ kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
-
+~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+~~~
+~~~ shell
 storageclass "standard" patched
-```
-```shell
-$ kubectl patch storageclass ssd -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-
+~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+kubectl patch storageclass ssd -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+~~~
+~~~ shell
 storageclass "ssd" patched
-```
+~~~
 
 ### Disk size
 
 On some cloud providers, including all GCP disks and the AWS `io1` disk type, the number of IOPS available to a disk is directly correlated to the size of the disk. In such cases, increasing the size of your disks can significantly improve CockroachDB performance, and decrease the risk of filling them up. Before you create your CockroachDB cluster, modify the `cockroachdb.crdbCluster.dataStore.volumeClaimTemplate` in the CockroachDB YAML file to ask for more space. The following example sets this value to 1TB:
 
-```yaml
+~~~ yaml
 cockroachdb:
   crdbCluster:
     dataStore:
@@ -106,7 +114,7 @@ cockroachdb:
           resources:
             requests:
               storage: 1024Gi
-```
+~~~
 
 Since [GCE disk IOPS scale linearly with disk size](https://cloud.google.com/compute/docs/disks/performance#type_comparison), a 1TiB disk gives 1024 times as many IOPS as a 1GiB disk, which can make a very large difference for write-heavy workloads.
 
@@ -126,9 +134,11 @@ Resource requests reserve a certain amount of CPU or memory for your container. 
 
 To determine how many resources are usable on your Kubernetes nodes, you can run:
 
-```shell
-$ kubectl describe nodes
-
+{% include_cached copy-clipboard.html %}
+~~~ shell
+kubectl describe nodes
+~~~
+~~~ shell
 Name:               gke-perf-default-pool-aafee20c-k4t8
 [...]
 Capacity:
@@ -150,7 +160,7 @@ Allocated resources:
   CPU Requests  CPU Limits  Memory Requests  Memory Limits
   ------------  ----------  ---------------  -------------
   360m (9%)     0 (0%)      110Mi (0%)       170Mi (1%)
-```
+~~~
 
 In the output, the `Allocatable` field shows the `cpu` and `memory` resources Kubernetes will provide to pods running on the machine. The difference between the machine's `Capacity` and its `Allocatable` resources is taken up by the operating system and Kubernetes' management processes. In the preceding output, `3920m` stands for 3920 "milli-CPUs", or "thousandths of a CPU".
 
@@ -160,14 +170,14 @@ On Kubernetes v1.10 or earlier, it is difficult to truly use all of the allocata
 
 Once you've picked out an amount of CPU and memory to reserve for Cockroach, configure the resource requests in your CockroachDB YAML file. They should go underneath the `containers` heading. For example, to use most of the available resources on the machines described above, you'd configure the following lines of your values file:
 
-```yaml
+~~~ yaml
 cockroachdb:
   crdbCluster:
     resources:
       requests:
         cpu: 3500m
         memory: 12300Mi
-```
+~~~
 
 When you initialize the cluster, check that all the CockroachDB pods are scheduled successfully. If you see any get stuck in the pending state, run `kubectl describe pod {podname}` and check the `Events` for information about why they're still pending. You may need to manually preempt pods on one or more nodes by running `kubectl delete pod` on them to make room for the CockroachDB pods. As long as the pods you delete were created by a higher-level Kubernetes object such as a `Deployment`, they'll be safely recreated on another node.
 
@@ -177,7 +187,7 @@ Resource limits cap the resources used by a pod to no more than the provided lim
 
 To set resource limits, in addition to the [resource requests](#resource-requests) described in the preceding section, change the configuration as follows:
 
-```yaml
+~~~ yaml
 cockroachdb:
   crdbCluster:
     resources:
@@ -185,9 +195,8 @@ cockroachdb:
         cpu: 3500m
         memory: 12300Mi
       limits:
-        cpu: 3500m
         memory: 12300Mi
-```
+~~~
 
 Pods will be limited to their reserved resources and are unlikely to be preempted, except in rare cases. This will not improve performance on an underutilized Kubernetes cluster, but provides more predictable performance as other workloads run.
 
@@ -199,9 +208,10 @@ While setting memory limits is strongly recommended, [setting CPU limits can hur
 
 Even if you do not manually set resource requests, they are likely being applied. In many installations of Kubernetes, a [LimitRange](https://kubernetes.io/docs/tasks/administer-cluster/cpu-default-namespace/) is preconfigured for the `default` namespace that applies a default CPU request of `100m`, or one-tenth of a CPU. You can see this configuration by running the following command:
 
-```shell
-$ kubectl describe limitranges
-```
+{% include_cached copy-clipboard.html %}
+~~~ shell
+kubectl describe limitranges
+~~~
 
 Experimentally, this does not appear to have a noticeable effect on CockroachDB's performance when a Kubernetes cluster isn't heavily utilized, but do not be surprised if you see CPU requests on your pods that you didn't set.
 
@@ -209,9 +219,11 @@ Experimentally, this does not appear to have a noticeable effect on CockroachDB'
 
 As described in [Resource requests and limits](#resource-requests-and-limits), your Kubernetes cluster will always run pods other than CockroachDB. You can see them by running:
 
-```shell
-$ kubectl get pods --all-namespaces
-
+{% include_cached copy-clipboard.html %}
+~~~ shell
+kubectl get pods --all-namespaces
+~~~
+~~~ shell
 NAMESPACE     NAME                                             READY     STATUS    RESTARTS   AGE
 kube-system   event-exporter-v0.1.7-5c4d9556cf-6v7lf           2/2       Running   0          2m
 kube-system   fluentd-gcp-v2.0.9-6rvmk                         2/2       Running   0          2m
@@ -228,13 +240,14 @@ kube-system   kube-proxy-gke-test-default-pool-828d39a7-rc4m   1/1       Running
 kube-system   kube-proxy-gke-test-default-pool-828d39a7-trd1   1/1       Running   0          2m
 kube-system   kubernetes-dashboard-768854d6dc-v7ng8            1/1       Running   0          2m
 kube-system   l7-default-backend-6497bcdb4d-2kbh4              1/1       Running   0          2m
-```
+~~~
 
 These ["cluster add-ons"](https://github.com/kubernetes/kubernetes/tree/master/cluster/addons) provide a variety of basic services like managing DNS entries for services within the cluster, powering the Kubernetes dashboard UI, or collecting logs or metrics from all the pods running in the cluster. If you do not like having them take up space in your cluster, you can prevent some of them from running by configuring your Kubernetes cluster appropriately. For example, on GKE, you can create a cluster with the minimal set of add-ons by running:
 
-```shell
-$ gcloud container clusters create <your-cluster-name> --no-enable-cloud-logging --no-enable-cloud-monitoring --addons=""
-```
+{% include_cached copy-clipboard.html %}
+~~~ shell
+gcloud container clusters create <your-cluster-name> --no-enable-cloud-logging --no-enable-cloud-monitoring --addons=""
+~~~
 
 However, some pods like `kube-proxy` and `kube-dns` are required for compliant Kubernetes clusters. Since there will always be pods other than CockroachDB running in your cluster, it's important to understand and account for the effects of having CockroachDB share a machine with other processes. The more processes there are on the same machine as a CockroachDB pod, the slower and less predictable its performance will likely be. To protect against this, it's strongly recommended to specify [resource requests](#resource-requests) on your CockroachDB pods to provide some level of CPU and memory isolation.
 
@@ -246,7 +259,7 @@ If setting appropriate resource requests still isn't getting you the performance
 
 Client applications such as benchmarking applications running on the same machines as CockroachDB are likely to compete for resources. As application load increases, so does the load on CockroachDB processes. The best way to avoid this is to [set resource requests and limits](#resource-requests-and-limits). Alternatively, you can also set [anti-affinity scheduling policies](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) on your client applications:
 
-```yaml
+~~~ yaml
 cockroachdb:
   crdbCluster:
     affinity:
@@ -270,7 +283,7 @@ cockroachdb:
                 values:
                 - cockroachdb
             topologyKey: kubernetes.io/hostname
-```
+~~~
 
 The preceding configuration will first prefer to put the `loadgen` pods on different nodes from each other, which is important for the fault tolerance of the `loadgen` pods themselves. As a secondary priority, it will attempt to put the pods on nodes that do not already have a running `CockroachDB` pod. This will ensure the best possible balance of fault tolerance and performance for the load generator and CockroachDB cluster.
 
