@@ -50,13 +50,13 @@ Before you begin, it may be useful to enable authentication logging, which can h
 
 ### Step 1: Enable redaction of sensitive cluster settings
 
-For this integration, you will need to store LDAP bind credentials for the service account that enables the integration in the [cluster setting `server.host_based_authentication.configuration`]({% link {{ page.version.version }}/cluster-settings.md %}#server-host-based-authentication-configuration). You will also configure the mapping of external identities to CockroachDB SQL users with the [cluster setting `server.identity_map.configuration`]({% link {{ page.version.version }}/cluster-settings.md %}#server-identity-map-configuration). In addition, for a custom CA configuration, you may need to store certificate and key details in the cluster settings specified in the optional [Step 3: Configure TLS](#step-3-configure-tls-optional). 
+For this integration, you will need to store LDAP bind credentials for the service account that enables the integration in the [cluster setting `server.host_based_authentication.configuration`]({% link {{ page.version.version }}/cluster-settings.md %}#settting-server-host-based-authentication-configuration). You will also configure the mapping of external identities to CockroachDB SQL users with the [cluster setting `server.identity_map.configuration`]({% link {{ page.version.version }}/cluster-settings.md %}#settting-server-identitymap-configuration). In addition, for a custom CA configuration, you may need to store certificate and key details in the cluster settings specified in the optional [Step 3: Configure TLS](#step-3-configure-tls-optional). 
 	
 It is highly recommended that you redact these settings, so that only authorized users, such as members of the `admin` role, can view them. To enable this redaction and learn about its permission scheme, refer to [Sensitive settings]({% link {{ page.version.version }}/cluster-settings.md %}#sensitive-settings).
 
 ### Step 2: Configure Host-Based Authentication (HBA)
 
-To enable LDAP, you will need to update the [host-based authentication (HBA)]({% link {{ page.version.version }}/security-reference/authentication.md %}#authentication-configuration) configuration specified in the [cluster setting `server.host_based_authentication.configuration`]({% link {{ page.version.version }}/cluster-settings.md %}#server-host-based-authentication-configuration).
+To enable LDAP, you will need to update the [host-based authentication (HBA)]({% link {{ page.version.version }}/security-reference/authentication.md %}#authentication-configuration) configuration specified in the [cluster setting `server.host_based_authentication.configuration`]({% link {{ page.version.version }}/cluster-settings.md %}#settting-server-host-based-authentication-configuration).
 
 Set the authentication method for all users and databases to `ldap` and include the LDAP-specific option parameters:
 
