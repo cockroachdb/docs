@@ -1,6 +1,6 @@
-In a _regional by row_ table, individual rows are optimized for access from different home regions. Each row's home region is specified in a hidden [`crdb_region` column]({% link {{ page.version.version }}/alter-table.md %}#crdb_region), and is by default the region of the [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) from which the row is inserted. The `REGIONAL BY ROW` setting automatically divides a table and all of [its indexes]({% link {{ page.version.version }}/table-localities.md %}#indexes-on-regional-by-row-tables) into [partitions]({% link {{ page.version.version }}/partitioning.md %}) that use `crdb_region` as the prefix.
+In a _regional by row_ table, each row is optimized for access from a specific home region. Each row's home region is specified in a hidden [`crdb_region` column]({% link {{ page.version.version }}/alter-table.md %}#crdb_region), which defaults to the region of the [gateway node]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#gateway) that inserted the row. The `REGIONAL BY ROW` setting automatically [partitions]({% link {{ page.version.version }}/partitioning.md %}) the table and all of [its indexes]({% link {{ page.version.version }}/table-localities.md %}#indexes-on-regional-by-row-tables) by region using `crdb_region` as the partition key prefix.
 
-Use regional by row tables when your application requires low-latency reads and writes at a row level where individual rows are primarily accessed from a single region. For an example of a table in a multi-region cluster that can benefit from the `REGIONAL BY ROW` setting, see the `users` table from the [MovR application]({% link {{ page.version.version }}/movr.md %}), which could store users' data in specific regions for better performance.
+Use regional by row tables when individual rows are frequently accessed from a single region, and your application requires low-latency reads and writes at the row level. A typical `REGIONAL BY ROW` use case is the `users` table in the [MovR application]({% link {{ page.version.version }}/movr.md %}), where user data can be co-located with the user's region for better performance.
 
 To take advantage of regional by row tables:
 
@@ -10,7 +10,7 @@ To take advantage of regional by row tables:
 
 - [Turn on auto-rehoming for regional by row tables]({% link {{ page.version.version }}/alter-table.md %}#turn-on-auto-rehoming-for-regional-by-row-tables). A row's home region will be automatically set to the gateway region of any [`UPDATE`]({% link {{ page.version.version }}/update.md %}) or [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statements that write to those rows.
 
-For instructions showing how to set a table's locality to `REGIONAL BY ROW` and configure the home regions of its rows, see [`ALTER TABLE ... SET LOCALITY`]({% link {{ page.version.version }}/alter-table.md %}#crdb_region).
+For instructions showing how to set a table's locality to `REGIONAL BY ROW` and configure the home regions of its rows, refer to [`ALTER TABLE ... SET LOCALITY`]({% link {{ page.version.version }}/alter-table.md %}#crdb_region).
 
 For more information on regional by row tables, see the [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/regional-by-row/).
 
