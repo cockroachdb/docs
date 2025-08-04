@@ -55,7 +55,7 @@ The `metrics` Prometheus endpoint is commonly used and is the default in Prometh
 
 ### Value separation
 
-[Value separation]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) reduces write amplification by storing large values separately from the LSM in blob files. Value separation can reduce write amplification by up to 50% for large-value workloads, while introducing minor read overhead and a slight increase in disk space usage. This feature is available in Preview.
+[Value separation]({% link {{ page.version.version }}/architecture/storage-layer.md %}) reduces write amplification by storing large values separately from the LSM in blob files. Value separation can reduce write amplification by up to 50% for large-value workloads, while introducing minor read overhead and a slight increase in disk space usage. This feature is available in Preview.
 
 ### `database` and `application_name` labels for certain metrics
 
