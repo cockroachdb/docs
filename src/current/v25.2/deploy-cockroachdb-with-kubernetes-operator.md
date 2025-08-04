@@ -9,6 +9,10 @@ docs_area: deploy
 
 This page describes how to start and stop a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster.
 
+{{site.data.alerts.callout_info}}
+The CockroachDB operator is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+{{site.data.alerts.end}}
+
 ## Prerequisites and best practices
 
 ### Kubernetes version

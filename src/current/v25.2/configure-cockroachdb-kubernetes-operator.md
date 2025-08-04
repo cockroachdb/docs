@@ -9,6 +9,10 @@ docs_area: deploy
 
 This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage.
 
+{{site.data.alerts.callout_info}}
+The CockroachDB operator is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+{{site.data.alerts.end}}
+
 On a production cluster, the resources you allocate to CockroachDB should be proportionate to your machine types and workload. Cockroach Labs recommends that you determine and set these values before deploying the cluster, but you can also update the values on a running cluster.
 
 {{site.data.alerts.callout_info}}

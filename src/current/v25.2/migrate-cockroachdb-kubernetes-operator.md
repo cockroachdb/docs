@@ -9,6 +9,10 @@ docs_area: deploy
 
 This guide describes how to migrate an existing CockroachDB cluster managed via the public operator to the CockroachDB operator.
 
+{{site.data.alerts.callout_info}}
+The CockroachDB operator is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+{{site.data.alerts.end}}
+
 These instructions assume that you are migrating from a public operator cluster that is managed with kubectl via the following yaml files:
 
 {% include_cached copy-clipboard.html %}
