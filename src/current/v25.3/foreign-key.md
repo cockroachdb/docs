@@ -30,10 +30,9 @@ To read more about how foreign keys work, see our [What is a Foreign Key? (With 
 - A foreign key column cannot be a virtual [computed column]({% link {{ page.version.version }}/computed-columns.md %}), but it can be a stored computed column.
 - A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
 - A foreign key column can reference the [`crdb_region` column]({% link {{ page.version.version }}/alter-table.md %}#crdb_region) in [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) tables even if the `crdb_region` column is not explicitly part of a `UNIQUE` constraint. This is possible because `crdb_region` is implicitly included in every index on `REGIONAL BY ROW` tables as the partitioning key. This applies to whichever column is used as the partitioning column, in case a different name is used via `REGIONAL BY ROW AS`.
+    - {% include_cached new-in.html version="v25.3" %} If [region inference is enabled]({% link {{ page.version.version }}/alter-table.md %}#infer-a-rows-home-region-from-a-foreign-key) on a `REGIONAL BY ROW` table, the foreign key specified in [`infer_rbr_region_col_using_constraint`]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters) **must** include the `crdb_region` column. CockroachDB uses the foreign key to look up the matching row in the parent and copy its region value, ensuring the child row is placed in the same region as the parent.
 
-        {{site.data.alerts.callout_info}}
-        A foreign key column cannot reference a table's `crdb_region` column if [auto-rehoming is enabled]({% link {{ page.version.version }}/alter-table.md %}#turn-on-auto-rehoming-for-regional-by-row-tables) for the table.
-        {{site.data.alerts.end}}
+    - If [auto-rehoming is enabled]({% link {{ page.version.version }}/alter-table.md %}#turn-on-auto-rehoming-for-regional-by-row-tables) on a `REGIONAL BY ROW` table, a foreign key column **cannot** reference that table's `crdb_region` column. This is because auto-rehoming may move rows across regions and violate locality guarantees for referencing rows.
 
 **Referenced Columns**
 
