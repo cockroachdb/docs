@@ -14,6 +14,14 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## Aug 4, 2025
+
+CockroachDB v25.3 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.3 is an [Innovation release]({% link releases/index.md %}#release-types).
+
+For release notes, refer to [What's New in v25.3]({% link releases/v25.3.md %}).
+
+To get started with v25.3, refer to [Create a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) or [Upgrade a Cluster in CockroachDB Cloud]({% link cockroachcloud/upgrade-cockroach-version.md %}).
+
 ## July 31, 2025
 
 ### Customer-Managed Encryption Keys (CMEK) for CockroachDB Advanced for Azure
