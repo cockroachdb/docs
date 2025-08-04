@@ -8,7 +8,7 @@ toc: true
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-You can configure your cluster to assign [roles]({% link {{ page.version.version }}/ldap-authentication.md %}) based on a user's group membership in an LDAP service, such as Active Directory or Microsoft Entra ID. Users will inherit the privileges that you have configured for the roles they are assigned. 
+If you manage users through a service compatible with the Lightweight Directory Access Protocol (LDAP), such as Active Directory or Microsoft Entra ID, you can configure CockroachDB to automatically assign [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}) to users based on LDAP group memberships, simplifying access control. 
 
 If LDAP authorization is enabled:
 
@@ -25,7 +25,7 @@ If LDAP authorization is enabled:
 
 Before you begin, it may be useful to enable authentication logging, which can help you confirm sucessful configuration or troubleshoot issues. For details, refer to [Troubleshooting](#troubleshooting).
 
-### Step 1: Enable LDAP Authorization
+### Step 1: Enable LDAP authorization
 
 Add the `ldapgrouplistfilter` parameter to the HBA configuration that you enabled for [LDAP Authentication]({% link {{ page.version.version }}/ldap-authentication.md %}). The configuration will include two important LDAP filters:
 
@@ -136,6 +136,7 @@ If you are going to use [automatic user provisioning]({% link {{ page.version.ve
 
 Enable [`SESSION` logging]({% link {{ page.version.version }}/logging.md %}#sessions) to preserve data that will help troubleshoot LDAP issues:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~
@@ -157,7 +158,7 @@ Potential issues to investigate may pertain to:
 ## Security Considerations
 
 1. Always keep a backup authentication method (like password) for administrative users.
-2. Use LDAPS (LDAP over TLS) in production environments.
-3. Use a restricted service account for directory searches.
-4. Regularly audit LDAP group memberships.
-5. Monitor authentication logs for unusual patterns.
+1. Use LDAPS (LDAP over TLS) in production environments.
+1. Use a restricted service account for directory searches.
+1. Regularly audit LDAP group memberships.
+1. Monitor authentication logs for unusual patterns.
