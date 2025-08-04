@@ -36,7 +36,7 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
 <section class="filter-content" markdown="1" data-scope="aws">
 
 1. Make a note of your {{ site.data.products.cloud }} organization ID in the [Organization settings page](https://cockroachlabs.cloud/settings).
-1. Find your {{ site.data.products.advanced }} cluster's ID. From the CockroachDB {{ site.data.products.cloud }} console [Clusters list](https://cockroachlabs.cloud/clusters), click the name of a cluster to open its **Cluster Overview** page. From the page's URL make a note of the **last 12 digits** of the portion of the URL before `/overview/`. This is the cluster ID.
+1. Find your CockroachDB {{ site.data.products.advanced }} cluster's ID. From the CockroachDB {{ site.data.products.cloud }} console [Clusters list](https://cockroachlabs.cloud/clusters), click the name of a cluster to open its **Cluster Overview** page. From the page's URL make a note of the **last 12 digits** of the portion of the URL before `/overview/`. This is the cluster ID.
 1. Use the cluster ID to find the cluster's associated cross-account IAM role, which is managed by CockroachDB {{ site.data.products.cloud }}.
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -52,7 +52,7 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
 <section class="filter-content" markdown="1" data-scope="gcp">
 
 1. Make a note of your {{ site.data.products.cloud }} organization ID in the [Organization settings page](https://cockroachlabs.cloud/settings).
-1. Find your {{ site.data.products.advanced }} cluster's ID. From the CockroachDB {{ site.data.products.cloud }} console [Clusters list](https://cockroachlabs.cloud/clusters), click the name of a cluster to open its **Cluster Overview** page. From the page's URL make a note of the **last 12 digits** of the portion of the URL before `/overview/`. This is the cluster ID.
+1. Find your CockroachDB {{ site.data.products.advanced }} cluster's ID. From the CockroachDB {{ site.data.products.cloud }} console [Clusters list](https://cockroachlabs.cloud/clusters), click the name of a cluster to open its **Cluster Overview** page. From the page's URL make a note of the **last 12 digits** of the portion of the URL before `/overview/`. This is the cluster ID.
 1. Use the cluster ID to find the cluster's associated GCP Project ID, which is managed by CockroachDB {{ site.data.products.cloud }}. Query the `clusters/` endpoint of the CockroachDB {{ site.data.products.cloud }} API:
 
     {% include_cached copy-clipboard.html %}
@@ -112,8 +112,7 @@ This section shows how to enable CMEK on a CockroachDB {{ site.data.products.adv
 
 <section class="filter-content" markdown="1" data-scope="azure">
 
-1. Make a note of your {{ site.data.products.cloud }} organization ID in the [Organization settings page](https://cockroachlabs.cloud/settings).
-1. Find your {{ site.data.products.advanced }} cluster's ID. From the CockroachDB {{ site.data.products.cloud }} console [Clusters list](https://cockroachlabs.cloud/clusters), click the name of a cluster to open its **Cluster Overview** page. From the page's URL make a note of the **last 12 digits** of the portion of the URL before `/overview/`. This is the cluster ID.
+1. Find your CockroachDB {{ site.data.products.advanced }} cluster's ID. From the CockroachDB {{ site.data.products.cloud }} console [Clusters list](https://cockroachlabs.cloud/clusters), click the name of a cluster to open its **Cluster Overview** page. From the page's URL make a note of the part of the URL between `cluster/` and `/overview`. This is the cluster ID.
 1. Make a note of your Azure tenant ID. You can find this in the Azure portal under **Azure Active Directory** > **Overview** > **Tenant information**.
 
 </section>
@@ -152,10 +151,10 @@ Follow these steps to create a cross-account IAM role and give it permission to 
 1. In the GCP Console, visit the [IAM service accounts page](https://console.cloud.google.com/iam-admin/serviceaccounts) for your project and click **+ Create service account**. Select **Cross-tenant**.
 1. Click the new service account to open its details.
 1. In **PERMISSIONS**, click **GRANT ACCESS**.
-    - For **New principals**, enter the service account ID for your cluster, which you found in [Before you begin](#before-you-begin)
+    - For **New principals**, enter the service account ID for your cluster, which you found in [Before you begin](#before-you-begin),
     - For **Role**, enter **Service Account Token Creator**.
 
-  Click **SAVE**.
+    Click **SAVE**.
 1. Make a note of the email address for the new service account.
 
 </section>
@@ -189,12 +188,9 @@ Follow these steps to create a cross-account IAM role and give it permission to 
 This creates an enterprise application in your Azure tenant that CockroachDB Cloud can use to access your Key Vault. It is named using the following format:
 
 ~~~
-ClusterIdentity-<azure_cluster_identity_client_id>
+CockroachDB Cloud - <CLUSTER_ID>
 ~~~
 
-1. In the Azure portal, navigate to your Key Vault > **Access control (IAM)** > **Add role assignment**.
-1. Select the **Key Vault Crypto Officer** role, and select the option to assign access to **User, group, or service principal**.
-1. Click **Select members**, then search for the enterprise application created above: `ClusterIdentity-<azure_cluster_identity_client_id>`
 
 </section>
 
@@ -204,7 +200,7 @@ If you intend to use an existing key as the CMEK, skip this step.
 
 <section class="filter-content" markdown="1" data-scope="aws">
 
-You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
+You can create the CMEK directly in the AWS Console or using <a href="https://www.cockroachlabs.com/docs/stable/hashicorp-integration">HashiCorp Vault</a>.
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="aws-console">AWS Console</button>
@@ -314,7 +310,7 @@ You can create the CMEK directly in the AWS Console or using [HashiCorp Vault]({
 
 <section class="filter-content" markdown="1" data-scope="gcp">
 
-You can create the CMEK directly in the GCP Console or using [HashiCorp Vault]({% link {{site.current_cloud_version}}/hashicorp-integration.md %}).
+You can create the CMEK directly in the GCP Console or using <a href="https://www.cockroachlabs.com/docs/stable/hashicorp-integration">HashiCorp Vault</a>.
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="gcp-console">GCP Console</button>
@@ -383,6 +379,7 @@ Make a note of the key ring name.
     Click **SAVE**. Make a note of the key ring name.
 
 </section>
+</section>
 
 <section class="filter-content" markdown="1" data-scope="azure">
 
@@ -398,6 +395,10 @@ For these instructions, you can use an existing Azure Key Vault, or create a new
     ~~~text
     https://<keyVaultName>.vault.azure.net/keys/<keyName>/<version>
     ~~~
+
+1. Navigate to your Key Vault > **Access control (IAM)** > **Add role assignment**.
+1. Select the **Key Vault Crypto Officer** role, and select the option to assign access to **User, group, or service principal**.
+1. Click **Select members**, then search for the enterprise application created above: `CockroachDB Cloud - <CLUSTER_ID>`.
 
 </section>
 </section>
@@ -434,7 +435,6 @@ Compile the information about the service account and key we've just created int
       ]
     }
     ~~~
-</section>
 
 </section>
 
