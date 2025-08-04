@@ -25,7 +25,7 @@ While LDAP configuration is cluster-specific, each request to authenticate a use
   - If a matching record was found, the cluster attempts to verify the user's identity through another LDAP request, this time using the credentials (username and password) provided by that user.
   - If this LDAP bind operation succeeds, the user is authenticated to the CockroachDB cluster.
 1. Authorize the user (optional)
-  - If [LDAP authorization]({% link {{ page.version.version }}/ldap-authorization.md %}) is also enabled, an additional request is sent to retrieve the groups to which the user is assigned, using configurable criteria.
+  - If [LDAP authorization]({% link {{ page.version.version }}/ldap-authorization.md %}) is also enabled, the cluster sends an additional request to retrieve the groups to which the user is assigned, using configurable criteria.
   - If group memberships are found, any existing CockroachDB roles that match these group names are assigned to the user.
 
 These requests use a node's existing connection to the LDAP server, if one is open. Otherwise, the node establishes a new connection. The connection remains open for handling additional LDAP requests until it is closed by the LDAP server, based on its timeout setting.
@@ -33,7 +33,7 @@ These requests use a node's existing connection to the LDAP server, if one is op
 Because CockroachDB maintains no more than one LDAP connection per node, for a cluster with `n` nodes, you can expect up to `n` concurrent LDAP connections.
 
 {{site.data.alerts.callout_info}}
-LDAP authentication cannot be used for the `root` user or other [reserved identities]({% link {{ page.version.version }}/security-reference/authorization.md %}#reserved-identities). Credentials for `root` must be managed separately using password authentication to ensure continuous administrative access regardless of LDAP availability.
+LDAP authentication cannot be used for the `root` user or other [reserved identities]({% link {{ page.version.version }}/security-reference/authorization.md %}#reserved-identities). You must manage credentials for `root` separately using password authentication to ensure continuous administrative access regardless of LDAP availability.
 {{site.data.alerts.end}}
 
 ## Configuration
@@ -104,7 +104,7 @@ SET CLUSTER SETTING server.ldap_authentication.client.tls_key = '<PEM_ENCODED_KE
 
 ### Step 4: Sync database users
 
-Before LDAP authentication can be used for a user, the username must be created directly in CockroachDB. You will need to establish an automated method for keeping users in sync with the directory server, creating and dropping them as needed.
+Before LDAP authentication can be enabled for a user, you must create the username directly in CockroachDB. You will need to establish an automated method for keeping users in sync with the directory server, creating and dropping them as needed.
 
 {{site.data.alerts.callout_info}}
 As of v25.3, CockroachDB can automatically provision users during their first successful LDAP authentication. Refer to the [latest version]({% link {{ site.versions.stable }}/ldap-authentication.md %}) of this page.

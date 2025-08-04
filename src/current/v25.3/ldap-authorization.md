@@ -15,7 +15,7 @@ If LDAP authorization is enabled:
 1. When a client connects to the cluster using LDAP, the cluster looks up the user's group membership in the LDAP service.
 1. Each LDAP group is mapped to a cluster role using the group's Common Name (CN) in the LDAP service.
 1. The user is granted each corresponding role, and roles that no longer match the user's groups are revoked.
-1. {% include_cached new-in.html version="v25.3" %}In conjunction with [automatic user provisioning]({% link {{ page.version.version }}/ldap-authentication.md %}#option-1-automatic-user-provisioning-recommended) if enabled, users are created automatically during their first authentication and simultaneously receive specified role memberships.
+1. {% include_cached new-in.html version="v25.3" %} In conjunction with [automatic user provisioning]({% link {{ page.version.version }}/ldap-authentication.md %}#option-1-automatic-user-provisioning-recommended) if enabled, users are created automatically during their first authentication and simultaneously receive specified role memberships.
 
 ## Prerequisites
 
@@ -115,7 +115,7 @@ If you are going to use [automatic user provisioning]({% link {{ page.version.ve
     If automatic user provisioning is enabled, users will be created automatically during their first login.
 
 1. Log in to CockroachDB as each test user (refer to [Connect to a cluster using LDAP]({% link {{ page.version.version }}/ldap-authentication.md %}#connect-to-a-cluster-using-ldap)).
-1. Using your admin credentials, log in to the CockroachDB SQL shell and run `SHOW USERS;` to view and verify users and their role assignments.
+1. Using your `admin` credentials, log in to the CockroachDB SQL shell and run `SHOW USERS;` to view and verify users and their role assignments.
 
     For auto-provisioned users, you can identify them by their `PROVISIONSRC` role option:
 
