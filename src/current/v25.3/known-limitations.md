@@ -28,6 +28,10 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 
 {% include {{ page.version.version }}/known-limitations/geospatial-heterogeneous-architectures.md %}
 
+### `CITEXT`
+
+{% include {{ page.version.version }}/known-limitations/citext-limitations.md %}
+
 ## Limitations from {{ previous_version }} and earlier
 
 This section describes limitations from previous CockroachDB versions that still impact {{ page.version.version }}.

@@ -91,6 +91,10 @@ SELECT username FROM logins WHERE username::STRING < 'Xavi';
 (1 row)
 ~~~
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/citext-limitations.md %}
+
 ## See also
 
 - [Data Types]({% link {{ page.version.version }}/data-types.md %})
