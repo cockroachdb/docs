@@ -7,14 +7,24 @@ secure: true
 docs_area: deploy
 ---
 
-This page describes how to configure the following, using the [Operator](https://github.com/cockroachdb/cockroach-operator):
+This page describes how to configure the following, using the [public operator](https://github.com/cockroachdb/cockroach-operator):
 
+- [Enable feature gates](#enable-feature-gates)
 - [Node selectors](#node-selectors)
-- [Node affinities](#add-a-node-affinity)
-- [Pod affinities and anti-affinities](#add-a-pod-affinity-or-anti-affinity)
+- [Affinities and anti-affinities](#affinities-and-anti-affinities)
+  - [Add a node affinity](#add-a-node-affinity)
+  - [Add a pod affinity or anti-affinity](#add-a-pod-affinity-or-anti-affinity)
+  - [Example: Scheduling CockroachDB onto labeled nodes](#example-scheduling-cockroachdb-onto-labeled-nodes)
 - [Taints and tolerations](#taints-and-tolerations)
+  - [Add a toleration](#add-a-toleration)
+  - [Example: Evicting CockroachDB from a running worker node](#example-evicting-cockroachdb-from-a-running-worker-node)
 - [Topology spread constraints](#topology-spread-constraints)
+  - [Add a topology spread constraint](#add-a-topology-spread-constraint)
 - [Resource labels and annotations](#resource-labels-and-annotations)
+
+This page is for Kubernetes deployments that are not using the CockroachDB operator. For guidance specific to the CockroachDB operator, read [Pod Scheduling with the CockroachDB Operator]({% link {{ page.version.version }}/schedule-cockroachdb-kubernetes-operator.md %}).
+
+{% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 
 These settings control how CockroachDB pods can be identified or scheduled onto worker nodes.
 

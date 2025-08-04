@@ -9,13 +9,17 @@ docs_area: deploy
 
 {% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 
-This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage. 
+This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage.
+
+This page is for Kubernetes deployments that are not using the CockroachDB operator. For guidance specific to the CockroachDB operator, read [Resource management with the CockroachDB operator]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes-operator.md %}).
+
+{% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 
 These settings override the defaults used when [deploying CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}).
 
 <div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="operator">Operator</button>
-    <button class="filter-button" data-scope="manual">Manual Configs</button>
+    <button class="filter-button" data-scope="operator">Public operator</button>
+    <button class="filter-button" data-scope="manual">Manual configs</button>
     <button class="filter-button" data-scope="helm">Helm</button>
 </div>
 

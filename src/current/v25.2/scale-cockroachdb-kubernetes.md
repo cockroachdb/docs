@@ -13,8 +13,12 @@ This article assumes you have already [deployed CockroachDB on a single Kubernet
 
 This page explains how to add and remove CockroachDB nodes on Kubernetes.
 
+This page is for Kubernetes deployments that are not using the CockroachDB operator. For guidance specific to the CockroachDB operator, read [Cluster Scaling with the CockroachDB Operator]({% link {{ page.version.version }}/scale-cockroachdb-kubernetes-operator.md %}).
+
+{% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
+
 <div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="operator">Operator</button>
+    <button class="filter-button" data-scope="operator">Public operator</button>
     <button class="filter-button" data-scope="manual">Manual Configs</button>
     <button class="filter-button" data-scope="helm">Helm</button>
 </div>

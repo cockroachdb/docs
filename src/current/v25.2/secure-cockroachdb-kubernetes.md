@@ -13,6 +13,10 @@ This article assumes you have already [deployed CockroachDB securely on a single
 
 By default, self-signed certificates are used when using the Operator or Helm to securely [deploy CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}). However, the recommended approach is to use `cert-manager` for certificate management. For details, refer to [Deploy cert-manager for mTLS](?filters=helm#deploy-cert-manager-for-mtls).
 
+This page is for Kubernetes deployments that are not using the CockroachDB operator. For guidance specific to the CockroachDB operator, read [Certificate Management with the CockroachDB Operator]({% link {{ page.version.version }}/secure-cockroachdb-kubernetes-operator.md %}).
+
+{% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
+
 This page explains how to:
 
 - Authenticate an Operator or Helm deployment using a [custom CA](#use-a-custom-ca)
