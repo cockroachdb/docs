@@ -5,4 +5,3 @@
 - Index acceleration with filters is only supported if the filters match prefix columns. [#146145](https://github.com/cockroachdb/cockroach/issues/146145)
 - Index recommendations are not provided for vector indexes. [#146146](https://github.com/cockroachdb/cockroach/issues/146146)
 - Vector index queries may return incorrect results when the underlying table uses multiple column families. [#146046](https://github.com/cockroachdb/cockroach/issues/146046)
-- Queries against a vector index may ignore filter conditions (e.g., a `WHERE` clause) when multiple vector indexes exist on the same `VECTOR` column, and one has a prefix column. [#146257](https://github.com/cockroachdb/cockroach/issues/146257)

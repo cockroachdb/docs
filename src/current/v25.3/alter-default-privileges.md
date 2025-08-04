@@ -290,11 +290,11 @@ Because `max` has no default privileges, the user can now be dropped:
 ~~~
 
 ~~~
-    username    | options | member_of
-----------------+---------+------------
-  admin         |         | {}
-  cockroachlabs |         | {}
-  root          |         | {admin}
+    username    | options | member_of | estimated_last_login_time
+----------------+---------+-----------+------------------------------
+  admin         | {}      | {}        | NULL
+  cockroachlabs | {}      | {}        | NULL
+  root          | {}      | {admin}   | NULL
 (3 rows)
 ~~~
 
