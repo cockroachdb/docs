@@ -1112,536 +1112,99 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
             (OUTPUT_ROOT / "css" / "google-fonts.css").write_text(fallback)
 
     def create_professional_index_page(self):
-        """Create index page with clearer navigation structure (FROM SCRIPT 2)"""
-        index_html = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CockroachDB Documentation Archive</title>
-    <link rel="stylesheet" href="css/customstyles.css">
-    <link rel="stylesheet" href="css/google-fonts.css">
-    <link rel="icon" type="image/png" href="images/cockroachlabs-logo-170.png">
-    <style>
-        * {{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }}
+        """Add archived banner to existing index.html"""
+        index_path = OUTPUT_ROOT / "index.html"
         
-        body {{
-            font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f8fafc;
-        }}
+        # Check if there's already an index.html file from the Jekyll build
+        if index_path.exists():
+            # Read the existing content
+            html_content = index_path.read_text(encoding="utf-8")
+            
+            # Add the banner CSS to the head
+            banner_css = '''<style>
+    /* Archived version banner */
+    .archived-banner {
+        background-color: #FFF3CD;
+        border-bottom: 1px solid #FFEAA7;
+        padding: 8px 0;
+        text-align: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1035;
+        width: 100%;
+    }
 
-        /* Offline Archive Notice */
-        .offline-notice {{
-            background: #f8fafc;
-            border-bottom: 1px solid #e5e7eb;
-            color: #374151;
-            padding: 0.75rem 0;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }}
-        
-        .offline-notice-content {{
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }}
-        
-        .offline-notice-icon {{
-            font-size: 1.2rem;
-        }}
-        
-        .offline-notice-text {{
-            font-weight: 500;
-            font-size: 0.95rem;
-        }}
-        
-        .version-badge {{
-            background: #6933FF;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }}
+    .archived-banner .container {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
 
-        /* Main Content */
-        .main {{
-            background: linear-gradient(135deg, #6933FF 0%, #8B5CF6 50%, #A855F7 100%);
-            color: white;
-            padding: 4rem 0;
-            position: relative;
-            overflow: hidden;
-        }}
-        
-        .main::before {{
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(105, 51, 255, 0.9) 0%, rgba(139, 92, 246, 0.8) 50%, rgba(168, 85, 247, 0.9) 100%);
-            z-index: -1;
-        }}
-        
-        .container {{
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }}
-        
-        .hero {{
-            text-align: center;
-            margin-bottom: 4rem;
-            position: relative;
-        }}
-        
-        .hero h1 {{
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            letter-spacing: -0.02em;
-        }}
-        
-        .hero p {{
-            font-size: 1.3rem;
-            opacity: 0.95;
-            max-width: 650px;
-            margin: 0 auto;
-            line-height: 1.7;
-            font-weight: 400;
-        }}
-        
-        /* Navigation Clarity Styles */
-        .nav-section {{
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }}
-        
-        .nav-section h3 {{
-            color: #1f2937;
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }}
-        
-        .nav-cards {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }}
-        
-        .nav-card {{
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }}
-        
-        .nav-card:hover {{
-            border-color: #6933FF;
-            transform: translateY(-2px);
-        }}
-        
-        .nav-card.primary {{
-            border-color: #6933FF;
-            background: linear-gradient(135deg, rgba(105, 51, 255, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
-        }}
-        
-        .nav-card h4 {{
-            color: #1f2937;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }}
-        
-        .nav-card p {{
-            color: #6b7280;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }}
-        
-        .nav-card a {{
-            color: #6933FF;
-            text-decoration: none;
-            font-weight: 600;
-        }}
-        
-        .badge {{
-            background: #6933FF;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }}
-        
-        /* Action Cards */
-        .action-cards {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }}
-        
-        .card {{
-            background: white;
-            border-radius: 12px;
-            padding: 2.5rem;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }}
-        
-        .card:hover {{
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }}
-        
-        .card::before {{
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(135deg, #6933FF 0%, #8B5CF6 50%, #A855F7 100%);
-        }}
-        
-        .card-icon {{
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, #6933FF 0%, #8B5CF6 50%, #A855F7 100%);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            box-shadow: 0 8px 25px rgba(105, 51, 255, 0.3);
-        }}
-        
-        .card h2 {{
-            color: #1f2937;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }}
-        
-        .card p {{
-            color: #6b7280;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }}
-        
-        .card-link {{
-            color: #6933FF;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.3s ease;
-        }}
-        
-        .card-link:hover {{
-            color: #5B21B6;
-        }}
-        
-        .arrow {{
-            transition: transform 0.3s ease;
-        }}
-        
-        .card:hover .arrow {{
-            transform: translateX(4px);
-        }}
-        
-        /* Footer Section */
-        .footer-section {{
-            background: white;
-            padding: 4rem 0;
-            border-top: 1px solid #e5e7eb;
-        }}
-        
-        .footer-content {{
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }}
-        
-        .quick-links {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }}
-        
-        .link-group h3 {{
-            color: #1f2937;
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }}
-        
-        .link-group ul {{
-            list-style: none;
-            padding: 0;
-        }}
-        
-        .link-group li {{
-            margin-bottom: 0.5rem;
-        }}
-        
-        .link-group a {{
-            color: #6b7280;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }}
-        
-        .link-group a:hover {{
-            color: #6933FF;
-        }}
-        
-        /* Responsive */
-        @media (max-width: 768px) {{
-            .hero h1 {{
-                font-size: 2.5rem;
-            }}
-            
-            .hero p {{
-                font-size: 1.1rem;
-            }}
-            
-            .action-cards {{
-                grid-template-columns: 1fr;
-            }}
-            
-            .container {{
-                padding: 0 1rem;
-            }}
-            
-            .offline-notice-content {{
-                padding: 0 1rem;
-            }}
-        }}
-        
-        /* Hide online elements */
-        .ask-ai, #ask-ai, [data-ask-ai], .kapa-widget, 
-        [class*="kapa"], [id*="kapa"], .floating-action-button,
-        .search, #search, .search-bar, .search-input, .search-form,
-        [class*="search"], [id*="search"], input[type="search"],
-        .algolia-search, .docsearch, [class*="docsearch"],
-        form[action*="search"], input[placeholder*="Search" i], 
-        input[placeholder*="search" i], input[name="query"],
-        form[action="/docs/search"], form[action*="/search"] {{
-            display: none !important;
-        }}
-    </style>
-</head>
-<body>
-    <!-- Offline Archive Notice -->
-    <div class="offline-notice">
-        <div class="offline-notice-content">
-            <span class="offline-notice-icon">📱</span>
-            <span class="offline-notice-text">Offline Documentation Archive</span>
-            <span class="version-badge">{TARGET_VERSION}</span>
-        </div>
-    </div>
+    .archived-banner-text {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: #856404;
+        margin: 0;
+        line-height: 1.4;
+    }
 
-    <!-- Main Content -->
-    <main class="main">
+    .archived-banner-link {
+        color: #6933FF;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .archived-banner-link:hover {
+        color: #4d0dff;
+        text-decoration: underline;
+    }
+
+    /* Push the navbar down below the banner */
+    .main-nav-wrapper {
+        top: 32px !important;
+    }
+
+    .navbar.fixed-top {
+        top: 32px !important;
+    }
+
+    /* Only add the banner height to existing padding */
+    body {
+        padding-top: 32px;
+    }
+
+    @media (max-width: 768px) {
+        .archived-banner-text {
+            font-size: 13px;
+        }
+    }
+    </style>'''
+            
+            # Add the banner HTML
+            banner_html = '''<!-- Archived version banner -->
+    <div class="archived-banner">
         <div class="container">
-            <div class="hero">
-                <h1>CockroachDB Docs</h1>
-                <p>Your offline archive of CockroachDB documentation for version {TARGET_VERSION} and related resources.</p>
-            </div>
-            
-            <!-- Clear Navigation Structure -->
-            <div class="nav-section">
-                <h3>📚 Primary Documentation</h3>
-                <div class="nav-cards">
-                    <div class="nav-card primary">
-                        <h4>Core Documentation <span class="badge">PRIMARY</span></h4>
-                        <p>Complete {TARGET_VERSION} documentation with getting started guides, tutorials, and reference materials.</p>
-                        <a href="{TARGET_VERSION}/index.html">Enter Docs →</a>
-                    </div>
-                    
-                    <div class="nav-card">
-                        <h4>Quick Start</h4>
-                        <p>Jump directly to setting up your first CockroachDB cluster.</p>
-                        <a href="{TARGET_VERSION}/start-a-local-cluster.html">Start Here →</a>
-                    </div>
-                    
-                    <div class="nav-card">
-                        <h4>Developer Guide</h4>
-                        <p>Build applications with your preferred language and framework.</p>
-                        <a href="{TARGET_VERSION}/developer-guide-overview.html">Build Apps →</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="nav-section">
-                <h3>☁️ Additional Resources</h3>
-                <div class="nav-cards">
-                    <div class="nav-card">
-                        <h4>CockroachDB Cloud</h4>
-                        <p>Fully managed service documentation and guides.</p>
-                        <a href="cockroachcloud/quickstart.html">Cloud Docs →</a>
-                    </div>
-                    
-                    <div class="nav-card">
-                        <h4>Release Notes</h4>
-                        <p>Version history, changes, and upgrade information.</p>
-                        <a href="releases/index.html">Releases →</a>
-                    </div>
-                    
-                    <div class="nav-card">
-                        <h4>Technical Advisories</h4>
-                        <p>Important technical notices and security updates.</p>
-                        <a href="advisories/index.html">Advisories →</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Action Cards for Getting Started -->
-            <div class="action-cards">
-                <div class="card">
-                    <div class="card-icon">⚡</div>
-                    <h2>Installation</h2>
-                    <p>Download and install CockroachDB on your system.</p>
-                    <a href="{TARGET_VERSION}/install-cockroachdb-linux.html" class="card-link">
-                        Install Guide <span class="arrow">→</span>
-                    </a>
-                </div>
-                
-                <div class="card">
-                    <div class="card-icon">🔧</div>
-                    <h2>SQL Reference</h2>
-                    <p>Complete SQL statements, functions, and operators reference.</p>
-                    <a href="{TARGET_VERSION}/sql-statements.html" class="card-link">
-                        SQL Docs <span class="arrow">→</span>
-                    </a>
-                </div>
-                
-                <div class="card">
-                    <div class="card-icon">📊</div>
-                    <h2>Performance</h2>
-                    <p>Best practices for optimizing your CockroachDB deployment.</p>
-                    <a href="{TARGET_VERSION}/performance-best-practices-overview.html" class="card-link">
-                        Optimize <span class="arrow">→</span>
-                    </a>
-                </div>
-            </div>
+            <p class="archived-banner-text">
+                📚 This is an archived version of the CockroachDB documentation. 
+                <a href="https://www.cockroachlabs.com/docs/stable/" class="archived-banner-link">View the latest documentation</a>
+            </p>
         </div>
-    </main>
-    
-    <!-- Footer Links -->
-    <section class="footer-section">
-        <div class="footer-content">
-            <div class="quick-links">
-                <div class="link-group">
-                    <h3>📚 Get Started</h3>
-                    <ul>
-                        <li><a href="{TARGET_VERSION}/index.html">Documentation Home</a></li>
-                        <li><a href="{TARGET_VERSION}/install-cockroachdb-linux.html">Installation Guide</a></li>
-                        <li><a href="{TARGET_VERSION}/learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
-                        <li><a href="{TARGET_VERSION}/architecture/overview.html">Architecture Overview</a></li>
-                    </ul>
-                </div>
-                
-                <div class="link-group">
-                    <h3>🔧 Reference</h3>
-                    <ul>
-                        <li><a href="{TARGET_VERSION}/sql-statements.html">SQL Statements</a></li>
-                        <li><a href="{TARGET_VERSION}/functions-and-operators.html">Functions & Operators</a></li>
-                        <li><a href="{TARGET_VERSION}/data-types.html">Data Types</a></li>
-                        <li><a href="{TARGET_VERSION}/performance-best-practices-overview.html">Performance Best Practices</a></li>
-                    </ul>
-                </div>
-                
-                <div class="link-group">
-                    <h3>☁️ CockroachDB Cloud</h3>
-                    <ul>
-                        <li><a href="cockroachcloud/quickstart.html">Cloud Quickstart</a></li>
-                        <li><a href="cockroachcloud/create-an-account.html">Create an Account</a></li>
-                        <li><a href="cockroachcloud/production-checklist.html">Production Checklist</a></li>
-                    </ul>
-                </div>
-                
-                <div class="link-group">
-                    <h3>📋 Resources</h3>
-                    <ul>
-                        <li><a href="releases/index.html">Release Notes</a></li>
-                        <li><a href="releases/{TARGET_VERSION}.html">{TARGET_VERSION} Release</a></li>
-                        <li><a href="advisories/index.html">Technical Advisories</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <script>
-        // Remove any Ask AI elements and add navigation interactivity
-        document.addEventListener('DOMContentLoaded', function() {{
-            // Clean up unwanted elements
-            var selectors = ['.ask-ai', '#ask-ai', '[data-ask-ai]', '.kapa-widget', 
-                           '[class*="kapa"]', '[id*="kapa"]', '.floating-action-button',
-                           '.search', '#search', '.search-bar', '.search-input', '.search-form',
-                           '[class*="search"]', '[id*="search"]', 'input[type="search"]',
-                           '.algolia-search', '.docsearch', '[class*="docsearch"]',
-                           'form[action*="search"]', 'input[placeholder*="Search" i]', 
-                           'input[placeholder*="search" i]', 'input[name="query"]',
-                           'form[action="/docs/search"]', 'form[action*="/search"]'];
-            selectors.forEach(function(selector) {{
-                document.querySelectorAll(selector).forEach(function(el) {{
-                    el.remove();
-                }});
-            }});
+    </div>'''
             
-            // Add interaction for nav cards
-            document.querySelectorAll('.nav-card').forEach(function(card) {{
-                card.addEventListener('click', function(e) {{
-                    if (e.target.tagName !== 'A') {{
-                        var link = card.querySelector('a');
-                        if (link) link.click();
-                    }}
-                }});
-            }});
-        }});
-    </script>
-</body>
-</html>"""
-        
-        (OUTPUT_ROOT / "index.html").write_text(index_html)
-        self.log("Created professional navigation index.html with vibrant purple branding", "SUCCESS")
+            # Insert CSS before </head>
+            html_content = html_content.replace('</head>', banner_css + '\n</head>')
+            
+            # Insert banner HTML after <body>
+            html_content = html_content.replace('<body>', '<body>\n' + banner_html)
+            
+            # Write back the modified content
+            index_path.write_text(html_content, encoding="utf-8")
+            self.log("Added archived banner to existing index.html", "SUCCESS")
+        else:
+            self.log("No existing index.html found to modify", "WARNING")
     
     def build(self):
         """Main build process with hybrid optimizations"""
