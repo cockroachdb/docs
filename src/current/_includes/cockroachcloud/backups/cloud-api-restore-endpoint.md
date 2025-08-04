@@ -53,9 +53,10 @@ curl --request POST \
     "type": "CLUSTER"
 }'
 ~~~
-{% endif %}
 
 You can specify additional options for the restore operation in the `restore_opts` object. For more information, see the [API endpoint documentation](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/restores-config).
+
+{% endif %}
 
 If the request is successful, the client recieves a JSON response that describes the request operation:
 
