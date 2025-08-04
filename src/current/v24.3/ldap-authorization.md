@@ -8,7 +8,7 @@ toc: true
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-If you manage users through a service compatible with the Lightweight Directory Access Protocol (LDAP), such as Active Directory or Microsoft Entra ID, you can configure CockroachDB to automatically assign [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}) to users based on LDAP group memberships, simplifying access control. 
+If you manage users through a service compatible with the Lightweight Directory Access Protocol (LDAP), such as Active Directory or Microsoft Entra ID, you can configure CockroachDB to automatically assign [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}) to users based on LDAP group memberships, simplifying access control.
 
 When enabled:
 
@@ -18,7 +18,7 @@ When enabled:
 
 ## Prerequisites
 
-- Enable [LDAP Authentication]({% link {{ page.version.version }}/ldap-authentication.md %}).
+- Enable [LDAP authentication]({% link {{ page.version.version }}/ldap-authentication.md %}).
 
 ## Configuration
 
@@ -26,7 +26,7 @@ Before you begin, it may be useful to enable authentication logging, which can h
 
 ### Step 1: Enable LDAP Authorization
 
-Add the `ldapgrouplistfilter` parameter to the HBA configuration that you enabled for [LDAP Authentication]({% link {{ page.version.version }}/ldap-authentication.md %}). The configuration will include two important LDAP filters:
+Add the `ldapgrouplistfilter` parameter to the HBA configuration that you enabled for [LDAP authentication]({% link {{ page.version.version }}/ldap-authentication.md %}). The configuration will include two important LDAP filters:
 
 1. `ldapsearchfilter`: Determines which users can authenticate
 2. `ldapgrouplistfilter`: Defines which groups should be considered for authorization

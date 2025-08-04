@@ -81,7 +81,7 @@ host    all    all    all    ldap    ldapserver=ldap.example.com
     "ldapsearchfilter=(memberof=cn=cockroachdb_users,ou=groups,dc=example,dc=com)"';
 ~~~
 
-If you also intend to configure LDAP Authorization, you will need to include an additional LDAP parameter, `ldapgrouplistfilter`. For details, refer to [LDAP Authorization]({% link {{ page.version.version }}/ldap-authorization.md %}#configuration).
+If you also intend to configure LDAP Authorization, you will need to include an additional LDAP parameter, `ldapgrouplistfilter`. For details, refer to [LDAP authorization]({% link {{ page.version.version }}/ldap-authorization.md %}#configuration).
 
 ### Step 3: Configure TLS (Optional)
 
