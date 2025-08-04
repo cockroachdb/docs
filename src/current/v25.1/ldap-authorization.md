@@ -4,7 +4,11 @@ summary: Learn how to configure role-based access control (authorization) using 
 toc: true
 ---
 
-You can configure your cluster to assign [roles]({% link {{ page.version.version }}/ldap-authentication.md %}) based on a user's group membership in an LDAP service, such as Active Directory or Microsoft Entra ID.
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+If you manage users through a service compatible with the Lightweight Directory Access Protocol (LDAP), such as Active Directory or Microsoft Entra ID, you can configure CockroachDB to automatically assign [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}) to users based on LDAP group memberships, simplifying access control. 
 
 When enabled:
 
@@ -131,7 +135,7 @@ Potential issues to investigate may pertain to:
 ## Security Considerations
 
 1. Always keep a backup authentication method (like password) for administrative users.
-2. Use LDAPS (LDAP over TLS) in production environments.
-3. Use a restricted service account for directory searches.
-4. Regularly audit LDAP group memberships.
-5. Monitor authentication logs for unusual patterns.
+1. Use LDAPS (LDAP over TLS) in production environments.
+1. Use a restricted service account for directory searches.
+1. Regularly audit LDAP group memberships.
+1. Monitor authentication logs for unusual patterns.
