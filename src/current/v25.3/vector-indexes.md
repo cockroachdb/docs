@@ -128,7 +128,7 @@ Vector indexes on `VECTOR` columns support the following comparison operators. W
 
 - **L2 distance** ([`<->`]({% link {{ page.version.version }}/vector.md %}#syntax)): Use when you want the true geometric distance, such as in spatial or physical models where absolute positioning matters.
 - **Cosine distance** ([`<=>`]({% link {{ page.version.version }}/vector.md %}#syntax)): Use when you only care about directional similarity, like in semantic text matching or clustering. Ideal for [retrieval-augmented generation (RAG)](https://en.wikipedia.org/wiki/Retrieval-augmented_generation) use cases involving pretrained embedding models that either normalize vectors or are trained with a cosine similarity loss.
-- **Negative inner product** ([`<#>`])({% link {{ page.version.version }}/vector.md %}#syntax): Use when both the magnitude and direction of vectors matter, such as in scoring or preference modeling.
+- **Negative inner product** ([`<#>`]({% link {{ page.version.version }}/vector.md %}#syntax)): Use when both the magnitude and direction of vectors matter, such as in scoring or preference modeling.
 
 Operators are used in the [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}) clause when ranking results by vector similarity. Refer to the [Example](#example).
 
