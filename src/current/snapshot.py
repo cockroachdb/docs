@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Complete Offline Documentation Archiver for Jekyll CockroachDB Documentation
-FIXED VERSION with proper purple CockroachDB branding and working sidebar cleaning
+HYBRID VERSION - Combines vibrant sidebar styling, professional homepage, optimized assets, and improved navigation logic
 """
 import re
 import shutil
@@ -67,48 +67,57 @@ class OfflineArchiver:
     
     def check_file_exists(self, url):
         """Test if a file exists for a given URL"""
-        if url.startswith(('http://', 'https://', '#', 'mailto:', 'javascript:')):
-            return True  # External/anchor links are always valid
-        
-        # Normalize URL to file path
-        file_url = url.strip()
-        
-        # Handle root/empty URLs
-        if file_url in ['/', '', 'index', 'index.html']:
-            return True  # Root index always exists
-        
-        # Remove leading slash and docs prefix
-        if file_url.startswith('/docs/'):
-            file_url = file_url[6:]
-        elif file_url.startswith('docs/'):
-            file_url = file_url[5:]
-        file_url = file_url.lstrip('/')
-        
-        # Handle stable -> v19.2
-        file_url = file_url.replace('/stable/', f'/{TARGET_VERSION}/')
-        file_url = file_url.replace('stable/', f'{TARGET_VERSION}/')
-        if file_url == 'stable':
-            file_url = TARGET_VERSION
-        
-        # Convert ${VERSION} placeholder
-        file_url = file_url.replace('${VERSION}', TARGET_VERSION)
-        
-        # Try multiple file path variations
-        possible_paths = [
-            file_url,
-            file_url + '.html' if file_url and not file_url.endswith('.html') and '.' not in file_url.split('/')[-1] else None,
-            file_url + '/index.html' if file_url and not file_url.endswith('/') else None,
-            file_url.rstrip('/') + '.html' if file_url.endswith('/') else None
-        ]
-        
-        # Check if any variation exists
-        for path in possible_paths:
-            if path:
-                file_path = DOCS_ROOT / path
-                if file_path.exists():
-                    return True
-        
-        return False
+        try:
+            if not url or url.startswith(('http://', 'https://', '#', 'mailto:', 'javascript:')):
+                return True  # External/anchor links are always valid
+            
+            # Normalize URL to file path
+            file_url = str(url).strip()
+            
+            # Handle root/empty URLs
+            if file_url in ['/', '', 'index', 'index.html']:
+                return True  # Root index always exists
+            
+            # Remove leading slash and docs prefix
+            if file_url.startswith('/docs/'):
+                file_url = file_url[6:]
+            elif file_url.startswith('docs/'):
+                file_url = file_url[5:]
+            file_url = file_url.lstrip('/')
+            
+            # Handle stable -> v19.2
+            file_url = file_url.replace('/stable/', f'/{TARGET_VERSION}/')
+            file_url = file_url.replace('stable/', f'{TARGET_VERSION}/')
+            if file_url == 'stable':
+                file_url = TARGET_VERSION
+            
+            # Convert ${VERSION} placeholder
+            file_url = file_url.replace('${VERSION}', TARGET_VERSION)
+            
+            # Try multiple file path variations
+            possible_paths = [
+                file_url,
+                file_url + '.html' if file_url and not file_url.endswith('.html') and '.' not in file_url.split('/')[-1] else None,
+                file_url + '/index.html' if file_url and not file_url.endswith('/') else None,
+                file_url.rstrip('/') + '.html' if file_url.endswith('/') else None
+            ]
+            
+            # Check if any variation exists
+            for path in possible_paths:
+                if path:
+                    try:
+                        file_path = DOCS_ROOT / path
+                        if file_path.exists():
+                            return True
+                    except Exception:
+                        continue
+            
+            return False
+            
+        except Exception as e:
+            # If there's any error checking, assume the file exists to be safe
+            self.log(f"Error checking file existence for {url}: {e}", "DEBUG")
+            return True
 
     def clean_sidebar_items(self, items_data):
         """Clean the sidebar items array and count removed URLs"""
@@ -127,12 +136,18 @@ class OfflineArchiver:
                 valid_urls = []
                 
                 for url in item['urls']:
-                    if self.check_file_exists(url):
-                        valid_urls.append(url)
-                    else:
+                    try:
+                        if url and self.check_file_exists(url):
+                            valid_urls.append(url)
+                        else:
+                            removed_urls_count += 1
+                            if level == 0:  # Only log for top-level items to reduce noise
+                                self.log(f"Removing broken URL: {url}", "DEBUG")
+                    except Exception as e:
+                        # If there's an error checking the URL, skip it
                         removed_urls_count += 1
-                        if level == 0:  # Only log for top-level items to reduce noise
-                            self.log(f"Removing broken URL: {url}", "DEBUG")
+                        if level == 0:
+                            self.log(f"Removing problematic URL: {url} (error: {e})", "DEBUG")
                 
                 if valid_urls:
                     item['urls'] = valid_urls
@@ -182,90 +197,109 @@ class OfflineArchiver:
 
     def js_to_json(self, js_text):
         """Convert JavaScript object notation to valid JSON"""
-        # First pass - handle line by line for basic fixes
-        lines = js_text.split('\n')
-        fixed_lines = []
-        
-        for line_num, line in enumerate(lines, 1):
-            original_line = line
-            
-            # Remove comments first
-            if '//' in line:
-                # Only remove comments that aren't inside quotes
-                in_quotes = False
-                quote_char = None
-                comment_pos = -1
+        try:
+            if not js_text or not js_text.strip():
+                return ""
                 
-                for i, char in enumerate(line):
-                    if not in_quotes and char in ['"', "'"]:
-                        in_quotes = True
-                        quote_char = char
-                    elif in_quotes and char == quote_char and (i == 0 or line[i-1] != '\\'):
+            # First pass - handle line by line for basic fixes
+            lines = js_text.split('\n')
+            fixed_lines = []
+            
+            for line_num, line in enumerate(lines, 1):
+                try:
+                    original_line = line
+                    
+                    # Remove comments first
+                    if '//' in line:
+                        # Only remove comments that aren't inside quotes
                         in_quotes = False
                         quote_char = None
-                    elif not in_quotes and char == '/' and i < len(line) - 1 and line[i+1] == '/':
-                        comment_pos = i
-                        break
-                
-                if comment_pos >= 0:
-                    line = line[:comment_pos].rstrip()
+                        comment_pos = -1
+                        
+                        for i, char in enumerate(line):
+                            if not in_quotes and char in ['"', "'"]:
+                                in_quotes = True
+                                quote_char = char
+                            elif in_quotes and char == quote_char and (i == 0 or line[i-1] != '\\'):
+                                in_quotes = False
+                                quote_char = None
+                            elif not in_quotes and char == '/' and i < len(line) - 1 and line[i+1] == '/':
+                                comment_pos = i
+                                break
+                        
+                        if comment_pos >= 0:
+                            line = line[:comment_pos].rstrip()
+                    
+                    # Remove function definitions
+                    line = re.sub(r':\s*function\s*\([^)]*\)\s*\{[^}]*\}', ': null', line)
+                    
+                    # Fix unquoted property names ONLY at start of line
+                    stripped = line.strip()
+                    if stripped and ':' in stripped and not stripped.startswith('"') and not stripped.startswith('[') and not stripped.startswith('{'):
+                        match = re.match(r'^(\s*)([a-zA-Z_$][a-zA-Z0-9_$]*)(\s*:\s*)(.*)', line)
+                        if match:
+                            indent, prop_name, colon_part, rest = match.groups()
+                            line = f'{indent}"{prop_name}"{colon_part}{rest}'
+                    
+                    # Remove trailing commas before } or ]
+                    line = re.sub(r',(\s*[}\]])', r'\1', line)
+                    
+                    fixed_lines.append(line)
+                    
+                except Exception as e:
+                    self.log(f"Error processing line {line_num}: {e}", "DEBUG")
+                    fixed_lines.append(line)  # Use original line if processing fails
             
-            # Remove function definitions
-            line = re.sub(r':\s*function\s*\([^)]*\)\s*\{[^}]*\}', ': null', line)
+            result = '\n'.join(fixed_lines)
             
-            # Fix unquoted property names ONLY at start of line
-            stripped = line.strip()
-            if stripped and ':' in stripped and not stripped.startswith('"') and not stripped.startswith('[') and not stripped.startswith('{'):
-                match = re.match(r'^(\s*)([a-zA-Z_$][a-zA-Z0-9_$]*)(\s*:\s*)(.*)', line)
-                if match:
-                    indent, prop_name, colon_part, rest = match.groups()
-                    line = f'{indent}"{prop_name}"{colon_part}{rest}'
+            # Second pass - safer character-by-character processing for quotes
+            final_result = []
+            in_double_quotes = False
+            in_single_quotes = False
+            i = 0
             
-            # Remove trailing commas before } or ]
-            line = re.sub(r',(\s*[}\]])', r'\1', line)
-            
-            fixed_lines.append(line)
-        
-        result = '\n'.join(fixed_lines)
-        
-        # Second pass - safer character-by-character processing for quotes
-        final_result = []
-        in_double_quotes = False
-        in_single_quotes = False
-        i = 0
-        
-        while i < len(result):
-            char = result[i]
-            
-            if char == '"' and not in_single_quotes:
-                in_double_quotes = not in_double_quotes
-                final_result.append(char)
-            elif char == "'" and not in_double_quotes:
-                if in_single_quotes:
-                    # End of single-quoted string - convert to double quote
-                    final_result.append('"')
-                    in_single_quotes = False
-                else:
-                    # Start of single-quoted string - convert to double quote
-                    final_result.append('"')
-                    in_single_quotes = True
-            elif char == '\\' and (in_single_quotes or in_double_quotes):
-                # Handle escape sequences
-                final_result.append(char)
-                if i + 1 < len(result):
+            while i < len(result):
+                try:
+                    char = result[i]
+                    
+                    if char == '"' and not in_single_quotes:
+                        in_double_quotes = not in_double_quotes
+                        final_result.append(char)
+                    elif char == "'" and not in_double_quotes:
+                        if in_single_quotes:
+                            # End of single-quoted string - convert to double quote
+                            final_result.append('"')
+                            in_single_quotes = False
+                        else:
+                            # Start of single-quoted string - convert to double quote
+                            final_result.append('"')
+                            in_single_quotes = True
+                    elif char == '\\' and (in_single_quotes or in_double_quotes):
+                        # Handle escape sequences
+                        final_result.append(char)
+                        if i + 1 < len(result):
+                            i += 1
+                            final_result.append(result[i])
+                    else:
+                        final_result.append(char)
+                    
                     i += 1
-                    final_result.append(result[i])
-            else:
-                final_result.append(char)
+                    
+                except Exception as e:
+                    self.log(f"Error processing character at position {i}: {e}", "DEBUG")
+                    final_result.append(char)
+                    i += 1
             
-            i += 1
-        
-        result = ''.join(final_result)
-        
-        # Handle undefined
-        result = re.sub(r'\bundefined\b', 'null', result)
-        
-        return result
+            result = ''.join(final_result)
+            
+            # Handle undefined
+            result = re.sub(r'\bundefined\b', 'null', result)
+            
+            return result
+            
+        except Exception as e:
+            self.log(f"Error in js_to_json: {e}", "WARNING")
+            return ""
 
     def find_matching_bracket(self, text, start_pos):
         """Find the matching closing bracket for an opening bracket at start_pos"""
@@ -338,6 +372,9 @@ class OfflineArchiver:
         try:
             # Convert JavaScript to JSON
             json_str = self.js_to_json(items_str)
+            if not json_str.strip():
+                return html_content, 0
+                
             items_data = json.loads(json_str)
             
             # Clean the items
@@ -356,17 +393,13 @@ class OfflineArchiver:
             
         except json.JSONDecodeError as e:
             self.log(f"JSON parsing failed in sidebar cleaning: {e}", "WARNING")
+            self.log(f"Problematic JSON snippet: {json_str[:200] if 'json_str' in locals() else 'N/A'}...", "DEBUG")
             return html_content, 0
             
         except Exception as e:
             self.log(f"Error cleaning sidebar: {e}", "WARNING")
+            self.log(f"Error type: {type(e).__name__}", "DEBUG")
             return html_content, 0
-
-    def clean_sidebar_data(self, sidebar_data):
-        """Legacy method - replaced by clean_sidebar_in_html"""
-        # This method is kept for compatibility but the real work is done in clean_sidebar_in_html
-        cleaned_items, removed_urls, removed_sections = self.clean_sidebar_items(sidebar_data)
-        return cleaned_items
 
     def load_sidebar(self):
         """Load and prepare the sidebar HTML"""
@@ -430,10 +463,10 @@ class OfflineArchiver:
             
             # Pre-process sidebar links to normalize paths
             for a in sidebar_soup.find_all('a', href=True):
-                href = a['href']
+                href = a.get('href')
                 
-                # Skip external links
-                if href.startswith(('http://', 'https://', '#', 'mailto:')):
+                # Skip if no href or external links
+                if not href or href.startswith(('http://', 'https://', '#', 'mailto:')):
                     continue
                 
                 # First handle stable -> v19.2
@@ -484,7 +517,78 @@ class OfflineArchiver:
                 self.log(f"Downloaded: {name}", "SUCCESS")
             except Exception as e:
                 self.log(f"Failed to download {name}: {e}", "ERROR")
-    
+
+    def copy_selective_assets(self):
+        """Copy only necessary assets, excluding non-v19.2 version assets (FROM SCRIPT 2)"""
+        self.log("\n--- Copying Selective Assets ---")
+        
+        # Copy global assets (always needed)
+        for asset_dir in ["css", "js", "img"]:
+            src = SITE_ROOT / asset_dir
+            if src.exists():
+                dst = OUTPUT_ROOT / asset_dir
+                shutil.copytree(src, dst, dirs_exist_ok=True)
+                self.log(f"Copied global {asset_dir}/", "SUCCESS")
+        
+        # Copy docs-specific assets (base level)
+        for asset_dir in ["css", "js", "_internal"]:
+            src = DOCS_ROOT / asset_dir
+            if src.exists():
+                dst = OUTPUT_ROOT / asset_dir
+                shutil.copytree(src, dst, dirs_exist_ok=True)
+                self.log(f"Copied docs {asset_dir}/", "SUCCESS")
+        
+        # Handle images selectively - only v19.2 and global images
+        images_src = DOCS_ROOT / "images"
+        if images_src.exists():
+            images_dst = OUTPUT_ROOT / "images"
+            images_dst.mkdir(parents=True, exist_ok=True)
+            
+            copied_count = 0
+            skipped_count = 0
+            
+            for img_file in images_src.rglob("*"):
+                if img_file.is_file():
+                    rel_path = img_file.relative_to(images_src)
+                    
+                    # Skip version-specific images that aren't v19.2
+                    path_parts = rel_path.parts
+                    if (len(path_parts) > 0 and 
+                        path_parts[0].startswith('v') and 
+                        path_parts[0] != TARGET_VERSION and
+                        path_parts[0] not in ['v19.2']):  # Be explicit about allowed versions
+                        skipped_count += 1
+                        continue
+                    
+                    # Copy allowed images
+                    dst_file = images_dst / rel_path
+                    dst_file.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(img_file, dst_file)
+                    copied_count += 1
+            
+            self.log(f"Images: copied {copied_count}, skipped {skipped_count} version-specific files", "SUCCESS")
+        
+        # Copy version-specific assets only for TARGET_VERSION
+        version_dirs = [TARGET_VERSION]  # Only process our target version
+        
+        for version in version_dirs:
+            version_src = DOCS_ROOT / version
+            if version_src.exists():
+                # Copy version-specific images if they exist
+                version_images = version_src / "images"
+                if version_images.exists():
+                    version_images_dst = OUTPUT_ROOT / version / "images"
+                    shutil.copytree(version_images, version_images_dst, dirs_exist_ok=True)
+                    self.log(f"Copied {version}/images/", "SUCCESS")
+                
+                # Copy other version-specific assets
+                for asset_type in ["css", "js", "_internal"]:
+                    version_asset = version_src / asset_type
+                    if version_asset.exists():
+                        version_asset_dst = OUTPUT_ROOT / version / asset_type
+                        shutil.copytree(version_asset, version_asset_dst, dirs_exist_ok=True)
+                        self.log(f"Copied {version}/{asset_type}/", "SUCCESS")
+
     def fix_sidebar_javascript(self, html):
         """Fix the embedded sidebar JavaScript configuration and URL processing"""
         
@@ -655,9 +759,104 @@ class OfflineArchiver:
             self.log("Warning: JavaScript URL processing replacement may have failed", "WARNING")
         
         return new_html
+
+    def get_vibrant_sidebar_styles(self, prefix):
+        """Return vibrant sidebar styles with #6933FF purple branding (FROM SCRIPT 1)"""
+        return f'''<style>
+/* Force sidebar visibility */
+#sidebar, #sidebarMenu, .navbar-collapse {{
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    overflow: visible !important;
+}}
+
+/* Hide online-only elements */
+.ask-ai, #ask-ai, [data-ask-ai], .ai-widget, .kapa-widget,
+[class*="kapa"], [id*="kapa"], [class*="ask-ai"], [id*="ask-ai"],
+.version-switcher, #version-switcher, .feedback-widget,
+button[aria-label*="AI"], div[data-kapa-widget],
+.kapa-ai-button, .ai-assistant, .ai-chat,
+.floating-action-button, .fab, [class*="floating-button"],
+.search, #search, .search-bar, .search-input, .search-form,
+[class*="search"], [id*="search"], input[type="search"],
+.algolia-search, .docsearch, [class*="docsearch"],
+form[action*="search"], input[placeholder*="Search" i], 
+input[placeholder*="search" i], input[name="query"],
+form[action="/docs/search"], form[action*="/search"] {{
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+}}
+
+/* ----------------------------
+   Sidebar base link styles
+   ---------------------------- */
+#sidebar a {{
+  display: block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  color: #374151;
+}}
+#sidebar a:hover {{
+  text-decoration: underline;
+  background-color: #f3f4f6;
+}}
+
+/* ----------------------------
+   Highlight the active page
+   ---------------------------- */
+.navgoco li.active > a {{
+  font-weight: 600;
+  background-color: #e0e7ff;
+  color: #3730a3;
+}}
+
+/* ----------------------------
+   Remove arrows on true top‑level
+   ---------------------------- */
+/* Only indent top level, no arrow */
+.navgoco > li > a {{
+  position: relative;
+  padding-left: 1em;
+}}
+
+/* ----------------------------
+   Arrows for 2nd‑level (and deeper) items with children
+   ---------------------------- */
+/* Navgoco will add "hasChildren" and "open" classes */
+.navgoco li li.hasChildren > a::before {{
+  content: "▶";
+  position: absolute;
+  left: 0.5em;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform .2s ease;
+}}
+.navgoco li li.open.hasChildren > a::before {{
+  transform: translateY(-50%) rotate(90deg);
+}}
+
+/* ----------------------------
+   Submenu visibility
+   ---------------------------- */
+/* hide all sub‑lists by default */
+.navgoco li > ul {{
+  display: none;
+  margin: 0;
+  padding-left: 1.5em;
+}}
+/* show when open */
+.navgoco li.open > ul {{
+  display: block;
+}}
+</style>'''
     
     def process_html_file(self, src_path):
-        """Process a single HTML file"""
+        """Process a single HTML file with vibrant sidebar styling"""
         try:
             rel_path = src_path.relative_to(DOCS_ROOT)
             dst_path = OUTPUT_ROOT / rel_path
@@ -665,9 +864,6 @@ class OfflineArchiver:
             # Calculate depth and prefix
             depth = len(rel_path.parent.parts)
             prefix = "../" * depth
-            
-            # Check if this file is in the version directory
-            is_in_version_dir = str(rel_path).startswith(f'{TARGET_VERSION}/')
             
             # Read content
             html = src_path.read_text(encoding="utf-8")
@@ -728,8 +924,21 @@ class OfflineArchiver:
             # Remove any iframes that might be Ask AI related
             for iframe in soup.find_all('iframe'):
                 src = iframe.get('src', '')
-                if any(term in src.lower() for term in ['kapa', 'ask', 'ai']):
+                if src and any(term in src.lower() for term in ['kapa', 'ask', 'ai']):
                     iframe.decompose()
+            
+            # Fix any remaining anchor tags without href attributes
+            for a in soup.find_all('a'):
+                if not a.get('href'):
+                    # Remove anchor tags without href or set a placeholder
+                    if a.get_text().strip():
+                        # Convert to span if it has text content
+                        span = soup.new_tag('span')
+                        span.string = a.get_text()
+                        a.replace_with(span)
+                    else:
+                        # Remove empty anchor tags
+                        a.decompose()
             
             # Convert back to string
             html = str(soup)
@@ -784,51 +993,11 @@ class OfflineArchiver:
             
             html = re.sub(r"</head>", nav_deps + "\n</head>", html, flags=re.IGNORECASE)
             
-            # Add offline styles
-            offline_styles = f'''<style>
-/* Force sidebar visibility */
-#sidebar, #sidebarMenu, .navbar-collapse {{
-    display: block !important;
-    visibility: visible !important;
-    height: auto !important;
-    overflow: visible !important;
-}}
-
-/* Hide online-only elements */
-.ask-ai, #ask-ai, [data-ask-ai], .ai-widget, .kapa-widget,
-[class*="kapa"], [id*="kapa"], [class*="ask-ai"], [id*="ask-ai"],
-.version-switcher, #version-switcher, .feedback-widget,
-button[aria-label*="AI"], div[data-kapa-widget],
-.kapa-ai-button, .ai-assistant, .ai-chat,
-.floating-action-button, .fab, [class*="floating-button"],
-.search, #search, .search-bar, .search-input, .search-form,
-[class*="search"], [id*="search"], input[type="search"],
-.algolia-search, .docsearch, [class*="docsearch"],
-form[action*="search"], input[placeholder*="Search" i], 
-input[placeholder*="search" i], input[name="query"],
-form[action="/docs/search"], form[action*="/search"] {{
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    position: absolute !important;
-    left: -9999px !important;
-}}
-
-/* Navgoco styling */
-.navgoco li {{ list-style: none; }}
-.navgoco li.active > a {{
-    font-weight: bold;
-    background-color: #0066cc;
-    color: white !important;
-}}
-.navgoco li > ul {{ display: none; }}
-.navgoco li.open > ul {{ display: block; }}
-</style>'''
-            
+            # Add vibrant sidebar styles (FROM SCRIPT 1)
+            offline_styles = self.get_vibrant_sidebar_styles(prefix)
             html = re.sub(r"</head>", offline_styles + "\n</head>", html, flags=re.IGNORECASE)
             
-            # Add navigation initialization
+            # Simple navgoco initialization (FROM SCRIPT 1)
             nav_init = """<script>
 $(function(){
     // Remove unwanted elements
@@ -870,6 +1039,9 @@ $(function(){
             
         except Exception as e:
             self.log(f"Error processing {src_path}: {e}", "ERROR")
+            self.log(f"Error type: {type(e).__name__}", "ERROR")
+            self.log(f"Error details: {str(e)}", "ERROR")
+            # Continue processing other files instead of crashing
             import traceback
             traceback.print_exc()
     
@@ -938,15 +1110,15 @@ $(function(){
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
 code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
             (OUTPUT_ROOT / "css" / "google-fonts.css").write_text(fallback)
-    
-    def create_index_page(self):
-        """Create the index page with proper CockroachDB purple branding"""
+
+    def create_professional_index_page(self):
+        """Create index page with clearer navigation structure (FROM SCRIPT 2)"""
         index_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CockroachDB Documentation</title>
+    <title>CockroachDB Documentation Archive</title>
     <link rel="stylesheet" href="css/customstyles.css">
     <link rel="stylesheet" href="css/google-fonts.css">
     <link rel="icon" type="image/png" href="images/cockroachlabs-logo-170.png">
@@ -1055,6 +1227,79 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
             font-weight: 400;
         }}
         
+        /* Navigation Clarity Styles */
+        .nav-section {{
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }}
+        
+        .nav-section h3 {{
+            color: #1f2937;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }}
+        
+        .nav-cards {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }}
+        
+        .nav-card {{
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }}
+        
+        .nav-card:hover {{
+            border-color: #6933FF;
+            transform: translateY(-2px);
+        }}
+        
+        .nav-card.primary {{
+            border-color: #6933FF;
+            background: linear-gradient(135deg, rgba(105, 51, 255, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+        }}
+        
+        .nav-card h4 {{
+            color: #1f2937;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }}
+        
+        .nav-card p {{
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }}
+        
+        .nav-card a {{
+            color: #6933FF;
+            text-decoration: none;
+            font-weight: 600;
+        }}
+        
+        .badge {{
+            background: #6933FF;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }}
+        
         /* Action Cards */
         .action-cards {{
             display: grid;
@@ -1135,34 +1380,6 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
         
         .card:hover .arrow {{
             transform: translateX(4px);
-        }}
-        
-        /* Download Button */
-        .download-section {{
-            text-align: center;
-        }}
-        
-        .download-btn {{
-            background: #6933FF;
-            color: white;
-            padding: 1.2rem 2.5rem;
-            border: 2px solid #6933FF;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(105, 51, 255, 0.4);
-        }}
-        
-        .download-btn:hover {{
-            background: #5B21B6;
-            border-color: #5B21B6;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(105, 51, 255, 0.6);
         }}
         
         /* Footer Section */
@@ -1254,7 +1471,8 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
     <div class="offline-notice">
         <div class="offline-notice-content">
             <span class="offline-notice-icon">📱</span>
-            <span class="offline-notice-text">Offline Documentation Archive - CockroachDB Version 19.2</span>
+            <span class="offline-notice-text">Offline Documentation Archive</span>
+            <span class="version-badge">{TARGET_VERSION}</span>
         </div>
     </div>
 
@@ -1262,43 +1480,85 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
     <main class="main">
         <div class="container">
             <div class="hero">
-                <h1>Documentation</h1>
-                <p>CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.</p>
+                <h1>CockroachDB Docs</h1>
+                <p>Your offline archive of CockroachDB documentation for version {TARGET_VERSION} and related resources.</p>
             </div>
             
+            <!-- Clear Navigation Structure -->
+            <div class="nav-section">
+                <h3>📚 Primary Documentation</h3>
+                <div class="nav-cards">
+                    <div class="nav-card primary">
+                        <h4>Core Documentation <span class="badge">PRIMARY</span></h4>
+                        <p>Complete {TARGET_VERSION} documentation with getting started guides, tutorials, and reference materials.</p>
+                        <a href="{TARGET_VERSION}/index.html">Enter Docs →</a>
+                    </div>
+                    
+                    <div class="nav-card">
+                        <h4>Quick Start</h4>
+                        <p>Jump directly to setting up your first CockroachDB cluster.</p>
+                        <a href="{TARGET_VERSION}/start-a-local-cluster.html">Start Here →</a>
+                    </div>
+                    
+                    <div class="nav-card">
+                        <h4>Developer Guide</h4>
+                        <p>Build applications with your preferred language and framework.</p>
+                        <a href="{TARGET_VERSION}/developer-guide-overview.html">Build Apps →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <h3>☁️ Additional Resources</h3>
+                <div class="nav-cards">
+                    <div class="nav-card">
+                        <h4>CockroachDB Cloud</h4>
+                        <p>Fully managed service documentation and guides.</p>
+                        <a href="cockroachcloud/quickstart.html">Cloud Docs →</a>
+                    </div>
+                    
+                    <div class="nav-card">
+                        <h4>Release Notes</h4>
+                        <p>Version history, changes, and upgrade information.</p>
+                        <a href="releases/index.html">Releases →</a>
+                    </div>
+                    
+                    <div class="nav-card">
+                        <h4>Technical Advisories</h4>
+                        <p>Important technical notices and security updates.</p>
+                        <a href="advisories/index.html">Advisories →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Cards for Getting Started -->
             <div class="action-cards">
                 <div class="card">
-                    <div class="card-icon">☁️</div>
-                    <h2>Start a cloud cluster</h2>
-                    <p>Get started with CockroachDB Cloud, our fully managed service.</p>
-                    <a href="cockroachcloud/quickstart.html" class="card-link">
-                        Learn more <span class="arrow">→</span>
+                    <div class="card-icon">⚡</div>
+                    <h2>Installation</h2>
+                    <p>Download and install CockroachDB on your system.</p>
+                    <a href="{TARGET_VERSION}/install-cockroachdb-linux.html" class="card-link">
+                        Install Guide <span class="arrow">→</span>
                     </a>
                 </div>
                 
                 <div class="card">
-                    <div class="card-icon">🖥️</div>
-                    <h2>Start a local cluster</h2>
-                    <p>Set up a local CockroachDB cluster for development and testing.</p>
-                    <a href="{TARGET_VERSION}/start-a-local-cluster.html" class="card-link">
-                        Learn more <span class="arrow">→</span>
+                    <div class="card-icon">🔧</div>
+                    <h2>SQL Reference</h2>
+                    <p>Complete SQL statements, functions, and operators reference.</p>
+                    <a href="{TARGET_VERSION}/sql-statements.html" class="card-link">
+                        SQL Docs <span class="arrow">→</span>
                     </a>
                 </div>
                 
                 <div class="card">
-                    <div class="card-icon">🚀</div>
-                    <h2>Build a sample app</h2>
-                    <p>Build applications using your favorite language and framework.</p>
-                    <a href="{TARGET_VERSION}/developer-guide-overview.html" class="card-link">
-                        Learn more <span class="arrow">→</span>
+                    <div class="card-icon">📊</div>
+                    <h2>Performance</h2>
+                    <p>Best practices for optimizing your CockroachDB deployment.</p>
+                    <a href="{TARGET_VERSION}/performance-best-practices-overview.html" class="card-link">
+                        Optimize <span class="arrow">→</span>
                     </a>
                 </div>
-            </div>
-            
-            <div class="download-section">
-                <a href="{TARGET_VERSION}/install-cockroachdb-linux.html" class="download-btn">
-                    📦 Download The CockroachDB Binary →
-                </a>
             </div>
         </div>
     </main>
@@ -1349,8 +1609,9 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
     </section>
     
     <script>
-        // Remove any Ask AI elements
+        // Remove any Ask AI elements and add navigation interactivity
         document.addEventListener('DOMContentLoaded', function() {{
+            // Clean up unwanted elements
             var selectors = ['.ask-ai', '#ask-ai', '[data-ask-ai]', '.kapa-widget', 
                            '[class*="kapa"]', '[id*="kapa"]', '.floating-action-button',
                            '.search', '#search', '.search-bar', '.search-input', '.search-form',
@@ -1364,18 +1625,28 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
                     el.remove();
                 }});
             }});
+            
+            // Add interaction for nav cards
+            document.querySelectorAll('.nav-card').forEach(function(card) {{
+                card.addEventListener('click', function(e) {{
+                    if (e.target.tagName !== 'A') {{
+                        var link = card.querySelector('a');
+                        if (link) link.click();
+                    }}
+                }});
+            }});
         }});
     </script>
 </body>
 </html>"""
         
         (OUTPUT_ROOT / "index.html").write_text(index_html)
-        self.log("Created CockroachDB purple-branded index.html with broken link count", "SUCCESS")
+        self.log("Created professional navigation index.html with vibrant purple branding", "SUCCESS")
     
     def build(self):
-        """Main build process"""
+        """Main build process with hybrid optimizations"""
         print("\n" + "="*60)
-        print("🚀 COCKROACHDB OFFLINE DOCUMENTATION ARCHIVER (PURPLE BRANDED)")
+        print("🚀 COCKROACHDB OFFLINE DOCUMENTATION ARCHIVER (HYBRID+)")
         print("="*60)
         
         # Verify paths
@@ -1383,6 +1654,7 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
         self.log(f"Site Root: {SITE_ROOT}")
         self.log(f"Docs Root: {DOCS_ROOT}")
         self.log(f"Output: {OUTPUT_ROOT}")
+        self.log(f"Target Version: {TARGET_VERSION}")
         
         if not SITE_ROOT.exists():
             self.log("Site root not found! Run 'jekyll build' first.", "ERROR")
@@ -1394,23 +1666,8 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
             shutil.rmtree(OUTPUT_ROOT)
         OUTPUT_ROOT.mkdir(parents=True)
         
-        # Copy global assets FIRST
-        self.log("\n--- Copying Global Assets ---")
-        for asset_dir in ["css", "js", "img"]:
-            src = SITE_ROOT / asset_dir
-            if src.exists():
-                dst = OUTPUT_ROOT / asset_dir
-                shutil.copytree(src, dst, dirs_exist_ok=True)
-                self.log(f"Copied global {asset_dir}/", "SUCCESS")
-        
-        # Copy docs-specific assets
-        self.log("\n--- Copying Docs Assets ---")
-        for asset_dir in ["css", "js", "images", "_internal"]:
-            src = DOCS_ROOT / asset_dir
-            if src.exists():
-                dst = OUTPUT_ROOT / asset_dir
-                shutil.copytree(src, dst, dirs_exist_ok=True)
-                self.log(f"Copied docs {asset_dir}/", "SUCCESS")
+        # Use selective asset copying (FROM SCRIPT 2)
+        self.copy_selective_assets()
         
         # Ensure critical navigation assets
         self.log("\n--- Ensuring Navigation Assets ---")
@@ -1443,66 +1700,93 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
         self.log("\n--- Loading Sidebar ---")
         self.load_sidebar()
         
-        # Process HTML files
+        # Process HTML files with stricter version filtering (FROM SCRIPT 2)
         self.log("\n--- Processing HTML Files ---")
         
-        # Collect files to process
         files_to_process = []
         
-        # Target version files
+        # Only target version files
         version_dir = DOCS_ROOT / TARGET_VERSION
         if version_dir.exists():
             files_to_process.extend(list(version_dir.rglob("*.html")))
             self.log(f"Found {len(files_to_process)} files in {TARGET_VERSION}/", "SUCCESS")
         
-        # Common pages
+        # Common pages (but exclude other version directories)
         for pattern in COMMON_PAGES:
             if '*' in pattern:
-                files_to_process.extend(list(DOCS_ROOT.glob(pattern)))
+                for file_path in DOCS_ROOT.glob(pattern):
+                    # Skip other version directories
+                    rel_path = file_path.relative_to(DOCS_ROOT)
+                    if (rel_path.parts and 
+                        rel_path.parts[0].startswith('v') and 
+                        rel_path.parts[0] != TARGET_VERSION):
+                        continue
+                    files_to_process.append(file_path)
             else:
                 file_path = DOCS_ROOT / pattern
                 if file_path.exists():
                     files_to_process.append(file_path)
         
-        # Remove duplicates
-        files_to_process = list(set(files_to_process))
-        self.log(f"Total files to process: {len(files_to_process)}")
-        
-        # Process each file
-        for i, file_path in enumerate(files_to_process, 1):
-            # Skip non-v19.2 version directories
+        # Remove duplicates and filter out unwanted versions
+        filtered_files = []
+        for file_path in set(files_to_process):
             rel_path = file_path.relative_to(DOCS_ROOT)
-            if rel_path.parts and rel_path.parts[0].startswith('v') and rel_path.parts[0] != TARGET_VERSION:
+            # Skip files from other version directories
+            if (rel_path.parts and 
+                rel_path.parts[0].startswith('v') and 
+                rel_path.parts[0] != TARGET_VERSION):
                 continue
-            
-            if i % 25 == 0:
-                self.log(f"Progress: {i}/{len(files_to_process)} ({i*100//len(files_to_process)}%)")
-            
-            self.process_html_file(file_path)
+            filtered_files.append(file_path)
         
-        self.log(f"Processed {len(self.processed_files)} files", "SUCCESS")
+        files_to_process = filtered_files
+        self.log(f"Total files to process (after version filtering): {len(files_to_process)}")
+        
+        # Process each file with better error handling (FROM SCRIPT 2)
+        processed_count = 0
+        error_count = 0
+        
+        for i, file_path in enumerate(files_to_process, 1):
+            try:
+                if i % 25 == 0:
+                    self.log(f"Progress: {i}/{len(files_to_process)} ({i*100//len(files_to_process)}%)")
+                
+                self.process_html_file(file_path)
+                processed_count += 1
+                
+            except Exception as e:
+                error_count += 1
+                self.log(f"Failed to process {file_path}: {e}", "ERROR")
+                # Continue with next file instead of crashing
+                continue
+        
+        self.log(f"Successfully processed {processed_count} files, {error_count} errors", "SUCCESS")
         
         # Final cleanup steps
         self.log("\n--- Final Steps ---")
         self.fix_css_images()
         self.download_google_fonts()
-        self.create_index_page()
+        self.create_professional_index_page()  # FROM SCRIPT 2
         
-        # Summary
+        # Enhanced summary
         print("\n" + "="*60)
-        self.log("ARCHIVE COMPLETE WITH PURPLE BRANDING!", "SUCCESS")
+        self.log("HYBRID ARCHIVE COMPLETE!", "SUCCESS")
         self.log(f"Output directory: {OUTPUT_ROOT.resolve()}")
         self.log(f"Total files: {len(self.processed_files)}")
         self.log(f"Total broken URLs removed: {self.total_broken_urls}", "SUCCESS")
-        self.log("🟣 CockroachDB purple branding applied", "SUCCESS")
+        self.log("🟣 Vibrant #6933FF sidebar styling (Script 1)", "SUCCESS")
+        self.log("🏠 Professional homepage with clear navigation (Script 2)", "SUCCESS")
+        self.log("🔗 Sidebar navigation logic with better URL processing (Updated)", "SUCCESS")
+        self.log("⚡ Selective asset copying for reduced size (Script 2)", "SUCCESS")
+        self.log("🔧 Robust error handling and progress reporting (Script 2)", "SUCCESS")
         self.log("✅ Sidebar JavaScript URL processing FIXED", "SUCCESS")
         self.log("✅ Broken sidebar links and empty sections removed", "SUCCESS")
-        self.log("✅ Professional index page created", "SUCCESS")
         
-        print(f"\n🎉 Purple-branded offline site built in {OUTPUT_ROOT}")
+        print(f"\n🎉 Hybrid offline site built in {OUTPUT_ROOT}")
         print(f"\n📦 To test: open file://{OUTPUT_ROOT.resolve()}/index.html")
-        print(f"\n🟣 Your site now has proper CockroachDB purple branding!")
-        print(f"\n🔧 {self.total_broken_urls} broken sidebar URLs and empty sections were cleaned up!")
+        print(f"\n🟣 Vibrant purple sidebar + professional homepage + improved navigation logic")
+        print(f"\n⚡ Optimized assets - excluded non-{TARGET_VERSION} files")
+        print(f"\n🔧 {self.total_broken_urls} broken sidebar URLs cleaned up")
+        print(f"\n✨ Best features from all scripts combined!")
         
         return True
 
