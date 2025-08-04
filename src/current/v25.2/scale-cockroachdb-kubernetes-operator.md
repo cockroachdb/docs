@@ -10,7 +10,7 @@ docs_area: deploy
 This page explains how to add and remove CockroachDB nodes on Kubernetes.
 
 {{site.data.alerts.callout_info}}
-The CockroachDB operator is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 ## Add nodes

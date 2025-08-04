@@ -13,10 +13,10 @@ docs_area:
 
 This page shows you how to start and stop a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster using the following approaches:
 
-- [Public operator](https://github.com/cockroachdb/cockroach-operator)
+- [{{ site.data.products.public-operator }}](https://github.com/cockroachdb/cockroach-operator)
 
     {{site.data.alerts.callout_info}}
-    The CockroachDB Kubernetes Operator is also available on platforms such as [Red Hat OpenShift]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-openshift.md %}) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
+    The {{ site.data.products.public-operator }} is also available on platforms such as [Red Hat OpenShift]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-openshift.md %}) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
     {{site.data.alerts.end}}
 
 - Manual [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) configuration
@@ -40,12 +40,12 @@ Choose how you want to deploy and maintain the CockroachDB cluster.
 {{site.data.alerts.callout_info}}
 The [Public Kubernetes operator](https://github.com/cockroachdb/cockroach-operator) eases CockroachDB cluster creation and management on a single Kubernetes cluster.
 
-The Operator does not provision or apply an Enterprise license key. To use CockroachDB with the Operator, [set a license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) in the SQL shell.
+The {{ site.data.products.public-operator }} does not provision or apply a license key. To use CockroachDB with the {{ site.data.products.public-operator }}, [set a license]({% link {{ page.version.version }}/licensing-faqs.md %}#set-a-license) in the SQL shell.
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="operator">Use Operator</button>
-    <button class="filter-button" data-scope="manual">Use Configs</button>
+    <button class="filter-button" data-scope="operator">Use {{ site.data.products.public-operator }}</button>
+    <button class="filter-button" data-scope="manual">Use configs</button>
     <button class="filter-button" data-scope="helm">Use Helm</button>
 </div>
 

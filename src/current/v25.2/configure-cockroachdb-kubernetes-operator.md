@@ -10,7 +10,7 @@ docs_area: deploy
 This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage.
 
 {{site.data.alerts.callout_info}}
-The CockroachDB operator is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 On a production cluster, the resources you allocate to CockroachDB should be proportionate to your machine types and workload. Cockroach Labs recommends that you determine and set these values before deploying the cluster, but you can also update the values on a running cluster.
@@ -60,7 +60,7 @@ For more information on how Kubernetes handles resources, see the [Kubernetes do
 
 Each CockroachDB node reserves a portion of its available memory for its cache and for storing temporary data for SQL queries. For more information on these settings, see the [Production Checklist](recommended-production-settings.html#cache-and-sql-memory-size).
 
-The CockroachDB operator dynamically sets cache size and SQL memory size each to 25% (the recommended percentage) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. These values can be modified by adding the `cache` or `max-sql-memory` fields to `cockroachdb.crdbCluster.flags`, which is equivalent to appending `--cache` or `--max-sql-memory` as [cockroach start flags](cockroach-start.html#flags).
+The {{ site.data.products.cockroachdb-operator }} dynamically sets cache size and SQL memory size each to 25% (the recommended percentage) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. These values can be modified by adding the `cache` or `max-sql-memory` fields to `cockroachdb.crdbCluster.flags`, which is equivalent to appending `--cache` or `--max-sql-memory` as [cockroach start flags](cockroach-start.html#flags).
 
 ## Persistent storage
 
@@ -105,13 +105,13 @@ Apply the new settings to the cluster:
 helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
 ~~~
 
-The CockroachDB operator updates all nodes and triggers a rolling restart of the pods with the new storage capacity.
+The {{ site.data.products.cockroachdb-operator }} updates all nodes and triggers a rolling restart of the pods with the new storage capacity.
 
 To verify that the storage capacity has been updated, run `kubectl get pvc` to view the persistent volume claims (PVCs). It will take a few minutes before the PVCs are completely updated.
 
 ## Network ports
 
-The CockroachDB operator separates network traffic into three ports:
+The {{ site.data.products.cockroachdb-operator }} separates network traffic into three ports:
 
 | Protocol   | Default Port| Description                   | Custom Resource Field            |
 |------------|-------------|-------------------------------|----------------------------------|
@@ -119,7 +119,7 @@ The CockroachDB operator separates network traffic into three ports:
 | HTTP       | 8080        | Used to access the DB Console | service.ports.http    |
 | SQL        | 26257       | Used for SQL shell access     | service.ports.sql     |
 
-Specify alternate port numbers in `cockroachdb.crdbCluster.service.ports` of the CockroachDB operator's [custom resource](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster) (for example, to match the default port `5432` on PostgreSQL):
+Specify alternate port numbers in `cockroachdb.crdbCluster.service.ports` of the {{ site.data.products.cockroachdb-operator }}'s [custom resource](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster) (for example, to match the default port `5432` on PostgreSQL):
 
 ~~~ yaml
 cockroachdb:
@@ -136,4 +136,4 @@ Apply the new settings to the cluster:
 helm upgrade --reuse-values $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb --values ./cockroachdb-parent/charts/cockroachdb/values.yaml -n $NAMESPACE
 ~~~
 
-The CockroachDB operator updates all nodes and triggers a rolling restart of the pods with the new port settings.
+The {{ site.data.products.cockroachdb-operator }} updates all nodes and triggers a rolling restart of the pods with the new port settings.

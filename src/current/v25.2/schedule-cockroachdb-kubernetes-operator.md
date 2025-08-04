@@ -10,7 +10,7 @@ docs_area: deploy
 This page describes how to configure pod scheduling settings. These settings control how CockroachDB pods should be identified or scheduled onto worker nodes, which are then proxied to the Kubernetes scheduler.
 
 {{site.data.alerts.callout_info}}
-The CockroachDB operator is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 ## Node selectors

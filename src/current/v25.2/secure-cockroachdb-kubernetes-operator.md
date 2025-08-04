@@ -32,7 +32,7 @@ If you previously [authenticated with cockroach cert](deploy-cockroachdb-with-ku
       --overwrite
     ~~~
 
-1. Upload the new client certificate and key to the Kubernetes cluster as a **new** secret, renaming them to the filenames required by the CockroachDB operator:
+1. Upload the new client certificate and key to the Kubernetes cluster as a **new** secret, renaming them to the filenames required by the {{ site.data.products.cockroachdb-operator }}:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -62,7 +62,7 @@ If you previously [authenticated with cockroach cert](deploy-cockroachdb-with-ku
       --overwrite
     ~~~
 
-1. Upload the new node certificate and key to the Kubernetes cluster as a **new** secret, renaming them to the filenames required by the CockroachDB operator:
+1. Upload the new node certificate and key to the Kubernetes cluster as a **new** secret, renaming them to the filenames required by the {{ site.data.products.cockroachdb-operator }}:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -149,7 +149,7 @@ If you previously [authenticated with cockroach cert](deploy-cockroachdb-with-ku
 
 The operator ships with both [mutating](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook) and [validating](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#validatingadmissionwebhook) webhooks. Communication between the Kubernetes API server and the webhook service must be secured with TLS.
 
-By default, the CockroachDB operator searches for the TLS secret `cockroach-operator-certs`, which contains a CA certificate. If the secret is not found, the operator auto-generates `cockroach-operator-certs` with a CA certificate for future runs.
+By default, the {{ site.data.products.cockroachdb-operator }} searches for the TLS secret `cockroach-operator-certs`, which contains a CA certificate. If the secret is not found, the operator auto-generates `cockroach-operator-certs` with a CA certificate for future runs.
 
 The operator then generates a one-time server certificate for the webhook server that is signed with `cockroach-operator-certs`. Finally, the CA bundle for both mutating and validating webhook configurations is patched with the CA certificate.
 

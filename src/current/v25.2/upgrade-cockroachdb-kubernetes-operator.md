@@ -7,10 +7,10 @@ secure: true
 docs_area: deploy
 ---
 
-This page describes how to upgrade a CockroachDB cluster that is [deployed on a Kubernetes cluster](deploy-cockroachdb-with-kubernetes-operator.html) with the CockroachDB operator.
+This page describes how to upgrade a CockroachDB cluster that is [deployed on a Kubernetes cluster](deploy-cockroachdb-with-kubernetes-operator.html) with the {{ site.data.products.cockroachdb-operator }}.
 
 {{site.data.alerts.callout_info}}
-The CockroachDB operator is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 ## Overview

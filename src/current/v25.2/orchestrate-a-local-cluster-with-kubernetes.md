@@ -13,7 +13,7 @@ On top of CockroachDB's built-in automation, you can use a third-party [orchestr
 This page demonstrates a basic integration with the open-source [Kubernetes](http://kubernetes.io/) orchestration system. Using either the CockroachDB [Helm](https://helm.sh/) chart or a few configuration files, you'll quickly create a 3-node local cluster. You'll run some SQL commands against the cluster and then simulate node failure, watching how Kubernetes auto-restarts without the need for any manual intervention. You'll then scale the cluster with a single command before shutting the cluster down, again with a single command.
 
 {{site.data.alerts.callout_info}}
-To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments]({% link {{ page.version.version }}/kubernetes-overview.md %}). To deploy a 30-day free CockroachDB {{ site.data.products.dedicated }} cluster instead of running CockroachDB yourself, see the [Quickstart]({% link cockroachcloud/quickstart.md %}).
+To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments]({% link {{ page.version.version }}/kubernetes-operator-overview.md %}). To deploy a 30-day free CockroachDB {{ site.data.products.dedicated }} cluster instead of running CockroachDB yourself, see the [Quickstart]({% link cockroachcloud/quickstart.md %}).
 {{site.data.alerts.end}}
 
 <a id="best-practices"></a>
@@ -27,14 +27,14 @@ To orchestrate a physically distributed cluster in production, see [Orchestrated
 
 Choose a way to deploy and maintain the CockroachDB cluster:
 
-- [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) (recommended)
+- [{{ site.data.products.public-operator }}](https://github.com/cockroachdb/cockroach-operator)
 - [Helm](https://helm.sh/) package manager
 - Manually apply our StatefulSet configuration and related files
 
 <div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="operator">Use Operator</button>
+    <button class="filter-button" data-scope="operator">Use {{ site.data.products.public-operator }}</button>
     <button class="filter-button" data-scope="helm">Use Helm</button>
-    <button class="filter-button" data-scope="manual">Use Configs</button>
+    <button class="filter-button" data-scope="manual">Use configs</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="operator">

@@ -7,13 +7,13 @@ secure: true
 docs_area: deploy
 ---
 
-This guide describes how to migrate an existing CockroachDB cluster managed via the public operator to the CockroachDB operator.
+This guide describes how to migrate an existing CockroachDB cluster managed via the {{ site.data.products.public-operator }} to the {{ site.data.products.cockroachdb-operator }}.
 
 {{site.data.alerts.callout_info}}
-The CockroachDB operator is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
-These instructions assume that you are migrating from a public operator cluster that is managed with kubectl via the following yaml files:
+These instructions assume that you are migrating from a {{ site.data.products.public-operator }} cluster that is managed with kubectl via the following yaml files:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -40,7 +40,7 @@ export PATH=$PATH:$(pwd)/bin
 
 Export environment variables for the existing deployment:
 
-- Set CRDBCLUSTER to the crdbcluster custom resource name in the public operator:
+- Set CRDBCLUSTER to the crdbcluster custom resource name in the {{ site.data.products.public-operator }}:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     export CRDBCLUSTER="cockroachdb"
@@ -74,14 +74,14 @@ kubectl get crdbcluster -o yaml $CRDBCLUSTER > backup/crdbcluster-$CRDBCLUSTER.y
 
 ## Step 2. Generate manifests with the migration helper
 
-The CockroachDB operator uses slightly different certificates than the public operator, and mounts them in configmaps and secrets with different names. Use the migration helper utility with the `migrate-certs` option to re-map and generate TLS certificates:
+The {{ site.data.products.cockroachdb-operator }} uses slightly different certificates than the {{ site.data.products.public-operator }}, and mounts them in configmaps and secrets with different names. Use the migration helper utility with the `migrate-certs` option to re-map and generate TLS certificates:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 bin/migration-helper migrate-certs --statefulset-name $STS_NAME --namespace $NAMESPACE
 ~~~
 
-Generate a manifest for each crdbnode and the crdbcluster based on the state of the StatefulSet. The new pods and their associated PVCs must have the same names as the original StatefulSet-managed pods and PVCs. The new CockroachDB operator-managed pods will then use the original PVCs, rather than replicate data into empty nodes.
+Generate a manifest for each crdbnode and the crdbcluster based on the state of the StatefulSet. The new pods and their associated PVCs must have the same names as the original StatefulSet-managed pods and PVCs. The new {{ site.data.products.cockroachdb-operator }}-managed pods will then use the original PVCs, rather than replicate data into empty nodes.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -89,9 +89,9 @@ mkdir -p manifests
 bin/migration-helper build-manifest helm --statefulset-name $STS_NAME --namespace $NAMESPACE --cloud-provider $CLOUD_PROVIDER --cloud-region $REGION --output-dir ./manifests
 ~~~
 
-## Step 3. Uninstall and replace the public operator
+## Step 3. Uninstall and replace the {{ site.data.products.public-operator }}
 
-The public operator and the CockroachDB operator use custom resource definitions with the same names, so you must remove the public operator before installing the CockroachDB operator. Run the following commands to uninstall the public operator, without deleting its managed resources:
+The {{ site.data.products.public-operator }} and the {{ site.data.products.cockroachdb-operator }} use custom resource definitions with the same names, so you must remove the {{ site.data.products.public-operator }} before installing the {{ site.data.products.cockroachdb-operator }}. Run the following commands to uninstall the {{ site.data.products.public-operator }}, without deleting its managed resources:
 
 - Ensure that the operator can't accidentally delete managed Kubernetes objects:
     {% include_cached copy-clipboard.html %}
@@ -99,13 +99,13 @@ The public operator and the CockroachDB operator use custom resource definitions
     kubectl delete clusterrolebinding cockroach-operator-rolebinding
     ~~~
 
-- Delete the public operator custom resource:
+- Delete the {{ site.data.products.public-operator }} custom resource:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl delete crdbcluster $CRDBCLUSTER --cascade=orphan
     ~~~
 
-- Delete public operator resources and custom resource definition:
+- Delete {{ site.data.products.public-operator }} resources and custom resource definition:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.17.0/install/crds.yaml
@@ -118,7 +118,7 @@ The public operator and the CockroachDB operator use custom resource definitions
     kubectl delete validatingwebhookconfigurations cockroach-operator-validating-webhook-configuration
     ~~~
 
-Run `helm upgrade` to install the CockroachDB operator and wait for it to become ready:
+Run `helm upgrade` to install the {{ site.data.products.cockroachdb-operator }} and wait for it to become ready:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -128,7 +128,7 @@ kubectl rollout status deployment/cockroach-operator --timeout=60s
 
 ## Step 4. Replace statefulset pods with operator-managed nodes
 
-To migrate seamlessly from the public operator to the CockroachDB operator, scale down StatefulSet-managed pods and replace them with crdbnode objects, one by one. Then we’ll create the crdbcluster object that manages the crdbnodes.
+To migrate seamlessly from the {{ site.data.products.public-operator }} to the {{ site.data.products.cockroachdb-operator }}, scale down StatefulSet-managed pods and replace them with crdbnode objects, one by one. Then we’ll create the crdbcluster object that manages the crdbnodes.
 
 Create objects with `kubectl` that will eventually be owned by the crdbcluster:
 
@@ -182,7 +182,7 @@ Repeat these steps until the StatefulSet has zero replicas.
 
 ## Step 5. Update the crdbcluster manifest
 
-The public operator creates a pod disruption budget that conflicts with a pod disruption budget managed by the CockroachDB operator. Before applying the crdbcluster manifest, delete the existing pod disruption budget:
+The {{ site.data.products.public-operator }} creates a pod disruption budget that conflicts with a pod disruption budget managed by the {{ site.data.products.cockroachdb-operator }}. Before applying the crdbcluster manifest, delete the existing pod disruption budget:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -205,7 +205,7 @@ Apply the crdbcluster manifest:
 helm install $CRDBCLUSTER ./cockroachdb-parent/charts/cockroachdb -f manifests/values.yaml
 ~~~
 
-Once the migration is successful, delete the StatefulSet that was created by the public operator:
+Once the migration is successful, delete the StatefulSet that was created by the {{ site.data.products.public-operator }}:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

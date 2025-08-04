@@ -8,27 +8,27 @@ docs_area: deploy
 ---
 
 {{site.data.alerts.callout_info}}
-This article assumes you have already [deployed CockroachDB securely on a single Kubernetes cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}) using the Operator or Helm. However, it's possible to configure these settings before starting CockroachDB on Kubernetes.
+This article assumes you have already [deployed CockroachDB securely on a single Kubernetes cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}) using the {{ site.data.products.public-operator }} or Helm. However, it's possible to configure these settings before starting CockroachDB on Kubernetes.
 {{site.data.alerts.end}}
 
-By default, self-signed certificates are used when using the Operator or Helm to securely [deploy CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}). However, the recommended approach is to use `cert-manager` for certificate management. For details, refer to [Deploy cert-manager for mTLS](?filters=helm#deploy-cert-manager-for-mtls).
+By default, self-signed certificates are used when using the {{ site.data.products.public-operator }} or Helm to securely [deploy CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}). However, the recommended approach is to use `cert-manager` for certificate management. For details, refer to [Deploy cert-manager for mTLS](?filters=helm#deploy-cert-manager-for-mtls).
 
-This page is for Kubernetes deployments that are not using the CockroachDB operator. For guidance specific to the CockroachDB operator, read [Certificate Management with the CockroachDB Operator]({% link {{ page.version.version }}/secure-cockroachdb-kubernetes-operator.md %}).
+This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Certificate Management with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/secure-cockroachdb-kubernetes-operator.md %}).
 
 {% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 
 This page explains how to:
 
-- Authenticate an Operator or Helm deployment using a [custom CA](#use-a-custom-ca)
+- Authenticate a {{ site.data.products.public-operator }} or Helm deployment using a [custom CA](#use-a-custom-ca)
 - [Rotate security certificates](#rotate-security-certificates)
-- [Secure the webhooks](#secure-the-webhooks) (Operator)
+- [Secure the webhooks](#secure-the-webhooks) (public perator)
 
 {{site.data.alerts.callout_danger}}
 If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. The recommended approach is to use `cert-manager` for certificate management. For details, refer to [Deploy cert-manager for mTLS](?filters=helm#deploy-cert-manager-for-mtls).
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
-  <button class="filter-button" data-scope="operator">Operator</button>
+  <button class="filter-button" data-scope="operator">{{ site.data.products.public-operator }}</button>
   <button class="filter-button" data-scope="helm">Helm</button>
 </div>
 
@@ -37,9 +37,9 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
 ## Use a custom CA
 
 <section class="filter-content" markdown="1" data-scope="operator">
-By default, the Operator will generate and sign 1 client and 1 node certificate to secure the cluster.
+By default, the {{ site.data.products.public-operator }} will generate and sign 1 client and 1 node certificate to secure the cluster.
 
-To use your own certificate authority instead, add the following to the Operator's custom resource **before** [initializing the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster):
+To use your own certificate authority instead, add the following to the {{ site.data.products.public-operator }}'s custom resource **before** [initializing the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster):
 
 {% include_cached copy-clipboard.html %}
 ~~~ yaml
@@ -54,7 +54,7 @@ Replace:
 - `{client_secret_name}`: the name of the Kubernetes secret that contains the generated node certificate and key.
 
 {{site.data.alerts.callout_info}}
-Currently, the Operator requires that the client and node secrets each contain the filenames `tls.crt` and `tls.key`.
+Currently, the {{ site.data.products.public-operator }} requires that the client and node secrets each contain the filenames `tls.crt` and `tls.key`.
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/orchestration/apply-custom-resource.md %}
@@ -124,7 +124,7 @@ Complete the following steps **before** [initializing the cluster]({% link {{ pa
       --ca-key=my-safe-directory/ca.key
     ~~~
 
-1. Upload the client certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the Operator:
+1. Upload the client certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the {{ site.data.products.public-operator }}:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -138,7 +138,7 @@ Complete the following steps **before** [initializing the cluster]({% link {{ pa
     secret/cockroachdb.client.root created
     ~~~
 
-1. Create the certificate and key pair for your CockroachDB nodes, specifying the namespace you used when [deploying the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster). This example uses the Operator's default namespace (`cockroach-operator-system`):
+1. Create the certificate and key pair for your CockroachDB nodes, specifying the namespace you used when [deploying the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster). This example uses the {{ site.data.products.public-operator }}'s default namespace (`cockroach-operator-system`):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -154,7 +154,7 @@ Complete the following steps **before** [initializing the cluster]({% link {{ pa
       --ca-key=my-safe-directory/ca.key
     ~~~
 
-1. Upload the node certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the Operator:
+1. Upload the node certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the {{ site.data.products.public-operator }}:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -182,7 +182,7 @@ Complete the following steps **before** [initializing the cluster]({% link {{ pa
     default-token-6js7b       kubernetes.io/service-account-token      3     9h
     ~~~
 
-1. Add `nodeTLSSecret` and `clientTLSSecret` to the Operator's [custom resource]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster), specifying the generated secret names:
+1. Add `nodeTLSSecret` and `clientTLSSecret` to the {{ site.data.products.public-operator }}'s [custom resource]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster), specifying the generated secret names:
 
     ~~~ yaml
     spec:
@@ -322,7 +322,7 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
         --overwrite
     ~~~
 
-1. Upload the new client certificate and key to the Kubernetes cluster as a **new** secret, renaming them to the filenames required by the Operator:
+1. Upload the new client certificate and key to the Kubernetes cluster as a **new** secret, renaming them to the filenames required by the {{ site.data.products.public-operator }}:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -336,7 +336,7 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
     secret/cockroachdb.client.root.2 created
     ~~~
 
-1. Create a new certificate and key pair for your CockroachDB nodes, overwriting the previous certificate and key. Specify the namespace you used when [deploying the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster). This example uses the Operator's default namespace (`cockroach-operator-system`):
+1. Create a new certificate and key pair for your CockroachDB nodes, overwriting the previous certificate and key. Specify the namespace you used when [deploying the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster). This example uses the {{ site.data.products.public-operator }}'s default namespace (`cockroach-operator-system`):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -353,7 +353,7 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
       --overwrite
     ~~~
 
-1. Upload the new node certificate and key to the Kubernetes cluster as a **new** secret, renaming them to the filenames required by the Operator:
+1. Upload the new node certificate and key to the Kubernetes cluster as a **new** secret, renaming them to the filenames required by the {{ site.data.products.public-operator }}:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -367,7 +367,7 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
     secret/cockroachdb.node.2 created
     ~~~
 
-1. Add `nodeTLSSecret` and `clientTLSSecret` to the Operator's [custom resource]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster), specifying the new secret names:
+1. Add `nodeTLSSecret` and `clientTLSSecret` to the {{ site.data.products.public-operator }}'s [custom resource]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster), specifying the new secret names:
 
     ~~~ yaml
     spec:
@@ -390,7 +390,7 @@ If you previously [authenticated with `cockroach cert`](#example-authenticate-wi
     ~~~
 
     {{site.data.alerts.callout_info}}
-    Remember that `nodeTLSSecret` and `clientTLSSecret` in the Operator's [custom resource]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster) must specify these secret names. For details, see [Use a custom CA](#use-a-custom-ca).
+    Remember that `nodeTLSSecret` and `clientTLSSecret` in the {{ site.data.products.public-operator }}'s [custom resource]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster) must specify these secret names. For details, see [Use a custom CA](#use-a-custom-ca).
     {{site.data.alerts.end}}
 
 1. Apply the new settings to the cluster:
@@ -567,11 +567,11 @@ Previously, the Helm chart used a self-signer for cluster authentication. This a
 
 ##  Secure the webhooks
 
-The Operator ships with both [mutating](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook) and [validating](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#validatingadmissionwebhook) webhooks. Communication between the Kubernetes API server and the webhook service must be secured with TLS.
+The {{ site.data.products.public-operator }} ships with both [mutating](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook) and [validating](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#validatingadmissionwebhook) webhooks. Communication between the Kubernetes API server and the webhook service must be secured with TLS.
 
-By default, the Operator searches for the TLS secret `cockroach-operator-webhook-ca`, which contains a CA certificate. If the secret is not found, the Operator auto-generates `cockroach-operator-webhook-ca` with a CA certificate for future runs.
+By default, the {{ site.data.products.public-operator }} searches for the TLS secret `cockroach-operator-webhook-ca`, which contains a CA certificate. If the secret is not found, the {{ site.data.products.public-operator }} auto-generates `cockroach-operator-webhook-ca` with a CA certificate for future runs.
 
-The Operator then generates a one-time server certificate for the webhook server that is signed with `cockroach-operator-webhook-ca`. Finally, the CA bundle for both mutating and validating webhook configurations is patched with the CA certificate.
+The {{ site.data.products.public-operator }} then generates a one-time server certificate for the webhook server that is signed with `cockroach-operator-webhook-ca`. Finally, the CA bundle for both mutating and validating webhook configurations is patched with the CA certificate.
 
 You can also use your own certificate authority rather than `cockroach-operator-webhook-ca`. Both the certificate and key files you generate must be PEM-encoded. See the following [example](#example-using-openssl-to-secure-the-webhooks).
 
@@ -611,7 +611,7 @@ These steps demonstrate how to use the [`openssl genrsa`](https://www.openssl.or
     rm tls.crt tls.key
     ~~~
 
-1. Roll the Operator deployment to ensure a new server certificate is generated:
+1. Roll the {{ site.data.products.public-operator }} deployment to ensure a new server certificate is generated:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

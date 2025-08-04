@@ -1,16 +1,16 @@
 ---
 title: Migrate from Helm StatefulSet
-summary: Migration guide detailing how to migrate away from a Helm deployment of CockroachDB to the CockroachDB operator.
+summary: Migration guide detailing how to migrate away from a Helm deployment of CockroachDB to the {{ site.data.products.cockroachdb-operator }}.
 toc: true
 toc_not_nested: true
 secure: true
 docs_area: deploy
 ---
 
-This guide describes how to migrate an existing CockroachDB cluster managed via StatefulSet to the CockroachDB operator.
+This guide describes how to migrate an existing CockroachDB cluster managed via StatefulSet to the {{ site.data.products.cockroachdb-operator }}.
 
 {{site.data.alerts.callout_info}}
-The CockroachDB operator is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 These instructions assume that you are migrating from a StatefulSet cluster that was configured using the Helm chart with the following command:
@@ -20,7 +20,7 @@ helm upgrade --install --set operator.enabled=false crdb-test --debug ./cockroac
 ~~~
 
 {{site.data.alerts.callout_success}}
-If your existing cluster was created using the public operator, refer to the [public operator migration guide](migrate-cockroachdb-kubernetes-operator.html).
+If your existing cluster was created using the {{ site.data.products.public-operator }}, refer to the [{{ site.data.products.public-operator }} migration guide](migrate-cockroachdb-kubernetes-operator.html).
 {{site.data.alerts.end}}
 
 This migration can be completed without affecting cluster availability, and preserves existing disks so that data doesn't need to be replicated into empty volumes. The process scales down the StatefulSet by one node before adding each operator-managed pod, so the maximum cluster capacity will be reduced by one node periodically throughout the migration.

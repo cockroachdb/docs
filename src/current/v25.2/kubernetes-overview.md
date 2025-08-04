@@ -14,10 +14,10 @@ Kubernetes is a portable, extensible, open source platform for managing containe
 
 You can also deploy CockroachDB on Kubernetes using the following methods:
 
-- [Public operator](https://github.com/cockroachdb/cockroach-operator)
+- [{{ site.data.products.public-operator }}](https://github.com/cockroachdb/cockroach-operator)
 
     {{site.data.alerts.callout_info}}
-    The public operator is also available on platforms such as [Red Hat OpenShift]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-openshift.md %}) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
+    The {{ site.data.products.public-operator }} is also available on platforms such as [Red Hat OpenShift]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-openshift.md %}) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
     {{site.data.alerts.end}}
 
 - Manual [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) configuration

@@ -195,7 +195,7 @@
                         ]
                     },
                     {
-                        "title": "Migrate from Public Operator",
+                        "title": "Migrate from {{ site.data.products.public-operator }}",
                         "urls": [
                         "/${VERSION}/migrate-cockroachdb-kubernetes-operator.html"
                         ]

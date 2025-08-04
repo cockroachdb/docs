@@ -834,9 +834,13 @@ On the **Cluster Overview** page of the DB Console, the [node status]({% link {{
 
 Most of the guidance in this page is most relevant to manual deployments that don't use Kubernetes. If you use Kubernetes to deploy CockroachDB, draining and decommissioning work the same way for the `cockroach` process, but Kubernetes handles them on your behalf. In a deployment without Kubernetes, an administrator initiates decommissioning or draining directly. In a Kubernetes deployment, an administrator modifies the desired configuration of the Kubernetes cluster and Kubernetes makes the required changes to the cluster, including decommissioning or draining nodes as required.
 
-- Whether you deployed a cluster using the CockroachDB Operator, Helm, or a manual StatefulSet, the resulting deployment is a StatefulSet. Due to the nature of StatefulSets, it's safe to decommission **only** the Cockroach node with the highest StatefulSet ordinal in preparation for scaling down the StatefulSet. If you think you need to decommission any other node, consider the following recommendations and [contact Support](https://support.cockroachlabs.com/hc/en-us) for assistance.
+- The {{ site.data.products.public-operator }}, Helm, and manual StatefulSet deployments use a StatefulSet. Due to the nature of StatefulSets, it's safe to decommission **only** the Cockroach node with the highest StatefulSet ordinal in preparation for scaling down the StatefulSet. If you think you need to decommission any other node, consider the following recommendations and [contact Support](https://support.cockroachlabs.com/hc/en-us) for assistance.
 
-    - If you deployed a cluster using the [CockroachDB Kubernetes Operator]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}), the best way to scale down a cluster is to update the specification for the Kubernetes deployment to reduce the value of `nodes:` and apply the change using a [rolling update](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/). Kubernetes will notice that there are now too many nodes and will reduce them and clean up their storage automatically.
+    {{ site.data.alerts.callout_success }}
+    Unlike the other Kubernetes deployment methods, the [{{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/kubernetes-operator-overview.md %}) does not use StatefulSets so deployments using that operator do not share this limitation. With the {{ site.data.products.cockroachdb-operator }}, nodes can be scaled down in any order. For more information, read [Cluster Scaling with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/scale-cockroachdb-kubernetes-operator.md %}).
+    {{ site.data.alerts.end }}
+    
+    - If you deployed a cluster using the [{{ site.data.products.public-operator }}]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}), the best way to scale down a cluster is to update the specification for the Kubernetes deployment to reduce the value of `nodes:` and apply the change using a [rolling update](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/). Kubernetes will notice that there are now too many nodes and will reduce them and clean up their storage automatically.
 
     - If you deployed the cluster using [Helm]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}?filters=helm) or a [manual StatefulSet]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}?filters=manual), the best way to scale down a cluster is to interactively decommission and drain the highest-order node. After that node is decommissioned, drained, and terminated, you can repeat the process to further reduce the cluster's size.
 
@@ -854,7 +858,7 @@ After Kubernetes issues a termination request to the `cockroach` process on a cl
 
 If undefined, Kubernetes sets `terminationGracePeriodSeconds` to 30 seconds. This is too short for the `cockroach` process to stop gracefully before Kubernetes terminates it forcibly. Do not set `terminationGracePeriodSeconds` to `0`, which prevents Kubernetes from detecting and terminating a stuck pod.
 
-For clusters deployed using the CockroachDB Public Operator, `terminationGracePeriodSeconds` defaults to 300 seconds (5 minutes).
+For clusters deployed using the CockroachDB {{ site.data.products.public-operator }}, `terminationGracePeriodSeconds` defaults to 300 seconds (5 minutes).
 For clusters deployed using the CockroachDB Helm chart or a manual StatefulSet, the default depends upon the values file or manifest you used when you created the cluster.
 
 Cockroach Labs recommends that you:

@@ -9,7 +9,7 @@ docs_area: deploy
 Despite CockroachDB's various [built-in safeguards against failure](architecture/replication-layer.html), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
 {{site.data.alerts.callout_info}}
-The CockroachDB operator is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 ## Configure Prometheus
@@ -218,7 +218,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 ## Monitor the operator
 
-The CockroachDB operator automatically exposes [Prometheus-style metrics](https://prometheus.io/docs/concepts/metric_types/) that you can monitor to observe its operations.
+The {{ site.data.products.cockroachdb-operator }} automatically exposes [Prometheus-style metrics](https://prometheus.io/docs/concepts/metric_types/) that you can monitor to observe its operations.
 
 Metrics can be collected from the operator via HTTP requests (port 8080 by default) against the `/metrics` endpoint. The response will describe the current node metrics, for example:
 

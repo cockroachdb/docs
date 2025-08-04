@@ -10,7 +10,7 @@ docs_area: deploy
 This page describes how to start and stop a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster.
 
 {{site.data.alerts.callout_info}}
-The CockroachDB operator is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
+The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 ## Prerequisites and best practices
@@ -29,7 +29,7 @@ Error: UPGRADE FAILED: template: cockroachdb/templates/tests/client.yaml:6:14: e
 
 The Helm chart consists of two sub-charts:
 
-- `operator`: The CockroachDB operator chart to be installed first.
+- `operator`: The {{ site.data.products.cockroachdb-operator }} chart to be installed first.
 - `cockroachdb`: The CockroachDB application chart to be installed after the operator is ready.
 
 ### Network
@@ -50,7 +50,7 @@ For more information on how locality labels are used by CockroachDB, refer to th
 
 ### Architecture
 
-The CockroachDB operator is only supported in environments with an ARM64 or AMD64 architecture.
+The {{ site.data.products.cockroachdb-operator }} is only supported in environments with an ARM64 or AMD64 architecture.
 
 ### Resources
 
@@ -631,7 +631,7 @@ The following example uses [cockroach cert commands](cockroach-cert.html) to gen
       --ca-key=my-safe-directory/ca.key
     ~~~
 
-1. Upload the client certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the CockroachDB operator:
+1. Upload the client certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the {{ site.data.products.cockroachdb-operator }}:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -660,7 +660,7 @@ The following example uses [cockroach cert commands](cockroach-cert.html) to gen
       --ca-key=my-safe-directory/ca.key
     ~~~
 
-1. Upload the node certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the CockroachDB operator:
+1. Upload the node certificate and key to the Kubernetes cluster as a secret, renaming them to the filenames required by the {{ site.data.products.cockroachdb-operator }}:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
