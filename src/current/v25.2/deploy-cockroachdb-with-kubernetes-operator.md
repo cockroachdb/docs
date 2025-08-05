@@ -42,9 +42,11 @@ If you want to secure your cluster to use TLS certificates for all network commu
 
 ### Localities
 
-CockroachDB clusters use locality labels to efficiently distribute replicas. This is especially important in multi-region deployments. In cloud provider deployments (e.g., [GKE](#hosted-gke), [EKS](#hosted-eks), or [AKS](#hosted-aks)), the [`topology.kubernetes.io/region`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesioregion) and [`topology.kubernetes.io/zone`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) labels are applied implicitly to Kubernetes nodes and populated by the regions and zones specific to the cloud provider. For further granularity, you can define arbitrary locality labels (e.g., `province`, `datacenter`, `rack`), but these need to be applied individually to the Kubernetes node when initialized so that CockroachDB can understand where the node lives and distribute replicas accordingly.
+CockroachDB clusters use localities to efficiently distribute replicas. This is especially important in multi-region deployments. With the {{ site.data.products.cockroachdb-operator }}, you specify mappings between locality levels and the location on a Kubernetes node where the value for that locality can be found.
 
-On bare metal Kubernetes deployments, you must plan a hierarchy of locality labels that suit your CockroachDB node distribution, then apply these labels individually to nodes when they are initialized. Although you can set most of these values arbitrarily, you must set region and zone locations in the reserved `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` namespaces, respectively.
+In cloud provider deployments (e.g., [GKE](#hosted-gke), [EKS](#hosted-eks), or [AKS](#hosted-aks)), the [`topology.kubernetes.io/region`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesioregion) and [`topology.kubernetes.io/zone`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) values on Kubernetes nodes are populated by cloud provider. For further granularity, you can define arbitrary locality labels (e.g., `province`, `datacenter`, `rack`), but these need to be applied individually to the Kubernetes node when initialized so that CockroachDB can understand where the node lives and distribute replicas accordingly.
+
+On bare metal Kubernetes deployments, you must plan a hierarchy of localities that suit your CockroachDB node distribution, then apply these values individually to nodes when they are initialized. Although you can set most of these values arbitrarily, you must set region and zone locations in the reserved `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` namespaces, respectively.
 
 For more information on how locality labels are used by CockroachDB, refer to the [`--locality` documentation](cockroach-start.html#locality).
 
@@ -382,29 +384,32 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
         
         For a detailed tutorial of a TLS configuration with manual certificates, refer to [Example: Authenticate with cockroach cert](#example-authenticate-with-cockroach-cert).
 
-1. In `cockroachdb.crdbCluster.localityLabels`, provide [locality labels](#localities) that specify where the locality information of each Kubernetes node is stored. When CockroachDB is initialized on a node, it processes these values as though they are provided through the [`cockroach start --locality`](cockroach-start#locality) flag. 
+1. In `cockroachdb.crdbCluster.localityMappings`, provide [locality mappings](#localities) that define locality levels and map them to node labels where the locality information of each Kubernetes node is stored. When CockroachDB is initialized on a node, it processes these values as though they are provided through the [`cockroach start --locality`](cockroach-start#locality) flag. 
 
-    The default configuration uses the `region` and `zone` locality levels, which are set differently depending on the deployment type:
-    - In cloud provider deployments, the [`topology.kubernetes.io/region`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesioregion) and [`topology.kubernetes.io/zone`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) locality labels are applied implicitly to Kubernetes nodes and populated by the regions and zones specific to the cloud provider.
-    - In bare metal deployments, the `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` values are not set implicitly by a cloud provider when initializing the node, so you must set them manually or configure custom locality labels.
+    The default configuration uses the `region` and `zone` locality labels, mapped implicitly to the [`topology.kubernetes.io/region`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesioregion) and [`topology.kubernetes.io/zone`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) node labels.
+    - In cloud provider deployments, the `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` values on a node are populated by the cloud provider.
+    - In bare metal deployments, the `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` node label values are not set implicitly by a cloud provider when initializing the node, so you must set them manually or configure custom locality labels.
 
-    To add more granular levels of locality to your nodes or use different locality labels, add custom locality levels as values in the `cockroachdb.crdbCluster.localityLabels` list. Any custom `localityLabels` configuration overrides the default `region` and `zone` configuration, so if you append an additional locality level but wish to keep the `region` and `zone` labels you must declare them manually.
+    To add more granular levels of locality to your nodes or use different locality labels, add custom locality levels as values in the `cockroachdb.crdbCluster.localityMappings` list. Any custom `localityMappings` configuration overrides the default `region` and `zone` configuration, so if you append an additional locality level but wish to keep the `region` and `zone` labels you must declare them manually.
 
-    The following example uses the existing `region` and `zone` labels and adds an additional `datacenter` locality label that is more granular than `zone`. This example declares that the `datacenter` locality information is stored in the `example.datacenter.locality` variable on the node:
+    The following example uses the existing `region` and `zone` labels and adds an additional `datacenter` locality mapping that is more granular than `zone`. This example declares that the `dc` locality information is stored in the `example.datacenter.locality` node label:
 
     ~~~ yaml
     cockroachdb:
       crdbCluster:
-        localityLabels:
-          - topology.kubernetes.io/region
-          - topology.kubernetes.io/zone
-          - example.datacenter.locality
+        localityMappings:
+          - nodeLabel: "topology.kubernetes.io/region"
+            localityLabel: "region"
+          - nodeLabel: "topology.kubernetes.io/zone"
+            localityLabel: "zone"
+          - nodeLabel: "example.datacenter.locality"
+            localityLabel: "dc"
     ~~~
 
     In this example, if a Kubernetes node is initialized in the `us-central1` region, `us-central1-c` zone, and `dc2` datacenter, its `cockroach start --locality` flag would be equivalent to the following:
 
     ~~~ shell
-    cockroach start --locality region=us-central1,zone=us-central1-c,example.datacenter.locality=dc2
+    cockroach start --locality region=us-central1,zone=us-central1-c,dc=dc2
     ~~~
 
     Optionally, review the `cockroachdb.crdbCluster.topologySpreadConstraints` configuration and set `topologyKey` to a locality variable that will have distinct values for each node. By default the lowest locality level is `zone`, so the following configuration sets that value as the `topologyKey`:
