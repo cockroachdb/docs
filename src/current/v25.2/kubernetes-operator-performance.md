@@ -15,9 +15,9 @@ The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ pag
 
 Before you focus on optimizing a Kubernetes-orchestrated CockroachDB cluster:
 
-1. Before deploying on Kubernetes, ensure that performance is optimized for your workload on identical hardware. You may find that you first need to [modify your workload](performance-best-practices-overview.html) or use [different machine specs](recommended-production-settings.html#hardware) to achieve the performance you need.
+1. Before deploying on Kubernetes, ensure that performance is optimized for your workload on identical hardware. You may find that you first need to [modify your workload]({% link {{ page.version.version }}/performance-best-practices-overview.md %}) or use [different machine specs]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) to achieve the performance you need.
 
-1. Read the documentation for [deploying CockroachDB on a Kubernetes cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster) to familiarize yourself with the necessary Kubernetes terminology and deployment abstractions.
+1. Read the documentation for [deploying CockroachDB on a Kubernetes cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster) to familiarize yourself with the necessary Kubernetes terminology and deployment abstractions.
 
 ## Performance factors
 
@@ -31,15 +31,15 @@ Because CockroachDB is under very active development, there are typically substa
 
 ### Client workload
 
-Your workload is the single most important factor in database performance. Read through [SQL performance best practices](performance-best-practices-overview.html) and determine whether you can make workload changes to speed up your application.
+Your workload is the single most important factor in database performance. Read through [SQL performance best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}) and determine whether you can make workload changes to speed up your application.
 
 ### Machine size
 
-The size of the machines you're using is not a Kubernetes-specific concern, but is a good place to start if you want more performance. Using machines with more CPU will almost always allow for greater throughput. Because Kubernetes runs a set of processes on every machine in a cluster, it is typically more efficient to use fewer large machines than more small machines. For specific suggestions, refer to [Hardware](recommended-production-settings.html#hardware). 
+The size of the machines you're using is not a Kubernetes-specific concern, but is a good place to start if you want more performance. Using machines with more CPU will almost always allow for greater throughput. Because Kubernetes runs a set of processes on every machine in a cluster, it is typically more efficient to use fewer large machines than more small machines. For specific suggestions, refer to [Hardware]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware). 
 
 ### Disk type
 
-CockroachDB makes heavy use of the disks you provide it, so using faster disks is an easy way to improve your cluster's performance. For the best performance, [SSDs are strongly recommended](recommended-production-settings.html#hardware).
+CockroachDB makes heavy use of the disks you provide it, so using faster disks is an easy way to improve your cluster's performance. For the best performance, [SSDs are strongly recommended]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware).
 
 The Cockroach Labs-provided configuration does not specify disk type, so in most environments Kubernetes will auto-provision disks of the default type. In the common cloud environments (AWS, GCP, Azure) this means you'll get slow disks that aren't optimized for database workloads (e.g., HDDs on GCE, SSDs without provisioned IOPS on AWS).
 
@@ -126,7 +126,7 @@ Since [GCE disk IOPS scale linearly with disk size](https://cloud.google.com/com
 
 The examples thus far assume the use of auto-provisioned, remotely attached disks. However, local disks typically provide better performance than remotely attached disks. For example, SSD Instance Store Volumes outperform EBS Volumes on AWS, and Local SSDs outperform Persistent Disks on GCE. As of v1.14, Kubernetes supports [local volumes](https://kubernetes.io/docs/concepts/storage/volumes/#local).
 
-When using local disks, consider using [replication controls](configure-replication-zones.html) to increase the replication factor of your data from 3 (default) to 5. This is because local disks have a greater chance of experiencing a disk failure than a cloud provider's network-attached disks, which are often replicated underneath the covers.
+When using local disks, consider using [replication controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) to increase the replication factor of your data from 3 (default) to 5. This is because local disks have a greater chance of experiencing a disk failure than a cloud provider's network-attached disks, which are often replicated underneath the covers.
 
 ### Resource requests and limits
 
@@ -134,7 +134,7 @@ When you ask Kubernetes to run a pod, you can tell it to reserve certain amounts
 
 #### Resource requests
 
-Resource requests reserve a certain amount of CPU or memory for your container. If you add resource requests to your CockroachDB YAML file, Kubernetes will schedule each CockroachDB pod onto a node with sufficient unreserved resources and ensure the pods are guaranteed the reserved resources using the applicable Linux container primitives. If you are running other workloads in your Kubernetes cluster, setting resource requests is strongly recommended to ensure good performance. If you do not set resource requests, CockroachDB could be starved of CPU cycles or [OOM-stopped](cluster-setup-troubleshooting.html#out-of-memory-oom-crash) before less important processes.
+Resource requests reserve a certain amount of CPU or memory for your container. If you add resource requests to your CockroachDB YAML file, Kubernetes will schedule each CockroachDB pod onto a node with sufficient unreserved resources and ensure the pods are guaranteed the reserved resources using the applicable Linux container primitives. If you are running other workloads in your Kubernetes cluster, setting resource requests is strongly recommended to ensure good performance. If you do not set resource requests, CockroachDB could be starved of CPU cycles or [OOM-stopped]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) before less important processes.
 
 To determine how many resources are usable on your Kubernetes nodes, you can run:
 
@@ -305,4 +305,4 @@ If you aren't using a hosted Kubernetes service, you'll need to choose a [networ
 
 If your Kubernetes cluster uses heterogeneous hardware, you will likely want to ensure that CockroachDB only runs on specific machines. To optimize performance, it can be beneficial to dedicate those machines exclusively to CockroachDB.
 
-For more information, refer to [Pod scheduling](schedule-cockroachdb-kubernetes-operator.html).
+For more information, refer to [Pod scheduling]({% link {{ page.version.version }}/schedule-cockroachdb-kubernetes-operator.md %}).

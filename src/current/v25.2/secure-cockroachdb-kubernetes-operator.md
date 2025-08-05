@@ -20,7 +20,7 @@ You may need to rotate the node, client, or CA certificates in the following sce
 
 ### Example: Rotate certificates signed with `cockroach cert`
 
-If you previously [authenticated with cockroach cert](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster), follow these steps to rotate the certificates using the same CA:
+If you previously [authenticated with cockroach cert]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster), follow these steps to rotate the certificates using the same CA:
 
 1. Create a new client certificate and key pair for the root user, overwriting the previous certificate and key:
 
@@ -45,7 +45,7 @@ If you previously [authenticated with cockroach cert](deploy-cockroachdb-with-ku
     secret/cockroachdb.client.root.2 created
     ~~~
 
-1. Create a new certificate and key pair for your CockroachDB nodes, overwriting the previous certificate and key. Specify the namespace you used when [deploying the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster). This example uses the `cockroach-ns` namespace:
+1. Create a new certificate and key pair for your CockroachDB nodes, overwriting the previous certificate and key. Specify the namespace you used when [deploying the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster). This example uses the `cockroach-ns` namespace:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -75,7 +75,7 @@ If you previously [authenticated with cockroach cert](deploy-cockroachdb-with-ku
     secret/cockroachdb.node.2 created
     ~~~
 
-1. Add `cockroachdb.tls.externalCertificates.certificates.nodeClientSecretName` and `cockroachdb.tls.externalCertificates.certificates.nodeSecretName` to the values file used to [deploy the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster):
+1. Add `cockroachdb.tls.externalCertificates.certificates.nodeClientSecretName` and `cockroachdb.tls.externalCertificates.certificates.nodeSecretName` to the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster):
 
     ~~~ yaml
     cockroachdb:
@@ -101,7 +101,7 @@ If you previously [authenticated with cockroach cert](deploy-cockroachdb-with-ku
     ~~~
 
     {{site.data.alerts.callout_info}}
-    Remember that `nodeSecretName` and `nodeClientSecretName` in the operator configuration must specify these secret names. For details, see the [deployment guide](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster).
+    Remember that `nodeSecretName` and `nodeClientSecretName` in the operator configuration must specify these secret names. For details, see the [deployment guide]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster).
     {{site.data.alerts.end}}
 
 1. Apply the new settings to the cluster:

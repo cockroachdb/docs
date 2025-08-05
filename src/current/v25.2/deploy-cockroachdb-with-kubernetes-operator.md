@@ -48,7 +48,7 @@ In cloud provider deployments (e.g., [GKE](#hosted-gke), [EKS](#hosted-eks), or 
 
 On bare metal Kubernetes deployments, you must plan a hierarchy of localities that suit your CockroachDB node distribution, then apply these values individually to nodes when they are initialized. Although you can set most of these values arbitrarily, you must set region and zone locations in the reserved `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` namespaces, respectively.
 
-For more information on how locality labels are used by CockroachDB, refer to the [`--locality` documentation](cockroach-start.html#locality).
+For more information on how locality labels are used by CockroachDB, refer to the [`--locality` documentation]({% link {{ page.version.version }}/cockroach-start.md %}#locality).
 
 ### Architecture
 
@@ -60,7 +60,7 @@ When starting Kubernetes, select machines with at least 4 vCPUs and 16 GiB of me
 
 ### Storage
 
-Kubernetes deployments use external persistent volumes that are often replicated by the provider. CockroachDB replicates data automatically, and this redundant layer of [replication](% link {{ page.version.version }}/architecture/overview.md %}#replication) can impact performance. Using [local volumes](https://kubernetes.io/docs/concepts/storage/volumes/#local) may improve performance.
+Kubernetes deployments use external persistent volumes that are often replicated by the provider. CockroachDB replicates data automatically, and this redundant layer of [replication]({% link {{ page.version.version }}/architecture/overview.md %}#replication) can impact performance. Using [local volumes](https://kubernetes.io/docs/concepts/storage/volumes/#local) may improve performance.
 
 ## Step 1. Start Kubernetes
 
@@ -96,7 +96,7 @@ Cloud providers such as GKE, EKS, and AKS are not required to run CockroachDB on
 
     This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--region` flag specifies a [regional three-zone cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster), and `--num-nodes` specifies one Kubernetes worker node in each zone.
     
-    The `--machine-type` flag tells the node pool to use the [n2-standard-4](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings#basic-hardware-recommendations).
+    The `--machine-type` flag tells the node pool to use the [n2-standard-4](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration]({% link {{ page.version.version }}/recommended-production-settings.md %}#basic-hardware-recommendations).
     
     {{site.data.alerts.callout_info}}
     Consider creating another, dedicated node group for the operator pod for system resource availability.
@@ -152,7 +152,7 @@ Cloud providers such as GKE, EKS, and AKS are not required to run CockroachDB on
       --node-ami auto
     ~~~
 
-    This creates EKS instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--node-type` flag tells the node pool to use the [m6i.xlarge](https://aws.amazon.com/ec2/instance-types/) instance type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings#basic-hardware-recommendations).
+    This creates EKS instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--node-type` flag tells the node pool to use the [m6i.xlarge](https://aws.amazon.com/ec2/instance-types/) instance type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration]({% link {{ page.version.version }}/recommended-production-settings.md %}#basic-hardware-recommendations).
 
     {{site.data.alerts.callout_info}}
     Consider creating another, dedicated node group for the operator pod for system resource availability.
@@ -252,7 +252,7 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
 
 1. Uncomment and modify `cockroachdb.crdbCluster.resources` in the values file with the CPU and memory requests and limits for each node to use. The default values are 4vCPU and 16GB of memory:
 
-    For more information on configuring node resource allocation, refer to [Resource management](configure-cockroachdb-kubernetes-operator.html)
+    For more information on configuring node resource allocation, refer to [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes-operator.md %})
 
 1. Modify the TLS configuration as desired. For a secure deployment, set `cockroachdb.tls.enabled` in the values file to `true`. You can either allow the operator to generate self-signed certificates, provide a custom CA certificate and generate other certificates, or use your own certificates.
     - **All self-signed certificates**: By default, the certificates are created automatically by a self-signer utility, which requires no configuration beyond setting a custom certificate duration if desired. This utility creates self-signed certificates for the nodes and root client which are stored in a secret. You can see these certificates by running `kubectl get secrets`:
@@ -382,9 +382,9 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
         - `{node_secret_name}`: The name of the Kubernetes secret that contains the generated client certificate and key.
         - `{client_secret_name}`: The name of the Kubernetes secret that contains the generated node certificate and key.
         
-        For a detailed tutorial of a TLS configuration with manual certificates, refer to [Example: Authenticate with cockroach cert](#example-authenticate-with-cockroach-cert).
+        For a detailed tutorial of a TLS configuration with manual certificates, refer to [Authenticate with cockroach cert](#authenticate-with-cockroach-cert).
 
-1. In `cockroachdb.crdbCluster.localityMappings`, provide [locality mappings](#localities) that define locality levels and map them to node labels where the locality information of each Kubernetes node is stored. When CockroachDB is initialized on a node, it processes these values as though they are provided through the [`cockroach start --locality`](cockroach-start#locality) flag. 
+1. In `cockroachdb.crdbCluster.localityMappings`, provide [locality mappings](#localities) that define locality levels and map them to node labels where the locality information of each Kubernetes node is stored. When CockroachDB is initialized on a node, it processes these values as though they are provided through the [`cockroach start --locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag. 
 
     The default configuration uses the `region` and `zone` locality labels, mapped implicitly to the [`topology.kubernetes.io/region`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesioregion) and [`topology.kubernetes.io/zone`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) node labels.
     - In cloud provider deployments, the `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` values on a node are populated by the cloud provider.
@@ -492,7 +492,7 @@ To use the CockroachDB SQL client, follow these steps to launch a secure pod run
     kubectl create -f client-secure.yaml
     ~~~
 
-1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
+1. Get a shell into the pod and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -516,7 +516,7 @@ To use the CockroachDB SQL client, follow these steps to launch a secure pod run
 
     This pod will continue running indefinitely, so any time you need to reopen the built-in SQL client or run any other cockroach client commands (e.g., cockroach node), repeat this step using the appropriate cockroach command. If you'd prefer to delete the pod and recreate it when needed, run `kubectl delete pod cockroachdb-client-secure`.
 
-1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Run some basic [CockroachDB SQL statements]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}):
 
     ~~~ sql
     CREATE DATABASE bank;
@@ -529,7 +529,7 @@ To use the CockroachDB SQL client, follow these steps to launch a secure pod run
     (1 row)
     ~~~
 
-1. [Create a user with a password](create-user.html#create-a-user-with-a-password):
+1. [Create a user with a password]({% link {{ page.version.version }}/create-user.md %}#create-a-user-with-a-password):
 
     ~~~ sql
     CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
@@ -545,11 +545,11 @@ To use the CockroachDB SQL client, follow these steps to launch a secure pod run
 
 ## Step 4. Access the DB Console
 
-To access the cluster's [DB Console](ui-overview.html):
+To access the cluster's [DB Console]({% link {{ page.version.version }}/ui-overview.md %}):
 
-1. On secure clusters, [certain pages of the DB Console](ui-overview.html#db-console-access) can only be accessed by `admin` users.
+1. On secure clusters, [certain pages of the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) can only be accessed by `admin` users.
 
-    Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
+    Get a shell into the pod and start the CockroachDB [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -590,26 +590,27 @@ To access the cluster's [DB Console](ui-overview.html):
     {{site.data.alerts.end}}
 
 1. In the DB Console, verify that the cluster is running as expected:
-    1. View the [**Node List**](ui-cluster-overview-page.html#node-list) to ensure that all nodes successfully joined the cluster.
+    1. View the [**Node List**]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-list) to ensure that all nodes successfully joined the cluster.
     1. Click the **Databases** tab on the left to verify that `bank` is listed.
 
 ## Next steps
 
 Read the following pages for detailed information on cluster scaling, certificate management, resource management, best practices, and other cluster operation details:
 
-- [Pod scheduling](schedule-cockroachdb-kubernetes-operator.html)
-- [Resource management](configure-cockroachdb-kubernetes-operator.html)
-- [Certificate management](secure-cockroachdb-kubernetes-operator.html)
-- [Cluster scaling](scale-cockroachdb-kubernetes-operator.html)
-- [Cluster monitoring](monitor-cockroachdb-kubernetes-operator.html)
-- [Upgrade a cluster](upgrade-cockroachdb-kubernetes-operator.html)
-- [CockroachDB performance on Kubernetes](kubernetes-operator-performance.html)
+- [Pod scheduling]({% link {{ page.version.version }}/schedule-cockroachdb-kubernetes-operator.md %})
+- [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes-operator.md %})
+- [Certificate management]({% link {{ page.version.version }}/secure-cockroachdb-kubernetes-operator.md %})
+- [Cluster scaling]({% link {{ page.version.version }}/scale-cockroachdb-kubernetes-operator.md %})
+- [Cluster monitoring]({% link {{ page.version.version }}/monitor-cockroachdb-kubernetes-operator.md %})
+- [Upgrade a cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes-operator.md %})
+- [Override deployment templates]({% link {{ page.version.version }}/override-templates-kubernetes-operator.md %})
+- [CockroachDB performance on Kubernetes]({% link {{ page.version.version }}/kubernetes-operator-performance.md %})
 
 ## Examples
 
 ### Authenticate with `cockroach cert`
 
-The following example uses [cockroach cert commands](cockroach-cert.html) to generate and sign the CockroachDB node and client certificates. To learn more about the supported methods of signing certificates, refer to [Authentication](authentication.html#using-digital-certificates-with-cockroachdb).
+The following example uses [cockroach cert commands]({% link {{ page.version.version }}/cockroach-cert.md %}) to generate and sign the CockroachDB node and client certificates. To learn more about the supported methods of signing certificates, refer to [Authentication]({% link {{ page.version.version }}/authentication.md %}#using-digital-certificates-with-cockroachdb).
 
 1. Create two directories:
 

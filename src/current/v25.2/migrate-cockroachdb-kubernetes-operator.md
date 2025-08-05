@@ -23,7 +23,7 @@ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operato
 ~~~
 
 {{site.data.alerts.callout_success}}
-If your existing cluster was created as a StatefulSet using Helm, refer to the [Helm migration guide](migrate-cockroachdb-kubernetes-helm.html).
+If your existing cluster was created as a StatefulSet using Helm, refer to the [Helm migration guide]({% link {{ page.version.version }}/migrate-cockroachdb-kubernetes-helm.md %}).
 {{site.data.alerts.end}}
 
 This migration process can be completed without affecting cluster availability, and preserves existing disks so that data doesn’t need to be replicated into empty volumes. This process scales down the StatefulSet by one node before adding each operator-managed pod, so the maximum cluster capacity will be reduced by one node periodically throughout the migration.
@@ -161,7 +161,7 @@ For each pod in the StatefulSet, perform the following steps:
     kubectl apply -f manifests/crdbnode-4.yaml
     ~~~
 
-1. Wait for the new pod to become ready. If it doesn’t, [check the operator logs](monitor-cockroachdb-kubernetes-operator.html#monitor-the-operator) for errors.
+1. Wait for the new pod to become ready. If it doesn’t, [check the operator logs]({% link {{ page.version.version }}/monitor-cockroachdb-kubernetes-operator.md %}#monitor-the-operator) for errors.
 
 1. Before moving on to the next replica migration, verify that there are no underreplicated ranges:
     1. Set up port forwarding to access the CockroachDB node’s HTTP interface. Note that the DB Console runs on port 8080 by default:

@@ -24,10 +24,10 @@ Run `kubectl describe nodes` to see the available resources on the instances tha
 You can set the CPU and memory resources allocated to the CockroachDB container on each pod.
 
 {{site.data.alerts.callout_info}}
-1 CPU in Kubernetes is equivalent to 1 vCPU or 1 hyperthread. For best practices on provisioning CPU and memory for CockroachDB, refer to the [Production Checklist](recommended-production-settings.html#hardware).
+1 CPU in Kubernetes is equivalent to 1 vCPU or 1 hyperthread. For best practices on provisioning CPU and memory for CockroachDB, refer to the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware).
 {{site.data.alerts.end}}
 
-Specify CPU and memory values in `cockroachdb.crdbCluster.resources.limits` and `cockroachdb.crdbCluster.resources.requests` in the values file used to [deploy the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster):
+Specify CPU and memory values in `cockroachdb.crdbCluster.resources.limits` and `cockroachdb.crdbCluster.resources.requests` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster):
 
 ~~~ yaml
 cockroachdb:
@@ -58,15 +58,15 @@ For more information on how Kubernetes handles resources, see the [Kubernetes do
 
 ### Cache and SQL memory size
 
-Each CockroachDB node reserves a portion of its available memory for its cache and for storing temporary data for SQL queries. For more information on these settings, see the [Production Checklist](recommended-production-settings.html#cache-and-sql-memory-size).
+Each CockroachDB node reserves a portion of its available memory for its cache and for storing temporary data for SQL queries. For more information on these settings, see the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size).
 
-The {{ site.data.products.cockroachdb-operator }} dynamically sets cache size and SQL memory size each to 25% (the recommended percentage) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. These values can be modified by adding the `cache` or `max-sql-memory` fields to `cockroachdb.crdbCluster.flags`, which is equivalent to appending `--cache` or `--max-sql-memory` as [cockroach start flags](cockroach-start.html#flags).
+The {{ site.data.products.cockroachdb-operator }} dynamically sets cache size and SQL memory size each to 25% (the recommended percentage) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. These values can be modified by adding the `cache` or `max-sql-memory` fields to `cockroachdb.crdbCluster.flags`, which is equivalent to appending `--cache` or `--max-sql-memory` as [cockroach start flags]({% link {{ page.version.version }}/cockroach-start.md %}#flags).
 
 ## Persistent storage
 
 When you start your cluster, Kubernetes dynamically provisions and mounts a persistent volume into each pod. For more information on persistent volumes, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 
-The storage capacity of each volume is set in `cockroachdb.crdbCluster.dataStore.volumeClaimTemplate.spec.resources` in the values file used to [deploy the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster):
+The storage capacity of each volume is set in `cockroachdb.crdbCluster.dataStore.volumeClaimTemplate.spec.resources` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster):
 
 ~~~ yaml
 cockroachdb:
@@ -79,13 +79,13 @@ cockroachdb:
               storage: "10Gi"
 ~~~
 
-You should provision an appropriate amount of disk storage for your workload. For recommendations on this, see the [Production Checklist](recommended-production-settings.html#storage).
+You should provision an appropriate amount of disk storage for your workload. For recommendations on this, see the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage).
 
 ### Expand disk size
 
-If you discover that you need more capacity, you can expand the persistent volumes on a running cluster. Increasing disk size is often [beneficial for CockroachDB performance](kubernetes-operator-performance.html).
+If you discover that you need more capacity, you can expand the persistent volumes on a running cluster. Increasing disk size is often [beneficial for CockroachDB performance]({% link {{ page.version.version }}/kubernetes-operator-performance.md %}).
 
-Specify a new volume size in the values file used to [deploy the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster):
+Specify a new volume size in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster):
 
 ~~~ yaml
 cockroachdb:
@@ -119,7 +119,7 @@ The {{ site.data.products.cockroachdb-operator }} separates network traffic into
 | HTTP       | 8080        | Used to access the DB Console | service.ports.http    |
 | SQL        | 26257       | Used for SQL shell access     | service.ports.sql     |
 
-Specify alternate port numbers in `cockroachdb.crdbCluster.service.ports` of the {{ site.data.products.cockroachdb-operator }}'s [custom resource](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster) (for example, to match the default port `5432` on PostgreSQL):
+Specify alternate port numbers in `cockroachdb.crdbCluster.service.ports` of the {{ site.data.products.cockroachdb-operator }}'s [custom resource]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster) (for example, to match the default port `5432` on PostgreSQL):
 
 ~~~ yaml
 cockroachdb:

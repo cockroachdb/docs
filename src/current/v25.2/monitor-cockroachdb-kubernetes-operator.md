@@ -6,7 +6,7 @@ toc_not_nested: true
 docs_area: deploy
 ---
 
-Despite CockroachDB's various [built-in safeguards against failure](architecture/replication-layer.html), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
+Despite CockroachDB's various [built-in safeguards against failure]({% link {{ page.version.version }}/architecture/replication-layer.md %}), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
 {{site.data.alerts.callout_info}}
 The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
@@ -19,7 +19,7 @@ Every node of a CockroachDB cluster exports granular timeseries metrics formatte
 This guidance is based on [CoreOS's Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/tree/main), which allows a Prometheus instance to be managed using built-in Kubernetes concepts.
 
 {{site.data.alerts.callout_info}}
-If you're on Hosted GKE, before starting, make sure the email address associated with your Google Cloud account is part of the `cluster-admin` RBAC group, as shown in [Deploy CockroachDB with Kubernetes](deploy-cockroachdb-with-kubernetes-operator.html).
+If you're on Hosted GKE, before starting, make sure the email address associated with your Google Cloud account is part of the `cluster-admin` RBAC group, as shown in [Deploy CockroachDB with Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}).
 {{site.data.alerts.end}}
 
 1. From your local workstation, edit the cockroachdb service to add the prometheus: cockroachdb label:
@@ -112,7 +112,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
         <img src="{{ 'images/v25.2/kubernetes-prometheus-graph.png' | relative_url }}" alt="Prometheus graph" style="border:1px solid #eee;max-width:100%" />
 
     {{site.data.alerts.callout_info}}
-    Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, port-forward as described in [Access the DB Console](deploy-cockroachdb-with-kubernetes-operator.html#step-4-access-the-db-console) and then point your browser to [http://localhost:8080/_status/vars](http://localhost:8080/_status/vars).
+    Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, port-forward as described in [Access the DB Console]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#step-4-access-the-db-console) and then point your browser to [http://localhost:8080/_status/vars](http://localhost:8080/_status/vars).
     {{site.data.alerts.end}}
 
 For more details on using the Prometheus UI, see their [official documentation](https://prometheus.io/docs/introduction/getting_started/).
@@ -235,7 +235,7 @@ node_decommissioning{node="cockroachdb-r4wz8"} 0
 
 ## Configure logging
 
-You can use the operator to configure the CockroachDB logging system. This allows you to output logs to [configurable log sinks](configure-logs.html#configure-log-sinks) such as file or network logging destinations.
+You can use the operator to configure the CockroachDB logging system. This allows you to output logs to [configurable log sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) such as file or network logging destinations.
 
 The logging configuration is defined in a [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) object, using a key named `logs.yaml`. For example:
 
@@ -265,12 +265,12 @@ metadata:
   namespace: cockroach-ns
 ~~~
 
-The above configuration overrides the [default logging configuration](configure-logs.html#default-logging-configuration) and reflects our recommended Kubernetes logging configuration:
+The above configuration overrides the [default logging configuration]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration) and reflects our recommended Kubernetes logging configuration:
 
-- Save debug-level logs (the `DEV` [log channel](logging-overview.html#logging-channels)) to disk for troubleshooting.
-- Send operational- and security-level logs to a [network collector](logging-use-cases.html#network-logging), in this case [Fluentd](configure-logs.html#fluentd-logging-format).
+- Save debug-level logs (the `DEV` [log channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels)) to disk for troubleshooting.
+- Send operational- and security-level logs to a [network collector]({% link {{ page.version.version }}/logging-use-cases.md %}#network-logging), in this case [Fluentd]({% link {{ page.version.version }}/configure-logs.md %}#fluentd-logging-format).
 
-The ConfigMap `name` must match the `cockroachdb.crdbCluster.loggingConfigMapName` object in the values file used to [deploy the cluster](deploy-cockroachdb-with-kubernetes-operator.html#initialize-the-cluster):
+The ConfigMap `name` must match the `cockroachdb.crdbCluster.loggingConfigMapName` object in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster):
 
 ~~~ yaml
 cockroachdb:
@@ -278,7 +278,7 @@ cockroachdb:
     loggingConfigMapName: logconfig
 ~~~
 
-By default, the operator also modifies the [default logging configuration](configure-logs.html#default-logging-configuration) with the following:
+By default, the operator also modifies the [default logging configuration]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration) with the following:
 
 ~~~ yaml
 sinks:
@@ -287,11 +287,11 @@ sinks:
       redact: true
 ~~~
 
-This outputs logging events in the [OPS](logging.html#ops) channel to a `cockroach-stderr.log` file.
+This outputs logging events in the [OPS]({% link {{ page.version.version }}/logging.md %}#ops) channel to a `cockroach-stderr.log` file.
 
 ### Example: Configuring a troubleshooting log file on pods
 
-In this example, CockroachDB has already been deployed on a Kubernetes cluster. Override the [default logging configuration](configure-logs.html#default-logging-configuration) to output [DEV](logging.html#dev) logs to a `cockroach-dev.log` file.
+In this example, CockroachDB has already been deployed on a Kubernetes cluster. Override the [default logging configuration]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration) to output [DEV]({% link {{ page.version.version }}/logging.md %}#dev) logs to a `cockroach-dev.log` file.
 
 1. Create a ConfigMap named `logconfig`. Note that `namespace` is set to the `cockroach-ns` namespace:
 
@@ -316,7 +316,7 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
     The ConfigMap key is not related to the ConfigMap `name` or YAML filename, and must be named `logging.yaml`.
     {{site.data.alerts.end}}
 
-    This configuration outputs `DEV` logs that have severity [WARNING](logging.html#logging-levels-severities) to a `cockroach-dev.log` file on each pod.
+    This configuration outputs `DEV` logs that have severity [WARNING]({% link {{ page.version.version }}/logging.md %}#logging-levels-severities) to a `cockroach-dev.log` file on each pod.
 
 1. Apply the ConfigMap to the cluster:
 

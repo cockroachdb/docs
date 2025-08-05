@@ -7,7 +7,7 @@ secure: true
 docs_area: deploy
 ---
 
-This page describes how to upgrade a CockroachDB cluster that is [deployed on a Kubernetes cluster](deploy-cockroachdb-with-kubernetes-operator.html) with the {{ site.data.products.cockroachdb-operator }}.
+This page describes how to upgrade a CockroachDB cluster that is [deployed on a Kubernetes cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}) with the {{ site.data.products.cockroachdb-operator }}.
 
 {{site.data.alerts.callout_info}}
 The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}).
@@ -60,7 +60,7 @@ To upgrade from one patch release to another within the same major version, perf
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
     ~~~
 
-You can also check the CockroachDB version of each node in the [DB Console](ui-cluster-overview-page.html#node-details).
+You can also check the CockroachDB version of each node in the [DB Console]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-details).
 
 ### Roll back a patch upgrade
 
