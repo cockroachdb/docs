@@ -14,6 +14,10 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## Aug 6, 2025
+
+You can now use the [CockroachDB Cloud API]({% link cockroachcloud/cloud-api.md %}#managed-backups-and-restores) to list managed backups and restore entities from managed backups.
+
 ## Aug 4, 2025
 
 CockroachDB v25.3 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.3 is an [Innovation release]({% link releases/index.md %}#release-types).
