@@ -312,11 +312,11 @@ SHOW ROLES;
 ~~~
 
 ~~~
-  username | options | member_of
------------+---------+------------
-  admin    |         | {}
-  new_role | NOLOGIN | {}
-  root     |         | {admin}
+  username | options   | member_of | estimated_last_login_time
+-----------+-----------+-----------+------------------------------
+  admin    | {}        | {}        | NULL
+  new_role | {NOLOGIN} | {}        | NULL
+  root     | {}        | {admin}   | NULL
 (3 rows)
 ~~~
 

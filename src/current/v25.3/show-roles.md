@@ -29,12 +29,12 @@ The role must have the [`SELECT`]({% link {{ page.version.version }}/select-clau
 ~~~
 
 ~~~
-  username |  options   | member_of
------------+------------+------------
-  admin    | CREATEROLE | {}
-  carl     | NOLOGIN    | {}
-  petee    |            | {}
-  root     | CREATEROLE | {admin}
+  username |    options     | member_of | estimated_last_login_time
+-----------+----------------+-----------+------------------------------
+  admin    | {CREATEROLE}   | {}        | NULL
+  carl     | {NOLOGIN}      | {}        | NULL
+  petee    | {}             | {}        | 2025-08-04 19:18:00.201402+00
+  root     | {CREATEROLE}   | {admin}   | NULL
 (4 rows)
 ~~~
 

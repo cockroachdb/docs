@@ -104,25 +104,33 @@ For an example, refer to [Create and query a vector index](#create-and-query-a-v
 
 ### Specify an opclass
 
-You can optionally specify an opclass (operator class) that defines how the `VECTOR` data type is handled by the index. If not specified, the default is `vector_l2_ops`:
+When you create a vector index, you can specify an *operator class* (opclass) that tells the index which `VECTOR` [distance metric](#comparisons) to accelerate. The following opclasses are available:
+
+- `vector_l2_ops` (default): Accelerate queries that use the L2 distance operator [`<->`]({% link {{ page.version.version }}/vector.md %}#syntax). 
+- `vector_cosine_ops`: Accelerate queries that use the cosine distance operator [`<=>`]({% link {{ page.version.version }}/vector.md %}#syntax).
+- `vector_ip_ops`: Accelerate queries that use the negative inner product operator [`<#>`]({% link {{ page.version.version }}/vector.md %}#syntax).
+
+If not specified, `vector_l2_ops` is used by default. To accelerate cosine or inner-product searches, specify the corresponding opclass when you create the vector index. For an example, to build a cosine-optimized index:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE items (
     department_id INT,
-    category_id INT,
-    embedding VECTOR(1536),
-    VECTOR INDEX embed_idx (embedding vector_l2_ops)
+    category_id   INT,
+    embedding     VECTOR(1536),
+    VECTOR INDEX embed_idx (embedding vector_cosine_ops)
 );
 ~~~
 
 ## Comparisons
 
-Vector indexes on `VECTOR` columns support the following comparison operator:
+Vector indexes on `VECTOR` columns support the following comparison operators. Whether an operator is *accelerated* depends on the [opclass](#specify-an-opclass) that you specified upon index creation.
 
-- **L2 distance**: [`<->`]({% link {{ page.version.version }}/vector.md %}#syntax)
+- **L2 distance** ([`<->`]({% link {{ page.version.version }}/vector.md %}#syntax)): Use when you want the true geometric distance, such as in spatial or physical models where absolute positioning matters.
+- **Cosine distance** ([`<=>`]({% link {{ page.version.version }}/vector.md %}#syntax)): Use when you only care about directional similarity, like in semantic text matching or clustering. Ideal for [retrieval-augmented generation (RAG)](https://en.wikipedia.org/wiki/Retrieval-augmented_generation) use cases involving pretrained embedding models that either normalize vectors or are trained with a cosine similarity loss.
+- **Negative inner product** ([`<#>`]({% link {{ page.version.version }}/vector.md %}#syntax)): Use when both the magnitude and direction of vectors matter, such as in scoring or preference modeling.
 
-For usage, refer to the [Example](#example).
+Operators are used in the [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}) clause when ranking results by vector similarity. Refer to the [Example](#example).
 
 ## Tune vector indexes
 
