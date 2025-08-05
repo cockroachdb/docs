@@ -326,6 +326,6 @@ SHOW CREATE customer_seq_node_cached;
 - [`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %})
 - [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
 - [`SHOW SEQUENCES`]({% link {{ page.version.version }}/show-sequences.md %})
-- [Functions and s]({% link {{ page.version.version }}/functions-and-operators.md %})
+- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

@@ -1,4 +1,4 @@
-### Install the {{ site.data.products.public-operator }}
+### Install the Operator
 
 {% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 {% capture apply_default_operator_manifest_command %}{% include_cached copy-clipboard.html %}
