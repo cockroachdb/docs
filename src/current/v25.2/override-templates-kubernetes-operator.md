@@ -86,8 +86,7 @@ cockroachdb:
       # upsert captures a set of flags that are given higher precedence in the start command.
       upsert:
         - "--cache=30%"
-        - "--max-sql-memory=35%"
       # omit defines a set of flags which will be omitted from the start command.
       omit:
-        - ""
+        - "--max-sql-memory"
 ~~~
