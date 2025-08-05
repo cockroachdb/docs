@@ -29,14 +29,14 @@ Cluster Setting | Description | Default Value
 
 - The automatic Go execution tracer saves the captured traces to disk on each node's file system in the [logging directory]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory). The default path is `cockroach-data/logs/executiontrace_dump`.
 - To access these Go execution traces, you must use the node file system.
-- Each file represents a single trace session, includes the `executiontrace.` prefix and `.out` extension, and is timestamped to support correlation with other logs and profiles. For example, the trace file could be named `executiontrace.2025-07-14T18_41_22.216.out`.
+- Each file represents a single trace session, includes the `executiontrace.` prefix and `.out` extension, and is timestamped with the session start time to support correlation with other logs and profiles. For example, the trace file could be named `executiontrace.2025-07-14T18_41_22.216.out`.
 - Enabling the automatic Go execution tracer does add Go execution traces to [debug zips]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) in the `nodes/*/executiontrace` paths.
 
 ## Best Practices
 
 - Trace duration should be short (e.g., 5s–15s). Shorter trace files are easier to parse and load into external tools.
 - Storage limit should be generous to allow sufficient trace history. Avoid overly tight disk caps unless necessary.
-- Enable tracing temporarily when troubleshooting runtime behavior or under support guidance, as it may slightly impact performance.
+- Enable tracing temporarily when troubleshooting runtime behavior or under [support guidance](https://support.cockroachlabs.com), as it may slightly impact performance.
 
 ## Performance Impact
 
