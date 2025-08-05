@@ -32,6 +32,7 @@ This section describes how to:
     - [Scale a cluster]({% link {{page.version.version}}/scale-cockroachdb-kubernetes-operator.md %}).
     - [Monitor a cluster]({% link {{page.version.version}}/monitor-cockroachdb-kubernetes-operator.md %}).
     - [Upgrade a cluster]({% link {{page.version.version}}/upgrade-cockroachdb-kubernetes-operator.md %}).
+    - [Override deployment templates]({% link {{page.version.version}}/override-templates-kubernetes-operator.md %}).
     - [Improve cluster performance]({% link {{page.version.version}}/kubernetes-operator-performance.md %}).
 
 ## Kubernetes terminology

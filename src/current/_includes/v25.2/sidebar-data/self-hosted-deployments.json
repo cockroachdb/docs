@@ -242,6 +242,12 @@
                           ]
                       },
                       {
+                          "title": "Override Templates",
+                          "urls": [
+                          "/${VERSION}/override-templates-kubernetes-operator.html"
+                          ]
+                      },
+                      {
                           "title": "Kubernetes Performance",
                           "urls": [
                           "/${VERSION}/kubernetes-operator-performance.html"
