@@ -180,6 +180,10 @@ For each pod in the StatefulSet, perform the following steps:
 
 Repeat these steps until the StatefulSet has zero replicas.
 
+{{site.data.alerts.callout_danger}}
+If there are issues with the migration and you need to revert back to the previous deployment, follow the [rollback process](#roll-back-a-migration-in-progress).
+{{site.data.alerts.end}}
+
 ## Step 5. Update the crdbcluster manifest
 
 The {{ site.data.products.public-operator }} creates a pod disruption budget that conflicts with a pod disruption budget managed by the {{ site.data.products.cockroachdb-operator }}. Before applying the crdbcluster manifest, delete the existing pod disruption budget:
@@ -211,3 +215,98 @@ Once the migration is successful, delete the StatefulSet that was created by the
 ~~~ shell
 kubectl delete poddisruptionbudget $STS_NAME-budget
 ~~~
+
+## Roll back a migration in progress
+
+If the migration to the {{ site.data.products.cockroachdb-operator}} fails during the stage where you are applying the generated `crdbnode` manifests, follow the steps below to safely restore the original state using the previously backed-up resources and preserved volumes. This assumes the StatefulSet and PVCs are not deleted.
+
+1. Delete the applied `crdbnode` resources and simultaneously scale the StatefulSet back up.
+
+    Delete the individual `crdbnode` manifests in the reverse order of their creation (starting with the last one created, e.g., `crdbnode-2.yaml`) and scale the StatefulSet back to its original replica count (e.g., 3). For example, assuming you have applied two `crdbnode` yaml files (`crdbnode-2.yaml` & `crdbnode-1.yaml`):
+    
+    1. Delete a `crdbnode` manifest in reverse order, starting with `crdbnode-2.yaml`.
+    1. Scale the StatefulSet replica count up by one (to 2).
+    1. Verify that data has propagated by waiting for there to be zero under-replicated ranges:
+    
+        1. Set up port forwarding to access the CockroachDB node's HTTP interface, replacing `cockroachdb-X` with the node name:
+
+            {% include_cached copy-clipboard.html %}
+            ~~~ shell
+            kubectl port-forward pod/cockroachdb-X 8080:8080
+            ~~~
+            
+            The DB Console runs on port 8080 by default.
+
+        1. Check the `ranges_underreplicated` metric:
+
+            {% include_cached copy-clipboard.html %}
+            ~~~ shell
+            curl --insecure -s https://localhost:8080/_status/vars | grep "ranges_underreplicated{" | awk ' {print $2}'
+            ~~~
+            
+            This command outputs the number of under-replicated ranges on the node, which should be zero before proceeding with the next node. This may take some time depending on the deployment, but is necessary to ensure that there is no downtime in data availability.
+
+    1. Repeat steps a through c for each node, deleting the `crdbnode-1.yaml`, scaling replica count to 3, and so on.
+    
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        kubectl delete -f manifests/crdbnode-2.yaml
+        kubectl scale statefulset $CRDBCLUSTER --replicas=2
+        ~~~
+        
+        Repeat the `kubectl delete -f ... command` for each `crdbnode` manifest you applied during migration. Make sure to verify that there are no underreplicated ranges after rolling back each node.
+
+1. Delete the PriorityClass and RBAC resources created for the CockroachDB operator:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl delete priorityclass crdb-critical
+    kubectl delete -f manifests/rbac.yaml
+    ~~~
+
+1. Uninstall the {{ site.data.products.cockroachdb-operator }}:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    helm uninstall crdb-operator
+    ~~~
+
+1. Clean up {{ site.data.products.cockroachdb-operator }} resources and custom resource definitions:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl delete crds crdbnodes.crdb.cockroachlabs.com
+    kubectl delete crds crdbtenants.crdb.cockroachlabs.com
+    kubectl delete serviceaccount cockroachdb-sa
+    kubectl delete service cockroach-webhook-service
+    kubectl delete validatingwebhookconfiguration cockroach-webhook-config
+    ~~~
+
+1. Restore the {{ site.data.products.public-operator }}:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.17.0/install/crds.yaml
+    kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/v2.17.0/install/operator.yaml
+    ~~~
+    
+    Wait for the operator pod to be "Running" as shown with the following command:
+    
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl get pods -n cockroach-operator-system
+    ~~~
+
+1. Restore the original `crdbcluster` custom resource:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl apply -f backup/crdbcluster-$CRDBCLUSTER.yaml
+    ~~~
+
+1. Confirm that all CockroachDB pods are "Running" or "Ready" as shown with the following command:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl get pods
+    ~~~
