@@ -176,13 +176,13 @@
                 {
                     "title": "Overview",
                     "urls": [
-                      "/${VERSION}/kubernetes-operator-overview.html"
+                      "/${VERSION}/cockroachdb-operator-overview.html"
                     ]
                   },
                   {
                     "title": "CockroachDB Operator Deployment Guide",
                     "urls": [
-                      "/${VERSION}/deploy-cockroachdb-with-kubernetes-operator.html"
+                      "/${VERSION}/deploy-cockroachdb-with-cockroachdb-operator.html"
                     ]
                   },
                   {
@@ -208,49 +208,49 @@
                       {
                           "title": "Pod Scheduling",
                           "urls": [
-                          "/${VERSION}/schedule-cockroachdb-kubernetes-operator.html"
+                          "/${VERSION}/schedule-cockroachdb-operator.html"
                           ]
                       },
                       {
                           "title": "Resource Management",
                           "urls": [
-                          "/${VERSION}/configure-cockroachdb-kubernetes-operator.html"
+                          "/${VERSION}/configure-cockroachdb-operator.html"
                           ]
                       },
                       {
                           "title": "Certificate Management",
                           "urls": [
-                          "/${VERSION}/secure-cockroachdb-kubernetes-operator.html"
+                          "/${VERSION}/secure-cockroachdb-operator.html"
                           ]
                       },
                       {
                           "title": "Cluster Scaling",
                           "urls": [
-                          "/${VERSION}/scale-cockroachdb-kubernetes-operator.html"
+                          "/${VERSION}/scale-cockroachdb-operator.html"
                           ]
                       },
                       {
                           "title": "Cluster Monitoring",
                           "urls": [
-                          "/${VERSION}/monitor-cockroachdb-kubernetes-operator.html"
+                          "/${VERSION}/monitor-cockroachdb-operator.html"
                           ]
                       },
                       {
                           "title": "Cluster Upgrades",
                           "urls": [
-                          "/${VERSION}/upgrade-cockroachdb-kubernetes-operator.html"
+                          "/${VERSION}/upgrade-cockroachdb-operator.html"
                           ]
                       },
                       {
                           "title": "Override Templates",
                           "urls": [
-                          "/${VERSION}/override-templates-kubernetes-operator.html"
+                          "/${VERSION}/override-templates-cockroachdb-operator.html"
                           ]
                       },
                       {
                           "title": "Kubernetes Performance",
                           "urls": [
-                          "/${VERSION}/kubernetes-operator-performance.html"
+                          "/${VERSION}/cockroachdb-operator-performance.html"
                           ]
                       }
                       ]

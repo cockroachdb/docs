@@ -19,7 +19,7 @@ Every node of a CockroachDB cluster exports granular timeseries metrics formatte
 This guidance is based on [CoreOS's Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/tree/main), which allows a Prometheus instance to be managed using built-in Kubernetes concepts.
 
 {{site.data.alerts.callout_info}}
-If you're on Hosted GKE, before starting, make sure the email address associated with your Google Cloud account is part of the `cluster-admin` RBAC group, as shown in [Deploy CockroachDB with Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}).
+If you're on Hosted GKE, before starting, make sure the email address associated with your Google Cloud account is part of the `cluster-admin` RBAC group, as shown in [Deploy CockroachDB with Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}).
 {{site.data.alerts.end}}
 
 1. From your local workstation, edit the cockroachdb service to add the prometheus: cockroachdb label:
@@ -112,7 +112,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
         <img src="{{ 'images/v25.2/kubernetes-prometheus-graph.png' | relative_url }}" alt="Prometheus graph" style="border:1px solid #eee;max-width:100%" />
 
     {{site.data.alerts.callout_info}}
-    Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, port-forward as described in [Access the DB Console]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#step-4-access-the-db-console) and then point your browser to [http://localhost:8080/_status/vars](http://localhost:8080/_status/vars).
+    Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, port-forward as described in [Access the DB Console]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#step-4-access-the-db-console) and then point your browser to [http://localhost:8080/_status/vars](http://localhost:8080/_status/vars).
     {{site.data.alerts.end}}
 
 For more details on using the Prometheus UI, see their [official documentation](https://prometheus.io/docs/introduction/getting_started/).
@@ -270,7 +270,7 @@ The above configuration overrides the [default logging configuration]({% link {{
 - Save debug-level logs (the `DEV` [log channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels)) to disk for troubleshooting.
 - Send operational- and security-level logs to a [network collector]({% link {{ page.version.version }}/logging-use-cases.md %}#network-logging), in this case [Fluentd]({% link {{ page.version.version }}/configure-logs.md %}#fluentd-logging-format).
 
-The ConfigMap `name` must match the `cockroachdb.crdbCluster.loggingConfigMapName` object in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster):
+The ConfigMap `name` must match the `cockroachdb.crdbCluster.loggingConfigMapName` object in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster):
 
 ~~~ yaml
 cockroachdb:

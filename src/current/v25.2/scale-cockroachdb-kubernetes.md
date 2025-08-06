@@ -13,7 +13,7 @@ This article assumes you have already [deployed CockroachDB on a single Kubernet
 
 This page explains how to add and remove CockroachDB nodes on Kubernetes.
 
-This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Cluster Scaling with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/scale-cockroachdb-kubernetes-operator.md %}).
+This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Cluster Scaling with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/scale-cockroachdb-operator.md %}).
 
 {% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 

@@ -7,7 +7,7 @@ docs_area: deploy
 
 Kubernetes provides many useful abstractions for deploying and operating distributed systems, but some of the abstractions come with a performance overhead and an increase in underlying system complexity. This page explains potential bottlenecks to be aware of when [running CockroachDB in Kubernetes]({% link {{ page.version.version }}/kubernetes-overview.md %}) and shows you how to optimize your deployment for better performance.
 
-This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [CockroachDB Performance on Kubernetes with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/kubernetes-operator-performance.md %}).
+This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [CockroachDB Performance on Kubernetes with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/cockroachdb-operator-performance.md %}).
 
 {% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 

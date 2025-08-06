@@ -20,7 +20,7 @@ Before scaling up CockroachDB, note the following [topology recommendations]({% 
 - Each CockroachDB node (running in its own pod) should run on a separate Kubernetes worker node.
 - Each availability zone should have the same number of CockroachDB nodes.
 
-If your cluster has 3 CockroachDB nodes distributed across 3 availability zones (as in our [deployment example]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster)), Cockroach Labs recommends scaling up by a multiple of 3 to retain an even distribution of nodes. You should therefore scale up to a minimum of 6 CockroachDB nodes, with 2 nodes in each zone.
+If your cluster has 3 CockroachDB nodes distributed across 3 availability zones (as in our [deployment example]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster)), Cockroach Labs recommends scaling up by a multiple of 3 to retain an even distribution of nodes. You should therefore scale up to a minimum of 6 CockroachDB nodes, with 2 nodes in each zone.
 
 1. Run `kubectl get nodes` to list the worker nodes in your Kubernetes cluster. There should be at least as many worker nodes as pods you plan to add. This ensures that no more than one pod will be placed on each worker node.
 
@@ -33,7 +33,7 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 
     This example distributes 2 worker nodes across the default 3 zones, raising the total to 6 worker nodes.
 
-1. Update `cockroachdb.crdbCluster.regions.code.nodes` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster), with the target size of the CockroachDB cluster in the specified region. This value refers to the number of CockroachDB nodes, each running in one pod:
+1. Update `cockroachdb.crdbCluster.regions.code.nodes` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster), with the target size of the CockroachDB cluster in the specified region. This value refers to the number of CockroachDB nodes, each running in one pod:
 
     ~~~ yaml
     cockroachdb:
@@ -73,13 +73,13 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 
 ## Remove nodes
 
-If your nodes are distributed across 3 availability zones (as in our [deployment example]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster)), Cockroach Labs recommends scaling down by a multiple of 3 to retain an even distribution. If your cluster has 6 CockroachDB nodes, you should therefore scale down to 3, with 1 node in each zone.
+If your nodes are distributed across 3 availability zones (as in our [deployment example]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster)), Cockroach Labs recommends scaling down by a multiple of 3 to retain an even distribution. If your cluster has 6 CockroachDB nodes, you should therefore scale down to 3, with 1 node in each zone.
 
 {{site.data.alerts.callout_danger}}
 Do not scale down to fewer than 3 nodes. This is considered an anti-pattern on CockroachDB and will cause errors. Before scaling down CockroachDB, note that each availability zone should have the same number of CockroachDB nodes.
 {{site.data.alerts.end}}
 
-1. Update `cockroachdb.crdbCluster.regions.code.nodes` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster), with the target size of the CockroachDB cluster. For instance, to scale a cluster in Google Cloud down to 3 nodes:
+1. Update `cockroachdb.crdbCluster.regions.code.nodes` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster), with the target size of the CockroachDB cluster. For instance, to scale a cluster in Google Cloud down to 3 nodes:
 
     ~~~ yaml
     cockroachdb:

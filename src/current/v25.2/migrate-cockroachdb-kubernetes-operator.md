@@ -161,7 +161,7 @@ For each pod in the StatefulSet, perform the following steps:
     kubectl apply -f manifests/crdbnode-4.yaml
     ~~~
 
-1. Wait for the new pod to become ready. If it doesn’t, [check the operator logs]({% link {{ page.version.version }}/monitor-cockroachdb-kubernetes-operator.md %}#monitor-the-operator) for errors.
+1. Wait for the new pod to become ready. If it doesn’t, [check the operator logs]({% link {{ page.version.version }}/monitor-cockroachdb-operator.md %}#monitor-the-operator) for errors.
 
 1. Before moving on to the next replica migration, verify that there are no underreplicated ranges:
     1. Set up port forwarding to access the CockroachDB node’s HTTP interface. Note that the DB Console runs on port 8080 by default:

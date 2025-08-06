@@ -22,7 +22,7 @@ This page describes how to configure the following, using the [{{ site.data.prod
   - [Add a topology spread constraint](#add-a-topology-spread-constraint)
 - [Resource labels and annotations](#resource-labels-and-annotations)
 
-This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Pod Scheduling with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/schedule-cockroachdb-kubernetes-operator.md %}).
+This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Pod Scheduling with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/schedule-cockroachdb-operator.md %}).
 
 {% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 

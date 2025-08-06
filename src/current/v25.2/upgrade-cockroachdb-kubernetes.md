@@ -9,7 +9,7 @@ docs_area: deploy
 
 This page shows how to upgrade a CockroachDB cluster that is [deployed on a Kubernetes cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}).
 
-This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Upgrade a Cluster in Kubernetes with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes-operator.md %}).
+This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Upgrade a Cluster in Kubernetes with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/upgrade-cockroachdb-operator.md %}).
 
 {% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 

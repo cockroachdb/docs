@@ -11,7 +11,7 @@ docs_area: deploy
 
 This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage.
 
-This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Resource management with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes-operator.md %}).
+This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Resource management with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/configure-cockroachdb-operator.md %}).
 
 {% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 

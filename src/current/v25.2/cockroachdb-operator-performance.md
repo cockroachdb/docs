@@ -17,7 +17,7 @@ Before you focus on optimizing a Kubernetes-orchestrated CockroachDB cluster:
 
 1. Before deploying on Kubernetes, ensure that performance is optimized for your workload on identical hardware. You may find that you first need to [modify your workload]({% link {{ page.version.version }}/performance-best-practices-overview.md %}) or use [different machine specs]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) to achieve the performance you need.
 
-1. Read the documentation for [deploying CockroachDB on a Kubernetes cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster) to familiarize yourself with the necessary Kubernetes terminology and deployment abstractions.
+1. Read the documentation for [deploying CockroachDB on a Kubernetes cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster) to familiarize yourself with the necessary Kubernetes terminology and deployment abstractions.
 
 ## Performance factors
 
@@ -305,4 +305,4 @@ If you aren't using a hosted Kubernetes service, you'll need to choose a [networ
 
 If your Kubernetes cluster uses heterogeneous hardware, you will likely want to ensure that CockroachDB only runs on specific machines. To optimize performance, it can be beneficial to dedicate those machines exclusively to CockroachDB.
 
-For more information, refer to [Pod scheduling]({% link {{ page.version.version }}/schedule-cockroachdb-kubernetes-operator.md %}).
+For more information, refer to [Pod scheduling]({% link {{ page.version.version }}/schedule-cockroachdb-operator.md %}).

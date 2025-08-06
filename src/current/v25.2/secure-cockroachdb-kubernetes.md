@@ -13,7 +13,7 @@ This article assumes you have already [deployed CockroachDB securely on a single
 
 By default, self-signed certificates are used when using the {{ site.data.products.public-operator }} or Helm to securely [deploy CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}). However, the recommended approach is to use `cert-manager` for certificate management. For details, refer to [Deploy cert-manager for mTLS](?filters=helm#deploy-cert-manager-for-mtls).
 
-This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Certificate Management with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/secure-cockroachdb-kubernetes-operator.md %}).
+This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Certificate Management with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/secure-cockroachdb-operator.md %}).
 
 {% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 

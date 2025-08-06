@@ -27,7 +27,7 @@ The CockroachDB Helm chart requires Helm 3.0 or higher. If you attempt to use an
 Error: UPGRADE FAILED: template: cockroachdb/templates/tests/client.yaml:6:14: executing "cockroachdb/templates/tests/client.yaml" at <.Values.networkPolicy.enabled>: nil pointer evaluating interface {}.enabled
 ~~~
 
-The Helm chart consists of two sub-charts:
+There are two Helm charts that must be deployed:
 
 - `operator`: The {{ site.data.products.cockroachdb-operator }} chart to be installed first.
 - `cockroachdb`: The CockroachDB application chart to be installed after the operator is ready.
@@ -236,7 +236,7 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
 
 1. Open `cockroachdb-parent/charts/cockroachdb/values.yaml`, a values file that tells Helm how to configure the Kubernetes cluster, in your text editor.
 
-1. Modify the `cockroachdb.crdbCluster.regions` section to describe the number of nodes to deploy and what region(s) to deploy them in. Replace the default `cloudProvider` with the appropriate value (`gcp`, `aws`, `azure`). For bare metal deployments, you can remove the `cloudProvider` field. The following example initializes three nodes on Google Cloud in the `us-central1` region:
+1. Modify the `cockroachdb.crdbCluster.regions` section to describe the number of CockroachDB nodes to deploy and what region(s) to deploy them in. Replace the default `cloudProvider` with the appropriate value (`gcp`, `aws`, `azure`). For bare metal deployments, you can remove the `cloudProvider` field. The following example initializes three nodes on Google Cloud in the `us-central1` region:
 
     ~~~ yaml
     cockroachdb:
@@ -248,11 +248,13 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
             namespace: cockroach-ns
     ~~~
 
+    {{site.data.alerts.callout_info}}
     If you intend to deploy CockroachDB nodes across multiple different regions, follow the additional steps described in [Deploy across multiple regions](#deploy-across-multiple-regions).
+    {{site.data.alerts.callout_end}}
 
-1. Uncomment and modify `cockroachdb.crdbCluster.resources` in the values file with the CPU and memory requests and limits for each node to use. The default values are 4vCPU and 16GB of memory:
+1. Uncomment and modify `cockroachdb.crdbCluster.resources` in the values file with the CPU and memory requests and limits for each node to use. The default values are 4vCPU and 16GiB of memory:
 
-    For more information on configuring node resource allocation, refer to [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes-operator.md %})
+    For more information on configuring node resource allocation, refer to [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-operator.md %})
 
 1. Modify the TLS configuration as desired. For a secure deployment, set `cockroachdb.tls.enabled` in the values file to `true`. You can either allow the operator to generate self-signed certificates, provide a custom CA certificate and generate other certificates, or use your own certificates.
     - **All self-signed certificates**: By default, the certificates are created automatically by a self-signer utility, which requires no configuration beyond setting a custom certificate duration if desired. This utility creates self-signed certificates for the nodes and root client which are stored in a secret. You can see these certificates by running `kubectl get secrets`:
@@ -386,7 +388,7 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
 
 1. In `cockroachdb.crdbCluster.localityMappings`, provide [locality mappings](#localities) that define locality levels and map them to node labels where the locality information of each Kubernetes node is stored. When CockroachDB is initialized on a node, it processes these values as though they are provided through the [`cockroach start --locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag. 
 
-    The default configuration uses the `region` and `zone` locality labels, mapped implicitly to the [`topology.kubernetes.io/region`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesioregion) and [`topology.kubernetes.io/zone`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) node labels.
+    If `localityMappings` is not configured, by default the {{ site.data.products.cockroachdb-operator }} uses the `region` and `zone` locality labels, mapped implicitly to the [`topology.kubernetes.io/region`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesioregion) and [`topology.kubernetes.io/zone`](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) node labels.
     - In cloud provider deployments, the `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` values on a node are populated by the cloud provider.
     - In bare metal deployments, the `topology.kubernetes.io/region` and `topology.kubernetes.io/zone` node label values are not set implicitly by a cloud provider when initializing the node, so you must set them manually or configure custom locality labels.
 
@@ -406,13 +408,13 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
             localityLabel: "dc"
     ~~~
 
-    In this example, if a Kubernetes node is initialized in the `us-central1` region, `us-central1-c` zone, and `dc2` datacenter, its `cockroach start --locality` flag would be equivalent to the following:
+    The list of `localityMappings` is processed in a top-down hierarchy, where each entry is processed as a lower locality level than the previous locality. In this example, if a Kubernetes node is initialized in the `us-central1` region, `us-central1-c` zone, and `dc2` datacenter, its `cockroach start --locality` flag would be equivalent to the following:
 
     ~~~ shell
     cockroach start --locality region=us-central1,zone=us-central1-c,dc=dc2
     ~~~
 
-    Optionally, review the `cockroachdb.crdbCluster.topologySpreadConstraints` configuration and set `topologyKey` to a locality variable that will have distinct values for each node. By default the lowest locality level is `zone`, so the following configuration sets that value as the `topologyKey`:
+    Optionally, review the `cockroachdb.crdbCluster.topologySpreadConstraints` configuration and set `topologyKey` to the `nodeLabel` value of a locality level that has distinct values for each node. By default the lowest locality level is `zone`, so the following configuration sets that value as the `topologyKey`:
 
     ~~~ yaml
     cockroachdb:
@@ -420,6 +422,8 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
         topologySpreadConstraints:
           topologyKey: topology.kubernetes.io/zone
     ~~~
+
+    For more information on localities and topology planning, see the [topology patterns documentation]({% link {{ page.version.version }}/topology-patterns.md %}).
 
 1. Modify other relevant parts of the configuration such as other `topologySpreadConstraints` fields, `service.ports`,  and others as needed for your configuration.
 
@@ -597,14 +601,14 @@ To access the cluster's [DB Console]({% link {{ page.version.version }}/ui-overv
 
 Read the following pages for detailed information on cluster scaling, certificate management, resource management, best practices, and other cluster operation details:
 
-- [Pod scheduling]({% link {{ page.version.version }}/schedule-cockroachdb-kubernetes-operator.md %})
-- [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-kubernetes-operator.md %})
-- [Certificate management]({% link {{ page.version.version }}/secure-cockroachdb-kubernetes-operator.md %})
-- [Cluster scaling]({% link {{ page.version.version }}/scale-cockroachdb-kubernetes-operator.md %})
-- [Cluster monitoring]({% link {{ page.version.version }}/monitor-cockroachdb-kubernetes-operator.md %})
-- [Upgrade a cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-kubernetes-operator.md %})
-- [Override deployment templates]({% link {{ page.version.version }}/override-templates-kubernetes-operator.md %})
-- [CockroachDB performance on Kubernetes]({% link {{ page.version.version }}/kubernetes-operator-performance.md %})
+- [Pod scheduling]({% link {{ page.version.version }}/schedule-cockroachdb-operator.md %})
+- [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-operator.md %})
+- [Certificate management]({% link {{ page.version.version }}/secure-cockroachdb-operator.md %})
+- [Cluster scaling]({% link {{ page.version.version }}/scale-cockroachdb-operator.md %})
+- [Cluster monitoring]({% link {{ page.version.version }}/monitor-cockroachdb-operator.md %})
+- [Upgrade a cluster]({% link {{ page.version.version }}/upgrade-cockroachdb-operator.md %})
+- [Override deployment templates]({% link {{ page.version.version }}/override-templates-cockroachdb-operator.md %})
+- [CockroachDB performance on Kubernetes]({% link {{ page.version.version }}/cockroachdb-operator-performance.md %})
 
 ## Examples
 

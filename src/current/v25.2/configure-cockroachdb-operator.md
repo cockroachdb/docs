@@ -27,7 +27,7 @@ You can set the CPU and memory resources allocated to the CockroachDB container 
 1 CPU in Kubernetes is equivalent to 1 vCPU or 1 hyperthread. For best practices on provisioning CPU and memory for CockroachDB, refer to the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware).
 {{site.data.alerts.end}}
 
-Specify CPU and memory values in `cockroachdb.crdbCluster.resources.limits` and `cockroachdb.crdbCluster.resources.requests` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster):
+Specify CPU and memory values in `cockroachdb.crdbCluster.resources.limits` and `cockroachdb.crdbCluster.resources.requests` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster):
 
 ~~~ yaml
 cockroachdb:
@@ -66,7 +66,7 @@ The {{ site.data.products.cockroachdb-operator }} dynamically sets cache size an
 
 When you start your cluster, Kubernetes dynamically provisions and mounts a persistent volume into each pod. For more information on persistent volumes, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 
-The storage capacity of each volume is set in `cockroachdb.crdbCluster.dataStore.volumeClaimTemplate.spec.resources` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster):
+The storage capacity of each volume is set in `cockroachdb.crdbCluster.dataStore.volumeClaimTemplate.spec.resources` in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster):
 
 ~~~ yaml
 cockroachdb:
@@ -83,9 +83,9 @@ You should provision an appropriate amount of disk storage for your workload. Fo
 
 ### Expand disk size
 
-If you discover that you need more capacity, you can expand the persistent volumes on a running cluster. Increasing disk size is often [beneficial for CockroachDB performance]({% link {{ page.version.version }}/kubernetes-operator-performance.md %}).
+If you discover that you need more capacity, you can expand the persistent volumes on a running cluster. Increasing disk size is often [beneficial for CockroachDB performance]({% link {{ page.version.version }}/cockroachdb-operator-performance.md %}).
 
-Specify a new volume size in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster):
+Specify a new volume size in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster):
 
 ~~~ yaml
 cockroachdb:
@@ -119,7 +119,7 @@ The {{ site.data.products.cockroachdb-operator }} separates network traffic into
 | HTTP       | 8080        | Used to access the DB Console | service.ports.http    |
 | SQL        | 26257       | Used for SQL shell access     | service.ports.sql     |
 
-Specify alternate port numbers in `cockroachdb.crdbCluster.service.ports` of the {{ site.data.products.cockroachdb-operator }}'s [custom resource]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster) (for example, to match the default port `5432` on PostgreSQL):
+Specify alternate port numbers in `cockroachdb.crdbCluster.service.ports` of the {{ site.data.products.cockroachdb-operator }}'s [custom resource]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster) (for example, to match the default port `5432` on PostgreSQL):
 
 ~~~ yaml
 cockroachdb:
@@ -144,7 +144,7 @@ You can configure an [Ingress](https://kubernetes.io/docs/concepts/services-netw
 
 In order to use the Ingress resource, your cluster must be running an [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) for load balancing. This is **not** handled by the {{ site.data.products.cockroachdb-operator }} and must be deployed separately.
 
-Specify Ingress objects in `cockroachdb.crdbCluster.service.ingress`. Set `ingress.enabled` to `true` and specify `ingress.ui` (HTTP) or `ingress.sql` (SQL) in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes-operator.md %}#initialize-the-cluster)):
+Specify Ingress objects in `cockroachdb.crdbCluster.service.ingress`. Set `ingress.enabled` to `true` and specify `ingress.ui` (HTTP) or `ingress.sql` (SQL) in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster)):
 
 ~~~ yaml
 cockroachdb:

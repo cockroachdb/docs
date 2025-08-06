@@ -12,7 +12,7 @@ This article assumes you have already [deployed CockroachDB on a single Kubernet
 
 Despite CockroachDB's various [built-in safeguards against failure]({% link {{ page.version.version }}/architecture/replication-layer.md %}), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
-This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Cluster Monitoring with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/monitor-cockroachdb-kubernetes-operator.md %}).
+This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Cluster Monitoring with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/monitor-cockroachdb-operator.md %}).
 
 {% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 

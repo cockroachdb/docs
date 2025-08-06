@@ -62,7 +62,7 @@ Now, to complete a major-version upgrade, you must manually [finalize it](#final
 
 </section>
 
-{% else if page.name == 'upgrade-cockroachdb-kubernetes-operator.md' %}
+{% else if page.name == 'upgrade-cockroachdb-operator.md' %}
 
 By default, auto-finalization is enabled, and a major-version upgrade is finalized when all nodes have rejoined the cluster using the new `cockroach` binary. This means that by default, a major-version upgrade cannot be rolled back. Instead, you must [restore the cluster to the previous version]({% link {{ page.version.version }}/restoring-backups-across-versions.md %}#support-for-restoring-backups-into-a-newer-version).
 
