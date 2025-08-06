@@ -77,7 +77,9 @@ For more information about how MVCC works, see [MVCC]({% link {{ page.version.ve
 
 ### The data could be in the process of being compacted
 
-When MVCC garbage is deleted by garbage collection, the data is still not yet physically removed from the filesystem by the [Storage Layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}). Removing data from the filesystem requires rewriting the files containing the data using a process also known as [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction), which can be expensive. The storage engine has heuristics to compact data and remove deleted rows when enough garbage has accumulated to warrant a compaction. It strives to always restrict the overhead of obsolete data (called the space amplification) to at most 10%. If a lot of data was just deleted, it may take the storage engine some time to compact the files and restore this property.
+<a name="space-amplification"></a>
+
+When MVCC garbage is deleted by garbage collection, the data is still not yet physically removed from the filesystem by the [Storage Layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}). Removing data from the filesystem requires rewriting the files containing the data using a process called [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction), which can be expensive. The storage engine has heuristics to compact data and remove deleted rows when enough garbage has accumulated to warrant a compaction. It strives to limit the overhead of this obsolete data (called the _space amplification_) to a small fixed percentage. If a lot of data was just deleted, it may take the storage engine some time to compact the files and restore this property.
 
 {% include {{page.version.version}}/storage/free-up-disk-space.md %}
 
@@ -174,6 +176,10 @@ To reduce the interval for storage of time-series data:
 Cockroach Labs recommends that you avoid _increasing_ the period of time that DB Console retains time-series metrics. If you need to retain this data for a longer period, consider using a third-party tool such as Prometheus to collect the cluster's metrics and disabling the DB Console's collection of time-series metrics. Refer to [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %}).
 
 ### Disable time-series storage
+
+{{site.data.alerts.callout_info}}
+Even if you rely on external tools for storing and visualizing your cluster's time-series metrics, CockroachDB continues to store time-series metrics for its [DB Console Metrics dashboards]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#metrics-dashboards), unless you manually disable this collection. These stored time-series metrics may be used to generate a [tsdump]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %}), which may be critical during escalations to Cockroach Labs support.
+{{site.data.alerts.end}}
 
 Disabling time-series storage is recommended only if you exclusively use a third-party tool such as [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}) for time-series monitoring. Prometheus and other such tools do not rely on CockroachDB-stored time-series data; instead, they ingest metrics exported by CockroachDB from memory and then store the data themselves.
 

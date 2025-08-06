@@ -9,10 +9,6 @@ cloud: true
 
 This page describes how Egress Perimeter Controls can enhance the security of CockroachDB {{ site.data.products.advanced }} clusters, and gives an overview of how to manage a cluster's egress rules.
 
-{{site.data.alerts.callout_info}}
-Egress Perimeter Controls are not yet available for [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
-{{site.data.alerts.end}}
-
 ## Why use Egress Perimeter Controls
 
 CockroachDB {{ site.data.products.advanced }} clusters access external resources for many purposes:
@@ -35,10 +31,8 @@ Regardless of user-specific Egress Perimeter Control policy, egress is always pe
 ## Before you begin
 
 - Egress Perimeter Controls are supported on AWS and GCP for the following deployment types:
-    - CockroachDB {{ site.data.products.advanced }} clusters with [enhanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features).
+    - CockroachDB {{ site.data.products.advanced }} clusters with [advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features).
     - CockroachDB {{ site.data.products.advanced }} [Private Clusters]({% link cockroachcloud/private-clusters.md %}).
-
-    Egress Perimeter Controls are not supported for CockroachDB {{ site.data.products.advanced }} on Azure.
 
 - You need a service account with the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) role on clusters in your organization. You can provision service accounts and API keys in CockroachDB Cloud Console. Refer to [Service Accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 

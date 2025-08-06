@@ -50,7 +50,7 @@ Further guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage
 
 ## Set up monitoring for the backup schedule
 
-We recommend that you [monitor your backup schedule with Prometheus]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint), and alert when there are anomalies such as backups that have failed or no backups succeeding over a certain amount of time—at which point, you can inspect schedules by running [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}).
+We recommend that you [monitor your backup schedule with Prometheus]({% link {{ page.version.version }}/prometheus-endpoint.md %}), and alert when there are anomalies such as backups that have failed or no backups succeeding over a certain amount of time—at which point, you can inspect schedules by running [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}).
 
 Metrics for scheduled backups fall into two categories:
 

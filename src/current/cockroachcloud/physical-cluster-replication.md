@@ -37,7 +37,7 @@ You'll need the following:
     We recommend [enabling Prometheus metrics export]({% link cockroachcloud/export-metrics.md %}) on your cluster before starting a PCR stream. For details on metrics to track, refer to [Monitor the PCR stream](#step-3-monitor-the-pcr-stream).
     {{site.data.alerts.end}}
 - **[Cloud API Access]({% link cockroachcloud/managing-access.md %}#api-access).**
-    To set up and manage PCR on CockroachDB {{ site.data.products.advanced }} clusters, you'll use the `'https://cockroachlabs.cloud/api/v1/replication-streams'` endpoint. Access to the `physical-replication-streams` endpoint requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) with the correct permissions.
+    To set up and manage PCR on CockroachDB {{ site.data.products.advanced }} clusters, you'll use the `'https://cockroachlabs.cloud/api/v1/physical-replication-streams'` endpoint. Access to the `physical-replication-streams` endpoint requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) with the correct permissions.
 
     The following describes the required roles for the `physical-replication-streams` endpoint methods. These can be assigned at the [organization]({% link cockroachcloud/authorization.md %}#organization-user-roles), [folder]({% link cockroachcloud/folders.md %}), or cluster scope:
 
@@ -164,7 +164,7 @@ This will return a response similar to:
 - `"replicated_time"`: The latest time at which the standby cluster has consistent data. This field will be present when the PCR stream is in the `REPLICATING` [state](#status).
 - `"replication_lag_seconds"`: The [_replication lag_](#technical-reference) in seconds. This field will be present when the PCR stream is in the `REPLICATING` [state](#status).
 
-You can also list PCR streams and query using different parameters, refer to the [CockroachDB Cloud API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/replication-streams) for more details.
+You can also list PCR streams and query using different parameters, refer to the [CockroachDB Cloud API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/physical-replication-streams) for more details.
 
 #### Status
 
@@ -211,7 +211,7 @@ curl --request PATCH --url "https://cockroachlabs.cloud/api/v1/physical-replicat
 
 #### Fail over to a specific time
 
-To specify a timestamp, send a `PATCH` request to the `/v1/replication-streams` endpoint along with the primary cluster, standby cluster, or the ID of the PCR stream. Include the `failover_at` field with your required timestamp:
+To specify a timestamp, send a `PATCH` request to the `/v1/physical-replication-streams` endpoint along with the primary cluster, standby cluster, or the ID of the PCR stream. Include the `failover_at` field with your required timestamp:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
