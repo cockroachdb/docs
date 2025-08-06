@@ -82,7 +82,7 @@ Within this field, you can specify flags to upsert and flags to omit:
 ~~~ yaml
 cockroachdb:
   crdbCluster:
-    startFlags: {}
+    startFlags:
       # upsert captures a set of flags that are given higher precedence in the start command.
       upsert:
         - "--cache=30%"
