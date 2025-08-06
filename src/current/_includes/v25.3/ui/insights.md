@@ -164,13 +164,7 @@ To test this functionality, you can generate a SQL query with a [Slow Execution]
     ~~~
 1. On the Insights page, in the **Columns** selector, check **Query Tags** and click **Apply**.
 1. For the row where **Statement Execution** is `SELECT pg_sleep()`, scroll to the right to see the key-value pairs from the SQL comment displayed in the **Query Tags** column.
-
-    ~~~
-    db_driver=test_driver
-    db_framework=test_framework
-    db_backend=cockroachdb
-    ~~~
-
+    <img src="{{ 'images/v25.3/query-tags.png' | relative_url }}" alt="Query tags" style="border:1px solid #eee;max-width:100%" />
 1. On the same row, click on the **Latest Statement Execution ID** (the first column on the left) to open the [**Statement Execution** details](#statement-execution-details) page. These key-value pairs also appear on the **Overview** tab under **Query Tags**.
 
 ### Statement Execution details
