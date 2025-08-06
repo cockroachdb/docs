@@ -112,6 +112,12 @@
         "urls": [
           "/${VERSION}/automatic-cpu-profiler.html"
         ]
+      },
+      {
+        "title": "Automatic Go Execution Tracer",
+        "urls": [
+          "/${VERSION}/automatic-go-execution-tracer.html"
+        ]
       }
     ]
   }

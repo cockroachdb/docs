@@ -47,6 +47,15 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
+### Prometheus-compatible `metrics` endpoint
+
+[`http://<host>:<http-port>/metrics` Prometheus-compatible endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}#metrics) is enhanced with additional static labels.
+
+The `metrics` Prometheus endpoint is commonly used and is the default in Prometheus configurations.
+
+### Value separation
+
+[Value separation]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) reduces write amplification by storing large values separately from the LSM in blob files. Value separation can reduce write amplification by up to 50% for large-value workloads, while introducing minor read overhead and a slight increase in disk space usage. This feature is available in Preview.
 
 ### `database` and `application_name` labels for certain metrics
 
