@@ -105,6 +105,8 @@ The {{ site.data.products.public-operator }} and the {{ site.data.products.cockr
     kubectl delete crdbcluster $CRDBCLUSTER --cascade=orphan
     ~~~
 
+    The `--cascade=orphan` flag tells Kubernetes not to delete the dependent resources (StatefulSets, Services, PVCs, etc.) created by the `CrdbCluster` custom resource. This ensures that only the parent custom resource is deleted, while child resources are left intact in the cluster. This allows the CockroachDB cluster to continue running as a StatefulSet until the migration is complete.
+
 - Delete {{ site.data.products.public-operator }} resources and custom resource definition:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
