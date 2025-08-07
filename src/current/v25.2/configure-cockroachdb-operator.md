@@ -85,6 +85,10 @@ You should provision an appropriate amount of disk storage for your workload. Fo
 
 If you discover that you need more capacity, you can expand the persistent volumes on a running cluster. Increasing disk size is often [beneficial for CockroachDB performance]({% link {{ page.version.version }}/cockroachdb-operator-performance.md %}).
 
+{{site.data.alerts.callout_info}}
+The volume size should only adjusted on disk types that can dynamically scale up, such as Amazon EBS volumes. Adjusting the volume size on non-dynamically scaling disks is not recommended, and instead you should horizontally scale the number of disks used.
+{{site.data.alerts.end}}
+
 Specify a new volume size in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster):
 
 ~~~ yaml
