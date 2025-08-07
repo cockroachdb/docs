@@ -254,10 +254,7 @@ metadata:
   namespace: cockroach-ns
 ~~~
 
-The above configuration overrides the [default logging configuration]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration) and reflects our recommended Kubernetes logging configuration:
-
-- Save debug-level logs (the `DEV` [log channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels)) to disk for troubleshooting.
-- Send operational- and security-level logs to a [network collector]({% link {{ page.version.version }}/logging-use-cases.md %}#network-logging), in this case [Fluentd]({% link {{ page.version.version }}/configure-logs.md %}#fluentd-logging-format).
+The above configuration overrides the [default logging configuration]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration) and saves debug-level logs (the `DEV` [log channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels)) to disk for troubleshooting.
 
 The ConfigMap `name` must match the `cockroachdb.crdbCluster.loggingConfigMapName` object in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster):
 
