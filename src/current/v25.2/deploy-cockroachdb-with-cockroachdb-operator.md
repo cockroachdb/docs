@@ -340,7 +340,28 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
         The subject alternative names are based on a release called `my-release` in the `cockroach-ns` namespace. Make sure they match the services created with the release during Helm install.
         {{site.data.alerts.end}}
         
-        If you wish to supply certificates with [cert-manager](https://cert-manager.io/), set `cockroachdb.tls.certManager.enabled` to `true`, and `cockroachdb.tls.certManager.issuer` to an IssuerRef (as they appear in certificate resources) pointing to a clusterIssuer or issuer that you have set up in the cluster. The following Kubernetes application describes an example issuer:
+        If you wish to supply certificates with [cert-manager](https://cert-manager.io/), set `cockroachdb.tls.certManager.enabled` to `true`, and `cockroachdb.tls.certManager.issuer` to an IssuerRef (as they appear in certificate resources) pointing to a clusterIssuer or issuer that you have set up in the cluster:
+        
+        ~~~ yaml
+        cockroachdb:
+          tls:
+            enabled: true
+            certManager:
+              enabled: true
+              caConfigMap: cockroachdb-ca
+              nodeSecret: cockroachdb-node
+              clientRootSecret: cockroachdb-root
+              issuer:
+                group: cert-manager.io
+                kind: Issuer
+                name: cockroachdb-cert-issuer
+                clientCertDuration: 672h
+                clientCertExpiryWindow: 48h
+                nodeCertDuration: 8760h
+                nodeCertExpiryWindow: 168h
+        ~~~
+        
+        The following Kubernetes application describes an example issuer.
         
         ~~~ yaml
         apiVersion: v1
