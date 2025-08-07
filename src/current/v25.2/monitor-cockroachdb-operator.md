@@ -248,17 +248,6 @@ data:
         dev:
           channels: DEV
           filter: WARNING
-      fluent-servers:
-        ops:
-          channels: [OPS, HEALTH, SQL_SCHEMA]
-          address: 127.0.0.1:5170
-          net: tcp
-          redact: true
-        security:
-          channels: [SESSIONS, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS]
-          address: 127.0.0.1:5170
-          net: tcp
-          auditable: true
 kind: ConfigMap
 metadata:
   name: logconfig
