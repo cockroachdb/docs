@@ -148,7 +148,7 @@ You can configure an [Ingress](https://kubernetes.io/docs/concepts/services-netw
 
 In order to use the Ingress resource, your cluster must be running an [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) for load balancing. This is **not** handled by the {{ site.data.products.cockroachdb-operator }} and must be deployed separately.
 
-Specify Ingress objects in `cockroachdb.crdbCluster.service.ingress`. Set `ingress.enabled` to `true` and specify `ingress.ui` (HTTP) or `ingress.sql` (SQL) in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster)):
+Specify Ingress objects in `cockroachdb.crdbCluster.service.ingress`. Set `ingress.enabled` to `true` and specify `ingress.ui` (HTTP) or `ingress.sql` (SQL) in the values file used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-cockroachdb-operator.md %}#initialize-the-cluster):
 
 ~~~ yaml
 cockroachdb:
