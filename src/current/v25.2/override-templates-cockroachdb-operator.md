@@ -40,8 +40,6 @@ cockroachdb:
         containers:
           - name: cockroachdb
             image: cockroachdb/cockroach:v25.2.2
-          - name: cert-reloader
-            image: us-docker.pkg.dev/cockroach-cloud-images/data-plane/inotifywait:87edf086db32734c7fa083a62d1055d664900840
         # imagePullSecrets captures the secrets for fetching images from private registries.
         imagePullSecrets: []
 ~~~

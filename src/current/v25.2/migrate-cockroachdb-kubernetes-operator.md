@@ -222,10 +222,22 @@ If the migration to the {{ site.data.products.cockroachdb-operator}} fails durin
 
 1. Delete the applied `crdbnode` resources and simultaneously scale the StatefulSet back up.
 
-    Delete the individual `crdbnode` manifests in the reverse order of their creation (starting with the last one created, e.g., `crdbnode-2.yaml`) and scale the StatefulSet back to its original replica count (e.g., 3). For example, assuming you have applied two `crdbnode` yaml files (`crdbnode-2.yaml` & `crdbnode-1.yaml`):
+    Delete the individual `crdbnode` manifests in the reverse order of their creation (starting with the last one created, e.g., `crdbnode-1.yaml`) and scale the StatefulSet back to its original replica count (e.g., 2). For example, assuming you have applied two `crdbnode` yaml files (`crdbnode-2.yaml` and  `crdbnode-1.yaml`):
     
-    1. Delete a `crdbnode` manifest in reverse order, starting with `crdbnode-2.yaml`.
+    1. Delete a `crdbnode` manifest in reverse order, starting with `crdbnode-1.yaml`.
+    
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        kubectl delete -f manifests/crdbnode-1.yaml
+        ~~~
+    
     1. Scale the StatefulSet replica count up by one (to 2).
+    
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        kubectl scale statefulset $CRDBCLUSTER --replicas=2
+        ~~~
+    
     1. Verify that data has propagated by waiting for there to be zero under-replicated ranges:
     
         1. Set up port forwarding to access the CockroachDB node's HTTP interface, replacing `cockroachdb-X` with the node name:
@@ -245,15 +257,9 @@ If the migration to the {{ site.data.products.cockroachdb-operator}} fails durin
             ~~~
             
             This command outputs the number of under-replicated ranges on the node, which should be zero before proceeding with the next node. This may take some time depending on the deployment, but is necessary to ensure that there is no downtime in data availability.
-
-    1. Repeat steps a through c for each node, deleting the `crdbnode-1.yaml`, scaling replica count to 3, and so on.
     
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        kubectl delete -f manifests/crdbnode-2.yaml
-        kubectl scale statefulset $CRDBCLUSTER --replicas=2
-        ~~~
-        
+    1. Repeat steps a through c for each node, deleting the `crdbnode-2.yaml`, scaling replica count to 3, and so on.
+    
         Repeat the `kubectl delete -f ... command` for each `crdbnode` manifest you applied during migration. Make sure to verify that there are no underreplicated ranges after rolling back each node.
 
 1. Delete the PriorityClass and RBAC resources created for the CockroachDB operator:
