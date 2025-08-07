@@ -31,7 +31,7 @@ For secure clusters, you can avoid getting the warning message by using a certif
       pkill -SIGHUP -x cockroach
       ~~~
       The `SIGHUP` signal must be sent by the same user running the process or by a user with adequate privileges to send signals to processes owned by another user, such as a user with `sudo` access.
-   - In a cluster deployed using the [Kubernetes Operator]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}), there is no way to send a `SIGHUP` signal to the individual `cockroach` process on each cluster node. Instead, perform a rolling restart of the cluster's pods.
+   - In a cluster deployed using the [{{ site.data.products.public-operator }}]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}), there is no way to send a `SIGHUP` signal to the individual `cockroach` process on each cluster node. Instead, perform a rolling restart of the cluster's pods.
 
 ### Node key and certificates
 
