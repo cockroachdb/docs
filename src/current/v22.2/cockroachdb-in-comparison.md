@@ -43,7 +43,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Database horizontal scale
       <a href="#" data-toggle="tooltip" title="Increase capacity of the database by adding more instances/nodes">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -65,7 +65,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Database load balancing (internal)
       <a href="#" data-toggle="tooltip" title="Locate data across multiple instances/nodes based on optimization criteria for balancing load">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -85,7 +85,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Failover
       <a href="#" data-toggle="tooltip" title="Provide access to backup data upon failure">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -107,7 +107,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Automated repair and RPO(Recovery Point Objective)
       <a href="#" data-toggle="tooltip" title="Repair the database after failure and the time it takes for the db to come back online">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -129,7 +129,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Distributed reads
       <a href="#" data-toggle="tooltip" title="Reliably read data in any instance/node of the database">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -147,7 +147,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Distributed transactions
       <a href="#" data-toggle="tooltip" title="Allow for acid writes across multiple instances/nodes">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -168,7 +168,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Database isolation levels
       <a href="#" data-toggle="tooltip" title="Transaction isolation levels allowed for writes in the database">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -190,7 +190,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Potential data issues (default)
       <a href="#" data-toggle="tooltip" title="Possible data inconsistency issues at default isolation level">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -214,7 +214,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       SQL
       <a href="#" data-toggle="tooltip" title="Compliance with standard SQL">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -234,7 +234,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Database schema change
       <a href="#" data-toggle="tooltip" title="Modify database schema across all tables">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -254,7 +254,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Cost based optimization
       <a href="#" data-toggle="tooltip" title="Optimize execution of queries based on transaction analytics">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -276,7 +276,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Data Geo-partitioning
       <a href="#" data-toggle="tooltip" title="Tie data to an instance/node to comply with regulations or optimize access latency">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -298,7 +298,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Upgrade method
       <a href="#" data-toggle="tooltip" title="Upgrade the database software">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -316,7 +316,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Multi-region
       <a href="#" data-toggle="tooltip" title="Deploy a single database across multiple regions">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
@@ -336,7 +336,7 @@ This page shows you how the key features of CockroachDB stack up against other d
     <td class="comparison-chart__feature">
       Multi-cloud
       <a href="#" data-toggle="tooltip" title="Deploy a single database across multiple cloud providers or on-prem">
-        <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
+        <img src="{{ 'images/v22.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
     </td>
     <td class="comparison-chart__column-one">
