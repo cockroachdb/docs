@@ -1,0 +1,13 @@
+{% if page.name == "kubernetes-operator.md" %}
+{{ site.data.alerts.callout_success }}
+The {{ site.data.products.cockroachdb-operator }} is a fully-featured Kubernetes operator that is designed for ease of deployment and scaling of both single-region and multi-region clusters. To learn more, read the [{{ site.data.products.cockroachdb-operator }} documentation]({% link v25.2/cockroachdb-operator-overview.md %}).
+
+Cockroach Labs recommends that new deployments of CockroachDB on Kubernetes use the {{ site.data.products.cockroachdb-operator }}. To migrate an existing deployment to use the {{ site.data.products.cockroachdb-operator }}, read the [Helm]({% link v25.2/migrate-cockroachdb-kubernetes-helm.md %}) and [{{ site.data.products.public-operator }}]({% link v25.2/migrate-cockroachdb-kubernetes-operator.md %}) migration guides.
+{{ site.data.alerts.end }}
+{% else %}
+{{ site.data.alerts.callout_success }}
+The {{ site.data.products.cockroachdb-operator }} is a fully-featured Kubernetes operator that is designed for ease of deployment and scaling of multi-region clusters. To learn more, read the [{{ site.data.products.cockroachdb-operator }} documentation]({% link {{ page.version.version }}/cockroachdb-operator-overview.md %}).
+
+Cockroach Labs recommends that new deployments of CockroachDB on Kubernetes use the {{ site.data.products.cockroachdb-operator }}. To migrate an existing deployment to use the {{ site.data.products.cockroachdb-operator }}, read the [Helm]({% link {{ page.version.version }}/migrate-cockroachdb-kubernetes-helm.md %}) and [{{ site.data.products.public-operator }}]({% link {{ page.version.version }}/migrate-cockroachdb-kubernetes-operator.md %}) migration guides.
+{{ site.data.alerts.end }}
+{% endif %}
