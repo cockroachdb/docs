@@ -25,6 +25,10 @@ If your existing cluster was created using the {{ site.data.products.public-oper
 
 This migration can be completed without affecting cluster availability, and preserves existing disks so that data doesn't need to be replicated into empty volumes. The process scales down the StatefulSet by one node before adding each operator-managed pod, so the maximum cluster capacity will be reduced by one node periodically throughout the migration.
 
+{{site.data.alerts.callout_danger}}
+The {{ site.data.products.cockroachdb-operator }} uses a different port than StatefulSets for RPC services, meaning that the migration will cause temporary downtime specifically for issuing commands that use RPCs. This includes commands such as `cockroach node drain` and `cockroach node decommission`. Plan for this limited downtime until the public service is updated in Step 4 as described in this guide. 
+{{site.data.alerts.end}}
+
 ## Step 1. Prepare the migration helper
 
 Build the migration helper and add the `./bin` directory to your PATH:
