@@ -135,6 +135,7 @@ Type | Details
 `BIT` | Requires supported [`BIT`]({% link {{ page.version.version }}/bit.md %}) string format, e.g., `'101001'` or `'xAB'`.
 `BOOL` | Requires supported [`BOOL`]({% link {{ page.version.version }}/bool.md %}) string format, e.g., `'true'`.
 `BYTES` | For more details, [see here]({% link {{ page.version.version }}/bytes.md %}#supported-conversions).
+`CITEXT` | Preserves the original letter case, but value comparisons are treated case-insensitively. Refer to [`CITEXT`]({% link {{ page.version.version }}/citext.md %}).
 `DATE` | Requires supported [`DATE`]({% link {{ page.version.version }}/date.md %}) string format, e.g., `'2016-01-25'`.
 `DECIMAL` | Requires supported [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}) string format, e.g., `'1.1'`.
 `FLOAT` | Requires supported [`FLOAT`]({% link {{ page.version.version }}/float.md %}) string format, e.g., `'1.1'`.

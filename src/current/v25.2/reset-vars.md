@@ -83,6 +83,10 @@ No [privileges]({% link {{ page.version.version }}/security-reference/authorizat
 (1 row)
 ~~~
 
+## Known Limitations
+
+{% include {{page.version.version}}/known-limitations/set-transaction-no-rollback.md %}
+
 ## See also
 
 - [`SET {session variable}`]({% link {{ page.version.version }}/set-vars.md %})

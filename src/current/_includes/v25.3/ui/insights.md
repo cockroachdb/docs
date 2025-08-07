@@ -122,14 +122,50 @@ Start Time (UTC) | The timestamp when the statement execution started.
 Elapsed Time | The time that elapsed to complete the statement execution.
 User Name | The name of the user that invoked the statement execution.
 Application Name | The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
+Query Tags | The [query tags](#query-tags) extracted from comments in the statement query. When set appropriately, these tags can provide application context and help correlate query performance with client-side application state.
 Rows Processed | The total number of rows read and written.
 Retries | The number of times the statement execution was [retried]({{ link_prefix }}transactions.html#automatic-retries).
 Contention Time | The amount of time the statement execution spent waiting in [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
-CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. <br /><br />{%- if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).{%- endif -%}{%- if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
+SQL CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. <br /><br />{%- if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).{%- endif -%}{%- if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
 {%- endif %}    
 Full Scan | Whether the execution performed a full scan of the table.
 Transaction Fingerprint ID | The ID of the transaction fingerprint for the statement execution.
 Latest Transaction Execution ID | The ID of the transaction execution for the statement execution.
+
+#### Query tags
+
+{% include_cached new-in.html version="25.3" %} The **Query Tags** column displays the comments embedded in SQL statements, as defined by the [SQL commenter specification](https://google.github.io/sqlcommenter/spec/). These comments, referred to as *query tags*, must be instrumented by the user and can include application context such as the application name, user ID, or feature flags. This information helps correlate slow query performance with specific application states. The **Query Tags** column is available in the **Statement Executions** view's **Statement Insights** table, but is hidden by default. To display it, use the **Columns** selector.
+
+Query tags are also included in the following locations:
+
+- The [**Statement Execution** details](#statement-execution-details) page
+- All [log entries generated]({{ link_prefix }}logging-use-cases.html#sql_exec) during the execution of a SQL statement (prefixed with `querytag-`)
+- [Traces]({{ link_prefix }}show-trace.html) (prefixed with `querytag-`)
+- The `crdb_internal.cluster_execution_insights` and `crdb_internal.node_execution_insights` [virtual tables]({{ link_prefix }}crdb-internal.html), in a new `query_tags` JSONB column
+
+This feature is disabled by default. To enable it, set the [`sql.sqlcommenter.enabled` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-sqlcommenter-enabled) to `true`.
+
+To test this functionality, you can generate a SQL query with a [Slow Execution](#slow-execution), then view it on the **Insights** page:
+
+1. Enable SQL commenter query tagging:
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING sql.sqlcommenter.enabled=true;
+    ~~~
+1. Check the value of cluster setting [`sql.insights.latency_threshold`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-latency-threshold):
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW CLUSTER SETTING sql.insights.latency_threshold;
+    ~~~
+1. Execute the following statement, using a `pg_sleep` value greater than the `latency_threshold`:
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT pg_sleep(2) /*db_driver='test_driver',db_framework='test_framework',db_backend='cockroachdb'*/;
+    ~~~
+1. On the Insights page, in the **Columns** selector, check **Query Tags** and click **Apply**.
+1. For the row where **Statement Execution** is `SELECT pg_sleep()`, scroll to the right to see the key-value pairs from the SQL comment displayed in the **Query Tags** column.
+    <img src="{{ 'images/v25.3/query-tags.png' | relative_url }}" alt="Query tags" style="border:1px solid #eee;max-width:100%" />
+1. On the same row, click on the **Latest Statement Execution ID** (the first column on the left) to open the [**Statement Execution** details](#statement-execution-details) page. These key-value pairs also appear on the **Overview** tab under **Query Tags**.
 
 ### Statement Execution details
 
@@ -144,7 +180,7 @@ Field/Column | Description
 Start Time | The timestamp when the statement execution started.
 End Time | The timestamp when the statement execution ended.
 Elapsed Time | The time that elapsed during statement execution.
-CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. {% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).{% endif %}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).{% endif %}
+SQL CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. {% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}). It does not include time spent in the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).{% endif %}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).{% endif %}
 Rows Read | The total number of rows read by the statement execution.
 Rows Written | The total number of rows written by the statement execution.
 Transaction Priority | The [priority]({{ link_prefix }}transactions.html#set-transaction-priority) of the transaction for the statement execution.
@@ -154,6 +190,7 @@ Session ID | The ID of the [session]({{ link_prefix }}ui-sessions-page.html) the
 Transaction Fingerprint ID | The ID of the transaction fingerprint for the statement execution.
 Transaction Execution ID | The ID of the transaction execution for the statement execution.
 Statement Fingerprint ID | The fingerprint ID of the statement fingerprint for the statement execution.
+Query Tags | The [query tags](#query-tags) extracted from comments in the statement query. When set appropriately, these tags can provide application context and help correlate query performance with client-side application state.
 Insights | The [insight type](#workload-insight-types).
 Details | Provides details on the insight. For example, if the insight type is High Contention, **Time Spent Waiting** and **Description** are displayed. If the insight type is Failed Execution, **Error Code** and **Error Message** are displayed.
 
