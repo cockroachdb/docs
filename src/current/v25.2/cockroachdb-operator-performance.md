@@ -1,6 +1,6 @@
 ---
 title: Performance with the CockroachDB Operator
-summary: How running CockroachDB in Kubernetes affects its performance and how to get the best possible performance when running in Kubernetes using the CockroachDB operator.
+summary: How running CockroachDB in Kubernetes affects its performance and how to get the best possible performance when using the CockroachDB operator.
 toc: true
 docs_area: deploy
 ---
