@@ -30,7 +30,7 @@ This migration process can be completed without affecting cluster availability, 
 
 ## Step 1. Prepare the migration helper
 
-Build the migration helper and add the `./bin` directory to your PATH:
+In the root of the [cockroachdb/helm-charts](https://github.com/cockroachdb/helm-charts/tree/master) repository, build the migration helper and add the `./bin` directory to your PATH:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
