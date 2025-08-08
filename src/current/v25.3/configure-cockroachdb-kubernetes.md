@@ -9,13 +9,17 @@ docs_area: deploy
 
 {% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 
-This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage. 
+This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage.
+
+This page is for Kubernetes deployments that are not using the {{ site.data.products.cockroachdb-operator }}. For guidance specific to the {{ site.data.products.cockroachdb-operator }}, read [Resource management with the {{ site.data.products.cockroachdb-operator }}]({% link {{ page.version.version }}/configure-cockroachdb-operator.md %}).
+
+{% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 
 These settings override the defaults used when [deploying CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}).
 
 <div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="operator">Operator</button>
-    <button class="filter-button" data-scope="manual">Manual Configs</button>
+    <button class="filter-button" data-scope="operator">{{ site.data.products.public-operator }}</button>
+    <button class="filter-button" data-scope="manual">Manual configs</button>
     <button class="filter-button" data-scope="helm">Helm</button>
 </div>
 
@@ -42,7 +46,7 @@ You can set the CPU and memory resources allocated to the CockroachDB container 
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="operator">
-Specify CPU and memory values in `resources.requests` and `resources.limits` in the Operator's custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster):
+Specify CPU and memory values in `resources.requests` and `resources.limits` in the {{ site.data.products.public-operator }}'s custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster):
 
 ~~~ yaml
 spec:
@@ -110,7 +114,7 @@ Each CockroachDB node reserves a portion of its available memory for its cache a
 
 Our Kubernetes manifests dynamically set cache size and SQL memory size each to 1/4 (the recommended fraction) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. If you want to customize these values, set them explicitly.
 
-Specify `cache` and `maxSQLMemory` in the Operator's custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster):
+Specify `cache` and `maxSQLMemory` in the {{ site.data.products.public-operator }}'s custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster):
 
 ~~~ yaml
 spec:
@@ -148,7 +152,7 @@ conf:
 When you start your cluster, Kubernetes dynamically provisions and mounts a persistent volume into each pod. For more information on persistent volumes, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 
 <section class="filter-content" markdown="1" data-scope="operator">
-The storage capacity of each volume is set in `pvc.spec.resources` in the Operator's custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster):
+The storage capacity of each volume is set in `pvc.spec.resources` in the {{ site.data.products.public-operator }}'s custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster):
 
 ~~~ yaml
 spec:
@@ -191,7 +195,7 @@ You should provision an appropriate amount of disk storage for your workload. Fo
 If you discover that you need more capacity, you can expand the persistent volumes on a running cluster. Increasing disk size is often [beneficial for CockroachDB performance]({% link {{ page.version.version }}/kubernetes-performance.md %}#disk-size).
 
 <section class="filter-content" markdown="1" data-scope="operator">
-Specify a new volume size in `resources.requests` and `resources.limits` in the Operator's custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster):
+Specify a new volume size in `resources.requests` and `resources.limits` in the {{ site.data.products.public-operator }}'s custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster):
 
 ~~~ yaml
 spec:
@@ -207,7 +211,7 @@ spec:
 
 {% include {{ page.version.version }}/orchestration/apply-custom-resource.md %}
 
-The Operator updates the StatefulSet and triggers a rolling restart of the pods with the new storage capacity. 
+The {{ site.data.products.public-operator }} updates the StatefulSet and triggers a rolling restart of the pods with the new storage capacity. 
 
 To verify that the storage capacity has been updated, run `kubectl get pvc` to view the persistent volume claims (PVCs). It will take a few minutes before the PVCs are completely updated.
 </section>
@@ -223,7 +227,7 @@ To verify that the storage capacity has been updated, run `kubectl get pvc` to v
 <section class="filter-content" markdown="1" data-scope="operator">
 ## Network ports
 
-The Operator separates network traffic into three ports:
+The {{ site.data.products.public-operator }} separates network traffic into three ports:
 
 | Protocol | Default | Description                                                         | Custom Resource Field |
 |----------|---------|---------------------------------------------------------------------|-----------------------|
@@ -231,7 +235,7 @@ The Operator separates network traffic into three ports:
 | HTTP     | 8080    | Used to [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) | `httpPort`            |
 | SQL      | 26257   | Used for SQL shell access                                           | `sqlPort`             |
 
-Specify alternate port numbers in the Operator's [custom resource]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster) (for example, to match the default port `5432` on PostgreSQL):
+Specify alternate port numbers in the {{ site.data.products.public-operator }}'s [custom resource]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster) (for example, to match the default port `5432` on PostgreSQL):
 
 ~~~ yaml
 spec:
@@ -240,19 +244,19 @@ spec:
 
 {% include {{ page.version.version }}/orchestration/apply-custom-resource.md %}
 
-The Operator updates the StatefulSet and triggers a rolling restart of the pods with the new port settings. 
+The {{ site.data.products.public-operator }} updates the StatefulSet and triggers a rolling restart of the pods with the new port settings. 
 
 {{site.data.alerts.callout_danger}}
-Currently, only the pods are updated with new ports. To connect to the cluster, you need to ensure that the `public` service is also updated to use the new port. You can do this by deleting the service with `kubectl delete service {cluster-name}-public`. When service is recreated by the Operator, it will use the new port. This is a known limitation that will be fixed in an Operator update.
+Currently, only the pods are updated with new ports. To connect to the cluster, you need to ensure that the `public` service is also updated to use the new port. You can do this by deleting the service with `kubectl delete service {cluster-name}-public`. When service is recreated by the operator, it will use the new port. This is a known limitation.
 {{site.data.alerts.end}}
 
 ## Ingress
 
 You can configure an [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) object to expose an internal HTTP or SQL [`ClusterIP` service](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) through a hostname.
 
-In order to use the Ingress resource, your cluster must be running an [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) for load balancing. This is **not** handled by the Operator and must be deployed separately.
+In order to use the Ingress resource, your cluster must be running an [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) for load balancing. This is **not** handled by the {{ site.data.products.public-operator }} and must be deployed separately.
 
-Specify Ingress objects in `ingress.ui` (HTTP) or `ingress.sql` (SQL) in the Operator's custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster):
+Specify Ingress objects in `ingress.ui` (HTTP) or `ingress.sql` (SQL) in the {{ site.data.products.public-operator }}'s custom resource, which is used to [deploy the cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}#initialize-the-cluster):
 
 ~~~ yaml
 spec:
@@ -283,5 +287,5 @@ spec:
     Changing the SQL Ingress `host` on a running deployment will cause a rolling restart of the cluster, due to new node certificates being generated for the SQL host.
     {{site.data.alerts.end}}
 
-The [custom resource definition](https://github.com/cockroachdb/cockroach-operator/blob/v{{ latest_operator_version }}/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml) details the fields supported by the Operator.
+The [custom resource definition](https://github.com/cockroachdb/cockroach-operator/blob/v{{ latest_operator_version }}/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml) details the fields supported by the operator.
 </section>
