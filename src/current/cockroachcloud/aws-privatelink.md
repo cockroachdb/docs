@@ -72,12 +72,12 @@ Your service account must have one of the following roles on the cluster, either
 
 ### Add a private endpoint trusted owner
 
-To [add a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api.html/cloud/v1#post-/api.html/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners):
+To [add a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
-  --url https://cockroachlabs.cloud/api.html/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
   --header 'Authorization: Bearer {bearer_token' \
   --header 'content-type: application/json' \
   --data '{"external_owner_id":"{aws_account_id}","type":"AWS_ACCOUNT_ID"}'
@@ -95,12 +95,12 @@ Next, you can [create an AWS endpoint](#step-3-create-an-aws-endpoint).
 
 ### List private endpoint trusted owners
 
-To [list private endpoint trusted owners](https://www.cockroachlabs.com/docs/api.html/cloud/v1#get-/api.html/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners) for a cluster:
+To [list private endpoint trusted owners](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners) for a cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url https://cockroachlabs.cloud/api.html/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
   --header 'Authorization: Bearer {bearer_token}'
 ~~~
 
@@ -111,12 +111,12 @@ Replace:
 
 ### Get details about a trusted owner
 
-To [get details about a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api.html/cloud/v1#get-/api.html/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
+To [get details about a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url https://cockroachlabs.cloud/api.html/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
   --header 'Authorization: Bearer {bearer_token}'
 ~~~
 
@@ -128,12 +128,12 @@ Replace:
 
 ### Remove a trusted owner
 
-To [remove a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api.html/cloud/v1#delete-/api.html/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
+To [remove a private endpoint trusted owner](https://www.cockroachlabs.com/docs/api/cloud/v1#delete-/api/v1/clusters/-cluster_id-/networking/private-endpoint-trusted-owners/-owner_id-):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request DELETE \
-  --url https://cockroachlabs.cloud/api.html/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
   --header 'Authorization: {bearer_token}'
 ~~~
 
