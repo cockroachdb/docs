@@ -167,6 +167,12 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
       <td><a href="{% link cockroachcloud/network-authorization.md %}#aws-privatelink"></a>PrivateLink for AWS clusters. </td>
     </tr>
     <tr>
+      <td>&nbsp;</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td><a href="{% link cockroachcloud/egress-private-endpoints.md %}"></a>Egress private endpoints. </td>
+    </tr>
+    <tr>
       <td rowspan="2"><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
       <td>✓</td>
       <td>✓</td>
