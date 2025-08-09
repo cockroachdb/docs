@@ -325,6 +325,12 @@
                         "urls": [
                             "/cockroachcloud/egress-perimeter-controls.html"
                         ]
+                    },
+                    {
+                    "title": "Egress Private Endpoints",
+                    "urls": [
+                        "/cockroachcloud/egress-private-endpoints.html"
+                    ]
                     }
                 ]
             },
