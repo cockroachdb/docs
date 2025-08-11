@@ -111,7 +111,14 @@ To enable value separation, set the following [cluster setting]({% link {{ page.
 SET CLUSTER SETTING storage.value_separation.enabled = true;
 ~~~
 
-To monitor this feature, refer to [the documentation for the metrics in the `storage.value_separation.*` namespace]({% link {{ page.version.version }}/essential-metrics-self-hosted.md %}#storage-value-separation).
+To monitor this feature, use the following metrics:
+
+| CockroachDB Metric Name | Description | Usage |
+|-------------------------|-------------|-------|
+| `storage.value_separation.blob_files.count` | The number of blob files that are used to store [separated values]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) within the storage engine. | Use this metric to track how many values (of key-value pairs) are being stored outside of the [LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#log-structured-merge-trees) by the storage engine due to their large size. |
+| `storage.value_separation.blob_files.size` | The size of the physical blob files that are used to store [separated values]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) within the storage engine. This value is the physical post-compression sum of the `storage.value_separation.value_bytes.referenced` and `storage.value_separation.value_bytes.unreferenced` metrics. | Use this metric to see how much of your physical storage capacity is being used by separated values in blob files. |
+| `storage.value_separation.value_bytes.referenced` | The size of storage engine value bytes (pre-compression) that are [stored separately in blob files]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) and referenced by a live [SSTable]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts). | Use this metric to see how much live (i.e., not yet eligible for compaction) blob storage is in use by separated values. |
+| `storage.value_separation.value_bytes.unreferenced` | The size of storage engine value bytes (pre-compression) that are [stored separately in blob files]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) and not referenced by any live [SSTable]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts). These bytes are garbage that could be reclaimed by a [compaction]({% link {{ page.version.version }}/architecture/storage-layer.md %}#compaction). | Use this metric to see how much blob storage is no longer in use and waiting to be compacted. |
 
 ##### Compaction
 

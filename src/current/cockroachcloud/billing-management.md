@@ -143,8 +143,10 @@ If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your
 
 ### Export invoices
 
-You can export invoice data in CSV format. From the **Invoices** tab, on the row of any billing period, click the download icon under the **CSV** column.
+You can export invoice data in CSV or PDF format. From the **Invoices** tab, on the row of any billing period, click the **...** button under the **Download** column and select **Export CSV** or **Export PDF**.
 
-The CSV file includes line items for all clusters in your organization for the selected billing period. It includes the same information that is available when viewing invoices within the Console.
+- The CSV file includes line items for all clusters in your organization for the selected billing period. It includes the same information that is available when viewing invoices within the Console.
+
+- The PDF renders invoice information from the Console into a traditional invoice format. This format includes the high level information from the Console, a summary of total usage, the organization's billing address, and a CockroachDB letterhead.
 
 If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your clusters, the full path for each cluster is provided under the **Cluster path** column.
