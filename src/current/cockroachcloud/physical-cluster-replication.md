@@ -57,7 +57,7 @@ For the schema of each API response, refer to the [CockroachDB Cloud API referen
 
 ### Step 1. Create the clusters
 
-To use PCR, it is necessary to set the `supports_cluster_virtualization` field to `true`, which indicates that a cluster should start using an architecture that supports PCR. For details on supported cluster cloud provider and region setup, refer to the [prerequisites section](#before-you-begin).
+To use PCR, it is necessary to set the `supports_cluster_virtualization` field to `true`. This setting enables cluster virtualization, which is the architecture that supports PCR. For details on supported cluster cloud provider and region setup, refer to the [prerequisites section](#before-you-begin).
 
 1. Send a `POST` request to create the primary cluster:
 
