@@ -26,7 +26,7 @@ You can also refer to instructions for [failover](#fail-over-to-the-standby-clus
 
 You'll need the following:
 
-- **Two CockroachDB {{ site.data.products.advanced }} clusters with the [`support_physical_cluster_replication` flag enabled](#step-1-create-the-clusters).** To set up PCR successfully, configure your clusters as per the following:
+- **Two CockroachDB {{ site.data.products.advanced }} clusters with the [`supports_cluster_virtualization` flag enabled](#step-1-create-the-clusters).** For more information about cluster virtualization, read the [documentation]({% link {{ site.versions["stable"] }}/cluster-virtualization-overview.md %}). To set up PCR successfully, configure your clusters as per the following:
     - Clusters must be in the same cloud (AWS, GCP, or Azure).
     - Clusters must be single [region]({% link cockroachcloud/regions.md %}) (multiple availability zones per cluster is supported).
     - The primary and standby cluster in AWS and Azure must be in different regions.
@@ -57,22 +57,22 @@ For the schema of each API response, refer to the [CockroachDB Cloud API referen
 
 ### Step 1. Create the clusters
 
-To use PCR, it is necessary to set the `support_physical_cluster_replication` field to `true`, which indicates that a cluster should start using an architecture that supports PCR. For details on supported cluster cloud provider and region setup, refer to the [prerequisites section](#before-you-begin).
+To use PCR, it is necessary to set the `supports_cluster_virtualization` field to `true`, which indicates that a cluster should start using an architecture that supports PCR. For details on supported cluster cloud provider and region setup, refer to the [prerequisites section](#before-you-begin).
 
 1. Send a `POST` request to create the primary cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' --header "Authorization: Bearer api_secret_key" --header 'Content-Type: application/json' --data '{"name": "primary_cluster_name", "provider": "AWS", "spec": {"dedicated": {"cockroachVersion": "v25.2", "hardware": {"disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, "storage_gib": 16}, "region_nodes": {"us-east-1": 3}, "support_physical_cluster_replication": true}}}'
+    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' --header "Authorization: Bearer api_secret_key" --header 'Content-Type: application/json' --data '{"name": "primary_cluster_name", "provider": "AWS", "spec": {"dedicated": {"cockroachVersion": "v25.2", "hardware": {"disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, "storage_gib": 16}, "region_nodes": {"us-east-1": 3}, "supports_cluster_virtualization": true}}}'
     ~~~
 
     Ensure that you replace each of the values for the cluster specification as per your requirements. For details on the cluster specifications, refer to [Create a cluster]({% link cockroachcloud/cloud-api.md %}#create-a-cluster). Also, replace `api_secret_key` with your API secret key.
 
-1. Send a `POST` request to create the standby cluster that includes your necessary cluster specification. Ensure that you include `support_physical_cluster_replication` set to `true`:
+1. Send a `POST` request to create the standby cluster that includes your necessary cluster specification. Ensure that you include `supports_cluster_virtualization` set to `true`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' --header "Authorization: Bearer api_secret_key" --header 'Content-Type: application/json' --data '{"name": "standby_cluster_name", "provider": "AWS", "spec": {"dedicated": {"cockroachVersion": "v25.2", "hardware": {"disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, "storage_gib": 16}, "region_nodes": {"us-east-2": 3}, "support_physical_cluster_replication": true}}}'
+    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' --header "Authorization: Bearer api_secret_key" --header 'Content-Type: application/json' --data '{"name": "standby_cluster_name", "provider": "AWS", "spec": {"dedicated": {"cockroachVersion": "v25.2", "hardware": {"disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, "storage_gib": 16}, "region_nodes": {"us-east-2": 3}, "supports_cluster_virtualization": true}}}'
     ~~~
 
     If you're creating clusters in AWS or Azure, you must start the primary and standby clusters in different regions.

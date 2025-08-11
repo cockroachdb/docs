@@ -14,6 +14,10 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## Aug 12, 2025
+
+Physical cluster replication now requires the [`supports_cluster_virtualization` flag]({% link cockroachcloud/physical-cluster-replication.md %}#step-1-create-the-clusters) to be enabled, rather than `supports_physical_cluster_replication`.
+
 ## Aug 5, 2025
 
 Console users with the [Billing Coordinator role]({% link cockroachcloud/authorization.md %}#billing-coordinator) can now [export invoices]({% link cockroachcloud/billing-management.md %}#export-invoices) in a PDF format, rendering billing information into a traditional invoice format for ease of distribution.
