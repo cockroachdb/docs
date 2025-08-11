@@ -194,49 +194,54 @@
                 "/cockroachcloud/security-overview.html"
                 ]
             },
-
             {
-            "title": "Manage AWS PrivateLink",
-            "urls": [
-                "/cockroachcloud/aws-privatelink.html"
-            ]
+              "title": "Manage AWS PrivateLink",
+              "urls": [
+                  "/cockroachcloud/aws-privatelink.html"
+              ]
             },
             {
-            "title": "Customer-Managed Encryption Keys (CMEK)",
-            "items": [
-                {
-                "title": "Overview",
-                "urls": [
-                    "/cockroachcloud/cmek.html"
-                ]
-                },
-                {
-                "title": "Manage CMEK",
-                "urls": [
-                    "/cockroachcloud/managing-cmek.html"
-                ]
-                }
-            ]
+              "title": "Egress Private Endpoints",
+              "urls": [
+                  "/cockroachcloud/egress-private-endpoints.html"
+              ]
             },
             {
-            "title": "Compliance",
-            "items": [
-                {
-                    "title": "Compliance in Advanced",
-                    "urls": [
-                      "/cockroachcloud/compliance.html"
-                    ]
+              "title": "Customer-Managed Encryption Keys (CMEK)",
+              "items": [
+                  {
+                  "title": "Overview",
+                  "urls": [
+                      "/cockroachcloud/cmek.html"
+                  ]
                   },
-                {
-                "title": "PCI DSS",
-                "urls": [
-                    "/cockroachcloud/pci-dss.html"
-                ]
-                }
-            ]
+                  {
+                  "title": "Manage CMEK",
+                  "urls": [
+                      "/cockroachcloud/managing-cmek.html"
+                  ]
+                  }
+              ]
             },
             {
-            "title": "Authentication",
+              "title": "Compliance",
+              "items": [
+                  {
+                      "title": "Compliance in Advanced",
+                      "urls": [
+                        "/cockroachcloud/compliance.html"
+                      ]
+                    },
+                  {
+                  "title": "PCI DSS",
+                  "urls": [
+                      "/cockroachcloud/pci-dss.html"
+                  ]
+                  }
+              ]
+            },
+            {
+              "title": "Authentication",
                 "items": [
                     {
                         "title": "Overview",
@@ -325,12 +330,6 @@
                         "urls": [
                             "/cockroachcloud/egress-perimeter-controls.html"
                         ]
-                    },
-                    {
-                    "title": "Egress Private Endpoints",
-                    "urls": [
-                        "/cockroachcloud/egress-private-endpoints.html"
-                    ]
                     }
                 ]
             },

@@ -2,7 +2,6 @@
 title: Configure Egress Private Endpoints
 summary: Learn how to configure egress private endpoints for enhanced network security on a CockroachDB Cloud cluster.
 toc: true
-toc_not_nested: true
 docs_area: security
 cloud: true
 ---
@@ -11,13 +10,14 @@ cloud: true
 {% include feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
 
-Establish secure network connectivity between CockroachDB {{ site.data.products.cloud }} and your private cloud infrastructure with **Egress private endpoints**. You can use the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to create and manage egress private endpoints on a CockroachDB {{ site.data.products.cloud }} cluster.
+Establish a secure network connection from a CockroachDB {{ site.data.products.cloud }} Advanced cluster to send [changefeeds]({% link {{ site.versions["stable"] }}/change-data-capture-overview.md %}) to your private cloud infrastructure with *egress private endpoints*. You can use the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to create and manage egress private endpoints on a CockroachDB {{ site.data.products.cloud }} cluster.
 
 CockroachDB {{ site.data.products.cloud }} supports egress private endpoints with the following cloud services:
 
 - [Amazon Virtual Private Cloud (AWS VPC)](https://aws.amazon.com/vpc/)
 - [Amazon Managed Streaming for Apache Kafka (MSK)](https://aws.amazon.com/msk/)
 - [Google Cloud Virtual Private Cloud (GCP VPC)](https://cloud.google.com/vpc)
+- [Confluent Cloud](https://www.confluent.io/confluent-cloud/)
 
 {{site.data.alerts.callout_danger}}
 Regions cannot be removed from a CockroachDB {{ site.data.products.cloud }} cluster if there are private endpoints in the `AVAILABLE` state in that region. When a {{ site.data.products.cloud }} cluster is deleted, all private endpoints associated with the cluster are deleted as well.
@@ -25,17 +25,28 @@ Regions cannot be removed from a CockroachDB {{ site.data.products.cloud }} clus
 
 ## Prerequisites
 
-Refer to the following sections for prerequisites that apply to each cloud service:
+Refer to the following sections for prerequisites that apply to the corresponding cloud service:
 
 ### AWS VPC endpoints
 
-The CockroachDB {{ site.data.products.cloud }} AWS account must be added as a principal on the endpoint service. Using the `account_id` returned from the `GET /api/v1/clusters/{cluster_id}`, add the `arn:aws:iam::<CC_ACCOUNT_ID>:root` principal to the endpoint service.
+The CockroachDB {{ site.data.products.cloud }} AWS account must be added as a principal on the endpoint service. Using you CockroachDB {{ site.data.products.cloud }} `account_id`, add the `arn:aws:iam::<CC_ACCOUNT_ID>:root` principal to the endpoint service.
+
+You can use the following API call to collect your CockroachDB {{ site.data.products.cloud }} `account_id`:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+{
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
+  --header 'Authorization: Bearer {secret_key}' | jq .account_id
+}
+~~~
 
 ### MSK endpoints
 
 The following prerequisites apply to the MSK service:
 
-- The cluster must not use *kafka.t3.small* instances.
+- The cluster must not use `kafka.t3.small` instances.
 - If the cluster is not using IAM authentication, set the `allow.everyone.if.no.acl.found=false` [ACL](https://docs.aws.amazon.com/msk/latest/developerguide/msk-acls.html).
 - Multi-VPC Connectivity must be enabled.
 - Using the `account_id` returned from the `GET /api/v1/clusters/{cluster_id}`, include the following in the [cluster policy](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-cluster-owner-action-policy.html):
@@ -57,6 +68,12 @@ The following prerequisites apply to the MSK service:
     }
     ~~~
 
+### Confluent Cloud endpoints
+
+Egress private endpoints can be configured to an AWS or GCP private service configured in a Confluent account. The endpoint creation is identical to AWS or GCP VPC.
+
+Confluent Cloud requires a custom DNS configuration due to the TLS certificates provisioned for their Kafka clusters. Collect the required domain names from Confluent, then [configure custom DNS records](#configure-custom-dns) for the cluster after the endpoint is created.
+
 ## Create an egress private endpoint
 
 A user with the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator) roles can create an egress private endpoint by sending a `POST` request to the `/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints` endpoint with the following payload information:
@@ -75,61 +92,63 @@ A user with the [Cluster Admin]({% link cockroachcloud/authorization.md %}#clust
 
 Once this request is sent, the CockroachDB {{ site.data.products.cloud }} cluster enters a maintenance mode where other configuration changes (cluster scaling, feature configuration, upgrades, etc) cannot be made until the operation is complete. The operation is complete when the [endpoint status](#check-the-endpoint-status) is `AVAILABLE` and both the `endpoint_id` and `endpoint_address` fields are populated.
 
-The following example `POST` requests assume that an API key has been created for a user with the appropriate role, such as [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), and stored in the `$API_SECRET` environment variable.
+### Example endpoint creation requests
 
-**Example AWS private service endpoint creation**
+The following example `POST` requests assume that an API key has been created for a user with the appropriate role, such as [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator):
+
+#### AWS private service endpoint
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
--H 'Authorization: Bearer $API_SECRET' \
+-H 'Authorization: Bearer {secret_key}' \
 -H 'Content-Type: application/json' \
 -d '{
-  "cluster_id": "799c32e8-13ba-4d43-aef4-example",
+  "cluster_id": "{cluster_id}",
   "region": "us-east-1",
   "target_service_identifier": "com.amazonaws.vpce.us-east-1.vpce-svc-example",
   "target_service_type": "PRIVATE_SERVICE"
 }'
 ~~~
 
-**Example MSK cluster endpoint creation**
+#### MSK cluster endpoint
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
--H 'Authorization: Bearer $API_SECRET' \
+-H 'Authorization: Bearer {secret_key}' \
 -H 'Content-Type: application/json' \
 -d '{
-  "cluster_id": "799c32e8-13ba-4d43-aef4-example",
+  "cluster_id": "{cluster_id}",
   "region": "us-east-2",
   "target_service_identifier": "arn:aws:kafka:us-east-2:033701886158:cluster/msk-example/99bcd320-3af1-42cc-b8cc-example-7",
   "target_service_type": "MSK_SASL_SCRAM"
 }'
 ~~~
 
-**Example MSK cluster endpoint creation**
+#### GCP private service endpoint
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
--H 'Authorization: Bearer $API_SECRET' \
+-H 'Authorization: Bearer {secret_key}' \
 -H 'Content-Type: application/json' \
 -d '{
-  "cluster_id": "799c32e8-13ba-4d43-aef4-example",
+  "cluster_id": "{cluster_id}",
   "region": "us-east1",
   "target_service_identifier": "projects/cc-example/regions/us-east1/serviceAttachments/s-vr9zz-service-attachment-us-east1-d",
   "target_service_type": "PRIVATE_SERVICE"
 }'
 ~~~
 
-**Example response**
+#### Example response
 
 ~~~ json
 {
-    "id": "2bf86fbe-cdf3-4703-8156-01228f0e19b3",
+    "id": "{endpoint_id}",
     "endpoint_connection_id": "",
     "region": "us-east-2",
     "target_service_identifier": "com.amazonaws.vpce.us-east-2.vpce-svc-0fb8e1b95f0ade981",
@@ -138,13 +157,15 @@ curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/
 }
 ~~~
 
+{{site.data.alerts.callout_info}}
 Depending on the cloud service, there may be an additional step necessary to manually accept the connection on the remote side.
+{{site.data.alerts.end}}
 
-### Configure custom DNS for an egress private endpoint
+### Configure custom DNS
 
-If the cloud service has a TLS certificate that requires traffic to be sent from a specific domain, you can use the {{ site.data.products.cloud }} API to create custom DNS records for a CockroachDB {{ site.data.products.cloud }} cluster that points to the `endpoint_address` of an egress private endpoint.
+If the cloud service has a TLS certificate that requires traffic to be sent from a specific domain, such as Confluent Cloud, you can use the {{ site.data.products.cloud }} API to create custom DNS records for a CockroachDB {{ site.data.products.cloud }} cluster that points to the `endpoint_address` of an egress private endpoint.
 
-Before creating a custom DNS record, [check the endpoint status](#check-the-endpoint-status) and make sure the endpoint is in the `AVAILABLE` state. Save the `egress_private_endpoints.id` value (not the `endpoint_connection_id` value, which is an external identifier for the endpoint) for use.
+Before creating a custom DNS record, [check that the endpoint status is in the `AVAILABLE` state](#check-the-endpoint-status). Save the `egress_private_endpoints.id` value for later use. This ID is distinct from the `endpoint_connection_id`, which is an external identifier.
 
 Send a `PATCH` request to the `/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id}/domain-names` endpoint with the following payload information:
 
@@ -152,15 +173,17 @@ Send a `PATCH` request to the `/api/v1/clusters/{cluster_id}/networking/egress-p
 - `endpoint_id`: The `id` value of the egress private endpoint.
 - `domain_names`: A list of domain names to resolve to the private endpoint, as required by the cloud service provider.
 
+For example:
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id}/domain-names \
 -X PATCH \
--H 'Authorization: Bearer $API_SECRET' \
+-H 'Authorization: Bearer {secret_key}' \
 -H 'Content-Type: application/json' \
 -d '{
-  "cluster_id": "799c32e8-13ba-4d43-aef4-example",
-  "endpoint_id": "7741fff1-5bb8-455c-bed8-example",
+  "cluster_id": "{cluster_id}",
+  "endpoint_id": "{endpoint_id}",
   "domain_names": ["*.us-east-2.aws.confluent.cloud"]
 }'
 ~~~
@@ -169,21 +192,21 @@ The cluster enters maintenance mode once more until the DNS setup is complete, w
 
 ## Check the endpoint status
 
-Send a `GET` request to the `/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints` to review the status of all egress private endpoints on the cluster:
+Send a `GET` request to the `/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints` endpoint to review the status of all egress private endpoints on the cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
--H "Authorization: Bearer $API_SECRET"
+-H "Authorization: Bearer {secret_key}"
 ~~~
 
-The response lists out all egress private endpoints on the cluster. The `state` field describes the status of each endpoint:
+The response lists all egress private endpoints on the cluster. The `state` field indicates the status of each endpoint:
 
 ~~~ json
 {
     "egress_private_endpoints": [
         {
-            "id": "2bf86fbe-cdf3-4703-8156-01228f0e19b3",
+            "id": "{endpoint_id}",
             "endpoint_connection_id": "vpce-0460d7c25b1f505dd",
             "region": "us-east-2",
             "target_service_identifier": "com.amazonaws.vpce.us-east-2.vpce-svc-0fb8e1b95f0ade981",
@@ -198,12 +221,10 @@ The response lists out all egress private endpoints on the cluster. The `state` 
 
 The following list describes all of the possible `state` values and their meanings:
 
-
 - `PENDING`: The endpoint is in the process of being created.
 - `PENDING_ACCEPTANCE`: The endpoint needs to be manually accepted on the cloud provider service.
 - `AVAILABLE`: The endpoint has been created and is available for traffic.
 - `DELETING`: The endpoint is in the process of being deleted from the cluster.
-- `DELETED`: The endpoint has been deleted in the cloud provider.
 - `REJECTED`: The endpoint connection was rejected on the cloud provider side.
 - `FAILED`: Something went wrong with the creation of the endpoint in the cloud provider.
 - `EXPIRED`: The connection request expired before it was accepted on the cloud provider service.
@@ -220,7 +241,7 @@ To delete a private endpoint, send a `DELETE` request to the `/api/v1/clusters/{
 ~~~ shell
 curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id} \
 -X DELETE \
--H "Authorization: Bearer $API_SECRET"
+-H "Authorization: Bearer {secret_key}"
 ~~~
 
 The endpoint briefly enters the `DELETING` state then is removed from the list of endpoints on the cluster.
