@@ -20,7 +20,7 @@ CockroachDB {{ site.data.products.cloud }} supports egress private endpoints wit
 - [Google Cloud Virtual Private Cloud (GCP VPC)](https://cloud.google.com/vpc)
 
 {{site.data.alerts.callout_danger}}
-Regions cannot be removed from a CockroachDB {{ site.data.products.cloud }} cluster if there are private endpoints in the `AVAILABLE` state. When a {{ site.data.products.cloud }} cluster is deleted, all private endpoints associated with the cluster are deleted as well.
+Regions cannot be removed from a CockroachDB {{ site.data.products.cloud }} cluster if there are private endpoints in the `AVAILABLE` state in that region. When a {{ site.data.products.cloud }} cluster is deleted, all private endpoints associated with the cluster are deleted as well.
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -36,9 +36,9 @@ The CockroachDB {{ site.data.products.cloud }} AWS account must be added as a pr
 The following prerequisites apply to the MSK service:
 
 - The cluster must not use *kafka.t3.small* instances.
-- If the cluster is not using IAM authentication, set the `allow.everyone.if.no.acl.found=false` ACL.
+- If the cluster is not using IAM authentication, set the `allow.everyone.if.no.acl.found=false` [ACL](https://docs.aws.amazon.com/msk/latest/developerguide/msk-acls.html).
 - Multi-VPC Connectivity must be enabled.
-- Using the `account_id` returned from the `GET /api/v1/clusters/{cluster_id}`, include the following in the cluster policy:
+- Using the `account_id` returned from the `GET /api/v1/clusters/{cluster_id}`, include the following in the [cluster policy](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-cluster-owner-action-policy.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ json
@@ -59,7 +59,7 @@ The following prerequisites apply to the MSK service:
 
 ## Create an egress private endpoint
 
-A user with the [Cluster Admin role]({% link cockroachcloud/authorization.md %}#cluster-admin) can create an egress private endpoint by sending a `POST` request to the `/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints` endpoint with the following payload information:
+A user with the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), or [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator) roles can create an egress private endpoint by sending a `POST` request to the `/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints` endpoint with the following payload information:
 
 - `cluster_id`: The CockroachDB {{ site.data.products.cloud }} cluster ID.
 - `region`: The region code where the target service identifier is located (e.g. `us-east-1`).
@@ -73,9 +73,9 @@ A user with the [Cluster Admin role]({% link cockroachcloud/authorization.md %}#
     - **MSK** with IAM access control: Set to `MSK_SASL_IAM`.
     - **MSK** with mutual TLS authentication: Set to `MSK_TLS`.
 
-Once this request is sent, the CockroachDB {{ site.data.products.cloud }} cluster enters a maintenance mode where other configuration changes (cluster scaling, feature configuration, upgrades, etc) cannot be made until the operation is complete.
+Once this request is sent, the CockroachDB {{ site.data.products.cloud }} cluster enters a maintenance mode where other configuration changes (cluster scaling, feature configuration, upgrades, etc) cannot be made until the operation is complete. The operation is complete when the [endpoint status](#check-the-endpoint-status) is `AVAILABLE` and both the `endpoint_id` and `endpoint_address` fields are populated.
 
-The following example `POST` requests assume that an API key has been created for a user with the Cluster Admin role and stored in the `$API_SECRET` environment variable.
+The following example `POST` requests assume that an API key has been created for a user with the appropriate role, such as [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), and stored in the `$API_SECRET` environment variable.
 
 **Example AWS private service endpoint creation**
 
@@ -165,7 +165,7 @@ curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/
 }'
 ~~~
 
-The cluster enters maintenance mode once more until the DNS setup is complete. Traffic from the CockroachDB {{ site.data.products.cloud }} cluster should now be routed appropriately to the private endpoint.
+The cluster enters maintenance mode once more until the DNS setup is complete, which may take approximately 10 seconds. Traffic from the CockroachDB {{ site.data.products.cloud }} cluster should now be routed appropriately to the private endpoint.
 
 ## Check the endpoint status
 
@@ -202,7 +202,7 @@ The following list describes all of the possible `state` values and their meanin
 - `PENDING`: The endpoint is in the process of being created.
 - `PENDING_ACCEPTANCE`: The endpoint needs to be manually accepted on the cloud provider service.
 - `AVAILABLE`: The endpoint has been created and is available for traffic.
-- `DELETING`: The endpoint is in the process of being deleted from the cloud provider.
+- `DELETING`: The endpoint is in the process of being deleted from the cluster.
 - `DELETED`: The endpoint has been deleted in the cloud provider.
 - `REJECTED`: The endpoint connection was rejected on the cloud provider side.
 - `FAILED`: Something went wrong with the creation of the endpoint in the cloud provider.
@@ -222,3 +222,5 @@ curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/
 -X DELETE \
 -H "Authorization: Bearer $API_SECRET"
 ~~~
+
+The endpoint briefly enters the `DELETING` state then is removed from the list of endpoints on the cluster.
