@@ -6,7 +6,9 @@ secure: true
 docs_area:
 ---
 
-This page shows you how to start and stop a secure 3-node CockroachDB cluster on the Red Hat OpenShift platform, using the [CockroachDB Kubernetes Operator](https://marketplace.redhat.com/en-us/products/cockroachdb-operator).
+This page shows you how to start and stop a secure 3-node CockroachDB cluster on the Red Hat OpenShift platform, using the [{{ site.data.products.public-operator }}](https://marketplace.redhat.com/en-us/products/cockroachdb-operator).
+
+{% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 
 ## Before you begin
 
@@ -59,7 +61,7 @@ This article assumes you have already installed the OpenShift Container Platform
 
 	This lets you issue `oc` commands without having to specify the namespace each time.
 
-## Step 2. Install the Operator
+## Step 2. Install the {{ site.data.products.public-operator }}
 
 1. Navigate to your OpenShift web console and click **OperatorHub**.
 
@@ -71,7 +73,7 @@ This article assumes you have already installed the OpenShift Container Platform
 
 1. On the **Install Operator** page, select `cockroachdb` in the **Installed Namespace** dropdown and click **Install**.
 
-1. Confirm that the Operator is running:
+1. Confirm that the operator is running:
 
 	  {% include_cached copy-clipboard.html %}
 	  ~~~ shell
@@ -87,13 +89,13 @@ This article assumes you have already installed the OpenShift Container Platform
 
 {% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 
-1. When the Operator is ready, click **View Operator** to navigate to the **Installed Operators** page.
+1. When the operator is ready, click **View Operator** to navigate to the **Installed Operators** page.
 
 1. In the **CockroachDB Operator** tile, click **Create instance**.
 
 	<img src="{{ 'images/v25.3/cockroachdb-operator-instance-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
-1. Make sure **CockroachDB Version** is set to a valid CockroachDB version. For a list of compatible image names, see `spec.containers.env` in the [Operator manifest](https://raw.github.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml) on GitHub.
+1. Make sure **CockroachDB Version** is set to a valid CockroachDB version. For a list of compatible image names, see `spec.containers.env` in the [pulic operator manifest](https://raw.github.com/cockroachdb/cockroach-operator/v{{ latest_operator_version }}/install/operator.yaml) on GitHub.
 
 1. This will open the **Create CrdbCluster** page. By default, this deploys a 3-node secure cluster. Leave the other fields unchanged and click **Create**.
 
@@ -120,10 +122,10 @@ This article assumes you have already installed the OpenShift Container Platform
 
 To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
 
-This can be defined with the following YAML, which mounts the Operator's generated certificates:
+This can be defined with the following YAML, which mounts the operator's generated certificates:
 
 {{site.data.alerts.callout_success}}
-`spec.containers.image` should match the **Image** value that is displayed under the **Containers** section on the **Pods** page when you select a CockroachDB pod. Be sure to select a CockroachDB pod and not the Operator pod.
+`spec.containers.image` should match the **Image** value that is displayed under the **Containers** section on the **Pods** page when you select a CockroachDB pod. Be sure to select a CockroachDB pod and not the operator pod.
 
 Note that OpenShift may display the image SHA instead of the tag. In this case, you should use the SHA for `spec.containers.image`.
 {{site.data.alerts.end}}
@@ -327,7 +329,7 @@ If you want to continue using this cluster, see the documentation on [configurin
 
 	<img src="{{ 'images/v25.3/cockroachdb-operator-delete-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
-This will delete the CockroachDB cluster being run by the Operator. It will *not* delete:
+This will delete the CockroachDB cluster being run by the operator. It will *not* delete:
 
 - The persistent volumes that were attached to the pods. This can be done by deleting the PVCs via **Storage** > **Persistent Volume Claims**.
 - The opaque secrets used to authenticate the cluster. This can be done via **Workloads** > **Secrets**.

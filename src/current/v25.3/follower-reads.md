@@ -18,7 +18,7 @@ The following table summarizes the read types and how to accomplish them.
  | Strong Reads | Stale Reads
 -----|-----------|----------------------------------------------------------------
 Only From Leaseholder  | `SELECT` | N/A
-From Nearest Replica | `SELECT` on `GLOBAL` table	| `SELECT` with `AS OF SYSTEM TIME <historical-timestamp-function>`
+From Nearest Replica | `SELECT` on a `GLOBAL` table **or** a long-running `SELECT` whose read timestamp has fallen behind the [closed timestamp]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#closed-timestamps) | `SELECT` with `AS OF SYSTEM TIME <historical-timestamp-function>`
 
 ## Stale follower reads
 
