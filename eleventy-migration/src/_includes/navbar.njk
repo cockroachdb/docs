@@ -1,0 +1,572 @@
+
+<!-- Cockroach Labs Header Navbar - Replicated from Jekyll -->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+  
+  .navbar {
+    max-height: 84px;
+    padding-left: 210px;
+  }
+
+  #crdb-icon-name{
+    padding-bottom: 10px;
+  }
+  
+  .navbar-nav .nav-item .nav-link {
+    font-size: 16px;
+    color: #0A2540;
+  }
+
+  /* Dropdown styles */
+  .navbar .dropdown .dropdown-menu {
+    display: none !important;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175);
+  }
+
+  .navbar .dropdown .dropdown-menu.dropdown-open,
+  .navbar .dropdown .dropdown-menu.show {
+    display: block !important;
+    opacity: 1;
+  }
+
+  @media (hover: hover) {
+    .navbar .dropdown:hover .dropdown-menu {
+      visibility: visible;
+      opacity: 1;
+    }
+    .main-nav .navbar .dropdown-menu * {
+      list-style: none !important;
+      background-color: #fff;
+    }
+  }
+
+  /* Desktop styles */
+  @media (min-width: 1450px) {
+    .nav-icon-md {
+      display: none !important;
+    }
+    .right-nav-text {
+      display: block !important;
+    }
+  }
+
+  /* Medium desktop styles */
+  @media (min-width: 993px) and (max-width: 1449px) {
+    .navbar {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    #crdb-icon-name{
+      padding-bottom: 0px;
+    }
+    
+    .navbar-nav .nav-item {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .navbar-nav .nav-item .nav-link {
+      font-size: 16px;
+      padding: 0.5rem 0.5rem;
+    }
+
+    .right-nav-text {
+      display: none !important;
+    }
+    
+    .nav-icon-md {
+      display: block !important;
+      padding: 0.5rem !important;
+    }
+
+    .btn-primary {
+      padding: 4px 12px !important;
+      font-size: 13px !important;
+      margin-left: 0.5rem !important;
+    }
+
+    .navbar-brand img {
+      width: 140px;
+      height: auto;
+    }
+
+    .navbar-nav .mx-1 {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+
+    .navbar-nav .px-1 {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+  }
+
+  /* Tablet styles */
+  @media (max-width: 992px) {
+    .navbar {
+      padding-left: 15px;
+    }
+
+    #navbarSupportedContent {
+      position: fixed;
+      top: 84px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: white;
+      z-index: 1040;
+      overflow-y: auto;
+    }
+
+    .navbar-collapse.show {
+      display: block;
+    }
+
+    body.mobile-menu-open {
+      overflow: hidden;
+    }
+
+    .nav-icon-md {
+      display: none !important;
+    }
+
+    .right-nav-text {
+      display: block !important;
+    }
+
+    .mobile-menu-wrapper .card-header {
+      padding: 1rem;
+    }
+  }
+
+  /* Ensure Bootstrap utility classes work */
+  .d-none { display: none !important; }
+  .d-lg-none { display: none !important; }
+  .d-lg-flex { display: flex !important; }
+  .d-lg-block { display: block !important; }
+  .d-flex { display: flex !important; }
+  .justify-content-between { justify-content: space-between !important; }
+  .justify-content-center { justify-content: center !important; }
+  .align-items-center { align-items: center !important; }
+  .flex-column { flex-direction: column !important; }
+  .w-100 { width: 100% !important; }
+  .h-100 { height: 100% !important; }
+  .mr-auto { margin-right: auto !important; }
+  .ml-auto { margin-left: auto !important; }
+  .mb-0 { margin-bottom: 0 !important; }
+  .mb-2 { margin-bottom: 0.5rem !important; }
+  .mb-lg-0 { margin-bottom: 0 !important; }
+  .mt-auto { margin-top: auto !important; }
+  .mx-1 { margin-left: 0.25rem !important; margin-right: 0.25rem !important; }
+  .mx-0 { margin-left: 0 !important; margin-right: 0 !important; }
+  .px-1 { padding-left: 0.25rem !important; padding-right: 0.25rem !important; }
+  .px-2 { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+  .px-3 { padding-left: 1rem !important; padding-right: 1rem !important; }
+  .px-0 { padding-left: 0 !important; padding-right: 0 !important; }
+  .py-0 { padding-top: 0 !important; padding-bottom: 0 !important; }
+  .py-1 { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
+  .py-4 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+  .pt-2 { padding-top: 0.5rem !important; }
+  .ml-2 { margin-left: 0.5rem !important; }
+  .mr-0 { margin-right: 0 !important; }
+  .mr-md-2 { margin-right: 0.5rem !important; }
+  .position-static { position: static !important; }
+  .position-relative { position: relative !important; }
+  .position-fixed { position: fixed !important; }
+  .fixed-top { position: fixed !important; top: 0 !important; right: 0 !important; left: 0 !important; z-index: 1030 !important; }
+  .shadow-sm { box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important; }
+  .border-right { border-right: 1px solid #dee2e6 !important; }
+  .border-top { border-top: 1px solid #dee2e6 !important; }
+  .border-bottom { border-bottom: 1px solid #dee2e6 !important; }
+  .bg-white { background-color: #fff !important; }
+  .text-left { text-align: left !important; }
+  .text-nowrap { white-space: nowrap !important; }
+  .rounded-pill { border-radius: 50rem !important; }
+
+  @media (min-width: 992px) {
+    .d-lg-none { display: none !important; }
+    .d-lg-block { display: block !important; }
+    .d-lg-flex { display: flex !important; }
+  }
+</style>
+
+<!-- JavaScript for navbar functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Navbar toggler functionality
+  function toggleDropdown(element, isOpen) {
+    const dropdownMenu = element.querySelector('.dropdown-menu');
+    if (isOpen) {
+      element.classList.add('dropdown-open');
+      dropdownMenu.classList.add('dropdown-open');
+    } else {
+      element.classList.remove('dropdown-open');
+      dropdownMenu.classList.remove('dropdown-open');
+    }
+  }
+
+  // Desktop dropdown functionality
+  const dropdowns = document.querySelectorAll('.dropdown');
+  
+  dropdowns.forEach(dropdown => {
+    const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+    
+    // Mouse enter event
+    dropdown.addEventListener('mouseenter', function() {
+      if (window.innerWidth >= 993) {
+        dropdownMenu.classList.add('dropdown-open');
+        dropdownMenu.classList.add('show');
+      }
+    });
+    
+    // Mouse leave event
+    dropdown.addEventListener('mouseleave', function() {
+      if (window.innerWidth >= 993) {
+        dropdownMenu.classList.remove('dropdown-open');
+        dropdownMenu.classList.remove('show');
+      }
+    });
+    
+    // Click event for mobile
+    const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+    if (dropdownToggle) {
+      dropdownToggle.addEventListener('click', function(e) {
+        if (window.innerWidth < 993) {
+          e.preventDefault();
+          dropdownMenu.classList.toggle('dropdown-open');
+          dropdownMenu.classList.toggle('show');
+        }
+      });
+    }
+  });
+
+  // Mobile navbar toggle functionality
+  const navbarToggler = document.querySelector('.navbar-toggler');
+  const navbarCollapse = document.querySelector('.navbar-collapse');
+  
+  if (navbarToggler && navbarCollapse) {
+    navbarToggler.addEventListener('click', function() {
+      navbarCollapse.classList.toggle('show');
+      document.body.classList.toggle('mobile-menu-open');
+    });
+  }
+});
+</script>
+
+<div class="shadow-sm main-nav-wrapper position-relative" style="z-index: 1030;">
+  <div class="main-nav main-nav-contained-800">
+    <nav class="navbar navbar-expand-lg navbar-light py-0 fixed-top">
+      <div class="container-xl px-0">
+        <a class="navbar-brand mr-0 mr-md-2 d-xl-block" href="/" id="crdb-icon-name">
+          <img 
+            width="170" 
+            height="24" 
+            alt="Cockroach Labs" 
+            class="br0 db mb0" 
+            src="/images/cockroachlabs-logo-170.png"
+          >
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+          <!-- Mobile nav -->
+          <div class="d-lg-none pt-2 mobile-menu-wrapper">
+            <div class="accordion" id="accordionExample">
+
+              <!-- Mobile product -->
+              <div class="card">
+                <div class="card-header bg-white py-4" id="mobileProduct">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapseProduct" aria-expanded="false" aria-controls="mobileProduct" style="font-weight: 450;">
+                      Product
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseProduct" class="collapse" aria-labelledby="mobileProduct" data-parent="#accordionExample">
+                  <div class="card-body">
+                    {% include "nav/nav-product.njk" %}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mobile solutions -->
+              <div class="card">
+                <div class="card-header bg-white py-4" id="mobileSolutions">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapseSolutions" aria-expanded="false" aria-controls="mobileSolutions" style="font-weight: 450;">
+                      Solutions
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseSolutions" class="collapse" aria-labelledby="mobileSolutions" data-parent="#accordionExample">
+                  <div class="card-body">
+                    {% include "nav/nav-solutions.njk" %}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mobile Resources -->
+              <div class="card">
+                <div class="card-header bg-white py-4" id="mobileResources">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapseResources" aria-expanded="false" aria-controls="mobileResources" style="font-weight: 450;">
+                      Resources
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseResources" class="collapse" aria-labelledby="mobileResources" data-parent="#accordionExample">
+                  <div class="card-body">
+                    {% include "nav/nav-resources.njk" %}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mobile Docs -->
+              <div class="card">
+                <div class="card-header bg-white py-4" id="mobileDocs">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapseDocs" aria-expanded="false" aria-controls="mobileDocs" style="font-weight: 450;">
+                      Docs
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseDocs" class="collapse" aria-labelledby="mobileDocs" data-parent="#accordionExample">
+                  <div class="card-body">
+                    {% include "nav/nav-docs.njk" %}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mobile Company -->
+              <div class="card">
+                <div class="card-header bg-white py-4" id="mobileCompany">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapseCompany" aria-expanded="false" aria-controls="mobileCompany" style="font-weight: 450;">
+                      Company
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseCompany" class="collapse" aria-labelledby="mobileCompany" data-parent="#accordionExample">
+                  <div class="card-body">
+                    {% include "nav/nav-company.njk" %}
+                  </div>
+                </div>
+              </div> 
+
+              <!-- Mobile Customers -->
+              <div class="card">
+                <div class="card-header bg-white py-4" id="mobileCustomers">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapseCustomers" aria-expanded="false" aria-controls="mobileCustomers" style="font-weight: 450;">
+                      Customers
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseCustomers" class="collapse" aria-labelledby="mobileCustomers" data-parent="#accordionExample">
+                  <div class="card-body">
+                    {% include "nav/nav-customers.njk" %}
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header bg-white py-4" id="">
+                  <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/pricing/" style="font-weight: 450;">Pricing</a>
+                  </h2>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header bg-white py-4" id="">
+                  <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left btn-link-chevron-right d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/contact/" style="font-weight: 450;">Contact us</a>
+                  </h2>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header bg-white py-4" id="">
+                  <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left" href="https://cockroachlabs.cloud/" style="font-weight: 450;">Sign In</a>
+                  </h2>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- end mobile nav -->
+           
+          <!-- Desktop nav -->
+          <ul class="d-none d-lg-flex navbar-nav mr-auto mb-2 mb-lg-0 mt-auto">
+            <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+              <a
+                class="nav-link nav-link-border dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                style="font-weight: 450;"
+              >Product</a>
+              <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
+                {% include "nav/nav-product.njk" %}
+              </div>
+            </li>
+
+            <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+              <a
+                class="nav-link nav-link-border dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                style="font-weight: 450;"
+              >Solutions</a>
+              <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
+                {% include "nav/nav-solutions.njk" %}
+              </div>
+            </li>
+
+            <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+              <a
+                class="nav-link nav-link-border dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                style="font-weight: 450;"
+              >Resources</a>
+              <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
+                {% include "nav/nav-resources.njk" %}
+              </div>
+            </li>
+
+            <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+              <a
+                class="nav-link nav-link-border dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                style="font-weight: 450;"
+              >Docs</a>
+              <div class="dropdown-menu w-100 p-45 docs" aria-labelledby="navbarDropdown">
+                {% include "nav/nav-docs.njk" %}
+              </div>
+            </li>
+
+            <li class="nav-item dropdown position-static py-4 mx-0 px-2">
+              <a
+                class="nav-link nav-link-border dropdown-toggle no-chevron"
+                href="https://www.cockroachlabs.com/pricing/"
+                id="navbarDropdown"
+                style="font-weight: 450;"
+              >Pricing</a>
+            </li>
+
+            <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+              <a
+                class="nav-link nav-link-border dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                style="font-weight: 450;"
+              >Customers</a>
+              <div class="dropdown-menu w-100 p-45 company" aria-labelledby="navbarDropdown">
+                {% include "nav/nav-customers.njk" %}
+              </div>
+            </li>
+
+            <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+              <a
+                class="nav-link nav-link-border dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                style="font-weight: 450;"
+              >Company</a>
+              <div class="dropdown-menu w-100 p-45 company" aria-labelledby="navbarDropdown">
+                {% include "nav/nav-company.njk" %}
+              </div>
+            </li>
+
+          </ul>
+          <!-- end desktop nav -->
+
+          <!-- right side nav -->
+          <div class="ml-auto">
+            <ul class="d-none d-lg-flex navbar-nav mr-auto mb-2 mb-lg-0 mt-auto">
+              <li class="nav-item">
+                <!-- Contact link with text -->
+                <a class="nav-link right-nav-text" href="https://www.cockroachlabs.com/contact/" role="button" style="font-weight: 450;">
+                  Contact us
+                </a>
+                <!-- Contact icon -->
+                <a class="nav-link nav-icon-md" href="https://www.cockroachlabs.com/contact/" role="button">
+                  <img width="32" src="/images/icons/icon-envelope.png" alt="Contact">
+                </a>
+              </li>
+              <li class="nav-item">
+                <!-- Sign in link with text -->
+                <a href="https://cockroachlabs.cloud/" class="nav-link right-nav-text" style="font-weight: 450;">Sign In</a>
+                <!-- Sign in icon -->
+                <a href="https://cockroachlabs.cloud/" class="nav-link nav-icon-md">
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="11" cy="11" r="10.25" fill="white" style="fill: white" stroke="black" stroke-width="1.5"/>
+                    <circle cx="11" cy="9" r="2.25" stroke="black" stroke-width="1.5"/>
+                    <path d="M6 16C6.47619 14.6667 8.14286 12 11 12C13.8571 12 15.5238 14.6667 16 16" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </a>
+              </li>
+              <li class="nav-item d-flex justify-content-center flex-column">
+                <a class="btn btn-primary rounded-pill px-3 font-family-poppins py-1 ml-2" href="https://cockroachlabs.cloud/signup" style="color: #fff;font-weight: 450;">
+                  Get started free
+                </a>
+              </li>
+            </ul>
+          </div>
+          <!-- End right side nav -->
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>

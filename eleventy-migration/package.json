@@ -1,0 +1,33 @@
+{
+  "name": "cockroachdb-docs-eleventy",
+  "version": "1.0.0",
+  "description": "CockroachDB Documentation - Eleventy Migration",
+  "main": ".eleventy.js",
+  "scripts": {
+    "start": "eleventy --serve --watch",
+    "build": "eleventy",
+    "debug": "eleventy --dryrun",
+    "clean": "rm -rf _site"
+  },
+  "keywords": [
+    "eleventy",
+    "documentation",
+    "cockroachdb",
+    "11ty"
+  ],
+  "author": "CockroachDB Docs Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+    "eleventy-sass": "^2.2.6",
+    "markdown-it": "^13.0.2",
+    "markdown-it-anchor": "^8.6.7",
+    "markdown-it-table-of-contents": "^0.6.0",
+    "sass": "^1.90.0"
+  },
+  "dependencies": {
+    "front-matter": "^4.0.2",
+    "yaml": "^2.3.4"
+  }
+}
