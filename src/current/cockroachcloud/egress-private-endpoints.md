@@ -27,7 +27,7 @@ Regions cannot be removed from a CockroachDB {{ site.data.products.cloud }} clus
 
 Refer to the following sections for prerequisites that apply to the corresponding cloud service:
 
-### AWS VPC endpoints
+### AWS VPC
 
 The CockroachDB {{ site.data.products.cloud }} AWS account must be added as a principal on the endpoint service. Using your CockroachDB {{ site.data.products.cloud }} `account_id`, [add the `arn:aws:iam::<CC_ACCOUNT_ID>:root` principal](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#add-remove-permissions) to the endpoint service definition.
 
@@ -40,7 +40,7 @@ curl --request GET \
   --header 'Authorization: Bearer {secret_key}' | jq .account_id
 ~~~
 
-### MSK endpoints
+### MSK
 
 The following prerequisites apply to the MSK service:
 
@@ -66,7 +66,7 @@ The following prerequisites apply to the MSK service:
     }
     ~~~
 
-### GCP VPC endpoints
+### GCP VPC
 
 The following prerequisites apply to the Google Cloud VPC service:
 
@@ -83,7 +83,7 @@ The following prerequisites apply to the Google Cloud VPC service:
 
 - Enable [consumer global access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#compatibility) on the service load balancer or forwarding rule.
 
-### Confluent Cloud endpoints
+### Confluent Cloud
 
 You can configure egress private endpoints to connect to an AWS or GCP private service configured in a Confluent account. Endpoint creation follows the same process and syntax as for AWS or GCP VPCs.
 
