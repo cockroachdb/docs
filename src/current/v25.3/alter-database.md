@@ -400,6 +400,10 @@ In CockroachDB, the following are aliases for `ALTER DATABASE ... SET {session v
 
 For more information, refer to [`ALTER ROLE ALL ...`]({% link {{ page.version.version }}/alter-role.md %}#set-default-session-variable-values-for-all-users).
 
+#### Session variable precedence
+
+{% include {{ page.version.version }}/sql/session-variable-precedence-order.md %}
+
 ### `SET PRIMARY REGION`
 
 `ALTER DATABASE .. SET PRIMARY REGION` sets the primary [region]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) of a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}).
