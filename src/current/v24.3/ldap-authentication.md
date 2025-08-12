@@ -91,7 +91,7 @@ Set the custom CA certificate:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SET CLUSTER SETTING server.ldap_authentication.domain_ca = '<PEM_ENCODED_CA_CERT>';
+SET CLUSTER SETTING server.ldap_authentication.domain.custom_ca = '<PEM_ENCODED_CA_CERT>';
 ~~~
 
 Configure a client certificate for mTLS if required:
