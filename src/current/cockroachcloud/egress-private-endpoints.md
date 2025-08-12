@@ -66,6 +66,23 @@ The following prerequisites apply to the MSK service:
     }
     ~~~
 
+### GCP VPC endpoints
+
+The following prerequisites apply to the Google Cloud VPC service:
+
+- The CockroachDB {{ site.data.products.cloud }} account's GCP project must be granted explicit approval as a consumer. Follow the [Google Cloud VPC documentation](https://cloud.google.com/vpc/docs/configure-private-service-connect-producer#publish-service-explicit), and follow the steps to **Accept connections for selected projects** with your CockroachDB {{ site.data.products.cloud }} GCP account ID.
+
+    You can use the following API call to retrieve your CockroachDB {{ site.data.products.cloud }} `account_id`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl --request GET \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
+      --header 'Authorization: Bearer {secret_key}' | jq .account_id
+    ~~~
+
+- Enable [consumer global access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#compatibility) on the service load balancer or forwarding rule.
+
 ### Confluent Cloud endpoints
 
 You can configure egress private endpoints to connect to an AWS or GCP private service configured in a Confluent account. Endpoint creation follows the same process and syntax as for AWS or GCP VPCs.
