@@ -462,6 +462,20 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
     helm install $CRDBCLUSTER  ./cockroachdb-parent/charts/cockroachdb --set clusterDomain=cluster-test.local -n $NAMESPACE
     ~~~
 
+1. Verify that the pods were successfully started:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl get pods
+    ~~~
+    ~~~ shell
+    NAME                                    READY   STATUS    RESTARTS   AGE
+    crdb-operator-655fbf7847-zn9v8            1/1     Running   0          10m
+    cockroachdb-9swcg                         1/1     Running   0          45s
+    cockroachdb-bn6f7                         1/1     Running   0          45s
+    cockroachdb-nk2dw                         1/1     Running   0          45s
+    ~~~
+
 #### Deploy across multiple regions
 
 The Helm chart supports specifying multiple region definitions in `cockroachdb.crdbCluster.regions` with their respective node counts. You must ensure the required networking is set up to allow for service discovery across regions. Also, ensure that the same CA cert is used across all the regions.
