@@ -1,0 +1,173 @@
+/* Font Mixins and Typography - Converted from Jekyll SCSS */
+
+/* Base font properties */
+* {
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Font Family Classes */
+.font-source-code {
+  font-family: 'Source Code Pro', monospace, Arial, Helvetica, sans-serif;
+}
+
+.font-source-sans {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Typography Scale */
+h1, .headline-1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 35px;
+}
+
+@media (min-width: 992px) {
+  h1, .headline-1 {
+    font-size: 50px;
+    line-height: 85px;
+  }
+}
+
+h2, .headline-2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 40px;
+}
+
+h3, .headline-3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 35px;
+}
+
+h4, .headline-4 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+h5, .headline-5 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+h6, .headline-6 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+/* Body Typography */
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 16px;
+  line-height: 1.725;
+  color: #242A35;
+}
+
+p, .paragraph-type {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 16px;
+  line-height: 22.6px;
+}
+
+.paragraph-type--medium {
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.paragraph-type--heavy {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 25px;
+}
+
+@media (min-width: 992px) {
+  .paragraph-type--heavy {
+    font-size: 14px;
+    line-height: 24px;
+  }
+}
+
+/* Subheadings */
+.subhead-lg {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 35px;
+}
+
+.subhead-sm {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 30px;
+}
+
+/* Button Text */
+.btn, .button-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.725;
+  letter-spacing: 0.1px;
+}
+
+.type-button {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 1.5px;
+}
+
+.type-button--uppercase {
+  text-transform: uppercase;
+}
+
+/* Code and Monospace */
+code, .code-type {
+  font-family: 'Source Code Pro', monospace, Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 24px;
+  border-radius: 3px;
+  padding: 2px 2px;
+}
+
+pre code {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Captions */
+.caption {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 15px;
+  line-height: 25px;
+}
+
+.caption--small {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+/* Font Weights */
+.font-weight-normal { font-weight: 400; }
+.font-weight-medium { font-weight: 500; }
+.font-weight-semi-bold { font-weight: 600; }
+.font-weight-bold { font-weight: 700; }
