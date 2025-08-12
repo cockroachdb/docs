@@ -10,7 +10,7 @@ cloud: true
 {% include feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
 
-Establish a secure network connection from a CockroachDB {{ site.data.products.cloud }} Advanced cluster to send [changefeeds]({% link {{ site.versions["stable"] }}/change-data-capture-overview.md %}) to your private cloud infrastructure with *egress private endpoints*. You can use the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to create and manage egress private endpoints on a CockroachDB {{ site.data.products.cloud }} cluster.
+Establish a secure network connection from a CockroachDB {{ site.data.products.advanced }} cluster to send [changefeeds]({% link {{ site.versions["stable"] }}/change-data-capture-overview.md %}) to your private cloud infrastructure with *egress private endpoints*. You can use the [CockroachDB {{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}) to create and manage egress private endpoints on a CockroachDB {{ site.data.products.advanced }} cluster.
 
 CockroachDB {{ site.data.products.cloud }} supports egress private endpoints with the following cloud services:
 
@@ -20,7 +20,7 @@ CockroachDB {{ site.data.products.cloud }} supports egress private endpoints wit
 - [Confluent Cloud](https://www.confluent.io/confluent-cloud/)
 
 {{site.data.alerts.callout_danger}}
-Regions cannot be removed from a CockroachDB {{ site.data.products.cloud }} cluster if there are private endpoints in the `AVAILABLE` state in that region. When a {{ site.data.products.cloud }} cluster is deleted, all private endpoints associated with the cluster are deleted as well.
+Regions cannot be removed from a CockroachDB {{ site.data.products.cloud }} cluster if there are egress private endpoints in that region. When a {{ site.data.products.cloud }} cluster is deleted, all private endpoints associated with the cluster are deleted as well.
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -29,17 +29,15 @@ Refer to the following sections for prerequisites that apply to the correspondin
 
 ### AWS VPC endpoints
 
-The CockroachDB {{ site.data.products.cloud }} AWS account must be added as a principal on the endpoint service. Using you CockroachDB {{ site.data.products.cloud }} `account_id`, add the `arn:aws:iam::<CC_ACCOUNT_ID>:root` principal to the endpoint service.
+The CockroachDB {{ site.data.products.cloud }} AWS account must be added as a principal on the endpoint service. Using your CockroachDB {{ site.data.products.cloud }} `account_id`, [add the `arn:aws:iam::<CC_ACCOUNT_ID>:root` principal](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#add-remove-permissions) to the endpoint service definition.
 
-You can use the following API call to collect your CockroachDB {{ site.data.products.cloud }} `account_id`:
+You can use the following API call to retrieve your CockroachDB {{ site.data.products.cloud }} `account_id`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-{
 curl --request GET \
   --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
   --header 'Authorization: Bearer {secret_key}' | jq .account_id
-}
 ~~~
 
 ### MSK endpoints
@@ -70,9 +68,9 @@ The following prerequisites apply to the MSK service:
 
 ### Confluent Cloud endpoints
 
-Egress private endpoints can be configured to an AWS or GCP private service configured in a Confluent account. The endpoint creation is identical to AWS or GCP VPC.
+You can configure egress private endpoints to connect to an AWS or GCP private service configured in a Confluent account. Endpoint creation follows the same process and syntax as for AWS or GCP VPCs.
 
-Confluent Cloud requires a custom DNS configuration due to the TLS certificates provisioned for their Kafka clusters. Collect the required domain names from Confluent, then [configure custom DNS records](#configure-custom-dns) for the cluster after the endpoint is created.
+Confluent Cloud requires a custom DNS configuration due to the TLS certificates provisioned for their Kafka clusters. Collect the required domain names from Confluent. After the endpoint is created, [configure custom DNS records](#configure-custom-dns) for the cluster.
 
 ## Create an egress private endpoint
 
@@ -123,7 +121,7 @@ curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/
 -d '{
   "cluster_id": "{cluster_id}",
   "region": "us-east-2",
-  "target_service_identifier": "arn:aws:kafka:us-east-2:033701886158:cluster/msk-example/99bcd320-3af1-42cc-b8cc-example-7",
+  "target_service_identifier": "arn:aws:kafka:us-east-2:example:cluster/msk-example/99bcd320-3af1-42cc-b8cc-example-7",
   "target_service_type": "MSK_SASL_SCRAM"
 }'
 ~~~
@@ -139,7 +137,7 @@ curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/
 -d '{
   "cluster_id": "{cluster_id}",
   "region": "us-east1",
-  "target_service_identifier": "projects/cc-example/regions/us-east1/serviceAttachments/s-vr9zz-service-attachment-us-east1-d",
+  "target_service_identifier": "projects/cc-example/regions/us-east1/serviceAttachments/s-example-service-attachment-us-east1-d",
   "target_service_type": "PRIVATE_SERVICE"
 }'
 ~~~
@@ -151,7 +149,7 @@ curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/
     "id": "{endpoint_id}",
     "endpoint_connection_id": "",
     "region": "us-east-2",
-    "target_service_identifier": "com.amazonaws.vpce.us-east-2.vpce-svc-0fb8e1b95f0ade981",
+    "target_service_identifier": "com.amazonaws.vpce.us-east-2.vpce-svc-example",
     "target_service_type": "PRIVATE_SERVICE",
     "endpoint_address": ""
 }
@@ -188,7 +186,7 @@ curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/
 }'
 ~~~
 
-The cluster enters maintenance mode once more until the DNS setup is complete, which may take approximately 10 seconds. Traffic from the CockroachDB {{ site.data.products.cloud }} cluster should now be routed appropriately to the private endpoint.
+The cluster enters maintenance mode once more until the DNS setup is complete, which may take a minute or longer. Traffic from the CockroachDB {{ site.data.products.cloud }} cluster should now be routed appropriately to the private endpoint.
 
 ## Check the endpoint status
 

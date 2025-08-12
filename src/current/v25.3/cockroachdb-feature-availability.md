@@ -39,14 +39,12 @@ Any feature made available in a phase prior to GA is provided without any warran
 
 [Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics-advanced.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
-<<<<<<< HEAD
 ### Backup and restore with the Cloud API
 You can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}#managed-backups-and-restores) to handle [managed backups and restore operations]({% link cockroachcloud/backup-and-restore-overview.md %}). To express interest and try out these API endpoints, contact [Support](https://support.cockroachlabs.com/hc).
-=======
+
 ### Egress private endpoints
 
-[Egress private endpoints]({% link cockroachcloud/egress-private-endpoints.md %}) are secured network connections between a CockroachDB {{ site.data.products.cloud }} Advanced cluster and the rest of your private cloud infrastructure. Egress endpoints allow CockroachDB to send information outbound, such as [changefeed targets]({% link {{ page.version.version }}/change-data-capture-overview.md %}), to other cloud services over a private network link. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
->>>>>>> f09b04f97 (Address feedback)
+[Egress private endpoints]({% link cockroachcloud/egress-private-endpoints.md %}) are secure network connections between a CockroachDB {{ site.data.products.advanced }} cluster and the rest of your private cloud infrastructure. Egress endpoints let CockroachDB send outbound information, such as [changefeed targets]({% link {{ page.version.version }}/change-data-capture-overview.md %}), to other cloud services over a private network link. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### Cluster SSO backed by LDAP
 
