@@ -462,7 +462,7 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
     helm install $CRDBCLUSTER  ./cockroachdb-parent/charts/cockroachdb --set clusterDomain=cluster-test.local -n $NAMESPACE
     ~~~
 
-1. Verify that the pods were successfully started:
+1. Verify that the cluster has initialized and pods are now running:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
