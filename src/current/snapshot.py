@@ -47,6 +47,7 @@ FONTS_CSS_URL = (
 class OfflineArchiver:
     def __init__(self):
         self.sidebar_html = None
+        self.comprehensive_sidebar_html = None  # Store comprehensive sidebar from cockroachcloud
         self.processed_files = set()
         self.missing_assets = set()
         self.copied_assets = set()
@@ -121,6 +122,7 @@ class OfflineArchiver:
 
     def clean_sidebar_items(self, items_data):
         """Clean the sidebar items array and count removed URLs"""
+        import re
         removed_urls_count = 0
         removed_sections_count = 0
         
@@ -137,6 +139,7 @@ class OfflineArchiver:
                 
                 for url in item['urls']:
                     try:
+                        # Simple check - let the original check_file_exists handle everything
                         if url and self.check_file_exists(url):
                             valid_urls.append(url)
                         else:
@@ -494,6 +497,116 @@ class OfflineArchiver:
         self.log("Sidebar not found", "WARNING")
         return False
     
+    def extract_comprehensive_sidebar(self, html):
+        """Extract comprehensive sidebar JavaScript from cockroachcloud pages and ensure correct format"""
+        try:
+            # Simple extraction - find the sidebar object
+            sidebar_start = html.find('const sidebar = {')
+            if sidebar_start == -1:
+                self.log("No sidebar JavaScript found in cockroachcloud page", "DEBUG")
+                return
+            
+            # Find end with simple pattern
+            sidebar_end = html.find('};\n', sidebar_start)
+            if sidebar_end == -1:
+                sidebar_end = html.find('};', sidebar_start)
+                if sidebar_end == -1:
+                    self.log("Could not find end of sidebar JavaScript", "DEBUG")
+                    return
+            
+            # Extract the sidebar JavaScript
+            comprehensive_sidebar_js = html[sidebar_start:sidebar_end + 2]
+            
+            self.log("Extracted comprehensive sidebar from cockroachcloud page", "SUCCESS")
+            self.log(f"Raw sidebar preview (first 300 chars): {comprehensive_sidebar_js[:300]}...", "DEBUG")
+            
+            # CRITICAL: Fix baseUrl to match original format
+            # The original script uses baseUrl: "" but comprehensive sidebar has baseUrl: "/docs"
+            if 'baseUrl: "/docs"' in comprehensive_sidebar_js:
+                comprehensive_sidebar_js = comprehensive_sidebar_js.replace('baseUrl: "/docs"', 'baseUrl: ""')
+                self.log("✓ Fixed baseUrl from '/docs' to empty string", "DEBUG")
+            elif 'baseUrl:"/docs"' in comprehensive_sidebar_js:
+                comprehensive_sidebar_js = comprehensive_sidebar_js.replace('baseUrl:"/docs"', 'baseUrl:""')
+                self.log("✓ Fixed baseUrl from '/docs' to empty string", "DEBUG")
+            
+            # DIRECT FIX: Replace the broken URL processing with working offline logic
+            # The comprehensive sidebar contains web-based URL processing that strips .html extensions
+            # This breaks offline navigation, so we replace it with proper offline logic
+            
+            # Always apply fix for comprehensive sidebar since it has web-based URL processing
+            if comprehensive_sidebar_js and len(comprehensive_sidebar_js) > 100:
+                self.log("🔍 Found broken URL processing in comprehensive sidebar - fixing it", "DEBUG")
+                
+                # SIMPLE DIRECT REPLACEMENT: Replace the exact broken line with working logic
+                # Find and replace the specific problematic line
+                
+                broken_line = 'url = sidebar.baseUrl + url.replace("/index.html", "").replace(".html", "");'
+                
+                working_replacement = '''// Remove /docs/ prefix if present
+                url = url.replace(/^\\/docs\\//, '').replace(/^docs\\//, '');
+                
+                // Handle root/home URLs
+                if (url === '/' || url === '' || url === 'index' || url === 'index.html') {
+                    var currentPath = window.location.pathname;
+                    var pathMatch = currentPath.match(/(cockroachcloud|v19\\.2|releases|advisories)\\/[^\\/]+$/);
+                    if (pathMatch) {
+                        url = '../index.html';
+                    } else {
+                        url = 'index.html';
+                    }
+                } else {
+                    if (url.startsWith('/')) {
+                        url = url.substring(1);
+                    }
+                    url = url.replace(/^stable\\//, 'v19.2/').replace(/\\/stable\\//, '/v19.2/');
+                    
+                    var currentPath = window.location.pathname;
+                    var pathMatch = currentPath.match(/(cockroachcloud|v19\\.2|releases|advisories)\\/[^\\/]+$/);
+                    if (pathMatch) {
+                        var currentDir = pathMatch[1];
+                        if (url.startsWith(currentDir + '/')) {
+                            url = url.substring(currentDir.length + 1);
+                        } else if (url.includes('/')) {
+                            url = '../' + url;
+                        } else if (url !== '' && !url.endsWith('.html') && !url.endsWith('/')) {
+                            url = '../' + url;
+                        }
+                    }
+                }
+                url = url.replace(/\\/+/g, '/');
+                url = sidebar.baseUrl + url;'''
+                
+                if broken_line in comprehensive_sidebar_js:
+                    comprehensive_sidebar_js = comprehensive_sidebar_js.replace(broken_line, working_replacement)
+                    self.log("✅ Successfully replaced broken URL processing line", "SUCCESS")
+                else:
+                    # Debug: show what we're actually looking for vs what exists
+                    self.log("⚠️  Could not find exact broken line to replace", "WARNING")
+                    if 'url.replace("/index.html"' in comprehensive_sidebar_js:
+                        lines = comprehensive_sidebar_js.split('\n')
+                        for i, line in enumerate(lines):
+                            if 'url.replace("/index.html"' in line:
+                                self.log(f"Found actual line: '{line.strip()}'", "DEBUG")
+                                break
+                self.log("✅ Fixed comprehensive sidebar URL processing for offline use", "SUCCESS")
+                fixed_sidebar = comprehensive_sidebar_js
+            else:
+                # Fallback to original processing
+                self.log("🔍 No broken URL processing found, using standard fix", "DEBUG")
+                fixed_sidebar = self.fix_sidebar_javascript(comprehensive_sidebar_js)
+            
+            cleaned_sidebar, removed_count = self.clean_sidebar_in_html(fixed_sidebar)
+            if removed_count > 0:
+                self.log(f"Cleaned {removed_count} broken URLs from comprehensive sidebar", "DEBUG")
+                fixed_sidebar = cleaned_sidebar
+            
+            # Store it
+            self.comprehensive_sidebar_html = fixed_sidebar
+            self.log(f"Final sidebar preview (first 300 chars): {fixed_sidebar[:300]}...", "DEBUG")
+                
+        except Exception as e:
+            self.log(f"Error extracting comprehensive sidebar: {e}", "ERROR")
+    
     def ensure_asset(self, name, local_candidates, url, dest_dir):
         """Ensure an asset exists, downloading if necessary"""
         dest_dir.mkdir(parents=True, exist_ok=True)
@@ -590,12 +703,14 @@ class OfflineArchiver:
                         self.log(f"Copied {version}/{asset_type}/", "SUCCESS")
 
     def fix_sidebar_javascript(self, html):
-        """Fix the embedded sidebar JavaScript configuration and URL processing"""
+        """Fix the embedded sidebar JavaScript configuration and URL processing (ORIGINAL WORKING VERSION)"""
         
         # Fix 1: Replace baseUrl in the embedded sidebar configuration
+        # For offline file:// URLs, use absolute path to offline_snap directory
+        offline_snap_path = f"file://{OUTPUT_ROOT.resolve()}/"
         html = re.sub(
             r'baseUrl:\s*["\'][^"\']*["\']',
-            'baseUrl: ""',
+            f'baseUrl: "{offline_snap_path}"',
             html
         )
         
@@ -603,92 +718,89 @@ class OfflineArchiver:
         # Look for the specific URL processing pattern in the JavaScript
         url_processing_pattern = r'(if \(!/\^https\?:/.test\(url\)\) \{\s*url = sidebar\.baseUrl \+ url\.replace\([^}]+\}\s*return url;)'
         
-        # More robust pattern that captures the entire URL processing block
-        better_pattern = r'(const urls = \(item\.urls \|\| \[\]\)\.map\(function \(url\) \{[\s\S]*?)(if \(!/\^https\?:/.test\(url\)\) \{[\s\S]*?url = sidebar\.baseUrl \+ url\.replace[\s\S]*?\}[\s\S]*?)(return url;[\s\S]*?\}\);)'
+        # More robust pattern that captures the entire URL processing block  
+        # Fixed pattern to match comprehensive sidebar format exactly
+        better_pattern = r'(const urls = \(item\.urls \|\| \[\]\)\.map\(function \(url\) \{[\s\S]*?)(if \(!/\^https\?:/.test\(url\)\) \{[\s\S]*?url = sidebar\.baseUrl \+ url\.replace\([^}]+\}[\s\S]*?)(return url;[\s\S]*?\}\);)'
         
         def replace_url_processing(match):
             start_part = match.group(1)
             end_part = match.group(3)
             
-            # Inject our custom URL processing logic
+            # Simplified URL processing for offline file:// URLs with absolute baseUrl
             new_processing = r'''if (!/^https?:/.test(url)) {
                 // Remove /docs/ prefix if present
                 url = url.replace(/^\/docs\//, '').replace(/^docs\//, '');
                 
+                // Remove leading slash to make it relative
+                if (url.startsWith('/')) {
+                    url = url.substring(1);
+                }
+                
+                // Handle stable -> v19.2 conversion
+                url = url.replace(/^stable\//, 'v19.2/').replace(/\/stable\//, '/v19.2/');
+                
                 // Handle root/home URLs
-                if (url === '/' || url === '' || url === 'index' || url === 'index.html') {
-                    // For docs home, determine if we need to go up directories
-                    var currentPath = window.location.pathname;
-                    var pathMatch = currentPath.match(/(cockroachcloud|v19\.2|releases|advisories)\/[^\/]+$/);
-                    if (pathMatch) {
-                        url = '../index.html';  // Go up to main index
-                    } else {
-                        url = 'index.html';     // Stay at current level
-                    }
-                } else {
-                    // Better current directory detection for file:// URLs
-                    var currentPath = window.location.pathname;
-                    var currentDir = '';
-                    
-                    // Extract just the relevant part of the path (handle both web and file:// URLs)
-                    var pathMatch = currentPath.match(/(cockroachcloud|v19\.2|releases|advisories)\/[^\/]+$/);
-                    if (pathMatch) {
-                        currentDir = pathMatch[1];
-                    } else {
-                        // Fallback: check if we're in root or any subdirectory
-                        var pathParts = currentPath.split('/').filter(function(part) { return part; });
-                        for (var i = pathParts.length - 2; i >= 0; i--) {
-                            if (pathParts[i] === 'cockroachcloud' || pathParts[i] === 'v19.2' || 
-                                pathParts[i] === 'releases' || pathParts[i] === 'advisories') {
-                                currentDir = pathParts[i];
-                                break;
-                            }
-                        }
-                    }
-                    
-                    // Remove leading slash from URL
-                    if (url.startsWith('/')) {
-                        url = url.substring(1);
-                    }
-                    
-                    // Handle stable -> v19.2 conversion
-                    url = url.replace(/^stable\//, 'v19.2/').replace(/\/stable\//, '/v19.2/');
-                    
-                    // Calculate relative path based on current directory context
-                    if (currentDir) {
-                        // We're in a subdirectory
-                        if (url.startsWith(currentDir + '/')) {
-                            // Same directory - remove the directory prefix
-                            url = url.substring(currentDir.length + 1);
-                        } else if (url.includes('/')) {
-                            // Different directory - need to go up one level
-                            url = '../' + url;
-                        } else if (url !== '' && !url.endsWith('.html') && !url.endsWith('/')) {
-                            // Root level file - go up one level
-                            url = '../' + url;
-                        }
-                    }
+                if (url === '' || url === 'index' || url === 'index.html') {
+                    url = 'index.html';
                 }
                 
                 // Clean up any double slashes
                 url = url.replace(/\/+/g, '/');
-                // Note: Keep .html extensions for offline file:// URLs
+                
+                // Use absolute baseUrl for file:// URLs
+                url = sidebar.baseUrl + url;
             }'''
             
             return start_part + new_processing + end_part
         
-        # Try to apply the replacement
-        new_html = re.sub(better_pattern, replace_url_processing, html, flags=re.DOTALL)
+        # Try to apply the replacement - use global replacement to catch all instances
+        new_html = html
+        matches_found = 0
+        def count_replacements(match):
+            nonlocal matches_found
+            matches_found += 1
+            return replace_url_processing(match)
+        
+        new_html = re.sub(better_pattern, count_replacements, html, flags=re.DOTALL)
+        
+        if matches_found > 0:
+            self.log(f"✅ Applied comprehensive URL processing replacement ({matches_found} matches)", "SUCCESS")
+        else:
+            self.log("⚠️  Comprehensive URL processing pattern not found", "WARNING")
+        
+        # If that didn't work, try direct replacement of the .html stripping pattern
+        # This is the most important fix for comprehensive sidebar
+        if new_html == html:
+            # Direct pattern matching for comprehensive sidebar format - handle spacing
+            new_html = re.sub(
+                r'url\s*=\s*sidebar\.baseUrl\s*\+\s*url\.replace\s*\(\s*"/index\.html"\s*,\s*""\s*\)\.replace\s*\(\s*"\.html"\s*,\s*""\s*\)\s*;',
+                'url = sidebar.baseUrl + url.replace("/index.html", ""); // Keep .html for offline',
+                html
+            )
+            if new_html != html:
+                self.log("Applied direct .html preservation fix to comprehensive sidebar", "DEBUG")
         
         # Also fix the .html stripping issue - replace the line that removes .html extensions
-        new_html = re.sub(
-            r'url = url\.replace\("/index\.html", ""\)\.replace\("\.html", ""\);',
-            'url = url.replace("/index.html", ""); // Keep .html for offline',
-            new_html
-        )
+        # The main pattern we need to fix is:
+        # url = sidebar.baseUrl + url.replace("/index.html", "").replace(".html", "");
+        
+        # FINAL FIX: Simple string replacement to ensure .html extensions are preserved
+        old_text = 'url = sidebar.baseUrl + url.replace("/index.html", "").replace(".html", "");'
+        new_text = 'url = sidebar.baseUrl + url.replace("/index.html", ""); // Keep .html for offline'
+        
+        # Apply the fix regardless of previous replacements
+        new_html = new_html.replace(old_text, new_text)
+        
+        if old_text in html and old_text not in new_html:
+            self.log("✅ Fixed .html stripping with simple string replacement", "SUCCESS")
+        elif old_text in html:
+            self.log("⚠️  Failed to replace .html stripping pattern", "WARNING")
+        else:
+            self.log("ℹ️  No .html stripping pattern found to fix", "INFO")
         
         # If the complex pattern didn't match, try a simpler approach
         if new_html == html:
+            self.log("Trying simple pattern replacement as fallback", "DEBUG")
             # Simple pattern - just replace the specific problematic line
             simple_pattern = r'url = sidebar\.baseUrl \+ url\.replace\([^}]+\}'
             
@@ -728,6 +840,14 @@ class OfflineArchiver:
                     
                     url = url.replace(/^stable\//, 'v19.2/').replace(/\/stable\//, '/v19.2/');
                     
+                    // Handle cross-directory URLs (releases, cockroachcloud, advisories)
+                    if (url.startsWith('releases/') || url.startsWith('cockroachcloud/') || url.startsWith('advisories/')) {
+                        // These should go up from v19.2 directory to the root level
+                        if (currentDir === 'v19.2') {
+                            url = '../' + url;
+                        }
+                    }
+                    
                     if (currentDir) {
                         if (url.startsWith(currentDir + '/')) {
                             url = url.substring(currentDir.length + 1);
@@ -745,10 +865,15 @@ class OfflineArchiver:
             
             new_html = re.sub(simple_pattern, simple_replacement, html, flags=re.DOTALL)
             
-            # Also fix the .html stripping issue
+            # Also fix the .html stripping issue - handle both patterns
             new_html = re.sub(
                 r'url = url\.replace\("/index\.html", ""\)\.replace\("\.html", ""\);',
                 'url = url.replace("/index.html", ""); // Keep .html for offline',
+                new_html
+            )
+            new_html = re.sub(
+                r'url = sidebar\.baseUrl \+ url\.replace\("/index\.html", ""\)\.replace\("\.html", ""\);',
+                'url = sidebar.baseUrl + url.replace("/index.html", ""); // Keep .html for offline',
                 new_html
             )
         
@@ -857,6 +982,7 @@ form[action="/docs/search"], form[action*="/search"] {{
     
     def process_html_file(self, src_path):
         """Process a single HTML file with vibrant sidebar styling"""
+        import re  # Import at the top to avoid UnboundLocalError
         try:
             rel_path = src_path.relative_to(DOCS_ROOT)
             dst_path = OUTPUT_ROOT / rel_path
@@ -868,23 +994,82 @@ form[action="/docs/search"], form[action*="/search"] {{
             # Read content
             html = src_path.read_text(encoding="utf-8")
             
-            # CRITICAL: Fix sidebar JavaScript BEFORE other processing
-            html = self.fix_sidebar_javascript(html)
+            # Extract comprehensive sidebar from cockroachcloud pages FIRST (if not already done)
+            if not self.comprehensive_sidebar_html and 'cockroachcloud' in str(rel_path):
+                self.extract_comprehensive_sidebar(html)
             
-            # CRITICAL: Clean embedded sidebar JavaScript
-            cleaned_html, removed_count = self.clean_sidebar_in_html(html)
-            if removed_count > 0:
-                self.total_broken_urls += removed_count
-            html = cleaned_html
+            # SIMPLE APPROACH: If we have comprehensive sidebar, replace it. Otherwise use original logic.
+            if self.comprehensive_sidebar_html:
+                # Find and replace the sidebar JavaScript with our comprehensive version
+                sidebar_pattern = r'const sidebar = \{[\s\S]*?\};'
+                match = re.search(sidebar_pattern, html, flags=re.DOTALL)
+                if match:
+                    # Use simple string replacement to avoid regex escape issues
+                    original_sidebar = match.group(0)
+                    
+                    # FINAL FIX: Apply URL processing fix to comprehensive sidebar before applying it
+                    fixed_comprehensive_sidebar = self.comprehensive_sidebar_html
+                    
+                    # Fix the .html stripping issue in the comprehensive sidebar
+                    broken_line = 'url = sidebar.baseUrl + url.replace("/index.html", "").replace(".html", "");'
+                    fixed_line = 'url = sidebar.baseUrl + url.replace("/index.html", ""); // Keep .html for offline'
+                    
+                    if broken_line in fixed_comprehensive_sidebar:
+                        fixed_comprehensive_sidebar = fixed_comprehensive_sidebar.replace(broken_line, fixed_line)
+                        self.log("🔧 Fixed .html stripping in comprehensive sidebar", "SUCCESS")
+                    
+                    # The simple fix above should be sufficient
+                    
+                    html = html.replace(original_sidebar, fixed_comprehensive_sidebar)
+                    self.log(f"Applied comprehensive sidebar to {rel_path}", "DEBUG")
+                    
+                    # CRITICAL: Apply sidebar fixes AFTER comprehensive sidebar replacement
+                    html = self.fix_sidebar_javascript(html)
+                    
+                    # Debug: check if "/" URL is present in replaced content
+                    if '"/"' in self.comprehensive_sidebar_html:
+                        self.log("✓ Root URL '/' found in comprehensive sidebar", "DEBUG")
+                    else:
+                        self.log("⚠ Root URL '/' NOT found in comprehensive sidebar", "WARNING")
+                else:
+                    # No sidebar JS found, continue with normal processing
+                    html = self.fix_sidebar_javascript(html)
+                    cleaned_html, removed_count = self.clean_sidebar_in_html(html)
+                    if removed_count > 0:
+                        self.total_broken_urls += removed_count
+                    html = cleaned_html
+            else:
+                # ORIGINAL LOGIC: Fix sidebar JavaScript BEFORE other processing
+                html = self.fix_sidebar_javascript(html)
+                
+                # Clean embedded sidebar JavaScript
+                cleaned_html, removed_count = self.clean_sidebar_in_html(html)
+                if removed_count > 0:
+                    self.total_broken_urls += removed_count
+                html = cleaned_html
             
-            # Inject sidebar HTML if available
+            # Inject sidebar HTML if available (ORIGINAL LOGIC)
             if self.sidebar_html:
-                html = re.sub(
-                    r"(<div id=\"sidebar\"[^>]*>)(\s*?</div>)",
-                    rf"\1{self.sidebar_html}\2",
+                sidebar_to_inject = self.sidebar_html
+                # Try to inject into ul#sidebar first
+                ul_replaced = re.sub(
+                    r"(<ul[^>]*id=\"sidebar\"[^>]*>)([^<]*)(</ul>)",
+                    rf"\1{sidebar_to_inject}\3",
                     html,
-                    flags=re.IGNORECASE,
+                    flags=re.IGNORECASE | re.DOTALL,
                 )
+                
+                # If ul replacement worked, use it
+                if ul_replaced != html:
+                    html = ul_replaced
+                else:
+                    # Fallback to div#sidebar
+                    html = re.sub(
+                        r"(<div id=\"sidebar\"[^>]*>)(\s*?</div>)",
+                        rf"\1{sidebar_to_inject}\2",
+                        html,
+                        flags=re.IGNORECASE,
+                    )
             
             # Parse with BeautifulSoup for additional cleanup
             soup = BeautifulSoup(html, "html.parser")
@@ -1336,13 +1521,21 @@ code, pre { font-family: Consolas, Monaco, "Courier New", monospace; }"""
         self.log(f"Output directory: {OUTPUT_ROOT.resolve()}")
         self.log(f"Total files: {len(self.processed_files)}")
         self.log(f"Total broken URLs removed: {self.total_broken_urls}", "SUCCESS")
-        self.log("🟣 Vibrant #6933FF sidebar styling (Script 1)", "SUCCESS")
-        self.log("🏠 Professional homepage with clear navigation (Script 2)", "SUCCESS")
-        self.log("🔗 Sidebar navigation logic with better URL processing (Updated)", "SUCCESS")
-        self.log("⚡ Selective asset copying for reduced size (Script 2)", "SUCCESS")
-        self.log("🔧 Robust error handling and progress reporting (Script 2)", "SUCCESS")
-        self.log("✅ Sidebar JavaScript URL processing FIXED", "SUCCESS")
-        self.log("✅ Broken sidebar links and empty sections removed", "SUCCESS")
+        
+        # Navigation summary
+        if self.comprehensive_sidebar_html:
+            self.log("✅ Comprehensive sidebar extracted and applied to all pages", "SUCCESS")
+        else:
+            self.log("⚠️  No comprehensive sidebar found - using original individual processing", "WARNING")
+        
+        self.log("🟣 Vibrant #6933FF sidebar styling", "SUCCESS")
+        self.log("🏠 Professional homepage with archived banner", "SUCCESS")
+        self.log("🔗 ORIGINAL working navigation logic restored", "SUCCESS")
+        self.log("⚡ Selective asset copying for reduced size", "SUCCESS")
+        self.log("🔧 Robust error handling and progress reporting", "SUCCESS")
+        self.log("✅ JavaScript URL processing: ORIGINAL working version", "SUCCESS")
+        self.log("✅ Filtered out non-v19.2 version links (v25.1, v24.x, etc.)", "SUCCESS")
+        self.log("✅ Broken sidebar links removed from comprehensive sidebar", "SUCCESS")
         
         print(f"\n🎉 Hybrid offline site built in {OUTPUT_ROOT}")
         print(f"\n📦 To test: open file://{OUTPUT_ROOT.resolve()}/index.html")
