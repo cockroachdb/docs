@@ -9451,7 +9451,7 @@
     linux_arm: true
     linux_arm_experimental: false
     linux_arm_limited_access: false
-    linux_intel_fips: true
+    linux_intel_fips: false
     linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach
