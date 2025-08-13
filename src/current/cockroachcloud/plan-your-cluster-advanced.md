@@ -40,7 +40,11 @@ If your cluster's workload is subject to [compliance]({% link cockroachcloud/com
 
 A cluster's number of nodes and node capacity together determine the node's total compute and storage capacity.
 
-When considering your cluster's scale, we recommend that you start by planning the compute requirements per node. If a workload requires more than 16 vCPUs per node, consider adding more nodes. For example, if a 3-node cluster with 8 vCPUs per node is not adequate for your workload, consider scaling up to 16 vCPUs before adding a fourth node. For most production applications, we recommend at minimum 8 vCPUs per node.  We do not provide support for clusters with only 2 vCPUs per node.
+When considering your cluster's scale, we recommend that you start by planning the compute requirements per node. If a workload requires more than 16 vCPUs per node, consider adding more nodes. For example, if a 3-node cluster with 8 vCPUs per node is not adequate for your workload, consider scaling up to 16 vCPUs before adding a fourth node. For most production applications, we recommend at minimum 8 vCPUs per node.  
+
+{{site.data.alerts.callout_danger}}
+We do not provide support for clusters with only 2 vCPUs per node.
+{{site.data.alerts.end}}
 
 We recommend you avoid adding or removing nodes from a cluster when its load is expected to be high. Adding or removing nodes incurs a non-trivial amount of load on the cluster and can take more than half an hour per region. Changing the cluster configuration during times of heavy traffic may negatively impact application performance, and changes may take longer to be applied.
 
