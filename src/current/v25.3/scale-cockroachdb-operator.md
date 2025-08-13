@@ -56,17 +56,17 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    kubectl get pods
+    kubectl get pods -n $NAMESPACE
     ~~~
     ~~~ shell
     NAME                                    READY   STATUS    RESTARTS   AGE
     crdb-operator-655fbf7847-zn9v8            1/1     Running   0          30m
     cockroachdb-9swcg                         1/1     Running   0          24m
-    cockroachdb-bn6f7                         1/1     Running   0          24m
-    cockroachdb-nk2dw                         1/1     Running   0          24m
-    cockroachdb-f83nd                         1/1     Running   0          30s
-    cockroachdb-8d2ck                         1/1     Running   0          30s
-    cockroachdb-qopc2                         1/1     Running   0          30s
+    cockroachdb-bn6f7                         2/2     Running   0          24m
+    cockroachdb-nk2dw                         2/2     Running   0          24m
+    cockroachdb-f83nd                         2/2     Running   0          30s
+    cockroachdb-8d2ck                         2/2     Running   0          30s
+    cockroachdb-qopc2                         2/2     Running   0          30s
     ~~~
 
     Each pod should be running in one of the 6 worker nodes.

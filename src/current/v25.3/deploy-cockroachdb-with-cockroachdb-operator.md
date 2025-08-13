@@ -466,14 +466,14 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    kubectl get pods
+    kubectl get pods -n $NAMESPACE
     ~~~
     ~~~ shell
     NAME                                    READY   STATUS    RESTARTS   AGE
     crdb-operator-655fbf7847-zn9v8            1/1     Running   0          10m
-    cockroachdb-9swcg                         1/1     Running   0          45s
-    cockroachdb-bn6f7                         1/1     Running   0          45s
-    cockroachdb-nk2dw                         1/1     Running   0          45s
+    cockroachdb-9swcg                         2/2     Running   0          45s
+    cockroachdb-bn6f7                         2/2     Running   0          45s
+    cockroachdb-nk2dw                         2/2     Running   0          45s
     ~~~
 
 #### Deploy across multiple regions
