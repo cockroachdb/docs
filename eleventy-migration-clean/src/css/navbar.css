@@ -1,0 +1,701 @@
+/* Exact CSS copied from Jekyll's main-menu-serverless.html */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+.navbar {
+  max-height: 84px;
+  padding-left: 0px; /* Remove excessive left padding */
+}
+
+#crdb-icon-name{
+  padding-bottom: 10px;
+}
+
+.navbar-nav .nav-item .nav-link {
+  font-size: 16px;
+  color: #0A2540;
+}
+
+/* Dropdown styles */
+.navbar .dropdown .dropdown-menu {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s linear; /* Animate opacity */
+}
+
+.navbar .dropdown .dropdown-menu.dropdown-open {
+  display: block;
+  opacity: 1;
+}
+
+@media (hover: hover) {
+.navbar .dropdown:hover .dropdown-menu {
+  display: block !important; /* Show dropdown on hover */
+  visibility: visible;
+  opacity: 1;
+}
+.main-nav .navbar .dropdown-menu * {
+  list-style: none !important;
+  background-color: #fff;
+}
+}
+
+/* Desktop styles */
+@media (min-width: 1450px) {
+  .nav-icon-md {
+    display: none !important;
+  }
+  .right-nav-text {
+    display: block !important;
+  }
+}
+
+/* Medium desktop styles */
+@media (min-width: 993px) and (max-width: 1449px) {
+  .navbar {
+    padding-left: 20px;  /* Reduced left padding */
+    padding-right: 20px; /* Added right padding for balance */
+  }
+  #crdb-icon-name{
+  padding-bottom: 0px;
+}
+  /* Main nav adjustments */
+  .navbar-nav .nav-item {
+    padding: 0 !important;
+    margin:  0 !important;;
+  }
+
+  .navbar-nav .nav-item .nav-link {
+    font-size: 16px;
+    padding: 0.5rem 0.5rem;
+  }
+
+  /* Right nav adjustments */
+  .right-nav-text {
+    display: none !important;
+  }
+  
+  .nav-icon-md {
+    display: block !important;
+    padding: 0.5rem !important;
+  }
+
+  .btn-primary {
+    padding: 4px 12px !important;
+    font-size: 13px !important;
+    margin-left: 0.5rem !important;
+  }
+
+  .navbar-brand img {
+    width: 140px;
+    height: auto;
+  }
+
+  .navbar-nav .mx-1 {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .navbar-nav .px-1 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
+/* Tablet styles */
+@media (max-width: 992px) {
+  .navbar {
+    padding-left: 15px;
+  }
+
+  #navbarSupportedContent {
+    position: fixed;
+    top: 84px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    z-index: 1040;
+    overflow-y: auto;
+  }
+
+  .navbar-collapse.show {
+    display: block;
+  }
+
+  body.mobile-menu-open {
+    overflow: hidden;
+  }
+
+  .nav-icon-md {
+    display: none !important;
+  }
+
+  .right-nav-text {
+    display: block !important;
+  }
+
+  .mobile-menu-wrapper .card-header {
+    padding: 1rem;
+  }
+}
+
+/* Additional styles from Jekyll's _main-menu.scss */
+
+.main-nav-wrapper {
+  z-index: 9;
+  background-color: white;
+}
+
+.main-nav-contained-800 .dropdown-menu {
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.navbar-light .navbar-nav {
+  font-family: "Poppins", sans-serif;
+}
+
+.navbar-light .navbar-nav .nav-item {
+  margin-right: .35rem;
+  margin-left: .35rem;
+}
+
+.navbar-light .navbar-nav .nav-item.active .nav-link {
+  color: #6933fe;
+}
+
+.navbar-light .navbar-nav .nav-item .nav-link:focus {
+  outline: 2px solid #6933fe5c;
+}
+
+.navbar-light .navbar-nav .nav-link:focus {
+  color: #000;
+  font-weight: normal;
+  outline: none;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  color: #6933fe;
+}
+
+.navbar-light .navbar-nav .show .dropdown-toggle {
+  color: #6933fe;
+}
+
+.megamenu {
+  position: static;
+}
+
+.megamenu .dropdown-toggle:after {
+  display: none;
+}
+
+.megamenu .dropdown-menu {
+  background: none;
+  border: none;
+  width: 100%;
+}
+
+.megamenu .dropdown:hover > .dropdown-menu {
+  display: block !important;
+}
+
+.main-nav .nav-button {
+  border: 1px solid #6933fe;
+  color: #000;
+  border-radius: 30px;
+}
+
+.main-nav .navbar-toggler {
+  border: none;
+}
+
+.main-nav a, .main-nav .btn {
+  color: #000;
+}
+
+.main-nav .start-instantly-nav-btn {
+  color: white !important;
+}
+
+.main-nav .list-unstyled a {
+  color: #000000;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.main-nav .navbar .dropdown-menu * {
+  font-family: "Open Sans", sans-serif;
+}
+
+.main-nav .navbar p {
+  font-weight: 300;
+}
+
+@media (max-width: 992px) {
+  .main-nav .navbar {
+    padding-left: 20px;
+    height: 100%;
+    overflow-y: scroll;
+  }
+}
+
+.main-nav .navbar .nav-icon-md {
+  display: none;
+}
+
+@media (min-width:993px) and (max-width: 1080px) {
+  .main-nav .navbar .nav-text-md {
+    display: none;
+  }
+  .main-nav .navbar .nav-link.nav-icon-md {
+    display: block;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+.main-nav .navbar .btn-close {
+  right: 10px;
+  top: 10px;
+  background-size: 12px 12px;
+}
+
+.main-nav .navbar .small9 {
+  font-size: 9px;
+}
+
+.main-nav .navbar .small10 {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.main-nav .navbar .font-weight-semi-bold {
+  font-weight: 600;
+}
+
+.main-nav .navbar .navbar-brand {
+  margin-bottom: 7px;
+  padding: 0;
+}
+
+.main-nav .navbar .nav-link {
+  position: relative;
+}
+
+@media (min-width: 992px) {
+  .main-nav .navbar .nav-link {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+.main-nav .navbar .dropdown-menu {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background-image: url(https://crl2020.imgix.net/img/nav-bg.svg);
+  background-repeat: no-repeat;    
+  padding: 20px;
+  margin-top: none;
+  border-top: none;
+  margin-top: 0;
+  border-top: 1px solid #ccc;
+  box-shadow: 0 12px 6px 0 #0003;
+}
+
+.main-nav .navbar .dropdown-menu .btn {
+  border-width: 2px;
+  padding: .75rem .45rem;
+  font-size: .9rem;
+}
+
+.main-nav .navbar .dropdown-toggle:before {
+}
+
+.main-nav .navbar .dropdown-toggle.no-chevron:before {
+  display: none;
+}
+
+.main-nav .navbar .dropdown-toggle:after {
+  display: none;
+}
+
+.main-nav .navbar.show .dropdown-toggle:before {
+  background: url("/img/icon-chevron-up.svg");
+}
+
+.main-nav .navbar .card-header .btn-link-chevron-right:after {
+  content: '';
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: auto;
+  content: "";
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-size: 1.25rem;
+  transform: rotate(-90deg);
+}
+
+.img-logo-nav {
+  width: 100%;
+  max-height: 50px;
+  max-width: 100px;
+  height: auto;
+}
+
+.main-nav-wrapper .navbar-collapse .card .text-small {
+  font-size: 16px;
+}
+
+.dropdown-menu ul li a:hover {
+  color: #6933fe !important;
+}
+
+.width-990 {
+  max-width: 1250px;
+}
+
+.nav-img-holder {
+  box-shadow: 0px 0px 15px #00000054;
+  max-width: 325px;
+  margin-top: 30px;
+}
+
+@media (min-width:992px) {
+  .nav-img-holder {
+    box-shadow: 0px 0px 15px #00000054;
+    max-width: 275px;
+    margin: auto;
+  }
+}
+
+/* Bootstrap utilities we need */
+.container-xl {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 1200px) {
+  .container-xl {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container-xl {
+    max-width: 1320px;
+  }
+}
+
+.p-45 {
+  padding: 45px !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important;
+}
+
+.position-relative {
+  position: relative !important;
+}
+
+.position-static {
+  position: static !important;
+}
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+}
+
+.br0 {
+  border-radius: 0 !important;
+}
+
+.db {
+  display: block !important;
+}
+
+.mb0 {
+  margin-bottom: 0 !important;
+}
+
+.rounded-pill {
+  border-radius: 50rem !important;
+}
+
+.font-family-poppins {
+  font-family: "Poppins", sans-serif !important;
+}
+
+.btn-primary {
+  color: #fff !important;
+  background-color: #6933fe !important;
+  border-color: #6933fe !important;
+}
+
+/* Add body padding for fixed navbar */
+body {
+  padding-top: 84px;
+}
+
+/* Critical inline styles from Jekyll nav components */
+.custom-row {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.custom-col {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.nav-img-holder {
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 992px) {
+  .custom-col {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .nav-img-holder {
+    margin-bottom: 0;
+  }
+}
+
+/* Ensure the container width matches the design */
+@media (min-width: 576px) {
+  .container-sm.width-990 {
+    max-width: 990px;
+  }
+}
+
+/* Additional Bootstrap utilities needed by nav components */
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.no-gutters > .col,
+.no-gutters > [class*="col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fix navbar font sizes and alignment from Jekyll _main-menu.scss */
+.navbar-light .navbar-nav .nav-item {
+  margin-right: .35rem;
+  margin-left: .35rem;
+}
+
+.main-nav .navbar .dropdown-menu * {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 16px;
+}
+
+.main-nav .list-unstyled a {
+  color: #000000;
+  text-decoration: none;
+  font-size: 16px !important;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.main-nav .navbar p {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+/* Fix container widths for proper centering */
+.main-nav .dropdown-menu {
+  left: 50% !important;
+  transform: translateX(-50%);
+  right: auto !important;
+}
+
+/* Ensure proper spacing for dropdown items */
+.main-nav .dropdown-menu ul li {
+  margin-bottom: 0.5rem;
+}
+
+.main-nav .dropdown-menu ul li:last-child {
+  margin-bottom: 0;
+}
+
+/* Fix text size classes */
+.text-small {
+  font-size: 16px !important;
+}
+
+/* Nav-specific adjustments */
+.nav-solutions-first-col {
+  position: relative;
+  top: -10px;
+}
+
+.font-weight-semi-bold {
+  font-weight: 600 !important;
+}
+
+.font-size-16 {
+  font-size: 16px !important;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem !important;
+}
+
+.pt-3 {
+  padding-top: 1rem !important;
+}
+
+.mt-3 {
+  margin-top: 1rem !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.mb-5 {
+  margin-bottom: 3rem !important;
+}
+
+.mb-m-lg-0 {
+  margin-bottom: 0 !important;
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.pl-lg-4 {
+  padding-left: 1.5rem !important;
+}
+
+@media (min-width: 992px) {
+  .pl-lg-4 {
+    padding-left: 1.5rem !important;
+  }
+}
+
+.col-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.col-md-3 {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-md-4 {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-md-5 {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+@media (min-width: 768px) {
+  .col-md-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .col-md-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+  .col-md-5 {
+    flex: 0 0 41.666667%;
+    max-width: 41.666667%;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.container-sm {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 576px) {
+  .container-sm {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container-sm {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container-sm {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container-sm {
+    max-width: 1140px;
+  }
+}
+
+/* Special container widths used in nav components */
+.container-sm[style*="max-width: 1300px"] {
+  max-width: 1300px !important;
+}
