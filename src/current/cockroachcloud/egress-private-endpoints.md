@@ -17,7 +17,7 @@ CockroachDB {{ site.data.products.cloud }} supports egress private endpoints wit
 - [Amazon Virtual Private Cloud (AWS VPC)](https://aws.amazon.com/vpc/)
 - [Amazon Managed Streaming for Apache Kafka (MSK)](https://aws.amazon.com/msk/)
 - [Google Cloud VPC Private Service Connect (GCP PSC)](https://cloud.google.com/vpc/docs/private-service-connect)
-- [Confluent Cloud](https://www.confluent.io/confluent-cloud/)
+- [Confluent Cloud on GCP or AWS](https://www.confluent.io/confluent-cloud/)
 
 {{site.data.alerts.callout_danger}}
 Regions cannot be removed from a CockroachDB {{ site.data.products.cloud }} cluster if there are egress private endpoints in that region. When a {{ site.data.products.cloud }} cluster is deleted, all private endpoints associated with the cluster are deleted as well.
@@ -40,7 +40,7 @@ curl --request GET \
   --header 'Authorization: Bearer {secret_key}' | jq .account_id
 ~~~
 
-### MSK
+### AWS MSK
 
 The following prerequisites apply to the MSK service:
 
