@@ -115,7 +115,7 @@ The following example `POST` requests assume that an API key has been created fo
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
 -H 'Authorization: Bearer {secret_key}' \
 -H 'Content-Type: application/json' \
@@ -131,7 +131,7 @@ curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
 -H 'Authorization: Bearer {secret_key}' \
 -H 'Content-Type: application/json' \
@@ -147,7 +147,7 @@ curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
 -H 'Authorization: Bearer {secret_key}' \
 -H 'Content-Type: application/json' \
@@ -192,7 +192,7 @@ For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id}/domain-names \
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id}/domain-names \
 -X PATCH \
 -H 'Authorization: Bearer {secret_key}' \
 -H 'Content-Type: application/json' \
@@ -211,7 +211,7 @@ Send a `GET` request to the `/api/v1/clusters/{cluster_id}/networking/egress-pri
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -H "Authorization: Bearer {secret_key}"
 ~~~
 
@@ -222,12 +222,13 @@ The response lists all egress private endpoints on the cluster. The `state` fiel
     "egress_private_endpoints": [
         {
             "id": "{endpoint_id}",
-            "endpoint_connection_id": "vpce-0460d7c25b1f505dd",
+            "endpoint_connection_id": "vpce-example",
             "region": "us-east-2",
-            "target_service_identifier": "com.amazonaws.vpce.us-east-2.vpce-svc-0fb8e1b95f0ade981",
+            "target_service_identifier": "com.amazonaws.vpce.us-east-2.vpce-svc-example",
             "target_service_type": "PRIVATE_SERVICE",
-            "endpoint_address": "vpce-0460d7c25b1f505dd-onq0bw5q.vpce-svc-0fb8e1b95f0ade981.us-east-2.vpce.amazonaws.com",
-            "state": "AVAILABLE"
+            "endpoint_address": "vpce-example-onq0bw5q.vpce-svc-example.us-east-2.vpce.amazonaws.com",
+            "state": "AVAILABLE",
+            "domain_names": []
         }
     ],
     "pagination": null
@@ -254,7 +255,7 @@ To delete a private endpoint, send a `DELETE` request to the `/api/v1/clusters/{
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id} \
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id} \
 -X DELETE \
 -H "Authorization: Bearer {secret_key}"
 ~~~
