@@ -61,6 +61,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | GUI | Latest tested version | Support level | Tutorial |
 |-----+-----------------------+---------------+----------|
 | [DBeaver](https://dbeaver.com/) | 5.2.3 | Full | [Visualize CockroachDB Schemas with DBeaver]({% link {{ page.version.version }}/dbeaver.md %})
+| [ChartDB](https://chartdb.io/) | 1.4.0 | Full | [Visualize CockroachDB Schemas with ChartDB]({% link {{ page.version.version }}/chartdb.md %})
 
 ## Integrated development environments (IDEs)
 
