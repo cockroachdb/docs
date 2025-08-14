@@ -10,3 +10,9 @@ You can access these metrics via the following methods:
 
 - The [**Custom Chart** debug page]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}) in [DB Console]({% link {{ page.version.version }}/ui-custom-chart-debug-page.md %}).
 - By [monitoring CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}).
+
+In addition to metrics, logs help identify disk stalls during WAL failover. The following message indicates a disk stall on the primary store's volume:
+
+~~~
+disk stall detected: sync on file probe-file has been ongoing for 40.0s
+~~~
