@@ -12,7 +12,22 @@ To install MOLT, download the binary that matches your architecture and source d
 The following binaries are included:
 
 - `molt`
-- `replicator`. To use replication features, `replicator` **must** be located either in the same directory as `molt` or in a directory beneath `molt`.
+- `replicator`
+
+Both `molt` and `replicator` **must** be in your current working directory. To use replication features, `replicator` must be located either in the same directory as `molt` or in a directory directly beneath `molt`. For example, either of the following would be valid:
+
+~~~
+/migration-project/          # Your current working directory
+├── molt                     # MOLT binary
+└── replicator               # Replicator binary
+~~~
+	
+~~~
+/migration-project/          # Your current working directory
+├── molt                     # MOLT binary
+└── bin/                     # Subdirectory
+    └── replicator           # Replicator binary
+~~~
 
 To display the current version of each binary, run `molt --version` and `replicator --version`.
 
