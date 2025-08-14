@@ -734,6 +734,51 @@ Where:
   - `{entry_array}` is a structured JSON array of audit log entries.
   - `{timestamp}` indicates the timestamp to send to export the next batch of results.
 
+## Get invoices for an organization
+
+To list all [invoices billed]({% link cockroachcloud/billing-management.md %}#view-invoices) to an organization, send a `GET` request to the `/v1/invoices` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Billing Coordinator or Cluster Admin [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/invoices \
+  --header 'Authorization: Bearer {secret_key}'
+~~~
+
+If the request was successful, the client receives a list of invoices billed to the organization. Each invoice object includes the start and end of the corresponding billing period, with each past invoice showing a `status` of `FINALIZED`. An invoice object is also returned for the current billing period showing usage so far with a `status` of `DRAFT`.
+
+~~~ json
+{
+  "invoices": [
+    {<current_invoice_object>},
+    {<past_invoice_object1>},
+    {<past_invoice_object2>}
+  ],
+  "pagination": null
+}    
+~~~
+
+You can request a specific invoice by providing the invoice ID in a `GET` request to the `/v1/invoices/{invoice_id}` endpoint:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/invoices/{invoice_id} \
+  --header 'Authorization: Bearer {secret_key}'
+~~~
+~~~ json
+{
+  "invoices": [
+    {<invoice_object>}
+  ],
+  "pagination": null
+}    
+~~~
+
 ## List all clusters in an organization
 
 To list all active clusters within an organization, send a `GET` request to the `/v1/clusters` endpoint.
