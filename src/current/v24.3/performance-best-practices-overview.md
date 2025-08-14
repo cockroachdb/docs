@@ -64,20 +64,17 @@ When a table is created, all columns are stored as a single column family. This 
 
 ## Unique ID best practices
 
-The best practices for generating unique IDs in a distributed database like CockroachDB are very different than for a legacy single-node database. Traditional approaches for generating unique IDs for legacy single-node databases include:
-
-1. Using the [`SERIAL`]({% link {{ page.version.version }}/serial.md %}) pseudo-type for a column to generate random unique IDs. This can result in a performance bottleneck because IDs generated temporally near each other have similar values and are located physically near each other in a table's storage.
-1. Generating monotonically increasing [`INT`]({% link {{ page.version.version }}/int.md %}) IDs by using transactions with roundtrip [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})s, e.g., `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`]({% link {{ page.version.version }}/insert.md %}) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [change data capture (CDC)]({% link {{ page.version.version }}/change-data-capture-overview.md %}) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher-performance ID strategies outlined in the following sections.
-
-The preceding approaches are likely to create [hot spots](#hot-spots) for both reads and writes in CockroachDB. {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
+The best practices for generating unique IDs in a distributed database like CockroachDB are very different than for a single-node database.
 
 To create unique and non-sequential IDs, we recommend the following approaches (listed in order from best to worst performance):
 
-| Approach                                                                             | Pros                                             | Cons                                                                                    |
-|--------------------------------------------------------------------------------------+--------------------------------------------------+-----------------------------------------------------------------------------------------|
-| 1. [Use multi-column primary keys](#use-multi-column-primary-keys)                   | Potentially fastest, if done right               | Complex, requires up-front design and testing to ensure performance                     |
-| 2. [Use functions to generate unique IDs](#use-functions-to-generate-unique-ids)             | Good performance; spreads load well; easy choice | May leave some performance on the table; requires other columns to be useful in queries |
-| 3. [Use `INSERT` with the `RETURNING` clause](#use-insert-with-the-returning-clause-to-generate-unique-ids) | Easy to query against; familiar design           | Slower performance than the other options; higher chance of [transaction contention](#transaction-contention)      |
+| Approach                                                                                                    | Pros                                             | Cons                                                                                                          |
+|-------------------------------------------------------------------------------------------------------------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------------|
+| 1. [Use multi-column primary keys](#use-multi-column-primary-keys)                                          | Potentially fastest, if done right               | Complex, requires up-front design and testing to ensure performance                                           |
+| 2. [Use functions to generate unique IDs](#use-functions-to-generate-unique-ids)                            | Good performance; spreads load well; easy choice | May leave some performance on the table; requires other columns to be useful in queries                       |
+| 3. [Use `INSERT` with the `RETURNING` clause](#use-insert-with-the-returning-clause-to-generate-unique-ids) | Easy to query against; familiar design           | Slower performance than the other options; higher chance of [transaction contention](#transaction-contention) |
+
+Traditional approaches using monotonically increasing [`INT`]({% link {{ page.version.version }}/int.md %}) or [`SERIAL`]({% link {{ page.version.version }}/serial.md %}) data types will create [hotspots](#hotspots) for both reads and writes in a distributed database like CockroachDB. {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 
 ### Use multi-column primary keys
 
@@ -360,6 +357,8 @@ To maximize transaction performance, you'll need to maximize the performance of 
 - Minimize the network distance between the [replicas of a range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-replica), possibly using [zone configs]({% link {{ page.version.version }}/configure-replication-zones.md %}) and [partitioning]({% link {{ page.version.version }}/partitioning.md %}), or the newer [Multi-region SQL capabilities]({% link {{ page.version.version }}/multiregion-overview.md %}).
 - Use the fastest [storage devices]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage) available.
 - If the contending transactions operate on different keys within the same range, add [more CPU power (more cores) per node]({% link {{ page.version.version }}/recommended-production-settings.md %}#sizing). However, if the transactions all operate on the same key, this may not provide an improvement.
+
+<a name="hotspots"></a>
 
 ## Hot spots
 
