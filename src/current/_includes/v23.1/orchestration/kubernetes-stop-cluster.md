@@ -79,7 +79,9 @@ Do **not** use the `--all` flag to `kubectl delete`, to avoid the risk of data l
     pod "cockroachdb-client-secure" deleted
     ~~~
 
-{% capture get_issuers_command %}{% include_cached copy-clipboard.html %}
+{% capture get_issuers_command %}
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get issuer
     ~~~
@@ -88,7 +90,9 @@ Do **not** use the `--all` flag to `kubectl delete`, to avoid the risk of data l
     ~~~
 {% endcapture %}
 
-{% capture get_csrs_command %}{% include_cached copy-clipboard.html %}
+{% capture get_csrs_command %}
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     kubectl get csr
     ~~~
