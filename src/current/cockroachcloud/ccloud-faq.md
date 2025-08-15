@@ -45,7 +45,7 @@ Users with the Organization Admin role are allowed to manage users and roles at 
 
 ### What is the Cluster Creator role useful for when there’s a Cluster Admin role as well?
 
-A user with the Cluster Creator role can create new clusters in the CockroachDB {{ site.data.products.cloud }} organization, so this role can be assigned only at the organization scope.
+A user with the [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator) role can create new clusters in the CockroachDB {{ site.data.products.cloud }} organization, so this role can be assigned only at the organization scope.
 
 After the cluster is created, its creator is automatically assigned the Cluster Admin role on that cluster. If that user already had the Cluster Admin role at the organization scope, this cluster-specific role assignment appears to have no effect.
 
