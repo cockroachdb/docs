@@ -107,7 +107,7 @@ Possible sources of writes with their series label are:
 - SQL row spill (`sql-row-spill`), refer to [`cockroach start` command]({% link {{ page.version.version }}/cockroach-start.md %}#flags) flag `--max-disk-temp-storage`
 - [SQL columnar spill]({% link {{ page.version.version }}/vectorized-execution.md %}#disk-spilling-operations) (`sql-col-spill`)
 
-To view an aggregate of all disk writes, refer to the **Hardware** dashboard [**Disk Write Bytes** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#disk-write-bytes).
+To view an aggregate of all disk writes, refer to the **Hardware** dashboard [**Disk Write Bytes/s** graph]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#disk-write-bytes-s).
 
 ## Other graphs
 
