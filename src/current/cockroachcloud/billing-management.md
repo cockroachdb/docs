@@ -136,10 +136,12 @@ Under the **Credits** section, you can see more information about each of your o
 The **Current billing period** section displays a table listing your organization's clusters and the Credits they have accrued. The table also includes the cluster type and associated [labels]({% link cockroachcloud/labels.md %}).
 
 ## View invoices
-
-You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Click any invoice to view the details of your charges for a billing period.
+ 
+You can review an in-progress invoice for the current billing period on the **Overview** tab of the **Billing** page. You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Click any invoice to view the details of your charges for a billing period.
 
 If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your clusters, billing is grouped by folder. Click any folder to view invoices for individual clusters in the folder or its descendants. Within a folder, click any subfolder to view its details.
+
+You can also use the Cloud API to [get invoices for an organization]({% link cockroachcloud/cloud-api.md %}#get-invoices-for-an-organization).
 
 ### Export invoices
 
