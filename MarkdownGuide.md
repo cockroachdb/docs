@@ -1,6 +1,6 @@
 # Markdown Guide
 
-This guide covers Markdown-specific syntax and formatting conventions used in CockroachDB documentation. For general style guidelines, see [StyleGuide.md](StyleGuide.md).
+This guide covers Markdown-specific syntax and formatting conventions used in CockroachDB documentation. For general style guidelines, refer to the [Style Guide](StyleGuide.md).
 
 ## Table of Contents
 
