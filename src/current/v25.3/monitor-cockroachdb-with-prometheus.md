@@ -103,7 +103,7 @@ This tutorial explores the CockroachDB {{ site.data.products.core }} integration
     ~~~
 
 1. Point your browser to `http://<hostname of machine running prometheus>:9090`, where you can use the Prometheus UI to query, aggregate, and graph CockroachDB time series metrics.
-  - Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, point your browser to `http://<hostname of a CockroachDB node>:8080/_status/vars`.
+  - Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, point your browser to the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}).
   - For more details on using the Prometheus UI, see their [official documentation](https://prometheus.io/docs/introduction/getting_started/).
 
 ## Step 4. Send notifications with Alertmanager
@@ -205,7 +205,7 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
 If you rely on external tools such as Prometheus for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
 
-When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Prometheus and AlertManager based on the data Prometheus is collecting from your cluster's Prometheus endpoint.
+When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Prometheus and AlertManager based on the data Prometheus is collecting from your cluster's Prometheus endpoint.
 
 ## See also
 

@@ -32,10 +32,19 @@ Any feature made available in a phase prior to GA is provided without any warran
 {{site.data.alerts.end}}
 
 ### Export logs to Azure Monitor
+
 [Exporting logs to Azure Monitor]({% link cockroachcloud/export-logs-advanced.md %}?filters=azure-monitor-log-export) from your CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to Azure Monitor. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### Export metrics to Azure Monitor
+
 [Exporting Metrics to Azure Monitor]({% link cockroachcloud/export-metrics-advanced.md %}?filters=azure-monitor-metrics-export) from a CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, metrics will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to your chosen cloud metrics sink. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
+
+### Backup and restore with the Cloud API
+You can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}#managed-backups-and-restores) to handle [managed backups and restore operations]({% link cockroachcloud/backup-and-restore-overview.md %}). To express interest and try out these API endpoints, contact [Support](https://support.cockroachlabs.com/hc).
+
+### Egress private endpoints
+
+[Egress private endpoints]({% link cockroachcloud/egress-private-endpoints.md %}) are secure network connections between a CockroachDB {{ site.data.products.advanced }} cluster and the rest of your private cloud infrastructure. Egress endpoints let CockroachDB send outbound information, such as [changefeed targets]({% link {{ page.version.version }}/change-data-capture-overview.md %}), to other cloud services over a private network link. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
 
 ### Cluster SSO backed by LDAP
 
@@ -47,6 +56,15 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
+### Prometheus-compatible `metrics` endpoint
+
+[`http://<host>:<http-port>/metrics` Prometheus-compatible endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}#metrics) is enhanced with additional static labels.
+
+The `metrics` Prometheus endpoint is commonly used and is the default in Prometheus configurations.
+
+### Value separation
+
+[Value separation]({% link {{ page.version.version }}/architecture/storage-layer.md %}#value-separation) reduces write amplification by storing large values separately from the LSM in blob files. Value separation can reduce write amplification by up to 50% for large-value workloads, while introducing minor read overhead and a slight increase in disk space usage. This feature is available in Preview.
 
 ### `database` and `application_name` labels for certain metrics
 

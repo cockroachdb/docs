@@ -14,6 +14,37 @@ Get future release notes emailed to you:
 
 {% include marketo.html formId=1083 %}
 
+## Aug 5, 2025
+
+Console users with the [Billing Coordinator role]({% link cockroachcloud/authorization.md %}#billing-coordinator) can now [export invoices]({% link cockroachcloud/billing-management.md %}#export-invoices) in a PDF format, rendering billing information into a traditional invoice format for ease of distribution.
+
+## Aug 4, 2025
+
+CockroachDB v25.3 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.3 is an [Innovation release]({% link releases/index.md %}#release-types).
+
+For release notes, refer to [What's New in v25.3]({% link releases/v25.3.md %}).
+
+To get started with v25.3, refer to [Create a CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-an-advanced-cluster.md %}) or [Upgrade a Cluster in CockroachDB Cloud]({% link cockroachcloud/upgrade-cockroach-version.md %}).
+
+## July 31, 2025
+
+### Customer-Managed Encryption Keys (CMEK) for CockroachDB Advanced for Azure
+
+This release introduces Customer-Managed Encryption Keys (CMEK) for CockroachDB Cloud Advanced clusters on Microsoft Azure. This feature provides enhanced data security and supports PCI DSS compliance.
+
+CMEK enables customers to control the encryption keys used to protect their data at rest within CockroachDB Cloud on Azure. Keys are managed via the customer's Azure Key Vault.
+
+Key benefits:
+
+- **Enhanced Data Security**: Customers control key lifecycle (creation, rotation, revocation), improving data protection.
+- **PCI DSS Compliance**: Addresses PCI DSS Requirement 3 for protecting stored cardholder data.
+- **Operational Control**: Provides greater control and visibility over data encryption strategy.
+- **Data Revocation Capability**: Enables immediate data access revocation by disabling the encryption key in Azure Key Vault.
+
+This functionality is critical for organizations handling sensitive data and seeking PCI DSS compliance on the Azure Advanced Tier of CockroachDB Cloud.
+
+For more information, refer to [Customer-Managed Encryption Keys (CMEK) Overview]({% link cockroachcloud/cmek.md %}) and [Manage CMEK for CockroachDB Advanced]({% link cockroachcloud/managing-cmek.md %}).
+
 ## May 12, 2025
 
 CockroachDB v25.2 is now generally available (GA) for CockroachDB Cloud {{ site.data.products.advanced }} clusters. CockroachDB v25.2 is a [Regular release]({% link releases/index.md %}#release-types).

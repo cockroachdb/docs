@@ -15,9 +15,9 @@ docs_area: deploy
 
 This page shows you how to orchestrate a secure CockroachDB deployment across three [Kubernetes](http://kubernetes.io/) clusters, each in a different geographic region, using [StatefulSets](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) to manage the containers within each cluster and linking them together via DNS. This will result in a single, multi-region CockroachDB cluster running on Kubernetes.
 
-{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
+
 To deploy CockroachDB in a single Kubernetes cluster instead, see [Kubernetes Single-Cluster Deployment]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes]({% link {{ page.version.version }}/kubernetes-performance.md %}).
-{{site.data.alerts.end}}
 
 ## Before you begin
 
