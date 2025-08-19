@@ -18,10 +18,10 @@ The following diagram shows the internal architecture and network flow of a Cock
 
 <img src="{{ 'images/cockroachcloud/advanced-architecture.png' | relative_url }}" alt="Diagram showing the architecture of Advanced plan Cloud deployments" style="border:1px solid #eee;max-width:100%" />
 
-In this architecture, there are two planes that traffic flows through:
+In this architecture there are two network "planes", or abstract layers, that distinguish between types of traffic:
 
-- The **control plane** is a centralized management plane that handles requests pertaining to the CockroachDB cluster as a whole. This includes access to the {{ site.data.products.cloud}} Console, DB Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}), [observability features]({% link cockroachcloud/metrics.md %}), and other cluster management options.
-- The **data plane** covers network access from data applications to your underlying CockroachDB nodes. Each region has a network load balancer (NLB) that handles and distributes requests across CockroachDB nodes within the region. {{ site.data.products.advanced }} clusters can utilize [private connectivity]({% link cockroachcloud/private-clusters.md %}) to limit the amount of network traffic that is sent over the public Internet.
+- The **control plane** is a centralized point of access that manages the CockroachDB cluster as a whole. This includes access to the {{ site.data.products.cloud }} Console, DB Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}), [observability features]({% link cockroachcloud/metrics.md %}), and other cluster management options.
+- The **data plane** handles network access from data applications to your underlying CockroachDB nodes. Each region has a network load balancer (NLB) that handles and distributes requests across CockroachDB nodes within the region. {{ site.data.products.advanced }} clusters can utilize [private connectivity]({% link cockroachcloud/private-clusters.md %}) across the data plane to limit the amount of network traffic that is sent over the public Internet.
 
 ## Cluster topology
 
