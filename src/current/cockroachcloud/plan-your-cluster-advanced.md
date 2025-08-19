@@ -12,6 +12,17 @@ This page describes how to plan your CockroachDB {{ site.data.products.advanced 
 
 Before making any changes to your cluster's configuration, review these requirements and recommendations for CockroachDB {{ site.data.products.advanced }} clusters. We recommend that you test configuration changes carefully before applying them to production clusters.
 
+## {{ site.data.products.advanced}} cluster architecture
+
+The following diagram shows the internal architecture and network flow of a CockroachDB {{ site.data.products.advanced }} cluster:
+
+<img src="{{ 'images/cockroachcloud/advanced-architecture.png' | relative_url }}" alt="Diagram showing the architecture of Advanced plan Cloud deployments" style="border:1px solid #eee;max-width:100%" />
+
+In this architecture, there are two planes that traffic flows through:
+
+- The **control plane** is a centralized management plane that handles requests pertaining to the CockroachDB cluster as a whole. This includes access to the {{ site.data.products.cloud}} Console, DB Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}), [observability features]({% link cockroachcloud/metrics.md %}), and other cluster management options.
+- The **data plane** covers network access from data applications to your underlying CockroachDB nodes. Each region has a network load balancer (NLB) that handles and distributes requests across CockroachDB nodes within the region. {{ site.data.products.advanced }} clusters can utilize [private connectivity]({% link cockroachcloud/private-clusters.md %}) to limit the amount of network traffic that is sent over the public Internet.
+
 ## Cluster topology
 
 ### Single-region clusters
