@@ -28,48 +28,16 @@ Included in this guide:
 - [File conventions](#file-conventions)
   - [Examples](#examples-4)
   - [File naming](#file-naming)
-- [Content types](#content-types)
-  - [Concept](#concept)
-    - [Examples](#examples-5)
-  - [Task](#task)
-    - [Examples](#examples-6)
-  - [Reference](#reference)
-    - [Examples](#examples-7)
-  - [Definition](#definition)
-    - [Examples](#examples-8)
-- [Standard sections](#standard-sections)
-  - [Glossary](#glossary)
-    - [Examples](#examples-9)
-  - [Before you begin](#before-you-begin)
-  - [See also](#see-also)
-- [Page types](#page-types)
-  - [Tutorial](#tutorial)
-    - [Examples](#examples-10)
-  - [Best practice](#best-practice)
-    - [Examples](#examples-11)
-  - [Troubleshooting](#troubleshooting)
-    - [Examples](#examples-12)
-  - [FAQ](#faq)
-    - [Examples](#examples-13)
-  - [Release note](#release-note)
-    - [Examples](#examples-14)
-- [Components](#components)
+- [Product names](#product-names)
+- [Page components](#page-components)
   - [Page title](#page-title)
-  - [Headings](#headings)
-    - [Examples](#examples-15)
   - [Text format](#text-format)
     - [Bold](#bold)
     - [Monospace](#monospace)
     - [Quotation marks](#quotation-marks)
     - [Italics](#italics)
     - [Underline](#underline)
-  - [Links](#links)
-    - [Link capitalization](#link-capitalization)
-    - [Links to CockroachDB docs pages in the same directory](#links-to-cockroachdb-docs-pages-in-the-same-directory)
-    - [Links to CockroachDB docs pages outside of the current directory](#links-to-cockroachdb-docs-pages-outside-of-the-current-directory)
-    - [Links to a specific location on a page that is not a heading](#links-to-a-specific-location-on-a-page-that-is-not-a-heading)
-    - [Localized external links](#localized-external-links)
-    - [GitHub issues and pull requests](#github-issues-and-pull-requests)
+  - [GitHub issues and pull requests](#github-issues-and-pull-requests)
   - [Tips, notes, and warnings](#tips-notes-and-warnings)
     - [Tips](#tips)
     - [Notes](#notes)
@@ -82,22 +50,13 @@ Included in this guide:
     - [Who documents known limitations](#who-documents-known-limitations)
     - [Where to document known limitations](#where-to-document-known-limitations)
     - [How to document known limitations](#how-to-document-known-limitations)
-  - [Product names](#product-names)
-  - [Code](#code)
-    - [Inline code](#inline-code)
-    - [Code block](#code-block)
-    - [Placeholders](#placeholders)
-    - [How to escape special characters](#how-to-escape-special-characters)
-  - [Examples](#examples-16)
-  - [Version tags](#version-tags)
-  - [Version references](#version-references)
+  - [Examples](#examples-15)
+  - [Versioning](#versioning)
+    - [Version tags](#version-tags)
+    - [Version references](#version-references)
+- [Content elements](#content-elements)
   - [Tables](#tables)
-    - [Markdown](#markdown)
-    - [HTML](#html)
   - [Lists](#lists)
-    - [Nest lists](#nest-lists)
-    - [Nest paragraphs or code blocks](#nest-paragraphs-or-code-blocks)
-    - [Use ordered lists when there are multiple steps in a section](#use-ordered-lists-when-there-are-multiple-steps-in-a-section)
   - [Images](#images)
   - [Videos](#videos)
   - [Include files](#include-files)
@@ -111,6 +70,8 @@ Included in this guide:
     - [Linking into tabbed content](#linking-into-tabbed-content)
   - [Comments](#comments)
 - [Word usage guidelines](#word-usage-guidelines)
+
+For Markdown-specific syntax and formatting guidelines, see [MarkdownGuide.md](MarkdownGuide.md).
 
 ## Style and tone
 
@@ -130,12 +91,12 @@ Other general guidance about language and tone:
     - Do not use "we" in place of "CockroachDB" for when you are talking about something the _product_ does or supports.
     - Do not use "we" in tutorials. See the next bullet for more on tutorials and examples.
 
-- For [tutorials and examples](#tutorials-and-examples), we recommend you use the second-person point of view (e.g., you). These docs should be more casual and conversational, as if they are teaching the user, but still straightforward and clear.
+- For tutorials and examples, we recommend you use the second-person point of view (e.g., you). These docs should be more casual and conversational, as if they are teaching the user, but still straightforward and clear.
 
     **Example:** In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
 
 - Use active voice instead of passive. For more information, refer to the [Purdue Online Writing Lab resource](https://owl.english.purdue.edu/owl/resource/539/02/).
-- Use simple and direct language. Grammar can be incorrect to save simplicity (e.g., many descriptions in [reference docs](#reference-and-task-based-docs) are phrases).
+- Use simple and direct language. Grammar can be incorrect to save simplicity (e.g., many descriptions in reference docs are phrases).
 
     **Example:** `table name`: The name of the table to create audit logs for.
 
@@ -230,7 +191,6 @@ Avoid using socially-charged terms for features and technical concepts.
 
 - Use title case for titles.
 - Use sentence case instead of title case for all [headings](#headings).
-- Depending on the target, use title case or sentence case for [links](#links).
 - Capitalize proper nouns, CockroachDB specific terms, and the names of UI features:
 
     **Examples:** CockroachDB, Cockroach Labs, the Overview dashboard, the SQL Queries graph
@@ -241,6 +201,14 @@ Avoid using socially-charged terms for features and technical concepts.
     **Example:**
       - Correct: New clusters will now have admission control enabled by default.
       - Incorrect: New clusters will now have Admission Control enabled by default.
+
+#### Link capitalization
+
+For [links](#links), capitalization should match the context:
+
+- **Use title case** when referring to the linked doc by its page title (e.g., "See __Best Practices__ for more information").
+- **Use sentence case** when referring to the linked doc by one of its headers (e.g., "See __Clock synchronization__ for further guidance").
+- **Use sentence case** when referring to a linked doc without explicitly citing a page title or header (e.g., "[…] follow the __identifier rules__ when creating […]").
 
 ### Punctuation rules
 
@@ -282,27 +250,26 @@ File names should match the page title. If you need to change a file name, it is
 - Add the previous page URL with the new URL to `_redirects`.
 - Replace all links to the previous file name with the new file name in the applicable docs versions.
 
+## Product names
+
+All product names except CockroachDB should be written as Liquid variables unless part of front-matter, file names, or non-Markdown files. Use the following code in place of product names:
+
+- **CockroachDB Cloud** : `CockroachDB {{ site.data.products.cloud }}`
+- **CockroachDB Basic** : `CockroachDB {{ site.data.products.basic }}`
+- **CockroachDB Standard** : `CockroachDB {{ site.data.products.standard }}`
+- **CockroachDB Advanced** : `CockroachDB {{ site.data.products.advanced }}`
+- **self-hosted** : `CockroachDB {{ site.data.products.core }} cluster`
+- **Enterprise** : `{{ site.data.products.enterprise }}`
+
+The first occurrence of a product name within a docs page should use its full name. At the writer's discretion, subsequent occurrences may be shortened to "Basic", "Advanced", or "Cloud", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
+
 ## Page components
 
 ### Title
 
 Set the page title in the `title:` metadata. The title should be in title case. Heading 1 (`#`) is reserved for page titles and **should not** be used in pages.
 
-### Headings
-
-Use headings to demarcate content into a hierarchy to help readers find information. When the page is rendered, the first two heading levels appear in the page TOC at the right of the page.
-
-A heading is denoted by one or more number signs (`#`) followed by one space: Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`). Use Heading 4 sparingly. Denote anything under Heading 4 by bolded text.
-
-Headings should be sentence case.
-
-Enter a line break between a heading and its content.
-
-#### Examples
-
-- `## Heading 2`
-- `### Heading 3`
-- `## Step 2. A step in a tutorial`
+For Markdown heading syntax, see [MarkdownGuide.md](MarkdownGuide.md#headings).
 
 ### Text format
 
@@ -312,8 +279,6 @@ Use bold text to emphasize an important word or phrase, or to create visual sepa
 
 Use bold text when you refer to the name of a UI section or field. The name should be in bold only if it appears verbatim in the UI. If a UI element, such as a table, is not labeled in the UI, do not bold when you reference the element in the documentation.
 
-To bold a word or phrase, surround the text with two asterisks (`**`).
-
 **Examples:**
 
 - The **Overview** dashboard is displayed. Hover over the **SQL Queries** graph at the top.
@@ -322,7 +287,13 @@ To bold a word or phrase, surround the text with two asterisks (`**`).
 
 #### Monospace
 
-See [Inline Code](#inline-code).
+Use monospace text (inline code) when referring to code, commands, or other technical syntax within a sentence.
+
+**Examples:**
+
+- The `CREATE TABLE` statement creates a new table in a database.
+- Use the `--export-concurrency` flag to control sharding.
+- Set `idle_in_transaction_session_timeout` to a higher value.
 
 #### Quotation marks
 
@@ -337,85 +308,6 @@ Use italics to identify the term in a concept definition. Otherwise, do not use 
 #### Underline
 
 Do not use underlined text in CockroachDB docs. If it seems beneficial to emphasize a word or phrase, use [bold](#bold).
-
-### Links
-
-Whenever a CockroachDB feature is referenced, provide a link to the relevant documentation. You can also provide links to external resources, but only if the resource is confirmed to be accurate by a technical reviewer or the author is a Cockroach Labs SME and no CockroachDB documentation covers the topic.
-
-Links are marked with inline text surrounded by square brackets followed by the link address in parentheses.
-
-Avoid using non-descriptive link names such as `here`, `this page`, or `go`.
-
-Use Markdown reference-style links when several parts of the same page refer to the same target URL. Reference-style links contain two sets of square brackets. The first set of brackets contains the link text that will appear on the final rendered page. The second set of brackets contains the reference name.
-
-**Example:**
-
-```
-This text has a [link to a page][docs].
-...
-This text has a [link as well][docs].
-...
-[docs]: https://www.cockroachlabs.com/docs
-```
-
-#### Link capitalization
-
-Link capitalization should match our [capitalization rules](#capitalization-rules) for page titles and headers:
-
-- **Use title case** when referring to the linked doc by its page title (e.g., "See __Best Practices__ for more information").
-- **Use sentence case** when referring to the linked doc by one of its headers (e.g., "See __Clock synchronization__ for further guidance").
-- **Use sentence case** - when referring to a linked doc without explicitly citing a page title or header (e.g., "[…] follow the __identifier rules__ when creating […]").
-
-#### Links to CockroachDB docs pages in the same directory
-
-To link to a page within the same directory (e.g., a page in `v23.1` to another page in `v23.1`), use the [Jekyll link syntax](https://jekyllrb.com/docs/liquid/tags/#links).
-
-If the page is a versioned doc, use `{{ page.version.version }}` instead of the hardcoded version. Otherwise, use the regular path (e.g., `cockroachcloud`).
-
-**Example:** `[Foreign Key Constraint]({% link {{ page.version.version }}/foreign-key.md %})`
-
-**Example:** `[Foreign Key Constraint]({% link cockroachcloud/quickstart.md %})`
-
-To include a subsection, place it outside of the Liquid tag.
-
-**Example:** `[Rules for creating foreign keys]({% link {{ page.version.version }}/foreign-key.md %}#rules-for-creating-foreign-keys)`
-
-This also applies to files within a subdirectory of the same directory (e.g., a link from `v23.1/abc.md` to `v23.1/architecture/xyz.md` or from `v23.1/architecture/xyz.md` to `v23.1/abc.md`).
-
-**Example:** `[Multi-active availability]({% link {{ page.version.version }}/architecture/glossary.md %}#multi-active-availability)`
-
-#### Links to CockroachDB docs pages outside of the current directory
-
-To link to a page outside of the current directory (e.g., a link from `v23.1` to `cockroachcloud`), use the fully qualified production URL:
-
-**Example:** `[Quickstart with CockroachDB](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart)`
-
-#### Links to a specific location on a page that is not a heading
-
-To link to a specific location on a page that is not a heading (e.g., a specific command-line flag in a table), add a manual anchor and use the `id` parameter:
-
-**Example:**
-
-```
-# Anchor:
-<a id="flags-max-offset"></a>`--max-offset`
-```
-
-```
-# Link:
-[--max-offset](#flags-max-offset)
-```
-
-#### Localized external links
-
-For websites that automatically localize pages, avoid using localization elements directly within the URL. For example:
-
-- GitHub
-  - Instead of `https://docs.github.com/**en/**graphql/overview/explorer`
-  - Use `https://docs.github.com/graphql/overview/explorer`
-- Wikipedia
-  - Instead of `https://en.wikipedia.org/wiki/SQL:2011`
-  - Use `https://www.wikipedia.org/wiki/SQL:2011` or `https://wikipedia.org/wiki/SQL:2011`
 
 #### GitHub issues and pull requests
 
@@ -538,138 +430,9 @@ If the limitation is related to a feature documented elsewhere on our docs site,
 
 Refer to the [wiki](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/3516825623/Document+known+limitations).
 
-### Product names
-
-All product names except CockroachDB should be written as Liquid variables unless part of front-matter, file names, or non-Markdown files. Use the following code in place of product names:
-
-- **CockroachDB Cloud** : `CockroachDB {{ site.data.products.cloud }}`
-- **CockroachDB Basic** : `CockroachDB {{ site.data.products.basic }}`
-- **CockroachDB Standard** : `CockroachDB {{ site.data.products.standard }}`
-- **CockroachDB Advanced** : `CockroachDB {{ site.data.products.advanced }}`
-- **self-hosted** : `CockroachDB {{ site.data.products.core }} cluster`
-- **Enterprise** : `{{ site.data.products.enterprise }}`
-
-The first occurrence of a product name within a docs page should use its full name. At the writer's discretion, subsequent occurrences may be shortened to "Basic", "Advanced", or "Cloud", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
-
 ### Code
 
-You can mark up code [inline](#inline-code) or as a [code block](#code-blocks).
-
-#### Inline code
-
-Use inline code when referring to code, commands, or other technical syntax within a sentence. Inline `code` has `backticks (``) around` it.
-
-**Example:** The `CREATE TABLE` statement creates a new table in a database.
-
-#### Code block
-
-Use a code block to provide executable code samples. A code block has an opening and closing set of 3 tildes (`~~~`) or 3 backticks (<code>```</code>). A code block supports syntax highlighting if you add the language name immediately after the first line of tildes or backticks. There should be one returned line before and after a code block, for better Markdown readability. For example:
-
-```
-This is a sample line of text.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ go get -u github.com/lib/pq
-~~~
-
-This is more sample text.
-```
-Using some special characters (e.g., double `{{ ... }}`) within code blocks may require to you [escape them](#how-to-escape-special-characters).
-
-Highlight shell and SQL commands where appropriate using the following info:
-
-**Shell code samples**
-
-Start shell code samples with `~~~ shell` followed by a line break. The first character of the next line must be the terminal marker `$`. For multi-line shell commands, use a backslash (`\`) at the end of each line to indicate a line break.
-
-In an example command to download an artifact using the command line, `curl` is preferred over `wget` because it is included in Linux, macOS, and recent builds of Windows. Use syntax like:
-
-```
-curl -o {optional_output_path}/{output_file_name} [-H {header_keys_and_values}] {url} 
-```
-
-- In general, always specify `-o` or `--output` to a path and filename, or omit the path to save the file to the current working directory.
-
-  Omit `-o` to print the response to standard output. Printing a binary file can corrupt the terminal session or lead to unintended results, and is generally useful only when piping or redirecting the output to another command or a file.
-- Headers are optional, but certain APIs such as the CockroachDB Cloud API require certain header fields to be set.
-
-**SQL code samples**
-
-SQL code samples are broken into two sections: commands and responses.
-
-- **Commands** (e.g., `SELECT`, `CREATE TABLE`) should begin with `~~~ sql` followed by a line break. Commands should be properly capitalized, and there should be only one command per code sample.
-
-- **Responses** (e.g., retrieved tables) should begin with `~~~` but should **not** be syntax highlighted.
-
-  Note that not all responses warrant inclusion. For example, if a SQL code sample shows `CREATE TABLE`, `INSERT`, and then `SELECT`, it's unnecessary to show the responses for `CREATE TABLE` (which is just `CREATE TABLE`) and `INSERT` (which is just `INSERT <number of rows>`).
-
-**Copy to Clipboard Button**
-
-Many of our code blocks are written so users can copy and paste them directly into a terminal. To make that easier, add the **Copy to Clipboard** button by placing `{% include_cached copy-clipboard.html %}` on the line directly preceding the code block, for example:
-
-```
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ go get -u github.com/lib/pq
-~~~
-```
-
-Notes for usage:
-
-- **Copy to Clipboard** should be used for every code block that can be **executed**.
-- There must be a line break above the `{% include_cached copy-clipboard.html %}` line.
-
-#### Placeholders
-
-Code samples often include placeholder values, to be replaced by values specific to a user's environment. To denote that a value in a code sample is a placeholder value that should be replaced, use curly brackets (`{}`).
-
-For example, suppose you have the following sample SQL statement: `SELECT * FROM TABLE {mytable};`. In this code sample, `{mytable}` would be replaced by some table name before the code could actually run (e.g., `SELECT * FROM TABLE realtable;`).
-
-When you use placeholders, you usually need to define the value within the brackets, if the placeholder value (or the fact that the placeholder is a placeholder) isn't clear. If you are defining a placeholder value, do so immediately following the code sample/bracket. To determine the format of the value definition, you can roughly follow these guidelines:
-
-- Always include the placeholder delimiters (i.e., the curly brackets `{}`) in the definitions.
-- For a single placeholder value, use a follow-up sentence.
-- For multiple placeholder values, use a [bulleted list](#lists).
-- For many placeholder values (10+), and for placeholder values with complex definitions, use a [table](#tables).
-- For large code blocks, define the placeholder values inside the code block, with an inline code comment.
-
-Ensure that placeholders are placed within backticks `(``)`: `SET {session variable}`. This signifies that placeholder values are code.
-
-If the code sample you are using is sensitive to curly bracket characters (e.g., JavaScript), you can use `<>` instead.
-
-Using placeholders within code samples or in non-Markdown locations may require to you [escape them](#how-to-escape-special-characters).
-
-For some examples, see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/stable/connect-to-the-database.html?filters=python).
-
-#### How to escape special characters
-
-Sometimes you may need to escape special characters to achieve proper rendering. This is most common in the following two cases:
-
-- You are using Jekyll-reserved characters (e.g., double `{{ ... }}`) in code blocks. To escape these, wrap the specific line(s) you wish to escape using the Liquid tags `{% raw %} ... {% endraw %}`. For example:
-
-  ```
-  {% raw %}summary: Instance {{ $labels.instance }} has {{ $value }} tripped per-Replica circuit breakers{% endraw %}
-  ```
-
-  **Note:** Use these tags inline within the code block. Using `{% raw %}` or `{% endraw %}` tags on their own line will render the contained text correctly, but will introduce an extra newline of whitespace for each.
-
-- You are using special characters (e.g., single `{ ... }`, `< ... >`, etc.) in non-Markdown copy, such as front matter (e.g., `title:` or `summary:`), or in the left-nav `sidebar-data` JSON files. To escape these, convert the special characters to Unicode. For example, to escape `SET {session variable}` in the front matter, use:
-
-  ```
-  title: SET &#123;session variable &#125;
-  ```
-
-  Or in one of the left-nav `sidebar-data` JSON files, use:
-
-  ```
-  {
-    "title": "<code>SET &#123;session variable&#125;</code>",
-    "urls": [
-      "/${VERSION}/set-vars.html"
-    ]
-  },
-  ```
+For all code formatting including inline code, code blocks, syntax highlighting, placeholders, and escaping special characters, see [MarkdownGuide.md](MarkdownGuide.md#code-blocks).
 
 ### Examples
 
@@ -693,7 +456,11 @@ Examples help show the feature in action. Examples follow a basic format:
 
     When such a "simple" table has no indexes or foreign keys, `INSERT`/`UPSERT`/`UPDATE`/`DELETE` statements translate to key-value operations with minimal overhead (single digit percent slowdowns)." [_Click here to see the rest of the example._](https://www.cockroachlabs.com/docs/stable/create-table.html#create-a-table-that-mirrors-key-value-storage)
 
-### Version tags
+### Versioning
+
+Use version tags to highlight new features and version references to link to specific CockroachDB versions in documentation.
+
+#### Version tags
 
 Version tags inform users of new and updated features in CockroachDB, and could motivate users to upgrade to the latest major or patch version of CockroachDB. Version tags also help us identify new and updated features that we can call out in [our GA release notes](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/402718726/GA+Release+Checklist).
 
@@ -715,7 +482,7 @@ If a feature has been backported to a previous version in a patch release, use t
 
 Version tags should only refer to the version of the docset that contains them. For example, the version tag `{% include_cached new-in.html version="v21.1.9" %}` should only be on pages in `v21.1` directories.
 
-### Version references
+#### Version references
 
 To refer to a static version of CockroachDB:
 
@@ -743,181 +510,17 @@ A patch release version of CockroachDB receives updates as patches. To refer to 
 {{ page.release_info.name }}
 ~~~
 
+## Content elements
+
+This section covers various content elements used in CockroachDB documentation.
+
 ### Tables
 
-Use tables to display structured information in an easy-to-read format. We use two types of tables: [Markdown](#markdown) and [HTML](#html).
-
-<a name="markdown"></a>
-
-#### Markdown
-
-If you can keep the table formatting simple (e.g., basic text formatting and using `<br>` tags for paragraph breaks), create a table using Markdown. This is the preferred table format.
-
-To create a table, use pipes (`|`) between columns and at least 3 dashes (`-`) separating the header cells from the body cells. A return denotes the start of the next row. The text within each column does not need to align in order to be rendered correctly, and you can inline Markdown or HTML.
-
-Do not use outer pipes.
-
-Example:
-
-~~~
-   Term   |         Description         |     Example
-----------|-----------------------------|----------------
- `term_1` | This is a description.      | `3.14`
- `term_2` | This is also a description. | `"lola mcdog"`
-~~~
-
-You can use the following Markdown formatting within a Markdown table:
-
-- [Bold](#bold)
-- [Italics](#italics)
-- [Inline code](#inline-code)
-- [Links](#links)
-
-The following formatting needs to be in HTML to be used within a Markdown table:
-
-- Paragraph breaks (`<br>`)
-- Lists (`ol` / `ul` / `<li>`)
-
-If the formatting becomes too complex, create an [HTML table](#html).
-
-The following formatting is not supported within a Markdown table:
-
-- [Liquid tags](https://shopify.github.io/Liquid/)
-- [Code blocks](#code-blocks)
-
-#### HTML
-
-If it's necessary to include more complex table formatting or if a [Markdown table](#markdown) becomes too unwieldy, create a table using HTML. This formatting is not recommended unless necessary, since it is hard for other writers to parse and maintain.
-
-You can use the following HTML formatting  within an HTML table:
-
-- Bold (`<strong>`)
-- Italics (`<em>`)
-- Inline code (`<code>`)
-- Links (`<a href`)
-- Paragraph breaks (`<p>`)
-- Lists (`<ol>` / `<ul>` / `<li>`)
-
-**Example:** [Query Options](admin-ui-custom-chart-debug-page.html#query-options) table (see [GitHub](https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/_includes/v2.1/admin-ui-custom-chart-debug-page-00.html) for the raw HTML)
+For table formatting, including Markdown and HTML syntax, see [MarkdownGuide.md](MarkdownGuide.md#tables).
 
 ### Lists
 
-CockroachDB docs use two types of lists:
-
-- **Numbered** (i.e., ordered list) - Use to list information that should appear in order, like tutorial steps.
-
-    **Example:** [Start CockroachDB](https://www.cockroachlabs.com/docs/stable/deploy-a-test-cluster.html#step-1-start-cockroachdb) in the Deploy a Test Cluster doc
-
-- **Bulleted** (i.e., unordered list) - Use to list related information in an easy-to-read way.
-
-    **Example:** [Start the First Node](https://www.cockroachlabs.com/docs/stable/start-a-local-cluster.html#step-1-start-the-first-node) in the Start a Local Cluster doc
-
-Introduce a list with a sentence and a colon. Use periods at the end of list items if they are sentences or complete a sentence.
-
-For each item of a **numbered list**, use `1.` followed by a period and a space, e.g., `1. This is a numbered list item`. The HTML renderer will render the steps in the correct order.
-
-For each item of a **bulleted list**, use one dash followed by one space, e.g., `- This is a bulleted list item`.
-
-#### Nest lists
-
-To nest a list under a list item, start the list on the next line (no empty line), and indent the new list four spaces, for example:
-
-```
-1. This is a step.
-    - This is a bullet.
-    - This is a bullet.
-    - This is a bullet.
-
-1. This is a step.
-
-    This is a nested paragraph.
-    - This is a bullet.
-    - This is a bullet.
-```
-
-Nested ordered lists work similarly:
-
-```
-1. This is a step.
-    1. This is a substep.
-    1. This is a substep.
-    1. This is a substep.
-
-1. This is a step.
-
-    This is a nested paragraph.
-    1. This is a substep.
-    1. This is a substep.
-```
-
-#### Nest paragraphs or code blocks
-
-To nest a paragraph or code block under a list item, insert an empty line and then indent the paragraph or code block 4 spaces, for example:
-
-```
-1. This is a step.
-
-    This is a nested paragraph.
-
-    ~~~ shell
-    $ command
-    ~~~
-```
-
-Similarly, to nest a paragraph or code block under a **nested** list item, insert an empty line and then indent the paragraph or code block 8 spaces, for example:
-
-```
-1. This is a step.
-    - This is a bullet.
-
-        ~~~ shell
-        $ command
-        ~~~
-    - This is a bullet.
-
-        ~~~ shell
-        $ command
-        ~~~
-    - This is a bullet.
-
-        ~~~ shell
-        $ command
-        ~~~
-
-1. This is a step.
-```
-
-#### Use ordered lists when there are multiple steps in a section
-
-Don't use prose to describe multiple steps within a section. Instead, use an ordered list. If a topic introduces actions the user performs with "First, ..." and "Next, ..." you should make these an ordered list.
-
-**Incorrect**
-
-First, run this command:
-
-~~~ shell
-command1 --option
-~~~
-
-Then, run another command:
-
-~~~ shell
-command2 myfile.yaml
-~~~
-
-**Correct**
-
-1. Run this command:
-
-    ~~~ shell
-    command1 --option
-    ~~~
-
-1. Run another command:
-
-    ~~~ shell
-    command2 myfile.yaml
-    ~~~
+For list formatting, including ordered lists, unordered lists, nesting, and best practices, see [MarkdownGuide.md](MarkdownGuide.md#lists).
 
 ### Images
 
