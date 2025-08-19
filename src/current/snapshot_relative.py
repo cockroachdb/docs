@@ -31,7 +31,8 @@ COMMON_PAGES = [
     "index.html",
     "cockroachcloud/*.html",
     "releases/*.html",
-    "advisories/*.html"
+    "advisories/*.html",
+    f"{TARGET_VERSION}/*.html"  # Include the target version directory
 ]
 
 # Google Fonts
@@ -103,7 +104,7 @@ class OfflineArchiver:
                 file_url.rstrip('/') + '.html' if file_url.endswith('/') else None
             ]
             
-            # Check if any variation exists
+            # Check if any variation exists in the source
             for path in possible_paths:
                 if path:
                     try:
@@ -113,12 +114,18 @@ class OfflineArchiver:
                     except Exception:
                         continue
             
+            # Special handling for common directories that should exist even if we can't verify individual files
+            if any(pattern in file_url for pattern in ['cockroachcloud/', 'releases/', 'advisories/']):
+                # For non-versioned directories, be more permissive
+                return True
+            
+            # File doesn't exist
             return False
             
         except Exception as e:
-            # If there's any error checking, assume the file exists to be safe
+            # If there's any error checking, log it and assume false to be safe
             self.log(f"Error checking file existence for {url}: {e}", "DEBUG")
-            return True
+            return False
 
     def clean_sidebar_items(self, items_data):
         """Clean the sidebar items array and count removed URLs"""
@@ -537,57 +544,95 @@ class OfflineArchiver:
             if comprehensive_sidebar_js and len(comprehensive_sidebar_js) > 100:
                 self.log("🔍 Found broken URL processing in comprehensive sidebar - fixing it", "DEBUG")
                 
-                # SIMPLE DIRECT REPLACEMENT: Replace the exact broken line with working logic
-                # Find and replace the specific problematic line
+                # COMPREHENSIVE FIX: Replace the entire URL processing section
+                # Look for the pattern that indicates URL processing
                 
+                # First try the exact broken line
                 broken_line = 'url = sidebar.baseUrl + url.replace("/index.html", "").replace(".html", "");'
                 
-                working_replacement = '''// Remove /docs/ prefix if present
-                url = url.replace(/^\\/docs\\//, '').replace(/^docs\\//, '');
-                
-                // Handle root/home URLs
-                if (url === '/' || url === '' || url === 'index' || url === 'index.html') {
-                    var currentPath = window.location.pathname;
-                    var pathMatch = currentPath.match(/(cockroachcloud|v19\\.2|releases|advisories)\\/[^\\/]+$/);
-                    if (pathMatch) {
-                        url = '../index.html';
-                    } else {
-                        url = 'index.html';
-                    }
-                } else {
-                    if (url.startsWith('/')) {
-                        url = url.substring(1);
-                    }
-                    url = url.replace(/^stable\\//, 'v19.2/').replace(/\\/stable\\//, '/v19.2/');
+                if broken_line in comprehensive_sidebar_js:
+                    working_replacement = '''// Remove /docs/ prefix if present
+                    url = url.replace(/^\\/docs\\//, '').replace(/^docs\\//, '');
                     
-                    var currentPath = window.location.pathname;
-                    var pathMatch = currentPath.match(/(cockroachcloud|v19\\.2|releases|advisories)\\/[^\\/]+$/);
-                    if (pathMatch) {
-                        var currentDir = pathMatch[1];
-                        if (url.startsWith(currentDir + '/')) {
-                            url = url.substring(currentDir.length + 1);
-                        } else if (url.includes('/')) {
-                            url = '../' + url;
-                        } else if (url !== '' && !url.endsWith('.html') && !url.endsWith('/')) {
-                            url = '../' + url;
+                    // Handle root/home URLs
+                    if (url === '/' || url === '' || url === 'index' || url === 'index.html') {
+                        var currentPath = window.location.pathname;
+                        var pathMatch = currentPath.match(/(cockroachcloud|v19\\.2|releases|advisories)\\/[^\\/]+$/);
+                        if (pathMatch) {
+                            url = '../index.html';
+                        } else {
+                            url = 'index.html';
+                        }
+                    } else {
+                        if (url.startsWith('/')) {
+                            url = url.substring(1);
+                        }
+                        url = url.replace(/^stable\\//, 'v19.2/').replace(/\\/stable\\//, '/v19.2/');
+                        
+                        var currentPath = window.location.pathname;
+                        
+                        // BULLETPROOF offline navigation fix
+                        var offlineSnapIndex = currentPath.indexOf('/offline_snap/');
+                        if (offlineSnapIndex !== -1) {
+                            // We're in the offline snap - calculate relative path to target
+                            var currentFromSnap = currentPath.substring(offlineSnapIndex + '/offline_snap/'.length);
+                            var currentParts = currentFromSnap.split('/').filter(function(p) { return p; });
+                            
+                            // Remove the current filename to get directory path
+                            currentParts.pop();
+                            
+                            // Calculate how many ../ we need to get to offline_snap root
+                            var upLevels = currentParts.length;
+                            var upPath = '';
+                            for (var i = 0; i < upLevels; i++) {
+                                upPath += '../';
+                            }
+                            
+                            // Target path is always relative to offline_snap root
+                            url = upPath + url;
                         }
                     }
-                }
-                url = url.replace(/\\/+/g, '/');
-                url = sidebar.baseUrl + url;'''
-                
-                if broken_line in comprehensive_sidebar_js:
+                    url = url.replace(/\\/+/g, '/');
+                    url = sidebar.baseUrl + url;'''
+                    
                     comprehensive_sidebar_js = comprehensive_sidebar_js.replace(broken_line, working_replacement)
                     self.log("✅ Successfully replaced broken URL processing line", "SUCCESS")
                 else:
-                    # Debug: show what we're actually looking for vs what exists
-                    self.log("⚠️  Could not find exact broken line to replace", "WARNING")
-                    if 'url.replace("/index.html"' in comprehensive_sidebar_js:
-                        lines = comprehensive_sidebar_js.split('\n')
-                        for i, line in enumerate(lines):
-                            if 'url.replace("/index.html"' in line:
-                                self.log(f"Found actual line: '{line.strip()}'", "DEBUG")
-                                break
+                    # The comprehensive sidebar doesn't have the problematic line
+                    # Instead, we need to replace the simple URL assignment
+                    simple_assignment = 'url = sidebar.baseUrl + url;'
+                    
+                    if simple_assignment in comprehensive_sidebar_js:
+                        # We need to insert the directory logic BEFORE this assignment
+                        enhanced_replacement = '''// BULLETPROOF offline navigation fix
+                        var currentPath = window.location.pathname;
+                        
+                        // Find the offline_snap directory position
+                        var offlineSnapIndex = currentPath.indexOf('/offline_snap/');
+                        if (offlineSnapIndex !== -1) {
+                            // We're in the offline snap - calculate relative path to target
+                            var currentFromSnap = currentPath.substring(offlineSnapIndex + '/offline_snap/'.length);
+                            var currentParts = currentFromSnap.split('/').filter(function(p) { return p; });
+                            
+                            // Remove the current filename to get directory path
+                            currentParts.pop();
+                            
+                            // Calculate how many ../ we need to get to offline_snap root
+                            var upLevels = currentParts.length;
+                            var upPath = '';
+                            for (var i = 0; i < upLevels; i++) {
+                                upPath += '../';
+                            }
+                            
+                            // Target path is always relative to offline_snap root
+                            url = upPath + url;
+                        }
+                        url = sidebar.baseUrl + url;'''
+                        
+                        comprehensive_sidebar_js = comprehensive_sidebar_js.replace(simple_assignment, enhanced_replacement)
+                        self.log("✅ Enhanced comprehensive sidebar with same-directory navigation logic", "SUCCESS")
+                    else:
+                        self.log("⚠️  Could not find URL assignment pattern to enhance", "WARNING")
                 self.log("✅ Fixed comprehensive sidebar URL processing for offline use", "SUCCESS")
                 fixed_sidebar = comprehensive_sidebar_js
             else:
@@ -856,14 +901,25 @@ class OfflineArchiver:
                         }
                     }
                     
-                    if (currentDir) {
-                        if (url.startsWith(currentDir + '/')) {
-                            url = url.substring(currentDir.length + 1);
-                        } else if (url.includes('/')) {
-                            url = '../' + url;
-                        } else if (url !== '' && !url.endsWith('.html') && !url.endsWith('/')) {
-                            url = '../' + url;
+                    // BULLETPROOF offline navigation fix
+                    var offlineSnapIndex = currentPath.indexOf('/offline_snap/');
+                    if (offlineSnapIndex !== -1) {
+                        // We're in the offline snap - calculate relative path to target
+                        var currentFromSnap = currentPath.substring(offlineSnapIndex + '/offline_snap/'.length);
+                        var currentParts = currentFromSnap.split('/').filter(function(p) { return p; });
+                        
+                        // Remove the current filename to get directory path
+                        currentParts.pop();
+                        
+                        // Calculate how many ../ we need to get to offline_snap root
+                        var upLevels = currentParts.length;
+                        var upPath = '';
+                        for (var i = 0; i < upLevels; i++) {
+                            upPath += '../';
                         }
+                        
+                        // Target path is always relative to offline_snap root
+                        url = upPath + url;
                     }
                 }
                 
