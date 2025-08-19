@@ -1,11 +1,4 @@
-<!-- Include Bootstrap, Core Styles, and Navbar CSS and JS -->
-<link rel="stylesheet" href="/css/bootstrap-navbar.css">
-<link rel="stylesheet" href="/css/core-styles.css">
-<link rel="stylesheet" href="/css/navbar.css">
-<script src="/js/navbar.js"></script>
-
-  
-<div class="shadow-sm main-nav-wrapper position-relative" style="z-index: 1030;" >
+<div class="shadow-sm main-nav-wrapper position-relative megamenu">
 <div class="main-nav main-nav-contained-800">
   <nav class="navbar navbar-expand-lg navbar-light py-0 fixed-top">
     <div class="container-xl px-0">
@@ -15,7 +8,7 @@
           height="24" 
           alt="Cockroach Labs" 
           class="br0 db mb0" 
-          src="/images/cockroachlabs-logo-170.png?auto=format,compress"
+          src="/images/cockroachlabs-logo-170.png"
         >
       </a>
     <button
@@ -144,14 +137,14 @@
           <div class="card">
             <div class="card-header bg-white py-4" id="">
                 <h2 class="mb-0">
-                    <a class="btn btn-link w-100 text-start d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/pricing/" style="font-weight: 450;">Pricing</a>
+                    <a class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/pricing/" style="font-weight: 450;">Pricing</a>
                 </h2>
             </div>
           </div>
           <div class="card">
             <div class="card-header bg-white py-4" id="">
                 <h2 class="mb-0">
-                    <a class="btn btn-link w-100 text-start btn-link-chevron-right d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/contact/" style="font-weight: 450;">Contact us</a>
+                    <a class="btn btn-link btn-block text-left btn-link-chevron-right d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/contact/" style="font-weight: 450;">Contact us</a>
                 </h2>
             </div>
           </div>
@@ -159,7 +152,7 @@
           <div class="card">
             <div class="card-header bg-white py-4" id="">
                 <h2 class="mb-0">
-                    <a class="btn btn-link w-100 text-start" href="https://cockroachlabs.cloud/" style="font-weight: 450;">Sign In</a>
+                    <a class="btn btn-link btn-block text-left" href="https://cockroachlabs.cloud/" style="font-weight: 450;">Sign In</a>
                 </h2>
             </div>
           </div>
@@ -169,9 +162,9 @@
       </div>
       <!-- end mobile nav -->
        
-      <!-- Desktop nav -->
-      <ul class="d-none d-lg-flex navbar-nav me-auto mb-2 mb-lg-0 mt-auto">
-        <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+      <!-- Desktop nav (left side) -->
+      <ul class="d-none d-lg-flex navbar-nav me-auto mr-auto mb-2 mb-lg-0 mt-auto">
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1" >
 
           <a
           class="nav-link nav-link-border dropdown-toggle"
@@ -188,87 +181,90 @@
           </div>
         </li>
 
-        <li class="nav-item dropdown position-static py-4 mx-1 px-1">          <a
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+          <a
           class="nav-link nav-link-border dropdown-toggle"
           href="#"
-          id="navbarDropdown"
+          id="dropdownSolutions"
           role="button"
           data-bs-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
           style="font-weight: 450;"
           >Solutions</a>
-          <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
+          <div class="dropdown-menu w-100 p-45" aria-labelledby="dropdownSolutions">
             {% include "nav/nav-solutions.njk" %}
           </div>
         </li>
 
-        <li class="nav-item dropdown position-static py-4 mx-1 px-1">          <a
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+          <a
           class="nav-link nav-link-border dropdown-toggle"
           href="#"
-          id="navbarDropdown"
+          id="dropdownResources"
           role="button"
           data-bs-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
           style="font-weight: 450;"
           >Resources</a>
-          <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
+          <div class="dropdown-menu w-100 p-45" aria-labelledby="dropdownResources">
             {% include "nav/nav-resources.njk" %}
           </div>
         </li>
 
-
-        <li class="nav-item dropdown position-static py-4 mx-1 px-1">          <a
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+          <a
           class="nav-link nav-link-border dropdown-toggle"
           href="#"
-          id="navbarDropdown"
+          id="dropdownDocs"
           role="button"
           data-bs-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
           style="font-weight: 450;"
           >Docs</a>
-          <div class="dropdown-menu w-100 p-45 docs" aria-labelledby="navbarDropdown">
+          <div class="dropdown-menu w-100 p-45 docs" aria-labelledby="dropdownDocs">
             {% include "nav/nav-docs.njk" %}
           </div>
         </li>
 
         <li class="nav-item dropdown position-static py-4 mx-0 px-2">
           <a
-          class="nav-link nav-link-border dropdown-toggle no-chevron"
+          class="nav-link nav-link-border no-chevron"
           href="https://www.cockroachlabs.com/pricing/"
-          id="navbarDropdown"
           style="font-weight: 450;"
           >Pricing</a>
         </li>
 
-        <li class="nav-item dropdown position-static py-4 mx-1 px-1">          <a
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+          <a
           class="nav-link nav-link-border dropdown-toggle"
           href="#"
-          id="navbarDropdown"
+          id="dropdownCustomers"
           role="button"
           data-bs-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
           style="font-weight: 450;"
           >Customers</a>
-          <div class="dropdown-menu w-100 p-45 company" aria-labelledby="navbarDropdown">
+          <div class="dropdown-menu w-100 p-45 company" aria-labelledby="dropdownCustomers">
             {% include "nav/nav-customers.njk" %}
           </div>
         </li>
 
-        <li class="nav-item dropdown position-static py-4 mx-1 px-1">          <a
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+          <a
           class="nav-link nav-link-border dropdown-toggle"
           href="#"
-          id="navbarDropdown"
+          id="dropdownCompany"
           role="button"
           data-bs-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
           style="font-weight: 450;"
           >Company</a>
-          <div class="dropdown-menu w-100 p-45 company" aria-labelledby="navbarDropdown">
+          <div class="dropdown-menu w-100 p-45 company" aria-labelledby="dropdownCompany">
             {% include "nav/nav-company.njk" %}
           </div>
         </li>
@@ -277,22 +273,21 @@
       <!-- end desktop nav -->
 
       <!-- right side nav -->
-      <div class="ms-auto">
-        <ul class="d-none d-lg-flex navbar-nav ms-auto mb-2 mb-lg-0 mt-auto">
+      <div class="ms-auto ml-auto">
+        <ul class="d-none d-lg-flex navbar-nav mb-2 mb-lg-0 mt-auto">
           <li class="nav-item">
-            <!-- Contact link with text -->
             <a class="nav-link right-nav-text" href="https://www.cockroachlabs.com/contact/" role="button" style="font-weight: 450;">
               Contact us
             </a>
-            <!-- Contact icon -->
             <a class="nav-link nav-icon-md" href="https://www.cockroachlabs.com/contact/" role="button">
-              <img width="32" src="/images/icons/icon-envelope.png" alt="Contact">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <rect x="3" y="5" width="18" height="14" rx="2" ry="2" stroke="#000" stroke-width="1.5" fill="#fff"/>
+                <path d="M4 7l8 6 8-6" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </a>
           </li>
           <li class="nav-item">
-            <!-- Sign in link with text -->
             <a href="https://cockroachlabs.cloud/" class="nav-link right-nav-text" style="font-weight: 450;">Sign In</a>
-            <!-- Sign in icon -->
             <a href="https://cockroachlabs.cloud/" class="nav-link nav-icon-md">
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="11" cy="11" r="10.25" fill="white" style="fill: white" stroke="black" stroke-width="1.5"/>
