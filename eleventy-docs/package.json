@@ -1,8 +1,8 @@
 {
-  "name": "eleventy-navbar-fresh",
+"name": "eleventy-docs",
   "version": "1.0.0",
   "private": true,
-  "description": "Fresh Eleventy project to replicate Jekyll navbar",
+  "description": "Eleventy project to replicate Jekyll based docs website",
   "scripts": {
     "start": "eleventy --serve",
     "build": "eleventy"
