@@ -53,13 +53,13 @@ You'll need the following:
     We recommend creating service accounts with the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege), and giving each application that accesses the API its own service account and API key. This allows fine-grained access to the cluster and PCR streams.
     {{site.data.alerts.end}}
 
-For the schema of each API response, refer to the [CockroachDB Cloud API reference documentation][list].
+For the schema of each API response, refer to the [CockroachDB Cloud API reference documentation](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/physical-replication-streams).
 
 ### Step 1. Create the clusters
 
 To use PCR, it is necessary to set the `supports_cluster_virtualization` field to `true`. This setting enables cluster virtualization, which is the architecture that supports PCR. For details on supported cluster cloud provider and region setup, refer to the [prerequisites section](#before-you-begin).
 
-1. Send a `POST` [request][post] to create the primary cluster:
+1. Send a `POST` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/physical-replication-streams) to create the primary cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -68,7 +68,7 @@ To use PCR, it is necessary to set the `supports_cluster_virtualization` field t
 
     Ensure that you replace each of the values for the cluster specification as per your requirements. For details on the cluster specifications, refer to [Create a cluster]({% link cockroachcloud/cloud-api.md %}#create-a-cluster). Also, replace `<api_secret_key>` with your API secret key.
 
-1. Send a `POST` [request][post] to create the standby cluster that includes your necessary cluster specification. Ensure that you include `supports_cluster_virtualization` set to `true`:
+1. Send a `POST` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/physical-replication-streams) to create the standby cluster that includes your necessary cluster specification. Ensure that you include `supports_cluster_virtualization` set to `true`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -89,7 +89,7 @@ We recommend using an empty standby cluster when starting PCR. When you initiate
 
 With the primary and standby clusters set up, you can now start a PCR stream.
 
-1. Send a `POST` [request][post] to the `/v1/physical-replication-streams` endpoint to start the PCR stream:
+1. Send a `POST` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/physical-replication-streams) to the `/v1/physical-replication-streams` endpoint to start the PCR stream:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -129,7 +129,7 @@ To start PCR between clusters, CockroachDB {{ site.data.products.cloud }} sets u
 
 ### Step 3. Monitor the PCR stream
 
-For monitoring the current status of the PCR stream, send a `GET` [request][get] to the `/v1/physical-replication-streams` endpoint along with the ID of the PCR stream:
+For monitoring the current status of the PCR stream, send a `GET` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/physical-replication-streams/-id-) to the `/v1/physical-replication-streams` endpoint along with the ID of the PCR stream:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -164,7 +164,7 @@ This will return a response similar to:
 - `"replicated_time"`: The latest time at which the standby cluster has consistent data. This field will be present when the PCR stream is in the `REPLICATING` [state](#status).
 - `"replication_lag_seconds"`: The [_replication lag_](#technical-reference) in seconds. This field will be present when the PCR stream is in the `REPLICATING` [state](#status).
 
-You can also list PCR streams and query using different parameters. Refer to the [CockroachDB Cloud API Reference][list] for more details.
+You can also list PCR streams and query using different parameters. Refer to the [CockroachDB Cloud API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/physical-replication-streams) for more details.
 
 #### Status
 
@@ -193,7 +193,7 @@ Failing over from the primary cluster to the standby cluster will stop the PCR s
 
 #### Fail over to the latest consistent time
 
-To fail over to the latest consistent time, you only need to include `"status": "FAILING_OVER"` in your `PATCH` [request][patch] with the PCR stream ID:
+To fail over to the latest consistent time, you only need to include `"status": "FAILING_OVER"` in your `PATCH` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/physical-replication-streams/-id-) with the PCR stream ID:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -211,7 +211,7 @@ curl --request PATCH --url "https://cockroachlabs.cloud/api/v1/physical-replicat
 
 #### Fail over to a specific time
 
-To specify a timestamp, send a `PATCH` [request][patch] to the `/v1/physical-replication-streams` endpoint along with the primary cluster, standby cluster, or the ID of the PCR stream. Include the `failover_at` field with your required timestamp:
+To specify a timestamp, send a `PATCH` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/physical-replication-streams/-id-) to the `/v1/physical-replication-streams` endpoint along with the primary cluster, standby cluster, or the ID of the PCR stream. Include the `failover_at` field with your required timestamp:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -232,7 +232,7 @@ curl --request PATCH "https://cockroachlabs.cloud/api/v1/physical-replication-st
 
 After the failover is complete, both clusters can receive traffic and operate as separate clusters. It is necessary to redirect application traffic manually.
 
-Run a `GET` [request][get] to check when the failover is complete:
+Run a `GET` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/physical-replication-streams/-id-) to check when the failover is complete:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -286,8 +286,3 @@ After reverting any necessary data, the standby cluster is promoted as available
 - [Physical Cluster Replication Overview]({% link {{ site.current_cloud_version }}/physical-cluster-replication-overview.md %})
 - [CockroachDB {{ site.data.products.cloud }} API reference](https://www.cockroachlabs.com/docs/api/cloud/v1)
 - [Disaster Recovery Overview]({% link {{ site.current_cloud_version }}/disaster-recovery-overview.md %})
-
-[list]: https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/physical-replication-streams
-[post]: https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/physical-replication-streams
-[get]: https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/physical-replication-streams/-id-
-[patch]: https://www.cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/physical-replication-streams/-id-
