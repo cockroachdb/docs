@@ -32,6 +32,7 @@ COMMON_PAGES = [
     "cockroachcloud/*.html",
     "releases/*.html",
     "advisories/*.html",
+    "molt/*.html",  # Include molt folder
     f"{TARGET_VERSION}/*.html"  # Include the target version directory
 ]
 
