@@ -34,7 +34,7 @@ Complete the following items before using MOLT Fetch:
 - <a id="replication-setup"></a> If you plan to use continuous replication, using either the MOLT Fetch [replication feature](#data-load-and-replication) or an [external change data capture (CDC) tool](#cdc-cursor), you must configure the source database for replication. Refer to the tutorial setup steps for [PostgreSQL]({% link molt/migrate-data-load-and-replication.md %}#configure-source-database-for-replication), [MySQL]({% link molt/migrate-data-load-and-replication.md %}?filters=mysql#configure-source-database-for-replication), and [Oracle]({% link molt/migrate-data-load-and-replication.md %}?filters=oracle#configure-source-database-for-replication).
 
 	{{site.data.alerts.callout_success}}
-	If you have [planned application downtime]({% link molt/migration-strategy.md %}#approach-to-downtime) and will not use replication, you can skip replication setup and use the [`--ignore-replication-check`](#global-flags) flag with MOLT Fetch. This flag instructs MOLT Fetch to skip querying for replication checkpoints (such as `pg_current_wal_insert_lsn()` on PostgreSQL, `gtid_executed` on MySQL, and `CURRENT_SCN` on Oracle). For an example of this workflow, refer to [Bulk Load Migration]({% link molt/migrate-bulk-load.md %}).
+	If you will not use replication (for example, during a [bulk load migration]({% link molt/migrate-bulk-load.md %}) or when doing a one-time data export from a read replica), you can skip replication setup and use the [`--ignore-replication-check`](#global-flags) flag with MOLT Fetch. This flag instructs MOLT Fetch to skip querying for replication checkpoints (such as `pg_current_wal_insert_lsn()` on PostgreSQL, `gtid_executed` on MySQL, and `CURRENT_SCN` on Oracle).
 	{{site.data.alerts.end}}
 
 - URL-encode the connection strings for the source database and [CockroachDB]({% link {{site.current_cloud_version}}/connect-to-the-database.md %}). This ensures that the MOLT tools can parse special characters in your password.
@@ -549,7 +549,7 @@ Two sharding mechanisms are available:
 
 Stats-based sharding requires that the user has `SELECT` permissions on source tables and on each table's `pg_stats` view. The latter permission is automatically granted to users that can read the table.
 
-To optimize stats-based sharding, run [`ANALYZE`](https://www.postgresql.org/docs/current/sql-analyze.html) on source tables before migration to ensure that table statistics are up-to-date and shards are evenly distributed. This requires requires `MAINTAIN` or `OWNER` permissions on the table. You can analyze specific primary key columns or the entire table. For example:
+To optimize stats-based sharding, run [`ANALYZE`](https://www.postgresql.org/docs/current/sql-analyze.html) on source tables before migration to ensure that table statistics are up-to-date and shards are evenly distributed. This requires `MAINTAIN` or `OWNER` permissions on the table. You can analyze specific primary key columns or the entire table. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -561,7 +561,7 @@ ANALYZE table_name(PK1, PK2, PK3);
 ANALYZE table_name;
 ~~~
 
-Large tables may take time to analyze, but `ANALYZE` can run in the background. You can run `ANALYZE` with elevated privileges during migration preparation, then perform the actual migration with standard `SELECT` privileges. 
+Large tables may take time to analyze, but `ANALYZE` can run in the background. You can run `ANALYZE` with `MAINTAIN` or `OWNER` privileges during migration preparation, then perform the actual migration with standard `SELECT` privileges. 
 
 {{site.data.alerts.callout_info}}
 Migration without running `ANALYZE` will still work, but shard distribution may be less even.

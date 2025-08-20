@@ -14,7 +14,7 @@ The following binaries are included:
 - `molt`
 - `replicator`
 
-Both `molt` and `replicator` **must** be in your current working directory. To use replication features, `replicator` must be located either in the same directory as `molt` or in a directory directly beneath `molt`. For example, either of the following would be valid:
+Both `molt` and `replicator` must be in your current **working directory**. To use replication features, `replicator` must be located either in the same directory as `molt` or in a directory directly beneath `molt`. For example, either of the following would be valid:
 
 ~~~
 /migration-project/          # Your current working directory
