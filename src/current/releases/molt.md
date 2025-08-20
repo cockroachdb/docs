@@ -16,6 +16,27 @@ Cockroach Labs recommends using the latest available version of each tool. See [
 
 {% include molt/molt-install.md %}
 
+## August 21, 2025
+
+MOLT Fetch/Verify 1.3.1 is [available](#installation).
+
+- MOLT Fetch now supports [sharding]({% link molt/molt-fetch.md %}#table-sharding) primary keys of any data type on PostgreSQL 11+ sources. This can be enabled with the [`--use-stats-based-sharding`]({% link molt/molt-fetch.md %}#global-flags) flag.
+- Added the [`--ignore-replication-check`]({% link molt/molt-fetch.md %}#global-flags) flag to allow data loads with planned downtime and no [replication setup]({% link molt/molt-fetch.md %}#replication-setup). The `--pglogical-ignore-wal-check` flag has been removed.
+- Added the `--enableParallelApplies` [replication flag]({% link molt/molt-fetch.md %}#replication-flags) to enable parallel application of independent table groups during replication. By default, applies are synchronous. When enabled, this increases throughput at the cost of higher target pool usage and memory usage.
+- Improved cleanup logic for scheduled tasks to ensure progress reporting and prevent indefinite hangs.
+- Added parallelism gating to ensure the parallelism setting remains smaller than the `targetMaxPoolSize`. This helps prevent a potential indefinite hang.
+- Added new metrics for progress report start and end times, as well as error report timing. These provide visibility into the core sequencer progress and help identify hangs in the applier and progress tracking pipeline.
+- Added a new metric to track target apply queue utilization, indicating when the queue should be resized.
+- Oracle sources now support configurable backpressure between the source and target applier, with a new metric to track queue depth.
+- Improved visibility into queue depth between each source frontend and the backend applier to the target. Updated logging to use lower log levels with clearer, less alarming wording.
+- Improved throughput for tables in the replication stream that have no dependencies on one another. This increases parallelism and minimizes blocking of transactions that are mutually independent.
+- The best effort window is now disabled by default to prevent unexpected mode switches that can lead to consistency issues and stalled replication due to failed target applies.
+- Added checkpointing support for the Pebble stager in CockroachDB-to-X replication mode to better handle failures and ensure minimal data replay for consistency.
+
+#### Bug fixes
+
+- Fixed a panic that could occur with `ENUM` types.
+
 ## July 24, 2025
 
 MOLT Fetch/Verify 1.3.0 is [available](#installation).
