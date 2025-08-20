@@ -29,7 +29,21 @@ This guide covers Markdown-specific syntax and formatting conventions used in Co
 - [Tables](#tables)
   - [Markdown tables](#markdown-tables)
   - [HTML tables](#html-tables)
-- [Best practices](#best-practices)
+  - [Markdown vs HTML](#markdown-vs-html)
+- [Images](#images)
+- [Videos](#videos)
+- [Versioning](#versioning)
+  - [Version tags](#version-tags)
+  - [Version references](#version-references)
+- [Include files](#include-files)
+  - [Basic include file usage](#basic-include-file-usage)
+  - [Advanced include file usage](#advanced-include-file-usage)
+  - [Filter tabs](#filter-tabs)
+  - [Technical limitations of include files](#technical-limitations-of-include-files)
+- [Tabs](#tabs)
+  - [Linking into tabbed content](#linking-into-tabbed-content)
+- [Comments](#comments)
+  - [TODOs](#todos)
 
 ## Headings
 
@@ -47,7 +61,7 @@ Add a line break between a heading and its content.
 
 ### Bold
 
-Use bold text to emphasize a UI element, important word or phrase, or to create visual separation and callouts (e.g., **Example:**). Do **not** combine bold with italic.
+Use bold text to emphasize a UI element, important word or phrase, or to create visual separation and callouts. Do **not** combine bold with italic.
 
 **Examples:**
 
@@ -374,3 +388,300 @@ You can use the following HTML formatting within an HTML table:
 - Prefer Markdown syntax over HTML when possible for better readability and maintainability.
 - Use HTML only when Markdown doesn't provide the necessary functionality.
 - When mixing Markdown and HTML, ensure proper spacing and formatting. Preview the rendered page locally.
+
+## Images
+
+Use the following HTML and Liquid to include an image in a Markdown page:
+
+~~~ html
+<img src="{{ 'images/v2.1/image-name.png' | relative_url }}" alt="Alternative Text Here" style="border:1px solid #eee;max-width:100%" />
+~~~
+
+## Videos
+
+Use the following Liquid to include an embedded video in a Markdown page:
+
+~~~ md
+{% include_cached youtube.html video_id="<YouTube ID>" [widescreen=true] %}
+~~~
+
+The `video_id` parameter is required and is whatever is after the `?v=` portion of the URL. If the URL to the video you wish to embed is `https://www.youtube.com/watch?v=5kiMg7GXAsY`, for example, then the value of `video_id` should be `5kiMg7GXAsY`. The `widescreen` parameter is optional and meant for videos with wide banners such as our video on [Foreign Key Constraints](https://www.youtube.com/watch?v=5kiMg7GXAsY).
+
+You can optionally pass in a start time to the `video_id` parameter to make the video start at a specific timestamp. The below example embeds the [How to Create Tables with Foreign Keys in SQL](https://www.youtube.com/watch?v=mFQk1VsIkZA) video and starts playing it at 25 seconds:
+
+~~~ md
+{% include_cached youtube.html video_id="mFQk1VsIkZA?start=25" %}
+~~~
+
+## Versioning
+
+Use version tags to highlight new features and version references to link to specific CockroachDB versions in documentation.
+
+### Version tags
+
+Version tags inform users of new and updated features in CockroachDB, and could motivate users to upgrade to the latest major or patch version of CockroachDB. Version tags also help us identify new and updated features that we can call out in [our GA release notes](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/402718726/GA+Release+Checklist).
+
+To add a version tag, use the following Liquid tag:
+
+~~~
+{% include_cached new-in.html version="v22.1" %}
+~~~
+
+<a name="version-tags-tables"></a>
+
+Note: If using a version tag inside of a Markdown table, use `<span class="version-tag">New in vXX.Y:</span>` or `<span class="version-tag">New in vXX.Y.Z:</span>` instead.
+
+Put version tags at the beginning of a paragraph, sentence, or description in a table cell.
+
+If a feature is new in a GA release, use the major release number for the release version tag (e.g., `{% include_cached new-in.html version="v21.2" %}`).
+
+If a feature has been backported to a previous version in a patch release, use the patch release number for the release version tag (for example, `{% include_cached new-in.html version="v21.2.10" %}`).
+
+Version tags should only refer to the version of the docset that contains them. For example, the version tag `{% include_cached new-in.html version="v21.1.9" %}` should only be on pages in `v21.1` directories.
+
+### Version references
+
+To refer to a static version of CockroachDB:
+
+~~~
+{{site.versions["v22.2"]}}
+~~~
+
+To dynamically refer to the stable version of CockroachDB, as determined each time the site is built:
+
+~~~
+{{site.versions["stable"]}}
+~~~
+
+**Warning**: If you use a `stable` link on a versioned page which is for a previous version, the link points to a different version  of CockroachDB than the version the page documents. Similarly, if you use a `stable` link on a page for the current version and then a new version is added, the link points to a different version than the version the page documents. If this is a problem, use one of the following methods instead.
+
+Pages that document CockroachDB itself exist within subdirectories that represent major versions. To refer to a page's major version (for example, v22.2), which matches its top-level subdirectory within the docs repo:
+
+~~~
+{{page.version.version}}
+~~~
+
+A patch release version of CockroachDB receives updates as patches. To refer to a page's current patch version (for example, v22.1.7):
+
+~~~
+{{ page.release_info.name }}
+~~~
+
+## Include files
+
+Sometimes content needs to be duplicated across two or more pages in the documentation. For example, there may be several pages that need the same cluster setup, but describe how to use different features. Or a very specific [note](#notes) or [warning](#warnings) needs to be added to several different pages.
+
+In these situations, you will need to use an _include file_. An include file is a separate Markdown file (stored in `_includes/some/shared-file.md`) where you will write content that is shared across multiple pages.
+
+For more information about include files, see [the Jekyll `include` documentation](https://jekyllrb.com/docs/includes/).
+
+_Note_: Using include files adds complexity to the docs site architecture and build process. It also makes writing the documentation more tricky, because instead of working on text in one document, the writer has to jump between two or more files. If you can link to existing content rather than using an include file, strongly consider doing that instead.
+
+There are [basic](#basic-include-file-usage) and [advanced](#advanced-include-file-usage) methods for using include files. Use the basic method unless you are sure you need the advanced.
+
+<a name="basic-include-file-usage"></a>
+
+### Basic include file usage
+
+The basic method for using an include file is:
+
+1. Find (or create) a block of content that you want to make appear on two or more different pages.
+1. Create a new file in the subdirectory of the `_includes` directory associated with the product you are working on. For example, if you are working on CockroachDB Self-Hosted v22.1, the directory will be `_includes/v22.1/`. If you are working on CockroachDB Dedicated, it will be `_includes/cockroachcloud`. If the include text is not version- or product-specific, put it in the `common` directory.
+1. In the pages where you want the included content to appear, add an `include` tag like one of the following: for CockroachDB Self-Hosted, `{% include {{page.version.version}}/some/shared-file.md %}`; for CockroachDB Dedicated, `{% include cockroachcloud/some/shared-file.md %}`.
+
+The contents of `shared-file.md` will now appear on all of the pages where you added the `include` tag.
+
+<a name="advanced-include-file-usage"></a>
+
+### Advanced include file usage
+
+#### Different content depending on page name
+
+There may be cases where the content of the include file will need to vary slightly depending on what pages that content is being shared into. For example, while working on [cockroachdb/docs#12216](https://github.com/cockroachdb/docs/pull/12216),  I needed a way to:
+
+- Have text be a link on the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations) page.
+- Have that same text _not_ be a link on the [Cost-Based Optimizer](https://www.cockroachlabs.com/docs/stable/cost-based-optimizer) page (since it would be a self-referring link).
+
+The way to do this in Jekyll (with its templating language Liquid) is to add the following content to an include file that is shared into both pages:
+
+    {% if page.name == "cost-based-optimizer.md" %} Locality-optimized search {% else %} [Locality-optimized search](cost-based-optimizer.html#locality-optimized-search-in-multi-region-clusters) {% endif %} only works for queries selecting a limited number of records (up to 10,000 unique keys). Also, it does not yet work with [`LIMIT`](limit-offset.html) clauses.
+
+The syntax is a little hard to read inline, but based on some experimenting it appears that it _must_ be written as one line so as not to introduce line breaks in the resulting text.
+
+Formatted for easier reading, the template code looks like:
+
+```
+{% if page.name == "cost-based-optimizer.md" %}
+Locality-optimized search
+{% else %}
+[Locality-optimized search](cost-based-optimizer.html#locality-optimized-search-in-multi-region-clusters)
+{% endif %}
+```
+
+#### Remote includes
+
+Sometimes, you need to include files that are maintained in other places than the `cockroachdb/docs` repo but referenced in our docs. The `remote_include` tag is used for this. We most often use this tag for code samples, which are maintained in various repos.
+
+For code samples, you usually want to show only part of a larger file to highlight a specific technique, or due to length considerations.
+
+To accomplish this, the `remote_include` tag lets you pass arguments (usually named `START {text}` and `END {text}` by convention) that pull in the text of the remote file between `START {text}` and `END {text}`.
+
+For example, the file `movr-flask-application.md` (which becomes the page [Develop a Global Web Application](https://www.cockroachlabs.com/docs/v22.1/movr-flask-application.html)) has the following `remote_include`:
+
+```
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START database ||-- END database %}
+```
+
+If you browse to the `dbinit.sql` file, you will find the following SQL code block that uses those start and end tags:
+
+```
+-- START database
+CREATE DATABASE movr PRIMARY REGION "gcp-us-east1" REGIONS "gcp-us-east1", "gcp-europe-west1", "gcp-us-west1";
+-- END database
+```
+
+For more information about the `remote_include` tag, see the README in the [jekyll-remote-include](https://github.com/cockroachdb/jekyll-remote-include) repo.
+
+### Filter tabs
+
+On some pages in our docs, there are tabs at the top of the page that will link to different pages at different hyperlinks. For example, in the [Install CockroachDB docs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb.html), there are links to the Mac, Linux, and Windows pages at the top of the page.
+
+Use [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/main/src/current/_includes/filter-tabs.md) to specify these tabs for any `cockroachcloud` docs or docs for CockroachDB v21.2 and later.
+
+**Note:** this include file only produces tabs that link to different URLs/pages. It cannot be used for creating tabs within a single page.
+
+The general process to follow and use this is as follows:
+
+1. Identify each page to be linked from a filter tab.
+    - Make a note of each HTML page filename (e.g., `install-cockroachdb-mac.html`).
+    - Draft a tab name (e.g., `Install on <strong>Mac</strong>`)—the text to display on the tab itself. This supports HTML, not Markdown.
+2. Create an include Markdown file within `_includes/<CRDB version>/filter-tabs` with the following structure:
+    ```
+    {% assign tab_names_html = "Tab Name 1;Tab Name 2;Tab Name 3" %}
+    {% assign html_page_filenames = "page-name-1.html;page-name-2.html;page-name-3.html" %}
+
+    {% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder=<CRDB version> %}
+    ```
+    - `tab_names_html` is a semicolon-separated list of the HTML-supported tab names.
+    - `html_page_filenames` is a semicolon-separated list of the page filenames with the `.html` extension.
+    - `<crdb_version>` is `"cockroachcloud"` (with quotes) for any CockroachDB Cloud docs and `page.version.version` (without quotes) for any versioned docs (v21.2 and later).
+3. For each page listed in `html_page_filenames`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
+
+### Technical limitations of include files
+
+Include files have the following technical limitations:
+
+- They cannot be used in [Markdown tables](#tables). For example, this is why [the guidance about how to use version tags in tables](#version-tags-tables) is provided.
+- A [remote include](#remote-includes) file in another repo that contains an [include file](#include-files) that references something in `cockroachdb/docs` will fail to pull in and render that include file.
+- Include files containing a paragraph followed by a code block do not render correctly in the context of both paragraphs and lists in the files they are included from due to a limitation in our [Markdown](#markdown) renderer.
+
+## Tabs
+
+To allow your reader to select from two or more versions of on-page content, use a tabset. This might be appropriate for:
+  - Install procedurals with different steps for the different supported platforms (like macOS, Windows, Linux).
+  - Reference material where the Enterprise and non-Enterprise versions of a feature differ.
+  - Demonstrating how to connect from an example application in each supported programming language (like Python, C++, Java, etc.).
+
+To add tabs to your copy, you first define the tabset for use later on the page, then you declare each tab's content within each tab.
+
+To define the tabset:
+
+```
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="macos-install-steps">macOS</button>
+  <button class="filter-button" data-scope="windows-install-steps">Windows</button>
+</div>
+```
+
+This example defines two tabs (named `macOS` and `Windows`) and defines a unique `data-scope` for each (`macos-install-steps` and `windows-install-steps` respectively).
+
+Then, to declare the content within each tab:
+
+```
+<section class="filter-content" markdown="1" data-scope="macos-install-steps">
+
+1. To install CockroachDB on macOS, first you need to ...
+...
+</section>
+
+<section class="filter-content" markdown="1" data-scope="windows-install-steps">
+
+1. To install CockroachDB on Windows, first you need to ...
+...
+</section>
+
+## This section outside of tabs
+
+```
+
+Now the user can freely switch between the `macOS` and `Windows` tabs as needed.
+
+Tip: Do your tabs share a lot of common content betwen them? Tabs are often a great place to make use of [include files](#include-files)!
+
+### Linking into tabbed content
+
+To link to content that is contained within a tab, add the `filter` component to your link, specifying the `data-scope` you provided in your tabset definition. You can do this in the following two ways:
+
+- To link to the top of a target page, with a specific tab selected:
+
+  ```
+  [Core changefeeds](create-and-configure-changefeeds.html?filters=core)
+  ```
+
+  This takes us to the top of `create-and-configure-changefeeds.html` and ensures the tab matching `data-scope: core` is selected. See [Create and Configure Changefeeds](https://www.cockroachlabs.com/docs/stable/create-and-configure-changefeeds.html?filters=core) to see this in action.
+
+- For linking to a header contained within a tabset:
+
+  ```
+  [Create with column families](changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families)
+  ```
+
+  This takes us directly to the `create-a-core-changefeed-on-a-table-with-column-families` header, within the `data-scope: core` tab. See [Create a Core changefeed on a table with column families](https://www.cockroachlabs.com/docs/stable/changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families) to see this in action.
+
+Considerations:
+
+- If you intend to link to a header present on two or more tabsets on the same page, the header targets must be uniquely named. If you require identical header names, use explicit, unique HTML anchor names for each (in form `<a name="uniquename"></a>` as shown under [Links](#links).
+- For the first-defined tab, specifying its `filter` value in a link is functionally the same as omitting it. For all other tabs, the explicit filter name is required. You can think of this first tab as the "default" tab in this context: if not otherwise specificed, Jekyll will always open with the first tab's contents displayed.
+
+## Comments
+
+There may be situations that require adding an explanation below a piece of content or to temporarily suppress content within a page. In those situations, use [Liquid comments](https://shopify.github.io/liquid/tags/template/#comment).
+
+Page source:
+
+```
+This sentence is visible!
+{% comment %}
+This sentence is not visible!
+{% endcomment %}
+This sentence is visible except for a single commented word: {% comment %}CockroachDB{% endcomment %}
+```
+
+Final page HTML:
+
+```
+<p>This sentence is visible!</p>
+<p>This sentence is visible except for a single commented word: </p>
+```
+
+Do not use HTML comments (`<!-- -->`), because HTML comments are visible in the page's HTML source code in production. Additionally, any HTML comment content must be processed by the Liquid parser, so any Liquid within an HTML comment is still processed and can produce errors, such as a broken include or broken link.
+
+### TODOS
+
+If you have future work to do in a particular file, simply add `TODO` or a `FIXME` inside of a comment. A colon after `TODO` or `FIXME` is optional.
+
+Examples:
+
+```
+{% comment %}
+TODO clean up the style guide
+{% endcomment %}
+```
+
+```
+{% comment %}
+FIXME: Update example SQL commands
+{% endcomment %}
+```
+
+Many popular code editors feature extensions that can highlight `TODO`s across the repository. One such extension is [Todo Highlight](https://marketplace.visualstudio.com/items?itemName=wayou.vscode-todo-highlight).
