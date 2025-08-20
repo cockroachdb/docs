@@ -47,6 +47,8 @@ This guide covers Markdown-specific syntax and formatting conventions used in Co
 
 ## Headings
 
+A heading is denoted by one or more number signs (`#`) followed by one space: Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`). Denote anything under Heading 4 by bolded text.
+
 Use headings to establish a content hierarchy. When the page is rendered, the first two heading levels appear in the page TOC at the right of the page.
 
 Add a line break between a heading and its content.
