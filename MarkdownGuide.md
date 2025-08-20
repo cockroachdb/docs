@@ -8,13 +8,15 @@ This guide covers Markdown-specific syntax and formatting conventions used in Co
 - [Text formatting](#text-formatting)
   - [Bold](#bold)
   - [Italics](#italics)
-  - [Inline code](#inline-code)
 - [Links](#links)
-  - [Link syntax](#link-syntax)
-  - [Jekyll links](#jekyll-links)
-  - [Anchor links](#anchor-links)
-- [Code blocks](#code-blocks)
-  - [Basic syntax](#basic-syntax)
+  - [Between pages](#links-between-cockroachdb-docs-pages)
+  - [From non-versioned directories](#links-to-versioned-docs-pages-from-a-non-versioned-directory)
+  - [From Technical Advisories](#links-to-versioned-docs-pages-from-technical-advisories)
+  - [Custom anchor links](#custom-anchor-links)
+  - [External links](#external-links)
+- [Code](#code-blocks)
+  - [Inline code](#inline-code)
+  - [Code block](#code-block)
   - [Language highlighting](#language-highlighting)
   - [Copy to clipboard](#copy-to-clipboard)
   - [Placeholders](#placeholders)
@@ -134,7 +136,7 @@ Use inline code when referring to code, commands, or other technical syntax with
 
 Use a code block to provide executable code samples. A code block has an opening and closing set of 3 tildes (`~~~`). There should be one returned line before and after a code block, for better Markdown readability.
 
-```
+~~~markdown
 This is a sample line of text.
 
 {% include_cached copy-clipboard.html %}
@@ -143,47 +145,47 @@ $ go get -u github.com/lib/pq
 ~~~
 
 This is more sample text.
-```
+~~~
 
 ### Language highlighting
 
 A code block supports syntax highlighting if you add the language name (`shell`, `sql`, `json`, etc.) immediately after the first line of tildes.
 
-```
+~~~markdown
 ~~~sql
 SELECT * FROM users;
 ~~~
-```
+~~~
 
-```
+~~~markdown
 ~~~shell
 $ cockroach start --insecure
 ~~~
-```
+~~~
 
 ### Multi-line samples
 
 For multi-line commands, use a backslash (`\`) at the end of each line to indicate a line break.
 
-```
+~~~markdown
 ~~~shell
 $ cockroach start \
   --insecure \
   --store=node1 \
   --listen-addr=localhost:26257
 ~~~
-```
+~~~
 
 ### Copy to clipboard
 
 Many of our code blocks are written so users can copy and paste them directly into a terminal. To make that easier, add the **Copy to Clipboard** button by placing `{% include_cached copy-clipboard.html %}` on the line directly preceding the code block:
 
-```
+~~~markdown
 {% include_cached copy-clipboard.html %}
 ~~~shell
 $ go get -u github.com/lib/pq
 ~~~
-```
+~~~
 
 Notes for usage:
 
