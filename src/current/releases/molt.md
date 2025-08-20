@@ -25,9 +25,9 @@ MOLT Fetch/Verify 1.3.1 is [available](#installation).
 - Added the `--enableParallelApplies` [replication flag]({% link molt/molt-fetch.md %}#replication-flags) to enable parallel application of independent table groups during replication. By default, applies are synchronous. When enabled, this increases throughput at the cost of higher target pool usage and memory usage.
 - Improved cleanup logic for scheduled tasks to ensure progress reporting and prevent indefinite hangs.
 - Added parallelism gating to ensure the parallelism setting remains smaller than the `targetMaxPoolSize`. This helps prevent a potential indefinite hang.
-- Added new metrics for progress report start and end times, as well as error report timing. These provide visibility into the core sequencer progress and help identify hangs in the applier and progress tracking pipeline.
-- Added a new metric to track target apply queue utilization, indicating when the queue should be resized.
-- Oracle sources now support configurable backpressure between the source and target applier, with a new metric to track queue depth.
+- Added new metrics that track start and end times for progress reports (`core_progress_reports_started_count` and `core_progress_reports_ended_count`) and error reports (`core_error_reports_started_count` and `core_error_reports_ended_count`). These provide visibility into the core sequencer progress and help identify hangs in the applier and progress tracking pipeline.
+- Added new metrics `target_apply_queue_utilization_percent` and `target_apply_queue_depth` to track target apply queue utilization, indicating when the queue should be resized. These metrics are only relevant to PostgreSQL, Oracle, and CockroachDB sources.
+- Oracle sources now support configurable backpressure between the source and target applier. The new `target_apply_queue_depth` metric tracks queue depth.
 - Improved visibility into queue depth between each source frontend and the backend applier to the target. Updated logging to use lower log levels with clearer, less alarming wording.
 - Improved throughput for tables in the replication stream that have no dependencies on one another. This increases parallelism and minimizes blocking of transactions that are mutually independent.
 - The best effort window is now disabled by default to prevent unexpected mode switches that can lead to consistency issues and stalled replication due to failed target applies.
