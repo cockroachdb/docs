@@ -31,15 +31,11 @@ This guide covers Markdown-specific syntax and formatting conventions used in Co
 
 ## Headings
 
-Use headings to demarcate content into a hierarchy to help readers find information. When the page is rendered, the first two heading levels appear in the page TOC at the right of the page.
+Use headings to establish a content hierarchy. When the page is rendered, the first two heading levels appear in the page TOC at the right of the page.
 
-A heading is denoted by one or more number signs (`#`) followed by one space: Heading 2 (`##`), Heading 3 (`###`) and Heading 4 (`####`). Use Heading 4 sparingly. Denote anything under Heading 4 by bolded text.
+Add a line break between a heading and its content.
 
-Headings should be sentence case.
-
-Enter a line break between a heading and its content.
-
-### Examples
+**Examples:**
 
 - `## Heading 2`
 - `### Heading 3`
@@ -49,101 +45,106 @@ Enter a line break between a heading and its content.
 
 ### Bold
 
-Use bold text to emphasize an important word or phrase, or to create visual separation and callouts (e.g., **Example:**). Do not combine bold with italic.
-
-To bold a word or phrase, surround the text with two asterisks (`**`).
+Use bold text to emphasize a UI element, important word or phrase, or to create visual separation and callouts (e.g., **Example:**). Do **not** combine bold with italic.
 
 **Examples:**
 
 - The **Overview** dashboard is displayed. Hover over the **SQL Queries** graph at the top.
-- **This is an experimental feature.** The interface and output of this feature are subject to change.
 - **Default:** `NULL`
 
 ### Italics
 
-Use italics to identify the term in a concept definition. Otherwise, do not use italicized text in CockroachDB docs. If it seems beneficial to emphasize a word or phrase, use [bold](#bold).
+Use italics to introduce a new term or concept. To emphasize a word or phrase, use [bold](#bold) formatting instead.
 
-To italicize text, surround it with single asterisks (`*`) or underscores (`_`).
+**Examples:**
+
+- This is the basis of potential *write skew anomalies*.
+- Every table in a multi-region database has a "table locality setting" that configures one or more *home regions* at the table or row level.
 
 ### Inline code
 
-Use inline code when referring to code, commands, or other technical syntax within a sentence. Inline `code` has `backticks (``) around` it.
+Use inline code when referring to code, commands, or other technical syntax within a sentence. Inline `code` is surrounded by backticks (``).
 
 **Example:** The `CREATE TABLE` statement creates a new table in a database.
 
+For guidance on code blocks, refer to [Code blocks](#code-blocks).
+
 ## Links
 
-### Link syntax
+### Links between CockroachDB docs pages
 
-Links are marked with inline text surrounded by square brackets followed by the link address in parentheses.
+To link to pages in the `docs` repo, use the [Jekyll link syntax](https://jekyllrb.com/docs/liquid/tags/#links).
 
-~~~markdown
-[Link text](https://example.com)
-~~~
+If the page is versioned, use `{{ page.version.version }}` rather than the hardcoded version. Exceptions apply when linking to versioned pages from [non-versioned pages](#links-to-versioned-docs-pages-from-a-non-versioned-directory) and [technical advisory pages](#links-to-cockroachdb-docs-from-technical-advisories).
 
-Avoid using non-descriptive link names such as `here`, `this page`, or `go`.
+**Examples:** 
 
-Use Markdown reference-style links when several parts of the same page refer to the same target URL. Reference-style links contain two sets of square brackets. The first set of brackets contains the link text that will appear on the final rendered page. The second set of brackets contains the reference name.
+- `[Foreign Key Constraint]({% link {{ page.version.version }}/foreign-key.md %})`
+- `[Foreign Key Constraint]({% link cockroachcloud/quickstart.md %})`
 
-**Example:**
+To include an anchor link, place it outside of the Liquid tag.
 
-~~~markdown
-This text has a [link to a page][docs].
-...
-This text has a [link as well][docs].
-...
-[docs]: https://www.cockroachlabs.com/docs
-~~~
+**Examples:** 
 
-### Jekyll links
+- `[Rules for creating foreign keys]({% link {{ page.version.version }}/foreign-key.md %}#rules-for-creating-foreign-keys)`
+- `[Multi-active availability]({% link {{ page.version.version }}/architecture/glossary.md %}#multi-active-availability)`
 
-To link to a page within the same directory (e.g., a page in `v23.1` to another page in `v23.1`), use the [Jekyll link syntax](https://jekyllrb.com/docs/liquid/tags/#links).
+### Links to versioned docs pages from a non-versioned directory
 
-If the page is a versioned doc, use `{{ page.version.version }}` instead of the hardcoded version. Otherwise, use the regular path (e.g., `cockroachcloud`).
+When linking to a versioned page from a non-versioned page (such as `cockroachcloud` or `molt`), use `{{ site.current_cloud_version }}` in place of `{{ page.version.version }}`. This is because the `page.version.version` variable can't be accessed from the non-versioned directories.
 
-**Example:** `[Foreign Key Constraint]({% link {{ page.version.version }}/foreign-key.md %})`
+**Example:** [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %})
 
-**Example:** `[Foreign Key Constraint]({% link cockroachcloud/quickstart.md %})`
+### Links to CockroachDB docs from technical advisories
 
-To include a subsection, place it outside of the Liquid tag.
+When linking to a versioned page from a Technical Advisory (in `advisories`), hardcode the page version.
 
-**Example:** `[Rules for creating foreign keys]({% link {{ page.version.version }}/foreign-key.md %}#rules-for-creating-foreign-keys)`
+**Example:** [`debug.zip`]({% link v25.1/cockroach-debug-zip.md %})
 
-### Anchor links
+### Custom anchor links
 
 To link to a specific location on a page that is not a heading (e.g., a specific command-line flag in a table), add a manual anchor and use the `id` parameter:
 
 **Example:**
 
-~~~markdown
+~~~
 # Anchor:
 <a id="flags-max-offset"></a>`--max-offset`
 ~~~
 
-~~~markdown
+~~~
 # Link:
 [--max-offset](#flags-max-offset)
 ~~~
+
+### External links
+
+To link to an external page, use the standard [Markdown syntax](https://www.markdownguide.org/basic-syntax/#links).
+
+**Example:** `Refer to the [PostgreSQL documentation](https://www.postgresql.org/docs/current/index.html).`
+
+For websites that automatically localize pages, avoid using localization elements directly within the URL. 
+
+**Examples:**
+
+- Instead of `https://docs.github.com/**en/**graphql/overview/explorer`, use `https://docs.github.com/graphql/overview/explorer`.
+- Instead of `https://en.wikipedia.org/wiki/SQL:2011`, use `https://www.wikipedia.org/wiki/SQL:2011` or `https://wikipedia.org/wiki/SQL:2011`.
 
 ## Code blocks
 
 ### Basic syntax
 
-Use a code block to provide executable code samples. A code block has an opening and closing set of 3 tildes (`~~~`) or 3 backticks (<code>~~~</code>). There should be one returned line before and after a code block, for better Markdown readability.
+Use a code block to provide executable code samples. A code block has an opening and closing set of 3 tildes (`~~~`). There should be one returned line before and after a code block, for better Markdown readability.
 
 ~~~markdown
-This is a sample line of text.
-
 ~~~
 Code goes here
 ~~~
-
-This is more sample text.
 ~~~
 
 ### Language highlighting
 
-A code block supports syntax highlighting if you add the language name immediately after the first line of tildes or backticks.
+A code block supports syntax highlighting if you add the language name (`shell`, `sql`, `json`, etc.) immediately after the first line of tildes.
 
 ~~~markdown
 ~~~sql
@@ -157,9 +158,9 @@ $ cockroach start --insecure
 ~~~
 ~~~
 
-### Shell code samples
+### Multi-line samples
 
-Start shell code samples with `~~~ shell` followed by a line break. The first character of the next line must be the terminal marker `$`. For multi-line shell commands, use a backslash (`\`) at the end of each line to indicate a line break.
+For multi-line commands, use a backslash (`\`) at the end of each line to indicate a line break.
 
 ~~~markdown
 ~~~shell
@@ -169,14 +170,6 @@ $ cockroach start \
   --listen-addr=localhost:26257
 ~~~
 ~~~
-
-### SQL code samples
-
-SQL code samples are broken into two sections: commands and responses.
-
-- **Commands** (e.g., `SELECT`, `CREATE TABLE`) should begin with `~~~ sql` followed by a line break. Commands should be properly capitalized, and there should be only one command per code sample.
-
-- **Responses** (e.g., retrieved tables) should begin with `~~~` but should **not** be syntax highlighted.
 
 ### Copy to clipboard
 
@@ -231,8 +224,8 @@ Sometimes you may need to escape special characters to achieve proper rendering:
 
 CockroachDB docs use two types of lists:
 
-- **Numbered** (ordered list) - Use to list information that should appear in order, like tutorial steps.
-- **Bulleted** (unordered list) - Use to list related information in an easy-to-read way.
+- **Numbered** (ordered list): Use to list information that should appear in order, like tutorial steps.
+- **Bulleted** (unordered list): Use to list related information in an easy-to-read way.
 
 Introduce a list with a sentence and a colon. Use periods at the end of list items if they are sentences or complete a sentence.
 
@@ -371,42 +364,8 @@ You can use the following HTML formatting within an HTML table:
 - Paragraph breaks (`<p>`)
 - Lists (`<ol>` / `<ul>` / `<li>`)
 
-## Best practices
-
-### When to use ordered lists
-
-Don't use prose to describe multiple steps within a section. Instead, use an ordered list. If a topic introduces actions the user performs with "First, ..." and "Next, ..." you should make these an ordered list.
-
-**Incorrect**
-
-First, run this command:
-
-~~~shell
-command1 --option
-~~~
-
-Then, run another command:
-
-~~~shell
-command2 myfile.yaml
-~~~
-
-**Correct**
-
-1. Run this command:
-
-    ~~~shell
-    command1 --option
-    ~~~
-
-1. Run another command:
-
-    ~~~shell
-    command2 myfile.yaml
-    ~~~
-
 ### Markdown vs HTML
 
 - Prefer Markdown syntax over HTML when possible for better readability and maintainability.
 - Use HTML only when Markdown doesn't provide the necessary functionality.
-- When mixing Markdown and HTML, ensure proper spacing and formatting.
+- When mixing Markdown and HTML, ensure proper spacing and formatting. Preview the rendered page locally.
