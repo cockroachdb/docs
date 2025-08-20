@@ -798,3 +798,9 @@ Term | Classification | Note
 Postgres | 🔴 | This is a nickname for PostgreSQL. Use PostgreSQL instead: it's the official name, our docs site and Google treat these as synonyms, and Cmd+F on `Postgres` will still find `PostgreSQL`.
 PostgreSQL | 🟢 | Preferred over Postgres.
 vxx.x.x | 🟢 | This is the correct way to refer to any version of CockroachDB (for example, `v21.1.8`). Preferred over `version xx.x.x`. When listing a range of versions, separate the first and last version numbers with `to` (for example, `v22.1.0 to v22.1.4`). [Do not use a dash.](#punctuation-rules)
+
+### Legacy vs. Deprecated
+
+Use _legacy_ only for our own earlier products, features, or workflows to signal that a newer option is preferred. Avoid using legacy as a pejorative; if no preference is intended, say "earlier" or "previous". Do not use legacy to refer to competitors' products.
+
+Prefer _deprecated_ when there is an approved plan for end of support and removal. If deprecation is not approved but guidance is needed, you may call the previous option legacy.
