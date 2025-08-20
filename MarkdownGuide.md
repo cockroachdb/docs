@@ -61,14 +61,6 @@ Use italics to introduce a new term or concept. To emphasize a word or phrase, u
 - This is the basis of potential *write skew anomalies*.
 - Every table in a multi-region database has a "table locality setting" that configures one or more *home regions* at the table or row level.
 
-### Inline code
-
-Use inline code when referring to code, commands, or other technical syntax within a sentence. Inline `code` is surrounded by backticks (``).
-
-**Example:** The `CREATE TABLE` statement creates a new table in a database.
-
-For guidance on code blocks, refer to [Code blocks](#code-blocks).
-
 ## Links
 
 ### Links between CockroachDB docs pages
@@ -130,57 +122,68 @@ For websites that automatically localize pages, avoid using localization element
 - Instead of `https://docs.github.com/**en/**graphql/overview/explorer`, use `https://docs.github.com/graphql/overview/explorer`.
 - Instead of `https://en.wikipedia.org/wiki/SQL:2011`, use `https://www.wikipedia.org/wiki/SQL:2011` or `https://wikipedia.org/wiki/SQL:2011`.
 
-## Code blocks
+## Code
 
-### Basic syntax
+### Inline code
+
+Use inline code when referring to code, commands, or other technical syntax within a sentence. Inline `code` is surrounded by backticks (``).
+
+**Example:** The `CREATE TABLE` statement creates a new table in a database.
+
+### Code block
 
 Use a code block to provide executable code samples. A code block has an opening and closing set of 3 tildes (`~~~`). There should be one returned line before and after a code block, for better Markdown readability.
 
-~~~markdown
+```
+This is a sample line of text.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ go get -u github.com/lib/pq
 ~~~
-Code goes here
-~~~
-~~~
+
+This is more sample text.
+```
 
 ### Language highlighting
 
 A code block supports syntax highlighting if you add the language name (`shell`, `sql`, `json`, etc.) immediately after the first line of tildes.
 
-~~~markdown
+```
 ~~~sql
 SELECT * FROM users;
 ~~~
-~~~
+```
 
-~~~markdown
+```
 ~~~shell
 $ cockroach start --insecure
 ~~~
-~~~
+```
 
 ### Multi-line samples
 
 For multi-line commands, use a backslash (`\`) at the end of each line to indicate a line break.
 
-~~~markdown
+```
 ~~~shell
 $ cockroach start \
   --insecure \
   --store=node1 \
   --listen-addr=localhost:26257
 ~~~
-~~~
+```
 
 ### Copy to clipboard
 
 Many of our code blocks are written so users can copy and paste them directly into a terminal. To make that easier, add the **Copy to Clipboard** button by placing `{% include_cached copy-clipboard.html %}` on the line directly preceding the code block:
 
-~~~markdown
+```
 {% include_cached copy-clipboard.html %}
 ~~~shell
 $ go get -u github.com/lib/pq
 ~~~
-~~~
+```
 
 Notes for usage:
 
