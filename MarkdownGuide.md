@@ -4,6 +4,7 @@ This guide covers Markdown-specific syntax and formatting conventions used in Co
 
 ## Table of Contents
 
+- [Title](#title)
 - [Headings](#headings)
 - [Text formatting](#text-formatting)
   - [Bold](#bold)
@@ -44,6 +45,10 @@ This guide covers Markdown-specific syntax and formatting conventions used in Co
   - [Linking into tabbed content](#linking-into-tabbed-content)
 - [Comments](#comments)
   - [TODOs](#todos)
+
+## Title
+
+Set the page title in the `title:` metadata. The title should be in title case. Heading 1 (`#`) is reserved for page titles and **should not** be used in pages.
 
 ## Headings
 

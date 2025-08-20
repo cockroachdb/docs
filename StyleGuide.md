@@ -25,13 +25,6 @@ Included in this guide:
   - [File naming](#file-naming)
 - [Product names](#product-names)
 - [Page components](#page-components)
-  - [Page title](#page-title)
-  - [Text format](#text-format)
-    - [Bold](#bold)
-    - [Monospace](#monospace)
-    - [Quotation marks](#quotation-marks)
-    - [Italics](#italics)
-    - [Underline](#underline)
   - [GitHub issues and pull requests](#github-issues-and-pull-requests)
   - [Tips, notes, and warnings](#tips-notes-and-warnings)
     - [Tips](#tips)
@@ -46,22 +39,9 @@ Included in this guide:
     - [Where to document known limitations](#where-to-document-known-limitations)
     - [How to document known limitations](#how-to-document-known-limitations)
   - [Examples](#examples-15)
-  - [Versioning](#versioning)
-    - [Version tags](#version-tags)
-    - [Version references](#version-references)
 - [Content elements](#content-elements)
   - [Images](#images)
   - [Videos](#videos)
-  - [Include files](#include-files)
-    - [Basic include file usage](#basic-include-file-usage)
-    - [Advanced include file usage](#advanced-include-file-usage)
-      - [Different content depending on page name](#different-content-depending-on-page-name)
-      - [Remote includes](#remote-includes)
-    - [Filter tabs](#filter-tabs)
-    - [Technical limitations of include files](#technical-limitations-of-include-files)
-  - [Tabs](#tabs)
-    - [Linking into tabbed content](#linking-into-tabbed-content)
-  - [Comments](#comments)
 - [Word usage guidelines](#word-usage-guidelines)
 
 For Markdown-specific syntax and formatting guidelines, see [MarkdownGuide.md](MarkdownGuide.md).
@@ -258,51 +238,7 @@ The first occurrence of a product name within a docs page should use its full na
 
 ## Page components
 
-### Title
-
-Set the page title in the `title:` metadata. The title should be in title case. Heading 1 (`#`) is reserved for page titles and **should not** be used in pages.
-
-For Markdown heading syntax, see [MarkdownGuide.md](MarkdownGuide.md#headings).
-
-### Text format
-
-#### Bold
-
-Use bold text to emphasize an important word or phrase, or to create visual separation and callouts (e.g., **Example:**). Do not combine bold with italic.
-
-Use bold text when you refer to the name of a UI section or field. The name should be in bold only if it appears verbatim in the UI. If a UI element, such as a table, is not labeled in the UI, do not bold when you reference the element in the documentation.
-
-**Examples:**
-
-- The **Overview** dashboard is displayed. Hover over the **SQL Queries** graph at the top.
-- **This is an experimental feature.** The interface and output of this feature are subject to change.
-- **Default:** `NULL`
-
-#### Monospace
-
-Use monospace text (inline code) when referring to code, commands, or other technical syntax within a sentence.
-
-**Examples:**
-
-- The `CREATE TABLE` statement creates a new table in a database.
-- Use the `--export-concurrency` flag to control sharding.
-- Set `idle_in_transaction_session_timeout` to a higher value.
-
-#### Quotation marks
-
-Use quotation marks (`""`) to indicate a direct, word-for-word quotation.
-
-**Example:** As stated in RFC8259, "JavaScript Object Notation (JSON) is a lightweight, text-based, language-independent data interchange format."
-
-#### Italics
-
-Use italics to identify the term in a concept definition. Otherwise, do not use italicized text in CockroachDB docs. If it seems beneficial to emphasize a word or phrase, use [bold](#bold).
-
-#### Underline
-
-Do not use underlined text in CockroachDB docs. If it seems beneficial to emphasize a word or phrase, use [bold](#bold).
-
-#### GitHub issues and pull requests
+### GitHub issues and pull requests
 
 [Release notes](https://www.cockroachlabs.com/docs/releases/index.html) and [technical advisories](https://www.cockroachlabs.com/docs/advisories/index.html) contain links to individual GitHub issues and pull requests.
 
