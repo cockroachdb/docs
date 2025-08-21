@@ -281,7 +281,7 @@ The `--source-cdb` flag specifies the connection string for the Oracle container
 - [Load data into CockroachDB](#data-load)
 - [Load data and replicate changes to CockroachDB](#data-load-and-replication)
 - [Replicate changes to CockroachDB](#replication-only)
-- [Export the data to storage](#export-only-and-import-only)
+- [Export and import the data only](#export-only-and-import-only)
 - [Fail back to source database](#failback)
 
 #### `data-load`
