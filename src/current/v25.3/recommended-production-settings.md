@@ -318,9 +318,9 @@ Creating the appropriate size pool of connections is critical to gaining maximum
 
 {% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %}.
 
-For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools]({% link {{ page.version.version }}/connection-pooling.md %}).
+For guidance on sizing, validating, and using connection pools with CockroachDB, refer to [Use Connection Pools]({% link {{ page.version.version }}/connection-pooling.md %}).
 
-{% include {{page.version.version}}/sql/server-side-connection-limit.md %} This may be useful in addition to your connection pool settings.
+{% include {{page.version.version}}/sql/server-side-connection-limit.md %}
 
 ## Monitoring and alerting
 
