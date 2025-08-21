@@ -31,7 +31,6 @@ MOLT Fetch/Verify 1.3.1 is [available](#installation).
 - Improved visibility into queue depth between each source frontend and the backend applier to the target. Updated logging to use lower log levels with clearer, less alarming messages.
 - Improved throughput for tables in the replication stream that have no dependencies on one another. This increases parallelism and minimizes blocking of transactions that are mutually independent.
 - The best effort window is now disabled by default to prevent unexpected mode switches that could cause consistency issues or stall replication due to failed target applies.
-- Added checkpointing support for the Pebble stager in CockroachDB-to-X replication mode to better handle failures and ensure minimal data replay for consistency.
 
 #### Bug fixes
 
