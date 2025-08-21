@@ -138,7 +138,7 @@ To link to an external page, use the standard [Markdown syntax](https://www.mark
 
 **Example:** `Refer to the [PostgreSQL documentation](https://www.postgresql.org/docs/current/index.html).`
 
-For websites that automatically localize pages, avoid using localization elements directly within the URL. 
+For websites that automatically localize pages, avoid using localization elements, such as `en`, directly within the URL. 
 
 **Examples:**
 
