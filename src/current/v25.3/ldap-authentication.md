@@ -130,7 +130,7 @@ If you choose to manage CockroachDB role memberships and privileges directly, yo
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SET CLUSTER SETTING server.provisioning.ldap.enabled = true;
+SET CLUSTER SETTING security.provisioning.ldap.enabled = true;
 ~~~
 
 #### Option 2: Manual/scripted user creation
