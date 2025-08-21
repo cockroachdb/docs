@@ -73,22 +73,26 @@ To use PCR, it is necessary to set the `supports_cluster_virtualization` field t
         "dedicated": {
           "cockroachVersion": "v25.2", 
           "hardware": {
-            "disk_iops": 0 "machine_spec": {"num_virtual_cpus": 4}, 
-            "storage_gib": 16
+            "disk_iops": 0 "machine_spec": {
+              "num_virtual_cpus": 4
             }, 
-          "region_nodes": {"us-east-1": 3}, 
+            "storage_gib": 16
+          }, 
+          "region_nodes": {
+            "us-east-1": 3
+          }, 
           "supports_cluster_virtualization": true
-          }
         }
-      }'
+      }
+    }'
     ~~~
 
-    Replace:
+Replace:
 
-    - `{api_secret_key}` with your API secret key.
-    - `{primary_cluster_id}` with the cluster ID returned after creating the primary cluster.
+- `{api_secret_key}` with your API secret key.
+- `{primary_cluster_id}` with the cluster ID returned after creating the primary cluster.
 
-    Ensure that you replace each of the values for the cluster specification as per your requirements. For details on the cluster specifications, refer to [Create a cluster]({% link cockroachcloud/cloud-api.md %}#create-a-cluster).
+Ensure that you replace each of the values for the cluster specification as per your requirements. For details on the cluster specifications, refer to [Create a cluster]({% link cockroachcloud/cloud-api.md %}#create-a-cluster).
 
 1. Send a `POST` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/physical-replication-streams) to create the standby cluster that includes your necessary cluster specification. Ensure that you include `supports_cluster_virtualization` set to `true`:
 
@@ -103,22 +107,26 @@ To use PCR, it is necessary to set the `supports_cluster_virtualization` field t
       "spec": {
         "dedicated": {
           "cockroachVersion": "v25.2", "hardware": {
-            "disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, 
-            "storage_gib": 16
+            "disk_iops": 0, "machine_spec": {
+              "num_virtual_cpus": 4
             }, 
-          "region_nodes": {"us-east-2": 3}, 
+            "storage_gib": 16
+          }, 
+          "region_nodes": {
+            "us-east-2": 3
+          }, 
           "supports_cluster_virtualization": true
-          }
         }
-      }'
+      }
+    }'
     ~~~
 
-    Replace:
+Replace:
 
-    - `{api_secret_key}` with your API secret key.
-    - `{standby_cluster_id}` with the cluster ID returned after creating the standby cluster.
+- `{api_secret_key}` with your API secret key.
+- `{standby_cluster_id}` with the cluster ID returned after creating the standby cluster.
 
-    If you're creating clusters in AWS or Azure, you must start the primary and standby clusters in different regions.
+If you're creating clusters in AWS or Azure, you must start the primary and standby clusters in different regions.
 
 {{site.data.alerts.callout_success}}
 We recommend [enabling Prometheus metrics export]({% link cockroachcloud/export-metrics.md %}) on your cluster before starting a PCR stream. For details on metrics to track, refer to [Monitor the PCR stream](#step-3-monitor-the-pcr-stream).
@@ -139,8 +147,9 @@ With the primary and standby clusters set up, you can now start a PCR stream.
 curl --request POST --url 'https://cockroachlabs.cloud/api/v1/physical-replication-streams' \
 --header "Authorization: Bearer {api_secret_key}" \
 --json '{
-  "primary_cluster_id": "{primary_cluster_id}","standby_cluster_id": "{standby_cluster_id}"
-  }'
+  "primary_cluster_id": "{primary_cluster_id}",
+  "standby_cluster_id": "{standby_cluster_id}"
+}'
 ~~~
 
 Replace:
@@ -249,7 +258,7 @@ curl --request PATCH --url "https://cockroachlabs.cloud/api/v1/physical-replicat
 --header "Authorization: Bearer {api_secret_key}" \
 --json '{
   "status": "FAILING_OVER"
-  }'
+}'
 ~~~
 ~~~json
 {
@@ -271,7 +280,7 @@ curl --request PATCH "https://cockroachlabs.cloud/api/v1/physical-replication-st
 --header "Authorization: Bearer {api_secret_key}" \
 --json '{
   "status": "STARTING", "failover_at": "2025-05-01T19:39:39.731939Z"
-  }'
+}'
 ~~~
 ~~~json
 {
