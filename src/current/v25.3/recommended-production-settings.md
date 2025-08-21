@@ -316,11 +316,11 @@ Environment | Featured Approach
 
 Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
-{% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %}.
+{% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %}
 
-For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools]({% link {{ page.version.version }}/connection-pooling.md %}).
+For guidance on sizing, validating, and using connection pools with CockroachDB, refer to [Use Connection Pools]({% link {{ page.version.version }}/connection-pooling.md %}).
 
-{% include {{page.version.version}}/sql/server-side-connection-limit.md %} This may be useful in addition to your connection pool settings.
+{% include {{page.version.version}}/sql/server-side-connection-limit.md %}
 
 ## Monitoring and alerting
 
