@@ -164,7 +164,7 @@ Avoid using socially-charged terms for features and technical concepts.
 
 - Use title case for titles.
 - Use sentence case instead of title case for all [headings](#headings).
-- Capitalize proper nouns, CockroachDB specific terms, and the names of UI features:
+- Capitalize proper nouns, CockroachDB specific terms, and the names of UI features.
 
     **Examples:** CockroachDB, Cockroach Labs, the Overview dashboard, the SQL Queries graph
 

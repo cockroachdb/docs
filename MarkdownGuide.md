@@ -142,7 +142,7 @@ For websites that automatically localize pages, avoid using localization element
 
 **Examples:**
 
-- Instead of `https://docs.github.com/**en/**graphql/overview/explorer`, use `https://docs.github.com/graphql/overview/explorer`.
+- Instead of `https://docs.github.com/en/graphql/overview/explorer`, use `https://docs.github.com/graphql/overview/explorer`.
 - Instead of `https://en.wikipedia.org/wiki/SQL:2011`, use `https://www.wikipedia.org/wiki/SQL:2011` or `https://wikipedia.org/wiki/SQL:2011`.
 
 ## Code
@@ -162,7 +162,7 @@ This is a sample line of text.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ go get -u github.com/lib/pq
+go get -u github.com/lib/pq
 ~~~
 
 This is more sample text.
@@ -180,17 +180,17 @@ SELECT * FROM users;
 
 ```
 ~~~shell
-$ cockroach start --insecure
+cockroach start --insecure
 ~~~
 ```
 
 ### Multi-line samples
 
-For multi-line commands, use a backslash (`\`) at the end of each line to indicate a line break.
+For multi-line commands, use a backslash (`\`) at the end of each line to indicate a line continuation. The backslashes make the command easier to read, but the shell sees it as one line.
 
 ```
 ~~~shell
-$ cockroach start \
+cockroach start \
   --insecure \
   --store=node1 \
   --listen-addr=localhost:26257
@@ -204,14 +204,14 @@ Many of our code blocks are written so users can copy and paste them directly in
 ```
 {% include_cached copy-clipboard.html %}
 ~~~shell
-$ go get -u github.com/lib/pq
+go get -u github.com/lib/pq
 ~~~
 ```
 
 Notes for usage:
 
 - **Copy to Clipboard** should be used for every code block that can be **executed**.
-- There must be a line break above the `{% include_cached copy-clipboard.html %}` line.
+- To render properly, there must be a line break above the `{% include_cached copy-clipboard.html %}` line.
 
 ### Placeholders
 
@@ -317,7 +317,7 @@ To nest a paragraph or code block under a list item, insert an empty line and th
     This is a nested paragraph.
 
     ~~~shell
-    $ command
+    command
     ~~~
 ~~~
 
@@ -328,12 +328,12 @@ Similarly, to nest a paragraph or code block under a **nested** list item, inser
     - This is a bullet.
 
         ~~~shell
-        $ command
+        command
         ~~~
     - This is a bullet.
 
         ~~~shell
-        $ command
+        command
         ~~~
 ~~~
 
