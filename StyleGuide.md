@@ -44,7 +44,7 @@ Included in this guide:
   - [Videos](#videos)
 - [Word usage guidelines](#word-usage-guidelines)
 
-For Markdown-specific syntax and formatting guidelines, see [MarkdownGuide.md](MarkdownGuide.md).
+For Markdown-specific syntax and formatting guidelines, refer to the [Markdown Guide](MarkdownGuide.md).
 
 ## Style and tone
 
@@ -172,6 +172,7 @@ Avoid using socially-charged terms for features and technical concepts.
 - In body text, only capitalize proper nouns. Do not capitalize common nouns, even if the common noun is an important product concept.
 
     **Example:**
+
       - Correct: New clusters will now have admission control enabled by default.
       - Incorrect: New clusters will now have Admission Control enabled by default.
 
@@ -232,7 +233,6 @@ All product names except CockroachDB should be written as Liquid variables unles
 - **CockroachDB Standard** : `CockroachDB {{ site.data.products.standard }}`
 - **CockroachDB Advanced** : `CockroachDB {{ site.data.products.advanced }}`
 - **self-hosted** : `CockroachDB {{ site.data.products.core }} cluster`
-- **Enterprise** : `{{ site.data.products.enterprise }}`
 
 The first occurrence of a product name within a docs page should use its full name. At the writer's discretion, subsequent occurrences may be shortened to "Basic", "Advanced", or "Cloud", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
 
@@ -359,10 +359,6 @@ If the limitation is related to a feature documented elsewhere on our docs site,
 
 Refer to the [wiki](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/3516825623/Document+known+limitations).
 
-### Code
-
-For all code formatting including inline code, code blocks, syntax highlighting, placeholders, and escaping special characters, see [MarkdownGuide.md](MarkdownGuide.md#code-blocks).
-
 ### Examples
 
 Examples help show the feature in action. Examples follow a basic format:
@@ -375,7 +371,7 @@ Examples help show the feature in action. Examples follow a basic format:
 
     **Example:** "CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. Although it is not possible to access the key-value store directly, you can mirror direct access using a "simple" table of two columns, with one set as the primary key:"
 
-- **[Code blocks](#code-blocks)** provide executable code samples.
+- **Code blocks** provide executable code samples.
 
     **Example:** "CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. Although it is not possible to access the key-value store directly, you can mirror direct access using a "simple" table of two columns, with one set as the primary key:
 
