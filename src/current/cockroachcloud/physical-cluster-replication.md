@@ -63,17 +63,60 @@ To use PCR, it is necessary to set the `supports_cluster_virtualization` field t
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' --header "Authorization: Bearer <api_secret_key>" --header 'Content-Type: application/json' --data '{"name": "<primary_cluster_name>", "provider": "AWS", "spec": {"dedicated": {"cockroachVersion": "v25.2", "hardware": {"disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, "storage_gib": 16}, "region_nodes": {"us-east-1": 3}, "supports_cluster_virtualization": true}}}'
+    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' \
+    --header "Authorization: Bearer {api_secret_key}" \
+    --header 'Content-Type: application/json' \
+    --data '{
+      "name": "{primary_cluster_name}", 
+      "provider": "AWS", 
+      "spec": {
+        "dedicated": {
+          "cockroachVersion": "v25.2", 
+          "hardware": {
+            "disk_iops": 0 "machine_spec": {"num_virtual_cpus": 4}, 
+            "storage_gib": 16
+            }, 
+          "region_nodes": {"us-east-1": 3}, 
+          "supports_cluster_virtualization": true
+          }
+        }
+      }'
     ~~~
 
-    Ensure that you replace each of the values for the cluster specification as per your requirements. For details on the cluster specifications, refer to [Create a cluster]({% link cockroachcloud/cloud-api.md %}#create-a-cluster). Also, replace `<api_secret_key>` with your API secret key.
+    Replace:
+
+    - `{api_secret_key}` with your API secret key.
+    - `{primary_cluster_id}` with the cluster ID returned after creating the primary cluster.
+
+    Ensure that you replace each of the values for the cluster specification as per your requirements. For details on the cluster specifications, refer to [Create a cluster]({% link cockroachcloud/cloud-api.md %}#create-a-cluster).
 
 1. Send a `POST` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/physical-replication-streams) to create the standby cluster that includes your necessary cluster specification. Ensure that you include `supports_cluster_virtualization` set to `true`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' --header "Authorization: Bearer <api_secret_key>" --header 'Content-Type: application/json' --data '{"name": "standby_cluster_name", "provider": "AWS", "spec": {"dedicated": {"cockroachVersion": "v25.2", "hardware": {"disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, "storage_gib": 16}, "region_nodes": {"us-east-2": 3}, "supports_cluster_virtualization": true}}}'
+    curl --location --request POST 'https://cockroachlabs.cloud/api/v1/clusters' \
+    --header "Authorization: Bearer {api_secret_key}" \
+    --header 'Content-Type: application/json' \
+    --data '{
+      "name": "{standby_cluster_name}", 
+      "provider": "AWS", 
+      "spec": {
+        "dedicated": {
+          "cockroachVersion": "v25.2", "hardware": {
+            "disk_iops": 0, "machine_spec": {"num_virtual_cpus": 4}, 
+            "storage_gib": 16
+            }, 
+          "region_nodes": {"us-east-2": 3}, 
+          "supports_cluster_virtualization": true
+          }
+        }
+      }'
     ~~~
+
+    Replace:
+
+    - `{api_secret_key}` with your API secret key.
+    - `{standby_cluster_id}` with the cluster ID returned after creating the standby cluster.
 
     If you're creating clusters in AWS or Azure, you must start the primary and standby clusters in different regions.
 
@@ -93,14 +136,18 @@ With the primary and standby clusters set up, you can now start a PCR stream.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request POST --url 'https://cockroachlabs.cloud/api/v1/physical-replication-streams' --header "Authorization: Bearer <api_secret_key>" --json '{"primary_cluster_id": "<primary_cluster_id>","standby_cluster_id": "<standby_cluster_id>"}'
+curl --request POST --url 'https://cockroachlabs.cloud/api/v1/physical-replication-streams' \
+--header "Authorization: Bearer {api_secret_key}" \
+--json '{
+  "primary_cluster_id": "{primary_cluster_id}","standby_cluster_id": "{standby_cluster_id}"
+  }'
 ~~~
 
 Replace:
 
-- `<api_secret_key>` with your API secret key.
-- `<primary_cluster_id>` with the cluster ID returned after creating the primary cluster.
-- `<standby_cluster_id>` with the cluster ID returned after creating the standby cluster.
+- `{api_secret_key}` with your API secret key.
+- `{primary_cluster_id}` with the cluster ID returned after creating the primary cluster.
+- `{standby_cluster_id}` with the cluster ID returned after creating the standby cluster.
 
 You can find the cluster IDs in the cluster creation output, or in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`. The ID will resemble `ad1e8630-729a-40f3-87e4-9f72eb3347a0`.
 
@@ -133,13 +180,14 @@ For monitoring the current status of the PCR stream, send a `GET` [request](http
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request GET "https://cockroachlabs.cloud/api/v1/physical-replication-streams/<job_id>" --header "Authorization: Bearer <api_secret_key>" 
+curl --request GET "https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id}" \
+--header "Authorization: Bearer {api_secret_key}" 
 ~~~
 
 Replace:
 
-- `<api_secret_key>` with your API secret key.
-- `<job_id>` with the PCR job's ID. You can find this in the response from when you created the PCR stream.
+- `{api_secret_key}` with your API secret key.
+- `{job_id}` with the PCR job's ID. You can find this in the response from when you created the PCR stream.
 
 This will return a response similar to:
 
@@ -197,7 +245,11 @@ To fail over to the latest consistent time, you only need to include `"status": 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request PATCH --url "https://cockroachlabs.cloud/api/v1/physical-replication-streams/<job_id>" --header "Authorization: Bearer <api_secret_key>" --json '{"status": "FAILING_OVER"}'
+curl --request PATCH --url "https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id}" \
+--header "Authorization: Bearer {api_secret_key}" \
+--json '{
+  "status": "FAILING_OVER"
+  }'
 ~~~
 ~~~json
 {
@@ -215,7 +267,11 @@ To specify a timestamp, send a `PATCH` [request](https://www.cockroachlabs.com/d
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request PATCH "https://cockroachlabs.cloud/api/v1/physical-replication-streams/<job_id>" --header "Authorization: Bearer <api_secret_key>" --json '{"status": "STARTING", "failover_at": "2025-05-01T19:39:39.731939Z"}'
+curl --request PATCH "https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id}" \
+--header "Authorization: Bearer {api_secret_key}" \
+--json '{
+  "status": "STARTING", "failover_at": "2025-05-01T19:39:39.731939Z"
+  }'
 ~~~
 ~~~json
 {
@@ -236,7 +292,8 @@ Run a `GET` [request](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --request GET "https://cockroachlabs.cloud/api/v1/physical-replication-streams/<job_id>" --header "Authorization: Bearer <api_secret_key>" 
+curl --request GET "https://cockroachlabs.cloud/api/v1/physical-replication-streams/{job_id}" \
+--header "Authorization: Bearer {api_secret_key}" 
 ~~~
 ~~~json
 {
