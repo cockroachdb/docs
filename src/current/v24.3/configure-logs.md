@@ -293,6 +293,8 @@ By default, `cockroach start` and `cockroach start-single-node` do not print any
 
 ### Logging channel selection
 
+{% include {{ page.version.version }}/log-channel-note.md %}
+
 For each sink, multiple channels can be selected. Note that:
 
 - Spacing between items will vary according to the syntax used.
