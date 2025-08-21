@@ -12,7 +12,22 @@ To install MOLT, download the binary that matches your architecture and source d
 The following binaries are included:
 
 - `molt`
-- `replicator`. To use replication features, `replicator` **must** be located either in the same directory as `molt` or in a directory beneath `molt`.
+- `replicator`
+
+Both `molt` and `replicator` must be in your current **working directory**. To use replication features, `replicator` must be located either in the same directory as `molt` or in a directory directly beneath `molt`. For example, either of the following would be valid:
+
+~~~
+/migration-project/          # Your current working directory
+├── molt                     # MOLT binary
+└── replicator               # Replicator binary
+~~~
+	
+~~~
+/migration-project/          # Your current working directory
+├── molt                     # MOLT binary
+└── bin/                     # Subdirectory
+    └── replicator           # Replicator binary
+~~~
 
 To display the current version of each binary, run `molt --version` and `replicator --version`.
 
@@ -26,7 +41,7 @@ MOLT Fetch is supported on Red Hat Enterprise Linux (RHEL) 9 and above.
 
 ### Docker image
 
-[Docker multi-platform images](https://hub.docker.com/r/cockroachdb/molt/tags) containing both the AMD and ARM binaries are available. To pull the latest image:
+[Docker multi-platform images](https://hub.docker.com/r/cockroachdb/molt/tags) containing both the AMD and ARM binaries are available. To pull the latest image for PostgreSQL and MySQL:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -40,4 +55,11 @@ To pull a specific version (e.g., `1.1.3`):
 docker pull cockroachdb/molt:1.1.3
 ~~~
 
-{% if page.name != "molt.md" %}For details on running in Docker, see [Docker usage](#docker-usage).{% endif %}
+To pull the latest image for Oracle (note that only `linux/amd64` is supported):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+docker pull cockroachdb/molt:oracle-latest
+~~~
+
+{% if page.name != "molt.md" %}For details on running in Docker, refer to [Docker usage](#docker-usage).{% endif %}
