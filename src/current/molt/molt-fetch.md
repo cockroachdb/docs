@@ -578,7 +578,7 @@ Stats based sharding enabled for table {table_name}
 If stats-based sharding fails on a table, MOLT logs the following `WARNING` message and defaults to range-based sharding:
 
 ~~~
-error sharding table {table_name} using stats based sharding: {reason_for_failure}, falling back to non-stats based sharding
+Warning: failed to shard table {table_name} using stats based sharding: {reason_for_failure}, falling back to non stats based sharding
 ~~~
 
 The number of shards is dependent on the number of distinct values in the first primary key column of the table to be migrated. If this is different from the number of shards requested with `--export-concurrency`, MOLT logs the following `WARNING` and continues with the migration:
