@@ -16,6 +16,26 @@ Cockroach Labs recommends using the latest available version of each tool. See [
 
 {% include molt/molt-install.md %}
 
+## August 21, 2025
+
+MOLT Fetch/Verify 1.3.1 is [available](#installation).
+
+- MOLT Fetch now supports [sharding]({% link molt/molt-fetch.md %}#table-sharding) of primary keys of any data type on PostgreSQL 11+ sources. This can be enabled with the [`--use-stats-based-sharding`]({% link molt/molt-fetch.md %}#global-flags) flag.
+- Added the [`--ignore-replication-check`]({% link molt/molt-fetch.md %}#global-flags) flag to allow data loads with planned downtime and no [replication setup]({% link molt/molt-fetch.md %}#replication-setup). The `--pglogical-ignore-wal-check` flag has been removed.
+- Added the `--enableParallelApplies` [replication flag]({% link molt/molt-fetch.md %}#replication-flags) to enable parallel application of independent table groups during replication. By default, applies are synchronous. When enabled, this increases throughput at the cost of increased target pool and memory usage.
+- Improved cleanup logic for scheduled tasks to ensure progress reporting and prevent indefinite hangs.
+- Added parallelism gating to ensure the parallelism setting is smaller than the `targetMaxPoolSize`. This helps prevent a potential indefinite hang.
+- Added new metrics that track start and end times for progress reports (`core_progress_reports_started_count` and `core_progress_reports_ended_count`) and error reports (`core_error_reports_started_count` and `core_error_reports_ended_count`). These provide visibility into the core sequencer progress and help identify hangs in the applier and progress tracking pipeline.
+- Added new metrics `target_apply_queue_utilization_percent` and `target_apply_queue_depth` to track target apply queue utilization, indicating when the queue should be resized. These metrics apply only to PostgreSQL, Oracle, and CockroachDB sources.
+- Oracle sources now support configurable backpressure between the source and target applier. The new `target_apply_queue_depth` metric tracks queue depth.
+- Improved visibility into queue depth between each source frontend and the backend applier to the target. Updated logging to use lower log levels with clearer, less alarming messages.
+- Improved throughput for tables in the replication stream that have no dependencies on one another. This increases parallelism and minimizes blocking of transactions that are mutually independent.
+- The best effort window is now disabled by default to prevent unexpected mode switches that could cause consistency issues or stall replication due to failed target applies.
+
+#### Bug fixes
+
+- Fixed a panic that could occur with `ENUM` types.
+
 ## July 24, 2025
 
 MOLT Fetch/Verify 1.3.0 is [available](#installation).
