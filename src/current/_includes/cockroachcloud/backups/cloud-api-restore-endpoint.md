@@ -31,7 +31,7 @@ curl --request POST \
 }'
 ~~~
 
-By default, the restore operation uses the most recent backup stored within the last 7 days on the cluster specified in `source_cluster_id`. To restore a specific backup, include the `backup_id` field and specify a backup ID from the [managed backups list](#view-managed-backups):
+By default, the restore job uses the most recent backup stored within the last 7 days on the cluster specified in `source_cluster_id`. To restore a specific backup, include the `backup_id` field and specify a backup ID from the [managed backups list](#view-managed-backups):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -58,7 +58,7 @@ curl --request POST \
 }'
 ~~~
 
-You can specify additional options for the restore operation in the `restore_opts` object. For more information, see the [API endpoint documentation](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/restores-config).
+You can specify additional options for the restore job in the `restore_opts` object. For more information, see the [API endpoint documentation](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/restores-config).
 
 {% endif %}
 
@@ -156,7 +156,7 @@ curl --request POST \
 }'
 ~~~
 
-You can specify additional options for the restore operations in the `restore_opts` object. For more information, see the [API endpoint documentation](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/restores-config).
+You can specify additional options for the restore jobs in the `restore_opts` object. For more information, see the [API endpoint documentation](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/restores-config).
 
 If the request is successful, the client recieves a response containing JSON describing the request operation:
 
@@ -266,7 +266,7 @@ curl --request POST \
 }'
 ~~~
 
-You can specify additional options for the restore operations in the `restore_opts` object. For more information, see the [API endpoint documentation](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/restores-config).
+You can specify additional options for the restore jobs in the `restore_opts` object. For more information, see the [API endpoint documentation](https://www.cockroachlabs.com/docs/api/cloud/v1#get-/api/v1/clusters/-cluster_id-/restores-config).
 
 If the request is successful, the client recieves a response containing JSON describing the request operation:
 
@@ -282,13 +282,13 @@ If the request is successful, the client recieves a response containing JSON des
 ~~~
 {% endif %}
 
-### Get status of a restore operation
+### Get status of a restore job
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
 
-To view the status of a restore operation using the cloud API, send a `GET` request to the `/v1/clusters/{cluster_id}/restores/{restore_id}` endpoint where `restore_id` is the `id` from the JSON response:
+To view the status of a restore job using the cloud API, send a `GET` request to the `/v1/clusters/{cluster_id}/restores/{restore_id}` endpoint where `restore_id` is the `id` from the JSON response:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
