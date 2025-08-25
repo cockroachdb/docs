@@ -41,6 +41,8 @@ jekyll-minifier:
   remove_style_attributes: 'false'
   simple_boolean_attributes: 'false'
   simple_doctype: 'false'
+  uglifier_args:
+    harmony: 'true'
 main_url: https://www.cockroachlabs.com
 markdown: Redcarpet
 plugins:
