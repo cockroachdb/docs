@@ -1,0 +1,4 @@
+- Test and adjust your workloads in batches when migrating to SCRAM authentication.
+- Start by enabling SCRAM authentication in a testing environment, and test the performance of your client application against the types of workloads you expect it to handle in production before rolling the changes out to production.
+- Limit the maximum number of connections in the client driver's connection pool.
+- Limit the maximum number of concurrent transactions the client application can issue.

@@ -1,0 +1,1 @@
+In clusters that mix big-endian and little-endian architectures, DistSQL may produce incorrect results because hash computations differ between the platforms. As a workaround on heterogeneous clusters, disable DistSQL with `SET CLUSTER SETTING sql.defaults.distsql = off`. [#148773](https://github.com/cockroachdb/cockroach/issues/148773)
