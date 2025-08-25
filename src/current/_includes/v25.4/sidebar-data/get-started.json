@@ -1,0 +1,218 @@
+{
+  "title": "Get Started",
+  "is_top_level": true,
+  "items": [{
+      "title": "Quickstart",
+      "urls": [
+        "/cockroachcloud/quickstart.html"
+      ]
+    },
+    {
+      "title": "Install CockroachDB",
+      "urls": [
+        "/${VERSION}/install-cockroachdb.html",
+        "/${VERSION}/install-cockroachdb-mac.html",
+        "/${VERSION}/install-cockroachdb-linux.html",
+        "/${VERSION}/fips.html",
+        "/${VERSION}/install-cockroachdb-windows.html"
+      ]
+    },
+    {
+      "title": "Learn CockroachDB SQL",
+      "urls": [
+        "/cockroachcloud/learn-cockroachdb-sql.html",
+        "/${VERSION}/learn-cockroachdb-sql.html"
+      ]
+    },
+    {
+      "title": "Develop with CockroachDB",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/developer-guide-overview.html"
+          ]
+        },
+        {
+          "title": "Developer Basics",
+          "urls": [
+            "/${VERSION}/developer-basics.html"
+          ]
+        },
+        {
+          "title": "JavaScript/TypeScript",
+          "urls": [
+            "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
+            "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
+            "/${VERSION}/build-a-nodejs-app-with-cockroachdb-knexjs.html",
+            "/${VERSION}/build-a-nodejs-app-with-cockroachdb-prisma.html",
+            "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
+          ]
+        },
+        {
+          "title": "Python",
+          "urls": [
+            "/${VERSION}/build-a-python-app-with-cockroachdb-psycopg3.html",
+            "/${VERSION}/build-a-python-app-with-cockroachdb.html",
+            "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
+            "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
+            "/${VERSION}/build-a-python-app-with-cockroachdb-asyncpg.html"
+          ]
+        },
+        {
+          "title": "Golang",
+          "urls": [
+            "/${VERSION}/build-a-go-app-with-cockroachdb.html",
+            "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
+            "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
+            "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
+          ]
+        },
+        {
+          "title": "Java",
+          "urls": [
+            "/${VERSION}/build-a-java-app-with-cockroachdb.html",
+            "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html",
+            "/${VERSION}/build-a-java-app-with-cockroachdb-jooq.html",
+            "/${VERSION}/build-a-spring-app-with-cockroachdb-mybatis.html"
+          ]
+        },
+        {
+          "title": "Ruby",
+          "urls": [
+            "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
+            "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
+          ]
+        },
+        {
+          "title": "C# (.NET)",
+          "urls": [
+            "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
+          ]
+        },
+        {
+          "title": "Rust",
+          "urls": [
+            "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
+          ]
+        },
+        {
+          "title": "Hasura (GraphQL)",
+          "urls": [
+            "/${VERSION}/hasura-getting-started.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Standard Examples",
+      "items": [
+        {
+          "title": "AWS Lambda",
+          "urls": [
+            "/${VERSION}/deploy-lambda-function.html"
+          ]
+        },
+        {
+          "title": "Google Cloud Run",
+          "urls": [
+            "/${VERSION}/deploy-app-gcr.html"
+          ]
+        },
+        {
+          "title": "Netlify",
+          "urls": [
+            "/${VERSION}/deploy-app-netlify.html"
+          ]
+        },
+        {
+          "title": "Vercel",
+          "urls": [
+            "/${VERSION}/deploy-app-vercel.html"
+          ]
+        },
+        {
+          "title": "Serverless Function Best Practices",
+          "urls": [
+            "/${VERSION}/serverless-function-best-practices.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Advanced Example Applications",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/example-apps.html"
+          ]
+        },
+        {
+          "title": "Spring Boot",
+          "items": [
+            {
+              "title": "Spring Boot with JDBC",
+              "urls": [
+                "/${VERSION}/build-a-spring-app-with-cockroachdb-jdbc.html"
+              ]
+            },
+            {
+              "title": "Spring Boot with JPA",
+              "urls": [
+                "/${VERSION}/build-a-spring-app-with-cockroachdb-jpa.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "MovR",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/movr.html"
+              ]
+            },
+            {
+              "title": "Global Application Use Case",
+              "urls": [
+                "/${VERSION}/movr-flask-use-case.html"
+              ]
+            },
+            {
+              "title": "Multi-region Database Schema",
+              "urls": [
+                "/${VERSION}/movr-flask-database.html"
+              ]
+            },
+            {
+              "title": "Set up a Development Environment",
+              "urls": [
+                "/${VERSION}/movr-flask-setup.html"
+              ]
+            },
+            {
+              "title": "Develop a Global Application",
+              "urls": [
+                "/${VERSION}/movr-flask-application.html"
+              ]
+            },
+            {
+              "title": "Deploy a Global Application",
+              "urls": [
+                "/${VERSION}/movr-flask-deployment.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
+          "urls": [
+            "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
+          ]
+        }
+      ]
+    }
+  ]
+}

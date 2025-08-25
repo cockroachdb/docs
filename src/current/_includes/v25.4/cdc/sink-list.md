@@ -1,0 +1,8 @@
+- {% if page.name == "changefeed-sinks.md" %} [Amazon MSK](#amazon-msk) {% else %} [Amazon MSK]({% link {{ page.version.version }}/changefeed-sinks.md %}#amazon-msk) {% endif %}
+- {% if page.name == "changefeed-sinks.md" %} [Apache Pulsar](#apache-pulsar) (in Preview) {% else %} [Apache Pulsar]({% link {{ page.version.version }}/changefeed-sinks.md %}#apache-pulsar) (in Preview) {% endif %}
+- {% if page.name == "changefeed-sinks.md" %} [Azure Event Hubs](#azure-event-hubs) {% else %} [Azure Event Hubs]({% link {{ page.version.version }}/changefeed-sinks.md %}#azure-event-hubs) {% endif %}
+- {% if page.name == "changefeed-sinks.md" %} [Cloud Storage](#cloud-storage-sink) / HTTP {% else %} [Cloud Storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink) / HTTP {% endif %}
+- {% if page.name == "changefeed-sinks.md" %} [Confluent Cloud](#confluent-cloud) {% else %} [Confluent Cloud]({% link {{ page.version.version }}/changefeed-sinks.md %}#confluent-cloud) {% endif %}
+- {% if page.name == "changefeed-sinks.md" %} [Google Cloud Pub/Sub](#google-cloud-pub-sub) {% else %} [Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) {% endif %}
+- {% if page.name == "changefeed-sinks.md" %} [Kafka](#kafka) {% else %} [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka) {% endif %}
+- {% if page.name == "changefeed-sinks.md" %} [Webhook](#webhook-sink) {% else %} [Webhook]({% link {{ page.version.version }}/changefeed-sinks.md %}#webhook-sink) {% endif %}

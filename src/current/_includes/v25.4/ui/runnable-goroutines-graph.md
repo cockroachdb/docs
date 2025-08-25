@@ -1,0 +1,4 @@
+This graph shows the number of [Goroutines](https://golangbot.com/goroutines/) waiting to run per CPU, as tracked by the `sys.runnable.goroutines.per.cpu` metric. This graph should rise and fall based on CPU load. Values greater than `50` are considered high. A value greater than the value set in `admission.kv_slot_adjuster.overload_threshold` (default = `32`), sampled at `1ms`, is used by [admission control]({% link {{ page.version.version }}/admission-control.md %}) to throttle regular CPU work.
+
+- In the node view, the graph shows the number of Goroutines waiting per CPU on the selected node.
+- In the cluster view, the graph shows the number of Goroutines waiting per CPU across all nodes in the cluster.

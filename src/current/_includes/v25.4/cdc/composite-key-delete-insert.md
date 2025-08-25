@@ -1,0 +1,3 @@
+{{site.data.alerts.callout_info}}
+When changes happen to a column that is part of a composite [key]({% link {{ page.version.version }}/primary-key.md %}), the changefeed will produce a {% if page.name == "cdc-queries.md" %}[delete message](#filter-delete-messages) {% else %}[delete message]({% link {{ page.version.version }}/changefeed-messages.md %}#delete-messages) {% endif %} and then an insert message.
+{{site.data.alerts.end}}
