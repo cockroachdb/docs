@@ -26,17 +26,32 @@ module Jekyll
         latest_release = relevant_releases.max_by { |release| Date.parse(release['release_date']) }
         
         # Populate release info
-        release_info[major_version] = {
-          "version" => latest_release['release_name'],
-          "release_name" => latest_release['release_name'],
-          "major_version" => major_version,
-          "build_time" => "#{latest_release['release_date']} 00:00:00",
-          "go_version" => latest_release['go_version'],
-          "docker_image" => latest_release['docker']['docker_image'],
-          "release_type" => latest_release['release_type'],
-          "crdb_branch_name" => version['crdb_branch_name'],
-          "all_releases" => relevant_releases
-        }
+        if latest_release
+          release_info[major_version] = {
+            "version" => latest_release['release_name'],
+            "release_name" => latest_release['release_name'],
+            "major_version" => major_version,
+            "build_time" => "#{latest_release['release_date']} 00:00:00",
+            "go_version" => latest_release['go_version'],
+            "docker_image" => latest_release['docker']['docker_image'],
+            "release_type" => latest_release['release_type'],
+            "crdb_branch_name" => version['crdb_branch_name'],
+            "all_releases" => relevant_releases
+          }
+        else
+          # Handle versions with no releases yet
+          release_info[major_version] = {
+            "version" => "No releases available",
+            "release_name" => "No releases available",
+            "major_version" => major_version,
+            "build_time" => "N/A",
+            "go_version" => "N/A",
+            "docker_image" => "N/A",
+            "release_type" => "N/A",
+            "crdb_branch_name" => version['crdb_branch_name'] || 'master',
+            "all_releases" => []
+          }
+        end
       end
       
       # Add the data to site object
