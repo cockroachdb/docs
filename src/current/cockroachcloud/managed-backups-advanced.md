@@ -145,7 +145,7 @@ Users with the [Organization Admin]({% link cockroachcloud/authorization.md %}#o
 #### Restore an Advanced cluster
 
 {{site.data.alerts.callout_info}}
-Before a cluster can be restored from a managed backup, the destination cluster must be completely wiped of data. A cluster restore operation fails if the destination cluster contains any databases/schemas/tables.
+Before a cluster can be restored from a managed backup, the destination cluster must be completely wiped of data. A cluster restore job fails if the destination cluster contains any databases/schemas/tables.
 {{site.data.alerts.end}}
 
 To restore a cluster:
