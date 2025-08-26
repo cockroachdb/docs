@@ -1,0 +1,112 @@
+{
+  "overall_score": 0.2,
+  "query_results": {
+    "backup": {
+      "title_matches": 1,
+      "url_matches": 1,
+      "title_score": 0.2,
+      "url_score": 0.2,
+      "combined_score": 0.2,
+      "prod_titles": [
+        "BACKUP",
+        "Backup and Restore Overview",
+        "Backup Validation",
+        "Backup Architecture",
+        "Backup and Restore in CockroachDB Cloud Overview"
+      ],
+      "stage_titles": [
+        "BACKUP",
+        "Backup Validation",
+        "Backup and Restore Overview",
+        "Backup and restore support",
+        "Enterprise BACKUP does not capture database/table/column comments"
+      ]
+    },
+    "CREATE TABLE": {
+      "title_matches": 2,
+      "url_matches": 2,
+      "title_score": 0.4,
+      "url_score": 0.4,
+      "combined_score": 0.4,
+      "prod_titles": [
+        "CREATE TABLE AS",
+        "CREATE TABLE",
+        "Stream a Changefeed to Snowflake",
+        "SHOW CREATE",
+        "Create a Table"
+      ],
+      "stage_titles": [
+        "CREATE TABLE AS",
+        "CREATE TABLE",
+        "Populate CREATE TABLE AS with historical data using AS OF SYSTEM TIME",
+        "Show the CREATE TABLE statement for a table with a comment",
+        "Show the CREATE TABLE statement for a table with a multi-region locality"
+      ]
+    },
+    "performance": {
+      "title_matches": 2,
+      "url_matches": 2,
+      "title_score": 0.4,
+      "url_score": 0.4,
+      "combined_score": 0.4,
+      "prod_titles": [
+        "Performance with the CockroachDB Operator",
+        "Performance Benchmarking with TPC-C",
+        "Performance Benchmarking with TPC-C",
+        "Performance Benchmarking with TPC-C",
+        "Performance Tuning Recipes"
+      ],
+      "stage_titles": [
+        "Performance Benchmarking with TPC-C",
+        "Performance with the CockroachDB Operator",
+        "Performance Benchmarking with TPC-C",
+        "Performance best practices",
+        "Performance Tuning Recipes"
+      ]
+    },
+    "authentication": {
+      "title_matches": 0,
+      "url_matches": 0,
+      "title_score": 0.0,
+      "url_score": 0.0,
+      "combined_score": 0.0,
+      "prod_titles": [
+        "Authentication on CockroachDB Cloud",
+        "GSSAPI Authentication (Enterprise)",
+        "SQL Authentication",
+        "Configure LDAP Authentication",
+        "Cloud Storage Authentication"
+      ],
+      "stage_titles": [
+        "Authentication",
+        "Authentication on CockroachDB Cloud",
+        "ccloud authentication",
+        "Specified authentication",
+        "Implicit authentication"
+      ]
+    },
+    "cluster": {
+      "title_matches": 0,
+      "url_matches": 0,
+      "title_score": 0.0,
+      "url_score": 0.0,
+      "combined_score": 0.0,
+      "prod_titles": [
+        "Cluster Overview Page",
+        "Cluster Settings",
+        "Cluster Metric Scopes with Cluster Virtualization enabled",
+        "Cluster Monitoring",
+        "Cluster Single Sign-on (SSO) using JSON Web Tokens (JWTs)"
+      ],
+      "stage_titles": [
+        "Cluster Monitoring",
+        "Cluster scaling",
+        "Cluster startup",
+        "Cluster Settings",
+        "Cluster regions"
+      ]
+    }
+  },
+  "total_queries": 5,
+  "passed_queries": 0
+}

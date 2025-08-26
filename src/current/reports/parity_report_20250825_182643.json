@@ -1,0 +1,147 @@
+{
+  "timestamp": "2025-08-25T18:26:43.340856",
+  "verdict": "PASS",
+  "parameters": {
+    "enableReRanking": false,
+    "clickAnalytics": false,
+    "getRankingInfo": true,
+    "attributesToRetrieve": [
+      "objectID",
+      "title",
+      "summary",
+      "content",
+      "url"
+    ],
+    "attributesToHighlight": [
+      "title",
+      "summary",
+      "content"
+    ],
+    "attributesToSnippet": [
+      "summary:20",
+      "content:20"
+    ],
+    "highlightPreTag": "<em>",
+    "highlightPostTag": "</em>",
+    "page": 0,
+    "hitsPerPage": 20,
+    "restrictSearchableAttributes": [
+      "title",
+      "summary",
+      "content"
+    ]
+  },
+  "performance": {
+    "processed_files": 200,
+    "skipped_timeout": 0,
+    "skipped_error": 0,
+    "avg_seconds_per_file": 0.04333917379379273,
+    "slowest_files": [
+      {
+        "path": "_site/docs/releases/unsupported-versions.html",
+        "seconds": 4.721841096878052,
+        "size_mb": 1.3012456893920898
+      },
+      {
+        "path": "_site/docs/releases/index.html",
+        "seconds": 0.799030065536499,
+        "size_mb": 0.9426364898681641
+      },
+      {
+        "path": "_site/docs/molt/molt-fetch.html",
+        "seconds": 0.21572303771972656,
+        "size_mb": 0.5767183303833008
+      },
+      {
+        "path": "_site/docs/molt/migrate-data-load-replicate-only.html",
+        "seconds": 0.14612507820129395,
+        "size_mb": 0.5543889999389648
+      },
+      {
+        "path": "_site/docs/molt/migrate-data-load-and-replication.html",
+        "seconds": 0.13845396041870117,
+        "size_mb": 0.546910285949707
+      },
+      {
+        "path": "_site/docs/molt/migrate-bulk-load.html",
+        "seconds": 0.08613991737365723,
+        "size_mb": 0.5025510787963867
+      },
+      {
+        "path": "_site/docs/releases/v1.0.html",
+        "seconds": 0.07711219787597656,
+        "size_mb": 0.6903543472290039
+      },
+      {
+        "path": "_site/docs/cockroachcloud/managed-backups-advanced.html",
+        "seconds": 0.06879878044128418,
+        "size_mb": 0.4544258117675781
+      },
+      {
+        "path": "_site/docs/cockroachcloud/insights-page.html",
+        "seconds": 0.052983999252319336,
+        "size_mb": 0.4475250244140625
+      },
+      {
+        "path": "_site/docs/releases/cloud.html",
+        "seconds": 0.05223798751831055,
+        "size_mb": 0.5057859420776367
+      }
+    ]
+  },
+  "field_presence": {
+    "PROD": {
+      "title": 100.0,
+      "summary": 100.0,
+      "content": 100.0
+    },
+    "STAGE": {
+      "title": 100.0,
+      "summary": 100.0,
+      "content": 100.0
+    }
+  },
+  "results": [
+    {
+      "prod_ids": [],
+      "stage_ids": [],
+      "ids_match": true,
+      "titles_summaries_match": true,
+      "invalid_hits": [],
+      "ranking_diffs": [],
+      "snippet_diffs": [],
+      "query": "backup",
+      "prod_total": 0,
+      "stage_total": 0
+    },
+    {
+      "prod_ids": [],
+      "stage_ids": [],
+      "ids_match": true,
+      "titles_summaries_match": true,
+      "invalid_hits": [],
+      "ranking_diffs": [],
+      "snippet_diffs": [],
+      "query": "restore",
+      "prod_total": 0,
+      "stage_total": 0
+    },
+    {
+      "prod_ids": [],
+      "stage_ids": [],
+      "ids_match": true,
+      "titles_summaries_match": true,
+      "invalid_hits": [],
+      "ranking_diffs": [],
+      "snippet_diffs": [],
+      "query": "performance",
+      "prod_total": 0,
+      "stage_total": 0
+    }
+  ],
+  "summary": {
+    "total_queries": 3,
+    "passing_queries": 3,
+    "failing_queries": 0
+  }
+}

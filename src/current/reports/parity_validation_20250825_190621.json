@@ -1,0 +1,112 @@
+{
+  "overall_score": 0.0,
+  "query_results": {
+    "backup": {
+      "title_matches": 0,
+      "url_matches": 0,
+      "title_score": 0.0,
+      "url_score": 0.0,
+      "combined_score": 0.0,
+      "prod_titles": [
+        "BACKUP",
+        "Backup and Restore Overview",
+        "Backup Validation",
+        "Backup Architecture",
+        "Backup and Restore in CockroachDB Cloud Overview"
+      ],
+      "stage_titles": [
+        "Enterprise BACKUP does not capture database/table/column comments",
+        "Amazon S3 storage classes",
+        "Restoring a multi-region database to a new database in CockroachDB Dedicated",
+        "Example file URLs",
+        "Renew an expired license"
+      ]
+    },
+    "CREATE TABLE": {
+      "title_matches": 0,
+      "url_matches": 0,
+      "title_score": 0.0,
+      "url_score": 0.0,
+      "combined_score": 0.0,
+      "prod_titles": [
+        "CREATE TABLE AS",
+        "CREATE TABLE",
+        "Stream a Changefeed to Snowflake",
+        "SHOW CREATE",
+        "Create a Table"
+      ],
+      "stage_titles": [
+        "Show the CREATE TABLE statement for a table",
+        "Show the CREATE TABLE statement for a table with a comment",
+        "Show the CREATE TABLE statement for a table with a multi-region locality",
+        "Table level",
+        "Trace conflicting transactions"
+      ]
+    },
+    "performance": {
+      "title_matches": 0,
+      "url_matches": 0,
+      "title_score": 0.0,
+      "url_score": 0.0,
+      "combined_score": 0.0,
+      "prod_titles": [
+        "Performance with the CockroachDB Operator",
+        "Performance Benchmarking with TPC-C",
+        "Performance Benchmarking with TPC-C",
+        "Performance Benchmarking with TPC-C",
+        "Performance Tuning Recipes"
+      ],
+      "stage_titles": [
+        "Performance best practices",
+        "SQL Performance Best Practices",
+        "Large index keys can impair performance",
+        "Step 3. View cluster health and performance in the DB Console",
+        "Use reWriteBatchedInserts for increased speed"
+      ]
+    },
+    "authentication": {
+      "title_matches": 0,
+      "url_matches": 0,
+      "title_score": 0.0,
+      "url_score": 0.0,
+      "combined_score": 0.0,
+      "prod_titles": [
+        "Authentication on CockroachDB Cloud",
+        "GSSAPI Authentication (Enterprise)",
+        "SQL Authentication",
+        "Configure LDAP Authentication",
+        "Cloud Storage Authentication"
+      ],
+      "stage_titles": [
+        "Authentication",
+        "Specified authentication",
+        "Implicit authentication",
+        "Generate PKCS8 keys for client authentication",
+        "Prevent a role from using password authentication"
+      ]
+    },
+    "cluster": {
+      "title_matches": 0,
+      "url_matches": 0,
+      "title_score": 0.0,
+      "url_score": 0.0,
+      "combined_score": 0.0,
+      "prod_titles": [
+        "Cluster Overview Page",
+        "Cluster Settings",
+        "Cluster Metric Scopes with Cluster Virtualization enabled",
+        "Cluster Monitoring",
+        "Cluster Single Sign-on (SSO) using JSON Web Tokens (JWTs)"
+      ],
+      "stage_titles": [
+        "Cluster regions",
+        "Cluster scaling",
+        "Cluster startup",
+        "Start a Cluster in Docker (Insecure)",
+        "Start a Cluster in Docker (Insecure)"
+      ]
+    }
+  },
+  "total_queries": 5,
+  "passed_queries": 0
+}

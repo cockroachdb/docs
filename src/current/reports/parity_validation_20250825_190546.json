@@ -1,0 +1,88 @@
+{
+  "overall_score": 0.0,
+  "query_results": {
+    "backup": {
+      "title_matches": 0,
+      "url_matches": 0,
+      "title_score": 0.0,
+      "url_score": 0.0,
+      "combined_score": 0.0,
+      "prod_titles": [
+        "BACKUP",
+        "Backup and Restore Overview",
+        "Backup Validation",
+        "Backup Architecture",
+        "Backup and Restore in CockroachDB Cloud Overview"
+      ],
+      "stage_titles": []
+    },
+    "CREATE TABLE": {
+      "title_matches": 0,
+      "url_matches": 0,
+      "title_score": 0.0,
+      "url_score": 0.0,
+      "combined_score": 0.0,
+      "prod_titles": [
+        "CREATE TABLE AS",
+        "CREATE TABLE",
+        "Stream a Changefeed to Snowflake",
+        "SHOW CREATE",
+        "Create a Table"
+      ],
+      "stage_titles": []
+    },
+    "performance": {
+      "title_matches": 0,
+      "url_matches": 0,
+      "title_score": 0.0,
+      "url_score": 0.0,
+      "combined_score": 0.0,
+      "prod_titles": [
+        "Performance with the CockroachDB Operator",
+        "Performance Benchmarking with TPC-C",
+        "Performance Benchmarking with TPC-C",
+        "Performance Benchmarking with TPC-C",
+        "Performance Tuning Recipes"
+      ],
+      "stage_titles": []
+    },
+    "authentication": {
+      "title_matches": 0,
+      "url_matches": 0,
+      "title_score": 0.0,
+      "url_score": 0.0,
+      "combined_score": 0.0,
+      "prod_titles": [
+        "Authentication on CockroachDB Cloud",
+        "GSSAPI Authentication (Enterprise)",
+        "SQL Authentication",
+        "Configure LDAP Authentication",
+        "Cloud Storage Authentication"
+      ],
+      "stage_titles": []
+    },
+    "cluster": {
+      "title_matches": 0,
+      "url_matches": 0,
+      "title_score": 0.0,
+      "url_score": 0.0,
+      "combined_score": 0.0,
+      "prod_titles": [
+        "Cluster Overview Page",
+        "Cluster Settings",
+        "Cluster Metric Scopes with Cluster Virtualization enabled",
+        "Cluster Monitoring",
+        "Cluster Single Sign-on (SSO) using JSON Web Tokens (JWTs)"
+      ],
+      "stage_titles": [
+        "Cluster scaling",
+        "Before you begin",
+        "Example",
+        "Documentation",
+        "Automatic PVC pruning"
+      ]
+    }
+  },
+  "total_queries": 5,
+  "passed_queries": 0
+}
