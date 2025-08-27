@@ -2,8 +2,14 @@ On a CockroachDB [node]({% link {{ page.version.version }}/architecture/overview
 
 Failing over the WAL may allow some operations against a store to continue to complete despite temporary unavailability of the underlying storage. For example, if the node's primary store is stalled, and the node can't read from or write to it, the node can still write to the WAL on another store. This can allow the node to continue to service requests during momentary unavailability of the underlying storage device.
 
-When WAL failover is enabled, CockroachDB will take the the following actions:
+When WAL failover is enabled, CockroachDB does the following:
 
-- At node startup, each store is assigned another store to be its failover destination.
-- CockroachDB will begin monitoring the latency of all WAL writes. If latency to the WAL exceeds the value of the [cluster setting `storage.wal_failover.unhealthy_op_threshold`]({% link {{page.version.version}}/cluster-settings.md %}#setting-storage-wal-failover-unhealthy-op-threshold), the node will attempt to write WAL entries to a secondary store's volume.
-- CockroachDB will update the [store status endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#store-status-endpoint) at `/_status/stores` so you can monitor the store's status.
+- Pairs each primary store with a secondary failover store at node startup.
+- Monitors latency of all write operations against the primary WAL. If any operation exceeds the duration of [`storage.wal_failover.unhealthy_op_threshold`]({% link {{page.version.version}}/cluster-settings.md %}#setting-storage-wal-failover-unhealthy-op-threshold), the node redirects new WAL writes to the secondary store.
+- Checks the primary store while failed over by performing a set of filesystem operations against a small internal "probe file" on its volume. This file contains no user data and exists only when WAL failover is enabled.
+- Switches back to the primary store once the set of filesystem operations against the probe file on its volume starts consuming less than a latency threshold (order of tens of milliseconds). If a probe `fsync` blocks longer than [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`]({% link {{ page.version.version }}/wal-failover.md %}#important-environment-variables), CockroachDB emits a log like: `disk stall detected: sync on file probe-file has been ongoing for 40.0s` and, if the stall persists, the node exits (fatals) to [shed leases]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node) and allow recovery elsewhere.
+- Exposes status at [`/_status/stores`]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#store-status-endpoint) so you can monitor each store's health and failover state.
+
+{{site.data.alerts.callout_info}}
+- WAL failover only relocates the WAL. Data files remain on the primary volume. Reads that miss the Pebble block cache and the OS page cache can still stall if the primary disk is stalled. Caches typically limit blast radius, but some reads may see elevated latency.
+{{site.data.alerts.end}}
