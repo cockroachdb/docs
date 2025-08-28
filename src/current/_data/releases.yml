@@ -9488,3 +9488,84 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.17
+
+- release_name: v24.1.23
+  major_version: v24.1
+  release_date: '2025-08-22'
+  release_type: Production
+  go_version: go1.23.7
+  sha: b2d9e467bbe18f26450bf5600c249d2b59765b9a
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.1.22
+
+- release_name: v24.3.19
+  major_version: v24.3
+  release_date: '2025-08-22'
+  release_type: Production
+  go_version: go1.23.7
+  sha: faf059d833b409c16409d1095dfa387068996c1c
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.3.18
+
+- release_name: v25.2.5
+  major_version: v25.2
+  release_date: '2025-08-22'
+  release_type: Production
+  go_version: go1.23.7
+  sha: f08e98cff22855b4abdeba2ad7677a6e7b32e3ed
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.2.4
