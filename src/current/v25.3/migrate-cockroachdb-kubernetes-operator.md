@@ -78,7 +78,7 @@ The {{ site.data.products.cockroachdb-operator }} uses slightly different certif
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-bin/migration-helper migrate-certs --statefulset-name $STS_NAME --namespace $NAMESPACE
+bin/migration-helper migrate-certs --statefulset-name $CRDBCLUSTER --namespace $NAMESPACE
 ~~~
 
 Generate a manifest for each crdbnode and the crdbcluster based on the state of the StatefulSet. The new pods and their associated PVCs must have the same names as the original StatefulSet-managed pods and PVCs. The new {{ site.data.products.cockroachdb-operator }}-managed pods will then use the original PVCs, rather than replicate data into empty nodes.
@@ -86,7 +86,7 @@ Generate a manifest for each crdbnode and the crdbcluster based on the state of 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 mkdir -p manifests
-bin/migration-helper build-manifest helm --statefulset-name $STS_NAME --namespace $NAMESPACE --cloud-provider $CLOUD_PROVIDER --cloud-region $REGION --output-dir ./manifests
+migration-helper build-manifest operator --crdb-cluster $CRDBCLUSTER --namespace $NAMESPACE --cloud-provider $CLOUD_PROVIDER --cloud-region $REGION --output-dir ./manifests
 ~~~
 
 ## Step 3. Uninstall and replace the {{ site.data.products.public-operator }}
