@@ -18,10 +18,10 @@ The following diagram shows the internal architecture and network flow of a Cock
 
 <img src="{{ 'images/cockroachcloud/advanced-architecture.png' | relative_url }}" alt="Diagram showing the architecture of Advanced plan Cloud deployments" style="border:1px solid #eee;max-width:100%" />
 
-In this architecture, network traffic to the cluster can be categorized as **control traffic** and **data traffic**:
+CockroachDB {{ site.data.products.cloud }} operations are split into logical layers for **control** and **data**:
 
-- Control traffic describes network connections that manage the CockroachDB cluster as a whole. These connections include access to the {{ site.data.products.cloud }} Console, DB Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}), [observability features]({% link cockroachcloud/metrics.md %}), and other cluster management tools. These requests are handled by the **CockroachDB Cloud control plane** which communicates directly with cluster nodes as needed.
-- Data traffic describes network communications between data applications and your underlying CockroachDB nodes, including SQL queries and responses. Each region has a network load balancer (NLB) that handles and distributes requests across CockroachDB nodes within the region. {{ site.data.products.advanced }} clusters can utilize [private connectivity]({% link cockroachcloud/private-clusters.md %}) across the cloud to limit the amount of network traffic that is sent over the public Internet.
+- Control operations manage the CockroachDB cluster as a whole. These requests are handled by the **CockroachDB Cloud control plane** which communicates directly with cluster nodes as needed. These connections include access to the {{ site.data.products.cloud }} Console, DB Console, [Cloud API]({% link cockroachcloud/cloud-api.md %}), [observability features]({% link cockroachcloud/metrics.md %}), and other cluster management tools.
+- Data operations involve connections between data applications and your underlying CockroachDB nodes, including SQL queries and responses. Each region has a network load balancer (NLB) that handles and distributes requests across CockroachDB nodes within the region. {{ site.data.products.advanced }} clusters can utilize [private connectivity]({% link cockroachcloud/private-clusters.md %}) across the cloud to limit the amount of network traffic that is sent over the public Internet.
 
 ## Cluster topology
 
