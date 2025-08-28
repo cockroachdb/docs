@@ -38,6 +38,7 @@ Subcommand | Description |
 [`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for an index. | 
 [`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition an index.
 [`RENAME TO`](#rename-to) | Change the name of an index.
+[`SCATTER`](#scatter) | Redistribute leaseholders for the ranges of a table or index. |
 [`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the index.
 [`VISIBILITY`](#visibility) | Set the visibility of an index between a range of `0.0` and `1.0`.
@@ -116,6 +117,30 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
  Parameter | Description
 -----------|-------------
 `index_new_name` | The [`name`]({% link {{ page.version.version }}/sql-grammar.md %}#name) you want to use for the index, which must be unique to its table and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers).
+
+For usage, see [Synopsis](#synopsis).
+
+### `SCATTER`
+
+`ALTER INDEX ... SCATTER` runs a specified set of ranges for a table or index through the [replication layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}) queue. If many ranges have been created recently, the replication queue may transfer some leases to other replicas to balance load across the cluster. Some leaseholders may not update as a result of this command.
+
+{{site.data.alerts.callout_info}}
+`SCATTER` has the potential to result in data movement proportional to the size of the table or index being scattered, thus taking additional time and resources to complete.
+{{site.data.alerts.end}}
+
+For examples, see [Scatter indexes](#scatter-indexes).
+
+#### Required privileges
+
+The user must have the `INSERT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table or index.
+
+#### Parameters
+
+Parameter | Description
+----------|-------------
+`table_name` | The name of the table that you want to scatter.
+`table_index_name` | The name of the index that you want to scatter.
+`expr_list` | A list of [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}) in the form of the primary key of the table or the specified index.
 
 For usage, see [Synopsis](#synopsis).
 
@@ -341,6 +366,39 @@ SHOW INDEXES FROM users;
   users      | users_pkey     |     f      |            4 | address     | N/A       |    t    |    f     |    t
   users      | users_pkey     |     f      |            5 | credit_card | N/A       |    t    |    f     |    t
 (8 rows)
+~~~
+
+### Scatter indexes
+
+Before scattering, you can view the current leaseholder distribution for an index:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH range_details AS (SHOW RANGES FROM DATABASE movr WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
+~~~
+
+~~~
+  range_id | lease_holder | replicas
+-----------+--------------+-----------
+        94 |            1 | {1}
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> ALTER INDEX rides@revenue_idx SCATTER;
+~~~
+
+After scattering, recheck the leaseholder distribution:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH range_details AS (SHOW RANGES FROM DATABASE movr WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
+~~~
+
+~~~
+  range_id | lease_holder | replicas
+-----------+--------------+-----------
+        94 |            1 | {1}
 ~~~
 
 ### Split and unsplit indexes
