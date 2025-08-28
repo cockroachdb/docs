@@ -30,7 +30,7 @@ A migration to CockroachDB generally follows this sequence:
 1. Load data into CockroachDB: Use [MOLT Fetch]({% link molt/molt-fetch.md %}) to bulk-ingest your source data.
 1. (Optional) Verify consistency before replication: Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the data loaded into CockroachDB is consistent with the source.
 1. Finalize target schema: Recreate indexes or constraints on CockroachDB that you previously dropped to facilitate data load.
-1. Replicate ongoing changes: Enable continuous replication with [MOLT Fetch]({% link molt/molt-fetch.md %}#replicate-changes) to keep CockroachDB in sync with the source.
+1. Replicate ongoing changes: Enable continuous replication with [MOLT Fetch]({% link molt/molt-fetch.md %}#replication-only) to keep CockroachDB in sync with the source.
 1. Verify consistency before cutover: Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the CockroachDB data is consistent with the source.
 1. Cut over to CockroachDB: Redirect application traffic to the CockroachDB cluster.
 
@@ -84,10 +84,10 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 - [Multiple migration flows](#migration-flows) via `IMPORT INTO` or `COPY FROM`.
 - Data movement via [cloud storage, local file servers, or direct copy]({% link molt/molt-fetch.md %}#data-path).
 - [Concurrent data export]({% link molt/molt-fetch.md %}#best-practices) from multiple source tables and shards.
-- [Continuous replication]({% link molt/molt-fetch.md %}#replicate-changes), enabling you to minimize downtime before cutover.
+- [Continuous replication]({% link molt/molt-fetch.md %}#replication-only), enabling you to minimize downtime before cutover.
 - [Schema transformation rules]({% link molt/molt-fetch.md %}#transformations).
 - After exporting data with `IMPORT INTO`, safe [continuation]({% link molt/molt-fetch.md %}#fetch-continuation) to retry failed or interrupted tasks from specific checkpoints.
-- [Failback]({% link molt/molt-fetch.md %}#fail-back-to-source-database), which replicates changes from CockroachDB back to the original source via a secure changefeed.
+- [Failback]({% link molt/molt-fetch.md %}#failback), which replicates changes from CockroachDB back to the original source via a secure changefeed.
 
 ### Verify
 

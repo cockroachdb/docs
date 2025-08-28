@@ -71,7 +71,7 @@ Flag | Description
 <a name="flags-max-tsdb-memory"></a>`--max-tsdb-memory` | Maximum memory capacity available to store temporary data for use by the time-series database to display metrics in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}). Consider raising this value if your cluster is comprised of a large number of nodes where individual nodes have very limited memory available (e.g., under `8 GiB`). Insufficient memory capacity for the time-series database can constrain the ability of the DB Console to process the time-series queries used to render metrics for the entire cluster. This capacity constraint does not affect SQL query execution. This flag accepts numbers interpreted as bytes, size suffixes (e.g., `1GB` and `1GiB`) or a percentage of physical memory (e.g., `0.01`).<br><br>**Note:** The sum of `--cache`, `--max-sql-memory`, and `--max-tsdb-memory` should not exceed 75% of the memory available to the `cockroach` process.<br><br>**Default:** `0.01` (i.e., 1%) of physical memory or `64 MiB`, whichever is greater.
 `--pid-file` | The file to which the node's process ID will be written as soon as the node is ready to accept connections. When `--background` is used, this happens before the process detaches from the terminal. When this flag is not set, the process ID is not written to file.
 <a name="flags-store"></a> `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [Store](#store) below.
-`--wal-failover` <a name="flag-wal-failover"></a> | Used to configure [WAL failover](#write-ahead-log-wal-failover) on [nodes]({% link {{ page.version.version }}/architecture/overview.md %}#node) with [multiple stores](#store). To enable WAL failover, pass `--wal-failover=among-stores`.  To disable, pass `--wal-failover=disabled` on [node restart]({% link {{ page.version.version }}/node-shutdown.md %}#stop-and-restart-a-node). This feature is in [preview]({% link {{page.version.version}}/cockroachdb-feature-availability.md %}#features-in-preview).
+`--wal-failover` <a name="flag-wal-failover"></a> | Used to configure [WAL failover](#write-ahead-log-wal-failover) on [nodes]({% link {{ page.version.version }}/architecture/overview.md %}#node) with [multiple stores](#store). To enable WAL failover, pass `--wal-failover=among-stores`.  To disable, pass `--wal-failover=disabled` on [node restart]({% link {{ page.version.version }}/node-shutdown.md %}#stop-and-restart-a-node).
 <a name="flags-spatial-libs"></a>`--spatial-libs` |  The location on disk where CockroachDB looks for [spatial]({% link {{ page.version.version }}/spatial-data-overview.md %}) libraries.<br/><br/>**Defaults:** <br/><ul><li>`/usr/local/lib/cockroach`</li><li>A `lib` subdirectory of the CockroachDB binary's current directory.</li></ul>
 `--temp-dir` <a name="temp-dir"></a> | The path of the node's temporary store directory. On node start up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
 
@@ -236,10 +236,6 @@ Field | Description
 #### Write Ahead Log (WAL) failover
 
 {% include {{ page.version.version }}/wal-failover-intro.md %}
-
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
 
 This page has basic instructions on how to enable WAL failover, disable WAL failover, and monitor WAL failover.
 
