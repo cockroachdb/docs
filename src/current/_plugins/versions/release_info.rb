@@ -23,10 +23,36 @@ module Jekyll
       versions_data.each do |version|
         major_version = version['major_version']
         relevant_releases = releases_data.select { |release| release['major_version'] == major_version }
+        
+        # Validate all release dates before processing
+        releases_with_invalid_dates = relevant_releases.select do |release|
+          begin
+            release['release_date'].nil? || release['release_date'].to_s.strip.empty? || !Date.parse(release['release_date'])
+            false
+          rescue Date::Error, ArgumentError
+            true
+          end
+        end
+
+        if releases_with_invalid_dates.any?
+          error_details = releases_with_invalid_dates.map do |r| 
+            name = r['release_name'] || 'unnamed'
+            date = r['release_date'].inspect
+            "#{name}: #{date}"
+          end.join(", ")
+          
+          raise "Invalid release dates found in releases.yml: #{error_details}"
+        end
+        
         latest_release = relevant_releases.max_by { |release| Date.parse(release['release_date']) }
         
         # Populate release info
         if latest_release
+          # Validate required docker configuration
+          unless latest_release.dig('docker', 'docker_image')
+            raise "Missing docker.docker_image for release #{latest_release['release_name'] || 'unnamed'} in releases.yml"
+          end
+
           release_info[major_version] = {
             "version" => latest_release['release_name'],
             "release_name" => latest_release['release_name'],
