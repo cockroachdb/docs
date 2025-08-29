@@ -51,9 +51,9 @@ Replace `{secret_key}` with the secret key string you stored when you [created t
 
 ## Set the API version
 
-The Cloud API uses date-based versions of the form `YYYY-MM-DD`, in [ISO 8601 format](https://www.w3.org/TR/NOTE-datetime). It is strongly recommended that you use the `Cc-Version` HTTP header to specify the version of the Cloud API to use. If you omit the `Cc-Version` header, the Cloud API will default to the latest version. If you don’t specify the version your application expects, breakage may occur. While we try to minimize the risk of breaking API changes, passing the version explicitly helps to mitigate against this risk and is strongly recommended.
+The Cloud API uses date-based versions of the form `YYYY-MM-DD`, in [ISO 8601 format](https://www.w3.org/TR/NOTE-datetime). It is strongly recommended that you use the `Cc-Version` HTTP header to specify the version of the Cloud API to use. If you omit the `Cc-Version` header, the Cloud API defaults to the latest version. If you don’t specify the version your application expects, breakage may occur. While we try to minimize the risk of breaking API changes, passing the version explicitly helps to mitigate against this risk and is strongly recommended.
 
-If you set an invalid version, you will get an HTTP 400 response with the message "invalid Cc-Version."
+If you set an invalid version, you recieve an HTTP 400 response with the message "invalid Cc-Version."
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -175,7 +175,7 @@ curl --request POST \
 
 </section>
 
-If the request was successful, the API returns information about the new cluster.
+If the request is successful, the API returns information about the new cluster.
 
 For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters) in the API reference.
 
@@ -277,7 +277,7 @@ curl --request POST \
 
 </section>
 
-If the request was successful, the API returns information about the new cluster.
+If the request is successful, the API returns information about the new cluster.
 
 For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters) in the API reference.
 
@@ -339,8 +339,8 @@ Where:
   - `plan` is set to `ADVANCED` for an Advanced cluster.
   - `{region_name}` is the name of a CockroachDB Cloud [region]({% link cockroachcloud/regions.md %}). Region names are set by the cloud provider. For example, `us-east-1` is an AWS region. Available regions vary based on both the selected plan type and the cloud provider.
   - The `region_nodes` field specifies the number of nodes in each region. The minimum is 3 nodes per region for an Advanced cluster.
-  - `{num_cpus}` is the number of virtual CPUs per node in the cluster. This value determines the machine type that will be provisioned.
-  - `{version}` is the CockroachDB version for the cluster. This field is optional; if omitted, the current version will be used.
+  - `{num_cpus}` is the number of virtual CPUs per node in the cluster. This value determines the machine type that is provisioned.
+  - `{version}` is the CockroachDB version for the cluster. This field is optional; if omitted, the current version is used.
 
 For example, to create a new Advanced cluster named `advanced-test` using AWS as the cloud provider:
 
@@ -387,7 +387,7 @@ curl --request POST \
 
 </section>
 
-If the request was successful, the API returns information about the new cluster.
+If the request is successful, the API returns information about the new cluster.
 
 For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters) in the API reference.
 
@@ -414,7 +414,7 @@ Where:
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
-If the request was successful, the API will return detailed information about the cluster.
+If the request is successful, the API returns detailed information about the cluster.
 
 For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1#post-/api/v1/clusters) in the API reference.
 
@@ -441,7 +441,7 @@ Where:
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
-If the request was successful, the API will return detailed information about the nodes in the cluster.
+If the request is successful, the API returns detailed information about the nodes in the cluster.
 
 ~~~ json
 {
@@ -524,7 +524,7 @@ Where:
   - `storage_mib_limit` is the maximum number of MiB of storage that the cluster can use at any time during the month. If this limit is exceeded, then the cluster is throttled, where only one SQL connection is allowed at a time, with the expectation that it is used to delete data to reduce storage usage. It is an error for this value to be zero.
   - `request_unit_limit` is the maximum number of request units that the cluster can consume during the month. If this limit is exceeded, then the cluster is disabled until the limit is increased, or until the beginning of the next month when more request units are granted. It is an error for this to be zero.
 
-If the request was successful, the API returns the updated cluster details.
+If the request is successful, the API returns the updated cluster details.
 
 For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-) in the API reference.
 
@@ -581,7 +581,7 @@ Where:
   - `{secret_key}` is the secret key for the service account.
   - `{provisioned_virtual_cpus}` is the number of virtual CPUs (vCPUs) the cluster provides. Once this limit is reached, operation latency may increase due to throttling.
 
-If the request was successful, the API returns the updated cluster details.
+If the request is successful, the API returns the updated cluster details.
 
 For details about returned fields, refer to the [response example and schema](https://www.cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-) in the API reference.
 
@@ -635,7 +635,7 @@ Where `{cluster_id}` is the ID of your cluster and `{secret_key}` is your API ke
 {% include feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
 
-For information on using the Cloud API to handle [managed backups and restore operations]({% link cockroachcloud/backup-and-restore-overview.md %}), see the respective managed backup documentation for [Basic]({% link cockroachcloud/managed-backups-basic.md %}#cloud-api), [Standard]({% link cockroachcloud/managed-backups.md %}#cloud-api), and [Advanced]({% link cockroachcloud/managed-backups-advanced.md %}#cloud-api) plans.
+For information on using the Cloud API to handle [managed backups and restore jobs]({% link cockroachcloud/backup-and-restore-overview.md %}), see the respective managed backup documentation for [Basic]({% link cockroachcloud/managed-backups-basic.md %}#cloud-api), [Standard]({% link cockroachcloud/managed-backups.md %}#cloud-api), and [Advanced]({% link cockroachcloud/managed-backups-advanced.md %}#cloud-api) plans.
 
 ## Change a cluster's plan
 
@@ -650,7 +650,7 @@ To migrate from CockroachDB {{ site.data.products.standard }} to CockroachDB {{ 
 
 1. Edit the API command or application code that was used to create the cluster. In the JSON header:
   - Replace the `serverless.usage_limits.provisioned_virtual_cpus` field with an empty value for no resource limits, or optionally values for `request_unit_limit` and `storage_mib_limit`. It is not possible to reserve compute on CockroachDB {{ site.data.products.basic }}. Refer to [CockroachDB API: Create a Standard cluster](https://cockroachlabs.com/docs/docs/api/cloud/v1.html#post-/api/v1/clusters) for the specification for CockroachDB {{ site.data.products.basic }}.
-  - Remove configurations for features that are unsupported on CockroachDB {{ site.data.products.basic }}, such as private connectivity. Otherwise, running the updated command or application code will fail.
+  - Remove configurations for features that are unsupported on CockroachDB {{ site.data.products.basic }}, such as private connectivity. Otherwise, running the updated command or application code fails.
 
 {{site.data.alerts.callout_info}}
 To change a cluster's plan between CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.standard }}, you must create and configure a new cluster, back up the existing cluster's data, and restore the backup to the new cluster. Migration in place is not supported. Refer to [Self-managed backups]({% link cockroachcloud/backup-and-restore-overview.md %}#self-managed-backups).
@@ -664,7 +664,7 @@ To delete a cluster, send a `DELETE` request to the `/v1/clusters/{cluster_id}` 
 The service account associated with the secret key must have the Cluster Admin or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
-Deleting a cluster will permanently delete the cluster and all the data within the cluster.
+Sending a `DELETE` request permanently deletes the cluster and all the data within the cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -681,7 +681,7 @@ Where:
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
-If the `DELETE` request was successful the client will not receive a response payload.
+If the `DELETE` request is successful the client does not receive a response payload.
 
 <a id="cloud-audit-logs"></a>
 
@@ -714,7 +714,7 @@ Where:
 
 A request that includes no parameters exports roughly 200 entries in ascending order, starting from when your CockroachDB {{ site.data.products.cloud }} organization was created.
 
-If the request was successful, the client will receive a JSON array consisting of a list of log `entries` and, depending on the circumstances, a `next_starting_from` field.
+If the request is successful, the client receives a JSON array consisting of a list of log `entries` and, depending on the circumstances, a `next_starting_from` field.
 
 - If `{sort_order}` is `ASC`, `next_starting_from` is always returned.
 - If `{sort_order}` is `DESC`, then `next_starting_from` is returned as long as earlier audit logs are available. It is not returned when the earliest log entry is reached (when the CockroachDB {{ site.data.products.cloud }} organization was created).
@@ -733,6 +733,51 @@ Where:
 
   - `{entry_array}` is a structured JSON array of audit log entries.
   - `{timestamp}` indicates the timestamp to send to export the next batch of results.
+
+## Get invoices for an organization
+
+To list all [invoices billed]({% link cockroachcloud/billing-management.md %}#view-invoices) to an organization, send a `GET` request to the `/v1/invoices` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Billing Coordinator or Cluster Admin [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/invoices \
+  --header 'Authorization: Bearer {secret_key}'
+~~~
+
+If the request is successful, the client receives a list of invoices billed to the organization. Each invoice object includes the start and end of the corresponding billing period, with each past invoice showing a `status` of `FINALIZED`. An invoice object is also returned for the current billing period showing usage so far with a `status` of `DRAFT`.
+
+~~~ json
+{
+  "invoices": [
+    {<current_invoice_object>},
+    {<past_invoice_object1>},
+    {<past_invoice_object2>}
+  ],
+  "pagination": null
+}    
+~~~
+
+You can request a specific invoice by providing the invoice ID in a `GET` request to the `/v1/invoices/{invoice_id}` endpoint:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/invoices/{invoice_id} \
+  --header 'Authorization: Bearer {secret_key}'
+~~~
+~~~ json
+{
+  "invoices": [
+    {<invoice_object>}
+  ],
+  "pagination": null
+}    
+~~~
 
 ## List all clusters in an organization
 
@@ -762,7 +807,7 @@ Where:
 
   - `{secret_key}` is the secret key for the service account.
 
-If the request was successful, the client will receive a list of all clusters within the organization, in the following format.
+If the request is successful, the client receives a list of all clusters within the organization, in the following format.
 
 ~~~ json
 {
@@ -795,7 +840,7 @@ Where:
   - `{cloud_provider}` is the name of the cloud provider: `AWS`, `AZURE`, or `GCP`.
   - `{secret_key}` is the secret key for the service account.
 
-If the request was successful, the client will receive a list of available regions for the specified cloud provider.
+If the request is successful, the client receives a list of available regions for the specified cloud provider.
 
 ~~~ json
 {
@@ -832,7 +877,7 @@ Where:
   {{site.data.alerts.end}}
   - `{secret_key}` is the secret key for the service account.
 
-If the request was successful, the client will receive a list of SQL users.
+If the request is successful, the client receives a list of SQL users.
 
 ~~~ json
 {
@@ -886,7 +931,7 @@ The cluster ID used in the Cloud API is different from the routing ID used when 
 - `{sql_username}` is the username of the new SQL user you want to create.
 - `{password}` is the new user's password.
 
-If the request was successful, the client receives a response with the name of the new user.
+If the request is successful, the client receives a response with the name of the new user.
 
 ~~~ json
 {
@@ -924,7 +969,7 @@ The cluster ID used in the Cloud API is different from the routing ID used when 
 - `{sql_username}` is the username of the SQL user you want to delete.
 - `{secret_key}` is the secret key for the service account.
 
-If the request was successful, the client receives a response with the name of the deleted user.
+If the request is successful, the client receives a response with the name of the deleted user.
 
 ~~~ json
 {
@@ -961,7 +1006,7 @@ The cluster ID used in the Cloud API is different from the routing ID used when 
 - `{sql_username}` is the username of the SQL user whose password you want to change.
 - `{new_password}` is the new password for the SQL user.
 
-If the request was successful, the client receives a response with the name of the SQL user whose password was changed.
+If the request is successful, the client receives a response with the name of the SQL user whose password was changed.
 
 ~~~ json
 {

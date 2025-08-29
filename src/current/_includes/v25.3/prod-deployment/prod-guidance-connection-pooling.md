@@ -1,1 +1,1 @@
-The total number of workload connections across all connection pools **should not exceed 4 times the number of vCPUs** in the cluster by a large amount.
+The number of **active** connections across all connection pools **should not exceed 4 times the number of vCPUs** in the cluster by a large amount. A connection is "active" when it is actively executing a query. To monitor active connections, use the [**Active SQL Statements** graph and `sql.statements.active` metric]({% link {{ page.version.version }}/connection-pooling.md %}#monitor-active-connections).

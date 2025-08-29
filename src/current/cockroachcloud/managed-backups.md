@@ -108,7 +108,7 @@ To modify the [retention](#retention) of backups, click on **Retain backups for*
 ### Restore a cluster
 
 {{site.data.alerts.callout_info}}
-Before a cluster can be restored from a managed backup, the destination cluster must be completely wiped of data. A cluster restore operation fails if the destination cluster contains any databases/schemas/tables.
+Before a cluster can be restored from a managed backup, the destination cluster must be completely wiped of data. A cluster restore job fails if the destination cluster contains any databases/schemas/tables.
 {{site.data.alerts.end}}
 
 Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup.

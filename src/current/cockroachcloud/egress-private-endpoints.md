@@ -16,8 +16,8 @@ CockroachDB {{ site.data.products.cloud }} supports egress private endpoints wit
 
 - [Amazon Virtual Private Cloud (AWS VPC)](https://aws.amazon.com/vpc/)
 - [Amazon Managed Streaming for Apache Kafka (MSK)](https://aws.amazon.com/msk/)
-- [Google Cloud Virtual Private Cloud (GCP VPC)](https://cloud.google.com/vpc)
-- [Confluent Cloud](https://www.confluent.io/confluent-cloud/)
+- [Google Cloud VPC Private Service Connect (GCP PSC)](https://cloud.google.com/vpc/docs/private-service-connect)
+- [Confluent Cloud on GCP or AWS](https://www.confluent.io/confluent-cloud/)
 
 {{site.data.alerts.callout_danger}}
 Regions cannot be removed from a CockroachDB {{ site.data.products.cloud }} cluster if there are egress private endpoints in that region. When a {{ site.data.products.cloud }} cluster is deleted, all private endpoints associated with the cluster are deleted as well.
@@ -27,7 +27,7 @@ Regions cannot be removed from a CockroachDB {{ site.data.products.cloud }} clus
 
 Refer to the following sections for prerequisites that apply to the corresponding cloud service:
 
-### AWS VPC endpoints
+### AWS VPC
 
 The CockroachDB {{ site.data.products.cloud }} AWS account must be added as a principal on the endpoint service. Using your CockroachDB {{ site.data.products.cloud }} `account_id`, [add the `arn:aws:iam::<CC_ACCOUNT_ID>:root` principal](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#add-remove-permissions) to the endpoint service definition.
 
@@ -40,7 +40,7 @@ curl --request GET \
   --header 'Authorization: Bearer {secret_key}' | jq .account_id
 ~~~
 
-### MSK endpoints
+### AWS MSK
 
 The following prerequisites apply to the MSK service:
 
@@ -66,9 +66,26 @@ The following prerequisites apply to the MSK service:
     }
     ~~~
 
-### Confluent Cloud endpoints
+### GCP PSC
 
-You can configure egress private endpoints to connect to an AWS or GCP private service configured in a Confluent account. Endpoint creation follows the same process and syntax as for AWS or GCP VPCs.
+The following prerequisites apply to the Google Cloud VPC service:
+
+- The CockroachDB {{ site.data.products.cloud }} account's GCP project must be granted explicit approval as a consumer. Follow the [Google Cloud PSC documentation](https://cloud.google.com/vpc/docs/configure-private-service-connect-producer#publish-service-explicit), and follow the steps to **Accept connections for selected projects** with your CockroachDB {{ site.data.products.cloud }} GCP account ID.
+
+    You can use the following API call to retrieve your CockroachDB {{ site.data.products.cloud }} `account_id`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl --request GET \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
+      --header 'Authorization: Bearer {secret_key}' | jq .account_id
+    ~~~
+
+- Enable [consumer global access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#compatibility) on the service load balancer or forwarding rule.
+
+### Confluent Cloud
+
+You can configure egress private endpoints to connect to an AWS or GCP private service configured in a Confluent account. Endpoint creation follows the same process and syntax as for AWS or GCP.
 
 Confluent Cloud requires a custom DNS configuration due to the TLS certificates provisioned for their Kafka clusters. Collect the required domain names from Confluent. After the endpoint is created, [configure custom DNS records](#configure-custom-dns) for the cluster.
 
@@ -81,9 +98,9 @@ A user with the [Cluster Admin]({% link cockroachcloud/authorization.md %}#clust
 - `target_service_identifier`: The unique identifier of the target service, which is a different value depending on the service:
     - **AWS VPC**: The AWS private service name.
     - **MSK**: The MSK-provisioned cluster's Amazon Resource Name (ARN).
-    - **GCP VPC**: The GCP service attachment.
+    - **GCP PSC**: The GCP service attachment.
 - `target_service_type`: Description of the service type, dependent on the service and authentication method:
-    - **AWS VPC** or **GCP VPC**: Set to `PRIVATE_SERVICE`.
+    - **AWS VPC** or **GCP PSC**: Set to `PRIVATE_SERVICE`.
     - **MSK** with SASL/SCRAM authentication: Set to `MSK_SASL_SCRAM`.
     - **MSK** with IAM access control: Set to `MSK_SASL_IAM`.
     - **MSK** with mutual TLS authentication: Set to `MSK_TLS`.
@@ -98,7 +115,7 @@ The following example `POST` requests assume that an API key has been created fo
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
 -H 'Authorization: Bearer {secret_key}' \
 -H 'Content-Type: application/json' \
@@ -114,7 +131,7 @@ curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
 -H 'Authorization: Bearer {secret_key}' \
 -H 'Content-Type: application/json' \
@@ -130,7 +147,7 @@ curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -X POST \
 -H 'Authorization: Bearer {secret_key}' \
 -H 'Content-Type: application/json' \
@@ -175,7 +192,7 @@ For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id}/domain-names \
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id}/domain-names \
 -X PATCH \
 -H 'Authorization: Bearer {secret_key}' \
 -H 'Content-Type: application/json' \
@@ -194,7 +211,7 @@ Send a `GET` request to the `/api/v1/clusters/{cluster_id}/networking/egress-pri
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints \
 -H "Authorization: Bearer {secret_key}"
 ~~~
 
@@ -205,12 +222,13 @@ The response lists all egress private endpoints on the cluster. The `state` fiel
     "egress_private_endpoints": [
         {
             "id": "{endpoint_id}",
-            "endpoint_connection_id": "vpce-0460d7c25b1f505dd",
+            "endpoint_connection_id": "vpce-example",
             "region": "us-east-2",
-            "target_service_identifier": "com.amazonaws.vpce.us-east-2.vpce-svc-0fb8e1b95f0ade981",
+            "target_service_identifier": "com.amazonaws.vpce.us-east-2.vpce-svc-example",
             "target_service_type": "PRIVATE_SERVICE",
-            "endpoint_address": "vpce-0460d7c25b1f505dd-onq0bw5q.vpce-svc-0fb8e1b95f0ade981.us-east-2.vpce.amazonaws.com",
-            "state": "AVAILABLE"
+            "endpoint_address": "vpce-example-onq0bw5q.vpce-svc-example.us-east-2.vpce.amazonaws.com",
+            "state": "AVAILABLE",
+            "domain_names": []
         }
     ],
     "pagination": null
@@ -237,7 +255,7 @@ To delete a private endpoint, send a `DELETE` request to the `/api/v1/clusters/{
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://management-staging.crdb.io/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id} \
+curl https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/egress-private-endpoints/{endpoint_id} \
 -X DELETE \
 -H "Authorization: Bearer {secret_key}"
 ~~~

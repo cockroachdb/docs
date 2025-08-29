@@ -7,9 +7,9 @@ MOLT Fetch and Verify are likely to run more slowly in a Docker container than o
 {% if page.name == "molt-fetch.md" %}
 ### Authentication
 
-When using MOLT Fetch with [cloud storage](#cloud-storage), it is necessary to specify volumes and environment variables, as described in the following sections for [Google Cloud Storage](#google-cloud-storage) and [Amazon S3](#amazon-s3). 
+When using MOLT Fetch with [cloud storage](#bucket-path), it is necessary to specify volumes and environment variables, as described in the following sections for [Google Cloud Storage](#google-cloud-storage) and [Amazon S3](#amazon-s3). 
 
-No additional configuration is needed when running MOLT Fetch with a [local file server](#local-file-server) or in [direct copy mode](#direct-copy): 
+No additional configuration is needed when running MOLT Fetch with a [local file server](#local-path) or in [direct copy mode](#direct-copy): 
 
 ~~~ shell
 docker run -it cockroachdb/molt fetch ...
@@ -19,7 +19,7 @@ For more information on `docker run`, see the [Docker documentation](https://doc
 
 #### Google Cloud Storage
 
-If you are using [Google Cloud Storage](https://cloud.google.com/storage/docs/access-control) for [cloud storage](#cloud-storage):
+If you are using [Google Cloud Storage](https://cloud.google.com/storage/docs/access-control) for [cloud storage](#bucket-path):
 
 Volume map the `application_default_credentials.json` file into the container, and set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to this file.
 
@@ -46,7 +46,7 @@ For details on Google Cloud Storage authentication, see [Application Default Cre
 
 #### Amazon S3
 
-If you are using [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) for [cloud storage](#cloud-storage):
+If you are using [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) for [cloud storage](#bucket-path):
 
 Volume map the host's `~/.aws` directory to the `/root/.aws` directory inside the container, and set the required `AWS_REGION`, `AWS_SECRET_ACCESS_KEY`, and `AWS_ACCESS_KEY_ID` environment variables:
 
