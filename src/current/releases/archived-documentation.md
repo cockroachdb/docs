@@ -67,18 +67,7 @@ Choose a version to view its archived documentation:
 <select id="version-select" class="filter-select">
   <option value="" disabled selected>Select a version</option>
   <optgroup label="Major Releases">
-    <option value="v21.2">v21.2 (Archived)</option>
-    <option value="v21.1">v21.1 (Archived)</option>
-    <option value="v20.2">v20.2 (Archived)</option>
-    <option value="v20.1">v20.1 (Archived)</option>
     <option value="v19.2">v19.2 (Archived)</option>
-  </optgroup>
-  <optgroup label="Legacy Releases">
-    <option value="v19.1">v19.1 (Archived)</option>
-    <option value="v2.1">v2.1 (Archived)</option>
-    <option value="v2.0">v2.0 (Archived)</option>
-    <option value="v1.1">v1.1 (Archived)</option>
-    <option value="v1.0">v1.0 (Archived)</option>
   </optgroup>
 </select>
 
@@ -95,36 +84,9 @@ Browse the full list of archived CockroachDB versions:
     <tr><th>Version</th><th>Release Date</th><th>EOL Date</th><th>Status</th><th>Downloads</th></tr>
   </thead>
   <tbody>
-    <tr><td><strong>v21.2</strong></td><td>November 2021</td><td>March 2023</td>
-        <td><span class="version-pill version-archived">Archived</span></td>
-        <td><a href="#" class="download-link">ZIP</a>&nbsp;<a href="#" class="download-link">PDF</a></td></tr>
-    <tr><td><strong>v21.1</strong></td><td>May 2021</td><td>November 2022</td>
-        <td><span class="version-pill version-archived">Archived</span></td>
-        <td><a href="#" class="download-link">ZIP</a>&nbsp;<a href="#" class="download-link">PDF</a></td></tr>
-    <tr><td><strong>v20.2</strong></td><td>November 2020</td><td>May 2022</td>
-        <td><span class="version-pill version-archived">Archived</span></td>
-        <td><a href="#" class="download-link">ZIP</a>&nbsp;<a href="#" class="download-link">PDF</a></td></tr>
-    <tr><td><strong>v20.1</strong></td><td>May 2020</td><td>November 2021</td>
-        <td><span class="version-pill version-archived">Archived</span></td>
-        <td><a href="#" class="download-link">ZIP</a>&nbsp;<a href="#" class="download-link">PDF</a></td></tr>
     <tr><td><strong>v19.2</strong></td><td>November 2019</td><td>May 2021</td>
         <td><span class="version-pill version-archived">Archived</span></td>
-        <td><a href="#" class="download-link">ZIP</a>&nbsp;<a href="#" class="download-link">PDF</a></td></tr>
-    <tr><td><strong>v19.1</strong></td><td>May 2019</td><td>November 2020</td>
-        <td><span class="version-pill version-archived">Archived</span></td>
-        <td><a href="#" class="download-link">ZIP</a>&nbsp;<a href="#" class="download-link">PDF</a></td></tr>
-    <tr><td><strong>v2.1</strong></td><td>November 2018</td><td>May 2020</td>
-        <td><span class="version-pill version-archived">Archived</span></td>
-        <td><a href="#" class="download-link">ZIP</a>&nbsp;<a href="#" class="download-link">PDF</a></td></tr>
-    <tr><td><strong>v2.0</strong></td><td>April 2018</td><td>November 2019</td>
-        <td><span class="version-pill version-archived">Archived</span></td>
-        <td><a href="#" class="download-link">ZIP</a>&nbsp;<a href="#" class="download-link">PDF</a></td></tr>
-    <tr><td><strong>v1.1</strong></td><td>October 2017</td><td>April 2019</td>
-        <td><span class="version-pill version-archived">Archived</span></td>
-        <td><a href="#" class="download-link">ZIP</a>&nbsp;<a href="#" class="download-link">PDF</a></td></tr>
-    <tr><td><strong>v1.0</strong></td><td>May 2017</td><td>October 2018</td>
-        <td><span class="version-pill version-archived">Archived</span></td>
-        <td><a href="#" class="download-link">ZIP</a>&nbsp;<a href="#" class="download-link">PDF</a></td></tr>
+        <td><a href="https://storage.googleapis.com/crdbdocs-archive/archive_19.2.zip" class="download-link">ZIP</a></td></tr>
   </tbody>
 </table>
 
