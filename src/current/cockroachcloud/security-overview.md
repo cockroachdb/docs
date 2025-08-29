@@ -124,7 +124,7 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
       <td>Cloud Organization users with fine-grained access roles</td>
     </tr>
     <tr>
-    <td rowspan="7">Network Security</td>
+    <td rowspan="8">Network Security</td>
       <td>✓</td>
       <td>✓</td>
       <td>✓</td>
@@ -165,6 +165,12 @@ The following table summarizes the CockroachDB {{ site.data.products.cloud }} se
       <td>✓</td>
       <td>✓</td>
       <td><a href="{% link cockroachcloud/network-authorization.md %}#aws-privatelink"></a>PrivateLink for AWS clusters. </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>✓</td>
+      <td><a href="{% link cockroachcloud/egress-private-endpoints.md %}">Egress private endpoints</a></td>
     </tr>
     <tr>
       <td rowspan="2"><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>

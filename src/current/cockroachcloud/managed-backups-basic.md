@@ -53,10 +53,8 @@ For each backup, the following details display:
 
 ### Restore a cluster
 
-{{site.data.alerts.callout_danger}}
-The restore completely erases all data in the destination cluster. All cluster data is replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress.
-
-This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when designing your system of privilege grants.
+{{site.data.alerts.callout_info}}
+Before a cluster can be restored from a managed backup, the destination cluster must be completely wiped of data. A cluster restore job fails if the destination cluster contains any databases/schemas/tables.
 {{site.data.alerts.end}}
 
 Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup.
@@ -75,3 +73,11 @@ To restore a cluster:
     {{site.data.alerts.end}}
 
 1. Click **Restore**.
+
+## Cloud API
+
+{% include cockroachcloud/backups/cloud-api-managed-backup-intro.md %}
+
+{% include cockroachcloud/backups/cloud-api-backup-view.md %}
+
+{% include cockroachcloud/backups/cloud-api-restore-endpoint.md %}

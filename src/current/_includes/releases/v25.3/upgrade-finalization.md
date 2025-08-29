@@ -1,4 +1,4 @@
-During a major-version upgrade, certain features and performance improvements are available until the upgrade is finalized. In v25.3, these are:
+During a major-version upgrade, certain features and performance improvements are not available until the upgrade is finalized. In v25.3, these are:
 
 - The `CITEXT` data type
 - Support for automatically determining the region column for a REGIONAL BY ROW table using a foreign key constraint

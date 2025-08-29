@@ -13,7 +13,7 @@ To view this dashboard, [access the DB Console]({% link {{ page.version.version 
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
-For monitoring CockroachDB, it is sufficient to use the [**Open SQL Sessions**](#open-sql-sessions), [**SQL Byte Traffic**](#sql-byte-traffic), [**SQL Queries Per Second**](#sql-queries-per-second), [**Service Latency**](#service-latency-sql-99th-percentile), and [**Transactions**](#transactions) graphs.
+For monitoring CockroachDB, it is sufficient to use the [**Open SQL Sessions**](#open-sql-sessions), [**Active SQL Statements**](#active-sql-statements), [**SQL Byte Traffic**](#sql-byte-traffic), [**SQL Queries Per Second**](#sql-queries-per-second), [**Service Latency**](#service-latency-sql-99th-percentile), and [**Transactions**](#transactions) graphs.
 
 ---
 
