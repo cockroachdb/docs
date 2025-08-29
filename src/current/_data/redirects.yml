@@ -418,7 +418,6 @@
 
 - destination: stable/example-apps.md#python
   sources:
-    - v19.2/build-a-python-app-with-cockroachdb-pony.md
     - v20.1/build-a-python-app-with-cockroachdb-pony.md
 
 - destination: stable/install-client-drivers.md
