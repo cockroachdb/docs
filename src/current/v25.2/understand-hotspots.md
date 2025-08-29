@@ -8,6 +8,8 @@ In distributed SQL, hotspots refer to bottlenecks that limit a cluster's ability
 
 The page also offers best practices for [reducing hotspots](#reduce-hotspots), including a [video demo](#video-demo).
 
+To troubleshoot common hotspots, refer to the [Detect Hotspots page]({% link {{ page.version.version }}/detect-hotspots.md %}).
+
 ## Terminology
 
 ### Hotspot
@@ -139,7 +141,7 @@ On this page, the phrase _index hotspot_ will be reserved for a hot by write hot
 
 #### Resolving index hotspots
 
-The resolution of the index hotspot often depends on your requirements for the data. If the sequential nature of the index serves no purpose, it is recommended to change the writes into the index to be randomly distributed. Ideally, primary keys in this instance would be set to `UUID`s, if your tolerance for swapover or even downtime allows it.
+The resolution of the index hotspot often depends on your requirements for the data. If the sequential nature of the index serves no purpose, it is recommended to change the writes into the index to be randomly distributed. Ideally, primary keys in this instance would be set to [`UUID`]({% link {{ page.version.version }}/uuid.md %})s, if your tolerance for swapover or even downtime allows it.
 
 If inserting in sequential order is important, the index itself can be [hash-sharded]({% link {{ page.version.version }}/hash-sharded-indexes.md %}), which means that it is still stored in order, albeit in some number of shards. Consider a `users` table, with a primary key `id INT`, which is hash-sharded with 4 shards, and a hashing function of modulo 4. The following image illustrates this example:
 
@@ -335,5 +337,6 @@ For a demo on hotspot reduction, watch the following video:
 
 ## See also
 
+- [Detect Hotspots]({% link {{ page.version.version }}/detect-hotspots.md %})
 - [Performance Tuning Recipes: Hotspots]({% link {{ page.version.version }}/performance-recipes.md %}#hotspots)
 - [Single hot node]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#single-hot-node)

@@ -14,9 +14,59 @@ Cockroach Labs recommends using the latest available version of each tool. See [
 
 ## Installation
 
-To download the latest MOLT Fetch/Verify binary:
-
 {% include molt/molt-install.md %}
+
+## August 21, 2025
+
+MOLT Fetch/Verify 1.3.1 is [available](#installation).
+
+- MOLT Fetch now supports [sharding]({% link molt/molt-fetch.md %}#table-sharding) of primary keys of any data type on PostgreSQL 11+ sources. This can be enabled with the [`--use-stats-based-sharding`]({% link molt/molt-fetch.md %}#global-flags) flag.
+- Added the [`--ignore-replication-check`]({% link molt/molt-fetch.md %}#global-flags) flag to allow data loads with planned downtime and no [replication setup]({% link molt/molt-fetch.md %}#replication-setup). The `--pglogical-ignore-wal-check` flag has been removed.
+- Added the `--enableParallelApplies` [replication flag]({% link molt/molt-fetch.md %}#replication-flags) to enable parallel application of independent table groups during replication. By default, applies are synchronous. When enabled, this increases throughput at the cost of increased target pool and memory usage.
+- Improved cleanup logic for scheduled tasks to ensure progress reporting and prevent indefinite hangs.
+- Added parallelism gating to ensure the parallelism setting is smaller than the `targetMaxPoolSize`. This helps prevent a potential indefinite hang.
+- Added new metrics that track start and end times for progress reports (`core_progress_reports_started_count` and `core_progress_reports_ended_count`) and error reports (`core_error_reports_started_count` and `core_error_reports_ended_count`). These provide visibility into the core sequencer progress and help identify hangs in the applier and progress tracking pipeline.
+- Added new metrics `target_apply_queue_utilization_percent` and `target_apply_queue_depth` to track target apply queue utilization, indicating when the queue should be resized. These metrics apply only to PostgreSQL, Oracle, and CockroachDB sources.
+- Oracle sources now support configurable backpressure between the source and target applier. The new `target_apply_queue_depth` metric tracks queue depth.
+- Improved visibility into queue depth between each source frontend and the backend applier to the target. Updated logging to use lower log levels with clearer, less alarming messages.
+- Improved throughput for tables in the replication stream that have no dependencies on one another. This increases parallelism and minimizes blocking of transactions that are mutually independent.
+- The best effort window is now disabled by default to prevent unexpected mode switches that could cause consistency issues or stall replication due to failed target applies.
+
+#### Bug fixes
+
+- Fixed a panic that could occur with `ENUM` types.
+
+## July 24, 2025
+
+MOLT Fetch/Verify 1.3.0 is [available](#installation).
+
+- Oracle is now supported on Fetch Docker images and standalone binaries.
+- Oracle is now supported on Replicator Docker images and standalone binaries.
+- Azure Blob Storage is now supported as an intermediate data store for Fetch.
+- Added a `--skip-pk-check` flag that lets you run the initial data load even when the source or target table is missing a primary key, or the keys do not match. When this flag is set, Fetch treats every table as keyless, disables sharding, and exports each table in a single batch, ignoring `export-concurrency` and `row-batch-size`. Querying the entire table at once may lead to high memory usage or long-running queries. Duplicate source rows are automatically removed during import when the target has primary key or unique constraints.
+- Replication now uses checkpoint polling by default. This is because polling (which periodically queries the staging table for updates) performs comparably to checkpoint streaming (which uses an internal changefeed from the staging table to broadcast real-time updates). To use checkpoint streaming, set `--enableCheckpointStream`. `--disableCheckpointStream` is deprecated and should be removed from replication commands.
+- Replaced the `--copierChannel` and `--stageCopierChannelSize` replication flags with a single `--targetApplyQueueSize` flag, which controls downstream apply throughput and memory usage. This feature applies only to CockroachDB and PostgreSQL (`pglogical`) sources.
+- Added support for compressed changefeed payloads, improving performance of changefeed-to-Replicator communication. This only affects failback workflows from CockroachDB v25.2 and later.
+- Improved apply-side performance by switching to a faster JSON decoder.
+- Improved batch-accumulation performance by removing unnecessary sorting.
+
+#### Bug fixes
+
+- Fixed a bug where some error logs were not displayed when replicating to the target database.
+
+## June 19, 2025
+
+MOLT Fetch/Verify 1.2.7 is [available](#installation).
+
+- Updated the MOLT [Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) with the following timing metrics to better diagnose performance: Source Side Queries, Convert Source Side Queries to Datums, Writing Datums to Pipe, Preparing CSV files to be uploaded, Uploading CSV files to S3/GCP/local.
+- Upgraded the MOLT parser to support new syntax that is valid in CockroachDB v25.2.
+- Added more granular replication counter metrics to track data counts at each stage of the mutation pipeline, helping to diagnose data correctness issues.
+
+#### Bug fixes
+
+- MOLT Fetch [failback]({% link molt/migrate-failback.md %}) now reliably creates changefeeds with a sorted list of table names so that create changefeed operations can be properly deduplicated.
+- Fixed an issue where shard connections failed to recognize custom types (e.g., `ENUM`) in primary keys during table migration. This occurred because the type map from the original `pgx.Conn` was not cloned. The type map is now properly cloned and attached to each shard connection.
+- Fixed a bug that could cause an integer overflow, which impacts retrieving the correct shards for exporting data.
 
 ## May 22, 2025
 
@@ -37,7 +87,7 @@ MOLT Fetch/Verify 1.2.5 is [available](#installation).
 MOLT Fetch/Verify 1.2.4 is [available](#installation).
 
 - MOLT Fetch now supports PostgreSQL 11.
-- MOLT Fetch [failback]({% link molt/molt-fetch.md %}#fail-back-to-source-database) to CockroachDB is now disallowed.
+- MOLT Fetch [failback]({% link molt/molt-fetch.md %}#failback) to CockroachDB is now disallowed.
 - MOLT Verify can now compare tables that are named differently on the source and target schemas.
 - The `molt` logging date format is now period-delimited for Windows compatibility.
 - During replication, an index is now created on all tables by default, improving replication performance. Because index creation can cause the replication process to initialize more slowly, this behavior can be disabled using the `--stageDisableCreateTableReaderIndex` [replication flag]({% link molt/molt-fetch.md %}#replication-flags).
@@ -55,7 +105,7 @@ MOLT Fetch/Verify 1.2.3 is [available](#installation).
 
 MOLT Fetch/Verify 1.2.2 is [available](#installation).
 
-- Added an [`--import-region`]({% link molt/molt-fetch.md %}#global-flags) flag that is used to set the `AWS_REGION` query parameter explicitly in the [`s3` URL]({% link molt/molt-fetch.md %}#cloud-storage).
+- Added an [`--import-region`]({% link molt/molt-fetch.md %}#global-flags) flag that is used to set the `AWS_REGION` query parameter explicitly in the [`s3` URL]({% link molt/molt-fetch.md %}#bucket-path).
 - Fixed the [`truncate-if-exists`]({% link molt/molt-fetch.md %}#target-table-handling) schema mode for cases where there are uppercase table or schema names.
 - Fixed an issue with unsigned `BIGINT` values overflowing in replication.
 - Added a `--schemaRefresh` [replication flag]({% link molt/molt-fetch.md %}#replication-flags) that is used to configure the schema watcher refresh delay in the replication phase. Previously, the refresh delay was set to a constant value of 1 minute. Set the flag as follows: `--replicator-flags "--schemaRefresh {value}"`.
@@ -68,15 +118,15 @@ MOLT Fetch/Verify 1.2.1 is [available](#installation).
 - MySQL 5.7 and later are now supported with MOLT Fetch replication modes. For details on setup, refer to the [MOLT Fetch documentation]({% link molt/molt-fetch.md %}#replication-setup).
 - Fetch replication mode now defaults to a less verbose `INFO` logging level. To specify `DEBUG` logging, pass in the `--replicator-flags '-v'` setting, or `--replicator-flags '-vv'` for trace logging.
 - MySQL columns of type `BIGINT UNSIGNED` or `SERIAL` are now auto-mapped to [`DECIMAL`]({% link {{ site.current_cloud_version }}/decimal.md %}) type in CockroachDB. MySQL regular `BIGINT` types are mapped to [`INT`]({% link {{ site.current_cloud_version }}/int.md %}) type in CockroachDB.
-- The `pglogical` replication workflow was modified in order to enforce safer and simpler defaults for the [`data-load`]({% link molt/molt-fetch.md %}#load-data), [`data-load-and-replication`]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes), and [`replication-only`]({% link molt/molt-fetch.md %}#replicate-changes) workflows for PostgreSQL sources. Fetch now ensures that the publication is created before the slot, and that `replication-only` defaults to using publications and slots created either in previous Fetch runs or manually.
+- The `pglogical` replication workflow was modified in order to enforce safer and simpler defaults for the [`data-load`]({% link molt/molt-fetch.md %}#data-load), [`data-load-and-replication`]({% link molt/molt-fetch.md %}#data-load-and-replication), and [`replication-only`]({% link molt/molt-fetch.md %}#replication-only) workflows for PostgreSQL sources. Fetch now ensures that the publication is created before the slot, and that `replication-only` defaults to using publications and slots created either in previous Fetch runs or manually.
 - Fixed scan iterator query ordering for `BINARY` and `TEXT` (of same collation) PKs so that they lead to the correct queries and ordering.
-- For a MySQL source in [`replication-only`]({% link molt/molt-fetch.md %}#replicate-changes) mode, the [`--stagingSchema` replicator flag]({% link molt/molt-fetch.md %}#replication-flags) can now be used to resume streaming replication after being interrupted. Otherwise, the [`--defaultGTIDSet` replicator flag]({% link molt/molt-fetch.md %}#mysql-replication-flags) is used to start initial replication after a previous Fetch run in [`data-load`]({% link molt/molt-fetch.md %}#load-data) mode, or as an override to the current replication stream.
+- For a MySQL source in [`replication-only`]({% link molt/molt-fetch.md %}#replication-only) mode, the [`--stagingSchema` replicator flag]({% link molt/molt-fetch.md %}#replication-flags) can now be used to resume streaming replication after being interrupted. Otherwise, the [`--defaultGTIDSet` replicator flag]({% link molt/molt-fetch.md %}#mysql-replication-flags) is used to start initial replication after a previous Fetch run in [`data-load`]({% link molt/molt-fetch.md %}#data-load) mode, or as an override to the current replication stream.
 
 ## October 29, 2024
 
 MOLT Fetch/Verify 1.2.0 is [available](#installation).
 
-- Added [`failback` mode]({% link molt/molt-fetch.md %}#fail-back-to-source-database) to MOLT Fetch, which allows the user to replicate changes on CockroachDB back to the initial source database. Failback is supported for MySQL and PostgreSQL databases.
+- Added [`failback` mode]({% link molt/molt-fetch.md %}#failback) to MOLT Fetch, which allows the user to replicate changes on CockroachDB back to the initial source database. Failback is supported for MySQL and PostgreSQL databases.
 - The [`--pprof-list-addr` flag]({% link molt/molt-fetch.md %}#global-flags), which specifies the address of the `pprof` endpoint, is now configurable. The default value is `'127.0.0.1:3031'`.
 - [Fetch modes]({% link molt/molt-fetch.md %}#fetch-mode) involving replication now state that MySQL 8.0 and later are supported for replication between MySQL and CockroachDB.
 - [Partitioned tables]({% link molt/molt-fetch.md %}#transformations) can now be moved to CockroachDB using [`IMPORT INTO`]({% link {{ site.current_cloud_version }}/import-into.md %}).
@@ -102,9 +152,9 @@ MOLT Fetch/Verify 1.1.6 is [available](#installation).
 
 MOLT Fetch/Verify 1.1.5 is [available](#installation).
 
-- **Deprecated** the `--ongoing-replication` flag in favor of [`--mode data-load-and-replication`]({% link molt/molt-fetch.md %}#load-data-and-replicate-changes), using the new `--mode` flag. Users should replace all instances of `--ongoing-replication` with `--mode data-load-and-replication`.
-- Fetch can now be run in an export-only mode by specifying [`--mode export-only`]({% link molt/molt-fetch.md %}#export-data-to-storage). This will export all the data in `csv` or `csv.gz` format to the specified cloud or local store.
-- Fetch can now be run in an import-only mode by specifying [`--mode import-only`]({% link molt/molt-fetch.md %}#import-data-from-storage). This will load all data in the specified cloud or local store into the target CockroachDB database, effectively skipping the export data phase.
+- **Deprecated** the `--ongoing-replication` flag in favor of [`--mode data-load-and-replication`]({% link molt/molt-fetch.md %}#data-load-and-replication), using the new `--mode` flag. Users should replace all instances of `--ongoing-replication` with `--mode data-load-and-replication`.
+- Fetch can now be run in an export-only mode by specifying [`--mode export-only`]({% link molt/molt-fetch.md %}#export-only-and-import-only). This will export all the data in `csv` or `csv.gz` format to the specified cloud or local store.
+- Fetch can now be run in an import-only mode by specifying [`--mode import-only`]({% link molt/molt-fetch.md %}#export-only-and-import-only). This will load all data in the specified cloud or local store into the target CockroachDB database, effectively skipping the export data phase.
 - Strings for the `--mode` flag are now word-separated by hyphens instead of underscores. For example, `replication-only` instead of `replication_only`.
 
 ## August 8, 2024

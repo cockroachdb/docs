@@ -372,6 +372,8 @@ Like any database system, if you run out of disk space the system will no longer
 - [Why is disk usage increasing despite lack of writes?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-disk-usage-increasing-despite-lack-of-writes)
 - [Can I reduce or disable the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data)
 
+In rare cases, disk usage can increase on nodes with [Raft followers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) due to a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-splits).
+
 ###### Automatic ballast files
 
  CockroachDB automatically creates an emergency ballast file at [node startup]({% link {{ page.version.version }}/cockroach-start.md %}). This feature is **on** by default. Note that the [`cockroach debug ballast`]({% link {{ page.version.version }}/cockroach-debug-ballast.md %}) command is still available but deprecated.

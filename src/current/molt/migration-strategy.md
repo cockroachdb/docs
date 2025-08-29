@@ -37,7 +37,7 @@ It's important to fully [prepare the migration](#prepare-for-migration) in order
 
 - *Planned downtime* is made known to your users in advance. Once you have [prepared for the migration](#prepare-for-migration), you take the application offline, [conduct the migration]({% link molt/migration-overview.md %}), and bring the application back online on CockroachDB. To succeed, you should estimate the amount of downtime required to migrate your data, and ideally schedule the downtime outside of peak hours. Scheduling downtime is easiest if your application traffic is "periodic", meaning that it varies by the time of day, day of week, or day of month.
 
-	Migrations with planned downtime are only recommended if you can complete the bulk data load (e.g., using the MOLT Fetch [`data-load` mode]({% link molt/migration-overview.md %}#migration-modes)) within the downtime window. Otherwise, you can [minimize downtime using continuous replication]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime).
+	Migrations with planned downtime are only recommended if you can complete the bulk data load (e.g., using the MOLT Fetch [`data-load` mode]({% link molt/molt-fetch.md %}#fetch-mode)) within the downtime window. Otherwise, you can [minimize downtime using continuous replication]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime).
 
 - *Minimal downtime* impacts as few customers as possible, ideally without impacting their regular usage. If your application is intentionally offline at certain times (e.g., outside business hours), you can migrate the data without users noticing. Alternatively, if your application's functionality is not time-sensitive (e.g., it sends batched messages or emails), you can queue requests while the system is offline and process them after completing the migration to CockroachDB. 
 
@@ -110,9 +110,9 @@ Based on the error budget you [defined in your migration plan](#develop-a-migrat
 
 ### Load test data
 
-It's useful to load test data into CockroachDB so that you can [test your application queries](#validate-queries). Refer to the steps in [Migrate to CockroachDB in Phases]({% link molt/migrate-in-phases.md %}).
+It's useful to load test data into CockroachDB so that you can [test your application queries](#validate-queries). Refer to [Migration flows]({% link molt/migration-overview.md %}#migration-flows).
 
-MOLT Fetch [supports both `IMPORT INTO` and `COPY FROM`]({% link molt/molt-fetch.md %}#data-movement) for loading data into CockroachDB:
+MOLT Fetch [supports both `IMPORT INTO` and `COPY FROM`]({% link molt/molt-fetch.md %}#data-load-mode) for loading data into CockroachDB:
 
 - Use `IMPORT INTO` for maximum throughput when the target tables can be offline. For a bulk data migration, most users should use `IMPORT INTO` because the tables will be offline anyway, and `IMPORT INTO` can [perform the data import much faster]({% link {{ site.current_cloud_version }}/import-performance-best-practices.md %}) than `COPY FROM`.
 - Use `COPY FROM` (or `--direct-copy`) when the target must remain queryable during load.
@@ -160,13 +160,11 @@ To safely cut over when using replication:
 1. When your [monitoring](#set-up-monitoring-and-alerting) indicates that replication is idle, use [MOLT Verify]({% link molt/molt-verify.md %}) to validate the CockroachDB data.
 1. Start application traffic on CockroachDB.
 
-When you are ready to migrate, refer to [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %}) or [Migrate to CockroachDB in Phases]({% link molt/migrate-in-phases.md %}) for practical examples of the migration steps.
+When you are ready to migrate, refer to [Migration flows]({% link molt/migration-overview.md %}#migration-flows) for a summary of migration types.
 
 ## See also
 
 - [Migration Overview]({% link molt/migration-overview.md %})
-- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
-- [Migrate to CockroachDB in Phases]({% link molt/migrate-in-phases.md %})
 - [Migration Failback]({% link molt/migrate-failback.md %})
 - [Schema Design Overview]({% link {{ site.current_cloud_version }}/schema-design-overview.md %})
 - [Primary key best practices]({% link {{ site.current_cloud_version }}/schema-design-table.md %}#primary-key-best-practices)

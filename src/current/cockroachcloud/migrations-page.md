@@ -20,11 +20,11 @@ The **Migrations** page on the CockroachDB {{ site.data.products.cloud }} Consol
 
 To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Migration** in the **Data** section of the left side navigation.
 
-## Required privileges
+## Required permissions
 
 To access the **Migrations** page, as user must have either of the following roles:
 
-- [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator)
+- [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin)
 - [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator)
 
 ## Convert a schema
@@ -360,6 +360,5 @@ To delete or verify a set of credentials, select the appropriate option in the *
 ## See also
 
 - [Migration Overview]({% link molt/migration-strategy.md %})
-- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})

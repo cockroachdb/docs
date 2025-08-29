@@ -23,15 +23,13 @@ For a demo of MOLT Verify, watch the following video:
 
 ## Supported databases
 
-The following databases are currently supported:
+The following source databases are currently supported:
 
 - PostgreSQL 12-16
 - MySQL 5.7, 8.0 and later
-- CockroachDB
+- Oracle Database 19c (Enterprise Edition) and 21c (Express Edition)
 
 ## Installation
-
-To install MOLT Verify, download the binary that matches your system. To download the latest binary:
 
 {% include molt/molt-install.md %}
 
@@ -131,5 +129,5 @@ The following limitation is specific to MySQL:
 ## See also
 
 - [Migration Overview]({% link molt/migration-overview.md %})
-- [Migrate to CockroachDB]({% link molt/migrate-to-cockroachdb.md %})
+- [Migration Strategy]({% link molt/migration-strategy.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})

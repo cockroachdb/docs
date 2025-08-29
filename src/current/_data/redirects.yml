@@ -251,6 +251,10 @@
   sources: ['grant-roles.md']
   versions: ['v21.1']
 
+- destination: how-does-a-changefeed-work.md
+  sources: ['how-does-an-enterprise-changefeed-work.md']
+  versions: ['v25.2', 'v25.1', 'v24.3']
+
 - destination: kubernetes-overview.md
   sources: ['operate-cockroachdb-kubernetes.md']
   versions: ['v21.2']
@@ -286,10 +290,13 @@
   - 'migrate-from-serverless-to-dedicated.md'
   versions: ['cockroachcloud']
 
-- destination: molt/migrate-to-cockroachdb.md?filters=mysql
+- destination: molt/migrate-data-load-and-replication.md?filters=oracle
+  sources: [':version/migrate-from-oracle.md']
+
+- destination: molt/migrate-data-load-and-replication.md?filters=mysql
   sources: [':version/migrate-from-mysql.md']
 
-- destination: molt/migrate-to-cockroachdb.md
+- destination: molt/migrate-data-load-and-replication.md
   sources: [':version/migrate-from-postgres.md']
 
 - destination: molt/migration-overview.md
@@ -1046,3 +1053,4 @@
     - v24.2/cockroachdb-in-comparison.md
     - v24.3/cockroachdb-in-comparison.md
     - v25.1/cockroachdb-in-comparison.md
+

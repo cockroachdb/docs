@@ -1,6 +1,6 @@
 ---
 title: Multi-dimensional Metrics
-summary: Learn about high-cardinality multi-dimensional metrics enabled by the child metrics and detailed latency cluster settings
+summary: Learn about high-cardinality multi-dimensional metrics enabled by the applicable cluster settings.
 toc: true
 docs_area: reference.metrics
 ---
@@ -10,13 +10,15 @@ Multi-dimensional metrics are additional [Prometheus]({% link {{ page.version.ve
 The export of multi-dimensional metrics can be enabled by two [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}):
 
 - [`server.child_metrics.enabled`](#enable-child-metrics)
+- [`sql.metrics.database_name.enabled`](#enable-database-and-application_name-labels)
+- [`sql.metrics.application_name.enabled`](#enable-database-and-application_name-labels)
 - [`sql.stats.detailed_latency_metrics.enabled`](#enable-detailed-latency-metrics)
 
 ## Enable child metrics
 
 Child metrics are specific, detailed metrics that are usually related to a higher-level (parent or aggregate) metric. They often provide more granular or specific information about a particular aspect of the parent metric. The parent metrics and their potential child metrics are determined by the specific feature the cluster is using.
 
-The [cluster setting `server.child_metrics.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-child-metrics-enabled) is disabled by default. To enable it, use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement:
+The [cluster setting `server.child_metrics.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-child-metrics-enabled) is disabled by default. To enable it, use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -433,12 +435,181 @@ changefeed_flush_hist_nanos_sum{node_id="1",scope="office_dogs"} 9.79696709e+08
 changefeed_flush_hist_nanos_count{node_id="1",scope="office_dogs"} 2
 ~~~
 
+## Enable `database` and `application_name` labels
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+The following cluster settings enable the `database` and `application_name` labels for certain metrics, along with their internal counterparts if they exist:
+
+- [`sql.metrics.database_name.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-metrics-database-name-enabled)
+- [`sql.metrics.application_name.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-metrics-application-name-enabled)
+
+By default, these cluster settings are disabled. To enable them, use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement. Because these labels use aggregate metrics, you must enable the [`server.child_metrics.enabled`](#enable-child-metrics) cluster setting to use them.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING server.child_metrics.enabled = true;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING sql.metrics.database_name.enabled = true;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING sql.metrics.application_name.enabled = true;
+~~~
+
+Toggling the `sql.metrics.database_name.enabled` and `sql.metrics.application_name.enabled` cluster settings clears existing metric values for current label combinations and reinitializes the affected metrics to reflect the new label configuration.
+
+When toggling the `sql.metrics.database_name.enabled` and `sql.metrics.application_name.enabled` cluster settings, only the values for existing metric label combinations will be cleared. Aggregated metric values for the affected metrics will not be cleared.
+
+{{site.data.alerts.callout_info}}
+Child metrics (metrics with the `database` and `application_name` labels) are independent from the parent (aggregated metric). The child metrics are initialized when the cluster settings are enabled.
+
+For this reason, child `COUNTER` metrics may not always add up to the parent `COUNTER` metric. For an example, refer to [Examples 1 through 6](#1-all-cluster-settings-disabled).
+    
+For `GAUGE` metrics, values may be different and potentially unexpected depending on when a setting is enabled. For an example, refer to [7. `GAUGE` metric example](#7-gauge-metric-example).
+{{site.data.alerts.end}}
+
+These labels affect only the metrics emitted via [Prometheus export]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint). They are not visible in the [DB Console Metrics dashboards]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#metrics-dashboards).
+
+The system retains up to 5,000 recently used label combinations.
+
+{% assign feature = "database-and-application_name-labels" %}
+{% include {{ page.version.version }}/multi-dimensional-metrics-table.md %}
+
+### Examples
+
+This section demonstrates the impact of enabling and disabling the relevant cluster settings.
+
+[Examples 1 through 6](#1-all-cluster-settings-disabled) show the effect on the `COUNTER` metric `sql.select.count`. During these examples, the [`movr` workload]({% link {{ page.version.version }}/cockroach-workload.md %}#run-the-movr-workload) was running on node 1. The aggregated metric consistently increases as the examples progress.
+
+[Example 7](#7-gauge-metric-example) shows a possible effect on the `GAUGE` metric `sql.txn.open`.
+
+#### 1. All cluster settings disabled
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING server.child_metrics.enabled = false;
+SET CLUSTER SETTING sql.metrics.database_name.enabled = false;
+SET CLUSTER SETTING sql.metrics.application_name.enabled = false;
+~~~
+
+The Prometheus export only gives the aggregated metric for the node.
+
+~~~
+# HELP sql_select_count Number of SQL SELECT statements successfully executed
+# TYPE sql_select_count counter
+sql_select_count{node_id="1"} 2030
+~~~
+
+#### 2. Only child metrics enabled
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING server.child_metrics.enabled = true;
+SET CLUSTER SETTING sql.metrics.database_name.enabled = false;
+SET CLUSTER SETTING sql.metrics.application_name.enabled = false;
+~~~
+
+The Prometheus export still only gives the aggregated metric for the node.
+
+~~~
+sql_select_count{node_id="1"} 6568
+~~~
+
+#### 3. Child metrics and `database_name` label enabled
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING server.child_metrics.enabled = true;
+SET CLUSTER SETTING sql.metrics.database_name.enabled = true;
+SET CLUSTER SETTING sql.metrics.application_name.enabled = false;
+~~~
+
+The aggregated metric and a child metric with only the `database` label are emitted.
+
+~~~
+sql_select_count{node_id="1"} 10259
+sql_select_count{node_id="1",database="movr"} 816
+~~~
+
+#### 4. Child metrics and `application_name` label enabled
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING server.child_metrics.enabled = true;
+SET CLUSTER SETTING sql.metrics.database_name.enabled = false;
+SET CLUSTER SETTING sql.metrics.application_name.enabled = true;
+~~~
+
+The aggregated metric and a child metric with only the `application_name` label are emitted. Note that even though the aggregated metric has increased, the child metric with `application_name` label has a value less than the child metric with `database` label in the [preceding example](#3-child-metrics-and-database_name-label-enabled). This is because the labeled metrics have been reset, while the aggregated metric was not reset.
+
+~~~
+sql_select_count{node_id="1"} 14077
+sql_select_count{node_id="1",application_name="movr"} 718
+~~~
+
+#### 5. Child metrics and both `database` and `application_name` label enabled
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING server.child_metrics.enabled = true;
+SET CLUSTER SETTING sql.metrics.database_name.enabled = true;
+SET CLUSTER SETTING sql.metrics.application_name.enabled = true;
+~~~
+
+The aggregated metric and a child metric with both `database` and `application_name` labels are emitted.
+
+~~~
+sql_select_count{node_id="1"} 21085
+sql_select_count{node_id="1",database="movr",application_name="movr"} 3962
+~~~
+
+#### 6. Aggregate metric disabled
+
+The [cluster setting `server.child_metrics.include_aggregate.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-server-child-metrics-include-aggregate-enabled) (default: `true`) reports an aggregate time series for applicable multi-dimensional metrics. When set to `false`, it stops reporting the aggregate time series, preventing double counting when querying those metrics.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING server.child_metrics.enabled = true;
+SET CLUSTER SETTING sql.metrics.database_name.enabled = true;
+SET CLUSTER SETTING sql.metrics.application_name.enabled = true;
+SET CLUSTER SETTING server.child_metrics.include_aggregate.enabled = false;
+~~~
+
+No aggregated metric emitted.
+Only the child metric with both the `database` and `application_name` labels is emitted.
+
+~~~
+sql_select_count{node_id="1",database="movr",application_name="movr"} 8703
+~~~
+
+#### 7. `GAUGE` metric example
+
+Changes to cluster settings may take time to reinitialize affected metrics. As a result, some `GAUGE` metrics might briefly show unexpected values.
+
+`GAUGE` values for both aggregated and child metrics increase and decrease as transactions are opened and closed. This example uses the `GAUGE` metric `sql.txn.open`.
+
+Consider the following scenario:
+
+Time | Action | `sql.txn.open` aggregated metric | `sql.txn.open` child metric
+:---:|--------|:--------------------------------:|:---------------------------:
+1 | Open a transaction. The value of the `sql.txn.open` aggregated metric is incremented. | 1 | -
+2 | Enable `sql.metrics.database_name.enabled` and `sql.metrics.application_name.enabled`.<br>Re-initialize child metrics. | 1 | 0
+3 | Close a transaction.<br>The values of both the aggregated and child `sql.txn.open` metrics are decremented. | 0 | -1
+
+To avoid negative values in child metrics, use the [Prometheus `clamp_min` function](https://prometheus.io/docs/prometheus/latest/querying/functions/#clamp_min) to set the metric to zero.
+
 ## Enable detailed latency metrics
 
-The [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `sql.stats.detailed_latency_metrics.enabled`
-labels the latency metric `sql.exec.latency.detail` with the [statement fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints). To  estimate the cardinality of the set of all statement fingerprints, use the `sql.query.unique.count` metric. For most workloads, this metric ranges from dozens to hundreds.
+The [cluster setting `sql.stats.detailed_latency_metrics.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-detailed-latency-metrics-enabled) labels the latency metric `sql.exec.latency.detail` with the [statement fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints). To estimate the cardinality of the set of all statement fingerprints, use the `sql.query.unique.count` metric. For most workloads, this metric ranges from dozens to hundreds.
 
-`sql.stats.detailed_latency_metrics.enabled` is disabled by default. To enable it, use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement:
+`sql.stats.detailed_latency_metrics.enabled` is disabled by default. To enable it, use the [`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) statement.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

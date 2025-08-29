@@ -11,7 +11,7 @@ The `CREATE SEQUENCE` [statement]({% link {{ page.version.version }}/sql-stateme
 
 ## Considerations
 
-- Using a sequence is slower than [auto-generating unique IDs with the `gen_random_uuid()`, `uuid_v4()` or `unique_rowid()` built-in functions]({% link {{ page.version.version }}/sql-faqs.md %}#how-do-i-auto-generate-unique-row-ids-in-cockroachdb). Incrementing a sequence requires a write to persistent storage, whereas auto-generating a unique ID does not. Therefore, use auto-generated unique IDs unless an incremental sequence is preferred or required. For more information, see [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
+- Using a sequence is slower than [auto-generating unique IDs with the `gen_random_uuid()`, `uuid_v4()` or `unique_rowid()` built-in functions]({% link {{ page.version.version }}/sql-faqs.md %}#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) and is likely to cause performance problems due to [hotspots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hotspots). Incrementing a sequence requires a write to persistent storage, whereas auto-generating a unique ID does not. Therefore, use auto-generated unique IDs unless an incremental sequence is preferred or required. For more information, see [Unique ID best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#unique-id-best-practices).
 - A column that uses a sequence can have a gap in the sequence values if a transaction advances the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.
 - {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 -  By default, you cannot create sequences that are [owned by]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) columns in tables in other databases. You can enable such sequence creation by setting the `sql.cross_db_sequence_owners.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
@@ -38,6 +38,7 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
 `RESTART [WITH]` | Sets `nextval` to the specified number, or back to the original `START` value.
 `NO CYCLE` | All sequences are set to `NO CYCLE` and the sequence will not wrap.
 `CACHE` | The number of sequence values to cache in memory for reuse in the session. A cache size of `1` means that there is no cache, and cache sizes of less than `1` are not valid.<br><br>**Default:** `1` (sequences are not cached by default)
+`PER NODE CACHE` <a name="per-node-cache"></a> | The number of sequence values to cache in memory at the node level. All sessions on the node share the same cache, which can be concurrently accessed, and which reduces the chance of creating large gaps between generated IDs. A cache size of `1` means that there is no cache, and cache sizes of less than `1` are not valid.<br><br>**Default:** `256` (controlled by the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `sql.defaults.serial_sequences_cache_size` when the [session variable]({% link {{ page.version.version }}/set-vars.md %}) `serial_normalization` is set to `sql_sequence_cached_node`)
 `OWNED BY column_name` <a name="owned-by"></a> | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`
 `opt_temp` | Defines the sequence as a session-scoped temporary sequence. For more information, see [Temporary sequences](#temporary-sequences).
 
@@ -293,6 +294,29 @@ For example, to cache 10 sequence values in memory:
       table_name      |                                                create_statement
 ----------------------+------------------------------------------------------------------------------------------------------------------
   customer_seq_cached | CREATE SEQUENCE public.customer_seq_cached MINVALUE 1 MAXVALUE 9223372036854775807 INCREMENT 1 START 1 CACHE 10
+(1 row)
+~~~
+
+### Cache sequence values per node
+
+For improved performance, use the `PER NODE CACHE` clause to cache sequence values in memory at the node level.
+
+For example, to cache 10 sequence values per node:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE SEQUENCE customer_seq_node_cached PER NODE CACHE 10;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW CREATE customer_seq_node_cached;
+~~~
+
+~~~
+      table_name      |                                                create_statement
+----------------------+------------------------------------------------------------------------------------------------------------------
+  customer_seq_node_cached | CREATE SEQUENCE public.customer_seq_node_cached MINVALUE 1 MAXVALUE 9223372036854775807 INCREMENT 1 START 1 PER NODE CACHE 10
 (1 row)
 ~~~
 

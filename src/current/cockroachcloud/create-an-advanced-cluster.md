@@ -9,7 +9,7 @@ docs_area: deploy
 
 This page guides you through the process of creating a CockroachDB {{ site.data.products.advanced }} cluster using the [Cloud Console](https://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create an Advanced cluster]({% link cockroachcloud/cloud-api.md %}#create-an-advanced-cluster) in the API documentation.
 
-Only [CockroachDB {{ site.data.products.cloud }} Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need permission to create a cluster, contact an CockroachDB {{ site.data.products.cloud }} Org Administrator.
+Only [CockroachDB {{ site.data.products.cloud }} Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you need permission to create a cluster, contact an CockroachDB {{ site.data.products.cloud }} Organization Admin.
 
 ## Step 1. Start the cluster creation process
 
@@ -125,14 +125,6 @@ The cluster is automatically given a randomly-generated name. If desired, change
 ## Step 8. Select the CockroachDB version
 
 When you create a new cluster, it uses the [latest CockroachDB {{ site.data.products.cloud }} production release](https://www.cockroachlabs.com/docs/releases/cloud) by default. All clusters are then upgraded automatically to each subsequent patch release of their major version as it becomes available. To learn more, refer to [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %}).
-
-Prior to the GA release of a new CockroachDB major version, a series of Beta and Release Candidate (RC) releases are made available for CockroachDB {{ site.data.products.advanced }} as [Pre-Production Preview]({% link cockroachcloud/upgrade-policy.md %}#pre-production-preview-upgrades) releases. If available, the latest Pre-Production Preview release is listed as an option alongside the latest production release.
-
-{{site.data.alerts.callout_danger}}
-Testing releases, including Pre-Production Preview releases, are provided for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
-{{site.data.alerts.end}}
-
-If you install a Pre-Production Preview release, it will be upgraded to each subsequent beta or RC release automatically, before being upgraded to the GA and subsequent patch releases as they become available.
 
 To select the cluster version:
 

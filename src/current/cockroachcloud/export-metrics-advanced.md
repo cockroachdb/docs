@@ -27,7 +27,7 @@ Datadog            | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_
 Prometheus         | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/prometheus`
 Azure Monitor      | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/azuremonitor`
 
-Access to the `metricexport` endpoints requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) with the appropriate permissions (`admin` privilege, Cluster Administrator role, or Cluster Operator role).
+Access to the `metricexport` endpoints requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) with the appropriate permissions (`admin` privilege, Cluster Admin role, or Cluster Operator role).
 
 The following methods are available for use with the `metricexport` endpoints, and require the listed service account permissions:
 
@@ -89,7 +89,8 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
 	1. Select **Roles** and click **Create role**.
 	1. For **Trusted entity type**, select **AWS account**.
 	1. Choose **Another AWS account**.
-	1. For **Account ID**, provide the CockroachDB {{ site.data.products.advanced }} cloud provider account ID from step 3.
+	    1. For **Account ID**, provide the CockroachDB {{ site.data.products.advanced }} cloud provider account ID from step 3.
+	    1. (Optional) Select the option to **Require external ID**, and for the value of **External ID**, provide a string determined by your security policy. If **External ID** is set, you **must** include it in the `POST` command in Step 8.
 	1. Finish creating the IAM role with a suitable name. These instructions will use the role name `CockroachCloudMetricsExportRole`. You do not need to add any permissions.
 
 	{{site.data.alerts.callout_info}}
@@ -139,7 +140,7 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
     curl --request POST \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
       --header "Authorization: Bearer {secret_key}" \
-      --data '{"target_region": "{aws_region}", "role_arn": "arn:aws:iam::{role_arn}:role/CockroachCloudMetricsExportRole", "log_group_name": "{log_group_name}"}'
+      --data '{"target_region": "{aws_region}", "role_arn": "arn:aws:iam::{role_arn}:role/CockroachCloudMetricsExportRole", "log_group_name": "{log_group_name}", "external_id": "{external_id}"}'
     ~~~
 
     Where:
@@ -148,6 +149,7 @@ Perform the following steps to enable metrics export from your CockroachDB {{ si
     - `{aws_region}` is your AWS region, like `us-east-1`.
     - `{role_arn}` is the ARN for the `CockroachCloudMetricsExportRole` role you copied in step 7. If you used a different role name there, be sure to use your role name in place of `CockroachCloudMetricsExportRole` in the above command.
     - `{log_group_name}` is the target Amazon CloudWatch log group you created in step 1. This **must** be the same group name you provided in step 6.
+    - `{external_id}` is the **External ID** specified in the target Amazon cross-account IAM role in step 4.d.b. If specified, this **must** match the string provided in step 4.d.b. If not specified, leave this value empty, for example: `"external_id": ""`.
 
     Specifying an AWS region (to `{aws_region}`) that you do not have a cluster in, or a region that only partially covers your cluster's nodes will result in missing metrics.
 

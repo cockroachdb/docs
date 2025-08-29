@@ -9,8 +9,6 @@ docs_area: manage
 {% include feature-phases/preview.md %}
 
 Refer to the [Known Limitations](#known-limitations) section for further detail.
-
-Physical cluster replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v23.2" %} CockroachDB **physical cluster replication (PCR)** continuously sends all data at the cluster level from a _primary_ cluster to an independent _standby_ cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster. 

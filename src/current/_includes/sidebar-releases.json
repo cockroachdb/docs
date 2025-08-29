@@ -65,7 +65,7 @@
   ]
 },
 {
-  "title": "CockroachDB Kubernetes Operator",
+  "title": "Public Kubernetes Operator",
   "urls": [
     "/releases/kubernetes-operator.html"
   ]

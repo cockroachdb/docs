@@ -6,7 +6,7 @@
   sha: 96f4c50a69272cfd5a32e65889f5f72033502ed2
   docker:
     docker_image: cockroachdb/cockroach-unstable
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160414
   major_version: v1.0
@@ -17,7 +17,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160407
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160421
   major_version: v1.0
@@ -28,7 +28,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160414
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160428
   major_version: v1.0
@@ -39,7 +39,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160421
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160505
   major_version: v1.0
@@ -50,7 +50,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160428
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160512
   major_version: v1.0
@@ -61,7 +61,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160505
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160519
   major_version: v1.0
@@ -72,7 +72,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160512
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160526
   major_version: v1.0
@@ -83,7 +83,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160519
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160602
   major_version: v1.0
@@ -94,7 +94,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160526
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160609
   major_version: v1.0
@@ -105,7 +105,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160602
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160616
   major_version: v1.0
@@ -116,7 +116,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160609
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160629
   major_version: v1.0
@@ -127,7 +127,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160616
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160714
   major_version: v1.0
@@ -138,7 +138,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160629
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160721
   major_version: v1.0
@@ -149,7 +149,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160714
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160728
   major_version: v1.0
@@ -160,7 +160,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160721
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160829
   major_version: v1.0
@@ -171,7 +171,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160728
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160908
   major_version: v1.0
@@ -182,7 +182,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160829
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160915
   major_version: v1.0
@@ -193,7 +193,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160908
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20160929
   major_version: v1.0
@@ -204,7 +204,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160915
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161006
   major_version: v1.0
@@ -215,7 +215,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20160929
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161013
   major_version: v1.0
@@ -226,7 +226,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161006
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161027
   major_version: v1.0
@@ -237,7 +237,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161013
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161103
   major_version: v1.0
@@ -248,7 +248,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161027
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161201
   major_version: v1.0
@@ -259,7 +259,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161103
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161208
   major_version: v1.0
@@ -270,7 +270,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161201
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20161215
   major_version: v1.0
@@ -281,7 +281,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161208
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170105
   major_version: v1.0
@@ -292,7 +292,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20161215
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170112
   major_version: v1.0
@@ -303,7 +303,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170105
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170126
   major_version: v1.0
@@ -314,7 +314,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170112
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170209
   major_version: v1.0
@@ -325,7 +325,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170126
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170216
   major_version: v1.0
@@ -336,7 +336,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170209
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170223
   major_version: v1.0
@@ -347,7 +347,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170216
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170309
   major_version: v1.0
@@ -358,7 +358,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170223
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170323
   major_version: v1.0
@@ -369,7 +369,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: beta-20170309
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170330
   major_version: v1.0
@@ -381,7 +381,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: beta-20170323
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170413
   major_version: v1.0
@@ -393,7 +393,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: beta-20170330
-  is_not_downloadable: true
+ 
 
 - release_name: beta-20170420
   major_version: v1.0
@@ -405,7 +405,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: beta-20170413
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0-rc.1
   major_version: v1.0
@@ -417,7 +417,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: beta-20170420
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0-rc.2
   major_version: v1.0
@@ -429,7 +429,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.0-rc.1
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0
   major_version: v1.0
@@ -441,7 +441,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0-rc.2
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.1
   major_version: v1.0
@@ -453,7 +453,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170601
   major_version: v1.1
@@ -464,7 +464,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170608
   major_version: v1.1
@@ -476,7 +476,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170601
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.2
   major_version: v1.0
@@ -488,7 +488,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0.1
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170622
   major_version: v1.1
@@ -500,7 +500,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170608
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170629
   major_version: v1.1
@@ -512,7 +512,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170622
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.3
   major_version: v1.0
@@ -524,7 +524,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0.2
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170713
   major_version: v1.1
@@ -536,7 +536,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170629
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170720
   major_version: v1.1
@@ -548,7 +548,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170713
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.4
   major_version: v1.0
@@ -560,7 +560,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0.3
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170803
   major_version: v1.1
@@ -572,7 +572,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170720
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170810
   major_version: v1.1
@@ -584,7 +584,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170803
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-alpha.20170817
   major_version: v1.1
@@ -596,7 +596,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170810
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.5
   major_version: v1.0
@@ -608,7 +608,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0.4
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-beta.20170907
   major_version: v1.1
@@ -620,7 +620,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-alpha.20170817
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.6
   major_version: v1.0
@@ -632,7 +632,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0.5
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-beta.20170921
   major_version: v1.1
@@ -644,7 +644,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-beta.20170907
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1-beta.20170928
   major_version: v1.1
@@ -656,7 +656,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-beta.20170921
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.0-rc.1
   major_version: v1.1
@@ -668,7 +668,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.1-beta.20170928
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.0
   major_version: v1.1
@@ -680,7 +680,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.0-rc.1
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.1
   major_version: v1.1
@@ -692,7 +692,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.0
-  is_not_downloadable: true
+ 
 
 - release_name: v1.2-alpha.20171026
   major_version: v2.0
@@ -703,7 +703,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.2
   major_version: v1.1
@@ -715,7 +715,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.1
-  is_not_downloadable: true
+ 
 
 - release_name: v1.2-alpha.20171113
   major_version: v2.0
@@ -726,7 +726,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   previous_release: v1.2-alpha.20171026
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.3
   major_version: v1.1
@@ -738,7 +738,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.2
-  is_not_downloadable: true
+ 
 
 - release_name: v1.2-alpha.20171204
   major_version: v2.0
@@ -750,7 +750,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.2-alpha.20171113
-  is_not_downloadable: true
+ 
 
 - release_name: v1.2-alpha.20171211
   major_version: v2.0
@@ -762,7 +762,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.2-alpha.20171204
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-alpha.20171218
   major_version: v2.0
@@ -774,7 +774,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v1.2-alpha.20171211
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.4
   major_version: v1.1
@@ -786,7 +786,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.3
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-alpha.20180129
   major_version: v2.0
@@ -798,7 +798,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.0-alpha.20171218
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.5
   major_version: v1.1
@@ -810,7 +810,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.4
-  is_not_downloadable: true
+ 
 
 - release_name: v1.0.7
   major_version: v1.0
@@ -822,7 +822,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.0.6
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-beta.20180305
   major_version: v2.0
@@ -834,7 +834,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.0-alpha.20180129
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.6
   major_version: v1.1
@@ -846,7 +846,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.5
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-beta.20180312
   major_version: v2.0
@@ -858,7 +858,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.0-beta.20180305
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-beta.20180319
   major_version: v2.0
@@ -870,7 +870,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.0-beta.20180312
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.7
   major_version: v1.1
@@ -882,7 +882,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.6
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-beta.20180326
   major_version: v2.0
@@ -894,7 +894,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.0-beta.20180319
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0-rc.1
   major_version: v2.0
@@ -906,7 +906,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.0-beta.20180326
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.0
   major_version: v2.0
@@ -918,7 +918,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0-rc.1
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-alpha.20180416
   major_version: v2.1
@@ -929,7 +929,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.8
   major_version: v1.1
@@ -941,7 +941,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.7
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.1
   major_version: v2.0
@@ -953,7 +953,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.0
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-alpha.20180507
   major_version: v2.1
@@ -965,7 +965,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-alpha.20180416
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.2
   major_version: v2.0
@@ -977,7 +977,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.1
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-alpha.20180604
   major_version: v2.1
@@ -989,7 +989,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-alpha.20180507
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.3
   major_version: v2.0
@@ -1001,7 +1001,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.2
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-alpha.20180702
   major_version: v2.1
@@ -1013,7 +1013,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-alpha.20180604
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.4
   major_version: v2.0
@@ -1025,7 +1025,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.3
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-alpha.20180730
   major_version: v2.1
@@ -1037,7 +1037,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-alpha.20180702
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.5
   major_version: v2.0
@@ -1049,7 +1049,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.4
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20180827
   major_version: v2.1
@@ -1061,7 +1061,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-alpha.20180730
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20180904
   major_version: v2.1
@@ -1073,7 +1073,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20180827
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20180910
   major_version: v2.1
@@ -1085,7 +1085,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20180904
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20180917
   major_version: v2.1
@@ -1097,7 +1097,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20180910
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20180924
   major_version: v2.1
@@ -1109,7 +1109,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20180917
-  is_not_downloadable: true
+ 
 
 - release_name: v1.1.9
   major_version: v1.1
@@ -1121,7 +1121,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v1.1.8
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.6
   major_version: v2.0
@@ -1133,7 +1133,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.5
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20181001
   major_version: v2.1
@@ -1145,7 +1145,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20180924
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20181008
   major_version: v2.1
@@ -1157,7 +1157,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20181001
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-beta.20181015
   major_version: v2.1
@@ -1169,7 +1169,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20181008
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-rc.1
   major_version: v2.1
@@ -1181,7 +1181,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-beta.20181015
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0-rc.2
   major_version: v2.1
@@ -1193,7 +1193,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.1.0-rc.1
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.0
   major_version: v2.1
@@ -1205,7 +1205,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.0-rc.2
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.1
   major_version: v2.1
@@ -1217,7 +1217,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.0
-  is_not_downloadable: true
+ 
 
 - release_name: v2.2.0-alpha.20181119
   major_version: v19.1
@@ -1228,7 +1228,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-  is_not_downloadable: true
+ 
 
 - release_name: v2.0.7
   major_version: v2.0
@@ -1240,7 +1240,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.0.6
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.2
   major_version: v2.1
@@ -1252,7 +1252,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.1
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.3
   major_version: v2.1
@@ -1264,7 +1264,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.2
-  is_not_downloadable: true
+ 
 
 - release_name: v2.2.0-alpha.20181217
   major_version: v19.1
@@ -1276,7 +1276,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.2.0-alpha.20181119
-  is_not_downloadable: true
+ 
 
 - release_name: v2.2.0-alpha.20190114
   major_version: v19.1
@@ -1288,7 +1288,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.2.0-alpha.20181217
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.4
   major_version: v2.1
@@ -1300,7 +1300,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.3
-  is_not_downloadable: true
+ 
 
 - release_name: v2.2.0-alpha.20190211
   major_version: v19.1
@@ -1312,7 +1312,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.2.0-alpha.20190114
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.5
   major_version: v2.1
@@ -1324,7 +1324,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.4
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-beta.20190225
   major_version: v19.1
@@ -1336,7 +1336,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v2.2.0-alpha.20190211
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-beta.20190304
   major_version: v19.1
@@ -1348,7 +1348,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.1.0-beta.20190225
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.6
   major_version: v2.1
@@ -1360,7 +1360,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.5
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-beta.20190318
   major_version: v19.1
@@ -1372,7 +1372,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.1.0-beta.20190304
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-rc.1
   major_version: v19.1
@@ -1384,7 +1384,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.1.0-beta.20190318
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-rc.2
   major_version: v19.1
@@ -1396,7 +1396,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.1.0-rc.1
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-rc.3
   major_version: v19.1
@@ -1408,7 +1408,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.1.0-rc.2
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0-rc.4
   major_version: v19.1
@@ -1420,7 +1420,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.1.0-rc.3
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.0
   major_version: v19.1
@@ -1432,7 +1432,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.0-rc.4
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.7
   major_version: v2.1
@@ -1444,7 +1444,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.6
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.1
   major_version: v19.1
@@ -1456,7 +1456,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.0
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-alpha.20190606
   major_version: v19.2
@@ -1467,7 +1467,7 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.2
   major_version: v19.1
@@ -1479,7 +1479,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.1
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-alpha.20190701
   major_version: v19.2
@@ -1491,7 +1491,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-alpha.20190606
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.8
   major_version: v2.1
@@ -1503,7 +1503,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.7
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.3
   major_version: v19.1
@@ -1515,7 +1515,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.2
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-alpha.20190805
   major_version: v19.2
@@ -1527,7 +1527,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-alpha.20190701
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.4
   major_version: v19.1
@@ -1539,7 +1539,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.3
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.9
   major_version: v2.1
@@ -1551,7 +1551,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.8
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.5
   major_version: v19.1
@@ -1563,7 +1563,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.4
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-beta.20190930
   major_version: v19.2
@@ -1575,7 +1575,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-alpha.20190805
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-beta.20191014
   major_version: v19.2
@@ -1587,7 +1587,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-beta.20190930
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-rc.1
   major_version: v19.2
@@ -1599,7 +1599,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-beta.20191014
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-rc.2
   major_version: v19.2
@@ -1611,7 +1611,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-rc.1
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-rc.3
   major_version: v19.2
@@ -1623,7 +1623,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-rc.2
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0-rc.4
   major_version: v19.2
@@ -1635,7 +1635,7 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v19.2.0-rc.3
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.0
   major_version: v19.2
@@ -1648,7 +1648,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.0-rc.4
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0-alpha.20191118
   major_version: v20.1
@@ -1660,7 +1660,6 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-
 - release_name: v19.2.1
   major_version: v19.2
   release_date: '2019-11-25'
@@ -1672,7 +1671,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.0
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.10
   major_version: v2.1
@@ -1684,7 +1683,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.9
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.6
   major_version: v19.1
@@ -1696,7 +1695,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.5
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.2
   major_version: v19.2
@@ -1709,7 +1708,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.1
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0-alpha20191216
   major_version: v20.1
@@ -1722,7 +1721,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.1.0-alpha.20191118
-
 - release_name: v19.1.7
   major_version: v19.1
   release_date: '2020-01-27'
@@ -1733,7 +1731,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.6
-  is_not_downloadable: true
+ 
 
 - release_name: v2.1.11
   major_version: v2.1
@@ -1745,7 +1743,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v2.1.10
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0-alpha.20200123
   major_version: v20.1
@@ -1758,7 +1756,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.1.0-alpha20191216
-
 - release_name: v19.2.3
   major_version: v19.2
   release_date: '2020-02-03'
@@ -1770,7 +1767,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.2
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.8
   major_version: v19.1
@@ -1782,7 +1779,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.7
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.4
   major_version: v19.2
@@ -1795,7 +1792,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.3
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0-beta.1
   major_version: v20.1
@@ -1808,7 +1805,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.1.0-alpha.20200123
-
 - release_name: v20.1.0-beta.2
   major_version: v20.1
   release_date: '2020-03-02'
@@ -1820,7 +1816,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.1.0-beta.1
-
 - release_name: v19.2.5
   major_version: v19.2
   release_date: '2020-03-23'
@@ -1832,7 +1827,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.4
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0-beta.3
   major_version: v20.1
@@ -1845,7 +1840,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.1.0-beta.2
-
 - release_name: v20.1.0-beta.4
   major_version: v20.1
   release_date: '2020-03-30'
@@ -1857,7 +1851,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.1.0-beta.3
-
 - release_name: v19.2.6
   major_version: v19.2
   release_date: '2020-04-13'
@@ -1869,7 +1862,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.5
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0-rc.1
   major_version: v20.1
@@ -1882,7 +1875,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.1.0-beta.4
-
 - release_name: v20.1.0-rc.2
   major_version: v20.1
   release_date: '2020-04-21'
@@ -1894,7 +1886,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.1.0-rc.1
-
 - release_name: v19.1.9
   major_version: v19.1
   release_date: '2020-05-12'
@@ -1905,7 +1896,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.8
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.0
   major_version: v20.1
@@ -1918,7 +1909,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.0-rc.2
-
 - release_name: v19.2.7
   major_version: v19.2
   release_date: '2020-05-20'
@@ -1930,7 +1920,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.6
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.1
   major_version: v20.1
@@ -1943,7 +1933,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.0
-
 - release_name: v20.1.2
   major_version: v20.1
   release_date: '2020-06-17'
@@ -1955,7 +1944,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.1
-
 - release_name: v20.2.0-alpha.1
   major_version: v20.2
   release_date: '2020-06-17'
@@ -1966,7 +1954,6 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-
 - release_name: v19.1.10
   major_version: v19.1
   release_date: '2020-06-29'
@@ -1978,7 +1965,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.9
-  is_not_downloadable: true
+ 
 
 - release_name: v19.2.8
   major_version: v19.2
@@ -1991,7 +1978,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.7
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.3
   major_version: v20.1
@@ -2004,7 +1991,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.2
-
 - release_name: v19.2.9
   major_version: v19.2
   release_date: '2020-07-06'
@@ -2016,7 +2002,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.8
-  is_not_downloadable: true
+ 
 
 - release_name: v19.1.11
   major_version: v19.1
@@ -2029,7 +2015,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.1.10
-  is_not_downloadable: true
+ 
 
 - release_name: v20.2.0-alpha.2
   major_version: v20.2
@@ -2042,7 +2028,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.2.0-alpha.1
-
 - release_name: v20.1.4
   major_version: v20.1
   release_date: '2020-08-03'
@@ -2055,7 +2040,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.3
-
 - release_name: v19.2.10
   major_version: v19.2
   release_date: '2020-08-24'
@@ -2067,7 +2051,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.9
-  is_not_downloadable: true
+ 
 
 - release_name: v20.2.0-alpha.3
   major_version: v20.2
@@ -2080,7 +2064,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.2.0-alpha.2
-
 - release_name: v20.1.5
   major_version: v20.1
   release_date: '2020-08-31'
@@ -2093,7 +2076,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.4
-
 - release_name: v20.2.0-beta.1
   major_version: v20.2
   release_date: '2020-09-14'
@@ -2105,7 +2087,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.2.0-alpha.3
-
 - release_name: v20.1.6
   major_version: v20.1
   release_date: '2020-09-24'
@@ -2117,7 +2098,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.5
-
 - release_name: v20.2.0-beta.2
   major_version: v20.2
   release_date: '2020-09-25'
@@ -2129,7 +2109,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.2.0-beta.1
-
 - release_name: v20.2.0-beta.3
   major_version: v20.2
   release_date: '2020-09-30'
@@ -2141,7 +2120,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.2.0-beta.2
-
 - release_name: v20.2.0-beta.4
   major_version: v20.2
   release_date: '2020-10-06'
@@ -2153,7 +2131,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.2.0-beta.3
-
 - release_name: v19.2.11
   major_version: v19.2
   release_date: '2020-10-12'
@@ -2165,7 +2142,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.10
-  is_not_downloadable: true
+ 
 
 - release_name: v20.1.7
   major_version: v20.1
@@ -2178,7 +2155,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.6
-
 - release_name: v20.2.0-rc.1
   major_version: v20.2
   release_date: '2020-10-15'
@@ -2190,7 +2166,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.2.0-beta.4
-
 - release_name: v20.2.0-rc.2
   major_version: v20.2
   release_date: '2020-10-20'
@@ -2202,7 +2177,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.2.0-rc.1
-
 - release_name: v20.1.8
   major_version: v20.1
   release_date: '2020-10-21'
@@ -2214,7 +2188,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.7
-
 - release_name: v20.2.0-rc.3
   major_version: v20.2
   release_date: '2020-10-26'
@@ -2226,7 +2199,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.2.0-rc.2
-
 - release_name: v20.2.0-rc.4
   major_version: v20.2
   release_date: '2020-11-03'
@@ -2238,7 +2210,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v20.2.0-rc.3
-
 - release_name: v20.2.0
   major_version: v20.2
   release_date: '2020-11-10'
@@ -2250,7 +2221,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.0-rc.4
-
 - release_name: v20.2.1
   major_version: v20.2
   release_date: '2020-11-20'
@@ -2262,7 +2232,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.0
-
 - release_name: v20.2.2
   major_version: v20.2
   release_date: '2020-11-25'
@@ -2274,7 +2243,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.1
-
 - release_name: v20.1.9
   major_version: v20.1
   release_date: '2020-12-01'
@@ -2286,7 +2254,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.8
-
 - release_name: v21.1.0-alpha.1
   major_version: v21.1
   release_date: '2020-12-08'
@@ -2297,7 +2264,6 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-
 - release_name: v20.2.3
   major_version: v20.2
   release_date: '2020-12-14'
@@ -2309,7 +2275,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.2
-
 - release_name: v20.1.10
   major_version: v20.1
   release_date: '2020-12-21'
@@ -2321,7 +2286,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.9
-
 - release_name: v19.2.12
   major_version: v19.2
   release_date: '2021-01-19'
@@ -2333,7 +2297,7 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v19.2.11
-  is_not_downloadable: true
+ 
 
 - release_name: v20.2.4
   major_version: v20.2
@@ -2346,7 +2310,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.3
-
 - release_name: v20.1.11
   major_version: v20.1
   release_date: '2021-01-25'
@@ -2358,7 +2321,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.10
-
 - release_name: v21.1.0-alpha.2
   major_version: v21.1
   release_date: '2021-02-01'
@@ -2370,7 +2332,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.1.0-alpha.1
-
 - release_name: v21.1.0-alpha.3
   major_version: v21.1
   release_date: '2021-02-08'
@@ -2382,7 +2343,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.1.0-alpha.2
-
 - release_name: v20.1.12
   major_version: v20.1
   release_date: '2021-02-16'
@@ -2394,7 +2354,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.11
-
 - release_name: v20.2.5
   major_version: v20.2
   release_date: '2021-02-16'
@@ -2406,7 +2365,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.4
-
 - release_name: v20.1.13
   major_version: v20.1
   release_date: '2021-03-15'
@@ -2418,7 +2376,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.12
-
 - release_name: v20.2.6
   major_version: v20.2
   release_date: '2021-03-15'
@@ -2430,7 +2387,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.5
-
 - release_name: v21.1.0-beta.1
   major_version: v21.1
   release_date: '2021-03-22'
@@ -2442,7 +2398,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.1.0-alpha.3
-
 - release_name: v20.2.7
   major_version: v20.2
   release_date: '2021-03-29'
@@ -2454,7 +2409,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.6
-
 - release_name: v21.1.0-beta.2
   major_version: v21.1
   release_date: '2021-03-30'
@@ -2466,7 +2420,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.1.0-beta.1
-
 - release_name: v21.1.0-beta.3
   major_version: v21.1
   release_date: '2021-04-12'
@@ -2478,7 +2431,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.1.0-beta.2
-
 - release_name: v20.1.14
   major_version: v20.1
   release_date: '2021-04-19'
@@ -2490,7 +2442,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.13
-
 - release_name: v21.1.0-beta.4
   major_version: v21.1
   release_date: '2021-04-19'
@@ -2502,7 +2453,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.1.0-beta.3
-
 - release_name: v20.2.8
   major_version: v20.2
   release_date: '2021-04-23'
@@ -2514,7 +2464,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.7
-
 - release_name: v20.1.15
   major_version: v20.1
   release_date: '2021-04-26'
@@ -2526,7 +2475,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.14
-
 - release_name: v21.1.0-beta.5
   major_version: v21.1
   release_date: '2021-04-29'
@@ -2538,7 +2486,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.1.0-beta.4
-
 - release_name: v21.1.0-rc.1
   major_version: v21.1
   release_date: '2021-05-05'
@@ -2550,7 +2497,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.1.0-beta.5
-
 - release_name: v20.1.16
   major_version: v20.1
   release_date: '2021-05-10'
@@ -2562,7 +2508,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.15
-
 - release_name: v20.2.9
   major_version: v20.2
   release_date: '2021-05-10'
@@ -2574,7 +2519,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.8
-
 - release_name: v21.1.0-rc.2
   major_version: v21.1
   release_date: '2021-05-10'
@@ -2586,7 +2530,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.1.0-rc.1
-
 - release_name: v20.1.17
   major_version: v20.1
   release_date: '2021-05-17'
@@ -2598,7 +2541,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.1.16
-
 - release_name: v20.2.10
   major_version: v20.2
   release_date: '2021-05-17'
@@ -2610,7 +2552,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.9
-
 - release_name: v21.1.0
   major_version: v21.1
   release_date: '2021-05-18'
@@ -2623,7 +2564,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.0-rc.2
-
 - release_name: v21.1.1
   major_version: v21.1
   release_date: '2021-05-24'
@@ -2636,7 +2576,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.0
-
 - release_name: v21.1.2
   major_version: v21.1
   release_date: '2021-06-07'
@@ -2649,7 +2588,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.1
-
 - release_name: v20.2.11
   major_version: v20.2
   release_date: '2021-06-14'
@@ -2661,7 +2599,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.10
-
 - release_name: v21.1.3
   major_version: v21.1
   release_date: '2021-06-21'
@@ -2674,7 +2611,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.2
-
 - release_name: v20.2.12
   major_version: v20.2
   release_date: '2021-06-28'
@@ -2686,7 +2622,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.11
-
 - release_name: v21.1.4
   major_version: v21.1
   release_date: '2021-06-29'
@@ -2699,7 +2634,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.3
-
 - release_name: v21.1.5
   major_version: v21.1
   release_date: '2021-07-02'
@@ -2712,7 +2646,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.4
-
 - release_name: v20.2.13
   major_version: v20.2
   release_date: '2021-07-12'
@@ -2724,7 +2657,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.12
-
 - release_name: v21.1.6
   major_version: v21.1
   release_date: '2021-07-20'
@@ -2737,7 +2669,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.5
-
 - release_name: v21.1.7
   major_version: v21.1
   release_date: '2021-08-09'
@@ -2750,7 +2681,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.6
-
 - release_name: v20.2.14
   major_version: v20.2
   release_date: '2021-08-16'
@@ -2762,7 +2692,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.13
-
 - release_name: v20.2.15
   major_version: v20.2
   release_date: '2021-08-23'
@@ -2774,7 +2703,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.14
-
 - release_name: v21.1.8
   major_version: v21.1
   release_date: '2021-08-30'
@@ -2788,7 +2716,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.7
-
 - release_name: v20.2.16
   major_version: v20.2
   release_date: '2021-09-13'
@@ -2800,7 +2727,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.15
-
 - release_name: v21.1.9
   major_version: v21.1
   release_date: '2021-09-20'
@@ -2813,7 +2739,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.8
-
 - release_name: v21.2.0-beta.1
   major_version: v21.2
   release_date: '2021-09-24'
@@ -2824,7 +2749,6 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-
 - release_name: v21.2.0-beta.2
   major_version: v21.2
   release_date: '2021-09-27'
@@ -2836,7 +2760,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.2.0-beta.1
-
 - release_name: v21.2.0-beta.3
   major_version: v21.2
   release_date: '2021-10-04'
@@ -2848,7 +2771,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.2.0-beta.2
-
 - release_name: v21.1.10
   major_version: v21.1
   release_date: '2021-10-07'
@@ -2861,7 +2783,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.9
-
 - release_name: v20.2.17
   major_version: v20.2
   release_date: '2021-10-11'
@@ -2873,7 +2794,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.16
-
 - release_name: v21.2.0-beta.4
   major_version: v21.2
   release_date: '2021-10-11'
@@ -2885,7 +2805,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.2.0-beta.3
-
 - release_name: v21.1.11
   major_version: v21.1
   release_date: '2021-10-18'
@@ -2898,7 +2817,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.10
-
 - release_name: v21.2.0-rc.1
   major_version: v21.2
   release_date: '2021-10-18'
@@ -2910,7 +2828,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.2.0-beta.4
-
 - release_name: v21.2.0-rc.2
   major_version: v21.2
   release_date: '2021-10-25'
@@ -2922,7 +2839,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.2.0-rc.1
-
 - release_name: v21.2.0-rc.3
   major_version: v21.2
   release_date: '2021-11-01'
@@ -2934,7 +2850,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v21.2.0-rc.2
-
 - release_name: v20.2.18
   major_version: v20.2
   release_date: '2021-11-08'
@@ -2946,7 +2861,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.17
-
 - release_name: v21.1.12
   major_version: v21.1
   release_date: '2021-11-15'
@@ -2959,7 +2873,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.11
-
 - release_name: v21.2.0
   major_version: v21.2
   release_date: '2021-11-16'
@@ -2972,7 +2885,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.0-rc.3
-
 - release_name: v21.2.1
   major_version: v21.2
   release_date: '2021-11-29'
@@ -2985,7 +2897,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.0
-
 - release_name: v21.2.2
   major_version: v21.2
   release_date: '2021-12-01'
@@ -2998,7 +2909,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.1
-
 - release_name: v21.2.3
   major_version: v21.2
   release_date: '2021-12-13'
@@ -3011,7 +2921,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.2
-
 - release_name: v21.1.13
   major_version: v21.1
   release_date: '2022-01-10'
@@ -3024,7 +2933,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.12
-
 - release_name: v21.2.4
   major_version: v21.2
   release_date: '2022-01-10'
@@ -3037,7 +2945,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.3
-
 - release_name: v22.1.0-alpha.1
   major_version: v22.1
   release_date: '2022-01-24'
@@ -3048,7 +2955,6 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-
 - release_name: v21.2.5
   major_version: v21.2
   release_date: '2022-02-07'
@@ -3061,7 +2967,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.4
-
 - release_name: v21.1.14
   major_version: v21.1
   release_date: '2022-02-09'
@@ -3074,7 +2979,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.13
-
 - release_name: v20.2.19
   major_version: v20.2
   release_date: '2022-02-09'
@@ -3086,7 +2990,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v20.2.18
-
 - release_name: v21.1.15
   major_version: v21.1
   release_date: '2022-02-14'
@@ -3099,7 +3002,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.14
-
 - release_name: v21.2.6
   major_version: v21.2
   release_date: '2022-02-22'
@@ -3112,7 +3014,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.5
-
 - release_name: v21.1.16
   major_version: v21.1
   release_date: '2022-03-07'
@@ -3125,7 +3026,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.15
-
 - release_name: v22.1.0-alpha.2
   major_version: v22.1
   release_date: '2022-03-07'
@@ -3137,7 +3037,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.1.0-alpha.1
-
 - release_name: v22.1.0-alpha.3
   major_version: v22.1
   release_date: '2022-03-14'
@@ -3149,7 +3048,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.1.0-alpha.2
-
 - release_name: v21.2.7
   major_version: v21.2
   release_date: '2022-03-14'
@@ -3162,7 +3060,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.6
-
 - release_name: v22.1.0-alpha.4
   major_version: v22.1
   release_date: '2022-03-21'
@@ -3174,7 +3071,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.1.0-alpha.3
-
 - release_name: v22.1.0-alpha.5
   major_version: v22.1
   release_date: '2022-03-28'
@@ -3186,7 +3082,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.1.0-alpha.4
-
 - release_name: v21.1.17
   major_version: v21.1
   release_date: '2022-04-04'
@@ -3199,7 +3094,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.16
-
 - release_name: v22.1.0-beta.1
   major_version: v22.1
   release_date: '2022-04-04'
@@ -3211,7 +3105,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.1.0-alpha.5
-
 - release_name: v21.2.8
   major_version: v21.2
   release_date: '2022-04-04'
@@ -3224,7 +3117,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.7
-
 - release_name: v22.1.0-beta.2
   major_version: v22.1
   release_date: '2022-04-12'
@@ -3237,7 +3129,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.1.0-beta.1
-
 - release_name: v21.1.18
   major_version: v21.1
   release_date: '2022-04-12'
@@ -3250,7 +3141,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.17
-
 - release_name: v21.2.9
   major_version: v21.2
   release_date: '2022-04-13'
@@ -3263,7 +3153,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.8
-
 - release_name: v22.1.0-beta.3
   major_version: v22.1
   release_date: '2022-04-18'
@@ -3276,7 +3165,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.1.0-beta.2
-
 - release_name: v22.1.0-beta.4
   major_version: v22.1
   release_date: '2022-04-26'
@@ -3289,7 +3177,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.1.0-beta.3
-
 - release_name: v21.2.10
   major_version: v21.2
   release_date: '2022-05-02'
@@ -3302,7 +3189,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.9
-
 - release_name: v22.1.0-beta.5
   major_version: v22.1
   release_date: '2022-05-03'
@@ -3315,7 +3201,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.1.0-beta.4
-
 - release_name: v22.1.0-rc.1
   major_version: v22.1
   release_date: '2022-05-09'
@@ -3328,7 +3213,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.1.0-beta.5
-
 - release_name: v21.1.19
   major_version: v21.1
   release_date: '2022-05-09'
@@ -3341,7 +3225,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.18
-
 - release_name: v21.2.11
   major_version: v21.2
   release_date: '2022-05-23'
@@ -3354,7 +3237,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.10
-
 - release_name: v22.1.0
   major_version: v22.1
   release_date: '2022-05-24'
@@ -3368,7 +3250,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.0-rc.1
-
 - release_name: v22.1.1
   major_version: v22.1
   release_date: '2022-06-06'
@@ -3382,7 +3263,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.0
-
 - release_name: v21.2.12
   major_version: v21.2
   release_date: '2022-06-06'
@@ -3395,7 +3275,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.11
-
 - release_name: v22.1.2
   major_version: v22.1
   release_date: '2022-06-22'
@@ -3409,7 +3288,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.1
-
 - release_name: v21.2.13
   major_version: v21.2
   release_date: '2022-07-05'
@@ -3422,7 +3300,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.12
-
 - release_name: v22.1.3
   major_version: v22.1
   release_date: '2022-07-11'
@@ -3436,7 +3313,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.2
-
 - release_name: v22.1.4
   major_version: v22.1
   release_date: '2022-07-19'
@@ -3450,7 +3326,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.3
-
 - release_name: v22.1.5
   major_version: v22.1
   release_date: '2022-07-28'
@@ -3464,7 +3339,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.4
-
 - release_name: v21.2.14
   major_version: v21.2
   release_date: '2022-08-01'
@@ -3477,7 +3351,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.13
-
 - release_name: v22.1.6
   major_version: v22.1
   release_date: '2022-08-23'
@@ -3490,7 +3363,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.5
-
 - release_name: v21.2.15
   major_version: v21.2
   release_date: '2022-08-29'
@@ -3503,7 +3375,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.14
-
 - release_name: v22.2.0-alpha.1
   major_version: v22.2
   release_date: '2022-08-30'
@@ -3521,7 +3392,6 @@
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
-
 - release_name: v22.2.0-alpha.2
   major_version: v22.2
   release_date: '2022-09-06'
@@ -3540,7 +3410,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.2.0-alpha.1
-
 - release_name: v22.2.0-alpha.3
   major_version: v22.2
   release_date: '2022-09-12'
@@ -3559,7 +3428,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.2.0-alpha.2
-
 - release_name: v21.1.21
   major_version: v21.1
   release_date: '2022-09-15'
@@ -3572,7 +3440,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.1.19
-
 - release_name: v22.1.7
   major_version: v22.1
   release_date: '2022-09-15'
@@ -3585,7 +3452,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.6
-
 - release_name: v22.2.0-alpha.4
   major_version: v22.2
   release_date: '2022-09-22'
@@ -3604,7 +3470,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.2.0-alpha.3
-
 - release_name: v22.2.0-beta.1
   major_version: v22.2
   release_date: '2022-09-26'
@@ -3623,7 +3488,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.2.0-alpha.4
-
 - release_name: v22.1.8
   major_version: v22.1
   release_date: '2022-09-29'
@@ -3636,7 +3500,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.7
-
 - release_name: v21.2.16
   major_version: v21.2
   release_date: '2022-09-29'
@@ -3649,7 +3512,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.15
-
 - release_name: v22.2.0-beta.2
   major_version: v22.2
   release_date: '2022-10-03'
@@ -3668,7 +3530,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.2.0-beta.1
-
 - release_name: v22.2.0-beta.3
   major_version: v22.2
   release_date: '2022-10-10'
@@ -3687,7 +3548,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.2.0-beta.2
-
 - release_name: v22.1.9
   major_version: v22.1
   release_date: '2022-10-17'
@@ -3701,7 +3561,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.8
-
 - release_name: v22.2.0-beta.4
   major_version: v22.2
   release_date: '2022-10-17'
@@ -3720,7 +3579,6 @@
     docker_image: cockroachdb/cockroach-unstable
   source: true
   previous_release: v22.2.0-beta.3
-
 - release_name: v21.2.17
   major_version: v21.2
   release_date: '2022-10-17'
@@ -3733,7 +3591,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v21.2.16
-
 - release_name: v22.1.10
   major_version: v22.1
   release_date: '2022-10-28'
@@ -3747,7 +3604,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.9
-
 - release_name: v22.2.0-beta.5
   major_version: v22.2
   release_date: '2022-11-01'
@@ -3771,7 +3627,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.0-beta.4
-
 - release_name: v22.2.0-rc.1
   major_version: v22.2
   release_date: '2022-11-07'
@@ -3795,7 +3650,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.0-beta.5
-
 - release_name: v22.2.0-rc.2
   major_version: v22.2
   release_date: '2022-11-14'
@@ -3819,7 +3673,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.0-rc.1
-
 - release_name: v22.1.11
   major_version: v22.1
   release_date: '2022-11-14'
@@ -3833,7 +3686,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.10
-
 - release_name: v22.2.0-rc.3
   major_version: v22.2
   release_date: '2022-11-21'
@@ -3857,7 +3709,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.0-rc.2
-
 - release_name: v22.2.0
   major_version: v22.2
   release_date: '2022-12-06'
@@ -3881,7 +3732,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.0-rc.3
-
 - release_name: v22.1.12
   major_version: v22.1
   release_date: '2022-12-12'
@@ -3895,7 +3745,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.11
-
 - release_name: v23.1.0-alpha.1
   major_version: v23.1
   release_date: '2022-12-19'
@@ -3918,7 +3767,6 @@
     docker_arm: true
     docker_arm_experimental: true
   source: true
-
 - release_name: v22.2.1
   major_version: v22.2
   release_date: '2022-12-22'
@@ -3942,7 +3790,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.0
-
 - release_name: v22.2.2
   major_version: v22.2
   release_date: '2023-01-04'
@@ -3966,7 +3813,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.1
-
 - release_name: v22.1.13
   major_version: v22.1
   release_date: '2023-01-09'
@@ -3980,7 +3826,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.12
-
 - release_name: v22.2.3
   major_version: v22.2
   release_date: '2023-01-23'
@@ -4004,7 +3849,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.2
-
 - release_name: v22.1.14
   major_version: v22.1
   release_date: '2023-02-06'
@@ -4018,7 +3862,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.13
-
 - release_name: v22.2.4
   major_version: v22.2
   release_date: '2023-02-13'
@@ -4043,7 +3886,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.3
-
 - release_name: v23.1.0-alpha.2
   major_version: v23.1
   release_date: '2023-02-13'
@@ -4067,7 +3909,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.1
-
 - release_name: v22.2.5
   major_version: v22.2
   release_date: '2023-02-16'
@@ -4091,7 +3932,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.4
-
 - release_name: v22.1.15
   major_version: v22.1
   release_date: '2023-02-17'
@@ -4105,7 +3945,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.14
-
 - release_name: v23.1.0-alpha.3
   major_version: v23.1
   release_date: '2023-02-21'
@@ -4129,7 +3968,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.2
-
 - release_name: v23.1.0-alpha.4
   major_version: v23.1
   release_date: '2023-02-27'
@@ -4153,7 +3991,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.3
-
 - release_name: v22.2.6
   major_version: v22.2
   release_date: '2023-03-03'
@@ -4177,7 +4014,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.5
-
 - release_name: v22.1.16
   major_version: v22.1
   release_date: '2023-03-03'
@@ -4191,7 +4027,6 @@
     docker_image: cockroachdb/cockroach
   source: true
   previous_release: v22.1.15
-
 - release_name: v23.1.0-alpha.5
   major_version: v23.1
   release_date: '2023-03-06'
@@ -4215,7 +4050,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.4
-
 - release_name: v23.1.0-alpha.6
   major_version: v23.1
   release_date: '2023-03-13'
@@ -4239,7 +4073,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.5
-
 - release_name: v23.1.0-alpha.7
   major_version: v23.1
   release_date: '2023-03-20'
@@ -4263,7 +4096,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.6
-
 - release_name: v22.1.17
   major_version: v22.1
   release_date: '2023-03-27'
@@ -4285,7 +4117,6 @@
     docker_arm: false
   source: true
   previous_release: v22.1.16
-
 - release_name: v22.1.18
   major_version: v22.1
   release_date: '2023-03-28'
@@ -4306,7 +4137,6 @@
     docker_arm: false
   source: true
   previous_release: v22.1.17
-
 - release_name: v22.2.7
   major_version: v22.2
   release_date: '2023-03-28'
@@ -4330,7 +4160,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.6
-
 - release_name: v23.1.0-alpha.8
   major_version: v23.1
   release_date: '2023-03-27'
@@ -4354,7 +4183,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.7
-
 - release_name: v23.1.0-alpha.9
   major_version: v23.1
   release_date: '2023-04-04'
@@ -4378,7 +4206,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.8
-
 - release_name: v23.1.0-beta.1
   major_version: v23.1
   release_date: '2023-04-13'
@@ -4402,7 +4229,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-alpha.9
-
 - release_name: v22.2.8
   major_version: v22.2
   release_date: '2023-04-17'
@@ -4427,7 +4253,6 @@
   source: true
   previous_release: v22.2.7
   withdrawn: true
-
 - release_name: v23.1.0-beta.2
   major_version: v23.1
   release_date: '2023-04-17'
@@ -4451,7 +4276,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-beta.1
-
 - release_name: v23.1.0-beta.3
   major_version: v23.1
   release_date: '2023-04-19'
@@ -4475,7 +4299,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-beta.2
-
 - release_name: v22.1.19
   major_version: v22.1
   release_date: '2023-04-24'
@@ -4497,7 +4320,6 @@
   source: true
   previous_release: v22.1.18
   withdrawn: true
-
 - release_name: v23.1.0-rc.1
   major_version: v23.1
   release_date: '2023-05-02'
@@ -4521,7 +4343,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-beta.3
-
 - release_name: v23.1.0-rc.2
   major_version: v23.1
   release_date: '2023-05-04'
@@ -4545,7 +4366,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0-rc.1
-
 - release_name: v22.2.9
   major_version: v22.2
   release_date: '2023-05-08'
@@ -4569,7 +4389,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.8
-
 - release_name: v22.1.20
   major_version: v22.1
   release_date: '2023-05-12'
@@ -4590,7 +4409,6 @@
     docker_arm: false
   source: true
   previous_release: v22.1.19
-
 - release_name: v23.1.0
   major_version: v23.1
   release_date: '2023-05-15'
@@ -4615,7 +4433,6 @@
   source: true
   previous_release: v23.1.0-rc.2
   withdrawn: true
-
 - release_name: v23.1.1
   major_version: v23.1
   release_date: '2023-05-16'
@@ -4639,7 +4456,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.0
-
 - release_name: v23.1.2
   major_version: v23.1
   release_date: '2023-05-25'
@@ -4663,7 +4479,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.1
-
 - release_name: v22.2.10
   major_version: v22.2
   release_date: '2023-05-30'
@@ -4687,7 +4502,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.9
-
 - release_name: v22.1.21
   major_version: v22.1
   release_date: '2023-06-05'
@@ -4708,7 +4522,6 @@
     docker_arm: false
   source: true
   previous_release: v22.1.20
-
 - release_name: v23.1.3
   major_version: v23.1
   release_date: '2023-06-12'
@@ -4732,7 +4545,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.2
-
 - release_name: v23.1.4
   major_version: v23.1
   release_date: '2023-06-20'
@@ -4756,7 +4568,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.3
-
 - release_name: v22.2.11
   major_version: v22.2
   release_date: '2023-06-27'
@@ -4780,7 +4591,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.10
-
 - release_name: v23.1.5
   major_version: v23.1
   release_date: '2023-07-05'
@@ -4804,7 +4614,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.4
-
 - release_name: v22.2.12
   major_version: v22.2
   release_date: '2023-07-24'
@@ -4828,7 +4637,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v22.2.11
-
 - release_name: v23.1.6
   major_version: v23.1
   release_date: '2023-07-24'
@@ -4852,7 +4660,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.5
-
 - release_name: v23.1.7
   major_version: v23.1
   release_date: '2023-07-31'
@@ -4876,7 +4683,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.6
-
 - release_name: v23.1.8
   major_version: v23.1
   release_date: '2023-08-07'
@@ -4900,7 +4706,6 @@
     docker_arm_experimental: true
   source: true
   previous_release: v23.1.7
-
 - release_name: v22.2.13
   major_version: v22.2
   release_date: '2023-08-08'
@@ -4926,7 +4731,6 @@
     docker_arm_limited_access: true
   source: true
   previous_release: v22.2.12
-
 - release_name: v22.1.22
   major_version: v22.1
   release_date: '2023-08-14'
@@ -4947,7 +4751,6 @@
     docker_arm: false
   source: true
   previous_release: v22.1.21
-
 - release_name: v23.1.9
   major_version: v23.1
   release_date: '2023-09-07'
@@ -4974,7 +4777,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.8
-
 - release_name: v22.2.14
   major_version: v22.2
   release_date: '2023-09-14'
@@ -5001,7 +4803,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v22.2.13
-
 - release_name: v23.1.10
   major_version: v23.1
   release_date: '2023-09-18'
@@ -5028,7 +4829,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.9
-
 - release_name: v23.2.0-alpha.1
   major_version: v23.2
   release_date: '2023-09-26'
@@ -5054,7 +4854,6 @@
     docker_arm_experimental: true
     docker_arm_limited_access: false
   source: true
-
 - release_name: v23.1.11
   major_version: v23.1
   release_date: '2023-10-02'
@@ -5081,7 +4880,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.10
-
 - release_name: v23.2.0-alpha.2
   major_version: v23.2
   release_date: '2023-10-02'
@@ -5108,7 +4906,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.1
-
 - release_name: v23.2.0-alpha.3
   major_version: v23.2
   release_date: '2023-10-10'
@@ -5135,7 +4932,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.2
-
 - release_name: v23.2.0-alpha.4
   major_version: v23.2
   release_date: '2023-10-23'
@@ -5162,7 +4958,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.3
-
 - release_name: v22.2.15
   major_version: v22.2
   release_date: '2023-10-23'
@@ -5189,7 +4984,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v22.2.14
-
 - release_name: v23.2.0-alpha.5
   major_version: v23.2
   release_date: '2023-10-30'
@@ -5216,7 +5010,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.4
-
 - release_name: v23.1.12
   major_version: v23.1
   release_date: '2023-11-13'
@@ -5243,7 +5036,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.11
-
 - release_name: v22.2.16
   major_version: v22.2
   release_date: '2023-11-06'
@@ -5270,7 +5062,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v22.2.15
-
 - release_name: v23.2.0-alpha.6
   major_version: v23.2
   release_date: '2023-11-07'
@@ -5297,7 +5088,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.5
-
 - release_name: v22.2.17
   major_version: v22.2
   release_date: '2023-11-20'
@@ -5324,7 +5114,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v22.2.16
-
 - release_name: v23.2.0-alpha.7
   major_version: v23.2
   release_date: '2023-11-20'
@@ -5351,7 +5140,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.6
-
 - release_name: v23.2.0-beta.1
   major_version: v23.2
   release_date: '2023-11-27'
@@ -5378,7 +5166,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-alpha.7
-
 - release_name: v23.2.0-beta.2
   major_version: v23.2
   release_date: '2023-12-08'
@@ -5405,7 +5192,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-beta.1
-
 - release_name: v23.1.13
   major_version: v23.1
   release_date: '2023-12-11'
@@ -5432,7 +5218,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.12
-
 - release_name: v23.2.0-beta.3
   major_version: v23.2
   release_date: '2023-12-14'
@@ -5459,7 +5244,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-beta.2
-
 - release_name: v23.2.0-rc.1
   major_version: v23.2
   release_date: '2023-12-21'
@@ -5486,7 +5270,6 @@
     docker_arm_limited_access: true
   source: true
   previous_release: v23.2.0-beta.3
-
 - release_name: v23.2.0-rc.2
   major_version: v23.2
   release_date: '2024-01-09'
@@ -5513,7 +5296,6 @@
     docker_arm_limited_access: true
   source: true
   previous_release: v23.2.0-rc.1
-
 - release_name: v23.1.14
   major_version: v23.1
   release_date: '2024-01-17'
@@ -5540,7 +5322,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.13
-
 - release_name: v23.2.0
   major_version: v23.2
   release_date: '2024-02-05'
@@ -5567,7 +5348,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0-rc.2
-
 - release_name: v22.2.18
   major_version: v22.2
   release_date: '2024-02-08'
@@ -5594,7 +5374,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v22.2.17
-
 - release_name: v23.2.1
   major_version: v23.2
   release_date: '2024-02-20'
@@ -5621,7 +5400,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.0
-
 - release_name: v23.1.15
   major_version: v23.1
   release_date: '2024-02-20'
@@ -5648,7 +5426,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.14
-
 - release_name: v22.2.19
   major_version: v22.2
   release_date: '2024-02-26'
@@ -5675,7 +5452,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v22.2.18
-
 - release_name: v23.1.16
   major_version: v23.1
   release_date: '2024-02-27'
@@ -5702,7 +5478,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.15
-
 - release_name: v23.2.2
   major_version: v23.2
   release_date: '2024-02-27'
@@ -5729,7 +5504,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.1
-
 - release_name: v24.1.0-alpha.1
   major_version: v24.1
   release_date: '2024-03-07'
@@ -5755,7 +5529,6 @@
     docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
-
 - release_name: v24.1.0-alpha.2
   major_version: v24.1
   release_date: '2024-03-11'
@@ -5781,7 +5554,6 @@
     docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
-
 - release_name: v24.1.0-alpha.3
   major_version: v24.1
   release_date: '2024-03-18'
@@ -5808,7 +5580,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.0-alpha.2
-
 - release_name: v23.1.17
   major_version: v23.1
   release_date: '2024-03-19'
@@ -5835,7 +5606,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.16
-
 - release_name: v23.2.3
   major_version: v23.2
   release_date: '2024-03-20'
@@ -5862,7 +5632,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.2
-
 - release_name: v24.1.0-alpha.4
   major_version: v24.1
   release_date: '2024-03-25'
@@ -5889,7 +5658,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.0-alpha.3
-
 - release_name: v24.1.0-alpha.5
   major_version: v24.1
   release_date: '2024-04-01'
@@ -5916,7 +5684,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.0-alpha.4
-
 - release_name: v23.1.18
   major_version: v23.1
   release_date: '2024-04-09'
@@ -5943,7 +5710,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.17
-
 - release_name: v23.2.4
   major_version: v23.2
   release_date: '2024-04-11'
@@ -5970,7 +5736,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.3
-
 - release_name: v24.1.0-beta.1
   major_version: v24.1
   release_date: '2024-04-17'
@@ -5997,7 +5762,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.0-alpha.5
-
 - release_name: v23.1.19
   major_version: v23.1
   release_date: '2024-04-18'
@@ -6024,7 +5788,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.18
-
 - release_name: v24.1.0-beta.2
   major_version: v24.1
   release_date: '2024-04-24'
@@ -6051,7 +5814,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.0-beta.1
-
 - release_name: v24.1.0-beta.3
   major_version: v24.1
   release_date: '2024-04-30'
@@ -6078,7 +5840,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.0-beta.2
-
 - release_name: v23.1.20
   major_version: v23.1
   release_date: '2024-05-01'
@@ -6105,7 +5866,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.19
-
 - release_name: v23.2.5
   major_version: v23.2
   release_date: '2024-05-07'
@@ -6132,7 +5892,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.4
-
 - release_name: v23.1.21
   major_version: v23.1
   release_date: '2024-05-07'
@@ -6159,7 +5918,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.20
-
 - release_name: v24.1.0-rc.1
   major_version: v24.1
   release_date: '2024-05-08'
@@ -6186,7 +5944,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.0-beta.3
-
 - release_name: v24.1.0-rc.2
   major_version: v24.1
   release_date: '2024-05-16'
@@ -6213,7 +5970,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.0-rc.1
-
 - release_name: v24.1.0
   major_version: v24.1
   release_date: '2024-05-20'
@@ -6240,7 +5996,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.0-rc.2
-
 - release_name: v23.1.22
   major_version: v23.1
   release_date: '2024-05-23'
@@ -6267,7 +6022,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.21
-
 - release_name: v23.2.6
   major_version: v23.2
   release_date: '2024-06-11'
@@ -6294,7 +6048,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.5
-
 - release_name: v24.1.1
   major_version: v24.1
   release_date: '2024-06-14'
@@ -6321,7 +6074,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.0
-
 - release_name: v23.1.23
   major_version: v23.1
   release_date: '2024-06-20'
@@ -6348,7 +6100,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.22
-
 - release_name: v24.2.0-alpha.1
   major_version: v24.2
   release_date: '2024-07-01'
@@ -6374,7 +6125,6 @@
     docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
-
 - release_name: v23.2.7
   major_version: v23.2
   release_date: '2024-07-02'
@@ -6401,7 +6151,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.6
-
 - release_name: v24.1.2
   major_version: v24.1
   release_date: '2024-07-02'
@@ -6428,7 +6177,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.1
-
 - release_name: v24.2.0-alpha.2
   major_version: v24.2
   release_date: '2024-07-10'
@@ -6455,7 +6203,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.0-alpha.1
-
 - release_name: v23.2.8
   major_version: v23.2
   release_date: '2024-07-15'
@@ -6482,7 +6229,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.7
-
 - release_name: v24.2.0-beta.1
   major_version: v24.2
   release_date: '2024-07-18'
@@ -6509,7 +6255,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.0-alpha.2
-
 - release_name: v23.1.24
   major_version: v23.1
   release_date: '2024-07-18'
@@ -6536,7 +6281,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.23
-
 - release_name: v24.2.0-beta.2
   major_version: v24.2
   release_date: '2024-07-24'
@@ -6563,7 +6307,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.0-beta.1
-
 - release_name: v24.2.0-beta.3
   major_version: v24.2
   release_date: '2024-08-01'
@@ -6590,7 +6333,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.0-beta.2
-
 - release_name: v23.2.9
   major_version: v23.2
   release_date: '2024-08-01'
@@ -6617,7 +6359,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.8
-
 - release_name: v24.1.3
   major_version: v24.1
   release_date: '2024-08-01'
@@ -6644,7 +6385,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.2
-
 - release_name: v24.2.0-rc.1
   major_version: v24.2
   release_date: '2024-08-07'
@@ -6671,7 +6411,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.0-beta.3
-
 - release_name: v24.2.0
   major_version: v24.2
   release_date: '2024-08-12'
@@ -6724,7 +6463,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.24
-
 - release_name: v23.2.10
   major_version: v23.2
   release_date: '2024-08-29'
@@ -6751,7 +6489,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.9
-
 - release_name: v24.1.4
   major_version: v24.1
   release_date: '2024-08-29'
@@ -6778,7 +6515,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.3
-
 - release_name: v24.2.1
   major_version: v24.2
   release_date: '2024-09-05'
@@ -6806,7 +6542,6 @@
   source: true
   previous_release: v24.2.0
   withdrawn: true
-
 - release_name: v23.1.26
   major_version: v23.1
   release_date: '2024-09-12'
@@ -6833,7 +6568,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.25
-
 - release_name: v23.2.11
   major_version: v23.2
   release_date: '2024-09-16'
@@ -6860,7 +6594,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.10
-
 - release_name: v24.2.2
   major_version: v24.2
   release_date: '2024-09-23'
@@ -6887,7 +6620,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.1
-
 - release_name: v24.2.3
   major_version: v24.2
   release_date: '2024-09-25'
@@ -6914,7 +6646,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.2
-
 - release_name: v24.1.5
   major_version: v24.1
   release_date: '2024-09-25'
@@ -6941,7 +6672,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.3-261-gf629e9a3a88
-
 - release_name: v23.2.12
   major_version: v23.2
   release_date: '2024-09-25'
@@ -6968,7 +6698,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.11
-
 - release_name: v23.1.27
   major_version: v23.1
   release_date: '2024-10-03'
@@ -6995,8 +6724,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.26
-
-
 - release_name: v24.3.0-alpha.1
   major_version: v24.3
   release_date: '2024-10-09'
@@ -7022,7 +6749,6 @@
     docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
-
 - release_name: v23.1.28
   major_version: v23.1
   release_date: '2024-10-10'
@@ -7049,7 +6775,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.27
-
 - release_name: v24.3.0-alpha.2
   major_version: v24.3
   release_date: '2024-10-14'
@@ -7076,7 +6801,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.0-alpha.1
-
 - release_name: v24.1.6
   major_version: v24.1
   release_date: '2024-10-17'
@@ -7103,7 +6827,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.5
-
 - release_name: v24.2.4
   major_version: v24.2
   release_date: '2024-10-17'
@@ -7130,7 +6853,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.3
-
 - release_name: v23.2.13
   major_version: v23.2
   release_date: '2024-10-17'
@@ -7157,8 +6879,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.12
-
-
 - release_name: v24.3.0-beta.1
   major_version: v24.3
   release_date: '2024-10-24'
@@ -7185,8 +6905,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.0-alpha.2
-
-
 - release_name: v24.3.0-beta.2
   major_version: v24.3
   release_date: '2024-10-28'
@@ -7213,8 +6931,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.0-beta.1
-
-
 - release_name: v23.2.14
   major_version: v23.2
   release_date: '2024-10-31'
@@ -7241,8 +6957,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.13
-
-
 - release_name: v24.3.0-beta.3
   major_version: v24.3
   release_date: '2024-11-05'
@@ -7269,8 +6983,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.0-beta.2
-
-
 - release_name: v24.3.0
   major_version: v24.3
   release_date: '2024-11-18'
@@ -7297,8 +7009,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.0-rc.1
-
-
 - release_name: v24.2.5
   major_version: v24.2
   release_date: '2024-11-18'
@@ -7325,8 +7035,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.4
-
-
 - release_name: v23.1.29
   major_version: v23.1
   release_date: '2024-11-18'
@@ -7353,7 +7061,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.28
-
 - release_name: v24.1.7
   major_version: v24.1
   release_date: '2024-11-18'
@@ -7380,7 +7087,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.6
-
 - release_name: v23.2.15
   major_version: v23.2
   release_date: '2024-11-15'
@@ -7407,7 +7113,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.14
-
 - release_name: v23.2.16
   major_version: v23.2
   release_date: '2024-11-18'
@@ -7434,7 +7139,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.15
-
 - release_name: v24.3.0-rc.1
   major_version: v24.3
   release_date: '2024-11-15'
@@ -7461,7 +7165,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.0-beta.3
-
 - release_name: v24.2.6
   major_version: v24.2
   release_date: '2024-12-12'
@@ -7488,7 +7191,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.5
-
 - release_name: v24.1.8
   major_version: v24.1
   release_date: '2024-12-12'
@@ -7515,7 +7217,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.7
-      
 - release_name: v23.1.30
   major_version: v23.1
   release_date: '2024-12-12'
@@ -7542,7 +7243,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.1.29
-
 - release_name: v23.2.17
   major_version: v23.2
   release_date: '2024-12-12'
@@ -7569,7 +7269,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.16
-
 - release_name: v24.3.1
   major_version: v24.3
   release_date: '2024-12-12'
@@ -7596,7 +7295,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.0
-
 - release_name: v25.1.0-alpha.1
   major_version: v25.1
   release_date: '2024-12-19'
@@ -7622,7 +7320,6 @@
     docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
-
 - release_name: v24.3.2
   major_version: v24.3
   release_date: '2024-12-26'
@@ -7649,8 +7346,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.1
-
-
 - release_name: v24.1.9
   major_version: v24.1
   release_date: '2024-12-26'
@@ -7677,8 +7372,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.8
-
-
 - release_name: v24.2.7
   major_version: v24.2
   release_date: '2024-12-26'
@@ -7705,8 +7398,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.6
-
-
 - release_name: v23.2.18
   major_version: v23.2
   release_date: '2024-12-26'
@@ -7733,7 +7424,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.17
-
 - release_name: v25.1.0-alpha.2
   major_version: v25.1
   release_date: '2025-01-09'
@@ -7760,7 +7450,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.0-alpha.1
-
 - release_name: v24.1.10
   major_version: v24.1
   release_date: '2025-01-09'
@@ -7787,7 +7476,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.9
-
 - release_name: v24.2.8
   major_version: v24.2
   release_date: '2025-01-09'
@@ -7814,7 +7502,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.7
-
 - release_name: v24.3.3
   major_version: v24.3
   release_date: '2025-01-09'
@@ -7841,7 +7528,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.2
-    
 - release_name: v23.2.19
   major_version: v23.2
   release_date: '2025-01-09'
@@ -7868,8 +7554,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.18
-
-
 - release_name: v25.1.0-alpha.3
   major_version: v25.1
   release_date: '2025-01-15'
@@ -7896,8 +7580,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.0-alpha.2
-
-
 - release_name: v25.1.0-beta.1
   major_version: v25.1
   release_date: '2025-01-20'
@@ -7924,8 +7606,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.0-alpha.3
-
-
 - release_name: v25.1.0-beta.2
   major_version: v25.1
   release_date: '2025-01-27'
@@ -7952,8 +7632,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.0-beta.1
-
-
 - release_name: v24.2.9
   major_version: v24.2
   release_date: '2025-01-31'
@@ -7980,8 +7658,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.8
-
-
 - release_name: v24.1.11
   major_version: v24.1
   release_date: '2025-01-31'
@@ -8008,8 +7684,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.10
-
-
 - release_name: v24.3.4
   major_version: v24.3
   release_date: '2025-01-31'
@@ -8036,8 +7710,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.3
-
-
 - release_name: v25.1.0-beta.3
   major_version: v25.1
   release_date: '2025-02-03'
@@ -8064,7 +7736,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.0-beta.2
-
 - release_name: v24.1.12
   major_version: v24.1
   release_date: '2025-02-06'
@@ -8091,7 +7762,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.11
-
 - release_name: v23.2.20
   major_version: v23.2
   release_date: '2025-02-06'
@@ -8118,7 +7788,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.19
-
 - release_name: v24.3.5
   major_version: v24.3
   release_date: '2025-02-06'
@@ -8145,7 +7814,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.4
-
 - release_name: v24.2.10
   major_version: v24.2
   release_date: '2025-02-06'
@@ -8172,7 +7840,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.2.9
-
 - release_name: v25.1.0-rc.1
   major_version: v25.1
   release_date: '2025-02-10'
@@ -8199,7 +7866,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.0-beta.3
-
 - release_name: v25.1.0
   major_version: v25.1
   release_date: '2025-02-18'
@@ -8226,8 +7892,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.0-rc.1
-
-
 - release_name: v24.3.6
   major_version: v24.3
   release_date: '2025-02-19'
@@ -8254,8 +7918,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.5
-
-
 - release_name: v24.1.13
   major_version: v24.1
   release_date: '2025-02-19'
@@ -8282,8 +7944,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.12
-
-
 - release_name: v24.3.7
   major_version: v24.3
   release_date: '2025-03-06'
@@ -8310,8 +7970,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.6
-
-
 - release_name: v23.2.21
   major_version: v23.2
   release_date: '2025-03-06'
@@ -8338,8 +7996,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.20
-
-
 - release_name: v24.1.14
   major_version: v24.1
   release_date: '2025-03-06'
@@ -8366,8 +8022,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.13
-
-
 - release_name: v24.3.8
   major_version: v24.3
   release_date: '2025-03-12'
@@ -8394,8 +8048,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.7
-
-
 - release_name: v25.1.1
   major_version: v25.1
   release_date: '2025-03-11'
@@ -8422,8 +8074,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.0
-
-
 - release_name: v25.1.2
   major_version: v25.1
   release_date: '2025-03-12'
@@ -8450,9 +8100,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.1
-
-
-
 - release_name: v25.2.0-alpha.1
   major_version: v25.2
   release_date: '2025-03-24'
@@ -8478,7 +8125,6 @@
     docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
-
 - release_name: v25.2.0-alpha.2
   major_version: v25.2
   release_date: '2025-03-31'
@@ -8505,8 +8151,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.2.0-alpha.1
-
-
 - release_name: v23.2.22
   major_version: v23.2
   release_date: '2025-04-02'
@@ -8533,8 +8177,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.21
-
-
 - release_name: v24.3.9
   major_version: v24.3
   release_date: '2025-04-02'
@@ -8561,8 +8203,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.8
-
-
 - release_name: v25.1.3
   major_version: v25.1
   release_date: '2025-04-02'
@@ -8589,8 +8229,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.2
-
-
 - release_name: v24.1.15
   major_version: v24.1
   release_date: '2025-04-03'
@@ -8617,8 +8255,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.14
-
-
 - release_name: v25.2.0-alpha.3
   major_version: v25.2
   release_date: '2025-04-07'
@@ -8645,8 +8281,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.2.0-alpha.2
-
-
 - release_name: v25.1.4
   major_version: v25.1
   release_date: '2025-04-09'
@@ -8673,8 +8307,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.3
-
-
 - release_name: v23.2.23
   major_version: v23.2
   release_date: '2025-04-09'
@@ -8701,8 +8333,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.22
-
-
 - release_name: v24.1.16
   major_version: v24.1
   release_date: '2025-04-09'
@@ -8729,8 +8359,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.15
-
-
 - release_name: v24.3.10
   major_version: v24.3
   release_date: '2025-04-09'
@@ -8757,8 +8385,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.9
-
-
 - release_name: v25.2.0-beta.1
   major_version: v25.2
   release_date: '2025-04-14'
@@ -8785,8 +8411,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.2.0-alpha.3
-
-
 - release_name: v25.2.0-beta.2
   major_version: v25.2
   release_date: '2025-04-23'
@@ -8813,8 +8437,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.2.0-beta.1
-
-
 - release_name: v23.2.24
   major_version: v23.2
   release_date: '2025-04-28'
@@ -8841,8 +8463,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.23
-
-
 - release_name: v24.1.17
   major_version: v24.1
   release_date: '2025-04-28'
@@ -8869,8 +8489,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.16
-
-
 - release_name: v24.3.11
   major_version: v24.3
   release_date: '2025-04-28'
@@ -8897,8 +8515,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.10
-
-
 - release_name: v25.1.5
   major_version: v25.1
   release_date: '2025-04-28'
@@ -8925,8 +8541,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.4
-
-
 - release_name: v25.2.0-beta.3
   major_version: v25.2
   release_date: '2025-04-28'
@@ -8953,8 +8567,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.2.0-beta.2
-
-
 - release_name: v24.1.18
   major_version: v24.1
   release_date: '2025-04-30'
@@ -8981,7 +8593,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.17
-
 - release_name: v23.2.25
   major_version: v23.2
   release_date: '2025-04-30'
@@ -9008,7 +8619,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.24
-
 - release_name: v24.3.12
   major_version: v24.3
   release_date: '2025-04-30'
@@ -9035,8 +8645,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.11
-
-
 - release_name: v25.1.6
   major_version: v25.1
   release_date: '2025-04-30'
@@ -9063,8 +8671,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.5
-
-
 - release_name: v25.2.0-rc.1
   major_version: v25.2
   release_date: '2025-05-11'
@@ -9091,7 +8697,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.2.0-beta.3
-
 - release_name: v25.2.0
   major_version: v25.2
   release_date: '2025-05-12'
@@ -9118,8 +8723,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.2.0-rc.1
-
-
 - release_name: v24.3.13
   major_version: v24.3
   release_date: '2025-05-15'
@@ -9146,8 +8749,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.12
-
-
 - release_name: v23.2.26
   major_version: v23.2
   release_date: '2025-05-28'
@@ -9174,8 +8775,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v23.2.25
-
-
 - release_name: v25.1.7
   major_version: v25.1
   release_date: '2025-05-28'
@@ -9202,8 +8801,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v25.1.6
-
-
 - release_name: v24.3.14
   major_version: v24.3
   release_date: '2025-05-28'
@@ -9230,8 +8827,6 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.3.13
-
-
 - release_name: v24.1.19
   major_version: v24.1
   release_date: '2025-05-28'
@@ -9258,3 +8853,719 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v24.1.18
+- release_name: v25.2.1
+  major_version: v25.2
+  release_date: '2025-06-04'
+  release_type: Production
+  go_version: go1.23.7
+  sha: f9f183de9d58b822d6cf4c12c560e1fbbc70707f
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.2.0
+- release_name: v25.3.0-alpha.1
+  major_version: v25.3
+  release_date: '2025-06-09'
+  release_type: Testing
+  go_version: go1.23.7
+  sha: 6843e110b2e0519a66262715c6dafe6a82be209f
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+
+
+- release_name: v25.3.0-alpha.2
+  major_version: v25.3
+  release_date: '2025-06-16'
+  release_type: Testing
+  go_version: go1.23.7
+  sha: 5ccd93e6229fab8737eb2991f3116faa58ea1aec
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.3.0-alpha.1
+
+
+- release_name: v25.3.0-alpha.3
+  major_version: v25.3
+  release_date: '2025-06-23'
+  release_type: Testing
+  go_version: go1.23.7
+  sha: 4c2a546c4de2804fbd8a75bd528b6fd0cb7fa0bb
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.3.0-alpha.2
+
+
+- release_name: v23.2.27
+  major_version: v23.2
+  release_date: '2025-06-25'
+  release_type: Production
+  go_version: go1.23.7
+  sha: 0a311979123b1628c6389d2d74a62aa19640bdef
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v23.2.26
+
+
+- release_name: v24.3.15
+  major_version: v24.3
+  release_date: '2025-06-25'
+  release_type: Production
+  go_version: go1.23.7
+  sha: b33c70a891bb565033304c0411af9875506051f3
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.3.14
+
+
+- release_name: v24.1.20
+  major_version: v24.1
+  release_date: '2025-06-25'
+  release_type: Production
+  go_version: go1.23.7
+  sha: f68a5ee95712e9bf95c066df7244257dd21b9c27
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.1.19
+
+
+- release_name: v25.1.8
+  major_version: v25.1
+  release_date: '2025-06-25'
+  release_type: Production
+  go_version: go1.23.7
+  sha: a411051498078c6fcd67324301b983a962036208
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.1.7
+ 
+    
+- release_name: v25.2.2
+  major_version: v25.2
+  release_date: '2025-06-25'
+  release_type: Production
+  go_version: go1.23.7
+  sha: 0780d511bd527bfd9d02f4c7ca5ecc19115d9f5e
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.2.1
+
+
+
+- release_name: v25.3.0-beta.1
+  major_version: v25.3
+  release_date: '2025-07-02'
+  release_type: Testing
+  go_version: go1.23.7
+  sha: 0f1b7069d057d671e6ff3ad3b88de0e1ea227f45
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.3.0-alpha.3
+
+
+- release_name: v25.3.0-beta.2
+  major_version: v25.3
+  release_date: '2025-07-09'
+  release_type: Testing
+  go_version: go1.23.7
+  sha: 931cea93c97da32a66de8eda76733e18ce64f841
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.3.0-beta.1
+
+
+- release_name: v25.3.0-beta.3
+  major_version: v25.3
+  release_date: '2025-07-14'
+  release_type: Testing
+  go_version: go1.23.7
+  sha: 958b166620efe4fa6388de40588d497f17880e50
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.3.0-beta.2
+
+
+- release_name: v25.3.0-rc.1
+  major_version: v25.3
+  release_date: '2025-07-23'
+  release_type: Testing
+  go_version: go1.23.7
+  sha: 1af04df44b5ca356a187946834ee122b155241e4
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.3.0-beta.3
+
+
+- release_name: v24.3.16
+  major_version: v24.3
+  release_date: '2025-07-28'
+  release_type: Production
+  go_version: go1.23.7
+  sha: 3705b047131b82ff6b584369c9f9fe278f60ca2c
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.3.15
+
+
+- release_name: v24.1.21
+  major_version: v24.1
+  release_date: '2025-07-28'
+  release_type: Production
+  go_version: go1.23.7
+  sha: 1a78511371ecb81db7afb19bfb5ec66ad49a85f3
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.1.20
+
+  
+- release_name: v25.1.9
+  major_version: v25.1
+  release_date: '2025-07-28'
+  release_type: Production
+  go_version: go1.23.7
+  sha: 2fcef9301ac20e8cb084cf7e2c2c24bede0ee1e7
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.1.8
+
+  
+- release_name: v25.2.3
+  major_version: v25.2
+  release_date: '2025-07-28'
+  release_type: Production
+  go_version: go1.23.7
+  sha: adfe5601ff6cb72c0f65090995978ca9ebbdc647
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.2.2
+
+- release_name: v24.1.22
+  major_version: v24.1
+  release_date: '2025-08-01'
+  release_type: Production
+  go_version: go1.24.5
+  sha: 0d417065f39706192c154f2f8efa34a48f3f06ef
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.1.21
+
+- release_name: v24.3.17
+  major_version: v24.3
+  release_date: '2025-08-01'
+  release_type: Production
+  go_version: go1.24.5
+  sha: 4b7d71c98252df426bd10a14b1a580c48de1af8c
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.3.16
+
+- release_name: v25.1.10
+  major_version: v25.1
+  release_date: '2025-08-01'
+  release_type: Production
+  go_version: go1.24.5
+  sha: 1dbd5c09009fc79628d5145289ed309c002835e4
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.1.9
+
+- release_name: v25.2.4
+  major_version: v25.2
+  release_date: '2025-08-01'
+  release_type: Production
+  go_version: go1.24.5
+  sha: db39678e142ec9f40d40b7139c3f821a94fcb80f
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.2.3
+  
+- release_name: v25.3.0
+  major_version: v25.3
+  release_date: '2025-08-04'
+  release_type: Production
+  go_version: go1.23.7
+  sha: cb540b101146345c1df9f265f65ea321c62b10b3
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.3.0-rc.1
+
+
+- release_name: v24.3.18
+  major_version: v24.3
+  release_date: '2025-08-08'
+  release_type: Production
+  go_version: go1.24.5
+  sha: 37439c410d4583708c898b13a2f9e906f444867b
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.3.17
+
+- release_name: v24.1.23
+  major_version: v24.1
+  release_date: '2025-08-22'
+  release_type: Production
+  go_version: go1.23.7
+  sha: b2d9e467bbe18f26450bf5600c249d2b59765b9a
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.1.22
+
+- release_name: v24.3.19
+  major_version: v24.3
+  release_date: '2025-08-22'
+  release_type: Production
+  go_version: go1.23.7
+  sha: faf059d833b409c16409d1095dfa387068996c1c
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.3.18
+
+- release_name: v25.2.5
+  major_version: v25.2
+  release_date: '2025-08-22'
+  release_type: Production
+  go_version: go1.23.7
+  sha: f08e98cff22855b4abdeba2ad7677a6e7b32e3ed
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.2.4

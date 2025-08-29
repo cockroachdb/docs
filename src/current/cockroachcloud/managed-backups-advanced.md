@@ -51,6 +51,8 @@ You can set your retention duration **once**. After you have adjusted the retent
 
 {% include cockroachcloud/backups/retention-settings.md %}
 
+{% include cockroachcloud/backups/costs-link.md %}
+
 {% include cockroachcloud/backups/retention-deleted-cluster.md %}
 
 ## Considerations
@@ -59,6 +61,10 @@ You can set your retention duration **once**. After you have adjusted the retent
 - You can perform a cross-cluster restore across {{ site.data.products.advanced }} clusters that belong to the same organization. However, this cross-cluster restore is not supported for {{ site.data.products.standard }} and {{ site.data.products.basic }} clusters.
 - You cannot restore a backup of a multi-region database into a single-region database.
 - For details on managed backups and enabling CMEK in {{ site.data.products.advanced }} clusters, refer to [Backup and restore operations on a cluster with CMEK]({% link cockroachcloud/cmek.md %}#backup-and-restore-operations-on-a-cluster-with-cmek).
+
+### Required permissions to restore managed backups
+
+{% include cockroachcloud/backups/managed-backup-perms.md %}
 
 ## Cloud Console
 
@@ -130,7 +136,7 @@ For each incomplete backup, the following details display:
 
 ### Restore data
 
-Users with the [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), or [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) roles can perform the following from the Console:
+Users with the [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) roles can perform the following from the Console:
 
 - [Restore a cluster](#restore-an-advanced-cluster)
 - [Restore a database](#restore-a-database)
@@ -138,10 +144,8 @@ Users with the [Org Administrator]({% link cockroachcloud/authorization.md %}#or
 
 #### Restore an Advanced cluster
 
-{{site.data.alerts.callout_danger}}
-The restore completely erases all data in the destination cluster. All cluster data is replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress.
-
-This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when designing your system of privilege grants.
+{{site.data.alerts.callout_info}}
+Before a cluster can be restored from a managed backup, the destination cluster must be completely wiped of data. A cluster restore job fails if the destination cluster contains any databases/schemas/tables.
 {{site.data.alerts.end}}
 
 To restore a cluster:
@@ -240,7 +244,13 @@ For each restore job, the tab will display:
 
 ## Cloud API
 
-{% include cockroachcloud/backups/cloud-api-get-put.md %}
+{% include cockroachcloud/backups/cloud-api-managed-backup-intro.md %}
+
+{% include cockroachcloud/backups/cloud-api-backup-settings.md %}
+
+{% include cockroachcloud/backups/cloud-api-backup-view.md %}
+
+{% include cockroachcloud/backups/cloud-api-restore-endpoint.md %}
 
 ## CockroachDB Cloud Terraform provider
 

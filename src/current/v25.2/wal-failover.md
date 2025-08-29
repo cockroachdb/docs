@@ -352,7 +352,7 @@ Set up your cluster for WAL failover with either [multiple stores](#multi-store-
 
 For [multiple stores](#multi-store-config), pass `--wal-failover=among-stores` to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}).
 
-For a [side disk on a single-store config](#single-store-config), pass `--wal-failover={ path-to-side-drive-directory }` to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}).
+For a [side disk on a single-store config](#single-store-config), pass `--wal-failover={ path-to-my-side-disk-for-wal-failover }` to [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}).
 
 Use remote log sinks, or if you use file-based logging, enable asynchronous buffering of `file-groups` log sinks:
 
@@ -469,6 +469,12 @@ CockroachDB will monitor the latencies of the primary storage device in the back
 Store _A_ will failover to store _B_, store _B_ will failover to store _C_, and store _C_ will failover to store _A_, but store A will never failover to store C.
 
 However, the WAL failback operation will not cascade back until **all drives are available** - that is, if store _A_'s disk unstalls while store _B_ is still stalled, store _C_ will not failback to store _A_ until _B_ also becomes available again. In other words, _C_ must failback to _B_, which must then failback to _A_.
+
+### 13. Can I use an ephemeral disk for the secondary storage device?
+
+No, the secondary (failover) disk **must be durable and retain its data across VM or instance restarts**. Using an ephemeral volume (for example, the root volume of a cloud VM that is recreated on reboot) risks permanent data loss: if CockroachDB has failed over recent WAL entries to that disk and the disk is subsequently wiped, the node will start up with an incomplete [Raft log]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) and will refuse to join the cluster. In this scenario the node must be treated as lost and replaced.
+
+Always provision the failover disk with the same persistence guarantees as the primary store.
 
 ## Video demo: WAL failover
 

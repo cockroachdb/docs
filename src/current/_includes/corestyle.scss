@@ -1064,6 +1064,7 @@ div#feature-highlights .feature-description {
 	}
 }
 
+
 .sidebar__tag--new {
   background: #6933ff;
   color: #fff;
@@ -1072,3 +1073,45 @@ div#feature-highlights .feature-description {
   border-radius: 4px;
   margin-left: 8px;
 }
+
+.roles-table {
+  table {
+    width: 100%;                // Let the table stretch to the full container width
+    table-layout: auto;         // Allow browser to size columns based on content
+    border-collapse: collapse;  // Merge borders between cells
+  }
+
+  // Style the first column (permission names)
+  th:first-child,
+  td:first-child {
+    width: 45%;                 // Allocate more space to the permission column
+    min-width: 250px;           // Prevent it from shrinking too much
+    text-align: left;           // Left-align permission text for readability
+    font-weight: 500;           // Slightly bold for emphasis
+  }
+
+  // Style all table cells
+  th,
+  td {
+    min-width: 65px;            // Prevent narrow columns from collapsing
+    padding: 8px;               // Add spacing inside cells
+    word-wrap: break-word;      // Allow long words to wrap
+    white-space: pre-wrap;      // Preserve line breaks from Markdown
+    vertical-align: top;        // Align content to the top of the cell
+    line-height: 1.4;           // Improve readability with line spacing
+    text-align: center;         // Center role cells by default
+  }
+
+  // Add zebra striping for even-numbered rows
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  // Style all columns except the first (role columns)
+  th:not(:first-child),
+  td:not(:first-child) {
+    max-width: 100px;           // Cap role column width to avoid overflow
+    width: 1%;                  // Hint browser to minimize these columns if possible
+  }
+}
+

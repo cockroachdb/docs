@@ -9,10 +9,6 @@ cloud: true
 
 This page describes how Egress Perimeter Controls can enhance the security of CockroachDB {{ site.data.products.advanced }} clusters, and gives an overview of how to manage a cluster's egress rules.
 
-{{site.data.alerts.callout_info}}
-Egress Perimeter Controls are not yet available for [CockroachDB {{ site.data.products.advanced }} on Azure]({% link cockroachcloud/cockroachdb-advanced-on-azure.md %}).
-{{site.data.alerts.end}}
-
 ## Why use Egress Perimeter Controls
 
 CockroachDB {{ site.data.products.advanced }} clusters access external resources for many purposes:
@@ -24,7 +20,7 @@ CockroachDB {{ site.data.products.advanced }} clusters access external resources
 
 By default, clusters can access external resources via the internet without restriction, and even [private clusters]({% link cockroachcloud/private-clusters.md %}) can access their private network. This potentially leaves a cluster open to a *data exfiltration* scenario, wherein an attacker, often a [malicious insider](https://www.cisa.gov/defining-insider-threats), steals data by sending backups, changefeeds, data, or logs to a source that they control.
 
-Operators of CockroachDB {{ site.data.products.advanced }} clusters can mitigate against this risk by using Egress Perimeter Controls, which enable Cluster Administrators to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious or accidental data exfiltration. Along with other measures such as [Private Clusters]({% link cockroachcloud/private-clusters.md %}), Egress Perimeter Controls are an important component in an overall strategy for maximizing network security.
+Operators of CockroachDB {{ site.data.products.advanced }} clusters can mitigate against this risk by using Egress Perimeter Controls, which enable Cluster Admins to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious or accidental data exfiltration. Along with other measures such as [Private Clusters]({% link cockroachcloud/private-clusters.md %}), Egress Perimeter Controls are an important component in an overall strategy for maximizing network security.
 
 Further reading: [review how CockroachDB products differs in advanced security features]({% link {{site.current_cloud_version}}/security-reference/security-overview.md %}).
 
@@ -35,12 +31,10 @@ Regardless of user-specific Egress Perimeter Control policy, egress is always pe
 ## Before you begin
 
 - Egress Perimeter Controls are supported on AWS and GCP for the following deployment types:
-    - CockroachDB {{ site.data.products.advanced }} clusters with [enhanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features).
+    - CockroachDB {{ site.data.products.advanced }} clusters with [advanced security features]({% link cockroachcloud/create-an-advanced-cluster.md %}#step-6-configure-advanced-security-features).
     - CockroachDB {{ site.data.products.advanced }} [Private Clusters]({% link cockroachcloud/private-clusters.md %}).
 
-    Egress Perimeter Controls are not supported for CockroachDB {{ site.data.products.advanced }} on Azure.
-
-- You need a service account with the [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) role on clusters in your organization. You can provision service accounts and API keys in CockroachDB Cloud Console. Refer to [Service Accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
+- You need a service account with the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) role on clusters in your organization. You can provision service accounts and API keys in CockroachDB Cloud Console. Refer to [Service Accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 
 {{site.data.alerts.callout_danger}}
 The operations described in this page require an API key with very broad permissions, such as the potential to modify a cluster's configuration to add malicious egress rules that could allow the type of attack that Egress Perimeter Controls are meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen.

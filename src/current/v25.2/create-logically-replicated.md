@@ -5,8 +5,6 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-
 Logical data replication is only supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
@@ -15,7 +13,7 @@ The `CREATE LOGICALLY REPLICATED` statement starts [**logical data replication (
 Once the offline initial scan completes, the new table will come online and is ready to serve queries. In a [bidirectional]({% link {{ page.version.version }}/logical-data-replication-overview.md %}#use-cases) setup, the second LDR stream will also initialize after the offline initial scan completes.
 
 {{site.data.alerts.callout_danger}}
-If the table to be replicated contains [user-defined types]({% link {{ page.version.version }}/enum.md %}) or [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) dependencies, you must use the [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %}) statement instead. You can set up unidirectional or bidirectional LDR manually with `CREATE LOGICAL REPLICATION STREAM`. 
+If the table to be replicated contains [user-defined types]({% link {{ page.version.version }}/enum.md %}), you must use the [`CREATE LOGICAL REPLICATION STREAM`]({% link {{ page.version.version }}/create-logical-replication-stream.md %}) statement instead. You can set up unidirectional or bidirectional LDR manually with `CREATE LOGICAL REPLICATION STREAM`. 
 {{site.data.alerts.end}}
 
 This page is a reference for the `CREATE LOGICALLY REPLICATED` SQL statement, which includes information on its parameters and options. For a step-by-step guide to set up LDR, refer to the [Set Up Logical Data Replication]({% link {{ page.version.version }}/set-up-logical-data-replication.md %}) page.
@@ -81,14 +79,6 @@ Option | Description
 -------+------------
 `bidirectional on` / `unidirectional` | (**Required**) Specifies whether the LDR stream will be unidirectional or bidirectional. With `bidirectional on` specified, LDR will set up two LDR streams between the clusters. Refer to the examples for [unidirectional](#unidirectional) and [bidirectional](#bidirectional).
 `label` | Tracks LDR metrics at the job level. Add a user-specified string with `label`. For more details, refer to [Metrics labels]({% link {{ page.version.version }}/logical-data-replication-monitoring.md %}#metrics-labels).
-`mode` | Determines how LDR replicates the data to the destination cluster. Possible values: `immediate`, `validated`. For more details, refer to [LDR modes](#ldr-modes).
-
-## LDR modes
-
-_Modes_ determine how LDR replicates the data to the destination cluster. There are two modes:
-
-- `immediate` (default): {% include {{ page.version.version }}/ldr/immediate-description.md %}
-- `validated`: {% include {{ page.version.version }}/ldr/validated-description.md %}
 
 ## Examples
 
@@ -100,7 +90,7 @@ From the destination cluster of the LDR stream, run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE LOGICALLY REPLICATED TABLE {database.public.destination_table_name} FROM TABLE {database.public.source_table_name} ON 'external://source' WITH unidirectional, mode=validated;
+CREATE LOGICALLY REPLICATED TABLE {database.public.destination_table_name} FROM TABLE {database.public.source_table_name} ON 'external://source' WITH unidirectional;
 ~~~
 
 Include the following: 

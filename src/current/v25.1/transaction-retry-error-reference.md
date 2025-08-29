@@ -345,7 +345,7 @@ TransactionRetryWithProtoRefreshError:TransactionAbortedError(ABORT_REASON_NEW_L
 
 **Description:**
 
-The `ABORT_REASON_NEW_LEASE_PREVENTS_TXN` error occurs because the timestamp cache will not allow transaction _A_ to create a transaction record. A new lease wipes the timestamp cache, so this could mean the [leaseholder]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#leaseholder-node) was moved and the duration of transaction _A_ was unlucky enough to happen across a lease acquisition. In other words, leaseholders got shuffled out from underneath transaction _A_ (due to no fault of the client application or schema design), and now it has to be retried.
+The `ABORT_REASON_NEW_LEASE_PREVENTS_TXN` error occurs because the [timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache) will not allow transaction _A_ to create a [transaction record]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-records). A new lease wipes the timestamp cache, so this could mean the [leaseholder]({% link {{ page.version.version }}/architecture/life-of-a-distributed-transaction.md %}#leaseholder-node) was moved and the duration of transaction _A_ was unlucky enough to happen across a lease acquisition. In other words, leaseholders got shuffled out from underneath transaction _A_ (due to no fault of the client application or schema design), and now it has to be retried.
 
 **Action:**
 
@@ -361,7 +361,7 @@ TransactionRetryWithProtoRefreshError:TransactionAbortedError(ABORT_REASON_TIMES
 
 **Description:**
 
-The `ABORT_REASON_TIMESTAMP_CACHE_REJECTED` error occurs when the timestamp cache will not allow transaction _A_ to create a transaction record. This can happen due to a [range merge]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-merges) happening in the background, or because the timestamp cache is an in-memory cache, and has outgrown its memory limit (about 64 MB).
+The `ABORT_REASON_TIMESTAMP_CACHE_REJECTED` error occurs when the [timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache) will not allow transaction _A_ to create a [transaction record]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#transaction-records). This can happen due to a [range merge]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-merges) happening in the background, or because the [timestamp cache]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#timestamp-cache) is an in-memory cache, and has outgrown its memory limit (about 64 MB).
 
 **Action:**
 
