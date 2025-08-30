@@ -1064,6 +1064,16 @@ div#feature-highlights .feature-description {
 	}
 }
 
+
+.sidebar__tag--new {
+  background: #6933ff;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
 .roles-table {
   table {
     width: 100%;                // Let the table stretch to the full container width
@@ -1104,3 +1114,4 @@ div#feature-highlights .feature-description {
     width: 1%;                  // Hint browser to minimize these columns if possible
   }
 }
+
