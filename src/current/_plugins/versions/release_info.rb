@@ -25,6 +25,9 @@ module Jekyll
         relevant_releases = releases_data.select { |release| release['major_version'] == major_version }
         latest_release = relevant_releases.max_by { |release| Date.parse(release['release_date']) }
         
+        # Skip if no matching release found
+        next if latest_release.nil?
+        
         # Populate release info
         release_info[major_version] = {
           "version" => latest_release['release_name'],
