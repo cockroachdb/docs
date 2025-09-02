@@ -103,3 +103,103 @@ clean-site:
 
 clean-cache:
 	rm -rf .jekyll-cache
+
+# Jekyll-Algolia Self-Contained Pipeline
+# Extract and load Algolia records from _site with exact objectID generation
+
+# Configuration
+SITE_DIR_ALGOLIA ?= _site
+STAGING_INDEX ?= stage_cockroach_docs
+RECORDS_FILE ?= extracted_records.jsonl
+
+# Check required environment variables for Algolia
+check-algolia-env:
+	@echo "🔧 Checking Algolia environment variables..."
+	@test -n "$(ALGOLIA_APP_ID)" || (echo "❌ ALGOLIA_APP_ID not set" && exit 1)
+	@test -n "$(ALGOLIA_STAGE_ADMIN_KEY)" || (echo "❌ ALGOLIA_STAGE_ADMIN_KEY not set" && exit 1)
+	@echo "✅ Algolia environment variables set"
+
+# Extract records from _site
+algolia-extract:
+	@echo "🔄 Extracting records from $(SITE_DIR_ALGOLIA)..."
+	python3 site_to_algolia.py --site-dir $(SITE_DIR_ALGOLIA)
+	@echo "✅ Extraction complete"
+
+# Extract limited number of files for testing
+algolia-extract-sample:
+	@echo "🔄 Extracting sample records (100 files)..."
+	python3 site_to_algolia.py --site-dir $(SITE_DIR_ALGOLIA) --max-files 100
+	@echo "✅ Sample extraction complete"
+
+# Load records to staging index
+algolia-load: check-algolia-env
+	@echo "📤 Loading records to $(STAGING_INDEX)..."
+	python3 load_and_validate.py \
+		--app-id "$(ALGOLIA_APP_ID)" \
+		--admin-key "$(ALGOLIA_STAGE_ADMIN_KEY)" \
+		--index "$(STAGING_INDEX)" \
+		--records "$(RECORDS_FILE)"
+	@echo "✅ Loading complete"
+
+# Load and validate against production (optional)
+algolia-load-and-validate: check-algolia-env
+	@echo "📤 Loading and validating against production..."
+	python3 load_and_validate.py \
+		--app-id "$(ALGOLIA_APP_ID)" \
+		--admin-key "$(ALGOLIA_STAGE_ADMIN_KEY)" \
+		--index "$(STAGING_INDEX)" \
+		--records "$(RECORDS_FILE)" \
+		--validate-prod "cockroachcloud_docs" \
+		--prod-read-key "$(ALGOLIA_PROD_READ_KEY)"
+	@echo "✅ Loading and validation complete"
+
+# Test UUID algorithm
+algolia-test-uuid:
+	@echo "🧪 Testing UUID algorithm..."
+	python3 algolia_uuid.py
+	@echo "✅ UUID test complete"
+
+# Full Algolia pipeline: extract and load
+algolia-all: algolia-extract algolia-load
+	@echo "🎯 Complete Algolia pipeline finished"
+
+# Test Algolia pipeline with sample
+algolia-test: algolia-extract-sample algolia-load
+	@echo "🎯 Test Algolia pipeline finished"
+
+# Clean Algolia generated files
+algolia-clean:
+	rm -f $(RECORDS_FILE) test_*.jsonl focused_test_records.jsonl
+	@echo "🧹 Cleaned Algolia generated files"
+
+# Show Algolia help
+algolia-help:
+	@echo "Jekyll-Algolia Self-Contained Pipeline"
+	@echo ""
+	@echo "Available Algolia targets:"
+	@echo "  algolia-extract           - Extract all records from _site"
+	@echo "  algolia-extract-sample    - Extract sample (100 files) for testing"
+	@echo "  algolia-load              - Load records to staging index"
+	@echo "  algolia-load-and-validate - Load records and validate against production"
+	@echo "  algolia-test-uuid         - Test UUID algorithm implementation"
+	@echo "  algolia-all               - Full pipeline (extract + load)"
+	@echo "  algolia-test              - Test pipeline (sample extract + load)"
+	@echo "  algolia-clean             - Remove generated files"
+	@echo "  algolia-help              - Show this help"
+	@echo ""
+	@echo "Required environment variables:"
+	@echo "  ALGOLIA_APP_ID         - Algolia application ID"
+	@echo "  ALGOLIA_STAGE_ADMIN_KEY - Algolia admin key for staging"
+	@echo ""
+	@echo "Optional environment variables:"
+	@echo "  ALGOLIA_PROD_READ_KEY  - Production read key (for validation)"
+	@echo "  SITE_DIR_ALGOLIA       - Path to _site directory (default: _site)"
+	@echo "  STAGING_INDEX          - Staging index name (default: stage_cockroach_docs)"
+	@echo "  RECORDS_FILE           - Records file name (default: extracted_records.jsonl)"
+	@echo ""
+	@echo "Examples:"
+	@echo "  make algolia-test              # Test with sample"
+	@echo "  make algolia-all               # Full extraction and loading"
+	@echo "  make algolia-load-and-validate # Load with production validation"
+
+.PHONY: check-algolia-env algolia-extract algolia-extract-sample algolia-load algolia-load-and-validate algolia-test-uuid algolia-all algolia-test algolia-clean algolia-help

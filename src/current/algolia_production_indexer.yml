@@ -1,0 +1,51 @@
+# Algolia Production Indexer Configuration
+# Standalone configuration for maintaining 100% search parity
+
+# Current versions to include (others will be excluded)
+current_versions:
+  - "v25.3"           # Latest stable version
+  - "cockroachcloud"  # Cloud documentation  
+  - "releases"        # Release notes
+  - "advisories"      # Security advisories
+
+# Version patterns to exclude (reduce from 7,408 to ~1,500 files)
+excluded_version_patterns:
+  - "v20.*/**"        # Very old versions
+  - "v21.*/**" 
+  - "v22.*/**"
+  - "v23.*/**" 
+  - "v24.*/**"
+  - "v25.1/**"        # Exclude older v25 versions
+  - "v25.2/**"
+
+# File exclusions matching Jekyll-Algolia defaults
+excluded_files:
+  - "index.html"      # Root index pages
+  - "search.html"     # Search interface
+  - "404.html"        # Error pages
+
+# Jekyll-Algolia content extraction settings
+content_extraction:
+  nodes_to_index: "p,td,li"              # Content nodes to extract
+  heading_selector: "h1,h2,h3,h4,h5,h6"  # Heading hierarchy
+  max_record_size: 20000                  # Content truncation limit (bytes)
+  content_max_length: 2000                # Content field max length  
+  html_max_length: 5000                   # HTML field max length
+
+# Expected output targets (for validation)
+expected_results:
+  target_record_count: 1247               # Query-accessible production records
+  target_unique_after_distinct: 631       # After deduplication
+  acceptable_variance: 0.05               # 5% tolerance for minor differences
+
+# Algolia configuration
+algolia:
+  app_id: "7RXZLDVR5F"
+  stage_index: "stage_cockroach_docs"
+  production_config_file: "production_config_export.json"
+  
+# Processing options
+processing:
+  batch_size: 100                         # Records per upload batch
+  max_concurrent_files: 50                # Parallel processing limit
+  progress_reporting_interval: 100        # Files between progress reports
