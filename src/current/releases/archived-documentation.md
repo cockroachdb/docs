@@ -1,5 +1,5 @@
 ---
-title: Archived Documentation
+title: Documentation for CockroachDB versions that are no longer supported
 summary: Documentation for CockroachDB versions that are no longer actively maintained
 
 toc: false          # hide “On this page” nav
@@ -7,14 +7,16 @@ docs_area: releases
 ---
 
 
-Access documentation for previous versions of CockroachDB that are no longer actively maintained.
+This page contains downloads of archived documentation for CockroachDB versions that are no longer supported.
 
 {{ site.data.alerts.callout_info }}
-CockroachDB recommends using the most recent version for the best experience and most up-to-date documentation. Archived documentation is provided **as-is** and is no longer actively maintained.
+Cockroach Labs recommends using a [supported version]({% link {{ page.version.version }}/releases/release-support-policy.md %}) of CockroachDB for which documentation is actively maintained. The archived documentation on this page is provided **as-is** and is no longer maintained.
 {{ site.data.alerts.end }}
 
-## All Archived Versions
-Browse the full list of archived CockroachDB versions:
+## Archived versions  
+
+The table below contains links to archived documentation for versions of CockroachDB that are [no longer supported]({% link {{ page.version.version }}/releases/release-support-policy.md %}#unsupported-versions).  
+
 
 <div class="wide-overflow" markdown="1">
 
