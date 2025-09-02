@@ -79,7 +79,6 @@ The following information is also contained in the `.zip` file, and cannot be fi
 - Jobs
 - [Cluster Settings]({% link {{ page.version.version }}/cluster-settings.md %})
 - [Metrics]({% link {{ page.version.version }}/metrics.md %})
-- [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %})
 - CPU profiles
 - A script (`hot-ranges.sh`) that summarizes the hottest ranges (ranges receiving a high number of reads or writes)
 
