@@ -63,13 +63,13 @@ section.footer {
 
 .footer__right {
   display: flex;
-  border-bottom: solid 1px #DADADA; /* $cl_gray_medium */
+  border-bottom: none; /* Hide border on mobile */
 }
 
 @media (min-width: 992px) { /* $screen-md: 992px */
   .footer__right {
     border-bottom: none;
-    border-left: solid 1px #DADADA; /* $cl_gray_medium */
+    border-left: 1.5px solid #C0C6D9;; /* Darker/thicker border for desktop */
     width: 25%;
     padding-top: 0;
     padding-left: 60px;
@@ -185,6 +185,10 @@ section.footer {
   }
 }
 
+.footer-get-dev-news{
+  margin-left: 15px;
+}
+
 .copyright {
   margin: 20px 0 0 20px;
   /* @include type-caption equivalent */
@@ -216,7 +220,8 @@ section.footer {
 }
 
 
-/* Marketo form specific styles */
+
+/* Marketo form specific styles - force left alignment */
 #footer-mktoForm_1083 {
   width: 100% !important;
   margin-left: 0 !important;
