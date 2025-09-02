@@ -1,6 +1,6 @@
 ---
-title: Documentation for CockroachDB versions that are no longer supported
-summary: Documentation for CockroachDB versions that are no longer actively maintained
+title: Archived Documentation
+summary: Documentation for CockroachDB versions that are no longer supported
 
 toc: false          # hide “On this page” nav
 docs_area: releases
