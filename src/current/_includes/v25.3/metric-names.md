@@ -8,22 +8,57 @@
 <table markdown="1">
     <thead>
         <tr>
-            <td><b>CockroachDB Metric Name</b></td>
-            <td><b>Description</b></td>
-            <td><b>Type</b></td>
-            <td><b>Unit</b></td>
+            <th>CockroachDB Metric Name</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Unit</th>
+            {%- if page.name != "ui-custom-chart-debug-page.md" -%}<th>Supported Deployments</th>{%- endif -%}
         </tr>
     </thead>
     <tbody>    
     {% for m in available_metrics_sorted %} {% comment %} Iterate through the available_metrics. {% endcomment %}
-        {% assign metrics-list = site.data[version].metrics.metrics-list | where: "metric", m.metric_id %}
-        {% comment %} Get the row from the metrics-list with the given metric_id. {% endcomment %}
+
+        {% assign metrics-yaml = site.data[version].metrics.metrics %}
+        {%- comment -%} Looks for a metric anywhere in the nested structure: layers -> categories -> metrics{%- endcomment -%}
+
+        {%- assign found = "" -%}
+
+        {%- for layer in metrics-yaml.layers -%}
+            {%- for category in layer.categories -%}
+                {%- assign metric = category.metrics | where: "name", m.metric_id | first -%}
+                {%- if metric -%}
+                    {%- assign found = metric -%}
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endfor -%}
+
             <tr>
             <td><div id="{{ m.metric_id }}" class="anchored"><code>{{ m.metric_id }}</code></div></td>
-            {% comment %} Use the value from the metrics-list, if any, followed by the value in the available-metrics-not-in-metrics-list, if any. {% endcomment %}
-            <td>{{ metrics-list[0].description }}{{ m.description }}</td>
-            <td>{{ metrics-list[0].type }}{{ m.type }}</td>
-            <td>{{ metrics-list[0].unit }}{{ m.unit }}</td>
+            {% comment %} Use the found value from the metrics-yaml, if any, followed by the value in the available-metrics-not-in-metrics-list, if any. {% endcomment %}
+            <td>{{ found.description }}{{ m.description }}</td>
+            <td>{{ found.type }}{{ m.type }}</td>
+            <td>{{ found.unit }}{{ m.unit }}</td>
+            {%- if page.name != "ui-custom-chart-debug-page.md" -%}
+            <td>
+                {%- assign key = m.metric_id | replace: '.', '_'  | replace: '-', '_'-%}{%- comment -%} Replace periods and hyphens with underscores to normalize. {%- endcomment -%}
+                {%- comment -%}
+                - If in crdb_metrics.yaml      -> "Advanced/self-hosted"
+                - Else if in shared_metrics.yaml -> "Standard/Advanced/self-hosted"
+                - Else if in tenant_metrics.yaml -> "Standard/self-hosted"
+                - Else                           -> "self-hosted"
+                {%- endcomment -%}
+    
+                {%- assign crdb_hit    = site.data[version].metrics.export.crdb_metrics.metrics[key] -%}
+                {%- assign shared_hit  = site.data[version].metrics.export.shared_metrics.metrics[key] -%}
+                {%- assign tenant_hit  = site.data[version].metrics.export.tenant_metrics.metrics[key] -%}
+
+                {%- if crdb_hit -%}Advanced/self-hosted
+                {%- elsif shared_hit -%}Standard/Advanced/self-hosted
+                {%- elsif tenant_hit -%}Standard/self-hosted
+                {%- else -%}self-hosted
+                {%- endif -%}
+            </td>
+            {%- endif -%}{% comment %} page.name {% endcomment %}
         </tr>
     {% endfor %} {% comment %} metrics {% endcomment %}
     </tbody>
