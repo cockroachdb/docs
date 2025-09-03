@@ -2616,6 +2616,54 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 ) STORED;
 ~~~
 
+<a name="modify-rbr-region-column"></a>
+
+#### Modify the region column or its expression
+
+{{site.data.alerts.callout_info}}
+You cannot alter a computed column's expression in place. To change the mapping that determines row locality for a `REGIONAL BY ROW AS <column>` table, create a new column with the updated expression and then repoint the table locality to that column.
+{{site.data.alerts.end}}
+
+1. Add a new region column of the same type (`crdb_internal_region`) with the updated expression:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE app.public.users
+      ADD COLUMN region_new crdb_internal_region AS (<new_expression>) STORED;
+    ~~~
+
+2. Atomically swap the column names in a transaction so the original column is preserved and the new column takes the `region` name:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    BEGIN;
+      ALTER TABLE app.public.users RENAME COLUMN region TO region_old;
+      ALTER TABLE app.public.users RENAME COLUMN region_new TO region;
+    COMMIT;
+    ~~~
+
+    - After the first rename, the table continues to be `REGIONAL BY ROW AS region_old` because the locality metadata follows the column formerly named `region`.
+
+3. Re-point the table locality to the new column, outside the transaction:
+
+    {{site.data.alerts.callout_info}}
+    Run `SET LOCALITY` outside the transaction that performed the renames. Combining rename and backfill operations in a single transaction can exhibit problematic rollback behavior on clusters using the legacy schema changer (see GitHub issue [cockroachdb/cockroach#139840](https://github.com/cockroachdb/cockroach/issues/139840)). On newer releases with the declarative schema changer, this procedure is also safe and recommended.
+    {{site.data.alerts.end}}
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE app.public.users SET LOCALITY REGIONAL BY ROW AS region;
+    ~~~
+
+4. Optional: After verification, drop the old column:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE app.public.users DROP COLUMN region_old;
+    ~~~
+
+This approach avoids unsupported `ALTER COLUMN TYPE` or in-place computed expression changes and works with ongoing workload.
+
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
 #### Infer a row's home region from a foreign key

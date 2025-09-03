@@ -101,6 +101,10 @@ For more information, see [`ADD COLUMN`]({% link {{ page.version.version }}/alte
 
 {% include {{ page.version.version }}/computed-columns/alter-computed-column.md %}
 
+{{site.data.alerts.callout_info}}
+If the computed column controls row locality in a [`REGIONAL BY ROW`]({% link {{ page.version.version }}/table-localities.md %}#regional-by-row-tables) table (for example, a custom `crdb_internal_region` column used with `REGIONAL BY ROW AS`), you cannot change its expression in place. Follow the steps in [Modify the region column or its expression]({% link {{ page.version.version }}/alter-table.md %}#modify-rbr-region-column).
+{{site.data.alerts.end}}
+
 ## See also
 
 - [Scalar Expressions]({% link {{ page.version.version }}/scalar-expressions.md %})
