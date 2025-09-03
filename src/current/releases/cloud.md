@@ -1257,7 +1257,7 @@ CockroachDB {{ site.data.products.cloud }} now requires a user to have a Cockroa
 <h3 id="2020-03-02-general-changes">General changes</h3>
 
 - CockroachDB {{ site.data.products.cloud }} pricing is now available on the [pricing page](https://www.cockroachlabs.com/pricing/).
-- CockroachDB {{ site.data.products.cloud }} clusters running CockroachDB v19.2 have been upgraded to [v19.2.4]({% link releases/v19.2.md %}#v19-2-4). All new clusters will now be created with CockroachDB v19.2.4.
+- CockroachDB {{ site.data.products.cloud }} clusters running CockroachDB v19.2 have been upgraded to v19.2.4. All new clusters will now be created with CockroachDB v19.2.4.
 - CockroachDB {{ site.data.products.cloud }} now offers two options for per-node hardware configuration instead of three options. The hardware configuration [pricing]({% link cockroachcloud/create-your-cluster.md %}#step-2-select-the-cloud-provider) has been updated accordingly.
 - Added a **Sign up** link to the [CockroachDB {{ site.data.products.cloud }} **Log In** page](https://cockroachlabs.cloud/).
 - While [creating a new cluster]({% link cockroachcloud/create-your-cluster.md %}), you can now type in the number of nodes you want in the cluster instead of having to click the `+` sign repeatedly.
