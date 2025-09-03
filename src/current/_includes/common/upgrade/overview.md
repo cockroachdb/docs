@@ -15,10 +15,6 @@
     For CockroachDB {{ site.data.products.advanced }}, {{ site.data.products.standard }}, and {{ site.data.products.basic }} clusters, all production patch releases for a major version are automatically applied, until the cluster is upgraded to a new major version.
 {% endif %}
 
-    - In the lead-up to a new major version's GA, a series of beta and RC releases {% if page.path contains "cockroachcloud" %}may be made available to CockroachDB {{ site.data.products.advanced }} as Pre-Production Preview releases{% else %}are made available{% endif %} for testing and validation. Testing releases are intended for testing and experimentation only, and are not qualified for production environments or eligible for support or uptime SLA commitments.
-
-      {% if page.path contains "cockroachcloud" %}If a cluster is upgraded to a Pre-Production Preview release, it will be automatically upgraded to subsequent patch releases within the major version, including newer Pre-Production Preview testing releases, the GA release, and subsequent production patch releases.{% else %}{{site.data.alerts.callout_info}}A cluster cannot be upgraded from an alpha binary of a prior release or from a binary built from the `master` branch of the CockroachDB source code.{{site.data.alerts.end}}{% endif %}
-
 To learn more about CockroachDB major versions and patches, refer to the [Releases Overview]({% link releases/index.md %}#overview).
 
 {% if page.path contains "cockroachcloud" %}
