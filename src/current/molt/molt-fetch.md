@@ -43,7 +43,7 @@ Complete the following items before using MOLT Fetch:
 
 		{% include_cached copy-clipboard.html %}
 		~~~ shell
-		molt escape-password 'a$52&'
+		molt escape-password --password 'a$52&'
 		~~~
 
 		Substitute the following encoded password in your original connection url string:

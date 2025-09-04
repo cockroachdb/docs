@@ -45,7 +45,7 @@ Complete the following items before using MOLT Verify:
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell
-        molt escape-password 'a$52&'
+        molt escape-password --password 'a$52&'
         ~~~
 
         ~~~

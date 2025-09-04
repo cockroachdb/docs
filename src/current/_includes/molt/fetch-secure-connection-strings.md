@@ -8,7 +8,7 @@ To keep your database credentials out of shell history and logs, follow these be
 
 		{% include_cached copy-clipboard.html %}
 		~~~ shell
-		molt escape-password 'a$52&'
+		molt escape-password --password 'a$52&'
 		~~~
 
 		Use the encoded password in your `--source` connection string. For example:
