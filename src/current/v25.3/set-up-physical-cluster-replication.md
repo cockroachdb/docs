@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-In this tutorial, you will set up [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, accepting updates from the primary cluster. The replication stream will send changes from the primary to the standby.
+In this tutorial, you will set up [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, continuously receiving updates from the primary cluster. The replication stream replicates changes from the primary to the standby.
 
 The unit of replication is a [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}), which is part of the underlying infrastructure in the primary and standby clusters.
 
@@ -31,11 +31,11 @@ To set up PCR from an existing CockroachDB cluster, which will serve as the prim
 
 ## Before you begin
 
-- Two separate CockroachDB clusters (primary and standby) with a minimum of three nodes each, and each using the same CockroachDB {{page.version.version}} version. The standby cluster should be the same version or one version ahead of the primary cluster. The primary and standby clusters must be configured with similar hardware profiles, number of nodes, and overall size. Significant discrepancies in the cluster configurations may result in degraded performance.
+- You need two separate CockroachDB clusters (primary and standby), each with a minimum of three nodes. The standby cluster should be the same version or one version ahead of the primary cluster. The primary and standby clusters must be configured with similar hardware profiles, number of nodes, and overall size. Significant discrepancies in the cluster configurations may result in degraded performance.
     - To set up each cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you initialize the cluster with the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command, you **must** pass the `--virtualized` or `--virtualized-empty` flag. Refer to the cluster creation steps for the [primary cluster](#initialize-the-primary-cluster) and for the [standby cluster](#initialize-the-standby-cluster) for details.
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
 - All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Manage the cluster certificates](#step-3-manage-the-cluster-certificates).
-- The primary and standby clusters **must have the same [region topology]({% link {{ page.version.version }}/topology-patterns.md %})**. For example, replicating a multi-region primary cluster to a single-region standby cluster is not supported. Mismatching regions between a multi-region primary and standby cluster is also not supported.
+- The primary and standby clusters can have different [region topologies]({% link {{ page.version.version }}/topology-patterns.md %}). However, behavior for features that rely on multi-region primitives, such as Region by Row and Region by Table, may be affected.
 
 ## Step 1. Create the primary cluster
 
@@ -219,7 +219,7 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
     (1 rows)
     ~~~
 
-### Create a user for the standby cluster
+### Create a replication user and password
 
 Create a user to run the PCR stream and access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to observe the job:
 
@@ -239,7 +239,7 @@ Create a user to run the PCR stream and access the [DB Console]({% link {{ page.
 
     Open the DB Console in your web browser: `https://{node IP or hostname}:8080/`, where you will be prompted for these credentials. Refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}) for more detail on tracking relevant metrics for your replication stream.
 
-## Step 3. Manage the cluster certificates
+## Step 3. Manage cluster certificates and generate connection strings
 
 {{site.data.alerts.callout_danger}}
 It is important to carefully manage the exchange of CA certificates between clusters if you have generated self-signed certificates with `cockroach cert` as part of the [prerequisite deployment tutorial]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}).
@@ -247,17 +247,13 @@ It is important to carefully manage the exchange of CA certificates between clus
 To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
 {{site.data.alerts.end}}
 
-At this point, the primary and standby clusters are both running. The next step allows the standby cluster to connect to the primary cluster and begin ingesting its data. Depending on how you manage certificates, you must ensure that all nodes on the primary and the standby cluster have access to the certificate of the other cluster.
+At this point, the primary and standby clusters are both running. The next step creates a connection URI with the certifications needed to connect the two clusters. In most cases, we recommend ensuring that all nodes on the primary cluster have access to the certificate of the standby cluster, and vice versa. This ensures that PCR is able to parallelize the work.
 
-You can use the `cockroach encode-uri` command to generate a connection string containing a cluster's certificate for any [PCR statements]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}#manage-replication-in-the-sql-shell) that require a connection string.
-
-For example, in this tutorial you will need a connection string for the primary cluster when you start the replication stream from the standby.
-
-To generate a connection string, pass the replication user, IP and port, along with the directory to the certificate for the primary cluster:
+Use the `cockroach encode-uri` command to generate a connection string containing a cluster's certificate for any [PCR statements]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}#manage-replication-in-the-sql-shell) that require a connection string. Pass the replication user, IP and port, along with the path to the certificate for the **primary cluster**, into the `encode-uri` command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach encode-uri {replication user}:{password}@{node IP or hostname}:26257 --ca-cert certs/ca.crt --inline
+cockroach encode-uri {replication user}:{password}@{node IP or hostname}:26257 --ca-cert {path to certs directory}/certs/ca.crt --inline
 ~~~
 
 The connection string output contains the primary cluster's certificate:
@@ -271,7 +267,7 @@ Copy the output ready for [Step 4](#step-4-start-replication), which requires th
 
 ## Step 4. Start replication
 
-The system virtual cluster in the standby cluster initiates and controls the replication stream by pulling from the primary cluster. In this section, you will connect to the primary from the standby to initiate the replication stream.
+The system virtual cluster in the standby cluster initializes and controls the replication stream by pulling from the primary cluster. In this section, you will connect to the primary from the standby to initiate the replication stream.
 
 1. From the **standby** cluster, use your connection string to the primary:
 
@@ -350,7 +346,7 @@ The system virtual cluster in the standby cluster initiates and controls the rep
 
 ## Set up PCR from an existing cluster
 
-You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. In the [PCR setup]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}), the existing cluster is the primary cluster, which serves application traffic.
+You can set up PCR replication from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled. However, the standby cluster must have cluster virtualization enabled. In the [PCR setup]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}), the existing cluster is the primary cluster.
 
 {{site.data.alerts.callout_info}}
 When you start PCR with an existing primary cluster that does **not** have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled, you will not be able to [_fail back_]({% link {{ page.version.version }}/failover-replication.md %}#failback) to the original primary cluster from the promoted, original standby. 
