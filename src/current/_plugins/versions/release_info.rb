@@ -46,6 +46,9 @@ module Jekyll
         
         latest_release = relevant_releases.max_by { |release| Date.parse(release['release_date']) }
         
+        # Skip if no matching release found
+        next if latest_release.nil?
+        
         # Populate release info
         if latest_release
           # Validate required docker configuration
