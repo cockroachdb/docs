@@ -16,6 +16,10 @@ When [cluster virtualization]({% link {{ page.version.version }}/cluster-virtual
 - When a metric is scoped to a non-system virtual cluster, the metric is tracked separately for each virtual cluster (including the system virtual cluster). Most metrics are scoped to a virtual cluster. Refer to [Metrics scoped to a virtual cluster](#metrics-scoped-to-a-virtual-cluster).
 - When a metric is scoped to the system virtual cluster, it is included only in the metrics for the system virtual cluster. These metrics provide information about the underlying CockroachDB cluster's performance. Refer to [Metrics scoped to the system virtual cluster](#metrics-scoped-to-the-system-virtual-cluster).
 
+{{site.data.alerts.callout_info}}
+To retrieve both system (node-level) and virtual cluster metrics, scrape the [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint) with the `cluster=system` query parameter. If you set the [`server.controller.default_target_cluster` cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), the endpoint without this parameter exposes metrics only for the specified virtual cluster.
+{{site.data.alerts.end}}
+
 {% comment %}
 Src: cockroach gen metrics-list --format=csv against cockroach-v24.3.0-beta.1.darwin-10.9-amd64
 
