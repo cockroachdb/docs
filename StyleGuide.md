@@ -5,17 +5,17 @@ The following guidance is provided to benefit CockroachDB docs authors and revie
 Included in this guide:
 
 - [Style and tone](#style-and-tone)
-- [Inclusive language](#inclusive-language)
+  - [Perspective and voice](#perspective-and-voice)
+  - [Prescriptive writing](#prescriptive-writing)
+  - [Speculation and feature support](#speculation-and-feature-support)
+  - [Latinisms](#latinisms)
+- [Inclusivity](#inclusivity)
   - [Avoid ableist language](#avoid-ableist-language)
-    - [Examples](#examples)
   - [Avoid unnecessarily gendered language](#avoid-unnecessarily-gendered-language)
-    - [Examples](#examples-1)
   - [Write diverse and inclusive examples](#write-diverse-and-inclusive-examples)
   - [Avoid unnecessarily violent language](#avoid-unnecessarily-violent-language)
-    - [Examples](#examples-2)
   - [Write accessible documentation](#write-accessible-documentation)
   - [Write about features and users in inclusive ways](#write-about-features-and-users-in-inclusive-ways)
-    - [Examples](#examples-3)
 - [Capitalization and punctuation](#capitalization-and-punctuation)
   - [Capitalization rules](#capitalization-rules)
   - [Punctuation rules](#punctuation-rules)
@@ -48,55 +48,116 @@ For Markdown-specific syntax and formatting guidelines, refer to the [Markdown G
 
 ## Style and tone
 
-CockroachDB docs should be helpful, humble, positive, and friendly. To achieve this, all docs should be factual and free from hyperbolic language.
+CockroachDB docs should be helpful, humble, positive, friendly, and free from hyperbolic language.
 
-Other general guidance about language and tone:
+### Perspective and voice
 
-- For [reference and general task-based docs](#reference-and-task-based-docs), use the second-person imperative present tense, also known as the "[imperative mood](https://www.grammar-monster.com/glossary/imperative_mood.htm)." These docs should be straightforward and conventional.
+For instructions, use the imperative present tense, aka "[imperative mood](https://www.grammar-monster.com/glossary/imperative_mood.htm)." The second-person subject ("you") is implied and can be omitted.
 
-    **Example:** In a new terminal, as the `root` user, use the `cockroach user` command to create a new user, `maxroach`.
+- **Example:** Run `cockroach start`.
+- **Example:** Click **Next**.
 
-    **Example:** Now that you have a database, user, and a table, run the following code to insert rows into the table.
+In tutorials, where a conversational tone is sometimes helpful, use the second person ("you").
 
-- Recommended usage of the personal pronoun "we":
+- **Example:** In this tutorial, you'll start with a new cluster, so stop and clean up any existing clusters.
+- **Example:** After you create the database, insert some rows.
 
-    - "We" can be used to describe the group of people developing CockroachDB, instead of "Cockroach Labs," only when it is clear who "we" is referring to.
-    - Do not use "we" in place of "CockroachDB" for when you are talking about something the _product_ does or supports.
-    - Do not use "we" in tutorials. See the next bullet for more on tutorials and examples.
+In headings, use the imperative mood. Do not use the gerund form.
 
-- For tutorials and examples, we recommend you use the second-person point of view (e.g., you). These docs should be more casual and conversational, as if they are teaching the user, but still straightforward and clear.
+- **Avoid:** Managing Users
+  **Avoid:** User Management
+  **Prefer:** Manage Users
 
-    **Example:** In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
+Do not use "we" to refer to "CockroachDB" or "Cockroach Labs".
 
-- Use active voice instead of passive. For more information, refer to the [Purdue Online Writing Lab resource](https://owl.english.purdue.edu/owl/resource/539/02/).
-- Use simple and direct language. Grammar can be incorrect to save simplicity (e.g., many descriptions in reference docs are phrases).
+- **Avoid:** We support changefeeds.
+  **Prefer:** CockroachDB supports changefeeds.
 
-    **Example:** `table name`: The name of the table to create audit logs for.
+- **Avoid:** We recommend ...
+  **Prefer:** Cockroach Labs recommends ...
 
-- Avoid using "please" when giving an instruction, except when asking the user to go outside the scope of the task (such as contacting Cockroach Labs or filing a support issue).
+### Prescriptive writing
 
-- To expand upon the idea of "free from hyperbolic language", avoid the use of the word "simple" (along with "just", "easily", "actually", etc.) since it's not really possible to tell what might be easy or hard for the user. Something you think is simple may be challenging for them.
+Write in a prescriptive style that clearly guides the user. The user should feel confident and supported, without having to infer meaning or make too many decisions on their own.
 
-- Use contractions to simplify language, but not in cases where a clear directive or prohibition is being given (e.g., `do not` / `cannot` / `should not` instead of `don't` / `can't` / `shouldn't`).
+Use active instead of passive voice.
 
-    **Example:** You cannot change primary key using `ALTER TABLE`.
+- **Avoid:** Each parameter should be set explicitly.
+  **Prefer:** Set each parameter explicitly.
 
-    **Example:** If you leave versioned binaries on your servers, you do not need to do anything.
+- **Avoid:** Additional options can be specified.
+  **Prefer:** You can specify additional options.
 
-- Avoid using forward-looking language when writing about supported syntax and behavior:
-    - Do not suggest that a feature may or may not be added in a future release.
-    - Do not use the words "yet" and "currently" when writing about a feature that we do or do not support.
-    - Do not reference the internal product roadmap.
+Use concise, direct language. Cut unnecessary words unless a conversational tone is intentional (for example, in tutorials). If a feature or concept is difficult to describe clearly or concisely, consider using an [example](#examples) or [image](#images) to complement the text.
 
-## Inclusive language
+- **Avoid:** Be mindful of the possibility that you might encounter a different result, depending on the specifics of your configuration, so you might want to do some testing first to see what happens.
+  **Prefer:** Run tests to verify that you get the expected result for your configuration.
 
-We want our education materials to be inclusive and written with diversity in mind. This section provides general guidelines, best practices, and examples when writing docs or training materials. This is a work in progress and we welcome any feedback and additions.
+- **Avoid:** `table_name`: This parameter is used to specify the name of the table you want to modify.
+  **Prefer:** `table_name`: The name of the table to modify.
+
+Provide guidance rather than leave decisions to the user. Avoid vague phrases like "as you wish" or "of your choice". When user discretion is required, be as explicit as possible to reduce ambiguity and cognitive load.
+
+- **Avoid:** Increase the threshold as needed.
+  **Prefer:** Increase the threshold until you see a performance improvement.
+
+- **Avoid:** Define additional settings as desired.
+  **Prefer:** You can define additional settings in the configuration file. To change the default host and port, set `host` and `port` respectively. To change the path, ...
+
+- **Avoid:** Edit the profile using your preferred text editor.
+  **Prefer:** Edit the profile in a text editor.
+
+Avoid vague time estimates.
+
+- **Avoid:** You should set the grace period to at least a few minutes.
+  **Prefer:** Set the grace period to at least 5 minutes.
+
+- **Avoid:** This should take a few moments. When finished, click **Next**.
+  **Prefer:** When finished, click **Next**.
+
+Do not use contractions when giving a technical description or instruction.
+
+- **Example:** You cannot change primary key using `ALTER TABLE`.
+- **Example:** If you leave versioned binaries on your servers, you do not need to do anything.
+
+Do not use "please" when giving an instruction, except when asking the user to go outside the scope of the task (for example, contacting Cockroach Labs or filing a support issue).
+
+- **Example:** If you need assistance, please contact [support](https://support.cockroachlabs.com/).
+
+- **Avoid:** Please click on the **Next** button.
+  **Prefer:** Click **Next**.
+
+Do not use language that could be read as presumptuous or condescending.
+
+- **Avoid:** If you aren't willing to do this for some reason, ...
+  **Prefer:** If this is not possible, ...
+
+- **Avoid:** Monitoring the cluster is simple.
+  **Prefer:** Monitor the cluster with the following tools:
+
+### Speculation and feature support
+
+Avoid forward-looking language when writing about supported syntax and behavior. Do not suggest that a feature may or may not be added in a future release. Avoid words like "yet" and "currently", and do not reference the internal product roadmap.
+
+- **Avoid:** CockroachDB does not yet support column-level privileges. This is planned for a future release.
+  **Prefer:** CockroachDB does not support column-level privileges.
+
+### Latinisms
+
+For readability, avoid Latinisms.
+
+- **Avoid:** Select a deployment option, e.g., {{ site.data.products.standard }} or {{ site.data.products.advanced }}.
+  **Prefer:** Select a deployment option such as {{ site.data.products.standard }} or {{ site.data.products.advanced }}.
+
+## Inclusivity
+
+Use inclusive language that reflects a diverse readership. Avoid terms that inherently exclude, stereotype, or cause confusion.
 
 ### Avoid ableist language
 
 An informal tone can allow for problematic ableist language due to figures of speech and colloquial language. Ableist language includes words like "crazy", "insane", "blind", "dummy", "cripple", and more.
 
-#### Examples
+**Examples:**
 
 - Replace _dummy_ with **placeholder, sample**.
 - Replace _sanity-check_ with **final check, confirm**.
@@ -105,13 +166,12 @@ An informal tone can allow for problematic ableist language due to figures of sp
 
 Be aware of personal pronouns in examples and outdated gendered terms.
 
-Best practices:
+**Best practices:**
 
 - Avoid personal pronouns (i.e., use proper nouns, "the user", etc.).
 - If a personal pronoun is needed for clarity or conciseness, default to gender-neutral pronouns (they/them).
-- Be aware of other possible gendered language (e.g., man-hours, man-in-the-middle attacks), and find alternatives.
 
-#### Examples
+**Examples:**
 
 - Replace _man hours_ with one of: **work hours**, **staff hours**, **person hours**.
 - Replace _manning_ with **staffing**.
@@ -119,20 +179,20 @@ Best practices:
 
 ### Write diverse and inclusive examples
 
-Avoid examples that are US-specific or centric.
+Avoid examples that are U.S.-specific or centric.
 
-Best practices:
+**Best practices:**
 
-- Avoid US-specific holidays, sports, figures of speech, etc.
+- Avoid U.S.-specific holidays, sports, figures of speech, etc.
 - Use a diverse set of names in examples.
 
 ### Avoid unnecessarily violent language
 
-Avoid violent or harmful terms.
+Avoid terms that imply violence or harm.
 
-#### Examples
+**Examples:**
 
-- Replace "_kill_" with **terminate**
+- Replace "_kill_" with **terminate**.
 - Replace "_hit_ Enter" with **press Enter**.
 - Replace "_hit_ your resource limits" with **reach your resource limits**
 - Replace "_hit_ an error" with **experience an error**.
@@ -144,59 +204,50 @@ Terminology around "kill" vs. "stop" vs. "terminate" is nuanced, as described [i
 ### Write accessible documentation
 
 - Don't use directional terms as the only clue to location within a page. "Left", "right", "up", "down", "above", and "below" aren't useful for people who use screen-reading software. Good replacements are "preceding" and "following". If you must use a directional term, provide additional text about the location, such as in the Save As dialog box, on the Standard toolbar, or in the title bar.
-- Provide Alt text that adequately summarizes the intent of each image.
+- Replace "_see_" with **refer to**.
+- Provide [alt text](https://en.wikipedia.org/wiki/Alt_attribute) that adequately summarizes the intent of each [image](#images).
 - Link text should be the same as or summarize the title of the link target. Avoid **here** and **this documentation**.
 
 ### Write about features and users in inclusive ways
 
 Avoid using socially-charged terms for features and technical concepts.
 
-#### Examples
+**Examples:**
 
-- Replace _blacklist / whitelist_ with **denylist / allowlist**
-- Replace _master / slave_ with **main/principal/primary/manager** and **secondary/subordinate/worker**
-- Replace _native_ with **core, built-in, top-level, integrated, "built for"** or omit
-- Replace _old_ with **existing, previous, first, original**
+- Replace _blacklist / whitelist_ with **denylist / allowlist**.
+- Replace _master / slave_ with **main/principal/primary/manager** and **secondary/subordinate/worker**.
+- Replace _native_ with **core, built-in, top-level, integrated, "built for"** or omit.
+- Replace _old_ with **existing, previous, first, original**.
 
 ## Capitalization and punctuation
 
 ### Capitalization rules
 
-- Use title case for titles.
-- Use sentence case instead of title case for all [headings](#headings).
-- Capitalize proper nouns, CockroachDB specific terms, and the names of UI features.
+- Use [title case](https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case) for titles.
+- Use [sentence case](https://apastyle.apa.org/style-grammar-guidelines/capitalization/sentence-case) instead of title case for all [headings](#headings).
+- Capitalize proper nouns, CockroachDB-specific terms, and the names of UI features.
 
-    **Examples:** CockroachDB, Cockroach Labs, the Overview dashboard, the SQL Queries graph
+    - **Examples:** CockroachDB, Cockroach Labs, the Overview dashboard, the SQL Queries graph
 
-- Follow SQL capitalization standards.
-- In body text, only capitalize proper nouns. Do not capitalize common nouns, even if the common noun is an important product concept.
+- Follow [SQL capitalization standards](https://dataschool.com/how-to-teach-people-sql/syntax-conventions/#all-caps-sql-commands).
 
-    **Example:**
+For links, use the matching capitalization:
 
-      - Correct: New clusters will now have admission control enabled by default.
-      - Incorrect: New clusters will now have Admission Control enabled by default.
-
-#### Link capitalization
-
-For [links](#links), capitalization should match the context:
-
-- **Use title case** when referring to the linked doc by its page title (e.g., "See __Best Practices__ for more information").
-- **Use sentence case** when referring to the linked doc by one of its headers (e.g., "See __Clock synchronization__ for further guidance").
-- **Use sentence case** when referring to a linked doc without explicitly citing a page title or header (e.g., "[…] follow the __identifier rules__ when creating […]").
+- **Use title case** when referring to the linked doc by its page title (for example, "Refer to __Best Practices__ for more information").
+- **Use sentence case** when referring to the linked doc by one of its headers (for example, "Refer to __Clock synchronization__ for further guidance").
 
 ### Punctuation rules
 
-- Limit semicolon usage. Instead, try two simple sentences.
+- Limit semicolon usage. Instead, use two simple sentences.
 - Don't use end punctuation (e.g., periods or colons) in headings.
 - Use periods at the end of list items if they are sentences or complete a sentence.
-- Use the [Oxford (a.k.a. serial) comma](https://en.wikipedia.org/wiki/Serial_comma).
-- Append singular possessive nouns with `'s`, including when they end with `s`. For example, `Cockroach Labs's`.
+- Prefer colons to hyphens. For example, when defining a term, use "Term: Definition" and not "Term - Definition".
+- Use the [Oxford (aka serial) comma](https://en.wikipedia.org/wiki/Serial_comma).
+- Append singular possessive nouns with `'s`, including when they end with `s`. For example, `Cockroach Labs's`. TK
 - Ensure commas and periods are inside quotation marks, e.g., _CockroachDB's availability model is described as "Multi-Active Availability."_ Place other punctuation outside quotation marks, e.g., _What is "Multi-Active Availability"?_ . When any type of punctuation is part of a quote, place it inside the quotation marks, e.g., _To phrase it in the form of a question: "Who are the top 10 users by number of rides on a given date?"_.
 - Avoid using slashes `/` and ampersands `&` as conjunctions in place of **or** and **and** respectively, unless space is very limited (e.g., in a table).
 - Avoid using _and/or_ unless space is very limited (e.g., in a table). Instead, decide whether **and** or **or** can stand alone or make use of **both** when the inclusivity must be explicit, e.g., **x or y or both**.
 - When listing a range of versions, do not use a dash. Instead, separate the first and last versions with `to` (for example, `v22.1.0 to v22.1.4`).
-
-For more detail about how to format text, see [Components](#components).
 
 ## Vale
 
@@ -213,9 +264,9 @@ CockroachDB docs are mainly comprised of pages (`.md`) and images (`.png` or `.g
 - `this-is-a-doc.md`
 - `name-of-your-image.png`
 
-Each version's pages are found in a directory named for the version. For example, pages for CockroachDB v21.1 are in the `docs > v21.1` directory. For more information about page structure, see the [Pages](https://github.com/cockroachdb/docs/blob/main/CONTRIBUTING.md#pages) section in our [Contributing Guide](https://github.com/cockroachdb/docs/blob/main/CONTRIBUTING.md). For more information about how to style page content, see [Components](#components).
+Each version's pages are found in a directory named for the version. For example, pages for CockroachDB v25.3 are in the `docs > src > current > v25.3` directory. For more information about page structure, refer to the [Pages](https://github.com/cockroachdb/docs/blob/main/CONTRIBUTING.md#pages) section in our [Contributing Guide](https://github.com/cockroachdb/docs/blob/main/CONTRIBUTING.md).
 
-Each version's images are stored in a versioned directory under the `images` directory. For example, images for CockroachDB v21.1 are in the `docs > images > v21.1` directory. For more information, see [Images](#images).
+Each version's images are stored in a versioned directory under the `images` directory. For example, images for CockroachDB v25.3 are in the `docs > src > current > images > v25.3` directory. For more information, refer to [Images](#images).
 
 ### File naming
 
@@ -226,7 +277,7 @@ File names should match the page title. If you need to change a file name, it is
 
 ## Product names
 
-All product names except CockroachDB should be written as Liquid variables unless part of front-matter, file names, or non-Markdown files. Use the following code in place of product names:
+Use Liquid variables to write all product names for CockroachDB, except "CockroachDB", except in Markdown front-matter, file names, or non-Markdown files. Use the following code in place of product names:
 
 - **CockroachDB Cloud** : `CockroachDB {{ site.data.products.cloud }}`
 - **CockroachDB Basic** : `CockroachDB {{ site.data.products.basic }}`
@@ -236,11 +287,17 @@ All product names except CockroachDB should be written as Liquid variables unles
 
 The first occurrence of a product name within a docs page should use its full name. At the writer's discretion, subsequent occurrences may be shortened to "Basic", "Advanced", or "Cloud", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
 
+Before opening a pull request, verify that all product and feature names are correct, to the best of your knowledge.
+
+Do not use shortened versions of product names such as "CRDB", "K8s", etc.
+
+
+
 ## Page components
 
 ### GitHub issues and pull requests
 
-[Release notes](https://www.cockroachlabs.com/docs/releases/index.html) and [technical advisories](https://www.cockroachlabs.com/docs/advisories/index.html) contain links to individual GitHub issues and pull requests.
+[Release notes](https://www.cockroachlabs.com/docs/releases/index.html), [technical advisories](https://www.cockroachlabs.com/docs/advisories/index.html), and [known limitations](https://www.cockroachlabs.com/docs/stable/known-limitations.html) contain links to individual GitHub issues and pull requests.
 
 Reference issues and pull requests by their corresponding number, prepended with `#`.
 
@@ -359,28 +416,6 @@ If the limitation is related to a feature documented elsewhere on our docs site,
 
 Refer to the [wiki](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/3516825623/Document+known+limitations).
 
-### Examples
-
-Examples help show the feature in action. Examples follow a basic format:
-
-1. The **Title** should start with a verb and should describe the task the example is outlining. It should use title case.
-
-    **Example:** Create a Table that Mirrors Key-Value Storage
-
-2. **Introductory information** should be provided if some context is needed to orient the user and can also be used to introduce code blocks. This should be written in a conversational tone.
-
-    **Example:** "CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. Although it is not possible to access the key-value store directly, you can mirror direct access using a "simple" table of two columns, with one set as the primary key:"
-
-- **Code blocks** provide executable code samples.
-
-    **Example:** "CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. Although it is not possible to access the key-value store directly, you can mirror direct access using a "simple" table of two columns, with one set as the primary key:
-
-    ~~~
-    > CREATE TABLE kv (k INT PRIMARY KEY, v BYTES);
-    ~~~
-
-    When such a "simple" table has no indexes or foreign keys, `INSERT`/`UPSERT`/`UPDATE`/`DELETE` statements translate to key-value operations with minimal overhead (single digit percent slowdowns)." [_Click here to see the rest of the example._](https://www.cockroachlabs.com/docs/stable/create-table.html#create-a-table-that-mirrors-key-value-storage)
-
 ## Content elements
 
 This section covers various content elements used in CockroachDB documentation.
@@ -398,6 +433,73 @@ Use images to clarify a topic, but only use them as needed. Images are either:
 ### Videos
 
 Like images, use videos to clarify a topic, but only use them as needed. Typically, videos should be hosted on the official [CockroachDB YouTube page](https://www.youtube.com/@cockroachdb) and are surfaced by our Marketing team.
+
+### Code
+
+#### Code snippets
+
+TK
+<!-- Use environment variables in command snippets for paths and identifiers that may vary between deployments (e.g., $INSTALLDIR, $NAMESPACE) to reduce copy-paste errors, and avoid repeatedly clarifying arbitrary values in surrounding text. -->
+
+tk separate input and output
+interleave with text
+
+#### Placeholders
+
+Code samples often include placeholder values, to be replaced by values specific to a user's environment. To denote that a value in a code sample is a placeholder value that should be replaced, use curly brackets (`{}`).
+
+For example: `SELECT * FROM TABLE {mytable};`. In this code sample, `{mytable}` would be replaced by some table name before the code could actually run.
+
+When you use placeholders, you usually need to define the value within the brackets, if the placeholder value isn't clear. Define placeholder values immediately following the code sample:
+
+- For a single placeholder value, use a follow-up sentence.
+- For multiple placeholder values, use a bulleted list.
+- For many placeholder values (10+), use a table.
+- For large code blocks, define the placeholder values inside the code block with an inline code comment.
+
+Ensure that placeholders are placed within backticks: `SET {session variable}`. This signifies that placeholder values are code.
+
+If the code sample is sensitive to curly bracket characters (e.g., JavaScript), you can use `<>` instead.
+
+### Examples
+
+Examples help show the feature in action. Examples follow a basic format:
+
+1. The **Title** should start with a verb and should describe the task the example is outlining. It should use title case.
+
+    **Example:** Create a Table that Mirrors Key-Value Storage
+
+2. **Introductory information** should be provided if some context is needed to orient the user and can also be used to introduce code blocks. This should be written in a conversational tone.
+
+    **Example:** "CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. Although it is not possible to access the key-value store directly, you can mirror direct access using a "simple" table of two columns, with one set as the primary key:"
+
+- **Code blocks** provide executable code samples.
+
+    **Example:** "CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. Although it is not possible to access the key-value store directly, you can mirror direct access using a "simple" table of two columns, with one set as the primary key:
+
+    ~~~
+    CREATE TABLE kv (k INT PRIMARY KEY, v BYTES);
+    ~~~
+
+    When such a "simple" table has no indexes or foreign keys, `INSERT`/`UPSERT`/`UPDATE`/`DELETE` statements translate to key-value operations with minimal overhead (single digit percent slowdowns)." [_Click here to see the rest of the example._](https://www.cockroachlabs.com/docs/stable/create-table.html#create-a-table-that-mirrors-key-value-storage)
+
+tk
+
+Use an example whenever possible, especially when discussing a configuration template or tk.
+
+### Include files
+
+Sometimes content needs to be duplicated across two or more pages in the documentation. For example, there may be several pages that need the same cluster setup, but describe how to use different features. Or a very specific [note](#notes) or [warning](#warnings) needs to be added to several different pages.
+
+In these situations, you will need to use an [_include file_](https://jekyllrb.com/docs/includes/). An include file is a separate Markdown file (stored in `_includes/some/shared-file.md`) where you will write content that is shared across multiple pages.
+
+For information on include file syntax, refer to the [Markdown Guide](MarkdownGuide.md#include-files).
+
+_Note_: Using include files adds complexity to the docs site architecture and build process. It also makes writing the documentation more tricky, because instead of working on text in one document, the writer has to jump between two or more files. If you can link to existing content rather than using an include file, strongly consider doing that instead.
+
+## UI elements
+
+tk
 
 ## Word usage guidelines
 
