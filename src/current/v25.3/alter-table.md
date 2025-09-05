@@ -2618,6 +2618,12 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
+<a name="modify-rbr-region-column"></a>
+
+#### Modify the region column or its expression
+
+{% include {{ page.version.version }}/sql/modify-region-column-or-its-expression.md %}
+
 #### Infer a row's home region from a foreign key
 
 {{site.data.alerts.callout_info}}
