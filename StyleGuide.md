@@ -58,16 +58,16 @@ In tutorials, where a conversational tone is sometimes helpful, use the second p
 
 In page titles and headings, use the imperative mood to name a task. Do not use the gerund form or a noun phrase.
 
-- **Avoid:** Managing Users
-  **Avoid:** User Management
+- **Avoid:** Managing Users  
+  **Avoid:** User Management  
   **Prefer:** Manage Users
 
 Do not use "we" to refer to "CockroachDB" or "Cockroach Labs".
 
-- **Avoid:** We support changefeeds.
+- **Avoid:** We support changefeeds.  
   **Prefer:** CockroachDB supports changefeeds.
 
-- **Avoid:** We recommend ...
+- **Avoid:** We recommend ...  
   **Prefer:** Cockroach Labs recommends ...
 
 ### Prescriptive writing
@@ -76,37 +76,37 @@ Write in a prescriptive style that clearly guides the user. The user should feel
 
 Use active instead of passive voice.
 
-- **Avoid:** Each parameter should be set explicitly.
+- **Avoid:** Each parameter should be set explicitly.  
   **Prefer:** Set each parameter explicitly.
 
-- **Avoid:** Additional options can be specified.
+- **Avoid:** Additional options can be specified.  
   **Prefer:** You can specify additional options.
 
 Use concise, direct language. Cut unnecessary words unless a conversational tone is intentional (for example, in tutorials). If a feature or concept is difficult to describe clearly or concisely, consider using an [example](#examples) or [image](#images) to complement the text.
 
-- **Avoid:** Be mindful of the possibility that you might encounter a different result, depending on the specifics of your configuration, so you might want to do some testing first to see what happens.
+- **Avoid:** Be mindful of the possibility that you might encounter a different result, depending on the specifics of your configuration, so you might want to do some testing first to see what happens.  
   **Prefer:** Run tests to verify that you get the expected result for your configuration.
 
-- **Avoid:** `table_name`: This parameter is used to specify the name of the table you want to modify.
+- **Avoid:** `table_name`: This parameter is used to specify the name of the table you want to modify.  
   **Prefer:** `table_name`: The name of the table to modify.
 
 Provide guidance rather than leave decisions to the user. Avoid vague phrases like "as you wish" or "of your choice". When user discretion is required, be as explicit as possible to reduce ambiguity and cognitive load.
 
-- **Avoid:** Increase the threshold as needed.
+- **Avoid:** Increase the threshold as needed.  
   **Prefer:** Increase the threshold until you see a performance improvement.
 
-- **Avoid:** Define additional settings as desired.
+- **Avoid:** Define additional settings as desired.  
   **Prefer:** You can define additional settings in the configuration file. To change the default host and port, set `host` and `port` respectively. To change the path, ...
 
-- **Avoid:** Edit the profile using your preferred text editor.
+- **Avoid:** Edit the profile using your preferred text editor.  
   **Prefer:** Edit the profile in a text editor.
 
 Avoid vague time estimates. Provide a specific timeframe when possible.
 
-- **Avoid:** You should set the grace period to at least a few minutes.
+- **Avoid:** You should set the grace period to at least a few minutes.  
   **Prefer:** Set the grace period to at least 5 minutes.
 
-- **Avoid:** This should take a few moments. When finished, click **Next**.
+- **Avoid:** This should take a few moments. When finished, click **Next**.  
   **Prefer:** When finished, click **Next**.
 
 Do not use contractions when giving a technical description or instruction.
@@ -118,29 +118,29 @@ Do not use "please" when giving an instruction, except when asking the user to g
 
 - **Example:** If you need assistance, please contact [support](https://support.cockroachlabs.com/).
 
-- **Avoid:** Please click on the **Next** button.
+- **Avoid:** Please click on the **Next** button.  
   **Prefer:** Click **Next**.
 
 Do not use language that could be read as presumptuous or condescending.
 
-- **Avoid:** If you aren't willing to do this for some reason, ...
+- **Avoid:** If you aren't willing to do this for some reason, ...  
   **Prefer:** If this is not possible, ...
 
-- **Avoid:** Monitoring the cluster is simple.
+- **Avoid:** Monitoring the cluster is simple.  
   **Prefer:** Monitor the cluster with the following tools:
 
 ### Speculation and feature support
 
 Avoid forward-looking language when writing about supported syntax and behavior. Do not suggest that a feature may or may not be added in a future release. Avoid words like "yet" and "currently", and do not reference the internal product roadmap.
 
-- **Avoid:** CockroachDB does not yet support column-level privileges. This is planned for a future release.
+- **Avoid:** CockroachDB does not yet support column-level privileges. This is planned for a future release.  
   **Prefer:** CockroachDB does not support column-level privileges.
 
 ### Latinisms
 
 For readability, avoid Latinisms.
 
-- **Avoid:** Select a deployment option, e.g., {{ site.data.products.standard }} or {{ site.data.products.advanced }}.
+- **Avoid:** Select a deployment option, e.g., {{ site.data.products.standard }} or {{ site.data.products.advanced }}.  
   **Prefer:** Select a deployment option such as {{ site.data.products.standard }} or {{ site.data.products.advanced }}.
 
 ## Word usage guidelines
@@ -163,7 +163,7 @@ This section logs decisions about dictionary words to use and avoid. Add specifi
 
 - Use "`cockroach`" to refer to the CockroachDB binary.
 
-  - **Avoid:** Cockroach process
+  - **Avoid:** Cockroach process  
     **Prefer:** `cockroach` process
 
 ### CockroachDB versions
@@ -299,12 +299,12 @@ For links to CockroachDB docs, match the capitalization of the linked content:
 - Use the [Oxford (aka serial) comma](https://en.wikipedia.org/wiki/Serial_comma).
 - Use straight `'` rather than curved `‘` quotes.
 - Limit semicolon usage. Instead, use two simple sentences.
-    - **Avoid:** CockroachDB is a distributed database; it scales horizontally across multiple nodes.
+    - **Avoid:** CockroachDB is a distributed database; it scales horizontally across multiple nodes.  
       **Prefer:** CockroachDB is a distributed database. It scales horizontally across multiple nodes.
 - Do not end headings with punctuation (for example, periods or colons).
 - Use periods on either all [list items](MarkdownGuide.md#lists) or none. If some items are sentences or complete a sentence, use periods.
 - Use colons instead of dashes.
-    - **Avoid:** **Default** - true
+    - **Avoid:** **Default** - true  
       **Prefer:** **Default:** true
 - When listing a range of versions, do not use a dash. Instead, separate the first and last versions with `to` (for example, `v22.1.0 to v22.1.4`).
 - For singular proper nouns ending in **s**, form the possessive with **'s**.
