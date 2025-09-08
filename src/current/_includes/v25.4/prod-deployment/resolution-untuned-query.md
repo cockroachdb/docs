@@ -1,0 +1,1 @@
+If you find queries that are consuming too much memory, [cancel the queries]({% link {{ page.version.version }}/manage-long-running-queries.md %}#cancel-long-running-queries) to free up memory usage. For information on optimizing query performance, see [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}).
