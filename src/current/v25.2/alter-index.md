@@ -374,31 +374,49 @@ Before scattering, you can view the current leaseholder distribution for an inde
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-WITH range_details AS (SHOW RANGES FROM DATABASE movr WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
+WITH range_details AS (SHOW RANGES FROM index rides@rides_pkey WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
 ~~~
 
 ~~~
   range_id | lease_holder | replicas
 -----------+--------------+-----------
-        94 |            1 | {1}
+       135 |            9 | {2,6,9}
+       123 |            6 | {2,6,9}
+       122 |            9 | {2,6,9}
+       120 |            9 | {3,6,9}
+       121 |            9 | {3,6,9}
+       119 |            6 | {2,6,9}
+        93 |            6 | {1,6,9}
+        91 |            2 | {2,6,9}
+        92 |            6 | {2,6,8}
+(9 rows)
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER INDEX rides@revenue_idx SCATTER;
+ALTER INDEX rides@rides_pkey SCATTER;
 ~~~
 
 After scattering, recheck the leaseholder distribution:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-WITH range_details AS (SHOW RANGES FROM DATABASE movr WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
+WITH range_details AS (SHOW RANGES FROM index rides@rides_pkey WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
 ~~~
 
 ~~~
   range_id | lease_holder | replicas
 -----------+--------------+-----------
-        94 |            1 | {1}
+       135 |            9 | {1,6,9}
+       123 |            5 | {2,5,9}
+       122 |            5 | {2,5,9}
+       120 |            6 | {3,6,9}
+       121 |            3 | {3,6,9}
+       119 |            5 | {3,5,9}
+        93 |            5 | {1,5,9}
+        91 |            1 | {1,5,9}
+        92 |            5 | {2,5,8}
+(9 rows)
 ~~~
 
 ### Split and unsplit indexes
