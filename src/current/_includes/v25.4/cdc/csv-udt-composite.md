@@ -1,0 +1,1 @@
+A changefeed emitting [CSV]({% link {{ page.version.version }}/changefeed-messages.md %}#csv) will include `AS` labels in the message format when the changefeed serializes a [user-defined composite type]({% link {{ page.version.version }}/create-type.md %}). [#102905](https://github.com/cockroachdb/cockroach/issues/102905)
