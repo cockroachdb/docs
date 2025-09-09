@@ -1,7 +1,7 @@
-
 baseurl: /docs
+current_cloud_version: v25.3
+destination: _site/docs
+homepage_title: CockroachDB Docs
 versions:
   stable: v25.3
   dev: v25.3
-
-# Config updated at 2025-09-09 16:20:40.148520
