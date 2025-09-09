@@ -352,6 +352,10 @@ COMMIT;
 
 With transaction pipelining, write intents are replicated from leaseholders in parallel, so the waiting all happens at the end, at transaction commit time.
 
+{{site.data.alerts.callout_info}}
+Clarification: Transaction pipelining overlaps the Raft consensus work for intent writes across statements. It does not make individual SQL statements free. Each statement must still be planned and evaluated (e.g., index lookups, constraint checks, conflict detection, and waiting on contending writes), and the client submits statements sequentially. Statements that touch the same rows can also create pipeline stalls to preserve read-your-writes ordering. As a result, while the consensus component of write latency can approach O(1) with respect to the number of statements, end-to-end transaction latency can still scale with the number of statements due to SQL evaluation and dependency stalls.
+{{site.data.alerts.end}}
+
 At a high level, transaction pipelining works as follows:
 
 1. For each statement, the transaction gateway node communicates with the leaseholders (*L*<sub>1</sub>, *L*<sub>2</sub>, *L*<sub>3</sub>, ..., *L*<sub>i</sub>) for the ranges it wants to write to. Since the primary keys in the table above are UUIDs, the ranges are probably split across multiple leaseholders (this is a good thing, as it decreases [transaction conflicts](#transaction-conflicts)).
@@ -362,7 +366,7 @@ At a high level, transaction pipelining works as follows:
 
 1. When attempting to commit, the transaction gateway node then waits for the write intents to be replicated in parallel to all of the leaseholders' followers. When it receives responses from the leaseholders that the write intents have propagated, it commits the transaction.
 
-In terms of the SQL snippet shown above, all of the waiting for write intents to propagate and be committed happens once, at the very end of the transaction, rather than for each individual write. This means that the cost of multiple writes is not `O(n)` in the number of SQL DML statements; instead, it's `O(1)`.
+In terms of the SQL snippet shown above, all of the waiting for write intents to propagate and be committed happens once, at the very end of the transaction, rather than for each individual write. This means the consensus-related waiting is not `O(n)` in the number of SQL DML statements; instead, it approaches `O(1)`. The overall client-observed latency still includes per-statement planning and any pipeline stalls, so it does not, in general, become strictly `O(1)`.
 
 ### Parallel Commits
 
