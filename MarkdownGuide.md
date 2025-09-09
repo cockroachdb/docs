@@ -149,7 +149,7 @@ For websites that automatically localize pages, avoid using localization element
 
 ### Inline code
 
-Use inline code when referring to code, commands, or other technical syntax within a sentence. Inline `code` is surrounded by backticks (``).
+Use inline code when referring to code, commands, values, or other technical syntax within a sentence. Inline `code` is surrounded by backticks (``).
 
 **Example:** The `CREATE TABLE` statement creates a new table in a database.
 
@@ -212,23 +212,6 @@ Notes for usage:
 
 - **Copy to Clipboard** should be used for every code block that can be **executed**.
 - To render properly, there must be a line break above the `{% include_cached copy-clipboard.html %}` line.
-
-### Placeholders
-
-Code samples often include placeholder values, to be replaced by values specific to a user's environment. To denote that a value in a code sample is a placeholder value that should be replaced, use curly brackets (`{}`).
-
-For example: `SELECT * FROM TABLE {mytable};`. In this code sample, `{mytable}` would be replaced by some table name before the code could actually run.
-
-When you use placeholders, you usually need to define the value within the brackets, if the placeholder value isn't clear. Define placeholder values immediately following the code sample:
-
-- For a single placeholder value, use a follow-up sentence.
-- For multiple placeholder values, use a bulleted list.
-- For many placeholder values (10+), use a table.
-- For large code blocks, define the placeholder values inside the code block with an inline code comment.
-
-Ensure that placeholders are placed within backticks: `SET {session variable}`. This signifies that placeholder values are code.
-
-If the code sample is sensitive to curly bracket characters (e.g., JavaScript), you can use `<>` instead.
 
 ### Escaping special characters
 
@@ -396,6 +379,34 @@ You can use the following HTML formatting within an HTML table:
 - Use HTML only when Markdown doesn't provide the necessary functionality.
 - When mixing Markdown and HTML, ensure proper spacing and formatting. Preview the rendered page locally.
 
+## Callouts
+
+CockroachDB docs use three classes of "callouts," which are highlighted blocks of text: tips, notes, and warnings.
+
+- To insert a **tip**, use the following code:
+
+  ~~~
+  {{site.data.alerts.callout_success}}
+  tip text goes here
+  {{site.data.alerts.end}}
+  ~~~
+
+- To insert a **note**, use the following code:
+
+  ~~~
+  {{site.data.alerts.callout_info}}
+  note text goes here
+  {{site.data.alerts.end}}
+  ~~~
+
+- To insert a **warning**, use the following code:
+
+  ~~~
+  {{site.data.alerts.callout_danger}}
+  warning text goes here
+  {{site.data.alerts.end}}
+  ~~~
+
 ## Images
 
 Use the following HTML and Liquid to include an image in a Markdown page:
@@ -475,14 +486,6 @@ A patch release version of CockroachDB receives updates as patches. To refer to 
 ~~~
 
 ## Include files
-
-Sometimes content needs to be duplicated across two or more pages in the documentation. For example, there may be several pages that need the same cluster setup, but describe how to use different features. Or a very specific [note](#notes) or [warning](#warnings) needs to be added to several different pages.
-
-In these situations, you will need to use an _include file_. An include file is a separate Markdown file (stored in `_includes/some/shared-file.md`) where you will write content that is shared across multiple pages.
-
-For more information about include files, see [the Jekyll `include` documentation](https://jekyllrb.com/docs/includes/).
-
-_Note_: Using include files adds complexity to the docs site architecture and build process. It also makes writing the documentation more tricky, because instead of working on text in one document, the writer has to jump between two or more files. If you can link to existing content rather than using an include file, strongly consider doing that instead.
 
 There are [basic](#basic-include-file-usage) and [advanced](#advanced-include-file-usage) methods for using include files. Use the basic method unless you are sure you need the advanced.
 
