@@ -1,0 +1,1 @@
+**Expected values for a healthy cluster**: Less than 100ms in addition to the [network latency]({% link {{ page.version.version }}/ui-network-latency-page.md %}) between nodes in the cluster.

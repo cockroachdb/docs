@@ -1,0 +1,1 @@
+Use dedicated volumes for the CockroachDB <a href="{% link {{ page.version.version }}/cockroach-start.md %}#store">store</a>. Do not share the store volume with any other I/O activity.
