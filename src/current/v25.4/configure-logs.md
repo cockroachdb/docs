@@ -59,10 +59,12 @@ For clarity, this article uses the block format to describe the YAML payload, wh
 file-defaults: ...       # defaults inherited by file sinks
 fluent-defaults: ...     # defaults inherited by Fluentd sinks
 http-defaults: ...       # defaults inherited by HTTP sinks
+otlp-defaults: ...       # defaults inherited by OTLP sinks
 sinks:
    file-groups: ...      # file sink definitions
    fluent-servers: ...   # Fluentd sink definitions
    http-servers: ...     # HTTP sink definitions
+   otlp-servers: ...     # OTLP sink definitions
    stderr: ...           # stderr sink definitions
 capture-stray-errors: ... # parameters for the stray error capture system
 ~~~
@@ -75,7 +77,13 @@ You can view the default settings by running `cockroach debug check-log-config`,
 
 ## Configure log sinks
 
-Log *sinks* route events from specified [logging channels]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) to destinations outside CockroachDB. These destinations currently include [log files](#output-to-files), [Fluentd](https://www.fluentd.org/)-compatible [servers](#output-to-fluentd-compatible-network-collectors), [HTTP servers](#output-to-http-network-collectors), and the [standard error stream (`stderr`)](#output-to-stderr).
+Log *sinks* route events from specified [logging channels]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) to destinations outside CockroachDB. These destinations include:
+
+- [log files](#output-to-files)
+- [Fluentd](https://www.fluentd.org/)-compatible [servers](#output-to-fluentd-compatible-network-collectors)
+- [HTTP servers](#output-to-http-network-collectors)
+- [OTLP](https://opentelemetry.io/)-compatible [servers](#output-to-otlp-compatible-network-collectors)
+- the [standard error stream (`stderr`)](#output-to-stderr)
 
 All supported output destinations are configured under `sinks`:
 
@@ -83,6 +91,7 @@ All supported output destinations are configured under `sinks`:
 file-defaults: ...
 fluent-defaults: ...
 http-defaults: ...
+otlp-defaults: ...
 sinks:
   file-groups:
     {file group name}:
@@ -93,6 +102,10 @@ sinks:
       channels: {channels}
       ...
   http-servers:
+    {server name}:
+      channels: {channels}
+      ...
+  otlp-servers:
     {server name}:
       channels: {channels}
       ...
@@ -108,14 +121,14 @@ All supported sink types use the following common sink parameters:
 | Parameter       | Description                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `filter`        | Minimum severity level at which logs enter the channels selected for the sink. Accepts one of the valid [severity levels]({% link {{ page.version.version }}/logging.md %}#logging-levels-severities) or `NONE`, which excludes all messages from the sink output. For details, see [Set logging levels](#set-logging-levels).                                                                                                                                   |
-| `format`        | Log message format to use for file or network sinks. Accepts one of the valid [log formats]({% link {{ page.version.version }}/log-formats.md %}). For details, see [file logging format](#file-logging-format), [Fluentd logging format](#fluentd-logging-format), and [HTTP logging format](#http-logging-format).                                                                                                                                             |
+| `format`        | Log message format to use for file or network sinks. Accepts one of the valid [log formats]({% link {{ page.version.version }}/log-formats.md %}). For details, see [file logging format](#file-logging-format), [Fluentd logging format](#fluentd-logging-format), [HTTP logging format](#http-logging-format), and [OTLP logging format](#otlp-logging-format).                                                                                                                                             |
 |`format-options` | Customization options for specified `format`. For available options for each format, see [Log formats]({% link {{ page.version.version }}/log-formats.md %}). For an example use case, see [Set timezone](#set-timezone).  |
 | `redact`        | When `true`, enables automatic redaction of personally identifiable information (PII) from log messages. This ensures that sensitive data is not transmitted when collecting logs centrally or over a network. For details, see [Redact logs](#redact-logs).                                                                                                                                                                 |
 | `redactable`    | When `true`, preserves redaction markers around fields that are considered sensitive in the log messages. The markers are recognized by [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) and [`cockroach debug merge-logs`]({% link {{ page.version.version }}/cockroach-debug-merge-logs.md %}) but may not be compatible with external log collectors. For details on how the markers appear in each format, see [Log formats]({% link {{ page.version.version }}/log-formats.md %}).             |
 | `exit-on-error` | When `true`, stops the Cockroach node if an error is encountered while writing to the sink. We recommend enabling this option on file sinks in order to avoid losing any log entries. When set to `false`, this can be used to mark certain sinks (such as `stderr`) as non-critical.                                                                                                                                        |
 | <a id="auditable"></a>`auditable`     | If `true`, enables `exit-on-error` on the sink. Also disables `buffered-writes` if the sink is under `file-groups`. This guarantees [non-repudiability](https://wikipedia.org/wiki/Non-repudiation) for any logs in the sink, but can incur a performance overhead and higher disk IOPS consumption. This setting is typically enabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring).<br><br>File-based audit logging cannot coexist with the buffering configuration, so disable either [`buffering`](#file-buffering) or `auditable`. |
 
-If not specified for a given sink, these parameter values are inherited from [`file-defaults`](#set-file-defaults) (for file sinks), [`fluent-defaults`](#set-fluentd-defaults) (for Fluentd sinks), and [`http-defaults`](#set-http-defaults) (for HTTP sinks).
+If not specified for a given sink, these parameter values are inherited from [`file-defaults`](#set-file-defaults) (for file sinks), [`fluent-defaults`](#set-fluentd-defaults) (for Fluentd sinks), [`http-defaults`](#set-http-defaults) (for HTTP sinks), and [`otlp-defaults`](#set-otlp-defaults) (for OTLP sinks).
 
 ### Output to files
 
@@ -127,6 +140,7 @@ CockroachDB can write messages to one or more log files.
 file-defaults: ...
 fluent-defaults: ...
 http-defaults: ...
+otlp-defaults: ...
 sinks:
   file-groups:
     default:
@@ -197,6 +211,7 @@ CockroachDB can send logs over the network to a [Fluentd](https://www.fluentd.or
 file-defaults: ...
 fluent-defaults: ...
 http-defaults: ...
+otlp-defaults: ...
 sinks:
   fluent-servers:
     health:
@@ -228,6 +243,7 @@ For an example network logging configuration, see [Logging use cases]({% link {{
 file-defaults: ...
 fluent-defaults: ...
 http-defaults: ...
+otlp-defaults: ...
 sinks:
   http-servers:
     health:
@@ -261,6 +277,38 @@ Along with the [common sink parameters](#common-sink-parameters), each HTTP serv
 
 For an example network logging configuration, see [Logging use cases]({% link {{ page.version.version }}/logging-use-cases.md %}#network-logging). For an example that uses `compression`, `headers`, `file-based-headers`, and `buffering` parameters, see [Configure an HTTP network collector for Datadog]({% link {{ page.version.version }}/log-sql-activity-to-datadog.md %}#step-2-configure-an-http-network-collector-for-datadog).
 
+### Output to OTLP-compatible network collectors
+
+CockroachDB can send logs to an [OpenTelemetry](https://opentelemetry.io/)-compatible server using the OTLP protocol. Define `otlp-servers` to select channels and configure connection and protocol details. For example:
+
+~~~ yaml
+file-defaults: ...
+fluent-defaults: ...
+http-defaults: ...
+otlp-defaults: ...
+sinks:
+  otlp-servers:
+    health:
+      channels: [HEALTH]
+      address: 127.0.0.1:4317
+      mode: grpc
+      compression: gzip
+      ...
+~~~
+
+Along with the [common sink parameters](#common-sink-parameters), each OTLP server accepts the following additional parameters:
+
+| Parameter | Description |
+|-----------|-------------|
+| `channels` | List of channels that output to this sink. Use a YAML array or string of [channel names]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels), `ALL`, or `ALL EXCEPT {channels}`. See [Logging channel selection](#logging-channel-selection) for syntax. |
+| `address` | Network address of the OTLP collector endpoint for log ingestion, formatted as `{host}:{port}`. |
+| `mode` | Protocol used to export logs. Valid values `grpc` or `http`.<br><br>**Default:**`grpc` |
+| `headers` | Map of key-value string pairs which will be appended to every request as custom gRPC or HTTP headers depending on the `mode` selected. For example, `"x-api-key": "YOUR_API_KEY_HERE"`. |
+| `compression` | Compression for requests. Valid values `gzip` or `none`.<br><br>**Default:**`gzip` |
+| `buffering`     | Configures buffering of log messages for the sink, with the following sub-parameters:<ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. Default: `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. Default: `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. Default: `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for OTLP log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
+
+For an example network logging configuration, see [Logging use cases]({% link {{ page.version.version }}/logging-use-cases.md %}#network-logging).
+
 ### Output to `stderr`
 
 CockroachDB can output messages to the [standard error stream (`stderr`)](https://wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)), which prints them to the machine's terminal but does not store them. `stderr` specifies the channels that output to the stream. For example:
@@ -269,6 +317,7 @@ CockroachDB can output messages to the [standard error stream (`stderr`)](https:
 file-defaults: ...
 fluent-defaults: ...
 http-defaults: ...
+otlp-defaults: ...
 sinks:
   stderr:
     channels: [DEV]
@@ -354,7 +403,7 @@ channels: 'all except [ops, health]'
 
 ## Configure logging defaults
 
-When setting up a logging configuration, it's simplest to define shared parameters in `file-defaults` and `fluent-defaults` and override specific values as needed in [`file-groups`](#output-to-files), [`fluent-servers`](#output-to-fluentd-compatible-network-collectors), [`http-servers`](#output-to-http-network-collectors), and [`stderr`](#output-to-stderr). For a complete example, see the [default configuration](#default-logging-configuration).
+When setting up a logging configuration, it's simplest to define shared parameters in `file-defaults`, `fluent-defaults`, `http-defaults`, and `otlp-defaults` and override specific values as needed in [`file-groups`](#output-to-files), [`fluent-servers`](#output-to-fluentd-compatible-network-collectors), [`http-servers`](#output-to-http-network-collectors), [`otlp-servers`](#output-to-otlp-compatible-network-collectors) and [`stderr`](#output-to-stderr). For a complete example, see the [default configuration](#default-logging-configuration).
 
 {{site.data.alerts.callout_success}}
 You can view your current settings by running `cockroach debug check-log-config`, which returns the YAML definitions and a URL to a visualization of the current logging configuration.
@@ -428,7 +477,7 @@ fluent-defaults:
 
 Defaults for HTTP sinks are set in `http-defaults`, which accepts all [common sink parameters](#common-sink-parameters).
 
-Note that the [server parameters](#output-to-http-network-collectors) `address` and `method` are *not* specified in `fluent-defaults`:
+Note that the [server parameters](#output-to-http-network-collectors) `address` and `method` are *not* specified in `http-defaults`:
 
 - `address` must be specified for each sink under `http-servers`.
 - `method` is not required and defaults to `POST`.
@@ -439,6 +488,25 @@ The default message format for HTTP output is [`json-compact`]({% link {{ page.v
 
 ~~~ yaml
 http-defaults:
+  format: json
+~~~
+
+{{site.data.alerts.callout_info}}
+`format` refers to the envelope of the log message. This is separate from the event payload, which is structured according to [event type]({% link {{ page.version.version }}/eventlog.md %}).
+{{site.data.alerts.end}}
+
+### Set OTLP defaults
+
+Defaults for OTLP sinks are set in `otlp-defaults`, which accepts all [common sink parameters](#common-sink-parameters).
+
+Note that the [server parameter](#output-to-otlp-compatible-network-collectors) `address`is *not* specified in `otlp-defaults`. The `address` must be specified for each sink under `otlp-servers`.
+
+#### OTLP logging format
+
+The default message format for OTLP output is [`json`]({% link {{ page.version.version }}/log-formats.md %}#format-json). Each log message is structured as a JSON payload that can be read programmatically. For details, see [Log formats]({% link {{ page.version.version }}/log-formats.md %}).
+
+~~~ yaml
+otlp-defaults:
   format: json
 ~~~
 
@@ -612,7 +680,7 @@ To ensure that you are protecting sensitive information, also [redact your logs]
 
 ## Log buffering for network sinks
 
-Both [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) and [HTTP](#output-to-http-network-collectors) log sinks support the buffering of log messages by default. Previous to version v22.2, log buffering was only available for the [log file](#output-to-files) log sink.
+The network ([Fluentd-compatible](#output-to-fluentd-compatible-network-collectors), [HTTP](#output-to-http-network-collectors), and [OTLP-compatible](#output-to-otlp-compatible-network-collectors)) log sinks support the buffering of log messages by default. Previous to version v22.2, log buffering was only available for the [log file](#output-to-files) log sink.
 
 With log buffering configured, log messages are held in a buffer for a configurable time period or accumulated message size threshold before being written to the target log sink together as a batch. Log buffering helps to ensure consistent low-latency log message writes over the network even in high-traffic, high-contention scenarios.
 
