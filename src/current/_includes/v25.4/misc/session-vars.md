@@ -54,6 +54,7 @@
 | <a id="node-id"></a> `node_id` | The ID of the node currently connected to. <br/><br/>This variable is particularly useful for verifying load balanced connections. | Node-dependent | No | Yes |
 | <a id="null-ordered-last"></a> `null_ordered_last` | Set the default ordering of `NULL`s. The default order is `NULL`s first for ascending order and `NULL`s last for descending order. | `false` | Yes | Yes |
 | <a id="optimizer-merge-joins-enabled"></a> `optimizer_merge_joins_enabled` | If `on`, the optimizer will explore query plans with merge joins. | `on` | Yes | Yes |
+| <a id="optimizer-min-row-count"></a> `optimizer_min_row_count` | Sets a lower bound on row count estimates for relational expressions during query planning. A `0` value indicates no lower bound. Values greater than `0` may yield better query plans when statistics are frequently stale and inaccurate, though expressions with a cardinality of zero can still receive `0` estimates. | `1` | Yes | Yes |
 | <a id="optimizer-push-offset-into-index-join"></a> `optimizer_push_offset_into_index_join` | If `on`, the optimizer will attempt to push offset expressions into index join expressions to produce more efficient query plans. | `on` | Yes | Yes |
 | <a id="optimizer-use-forecasts"></a> `optimizer_use_forecasts` | If `on`, the optimizer uses forecasted statistics for query planning. | `on` | Yes | Yes |
 | <a id="optimizer-use-histograms"></a> `optimizer_use_histograms` | If `on`, the optimizer uses collected histograms for cardinality estimation. | `on` | No | Yes |
