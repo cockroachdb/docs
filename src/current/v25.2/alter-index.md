@@ -38,7 +38,7 @@ Subcommand | Description |
 [`CONFIGURE ZONE`](#configure-zone) | [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) for an index. | 
 [`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition an index.
 [`RENAME TO`](#rename-to) | Change the name of an index.
-[`SCATTER`](#scatter) | Redistribute leaseholders for the ranges of a table or index. |
+[`SCATTER`](#scatter) | Makes a best-effort attempt to redistribute replicas and leaseholders for the ranges of a table or index. Note that it does not return an error even if replicas are not moved. |
 [`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the index.
 [`VISIBILITY`](#visibility) | Set the visibility of an index between a range of `0.0` and `1.0`.
@@ -122,7 +122,9 @@ For usage, see [Synopsis](#synopsis).
 
 ### `SCATTER`
 
-`ALTER INDEX ... SCATTER` runs a specified set of ranges for a table or index through the [replication layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}) queue. If many ranges have been created recently, the replication queue may transfer some leases to other replicas to balance load across the cluster. Some leaseholders may not update as a result of this command.
+`ALTER INDEX ... SCATTER` runs a specified set of ranges for a table or index through the [replication layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}) queue. If many ranges have been created recently, the replication queue may transfer some leases to other replicas to balance load across the cluster.
+
+Note that this statement makes a best-effort attempt to redistribute replicas and leaseholders for the ranges of an index. It does not return an error even if replicas are not moved.
 
 {{site.data.alerts.callout_info}}
 `SCATTER` has the potential to result in data movement proportional to the size of the table or index being scattered, thus taking additional time and resources to complete.

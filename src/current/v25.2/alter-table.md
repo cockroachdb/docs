@@ -65,7 +65,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`SET {storage parameter}`](#set-storage-parameter) | Set a storage parameter on a table. | Yes
 [`SET LOCALITY`](#set-locality) |  Set the table locality for a table in a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}). | No
 [`SET SCHEMA`](#set-schema) |  Change the [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of a table. | No
-[`SCATTER`](#scatter) | Redistribute leaseholders for the ranges of a table or index. | No
+[`SCATTER`](#scatter) | Makes a best-effort attempt to redistribute replicas and leaseholders for the ranges of a table or index. Note that it does not return an error even if replicas are not moved. | No
 [`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the table. | No
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the table. | No
 [`VALIDATE CONSTRAINT`](#validate-constraint) | Check whether values in a column match a [constraint]({% link {{ page.version.version }}/constraints.md %}) on the column. | Yes
@@ -605,7 +605,9 @@ For usage, see [Synopsis](#synopsis).
 
 ### `SCATTER`
 
-`ALTER TABLE ... SCATTER` runs a specified set of ranges for a table or index through the [replication layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}) queue. If many ranges have been created recently, the replication queue may transfer some leases to other replicas to balance load across the cluster. Some leaseholders may not update as a result of this command.
+`ALTER TABLE ... SCATTER` runs a specified set of ranges for a table or index through the [replication layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}) queue. If many ranges have been created recently, the replication queue may transfer some leases to other replicas to balance load across the cluster.
+
+Note that this statement makes a best-effort attempt to redistribute replicas and leaseholders for the ranges of an index. It does not return an error even if replicas are not moved.
 
 {{site.data.alerts.callout_info}}
 `SCATTER` has the potential to result in data movement proportional to the size of the table or index being scattered, thus taking additional time and resources to complete.
