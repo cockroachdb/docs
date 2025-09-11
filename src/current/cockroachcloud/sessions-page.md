@@ -10,6 +10,8 @@ docs_area: manage
 
 The **Sessions** page of the CockroachDB {{ site.data.products.cloud }} Console provides details of all open sessions in the cluster.
 
+Viewing the Sessions page requires the [Cluster Monitor]({% link cockroachcloud/authorization.md %}#cluster-monitor), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) role.
+
 To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **SQL Activity** in the **Monitoring** section of the left side navigation. Select the **Sessions** tab.
 
 {% include common/ui/sessions-page.md %}
