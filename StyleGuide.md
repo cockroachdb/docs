@@ -213,7 +213,7 @@ CockroachDB docs are mainly comprised of pages (`.md`) and images (`.png` or `.g
 - `this-is-a-doc.md`
 - `name-of-your-image.png`
 
-Each version's pages are found in a directory named for the version. For example, pages for CockroachDB v21.1 are in the `docs > v21.1` directory. For more information about how to style page content, see [Components](#components).
+Each version's pages are found in a directory named for the version. For example, pages for CockroachDB v21.1 are in the `docs > src > current > v21.1` directory. For more information about how to style page content, see [Components](#components).
 
 Each version's images are stored in a versioned directory under the `images` directory. For example, images for CockroachDB v21.1 are in the `docs > images > v21.1` directory. For more information, see [Images](#images).
 
