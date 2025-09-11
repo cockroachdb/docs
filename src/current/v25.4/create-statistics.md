@@ -28,6 +28,53 @@ Parameter | Description
 `create_stats_target` | The name of the table to create statistics for.
 `opt_as_of_clause`    | Create historical stats using the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause.  For instructions, see [Create statistics as of a given time](#create-statistics-as-of-a-given-time).
 
+## Partial statistics
+
+{{site.data.alerts.callout_info}}
+Partial statistics were introduced in v25.1.
+{{site.data.alerts.end}}
+
+CockroachDB supports [partial statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#partial-statistics), which collect statistics on a subset of table data to provide more up-to-date information without scanning the entire table.
+
+### USING EXTREMES
+
+To create **extremes statistics** that collect partial statistics on the highest and lowest index values:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE STATISTICS statistics_name FROM table_name USING EXTREMES;
+~~~
+
+You can also specify specific columns:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE STATISTICS statistics_name ON column_name FROM table_name USING EXTREMES;
+~~~
+
+When no columns are specified, extremes statistics are collected on all single column prefixes of forward indexes, excluding partial, sharded, and implicitly partitioned indexes.
+
+### Requirements and limitations
+
+- **Full statistics prerequisite**: Partial statistics can only be collected if full statistics already exist for the table.
+- **Index requirements**: For manual collection with specific columns, an index must exist with a prefix matching those columns. If no matching index exists or if stats were not previously collected on the specified column, the statement will return an error.
+- **Supported indexes**: Only forward indexes are supported. Partial, sharded, and implicitly partitioned indexes are excluded.
+
+To enable manual creation of extremes statistics, ensure the [`enable_create_stats_using_extremes`]({% link {{ page.version.version }}/session-variables.md %}#enable-create-stats-using-extremes) session variable is `true` (default).
+
+### WHERE clause
+
+{% include_cached new-in.html version="v25.4" %}
+
+To create **predicate-based statistics** that collect statistics on data matching specific conditions:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE STATISTICS statistics_name ON column_name FROM table_name WHERE condition;
+~~~
+
+This allows you to collect statistics on specific subsets of your data that are relevant to your query patterns.
+
 ## Required privileges
 
 The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the parent database.
@@ -165,6 +212,37 @@ To create statistics as of a given time (in this example, 1 minute ago to avoid 
 ~~~
 
 For more information about how the `AS OF SYSTEM TIME` clause works, including supported time formats, see [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
+
+### Create partial statistics using extremes
+
+To create [partial statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#partial-statistics) that collect statistics on the highest and lowest index values:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE STATISTICS rides_extremes_stats FROM rides USING EXTREMES;
+~~~
+
+This creates partial statistics on all single column prefixes of forward indexes in the `rides` table by scanning only the highest and lowest index values, providing updated statistics without performing a full table scan.
+
+You can also create extremes statistics on specific columns:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE STATISTICS revenue_extremes_stats ON revenue FROM rides USING EXTREMES;
+~~~
+
+### Create predicate-based partial statistics
+
+{% include_cached new-in.html version="v25.4" %}
+
+To create [partial statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#partial-statistics) on data matching specific conditions:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE STATISTICS recent_rides_stats ON start_time FROM rides WHERE start_time > '2023-01-01';
+~~~
+
+This creates statistics only on rides that started after January 1, 2023, allowing the optimizer to have accurate statistics for recent data without scanning the entire table.
 
 ### Delete statistics
 
