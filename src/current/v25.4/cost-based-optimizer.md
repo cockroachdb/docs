@@ -23,18 +23,87 @@ The most important factor in determining the quality of a plan is cardinality (i
 
 The cost-based optimizer can often find more performant query plans if it has access to statistical data on the contents of your tables. This data needs to be generated from scratch for new tables, and [refreshed periodically](#control-statistics-refresh-rate) for existing tables.
 
-By default, CockroachDB automatically generates table statistics when tables are [created]({% link {{ page.version.version }}/create-table.md %}), and as they are [updated]({% link {{ page.version.version }}/update.md %}). It does this using a [background job]({% link {{ page.version.version }}/create-statistics.md %}#view-statistics-jobs) that automatically determines which columns to get statistics on. Specifically, the optimizer chooses:
+The optimizer can use two types of statistics to plan queries:
+
+- Full statistics
+- [Partial statistics](#partial-statistics)
+
+### Full statistics
+
+By default, CockroachDB automatically generates full statistics when tables are [created]({% link {{ page.version.version }}/create-table.md %}) and during [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}). Full statistics for a table are automatically refreshed when approximately 20% of its rows are updated.
+
+A [background job]({% link {{ page.version.version }}/create-statistics.md %}#view-statistics-jobs) automatically determines which columns to get statistics on. Specifically, the optimizer chooses:
 
 - Columns that are part of the primary key or an index (in other words, all indexed columns).
 - Up to 100 non-indexed columns.
 
 By default, CockroachDB also automatically collects [multi-column statistics]({% link {{ page.version.version }}/create-statistics.md %}#create-statistics-on-multiple-columns) on columns that prefix an index.
 
+For best query performance, most users should leave automatic statistics enabled with the default settings. Advanced users can follow the steps provided in this section for performance tuning and troubleshooting.
+
+### Partial statistics
+
+*Partial statistics* are collected on a subset of table data without scanning the full table. Partial statistics can improve query performance in large tables where only a portion is regularly updated or queried.
+
+While [full statistics](#full-statistics) refresh infrequently and can allow stale rows to accumulate, partial statistics automatically refresh when stale rows reach a threshold ([by default, 5%](#automatic-collection-of-partial-statistics)). Partial statistics also automatically collect on extreme index values, which is particularly valuable for timestamp indexes where workloads commonly access the most recent data.
+
+The optimizer uses partial statistics for query planning when the [`optimizer_use_merged_partial_statistics`]({% link {{ page.version.version }}/session-variables.md %}#optimizer-use-merged-partial-statistics) session variable is enabled (default: `on`). It merges partial statistics with existing full statistics to produce more accurate cardinality estimates.
+
+#### When partial statistics are collected
+
+Partial statistics are collected in the following scenarios:
+
+- Automatically at extremes: Partial statistics are automatically collected on the highest and lowest index values when [`sql.stats.automatic_partial_collection.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-automatic-partial-collection-enabled) is enabled. This captures data outside the range covered by previous full statistics collections.
+- Manually at extremes: You can manually collect partial statistics on extreme values using [`CREATE STATISTICS ... USING EXTREMES`]({% link {{ page.version.version }}/create-statistics.md %}#create-partial-statistics-using-extremes).
+- {% include_cached new-in.html version="v25.4" %} Manually on specific data: You can collect statistics on data matching specific conditions using `CREATE STATISTICS ... WHERE {predicate}`.
+
+#### Automatic collection of partial statistics
+
+Partial statistics are automatically collected when the number of stale rows in a table reaches thresholds defined by the `sql.stats.automatic_partial_collection.min_stale_rows` (default: 100) and `sql.stats.automatic_partial_collection.fraction_stale_rows` (default: 0.05) cluster settings. This is particularly beneficial for large tables where only a portion is regularly updated or queried, such as tables with timestamp columns where recent data is frequently accessed.
+
 {{site.data.alerts.callout_info}}
-[Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) trigger automatic statistics collection for the affected table(s).
+Partial statistics can only be collected if full statistics already exist for the table.
 {{site.data.alerts.end}}
 
-For best query performance, most users should leave automatic statistics enabled with the default settings. Advanced users can follow the steps provided in this section for performance tuning and troubleshooting.
+Automatic collection of partial statistics is controlled by the following cluster settings:
+
+|                                                                                           Setting                                                                                            | Default Value |                                                                                    Description                                                                                     |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`sql.stats.automatic_partial_collection.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-automatic-partial-collection-enabled)                         | `true`        | Enables automatic collection of partial table statistics                                                                                                                           |
+| [`sql.stats.automatic_partial_collection.min_stale_rows`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-automatic-partial-collection-min-stale-rows)           | `100`         | Minimum number of stale rows that trigger partial statistics collection                                                                                                            |
+| [`sql.stats.automatic_partial_collection.fraction_stale_rows`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-automatic-partial-collection-fraction-stale-rows) | `0.05`        | Target fraction of stale rows that trigger partial statistics collection (lower than the 0.2 threshold for full statistics, causing partial statistics to refresh more frequently) |
+
+Partial statistics are collected on all single column prefixes of forward indexes, excluding partial, sharded, and implicitly partitioned indexes.
+
+These settings also have table-level equivalents:
+
+|                        Table Setting                         |                              Description                               |
+|--------------------------------------------------------------|------------------------------------------------------------------------|
+| `sql_stats_automatic_partial_collection_enabled`             | Controls automatic partial statistics collection for individual tables |
+| `sql_stats_automatic_partial_collection_min_stale_rows`      | Table-specific minimum stale rows threshold                            |
+| `sql_stats_automatic_partial_collection_fraction_stale_rows` | Table-specific stale rows fraction threshold                           |
+
+#### Manual collection of partial statistics
+
+You can manually create partial statistics using:
+
+- **Extremes statistics**: [`CREATE STATISTICS stat_name FROM table_name USING EXTREMES`]({% link {{ page.version.version }}/create-statistics.md %}#create-partial-statistics-using-extremes)
+- **Predicate-based statistics** (v25.4+): `CREATE STATISTICS stat_name ON column_name FROM table_name WHERE condition`
+
+To enable manual creation of extremes statistics, ensure the [`enable_create_stats_using_extremes`]({% link {{ page.version.version }}/session-variables.md %}#enable-create-stats-using-extremes) session variable is `true` (default: `true`).
+
+For examples of creating partial statistics, refer to [Create partial statistics using extremes]({% link {{ page.version.version }}/create-statistics.md %}#create-partial-statistics-using-extremes).
+
+#### Independent control of full vs partial statistics
+
+You can separately control automatic collection of full and partial statistics:
+
+|                                                                            Setting                                                                             |    Default    |                      Description                       |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|--------------------------------------------------------|
+| [`sql.stats.automatic_full_collection.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-sql-stats-automatic-full-collection-enabled) | `true`        | Controls automatic collection of full table statistics |
+| `sql_stats_automatic_full_collection_enabled`                                                                                                                  | Table setting | Table-specific control for full statistics collection  |
+
+This allows configurations where partial statistics are collected automatically while full statistics collection is deferred to off-peak hours.
 
 ### Control statistics refresh rate
 
