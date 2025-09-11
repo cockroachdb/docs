@@ -9,9 +9,7 @@ docs_area: manage
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 
-If you utilize the read from standby feature in PCR, the standby cluster has an additional reader virtual cluster which is a copy of the application virtual cluster. 
-
-This separation of controls and data means that the replication stream can operate without affecting work happening in a virtual cluster.
+If you utilize the read from standby feature in PCR, the standby cluster has an additional reader virtual cluster that safely serves read requests on the replicating virtual cluster. 
 
 ### PCR stream start-up sequence
 
@@ -22,7 +20,7 @@ This separation of controls and data means that the replication stream can opera
 
 The stream initialization proceeds as follows:
 
-1. The standby's consumer job connects to the primary cluster via the standby's system virtual cluster and starts the primary cluster's physical stream producer job.
+1. The standby's consumer job connects to the primary cluster via the standby's system virtual cluster and starts the primary cluster's `REPLICATION STREAM PRODUCER` job.
 1. The primary cluster chooses a timestamp at which to start the physical replication stream. Data on the primary is protected from [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) until it is replicated to the standby using a [protected timestamp]({% link {{ page.version.version }}/architecture/storage-layer.md %}#protected-timestamps).
 1. The primary cluster returns the timestamp and a [job ID]({% link {{ page.version.version }}/show-jobs.md %}#response) for the replication job.
 1. The standby cluster retrieves a list of all nodes in the primary cluster. It uses this list to distribute work across all nodes in the standby cluster.

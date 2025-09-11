@@ -103,7 +103,7 @@ Connect to your primary cluster's system virtual cluster using [`cockroach sql`]
 
     Because this is the primary cluster rather than the standby cluster, the `data_state` of all rows is `ready`, rather than `replicating` or another [status]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
 
-### Create a replication user and password
+### Create a user with replication privileges
 
 The standby cluster connects to the primary cluster's system virtual cluster using an identity with the `REPLICATIONSOURCE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges). Connect to the primary cluster's system virtual cluster and create a user with a password:
 

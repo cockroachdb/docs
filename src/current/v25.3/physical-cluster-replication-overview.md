@@ -70,7 +70,7 @@ Statement | Action
 ## Cluster versions and upgrades
 
 {{site.data.alerts.callout_info}}
-The entire standby cluster must be at the same version as, or one version ahead of, the primary's virtual cluster at the time of [failover]({% link {{ page.version.version }}/failover-replication.md %}).
+The entire standby cluster must be at the same version as, or one version ahead of, the primary's virtual cluster.
 {{site.data.alerts.end}}
 
 When PCR is enabled, upgrade with the following procedure. This upgrades the standby cluster before the primary cluster. Within the primary and standby CockroachDB clusters, the system virtual cluster must be at a cluster version greater than or equal to the virtual cluster:
