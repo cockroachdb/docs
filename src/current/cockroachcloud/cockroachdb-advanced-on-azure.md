@@ -17,7 +17,7 @@ CockroachDB {{ site.data.products.advanced }} clusters on Azure have the followi
   - [Customer Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}) 
   - [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %})
 
-  You can configure IP allowlisting to limit the IP addresses or CIDR ranges that can access a CockroachDB {{ site.data.products.dedicated }} cluster on Azure, and you can use [Azure Private Link](https://learn.microsoft.com/azure/private-link/private-link-overview) to connect your applications in Azure to your cluster and avoid exposing your cluster or applications to the public internet. Refer to [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link).
+  You can configure IP allowlisting to limit the IP addresses or CIDR ranges that can access a CockroachDB {{ site.data.products.advanced }} cluster on Azure, and you can use [Azure Private Link](https://learn.microsoft.com/azure/private-link/private-link-overview) to connect your applications in Azure to your cluster and avoid exposing your cluster or applications to the public internet. Refer to [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}#azure-private-link).
 
 ## Change data capture
 
