@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-Use the `CREATE STATISTICS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) to generate table statistics for the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) to use.
+Use the `CREATE STATISTICS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) to [generate table statistics for the cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) to use.
 
 Once you [create a table]({% link {{ page.version.version }}/create-table.md %}) and load data into it (e.g., [`INSERT`]({% link {{ page.version.version }}/insert.md %}), [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})), table statistics can be generated. Table statistics help the cost-based optimizer determine the cardinality of the rows used in each query, which helps to predict more accurate costs.
 
@@ -165,6 +165,29 @@ To create statistics as of a given time (in this example, 1 minute ago to avoid 
 ~~~
 
 For more information about how the `AS OF SYSTEM TIME` clause works, including supported time formats, see [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}).
+
+### Create partial statistics using extremes
+
+To create [partial statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#partial-statistics) that collect statistics on the highest and lowest index values:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET enable_create_stats_using_extremes = true;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE STATISTICS rides_extremes_stats FROM rides USING EXTREMES;
+~~~
+
+This creates partial statistics on all single column prefixes of forward indexes in the `rides` table by scanning only the highest and lowest index values, providing updated statistics without performing a full table scan.
+
+You can also create extremes statistics on specific columns:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE STATISTICS revenue_extremes_stats ON revenue FROM rides USING EXTREMES;
+~~~
 
 ### Delete statistics
 
