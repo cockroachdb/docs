@@ -34,7 +34,27 @@ By default, CockroachDB also automatically collects [multi-column statistics]({%
 [Schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}) trigger automatic statistics collection for the affected table(s).
 {{site.data.alerts.end}}
 
+The optimizer can use three types of statistics to plan queries:
+
+- [Full statistics](#full-statistics)
+- [Partial statistics](#partial-statistics)
+- [Forecasted statistics](#forecasted-statistics)
+
 For best query performance, most users should leave automatic statistics enabled with the default settings. Advanced users can follow the steps provided in this section for performance tuning and troubleshooting.
+
+### Full statistics
+
+By default, CockroachDB automatically generates full statistics when tables are [created]({% link {{ page.version.version }}/create-table.md %}) and during [schema changes]({% link {{ page.version.version }}/online-schema-changes.md %}). Full statistics for a table are automatically refreshed when approximately 20% of its rows are updated.
+
+### Partial statistics
+
+*Partial statistics* are collected on a subset of table data without scanning the full table. Partial statistics can improve query performance in large tables where only a portion is regularly updated or queried.
+
+{{site.data.alerts.callout_info}}
+Partial statistics can only be collected if full statistics already exist for the table.
+{{site.data.alerts.end}}
+
+You can manually collect partial statistics on the highest and lowest index values using [`CREATE STATISTICS ... USING EXTREMES`]({% link {{ page.version.version }}/create-statistics.md %}#create-partial-statistics-using-extremes).
 
 ### Control statistics refresh rate
 
@@ -101,7 +121,7 @@ To learn how to manually generate statistics, see the [`CREATE STATISTICS` examp
 
 Statistics collection can be expensive for large tables, and you may prefer to defer collection until after data is finished loading or during off-peak hours. Tables that are frequently updated, including small tables, may trigger statistics collection more often, which can lead to unnecessary overhead and unpredictable query plan changes.
 
-You can enable and disable automatic statistics collection for individual tables using the `sql_stats_automatic_collection_enabled` storage parameter. This table setting **takes precedence** over the `sql.stats.automatic_collection.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) described in [Enable and disable automatic statistics collection for clusters](#enable-and-disable-automatic-statistics-collection-for-clusters).
+You can enable and disable automatic statistics collection for individual tables using the `sql_stats_automatic_collection_enabled` [table storage parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters). This table setting **takes precedence** over the `sql.stats.automatic_collection.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) described in [Enable and disable automatic statistics collection for clusters](#enable-and-disable-automatic-statistics-collection-for-clusters).
 
 You can either configure this setting during table creation:
 
@@ -157,9 +177,16 @@ sql_stats_automatic_collection_min_stale_rows = 2000);
 
 Automatic statistics rules are checked once per minute. While altered automatic statistics table settings take immediate effect for any subsequent DML statements on a table, running row mutations that started prior to modifying the table settings may still trigger statistics collection based on the settings that existed before you ran the `ALTER TABLE ... SET` statement.
 
-### Enable and disable forecasted statistics for tables
+### Forecasted statistics
 
-You can enable and disable [forecasted statistics]({% link {{ page.version.version }}/show-statistics.md %}#display-forecasted-statistics) collection for individual tables using the `sql_stats_forecasts_enabled` table parameter. This table setting **takes precedence** over the `sql.stats.forecasts.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
+*Forecasted statistics* use a simple regression model that predicts how the statistics have changed since they were last collected. CockroachDB generates forecasted statistics when the following conditions are met:
+
+- There have been at least 3 historical statistics collections.
+- The historical statistics closely fit a linear pattern.
+
+By default, the optimizer uses forecasts that closely match the historical statistics.
+
+You can enable and disable forecasted statistics collection for individual tables using the `sql_stats_forecasts_enabled` [table parameter]({% link {{ page.version.version }}/with-storage-parameter.md %}#table-parameters). This table setting **takes precedence** over the `sql.stats.forecasts.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 You can either configure this setting during table creation:
 
