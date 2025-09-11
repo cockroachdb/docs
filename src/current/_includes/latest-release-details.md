@@ -24,7 +24,7 @@ released: {{ released }}<br />
 skippable: {{ skippable }}<br />
 {% endif %}
 
-CockroachDB {{ latest.major_version }} is the latest supported production release.{% if skippable == true %} It is an [Innovation release]({% link releases/release-support-policy.md %}#support-types) that is optional for CockroachDB {{ site.data.products.dedicated }} and CockroachDB {{ site.data.products.core }} but required for CockroachDB {{ site.data.products.serverless }}.{% else %} It is a required [Regular release]({% link releases/release-support-policy.md %}#support-types).{% endif %} To learn more, refer to [CockroachDB {{ latest.major_version }} Release Notes](https://cockroachlabs.com/docs/releases/{{ latest.major_version }}.html).
+CockroachDB {{ latest.major_version }} is the latest supported production release.{% if skippable == true %} It is an [Innovation release]({% link releases/release-support-policy.md %}#support-types) that is optional for CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.core }} but required for CockroachDB {{ site.data.products.basic }} and CockroachDB {{ site.data.products.standard }}.{% else %} It is a required [Regular release]({% link releases/release-support-policy.md %}#support-types).{% endif %} To learn more, refer to [CockroachDB {{ latest.major_version }} Release Notes](https://cockroachlabs.com/docs/releases/{{ latest.major_version }}.html).
 
 {% if page.version.version != blank and page.version.version != latest.major_version %}
 **This page refers to CockroachDB {{ page.version.version }}, not {{ latest.major_version }}.**

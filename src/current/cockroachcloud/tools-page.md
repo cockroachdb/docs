@@ -71,8 +71,8 @@ To monitor the health of metrics export, you can [create a custom Monitor](#moni
 
 Open your Datadog [Dashboard List](https://docs.datadoghq.com/dashboards/#dashboard-list). There are two sample dashboards that present CockroachDB metrics:
 
-- `CockroachDB {{ site.data.products.cloud }} {{ site.data.products.standard }}` (formerly `{{ site.data.products.serverless }}`)
-- `CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }}` (formerly `{{ site.data.products.dedicated }}`)
+- `CockroachDB {{ site.data.products.cloud }} {{ site.data.products.standard }}`
+- `CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }}`
 
 Both sample dashboards presents a high-level view of SQL performance and latency, and information about resource consumption to help aid in capacity planning. `CockroachDB {{ site.data.products.cloud }} {{ site.data.products.advanced }}` provides the ability to drill down to specific nodes (identified by a `(node, region)` tag pair) within your cluster.
 

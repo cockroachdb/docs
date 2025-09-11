@@ -6,11 +6,10 @@ swap:
   builtin: built-in
   builtins: built-ins
   '[^\/\-\.]cockroachdb[^\/\-\.]': CockroachDB
-  'CockroachCloud Serverless': "{{ site.data.products.serverless }}"
-  'CockroachCloud Dedicated': "{{ site.data.products.dedicated }}"
-  'CockroachDB Serverless': "{{ site.data.products.serverless }}"
-  'CockroachDB Dedicated': "{{ site.data.products.dedicated }}"
-  CockroachCloud: "{{ site.data.products.db }}"
+  'Basic': "{{ site.data.products.basic }}"
+  'Standard': "{{ site.data.products.standard }}"
+  'Advanced': "{{ site.data.products.advanced }}"
+  'Cloud': "{{ site.data.products.cloud }}"
   raft: Raft
   Raft Group: Raft group
   Admin UI: DB Console
