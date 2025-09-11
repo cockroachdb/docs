@@ -237,7 +237,7 @@
 
 - destination: failover-replication.md
   sources: ['cutover-replication.md']
-  versions: ['24.3']
+  versions: ['24.3', '24.1']
 
 - destination: fips.md
   sources: ['fips-compliance.md']
