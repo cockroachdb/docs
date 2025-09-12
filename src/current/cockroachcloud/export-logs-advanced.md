@@ -24,6 +24,7 @@ Access to the `logexport` endpoint requires a valid CockroachDB {{ site.data.pro
 - [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin)
 - [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin)
 - [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator)
+- [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer)
 
 The following methods are available for use with the `logexport` endpoint:
 

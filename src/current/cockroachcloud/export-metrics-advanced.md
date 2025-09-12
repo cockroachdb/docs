@@ -27,7 +27,11 @@ Datadog            | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_
 Prometheus         | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/prometheus`
 Azure Monitor      | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/azuremonitor`
 
-Access to the `metricexport` endpoints requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) with the appropriate permissions (`admin` privilege, Cluster Admin role, or Cluster Operator role).
+Access to the `metricexport` endpoints requires a valid CockroachDB {{ site.data.products.cloud }} [service account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts) assigned one of the following [roles]({% link cockroachcloud/managing-access.md %}#edit-roles-on-a-service-account):
+
+- [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer)
+- [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator)
+- [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin)
 
 The following methods are available for use with the `metricexport` endpoints, and require the listed service account permissions:
 
