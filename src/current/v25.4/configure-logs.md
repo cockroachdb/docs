@@ -279,7 +279,9 @@ For an example network logging configuration, see [Logging use cases]({% link {{
 
 ### Output to OTLP-compatible network collectors
 
-CockroachDB can send logs to an [OpenTelemetry](https://opentelemetry.io/)-compatible server using the OTLP protocol. Define `otlp-servers` to select channels and configure connection and protocol details. For example:
+CockroachDB can send logs to an [OpenTelemetry](https://opentelemetry.io/)-compatible server using the OTLP protocol (e.g., [Datadog agent](https://docs.datadoghq.com/agent/?tab=Host-based)). For a complete list of log servers that support the OTLP protocol, see the [OpenTelemetry registry](https://opentelemetry.io/ecosystem/vendors/).
+
+Define `otlp-servers` to select channels and configure connection and protocol details. For example:
 
 ~~~ yaml
 file-defaults: ...
@@ -754,9 +756,10 @@ The YAML payload below represents the default logging behavior of [`cockroach st
 
 ~~~ yaml
 file-defaults:
+  dir: /cockroach-data/logs
   max-file-size: 10MiB
   max-group-size: 100MiB
-  file-permissions: 644
+  file-permissions: "0640"
   buffered-writes: true
   filter: INFO
   format: crdb-v2
@@ -764,6 +767,7 @@ file-defaults:
   redactable: true
   exit-on-error: true
   auditable: false
+  buffering: NONE
 fluent-defaults:
   filter: INFO
   format: json-fluent-compact
@@ -771,56 +775,223 @@ fluent-defaults:
   redactable: true
   exit-on-error: false
   auditable: false
+  buffering:
+    max-staleness: 5s
+    flush-trigger-size: 1.0MiB
+    max-buffer-size: 50MiB
+    format: newline
 http-defaults:
   method: POST
   unsafe-tls: false
-  timeout: 0s
+  timeout: 2s
   disable-keep-alives: false
+  compression: gzip
   filter: INFO
   format: json-compact
   redact: false
   redactable: true
   exit-on-error: false
   auditable: false
+  buffering:
+    max-staleness: 5s
+    flush-trigger-size: 1.0MiB
+    max-buffer-size: 50MiB
+    format: newline
+otlp-defaults:
+  mode: grpc
+  compression: gzip
+  filter: INFO
+  format: json
+  redact: false
+  redactable: true
+  exit-on-error: false
+  auditable: false
+  buffering:
+    max-staleness: 5s
+    flush-trigger-size: 1.0MiB
+    max-buffer-size: 50MiB
+    format: newline
 sinks:
   file-groups:
+    changefeed:
+      channels: {INFO: [CHANGEFEED]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     default:
-      channels:
-        INFO: [DEV, OPS]
-        WARNING: all except [DEV, OPS]
+      channels: {INFO: [DEV, OPS], WARNING: [HEALTH, STORAGE, SESSIONS, SQL_SCHEMA, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS, SQL_EXEC, SQL_PERF, SQL_INTERNAL_PERF, TELEMETRY, KV_DISTRIBUTION, CHANGEFEED, KV_EXEC]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     health:
-      channels: [HEALTH]
+      channels: {INFO: [HEALTH]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     kv-distribution:
-      channels: [KV_DISTRIBUTION]
+      channels: {INFO: [KV_DISTRIBUTION]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     pebble:
-      channels: [STORAGE]
+      channels: {INFO: [STORAGE]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     security:
-      channels: [PRIVILEGES, USER_ADMIN]
-      auditable: true
+      channels: {INFO: [USER_ADMIN, PRIVILEGES]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: false
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     sql-audit:
-      channels: [SENSITIVE_ACCESS]
-      auditable: true
+      channels: {INFO: [SENSITIVE_ACCESS]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: false
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     sql-auth:
-      channels: [SESSIONS]
-      auditable: true
+      channels: {INFO: [SESSIONS]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: false
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     sql-exec:
-      channels: [SQL_EXEC]
+      channels: {INFO: [SQL_EXEC]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
+    sql-schema:
+      channels: {INFO: [SQL_SCHEMA]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     sql-slow:
-      channels: [SQL_PERF]
+      channels: {INFO: [SQL_PERF]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     sql-slow-internal-only:
-      channels: [SQL_INTERNAL_PERF]
+      channels: {INFO: [SQL_INTERNAL_PERF]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     telemetry:
-      channels: [TELEMETRY]
+      channels: {INFO: [TELEMETRY]}
+      dir: /cockroach-data/logs
       max-file-size: 100KiB
       max-group-size: 1.0MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
   stderr:
-    channels: all
     filter: NONE
+    format: crdb-v2-tty
     redact: false
     redactable: true
     exit-on-error: true
+    buffering: NONE
 capture-stray-errors:
   enable: true
+  dir: /cockroach-data/logs
   max-group-size: 100MiB
 ~~~
 
