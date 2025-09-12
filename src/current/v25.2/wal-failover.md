@@ -476,6 +476,14 @@ No, the secondary (failover) disk **must be durable and retain its data across V
 
 Always provision the failover disk with the same persistence guarantees as the primary store.
 
+### 14. Can I relocate or rename the WAL directory?
+
+No. When WAL failover is enabled, the WAL directory path is stored as an absolute path in the [store]({% link {{ page.version.version}}/cockroach-start.md %}#store)'s data. It is not treated as a relative path. As a result, it is not sufficient to stop CockroachDB, move or rename that directory, and restart with a different `--wal-failover` path.
+
+Instead, to change the WAL directory path, you must first [disable WAL failover]({% link {{ page.version.version }}/cockroach-start.md %}#disable-wal-failover), [restart the node(s)]({% link {{ page.version.version }}/node-shutdown.md %}#stop-and-restart-a-node), and then [re-enable WAL failover with the new path]({% link {{ page.version.version }}/cockroach-start.md %}#enable-wal-failover). 
+
+Using filesystem indirection such as symlinks or mount-point changes is not supported or tested by Cockroach Labs.
+
 ## Video demo: WAL failover
 
 For a demo of WAL Failover in CockroachDB and what happens when you enable or disable it, play the following video:
