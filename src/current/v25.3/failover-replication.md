@@ -304,7 +304,7 @@ At this point, **Cluster A** has caught up to **Cluster B**. The clusters are en
 
 You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. For instructions on setting up a PCR in this way, refer to [Set up PCR from an existing cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#set-up-pcr-from-an-existing-cluster).
 
-After a [failover](#failover) to the standby cluster, you must set up PCR from the original standby cluster, which is now the primary, to another cluster, which will become the standby. There are multiple ways to set up a new standby, and some considerations.
+After a [failover](#failover) to the standby cluster, you may want to set up PCR from the original standby cluster, which is now the primary, to another cluster, which will become the standby. There are multiple ways to set up a new standby, and some considerations.
 
 In the example, the clusters are named for reference:
 
