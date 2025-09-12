@@ -419,7 +419,7 @@ All possible `SQL_PERF` event types are detailed in the [reference documentation
 
 ## Network logging
 
-A database operator can send logs over the network to a [Fluentd](https://www.fluentd.org/) or HTTP server.
+A database operator can send logs over the network to a [Fluentd](https://www.fluentd.org/), HTTP, or [OTLP](https://opentelemetry.io/) server.
 
 {{site.data.alerts.callout_danger}}
 TLS is not supported yet: the connection to the log collector is neither authenticated nor encrypted. Given that logging events may contain sensitive information, care should be taken to keep the log collector and the CockroachDB node close together on a private network, or connect them using a secure VPN. TLS support may be added at a later date.
@@ -472,14 +472,14 @@ See the [reference documentation]({% link {{ page.version.version }}/log-formats
 
 ### Network logging with log buffering
 
-A database operator can configure CockroachDB to buffer log messages for a configurable time period or collected message size before writing them to the [log sink]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks). This is especially useful for writing log messages to network log sinks, such as [Fluentd-compatible servers]({% link {{ page.version.version }}/configure-logs.md %}#output-to-fluentd-compatible-network-collectors) or [HTTP servers]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors), where high-traffic or high-contention scenarios can result in log message write latency.
+A database operator can configure CockroachDB to buffer log messages for a configurable time period or collected message size before writing them to the [log sink]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks). This is especially useful for writing log messages to network log sinks, such as [Fluentd-compatible servers]({% link {{ page.version.version }}/configure-logs.md %}#output-to-fluentd-compatible-network-collectors), [HTTP servers]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors), or [OTLP-compatible servers]({% link {{ page.version.version }}/configure-logs.md %}#output-to-otlp-compatible-network-collectors), where high-traffic or high-contention scenarios can result in log message write latency.
 
-Log buffering is enabled by default on the [Fluentd-compatible]({% link {{ page.version.version }}/configure-logs.md %}#output-to-fluentd-compatible-network-collectors) and [HTTP]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors) log sink destinations, but you may wish to adjust the buffering configuration for these log sinks based on your needs.
+Log buffering is enabled by default on the network log sink destinations, but you may wish to adjust the buffering configuration for these log sinks based on your needs.
 
-For example, the following logging configuration adjusts the default log buffering behavior for both a [Fluentd-compatible]({% link {{ page.version.version }}/configure-logs.md %}#output-to-fluentd-compatible-network-collectors) and an [HTTP]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors) log sink destination:
+For example, the following logging configuration adjusts the default log buffering behavior for both an [OTLP-compatible]({% link {{ page.version.version }}/configure-logs.md %}#output-to-otlp-compatible-network-collectors) and an [HTTP]({% link {{ page.version.version }}/configure-logs.md %}#output-to-http-network-collectors) log sink destination:
 
 ~~~ yaml
-fluent-defaults:
+otlp-defaults:
   buffering:
     flush-trigger-size: 2MiB
 http-defaults:
@@ -487,7 +487,7 @@ http-defaults:
     max-staleness: 10s
     max-buffer-size: 75MiB
 sinks:
-  fluent-servers:
+  otlp-servers:
     health:
       channels: HEALTH
       buffering:
@@ -500,7 +500,7 @@ sinks:
         max-buffer-size: 100MiB # Override max-buffer-size for HEALTH channel only
 ~~~
 
-Together, this configuration ensures that log messages to the Fluentd log sink target are buffered for up to `2MiB` in accumulated size, and log messages to the HTTP server log sink target are buffered for up to `10s` duration (with a limit of up to `75MiB` accumulated message size in the buffer before messages begin being dropped), before being written to the log sink. Further, each long sink target is configured with an overridden value for these settings specific to log messages in the `HEALTH` [log channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels), which are flushed more aggressively in both cases.
+Together, this configuration ensures that log messages to the OTLP log sink target are buffered for up to `2MiB` in accumulated size, and log messages to the HTTP server log sink target are buffered for up to `10s` duration (with a limit of up to `75MiB` accumulated message size in the buffer before messages begin being dropped), before being written to the log sink. Further, each long sink target is configured with an overridden value for these settings specific to log messages in the `HEALTH` [log channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels), which are flushed more aggressively in both cases.
 
 See [Log buffering]({% link {{ page.version.version }}/configure-logs.md %}#log-buffering-for-network-sinks) for more information.
 
