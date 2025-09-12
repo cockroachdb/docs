@@ -2,7 +2,7 @@ The following table describes the high level permissions given by each Cockroach
 
 <div class="roles-table" markdown="1">
 
-|  | [Org. Member](#organization-member) | [Org. Admin](#organization-admin) | [Billing Coord.](#billing-coordinator) | [Cluster Creator](#cluster-creator) | [Cluster Operator](#cluster-operator) | [Cluster Admin](#cluster-admin) | [Cluster Developer](#cluster-developer) | [Cluster Monitor](#cluster-monitor) | [Metrics Viewer](#metrics-viewer) | [Folder Admin](#folder-admin) | [Folder Mover](#folder-mover) |
+|  | [Org. Member]({% link cockroachcloud/authorization.md %}#organization-member) | [Org. Admin]({% link cockroachcloud/authorization.md %}#organization-admin) | [Billing Coord.]({% link cockroachcloud/authorization.md %}#billing-coordinator) | [Cluster Creator]({% link cockroachcloud/authorization.md %}#cluster-creator) | [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) | [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) | [Cluster Developer]({% link cockroachcloud/authorization.md %}#cluster-developer) | [Cluster Monitor]({% link cockroachcloud/authorization.md %}#cluster-monitor) | [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer) | [Folder Admin]({% link cockroachcloud/authorization.md %}#folder-admin) | [Folder Mover]({% link cockroachcloud/authorization.md %}#folder-mover) |
 |---|-------------|-------------|------------------|------------------|-------------------|----------------|--------------------|------------------|----------------|----------------|----------------|
 | **User/Access Management** |  |  |  |  |  |  |  |  |  |
 | Assign and revoke roles | — | ✓ | — | — | — | ✓ | — | — | — | — | — |
