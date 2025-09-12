@@ -2,7 +2,7 @@ The following table describes the high level permissions given by each Cockroach
 
 <div class="roles-table" markdown="1">
 
-|  | Org. Member | Org. Admin | Billing Coord. | Cluster Creator | Cluster Operator | Cluster Admin | Cluster Developer | Cluster Monitor | Metrics Viewer | Folder Admin | Folder Mover |
+|  | [Org. Member](#organization-member) | [Org. Admin](#organization-admin) | [Billing Coord.](#billing-coordinator) | [Cluster Creator](#cluster-creator) | [Cluster Operator](#cluster-operator) | [Cluster Admin](#cluster-admin) | [Cluster Developer](#cluster-developer) | [Cluster Monitor](#cluster-monitor) | [Metrics Viewer](#metrics-viewer) | [Folder Admin](#folder-admin) | [Folder Mover](#folder-mover) |
 |---|-------------|-------------|------------------|------------------|-------------------|----------------|--------------------|------------------|----------------|----------------|----------------|
 | **User/Access Management** |  |  |  |  |  |  |  |  |  |
 | Assign and revoke roles | — | ✓ | — | — | — | ✓ | — | — | — | — | — |
@@ -25,6 +25,7 @@ The following table describes the high level permissions given by each Cockroach
 | View [audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %}) | — | — | — | — | ✓ | ✓ | — | — | — | — | — |
 | View [insights]({% link cockroachcloud/insights-page.md %}) | — | — | — | — | ✓ | ✓ | — | ✓ | — | — | — |
 | View [jobs]({% link cockroachcloud/jobs-page.md %}) | — | — | — | — | ✓ | ✓ | — | ✓ | — | — | — |
+| View [sql activity]({% link cockroachcloud/statements-page.md %}) | — | — | — | — | ✓ | ✓ | — | ✓ | — | — | — |
 | View [metrics]({% link cockroachcloud/metrics.md %}) | — | — | — | — | ✓ | ✓ | — | — | ✓ | — | — |
 | Send [test alerts]({% link cockroachcloud/alerts-page.md %}#send-a-test-alert) | — | — | — | — | ✓ | ✓ | — | — | — | — | — |
 | Access [DB console]({% link cockroachcloud/network-authorization.md %}#db-console) | — | — | — | — | ✓ | ✓ | ✓ | — | — | — | — |
