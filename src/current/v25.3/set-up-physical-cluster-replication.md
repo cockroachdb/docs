@@ -223,7 +223,7 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
     (1 rows)
     ~~~
 
-### Create a replication user and password
+### Create a user with replication privileges
 
 Create a user to run the PCR stream and access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to observe the job:
 
