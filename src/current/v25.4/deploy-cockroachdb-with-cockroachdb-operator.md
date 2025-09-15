@@ -256,7 +256,7 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
 
     For more information on configuring node resource allocation, refer to [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-operator.md %})
 
-1. Modify the TLS configuration as desired. For a secure deployment, set `cockroachdb.tls.enabled` in the values file to `true`. By default, the certificates are created automatically by a self-signer utility, which requires no configuration beyond setting a custom certificate duration if desired. This utility creates self-signed certificates for the nodes and root client which are stored in a secret. You can see these certificates by running `kubectl get secrets`:
+1. Modify the TLS configuration as desired. For a secure deployment, set `cockroachdb.tls.enabled` in the values file to `true`. By default, the certificates are created automatically by a self-signer utility, which requires no configuration beyond setting a custom certificate duration if desired. This utility uses `cockroach cert` to automatically generate self-signed certificates for the nodes and root client which are stored in a secret. You can see these certificates by running `kubectl get secrets`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
