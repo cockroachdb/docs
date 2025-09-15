@@ -2856,7 +2856,7 @@ Then, change the table's schema:
 
 ### Scatter tables
 
-Before scattering, you can view the current leaseholder distribution for a table:
+Before scattering, you can view the current replica and leaseholder distribution for a table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -372,7 +372,7 @@ SHOW INDEXES FROM users;
 
 ### Scatter indexes
 
-Before scattering, you can view the current leaseholder distribution for an index:
+Before scattering, you can view the current replica and leaseholder distribution for an index:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
