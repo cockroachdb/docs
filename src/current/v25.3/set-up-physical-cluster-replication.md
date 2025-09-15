@@ -285,7 +285,7 @@ The system virtual cluster in the standby cluster initializes and controls the r
     ~~~
 
     Otherwise, pass the connection string that contains:
-    - The replication user and password that you [created for the primary cluster](#create-a-replication-user-and-password).
+    - The replication user and password that you [created for the primary cluster](#create-a-user-with-replication-privileges).
     - The node IP address or hostname of one node from the primary cluster.
     - The path to the primary node's certificate on the standby cluster.
 
