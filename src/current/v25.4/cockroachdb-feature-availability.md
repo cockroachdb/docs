@@ -31,6 +31,10 @@ Any feature made available in a phase prior to GA is provided without any warran
 **The following features are in limited access** and are subject to change. To begin validating a limited access feature and share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc).
 {{site.data.alerts.end}}
 
+### Metrics Viewer and Cluster Monitor CockroachDB Cloud user roles
+
+The [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer) role grants read‑only access to observability metrics for a cluster without any administrative or data‑manipulation privileges. The [Cluster Monitor]({% link cockroachcloud/authorization.md %}#cluster-monitor) role provides read‑only visibility into SQL activity and workload health without broader administrative privileges. 
+
 ### Export logs to Azure Monitor
 
 [Exporting logs to Azure Monitor]({% link cockroachcloud/export-logs-advanced.md %}?filters=azure-monitor-log-export) from your CockroachDB {{ site.data.products.advanced }} cluster hosted on Azure is in limited access. Once the export is configured, logs will flow from all nodes in all regions of your CockroachDB {{ site.data.products.advanced }} cluster to Azure Monitor. To express interest and try it out, contact [Support](https://support.cockroachlabs.com/hc).
