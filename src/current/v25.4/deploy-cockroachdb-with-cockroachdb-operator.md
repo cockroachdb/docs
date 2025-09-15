@@ -256,156 +256,23 @@ For bare metal deployments, the specific Kubernetes infrastructure deployment st
 
     For more information on configuring node resource allocation, refer to [Resource management]({% link {{ page.version.version }}/configure-cockroachdb-operator.md %})
 
-1. Modify the TLS configuration as desired. For a secure deployment, set `cockroachdb.tls.enabled` in the values file to `true`. You can either allow the operator to generate self-signed certificates, provide a custom CA certificate and generate other certificates, or use your own certificates.
-    - **All self-signed certificates**: By default, the certificates are created automatically by a self-signer utility, which requires no configuration beyond setting a custom certificate duration if desired. This utility creates self-signed certificates for the nodes and root client which are stored in a secret. You can see these certificates by running `kubectl get secrets`:
-        
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        kubectl get secrets
-        ~~~
-        ~~~
-        crdb-cockroachdb-ca-secret                 Opaque                                2      23s
-        crdb-cockroachdb-client-secret             kubernetes.io/tls                     3      22s
-        crdb-cockroachdb-node-secret               kubernetes.io/tls                     3      23s
-        ~~~
-        
-        {{site.data.alerts.callout_info}}
-        If you are deploying on OpenShift you must also set `cockroachdb.tls.selfSigner.securityContext.enabled` to `false` to mitigate stricter security policies.
-        {{site.data.alerts.end}}
-    - **Custom CA certificate**: If you wish to supply your own CA certificates to the deployed nodes but allow automatic generation of client certificates, create a Kubernetes secret with the custom CA certificate. To perform these steps using the `cockroach cert` command:
-        
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        mkdir certs
-        ~~~
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        mkdir my-safe-directory
-        ~~~
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        cockroach cert create-ca --certs-dir=certs --ca-key=my-safe-directory/ca.key
-        ~~~
-        
-        Set `cockroachdb.tls.selfSigner.caProvided` to `true` and specify the secret where the certificate is stored:
-        
-        ~~~ yaml
-        cockroachdb:
-          tls:
-            enabled: true
-            selfSigner:
-              enabled: true
-              caProvided: true
-              caSecret: {ca-secret-name}
-        ~~~
-        
-        {{site.data.alerts.callout_info}}
-        If you are deploying on OpenShift you must also set `cockroachdb.tls.selfSigner.securityContext.enabled` to `false` to mitigate stricter security policies.
-        {{site.data.alerts.end}}
-    - **All custom certificates**: Set up your certificates and load them into your Kubernetes cluster as secrets using the following commands:
-        
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        mkdir certs
-        ~~~
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        mkdir my-safe-directory
-        ~~~
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        cockroach cert create-ca --certs-dir=certs --ca-key=my-safe-directory/ca.key
-        ~~~
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        cockroach cert create-client root --certs-dir=certs --ca-key=my-safe-directory/ca.key
-        ~~~
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        kubectl create secret generic cockroachdb-root --from-file=certs
-        ~~~
-        ~~~ shell
-        secret/cockroachdb-root created
-        ~~~
-        {% include_cached copy-clipboard.html %}
-        ~~~ shell
-        cockroach cert create-node --certs-dir=certs --ca-key=my-safe-directory/ca.key localhost 127.0.0.1 my-release-cockroachdb-public my-release-cockroachdb-public.cockroach-ns my-release-cockroachdb-public.cockroach-ns.svc.cluster.local *.my-release-cockroachdb *.my-release-cockroachdb.cockroach-ns *.my-release-cockroachdb.cockroach-ns.svc.cluster.local
-        kubectl create secret generic cockroachdb-node --from-file=certs
-        ~~~
-        ~~~ shell
-        secret/cockroachdb-node created
-        ~~~
-        
-        {{site.data.alerts.callout_info}}
-        The subject alternative names are based on a release called `my-release` in the `cockroach-ns` namespace. Make sure they match the services created with the release during Helm install.
-        {{site.data.alerts.end}}
-        
-        If you wish to supply certificates with [cert-manager](https://cert-manager.io/), set `cockroachdb.tls.certManager.enabled` to `true`, and `cockroachdb.tls.certManager.issuer` to an IssuerRef (as they appear in certificate resources) pointing to a clusterIssuer or issuer that you have set up in the cluster:
-        
-        ~~~ yaml
-        cockroachdb:
-          tls:
-            enabled: true
-            certManager:
-              enabled: true
-              caConfigMap: cockroachdb-ca
-              nodeSecret: cockroachdb-node
-              clientRootSecret: cockroachdb-root
-              issuer:
-                group: cert-manager.io
-                kind: Issuer
-                name: cockroachdb-cert-issuer
-                clientCertDuration: 672h
-                clientCertExpiryWindow: 48h
-                nodeCertDuration: 8760h
-                nodeCertExpiryWindow: 168h
-        ~~~
-        
-        The following Kubernetes application describes an example issuer.
-        
-        ~~~ yaml
-        apiVersion: v1
-        kind: Secret
-        metadata:
-          name: cockroachdb-ca
-          namespace: cockroach-ns
-        data:
-          tls.crt: [BASE64 Encoded ca.crt]
-          tls.key: [BASE64 Encoded ca.key]
-        type: kubernetes.io/tls
-        ---
-        apiVersion: cert-manager.io/v1alpha3
-        kind: Issuer
-        metadata:
-          name: cockroachdb-cert-issuer
-          namespace: cockroach-ns
-        spec:
-          ca:
-            secretName: cockroachdb-ca
-        ~~~
-        
-        If your certificates are stored in TLS secrets, such as secrets generated by `cert-manager`, the secret will contain files named: `ca.crt`, `tls.crt`, and `tls.key`.
-        
-        For CockroachDB, rename these files as applicable to match the following naming scheme: `ca.crt`, `node.crt`, `node.key`, `client.root.crt`, and `client.root.key`.
-        
-        Add the following to the values file:
-        
-        ~~~ yaml
-        cockroachdb:
-          tls:
-            enabled: true
-            externalCertificates:
-              enabled: true
-              certificates:
-                nodeSecretName: {node_secret_name}
-                nodeClientSecretName: {client_secret_name}
-        ~~~
-        
-        Replacing the following:
-        - `{node_secret_name}`: The name of the Kubernetes secret that contains the generated client certificate and key.
-        - `{client_secret_name}`: The name of the Kubernetes secret that contains the generated node certificate and key.
-        
-        For a detailed tutorial of a TLS configuration with manual certificates, refer to [Authenticate with cockroach cert](#authenticate-with-cockroach-cert).
+1. Modify the TLS configuration as desired. For a secure deployment, set `cockroachdb.tls.enabled` in the values file to `true`. By default, the certificates are created automatically by a self-signer utility, which requires no configuration beyond setting a custom certificate duration if desired. This utility creates self-signed certificates for the nodes and root client which are stored in a secret. You can see these certificates by running `kubectl get secrets`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kubectl get secrets
+    ~~~
+    ~~~
+    crdb-cockroachdb-ca-secret                 Opaque                                2      23s
+    crdb-cockroachdb-client-secret             kubernetes.io/tls                     3      22s
+    crdb-cockroachdb-node-secret               kubernetes.io/tls                     3      23s
+    ~~~
+    
+    {{site.data.alerts.callout_info}}
+    If you are deploying on OpenShift you must also set `cockroachdb.tls.selfSigner.securityContext.enabled` to `false` to mitigate stricter security policies.
+    {{site.data.alerts.end}}
+
+    If your organization's security policy requires that you use a custom CA certificate or otherwise use your own certificates, read the [certificate management documentation]({% link {{ page.version.version }}/secure-cockroachdb-operator.md %}#tls-configuration-options).
 
 1. In `cockroachdb.crdbCluster.localityMappings`, provide [locality mappings](#localities) that define locality levels and map them to node labels where the locality information of each Kubernetes node is stored. When CockroachDB is initialized on a node, it processes these values as though they are provided through the [`cockroach start --locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flag. 
 
