@@ -231,6 +231,10 @@ cockroach userfile delete bank-backup --url {CONNECTION STRING}
 
 If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection]({% link {{site.current_cloud_version}}/configure-replication-zones.md %}#gc-ttlseconds) to be removed from disk.
 
+### Back up a CockroachDB {{ site.data.products.cloud }} cluster and restore into a new cluster
+
+{% include cockroachcloud/backup-restore-into-new-cluster.md %}
+
 ### Back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ site.data.products.cloud }} cluster
 
 To back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ site.data.products.cloud }} cluster:

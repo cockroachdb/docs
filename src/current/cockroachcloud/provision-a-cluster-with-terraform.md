@@ -225,10 +225,10 @@ terraform show
 
 ## Change a cluster's plan
 
-To change a CockroachDB {{ site.data.products.basic }} cluster's plan to CockroachDB {{ site.data.products.standard }} in place, or to change a CockroachDB {{ site.data.products.standard }} cluster to CockroachDB {{ site.data.products.basic }} using Terraform..or the [CockroachDB {{ site.data.products.cloud }} API](https://cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-).
+To change a CockroachDB {{ site.data.products.basic }} cluster's plan to CockroachDB {{ site.data.products.standard }} in place, or to change a CockroachDB {{ site.data.products.standard }} cluster to CockroachDB {{ site.data.products.basic }} using Terraform or the [CockroachDB {{ site.data.products.cloud }} API](https://cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-).
 
 {{site.data.alerts.callout_info}}
-To migrate between CockroachDB {{ site.data.products.advanced }} and either CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }}, you must create and configure a new cluster, back up the existing cluster's data, and restore the backup to the new cluster. Migration in place is not supported. Refer to [Self-managed backups]({% link cockroachcloud/backup-and-restore-overview.md %}#self-managed-backups).
+To migrate between CockroachDB {{ site.data.products.advanced }} and either CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }}, you must [create and move data to a new cluster]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}#back-up-a-cockroachdb-cloud-cluster-and-restore-into-a-new-cluster). Migration in place is not supported.
 {{site.data.alerts.end}}
 
 To migrate from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ site.data.products.standard }} in place:
@@ -270,6 +270,15 @@ To change a cluster's plan from CockroachDB {{ site.data.products.standard }} to
     ~~~ shell
     terraform apply
     ~~~
+
+To use the CockroachDB {{ site.data.products.cloud }} API to switch a cluster's plan in place between {{ site.data.products.basic }} and {{ site.data.products.standard }}, send a `PATCH` request to the [`clusters/{cluster_id}` endpoint](https://cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-) updating the `plan` and `serverless.usage_limits` as needed for the plan type. The following example request sets the `plan` to `STANDARD` and updates the `usage_limits` to use VCPUs as needed for a {{ site.data.products.standard }} plan:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request PATCH \ --url  https://cockroachlabs.cloud/api/v1/clusters/{cluster_id} \
+--header 'Authorization: Bearer <your_api_key>' \
+--json '{"plan":"STANDARD","serverless":{"usage_limits":{"provisioned_virtual_cpus": 2}}}'
+~~~
 
 ## Delete a cluster
 
