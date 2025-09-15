@@ -39,7 +39,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
   </tr>
   <tr>
     <td><ul>
-      <li>The <b>Hot Ranges</b> page (DB Console) displays a higher-than-expected QPS for a range.</li>
+      <li>The <b>Top Ranges</b> page (DB Console) displays a higher-than-expected QPS for a range.</li>
       <li>The <b>Key Visualizer</b> (DB Console) shows ranges with much higher-than-average write rates for the cluster.</li>
     </ul></td>
     <td><ul><li>Your cluster has <a href="{% link {{ page.version.version }}/understand-hotspots.md %}">hotspots</a>.</li></ul></td>
@@ -191,10 +191,10 @@ For a detailed explanation of hotspot causes and mitigation strategies, refer to
 #### Indicators that your cluster has hotspots
 
 - The **CPU Percent** graph on the [**Hardware**]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}) and [**Overload**]({% link {{ page.version.version }}/ui-overload-dashboard.md %}) dashboards (DB Console) shows spikes in CPU usage.
-- The **Hot Ranges** list on the [**Hot Ranges** page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) (DB Console) displays a higher-than-expected QPS for a range.
+- The **Top Ranges** list on the [**Top Ranges** page]({% link {{ page.version.version }}/ui-top-ranges-page.md %}) (DB Console) displays a higher-than-expected QPS for a range.
 - The [**Key Visualizer**]({% link {{ page.version.version }}/ui-key-visualizer.md %}) (DB Console) shows [ranges with much higher-than-average write rates]({% link {{ page.version.version }}/ui-key-visualizer.md %}#identifying-hotspots) for the cluster.
 
-If you find hotspots, use the [**Range Report**]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}#range-report) and [**Key Visualizer**]({% link {{ page.version.version }}/ui-key-visualizer.md %}) to identify the ranges with excessive traffic. Then take steps to [reduce hotspots](#reduce-hotspots).
+If you find hotspots, use the [**Range Report**]({% link {{ page.version.version }}/ui-top-ranges-page.md %}#range-report) and [**Key Visualizer**]({% link {{ page.version.version }}/ui-key-visualizer.md %}) to identify the ranges with excessive traffic. Then take steps to [reduce hotspots](#reduce-hotspots).
 
 #### Reduce hotspots
 
