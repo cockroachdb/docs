@@ -39,12 +39,12 @@ cockroachdb:
         # containers captures the list of containers for CockroachDB pods.
         containers:
           - name: cockroachdb
-            image: cockroachdb/cockroach:v25.3.2
+            image: cockroachdb/cockroach:v25.4.0
         # imagePullSecrets captures the secrets for fetching images from private registries.
         imagePullSecrets: []
 ~~~
 
-At least one value for `containers` must be specified if any part of `podTemplate` is being modified. For example, the following `podTemplate` configuration overrides pod anti-affinity behavior and specifies a default `cockroachdb/cockroach:v25.3.2` container image:
+At least one value for `containers` must be specified if any part of `podTemplate` is being modified. For example, the following `podTemplate` configuration overrides pod anti-affinity behavior and specifies a default `cockroachdb/cockroach:v25.4.0` container image:
 
 ~~~ yaml
 cockroachdb:
@@ -65,7 +65,7 @@ cockroachdb:
                    topologyKey: kubernetes.io/hostname
          containers:
            - name: cockroachdb
-             image: cockroachdb/cockroach:v25.3.2
+             image: cockroachdb/cockroach:v25.4.0
 ~~~
 
 ## Override the default `cockroach start` flags
