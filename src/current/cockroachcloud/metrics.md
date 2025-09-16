@@ -10,7 +10,7 @@ Depending on your CockroachDB {{ site.data.products.cloud }} deployment, you can
 - For all CockroachDB {{ site.data.products.cloud }} deployments, you can use the [CockroachDB {{ site.data.products.cloud }} Console **Metrics** page](#cockroachdb-cloud-console-metrics-page).
 - For CockroachDB {{ site.data.products.standard }} and CockroachDB {{ site.data.products.advanced }} deployments, you can [export metrics](#export-metrics) to a third-party cloud sink.
 
-Viewing metrics on a cluster requires the [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) or [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) role.
+Viewing metrics on a cluster requires the [Metrics Viewer]({% link cockroachcloud/authorization.md %}#metrics-viewer), [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator), or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) role.
 
 To understand how to make both practical and actionable use of the metrics in a production deployment, refer to the following documentation:
 
