@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-[**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) continuously asynchronously replicates data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. When both clusters are virtualized, each cluster contains a _system virtual cluster_ and an application [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) during the PCR stream:
+[**Physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) continuously and asynchronously replicates data from an active _primary_ CockroachDB cluster to a passive _standby_ cluster. When both clusters are virtualized, each cluster contains a _system virtual cluster_ and an application [virtual cluster]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) during the PCR stream:
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 

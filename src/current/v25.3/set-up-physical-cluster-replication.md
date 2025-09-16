@@ -38,7 +38,7 @@ To set up PCR from an existing CockroachDB cluster, which will serve as the prim
 - You need two separate CockroachDB clusters (primary and standby), each with a minimum of three nodes. The standby cluster should be the same version or one version ahead of the primary cluster. The primary and standby clusters must be configured with similar hardware profiles, number of nodes, and overall size. Significant discrepancies in the cluster configurations may result in degraded performance.
     - To set up each cluster, you can follow [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}). When you initialize the cluster with the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command, you **must** pass the `--virtualized` or `--virtualized-empty` flag. Refer to the cluster creation steps for the [primary cluster](#initialize-the-primary-cluster) and for the [standby cluster](#initialize-the-standby-cluster) for details.
     - The [Deploy CockroachDB on Premises]({% link {{ page.version.version }}/deploy-cockroachdb-on-premises.md %}) tutorial creates a self-signed certificate for each {{ site.data.products.core }} cluster. To create certificates signed by an external certificate authority, refer to [Create Security Certificates using OpenSSL]({% link {{ page.version.version }}/create-security-certificates-openssl.md %}).
-- All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Manage the cluster certificates](#step-3-manage-cluster-certificates-and-generate-connection-strings).
+- All nodes in each cluster will need access to the Certificate Authority for the other cluster. Refer to [Manage cluster certificates](#step-3-manage-cluster-certificates-and-generate-connection-strings).
 - The primary and standby clusters can have different [region topologies]({% link {{ page.version.version }}/topology-patterns.md %}). However, behavior for features that rely on multi-region primitives, such as Region by Row and Region by Table, may be affected.
 
 ## Step 1. Create the primary cluster
@@ -223,7 +223,7 @@ Connect to your standby cluster's system virtual cluster using [`cockroach sql`]
     (1 rows)
     ~~~
 
-### Create a user with replication privileges
+### Create a user with replication privileges on the standby cluster
 
 Create a user to run the PCR stream and access the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) to observe the job:
 
@@ -355,7 +355,7 @@ You can set up PCR replication from an existing CockroachDB cluster that does no
 {{site.data.alerts.callout_info}}
 When you start PCR with an existing primary cluster that does **not** have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled, you will not be able to [_fail back_]({% link {{ page.version.version }}/failover-replication.md %}#failback) to the original primary cluster from the promoted, original standby. 
 
-For more details on the failback process when you have started PCR with a non-virtualized primary, refer to [Fail back after PCR from an existing cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-after-replicating-from-an-existing-primary-cluster).
+For more details on the failback process when you have started PCR with a non-virtualized primary, refer to [Fail back after replicating from an existing cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-after-replicating-from-an-existing-primary-cluster).
 {{site.data.alerts.end}}
 
 Before you begin, you will need:
@@ -396,7 +396,7 @@ Before you begin, you will need:
     (1 row)
     ~~~
 
-1. To create the replication job, you will need a connection string for the **primary cluster** containing its CA certificate. For steps to generate a connection string with `cockroach encode-uri`, refer to [Step 3. Manage the cluster certificates](#step-3-manage-cluster-certificates-and-generate-connection-strings).
+1. To create the replication job, you will need a connection string for the **primary cluster** containing its CA certificate. For steps to generate a connection string with `cockroach encode-uri`, refer to [Step 3. Manage cluster certificates and generate connection strings](#step-3-manage-cluster-certificates-and-generate-connection-strings).
 
 1. If you would like to run a test workload on your existing **primary cluster**, you can use [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) like the following:
 
@@ -441,7 +441,7 @@ At this point, your replication stream will be running.
 
 To _fail over_ to the standby cluster, follow the instructions on the [Fail Over from a Primary Cluster to a Standby Cluster]({% link {{ page.version.version }}/failover-replication.md %}) page.
 
-For details on how to _fail back_ after replicating a non-virtualized cluster, refer to [Fail back after PCR from an existing cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-after-replicating-from-an-existing-primary-cluster).
+For details on how to _fail back_ after replicating a non-virtualized cluster, refer to [Fail back after replicating from an existing cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-after-replicating-from-an-existing-primary-cluster).
 
 ## Connection reference
 

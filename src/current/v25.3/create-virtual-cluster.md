@@ -62,7 +62,7 @@ To form a connection string similar to the example, include the following values
 
 Value | Description
 ----------------+------------
-`{replication user}` | The user on the primary cluster that has the `REPLICATION` system privilege. Refer to the [Create a replication user and password]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-user-with-replication-privileges) for more detail.
+`{replication user}` | The user on the primary cluster that has the `REPLICATION` system privilege. Refer to [Create a user with replication privileges]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#create-a-user-with-replication-privileges) for more detail.
 `{password}` | The replication user's password.
 `{node ID or hostname}` | The node IP address or hostname of any node from the primary cluster.
 `options=ccluster=system` | The parameter to connect to the system virtual cluster on the primary cluster.

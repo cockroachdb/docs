@@ -38,12 +38,15 @@ To initiate a failover to the standby cluster, specify the point in time for its
 
 - [`LATEST`](#fail-over-to-the-most-recent-replicated-time): The most recent replicated timestamp. This minimizes any data loss from the replication lag in asynchronous replication.
 - [Point-in-time](#fail-over-to-a-point-in-time):
-    - Past: A past timestamp within the [failover window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process) of up to 4 hours in the past. Failing over to a past point in time is useful if you need to recover from a recent human error. 
+    - Past: A past timestamp within the [failover window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process) of up to 4 hours in the past.
+    {{site.data.alerts.callout_success}}
+    Failing over to a past point in time is useful if you need to recover from a recent human error
+    {{site.data.alerts.end}}
     - Future: A future timestamp for planning a failover.
 
 #### Fail over to the most recent replicated time
 
-To initiate a failover to the most recent replicated timestamp, specify `LATEST` when you start the failover. Due to [_replication lag_]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process), the latest replicated time may be behind the current actual time. Replication lag is the time between the most up-to-date replicated time and the actual time.
+To initiate a failover to the most recent replicated timestamp, specify `LATEST`. Due to [_replication lag_]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process), the most recent replicated time may be behind the current actual time. Replication lag is the time difference between the most recent replicated time and the actual time.
 
 1. To view the current replication timestamp, use:
 
