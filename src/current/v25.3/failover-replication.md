@@ -175,7 +175,7 @@ To enable PCR again, from the new primary to the original primary (or a complete
 
 After failing over to the standby cluster, you may want to return to your original configuration by failing back to the original primary-standby cluster setup. Depending on the configuration of the primary cluster in the original PCR stream, use one of the following workflows:
 
-- [From the original standby cluster (after it was promoted during failover) to the original primary cluster](#fail-back-to-the-original-primary-cluster). If this failback is initiated within 24 hours of the failover, PCR replicates the net-new changes from the standby cluster to the primary cluster, so you do not need to re-seed the primary cluster.
+- [From the original standby cluster (after it was promoted during failover) to the original primary cluster](#fail-back-to-the-original-primary-cluster). If this failback is initiated within 24 hours of the failover, PCR replicates the net-new changes from the standby cluster to the primary cluster, rather than fully replacing the existing data in the primary cluster.
 - [After the PCR stream used an existing cluster as the primary cluster](#fail-back-after-replicating-from-an-existing-primary-cluster).
 
 {{site.data.alerts.callout_info}}

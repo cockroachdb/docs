@@ -9,7 +9,7 @@ docs_area: manage
 
 {% include {{ page.version.version }}/physical-replication/interface-virtual-cluster.md %}
 
-If you utilize the read from standby feature in PCR, the standby cluster has an additional reader virtual cluster that safely serves read requests on the replicating virtual cluster. 
+If you utilize the [read on standby](#start-up-sequence-with-read-on-standby) feature in PCR, the standby cluster has an additional reader virtual cluster that safely serves read requests on the replicating virtual cluster. 
 
 ### PCR stream start-up sequence
 
