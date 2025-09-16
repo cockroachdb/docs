@@ -1,4 +1,4 @@
-In the `molt fetch` command, use `--replicator-flags` to pass options to the included `replicator` process that handles continuous replication. For details on all available flags, refer to the [MOLT Fetch documentation]({% link molt/molt-fetch.md %}#replication-flags).
+The following flags are commonly used with [MOLT Replicator]({% link molt/molt-replicator.md %}) for continuous replication. For details on all available flags, refer to the [MOLT Replicator documentation]({% link molt/molt-replicator.md %}#flags).
 
 {% if page.name == "migrate-data-load-replicate-only.md" %}
 <section class="filter-content" markdown="1" data-scope="postgres">

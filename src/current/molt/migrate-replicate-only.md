@@ -5,10 +5,10 @@ toc: true
 docs_area: migrate
 ---
 
-Use `replication-only` mode to resume replication to CockroachDB after an interruption, without reloading data.
+Use [MOLT Replicator]({% link molt/molt-replicator.md %}) to resume replication to CockroachDB after an interruption, without reloading data.
 
 {{site.data.alerts.callout_info}}
-These steps assume that you previously started replication. Refer to [Load and Replicate]({% link molt/migrate-data-load-and-replication.md %}#replicate-changes-to-cockroachdb) or [Load and Replicate Separately]({% link molt/migrate-data-load-replicate-only.md %}#replicate-changes-to-cockroachdb).
+These steps assume that you previously started replication. Refer to [Load and Replicate]({% link molt/migrate-data-load-replicate-only.md %}#replicate-changes-to-cockroachdb).
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
@@ -19,57 +19,56 @@ These steps assume that you previously started replication. Refer to [Load and R
 
 ## Resume replication after interruption
 
-{% include molt/fetch-replicator-flags.md %}
+Resume replication using [MOLT Replicator]({% link molt/molt-replicator.md %}) by running the replicator binary directly with the same arguments used during [initial replication setup]({% link molt/migrate-data-load-replicate-only.md %}#replicate-changes-to-cockroachdb). Replicator will automatically resume from the saved checkpoint in the existing staging schema.
 
-1. Issue the [MOLT Fetch]({% link molt/molt-fetch.md %}) command to start replication on CockroachDB, specifying [`--mode replication-only`]({% link molt/molt-fetch.md %}#fetch-mode).
+1. Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) command corresponding to your source database type, using the same `--stagingSchema` value from your initial replication setup.
 
 	<section class="filter-content" markdown="1" data-scope="postgres">
-	Be sure to specify the same `--pglogical-replication-slot-name` value that you provided on [data load]({% link molt/migrate-data-load-replicate-only.md %}#load-data-into-cockroachdb).
+	Use the `replicator pglogical` command. Be sure to specify the same `--slotName` value that you used during initial replication setup.
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
-	molt fetch \
-	--source $SOURCE \ 
-	--target $TARGET \
-	--schema-filter 'migration_schema' \
-	--table-filter 'employees|payments|orders' \
-	--pglogical-replication-slot-name cdc_slot \
-	--replicator-flags '--stagingSchema _replicator_1749699789613149000 --metricsAddr :30005' \
-	--mode replication-only
+	replicator pglogical \
+	--sourceConn $SOURCE \
+	--targetConn $TARGET \
+	--slotName cdc_slot \
+	--stagingSchema _replicator \
+	--metricsAddr :30005
 	~~~
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="mysql">
+	Use the `replicator mylogical` command. Replicator will automatically use the saved GTID from the staging schema, or fall back to the specified `--defaultGTIDSet` if no saved state exists.
+
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
-	molt fetch \
-	--source $SOURCE \ 
-	--target $TARGET \
-	--schema-filter 'migration_schema' \
-	--table-filter 'employees|payments|orders' \
-	--non-interactive \
-	--replicator-flags '--stagingSchema _replicator_1749699789613149000 --metricsAddr :30005 --userscript table_filter.ts' \
-	--mode replication-only
+	replicator mylogical \
+	--sourceConn $SOURCE \
+	--targetConn $TARGET \
+	--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29 \
+	--stagingSchema _replicator \
+	--metricsAddr :30005 \
+	--userscript table_filter.ts
 	~~~
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="oracle">
+	Use the `replicator oraclelogminer` command. Replicator will automatically use the cached SCN from the staging schema memo table.
+
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
-	molt fetch \
-	--source $SOURCE \
-	--source-cdb $SOURCE_CDB \
-	--target $TARGET \
-	--schema-filter 'migration_schema' \
-	--table-filter 'employees|payments|orders' \
-	--replicator-flags '--stagingSchema _replicator_1749699789613149000 --metricsAddr :30005 --userscript table_filter.ts' \
-	--mode 'replication-only'
+	replicator oraclelogminer \
+	--sourceConn $SOURCE \
+	--sourcePDBConn $SOURCE_PDB \
+	--sourceSchema migration_schema \
+	--targetConn $TARGET \
+	--stagingSchema _replicator \
+	--metricsAddr :30005 \
+	--userscript table_filter.ts
 	~~~
 	</section>
 
-	Replication resumes from the last checkpoint without performing a fresh load.
-
-{% include molt/fetch-replication-output.md %}
+	Replication resumes from the last checkpoint without performing a fresh load. Monitor the metrics endpoint at `http://localhost:30005/_/varz` to track replication progress.
 
 ## See also
 
