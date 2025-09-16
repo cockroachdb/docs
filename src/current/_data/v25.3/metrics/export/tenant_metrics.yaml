@@ -1,0 +1,27 @@
+# CrdbTenant-specific metrics. The metrics in this list will be combined with
+# the ones in shared_metrics.yaml.
+#
+# Each metric is mapped to an aggregation function that indicates how the metric
+# should be aggregated when needed
+#
+# Note: The aggregation functions here are declared as noop because they are
+# only applied for UA-enabled clusters. For regular tenant clusters, these
+# values are not used but are included for consistency with the overall data
+# structure.
+metrics:
+  tenant_sql_usage_request_units: noop
+  tenant_sql_usage_kv_request_units: noop
+  tenant_sql_usage_read_batches: noop
+  tenant_sql_usage_read_requests: noop
+  tenant_sql_usage_read_bytes: noop
+  tenant_sql_usage_write_batches: noop
+  tenant_sql_usage_write_requests: noop
+  tenant_sql_usage_write_bytes: noop
+  tenant_sql_usage_sql_pods_cpu_seconds: noop
+  tenant_sql_usage_pgwire_egress_bytes: noop
+  tenant_sql_usage_external_io_ingress_bytes: noop
+  tenant_sql_usage_external_io_egress_bytes: noop
+  tenant_sql_usage_cross_region_network_ru: noop
+  tenant_sql_usage_estimated_cpu_seconds: noop
+  tenant_sql_usage_provisioned_vcpus: noop
+  sql_aggregated_livebytes: noop
