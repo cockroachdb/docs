@@ -131,6 +131,24 @@ Enable logical replication by setting `wal_level` to `logical` in `postgresql.co
 ~~~ sql
 ALTER SYSTEM SET wal_level = 'logical';
 ~~~
+
+Create a publication for the tables you want to replicate:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- For all tables:
+CREATE PUBLICATION molt_publication FOR ALL TABLES;
+
+-- For specific tables:
+CREATE PUBLICATION molt_publication FOR TABLE table1, table2, table3;
+~~~
+
+Create a logical replication slot:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
+~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
@@ -150,6 +168,46 @@ For MySQL **5.7** sources, set the following values. Note that `binlog-row-image
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
+##### Enable ARCHIVELOG and FORCE LOGGING
+
+Enable `ARCHIVELOG` mode for LogMiner to access archived redo logs:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Check current log mode
+SELECT log_mode FROM v$database;
+
+-- Enable ARCHIVELOG (requires database restart)
+SHUTDOWN IMMEDIATE;
+STARTUP MOUNT;
+ALTER DATABASE ARCHIVELOG;
+ALTER DATABASE OPEN;
+
+-- Verify ARCHIVELOG is enabled
+SELECT log_mode FROM v$database; -- Expected: ARCHIVELOG
+~~~
+
+Enable supplemental logging for primary keys:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE ADD SUPPLEMENTAL LOG DATA (PRIMARY KEY) COLUMNS;
+
+-- Verify supplemental logging
+SELECT supplemental_log_data_min, supplemental_log_data_pk FROM v$database;
+-- Expected: SUPPLEMENTAL_LOG_DATA_MIN: IMPLICIT (or YES), SUPPLEMENTAL_LOG_DATA_PK: YES
+~~~
+
+Enable `FORCE LOGGING` to ensure all changes are logged:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE FORCE LOGGING;
+
+-- Verify FORCE LOGGING is enabled
+SELECT force_logging FROM v$database; -- Expected: YES
+~~~
+
 ##### Create source sentinel table
 
 Create a checkpoint table called `_replicator_sentinel` in the Oracle schema you will migrate:

@@ -75,8 +75,10 @@ When you run `molt fetch`, you can configure the following options for data load
 
 {% include molt/fetch-metrics.md %}
 
-{% if page.name == "migrate-data-load-and-replication.md" %}
+{% if page.name == "migrate-data-load-replicate-only.md" %}
 ### Replication flags
+
+The following flags are commonly used with MOLT Replicator:
 
 {% include molt/fetch-replicator-flags.md %}
 {% endif %}
