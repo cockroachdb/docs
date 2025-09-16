@@ -14,20 +14,7 @@ The following binaries are included:
 - `molt`
 - `replicator`
 
-Both `molt` and `replicator` must be in your current **working directory**. To use replication features, `replicator` must be located either in the same directory as `molt` or in a directory directly beneath `molt`. For example, either of the following would be valid:
-
-~~~
-/migration-project/          # Your current working directory
-├── molt                     # MOLT binary
-└── replicator               # Replicator binary
-~~~
-	
-~~~
-/migration-project/          # Your current working directory
-├── molt                     # MOLT binary
-└── bin/                     # Subdirectory
-    └── replicator           # Replicator binary
-~~~
+Both `molt` and `replicator` must be in your current **working directory**.
 
 To display the current version of each binary, run `molt --version` and `replicator --version`.
 
@@ -39,16 +26,19 @@ MOLT Fetch is supported on Red Hat Enterprise Linux (RHEL) 9 and above.
 {{site.data.alerts.end}}
 {% endif %}
 
-### Docker image
+### Docker images
 
-[Docker multi-platform images](https://hub.docker.com/r/cockroachdb/molt/tags) containing both the AMD and ARM binaries are available. To pull the latest image for PostgreSQL and MySQL:
+{% if page.name != "molt-replicator.md" %}
+#### MOLT Fetch
+
+[Docker multi-platform images](https://hub.docker.com/r/cockroachdb/molt/tags) containing both the AMD and ARM `molt` and `replicator` binaries are available. To pull the latest image for PostgreSQL and MySQL:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 docker pull cockroachdb/molt
 ~~~
 
-To pull a specific version (e.g., `1.1.3`):
+To pull a specific version (for example, `1.1.3`):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -61,5 +51,24 @@ To pull the latest image for Oracle (note that only `linux/amd64` is supported):
 ~~~ shell
 docker pull cockroachdb/molt:oracle-latest
 ~~~
+{% endif %}
+
+{% if page.name != "molt-fetch.md" %}
+#### MOLT Replicator
+
+[Docker images for MOLT Replicator](https://hub.docker.com/r/cockroachdb/replicator/tags) are also available as a standalone binary:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+docker pull cockroachdb/replicator
+~~~
+
+To pull a specific version (for example, `v1.1.1`):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+docker pull cockroachdb/replicator:v1.1.1
+~~~
+{% endif %}
 
 {% if page.name != "molt.md" %}For details on running in Docker, refer to [Docker usage](#docker-usage).{% endif %}

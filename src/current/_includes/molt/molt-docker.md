@@ -1,8 +1,8 @@
-For details on pulling Docker images, see [Docker image](#docker-image).
+For details on pulling Docker images, refer to [Docker image](#docker-image).
 
 ### Performance
 
-MOLT Fetch and Verify are likely to run more slowly in a Docker container than on a local machine. To improve performance, increase the memory or compute resources, or both, on your Docker container.
+MOLT Fetch, Verify, and Replicator are likely to run more slowly in a Docker container than on a local machine. To improve performance, increase the memory or compute resources, or both, on your Docker container.
 
 {% if page.name == "molt-fetch.md" %}
 ### Authentication
@@ -67,14 +67,14 @@ When testing locally, specify the host as follows:
 
 - For macOS, use `host.docker.internal`. For example:
 
-~~~
---source 'postgres://postgres:postgres@host.docker.internal:5432/molt?sslmode=disable'
---target "postgres://root@host.docker.internal:26257/molt?sslmode=disable"
-~~~
+    ~~~
+    --source 'postgres://postgres:postgres@host.docker.internal:5432/molt?sslmode=disable'
+    --target "postgres://root@host.docker.internal:26257/molt?sslmode=disable"
+    ~~~
 
 - For Linux and Windows, use `172.17.0.1`. For example:
 
-~~~
---source 'postgres://postgres:postgres@172.17.0.1:5432/molt?sslmode=disable'
---target "postgres://root@172.17.0.1:26257/molt?sslmode=disable"
-~~~
+    ~~~
+    --source 'postgres://postgres:postgres@172.17.0.1:5432/molt?sslmode=disable'
+    --target "postgres://root@172.17.0.1:26257/molt?sslmode=disable"
+    ~~~

@@ -2,7 +2,7 @@
 
 #### Oracle Instant Client
 
-Install Oracle Instant Client on the machine that will run `molt` and `replicator`:
+Install Oracle Instant Client on the machine that will run `molt` and `replicator`. If using the MOLT Replicator binary (instead of Docker), the Oracle Instant Client libraries must be accessible at `/usr/lib`.
 
 - On macOS ARM machines, download the [Oracle Instant Client](https://www.oracle.com/database/technologies/instant-client/macos-arm64-downloads.html#ic_osx_inst). After installation, you should have a new directory at `/Users/$USER/Downloads/instantclient_23_3` containing `.dylib` files. Set the `LD_LIBRARY_PATH` environment variable to this directory:
 

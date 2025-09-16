@@ -1,5 +1,7 @@
 ## Troubleshooting
 
+### Fetch issues
+
 ##### Fetch exits early due to mismatches
 
 `molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
@@ -78,3 +80,237 @@ If you shut down `molt` or `replicator` unexpectedly (e.g., with `kill -9` or a 
 
     Replace `sid` and `serial#` in the preceding statement with the values returned by the `SELECT` query.
 </section>
+
+### Replicator issues
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+##### Unable to create publication or slot
+
+This error occurs when the source database does not support logical replication.
+
+**Resolution:** Verify that the source database supports logical replication by checking the `wal_level` parameter on PostgreSQL:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW wal_level;
+~~~
+
+If `wal_level` is not set to `logical`, update it and restart PostgreSQL:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER SYSTEM SET wal_level = 'logical';
+~~~
+
+##### Replication slot already exists
+
+~~~
+ERROR: replication slot "molt_slot" already exists
+~~~
+
+**Resolution:** Either create a new slot with a different name, or drop the existing slot to start fresh:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT pg_drop_replication_slot('molt_slot');
+~~~
+
+{{site.data.alerts.callout_danger}}
+Dropping a replication slot can be destructive and delete data that is not yet replicated. Only use this if you want to restart replication from the current position.
+{{site.data.alerts.end}}
+
+##### Publication does not exist
+
+~~~
+run CREATE PUBLICATION molt_fetch FOR ALL TABLES;
+~~~
+
+**Resolution:** [Create the publication](#configure-source-database-for-replication) on the source database. Ensure you also create the replication slot:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE PUBLICATION molt_publication FOR ALL TABLES;
+SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
+~~~
+
+##### Could not connect to PostgreSQL
+
+~~~
+could not connect to source database: failed to connect to `user=migration_user database=source_database`
+~~~
+
+**Resolution:** Verify the connection details including user, host, port, and database name. Ensure the database name in your `--sourceConn` connection string matches exactly where you created the publication and slot. Verify you're connecting to the same host and port where you ran the `CREATE PUBLICATION` and `SELECT pg_create_logical_replication_slot()` commands. Check if TLS certificates need to be included in the connection URI.
+
+##### Wrong replication slot name
+
+~~~
+run SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput'); in source database
+~~~
+
+**Resolution:** [Create the replication slot](#configure-source-database-for-replication) or verify the correct slot name:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
+~~~
+
+{% if page.name == "migrate-resume-replication.md" %}
+##### Resuming from stale location
+
+**Resolution:** Clear the `_replicator.memo` table to remove stale LSN (log sequence number) checkpoints:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+DELETE FROM _replicator.memo WHERE true;
+~~~
+{% endif %}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+##### Repeated binlog syncing restarts
+
+If Replicator repeatedly restarts binlog syncing, this indicates an invalid or purged GTID.
+
+**Resolution:** Verify the GTID set is valid and **not** purged:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Check if GTID is in executed set
+SELECT GTID_SUBSET('your-gtid-set', @@GLOBAL.gtid_executed) AS in_executed;
+
+-- Check if GTID is purged
+SELECT GTID_SUBSET('your-gtid-set', @@GLOBAL.gtid_purged) AS in_purged;
+~~~
+
+Interpret the results as follows:
+
+- If `in_executed` returns `1` and `in_purged` returns `0`, the GTID is valid for replication.
+- If `in_purged` returns `1`, the GTID has been purged and you must find a newer consistent point.
+- If both return `0`, the GTID doesn't exist in the records and is invalid.
+
+If the GTID is purged or invalid, follow these steps:
+
+1. Increase binlog retention by configuring `binlog_expire_logs_seconds` in MySQL or through your cloud provider:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    -- Increase binlog retention (example: 7 days = 604800 seconds)
+    SET GLOBAL binlog_expire_logs_seconds = 604800;
+    ~~~
+
+1. Get a current GTID set to restart replication:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    -- For MySQL < 8.0:
+    SHOW MASTER STATUS;
+    -- For MySQL 8.0+:
+    SHOW BINARY LOG STATUS;
+    ~~~
+
+##### Invalid GTID format
+
+Invalid GTIDs can occur when GTIDs are purged due to insufficient binlog retention, when connecting to a replica instead of the primary host, or when passing a GTID that has valid format but doesn't exist in the binlog history.
+
+**Resolution:** Use a valid GTID from `SHOW MASTER STATUS` (MySQL < 8.0) or `SHOW BINARY LOG STATUS` (MySQL 8.0+) and ensure you're connecting to the primary host. If GTIDs are being purged, increase binlog retention.
+
+{% if page.name == "migrate-resume-replication.md" %}
+##### Stale GTID from cache
+
+**Resolution:** Clear the `_replicator` database memo table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+DELETE FROM _replicator.memo WHERE true;
+~~~
+{% endif %}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+##### Table/column names exceed 30 characters
+
+Oracle LogMiner excludes tables and columns with names longer than 30 characters from redo logs.
+
+**Resolution:** Rename tables and columns to 30 characters or fewer before migration.
+
+##### Unsupported data types
+
+LogMiner and replication do not support:
+- Long BLOB/CLOBs (4000+ characters)
+- User-defined types (UDTs)
+- Nested tables
+- Varrays
+
+**Resolution:** Convert unsupported data types or exclude affected tables from replication.
+
+##### LOB column UPDATE statements
+
+UPDATE statements that only modify LOB columns are not supported by Oracle LogMiner.
+
+**Resolution:** Avoid LOB-only updates during replication, or use Binary Reader for Oracle 12c.
+
+##### JSONB null handling
+
+SQL NULL and JSON null values are not distinguishable in JSON payloads during replication.
+
+**Resolution:** Avoid using nullable JSONB columns where the distinction between SQL NULL and JSON null is important.
+</section>
+
+##### Schema drift errors
+
+Indicates source and target schemas are mismatched:
+
+~~~
+WARNING: schema drift detected in "database"."table" at payload object offset 0: unexpected columns: column_name
+~~~
+
+**Resolution:** Align schemas or use userscripts to transform data.
+
+##### Apply flow failures
+
+Apply flow failures occur when the target database encounters error conditions such as unique constraint violations, target database being unavailable, or incorrect data (missing or extraneous columns) during apply operations:
+
+~~~
+WARNING: warning during tryCommit: ERROR: duplicate key value violates unique constraint
+ERROR: maximum number of retries (10) exceeded
+~~~
+
+**Resolution:** Check target database constraints and connection stability. MOLT Replicator will log warnings for each retry attempt and surface a final error after exhausting all retry attempts, then restart the apply loop to continue processing.
+
+##### CockroachDB changefeed connection issues
+
+Connection errors when setting up changefeeds:
+
+~~~
+transient error: Post "https://localhost:30004/molt/public": dial tcp [::1]:30004: connect: connection refused
+~~~
+
+**Resolution:** Verify MOLT Replicator is running on the specified port and the webhook URL is correct.
+
+##### Incorrect schema path errors
+
+Schema path mismatches in changefeed URLs:
+
+~~~
+transient error: 400 Bad Request: unknown schema:
+~~~
+
+**Resolution:** Verify the webhook path matches your target database schema. Use `/database/schema` for CockroachDB/PostgreSQL targets and `/DATABASE` for MySQL/Oracle targets.
+
+### Performance troubleshooting
+
+If MOLT Replicator appears hung or performs poorly:
+
+1. Enable trace logging with `-vv` to get more visibility into the replicator's state and behavior.
+
+1. If MOLT Replicator is in an unknown, hung, or erroneous state, collect performance profiles to include with support tickets:
+
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	curl 'localhost:30005/debug/pprof/trace?seconds=15' > trace.out
+	curl 'localhost:30005/debug/pprof/profile?seconds=15' > profile.out
+	curl 'localhost:30005/debug/pprof/goroutine?seconds=15' > gr.out
+	curl 'localhost:30005/debug/pprof/heap?seconds=15' > heap.out
+	~~~
+
+1. Monitor lag metrics and adjust performance parameters as needed.

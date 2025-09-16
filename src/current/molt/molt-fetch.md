@@ -7,7 +7,7 @@ docs_area: migrate
 
 MOLT Fetch moves data from a source database into CockroachDB as part of a [database migration]({% link molt/migration-overview.md %}).
 
-MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to move the source data to cloud storage (Google Cloud Storage, Amazon S3, or Azure Blob Storage), a local file server, or local memory. Once the data is exported, MOLT Fetch can load the data into a target CockroachDB database and replicate changes from the source database. For details, refer to [Migration phases](#migration-phases).
+MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to move the source data to cloud storage (Google Cloud Storage, Amazon S3, or Azure Blob Storage), a local file server, or local memory. Once the data is exported, MOLT Fetch loads the data into a target CockroachDB database. For details, refer to [Migration phases](#migration-phases).
 
 {{site.data.alerts.callout_danger}}
 MOLT Fetch replication modes will be deprecated in favor of a separate replication workflow in an upcoming release. This includes the `data-load-and-replication`, `replication-only`, and `failback` modes.
@@ -15,7 +15,7 @@ MOLT Fetch replication modes will be deprecated in favor of a separate replicati
 
 ## Supported databases
 
-The following source databases are currently supported:
+The following source databases are supported:
 
 - PostgreSQL 11-16
 - MySQL 5.7, 8.0 and later
@@ -29,44 +29,25 @@ The following source databases are currently supported:
 
 Complete the following items before using MOLT Fetch:
 
-- Follow the recommendations in [Best practices](#best-practices) and [Security recommendations](#security-recommendations).
+- Follow the recommendations in [Best practices](#best-practices).
 
 - Ensure that the source and target schemas are identical, unless you enable automatic schema creation with the [`drop-on-target-and-recreate`](#target-table-handling) option. If you are creating the target schema manually, review the behaviors in [Mismatch handling](#mismatch-handling).
 
 - Ensure that the SQL user running MOLT Fetch has [`SELECT` privileges]({% link {{site.current_cloud_version}}/grant.md %}#supported-privileges) on the source and target CockroachDB databases, along with the required privileges to run [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}#required-privileges) (depending on the command used for [data movement](#data-load-mode)) on CockroachDB, as described on their respective pages.
 
-- <a id="replication-setup"></a> If you plan to use continuous replication, using either the MOLT Fetch [replication feature](#data-load-and-replication) or an [external change data capture (CDC) tool](#cdc-cursor), you must configure the source database for replication. Refer to the tutorial setup steps for [PostgreSQL]({% link molt/migrate-data-load-and-replication.md %}#configure-source-database-for-replication), [MySQL]({% link molt/migrate-data-load-and-replication.md %}?filters=mysql#configure-source-database-for-replication), and [Oracle]({% link molt/migrate-data-load-and-replication.md %}?filters=oracle#configure-source-database-for-replication).
-
-	{{site.data.alerts.callout_success}}
-	If you will not use replication (for example, during a [bulk load migration]({% link molt/migrate-bulk-load.md %}) or when doing a one-time data export from a read replica), you can skip replication setup and use the [`--ignore-replication-check`](#global-flags) flag with MOLT Fetch. This flag instructs MOLT Fetch to skip querying for replication checkpoints (such as `pg_current_wal_insert_lsn()` on PostgreSQL, `gtid_executed` on MySQL, and `CURRENT_SCN` on Oracle).
-	{{site.data.alerts.end}}
-
-- URL-encode the connection strings for the source database and [CockroachDB]({% link {{site.current_cloud_version}}/connect-to-the-database.md %}). This ensures that the MOLT tools can parse special characters in your password.
-
-	- Given a password `a$52&`, pass it to the `molt escape-password` command with single quotes:
-
-		{% include_cached copy-clipboard.html %}
-		~~~ shell
-		molt escape-password --password 'a$52&'
-		~~~
-
-		Substitute the following encoded password in your original connection url string:
-
-		~~~
-		a%2452%26
-		~~~
-
-	- Use the encoded password in your connection string. For example:
-
-		~~~
-		postgres://postgres:a%2452%26@localhost:5432/replicationload
-		~~~
+{{site.data.alerts.callout_success}}
+During a [bulk load migration]({% link molt/migrate-bulk-load.md %}) or when doing a one-time data export from a read replica, use the [`--ignore-replication-check`](#global-flags) flag with MOLT Fetch. This flag instructs MOLT Fetch to skip querying for replication checkpoints (such as `pg_current_wal_insert_lsn()` on PostgreSQL, `gtid_executed` on MySQL, and `CURRENT_SCN` on Oracle).
+{{site.data.alerts.end}}
 
 - If you plan to use cloud storage for the data migration, follow the steps in [Secure cloud storage](#secure-cloud-storage).
 
+## Docker usage
+
+{% include molt/molt-docker.md %}
+
 ## Migration phases
 
-MOLT Fetch operates in distinct phases to move data from source databases to CockroachDB. These phases can be executed together using an integrated mode ([`data-load-and-replication`]({% link molt/migrate-data-load-and-replication.md %})) or separately using targeted modes ([`data-load` and `replication-only`]({% link molt/migrate-data-load-replicate-only.md %})). For details on available modes, refer to [Fetch mode](#fetch-mode).
+MOLT Fetch operates in distinct phases to move data from source databases to CockroachDB. For details on available modes, refer to [Fetch mode](#fetch-mode).
 
 ### Data export phase
 
@@ -82,66 +63,7 @@ MOLT Fetch loads the exported data into the target CockroachDB database. The pro
 - [Data movement](#data-load-mode)
 - [Target table handling](#target-table-handling)
 
-### Replication phase
 
-For minimal-downtime migrations, MOLT Fetch can continuously replicate ongoing changes from the source. The system monitors source database transaction logs to capture ongoing writes, applies changes to CockroachDB in near real-time through streaming replication, and provides metrics to track replication lag and ensure data consistency. For details, refer to:
-
-- [Replicate changes](#replication-only)
-- [Resume replication](#resume-replication)
-
-## Best practices
-
-{{site.data.alerts.callout_success}}
-To verify that your connections and configuration work properly, run MOLT Fetch in a staging environment before migrating any data in production. Use a test or development environment that closely resembles production.
-{{site.data.alerts.end}}
-
-- To prevent connections from terminating prematurely during the [data export phase](#data-export-phase), set the following to high values on the source database:
-
-	- **Maximum allowed number of connections.** MOLT Fetch can export data across multiple connections. The number of connections it will create is the number of shards ([`--export-concurrency`](#global-flags)) multiplied by the number of tables ([`--table-concurrency`](#global-flags)) being exported concurrently.
-
-		{{site.data.alerts.callout_info}}
-		With the default numerical range sharding, only tables with [primary key]({% link {{ site.current_cloud_version }}/primary-key.md %}) types of [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) can be sharded. PostgreSQL users can enable [`--use-stats-based-sharding`](#global-flags) to use statistics-based sharding for tables with primary keys of any data type. For details, refer to [Table sharding](#table-sharding).
-		{{site.data.alerts.end}}
-
-	- **Maximum lifetime of a connection.**
-
-- For PostgreSQL sources using [`--use-stats-based-sharding`](#global-flags), run [`ANALYZE`]({% link {{ site.current_cloud_version }}/create-statistics.md %}) on source tables before migration to ensure optimal shard distribution. This is especially important for large tables where even distribution can significantly improve export performance.
-
-- If a PostgreSQL database is set as a [source](#source-and-target-databases), ensure that [`idle_in_transaction_session_timeout`](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT) on PostgreSQL is either disabled or set to a value longer than the duration of the [data export phase](#data-export-phase). Otherwise, the connection will be prematurely terminated. To estimate the time needed to export the PostgreSQL tables, you can perform a dry run and sum the value of [`molt_fetch_table_export_duration_ms`](#metrics) for all exported tables.
-
-- To prevent memory outages during `READ COMMITTED` [data export](#data-export-phase) of tables with large rows, estimate the amount of memory used to export a table: 
-
-	~~~
-	--row-batch-size * --export-concurrency * average size of the table rows
-	~~~
-
-	If you are exporting more than one table at a time (i.e., [`--table-concurrency`](#global-flags) is set higher than `1`), add the estimated memory usage for the tables with the largest row sizes. Ensure that you have sufficient memory to run `molt fetch`, and adjust `--row-batch-size` accordingly. For details on how concurrency and sharding interact, refer to [Table sharding](#table-sharding).
-
-- If a table in the source database is much larger than the other tables, [filter and export the largest table](#schema-and-table-selection) in its own `molt fetch` task. Repeat this for each of the largest tables. Then export the remaining tables in another task.
-
-- When using [`IMPORT INTO`](#data-load-mode) during the [data import phase](#data-import-phase) to load tables into CockroachDB, if the fetch task terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation](#fetch-continuation), or restart the task from the beginning.
-
-- Ensure that the machine running MOLT Fetch is large enough to handle the amount of data being migrated. Fetch performance can sometimes be limited by available resources, but should always be making progress. To identify possible resource constraints, observe the `molt_fetch_rows_exported` [metric](#metrics) for decreases in the number of rows being processed. You can use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view metrics. For details on optimizing export performance through sharding, refer to [Table sharding](#table-sharding).
-
-- {% include molt/molt-drop-constraints-indexes.md %}
-
-## Security recommendations
-
-Cockroach Labs **strongly** recommends the following:
-
-### Secure connections
-
-- Use secure connections to the source and [target CockroachDB database]({% link {{site.current_cloud_version}}/connection-parameters.md %}#additional-connection-parameters) whenever possible.
-- When performing [failback](#failback), use a secure changefeed connection by [overriding the default configuration](#changefeed-override-settings).
-- By default, insecure connections (i.e., `sslmode=disable` on PostgreSQL; `sslmode` not set on MySQL) are disallowed. When using an insecure connection, `molt fetch` returns an error. To override this check, you can enable the `--allow-tls-mode-disable` flag. Do this **only** when testing, or if a secure SSL/TLS connection to the source or target database is not possible.
-
-### Connection strings
-
-{% include molt/fetch-secure-connection-strings.md %}
-
-### Secure cloud storage
-
-{% include molt/fetch-secure-cloud-storage.md %}
 
 ## Commands
 
@@ -168,7 +90,6 @@ Cockroach Labs **strongly** recommends the following:
 | `--assume-role`                                      | Service account to use for assume role authentication. `--use-implicit-auth` must be included. For example, `--assume-role='user-test@cluster-ephemeral.iam.gserviceaccount.com' --use-implicit-auth`. For details, refer to [Cloud Storage Authentication]({% link {{ site.current_cloud_version }}/cloud-storage-authentication.md %}).                                                                                                                                                                                                                                  |
 | `--bucket-path`                                      | The path within the [cloud storage](#bucket-path) bucket where intermediate files are written (e.g., `'s3://bucket/path'` or `'gs://bucket/path'`). Only the URL path is used; query parameters (e.g., credentials) are ignored. To pass in query parameters, use the appropriate flags: `--assume-role`, `--import-region`, `--use-implicit-auth`.                                                                                                                                                                                                                        |
 | `--case-sensitive`                                   | Toggle case sensitivity when comparing table and column names on the source and target. To disable case sensitivity, set `--case-sensitive=false`. If `=` is **not** included (e.g., `--case-sensitive false`), the flag is interpreted as `--case-sensitive` (i.e., `--case-sensitive=true`).<br><br>**Default:** `false`                                                                                                                                                                                                                                                 |
-| `--changefeeds-path`                                 | Path to a JSON file that contains changefeed override settings for [failback](#failback), when enabled with `--mode failback`. If not specified, an insecure default configuration is used, and `--allow-tls-mode-disable` must be included. For details, see [Fail back to source database](#failback).                                                                                                                                                                                                                                                                   |
 | `--cleanup`                                          | Whether to delete intermediate files after moving data using [cloud or local storage](#data-path). **Note:** Cleanup does not occur on [continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                                                                                                |
 | `--compression`                                      | Compression method for data when using [`IMPORT INTO`](#data-load-mode) (`gzip`/`none`).<br><br>**Default:** `gzip`                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `--continuation-file-name`                           | Restart fetch at the specified filename if the task encounters an error. `--fetch-id` must be specified. For details, see [Fetch continuation](#fetch-continuation).                                                                                                                                                                                                                                                                                                                                                                                                       |
@@ -181,7 +102,7 @@ Cockroach Labs **strongly** recommends the following:
 | `--fetch-id`                                         | Restart fetch task corresponding to the specified ID. If `--continuation-file-name` or `--continuation-token` are not specified, fetch restarts for all failed tables.                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `--flush-rows`                                       | Number of rows before the source data is flushed to intermediate files. **Note:** If `--flush-size` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                                                                                               |
 | `--flush-size`                                       | Size (in bytes) before the source data is flushed to intermediate files. **Note:** If `--flush-rows` is also specified, the fetch behavior is based on the flag whose criterion is met first.                                                                                                                                                                                                                                                                                                                                                                              |
-| `--ignore-replication-check`                         | Skip querying for replication checkpoints such as `pg_current_wal_insert_lsn()` on PostgreSQL, `gtid_executed` on MySQL, and `CURRENT_SCN` on Oracle. This option is intended for use in non-replication modes, such as scenarios with planned application downtime or testing. It eliminates the need for replication-specific configurations like GTID-based replication in MySQL, logical replication in PostgreSQL, and access to Oracle views such as `V$DATABASE`, `V$SESSION`, and `V$TRANSACTION`.                                                                 |
+| `--ignore-replication-check`                         | Skip querying for replication checkpoints such as `pg_current_wal_insert_lsn()` on PostgreSQL, `gtid_executed` on MySQL, and `CURRENT_SCN` on Oracle. This option is intended for use during bulk load migrations or when doing a one-time data export from a read replica.                                                                                                                                                                                                                                                                                              |
 | `--import-batch-size`                                | The number of files to be imported at a time to the target database during the [data import phase](#data-import-phase). This applies only when using [`IMPORT INTO`](#data-load-mode) for data movement. **Note:** Increasing this value can improve the performance of full-scan queries on the target database shortly after fetch completes, but very high values are not recommended. If any individual file in the import batch fails, you must [retry](#fetch-continuation) the entire batch.<br><br>**Default:** `1000`                                             |
 | `--import-region`                                    | The region of the [cloud storage](#bucket-path) bucket. This applies only to [Amazon S3 buckets](#bucket-path). Set this flag only if you need to specify an `AWS_REGION` explicitly when using [`IMPORT INTO`](#data-load-mode) for data movement. For example, `--import-region=ap-south-1`.                                                                                                                                                                                                                                                                             |
 | `--local-path`                                       | The path within the [local file server](#local-path) where intermediate files are written (e.g., `data/migration/cockroach`). `--local-path-listen-addr` must be specified.                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -189,15 +110,10 @@ Cockroach Labs **strongly** recommends the following:
 | `--local-path-listen-addr`                           | Write intermediate files to a [local file server](#local-path) at the specified address (e.g., `'localhost:3000'`). `--local-path` must be specified.                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `--log-file`                                         | Write messages to the specified log filename. If no filename is provided, messages write to `fetch-{datetime}.log`. If `"stdout"` is provided, messages write to `stdout`.                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `--logging`                                          | Level at which to log messages (`trace`/`debug`/`info`/`warn`/`error`/`fatal`/`panic`).<br><br>**Default:** `info`                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `--metrics-listen-addr`                              | Address of the Prometheus metrics endpoint, which has the path `{address}/metrics`. For details on important metrics to monitor, see [Metrics](#metrics).<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                           |
-| `--mode`                                             | Configure the MOLT Fetch behavior: `data-load`, `data-load-and-replication`, `replication-only`, `export-only`, `import-only`, or `failback`. For details, refer to [Fetch mode](#fetch-mode).<br><br>**Default:** `data-load`                                                                                                                                                                                                                                                                                                                                             |
+| `--metrics-listen-addr`                              | Address of the Prometheus metrics endpoint, which has the path `{address}/metrics`. For details on important metrics to monitor, see [Fetch metrics](#fetch-metrics).<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                                                           |
+| `--mode`                                             | Configure the MOLT Fetch behavior: `data-load`, `export-only`, or `import-only`. For details, refer to [Fetch mode](#fetch-mode).<br><br>**Default:** `data-load`                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `--non-interactive`                                  | Run the fetch task without interactive prompts. This is recommended **only** when running `molt fetch` in an automated process (i.e., a job or continuous integration).                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `--pglogical-publication-name`                       | If set, the name of the [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) that will be created or used for replication. Used in [`replication-only`](#replication-only) mode.<br><br>**Default:** `molt_fetch`                                                                                                                                                                                                                                                                                                                   |
-| `--pglogical-publication-and-slot-drop-and-recreate` | If set, drops the [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) and slots if they exist and then recreates them. Used in [`replication-only`](#replication-only) mode.                                                                                                                                                                                                                                                                                                                                                       |
-| `--pglogical-replication-slot-name`                  | The name of a replication slot to create before taking a snapshot of data (e.g., `'fetch'`). **Required** in order to perform continuous [replication](#data-load-and-replication) from a source PostgreSQL database.                                                                                                                                                                                                                                                                                                                                                      |
-| `--pglogical-replication-slot-plugin`                | The output plugin used for logical replication under `--pglogical-replication-slot-name`.<br><br>**Default:** `pgoutput`                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `--pprof-listen-addr`                                | Address of the pprof endpoint.<br><br>**Default:** `'127.0.0.1:3031'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `--replicator-flags`                                 | If continuous [replication](#data-load-and-replication) is enabled with `--mode data-load-and-replication`, `--mode replication-only`, or `--mode failback`, specify [replication flags](#replication-flags) to override. For example: `--replicator-flags "--tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key"`                                                                                                                                                                                                                                       |
 | `--row-batch-size`                                   | Number of rows per shard to export at a time. For details on sharding, refer to [Table sharding](#table-sharding). See also [Best practices](#best-practices).<br><br>**Default:** `100000`                                                                                                                                                                                                                                                                                                                                                                                |
 | `--schema-filter`                                    | Move schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).<br><br>**Default:** `'.*'`                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `--skip-pk-check`                                    | Skip primary-key matching to allow data load when source or target tables have missing or mismatched primary keys. Disables sharding and bypasses `--export-concurrency` and `--row-batch-size` settings. Refer to [Skip primary key matching](#skip-primary-key-matching).<br><br>**Default:** `false`                                                                                                                                                                                                                                                                    |
@@ -220,7 +136,6 @@ Cockroach Labs **strongly** recommends the following:
 | `--conn-string`       | (Required) Connection string for the target database. For details, see [List active continuation tokens](#list-active-continuation-tokens). |
 | `-n`, `--num-results` | Number of results to return.                                                                                                                |
 
-{% include molt/replicator-flags.md %}
 
 ## Usage
 
@@ -283,10 +198,7 @@ The `--source-cdb` flag specifies the connection string for the Oracle container
 `--mode` specifies the MOLT Fetch behavior:
 
 - [Load data into CockroachDB](#data-load)
-- [Load data and replicate changes to CockroachDB](#data-load-and-replication)
-- [Replicate changes to CockroachDB](#replication-only)
 - [Export and import the data only](#export-only-and-import-only)
-- [Fail back to source database](#failback)
 
 {{site.data.alerts.callout_danger}}
 MOLT Fetch replication modes will be deprecated in favor of a separate replication workflow in an upcoming release. This includes the `data-load-and-replication`, `replication-only`, and `failback` modes.
@@ -301,104 +213,6 @@ MOLT Fetch replication modes will be deprecated in favor of a separate replicati
 --mode data-load
 ~~~
 
-If the source is a PostgreSQL database and you intend to [replicate changes](#replication-only) afterward, **also** specify a replication slot name with `--pglogical-replication-slot-name`. MOLT Fetch will create a replication slot with this name. For example, the following snippet instructs MOLT Fetch to create a slot named `replication_slot` to use for replication:
-
-{% include_cached copy-clipboard.html %}
-~~~
---mode data-load
---pglogical-replication-slot-name 'replication_slot'
-~~~
-
-{{site.data.alerts.callout_success}}
-In case you need to rename your [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html), also include `--pglogical-publication-name` to specify the new publication name and `--pglogical-publication-and-slot-drop-and-recreate` to ensure that the publication and replication slot are created in the correct order. For details on these flags, refer to [Global flags](#global-flags).
-{{site.data.alerts.end}}
-
-#### `data-load-and-replication`
-
-{{site.data.alerts.callout_info}}
-Before using this option, the source database **must** be configured for continuous replication, as described in [Setup](#replication-setup).
-{{site.data.alerts.end}}
-
-`data-load-and-replication` instructs MOLT Fetch to load the source data into CockroachDB, and replicate any subsequent changes on the source. This enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime).
-
-{% include_cached copy-clipboard.html %}
-~~~
---mode data-load-and-replication
-~~~
-
-If the source is a PostgreSQL database, you **must** also specify a replication slot name with `--pglogical-replication-slot-name`. MOLT Fetch will create a replication slot with this name. For example, the following snippet instructs MOLT Fetch to create a slot named `replication_slot` to use for replication:
-
-{% include_cached copy-clipboard.html %}
-~~~
---mode data-load-and-replication
---pglogical-replication-slot-name 'replication_slot'
-~~~
-
-{{site.data.alerts.callout_success}}
-In case you need to rename your [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html), also include `--pglogical-publication-name` to specify the new publication name and `--pglogical-publication-and-slot-drop-and-recreate` to ensure that the publication and replication slot are created in the correct order. For details on these flags, refer to [Global flags](#global-flags).
-{{site.data.alerts.end}}
-
-Continuous replication begins once the initial load is complete, as indicated by a `fetch complete` message in the output. If replication is interrupted, you can [resume replication](#resume-replication).
-
-To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`. If replication fails, a non-zero exit code is returned.
-
-To customize the replication behavior (an advanced use case), use `--replicator-flags` to specify one or more [replication-specific flags](#replication-flags).
-
-{% include_cached copy-clipboard.html %}
-~~~
---mode data-load-and-replication
---replicator-flags "--applyTimeout '1h' --parallelism 64"
-~~~
-
-#### `replication-only`
-
-{{site.data.alerts.callout_info}}
-Before using this option: 
-
-- The source database **must** be configured for continuous replication, as described in [Setup](#replication-setup).
-- The `replicator` binary **must** be located either in the same directory as `molt` or in a directory directly beneath `molt`. Both `molt` and `replicator` must be in your current working directory for MOLT to locate the replicator binary.
-{{site.data.alerts.end}}
-
-`replication-only` instructs MOLT Fetch to replicate ongoing changes on the source to CockroachDB, using the specified replication marker. This assumes you have already run [`--mode data-load`](#data-load) to load the source data into CockroachDB. This enables [migrations with minimal downtime]({% link molt/migration-overview.md %}#migrations-with-minimal-downtime).
-
-- For a PostgreSQL source, you should have already created a replication slot when [loading data](#data-load). Specify the same replication slot name using `--pglogical-replication-slot-name`. For example:
-
-	{% include_cached copy-clipboard.html %}
-	~~~
-	--mode replication-only 
-	--pglogical-replication-slot-name 'replication_slot'
-	~~~
-
-	{{site.data.alerts.callout_success}}
-	In case you want to run `replication-only` without already having loaded data (e.g., for testing), also include `--pglogical-publication-and-slot-drop-and-recreate` to ensure that the publication and replication slot are created in the correct order. For details on this flag, refer to [Global flags](#global-flags).
-	{{site.data.alerts.end}}
-
-
-- For a MySQL source, replication requires specifying a starting GTID set with the `--defaultGTIDSet` replication flag. After the initial data load completes, locate the [`cdc_cursor`](#cdc-cursor) value in the `fetch complete` log output and use it as the GTID set. For example:
-
-	{% include_cached copy-clipboard.html %}
-	~~~ shell
-	--mode replication-only \
-	--replicator-flags "--defaultGTIDSet b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21"
-	~~~
-
-If replication is interrupted, you can [resume replication](#resume-replication).
-
-##### Resume replication
-
-`replication-only` can be used to resume replication if it is interrupted in either `data-load-and-replication` or `replication-only` mode.
-
-Specify the staging schema with the [`--stagingSchema` replication flag](#replication-flags). MOLT Fetch outputs the schema name as `staging database name: {schema_name}` after the initial replication run.
-
-{% include_cached copy-clipboard.html %}
-~~~
---mode replication-only
---replicator-flags "--stagingSchema {schema_name}"
-~~~
-
-You **must** include the `--stagingSchema` replication flag when resuming replication, as the schema provides a replication marker for streaming changes.
-
-To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`. If replication fails, a non-zero exit code is returned.
 
 #### `export-only` and `import-only`
 
@@ -415,106 +229,6 @@ To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal. This returns 
 ~~~
 --mode import-only
 ~~~
-
-#### `failback`
-
-{{site.data.alerts.callout_danger}}
-Before using `failback` mode, refer to the [technical advisory]({% link advisories/a123371.md %}) about a bug that affects changefeeds on CockroachDB v22.2, v23.1.0 to v23.1.21, v23.2.0 to v23.2.5, and testing versions of v24.1 through v24.1.0-rc.1.
-{{site.data.alerts.end}}
-
-If you encounter issues after moving data to CockroachDB, you can use `failback` mode to replicate changes on CockroachDB back to the initial source database. In case you need to roll back the migration, this ensures that data is consistent on the initial source database.
-
-`failback` mode creates a [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) and sets up a [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) to pass change events from CockroachDB to the failback target. In production, you should **secure the connection** by specifying [changefeed override settings](#changefeed-override-settings) in a JSON file. These settings override the [default insecure changefeed](#default-insecure-changefeed) values, which are suited for testing only. Include the [`--changefeeds-path`](#global-flags) flag to indicate the path to the JSON file.
-
-{% include_cached copy-clipboard.html %}
-~~~
---mode failback
---changefeeds-path 'changefeed-settings.json'
-~~~
-
-When running `molt fetch --mode failback`, `--source` is the CockroachDB connection string and `--target` is the connection string of the database you migrated from. `--table-filter` specifies the tables to watch for change events. For example:
-
-{% include_cached copy-clipboard.html %}
-~~~
---source 'postgresql://{username}:{password}@{host}:{port}/{database}'
---target 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
---table-filter 'employees|payments'
-~~~
-
-{{site.data.alerts.callout_info}}
-MySQL 5.7 and later are supported as MySQL failback targets.
-{{site.data.alerts.end}}
-
-##### Changefeed override settings
-
-You can specify the following [`CREATE CHANGEFEED` parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#parameters) in the override JSON. If any parameter is not specified, its [default value](#default-insecure-changefeed) is used.
-
-- The following [`CREATE CHANGEFEED` sink URI parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#sink-uri):
-	- `host`: The hostname or IP address of the [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) where change events are sent. The applicable certificates of the failback target (i.e., the [source database](#source-and-target-databases) from which you migrated) **must** be located on this machine.
-	- `port`: The port of the [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
-	- `sink_query_parameters`: A comma-separated list of [`CREATE CHANGEFEED` query parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#query-parameters). This includes the base64-encoded client certificate ([`client_cert`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#client-cert)), key ([`client_key`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#client-key)), and CA ([`ca_cert`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#ca-cert)) for a secure webhook sink.
-- The following [`CREATE CHANGEFEED` options]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#options):
-	- [`resolved`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#resolved)
-	- [`min_checkpoint_frequency`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#min-checkpoint-frequency)
-	- [`initial_scan`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#initial-scan)
-	- [`webhook_sink_config`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#webhook-sink-config)  
-
-{{site.data.alerts.callout_info}}
-If there is already a running CockroachDB changefeed with the same webhook sink URL (excluding query parameters) and [watched tables]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}), the existing changefeed is used for `failback`.
-{{site.data.alerts.end}}
-
-**Use a secure changefeed connection whenever possible.** The [default insecure configuration](#default-insecure-changefeed) is **not** recommended in production. To secure the changefeed connection, define `sink_query_parameters` in the JSON as follows:
-
-{% include_cached copy-clipboard.html %}
-~~~ json
-{
-    "sink_query_parameters": "client_cert={base64 cert}&client_key={base64 key}&ca_cert={base64 CA cert}"
-}
-~~~
-
-`client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, use the command `base64 -i ./client.crt | jq -R -r '@uri'`).
-
-In the `molt fetch` command, also include [`--replicator-flags`](#failback-replication-flags) to specify the paths to the server certificate and key that correspond to the client certs defined in `sink_query_parameters`. For example:
-
-{% include_cached copy-clipboard.html %}
-~~~
---changefeeds-path 'changefeed-secure.json'
---replicator-flags "--tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key"
-~~~
-
-For a complete example of using `molt fetch` in `failback` mode, see [Fail back securely from CockroachDB](#fail-back-securely-from-cockroachdb).
-
-##### Default insecure changefeed
-
-{{site.data.alerts.callout_danger}}
-Insecure configurations are **not** recommended. In production, run failback with a secure changefeed connection. For details, see [Changefeed override settings](#changefeed-override-settings).
-{{site.data.alerts.end}}
-
-When `molt fetch --mode failback` is run without specifying `--changefeeds-path`, the following [`CREATE CHANGEFEED` parameters]({% link {{ site.current_cloud_version }}/create-changefeed.md %}#parameters) are used for the changefeed:
-
-~~~ json
-{
-    "host": "localhost",
-    "port": 30004,
-    "sink_query_parameters": "insecure_tls_skip_verify=true",
-    "resolved": "1s",
-    "min_checkpoint_frequency": "1s",
-    "initial_scan": "no",
-    "webhook_sink_config": "{\"Flush\":{\"Bytes\":1048576}}"
-}
-~~~
-
-The default parameters specify a local webhook sink (`"localhost"`) and an insecure sink connection (`"insecure_tls_skip_verify=true"`), which are suited for testing only. In order to run `failback` with the default insecure configuration, you must also include the following flags:
-
-{% include_cached copy-clipboard.html %}
-~~~
---allow-tls-mode-disable
---replicator-flags '--tlsSelfSigned --disableAuthentication'
-~~~
-
-{{site.data.alerts.callout_info}}
-Either `--changefeeds-path`, which overrides the default insecure configuration; or `--allow-tls-mode-disable`, which enables the use of the default insecure configuration, must be specified in `failback` mode. Otherwise, `molt fetch` will error.
-{{site.data.alerts.end}}
 
 ### Data load mode
 
@@ -696,7 +410,7 @@ By default, MOLT Fetch moves all data from the [`--source`](#source-and-target-d
 
 ### Selective data movement
 
-Use `--filter-path` to specify the path to a JSON file that defines row-level filtering for data load. This enables you to move a subset of data in a table, rather than all data in the table. To apply row-level filters during replication, you need a [userscript](#filter-path-userscript-for-replication).
+Use `--filter-path` to specify the path to a JSON file that defines row-level filtering for data load. This enables you to move a subset of data in a table, rather than all data in the table. To apply row-level filters during replication, use [MOLT Replicator]({% link molt/molt-replicator.md %}) with userscripts.
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -1051,7 +765,7 @@ If MOLT Fetch fails while loading data into CockroachDB from intermediate files,
 Continuation is only possible under the following conditions:
 
 - All data has been exported from the source database into intermediate files on [cloud](#bucket-path) or [local storage](#local-path).
-- The *initial load* of source data into the target CockroachDB database is incomplete. This means that ongoing [replication](#data-load-and-replication) of source data has not begun.
+- The *initial load* of source data into the target CockroachDB database is incomplete.
 
 {{site.data.alerts.callout_info}}
 Only one fetch ID and set of continuation tokens, each token corresponding to a table, are active at any time. See [List active continuation tokens](#list-active-continuation-tokens).
@@ -1115,17 +829,62 @@ A change data capture (CDC) cursor is written to the output as `cdc_cursor` at t
 {"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":1,"tables":["public.employees"],"cdc_cursor":"b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21","net_duration_ms":4879.890041,"net_duration":"000h 00m 04s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
 ~~~
 
-Use the `cdc_cursor` value as the starting GTID set for MySQL replication by passing it to the `--defaultGTIDSet` replication flag (refer to [Replication flags](#replication-flags)).
+Use the `cdc_cursor` value as the starting GTID set for MySQL replication with [MOLT Replicator]({% link molt/molt-replicator.md %}).
 
 You can also use the `cdc_cursor` value with an external change data capture (CDC) tool to continuously replicate subsequent changes from the source database to CockroachDB.
 
-### Metrics
+## Best practices
 
-By default, MOLT Fetch exports [Prometheus](https://prometheus.io/) metrics at `127.0.0.1:3030/metrics`. You can configure this endpoint with the `--metrics-listen-addr` [flag](#global-flags).
+### Test and validate
 
-{{site.data.alerts.callout_info}}
-If [replication](#fetch-mode) is active, metrics from the `replicator` process are enabled by setting the `--metricsAddr` [replication flag](#replication-flags), and are served at `http://host:port/_/varz`.
-{{site.data.alerts.end}}
+To verify that your connections and configuration work properly, run MOLT Fetch in a staging environment before migrating any data in production. Use a test or development environment that closely resembles production.
+
+### Connection strings
+
+URL-encode the connection strings for the source and target databases. This ensures that the MOLT tools can parse special characters in your password.
+
+{% include molt/fetch-secure-connection-strings.md %}
+
+
+### Configure the source database and connection
+
+- To prevent connections from terminating prematurely during the [data export phase](#data-export-phase), set the following to high values on the source database:
+
+	- **Maximum allowed number of connections.** MOLT Fetch can export data across multiple connections. The number of connections it will create is the number of shards ([`--export-concurrency`](#global-flags)) multiplied by the number of tables ([`--table-concurrency`](#global-flags)) being exported concurrently.
+
+		{{site.data.alerts.callout_info}}
+		With the default numerical range sharding, only tables with [primary key]({% link {{ site.current_cloud_version }}/primary-key.md %}) types of [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) can be sharded. PostgreSQL users can enable [`--use-stats-based-sharding`](#global-flags) to use statistics-based sharding for tables with primary keys of any data type. For details, refer to [Table sharding](#table-sharding).
+		{{site.data.alerts.end}}
+
+	- **Maximum lifetime of a connection.**
+
+- If a PostgreSQL database is set as a [source](#source-and-target-databases), ensure that [`idle_in_transaction_session_timeout`](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT) on PostgreSQL is either disabled or set to a value longer than the duration of the [data export phase](#data-export-phase). Otherwise, the connection will be prematurely terminated. To estimate the time needed to export the PostgreSQL tables, you can perform a dry run and sum the value of [`molt_fetch_table_export_duration_ms`](#fetch-metrics) for all exported tables.
+
+### Optimize performance
+
+- {% include molt/molt-drop-constraints-indexes.md %}
+
+- For PostgreSQL sources using [`--use-stats-based-sharding`](#global-flags), run [`ANALYZE`]({% link {{ site.current_cloud_version }}/create-statistics.md %}) on source tables before migration to ensure optimal shard distribution. This is especially important for large tables where even distribution can significantly improve export performance.
+
+- To prevent memory outages during `READ COMMITTED` [data export](#data-export-phase) of tables with large rows, estimate the amount of memory used to export a table:
+
+	~~~
+	--row-batch-size * --export-concurrency * average size of the table rows
+	~~~
+
+	If you are exporting more than one table at a time (i.e., [`--table-concurrency`](#global-flags) is set higher than `1`), add the estimated memory usage for the tables with the largest row sizes. Ensure that you have sufficient memory to run `molt fetch`, and adjust `--row-batch-size` accordingly. For details on how concurrency and sharding interact, refer to [Table sharding](#table-sharding).
+
+- If a table in the source database is much larger than the other tables, [filter and export the largest table](#schema-and-table-selection) in its own `molt fetch` task. Repeat this for each of the largest tables. Then export the remaining tables in another task.
+
+- Ensure that the machine running MOLT Fetch is large enough to handle the amount of data being migrated. Fetch performance can sometimes be limited by available resources, but should always be making progress. To identify possible resource constraints, observe the `molt_fetch_rows_exported` [metric](#fetch-metrics) for decreases in the number of rows being processed. You can use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view metrics. For details on optimizing export performance through sharding, refer to [Table sharding](#table-sharding).
+
+### Import and continuation handling
+
+- When using [`IMPORT INTO`](#data-load-mode) during the [data import phase](#data-import-phase) to load tables into CockroachDB, if the fetch task terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation](#fetch-continuation), or restart the task from the beginning.
+
+### Monitoring and observability
+
+**Metrics monitoring:** By default, MOLT Fetch exports [Prometheus](https://prometheus.io/) metrics at `127.0.0.1:3030/metrics`. You can configure this endpoint with the `--metrics-listen-addr` [flag](#global-flags).
 
 Cockroach Labs recommends monitoring the following metrics:
 
@@ -1141,218 +900,37 @@ Cockroach Labs recommends monitoring the following metrics:
 
 You can also use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view the preceding metrics.
 
-## Docker usage
+### Security
 
-{% include molt/molt-docker.md %}
+Cockroach Labs **strongly** recommends the following:
+
+#### Connection security and credentials
+
+- Use secure connections to the source and [target CockroachDB database]({% link {{site.current_cloud_version}}/connection-parameters.md %}#additional-connection-parameters) whenever possible.
+- By default, insecure connections (i.e., `sslmode=disable` on PostgreSQL; `sslmode` not set on MySQL) are disallowed. When using an insecure connection, `molt fetch` returns an error. To override this check, you can enable the `--allow-tls-mode-disable` flag. Do this **only** when testing, or if a secure SSL/TLS connection to the source or target database is not possible.
+
+#### Cloud storage security
+
+{% include molt/fetch-secure-cloud-storage.md %}
 
 ## Examples
 
-The following examples demonstrate how to issue `molt fetch` commands to load data into CockroachDB. These examples assume that [secure connections](#secure-connections) to the source and target database are used.
+For detailed examples of using MOLT Fetch, refer to the migration workflow tutorials:
+
+- [Bulk load migration]({% link molt/migrate-bulk-load.md %}): Load data with MOLT Fetch using planned downtime
+- [Minimal-downtime migrations]({% link molt/migrate-load-replicate.md %}): Load data with MOLT Fetch and set up ongoing replication with [MOLT Replicator]({% link molt/molt-replicator.md %})
 
 {{site.data.alerts.callout_success}}
-After successfully running MOLT Fetch, you can run [`molt verify`]({% link molt/molt-verify.md %}) to confirm that replication worked successfully without missing or mismatched rows.
+After successfully running MOLT Fetch, you can run [`molt verify`]({% link molt/molt-verify.md %}) to confirm that data was migrated successfully without missing or mismatched rows.
 {{site.data.alerts.end}}
 
-### Load PostgreSQL data via S3 with continuous replication
-
-The following `molt fetch` command uses [`IMPORT INTO`](#data-load-mode) to load a subset of tables from a PostgreSQL database to CockroachDB.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-molt fetch \
---source 'postgres://postgres:postgres@localhost/molt' \
---target 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full' \
---table-handling 'truncate-if-exists' \
---table-filter 'employees' \
---bucket-path 's3://migration/data/cockroach' \
---cleanup \
---pglogical-replication-slot-name 'replication_slot' \
---mode data-load-and-replication
-~~~
-
-- `--table-handling` specifies that existing tables on CockroachDB should be truncated before the source data is loaded.
-- `--table-filter` filters for tables with the `employees` string in the name.
-- `--bucket-path` specifies a directory on an [Amazon S3 bucket](#data-path) where intermediate files will be written.
-- `--cleanup` specifies that the intermediate files should be removed after the source data is loaded.
-- `--pglogical-replication-slot-name` specifies a replication slot name to be created on the source PostgreSQL database. This is used in continuous [replication](#data-load-and-replication).
-- `--mode data-load-and-replication` starts continuous [replication](#data-load-and-replication) of data from the source database to CockroachDB after the fetch task succeeds.
-
-If the fetch task succeeds, the output displays a `fetch complete` message like the following:
-
-~~~ json
-{"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":1,"tables":["public.employees"],"cdc_cursor":"0/3F41E40","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
-~~~
-
-{{site.data.alerts.callout_info}}
-If the fetch task encounters an error, it will exit and can be [continued](#continue-fetch-after-encountering-an-error).
-{{site.data.alerts.end}}
-
-Continuous [replication](#data-load-and-replication) begins immediately afterward:
-
-~~~ json
-{"level":"info","time":"2024-05-13T14:33:07-04:00","message":"starting replicator"}
-{"level":"info","time":"2024-05-13T14:36:22-04:00","message":"creating publication"}
-~~~
-
-To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal.
-
-### Load MySQL data via GCP with continuous replication
-
-The following `molt fetch` command uses [`COPY FROM`](#data-load-mode) to load a subset of tables from a MySQL database to CockroachDB.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-molt fetch \
---source 'mysql://root:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt' \
---target 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full' \
---table-handling 'truncate-if-exists' \
---table-filter 'employees' \
---bucket-path 'gs://migration/data/cockroach' \
---use-copy \
---cleanup \
---mode data-load-and-replication
-~~~
-
-- `--source` specifies the MySQL connection string and the certificates in URL-encoded format. Secure connections should be used by default. Refer to [Setup](#setup).
-- `--table-handling` specifies that existing tables on CockroachDB should be truncated before the source data is loaded.
-- `--table-filter` filters for tables with the `employees` string in the name.
-- `--bucket-path` specifies a directory on an [Google Cloud Storage bucket](#data-path) where intermediate files will be written.
-- `--use-copy` specifies that `COPY FROM` is used to load the tables, keeping the source tables online and queryable but loading the data more slowly than `IMPORT INTO`.
-- `--cleanup` specifies that the intermediate files should be removed after the source data is loaded.
-- `--mode data-load-and-replication` starts continuous [replication](#data-load-and-replication) of data from the source database to CockroachDB after the fetch task succeeds.
-
-If the fetch task succeeds, the output displays a `fetch complete` message like the following:
-
-~~~ json
-{"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":1,"tables":["public.employees"],"cdc_cursor":"0/3F41E40","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
-~~~
-
-{{site.data.alerts.callout_info}}
-If the fetch task encounters an error, it will exit and can be [continued](#continue-fetch-after-encountering-an-error).
-{{site.data.alerts.end}}
-
-Continuous [replication](#data-load-and-replication) begins immediately afterward:
-
-~~~ json
-{"level":"info","time":"2024-05-13T14:33:07-04:00","message":"starting replicator"}
-~~~
-
-To cancel replication, enter `ctrl-c` to issue a `SIGTERM` signal.
-
-### Load CockroachDB data via direct copy
-
-The following `molt fetch` command uses [`COPY FROM`](#data-load-mode) to load all tables directly from one CockroachDB database to another.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-molt fetch \
---source 'postgres://root@localhost:26257/defaultdb?sslmode=disable' \
---target 'postgres://root@localhost:26258/defaultdb?sslmode=disable' \
---table-handling 'none' \
---direct-copy \
---allow-tls-mode-disable
-~~~
-
-- `--source` specifies `sslmode=disable` to establish an insecure connection. By default, insecure connections are disallowed and should be used **only** for testing or if a secure SSL/TLS connection to the source or target database is not possible.
-- `--table-handling` specifies that existing tables on the target CockroachDB database should not be modified before the source data is loaded.
-- `--direct-copy` specifies that `COPY FROM` is used to load the tables directly, without creating intermediate files.
-- `--allow-tls-mode-disable` enables insecure connections to the source and target databases. Refer to [Secure connections](#secure-connections).
-
-### Continue fetch after encountering an error
-
-If the fetch task encounters an error, it exits with an error message, fetch ID, and continuation token for each table that failed to load on the target database. You can use these values to [continue the fetch task](#fetch-continuation) from where it was interrupted.
-
-~~~ json
-{"level":"info","table":"public.tbl1","file_name":"shard_01_part_00000001.csv","message":"creating or updating token for duplicate key value violates unique constraint \"tbl1_pkey\"; Key (id)=(22) already exists."}
-{"level":"info","table":"public.tbl1","continuation_token":"5e7c7173-101c-4539-9b8d-28fad37d0240","message":"created continuation token"}
-{"level":"info","fetch_id":"87bf8dc0-803c-4e26-89d5-3352576f92a7","message":"continue from this fetch ID"}
-~~~
-
-To retry a specific table, reissue the initial `molt fetch` command and include the fetch ID and a continuation token:
-
-{{site.data.alerts.callout_success}}
-You can use `molt fetch tokens list` to list all active continuation tokens. Refer to [List active continuation tokens](#list-active-continuation-tokens).
-{{site.data.alerts.end}}
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-molt fetch \
-... \
---fetch-id '87bf8dc0-803c-4e26-89d5-3352576f92a7' \
---continuation-token '5e7c7173-101c-4539-9b8d-28fad37d0240'
-~~~
-
-To retry all tables that failed, exclude `--continuation-token` from the command. When prompted, type `y` to clear all active continuation tokens. To avoid the prompt (e.g., when running `molt fetch` in a job), include the `--non-interactive` flag:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-molt fetch \
-... \
---fetch-id '87bf8dc0-803c-4e26-89d5-3352576f92a7' \
---non-interactive
-~~~
-
-### Fail back securely from CockroachDB
-
-{{site.data.alerts.callout_danger}}
-Before using `failback` mode, refer to the [technical advisory]({% link advisories/a123371.md %}) about a bug that affects changefeeds on CockroachDB v22.2, v23.1.0 to v23.1.21, v23.2.0 to v23.2.5, and testing versions of v24.1 through v24.1.0-rc.1.
-{{site.data.alerts.end}}
-
-The following `molt fetch` command uses [`failback` mode](#failback) to securely replicate changes from CockroachDB back to a MySQL database. This assumes that you migrated data from MySQL to CockroachDB, and want to keep the data consistent on MySQL in case you need to roll back the migration.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-molt fetch \
---source 'postgres://root@localhost:26257/defaultdb?sslmode=verify-full' \
---target 'mysql://root:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt' \
---table-filter 'employees|payments' \
---non-interactive \
---logging debug \
---replicator-flags "--tlsCertificate ./certs/server.crt --tlsPrivateKey ./certs/server.key" \
---mode failback \
---changefeeds-path 'changefeed-secure.json'
-~~~
-
-- `--source` specifies the connection string of the CockroachDB database to which you migrated.
-- `--target` specifies the connection string of the MySQL database acting as the failback target.
-- `--table-filter` specifies that the `employees` and `payments` tables should be watched for change events.
-- `--replicator-flags` specifies the paths to the server certificate (`--tlsCertificate`) and key (`--tlsPrivateKey`) that correspond to the client certs defined by `sink_query_parameters` in the changefeed override JSON file.
-- `--changefeeds-path` specifies the path to `changefeed-secure.json`, which contains the following setting override:
-
-	{% include_cached copy-clipboard.html %}
-	~~~ json
-	{
-	    "sink_query_parameters": "client_cert={base64 cert}&client_key={base64 key}&ca_cert={base64 CA cert}"
-	}
-	~~~
-
-	`client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters) that must be base64- and URL-encoded (for example, use the command `base64 -i ./client.crt | jq -R -r '@uri'`).
-
-	{{site.data.alerts.callout_success}}
-	For details on the default changefeed settings and how to override them, see [Changefeed override settings](#changefeed-override-settings).
-	{{site.data.alerts.end}}
-
-The preceding `molt fetch` command issues the equivalent [`CREATE CHANGEFEED`]({% link {{ site.current_cloud_version }}/create-changefeed.md %}) command, using the default and explicitly overriden changefeed settings:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE CHANGEFEED FOR TABLE employees, payments 
-  INTO 'webhook-https://localhost:30004/defaultdb/public?client_cert={base64 cert}&client_key={base64 key}&ca_cert={base64 CA cert}' 
-  WITH updated, resolved = '1s', min_checkpoint_frequency = '1s', initial_scan = 'no', cursor = '2024-09-11T16:33:35Z', webhook_sink_config = '{\"Flush\":{\"Bytes\":1048576,\"Frequency\":\"1s\"}}'
-~~~
-
-The initial output looks like the following:
-
-~~~
-INFO   [Sep 11 11:03:54] Replicator starting                           -buildmode=exe -compiler=gc CGO_CFLAGS= CGO_CPPFLAGS= CGO_CXXFLAGS= CGO_ENABLED=1 CGO_LDFLAGS= GOARCH=arm64 GOOS=darwin vcs=git vcs.modified=true vcs.revision=c948b78081a37aacf37a82eac213aa91a2828f92 vcs.time="2024-08-19T13:39:37Z"
-INFO   [Sep 11 11:03:54] Server listening                              address="[::]:30004"
-DEBUG  [Sep 11 11:04:00]                                               httpRequest="&{0x14000156ea0 0 401 32 101.042µs   false false}"
-DEBUG  [Sep 11 11:04:00]                                               httpRequest="&{0x14000018b40 0 401 32 104.417µs   false false}"
-DEBUG  [Sep 11 11:04:01]                                               httpRequest="&{0x140000190e0 0 401 32 27.958µs   false false}"
-~~~
 
 ## See also
 
 - [Migration Overview]({% link molt/migration-overview.md %})
 - [Migration Strategy]({% link molt/migration-strategy.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
+- [MOLT Replicator]({% link molt/molt-replicator.md %})
+- [Load and replicate]({% link molt/migrate-load-replicate.md %})
+- [Resume Replication]({% link molt/migrate-resume-replication.md %})
+- [Migration Failback]({% link molt/migrate-failback.md %})

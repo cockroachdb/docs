@@ -24,12 +24,6 @@
           ]
         },
         {
-          "title": "Load and Replicate",
-          "urls": [
-            "/molt/migrate-data-load-and-replication.html"
-          ]
-        },
-        {
           "title": "Load and Replicate Separately",
           "urls": [
             "/molt/migrate-data-load-replicate-only.html"
@@ -68,6 +62,12 @@
           "title": "Verify",
           "urls": [
             "/molt/molt-verify.html"
+          ]
+        },
+        {
+          "title": "Replicator",
+          "urls": [
+            "/molt/molt-replicator.html"
           ]
         }
       ]

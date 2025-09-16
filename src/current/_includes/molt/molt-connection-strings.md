@@ -14,6 +14,8 @@ For example:
 ~~~
 --source 'postgres://migration_user:password@localhost:5432/molt?sslmode=verify-full'
 ~~~
+
+The source connection must point to the PostgreSQL primary instance, not a read replica.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
