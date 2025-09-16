@@ -31,7 +31,7 @@ You can use PCR to:
 - **Transactional consistency**: Avoid conflicts in data after recovery; the replication completes to a transactionally consistent state.
 - **Improved RPO and RTO**: Depending on workload and deployment configuration, [replication lag]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) between the primary and standby is generally in the tens-of-seconds range. The failover process from the primary cluster to the standby should typically happen within five minutes when completing a failover to the latest replicated time using [`LATEST`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}#synopsis).
 - **Failover to a timestamp in the past or the future**: In the case of logical disasters or mistakes, you can [fail over]({% link {{ page.version.version }}/failover-replication.md %}) from the primary to the standby cluster to a timestamp in the past. This means that you can return the standby to a timestamp before the mistake was replicated to the standby. Furthermore, you can plan a failover by specifying a timestamp in the future.
-- **Fast failback**: Switch back from the promoted standby cluster to the original primary cluster after a failover event without reseeding data for an initial scan.
+- **Fast failback**: Switch back from the promoted standby cluster to the original primary cluster after a failover event by replicating net-new changes rather than fully replacing existing data for an initial scan.
 - {% include_cached new-in.html version="v24.3" %} **Read from standby cluster**: You can configure PCR to allow `SELECT` queries on the standby cluster. For more details, refer to [Start a PCR stream with read from standby]({% link {{ page.version.version }}/create-virtual-cluster.md %}#start-a-pcr-stream-with-read-from-standby).
 - **Monitoring**: To monitor the replication's initial progress, current status, and performance, you can use metrics available in the [DB Console]({% link {{ page.version.version }}/ui-overview.md %}) and [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}). For more details, refer to [Physical Cluster Replication Monitoring]({% link {{ page.version.version }}/physical-cluster-replication-monitoring.md %}).
 
@@ -72,7 +72,7 @@ Statement | Action
 ## Cluster versions and upgrades
 
 {{site.data.alerts.callout_info}}
-The entire standby cluster must be at the same version as, or one version ahead of, the primary's virtual cluster at the time of [failover]({% link {{ page.version.version }}/failover-replication.md %}).
+The entire standby cluster must be at the same version as, or one version ahead of, the primary's virtual cluster.
 {{site.data.alerts.end}}
 
 When PCR is enabled, upgrade with the following procedure. This upgrades the standby cluster before the primary cluster. Within the primary and standby CockroachDB clusters, the system virtual cluster must be at a cluster version greater than or equal to the virtual cluster:

@@ -38,12 +38,15 @@ To initiate a failover to the standby cluster, specify the point in time for its
 
 - [`LATEST`](#fail-over-to-the-most-recent-replicated-time): The most recent replicated timestamp. This minimizes any data loss from the replication lag in asynchronous replication.
 - [Point-in-time](#fail-over-to-a-point-in-time):
-    - Past: A past timestamp within the [failover window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process) of up to 4 hours in the past. Failing over to a past point in time is useful if you need to recover from a recent human error. 
+    - Past: A past timestamp within the [failover window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process) of up to 4 hours in the past.
+    {{site.data.alerts.callout_success}}
+    Failing over to a past point in time is useful if you need to recover from a recent human error
+    {{site.data.alerts.end}}
     - Future: A future timestamp for planning a failover.
 
 #### Fail over to the most recent replicated time
 
-To initiate a failover to the most recent replicated timestamp, specify `LATEST` when you start the failover. Due to [_replication lag_]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process), the latest replicated time may be behind the current actual time. Replication lag is the time between the most up-to-date replicated time and the actual time.
+To initiate a failover to the most recent replicated timestamp, specify `LATEST`. Due to [_replication lag_]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process), the most recent replicated time may be behind the current actual time. Replication lag is the time difference between the most recent replicated time and the actual time.
 
 1. To view the current replication timestamp, use:
 
@@ -172,7 +175,7 @@ To enable PCR again, from the new primary to the original primary (or a complete
 
 After failing over to the standby cluster, you may want to return to your original configuration by failing back to the original primary-standby cluster setup. Depending on the configuration of the primary cluster in the original PCR stream, use one of the following workflows:
 
-- [From the original standby cluster (after it was promoted during failover) to the original primary cluster](#fail-back-to-the-original-primary-cluster). If this failback is initiated within 24 hours of the failover, PCR replicates the net-new changes from the standby cluster to the primary cluster, so you do not need to re-seed the primary cluster.
+- [From the original standby cluster (after it was promoted during failover) to the original primary cluster](#fail-back-to-the-original-primary-cluster). If this failback is initiated within 24 hours of the failover, PCR replicates the net-new changes from the standby cluster to the primary cluster, rather than fully replacing the existing data in the primary cluster.
 - [After the PCR stream used an existing cluster as the primary cluster](#fail-back-after-replicating-from-an-existing-primary-cluster).
 
 {{site.data.alerts.callout_info}}
@@ -304,7 +307,7 @@ At this point, **Cluster A** has caught up to **Cluster B**. The clusters are en
 
 You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. For instructions on setting up a PCR in this way, refer to [Set up PCR from an existing cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#set-up-pcr-from-an-existing-cluster).
 
-After a [failover](#failover) to the standby cluster, you must set up PCR from the original standby cluster, which is now the primary, to another cluster, which will become the standby. There are multiple ways to set up a new standby, and some considerations.
+After a [failover](#failover) to the standby cluster, you may want to set up PCR from the original standby cluster, which is now the primary, to another cluster, which will become the standby. There are multiple ways to set up a new standby, and some considerations.
 
 In the example, the clusters are named for reference:
 
