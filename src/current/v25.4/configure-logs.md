@@ -59,10 +59,12 @@ For clarity, this article uses the block format to describe the YAML payload, wh
 file-defaults: ...       # defaults inherited by file sinks
 fluent-defaults: ...     # defaults inherited by Fluentd sinks
 http-defaults: ...       # defaults inherited by HTTP sinks
+otlp-defaults: ...       # defaults inherited by OTLP sinks
 sinks:
    file-groups: ...      # file sink definitions
    fluent-servers: ...   # Fluentd sink definitions
    http-servers: ...     # HTTP sink definitions
+   otlp-servers: ...     # OTLP sink definitions
    stderr: ...           # stderr sink definitions
 capture-stray-errors: ... # parameters for the stray error capture system
 ~~~
@@ -75,7 +77,13 @@ You can view the default settings by running `cockroach debug check-log-config`,
 
 ## Configure log sinks
 
-Log *sinks* route events from specified [logging channels]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) to destinations outside CockroachDB. These destinations currently include [log files](#output-to-files), [Fluentd](https://www.fluentd.org/)-compatible [servers](#output-to-fluentd-compatible-network-collectors), [HTTP servers](#output-to-http-network-collectors), and the [standard error stream (`stderr`)](#output-to-stderr).
+Log *sinks* route events from specified [logging channels]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels) to destinations outside CockroachDB. These destinations include:
+
+- [Log files](#output-to-files)
+- [Fluentd](https://www.fluentd.org/)-compatible [servers](#output-to-fluentd-compatible-network-collectors)
+- [HTTP servers](#output-to-http-network-collectors)
+- [OTLP](https://opentelemetry.io/)-compatible [servers](#output-to-otlp-compatible-network-collectors)
+- The [standard error stream (`stderr`)](#output-to-stderr)
 
 All supported output destinations are configured under `sinks`:
 
@@ -83,6 +91,7 @@ All supported output destinations are configured under `sinks`:
 file-defaults: ...
 fluent-defaults: ...
 http-defaults: ...
+otlp-defaults: ...
 sinks:
   file-groups:
     {file group name}:
@@ -93,6 +102,10 @@ sinks:
       channels: {channels}
       ...
   http-servers:
+    {server name}:
+      channels: {channels}
+      ...
+  otlp-servers:
     {server name}:
       channels: {channels}
       ...
@@ -108,14 +121,14 @@ All supported sink types use the following common sink parameters:
 | Parameter       | Description                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `filter`        | Minimum severity level at which logs enter the channels selected for the sink. Accepts one of the valid [severity levels]({% link {{ page.version.version }}/logging.md %}#logging-levels-severities) or `NONE`, which excludes all messages from the sink output. For details, see [Set logging levels](#set-logging-levels).                                                                                                                                   |
-| `format`        | Log message format to use for file or network sinks. Accepts one of the valid [log formats]({% link {{ page.version.version }}/log-formats.md %}). For details, see [file logging format](#file-logging-format), [Fluentd logging format](#fluentd-logging-format), and [HTTP logging format](#http-logging-format).                                                                                                                                             |
+| `format`        | Log message format to use for file or network sinks. Accepts one of the valid [log formats]({% link {{ page.version.version }}/log-formats.md %}). For details, see [file logging format](#file-logging-format), [Fluentd logging format](#fluentd-logging-format), [HTTP logging format](#http-logging-format), and [OTLP logging format](#otlp-logging-format).                                                                                                                                             |
 |`format-options` | Customization options for specified `format`. For available options for each format, see [Log formats]({% link {{ page.version.version }}/log-formats.md %}). For an example use case, see [Set timezone](#set-timezone).  |
 | `redact`        | When `true`, enables automatic redaction of personally identifiable information (PII) from log messages. This ensures that sensitive data is not transmitted when collecting logs centrally or over a network. For details, see [Redact logs](#redact-logs).                                                                                                                                                                 |
 | `redactable`    | When `true`, preserves redaction markers around fields that are considered sensitive in the log messages. The markers are recognized by [`cockroach debug zip`]({% link {{ page.version.version }}/cockroach-debug-zip.md %}) and [`cockroach debug merge-logs`]({% link {{ page.version.version }}/cockroach-debug-merge-logs.md %}) but may not be compatible with external log collectors. For details on how the markers appear in each format, see [Log formats]({% link {{ page.version.version }}/log-formats.md %}).             |
 | `exit-on-error` | When `true`, stops the Cockroach node if an error is encountered while writing to the sink. We recommend enabling this option on file sinks in order to avoid losing any log entries. When set to `false`, this can be used to mark certain sinks (such as `stderr`) as non-critical.                                                                                                                                        |
 | <a id="auditable"></a>`auditable`     | If `true`, enables `exit-on-error` on the sink. Also disables `buffered-writes` if the sink is under `file-groups`. This guarantees [non-repudiability](https://wikipedia.org/wiki/Non-repudiation) for any logs in the sink, but can incur a performance overhead and higher disk IOPS consumption. This setting is typically enabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring).<br><br>File-based audit logging cannot coexist with the buffering configuration, so disable either [`buffering`](#file-buffering) or `auditable`. |
 
-If not specified for a given sink, these parameter values are inherited from [`file-defaults`](#set-file-defaults) (for file sinks), [`fluent-defaults`](#set-fluentd-defaults) (for Fluentd sinks), and [`http-defaults`](#set-http-defaults) (for HTTP sinks).
+If not specified for a given sink, these parameter values are inherited from [`file-defaults`](#set-file-defaults) (for file sinks), [`fluent-defaults`](#set-fluentd-defaults) (for Fluentd sinks), [`http-defaults`](#set-http-defaults) (for HTTP sinks), and [`otlp-defaults`](#set-otlp-defaults) (for OTLP sinks).
 
 ### Output to files
 
@@ -127,6 +140,7 @@ CockroachDB can write messages to one or more log files.
 file-defaults: ...
 fluent-defaults: ...
 http-defaults: ...
+otlp-defaults: ...
 sinks:
   file-groups:
     default:
@@ -151,7 +165,7 @@ Along with the [common sink parameters](#common-sink-parameters), each file grou
 | `max-group-size`   | Approximate maximum combined size of all files to be preserved for this sink. Configures the maximum size for a logging group (for example, `cockroach`, `cockroach-sql-audit`, `cockroach-auth`, `cockroach-sql-exec`, `cockroach-pebble`), after which the oldest log file is deleted. An asynchronous garbage collection removes files that cause the file set to grow beyond this specified size. Accepts a valid file size, such as `1GiB`.<br/><br/> For high-traffic deployments, or to ensure log retention over longer periods of time, consider raising this value to `500MiB` or `1GiB`.<br/><br/>**Default:** `100MiB` |
 | `file-permissions` | The `chmod`-style permissions on generated log files, formatted as a 3-digit octal number. The executable bit must not be set. <br><br>**Default:** `640` (readable by the owner or members of the group, writable by the owner).                                                                                                                                                                                                                                                                                                |
 | `buffered-writes`  | When `true`, enables buffering of writes. Set to `false` to flush every log entry (i.e., propagate data from the `cockroach` process to the OS) and synchronize writes (i.e., ask the OS to confirm the log data was written to disk). Disabling this setting provides [non-repudiation](https://wikipedia.org/wiki/Non-repudiation) guarantees, but can incur a performance overhead and higher disk IOPS consumption. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). |
-| <a id="file-buffering"></a>`buffering`     |`buffering` is disabled by default for file log sinks. Default: `buffering: NONE`. Note that enabling asynchronous buffering of file log sinks is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).<br><br>To configure buffering of log messages for the sink, use the following sub-parameters:<ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time.</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size.</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped.</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). For a usage example, refer to [Enable WAL failover]({% link {{ page.version.version }}/cockroach-start.md %}#enable-wal-failover).<br><br>File-based audit logging cannot coexist with this buffering configuration, so disable either `buffering` or [`auditable`](#auditable). |
+| <a id="file-buffering"></a>`buffering`     |`buffering` is disabled by default for file log sinks. **Default:** `buffering: NONE`. Note that enabling asynchronous buffering of file log sinks is in [preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}#features-in-preview).<br><br>To configure buffering of log messages for the sink, use the following sub-parameters:<ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time.</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size.</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped.</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). For a usage example, refer to [Enable WAL failover]({% link {{ page.version.version }}/cockroach-start.md %}#enable-wal-failover).<br><br>File-based audit logging cannot coexist with this buffering configuration, so disable either `buffering` or [`auditable`](#auditable). |
 
 If not specified for a given file group, the parameter values are inherited from [`file-defaults`](#configure-logging-defaults) (except `channels`, which uses the [default configuration](#default-logging-configuration)).
 
@@ -197,6 +211,7 @@ CockroachDB can send logs over the network to a [Fluentd](https://www.fluentd.or
 file-defaults: ...
 fluent-defaults: ...
 http-defaults: ...
+otlp-defaults: ...
 sinks:
   fluent-servers:
     health:
@@ -216,7 +231,7 @@ Along with the [common sink parameters](#common-sink-parameters), each Fluentd s
 | `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging channel selection](#logging-channel-selection). |
 | `address` | Network address and port of the log collector.                                                                     |
 | `net`     | Network protocol to use. Options are `tcp`, `tcp4`, `tcp6`, `udp`, `udp4`, `udp6`, or `unix`.<br><br>**Default:** `tcp`<br><br>**Note:** In most cases, use the default of `tcp` rather than `udp`. The UDP/IP protocol has a ~65 KB (65,507 bytes) limit per datagram. This limit is enforced by the operating system. Log lines that exceed this limit return a `message too long` error. |
-| `buffering`     | Configures buffering of log messages for the sink, with the following sub-parameters:<ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. Default: `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. Default: `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. Default: `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
+| `buffering`     | Configures buffering of log messages for the sink, with the following sub-parameters:<ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. **Default:** `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. **Default:** `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. **Default:** `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
 
 For an example network logging configuration, see [Logging use cases]({% link {{ page.version.version }}/logging-use-cases.md %}#network-logging).
 
@@ -228,6 +243,7 @@ For an example network logging configuration, see [Logging use cases]({% link {{
 file-defaults: ...
 fluent-defaults: ...
 http-defaults: ...
+otlp-defaults: ...
 sinks:
   http-servers:
     health:
@@ -257,9 +273,43 @@ Along with the [common sink parameters](#common-sink-parameters), each HTTP serv
 | `compression`         | Compression method for the HTTP request body. Valid values `gzip` or `none`.<br><br>**Default:** `gzip` |
 | `headers`             | Map of key-value string pairs which will be appended to every request as custom HTTP headers. |
 |<a id="file-based-headers"></a> `file-based-headers`  | Map of key-filepath string pairs. The file specified by the filepath only contains a value that corresponds to the key. The key from the YAML configuration and the value contained in the file will be appended to every request as a custom HTTP header.<br><br>For example:  `file-based-headers: {X-CRDB-HEADER-KEY: /some/path/to/file_with_value, X-ANOTHER-HEADER-KEY: /other/path/to/file_with_another_value}`<br><br>A value in a file can be updated without restarting the `cockroach` process. Instead, send SIGHUP to the `cockroach` process to notify it to refresh values.|
-| `buffering`     | Configures buffering of log messages for the sink, with the following sub-parameters:<ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. Default: `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. Default: `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. Default: `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for [HTTP](#output-to-http-network-collectors) log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
+| `buffering`     | Configures buffering of log messages for the sink, with the following sub-parameters:<ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. **Default:** `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. **Default:** `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. **Default:** `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for [HTTP](#output-to-http-network-collectors) log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
 
 For an example network logging configuration, see [Logging use cases]({% link {{ page.version.version }}/logging-use-cases.md %}#network-logging). For an example that uses `compression`, `headers`, `file-based-headers`, and `buffering` parameters, see [Configure an HTTP network collector for Datadog]({% link {{ page.version.version }}/log-sql-activity-to-datadog.md %}#step-2-configure-an-http-network-collector-for-datadog).
+
+### Output to OTLP-compatible network collectors
+
+CockroachDB can send logs to an [OpenTelemetry](https://opentelemetry.io/)-compatible server using the OTLP protocol (e.g., [Datadog agent](https://docs.datadoghq.com/agent/?tab=Host-based)). For a complete list of log servers that support the OTLP protocol, see the [OpenTelemetry registry](https://opentelemetry.io/ecosystem/vendors/).
+
+Define `otlp-servers` to select channels and configure connection and protocol details. For example:
+
+~~~ yaml
+file-defaults: ...
+fluent-defaults: ...
+http-defaults: ...
+otlp-defaults: ...
+sinks:
+  otlp-servers:
+    health:
+      channels: [HEALTH]
+      address: 127.0.0.1:4317
+      mode: grpc
+      compression: gzip
+      ...
+~~~
+
+Along with the [common sink parameters](#common-sink-parameters), each OTLP server accepts the following additional parameters:
+
+| Parameter | Description |
+|-----------|-------------|
+| `channels` | List of channels that output to this sink. Use a YAML array or string of [channel names]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels), `ALL`, or `ALL EXCEPT {channels}`. See [Logging channel selection](#logging-channel-selection) for syntax. |
+| `address` | Network address of the OTLP collector endpoint for log ingestion, formatted as `{host}:{port}`. |
+| `mode` | Protocol used to export logs. Valid values `grpc` or `http`.<br><br>**Default:**`grpc` |
+| `headers` | Map of key-value string pairs which will be appended to every request as custom gRPC or HTTP headers depending on the `mode` selected. For example, `"x-api-key": "YOUR_API_KEY_HERE"`. |
+| `compression` | Compression for requests. Valid values `gzip` or `none`.<br><br>**Default:**`gzip` |
+| `buffering`     | Configures buffering of log messages for the sink, with the following sub-parameters:<ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. **Default:** `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. **Default:** `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. **Default:** `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for OTLP log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs]({% link {{ page.version.version }}/logging-use-cases.md %}#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
+
+For an example network logging configuration, see [Logging use cases]({% link {{ page.version.version }}/logging-use-cases.md %}#network-logging).
 
 ### Output to `stderr`
 
@@ -269,6 +319,7 @@ CockroachDB can output messages to the [standard error stream (`stderr`)](https:
 file-defaults: ...
 fluent-defaults: ...
 http-defaults: ...
+otlp-defaults: ...
 sinks:
   stderr:
     channels: [DEV]
@@ -354,7 +405,7 @@ channels: 'all except [ops, health]'
 
 ## Configure logging defaults
 
-When setting up a logging configuration, it's simplest to define shared parameters in `file-defaults` and `fluent-defaults` and override specific values as needed in [`file-groups`](#output-to-files), [`fluent-servers`](#output-to-fluentd-compatible-network-collectors), [`http-servers`](#output-to-http-network-collectors), and [`stderr`](#output-to-stderr). For a complete example, see the [default configuration](#default-logging-configuration).
+When setting up a logging configuration, it's simplest to define shared parameters in `file-defaults`, `fluent-defaults`, `http-defaults`, and `otlp-defaults` and override specific values as needed in [`file-groups`](#output-to-files), [`fluent-servers`](#output-to-fluentd-compatible-network-collectors), [`http-servers`](#output-to-http-network-collectors), [`otlp-servers`](#output-to-otlp-compatible-network-collectors) and [`stderr`](#output-to-stderr). For a complete example, see the [default configuration](#default-logging-configuration).
 
 {{site.data.alerts.callout_success}}
 You can view your current settings by running `cockroach debug check-log-config`, which returns the YAML definitions and a URL to a visualization of the current logging configuration.
@@ -428,7 +479,7 @@ fluent-defaults:
 
 Defaults for HTTP sinks are set in `http-defaults`, which accepts all [common sink parameters](#common-sink-parameters).
 
-Note that the [server parameters](#output-to-http-network-collectors) `address` and `method` are *not* specified in `fluent-defaults`:
+Note that the [server parameters](#output-to-http-network-collectors) `address` and `method` are *not* specified in `http-defaults`:
 
 - `address` must be specified for each sink under `http-servers`.
 - `method` is not required and defaults to `POST`.
@@ -439,6 +490,25 @@ The default message format for HTTP output is [`json-compact`]({% link {{ page.v
 
 ~~~ yaml
 http-defaults:
+  format: json
+~~~
+
+{{site.data.alerts.callout_info}}
+`format` refers to the envelope of the log message. This is separate from the event payload, which is structured according to [event type]({% link {{ page.version.version }}/eventlog.md %}).
+{{site.data.alerts.end}}
+
+### Set OTLP defaults
+
+Defaults for OTLP sinks are set in `otlp-defaults`, which accepts all [common sink parameters](#common-sink-parameters).
+
+Note that the [server parameter](#output-to-otlp-compatible-network-collectors) `address`is *not* specified in `otlp-defaults`. The `address` must be specified for each sink under `otlp-servers`.
+
+#### OTLP logging format
+
+The default message format for OTLP output is [`json`]({% link {{ page.version.version }}/log-formats.md %}#format-json). Each log message is structured as a JSON payload that can be read programmatically. For details, see [Log formats]({% link {{ page.version.version }}/log-formats.md %}).
+
+~~~ yaml
+otlp-defaults:
   format: json
 ~~~
 
@@ -612,7 +682,7 @@ To ensure that you are protecting sensitive information, also [redact your logs]
 
 ## Log buffering for network sinks
 
-Both [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) and [HTTP](#output-to-http-network-collectors) log sinks support the buffering of log messages by default. Previous to version v22.2, log buffering was only available for the [log file](#output-to-files) log sink.
+The network ([Fluentd-compatible](#output-to-fluentd-compatible-network-collectors), [HTTP](#output-to-http-network-collectors), and [OTLP-compatible](#output-to-otlp-compatible-network-collectors)) log sinks support the buffering of log messages by default.
 
 With log buffering configured, log messages are held in a buffer for a configurable time period or accumulated message size threshold before being written to the target log sink together as a batch. Log buffering helps to ensure consistent low-latency log message writes over the network even in high-traffic, high-contention scenarios.
 
@@ -686,9 +756,10 @@ The YAML payload below represents the default logging behavior of [`cockroach st
 
 ~~~ yaml
 file-defaults:
+  dir: /cockroach-data/logs
   max-file-size: 10MiB
   max-group-size: 100MiB
-  file-permissions: 644
+  file-permissions: "0640"
   buffered-writes: true
   filter: INFO
   format: crdb-v2
@@ -696,6 +767,7 @@ file-defaults:
   redactable: true
   exit-on-error: true
   auditable: false
+  buffering: NONE
 fluent-defaults:
   filter: INFO
   format: json-fluent-compact
@@ -703,56 +775,223 @@ fluent-defaults:
   redactable: true
   exit-on-error: false
   auditable: false
+  buffering:
+    max-staleness: 5s
+    flush-trigger-size: 1.0MiB
+    max-buffer-size: 50MiB
+    format: newline
 http-defaults:
   method: POST
   unsafe-tls: false
-  timeout: 0s
+  timeout: 2s
   disable-keep-alives: false
+  compression: gzip
   filter: INFO
   format: json-compact
   redact: false
   redactable: true
   exit-on-error: false
   auditable: false
+  buffering:
+    max-staleness: 5s
+    flush-trigger-size: 1.0MiB
+    max-buffer-size: 50MiB
+    format: newline
+otlp-defaults:
+  mode: grpc
+  compression: gzip
+  filter: INFO
+  format: json
+  redact: false
+  redactable: true
+  exit-on-error: false
+  auditable: false
+  buffering:
+    max-staleness: 5s
+    flush-trigger-size: 1.0MiB
+    max-buffer-size: 50MiB
+    format: newline
 sinks:
   file-groups:
+    changefeed:
+      channels: {INFO: [CHANGEFEED]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     default:
-      channels:
-        INFO: [DEV, OPS]
-        WARNING: all except [DEV, OPS]
+      channels: {INFO: [DEV, OPS], WARNING: [HEALTH, STORAGE, SESSIONS, SQL_SCHEMA, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS, SQL_EXEC, SQL_PERF, SQL_INTERNAL_PERF, TELEMETRY, KV_DISTRIBUTION, CHANGEFEED, KV_EXEC]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     health:
-      channels: [HEALTH]
+      channels: {INFO: [HEALTH]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     kv-distribution:
-      channels: [KV_DISTRIBUTION]
+      channels: {INFO: [KV_DISTRIBUTION]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     pebble:
-      channels: [STORAGE]
+      channels: {INFO: [STORAGE]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     security:
-      channels: [PRIVILEGES, USER_ADMIN]
-      auditable: true
+      channels: {INFO: [USER_ADMIN, PRIVILEGES]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: false
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     sql-audit:
-      channels: [SENSITIVE_ACCESS]
-      auditable: true
+      channels: {INFO: [SENSITIVE_ACCESS]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: false
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     sql-auth:
-      channels: [SESSIONS]
-      auditable: true
+      channels: {INFO: [SESSIONS]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: false
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     sql-exec:
-      channels: [SQL_EXEC]
+      channels: {INFO: [SQL_EXEC]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
+    sql-schema:
+      channels: {INFO: [SQL_SCHEMA]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     sql-slow:
-      channels: [SQL_PERF]
+      channels: {INFO: [SQL_PERF]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     sql-slow-internal-only:
-      channels: [SQL_INTERNAL_PERF]
+      channels: {INFO: [SQL_INTERNAL_PERF]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
     telemetry:
-      channels: [TELEMETRY]
+      channels: {INFO: [TELEMETRY]}
+      dir: /cockroach-data/logs
       max-file-size: 100KiB
       max-group-size: 1.0MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
   stderr:
-    channels: all
     filter: NONE
+    format: crdb-v2-tty
     redact: false
     redactable: true
     exit-on-error: true
+    buffering: NONE
 capture-stray-errors:
   enable: true
+  dir: /cockroach-data/logs
   max-group-size: 100MiB
 ~~~
 
