@@ -180,7 +180,7 @@ To enable PCR again, from the new primary to the original primary (or a complete
 After failting over to the standby cluster, you may need to fail back to the original primary-standby cluster setup cluster to serve your application. Depending on the configuration of the primary cluster in the original PCR stream, use one of the following workflows:
 
 - [From the original standby cluster (after it was promoted during failover) to the original primary cluster](#fail-back-to-the-original-primary-cluster). If this failback is initiated within 24 hours of the failover, PCR replicates the net-new changes from the standby cluster to the primary cluster, rather than fully replacing the existing data in the primary cluster.
-- [After the PCR stream used an existing cluster as the primary cluster](#fail-back-after-pcr-from-an-existing-cluster).
+- [After the PCR stream used an existing cluster as the primary cluster](#fail-back-after-replicating-from-an-existing-primary-cluster).
 
 {{site.data.alerts.callout_info}}
 To move back to a different cluster that was not involved in the original PCR stream, set up a new PCR stream following the PCR [setup]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) guide.
@@ -307,7 +307,7 @@ This section illustrates the steps to fail back to the original primary cluster 
 
 At this point, **Cluster A** is once again the primary and **Cluster B** is once again the standby. The clusters are entirely independent. To direct application traffic to the primary (**Cluster A**), you will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to **Cluster A**. To enable PCR again, from the primary to the standby (or a completely different cluster), refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
-### Fail back after PCR from an existing cluster
+### Fail back after replicating from an existing primary cluster
 
 {% include_cached new-in.html version="v24.1" %} You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. For instructions on setting up PCR in this way, refer to [Set up PCR from an existing cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#set-up-pcr-from-an-existing-cluster).
 
