@@ -25,9 +25,8 @@ Refer to the respective [subcommands](#subcommands).
 
  Parameter | Description
 -----------|-------------
-`table_name` | The name of the table with the index you want to change.
-`index_name` | The current name of the index you want to change.
-`IF EXISTS` | Alter the index only if an index `index_name` exists; if one does not exist, do not return an error.
+`table_index_name` | The name of the [index]({% link {{ page.version.version }}/indexes.md %}) you want to change.
+`IF EXISTS` | Alter the index only if an index `table_index_name` exists; if one does not exist, do not return an error.
 
 Additional parameters are documented for the respective [subcommands](#subcommands).
 
