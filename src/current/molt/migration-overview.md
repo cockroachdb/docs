@@ -118,8 +118,8 @@ MOLT supports various migration flows using [MOLT Fetch]({% link molt/molt-fetch
 |                                     Migration flow                                     |                        Tools                        |                            Description                             |                                                 Best for                                                |
 |----------------------------------------------------------------------------------------|----------------------------------------------------|--------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
 | [Bulk load]({% link molt/migrate-bulk-load.md %})                                      | MOLT Fetch (`--mode data-load`)                                 | Perform a one-time bulk load of source data into CockroachDB.      | Testing, migrations with [planned downtime]({% link molt/migration-strategy.md %}#approach-to-downtime) |
-| [Data load and replication]({% link molt/migrate-data-load-replicate-only.md %})      | MOLT Fetch + MOLT Replicator                 | Load source data with Fetch, then replicate subsequent changes continuously with Replicator.  | [Minimal downtime]({% link molt/migration-strategy.md %}#approach-to-downtime) migrations               |
-| [Resume replication]({% link molt/migrate-replicate-only.md %})                        | MOLT Replicator                          | Resume replication from a checkpoint after interruption.           | Resuming interrupted migrations, post-load sync                                                         |
+| [Data load and replication]({% link molt/migrate-load-replicate.md %})      | MOLT Fetch + MOLT Replicator                 | Load source data with Fetch, then replicate subsequent changes continuously with Replicator.  | [Minimal downtime]({% link molt/migration-strategy.md %}#approach-to-downtime) migrations               |
+| [Resume replication]({% link molt/migrate-resume-replication.md %})                        | MOLT Replicator                          | Resume replication from a checkpoint after interruption.           | Resuming interrupted migrations, post-load sync                                                         |
 | [Failback]({% link molt/migrate-failback.md %})                                        | MOLT Replicator                                  | Replicate changes from CockroachDB back to the source database.    | [Rollback]({% link molt/migrate-failback.md %}) scenarios                                               |
 
 ### Bulk load
@@ -130,13 +130,13 @@ For migrations that tolerate downtime, use MOLT Fetch in `data-load` mode to per
 
 To minimize downtime during migration, use MOLT Fetch for initial data loading followed by MOLT Replicator for continuous replication. Instead of loading all data during a planned downtime window, you can run an initial load followed by continuous replication. Writes are paused only briefly to allow replication to drain before the final cutover. The duration of this pause depends on the volume of write traffic and the replication lag between the source and CockroachDB.
 
-Refer to [Load and Replicate]({% link molt/migrate-data-load-replicate-only.md %}) for detailed instructions.
+Refer to [Load and Replicate]({% link molt/migrate-load-replicate.md %}) for detailed instructions.
 
 ### Recovery and rollback strategies
 
 If the migration is interrupted or cutover must be aborted, MOLT Replicator provides safe recovery options:
 
-- Resume a previously interrupted replication stream. Refer to [Resume Replication]({% link molt/migrate-replicate-only.md %}).
+- Resume a previously interrupted replication stream. Refer to [Resume Replication]({% link molt/migrate-resume-replication.md %}).
 - Use failback mode to reverse the migration, synchronizing changes from CockroachDB back to the original source. This ensures data consistency on the source so that you can retry the migration later. Refer to [Migration Failback]({% link molt/migrate-failback.md %}).
 
 ## See also

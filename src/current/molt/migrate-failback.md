@@ -39,7 +39,7 @@ SET CLUSTER SETTING kv.rangefeed.concurrent_catchup_iterators = 64;
 <section class="filter-content" markdown="1" data-scope="oracle">
 ## Grant Oracle user permissions
 
-You should have already created a migration user on the source database with the necessary privileges. Refer to [Create migration user on source database]({% link molt/migrate-data-load-replicate-only.md %}?filters=oracle#create-migration-user-on-source-database).
+You should have already created a migration user on the source database with the necessary privileges. Refer to [Create migration user on source database]({% link molt/migrate-load-replicate.md %}?filters=oracle#create-migration-user-on-source-database).
 
 Grant the Oracle user additional `INSERT` and `UPDATE` privileges on the tables to fail back:
 

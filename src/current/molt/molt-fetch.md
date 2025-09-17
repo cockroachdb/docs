@@ -923,8 +923,8 @@ You can also use the [sample Grafana dashboard](https://molt.cockroachdb.com/mol
 
 For detailed examples of using MOLT Fetch, refer to the migration workflow tutorials:
 
-- [Bulk load migration]({% link molt/migrate-bulk-load.md %}) - Load data with MOLT Fetch using planned downtime
-- [Minimal-downtime migrations]({% link molt/migrate-data-load-replicate-only.md %}) - Load data with MOLT Fetch and set up ongoing replication with [MOLT Replicator]({% link molt/molt-replicator.md %})
+- [Bulk load migration]({% link molt/migrate-bulk-load.md %}): Load data with MOLT Fetch using planned downtime
+- [Minimal-downtime migrations]({% link molt/migrate-load-replicate.md %}): Load data with MOLT Fetch and set up ongoing replication with [MOLT Replicator]({% link molt/molt-replicator.md %})
 
 {{site.data.alerts.callout_success}}
 After successfully running MOLT Fetch, you can run [`molt verify`]({% link molt/molt-verify.md %}) to confirm that data was migrated successfully without missing or mismatched rows.
