@@ -101,6 +101,10 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 
 MOLT Fetch supports various migration flows using [MOLT Fetch modes]({% link molt/molt-fetch.md %}#fetch-mode).
 
+{{site.data.alerts.callout_danger}}
+MOLT Fetch replication modes will be deprecated in favor of a separate replication workflow in an upcoming release. This includes the `data-load-and-replication`, `replication-only`, and `failback` modes.
+{{site.data.alerts.end}}
+
 |                                     Migration flow                                     |                        Mode                        |                            Description                             |                                                 Best for                                                |
 |----------------------------------------------------------------------------------------|----------------------------------------------------|--------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
 | [Bulk load]({% link molt/migrate-bulk-load.md %})                                      | `--mode data-load`                                 | Perform a one-time bulk load of source data into CockroachDB.      | Testing, migrations with [planned downtime]({% link molt/migration-strategy.md %}#approach-to-downtime) |
