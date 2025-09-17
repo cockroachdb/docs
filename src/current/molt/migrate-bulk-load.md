@@ -25,7 +25,6 @@ Perform the bulk load of the source data.
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
 	--table-handling truncate-if-exists \
-	 \
 	--ignore-replication-check
 	~~~
 	</section>
@@ -40,7 +39,6 @@ Perform the bulk load of the source data.
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
 	--table-handling truncate-if-exists \
-	 \
 	--ignore-replication-check
 	~~~
 	</section>
@@ -58,7 +56,6 @@ Perform the bulk load of the source data.
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
 	--table-handling truncate-if-exists \
-	 \
 	--ignore-replication-check
 	~~~
 	</section>

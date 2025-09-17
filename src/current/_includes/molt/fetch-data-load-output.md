@@ -83,7 +83,7 @@
 	~~~
 	</section>
 
-	{% if page.name == "migrate-data-load-replicate-only.md" %}
+	{% if page.name == "migrate-load-replicate.md" %}
 	<section class="filter-content" markdown="1" data-scope="oracle">
 	The following message shows the appropriate values for the `--backfillFromSCN` and `--scn` replication flags to use when [starting`replication-only` mode](#replicate-changes-to-cockroachdb):
 

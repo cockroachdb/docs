@@ -26,7 +26,7 @@ Complete the following items before using MOLT Replicator:
 
 - Follow the recommendations in [Best practices](#best-practices) and [Security recommendations](#security-recommendations).
 
-- Configure the source database for replication based on your source type. Refer to the migration workflow tutorials for [PostgreSQL]({% link molt/migrate-replicate-only.md %}), [MySQL]({% link molt/migrate-replicate-only.md %}?filters=mysql), [Oracle]({% link molt/migrate-replicate-only.md %}?filters=oracle), and [CockroachDB]({% link molt/migrate-failback.md %}) sources.
+- Configure the source database for replication based on your source type. Refer to the migration workflow tutorials for [PostgreSQL]({% link molt/migrate-resume-replication.md %}), [MySQL]({% link molt/migrate-resume-replication.md %}?filters=mysql), [Oracle]({% link molt/migrate-resume-replication.md %}?filters=oracle), and [CockroachDB]({% link molt/migrate-failback.md %}) sources.
 
 - Ensure that the SQL user running MOLT Replicator has appropriate privileges on the source and target databases as described in the migration workflow tutorials.
 
@@ -331,5 +331,5 @@ SQL NULL vs JSON null aren't distinguishable in JSON payloads; avoid nullable JS
 - [Migration Overview]({% link molt/migration-overview.md %})
 - [Migration Strategy]({% link molt/migration-strategy.md %})
 - [MOLT Verify]({% link molt/molt-verify.md %})
-- [Replicate data only]({% link molt/migrate-replicate-only.md %})
+- [Resume replication]({% link molt/migrate-resume-replication.md %})
 - [Fail back to source database]({% link molt/migrate-failback.md %})

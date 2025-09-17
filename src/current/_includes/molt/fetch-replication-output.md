@@ -19,8 +19,8 @@
 	DEBUG  [Jan 22 13:52:40] upserted rows                                 conflicts=0 duration=7.620208ms proposed=1 target="\"molt\".\"migration_schema\".\"employees\"" upserted=1
 	~~~
 
-	{% if page.name != "migrate-replicate-only.md" %}
+	{% if page.name != "migrate-resume-replication.md" %}
 	{{site.data.alerts.callout_success}}
-	If replication is interrupted, you can [resume replication]({% link molt/migrate-replicate-only.md %}).
+	If replication is interrupted, you can [resume replication]({% link molt/migrate-resume-replication.md %}).
 	{{site.data.alerts.end}}
 	{% endif %}

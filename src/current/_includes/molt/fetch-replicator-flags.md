@@ -1,6 +1,6 @@
 The following flags are commonly used with [MOLT Replicator]({% link molt/molt-replicator.md %}) for continuous replication. For details on all available flags, refer to the [MOLT Replicator documentation]({% link molt/molt-replicator.md %}#flags).
 
-{% if page.name == "migrate-data-load-replicate-only.md" %}
+{% if page.name == "migrate-load-replicate.md" %}
 <section class="filter-content" markdown="1" data-scope="postgres">
 |       Flag      |                                                  Description                                                   |
 |-----------------|----------------------------------------------------------------------------------------------------------------|
@@ -28,13 +28,13 @@ Replication from MySQL requires `--defaultGTIDSet`, which sets the starting GTID
 Replication from Oracle requires `--scn` and `--backfillFromSCN`, which specify the snapshot SCN and the earliest active transaction SCN, respectively. You can find these values in the message `replication-only mode should include the following replicator flags` after the [initial data load](#load-data-into-cockroachdb) completes.
 </section>
 
-{% elsif page.name == "migrate-replicate-only.md" %}
+{% elsif page.name == "migrate-resume-replication.md" %}
 |        Flag       |                                                  Description                                                   |
 |-------------------|----------------------------------------------------------------------------------------------------------------|
 | `--stagingSchema` | **Required.** Staging schema name for the changefeed checkpoint table.                                         |
 | `--metricsAddr`   | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`. |
 
-Resuming replication requires `--stagingSchema`, which specifies the staging schema name used as a checkpoint. MOLT Fetch [logs the staging schema name]({% link molt/migrate-data-load-replicate-only.md %}#replicate-changes-to-cockroachdb) as the `staging database name` when it starts replication. For example:
+Resuming replication requires `--stagingSchema`, which specifies the staging schema name used as a checkpoint. MOLT Fetch [logs the staging schema name]({% link molt/migrate-load-replicate.md %}#replicate-changes-to-cockroachdb) as the `staging database name` when it starts replication. For example:
 
 ~~~ json
 	{"level":"info","time":"2025-02-10T14:28:13-05:00","message":"staging database name: _replicator_1749699789613149000"}
@@ -42,13 +42,13 @@ Resuming replication requires `--stagingSchema`, which specifies the staging sch
 
 <section class="filter-content" markdown="1" data-scope="mysql">
 {{site.data.alerts.callout_info}}
-When using `--table-filter`, you must also include `--userscript`. Refer to [Table filter userscript]({% link molt/migrate-data-load-replicate-only.md %}?filters=mysql#table-filter-userscript).
+When using `--table-filter`, you must also include `--userscript`. Refer to [Table filter userscript]({% link molt/migrate-load-replicate.md %}?filters=mysql#table-filter-userscript).
 {{site.data.alerts.end}}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
 {{site.data.alerts.callout_info}}
-When using `--table-filter`, you must also include `--userscript`. Refer to [Table filter userscript]({% link molt/migrate-data-load-replicate-only.md %}?filters=oracle#table-filter-userscript).
+When using `--table-filter`, you must also include `--userscript`. Refer to [Table filter userscript]({% link molt/migrate-load-replicate.md %}?filters=oracle#table-filter-userscript).
 {{site.data.alerts.end}}
 </section>
 
@@ -77,7 +77,7 @@ When using `--table-filter`, you must also include `--userscript`. Refer to [Tab
 | `--tlsPrivateKey`  | Path to the server TLS private key for the webhook sink. Refer to [Secure failback for changefeed](#secure-changefeed-for-failback). |
 | `--metricsAddr`    | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                       |
 
-- Failback requires `--stagingSchema`, which specifies the staging schema name used as a checkpoint. MOLT Fetch [logs the staging schema name]({% link molt/migrate-data-load-replicate-only.md %}#replicate-changes-to-cockroachdb) when it starts replication:
+- Failback requires `--stagingSchema`, which specifies the staging schema name used as a checkpoint. MOLT Fetch [logs the staging schema name]({% link molt/migrate-load-replicate.md %}#replicate-changes-to-cockroachdb) when it starts replication:
 
 	~~~ shell
 	staging database name: _replicator_1749699789613149000
