@@ -115,7 +115,7 @@ Flag | Description
 `--include-range-info` | Include one file per node with information about the KV ranges stored on that node, in `nodes/{node ID}/ranges.json`.<br /><br />This information can be vital when debugging issues that involve the [KV layer]({% link {{ page.version.version }}/architecture/overview.md %}#layers) (which includes everything below the SQL layer), such as data placement, load balancing, performance or other behaviors. In certain situations, on large clusters with large numbers of ranges, these files can be omitted if and only if the issue being investigated is already known to be in another layer of the system (for example, an error message about an unsupported feature or incompatible value in a SQL schema change or statement). However, many higher-level issues are ultimately related to the underlying KV layer described by these files. Only set this to `false` if directed to do so by Cockroach Labs support.<br /><br />In addition, include problem ranges information in `reports/problemranges.json`.<br /><br />**Default:** true
 `--include-running-job-traces` | Include information about each traceable job that is running or reverting (such as [backup]({% link {{ page.version.version }}/backup.md %}), [restore]({% link {{ page.version.version }}/restore.md %}), [import]({% link {{ page.version.version }}/import-into.md %}), [physical cluster replication]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %})) in `jobs/*/*/trace.zip` files. This involves collecting cluster-wide traces for each running job in the cluster.<br /><br />**Default:** true
 `--nodes` | Specify nodes to inspect as a comma-separated list or range of node IDs. For example:<br /><br />`--nodes=1,10,13-15`
-<a id="redact"></a>`--redact` | Redact sensitive data from the generated `.zip`, with the exception of range keys, which must remain unredacted because they are essential to support CockroachDB. This flag replaces the deprecated `--redact-logs` flag, which only applied to log messages contained within `.zip`.<br><br>To redact hostnames and IP addresses in `.json` files, such as `status.json`, `details.json`, and `ranges.json`, you will also need to enable the [cluster setting `debug.zip.redact_addresses.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-debug-zip-redact-addresses-enabled). Note that enabling this cluster setting will not redact all hostnames and IP addresses in the `nodes.json` and `gossip.json` files.<br><br>For examples, refer to [Redact sensitive information](#redact-sensitive-information).
+<a id="redact"></a>`--redact` | Redact sensitive data from the generated `.zip`, with the exception of range keys, which must remain unredacted because they are essential to support CockroachDB. This flag replaces the deprecated `--redact-logs` flag, which only applied to log messages contained within `.zip`.<br><br>Cluster settings marked as "sensitive" are always redacted in the `crdb_internal.cluster_settings.txt` file, regardless of whether the `--redact` flag is used. When the `--redact` flag is used, "non-reportable" settings with non-default values are also redacted.<br><br>To redact hostnames and IP addresses in `.json` files, such as `status.json`, `details.json`, and `ranges.json`, you will also need to enable the [cluster setting `debug.zip.redact_addresses.enabled`]({% link {{ page.version.version }}/cluster-settings.md %}#setting-debug-zip-redact-addresses-enabled). Note that enabling this cluster setting will not redact all hostnames and IP addresses in the `nodes.json` and `gossip.json` files.<br><br>For examples, refer to [Redact sensitive information](#redact-sensitive-information).
 `--redact-logs` | **Deprecated** Redact sensitive data from collected log files only. Use the `--redact` flag instead, which redacts sensitive data across the entire generated `.zip` as well as the collected log files. Passing the `--redact-logs` flag will be interpreted as the `--redact` flag.
 `--timeout` | In the process of generating a debug zip, many internal requests are made. Each request is allowed the maximum duration specified by the timeout. If an internal request does not complete within the timeout duration, an error is displayed for that request and its artifact is not included in the zip file.<br /><br />The timeout is suffixed with `s` (seconds), `m` (minutes), or `h` (hours).<br /><br />**Default:** `60s`
 `--validate-zip-file` | Validate debug zip file after generation. This is a quick check to validate whether the generated zip file is valid and not corrupted.<br /><br />**Default:** `true`
@@ -195,6 +195,25 @@ $ cockroach debug zip ./cockroach-data/logs/debug.zip --redact --insecure --host
 
 ~~~
 server/server.go:1423 ⋮ password of user ‹×› was set to ‹×›
+~~~
+
+#### Cluster settings redaction
+
+Example of a cluster setting in `crdb_internal.cluster_settings.txt` without redaction enabled:
+
+~~~
+cluster.organization	Cockroach Labs Testing	s	t	f	f	organization name		override
+~~~
+
+Enable log redaction:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach debug zip ./cockroach-data/logs/debug.zip --redact --insecure --host=200.100.50.25
+~~~
+
+~~~
+cluster.organization	<redacted>	s	t	f	f	organization name		override
 ~~~
 
 #### Hostname and IP address redaction
