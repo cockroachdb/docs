@@ -202,6 +202,8 @@ server/server.go:1423 ⋮ password of user ‹×› was set to ‹×›
 Example of a cluster setting in `crdb_internal.cluster_settings.txt` without redaction enabled:
 
 ~~~
+variable	value	type	public	sensitive	reportable	description	default_value	origin
+...
 cluster.organization	Cockroach Labs Testing	s	t	f	f	organization name		override
 ~~~
 
@@ -213,6 +215,8 @@ $ cockroach debug zip ./cockroach-data/logs/debug.zip --redact --insecure --host
 ~~~
 
 ~~~
+variable	value	type	public	sensitive	reportable	description	default_value	origin
+...
 cluster.organization	<redacted>	s	t	f	f	organization name		override
 ~~~
 
