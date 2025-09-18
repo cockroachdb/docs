@@ -17,7 +17,7 @@ If you used the API to manage CockroachDB Serverless clusters that have been mig
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-The Cloud API is rate-limited to 10 requests per second per user.
+The Cloud API is rate-limited to 10 requests per second per user. When a request exceeds this limit, it receives an HTTP response with the `Retry-After` header and a "rate limit exceeded" message.
 {{site.data.alerts.end}}
 
 ## Call the API
