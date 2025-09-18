@@ -43,9 +43,9 @@ To initiate a failover to the standby cluster, you can specify the point in time
 - [`LATEST`](#fail-over-to-the-most-recent-replicated-time): The most recent replicated timestamp.
 - [Point-in-time](#fail-over-to-a-point-in-time):
     - Past: A past timestamp within the [failover window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process) of up to 4 hours in the past.
-+    {{site.data.alerts.callout_success}}
-+    Failing over to a past point in time is useful if you need to recover from a recent human error
-+    {{site.data.alerts.end}}
+    {{site.data.alerts.callout_success}}
+    Failing over to a past point in time is useful if you need to recover from a recent human error
+    {{site.data.alerts.end}}
     - Future: A future timestamp for planning a failover.
 
 #### Fail over to the most recent replicated time
