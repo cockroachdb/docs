@@ -1,21 +1,25 @@
+# STRESS TESTING CONFIGURATION - REMOTE FAILURES
+# This configuration tests maximum failure scenarios
+
 [build]
   base = "src/current/"
   publish = "_site/"
-  command = "./netlify/build.sh"
+  command = "./netlify/build-test.sh"
   edge_functions = "./netlify/edge-functions"
   [build.environment]
     NODE_VERSION = "18.14.0"
     RUBY_VERSION = "3.2.1"
+    # Stress test with multiple failures
+    NETLIFY_STRESS_TEST = "true"
+    FAIL_FAST = "false"
+    MAX_RETRIES = "5"
+    RETRY_DELAY = "15"
   [build.processing.html]
     pretty_urls = true
+
+# No cache plugin for stress testing - test raw network behavior
+# This forces all remote includes to hit the network
 
 [[edge_functions]]
   path = "/*"
   function = "blockBytedance"
-   
-#[[plugins]]
-#  package = "@netlify/plugin-lighthouse"
-#  [plugins.inputs]
-#    output_path = "./reports/lighthouse.html"
-#    [[plugins.inputs.audits]]
-#      path = "./docs/index.html"
