@@ -71,3 +71,5 @@ This configuration is ready for production:
 - **Monitoring**: Detailed logs for troubleshooting
 
 The solution balances reliability with build performance.
+
+<!-- Cache test: Build triggered at {{ site.time }} -->
