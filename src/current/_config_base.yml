@@ -70,8 +70,13 @@ plugins:
 - jekyll-last-modified-at
 - jekyll-minifier
 - jekyll-get-json
+- jekyll-remote-include
 sass:
   quiet_deps: 'true'
   sass_dir: css
   style: compressed
 site_title: CockroachDB Docs
+
+# Enable remote_include caching for performance and reliability
+remote_include:
+  use_cache: true
