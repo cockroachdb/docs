@@ -20,7 +20,7 @@ When you create a cluster in CockroachDB {{ site.data.products.cloud }}, you sel
 
 - **CockroachDB {{ site.data.products.basic }}**: Usage-based pricing. {{ site.data.products.basic }} clusters are ideal for smaller organizations or trial evaluations of CockroachDB.
 
-- **CockroachDB {{ site.data.products.standard }}**: Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. CockroachDB {{ site.data.products.basic }} clusters can be [upgraded to CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}). The {{ site.data.products.standard }} plan is a [Preview]({% link {{ site.current_cloud_version}}/cockroachdb-feature-availability.md %}#features-in-preview). 
+- **CockroachDB {{ site.data.products.standard }}**: Compute for CockroachDB {{ site.data.products.standard }} is pre-provisioned and storage is usage-based. CockroachDB {{ site.data.products.basic }} clusters can be [upgraded to CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/change-plan-between-basic-and-standard.md %}). The {{ site.data.products.standard }} plan is in [Preview]({% link {{ site.current_cloud_version}}/cockroachdb-feature-availability.md %}#features-in-preview). 
 
 - **CockroachDB {{ site.data.products.advanced }}**: Fully pre-provisioned, with additional security and compliance features.
 
