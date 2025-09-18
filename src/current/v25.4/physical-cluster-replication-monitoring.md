@@ -55,7 +55,6 @@ You can use Prometheus and Alertmanager to track and alert on PCR metrics. Refer
 We recommend tracking the following metrics:
 
 - `physical_replication.logical_bytes`: The logical bytes (the sum of all keys and values) ingested by all PCR jobs.
-- `physical_replication.sst_bytes`: The [SST]({% link {{ page.version.version }}/architecture/storage-layer.md %}#ssts) bytes (compressed) sent to the KV layer by all PCR jobs.
 - `physical_replication.replicated_time_seconds`: The [replicated time]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process) of the physical replication stream in seconds since the Unix epoch.
 
 ## Data verification
