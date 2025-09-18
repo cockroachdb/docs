@@ -52,5 +52,5 @@ For the [failover process]({% link {{ page.version.version }}/failover-replicati
 After reverting any necessary data, the standby virtual cluster is promoted as available to serve traffic and the replication job ends.
 
 {{site.data.alerts.callout_info}}
-For detail on failting back to the primary cluster following a failover, refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-to-the-original-primary-cluster).
+For detail on failing back to the primary cluster following a failover, refer to [Fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#fail-back-to-the-original-primary-cluster).
 {{site.data.alerts.end}}

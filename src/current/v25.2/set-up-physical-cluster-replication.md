@@ -6,7 +6,7 @@ docs_area: manage
 ---
 
 {{site.data.alerts.callout_info}}
-Physical cluster replication is supported in CockroachDB {{ site.data.products.core }} clusters and is in [limited access]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}) on [Cockroach Cloud]({% link cockroachcloud/physical-cluster-replication.md %}).
+Physical cluster replication is supported in CockroachDB {{ site.data.products.core }} clusters and is in [limited access]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}) on [CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/physical-cluster-replication.md %}).
 {{site.data.alerts.end}}
 
 In this tutorial, you will set up [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) between a primary cluster and standby cluster. The primary cluster is _active_, serving application traffic. The standby cluster is _passive_, continuously receiving updates from the primary cluster. The replication stream replicates changes from the primary to the standby.
