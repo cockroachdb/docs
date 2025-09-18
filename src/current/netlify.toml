@@ -19,7 +19,7 @@
 
 # Phase 1: Cache Plugin
 [[plugins]]
-  package = "@netlify/plugin-cache-build"
+  package = "netlify-plugin-cache"
   [plugins.inputs]
     paths = [
       ".jekyll-cache",
@@ -27,15 +27,9 @@
       "node_modules/.cache",
       "_data/cached"
     ]
-    ttl = 86400  # 24 hours
 
-# Phase 2: Add Retry Plugin (uncomment for retry testing)
-# [[plugins]]
-#   package = "@netlify/plugin-retry-build"
-#   [plugins.inputs]
-#     retryConditions = ["TIMEOUT", "NETWORK", "BUILD_FAILED"]
-#     maxRetries = 3
-#     retryDelay = 30
+# Note: Retry functionality implemented in build script
+# No separate retry plugin needed - using build script retry logic
 
 [[edge_functions]]
   path = "/*"
