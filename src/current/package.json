@@ -2,7 +2,9 @@
   "name": "cockroachdb-docs",
   "version": "2.0.0",
   "devDependencies": {
+    "@netlify/plugin-cache-build": "^2.0.1",
     "@netlify/plugin-lighthouse": "^4.0.7",
+    "@netlify/plugin-retry-build": "^2.2.0",
     "jest": "^26",
     "jest-cli": "^26"
   },
