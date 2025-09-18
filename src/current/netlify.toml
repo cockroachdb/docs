@@ -1,21 +1,35 @@
+# TESTING CONFIGURATION - RETRY TESTING
+# This file contains retry testing configuration with intentional failures
+
 [build]
   base = "src/current/"
   publish = "_site/"
-  command = "./netlify/build.sh"
+  command = "./netlify/build-test.sh"
   edge_functions = "./netlify/edge-functions"
   [build.environment]
     NODE_VERSION = "18.14.0"
     RUBY_VERSION = "3.2.1"
+    # Enable retry testing with failures
+    NETLIFY_RETRY_TEST = "true"
+    JEKYLL_REMOTE_INCLUDE_CACHE = "true"
+    JEKYLL_REMOTE_INCLUDE_CACHE_TTL = "3600"
   [build.processing.html]
     pretty_urls = true
+
+# Cache Plugin (keep caching for performance)
+[[plugins]]
+  package = "netlify-plugin-cache"
+  [plugins.inputs]
+    paths = [
+      ".jekyll-cache",
+      ".remote-includes-cache", 
+      "node_modules/.cache",
+      "_data/cached"
+    ]
+
+# Note: Retry functionality implemented in build script with intentional failures
+# Using build script retry logic to test failure scenarios
 
 [[edge_functions]]
   path = "/*"
   function = "blockBytedance"
-   
-#[[plugins]]
-#  package = "@netlify/plugin-lighthouse"
-#  [plugins.inputs]
-#    output_path = "./reports/lighthouse.html"
-#    [[plugins.inputs.audits]]
-#      path = "./docs/index.html"
