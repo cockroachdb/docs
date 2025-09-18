@@ -228,7 +228,7 @@ terraform show
 To change a CockroachDB {{ site.data.products.basic }} cluster's plan to CockroachDB {{ site.data.products.standard }} in place, or to change a CockroachDB {{ site.data.products.standard }} cluster to CockroachDB {{ site.data.products.basic }} using Terraform or the [CockroachDB {{ site.data.products.cloud }} API](https://cockroachlabs.com/docs/api/cloud/v1.html#patch-/api/v1/clusters/-cluster_id-).
 
 {{site.data.alerts.callout_info}}
-To migrate between CockroachDB {{ site.data.products.advanced }} and either CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }}, you must create and configure a new cluster, back up the existing cluster's data, and restore the backup to the new cluster. Refer to [Back up a CockroachDB {{ site.data.products.cloud }} cluster and restore into a new cluster]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}#back-up-a-cockroachdb-cloud-cluster-and-restore-into-a-new-cluster). Migration in place is not supported.
+To migrate between CockroachDB {{ site.data.products.advanced }} and either CockroachDB {{ site.data.products.standard }} or CockroachDB {{ site.data.products.basic }}, you must create and configure a new cluster, create a self-managed backup of the existing cluster's data, and restore the backup to the new cluster. Refer to [Back up a CockroachDB {{ site.data.products.cloud }} cluster and restore into a new cluster]({% link cockroachcloud/take-and-restore-self-managed-backups.md %}#back-up-a-cockroachdb-cloud-cluster-and-restore-into-a-new-cluster). Migration in place is not supported.
 {{site.data.alerts.end}}
 
 To migrate from CockroachDB {{ site.data.products.basic }} to CockroachDB {{ site.data.products.standard }} in place:
