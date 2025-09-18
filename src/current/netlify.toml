@@ -19,15 +19,12 @@
   [build.processing.html]
     pretty_urls = true
 
-# Cache Plugin - ESSENTIAL for performance
+# Cache Plugin - Remote includes only
 [[plugins]]
   package = "netlify-plugin-cache"
   [plugins.inputs]
     paths = [
-      ".jekyll-cache",
-      ".remote-includes-cache", 
-      "node_modules/.cache",
-      "_data/cached"
+      ".remote-includes-cache"
     ]
 
 # Combined approach:

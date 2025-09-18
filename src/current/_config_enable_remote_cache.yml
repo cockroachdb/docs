@@ -1,0 +1,3 @@
+# Override any remote_include cache disabling
+remote_include:
+  use_cache: true

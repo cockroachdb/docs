@@ -140,7 +140,9 @@ function build_with_retries {
         log_attempt $attempt $MAX_RETRIES
         ATTEMPT_COUNT=$attempt
         
-        if build_with_monitoring "$config"; then
+        # Add remote cache enabling config
+        config_with_cache="${config},_config_enable_remote_cache.yml"
+        if build_with_monitoring "$config_with_cache"; then
             echo "✅ Build succeeded on attempt ${attempt}/${MAX_RETRIES}"
             success=true
             break
