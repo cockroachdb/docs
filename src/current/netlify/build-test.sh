@@ -64,20 +64,35 @@ if [[ "$TEST_TYPE" = "combined" ]]; then
     echo ""
     echo "📊 CACHE STATUS CHECK"
     echo "===================="
+    
+    # Debug: List all potential cache directories
+    echo "🔍 Debugging cache directories:"
+    ls -la | grep -E "(cache|remote)" || echo "No cache-related directories found"
+    
+    # Check for various possible cache directory names
+    for cache_dir in ".remote-includes-cache" ".jekyll-remote-include-cache" "_remote_includes_cache" "remote-includes-cache"; do
+        if [ -d "$cache_dir" ]; then
+            REMOTE_SIZE=$(du -sh "$cache_dir" | cut -f1 2>/dev/null || echo "0")
+            REMOTE_FILES=$(find "$cache_dir" -type f 2>/dev/null | wc -l)
+            echo "✅ Remote cache found ($cache_dir): $REMOTE_SIZE ($REMOTE_FILES files)"
+            FOUND_REMOTE_CACHE=true
+            break
+        fi
+    done
+    
+    if [[ "$FOUND_REMOTE_CACHE" != "true" ]]; then
+        echo "❌ No remote includes cache found in any expected location"
+        echo "🔍 Environment variables:"
+        echo "   JEKYLL_REMOTE_INCLUDE_CACHE: ${JEKYLL_REMOTE_INCLUDE_CACHE:-not set}"
+        echo "   JEKYLL_REMOTE_INCLUDE_CACHE_TTL: ${JEKYLL_REMOTE_INCLUDE_CACHE_TTL:-not set}"
+    fi
+    
     if [ -d ".jekyll-cache" ]; then
         CACHE_SIZE=$(du -sh .jekyll-cache | cut -f1)
         CACHE_FILES=$(find .jekyll-cache -type f | wc -l)
         echo "✅ Jekyll cache found: $CACHE_SIZE ($CACHE_FILES files)"
     else
         echo "❌ No Jekyll cache found (first build or cache miss)"
-    fi
-    
-    if [ -d ".remote-includes-cache" ]; then
-        REMOTE_SIZE=$(du -sh .remote-includes-cache | cut -f1 2>/dev/null || echo "0")
-        REMOTE_FILES=$(find .remote-includes-cache -type f 2>/dev/null | wc -l)
-        echo "✅ Remote includes cache found: $REMOTE_SIZE ($REMOTE_FILES files)"
-    else
-        echo "❌ No remote includes cache found"
     fi
 fi
 
@@ -177,11 +192,46 @@ if [[ "$TEST_TYPE" = "combined" ]]; then
     echo ""
     echo "📊 POST-BUILD CACHE ANALYSIS"
     echo "============================"
+    
+    # Debug: Show what cache directories exist after build
+    echo "🔍 All cache/remote directories after build:"
+    ls -la | grep -E "(cache|remote)" || echo "No cache-related directories found"
+    
+    # Check Jekyll cache
     if [ -d ".jekyll-cache" ]; then
         NEW_CACHE_SIZE=$(du -sh .jekyll-cache | cut -f1)
         NEW_CACHE_FILES=$(find .jekyll-cache -type f | wc -l)
         echo "✅ Jekyll cache after build: $NEW_CACHE_SIZE ($NEW_CACHE_FILES files)"
     fi
+    
+    # Look for any remote cache directory that was created
+    echo "🔍 Searching for remote include cache directories:"
+    for cache_dir in ".remote-includes-cache" ".jekyll-remote-include-cache" "_remote_includes_cache" "remote-includes-cache"; do
+        if [ -d "$cache_dir" ]; then
+            NEW_REMOTE_SIZE=$(du -sh "$cache_dir" | cut -f1 2>/dev/null || echo "0")
+            NEW_REMOTE_FILES=$(find "$cache_dir" -type f 2>/dev/null | wc -l)
+            echo "✅ Remote cache created ($cache_dir): $NEW_REMOTE_SIZE ($NEW_REMOTE_FILES files)"
+            
+            # Show some sample cached files
+            echo "📄 Sample cached files:"
+            find "$cache_dir" -name "*.html" -o -name "*.md" | head -3 | while read file; do
+                echo "   $(basename "$file")"
+            done
+        fi
+    done
+    
+    # Check if remote_include plugin is actually working
+    echo "🔍 Checking if remote_include plugin is active:"
+    if grep -r "remote_include" _site/ 2>/dev/null | head -1; then
+        echo "✅ Remote includes are being processed"
+    else
+        echo "❌ No remote includes found in output"
+    fi
+    
+    # Show final environment variables
+    echo "🔍 Final cache environment:"
+    echo "   JEKYLL_REMOTE_INCLUDE_CACHE: ${JEKYLL_REMOTE_INCLUDE_CACHE:-not set}"
+    echo "   JEKYLL_REMOTE_INCLUDE_CACHE_TTL: ${JEKYLL_REMOTE_INCLUDE_CACHE_TTL:-not set}"
 fi
 
 echo ""
