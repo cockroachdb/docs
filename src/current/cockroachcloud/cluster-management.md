@@ -132,7 +132,7 @@ To help prevent a cluster from being deleted by mistake, you can enable _deletio
 ## Delete cluster
 
 {{site.data.alerts.callout_danger}}
-Deleting a cluster will delete all cluster data.
+Deleting a cluster will delete all cluster data. Deleted clusters can not be restored.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
