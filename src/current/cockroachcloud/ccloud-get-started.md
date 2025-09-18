@@ -74,11 +74,11 @@ There are two ways to create clusters using `ccloud`: `ccloud quickstart create`
 
 The `ccloud quickstart create` command interactively guides you through creating and connecting to a new CockroachDB {{ site.data.products.serverless }} cluster.
 
-The `ccloud cluster create` command creates a new CockroachDB {{ site.data.products.serverless }} or CockroachDB {{ site.data.products.dedicated }} CockroachDB cluster in your organization.
+The `ccloud cluster create` command creates a new CockroachDB {{ site.data.products.serverless }} or CockroachDB {{ site.data.products.advanced }} CockroachDB cluster in your organization.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless">CockroachDB {{ site.data.products.serverless }}<strong></strong></button>
-    <button class="filter-button page-level" data-scope="dedicated"><strong>CockroachDB {{ site.data.products.dedicated }}</strong></button>
+    <button class="filter-button page-level" data-scope="dedicated"><strong>CockroachDB {{ site.data.products.advanced }}</strong></button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="serverless">
@@ -111,7 +111,7 @@ ccloud cluster create serverless blue-dog us-central1 --cloud GCP --spend-limit 
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
-Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data.products.dedicated }} cluster.
+Use the `ccloud cluster create` command to create a new CockroachDB {{ site.data.products.advanced }} cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -502,7 +502,7 @@ Success! Deleted cluster
 ~~~
 
 {{site.data.alerts.callout_info}}
-If the cluster state is `CLUSTER_STATE_CREATING` you cannot delete the cluster. You must wait until the cluster has been provisioned and started, with a status of `CLUSTER_STATE_CREATED`, before you can delete the cluster. CockroachDB {{ site.data.products.serverless }} clusters are created in less than a minute. CockroachDB {{ site.data.products.dedicated }} clusters can take an hour or more to provision and start.
+If the cluster state is `CLUSTER_STATE_CREATING` you cannot delete the cluster. You must wait until the cluster has been provisioned and started, with a status of `CLUSTER_STATE_CREATED`, before you can delete the cluster. CockroachDB {{ site.data.products.serverless }} clusters are created in less than a minute. CockroachDB {{ site.data.products.advanced }} clusters can take an hour or more to provision and start.
 {{site.data.alerts.end}}
 
 ## Turn off telemetry events for `ccloud`
