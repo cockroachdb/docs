@@ -1,0 +1,15 @@
+# Cache testing configuration
+plugins:
+  - jekyll-remote-include
+
+remote_include:
+  cache: true
+  cache_dir: ".remote-includes-cache"
+  cache_ttl: 3600  # 1 hour for testing
+  timeout: 30
+  retries: 0  # No retries in cache-only test
+  debug: true
+
+jekyll_get_json:
+  cache_dir: "_data/cached"
+  cache_ttl: 3600
