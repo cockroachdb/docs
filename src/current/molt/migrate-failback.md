@@ -91,6 +91,51 @@ For example:
 --stagingConn 'postgres://crdb_user@localhost:26257/defaultdb?sslmode=verify-full'
 ~~~
 
+### TLS configuration
+
+{{site.data.alerts.callout_danger}}
+Insecure configurations are **not** recommended in production. Use secure TLS connections for failback replication to protect data in transit.
+{{site.data.alerts.end}}
+
+For production environments, configure TLS to secure the connection between CockroachDB changefeeds and MOLT Replicator.
+
+Generate TLS certificates using one of the following methods:
+- Self-issued and self-signed certificates
+- Certificates from a certificate authority like Let's Encrypt
+- Certificates from your organization's certificate management system
+
+Ensure TLS server certificates are accessible on the MOLT Replicator host via a relative or absolute file path. When you start MOLT Replicator, include the `--tlsCertificate` and `--tlsPrivateKey` parameters.
+
+{{site.data.alerts.callout_success}}
+Use secure connections to CockroachDB and the target database whenever possible. The client certificates defined in the changefeed URL must correspond to the server certificates specified in the MOLT Replicator configuration.
+{{site.data.alerts.end}}
+
+To include client certificates in the changefeed webhook URL, encode the certificates:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+# Encode client certificate for webhook URL
+base64 -i ./client.crt | jq -R -r '@uri'
+
+# Encode client key for webhook URL
+base64 -i ./client.key | jq -R -r '@uri'
+
+# Encode CA certificate for webhook URL
+base64 -i ./ca.crt | jq -R -r '@uri'
+~~~
+
+Include the encoded certificates in the changefeed URL:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE employees, payments, orders
+INTO 'webhook-https://localhost:30004/migration_schema/public?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}'
+WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms',
+initial_scan = 'no', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}';
+~~~
+
+For additional details on changefeed TLS configuration, refer to [Webhook sink documentation]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
+
 ## Fail back from CockroachDB
 
 Start failback to the source database using [MOLT Replicator]({% link molt/molt-replicator.md %}).
@@ -122,13 +167,13 @@ Start failback to the source database using [MOLT Replicator]({% link molt/molt-
     SELECT cluster_logical_timestamp();
     ~~~
 
-1. Create the changefeed pointing to the MOLT Replicator webhook endpoint:
+1. Create the changefeed pointing to the MOLT Replicator webhook endpoint. For production environments, use the TLS configuration from the previous section:
 
     <section class="filter-content" markdown="1" data-scope="postgres">
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders
-    INTO 'webhook-https://localhost:30004/migration_schema/public?insecure_tls_skip_verify=true'
+    INTO 'webhook-https://localhost:30004/migration_schema/public?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}'
     WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms',
     initial_scan = 'no', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}';
     ~~~
@@ -138,7 +183,7 @@ Start failback to the source database using [MOLT Replicator]({% link molt/molt-
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders
-    INTO 'webhook-https://localhost:30004/migration_schema?insecure_tls_skip_verify=true'
+    INTO 'webhook-https://localhost:30004/migration_schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}'
     WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms',
     initial_scan = 'no', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}';
     ~~~
@@ -148,7 +193,7 @@ Start failback to the source database using [MOLT Replicator]({% link molt/molt-
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE employees, payments, orders
-    INTO 'webhook-https://localhost:30004/MIGRATION_SCHEMA?insecure_tls_skip_verify=true'
+    INTO 'webhook-https://localhost:30004/MIGRATION_SCHEMA?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}'
     WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms',
     initial_scan = 'no', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}';
     ~~~
