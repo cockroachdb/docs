@@ -4,14 +4,10 @@ This guide covers Markdown-specific syntax and formatting conventions used in Co
 
 ## Table of Contents
 
-- [Site and Page Structure](#site-and-page-structure)
-  - [Docs structure](#docs-structure)
-  - [Pages](#pages)
+- [Site structure](#site-structure)
+  - [Docs repository](#docs-repository)
+  - [Page headings](#page-headings)
   - [Sidebar](#sidebar)
-  - [Page TOC](#page-toc)
-  - [Auto-included content](#auto-included-content)
-  - [Version tags](#version-tags)
-  - [Allowed hashes](#allowed-hashes)
 - [Title](#title)
 - [Headings](#headings)
 - [Text formatting](#text-formatting)
@@ -38,7 +34,7 @@ This guide covers Markdown-specific syntax and formatting conventions used in Co
 - [Tables](#tables)
   - [Markdown tables](#markdown-tables)
   - [HTML tables](#html-tables)
-  - [Markdown vs HTML](#markdown-vs-html)
+  - [Markdown vs. HTML](#markdown-vs-html)
 - [Images](#images)
 - [Videos](#videos)
 - [Versioning](#versioning)
@@ -462,7 +458,7 @@ You can use the following HTML formatting within an HTML table:
 - Paragraph breaks (`<p>`)
 - Lists (`<ol>` / `<ul>` / `<li>`)
 
-### Markdown vs HTML
+### Markdown vs. HTML
 
 - Prefer Markdown syntax over HTML when possible for better readability and maintainability.
 - Use HTML only when Markdown doesn't provide the necessary functionality.

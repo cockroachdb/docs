@@ -31,8 +31,13 @@ Included in this guide:
   - [Images](#images)
   - [Videos](#videos)
   - [Include files](#include-files)
-  - [GitHub links](#github-links)
+  - [Links](#links)
+    - [GitHub links](#github-links)
+    - [External links](#external-links)
+- [Page sections](#page-sections)
+  - [Before you begin](#before-you-begin)
   - [Known limitations](#known-limitations)
+  - [See also](#see-also)
 
 For Markdown-specific syntax and formatting guidelines, refer to the [Markdown Guide](MarkdownGuide.md).
 
