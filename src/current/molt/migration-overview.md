@@ -21,9 +21,7 @@ Before you begin the migration, review [Migration Strategy]({% link molt/migrati
 
 A migration to CockroachDB generally follows this sequence:
 
-<div style="text-align: center;">
 <img src="{{ 'images/molt/migration_flow.svg' | relative_url }}" alt="MOLT tooling overview" style="max-width:100%" />
-</div><br>
 
 1. Prepare the source database: Configure users, permissions, and replication settings as needed.
 1. Convert the source schema: Use the [Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) to generate CockroachDB-compatible [DDL]({% link {{ site.current_cloud_version }}/sql-statements.md %}#data-definition-statements). Apply the converted schema to the target database. Drop constraints and indexes to facilitate data load.
@@ -100,6 +98,10 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 ## Migration flows
 
 MOLT Fetch supports various migration flows using [MOLT Fetch modes]({% link molt/molt-fetch.md %}#fetch-mode).
+
+{{site.data.alerts.callout_danger}}
+MOLT Fetch replication modes will be deprecated in favor of a separate replication workflow in an upcoming release. This includes the `data-load-and-replication`, `replication-only`, and `failback` modes.
+{{site.data.alerts.end}}
 
 |                                     Migration flow                                     |                        Mode                        |                            Description                             |                                                 Best for                                                |
 |----------------------------------------------------------------------------------------|----------------------------------------------------|--------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|

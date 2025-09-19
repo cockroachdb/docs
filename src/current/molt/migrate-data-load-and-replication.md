@@ -10,6 +10,10 @@ docs_area: migrate
 
 {% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder="molt" %}
 
+{{site.data.alerts.callout_danger}}
+MOLT Fetch replication modes will be deprecated in favor of a separate replication workflow in an upcoming release. This includes the `data-load-and-replication`, `replication-only`, and `failback` modes.
+{{site.data.alerts.end}}
+
 Use `data-load-and-replication` mode to perform a one-time bulk load of source data and start continuous replication in a single command.
 
 {{site.data.alerts.callout_success}}

@@ -5,6 +5,10 @@ toc: true
 docs_area: migrate
 ---
 
+{{site.data.alerts.callout_danger}}
+MOLT Fetch replication modes will be deprecated in favor of a separate replication workflow in an upcoming release. This includes the `data-load-and-replication`, `replication-only`, and `failback` modes.
+{{site.data.alerts.end}}
+
 Use `replication-only` mode to resume replication to CockroachDB after an interruption, without reloading data.
 
 {{site.data.alerts.callout_info}}

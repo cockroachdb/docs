@@ -9,6 +9,10 @@ MOLT Fetch moves data from a source database into CockroachDB as part of a [data
 
 MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to move the source data to cloud storage (Google Cloud Storage, Amazon S3, or Azure Blob Storage), a local file server, or local memory. Once the data is exported, MOLT Fetch can load the data into a target CockroachDB database and replicate changes from the source database. For details, refer to [Migration phases](#migration-phases).
 
+{{site.data.alerts.callout_danger}}
+MOLT Fetch replication modes will be deprecated in favor of a separate replication workflow in an upcoming release. This includes the `data-load-and-replication`, `replication-only`, and `failback` modes.
+{{site.data.alerts.end}}
+
 ## Supported databases
 
 The following source databases are currently supported:
@@ -283,6 +287,10 @@ The `--source-cdb` flag specifies the connection string for the Oracle container
 - [Replicate changes to CockroachDB](#replication-only)
 - [Export and import the data only](#export-only-and-import-only)
 - [Fail back to source database](#failback)
+
+{{site.data.alerts.callout_danger}}
+MOLT Fetch replication modes will be deprecated in favor of a separate replication workflow in an upcoming release. This includes the `data-load-and-replication`, `replication-only`, and `failback` modes.
+{{site.data.alerts.end}}
 
 #### `data-load`
 
