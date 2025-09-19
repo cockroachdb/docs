@@ -6,7 +6,7 @@ This file has instructions & general info for working with us on these docs. Ple
 
 Docs for each released version are in subdirectories named for the version, e.g., `v25.4`.
 
-Docs for the Cockroach Cloud hosted version are in `cockroachcloud`.
+Docs specific to the CockroachDB Cloud product are in `cockroachcloud`.
 
 Docs related to release notes and other release-related matters are in `releases`.
 
