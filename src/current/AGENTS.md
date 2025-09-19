@@ -42,6 +42,6 @@ The includes are all located in subdirectories of the `_include` directory, i.e.
 
 - `_include/common` for widely shared things
 - `_include/cockroachcloud` for Cloud
-- `_include/v25.4` for v25.4 docs
+- `_include/v25.4` for v25.4-specific content
 
 <!-- eof -->
