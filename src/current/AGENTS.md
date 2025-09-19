@@ -24,7 +24,7 @@ For includes that are shared in many places:
 {% include common/define-watched-cdc.md %}
 ```
 
-For includes that are used in the Cloud product:
+For includes that pertain to the CockroachDB Cloud product:
 
 ```
 {% include cockroachcloud/metrics-time-interval-selection.md %}
