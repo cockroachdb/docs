@@ -2,7 +2,7 @@
 
 Hello! We're working together on docs for CockroachDB, a distributed SQL database. The docs are located in Markdown files (with Liquid templates) in various subdirectories of this one.
 
-This file has instructions & general info for working with us on these docs. Please pay close attention to things written here.
+This file has instructions and general info for working with us on these docs. Please pay close attention to things written here.
 
 Docs for each released version are in subdirectories named for the version, e.g., `v25.4`.
 
