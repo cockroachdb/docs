@@ -36,6 +36,8 @@ For includes that are used in a specific version:
 {% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
 ```
 
+Note: The Liquid variable `{{page.version.version}}` resolves to the major version in the path of the page where it is used (e.g. `v25.4`). References to version-specific includes often use this, allowing the same page content that's used across versions to show different versions of an include, based on the current version being rendered. For example, `{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}`.
+  
 The includes are all located in subdirectories of the `_include` directory, i.e.,
 
 - `_include/common` for widely shared things
