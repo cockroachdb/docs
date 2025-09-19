@@ -33,7 +33,7 @@ For includes that pertain to the CockroachDB Cloud product:
 For includes that we can assume only apply to specific versions, though in some cases, their content may be identical across all versions where the file exists:
 
 ```
-{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
+{% include vXX.Y/misc/cert-auth-using-x509-subject.md %}
 ```
 
 Note: The Liquid variable `{{page.version.version}}` resolves to the major version in the path of the page where it is used (e.g. `v25.4`). References to version-specific includes often use this, allowing the same page content that's used across versions to show different versions of an include, based on the current version being rendered. For example, `{% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}`.
