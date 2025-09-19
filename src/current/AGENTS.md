@@ -18,7 +18,7 @@ Our style guide lives in `StyleGuide.md` in the root of this repository. Please 
 
 To avoid repeating text across different files, we use shared "include files" (or just: "includes") which are referenced using the following syntax.
 
-For includes that are shared in many places:
+For includes that apply across versions or products:
 
 ```
 {% include common/define-watched-cdc.md %}
