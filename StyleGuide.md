@@ -90,13 +90,13 @@ Use concise, direct language. Cut unnecessary words unless a conversational tone
 - **Avoid:** `table_name`: This parameter is used to specify the name of the table you want to modify.  
   **Prefer:** `table_name`: The name of the table to modify.
 
-Provide guidance rather than leave decisions to the user. Avoid vague phrases like "as you wish" or "of your choice". When user discretion is required, be as explicit as possible to reduce ambiguity and cognitive load.
+Provide guidance rather than leave decisions to the user. For example, phrases like "change what you need" or "modify the relevant settings" may raise questions like "What would I need to change?" and "Which settings are relevant?". When user discretion is required, be as explicit as possible to reduce ambiguity and cognitive load.
 
 - **Avoid:** Increase the threshold as needed.  
   **Prefer:** Increase the threshold until you see a performance improvement.
 
 - **Avoid:** Define additional settings as desired.  
-  **Prefer:** You can define additional settings in the configuration file. To change the default host and port, set `host` and `port` respectively. To change the path, ...
+  **Prefer:** Depending on your configuration, you may need to define additional settings. For example, ...
 
 - **Avoid:** Edit the profile using your preferred text editor.  
   **Prefer:** Edit the profile in a text editor.
@@ -331,7 +331,7 @@ File names in the CockroachDB docs repo should be lowercase with a dash between 
 
 ## Page components
 
-This section describes how to approach page elements other than body text. For Markdown-specific syntax and formatting guidelines, refer to the [Markdown Guide](MarkdownGuide.md).
+This section describes how to approach page elements other than body text. For Markdown syntax and formatting, refer to the [Markdown Guide](MarkdownGuide.md).
 
 ### Code
 
@@ -379,6 +379,8 @@ Ensure that placeholders are placed within backticks: `SET {session variable}`. 
 
 If the code sample is sensitive to curly bracket characters (as in JavaScript), you can use `<>` instead.
 
+For code block syntax and formatting, refer to the [Markdown Guide](MarkdownGuide.md#code).
+
 ### Callouts
 
 CockroachDB docs use three classes of "callouts," which are highlighted blocks of text: tips, notes, and warnings.
@@ -397,14 +399,16 @@ CockroachDB docs use three classes of "callouts," which are highlighted blocks o
 
 **Best practices:**
 
-- Avoid placing callouts adjacent to each other.
+- Avoid placing callouts next to each other.
 - Do not overuse callouts. Most documentation belongs in the body of a page rather than in a callout.
+
+For code block syntax and formatting, refer to the [Markdown Guide](MarkdownGuide.md#callouts).
 
 ### Images
 
 Use images to clarify a topic, but only use them as needed. Images are either:
 
-- **Screenshots:** Depict a UI element. Screenshots should show enough of the UI that the user can easily orient themselves and understand what they are being shown. If a screenshot needs an annotation, use a red box.
+- **Screenshots:** Depict a UI element. Screenshots should only show enough of the UI that the user can easily orient themselves and understand what they are being shown. Exclude UI elements that are not relevant to the screenshot's purpose. If a screenshot needs an annotation, use a red box.
 
   **Note:** Screenshots are difficult to keep current, and impact accessibility. Use a screenshot only if it is necessary for the user to accomplish a task or understand a feature. For example, in a page on troubleshooting cluster performance, a screenshot of a Contention metric graph in the DB Console might be used to depict a cluster with high contention. The same screenshot would not be necessary in a reference topic about the DB Console user interface. 
 
@@ -414,16 +418,18 @@ Use images to clarify a topic, but only use them as needed. Images are either:
 
   The Docs team uses the following tools to compose diagrams:
 
-  - [Monodraw](https://monodraw.helftone.com/)
-  - [Omnigraffle](https://www.omnigroup.com/omnigraffle)
+  - [Monodraw](https://monodraw.helftone.com/): useful for abstract concept diagrams
+  - [Omnigraffle](https://www.omnigroup.com/omnigraffle): useful for diagrams with branded elements like logos and colors
 
-  Icons for diagrams can be sourced from: https://github.com/cockroachlabs/cockroach-studios/tree/main/icons
+  Icons for diagrams can be sourced from the [`cockroach-studios`](https://github.com/cockroachlabs/cockroach-studios/tree/main/icons) repo. The `.gstencil` file in the `icons` directory is an Omnigraffle template listing our branded primary/secondary/extended color palette.
+
+For image syntax and embedding, refer to the [Markdown Guide](MarkdownGuide.md#images).
 
 ### Videos
 
 Like images, use videos to clarify a topic, but only use them as needed. Typically, videos should be hosted on the official [CockroachDB YouTube page](https://www.youtube.com/@cockroachdb) and are surfaced by our Marketing team.
 
-Place videos under their own page heading.
+Place videos under their own page heading. For video embedding syntax, refer to the [Markdown Guide](MarkdownGuide.md#videos).
 
 ### Include files
 
@@ -431,11 +437,13 @@ Sometimes content needs to be duplicated across **two or more pages** in the doc
 
 In these situations, use an [_include file_](https://jekyllrb.com/docs/includes/). An include file is a separate Markdown file (stored in `_includes/some/shared-file.md`) whose content is shared across multiple pages.
 
-For information on include file syntax, refer to the [Markdown Guide](MarkdownGuide.md#include-files).
-
 **Note:** Using include files adds complexity to the docs site architecture and build process. Consider linking to an existing page or subheading rather than using an include file.
 
-### GitHub links
+For include file syntax, refer to the [Markdown Guide](MarkdownGuide.md#include-files).
+
+### Links
+
+#### GitHub links
 
 [Release notes](https://www.cockroachlabs.com/docs/releases/index.html), [technical advisories](https://www.cockroachlabs.com/docs/advisories/index.html), and [known limitations](https://www.cockroachlabs.com/docs/stable/known-limitations.html) contain links to individual GitHub issues and pull requests.
 
@@ -443,52 +451,39 @@ Reference issues and pull requests by their corresponding number, prepended with
 
 **Example:** `[#1](https://github.com/cockroachdb/docs/pull/1)`
 
+#### External links
+
+When linking to third-party documentation, consider the purpose and maintenance implications. Link to third-party sources for integration workflows, official API references, and tool configurations that change frequently.
+
+**Best practices:**
+
+- Link to stable, official documentation pages when possible and ensure links point to the appropriate version of the external product.
+- Avoid linking to blog posts or unofficial sources.
+- Consider whether a brief explanation in our docs would be more reliable than an external link.
+
+For link syntax, refer to the [Markdown Guide](MarkdownGuide.md#links).
+
+## Page sections
+
+For page headings, refer to the [Markdown Guide](MarkdownGuide.md#page-headings).
+
+### Before you begin
+
+A `Before you begin` section describes prerequisites for following the page content. These may be setup requirements or contextual information that's helpful to the task. Place this section immediately after the page introduction.
+
+**Best practices:**
+
+- Keep prerequisites specific and actionable.
+- Link to relevant setup or configuration pages.
+- Use a bulleted list for multiple prerequisites.
+- Avoid generic statements like "Have CockroachDB installed" unless the page specifically requires a fresh installation.
+
 ### Known limitations
 
-#### What are known limitations?
+A `Known limitations` section describes unexpected database behaviors that differ from SQL standards, PostgreSQL behavior, or expected functionality. Document all known limitations on the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations.html) page and on feature-specific pages under a dedicated "Known limitations" header.
 
-Sometimes CockroachDB does not behave the way that users expect it to behave. These deviations from expected behavior can be in the form of:
+Document limitations during GA release weeks or when discovered post-release. For detailed procedures, refer to the [documentation wiki](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/3516825623/Document+known+limitations).
 
-- A difference in syntax between CockroachDB and [SQL Standard](https://blog.ansi.org/2018/10/sql-standard-iso-iec-9075-2016-ansi-x3-135).
-- A difference in the behavior of CockroachDB and PostgreSQL.
-- A feature that is functional, but not yet fully implemented.
-- A feature that is fully implemented, but has some **long-standing** bugs (i.e., bugs that have existed across patch and/or major releases).
-- A feature that limits performance.
+### See also
 
-We list the general differences between CockroachDB and the SQL Standard on our [SQL Feature Support](https://www.cockroachlabs.com/docs/stable/sql-feature-support.html) page, and we provide more details on the differences between CockroachDB and PostgreSQL on our [PostgreSQL Compatibility](https://www.cockroachlabs.com/docs/stable/postgresql-compatibility.html). All other instances of known, but possibly unexpected, database behavior are known as **known limitations**.
-
-Known limitations often have [associated GitHub issues in the `cockroach` repo](https://github.com/cockroachdb/cockroach/issues), meaning the limitation could be resolved one day. **Not all known limitations have GitHub issues, and not all known limitations will be resolved.**
-
-The purpose of documenting known limitations is to help our users know more about using our product safely and effectively.
-
-#### Where to find known limitations
-
-Known limitations are generally listed in two places:
-
-1. (More common) In the `cockroach` repo, as [open issues with the `docs-known-limitations` label, but *not* with the `docs-done` label](https://github.com/cockroachdb/cockroach/issues?q=is%3Aissue+label%3Adocs-known-limitation+-label%3Adocs-done+is%3Aopen). Usually, engineers and product managers add these labels to issues in the weeks leading up to the release.
-
-1. (Less common) In the `docs` repo, as [open issues with the `T-known-limitation` label](https://github.com/cockroachdb/docs/issues?q=is%3Aopen+is%3Aissue+label%3AT-known-limitation).
-
-If you come across some behavior that you believe qualifies as a known limitation, first open an issue in the `cockroach` repo, get some engineering/PM feedback on the issue, and then add a `docs-known-limitations` label to an issue.
-
-#### When to document known limitations
-
-Documenting known limitations should happen in the [weeks leading up to a GA release](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/402718726/GA+Release+Checklist).
-
-You might also need to document a known limitation that is discovered after the GA release. In this case, you will likely be notified by your product area PM and should coordinate with them to determine how best to document the limitation.
-
-*Avoid documenting known limitations too early. Some "limitations" could be bugs that engineering finds the time to fix during the stability period leading up to a GA release.*
-
-#### Who documents known limitations
-
-Known limitations for a given product area are documented by the writer assigned to that product area.
-
-#### Where to document known limitations
-
-Document all known limitations on the [Known Limitations](https://www.cockroachlabs.com/docs/stable/known-limitations.html) page.
-
-If the limitation is related to a feature documented elsewhere on our docs site, you should also add the limitation to the page that documents that feature, under a dedicated "Known limitations" header. To avoid duplication, create an [include file](#include-files) in `_includes/vX.X/known-limitations` and include the file in both places.
-
-#### How to document known limitations
-
-Refer to the [wiki](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/3516825623/Document+known+limitations).
+A `See also` section contains links to related pages.  This is always the last section in a page.
