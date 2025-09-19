@@ -1,6 +1,6 @@
 ---
-title: Cut Over from a Primary Cluster to a Standby Cluster
-summary: A guide to complete physical cluster replication and cut over from a primary to a standby cluster.
+title: Fail Over from a Primary Cluster to a Standby Cluster
+summary: A guide to complete physical cluster replication and fail over from a primary to a standby cluster.
 toc: true
 docs_area: manage
 ---
@@ -9,45 +9,48 @@ docs_area: manage
 Physical cluster replication is supported in CockroachDB {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 
-_Cutover_ in [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to switch from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication stream to initiate a cutover, the job stops replicating data from the primary, sets the standby [virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) to a point in time (in the past or future) where all ingested data is consistent, and then makes the standby virtual cluster ready to accept traffic.
+_Failover_ in [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to switch from the active primary cluster to the passive standby cluster that has ingested replicated data. When you complete the replication stream to initiate a failover, the job stops replicating data from the primary, sets the standby [virtual cluster]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}) to a point in time (in the past or future) where all ingested data is consistent, and then makes the standby virtual cluster ready to accept traffic.
 
-_Cutback_ in PCR switches operations back to the original primary cluster (or a new cluster) after a cutover event. When you initiate a cutback, the job ensures the original primary is up to date with writes from the standby that happened after cutover. The original primary cluster is then set as ready to accept application traffic once again.
+_Failback_ in PCR switches operations back to the original primary cluster (or a new cluster) after a failover event. When you initiate a failback, the job ensures the original primary is up to date with writes from the standby that happened after failover. The original primary cluster is then set as ready to accept application traffic once again.
 
 This page describes:
 
-- [**Cutover**](#cutover) from the primary cluster to the standby cluster.
-- [**Cutback**](#cutback): 
-    - From the original standby cluster (after it was promoted during cutover) to the original primary cluster.
+- [**Failover**](#failover) from the primary cluster to the standby cluster.
+- [**Failback**](#failback): 
+    - From the original standby cluster (after it was promoted during failover) to the original primary cluster.
     - After the PCR stream used an existing cluster as the primary cluster.
-- [**Job management**](#job-management) after a cutover or cutback.
+- [**Job management**](#job-management) after a failover or failback.
 
 {{site.data.alerts.callout_danger}}
-Cutover and cutback do **not** redirect traffic automatically to the standby cluster. Once the cutover or cutback is complete, you must redirect application traffic to the standby (new) cluster. If you do not redirect traffic manually, writes to the primary (original) cluster may be lost.
+Failover and failback do **not** redirect traffic automatically to the standby cluster. Once the failover or failback is complete, you must redirect application traffic to the standby (new) cluster. If you do not redirect traffic manually, writes to the primary (original) cluster may be lost.
 {{site.data.alerts.end}}
 
-## Cutover
+## Failover
 
-The cutover is a two-step process on the standby cluster:
+The failover is a two-step process on the standby cluster:
 
-1. [Initiating the cutover](#step-1-initiate-the-cutover).
-1. [Completing the cutover](#step-2-complete-the-cutover).
+1. [Initiating the failover](#step-1-initiate-the-failover).
+1. [Completing the failover](#step-2-complete-the-failover).
 
 ### Before you begin
 
-During PCR, jobs running on the primary cluster will replicate to the standby cluster. Before you cut over to the standby cluster, or cut back to the original primary cluster, consider how you will manage running (replicated) jobs between the clusters. Refer to [Job management](#job-management) for instructions.
+During PCR, jobs running on the primary cluster will replicate to the standby cluster. Before you fail over to the standby cluster, or fail back to the original primary cluster, consider how you will manage running (replicated) jobs between the clusters. Refer to [Job management](#job-management) for instructions.
 
-### Step 1. Initiate the cutover
+### Step 1. Initiate the failover
 
-To initiate a cutover to the standby cluster, you can specify the point in time for the standby's promotion. That is, the standby cluster's live data at the point of cutover. Refer to the following sections for steps:
+To initiate a failover to the standby cluster, you can specify the point in time for the standby's promotion. That is, the standby cluster's live data at the point of failover. Refer to the following sections for steps:
 
-- [`LATEST`](#cut-over-to-the-most-recent-replicated-time): The most recent replicated timestamp.
-- [Point-in-time](#cut-over-to-a-point-in-time):
-    - Past: A past timestamp within the [cutover window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#cutover-and-promotion-process).
-    - Future: A future timestamp for planning a cutover.
+- [`LATEST`](#fail-over-to-the-most-recent-replicated-time): The most recent replicated timestamp.
+- [Point-in-time](#fail-over-to-a-point-in-time):
+    - Past: A past timestamp within the [failover window]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process) of up to 4 hours in the past.
+    {{site.data.alerts.callout_success}}
+    Failing over to a past point in time is useful if you need to recover from a recent human error.
+    {{site.data.alerts.end}}
+    - Future: A future timestamp for planning a failover.
 
-#### Cut over to the most recent replicated time
+#### Fail over to the most recent replicated time
 
-To initiate a cutover to the most recent replicated timestamp, you can specify `LATEST` when you start the cutover. The latest replicated time may be behind the actual time if there is [_replication lag_]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#cutover-and-promotion-process) in the stream. Replication lag is the time between the most up-to-date replicated time and the actual time.
+To initiate a failover to the most recent replicated timestamp, specify `LATEST`. Due to [_replication lag_]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}#failover-and-promotion-process), the most recent replicated time may be behind the current actual time. Replication lag is the time difference between the most recent replicated time and the actual time.
 
 1. To view the current replication timestamp, use:
 
@@ -58,7 +61,7 @@ To initiate a cutover to the most recent replicated timestamp, you can specify `
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    id | name | source_tenant_name |              source_cluster_uri                 |         retained_time           |    replicated_time     | replication_lag | cutover_time |   status
+    id | name | source_tenant_name |              source_cluster_uri                 |         retained_time           |    replicated_time     | replication_lag | failover_time |   status
     -----+------+--------------------+-------------------------------------------------+---------------------------------+------------------------+-----------------+--------------+--------------
     3 | main | main               | postgresql://user@hostname or IP:26257?redacted | 2024-04-18 10:07:45.000001+00   | 2024-04-18 14:07:45+00 | 00:00:19.602682 |         NULL | replicating
     (1 row)
@@ -68,25 +71,25 @@ To initiate a cutover to the most recent replicated timestamp, you can specify `
     You can view the [**Replication Lag** graph]({% link {{ page.version.version }}/ui-physical-cluster-replication-dashboard.md %}#replication-lag) in the standby cluster's DB Console.
     {{site.data.alerts.end}}
 
-1. Run the following from the standby cluster's SQL shell to start the cutover:
+1. Run the following from the standby cluster's SQL shell to start the failover:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO LATEST;
     ~~~
 
-    The `cutover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any replicated data above this timestamp to ensure that the standby is consistent with the primary at that timestamp:
+    The `failover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any replicated data above this timestamp to ensure that the standby is consistent with the primary at that timestamp:
 
     ~~~
-            cutover_time
+            failover_time
     ----------------------------------
     1695922878030920020.0000000000
     (1 row)
     ~~~
 
-#### Cut over to a point in time
+#### Fail over to a point in time
 
-You can control the point in time that the PCR stream will cut over to.
+You can control the point in time that the PCR stream will fail over to.
 
 1. To select a [specific time]({% link {{ page.version.version }}/as-of-system-time.md %}) in the past, use:
 
@@ -95,10 +98,10 @@ You can control the point in time that the PCR stream will cut over to.
     SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
     ~~~
 
-    The `retained_time` response provides the earliest time to which you can cut over.
+    The `retained_time` response provides the earliest time to which you can fail over.
 
     ~~~
-    id | name | source_tenant_name |              source_cluster_uri                 |         retained_time         |    replicated_time     | replication_lag | cutover_time |   status
+    id | name | source_tenant_name |              source_cluster_uri                 |         retained_time         |    replicated_time     | replication_lag | failover_time |   status
     -----+------+--------------------+-------------------------------------------------+-------------------------------+------------------------+-----------------+--------------+--------------
     3 | main | main               | postgresql://user@hostname or IP:26257?redacted | 2024-04-18 10:07:45.000001+00 | 2024-04-18 14:07:45+00 | 00:00:19.602682 |         NULL | replicating
     (1 row)
@@ -113,14 +116,14 @@ You can control the point in time that the PCR stream will cut over to.
 
     Refer to [Using different timestamp formats]({% link {{ page.version.version }}/as-of-system-time.md %}#using-different-timestamp-formats) for more information.
 
-    Similarly, to cut over to a specific time in the future:
+    Similarly, to fail over to a specific time in the future:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO SYSTEM TIME '+5h';
     ~~~
 
-    A future cutover will proceed once the replicated data has reached the specified time.
+    A future failover will proceed once the replicated data has reached the specified time.
 
 {{site.data.alerts.callout_info}}
 To monitor for when the replication stream completes, do the following:
@@ -129,7 +132,7 @@ To monitor for when the replication stream completes, do the following:
 1. Run `SHOW JOB WHEN COMPLETE job_id`. Refer to the `SHOW JOBS` page for [details]({% link {{ page.version.version }}/show-jobs.md %}#parameters) and an [example]({% link {{ page.version.version }}/show-jobs.md %}#show-job-when-complete).
 {{site.data.alerts.end}}
 
-### Step 2. Complete the cutover
+### Step 2. Complete the failover
 
 1. The completion of the replication is asynchronous; to monitor its progress use:
 
@@ -138,9 +141,9 @@ To monitor for when the replication stream completes, do the following:
     SHOW VIRTUAL CLUSTER main WITH REPLICATION STATUS;
     ~~~
     ~~~
-    id | name | source_tenant_name |              source_cluster_uri                 |         retained_time         |    replicated_time           | replication_lag | cutover_time                   |   status
+    id | name | source_tenant_name |              source_cluster_uri                 |         retained_time         |    replicated_time           | replication_lag | failover_time                   |   status
     ---+------+--------------------+-------------------------------------------------+-------------------------------+------------------------------+-----------------+--------------------------------+--------------
-    3  | main | main               | postgresql://user@hostname or IP:26257?redacted | 2023-09-28 16:09:04.327473+00 | 2023-09-28 17:41:18.03092+00 | 00:00:19.602682 | 1695922878030920020.0000000000 | replication pending cutover
+    3  | main | main               | postgresql://user@hostname or IP:26257?redacted | 2023-09-28 16:09:04.327473+00 | 2023-09-28 17:41:18.03092+00 | 00:00:19.602682 | 1695922878030920020.0000000000 | replication pending failover
     (1 row)
     ~~~
 
@@ -170,29 +173,29 @@ To monitor for when the replication stream completes, do the following:
 
 At this point, the primary and standby clusters are entirely independent. You will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to the standby (now primary). To manage replicated jobs on the promoted standby, refer to [Job management](#job-management).
 
-To enable PCR again, from the new primary to the original primary (or a completely different cluster), refer to [Cut back to the primary cluster](#cut-back-to-the-original-primary-cluster).
+To enable PCR again, from the new primary to the original primary (or a completely different cluster), refer to [Fail back to the primary cluster](#fail-back-to-the-original-primary-cluster).
 
-## Cutback
+## Failback
 
-After cutting over to the standby cluster, you may need to cut back to the original primary-standby cluster setup cluster to serve your application. Depending on the configuration of the primary cluster in the original PCR stream, use one of the following workflows:
+After failing over to the standby cluster, you may need to fail back to the original primary-standby cluster setup cluster to serve your application. Depending on the configuration of the primary cluster in the original PCR stream, use one of the following workflows:
 
-- [From the original standby cluster (after it was promoted during cutover) to the original primary cluster](#cut-back-to-the-original-primary-cluster).
-- [After the PCR stream used an existing cluster as the primary cluster](#cut-back-after-pcr-from-an-existing-cluster).
+- [From the original standby cluster (after it was promoted during failover) to the original primary cluster](#fail-back-to-the-original-primary-cluster). If this failback is initiated within 24 hours of the failover, PCR replicates the net-new changes from the standby cluster to the primary cluster, rather than fully replacing the existing data in the primary cluster.
+- [After the PCR stream used an existing cluster as the primary cluster](#fail-back-after-replicating-from-an-existing-primary-cluster).
 
 {{site.data.alerts.callout_info}}
 To move back to a different cluster that was not involved in the original PCR stream, set up a new PCR stream following the PCR [setup]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) guide.
 {{site.data.alerts.end}}
 
-### Cut back to the original primary cluster
+### Fail back to the original primary cluster
 
-This section illustrates the steps to cut back to the original primary cluster from the promoted standby cluster that is currently serving traffic.
+This section illustrates the steps to fail back to the original primary cluster from the promoted standby cluster that is currently serving traffic.
 
 - **Cluster A** = original primary cluster
 - **Cluster B** = original standby cluster
 
-**Cluster B** is serving application traffic after the [cutover](#step-2-complete-the-cutover).
+**Cluster B** is serving application traffic after the [failover](#step-2-complete-the-failover).
 
-1. To begin the cutback to **Cluster A**, the virtual cluster must first stop accepting connections. Connect to the system virtual on **Cluster A**:
+1. To begin the failback to **Cluster A**, the virtual cluster must first stop accepting connections. Connect to the system virtual on **Cluster A**:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -268,7 +271,7 @@ This section illustrates the steps to cut back to the original primary cluster f
       (2 rows)
     ~~~
 
-1. From **Cluster A**, start the cutover:
+1. From **Cluster A**, start the failover:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -279,10 +282,10 @@ This section illustrates the steps to cut back to the original primary cluster f
     {% include {{ page.version.version }}/physical-replication/fast-cutback-latest-timestamp.md %}
     {{site.data.alerts.end}}
 
-    The `cutover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any replicated data above this timestamp to ensure that the standby is consistent with the primary at that timestamp:
+    The `failover_time` is the timestamp at which the replicated data is consistent. The cluster will revert any replicated data above this timestamp to ensure that the standby is consistent with the primary at that timestamp:
 
     ~~~
-               cutover_time
+               failover_time
     ----------------------------------
       1714497890000000000.0000000000
     (1 row)
@@ -304,11 +307,11 @@ This section illustrates the steps to cut back to the original primary cluster f
 
 At this point, **Cluster A** is once again the primary and **Cluster B** is once again the standby. The clusters are entirely independent. To direct application traffic to the primary (**Cluster A**), you will need to use your own network load balancers, DNS servers, or other network configuration to direct application traffic to **Cluster A**. To enable PCR again, from the primary to the standby (or a completely different cluster), refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 
-### Cut back after PCR from an existing cluster
+### Fail back after replicating from an existing primary cluster
 
 {% include_cached new-in.html version="v24.1" %} You can replicate data from an existing CockroachDB cluster that does not have [cluster virtualization]({% link {{ page.version.version }}/cluster-virtualization-overview.md %}) enabled to a standby cluster with cluster virtualization enabled. For instructions on setting up PCR in this way, refer to [Set up PCR from an existing cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#set-up-pcr-from-an-existing-cluster).
 
-After a [cutover](#cutover) to the standby cluster, you may want to then set up PCR from the original standby cluster, which is now the primary, to another cluster, which will become the standby. There are couple of ways to set up a new standby, and some considerations.
+After a [failover](#failover) to the standby cluster, you may want to set up PCR from the original standby cluster, which is now the primary, to another cluster, which will become the standby. There are multiple ways to set up a new standby, and some considerations.
 
 In the example, the clusters are named for reference:
 
@@ -316,7 +319,7 @@ In the example, the clusters are named for reference:
 - **B** = The original standby cluster, which started with virtualization.
 
 1. You run PCR from cluster **A** to cluster **B**.
-1. You initiate a cutover from cluster **A** to cluster **B**.
+1. You initiate a failover from cluster **A** to cluster **B**.
 1. You promote the `main` virtual cluster on cluster **B** and start serving application traffic from **B** (that acts as the primary).
 1. You need to create a standby cluster for cluster **B** to replicate changes to. You can do one of the following:
     - [Create a new virtual cluster]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#step-4-start-replication) (`main`) on cluster **A** from the replication of cluster **B**. Cluster **A** is now virtualized. This will start an initial scan because the PCR stream will ignore the former workload tables in the system virtual cluster that were [originally replicated to **B**]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}#set-up-pcr-from-an-existing-cluster). You can [drop the tables]({% link {{ page.version.version }}/drop-table.md %}) that were in the system virtual cluster, because the new virtual cluster will now hold the workload replicating from cluster **B**.
@@ -324,22 +327,22 @@ In the example, the clusters are named for reference:
 
 ## Job management
 
-During a replication stream, jobs running on the primary cluster will replicate to the standby cluster. Once you have [completed a cutover](#step-2-complete-the-cutover) (or a [cutback](#cut-back-to-the-original-primary-cluster)), refer to the following sections for details on resuming jobs on the promoted cluster.
+During a replication stream, jobs running on the primary cluster will replicate to the standby cluster. Once you have [completed a failover](#step-2-complete-the-failover) (or a [failback](#fail-back-to-the-original-primary-cluster)), refer to the following sections for details on resuming jobs on the promoted cluster.
 
 ### Backup schedules
 
-[Backup schedules]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}) will pause after cutover on the promoted cluster. Take the following steps to resume jobs:
+[Backup schedules]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}) will pause after failover on the promoted cluster. Take the following steps to resume jobs:
 
 1. Verify that there are no other schedules running backups to the same [collection of backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#backup-collections), i.e., the schedule that was running on the original primary cluster.
 1. Resume the backup schedule on the promoted cluster.
 
 {{site.data.alerts.callout_info}}
-If your backup schedule was created on a cluster in v23.1 or earlier, it will **not** pause automatically on the promoted cluster after cutover. In this case, you must pause the schedule manually on the promoted cluster and then take the outlined steps.
+If your backup schedule was created on a cluster in v23.1 or earlier, it will **not** pause automatically on the promoted cluster after failover. In this case, you must pause the schedule manually on the promoted cluster and then take the outlined steps.
 {{site.data.alerts.end}}
 
 ### Changefeeds
 
-[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will fail on the promoted cluster immediately after cutover to avoid two clusters running the same changefeed to one sink. We recommend that you recreate changefeeds on the promoted cluster.
+[Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) will fail on the promoted cluster immediately after failover to avoid two clusters running the same changefeed to one sink. We recommend that you recreate changefeeds on the promoted cluster.
 
 [Scheduled changefeeds]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) will continue on the promoted cluster. You will need to manage [pausing]({% link {{ page.version.version }}/pause-schedules.md %}) or [canceling]({% link {{ page.version.version }}/drop-schedules.md %}) the schedule on the promoted standby cluster to avoid two clusters running the same changefeed to one sink.
 

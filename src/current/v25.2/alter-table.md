@@ -1314,6 +1314,12 @@ To ensure that the uniqueness constraint is enforced properly across regions whe
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
+<a name="modify-rbr-region-column"></a>
+
+#### Modify the region column or its expression
+
+{% include {{ page.version.version }}/sql/modify-region-column-or-its-expression.md %}
+
 #### Using `DEFAULT gen_random_uuid()` in `REGIONAL BY ROW` tables
 
 To auto-generate unique row identifiers in `REGIONAL BY ROW` tables, use the [`UUID`]({% link {{ page.version.version }}/uuid.md %}) column with the `gen_random_uuid()` [function]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions) as the [default value]({% link {{ page.version.version }}/default-value.md %}):

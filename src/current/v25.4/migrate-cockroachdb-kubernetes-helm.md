@@ -27,6 +27,8 @@ This migration can be completed without affecting cluster availability, and pres
 
 {{site.data.alerts.callout_danger}}
 Commands that use RPCs (such as `cockroach node drain` and `cockroach node decommission`) will be unavailable until the public service is updated in step 4. The {{ site.data.products.cockroachdb-operator }} uses a different port than StatefulSets for RPC services, causing these commands to fail for a limited time.
+
+The {{ site.data.products.cockroachdb-operator }} does not support custom store directories for [WAL failover]({% link {{ page.version.version }}/wal-failover.md %}). If the existing Helm deployment uses custom store directories, they must be reconfigured to use the default directories prior to beginning migration.
 {{site.data.alerts.end}}
 
 ## Step 1. Prepare the migration helper
