@@ -1,6 +1,6 @@
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachDB {{ site.data.products.serverless }}</button>
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachDB {{ site.data.products.basic }}</button>
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
@@ -9,7 +9,7 @@
 
 <h3>Choose your installation method</h3>
 
-You can create a CockroachDB {{ site.data.products.serverless }} cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or <code>ccloud</code>, a command-line interface (CLI) tool.
+You can create a CockroachDB {{ site.data.products.basic }} cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or <code>ccloud</code>, a command-line interface (CLI) tool.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="console">Use the Cloud Console (GUI)<strong></strong></button>
@@ -45,7 +45,7 @@ The connection string is pre-populated with your username, password, cluster nam
 
 <div class="filter-content" markdown="1" data-scope="ccloud">
 
-Follow these steps to create a CockroachDB {{ site.data.products.serverless }} cluster using the <code>ccloud</code> CLI tool.
+Follow these steps to create a CockroachDB {{ site.data.products.basic }} cluster using the <code>ccloud</code> CLI tool.
 
 {{site.data.alerts.callout_info}}
 The <code>ccloud</code> CLI tool is in Preview.
