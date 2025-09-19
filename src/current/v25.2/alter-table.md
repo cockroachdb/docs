@@ -65,6 +65,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`SET {storage parameter}`](#set-storage-parameter) | Set a storage parameter on a table. | Yes
 [`SET LOCALITY`](#set-locality) |  Set the table locality for a table in a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}). | No
 [`SET SCHEMA`](#set-schema) |  Change the [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}) of a table. | No
+[`SCATTER`](#scatter) | Makes a best-effort attempt to redistribute replicas and leaseholders for the ranges of a table or index. Note that it does not return an error even if replicas are not moved. | No
 [`SPLIT AT`](#split-at) | Force a [range split]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits) at the specified row in the table. | No
 [`UNSPLIT AT`](#unsplit-at) | Remove a range split enforcement in the table. | No
 [`VALIDATE CONSTRAINT`](#validate-constraint) | Check whether values in a column match a [constraint]({% link {{ page.version.version }}/constraints.md %}) on the column. | Yes
@@ -599,6 +600,32 @@ The user must have the `DROP` [privilege]({% link {{ page.version.version }}/sec
 Parameter | Description |
 ----------|-------------|
 `schema_name` | The name of the new schema for the table.
+
+For usage, see [Synopsis](#synopsis).
+
+### `SCATTER`
+
+`ALTER TABLE ... SCATTER` runs a specified set of ranges for a table or index through the [replication layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}) queue. If many ranges have been created recently, the replication queue may transfer some leases to other replicas to balance load across the cluster.
+
+Note that this statement makes a best-effort attempt to redistribute replicas and leaseholders for the ranges of an index. It does not return an error even if replicas are not moved.
+
+{{site.data.alerts.callout_info}}
+`SCATTER` has the potential to result in data movement proportional to the size of the table or index being scattered, thus taking additional time and resources to complete.
+{{site.data.alerts.end}}
+
+For examples, see [Scatter tables](#scatter-tables).
+
+#### Required privileges
+
+The user must have the `INSERT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the table or index.
+
+#### Parameters
+
+Parameter | Description
+----------|-------------
+`table_name` | The name of the table that you want to scatter.
+`table_index_name` | The name of the index that you want to scatter.
+`expr_list` | A list of [scalar expressions]({% link {{ page.version.version }}/scalar-expressions.md %}) in the form of the primary key of the table or the specified index.
 
 For usage, see [Synopsis](#synopsis).
 
@@ -2831,6 +2858,57 @@ Then, change the table's schema:
   public         | vehicle_location_histories | table |                1000
   public         | vehicles                   | table |                  15
 (6 rows)
+~~~
+
+### Scatter tables
+
+Before scattering, you can view the current replica and leaseholder distribution for a table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH range_details AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
+~~~
+
+~~~
+  range_id | lease_holder | replicas
+-----------+--------------+-----------
+        94 |            2 | {2,5,9}
+        78 |            3 | {3,5,9}
+        77 |            2 | {2,4,9}
+        76 |            3 | {3,6,9}
+        95 |            3 | {3,5,9}
+        75 |            2 | {2,5,8}
+        87 |            4 | {2,4,7}
+        85 |            2 | {2,5,9}
+        86 |            7 | {3,4,7}
+(9 rows)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE movr.users SCATTER;
+~~~
+
+After scattering, recheck the leaseholder distribution:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH range_details AS (SHOW RANGES FROM TABLE movr.users WITH DETAILS) SELECT range_id, lease_holder, replicas from range_details;
+~~~
+
+~~~
+  range_id | lease_holder | replicas
+-----------+--------------+-----------
+        94 |            5 | {2,5,8}
+        78 |            1 | {1,5,9}
+        77 |            1 | {1,4,9}
+        76 |            1 | {1,6,9}
+        95 |            1 | {1,5,9}
+        75 |            1 | {1,5,8}
+        87 |            7 | {2,4,7}
+        85 |            1 | {1,5,9}
+        86 |            3 | {3,4,7}
+(9 rows)
 ~~~
 
 ### Split and unsplit tables
