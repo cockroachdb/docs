@@ -231,6 +231,10 @@ cockroach userfile delete bank-backup --url {CONNECTION STRING}
 
 If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection]({% link {{site.current_cloud_version}}/configure-replication-zones.md %}#gc-ttlseconds) to be removed from disk.
 
+### Back up a CockroachDB {{ site.data.products.cloud }} cluster and restore into a new cluster
+
+{% include cockroachcloud/backup-restore-into-new-cluster.md %}
+
 ### Back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ site.data.products.cloud }} cluster
 
 To back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ site.data.products.cloud }} cluster:
@@ -257,30 +261,27 @@ To back up a self-hosted CockroachDB cluster and restore into a CockroachDB {{ s
     {% include cockroachcloud/sql-connection-string.md %}
 
 
-1. [Restore](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/restore) to your CockroachDB {{ site.data.products.cloud }} cluster.
+1. [Restore]({% link {{site.current_cloud_version}}/restore.md %}) to your CockroachDB {{ site.data.products.cloud }} cluster.
 
-    Use `SHOW BACKUPS` with your external location to find the backup's subdirectory:
+    a. Use `SHOW BACKUPS` with your external location to find the backup's subdirectory:
+      {% include_cached copy-clipboard.html %}
+      ~~~ sql
+      SHOW BACKUPS IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+      ~~~
+      ~~~
+              path
+      ------------------------
+      2021/03/23-213101.37
+      2021/03/24-172553.85
+      2021/03/24-210532.53
+      (3 rows)
+      ~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SHOW BACKUPS IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
-    ~~~
-
-    ~~~
-            path
-    ------------------------
-    2021/03/23-213101.37
-    2021/03/24-172553.85
-    2021/03/24-210532.53
-    (3 rows)
-    ~~~
-
-    Use the subdirectory to specify the backup to restore:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
-    ~~~
+    b. Use the subdirectory to specify the backup to restore:
+      {% include_cached copy-clipboard.html %}
+      ~~~ sql
+      RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+      ~~~
 
 ## See also
 
