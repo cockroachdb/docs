@@ -30,7 +30,7 @@ For includes that are used in the Cloud product:
 {% include cockroachcloud/metrics-time-interval-selection.md %}
 ```
 
-For includes that are used in a specific version:
+For includes that we can assume only apply to specific versions, though in some cases, their content may be identical across all versions where the file exists:
 
 ```
 {% include {{page.version.version}}/misc/cert-auth-using-x509-subject.md %}
