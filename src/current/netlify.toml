@@ -1,18 +1,16 @@
-# TESTING CONFIGURATION - RETRY TESTING
-# This file contains retry testing configuration with intentional failures
-
 [build]
   base = "src/current/"
   publish = "_site/"
-  command = "./netlify/build-test.sh"
+  command = "./netlify/build.sh"
   edge_functions = "./netlify/edge-functions"
   [build.environment]
     NODE_VERSION = "18.14.0"
     RUBY_VERSION = "3.2.1"
-    # Enable retry testing with failures
-    NETLIFY_RETRY_TEST = "true"
     JEKYLL_REMOTE_INCLUDE_CACHE = "true"
     JEKYLL_REMOTE_INCLUDE_CACHE_TTL = "3600"
+    # Enable retry logic for production builds
+    MAX_RETRIES = "3"
+    BASE_RETRY_DELAY = "30"
   [build.processing.html]
     pretty_urls = true
 
@@ -27,8 +25,7 @@
       "_data/cached"
     ]
 
-# Note: Retry functionality implemented in build script with intentional failures
-# Using build script retry logic to test failure scenarios
+# Retry functionality implemented in build script for robust production builds
 
 [[edge_functions]]
   path = "/*"
