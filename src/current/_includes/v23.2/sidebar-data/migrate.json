@@ -63,6 +63,12 @@
           "urls": [
             "/molt/molt-verify.html"
           ]
+        },
+        {
+          "title": "Replicator",
+          "urls": [
+            "/molt/molt-replicator.html"
+          ]
         }
       ]
     },
