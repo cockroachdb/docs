@@ -16,6 +16,10 @@ To manage clusters and other resources in CockroachDB Cloud, you can also use th
 If you used the API to manage CockroachDB Serverless clusters that have been migrated to CockroachDB Basic, ensure your code is updated to work with CockroachDB Basic.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+The Cloud API is rate-limited to 10 requests per second per user. When a request exceeds this limit, it receives an HTTP response with the `Retry-After` header and a "rate limit exceeded" message.
+{{site.data.alerts.end}}
+
 ## Call the API
 
 The API uses [bearer token authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/), and each request requires a [secret key]({% link cockroachcloud/managing-access.md %}#api-access). The secret key is associated with a service account, and inherits the [permissions of the account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).

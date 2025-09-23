@@ -8,7 +8,7 @@ docs_area: manage
 [Kibana](https://www.elastic.co/kibana/) is a platform that visualizes data on the [Elastic Stack](https://www.elastic.co/elastic-stack/). This page shows how to use the [CockroachDB module for Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html) to collect metrics exposed by your CockroachDB {{ site.data.products.core }} cluster's [Prometheus endpoint]({% link {{ page.version.version }}/prometheus-endpoint.md %}) in Elasticsearch and how to visualize those metrics with Kibana.
 
 {{site.data.alerts.callout_success}}
-To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/export-metrics.md %}) instead of this page.
+To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics.md %}) instead of this page.
 {{site.data.alerts.end}}
 
 In this tutorial, you will enable the CockroachDB module for Metricbeat and visualize the data in Kibana.
