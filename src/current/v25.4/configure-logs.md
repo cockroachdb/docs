@@ -15,6 +15,12 @@ This page describes how to configure CockroachDB logs with the [`--log` or `log-
 
 For examples of how these settings can be used in practice, see [Logging Use Cases]({% link {{ page.version.version }}/logging-use-cases.md %}).
 
+{{site.data.alerts.callout_info}}
+In a future release, certain events will be directed to new [logging channels]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). For more details, refer to [`log.channel_compatibility_mode.enabled`]({% link {{ page.version.version }}/logging-overview.md %}#log-channel_compatibility_mode-enabled).
+
+To assess potential downstream impacts on your logging setup and pipelines, set the `log.channel_compatibility_mode.enabled` cluster setting to `false` in a non-production environment.
+{{site.data.alerts.end}}
+
 ## Flag
 
 To configure the logging behavior of a `cockroach` command, include one of these flags with the command:
@@ -854,6 +860,19 @@ sinks:
       buffering: NONE
     kv-distribution:
       channels: {INFO: [KV_DISTRIBUTION]}
+      dir: /cockroach-data/logs
+      max-file-size: 10MiB
+      max-group-size: 100MiB
+      file-permissions: "0640"
+      buffered-writes: true
+      filter: INFO
+      format: crdb-v2
+      redact: false
+      redactable: true
+      exit-on-error: true
+      buffering: NONE
+    kv-exec:
+      channels: {INFO: [KV_EXEC]}
       dir: /cockroach-data/logs
       max-file-size: 10MiB
       max-group-size: 100MiB
