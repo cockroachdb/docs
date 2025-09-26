@@ -1,7 +1,7 @@
 {% assign DEBUG=false %}
 
 {% comment %}Get the version of the page we are currently viewing{% endcomment %}
-{% assign version = site.data.versions | where_exp: "v", "v.major_version == page.version.version" | sort: "release_date" | first %}
+{% assign version = site.data.versions | where_exp: "v", "v.major_version == page.version.version" | sort: "release_date, release_name" | reverse | first %}
 {% unless version %}Error: Could not get version details for version {{ page.version.version }}. Giving up.{% break %}{% endunless %}
 
 {% comment %}Check whether the current page's version is released and if so, is LTS{% endcomment %}
@@ -46,7 +46,7 @@
             {% comment %}Only show versions that have releases{% endcomment %}
           {% assign v_is_lts = false %}
           {% comment %}Get major-version details for this version{% endcomment %}
-          {% assign major_version_details = site.data.versions | where_exp: "pv", "pv.major_version == v.version.version" | sort: "release_date" | first %}
+          {% assign major_version_details = site.data.versions | where_exp: "pv", "pv.major_version == v.version.version" | sort: "release_date, release_name" | reverse | first %}
           {% unless major_version_details %}Error: Could not get version details for version {{ v.version }}. Giving up.{% break %}{% endunless %}
 
           {% comment %}Check whether this version is released and if so, and is LTS{% endcomment %}
