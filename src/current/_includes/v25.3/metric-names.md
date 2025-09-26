@@ -48,14 +48,14 @@
                 - Else                           -> "self-hosted"
                 {%- endcomment -%}
     
-                {%- assign crdb_hit    = site.data[version].metrics.export.crdb_metrics.metrics[key] -%}
-                {%- assign shared_hit  = site.data[version].metrics.export.shared_metrics.metrics[key] -%}
-                {%- assign tenant_hit  = site.data[version].metrics.export.tenant_metrics.metrics[key] -%}
+                {%- assign crdb_match    = site.data[version].metrics.export.crdb_metrics.metrics[key] -%}
+                {%- assign shared_match  = site.data[version].metrics.export.shared_metrics.metrics[key] -%}
+                {%- assign tenant_match  = site.data[version].metrics.export.tenant_metrics.metrics[key] -%}
 
-                {%- if crdb_hit -%}Advanced/self-hosted
-                {%- elsif shared_hit -%}Standard/Advanced/self-hosted
-                {%- elsif tenant_hit -%}Standard/self-hosted
-                {%- else -%}self-hosted
+                {%- if crdb_match -%}{{ site.data.products.advanced }}/{{ site.data.products.core }}
+                {%- elsif shared_match -%}{{ site.data.products.standard }}/{{ site.data.products.advanced }}/{{ site.data.products.core }}
+                {%- elsif tenant_match -%}{{ site.data.products.standard }}/{{ site.data.products.core }}
+                {%- else -%}{{ site.data.products.core }}
                 {%- endif -%}
             </td>
             {%- endif -%}{% comment %} page.name {% endcomment %}
