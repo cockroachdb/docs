@@ -199,12 +199,12 @@ server/server.go:1423 ⋮ password of user ‹×› was set to ‹×›
 
 #### Cluster settings redaction
 
-Example of a cluster setting in `crdb_internal.cluster_settings.txt` without redaction enabled:
+Example of a non-reportable cluster setting in `crdb_internal.cluster_settings.txt` without redaction enabled:
 
 ~~~
-variable	value	type	public	sensitive	reportable	description	default_value	origin
+variable             value                  type public sensitive reportable description       default_value origin
 ...
-cluster.organization	Cockroach Labs Testing	s	t	f	f	organization name		override
+cluster.organization Cockroach Labs Testing s    t      f         f          organization name               override
 ~~~
 
 Enable log redaction:
@@ -214,10 +214,12 @@ Enable log redaction:
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --redact --insecure --host=200.100.50.25
 ~~~
 
+A non-reportable cluster setting in `crdb_internal.cluster_settings.txt` with redaction enabled:
+
 ~~~
-variable	value	type	public	sensitive	reportable	description	default_value	origin
+variable             value      type public sensitive reportable description       default_value origin
 ...
-cluster.organization	<redacted>	s	t	f	f	organization name		override
+cluster.organization <redacted> s    t      f         f          organization name               override
 ~~~
 
 #### Hostname and IP address redaction
