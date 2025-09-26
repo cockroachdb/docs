@@ -9,7 +9,7 @@ docs_area: reference.sql
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-The `ALTER VIRTUAL CLUSTER` statement initiates a [_cutover_](#start-the-cutover-process) or [_cutback_](#start-the-cutback-process) in a [**physical cluster replication (PCR)** job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) and manages a virtual cluster.
+The `ALTER VIRTUAL CLUSTER` statement initiates a [_failover_](#start-the-failover-process) or [_failback_](#start-the-failback-process) in a [**physical cluster replication (PCR)** job]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}) and manages a virtual cluster.
 
 {% include {{ page.version.version }}/physical-replication/phys-rep-sql-pages.md %}
 
@@ -40,9 +40,9 @@ Parameter | Description
 `virtual_cluster_spec` | The virtual cluster's name.
 `PAUSE REPLICATION` | Pause the replication stream.
 `RESUME REPLICATION` | Resume the replication stream.
-`COMPLETE REPLICATION TO` | Set the time to complete the replication. Use: <br><ul><li>`SYSTEM TIME` to specify a [timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}). Refer to [Cut over to a point in time]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-a-point-in-time) for an example.</li><li>`LATEST` to specify the most recent replicated timestamp. Refer to [Cut over to a point in time]({% link {{ page.version.version }}/cutover-replication.md %}#cut-over-to-the-most-recent-replicated-time) for an example.</li></ul>
-`START REPLICATION OF virtual_cluster_spec ON physical_cluster` | Reset a virtual cluster to the time when the virtual cluster on the promoted standby diverged from it. To reuse as much of the existing data on the original primary cluster as possible, you can run this statement as part of the [cutback]({% link {{ page.version.version }}/cutover-replication.md %}#cutback) process. This command fails if the virtual cluster was not originally replicated from the original primary cluster.
-`START SERVICE SHARED` | Start a virtual cluster so it is ready to accept SQL connections after cutover.
+`COMPLETE REPLICATION TO` | Set the time to complete the replication. Use: <br><ul><li>`SYSTEM TIME` to specify a [timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}). Refer to [Fail over to a point in time]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-a-point-in-time) for an example.</li><li>`LATEST` to specify the most recent replicated timestamp. Refer to [Fail over to a point in time]({% link {{ page.version.version }}/failover-replication.md %}#fail-over-to-the-most-recent-replicated-time) for an example.</li></ul>
+`START REPLICATION OF virtual_cluster_spec ON physical_cluster` | Reset a virtual cluster to the time when the virtual cluster on the promoted standby diverged from it. To reuse as much of the existing data on the original primary cluster as possible, you can run this statement as part of the [failback]({% link {{ page.version.version }}/failover-replication.md %}#failback) process. This command fails if the virtual cluster was not originally replicated from the original primary cluster.
+`START SERVICE SHARED` | Start a virtual cluster so it is ready to accept SQL connections after failover.
 `RENAME TO virtual_cluster_spec` | Rename a virtual cluster.
 `STOP SERVICE` | Stop the `shared` service for a virtual cluster. The virtual cluster's `data_state` will still be `ready` so that the service can be restarted.
 `GRANT ALL CAPABILITIES` | Grant a virtual cluster all [capabilities]({% link {{ page.version.version }}/create-virtual-cluster.md %}#capabilities).
@@ -52,13 +52,13 @@ Parameter | Description
 
 ## Examples
 
-### Start the cutover process
+### Start the failover process
 
-To start the [cutover]({% link {{ page.version.version }}/cutover-replication.md %}) process, use `COMPLETE REPLICATION` and provide the timestamp to restore as of:
+To start the [failover]({% link {{ page.version.version }}/failover-replication.md %}) process, use `COMPLETE REPLICATION` and provide the timestamp to restore as of:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO {cutover time specification};
+ALTER VIRTUAL CLUSTER main COMPLETE REPLICATION TO {failover time specification};
 ~~~
 
 You can use either:
@@ -66,7 +66,7 @@ You can use either:
 - `SYSTEM TIME` to specify a [timestamp]({% link {{ page.version.version }}/as-of-system-time.md %}).
 - `LATEST` to specify the most recent replicated timestamp.
 
-When a virtual cluster is [`ready`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) after initiating the cutover process, you must start the service so that the virtual cluster is ready to accept SQL connections:
+When a virtual cluster is [`ready`]({% link {{ page.version.version }}/show-virtual-cluster.md %}#responses) after initiating the failover process, you must start the service so that the virtual cluster is ready to accept SQL connections:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -80,19 +80,19 @@ To stop the `shared` service for a virtual cluster and prevent it from accepting
 ALTER VIRTUAL CLUSTER main STOP SERVICE;
 ~~~
 
-### Start the cutback process
+### Start the failback process
 
-To [cut back]({% link {{ page.version.version }}/cutover-replication.md %}#cutback) to a cluster that was previously the primary cluster, use the `ALTER VIRTUAL CLUSTER` syntax:
+To [fail back]({% link {{ page.version.version }}/failover-replication.md %}#failback) to a cluster that was previously the primary cluster, use the `ALTER VIRTUAL CLUSTER` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER VIRTUAL CLUSTER {original_primary_vc} START REPLICATION OF {promoted_standby_vc} ON {connection_string_standby};
 ~~~
 
-The original primary virtual cluster may be almost up to date with the promoted standby's virtual cluster. The difference in data between the two virtual clusters will include only the writes that have been applied to the promoted standby after cutover from the primary cluster.
+The original primary virtual cluster may be almost up to date with the promoted standby's virtual cluster. The difference in data between the two virtual clusters will include only the writes that have been applied to the promoted standby after failover from the primary cluster.
 
 {{site.data.alerts.callout_info}}
-If you started the original PCR stream on an existing cluster without virtualization enabled, refer to the [Cut back after PCR from an existing cluster]({% link {{ page.version.version }}/cutover-replication.md %}) section for instructions.
+If you started the original PCR stream on an existing cluster without virtualization enabled, refer to the [Fail back after PCR from an existing cluster]({% link {{ page.version.version }}/failover-replication.md %}) section for instructions.
 {{site.data.alerts.end}}
 
 ## See also

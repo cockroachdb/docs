@@ -43,7 +43,7 @@ Complete the following items before using MOLT Fetch:
 
 		{% include_cached copy-clipboard.html %}
 		~~~ shell
-		molt escape-password 'a$52&'
+		molt escape-password --password 'a$52&'
 		~~~
 
 		Substitute the following encoded password in your original connection url string:
@@ -416,7 +416,7 @@ Before using `failback` mode, refer to the [technical advisory]({% link advisori
 
 If you encounter issues after moving data to CockroachDB, you can use `failback` mode to replicate changes on CockroachDB back to the initial source database. In case you need to roll back the migration, this ensures that data is consistent on the initial source database.
 
-`failback` mode creates a [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) and sets up a [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) to pass change events from CockroachDB to the failback target. In production, you should **secure the connection** by specifying [changefeed override settings](#changefeed-override-settings) in a JSON file. These settings override the [default insecure changefeed]#default-insecure-changefeed] values, which are suited for testing only. Include the [`--changefeeds-path`](#global-flags) flag to indicate the path to the JSON file.
+`failback` mode creates a [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) and sets up a [webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink) to pass change events from CockroachDB to the failback target. In production, you should **secure the connection** by specifying [changefeed override settings](#changefeed-override-settings) in a JSON file. These settings override the [default insecure changefeed](#default-insecure-changefeed) values, which are suited for testing only. Include the [`--changefeeds-path`](#global-flags) flag to indicate the path to the JSON file.
 
 {% include_cached copy-clipboard.html %}
 ~~~
