@@ -127,6 +127,11 @@ To emit a trace to the logs, the following conditions must be met:
 
 This approach minimizes overhead by tracing a fraction of the workload and emitting traces only for potentially relevant transactions.
 
+Additional [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) that control trace emission are:
+
+- `sql.trace.txn.include_internal.enabled`: Enables inclusion of internal transactions in probabilistic transaction tracing and latency-based logging. This setting is enabled by default. Set this to `false` to omit internal transactions and reduce noise when debugging user workloads.
+- `sql.trace.txn.jaeger_json_output.enabled`: Enables output of transaction traces in Jaeger-compatible JSON format for easier ingestion by observability tools. This setting is disabled by default.
+
 #### Trace configuration example
 
 To configure the trace sampling probability and duration, set the following cluster settings:
