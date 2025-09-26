@@ -130,19 +130,18 @@ docs_area: search
   // Create the render function
   const renderHits = (renderOptions, isFirstRender) => {
     const { hits, widgetParams } = renderOptions;
-    var div = $("<div/>");
     let results = "";
     if (hits.length) {
       results = hits
-        .map(
-          hit =>
-            `<div class="search-item">
-          <div class="search-title">
-            <a href="${hit.url}">${hit.title}</a>
-          </div>
-          <div class="search-snippet">${showResult(hit._highlightResult)}</div>
-          <div class="search-link">${hit.doc_type}</div>
-        </div>`
+        .filter(hit => !hit.url.includes("/v23.1/")) // Filter out hits with '/v23.1/' in their URL
+        .map(hit =>
+          `<div class="search-item">
+            <div class="search-title">
+              <a href="${hit.url}">${hit.title}</a>
+            </div>
+            <div class="search-snippet">${showResult(hit._highlightResult)}</div>
+            <div class="search-link">${hit.doc_type}</div>
+          </div>`
         )
         .join("");
     } else {
