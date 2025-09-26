@@ -65,7 +65,7 @@ If the trial ends and a payment method has not been provided, a 30 day grace per
 The cluster will be fully restored if a payment method is added. Any charges accrued during the grace period will be billed to the payment method.
 
 {{site.data.alerts.callout_danger}}
-If the end of the grace period is reached and no payment method has been added, all clusters in the organization are deleted.
+If the end of the grace period is reached and no payment method has been added, all clusters in the organization are deleted. Deleted clusters can not be restored.
 {{site.data.alerts.end}}
 
 ## Get started

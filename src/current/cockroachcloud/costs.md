@@ -309,6 +309,10 @@ In CockroachDB {{ site.data.products.advanced }}, CDC is billed monthly based on
 
 </section>
 
+## Non-payment
+
+{% include cockroachcloud/non-payment.md %}
+
 ## Learn more
 
 - [Plan a CockroachDB {{ site.data.products.basic }} cluster]({% link cockroachcloud/plan-your-cluster-basic.md %})
