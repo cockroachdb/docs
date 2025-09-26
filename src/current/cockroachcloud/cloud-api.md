@@ -668,7 +668,9 @@ To delete a cluster, send a `DELETE` request to the `/v1/clusters/{cluster_id}` 
 The service account associated with the secret key must have the Cluster Admin or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
-Sending a `DELETE` request permanently deletes the cluster and all the data within the cluster.
+{{site.data.alerts.callout_danger}}
+Sending a `DELETE` request permanently deletes the cluster and all the data within the cluster. Deleted clusters can not be restored.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
