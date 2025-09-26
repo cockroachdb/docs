@@ -88,34 +88,51 @@ const (
 	docsPrsTeam      = "docs-prs"
 )
 
+// docsPrsBypass is a small set of usernames/bots who
+// should be treated as if they're docs-prs members.
+var docsPrsBypass = map[string]struct{}{
+    "release-notes-automation[bot]": {},
+}
+
 func main() {
-	params, err := defaultEnvParameters()
-	if err != nil {
-		log.Fatalf("error: %v\n", err)
-	}
-	docsPrsMembers, err := searchDocsPrsTeamMembers(params.Token)
-	if err != nil {
-		log.Fatalf("error: %v\n", err)
-	}
-	_, authorIsDocsPrsMember := docsPrsMembers[params.PrAuthor]
-	if authorIsDocsPrsMember {
-		fmt.Printf(`User "%s" is a member of docs-prs, so no docs-prs approval required.`, params.PrAuthor)
-		os.Exit(0)
-	}
-	fmt.Printf(`User "%s" is not a member of docs-prs. Checking for docs-prs team approval...\n`, params.PrAuthor)
+    params, err := defaultEnvParameters()
+    if err != nil {
+        log.Fatalf("error: %v\n", err)
+    }
 
-	prReviews, err := searchDocsPrReviewers(params.Token, params.PrNumber)
-	if err != nil {
-		log.Fatalf("error: %v\n", err)
-	}
+    // 1. Gather docs-prs members from GitHub.
+    docsPrsMembers, err := searchDocsPrsTeamMembers(params.Token)
+    if err != nil {
+        log.Fatalf("error: %v\n", err)
+    }
 
-	isReviewed := parseDocsPrReviewers(prReviews, docsPrsMembers)
-	if isReviewed {
-		fmt.Println("This PR has been approved by a member of docs-prs. You are ready to merge!")
-		os.Exit(0)
-	}
-	log.Fatalln("error: You need approval from a member of docs-prs to merge this PR. Please add the group or at least one member of the group as a reviewer to this PR.")
+    // 2. Is the author a docs-prs member?
+    _, authorIsDocsPrsMember := docsPrsMembers[params.PrAuthor]
 
+    // 3. Is the author in our bypass list (e.g., "release-notes-automation[bot]" )?
+    _, authorIsInBypass := docsPrsBypass[params.PrAuthor]
+
+    // 4. If the author is in docs-prs OR in the bypass map, skip approval check.
+    if authorIsDocsPrsMember || authorIsInBypass {
+        fmt.Printf(`User "%s" is either a member of docs-prs or on the bypass list, so no docs-prs approval required.`, params.PrAuthor)
+        os.Exit(0)
+    }
+
+    // 5. Otherwise, proceed with the normal logic.
+    fmt.Printf(`User "%s" is not a member of docs-prs. Checking for docs-prs team approval...\n`, params.PrAuthor)
+
+    prReviews, err := searchDocsPrReviewers(params.Token, params.PrNumber)
+    if err != nil {
+        log.Fatalf("error: %v\n", err)
+    }
+
+    isReviewed := parseDocsPrReviewers(prReviews, docsPrsMembers)
+    if isReviewed {
+        fmt.Println("This PR has been approved by a member of docs-prs. You are ready to merge!")
+        os.Exit(0)
+    }
+    log.Fatalln("error: You need approval from a member of docs-prs to merge this PR. Please add the group or at least one member of the group as a reviewer to this PR.")
+	
 }
 
 func defaultEnvParameters() (parameters, error) {
