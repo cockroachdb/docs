@@ -273,7 +273,7 @@ Copy the output ready for [Step 4](#step-4-start-replication), which requires th
 
 The system virtual cluster in the standby cluster initializes and controls the replication stream by pulling from the primary cluster. In this section, you will connect to the primary from the standby to initiate the replication stream.
 
-1. From the **standby** cluster, use your connection string to the primary:
+1. In the SQL shell on the **standby** cluster, create an external connection using the primary cluster's connection string. Prefix the `postgresql://` scheme to the connection string and replace `{source}` with your external connection name:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
