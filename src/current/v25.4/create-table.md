@@ -863,6 +863,10 @@ For example:
 
 CockroachDB will then assign a region to each row, based on the value of the `region` column. In this example, the `region` column is computed from the value of the `city` column.
 
+#### Modify the region column or its expression
+
+{% include {{ page.version.version }}/sql/modify-region-column-or-its-expression.md %}
+
 ### Create a table with an identity column
 
  [Identity columns](#identity-columns) define a sequence from which to populate a column when a new row is inserted.
