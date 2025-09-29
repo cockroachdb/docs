@@ -81,6 +81,10 @@ fi
 echo "Starting Python Algolia indexing..."
 echo "Using wrapper script: algolia_indexing_wrapper.py"
 
+# Set state directory to writable workspace location
+export ALGOLIA_STATE_DIR="./algolia_state"
+mkdir -p "${ALGOLIA_STATE_DIR}"
+
 python3 algolia_indexing_wrapper.py
 if [[ $? != 0 ]]; then
   echo "Algolia indexing failed."
