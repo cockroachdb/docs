@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-CockroachDB {{ site.data.products.standard }}, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+CockroachDB {{ site.data.products.standard }} is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 This page describes how to change a cluster [plan]({% link cockroachcloud/index.md %}#plans) between CockroachDB {{ site.data.products.basic }} and CockroachDB {{ site.data.products.standard }} using the [{{ site.data.products.cloud }} Console](https://cockroachlabs.cloud/).
