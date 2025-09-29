@@ -280,7 +280,7 @@ The system virtual cluster in the standby cluster initializes and controls the r
     CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A';
     ~~~
 
-    If the primary and standby cluster nodes are on different networks, you can route the replication stream through the primary cluster's load balancer. Add `&crdb_route=gateway` to the connection URL:
+    If the primary and standby cluster nodes are on different networks, you can route the replication stream through the primary cluster's load balancer. Add `&crdb_route=gateway` to the connection string:
     
     {% include_cached copy-clipboard.html %}
     ~~~ sql
