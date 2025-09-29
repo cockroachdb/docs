@@ -275,48 +275,32 @@ The system virtual cluster in the standby cluster initializes and controls the r
 
 1. From the **standby** cluster, use your connection string to the primary:
 
-    If you generated the connection string using [`cockroach encode-uri`](#step-3-manage-cluster-certificates-and-generate-connection-strings):
-
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE VIRTUAL CLUSTER main
-    FROM REPLICATION OF main
-    ON 'postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A';
+    CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A';
     ~~~
 
-    Otherwise, pass the connection string that contains:
-    - The replication user and password that you [created for the primary cluster](#create-a-user-with-replication-privileges).
-    - The node IP address or hostname of one node from the primary cluster.
-    - The path to the primary node's certificate on the standby cluster.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    CREATE VIRTUAL CLUSTER main
-    FROM REPLICATION OF main
-    ON 'postgresql://{replication user}:{password}@{node IP or hostname}:{26257}?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt';
-    ~~~
-
-    If the standby and primary cluster's nodes are on different networks, you can route the replication stream through the primary cluster's load balancer. Add `&crdb_route=gateway` to the connection URL. For the `cockroach encode-uri` connection string:
+    If the primary and standby cluster nodes are on different networks, you can route the replication stream through the primary cluster's load balancer. Add `&crdb_route=gateway` to the connection URL:
     
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&crdb_route=gateway&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A';
     ~~~
 
-    For the manual connection string:
+    {{ site.data.alerts.callout_info }}
+    For an optimally performant replication stream, all nodes on the primary and standby clusters should share the same virtual network. The gateway route option should only be used when this network configuration is not possible due to firewall or IP allocation constraints.
+    {{ site.data.alerts.end }}
+
+    Once the external connection has been created, create the replication stream from the standby cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE VIRTUAL CLUSTER main
     FROM REPLICATION OF main
-    ON 'postgresql://{replication user}:{password}@{node IP or hostname}:{26257}?options=-ccluster=system&crdb_route=gateway&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt';
+    ON '{source}';
     ~~~
 
-    {{ site.data.alerts.callout_info }}
-    An optimal replication stream connects directly between nodes sharing the same virtual network. The gateway route option should only be used when this network configuration is not possible due to firewall or IP allocation constraints.
-    {{ site.data.alerts.end }}
-
-    Once the standby cluster has made a connection to the primary cluster, the standby will pull the topology of the primary cluster and will distribute the replication work across all nodes in the primary and standby.
+    Once the standby cluster has made a connection to the primary cluster, the standby pulls the topology of the primary cluster and distributes the replication work across all nodes in the primary and standby.
 
     {{site.data.alerts.callout_success}}
     You can also start a PCR stream that includes a read-only standby virtual cluster that allows you to read data on the standby cluster. For more details, refer to the [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}#start-a-pcr-stream-with-read-from-standby) page.

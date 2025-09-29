@@ -211,8 +211,10 @@ You can use the `cockroach encode-uri` command to generate a connection string c
     ~~~
 
     {{ site.data.alerts.callout_info }}
-    Ideally, LDR traffic should flow directly between nodes sharing the same virtual network. The gateway route option should only be used when this network configuration is not possible due to firewall or IP allocation constraints.
+    For optimal performance, all nodes on the source and destination clusters should share the same virtual network. The gateway route option should only be used when this network configuration is not possible due to firewall or IP allocation constraints.
     {{ site.data.alerts.end }}
+
+Once the source cluster has made a connection to the destination cluster, the destination cluster pulls the topology of the source cluster and distributes the replication work across all nodes in the source and destination.
 
 ### (Optional) Bidirectional: Create the connection for LDR stream 2
 
