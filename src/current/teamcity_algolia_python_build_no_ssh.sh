@@ -77,6 +77,13 @@ else
   echo "Warning: _site/docs/404.html not found"
 fi
 
+# Install Python dependencies
+echo "Installing Python dependencies..."
+pip3 install --user pyyaml algoliasearch beautifulsoup4 lxml || {
+    echo "Warning: pip3 install failed, trying with python3 -m pip"
+    python3 -m pip install --user pyyaml algoliasearch beautifulsoup4 lxml
+}
+
 # Run Python Algolia indexing
 echo "Starting Python Algolia indexing..."
 echo "Using wrapper script: algolia_indexing_wrapper.py"
