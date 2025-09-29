@@ -88,9 +88,9 @@ if ! command -v pip3 >/dev/null 2>&1 && ! python3 -m pip --version >/dev/null 2>
 fi
 
 # Install required packages
-pip3 install --user pyyaml algoliasearch beautifulsoup4 lxml || {
+pip3 install --user pyyaml algoliasearch beautifulsoup4 lxml tqdm || {
     echo "Warning: pip3 install failed, trying with python3 -m pip"
-    python3 -m pip install --user pyyaml algoliasearch beautifulsoup4 lxml
+    python3 -m pip install --user pyyaml algoliasearch beautifulsoup4 lxml tqdm
 }
 
 # Run Python Algolia indexing
