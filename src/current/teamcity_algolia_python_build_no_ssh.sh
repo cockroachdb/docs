@@ -79,6 +79,15 @@ fi
 
 # Install Python dependencies
 echo "Installing Python dependencies..."
+
+# First install pip if it doesn't exist
+if ! command -v pip3 >/dev/null 2>&1 && ! python3 -m pip --version >/dev/null 2>&1; then
+    echo "Installing pip..."
+    curl -s https://bootstrap.pypa.io/get-pip.py | python3 - --user
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
+# Install required packages
 pip3 install --user pyyaml algoliasearch beautifulsoup4 lxml || {
     echo "Warning: pip3 install failed, trying with python3 -m pip"
     python3 -m pip install --user pyyaml algoliasearch beautifulsoup4 lxml
