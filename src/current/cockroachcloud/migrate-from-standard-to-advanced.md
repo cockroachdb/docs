@@ -6,7 +6,7 @@ docs_area: migrate
 ---
 
 {{site.data.alerts.callout_info}}
-CockroachDB Standard, our new, enterprise-ready plan, is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
+CockroachDB Standard is currently in [Preview]({% link {{ site.current_cloud_version }}/cockroachdb-feature-availability.md %}).
 {{site.data.alerts.end}}
 
 This page has instructions for migrating data from a CockroachDB {{ site.data.products.standard }} cluster to a CockroachDB {{ site.data.products.advanced }} cluster, by exporting to CSV and using [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}). You may want to migrate to CockroachDB {{ site.data.products.advanced }} if you want a single-tenant cluster with no shared resources.
