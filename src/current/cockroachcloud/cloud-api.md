@@ -16,6 +16,10 @@ To manage clusters and other resources in CockroachDB Cloud, you can also use th
 If you used the API to manage CockroachDB Serverless clusters that have been migrated to CockroachDB Basic, ensure your code is updated to work with CockroachDB Basic.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+The Cloud API is rate-limited to 10 requests per second per user. When a request exceeds this limit, it receives an HTTP response with the `Retry-After` header and a "rate limit exceeded" message.
+{{site.data.alerts.end}}
+
 ## Call the API
 
 The API uses [bearer token authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/), and each request requires a [secret key]({% link cockroachcloud/managing-access.md %}#api-access). The secret key is associated with a service account, and inherits the [permissions of the account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
@@ -664,7 +668,9 @@ To delete a cluster, send a `DELETE` request to the `/v1/clusters/{cluster_id}` 
 The service account associated with the secret key must have the Cluster Admin or Cluster Creator [role]({% link cockroachcloud/authorization.md %}#organization-user-roles).
 {{site.data.alerts.end}}
 
-Sending a `DELETE` request permanently deletes the cluster and all the data within the cluster.
+{{site.data.alerts.callout_danger}}
+Sending a `DELETE` request permanently deletes the cluster and all the data within the cluster. Deleted clusters can not be restored.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

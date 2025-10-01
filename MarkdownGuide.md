@@ -4,6 +4,10 @@ This guide covers Markdown-specific syntax and formatting conventions used in Co
 
 ## Table of Contents
 
+- [Site structure](#site-structure)
+  - [Docs repository](#docs-repository)
+  - [Page headings](#page-headings)
+  - [Sidebar](#sidebar)
 - [Title](#title)
 - [Headings](#headings)
 - [Text formatting](#text-formatting)
@@ -30,7 +34,7 @@ This guide covers Markdown-specific syntax and formatting conventions used in Co
 - [Tables](#tables)
   - [Markdown tables](#markdown-tables)
   - [HTML tables](#html-tables)
-  - [Markdown vs HTML](#markdown-vs-html)
+  - [Markdown vs. HTML](#markdown-vs-html)
 - [Images](#images)
 - [Videos](#videos)
 - [Versioning](#versioning)
@@ -45,6 +49,87 @@ This guide covers Markdown-specific syntax and formatting conventions used in Co
   - [Linking into tabbed content](#linking-into-tabbed-content)
 - [Comments](#comments)
   - [TODOs](#todos)
+
+## Site structure
+
+### Docs repository
+
+Documentation for each CockroachDB version is organized in dedicated directories. For example, CockroachDB v23.1 docs are in `src/current/v23.1` and `src/current/_includes/v23.1`, while CockroachDB API docs are in `src/api`.
+
+Each page must be a `.md` file written in [Redcarpet](https://github.com/vmg/redcarpet) Markdown. Use lowercase file names with dashes between words.
+
+**Example:** `name-of-your-file.md`
+
+### Page headings
+
+All Markdown pages require YAML front matter:
+
+```yaml
+---
+title: Title of Page
+summary: Short description of page for SEO
+---
+```
+
+**Required fields:**
+
+Field | Description
+------|------------
+`title` | Page heading in title case
+`summary` | SEO meta description (50-160 characters)
+
+**Optional fields:**
+
+Field | Description | Default
+------|-------------|--------
+`toc` | Auto-generates page table of contents | `true`
+`toc_not_nested` | Limits TOC to h2 headers only | `false`
+`allowed_hashes` | URL hashes that don't correspond to headings | None
+`feedback` | Adds Yes/No feedback buttons | `true`
+`contribute` | Adds Contribute options | `true`
+`twitter` | Enables Twitter campaign tracking | `false`
+`no_sidebar` | Removes page sidebar | `false`
+`block_search` | Excludes page from search indexing | `false`
+`back_to_top` | Adds back-to-top button | `false`
+`docs_area` | Analytics area (for example, `get_started`, `reference.sql`) | None
+`product_area` | Product area for analytics | None
+
+### Sidebar
+
+Each CockroachDB version uses a JSON file to define sidebar navigation. The file is located at `_includes/vXX.Y/sidebar-data/{section}.json`.
+
+**JSON structure:**
+
+Field | Type | Description
+------|------|------------
+`title` | String | Section or page title in sidebar
+`items` | Array | Pages or subsections within a section
+`urls` | Array | Page URLs formatted as `/${VERSION}/<page-name>.html`
+
+**Example structure:**
+
+```json
+[
+  {
+    "title": "Get Started",
+    "items": [
+      {
+        "title": "Install CockroachDB",
+        "urls": ["/${VERSION}/install-cockroachdb.html"]
+      },
+      {
+        "title": "Start a Local Cluster",
+        "items": [
+          {
+            "title": "From Binary",
+            "urls": ["/${VERSION}/start-a-local-cluster.html"]
+          }
+        ]
+      }
+    ]
+  }
+]
+```
 
 ## Title
 
@@ -118,7 +203,7 @@ When linking to a versioned page from a Technical Advisory (in `advisories`), ha
 
 ### Custom anchor links
 
-To link to a specific location on a page that is not a heading (e.g., a specific command-line flag in a table), add a manual anchor and use the `id` parameter:
+To link to a specific location on a page that is not a heading (for example, a specific command-line flag in a table), add a manual anchor and use the `id` parameter:
 
 **Example:**
 
@@ -149,7 +234,7 @@ For websites that automatically localize pages, avoid using localization element
 
 ### Inline code
 
-Use inline code when referring to code, commands, or other technical syntax within a sentence. Inline `code` is surrounded by backticks (``).
+Use inline code when referring to code, commands, values, or other technical syntax within a sentence. Inline `code` is surrounded by backticks (``).
 
 **Example:** The `CREATE TABLE` statement creates a new table in a database.
 
@@ -213,28 +298,11 @@ Notes for usage:
 - **Copy to Clipboard** should be used for every code block that can be **executed**.
 - To render properly, there must be a line break above the `{% include_cached copy-clipboard.html %}` line.
 
-### Placeholders
-
-Code samples often include placeholder values, to be replaced by values specific to a user's environment. To denote that a value in a code sample is a placeholder value that should be replaced, use curly brackets (`{}`).
-
-For example: `SELECT * FROM TABLE {mytable};`. In this code sample, `{mytable}` would be replaced by some table name before the code could actually run.
-
-When you use placeholders, you usually need to define the value within the brackets, if the placeholder value isn't clear. Define placeholder values immediately following the code sample:
-
-- For a single placeholder value, use a follow-up sentence.
-- For multiple placeholder values, use a bulleted list.
-- For many placeholder values (10+), use a table.
-- For large code blocks, define the placeholder values inside the code block with an inline code comment.
-
-Ensure that placeholders are placed within backticks: `SET {session variable}`. This signifies that placeholder values are code.
-
-If the code sample is sensitive to curly bracket characters (e.g., JavaScript), you can use `<>` instead.
-
 ### Escaping special characters
 
 Sometimes you may need to escape special characters to achieve proper rendering:
 
-- **Jekyll-reserved characters** (e.g., double `{{ ... }}`) in code blocks: Wrap the specific line(s) with Liquid tags `{% raw %} ... {% endraw %}`.
+- **Jekyll-reserved characters** (for example, double `{{ ... }}`) in code blocks: Wrap the specific line(s) with Liquid tags `{% raw %} ... {% endraw %}`.
 
   ~~~markdown
   {% raw %}summary: Instance {{ $labels.instance }} has {{ $value }} tripped per-Replica circuit breakers{% endraw %}
@@ -257,7 +325,7 @@ Introduce a list with a sentence and a colon. Use periods at the end of list ite
 
 ### Ordered lists
 
-For each item of a **numbered list**, use `1.` followed by a period and a space, e.g., `1. This is a numbered list item`. The HTML renderer will render the steps in the correct order.
+For each item of a **numbered list**, use `1.` followed by a period and a space, for example, `1. This is a numbered list item`. The HTML renderer will render the steps in the correct order.
 
 ~~~markdown
 1. This is the first step.
@@ -267,7 +335,7 @@ For each item of a **numbered list**, use `1.` followed by a period and a space,
 
 ### Unordered lists
 
-For each item of a **bulleted list**, use one dash followed by one space, e.g., `- This is a bulleted list item`.
+For each item of a **bulleted list**, use one dash followed by one space, for example, `- This is a bulleted list item`.
 
 ~~~markdown
 - This is a bullet point.
@@ -343,7 +411,7 @@ Use tables to display structured information in an easy-to-read format. We use t
 
 ### Markdown tables
 
-If you can keep the table formatting simple (e.g., basic text formatting and using `<br>` tags for paragraph breaks), create a table using Markdown. This is the preferred table format.
+If you can keep the table formatting simple (for example, basic text formatting and using `<br>` tags for paragraph breaks), create a table using Markdown. This is the preferred table format.
 
 To create a table, use pipes (`|`) between columns and at least 3 dashes (`-`) separating the header cells from the body cells. A return denotes the start of the next row. The text within each column does not need to align in order to be rendered correctly, and you can inline Markdown or HTML.
 
@@ -390,11 +458,39 @@ You can use the following HTML formatting within an HTML table:
 - Paragraph breaks (`<p>`)
 - Lists (`<ol>` / `<ul>` / `<li>`)
 
-### Markdown vs HTML
+### Markdown vs. HTML
 
 - Prefer Markdown syntax over HTML when possible for better readability and maintainability.
 - Use HTML only when Markdown doesn't provide the necessary functionality.
 - When mixing Markdown and HTML, ensure proper spacing and formatting. Preview the rendered page locally.
+
+## Callouts
+
+CockroachDB docs use three classes of "callouts," which are highlighted blocks of text: tips, notes, and warnings.
+
+- To insert a **tip**, use the following code:
+
+  ~~~
+  {{site.data.alerts.callout_success}}
+  tip text goes here
+  {{site.data.alerts.end}}
+  ~~~
+
+- To insert a **note**, use the following code:
+
+  ~~~
+  {{site.data.alerts.callout_info}}
+  note text goes here
+  {{site.data.alerts.end}}
+  ~~~
+
+- To insert a **warning**, use the following code:
+
+  ~~~
+  {{site.data.alerts.callout_danger}}
+  warning text goes here
+  {{site.data.alerts.end}}
+  ~~~
 
 ## Images
 
@@ -476,14 +572,6 @@ A patch release version of CockroachDB receives updates as patches. To refer to 
 
 ## Include files
 
-Sometimes content needs to be duplicated across two or more pages in the documentation. For example, there may be several pages that need the same cluster setup, but describe how to use different features. Or a very specific [note](#notes) or [warning](#warnings) needs to be added to several different pages.
-
-In these situations, you will need to use an _include file_. An include file is a separate Markdown file (stored in `_includes/some/shared-file.md`) where you will write content that is shared across multiple pages.
-
-For more information about include files, see [the Jekyll `include` documentation](https://jekyllrb.com/docs/includes/).
-
-_Note_: Using include files adds complexity to the docs site architecture and build process. It also makes writing the documentation more tricky, because instead of working on text in one document, the writer has to jump between two or more files. If you can link to existing content rather than using an include file, strongly consider doing that instead.
-
 There are [basic](#basic-include-file-usage) and [advanced](#advanced-include-file-usage) methods for using include files. Use the basic method unless you are sure you need the advanced.
 
 <a name="basic-include-file-usage"></a>
@@ -551,36 +639,31 @@ For more information about the `remote_include` tag, see the README in the [jeky
 
 ### Filter tabs
 
-On some pages in our docs, there are tabs at the top of the page that will link to different pages at different hyperlinks. For example, in the [Install CockroachDB docs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb.html), there are links to the Mac, Linux, and Windows pages at the top of the page.
+Use filter tabs to create navigation between related pages. The [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/main/src/current/_includes/filter-tabs.md) include generates tabs that link to different pages.
 
-Use [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/main/src/current/_includes/filter-tabs.md) to specify these tabs for any `cockroachcloud` docs or docs for CockroachDB v21.2 and later.
+**Note:** Filter tabs link to different URLs/pages, not tabs within a single page.
 
-**Note:** this include file only produces tabs that link to different URLs/pages. It cannot be used for creating tabs within a single page.
+**Setup process:**
 
-The general process to follow and use this is as follows:
+1. Identify pages for filter tabs and note their HTML filenames (for example, `install-cockroachdb-mac.html`).
 
-1. Identify each page to be linked from a filter tab.
-    - Make a note of each HTML page filename (e.g., `install-cockroachdb-mac.html`).
-    - Draft a tab name (e.g., `Install on <strong>Mac</strong>`)—the text to display on the tab itself. This supports HTML, not Markdown.
-2. Create an include Markdown file within `_includes/<CRDB version>/filter-tabs` with the following structure:
+1. Create an include file in `_includes/<version>/filter-tabs/` with this structure:
+
+    ```liquid
+    {% assign tab_names_html = "Tab 1;Tab 2;Tab 3" %}
+    {% assign html_page_filenames = "page1.html;page2.html;page3.html" %}
+    {% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder=<version> %}
     ```
-    {% assign tab_names_html = "Tab Name 1;Tab Name 2;Tab Name 3" %}
-    {% assign html_page_filenames = "page-name-1.html;page-name-2.html;page-name-3.html" %}
 
-    {% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder=<CRDB version> %}
-    ```
-    - `tab_names_html` is a semicolon-separated list of the HTML-supported tab names.
-    - `html_page_filenames` is a semicolon-separated list of the page filenames with the `.html` extension.
-    - `<crdb_version>` is `"cockroachcloud"` (with quotes) for any CockroachDB Cloud docs and `page.version.version` (without quotes) for any versioned docs (v21.2 and later).
-3. For each page listed in `html_page_filenames`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
+1. Include the filter tabs on each target page: `{% include <version>/filter-tabs/<name>.html %}`
 
 ### Technical limitations of include files
 
 Include files have the following technical limitations:
 
-- They cannot be used in [Markdown tables](#tables). For example, this is why [the guidance about how to use version tags in tables](#version-tags-tables) is provided.
-- A [remote include](#remote-includes) file in another repo that contains an [include file](#include-files) that references something in `cockroachdb/docs` will fail to pull in and render that include file.
-- Include files containing a paragraph followed by a code block do not render correctly in the context of both paragraphs and lists in the files they are included from due to a limitation in our [Markdown](#markdown) renderer.
+- Cannot be used in [Markdown tables](#markdown-tables)
+- Remote includes cannot reference local includes
+- Include files with paragraphs followed by code blocks may not render correctly in all contexts
 
 ## Tabs
 
