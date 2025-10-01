@@ -166,7 +166,7 @@ For additional details on the webhook sink URI, refer to [Webhook sink]({% link 
 
 1. Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) `start` command to begin failback replication from CockroachDB to your source database. In this example, `--metricsAddr :30005` enables a Prometheus endpoint for monitoring replication metrics, and `--bindAddr :30004` sets up the webhook endpoint for the changefeed.
 
-    `--stagingSchema` specifies the staging database name (`_replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication]({% link molt/migrate-load-replicate.md %}#replicate-changes-to-cockroachdb) when you first ran MOLT Replicator with `--stagingCreateSchema`.
+    `--stagingSchema` specifies the staging database name (`_replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication]({% link molt/migrate-load-replicate.md %}#start-replicator) when you first ran MOLT Replicator with `--stagingCreateSchema`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

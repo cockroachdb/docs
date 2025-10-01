@@ -68,7 +68,7 @@
 	~~~
 
 	{% if page.name != "migrate-bulk-load.md" %}
-	This message includes a `cdc_cursor` value. You must set the `--defaultGTIDSet` replication flag to this value when starting [`replication-only` mode](#replicate-changes-to-cockroachdb):
+	This message includes a `cdc_cursor` value. You must set the `--defaultGTIDSet` replication flag to this value when [starting Replicator](#start-replicator):
 
 	{% include_cached copy-clipboard.html %}
 	~~~ 
