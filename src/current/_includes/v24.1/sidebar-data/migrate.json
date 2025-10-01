@@ -26,13 +26,13 @@
         {
           "title": "Load and Replicate Separately",
           "urls": [
-            "/molt/migrate-data-load-replicate-only.html"
+            "/molt/migrate-load-replicate.html"
           ]
         },
         {
           "title": "Resume Replication",
           "urls": [
-            "/molt/migrate-replicate-only.html"
+            "/molt/migrate-resume-replication.html"
           ]
         },
         {
@@ -59,15 +59,15 @@
           ]
         },
         {
-          "title": "Verify",
-          "urls": [
-            "/molt/molt-verify.html"
-          ]
-        },
-        {
           "title": "Replicator",
           "urls": [
             "/molt/molt-replicator.html"
+          ]
+        },
+        {
+          "title": "Verify",
+          "urls": [
+            "/molt/molt-verify.html"
           ]
         }
       ]

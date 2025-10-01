@@ -35,7 +35,7 @@ Complete the following items before using MOLT Replicator:
 
 - Follow the recommendations in [Best practices](#best-practices).
 
-- Configure the source database for replication based on your source type. Refer to the migration workflow tutorials for [PostgreSQL]({% link molt/migrate-load-replicate.md %}#prepare-the-source-database), [MySQL]({% link molt/migrate-load-replicate.md %}#prepare-the-source-database?filters=mysql), [Oracle]({% link molt/migrate-load-replicate.md %}#prepare-the-source-database?filters=oracle), and [CockroachDB]({% link molt/migrate-failback.md %}) sources.
+- Configure the source database for replication based on your source type. Refer to the migration workflow tutorials for [PostgreSQL]({% link molt/migrate-load-replicate.md %}#prepare-the-source-database), [MySQL]({% link molt/migrate-load-replicate.md %}?filters=mysql#prepare-the-source-database), [Oracle]({% link molt/migrate-load-replicate.md %}?filters=oracle#prepare-the-source-database), and [CockroachDB]({% link molt/migrate-failback.md %}) sources.
 
 - Ensure that the SQL user running MOLT Replicator has appropriate privileges on the source and target databases, as described in the migration workflow tutorials.
 

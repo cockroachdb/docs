@@ -101,7 +101,7 @@ The [MOLT Schema Conversion Tool]({% link cockroachcloud/migrations-page.md %}) 
 - [Multiple consistency modes]({% link molt/molt-replicator.md %}#consistency-modes) for balancing throughput and transactional guarantees.
 - Failback replication from CockroachDB back to source databases.
 - [TypeScript/JavaScript userscripts]({% link molt/molt-replicator.md %}#data-transformations) for live data transforms.
-- [Performance tuning]({% link molt/molt-replicator.md %}#performance-tuning) for high-throughput workloads.
+- [Performance tuning]({% link molt/molt-replicator.md %}#optimize-performance) for high-throughput workloads.
 
 ### Verify
 

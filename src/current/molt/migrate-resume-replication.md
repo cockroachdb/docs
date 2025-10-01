@@ -8,7 +8,7 @@ docs_area: migrate
 Use [MOLT Replicator]({% link molt/molt-replicator.md %}) to resume replication to CockroachDB after an interruption, without reloading data.
 
 {{site.data.alerts.callout_info}}
-These steps assume that you previously started replication. Refer to [Load and Replicate]({% link molt/migrate-load-replicate.md %}#replicate-changes-to-cockroachdb).
+These steps assume that you previously started replication. Refer to [Load and Replicate]({% link molt/migrate-load-replicate.md %}#start-replicator).
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
@@ -19,7 +19,7 @@ These steps assume that you previously started replication. Refer to [Load and R
 
 ## Resume replication after interruption
 
-Resume replication using [MOLT Replicator]({% link molt/molt-replicator.md %}) by running the replicator binary directly with the same arguments used during [initial replication setup]({% link molt/migrate-load-replicate.md %}#replicate-changes-to-cockroachdb). Replicator will automatically resume from the saved checkpoint in the existing staging schema.
+Resume replication using [MOLT Replicator]({% link molt/molt-replicator.md %}) by running the replicator binary directly with the same arguments used during [initial replication setup]({% link molt/migrate-load-replicate.md %}#start-replicator). Replicator will automatically resume from the saved checkpoint in the existing staging schema.
 
 1. Run the [MOLT Replicator]({% link molt/molt-replicator.md %}) command corresponding to your source database type, using the same `--stagingSchema` value from your initial replication setup.
 

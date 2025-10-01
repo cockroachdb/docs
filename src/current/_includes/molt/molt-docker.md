@@ -1,4 +1,4 @@
-For details on pulling Docker images, refer to [Docker image](#docker-image).
+For details on pulling Docker images, refer to [Docker images](#docker-images).
 
 ### Performance
 

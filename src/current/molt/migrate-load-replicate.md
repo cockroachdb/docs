@@ -5,7 +5,6 @@ toc: true
 docs_area: migrate
 ---
 
-
 Perform an initial bulk load of the source data using [MOLT Fetch]({% link molt/molt-fetch.md %}), then use [MOLT Replicator]({% link molt/molt-replicator.md %}) to replicate ongoing changes to the target.
 
 {% include molt/crdb-to-crdb-migration.md %}

@@ -81,6 +81,7 @@ If you shut down `molt` or `replicator` unexpectedly (e.g., with `kill -9` or a 
     Replace `sid` and `serial#` in the preceding statement with the values returned by the `SELECT` query.
 </section>
 
+{% if page.name != "migrate-bulk-load.md" %}
 ### Replicator issues
 
 <section class="filter-content" markdown="1" data-scope="postgres">
@@ -314,3 +315,4 @@ If MOLT Replicator appears hung or performs poorly:
 	~~~
 
 1. Monitor lag metrics and adjust performance parameters as needed.
+{% endif %}

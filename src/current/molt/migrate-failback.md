@@ -135,7 +135,7 @@ base64 -i ./client.key | jq -R -r '@uri'
 base64 -i ./ca.crt | jq -R -r '@uri'
 ~~~
 
-When you [create the changefeed](#create-changefeed), pass the encoded certificates in the changefeed URL, where `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters). For example:
+When you [create the changefeed](#create-the-cockroachdb-changefeed), pass the encoded certificates in the changefeed URL, where `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-parameters). For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
