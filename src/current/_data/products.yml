@@ -19,3 +19,5 @@ advanced: Advanced
 public-operator: Public operator
 
 cockroachdb-operator: CockroachDB operator
+
+ibm-cockroachdb: CockroachDB PostgresSQL for IBM
