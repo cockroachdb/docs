@@ -1205,7 +1205,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 #### Requests stuck in Raft
 
-- **Rule:** Send an alert when requests are taking a very long time in replication.
+- **Rule:** Send an alert when requests are taking a very long time in replication. This can be a symptom of a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-splits).
 
 - **How to detect:** Calculate this using the `requests_slow_raft` metric in the node's `_status/vars` output.
 
