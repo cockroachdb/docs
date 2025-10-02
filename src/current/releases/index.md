@@ -249,6 +249,18 @@ Refer to [Major release types](#major-releases) before installing or upgrading f
 To learn what's new in this release, refer to [Feature Highlights]({% link releases/{{ v.major_version }}.md %}#feature-highlights).
 {% endunless %}
 
+{% comment %} Add IBM tab to non-testing releases since v25.3 {% endcomment %}
+{% if v.major_version == 'v23.1' or
+      v.major_version == 'v23.2' or
+      v.major_version == 'v23.3' or
+      v.major_version == 'v23.4' or
+      v.major_version == 'v24.1' or
+      v.major_version == 'v24.2' or
+      v.major_version == 'v24.3' or
+      v.major_version == 'v24.4' or
+      v.major_version == 'v25.1' or
+      v.major_version == 'v25.2' or
+      released == false %}
 <div id="os-tabs" class="filters filters-big clearfix">
     <button id="linux" class="filter-button" data-scope="linux">Linux</button>
     <button id="mac" class="filter-button" data-scope="mac">Mac</button>
@@ -256,6 +268,16 @@ To learn what's new in this release, refer to [Feature Highlights]({% link relea
     <button id="docker" class="filter-button" data-scope="docker">Docker</button>
     <button id="source" class="filter-button" data-scope="source">Source</button>
 </div>
+{% else %}
+<div id="os-tabs" class="filters filters-big clearfix">
+    <button id="linux" class="filter-button" data-scope="linux">Linux</button>
+    <button id="mac" class="filter-button" data-scope="mac">Mac</button>
+    <button id="windows" class="filter-button" data-scope="windows">Windows</button>
+    <button id="docker" class="filter-button" data-scope="docker">Docker</button>
+    <button id="ibm" class="filter-button" data-scope="ibm">IBM</button>
+    <button id="source" class="filter-button" data-scope="source">Source</button>
+</div>
+{% endif %}
 
     {% for s in sections %} {% comment %} For each major version, iterate through the sections. {% endcomment %}
 
@@ -639,6 +661,10 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
         {% endfor %}
     </tbody>
     </table>
+</section>
+
+<section class="filter-content" markdown="1" data-scope="ibm">
+    <p>Downloads and documentation for production releases of {{ site.data.products.ibm-cockroachdb }} {{ r.release_name }} are available through <a href="https://www.ibm.com/software/passportadvantage/pao_customer.html" >IBM Passport Advantage</a></p>
 </section>
 
 <section class="filter-content" markdown="1" data-scope="source">
