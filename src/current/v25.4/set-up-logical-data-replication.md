@@ -203,6 +203,19 @@ You can use the `cockroach encode-uri` command to generate a connection string c
     CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{user}:{password}@{node IP}:26257?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded certificate}-----END+CERTIFICATE-----%0A';
     ~~~
 
+    If the source and destination cluster's nodes are on different networks, you can route LDR traffic through the destination cluster's load balancer. Add `&crdb_route=gateway` to the connection string:
+    
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{user}:{password}@{node IP}:26257?options=-ccluster%3Dsystem&crdb_route=gateway&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded certificate}-----END+CERTIFICATE-----%0A';
+    ~~~
+
+    {{ site.data.alerts.callout_info }}
+    For optimal performance, all nodes on the source and destination clusters should share the same virtual network. The gateway route option should only be used when this network configuration is not possible due to firewall or IP allocation constraints.
+    {{ site.data.alerts.end }}
+
+Once the source cluster has made a connection to the destination cluster, the destination cluster pulls the topology of the source cluster and distributes the replication work across all nodes in the source and destination.
+
 ### (Optional) Bidirectional: Create the connection for LDR stream 2
 
 (Optional) For bidirectional LDR, you'll need to repeat creating the certificate output and the external connection for the opposite cluster. Both clusters will act as the source and destination. At this point, you've created an external connection for LDR stream 1, so cluster **A** (source) to **B** (destination). Now, create the same for LDR stream 2 cluster **B** (source) to cluster **A** (destination).
@@ -225,6 +238,13 @@ You can use the `cockroach encode-uri` command to generate a connection string c
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{user}:{password}@{node IP}:26257?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded certificate}-----END+CERTIFICATE-----%0A';
+    ~~~
+
+    If cluster A and cluster B's nodes are on different networks, you can route LDR traffic through the destination cluster's load balancer. Add `&crdb_route=gateway` to the connection string:
+    
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{user}:{password}@{node IP}:26257?options=-ccluster%3Dsystem&crdb_route=gateway&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded certificate}-----END+CERTIFICATE-----%0A';
     ~~~
 
 ## Step 3. Start LDR
