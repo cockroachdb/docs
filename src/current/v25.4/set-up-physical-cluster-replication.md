@@ -273,30 +273,34 @@ Copy the output ready for [Step 4](#step-4-start-replication), which requires th
 
 The system virtual cluster in the standby cluster initializes and controls the replication stream by pulling from the primary cluster. In this section, you will connect to the primary from the standby to initiate the replication stream.
 
-1. From the **standby** cluster, use your connection string to the primary:
+1. In the SQL shell on the **standby** cluster, create an external connection using the primary cluster's connection string. Prefix the `postgresql://` scheme to the connection string and replace `{source}` with your external connection name:
 
-    If you generated the connection string using [`cockroach encode-uri`](#step-3-manage-cluster-certificates-and-generate-connection-strings):
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A';
+    ~~~
+
+    If the primary and standby cluster nodes are on different networks, you can route the replication stream through the primary cluster's load balancer. Add `&crdb_route=gateway` to the connection string:
+    
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE EXTERNAL CONNECTION {source} AS 'postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&crdb_route=gateway&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A';
+    ~~~
+
+    {{ site.data.alerts.callout_info }}
+    For an optimally performant replication stream, all nodes on the primary and standby clusters should share the same virtual network. The gateway route option should only be used when this network configuration is not possible due to firewall or IP allocation constraints.
+    {{ site.data.alerts.end }}
+
+    Once the external connection has been created, create the replication stream from the standby cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE VIRTUAL CLUSTER main
     FROM REPLICATION OF main
-    ON 'postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A';
+    ON '{source}';
     ~~~
 
-    Otherwise, pass the connection string that contains:
-    - The replication user and password that you [created for the primary cluster](#create-a-user-with-replication-privileges).
-    - The node IP address or hostname of one node from the primary cluster.
-    - The path to the primary node's certificate on the standby cluster.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    CREATE VIRTUAL CLUSTER main
-    FROM REPLICATION OF main
-    ON 'postgresql://{replication user}:{password}@{node IP or hostname}:{26257}?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt';
-    ~~~
-
-    Once the standby cluster has made a connection to the primary cluster, the standby will pull the topology of the primary cluster and will distribute the replication work across all nodes in the primary and standby.
+    Once the standby cluster has made a connection to the primary cluster, the standby pulls the topology of the primary cluster and distributes the replication work across all nodes in the primary and standby.
 
     {{site.data.alerts.callout_success}}
     You can also start a PCR stream that includes a read-only standby virtual cluster that allows you to read data on the standby cluster. For more details, refer to the [`CREATE VIRTUAL CLUSTER`]({% link {{ page.version.version }}/create-virtual-cluster.md %}#start-a-pcr-stream-with-read-from-standby) page.
@@ -461,6 +465,7 @@ Primary | System | Set up a replication user and view running virtual clusters. 
 Primary | Main | Add and run a workload with [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}). | `"postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=main&sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key"`<br><br>{% include {{ page.version.version }}/connect/cockroach-workload-parameters.md %} As a result, for the example in this tutorial, you will need:<ul><li>`options=-ccluster={virtual_cluster_name}`</li><li>`sslmode=verify-full`</li><li>`sslrootcert={path}/certs/ca.crt`</li><li>`sslcert={path}/certs/client.root.crt`</li><li>`sslkey={path}/certs/client.root.key`</li></ul>
 Standby | System | Manage the replication stream. Connect with [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). | `"postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=system&sslmode=verify-full"`<ul><li>`options=-ccluster=system`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
 Standby/Primary | System | Connect to the other cluster. | `"postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A"`<br><br>Generate the connection string with [`cockroach encode-uri`](#step-3-manage-cluster-certificates-and-generate-connection-strings). Use the generated connection string in:<ul><li>`CREATE VIRTUAL CLUSTER` statements to [start the replication stream](#step-4-start-replication).</li><li>`ALTER VIRTUAL CLUSTER` statements to [fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#failback).</li></ul>
+Standby/Primary | System | Connect to the other cluster through its load balancer | `"postgresql://{replication user}:{password}@{node IP or hostname}:{26257}/defaultdb?options=-ccluster%3Dsystem&crdb_route=gateway&sslinline=true&sslmode=verify-full&sslrootcert=-----BEGIN+CERTIFICATE-----{encoded_cert}-----END+CERTIFICATE-----%0A"`<br><br>Generate the connection string with [`cockroach encode-uri`](#step-3-manage-cluster-certificates-and-generate-connection-strings) and manually add the `&crdb_route=gateway` parameter. Recommended only when nodes do not share the same network. Use the generated connection string in:<ul><li>`CREATE VIRTUAL CLUSTER` statements to [start the replication stream](#step-4-start-replication).</li><li>`ALTER VIRTUAL CLUSTER` statements to [fail back to the primary cluster]({% link {{ page.version.version }}/failover-replication.md %}#failback).</li></ul>
 Standby | Read only | Run read queries on the standby's replicating virtual cluster | `"postgresql://root@{node IP or hostname}:{26257}?options=-ccluster=main-readonly&sslmode=verify-full"`<ul><li>`options=-ccluster=main-readonly`</li><li>`sslmode=verify-full`</li></ul>Use the `--certs-dir` flag to specify the path to your certificate.
 
 ## What's next
