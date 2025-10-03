@@ -103,7 +103,7 @@ A cluster that is upgraded to an alpha binary of CockroachDB or a binary that wa
 
 ### Staged release process
 
-As of 2024, CockroachDB is released under a staged delivery process. New releases are made available for select CockroachDB Cloud organizations for two weeks before binaries are published for CockroachDB {{ site.data.products.core }} downloads.
+{% include releases/staged-release-policy.md %}
 
 ### Recent releases
 
