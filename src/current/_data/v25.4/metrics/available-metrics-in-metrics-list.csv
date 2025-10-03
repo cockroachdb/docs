@@ -477,3 +477,9 @@ auth.password.conn.latency
 auth.scram.conn.latency
 sql.exec.latency.detail
 sql.query.unique.count
+rebalancing.cpunanospersecond
+rebalancing.lease.transfers
+rebalancing.range.rebalances
+rebalancing.replicas.cpunanospersecond
+rebalancing.replicas.queriespersecond
+rebalancing.state.imbalanced_overfull_options_exhausted

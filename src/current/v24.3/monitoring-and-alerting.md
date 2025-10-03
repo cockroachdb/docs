@@ -7,7 +7,7 @@ docs_area: manage
 
 In addition to CockroachDB's [built-in safeguards against failure]({% link {{ page.version.version }}/frequently-asked-questions.md %}#how-does-cockroachdb-survive-failures), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
-This page describes the monitoring and observability tools that are built into CockroachDB {{ site.data.products.core }} and shows how to collect your cluster's metrics using external tools like Prometheus's AlertManager for event-based alerting. To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/export-metrics.md %}) instead of this page. For more details, refer to:
+This page describes the monitoring and observability tools that are built into CockroachDB {{ site.data.products.core }} and shows how to collect your cluster's metrics using external tools like Prometheus's AlertManager for event-based alerting. To export metrics from a CockroachDB {{ site.data.products.cloud }} cluster, refer to [Export Metrics From a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/export-metrics.md %}) instead of this page. For more details, refer to:
 
 - [Monitor CockroachDB with Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %})
 - [Third-party Monitoring Tools]({% link {{ page.version.version }}/third-party-monitoring-tools.md %})
@@ -1205,7 +1205,7 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 #### Requests stuck in Raft
 
-- **Rule:** Send an alert when requests are taking a very long time in replication.
+- **Rule:** Send an alert when requests are taking a very long time in replication. This can be a symptom of a [leader-leaseholder split]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leader-leaseholder-splits).
 
 - **How to detect:** Calculate this using the `requests_slow_raft` metric in the node's `_status/vars` output.
 

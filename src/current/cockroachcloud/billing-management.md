@@ -152,3 +152,7 @@ You can export invoice data in CSV or PDF format. From the **Invoices** tab, on 
 - The PDF renders invoice information from the Console into a traditional invoice format. This format includes the high level information from the Console, a summary of total usage, the organization's billing address, and a CockroachDB letterhead.
 
 If you're using [folders]({% link cockroachcloud/folders.md %}) to organize your clusters, the full path for each cluster is provided under the **Cluster path** column.
+
+## Non-payment
+
+{% include cockroachcloud/non-payment.md %}
