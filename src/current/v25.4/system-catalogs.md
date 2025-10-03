@@ -14,6 +14,8 @@ The following system catalogs are available as schemas preloaded to every databa
 - [`pg_catalog`]({% link {{ page.version.version }}/pg-catalog.md %}),  a schema provided for compatibility with PostgreSQL.
 - [`pg_extension`]({% link {{ page.version.version }}/pg-extension.md %}), a schema catalog with information about CockroachDB extensions.
 
+Access to the `crdb_internal` schema and many descriptors in the `system` database is gated by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals). For details, see [crdb_internal access control]({% link {{ page.version.version }}/crdb-internal.md %}#access-control).
+
 {{site.data.alerts.callout_danger}}
 Tables in the system catalogs have varying levels of stability. Not all system catalog tables are meant for programmatic purposes. For more information, see [API Support Policy]({% link {{ page.version.version }}/api-support-policy.md %}).
 {{site.data.alerts.end}}
