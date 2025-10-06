@@ -40,9 +40,11 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 
 ### Storage considerations
 
+- Cockroach Labs tests functionality with AWS S3, Google Cloud Storage (GCS), and Azure Blob Storage. Other S3-compatible storage solutions such as [MinIO](https://min.io/), or [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/) may work.
+
+  However, Cockroach Labs can only offer best-effort support for untested systems. Contact the [Cockroach Labs Support team]({% link {{ page.version.version}}/support-resources.md %}) for more information.
 - [HTTP storage]({% link {{ page.version.version }}/use-a-local-file-server.md %}) is not supported for `BACKUP` and `RESTORE`.
 - Modifying backup files in the storage location could invalidate a backup, and therefore, prevent a restore. In v22.1 and later, **we recommend enabling [object locking]({% link {{ page.version.version }}/use-cloud-storage.md %}#immutable-storage) in your cloud storage bucket.**
-- While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test [S3-compatible services]({% link {{ page.version.version }}/use-cloud-storage.md %}) (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).
 
 ## Required privileges
 
