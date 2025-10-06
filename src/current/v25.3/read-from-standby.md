@@ -24,7 +24,7 @@ In the event of failover, the ReaderVC's response depends on the type of failove
 
 Prior to setting up read from standby, ensure that:
 
-- you have already configured PCR between a _primary_ cluster and a _standby_ cluster. For information on configuring PCR, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication %}).
+- you have already configured PCR between a _primary_ cluster and a _standby_ cluster. For information on configuring PCR, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
 - your CockroachDB version is v24.3 or later. The `read from standby` option is not supported in earlier versions.
 
 ### Start a PCR stream with read from standby
