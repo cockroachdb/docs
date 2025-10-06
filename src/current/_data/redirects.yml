@@ -521,6 +521,10 @@
   sources: ['admin-ui-storage-dashboard.md']
   versions: ['v20.2', 'v21.1']
 
+- destination: ui-top-ranges-page.md
+  sources: ['ui-hot-ranges-page.md']
+  versions: ['v25.4']
+
 - destination: use-a-local-file-server-for-bulk-operations.md
   sources: ['create-a-file-server.md']
   versions: ['v20.2', 'v21.1']

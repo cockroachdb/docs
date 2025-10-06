@@ -639,9 +639,9 @@
                         ]
                       },
                       {
-                        "title": "Hot Ranges Page",
+                        "title": "Top Ranges Page",
                         "urls": [
-                          "/${VERSION}/ui-hot-ranges-page.html"
+                          "/${VERSION}/ui-top-ranges-page.html"
                         ]
                       },
                       {
