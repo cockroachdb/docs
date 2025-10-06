@@ -1,6 +1,6 @@
 ---
 title: Read from Standby
-summary: Direct read-only queries to your standby cluster.
+summary: Direct read-only queries to your standby cluster instead of your primary cluster.
 toc: true
 docs_area: manage
 ---
