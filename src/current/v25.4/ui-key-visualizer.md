@@ -98,6 +98,6 @@ The following image shows the Key Visualizer highlighting a [full-table scan]({%
 
 - [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
 - [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
-- [Hot Ranges Page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %})
+- [Top Ranges Page]({% link {{ page.version.version }}/ui-top-ranges-page.md %})
 - [Reduce Hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}#reduce-hotspots)
 - [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
