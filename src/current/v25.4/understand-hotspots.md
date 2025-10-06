@@ -41,7 +41,7 @@ The following image is a graph of [CPU Percent]({% link {{ page.version.version 
 
 **Synonyms:** range hotspot
 
-A _hot range_ is one level down from the node hotspot. [Ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) are the smallest unit of data distribution, making them critical in troubleshooting hotspots. The [DB Console Hot Ranges page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) provides details about ranges receiving a high number of reads or writes, which become an issue if they cause a [hot node](#hot-node).
+A _hot range_ is one level down from the node hotspot. [Ranges]({% link {{ page.version.version }}/architecture/overview.md %}#range) are the smallest unit of data distribution, making them critical in troubleshooting hotspots. The [DB Console Top Ranges page]({% link {{ page.version.version }}/ui-top-ranges-page.md %}) provides details about ranges receiving a high number of reads or writes, which become an issue if they cause a [hot node](#hot-node).
 
 A hot node is often caused by a single hot range. The system may split the hot range to redistribute the load ([load-based splitting]({% link {{ page.version.version }}/load-based-splitting.md %})) or the range may stay hot until it fills up and splits ([range size splitting]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits)). In the second case, the split is likely the continuation of the hotspot (as shown in the [previous image for a hot node](#hotspots-figure-1)). If the system is unable to identify a good splitting point for a hot range (for example, in the case of a [row hotspot](#row-hotspot)), the hot range becomes a bottleneck.
 

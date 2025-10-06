@@ -127,6 +127,11 @@ To emit a trace to the logs, the following conditions must be met:
 
 This approach minimizes overhead by tracing a fraction of the workload and emitting traces only for potentially relevant transactions.
 
+Additional [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) that control trace emission are:
+
+- `sql.trace.txn.include_internal.enabled`: Enables inclusion of internal transactions in probabilistic transaction tracing and latency-based logging. This setting is enabled by default. Set this to `false` to omit internal transactions and reduce noise when debugging user workloads.
+- `sql.trace.txn.jaeger_json_output.enabled`: Enables output of transaction traces in Jaeger-compatible JSON format for easier ingestion by observability tools. This setting is disabled by default.
+
 #### Trace configuration example
 
 To configure the trace sampling probability and duration, set the following cluster settings:
@@ -329,7 +334,7 @@ A [*hot node*]({% link {{ page.version.version }}/understand-hotspots.md %}#hot-
   - [**Hardware** dashboard]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#cpu-percent) > **CPU Percent** graph
   - [**SQL** dashboard]({% link {{ page.version.version }}/ui-sql-dashboard.md %}#connection-latency-99th-percentile) > **SQL Connections** graph
   - [**Hardware** dashboard]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}#disk-ops-in-progress) > **Disk IOPS in Progress** graph
-- Open the [**Hot Ranges** page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) and check for ranges with significantly higher QPS on any nodes.
+- Open the [**Top Ranges** page]({% link {{ page.version.version }}/ui-top-ranges-page.md %}) and check for ranges with significantly higher QPS on any nodes.
 
 #### Solution
 
