@@ -9,7 +9,12 @@ The `crdb_internal` [system catalog]({% link {{ page.version.version }}/system-c
 
 ## Access control
 
-{% include_cached new-in.html version="v25.4" %} CockroachDB treats most objects in the `crdb_internal` schema, as well as descriptors in the `system` database, as *unsafe internals*. Access to these objects is controlled by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals). This defaults to `on`, but you can disable access by setting it to `off`.
+{% include_cached new-in.html version="v25.4" %} CockroachDB treats most objects in the `crdb_internal` schema, as well as descriptors in the `system` database, as *unsafe internals*. Access to these objects is controlled by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals). This defaults to `on`, but you can disable access by setting it to `off`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET allow_unsafe_internals = off;
+~~~
 
 When set to `off`, external sessions can read only the allowlisted `crdb_internal` objects that are supported for production use (the tables marked ✓ in the table below). All other tables and built-in functions that use the `crdb_internal` namespace require either an internal caller or explicitly enabling `allow_unsafe_internals` for the session:
 
@@ -21,6 +26,10 @@ SET allow_unsafe_internals = on;
 Some SHOW commands, such as [SHOW DATABASES]({% link {{ page.version.version }}/show-databases.md %}), depend on internal queries that access otherwise restricted data. These commands are designed to bypass the `allow_unsafe_internals` setting, so they continue to function even when direct access to unsafe internals is disabled.
 
 CockroachDB emits [log events to the `SENSITIVE_ACCESS` channel]({% link {{ page.version.version }}/logging-use-cases.md %}#example-unsafe-internals) when a user overrides or is denied access to unsafe internals, generating a record of emergency access to system internals.
+
+{{site.data.alerts.callout_danger}}
+In future releases, the `allow_unsafe_internals` session variable will default to `off` and then will be removed. To assess potential downstream impacts on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
+{{site.data.alerts.end}}
 
 <a id="data-exposed-by-crdb_internal"></a>
 
