@@ -61,7 +61,12 @@ GRANT EXECUTE_CATALOG_ROLE TO C##MIGRATION_USER;
 GRANT SELECT_CATALOG_ROLE TO C##MIGRATION_USER;
 
 -- Access to necessary V$ views
+GRANT SELECT ON V_$LOG TO C##MIGRATION_USER;
+GRANT SELECT ON V_$LOGFILE TO C##MIGRATION_USER;
+GRANT SELECT ON V_$LOGMNR_CONTENTS TO C##MIGRATION_USER;
+GRANT SELECT ON V_$ARCHIVED_LOG TO C##MIGRATION_USER;
 GRANT SELECT ON V_$DATABASE TO C##MIGRATION_USER;
+GRANT SELECT ON V_$LOG_HISTORY TO C##MIGRATION_USER;
 
 -- Direct grants to specific DBA views
 GRANT SELECT ON ALL_USERS TO C##MIGRATION_USER;
@@ -125,31 +130,160 @@ GRANT SELECT, FLASHBACK ON migration_schema.tbl TO MIGRATION_USER;
 #### Configure source database for replication
 
 <section class="filter-content" markdown="1" data-scope="postgres">
+{{site.data.alerts.callout_info}}
+Connect to the primary PostgreSQL instance, **not** a read replica. Read replicas cannot create or manage logical replication slots. Verify that you are connected to the primary server by running `SELECT pg_is_in_recovery();` and getting a `false` result.
+{{site.data.alerts.end}}
+
 Enable logical replication by setting `wal_level` to `logical` in `postgresql.conf` or in the SQL shell. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER SYSTEM SET wal_level = 'logical';
 ~~~
+
+Create a publication for the tables you want to replicate. Do this **before** creating the replication slot. 
+
+To create a publication for all tables:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE PUBLICATION molt_publication FOR ALL TABLES;
+~~~
+
+To create a publication for specific tables:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE PUBLICATION molt_publication FOR TABLE employees, payments, orders;
+~~~
+
+Create a logical replication slot:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
+~~~
+
+##### Verify logical replication setup
+
+Verify the publication was created successfully:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM pg_publication;
+~~~
+
+~~~
+  oid  |     pubname      | pubowner | puballtables | pubinsert | pubupdate | pubdelete | pubtruncate | pubviaroot
+-------+------------------+----------+--------------+-----------+-----------+-----------+-------------+------------
+ 59084 | molt_publication |       10 | t            | t         | t         | t         | t           | f
+~~~
+
+Verify the replication slot was created:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM pg_replication_slots;
+~~~
+
+~~~
+ slot_name |  plugin  | slot_type | datoid | database | temporary | active | active_pid | xmin | catalog_xmin | restart_lsn | confirmed_flush_lsn | wal_status | safe_wal_size | two_phase
+-----------+----------+-----------+--------+----------+-----------+--------+------------+------+--------------+-------------+---------------------+------------+---------------+-----------
+ molt_slot | pgoutput | logical   |  16385 | molt     | f         | f      |            |      |         2261 | 0/49913A20  | 0/49913A58          | reserved   |               | f
+~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-For MySQL **8.0 and later** sources, enable [global transaction identifiers (GTID)](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) consistency. Set the following values in `mysql.cnf`, in the SQL shell, or as flags in the `mysql` start command:
+Enable [global transaction identifiers (GTID)](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) and configure binary logging. Set `binlog-row-metadata` or `binlog-row-image` to `full` to provide complete metadata for replication.
 
-- `--enforce-gtid-consistency=ON`
-- `--gtid-mode=ON`
-- `--binlog-row-metadata=full`
+{{site.data.alerts.callout_info}}
+GTID replication sends all database changes to Replicator. To limit replication to specific tables or schemas, use the `--table-filter` and `--schema-filter` flags in the `replicator` command.
+{{site.data.alerts.end}}
 
-For MySQL **5.7** sources, set the following values. Note that `binlog-row-image` is used instead of `binlog-row-metadata`. Set `server-id` to a unique integer that differs from any other MySQL server you have in your cluster (e.g., `3`).
+|  Version   |                                                                                         Configuration                                                                                          |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| MySQL 5.6  | `--gtid-mode=on`<br>`--enforce-gtid-consistency=on`<br>`--server-id={unique_id}`<br>`--log-bin=mysql-binlog`<br>`--binlog-format=row`<br>`--binlog-row-image=full`<br>`--log-slave-updates=ON` |
+| MySQL 5.7  | `--gtid-mode=on`<br>`--enforce-gtid-consistency=on`<br>`--binlog-row-image=full`<br>`--server-id={unique_id}`<br>`--log-bin=log-bin`                                                           |
+| MySQL 8.0+ | `--gtid-mode=on`<br>`--enforce-gtid-consistency=on`<br>`--binlog-row-metadata=full`                                                                                                            |
+| MariaDB    | `--log-bin`<br>`--server_id={unique_id}`<br>`--log-basename=master1`<br>`--binlog-format=row`<br>`--binlog-row-metadata=full`                                                                  |
 
-- `--enforce-gtid-consistency=ON`
-- `--gtid-mode=ON`
-- `--binlog-row-image=full`
-- `--server-id={ID}`
-- `--log-bin=log-bin`
+##### Verify MySQL GTID setup
+
+Get the current GTID set to use as the starting point for replication:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- For MySQL < 8.0:
+SHOW MASTER STATUS;
+-- For MySQL 8.0+:
+SHOW BINARY LOG STATUS;
+~~~
+
+~~~
++---------------+----------+--------------+------------------+-------------------------------------------+
+| File          | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set                         |
++---------------+----------+--------------+------------------+-------------------------------------------+
+| binlog.000005 |      197 |              |                  | 77263736-7899-11f0-81a5-0242ac120002:1-38 |
++---------------+----------+--------------+------------------+-------------------------------------------+
+~~~
+
+Use the `Executed_Gtid_Set` value for the `--defaultGTIDSet` flag in MOLT Replicator.
+
+To verify that a GTID set is valid and not purged, use the following queries:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Verify the GTID set is in the executed set
+SELECT GTID_SUBSET('77263736-7899-11f0-81a5-0242ac120002:1-38', @@GLOBAL.gtid_executed) AS in_executed;
+
+-- Verify the GTID set is not in the purged set
+SELECT GTID_SUBSET('77263736-7899-11f0-81a5-0242ac120002:1-38', @@GLOBAL.gtid_purged) AS in_purged;
+~~~
+
+If `in_executed` returns `1` and `in_purged` returns `0`, the GTID set is valid for replication.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
+##### Enable ARCHIVELOG and FORCE LOGGING
+
+Enable `ARCHIVELOG` mode for LogMiner to access archived redo logs:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Check current log mode
+SELECT log_mode FROM v$database;
+
+-- Enable ARCHIVELOG (requires database restart)
+SHUTDOWN IMMEDIATE;
+STARTUP MOUNT;
+ALTER DATABASE ARCHIVELOG;
+ALTER DATABASE OPEN;
+
+-- Verify ARCHIVELOG is enabled
+SELECT log_mode FROM v$database; -- Expected: ARCHIVELOG
+~~~
+
+Enable supplemental logging for primary keys:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE ADD SUPPLEMENTAL LOG DATA (PRIMARY KEY) COLUMNS;
+
+-- Verify supplemental logging
+SELECT supplemental_log_data_min, supplemental_log_data_pk FROM v$database;
+-- Expected: SUPPLEMENTAL_LOG_DATA_MIN: IMPLICIT (or YES), SUPPLEMENTAL_LOG_DATA_PK: YES
+~~~
+
+Enable `FORCE LOGGING` to ensure all changes are logged:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE FORCE LOGGING;
+
+-- Verify FORCE LOGGING is enabled
+SELECT force_logging FROM v$database; -- Expected: YES
+~~~
+
 ##### Create source sentinel table
 
 Create a checkpoint table called `_replicator_sentinel` in the Oracle schema you will migrate:
@@ -242,6 +376,24 @@ CURRENT_SCN
 
 1 row selected.
 ~~~
+
+##### Get SCNs for replication startup
+
+If you plan to use [initial data load](#start-fetch) followed by [replication](#start-replicator), obtain the correct SCNs **before** starting the initial data load to ensure no active transactions are missed. Run the following queries on the PDB in the order shown:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Query the current SCN from Oracle
+SELECT CURRENT_SCN FROM V$DATABASE;
+
+-- Query the starting SCN of the earliest active transaction
+SELECT MIN(t.START_SCNB) FROM V$TRANSACTION t;
+~~~
+
+Use the results as follows:
+
+- `--scn`: Use the result from the first query (current SCN)
+- `--backfillFromSCN`: Use the result from the second query (earliest active transaction SCN). If the second query returns no results, use the result from the first query instead.
 
 Add the redo log files to LogMiner, using the redo log file paths you queried:
 
