@@ -1,4 +1,4 @@
-{% comment %}This include is used only in v22.2 and below. Older versions use release-downloads-docker-image.md. {% endcomment %}
+{% comment %}This include is used only in v22.2 and below. Newer versions use release-downloads-2023.md or later as appropriate. {% endcomment %}
 {% assign release = site.data.releases | where_exp: "release", "release.release_name == include.release" | first %}
 {% assign version = site.data.versions | where_exp: "version", "version.major_version == release.major_version" | first %}
 
