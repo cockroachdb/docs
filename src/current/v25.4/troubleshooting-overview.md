@@ -34,3 +34,4 @@ If you experience an issue when using CockroachDB, try these steps to resolve th
   - [`cockroach debug tsdump`]({% link {{ page.version.version }}/cockroach-debug-tsdump.md %})
   - [Automatic CPU Profiler]({% link {{ page.version.version }}/automatic-cpu-profiler.md %})
   - [Automatic Go Execution Tracer]({% link {{ page.version.version }}/automatic-go-execution-tracer.md %})
+  - [Transaction Diagnostics]({% link {{ page.version.version }}/transaction-diagnostics.md %})
