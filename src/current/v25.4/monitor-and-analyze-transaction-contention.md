@@ -10,6 +10,7 @@ This page shows how to monitor and analyze two types of [contention]({% link {{ 
 
 - [Console](#monitor-using-console)
 - [Metrics](#monitor-using-metrics)
+- [Logs](#monitor-using-logs)
 - [`crdb_internal` tables](#monitor-using-crdb_internal-tables)
 
 The [Continuous monitoring](#continuous-monitoring) section provides further considerations on identifying when contention occurs in your workload.
@@ -113,6 +114,19 @@ CockroachDB Metric Name | Description | Type | Unit
 
 Correlate these metrics with information from the [Insights]({% link {{ page.version.version }}/ui-insights-page.md %}) and [SQL Activity]({% link {{ page.version.version }}/ui-overview.md %}#sql-activity) pages to identify the affected database.
 
+## Monitor using logs
+
+CockroachDB periodically summarizes resolved contention activity as structured log events on the [`SQL_EXEC` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). Each `aggregated_contention_info` [event]({% link {{ page.version.version }}/eventlog.md %}) reports the waiting statement and transaction fingerprints, the blocking transaction fingerprint, the contended key (if not redacted), and the total wait time for that combination since the previous event. [Configure log sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) to route the SQL_EXEC channel to a destination, such as a log file or external collector, for long-term analysis.
+
+These periodic snapshots complement the in-memory [`crdb_internal.transaction_contention_events`](#transaction_contention_events-table) table by providing a durable view of contention history that persists across node restarts or after contention data expires from the event store. Snapshots are taken at an interval defined by the cluster setting [`sql.contention.event_store.resolution_interval`](#sql-contention-event_store-resolution_interval).
+
+The structured payload makes it easy to ingest the events into log analytics tools and correlate them with statement fingerprints or key hotspots. A typical structured log entry looks like the following:
+
+{% include_cached copy-clipboard.html %}
+~~~ json
+{"Timestamp":1756224167482848000,"EventType":"aggregated_contention_info","WaitingStmtFingerprintId":"\\x000000000000007b","WaitingTxnFingerprintId":"\\x00000000000001c8","BlockingTxnFingerprintId":"\\x0000000000000315","ContendedKey":"test-key-1","Duration":300000000}
+~~~
+
 ## Monitor using `crdb_internal` tables
 
 The [`crdb_internal`]({% link {{ page.version.version }}/crdb-internal.md %}) system catalog is a schema that contains information about internal objects, processes, and metrics related to a specific database. `crdb_internal` tables are read-only.
@@ -131,11 +145,11 @@ Setting | Type | Default | Description
 --------|------|---------|-------------
 `sql.contention.event_store.capacity` | byte size | `64 MiB` | the in-memory storage capacity per-node of contention event store
 `sql.contention.event_store.duration_threshold` | duration | `0s` | minimum contention duration to cause the contention events to be collected into crdb_internal.transaction_contention_events. If `0`, always store.
-`sql.contention.event_store.resolution_interval  ` | duration | `30s ` | the interval at which transaction fingerprint ID resolution is performed (set to 0 to disable)
+<a id="sql-contention-event_store-resolution_interval"></a>`sql.contention.event_store.resolution_interval  ` | duration | `30s ` | the interval at which transaction fingerprint ID resolution is performed (set to 0 to disable)
 `sql.contention.record_serialization_conflicts.enabled` | boolean | `true` | enables recording 40001 errors with conflicting txn meta as SERIALIZATION_CONFLICT contention events into crdb_internal.transaction_contention_events
 
 {{site.data.alerts.callout_info}}
-`crdb_internal.transaction_content_events` displays in-memory data, not on-disk data. The data changes over time as new events arrive and old ones are evicted from the cache.
+`crdb_internal.transaction_contention_events` displays in-memory data, not on-disk data. The data changes over time as new events arrive and old ones are evicted from the cache.
 {{site.data.alerts.end}}
 
 The table columns are as follows:
