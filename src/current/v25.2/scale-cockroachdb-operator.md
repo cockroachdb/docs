@@ -110,7 +110,7 @@ Do not scale down to fewer than 3 nodes. This is considered an anti-pattern on C
 When a Kubernetes node is scheduled for removal or maintenance, the {{ site.data.products.cockroachdb-operator }} can be instructed to decommission the node which safely moves data and workloads away before it goes offline.
 
 {{site.data.alerts.callout_info}}
-The CockroachDB node begins immediately decommissioning once the annotation is applied, it is not a mark for future removal. Once decommissioned, the node is cordoned so no further pods are scheduled on the node.
+Annotating a CockroachDB node for decommissioning immediately begins the decommission process. The annotation is not a mark for future removal. Once decommissioned, the node is cordoned so no further pods are scheduled on the node.
 
 If cluster capacity is limited, replacement pods may remain in the `Pending` state until new nodes are available. This is expected, as the operator prioritizes data safety and full replication over immediate scheduling.
 {{site.data.alerts.end}}
@@ -134,7 +134,7 @@ To mark a node for decommissioning, follow these steps:
 
 1. Identify the name of the Kubernetes node that is to be removed.
 
-1. Annotate the Kubernetes node with `crdb.cockroachlabs.com/decommission="true"`. The decommissioning process begins immediately after this annotation is applied. Using `kubectl` for example:
+1. Annotate the Kubernetes node with `crdb.cockroachlabs.com/decommission="true"`. The decommissioning process begins immediately after this annotation is applied. Using `kubectl`, for example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
