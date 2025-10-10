@@ -14,6 +14,7 @@ Elapsed Time | The time elapsed since the transaction started.
 Time Spent Waiting | The amount of time the execution experienced [lock contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 Statements | The number of statements in the transaction.
 Retries | The number of times statements in the transaction were retried.
+Isolation Level | The [isolation level]({{ link_prefix }}transactions.html#isolation-levels) used for the transaction execution.
 Application | The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
 
 To view details of an active transaction execution, click an execution ID in the **Transaction Execution ID** column to open the [**Transaction Execution** details page](#transaction-execution-details-page).
