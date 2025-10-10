@@ -107,12 +107,12 @@ Do not scale down to fewer than 3 nodes. This is considered an anti-pattern on C
 
 ## Decommission nodes
 
-When a Kubernetes node is scheduled for removal or maintenance, the {{ site.data.products.cockroachdb-operator }} can be instructed to decommission the node which safely moves data and workloads away before it goes offline.
+When a Kubernetes node is scheduled for removal or maintenance, the {{ site.data.products.cockroachdb-operator }} can be instructed to decommission the CockroachDB nodes scheduled on this Kubernetes node. Decommissioning safely moves data and workloads away before the node goes offline.
 
 {{site.data.alerts.callout_info}}
-Annotating a CockroachDB node for decommissioning immediately begins the decommission process. The annotation is not a mark for future removal. Once decommissioned, the node is cordoned so no further pods are scheduled on the node.
+Once annotated, the Kubernetes node is cordoned so no further pods are scheduled on the node. The annotation is not a mark for future removal, as CockroachDB is decommissioned on the node immediately.
 
-If cluster capacity is limited, replacement pods may remain in the `Pending` state until new nodes are available. This is expected, as the operator prioritizes data safety and full replication over immediate scheduling.
+If cluster capacity is limited, replacement pods may remain in the `Pending` state until new nodes are available.
 {{site.data.alerts.end}}
 
 The following prerequisites are necessary for the {{ site.data.products.cockroachdb-operator }} to be able to decommission a CockroachDB node:
@@ -126,7 +126,6 @@ The following prerequisites are necessary for the {{ site.data.products.cockroac
           args:
             - "-enable-k8s-node-controller=true"
     ~~~
-- The role-based access control system must be configured to allow the operator to patch nodes.
 - At least one replica of the operator must not be on the target node.
 - There must be no under-replicated ranges on the CockroachDB cluster.
 
