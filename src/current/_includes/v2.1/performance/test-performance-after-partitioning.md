@@ -10,7 +10,7 @@ Again imagine we are a Movr administrator in New York, and we want to get the ID
 
 2. Query for the data:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ {{page.app}} \
     --host=<address of a node in us-east1-b> \
@@ -50,7 +50,7 @@ Now let's again imagine 100 people in New York and 100 people in Seattle and 100
 
 2. Create 100 Seattle-based users:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     {{page.app}} \
     --host=<address of a node in us-west1-a> \
@@ -73,7 +73,7 @@ Now let's again imagine 100 people in New York and 100 people in Seattle and 100
 
 4. Create 100 new NY-based users:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     {{page.app}} \
     --host=<address of a node in us-east1-b> \

@@ -51,17 +51,17 @@ The user granting privileges must also have the privilege being granted on the t
 
 ### Grant privileges on databases
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max WITH PASSWORD roach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON DATABASE movr TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE movr;
 ~~~
@@ -92,12 +92,12 @@ The user granting privileges must also have the privilege being granted on the t
 
 ### Grant privileges on specific tables in a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT DELETE ON TABLE rides TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE rides;
 ~~~
@@ -113,12 +113,12 @@ The user granting privileges must also have the privilege being granted on the t
 
 ### Grant privileges on all tables in a database or schema
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT ON TABLE movr.public.* TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE movr.public.*;
 ~~~
@@ -150,12 +150,12 @@ The user granting privileges must also have the privilege being granted on the t
 
 ### Make a table readable to every user in the system
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT ON TABLE vehicles TO public;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE vehicles;
 ~~~
@@ -172,17 +172,17 @@ The user granting privileges must also have the privilege being granted on the t
 
 ### Grant privileges on schemas
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA cockroach_labs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON SCHEMA cockroach_labs TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
@@ -198,17 +198,17 @@ The user granting privileges must also have the privilege being granted on the t
 
 ### Grant privileges on user-defined types
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('available', 'unavailable');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON TYPE status TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TYPE status;
 ~~~
@@ -225,7 +225,7 @@ The user granting privileges must also have the privilege being granted on the t
 
 ### Grant the privilege to manage the replication zones for a database or table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ZONECONFIG ON TABLE rides TO max;
 ~~~

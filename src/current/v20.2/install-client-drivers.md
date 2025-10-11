@@ -30,7 +30,7 @@ Applications may encounter incompatibilities when using advanced or obscure feat
 
 To install the Python psycopg2 driver:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install psycopg2
 ~~~
@@ -47,7 +47,7 @@ For a simple but complete example app, see [Build a Python App with CockroachDB 
 
 To install SQLAlchemy and a [CockroachDB Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb) that accounts for some differences between CockroachDB and PostgreSQL:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install sqlalchemy sqlalchemy-cockroachdb psycopg2
 ~~~
@@ -68,7 +68,7 @@ CockroachDB supports Django versions 3.1+.
 
 To install [Django](https://docs.djangoproject.com/en/3.0/topics/install/):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install django==3.1.*
 ~~~
@@ -83,7 +83,7 @@ Before installing the [CockroachDB backend for Django](https://github.com/cockro
 
 After you install the psycopg2 prerequisite, you can install the CockroachDB Django backend:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install django-cockroachdb==3.1.*
 ~~~
@@ -100,7 +100,7 @@ For a simple but complete example app, see [Build a Python App with CockroachDB 
 
 To install PonyORM:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install pony
 ~~~
@@ -113,7 +113,7 @@ For a simple but complete example app, see [Build a Python App with CockroachDB 
 
 To install peewee:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install peewee
 ~~~
@@ -197,7 +197,7 @@ For a simple but complete example app that uses Maven for dependency management,
 
 To install the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go get -u github.com/jackc/pgx
 ~~~
@@ -210,7 +210,7 @@ For a simple but complete example app, see [Build a Go App with CockroachDB and 
 
 To install the [Go pq driver](https://godoc.org/github.com/lib/pq):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go get -u github.com/lib/pq
 ~~~
@@ -225,12 +225,12 @@ For a simple but complete example app, see [Build a Go App with CockroachDB and 
 
 To install [GORM](http://gorm.io):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go get -u github.com/lib/pq # dependency
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go get -u github.com/jinzhu/gorm
 ~~~
@@ -249,7 +249,7 @@ For a simple but complete example app, see [Build a Go App with CockroachDB and 
 
 To install the [Ruby pg driver](https://rubygems.org/gems/pg):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ gem install pg
 ~~~
@@ -264,7 +264,7 @@ For a simple but complete example app, see [Build a Ruby App with CockroachDB an
 
 To install ActiveRecord, the [pg driver](https://rubygems.org/gems/pg), and a [CockroachDB Ruby package](https://github.com/cockroachdb/activerecord-cockroachdb-adapter) that accounts for some minor differences between CockroachDB and PostgreSQL:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ gem install activerecord pg activerecord-cockroachdb-adapter
 ~~~
@@ -287,14 +287,14 @@ For a simple but complete example app, see [Build a Ruby App with CockroachDB an
 
 To install the [Node.js pg driver](https://www.npmjs.com/package/pg):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ npm install pg
 ~~~
 
 Some apps might also require [`async`](https://www.npmjs.com/package/async):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ npm install async
 ~~~
@@ -309,7 +309,7 @@ For a simple but complete example app, see [Build a Node.js App with CockroachDB
 
 To install Sequelize and a [CockroachDB Node.js package](https://github.com/cockroachdb/sequelize-cockroachdb) that accounts for some minor differences between CockroachDB and PostgreSQL:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ npm install sequelize sequelize-cockroachdb
 ~~~
@@ -348,12 +348,12 @@ Install the C libpq driver as described in the [official documentation](https://
 
 1. Create a .NET project:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ dotnet new console -o cockroachdb-test-app
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd cockroachdb-test-app
     ~~~
@@ -362,7 +362,7 @@ Install the C libpq driver as described in the [official documentation](https://
 
 2. Install the latest version of the [Npgsql driver](https://www.nuget.org/packages/Npgsql/) into the .NET project using the built-in nuget package manager:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ dotnet add package Npgsql
     ~~~

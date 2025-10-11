@@ -1,0 +1,1 @@
+{% include_cached new-in.html version="v23.1" %} All changefeed jobs will display regardless of if the job completed and when it completed. You can define a retention time and delete completed jobs by using the `jobs.retention_time` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).

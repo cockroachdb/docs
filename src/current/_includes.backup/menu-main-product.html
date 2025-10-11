@@ -1,0 +1,60 @@
+{{ $currentPage := . }}
+
+<div class="col-xl-8 bg-white position-relative shadow-sm">
+  <img class="nav-bg-img" src="{{.Site.Params.img_url}}/img/nav-bg.svg" alt="">
+  <div class="p-4 megamenu-main position-relative">
+      <div class="row">
+        <div class="col-xl-4 d-md-flex flex-md-column justify-content-center text-center pb-sm-3">
+          <div class="column-large-icon-box text-center d-flex justify-content-center">
+            <a href="/product/"><img src="{{ $.Site.Params.img_url}}/img/icons/icon-database.svg" alt="CockroachDB"></a>
+          </div>
+          <h6 class="font-weight-bold  callout-title text-center">
+              CockroachDB
+          </h6>
+          <p class="nav-link text-small text-center">
+            Free for everyone. <br>Runs anywhere.
+          </p>
+          <a href="/product/" class="text-small ">Explore CockroachDB <svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 0.664551L5 5.24403L1 9.82351" stroke="#6933FF"/>
+              </svg>
+          </a>
+        </div>
+        <div class="col-xl-4 d-md-flex flex-md-column justify-content-center text-center pb-sm-3">
+          <div class="column-large-icon-box d-flex justify-content-center">
+            <a href="/product/cockroachcloud/"><img src="{{ $.Site.Params.img_url}}/img/icons/icon-db-cloud.svg" alt="CockroachDB"></a>
+          </div>
+          <h6 class="font-weight-bold  callout-title text-center">
+              CockroachDB Cloud
+          </h6>
+          <p class="nav-link text-small text-center">
+            CockroachDB hosted <br>as a service.
+          </p>
+          <a href="/product/cockroachcloud/" class="text-small">Explore CockroachDB Cloud <svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 0.664551L5 5.24403L1 9.82351" stroke="#6933FF"/>
+              </svg>
+          </a>
+        </div>
+
+        <div class="col-xl-4 pb-sm-3">
+          <div class="font-weight-bold  column-title mb-3 pb-1">
+            QUICK LINKS
+          </div>
+          <ul class="list-unstyled">
+            <!-- Loop over menus.main where why -->
+            {{ range .Site.Menus.product_quicklinks }}
+              <li class="nav-item mb-3 pb-1">
+                  <div class="font-weight-bold item-title">{{.Pre}}</div>
+                  <a href="{{ item.url }}" class="nav-link text-small pb-0 {{ if $currentPage.HasMenuCurrent "main" . }} active {{ end }}"
+                    >{{ item.name }}</a
+                  >
+                </li>
+            {{ end }}
+          </ul>
+        </div>
+
+
+    </div>
+  </div>
+</div>
+
+

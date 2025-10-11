@@ -25,12 +25,12 @@ No [privileges](authorization.html#assign-privileges) are required to reset a se
 
 {{site.data.alerts.callout_success}}You can use <a href="set-vars.html#reset-a-variable-to-its-default-value"><code>SET .. TO DEFAULT</code></a> to reset a session variable as well.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET extra_float_digits = -10;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW extra_float_digits;
 ~~~
@@ -42,7 +42,7 @@ No [privileges](authorization.html#assign-privileges) are required to reset a se
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT random();
 ~~~
@@ -54,12 +54,12 @@ No [privileges](authorization.html#assign-privileges) are required to reset a se
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESET extra_float_digits;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW extra_float_digits;
 ~~~
@@ -71,7 +71,7 @@ No [privileges](authorization.html#assign-privileges) are required to reset a se
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT random();
 ~~~

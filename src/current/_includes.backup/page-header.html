@@ -1,0 +1,31 @@
+{% comment %}Cacheable page header component{% endcomment %}
+{% unless page.homepage %}
+  {% if page.version %}
+    {% if site.layout_optimizations.simple_version_switcher %}
+      {% include_cached version-switcher-simple.html %}
+    {% else %}
+      {% include version-switcher.html %}
+    {% endif %}
+  {% endif %}
+{% endunless %}
+
+{% if page.homepage != true %}
+  {% assign post_header_class = "post-header mb-3" %}
+  {% unless page.homepage %}
+    {% unless page.version %}
+     {% assign post_header_class = post_header_class | append:  " mt-5" %}
+    {% endunless %}
+  {% endunless %}
+<div class="{{ post_header_class }}">
+<h1 class="post-title-main w-100">{{ page.title }}</h1>
+  {% unless page.contribute == false %}
+    {% assign toc_classes = 'd-block ' %}
+    {% unless page.toc == false %}
+      {% assign toc_classes = toc_classes | append: 'd-lg-none' %}
+    {% endunless %}
+    <div class="{{toc_classes}}">
+      {% include_cached contribute-options.html %}
+    </div>
+  {% endunless %}
+</div>
+{% endif %}

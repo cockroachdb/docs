@@ -33,7 +33,7 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
 
 **Example**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     order_id        UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -60,7 +60,7 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
 
 **Example**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS inventories (
     product_id        INT,
@@ -80,7 +80,7 @@ For best practices, see [Schema Design: Select primary key columns](schema-desig
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS inventories (
     product_id        INT,
@@ -90,12 +90,12 @@ For best practices, see [Schema Design: Select primary key columns](schema-desig
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO inventories VALUES (1, 1, 100);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO inventories VALUES (1, 1, 200);
 ~~~
@@ -104,7 +104,7 @@ For best practices, see [Schema Design: Select primary key columns](schema-desig
 pq: duplicate key value (product_id,warehouse_id)=(1,1) violates unique constraint "primary"
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO inventories VALUES (1, NULL, 100);
 ~~~

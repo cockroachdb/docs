@@ -53,7 +53,7 @@ Field | Description
 
 To show information about a row in a table, you must know the values of the columns in the row's primary key:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM vehicles;
 ~~~
@@ -69,7 +69,7 @@ To show information about a row in a table, you must know the values of the colu
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, id FROM vehicles LIMIT 5;
 ~~~
@@ -85,7 +85,7 @@ To show information about a row in a table, you must know the values of the colu
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGE FROM TABLE vehicles FOR ROW (
     'boston',
@@ -104,7 +104,7 @@ To show information about a row in a table, you must know the values of the colu
 
 To show information about a row in a secondary index, you must know the values of the indexed columns:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM vehicles;
 ~~~
@@ -120,7 +120,7 @@ To show information about a row in a secondary index, you must know the values o
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, owner_id, id FROM vehicles@vehicles_auto_index_fk_city_ref_users LIMIT 5;
 ~~~
@@ -136,7 +136,7 @@ To show information about a row in a secondary index, you must know the values o
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGE FROM INDEX vehicles@vehicles_auto_index_fk_city_ref_users FOR ROW (
     'boston',

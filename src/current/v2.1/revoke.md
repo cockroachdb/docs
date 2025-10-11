@@ -32,7 +32,7 @@ Parameter | Description
 
 ### Revoke privileges on databases
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE db1, db2;
 ~~~
@@ -51,12 +51,12 @@ Parameter | Description
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE CREATE ON DATABASE db1, db2 FROM maxroach, betsyroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE db1, db2;
 ~~~
@@ -75,7 +75,7 @@ Parameter | Description
 
 ### Revoke privileges on specific tables in a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE db1.t1, db1.t2;
 ~~~
@@ -96,12 +96,12 @@ Parameter | Description
 (8 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE CREATE ON TABLE db1.t1, db1,t2 FROM betsyroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE db1.t1, db1.t2;
 ~~~
@@ -122,7 +122,7 @@ Parameter | Description
 
 ### Revoke privileges on all tables in a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE db2.t1, db2.t2;
 ~~~
@@ -139,7 +139,7 @@ Parameter | Description
 (4 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE DELETE ON db2.* FROM betsyroach;
 ~~~

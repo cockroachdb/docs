@@ -34,7 +34,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 If you no longer want a column in a table, you can drop it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders DROP COLUMN billing_zip;
 ~~~
@@ -43,7 +43,7 @@ If you no longer want a column in a table, you can drop it.
 
 If the column has dependent objects, such as [views](views.html), CockroachDB will not drop the column by default; however, if you want to be sure of the behavior you can include the `RESTRICT` clause.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders DROP COLUMN customer RESTRICT;
 ~~~
@@ -57,7 +57,7 @@ If you want to drop the column and all of its dependent options, include the `CA
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> does not list objects it drops, so should be used cautiously.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE customer_view;
 ~~~
@@ -70,12 +70,12 @@ If you want to drop the column and all of its dependent options, include the `CA
 +---------------+----------------------------------------------------------------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders DROP COLUMN customer CASCADE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 > SHOW CREATE customer_view;
 ~~~

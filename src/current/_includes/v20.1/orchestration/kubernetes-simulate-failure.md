@@ -5,7 +5,7 @@ To see this in action:
 1. Terminate one of the CockroachDB nodes:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod cockroachdb-2
     ~~~
@@ -16,7 +16,7 @@ To see this in action:
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod my-release-cockroachdb-2
     ~~~
@@ -32,7 +32,7 @@ To see this in action:
 3. Back in the terminal, verify that the pod was automatically restarted:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pod cockroachdb-2
     ~~~
@@ -44,7 +44,7 @@ To see this in action:
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pod my-release-cockroachdb-2
     ~~~

@@ -68,7 +68,7 @@ Note that when a table is [truncated](truncate.html), it is essentially re-creat
 
 ### Split a table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW EXPERIMENTAL_RANGES FROM TABLE kv;
 ~~~
@@ -82,7 +82,7 @@ Note that when a table is [truncated](truncate.html), it is essentially re-creat
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE kv SPLIT AT VALUES (10), (20), (30);
 ~~~
@@ -98,7 +98,7 @@ Note that when a table is [truncated](truncate.html), it is essentially re-creat
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW EXPERIMENTAL_RANGES FROM TABLE kv;
 ~~~
@@ -121,14 +121,14 @@ You may want to split a table with a composite primary key (e.g., when working w
 
 Given the table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE t (k1 INT, k2 INT, v INT, w INT, PRIMARY KEY (k1, k2));
 ~~~
 
 we can split it at its primary key like so:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE t SPLIT AT VALUES (5,1), (5,2), (5,3);
 ~~~
@@ -146,7 +146,7 @@ ALTER TABLE t SPLIT AT VALUES (5,1), (5,2), (5,3);
 
 To see more information about the range splits, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 ~~~
@@ -165,7 +165,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 Alternatively, you could split at a prefix of the primary key columns. For example, to add a split before all keys that start with `3`, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t SPLIT AT VALUES (3);
 ~~~
@@ -181,7 +181,7 @@ Alternatively, you could split at a prefix of the primary key columns. For examp
 
 Conceptually, this means that the second range will include keys that start with `3` through `∞`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 ~~~
@@ -198,12 +198,12 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 
 ### Split an index
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX secondary ON kv (v);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW EXPERIMENTAL_RANGES FROM INDEX kv@secondary;
 ~~~
@@ -217,7 +217,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX kv@secondary SPLIT AT (SELECT v FROM kv LIMIT 3);
 ~~~
@@ -233,7 +233,7 @@ SHOW EXPERIMENTAL_RANGES FROM TABLE t;
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW EXPERIMENTAL_RANGES FROM INDEX kv@secondary;
 ~~~

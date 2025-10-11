@@ -54,14 +54,14 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 2. Install HAProxy:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
 	~~~ shell
 	$ apt-get install haproxy
 	~~~
 
 3. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
@@ -69,7 +69,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 4. Copy the binary into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -78,7 +78,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 5. Run the [`cockroach gen haproxy`](generate-cockroachdb-resources.html) command, specifying the address of any CockroachDB node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
 	  ~~~ shell
 	  $ cockroach gen haproxy --insecure \
 	  --host=<address of any node> \
@@ -125,7 +125,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 6. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
 	~~~ shell
 	$ haproxy -f haproxy.cfg
 	~~~

@@ -1,6 +1,6 @@
 To control replication for a specific table,  use the `ALTER TABLE ... CONFIGURE ZONE` statement to define the values you want to change (other values will not be affected):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE customers CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
 ~~~
@@ -9,7 +9,7 @@ To control replication for a specific table,  use the `ALTER TABLE ... CONFIGURE
 CONFIGURE ZONE 1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FOR TABLE customers;
 ~~~

@@ -40,7 +40,7 @@ Field | Description
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     id INT PRIMARY KEY,
@@ -54,7 +54,7 @@ Field | Description
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM orders;
 ~~~

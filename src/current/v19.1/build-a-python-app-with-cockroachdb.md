@@ -22,7 +22,7 @@ We have tested the [Python psycopg2 driver](http://initd.org/psycopg/docs/) and 
 
 To install the Python psycopg2 driver, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install psycopg2
 ~~~
@@ -39,7 +39,7 @@ For other ways to install psycopg2, see the [official documentation](http://init
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -60,14 +60,14 @@ To clone a version of the code below that connects to insecure clusters, run the
 
 Copy the code or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v19.1/app/basic-sample.py" download>download it directly</a>.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/basic-sample.py %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python basic-sample.py
 ~~~
@@ -101,19 +101,19 @@ Now that you have a database and a user, you'll run the code shown below to:
 
 To get the code below, clone the `hello-world-python-psycopg2` repo to your machine:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/insecure/basic-sample.py %}
 ~~~
 
 Change to the directory where you cloned the repo and run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python example.py
 ~~~

@@ -1,0 +1,6 @@
+- Multi-region topology patterns are almost always table-specific. If you haven't already, [review the full range of patterns](topology-patterns.html#multi-region-patterns) to ensure you choose the right one for each of your tables.
+- Review how data is replicated and distributed across a cluster, and how this affects performance. It is especially important to understand the concept of the "leaseholder". For a summary, see [Reads and Writes in CockroachDB](architecture/reads-and-writes-overview.html). For a deeper dive, see the [CockroachDB Architecture](architecture/overview.html) documentation.
+- Review the concept of [locality](cockroach-start.html#locality), which makes CockroachDB aware of the location of nodes and able to intelligently place and balance data based on how you define [replication controls](configure-replication-zones.html).
+- Review the recommendations and requirements in our [Production Checklist](recommended-production-settings.html).
+- This topology doesn't account for hardware specifications, so be sure to follow our [hardware recommendations](recommended-production-settings.html#hardware) and perform a POC to size hardware for your use case.
+- Adopt relevant [SQL Best Practices](performance-best-practices-overview.html) to ensure optimal performance.

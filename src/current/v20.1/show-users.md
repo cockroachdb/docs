@@ -22,7 +22,7 @@ The user must have the [`SELECT`](select-clause.html) [privilege](authorization.
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW USERS;
 ~~~
@@ -39,7 +39,7 @@ The user must have the [`SELECT`](select-clause.html) [privilege](authorization.
 
 Alternatively, within the built-in SQL shell, you can use the `\du` [shell command](cockroach-sql.html#commands):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \du
 ~~~

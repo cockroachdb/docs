@@ -4,7 +4,7 @@ To see this in action:
 
 1. Terminate one of the CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod cockroachdb-2
     ~~~
@@ -17,7 +17,7 @@ To see this in action:
 
 3. Back in the terminal, verify that the pod was automatically restarted:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pod cockroachdb-2
     ~~~

@@ -4,7 +4,7 @@ On your local machine, complete the node startup process and have them join toge
 
 2. Run the [`cockroach init`](initialize-a-cluster.html) command, with the `--host` flag set to the address of any node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=<address of any node>
     ~~~

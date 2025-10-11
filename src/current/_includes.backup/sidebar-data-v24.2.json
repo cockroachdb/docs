@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Docs Home",
+    "is_top_level": true,
+    "urls": [
+      "/"
+    ]
+  },
+  {% include_cached v24.2/sidebar-data/get-started.json %},
+  {% include_cached v24.2/sidebar-data/releases.json %},
+  {% include_cached v24.2/sidebar-data/feature-overview.json %},
+  {% include_cached v24.2/sidebar-data/connect-to-cockroachdb.json %},
+  {% include_cached v24.2/sidebar-data/migrate.json %},
+  {% include_cached v24.2/sidebar-data/cloud-deployments.json %},
+  {% include_cached v24.2/sidebar-data/self-hosted-deployments.json %},
+  {% include_cached v24.2/sidebar-data/schema-design.json %},
+  {% include_cached v24.2/sidebar-data/reads-and-writes.json %},
+  {% include_cached v24.2/sidebar-data/stream-data.json %},
+  {% include_cached v24.2/sidebar-data/multi-region-capabilities.json %},
+  {% include_cached v24.2/sidebar-data/optimize-performance.json %},
+  {% include_cached v24.2/sidebar-data/troubleshooting.json %},
+  {% include_cached v24.2/sidebar-data/sql.json %},
+  {% include_cached v24.2/sidebar-data/reference.json %},
+  {% include_cached v24.2/sidebar-data/faqs.json %},
+  {% include_cached sidebar-data-cockroach-university.json %}
+]

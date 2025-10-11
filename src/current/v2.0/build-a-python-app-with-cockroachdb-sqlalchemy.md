@@ -26,7 +26,7 @@ For a more realistic use of SQLAlchemy with CockroachDB, see our [`examples-orms
 
 To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install sqlalchemy sqlalchemy-cockroachdb psycopg2
 ~~~
@@ -47,7 +47,7 @@ For other ways to install SQLAlchemy, see the [official documentation](http://do
 
 Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -64,14 +64,14 @@ The <a href="https://github.com/cockroachdb/sqlalchemy-cockroachdb">sqlalchemy-c
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.0/app/sqlalchemy-basic-sample.py" download>download it directly</a>.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/sqlalchemy-basic-sample.py %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python sqlalchemy-basic-sample.py
 ~~~
@@ -85,14 +85,14 @@ The output should be:
 
 To verify that the table and rows were created successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --database=bank
 ~~~
 
 Then, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts;
 ~~~
@@ -127,14 +127,14 @@ The <a href="https://github.com/cockroachdb/sqlalchemy-cockroachdb">sqlalchemy-c
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.0/app/insecure/sqlalchemy-basic-sample.py" download>download it directly</a>.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/insecure/sqlalchemy-basic-sample.py %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python sqlalchemy-basic-sample.py
 ~~~
@@ -148,14 +148,14 @@ The output should be:
 
 To verify that the table and rows were created successfully, start the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --database=bank
 ~~~
 
 Then, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts;
 ~~~

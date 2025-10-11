@@ -21,7 +21,7 @@ You can configure garbage collection periods using the `ttlseconds` [replication
 
 ## Create a backup with revision history
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BACKUP TO \
 'gs://acme-co-backup/test-cluster-2017-03-27-weekly' \
@@ -36,7 +36,7 @@ If the full or incremental backup was taken [with revision history](#create-a-ba
 
 If you do not specify a point-in-time, the data will be restored to the backup timestamp; that is, the restore will work as if the data was backed up without revision history.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
 AS OF SYSTEM TIME '2017-02-26 10:00:00';
@@ -46,7 +46,7 @@ AS OF SYSTEM TIME '2017-02-26 10:00:00';
 
 Restoring from incremental backups requires previous full and incremental backups. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM \
 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \

@@ -25,7 +25,7 @@ Parameter      | Description
 
 ### List table statistics
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE STATISTICS students ON id FROM students_by_list;
 ~~~
@@ -34,7 +34,7 @@ Parameter      | Description
 CREATE STATISTICS
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW STATISTICS FOR TABLE students_by_list;
 ~~~

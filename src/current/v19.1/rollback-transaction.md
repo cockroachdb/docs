@@ -30,7 +30,7 @@ No [privileges](authorization.html#assign-privileges) are required to rollback a
 
 Typically, an application conditionally executes rollbacks, but we can see their behavior by using `ROLLBACK` instead of `COMMIT` directly through SQL:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -43,22 +43,22 @@ Typically, an application conditionally executes rollbacks, but we can see their
 +----------+---------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE accounts SET balance = 2500 WHERE name = 'Marciela';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ROLLBACK;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -75,7 +75,7 @@ Typically, an application conditionally executes rollbacks, but we can see their
 
 To use [advanced client-side transaction retries](advanced-client-side-transaction-retries.html), an application must execute `ROLLBACK TO SAVEPOINT` after detecting a `40001` / `retry transaction` error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ROLLBACK TO SAVEPOINT cockroach_restart;
 ~~~

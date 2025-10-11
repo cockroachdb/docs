@@ -31,7 +31,7 @@ If you are running macOS, you need to install version 4.0.1 or higher of the lib
 
 Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -46,21 +46,21 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.cpp" download><code>basic-sample.cpp</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ cpp
 {% include {{ page.version.version }}/app/basic-sample.cpp %}
 ~~~
 
 To build the `basic-sample.cpp` source code to an executable file named `basic-sample`, run the following command from the directory that contains the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ g++ -std=c++11 basic-sample.cpp -lpq -lpqxx -o basic-sample
 ~~~
 
 Then run the `basic-sample` file from that directory:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ./basic-sample
 ~~~
@@ -75,28 +75,28 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/txn-sample.cpp" download><code>txn-sample.cpp</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ cpp
 {% include {{ page.version.version }}/app/txn-sample.cpp %}
 ~~~
 
 To build the `txn-sample.cpp` source code to an executable file named `txn-sample`, run the following command from the  directory that contains the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ g++ -std=c++11 txn-sample.cpp -lpq -lpqxx -o txn-sample
 ~~~
 
 Then run the `txn-sample` file from that directory:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ./txn-sample
 ~~~
 
 After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~
@@ -128,21 +128,21 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/basic-sample.cpp" download><code>basic-sample.cpp</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ cpp
 {% include {{ page.version.version }}/app/insecure/basic-sample.cpp %}
 ~~~
 
 To build the `basic-sample.cpp` source code to an executable file named `basic-sample`, run the following command from the directory that contains the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ g++ -std=c++11 basic-sample.cpp -lpq -lpqxx -o basic-sample
 ~~~
 
 Then run the `basic-sample` file from that directory:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ./basic-sample
 ~~~
@@ -157,28 +157,28 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/txn-sample.cpp" download><code>txn-sample.cpp</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ cpp
 {% include {{ page.version.version }}/app/insecure/txn-sample.cpp %}
 ~~~
 
 To build the `txn-sample.cpp` source code to an executable file named `txn-sample`, run the following command from the  directory that contains the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ g++ -std=c++11 txn-sample.cpp -lpq -lpqxx -o txn-sample
 ~~~
 
 Then run the `txn-sample` file from that directory:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ./txn-sample
 ~~~
 
 After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~

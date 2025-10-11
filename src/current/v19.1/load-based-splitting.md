@@ -15,7 +15,7 @@ Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.range_split.by_
 - `true` to enable load-based splitting _(default)_
 - `false` to disable load-based splitting
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.range_split.by_load_enabled = true;
 ~~~
@@ -32,7 +32,7 @@ You might want to disable load-based splitting when troubleshooting range-relate
 
 Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.range_split.load_qps_threshold` to the queries-per-second (QPS) at which you want to consider splitting a range (defaults to `2500`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.range_split.load_qps_threshold = 2000;
 ~~~

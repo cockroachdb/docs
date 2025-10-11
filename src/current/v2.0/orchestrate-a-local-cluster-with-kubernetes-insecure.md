@@ -31,7 +31,7 @@ Feature | Description
 
 2. Start a local Kubernetes cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ minikube start
     ~~~
@@ -54,7 +54,7 @@ To test the cluster, launch a temporary pod for using the built-in SQL client, a
 
 4. Use our [`example-app.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/example-app.yaml) file to launch a pod and run a load generator against the cluster from the pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/example-app.yaml
     ~~~
@@ -65,7 +65,7 @@ To test the cluster, launch a temporary pod for using the built-in SQL client, a
 
 5. Verify that the pod for the load generator was added successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -84,7 +84,7 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
 
 1. Port-forward from your local machine to one of the pods:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl port-forward cockroachdb-0 8080
     ~~~
@@ -109,7 +109,7 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
 
 1. Use the `kubectl scale` command to add a pod for another CockroachDB node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
     ~~~
@@ -120,7 +120,7 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
 
 2. Verify that the pod for a fourth node, `cockroachdb-3`, was added successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -138,7 +138,7 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
 
 - **If you plan to restart the cluster**, use the `minikube stop` command. This shuts down the minikube virtual machine but preserves all the resources you created:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ minikube stop
     ~~~
@@ -152,7 +152,7 @@ To access the [Admin UI](admin-ui-overview.html) and monitor the cluster's state
 
 - **If you do not plan to restart the cluster**, use the `minikube delete` command. This shuts down and deletes the minikube virtual machine and all the resources you created, including persistent volumes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ minikube delete
     ~~~

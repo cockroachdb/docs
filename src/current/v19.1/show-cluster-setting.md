@@ -31,7 +31,7 @@ Parameter | Description
 
 ### Showing the value of a single cluster setting
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING diagnostics.reporting.enabled;
 ~~~
@@ -47,7 +47,7 @@ Parameter | Description
 
 ### Showing the value of all cluster settings
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ALL CLUSTER SETTINGS;
 ~~~

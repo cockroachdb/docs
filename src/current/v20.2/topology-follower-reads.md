@@ -41,7 +41,7 @@ Using this pattern, you configure your application to use the [follower reads](f
 
 Assuming you have a [cluster deployed across three regions](#cluster-setup) and a table like the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE postal_codes (
     id INT PRIMARY KEY,
@@ -51,7 +51,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
 Insert some data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO postal_codes (ID, code) VALUES (1, '10001'), (2, '10002'), (3, '10003'), (4,'60601'), (5,'60602'), (6,'60603'), (7,'90001'), (8,'90002'), (9,'90003');
 ~~~
@@ -64,7 +64,7 @@ Insert some data:
     The `follower_read_timestamp()` [function](functions-and-operators.html) returns the [`TIMESTAMP`](timestamp.html) `statement_timestamp() - 4.8s`.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT code FROM postal_codes
         AS OF SYSTEM TIME follower_read_timestamp()
@@ -73,7 +73,7 @@ Insert some data:
 
     Alternately, instead of modifying individual read queries on the table, you can set the `AS OF SYSTEM TIME` value for all operations in a read-only transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
 

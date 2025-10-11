@@ -21,14 +21,14 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 To let your application communicate with CockroachDB, install the [Node.js pg driver](https://www.npmjs.com/package/pg):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ npm install pg
 ~~~
 
 The example app on this page also requires [`async`](https://www.npmjs.com/package/async):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ npm install async
 ~~~
@@ -45,14 +45,14 @@ First, use the following code to connect as the `maxroach` user and execute some
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.js" download><code>basic-sample.js</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ js
 {% include {{ page.version.version }}/app/basic-sample.js %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ node basic-sample.js
 ~~~
@@ -73,14 +73,14 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {{site.data.alerts.callout_info}}With the default <code>SERIALIZABLE</code> isolation level, CockroachDB may require the <a href="transactions.html#transaction-retries">client to retry a transaction</a> in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ js
 {% include {{ page.version.version }}/app/txn-sample.js %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ node txn-sample.js
 ~~~
@@ -95,7 +95,7 @@ Balances after transfer:
 
 However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~

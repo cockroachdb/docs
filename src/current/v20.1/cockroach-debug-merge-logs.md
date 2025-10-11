@@ -35,35 +35,35 @@ Flag | Description
 
 Generate a debug zip file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --insecure
 ~~~
 
 Unzip the file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ unzip ./cockroach-data/logs/debug.zip
 ~~~
 
 Merge the logs in the debug folder:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug merge-logs debug/nodes/*/logs/*
 ~~~
 
 Alternatively, filter the merged logs for a specified time range:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug merge-logs debug/nodes/*/logs/* --from= "18:36:28.208553" --to= "18:36:29.232864"
 ~~~
 
 You can also filter the merged logs for a regular expression:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach debug merge-logs debug/nodes/*/logs/* --filter="RUNNING IN INSECURE MODE"
 ~~~

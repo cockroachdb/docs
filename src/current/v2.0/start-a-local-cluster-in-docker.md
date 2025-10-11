@@ -42,19 +42,19 @@ The replica count on each node is identical, indicating that all data in the clu
 
 Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ docker stop roach1 roach2 roach3
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ docker rm roach1 roach2 roach3
 ~~~
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ rm -rf cockroach-data
 ~~~
@@ -81,19 +81,19 @@ The replica count on each node is identical, indicating that all data in the clu
 
 Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ docker stop roach1 roach2 roach3
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ docker rm roach1 roach2 roach3
 ~~~
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ rm -rf cockroach-data
 ~~~

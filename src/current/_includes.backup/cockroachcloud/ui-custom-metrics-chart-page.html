@@ -1,0 +1,97 @@
+<table>
+  <thead>
+    <tr>
+      <th>
+        Column
+      </th>
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        Metric
+      </td>
+      <td>
+        <p>
+          How the system refers to this metric, for example, <code>jobs.row_level_ttl.rows_deleted</code>.
+        </p>
+        <p>
+         <strong>Note</strong>: available metric options are filtered by <strong>Units</strong> selected.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Aggregator
+      </td>
+      <td>
+        <p>
+          Used to combine data points.
+        </p>
+        <p>
+          Options:
+          <ul>
+            <li><strong>Sum</strong>: Returns the sum of all values seen.</li>
+            <li><strong>Max</strong>: Returns the highest value seen.</li>
+            <li><strong>Min</strong>: Returns the lowest value seen.</li>
+            <li><strong>Avg</strong>: Returns the average value over the time period.</li>
+          </ul>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Rate
+      </td>
+      <td>
+        <p>
+          Determines how to display the rate of change during the selected time period.
+        </p>
+        <p>
+          Option:
+          <ul>
+            <li>
+              <strong>Normal</strong>: Returns the actual recorded value.
+            </li>
+          </ul>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Units
+      </th>
+      <td>
+        <p>
+          Sets the units to display.         
+        </p>
+        <p>
+          Options:
+          <ul>
+            <li><strong>Bytes</strong></li>
+            <li><strong>Count</strong></li>
+            <li><strong>Duration</strong></li>
+            <li><strong>Percentage</strong></li>
+            <li><strong>USD</strong></li>
+          </ul>
+        </p>
+        <p>
+          Units can be selected in two ways:
+          <ol>
+            <li>Manually select a unit option.</li>
+            <li>When the first metric has been added - if no unit has been selected yet - the metric's unit will automatically be selected.</li>
+          </ol>
+        </p>
+        <p>
+          Once a unit is selected, the available <strong>Metric</strong> options will be filtered to metrics with that unit type. For example, if the `Bytes` unit is selected, only metrics that are measured in `Bytes` will be available as <strong>Metric</strong> options.
+        </p>
+        <p>
+          <strong>Note</strong>: Changing the unit will clear the selected metrics.
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -31,7 +31,7 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE computers (
     ip INET PRIMARY KEY,
@@ -40,7 +40,7 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM computers;
 ~~~
@@ -56,7 +56,7 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO computers
   VALUES
@@ -65,7 +65,7 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
     ('2001:4f8:3:ba:2e0:81ff:fe22:d1f1/120', 'test@cockroachlabs.com', '2018-01-31');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM computers;
 ~~~

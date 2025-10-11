@@ -45,7 +45,7 @@ CockroachDB offers three methods for client authentication:
 - **Client certificate and key authentication**, which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
    Example:
-   {% include copy-clipboard.html %}
+   {% include_cached copy-clipboard.html %}
    ~~~ shell
    $ cockroach sql --certs-dir=certs --user=jpointsman
    ~~~
@@ -53,7 +53,7 @@ CockroachDB offers three methods for client authentication:
 - **Password authentication**, which is available to users and roles who you've created passwords for. Password creation is supported only in secure clusters.
 
    Example:
-   {% include copy-clipboard.html %}
+   {% include_cached copy-clipboard.html %}
    ~~~ shell
    $ cockroach sql --certs-dir=certs --user=jpointsman
    ~~~

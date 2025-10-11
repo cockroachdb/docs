@@ -10,7 +10,7 @@ A `MULTIPOLYGON` is a collection of [Polygons](polygon.html).  MultiPolygons are
 
 A MultiPolygon can be created from SQL by calling the `st_geomfromtext` function on a MultiPolygon definition expressed in the [Well Known Text (WKT)](spatial-glossary.html#wkt) format.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_GeomFromText('SRID=4326;MULTIPOLYGON(((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902), (-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832), (-84.191605 39.758949, -75.165222 39.952583, -78.878738 42.880230, -84.191605 39.758949)))');
 ~~~

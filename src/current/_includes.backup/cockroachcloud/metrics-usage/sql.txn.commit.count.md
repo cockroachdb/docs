@@ -1,0 +1,1 @@
+This metric shows the number of [transactions]({% link {{ site.current_cloud_version }}/transactions.md %}) that completed successfully. This metric can be used as a proxy to measure the number of successful explicit transactions.

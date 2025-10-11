@@ -53,7 +53,7 @@ To start a new cluster with the correct `--locality` flags:
 
 Start Node 1:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach start \
 --insecure \
@@ -66,7 +66,7 @@ $ cockroach start \
 
 Start Node 2:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach start \
 --insecure \
@@ -79,7 +79,7 @@ $ cockroach start \
 
 Start Node 3:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach start \
 --insecure \
@@ -92,7 +92,7 @@ $ cockroach start \
 
 Start Node 4:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach start \
 --insecure \
@@ -105,7 +105,7 @@ $ cockroach start \
 
 Use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init --insecure
 ~~~
@@ -124,14 +124,14 @@ The following page should be displayed:
 
 Launch the built-in SQL client:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=<address of any node>
 ~~~
 
 Insert the approximate latitudes and longitudes of each region into the `system.locations` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO system.locations VALUES
   ('region', 'us-east-1', 37.478397, -76.453077),

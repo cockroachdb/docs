@@ -32,7 +32,7 @@ Parameter | Description
 
 ### Pause a single job
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS;
 ~~~
@@ -45,7 +45,7 @@ Parameter | Description
 +----------------+---------+-------------------------------------------+...
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOB 27536791415282;
 ~~~
@@ -54,7 +54,7 @@ Parameter | Description
 
 <span class="version-tag">New in v2.1:</span> To pause multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `PAUSE JOBS` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > PAUSE JOBS (SELECT job_id FROM [SHOW JOBS]
       WHERE user_name = 'maxroach');

@@ -32,14 +32,14 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 To add a comment to a database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON DATABASE movr IS 'This database contains information about users, vehicles, and rides.';
 ~~~
 
 To view database comments, use [`SHOW DATABASES`](show-databases.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES WITH COMMENT;
 ~~~
@@ -58,14 +58,14 @@ To view database comments, use [`SHOW DATABASES`](show-databases.html):
 
 To add a comment to a table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON TABLE vehicles IS 'This table contains information about vehicles registered with MovR.';
 ~~~
 
 To view table comments, use [`SHOW TABLES`](show-tables.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr WITH COMMENT;
 ~~~
@@ -84,7 +84,7 @@ To view table comments, use [`SHOW TABLES`](show-tables.html):
 
 <span class="version-tag">New in v20.1:</span> You can also view comments on a table with [`SHOW CREATE`](show-create.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~
@@ -114,14 +114,14 @@ To view table comments, use [`SHOW TABLES`](show-tables.html):
 
 To add a comment to a column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON COLUMN users.credit_card IS 'This column contains user payment information.';
 ~~~
 
 To view column comments, use [`SHOW COLUMNS`](show-columns.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users WITH COMMENT;
 ~~~
@@ -141,21 +141,21 @@ To view column comments, use [`SHOW COLUMNS`](show-columns.html):
 
 Suppose we [create an index](create-index.html) on the `name` column of the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users(name);
 ~~~
 
 To add a comment to the index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON INDEX users_name_idx IS 'This index improves performance on queries that filter by name.';
 ~~~
 
 To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM users WITH COMMENT;
 ~~~

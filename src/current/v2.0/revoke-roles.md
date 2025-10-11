@@ -33,7 +33,7 @@ Parameter | Description
 
 ### Revoke Role Membership
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE design;
 ~~~
@@ -48,12 +48,12 @@ Parameter | Description
 +--------+---------+---------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE design FROM lola;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE design;
 ~~~
@@ -70,7 +70,7 @@ Parameter | Description
 ### Revoke the Admin Option
 
 To revoke a user or role's admin option from a role (without revoking the membership):
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE ADMIN OPTION FOR design FROM ernie;
 ~~~

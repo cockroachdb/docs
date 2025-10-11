@@ -50,7 +50,7 @@ Field | Description
 
 ### Show range information for a row in a table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW RANGE FROM TABLE users FOR ROW ('ae147ae1-47ae-4800-8000-000000000022', 'amsterdam', 'Tyler Dalton', '88194 Angela Gardens Suite 94', '4443538758')];
 ~~~
@@ -63,7 +63,7 @@ Field | Description
 
 ### Show range information for a row by a secondary index
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW RANGE FROM INDEX vehicles_auto_index_fk_city_ref_users FOR ROW ('aaaaaaaa-aaaa-4800-8000-00000000000a', 'amsterdam', 'scooter', 'c28f5c28-f5c2-4000-8000-000000000026', '2019-01-02 03:04:05+00:00', 'in_use', '62609 Stephanie Route', '{"color": "red"}')];
 ~~~

@@ -1,0 +1,63 @@
+{% comment %}
+Simplified version-switcher for development mode
+Uses precomputed data and minimal logic for fast builds
+{% endcomment %}
+
+{% if site.development_mode %}
+  {% comment %}Development mode: use precomputed data{% endcomment %}
+  {% assign current_version_data = site.data.version_mappings.versions[page.version.version] %}
+  
+  <div class="mt-3 mb-4">
+    <div id="version-switcher">
+      <ul class="nav">
+        <li class="tier-1">
+          <a href="#">
+            Version <span class="version-name">{{ page.version.name }}</span>{% if current_version_data.is_lts %}&nbsp;LTS&nbsp;{% endif %}
+            <div class="arrow"></div>
+          </a>
+          <ul class="list-unstyled" style="display: none">
+            {% for v in page.versions %}
+              {% assign v_data = site.data.version_mappings.versions[v.version.version] %}
+              {% if v_data.has_releases %}
+                <li class="tier-2 {% if v.version == page.version %}active{% endif %}">
+                  <a data-proofer-ignore
+                  {% if v.url %}
+                    href="{{ v.url | relative_url | replace: "/index.html", "" | replace: ".html", "" | downcase }}"
+                    class="version--mobile"
+                  {% else %}
+                    class="version--mobile version--page-dne"
+                  {% endif %}>
+                    {{ v.version.name }}{% if v_data.is_lts %}&nbsp;LTS&nbsp;{% endif %}
+                    {% unless v.version.tag == "cloud" or v.version.tag == nil %}({% if v.version.version == site.versions["stable"] %}Stable{% elsif v.version.version == site.versions["dev"] %}Dev{% endif %}){% endunless %}
+                    {% unless v.url %}
+                      <span class="version-text--page-dne">
+                        This page does not exist in {{ v.version.version }}
+                      </span>
+                    {% endunless %}
+                  </a>
+                  <a data-proofer-ignore
+                  {% if v.url %}
+                    href="{{ v.url | relative_url | replace: "/index.html", "" | replace: ".html", "" | downcase }}"
+                    class="version--desktop"
+                  {% else %}
+                    class="version--desktop version--page-dne"
+                    data-tooltip data-placement="left" data-container="body" title="This page does not exist in {{ v.version.version }}."
+                  {% endif %}>
+                    {{ v.version.name }}{% if v_data.is_lts %}&nbsp;LTS&nbsp;{% endif %}
+                    {% if v.version.tag %}({% if v.version.version == site.versions["stable"] %}Stable{% elsif v.version.version == site.versions["dev"] %}Dev{% endif %}){% endif %}
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="{{ 'js/initVersionSwitcher.js' | relative_url }}" async></script>
+
+{% else %}
+  {% comment %}Production mode: include full version-switcher{% endcomment %}
+  {% include version-switcher.html %}
+{% endif %}

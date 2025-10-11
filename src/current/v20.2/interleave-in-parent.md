@@ -97,7 +97,7 @@ When converting interleaved tables with `ALTER PRIMARY KEY`, note the following:
 
 For example, suppose you created an interleaved hierarchy between the `customers`, `orders`, and `packages` tables, using the following [`CREATE TABLE`](create-table.html) statements:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers (
     id INT PRIMARY KEY,
@@ -105,7 +105,7 @@ For example, suppose you created an interleaved hierarchy between the `customers
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     customer INT,
@@ -116,7 +116,7 @@ For example, suppose you created an interleaved hierarchy between the `customers
   ) INTERLEAVE IN PARENT customers (customer);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE packages (
     customer INT,
@@ -132,7 +132,7 @@ For example, suppose you created an interleaved hierarchy between the `customers
 
 The `INTERLEAVE IN PARENT` clauses will appear in `SHOW CREATE` statements for the `packages` and `orders` tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE orders;
 ~~~
@@ -151,7 +151,7 @@ The `INTERLEAVE IN PARENT` clauses will appear in `SHOW CREATE` statements for t
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE packages;
 ~~~
@@ -175,17 +175,17 @@ The `INTERLEAVE IN PARENT` clauses will appear in `SHOW CREATE` statements for t
 
 To convert these tables to non-interleaved tables, use `ALTER PRIMARY KEY` statements, starting at the bottom of the hierarchy (i.e., with `packages`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE packages ALTER PRIMARY KEY USING COLUMNS (customer, "order", id);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders ALTER PRIMARY KEY USING COLUMNS (customer, id);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE orders;
 ~~~
@@ -205,7 +205,7 @@ To convert these tables to non-interleaved tables, use `ALTER PRIMARY KEY` state
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE packages;
 ~~~

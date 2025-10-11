@@ -33,7 +33,7 @@ These example assumes that the `bank` database has been set as the current datab
 
 ### Show tables in the current database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -52,12 +52,12 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 
 ### Show tables in a different schema
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM information_schema;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM bank.information_schema; -- also possible
 ~~~
@@ -92,12 +92,12 @@ This uses the [current schema](sql-name-resolution.html#current-schema) `public`
 
 ### Show tables in a different database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM startrek.public;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM startrek; -- also possible
 ~~~

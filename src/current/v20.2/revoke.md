@@ -53,17 +53,17 @@ In addition to the `GRANT` privilege, the user revoking privileges must have the
 
 ### Revoke privileges on databases
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max WITH PASSWORD roach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT CREATE ON DATABASE movr TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE movr;
 ~~~
@@ -89,12 +89,12 @@ In addition to the `GRANT` privilege, the user revoking privileges must have the
 (15 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE CREATE ON DATABASE movr FROM max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE movr;
 ~~~
@@ -121,12 +121,12 @@ Any tables that previously inherited the database-level privileges retain the pr
 
 ### Revoke privileges on specific tables in a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT DELETE ON TABLE rides TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE rides;
 ~~~
@@ -140,12 +140,12 @@ Any tables that previously inherited the database-level privileges retain the pr
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE DELETE ON TABLE rides FROM max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE rides;
 ~~~
@@ -160,12 +160,12 @@ Any tables that previously inherited the database-level privileges retain the pr
 
 ### Revoke privileges on all tables in a database or schema
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT CREATE, SELECT, DELETE ON TABLE rides, users TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE movr.*;
 ~~~
@@ -194,7 +194,7 @@ Any tables that previously inherited the database-level privileges retain the pr
 (18 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE DELETE ON movr.* FROM max;
 ~~~
@@ -224,17 +224,17 @@ Any tables that previously inherited the database-level privileges retain the pr
 
 ### Revoke privileges on schemas
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA cockroach_labs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON SCHEMA cockroach_labs TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
@@ -248,12 +248,12 @@ Any tables that previously inherited the database-level privileges retain the pr
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE CREATE ON SCHEMA cockroach_labs FROM max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
@@ -270,17 +270,17 @@ Any tables that previously inherited the database-level privileges retain the pr
 
 ### Revoke privileges on user-defined types
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('available', 'unavailable');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON TYPE status TO max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TYPE status;
 ~~~
@@ -295,12 +295,12 @@ Any tables that previously inherited the database-level privileges retain the pr
 (4 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE GRANT ON TYPE status FROM max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TYPE status;
 ~~~

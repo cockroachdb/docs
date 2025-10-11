@@ -101,7 +101,7 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 
 {{site.data.alerts.callout_info}}Strictly speaking, a primary key's unique index is not created; it is derived from the key(s) under which the data is stored, so it takes no additional space. However, it appears as a normal unique index when using commands like <code>SHOW INDEX</code>.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE logon (
     user_id INT,
@@ -109,7 +109,7 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM logon;
 ~~~
@@ -124,7 +124,7 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM logon;
 ~~~
@@ -142,7 +142,7 @@ In CockroachDB, every table requires a [primary key](primary-key.html). If one i
 
 In this example, we create a table with three columns. One column is the [`PRIMARY KEY`](primary-key.html), another is given the [`UNIQUE` constraint](unique.html), and the third has no constraints. The `PRIMARY KEY` and column with the `UNIQUE` constraint are automatically indexed.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE logoff (
     user_id INT PRIMARY KEY,
@@ -151,7 +151,7 @@ In this example, we create a table with three columns. One column is the [`PRIMA
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM logoff;
 ~~~
@@ -167,7 +167,7 @@ In this example, we create a table with three columns. One column is the [`PRIMA
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM logoff;
 ~~~
@@ -191,7 +191,7 @@ In this example, we create two secondary indexes during table creation. Secondar
 
 This example also demonstrates a number of column-level and table-level [constraints](constraints.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE product_information (
     product_id           INT PRIMARY KEY NOT NULL,
@@ -214,7 +214,7 @@ This example also demonstrates a number of column-level and table-level [constra
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM product_information;
 ~~~
@@ -262,7 +262,7 @@ You can include a [foreign key action](foreign-key.html#foreign-key-actions) to 
 
 In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a foreign key constraint is deleted, all dependent rows are also deleted).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers (
     id INT PRIMARY KEY,
@@ -270,7 +270,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     id INT PRIMARY KEY,
@@ -278,7 +278,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE orders;
 ~~~
@@ -308,22 +308,22 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers VALUES (1, 'Lauren');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders VALUES (1,1);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers WHERE id = 1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders;
 ~~~
@@ -342,7 +342,7 @@ In this example, we use `ON DELETE CASCADE` (i.e., when row referenced by a fore
 
 You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a new table from the results of a `SELECT` statement, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers WHERE state = 'NY';
 ~~~
@@ -356,12 +356,12 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 +----+---------+-------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_ny AS SELECT * FROM customers WHERE state = 'NY';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_ny;
 ~~~
@@ -389,7 +389,7 @@ The primary key required for partitioning is different from the conventional pri
 
 In this example, we create a table and [define partitions by list](partitioning.html#partition-by-list).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_list (
     id INT DEFAULT unique_rowid(),
@@ -408,7 +408,7 @@ In this example, we create a table and [define partitions by list](partitioning.
 
 In this example, we create a table and [define partitions by range](partitioning.html#partition-by-range).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_range (
    id INT DEFAULT unique_rowid(),
@@ -426,7 +426,7 @@ In this example, we create a table and [define partitions by range](partitioning
 
 To show the definition of a table, use the [`SHOW CREATE`](show-create.html) statement. The contents of the `create_statement` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE logoff;
 ~~~

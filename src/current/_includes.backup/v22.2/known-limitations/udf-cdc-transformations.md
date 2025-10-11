@@ -1,0 +1,1 @@
+- {% if page.name == "cdc-transformations.md" %} CDC transformations {% else %} [CDC transformations](cdc-transformations.html) {% endif %} do not support {% if page.name == "user-defined-functions.md" %} user-defined functions {% else %} [user-defined functions](user-defined-functions.html). {% endif %}

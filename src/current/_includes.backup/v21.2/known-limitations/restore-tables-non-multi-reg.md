@@ -1,0 +1,1 @@
+Restoring [`GLOBAL`](multiregion-overview.html#global-tables) and [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) tables into a **non**-multi-region database is not supported. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71502)

@@ -27,7 +27,7 @@ notations, and those defined using
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *
    FROM [INSERT INTO t(x) VALUES (1), (2), (3) RETURNING x]
@@ -48,7 +48,7 @@ names defined in the surrounding query.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 # Find every customer with at least one order.
 > SELECT c.name

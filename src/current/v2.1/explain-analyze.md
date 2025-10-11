@@ -61,7 +61,7 @@ Any or all of the above fields may display for a given query plan.
 
 `EXPLAIN ANALYZE` will execute the query and generate a physical query plan with execution statistics:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN ANALYZE SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~

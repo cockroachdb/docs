@@ -1,0 +1,1 @@
+Following a change to the backup frequency or retention setting, the cluster will take a full backup immediately, which may impact CPU usage on the cluster. If you are disabling managed backups, the cluster will not take a backup following the change.

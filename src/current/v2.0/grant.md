@@ -49,12 +49,12 @@ Parameter | Description
 
 ### Grant Privileges on Databases
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT CREATE ON DATABASE db1, db2 TO maxroach, betsyroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE db1, db2;
 ~~~
@@ -75,12 +75,12 @@ Parameter | Description
 
 ### Grant Privileges on Specific Tables in a Database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT DELETE ON TABLE db1.t1, db1.t2 TO betsyroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE db1.t1, db1.t2;
 ~~~
@@ -99,12 +99,12 @@ Parameter | Description
 
 ### Grant Privileges on All Tables in a Database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT ON TABLE db2.* TO henryroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE db2.*;
 ~~~

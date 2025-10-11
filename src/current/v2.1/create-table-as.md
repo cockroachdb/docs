@@ -61,7 +61,7 @@ default rules for [column families](column-families.html) apply.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE logoff (
     user_id INT PRIMARY KEY,
@@ -70,12 +70,12 @@ For example:
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE logoff_copy AS TABLE logoff;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE logoff_copy;
 ~~~
@@ -102,12 +102,12 @@ It is however possible to
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX logoff_copy_id_idx ON logoff_copy(user_id);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE logoff_copy;
 ~~~
@@ -135,7 +135,7 @@ results.
 
 ### Create a table from a `SELECT` query
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers WHERE state = 'NY';
 ~~~
@@ -148,12 +148,12 @@ results.
 +----+---------+-------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_ny AS SELECT * FROM customers WHERE state = 'NY';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_ny;
 ~~~
@@ -170,12 +170,12 @@ results.
 
 This statement creates a copy of an existing table but with changed column names.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_ny (id, first_name) AS SELECT id, name FROM customers WHERE state = 'NY';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_ny;
 ~~~
@@ -190,12 +190,12 @@ This statement creates a copy of an existing table but with changed column names
 
 ### Create a table from a `VALUES` clause
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE tech_states AS VALUES ('CA'), ('NY'), ('WA');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM tech_states;
 ~~~
@@ -213,12 +213,12 @@ This statement creates a copy of an existing table but with changed column names
 
 ### Create a copy of an existing table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_ny_copy AS TABLE customers_ny;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_ny_copy;
 ~~~

@@ -36,7 +36,7 @@ For secure clusters, you can avoid getting the warning message by using a certif
 2. Rename the certificate and key as `ui.crt` and `ui.key`.
 3. Add the `ui.crt` and `ui.key` to the [certificate directory](create-security-certificates.html#certificate-directory). `ui.key` must not have group or world permissions (maximum permissions are 0700, or rwx------). You can disable this check by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK=true`.
 4. For nodes that are already running, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the cockroach process:
-   {% include copy-clipboard.html %}
+   {% include_cached copy-clipboard.html %}
    ~~~ shell
    pkill -SIGHUP -x cockroach
    ~~~

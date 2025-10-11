@@ -54,12 +54,12 @@ Parameter | Description
 
 ### Grant privileges on databases
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT CREATE ON DATABASE db1, db2 TO maxroach, betsyroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE db1, db2;
 ~~~
@@ -80,12 +80,12 @@ Parameter | Description
 
 ### Grant privileges on specific tables in a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT DELETE ON TABLE db1.t1, db1.t2 TO betsyroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE db1.t1, db1.t2;
 ~~~
@@ -104,12 +104,12 @@ Parameter | Description
 
 ### Grant privileges on all tables in a database
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT ON TABLE db2.* TO henryroach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE db2.*;
 ~~~
@@ -128,12 +128,12 @@ Parameter | Description
 
 ### Make a table readable to every user in the system
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT ON TABLE myTable TO public;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE myTable;
 ~~~
@@ -149,7 +149,7 @@ Parameter | Description
 
 ### Grant the privilege to manage the replication zones for a database or table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ZONECONFIG ON TABLE mytable TO myuser;
 ~~~

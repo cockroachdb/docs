@@ -23,7 +23,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 To install Sequelize, as well as a [CockroachDB Node.js package](https://github.com/cockroachdb/sequelize-cockroachdb) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ npm install sequelize sequelize-cockroachdb
 ~~~
@@ -37,14 +37,14 @@ The following code uses the [Sequelize](https://sequelize.org/) ORM to map Node.
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/sequelize-basic-sample.js" download>download it directly</a>.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ js
 {% include {{ page.version.version }}/app/sequelize-basic-sample.js %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ node sequelize-basic-sample.js
 ~~~
@@ -58,7 +58,7 @@ The output should be:
 
 To verify that the table and rows were created successfully, you can again use the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SHOW TABLES' --database=bank
 ~~~
@@ -72,7 +72,7 @@ $ cockroach sql --insecure -e 'SHOW TABLES' --database=bank
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~

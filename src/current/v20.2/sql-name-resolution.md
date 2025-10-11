@@ -101,17 +101,17 @@ The name resolution algorithm for index names supports both partial and complete
 
 The examples below use the following logical schema as a starting point:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE mydb;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE mydb.mytable(x INT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET database = mydb;
 ~~~
@@ -120,19 +120,19 @@ The examples below use the following logical schema as a starting point:
 
 An unqualified name is a name with no prefix, that is, a simple identifier.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM mytable;
 ~~~
 
 This uses the search path over the current database. The search path is `$user` by default, in the current database. If a `$user` schema does not exist, the search path resolves to the `public` schema. In this case, there is no `$user` schema, and the resolved name is `mydb.public.mytable`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET database = system;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM mytable;
 ~~~
@@ -150,7 +150,7 @@ look up fails with an error.
 A fully qualified name is a name with two prefix components, that is,
 three identifiers separated by periods.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM mydb.public.mytable;
 ~~~
@@ -164,7 +164,7 @@ A partially qualified name is a name with one prefix component, that is, two ide
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM public.mytable;
 ~~~
@@ -174,7 +174,7 @@ database. If the current database is `mydb`, the lookup succeeds.
 
 To ease development in multi-database scenarios, CockroachDB also allows queries to specify a database name in a partially qualified name. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM mydb.mytable;
 ~~~
@@ -192,17 +192,17 @@ Suppose that a client frequently accesses a stored table as well as a virtual ta
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM mydb.information_schema.schemata; -- valid
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.schemata; -- valid; uses mydb implicitly
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM schemata; -- invalid; information_schema not in search_path
 ~~~
@@ -210,12 +210,12 @@ For example:
 For clients that use `information_schema` often, you can add it to the
 search path to simplify queries. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET search_path = public, information_schema;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM schemata; -- now valid, uses search_path
 ~~~
@@ -231,17 +231,17 @@ or `crdb_internal`.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE public;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET database = mydb;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE public.mypublictable (x INT);
 ~~~
@@ -254,12 +254,12 @@ in the current database, the full name of `mypublictable` becomes
 To create the table in database `public`, one would instead use a
 fully qualified name, as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE public;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE public.public.mypublictable (x INT);
 ~~~

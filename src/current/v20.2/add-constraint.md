@@ -59,7 +59,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for *NULL* values).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD CONSTRAINT id_name_unique UNIQUE (id, name);
 ~~~
@@ -68,14 +68,14 @@ Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's va
 
 Adding the [`CHECK` constraint](check.html) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE rides ADD CONSTRAINT check_revenue_positive CHECK (revenue >= 0);
 ~~~
 
 Check constraints can be added to columns that were created earlier in the transaction. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > ALTER TABLE users ADD COLUMN is_owner STRING;
@@ -103,7 +103,7 @@ To add a foreign key constraint, use the steps shown below.
 
 Given two tables, `users` and `vehicles`, without foreign key constraints:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE users;
 ~~~
@@ -123,7 +123,7 @@ Given two tables, `users` and `vehicles`, without foreign key constraints:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE vehicles;
 ~~~
@@ -154,7 +154,7 @@ Using `ON DELETE CASCADE` will ensure that when the referenced row is deleted, a
 `CASCADE` does not list the objects it drops or updates, so it should be used with caution.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE vehicles ADD CONSTRAINT users_fk FOREIGN KEY (city, owner_id) REFERENCES users (city, id) ON DELETE CASCADE;
 ~~~
@@ -167,7 +167,7 @@ Using `ON DELETE CASCADE` will ensure that when the referenced row is deleted, a
 
 Suppose that you want to add `name` to the composite primary key of the `users` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -189,14 +189,14 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
 
 First, add a [`NOT NULL`](not-null.html) constraint to the `name` column with [`ALTER COLUMN`](alter-column.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ALTER COLUMN name SET NOT NULL;
 ~~~
 
 Then, in the same transaction, [`DROP`](drop-constraint.html) the old `"primary"` constraint and `ADD` the new one:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > ALTER TABLE users DROP CONSTRAINT "primary";
@@ -208,7 +208,7 @@ Then, in the same transaction, [`DROP`](drop-constraint.html) the old `"primary"
 NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~

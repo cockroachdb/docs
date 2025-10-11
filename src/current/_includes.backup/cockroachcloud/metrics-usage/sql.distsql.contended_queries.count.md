@@ -1,0 +1,1 @@
+This metric is incremented whenever there is a non-trivial amount of [contention]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}#transaction-contention) experienced by a statement whether read-write or write-write conflicts. Monitor this metric to correlate possible workload performance issues to contention conflicts.

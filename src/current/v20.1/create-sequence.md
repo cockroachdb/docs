@@ -83,17 +83,17 @@ To create a temporary sequence, add [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_te
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET experimental_enable_temp_tables=on;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TEMP SEQUENCE temp_seq START 1 INCREMENT 1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE temp_seq;
 ~~~
@@ -111,12 +111,12 @@ For example:
 
 In this example, we create a sequence with default settings.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE customer_seq;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE customer_seq;
 ~~~
@@ -132,12 +132,12 @@ In this example, we create a sequence with default settings.
 
 In this example, we create a sequence that starts at -1 and descends in increments of 2.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE desc_customer_list START -1 INCREMENT -2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE desc_customer_list;
 ~~~
@@ -153,7 +153,7 @@ In this example, we create a sequence that starts at -1 and descends in incremen
 
 To view the current value without incrementing the sequence, use:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customer_seq;
 ~~~
@@ -182,7 +182,7 @@ If a value has been obtained from the sequence in the current session, you can a
 
 ### List all sequences
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.sequences;
 ~~~

@@ -66,7 +66,7 @@ Table | Description
 
 To list the `crdb_internal` tables for the [current database](sql-name-resolution.html#current-database), use the following [`SHOW TABLES`](show-tables.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM crdb_internal;
 ~~~
@@ -94,7 +94,7 @@ Unless specified otherwise, queries to `crdb_internal` assume the [current datab
 
 For example, to return the `crdb_internal` table for the ranges of the [`movr`](movr.html) database, you can use the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.crdb_internal.ranges;
 ~~~

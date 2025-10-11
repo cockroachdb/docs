@@ -29,7 +29,7 @@ Collated strings are used as normal strings in SQL, but have a `COLLATE` clause 
 
 - **Column syntax**: `STRING COLLATE <collation>`. For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE foo (a STRING COLLATE en PRIMARY KEY);
     ~~~
@@ -38,7 +38,7 @@ Collated strings are used as normal strings in SQL, but have a `COLLATE` clause 
 
 - **Value syntax**: `<STRING value> COLLATE <collation>`. For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO foo VALUES ('dog' COLLATE en);
     ~~~
@@ -51,21 +51,21 @@ You can set a default collation for all values in a `STRING` column.
 
 For example, you can set a column's default collation to German (`de`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE de_names (name STRING COLLATE de PRIMARY KEY);
 ~~~
 
 When inserting values into this column, you must specify the collation for every value:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO de_names VALUES ('Backhaus' COLLATE de), ('Bär' COLLATE de), ('Baz' COLLATE de);
 ~~~
 
 The sort will now honor the `de` collation that treats *ä* as *a* in alphabetic sorting:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM de_names ORDER BY name;
 ~~~
@@ -85,7 +85,7 @@ You can sort a column using a specific collation instead of its default.
 
 For example, you receive different results if you order results by German (`de`) and Swedish (`sv`) collations:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM de_names ORDER BY name COLLATE sv;
 ~~~
@@ -103,7 +103,7 @@ For example, you receive different results if you order results by German (`de`)
 
 You can cast any string into a collation on the fly.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'A' COLLATE de < 'Ä' COLLATE de;
 ~~~
@@ -113,7 +113,7 @@ true
 
 However, you cannot compare values with different collations:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT 'Ä' COLLATE sv < 'Ä' COLLATE de;
 ~~~
@@ -123,7 +123,7 @@ pq: unsupported comparison operator: <collatedstring{sv}> < <collatedstring{de}>
 
 You can also use casting to remove collations from values.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT CAST(name AS STRING) FROM de_names ORDER BY name;
 ~~~

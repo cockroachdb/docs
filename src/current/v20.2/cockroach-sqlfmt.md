@@ -57,7 +57,7 @@ Using the interactive query formatter, output with the default column width (80 
 
 1. Start the interactive query formatter:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sqlfmt
     ~~~
@@ -66,7 +66,7 @@ Using the interactive query formatter, output with the default column width (80 
 
 3. Run the query:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE animals (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);
     ~~~
@@ -81,7 +81,7 @@ Using the interactive query formatter, output with the default column width (80 
 
 Using the command line, output with the column width set to `40`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sqlfmt --print-width 40 -e "CREATE TABLE animals (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);"
 ~~~
@@ -115,7 +115,7 @@ build = $1 AND (hero = $2 OR region = $3)
 
 Output with vertical alignment:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sqlfmt --align -e "SELECT winner, round(length / (60 * 5)) AS counter FROM players WHERE build = $1 AND (hero = $2 OR region = $3);"
 ~~~
@@ -130,7 +130,7 @@ SELECT winner, round(length / (60 * 5)) AS counter
 
 Output with the default simplification of parentheses:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sqlfmt -e "SELECT (1 * 2) + 3, (1 + 2) * 3;"
 ~~~
@@ -141,7 +141,7 @@ SELECT 1 * 2 + 3, (1 + 2) * 3
 
 Output with no simplification of parentheses:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sqlfmt --no-simplify -e "SELECT (1 * 2) + 3, (1 + 2) * 3;"
 ~~~

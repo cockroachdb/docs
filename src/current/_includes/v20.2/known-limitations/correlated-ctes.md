@@ -2,7 +2,7 @@ CockroachDB does not support correlated common table expressions. This means tha
 
 For example, the following query returns an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users
   WHERE id =

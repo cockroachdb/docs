@@ -43,7 +43,7 @@ CockroachDB does not currently support:
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
 ~~~
@@ -58,17 +58,17 @@ CockroachDB does not currently support:
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER VIEW bank.user_emails RENAME TO bank.user_email_addresses;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 > RENAME VIEW
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
 ~~~

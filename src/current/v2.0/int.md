@@ -36,12 +36,12 @@ You can use the `BIT(n)` type, with `n` from 1 to 64, to constrain integers base
 
 ## Examples
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE ints (a INT PRIMARY KEY, b SMALLINT, c BIT(5));
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM ints;
 ~~~
@@ -57,7 +57,7 @@ You can use the `BIT(n)` type, with `n` from 1 to 64, to constrain integers base
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO ints VALUES (1, 32, 32);
 ~~~
@@ -66,7 +66,7 @@ You can use the `BIT(n)` type, with `n` from 1 to 64, to constrain integers base
 pq: bit string too long for type BIT(5) (column "c")
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO ints VALUES (1, 32, 31);
 ~~~
@@ -75,7 +75,7 @@ pq: bit string too long for type BIT(5) (column "c")
 INSERT 1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM ints;
 ~~~

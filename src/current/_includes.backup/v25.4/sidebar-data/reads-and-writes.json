@@ -1,0 +1,189 @@
+{
+  "title": "Reads and Writes",
+  "is_top_level": true,
+  "items": [
+    {
+        "title": "Overview",
+        "urls": [
+          "/${VERSION}/architecture/reads-and-writes-overview.html"
+        ]
+    },
+    {
+      "title": "Read Data",
+      "items": [
+        {
+          "title": "Query Data",
+          "urls": [
+            "/${VERSION}/query-data.html"
+          ]
+        },
+        {
+          "title": "Reusable Views",
+          "urls": [
+            "/${VERSION}/views.html"
+          ]
+        },
+        {
+          "title": "Subqueries",
+          "urls": [
+            "/${VERSION}/subqueries.html"
+          ]
+        },
+        {
+          "title": "Temporary Tables",
+          "urls": [
+            "/${VERSION}/temporary-tables.html"
+          ]
+        },
+        {
+          "title": "Paginate Results",
+          "urls": [
+            "/${VERSION}/pagination.html"
+          ]
+        },
+        {
+          "title": "Follower Reads",
+          "urls": [
+            "/${VERSION}/follower-reads.html"
+          ]
+        },
+        {
+          "title": "<code>AS OF SYSTEM TIME</code>",
+          "urls": [
+            "/${VERSION}/as-of-system-time.html"
+          ]
+        },
+        {
+          "title": "Query Spatial Data",
+          "urls": [
+            "/${VERSION}/query-spatial-data.html"
+          ]
+        },
+        {
+          "title": "Export Spatial Data",
+          "urls": [
+          "/${VERSION}/export-spatial-data.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Write Data",
+      "items": [
+        {
+          "title": "Insert Data",
+          "urls": [
+            "/${VERSION}/insert-data.html"
+          ]
+        },
+        {
+          "title": "Update Data",
+          "urls": [
+            "/${VERSION}/update-data.html"
+          ]
+        },
+        {
+          "title": "Bulk-update Data",
+          "urls": [
+            "/${VERSION}/bulk-update-data.html"
+          ]
+        },
+        {
+          "title": "Delete Data",
+          "urls": [
+            "/${VERSION}/delete-data.html"
+          ]
+        },
+        {
+          "title": "Bulk-delete Data",
+          "urls": [
+            "/${VERSION}/bulk-delete-data.html"
+          ]
+        },
+        {
+          "title": "Batch Delete Expired Data with Row-Level TTL",
+          "urls": [
+            "/${VERSION}/row-level-ttl.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Transactions",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/transactions.html"
+          ]
+        },
+        {
+          "title": "Advanced Client-side Transaction Retries",
+          "urls": [
+            "/${VERSION}/advanced-client-side-transaction-retries.html"
+          ]
+        },
+        {
+          "title": "Life of a Distributed Transaction",
+          "urls": [
+            "/${VERSION}/architecture/life-of-a-distributed-transaction.html"
+          ]
+        },
+        {
+          "title": "Read Committed Transactions",
+          "urls": [
+            "/${VERSION}/read-committed.html"
+          ]
+        }        
+      ]
+    },
+    {
+      "title": "Test Your Application Locally",
+      "urls": [
+        "/${VERSION}/local-testing.html"
+      ]
+    },
+    {
+      "title": "JSON Support",
+      "urls": [
+        "/${VERSION}/demo-json-support.html"
+      ]
+    },
+    {
+      "title": "Spatial Data",
+      "urls": [
+        "/${VERSION}/spatial-tutorial.html"
+      ]
+    },
+    {
+      "title": "Cross-Cloud Migration",
+      "urls": [
+        "/${VERSION}/demo-automatic-cloud-migration.html"
+      ]
+    },
+    {
+      "title": "SQL Playground",
+      "is_top_level": true,
+      "urls": [
+        "https://www.cockroachlabs.com/docs/tutorials/sql-playground"
+      ]
+    },
+    {
+      "title": "Database Management Tools",
+      "items": [
+        {
+          "title": "DBeaver GUI",
+          "urls": [
+            "/${VERSION}/dbeaver.html"
+          ]
+        },
+        {
+          "title": "IntelliJ IDEA",
+          "urls": [
+            "/${VERSION}/intellij-idea.html"
+          ]
+        }
+      ]
+    }
+  ]
+}

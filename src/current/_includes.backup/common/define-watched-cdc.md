@@ -1,0 +1,1 @@
+The main feature of {% if page.name == "change-data-capture-overview.md" %} CockroachDB CDC {% else %} [CockroachDB CDC]({% link {{site.current_cloud_version}}/change-data-capture-overview.md %}) {% endif %} is the _changefeed_, which targets an allowlist of tables, known as _watched tables_.

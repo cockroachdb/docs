@@ -1,0 +1,3 @@
+<a name="connection-string"></a>After the cluster is created, the **Connection info** window appears. Click the **Connection string** tab and copy the connection string to a secure location. You will use this connection string to connect to CockroachDB later in the tutorial.
+
+The connection string is pre-populated with your SQL username and password, the cluster name, and other details. Save the password in a secure place such a password manager. You can find the connection string at any time from the CockroachDB Cloud Console. You can reset your SQL password for this cluster from the cluster's **SQL Users** page.

@@ -1,0 +1,1 @@
+- In its current implementation, this statement does not drop [functions](user-defined-functions.html). Users must drop their functions manually. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/90476)

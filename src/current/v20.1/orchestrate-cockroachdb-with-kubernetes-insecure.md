@@ -88,7 +88,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 3. Verify that a fourth pod was added successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -112,7 +112,7 @@ To shut down the CockroachDB cluster:
 1. Delete all of the resources you created, including the logs and remote persistent volumes:
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
     ~~~
@@ -142,7 +142,7 @@ To shut down the CockroachDB cluster:
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm uninstall my-release
     ~~~
@@ -155,25 +155,25 @@ To shut down the CockroachDB cluster:
 2. Stop Kubernetes:
     - Hosted GKE:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ gcloud container clusters delete cockroachdb --region {region-name}
         ~~~
     - Hosted EKS:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ eksctl delete cluster --name cockroachdb
         ~~~
     - Manual GCE:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ cluster/kube-down.sh
         ~~~
     - Manual AWS:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ cluster/kube-down.sh
         ~~~

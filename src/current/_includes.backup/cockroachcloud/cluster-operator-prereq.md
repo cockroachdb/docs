@@ -1,0 +1,1 @@
+Either the [Cluster Operator]({% link cockroachcloud/authorization.md %}#cluster-operator) or [Cluster Admin]({% link cockroachcloud/authorization.md %}#cluster-admin) role on an existing cluster, or the [Cluster Creator](authorization.html#cluster-creator) role in order to create a new cluster.

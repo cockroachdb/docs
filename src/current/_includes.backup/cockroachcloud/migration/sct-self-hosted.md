@@ -1,0 +1,5 @@
+{% if page.cloud != true %}
+If you are migrating to a CockroachDB {{ site.data.products.core }} database, you can [export the converted schema]({% link cockroachcloud/migrations-page.md %}#export-the-schema) from the Schema Conversion Tool and execute the statements in [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}), or use a third-party schema migration tool such as [Alembic]({% link {{ page.version.version }}/alembic.md %}), [Flyway]({% link {{ page.version.version }}/flyway.md %}), or [Liquibase]({% link {{ page.version.version }}/liquibase.md %}).
+{% else %}
+To migrate to a CockroachDB {{ site.data.products.core }} database, you can execute the statements in [`cockroach sql`]({% link {{version_prefix}}cockroach-sql.md %}), or use a third-party schema migration tool such as [Alembic]({% link {{version_prefix}}alembic.md %}), [Flyway]({% link {{site.current_cloud_version}}/flyway.md %}), or [Liquibase]({% link {{site.current_cloud_version}}/liquibase.md %}).
+{% endif %}

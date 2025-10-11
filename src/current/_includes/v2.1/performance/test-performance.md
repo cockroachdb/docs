@@ -8,7 +8,7 @@ For example, imagine we are a Movr administrator in New York, and we want to get
 
 2. Query for the data:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ {{page.app}} \
     --host=<address of a node in us-east1-b> \
@@ -46,7 +46,7 @@ For contrast, imagine we are now a Movr administrator in Los Angeles, and we wan
 
 2. Query for the data:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ {{page.app}} \
     --host=<address of a node in us-west2-a> \
@@ -84,7 +84,7 @@ The geographic distribution of data impacts write performance as well. For examp
 
 2. Create 100 Seattle-based users:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     {{page.app}} \
     --host=<address of a node in us-west1-a> \
@@ -105,7 +105,7 @@ The geographic distribution of data impacts write performance as well. For examp
 
 4. Create 100 new NY-based users:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     {{page.app}} \
     --host=<address of a node in us-east1-b> \
@@ -124,7 +124,7 @@ The geographic distribution of data impacts write performance as well. For examp
 
 It took 48.40ms to create a user in Seattle and 116.86ms to create a user in New York. To better understand this discrepancy, let's look at the distribution of data for the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 {{page.certs}} \

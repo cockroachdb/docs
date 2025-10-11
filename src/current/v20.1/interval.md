@@ -72,12 +72,12 @@ If the interval input is ambiguous, specifying two duration fields stores the in
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE intervals (a INT PRIMARY KEY, b INTERVAL);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM intervals;
 ~~~
@@ -90,7 +90,7 @@ If the interval input is ambiguous, specifying two duration fields stores the in
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO
     intervals
@@ -99,7 +99,7 @@ If the interval input is ambiguous, specifying two duration fields stores the in
            (3, '1-2 3 4:5:6');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM intervals;
 ~~~

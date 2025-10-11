@@ -29,7 +29,7 @@ No [privileges](authorization.html#assign-privileges) are required to release a 
 
 After declaring `SAVEPOINT cockroach_restart`, commit the transaction with `RELEASE SAVEPOINT cockroach_restart` and then prepare the connection for the next transaction with `COMMIT`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 

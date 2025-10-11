@@ -65,7 +65,7 @@ Setting the [`DEFAULT` value constraint](default-value.html) inserts the value w
 
 The below example inserts the Boolean value `true` whenever you inserted data to the `subscriptions` table without defining a value for the `newsletter` column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter SET DEFAULT true;
 ~~~
@@ -74,7 +74,7 @@ The below example inserts the Boolean value `true` whenever you inserted data to
 
 If the column has a defined [`DEFAULT` value](default-value.html), you can remove the constraint, which means the column will no longer insert a value by default if one is not explicitly defined for the column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP DEFAULT;
 ~~~
@@ -83,7 +83,7 @@ If the column has a defined [`DEFAULT` value](default-value.html), you can remov
 
 Setting the  [`NOT NULL` constraint](not-null.html) specifies that the column cannot contain `NULL` values.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter SET NOT NULL;
 ~~~
@@ -92,7 +92,7 @@ Setting the  [`NOT NULL` constraint](not-null.html) specifies that the column ca
 
 If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you can remove the constraint, which means the column becomes optional and can have *NULL* values written into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE subscriptions ALTER COLUMN newsletter DROP NOT NULL;
 ~~~
@@ -109,7 +109,7 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 
 The [TPC-C](performance-benchmarking-with-tpcc-small.html) database contains a `customer` table with a column `c_credit_lim` of type [`DECIMAL(10,2)`](decimal.html). Suppose you want to increase the precision of the column's data type to `DECIMAL (12,2)`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE customer ALTER c_credit_lim type DECIMAL (12,2);
 ~~~

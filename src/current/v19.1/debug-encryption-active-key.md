@@ -20,14 +20,14 @@ $ cockroach debug encryption-active-key [path specified by the store flag]
 
 Start a node with encryption-at-rest enabled:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-data,key=aes-128.key,old-key=plain --insecure --certs-dir=certs
 ~~~
 
 View the encryption algorithm and store key:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug encryption-active-key cockroach-data
 ~~~

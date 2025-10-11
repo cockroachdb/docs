@@ -50,7 +50,7 @@ Parameter | Description
 
 <span class="version-tag">New in v2.1:</span> To cancel multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `CANCEL JOBS` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CANCEL JOBS (SELECT job_id FROM [SHOW JOBS]
       WHERE user_name = 'maxroach');

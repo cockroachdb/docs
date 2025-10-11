@@ -97,12 +97,12 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 1. Create two directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir my-safe-directory
     ~~~
@@ -111,14 +111,14 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 2. Generate the CA certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -132,7 +132,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 1. Generate the certificate and key for the first node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     node1.example.com \
@@ -141,7 +141,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -155,13 +155,13 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 2. Upload certificates to the first node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh <username>@<node1 address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
@@ -172,7 +172,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 3. Delete the local copy of the first node's certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm certs/node.crt certs/node.key
     ~~~
@@ -181,7 +181,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 4. Create the certificate and key for the second node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     node2.example.com \
@@ -190,7 +190,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -204,13 +204,13 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 5. Upload certificates to the second node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh <username>@<node2 address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
@@ -223,7 +223,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ### Create the certificate and key pair for a client
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client \
 maxroach \
@@ -231,7 +231,7 @@ maxroach \
 --ca-key=my-safe-directory/ca.key
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ls -l certs
 ~~~
@@ -247,7 +247,7 @@ total 40
 
 ### List certificates and keys
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert list \
 --certs-dir=certs

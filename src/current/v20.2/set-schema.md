@@ -53,7 +53,7 @@ Suppose you want to add the `promo_codes` table to a new schema called `cockroac
 
 By default, [unqualified tables](sql-name-resolution.html#lookup-with-unqualified-names) created in the database belong to the `public` schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -72,19 +72,19 @@ By default, [unqualified tables](sql-name-resolution.html#lookup-with-unqualifie
 
 If the new schema does not already exist, [create it](create-schema.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
 Then, change the table's schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE promo_codes SET SCHEMA cockroach_labs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -105,12 +105,12 @@ Then, change the table's schema:
 
 Suppose you [create a sequence](create-sequence.html) that you would like to add to a new schema called `cockroach_labs`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE even_numbers INCREMENT 2 START 2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -124,7 +124,7 @@ Suppose you [create a sequence](create-sequence.html) that you would like to add
 
 By default, [unqualified sequences](sql-name-resolution.html#lookup-with-unqualified-names) created in the database belong to the `public` schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE public.even_numbers;
 ~~~
@@ -138,19 +138,19 @@ By default, [unqualified sequences](sql-name-resolution.html#lookup-with-unquali
 
 If the new schema does not already exist, [create it](create-schema.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
 Then, change the sequence's schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER SEQUENCE even_numbers SET SCHEMA cockroach_labs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE public.even_numbers;
 ~~~
@@ -160,7 +160,7 @@ ERROR: relation "public.even_numbers" does not exist
 SQLSTATE: 42P01
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -172,7 +172,7 @@ SQLSTATE: 42P01
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE cockroach_labs.even_numbers;
 ~~~
@@ -188,14 +188,14 @@ SQLSTATE: 42P01
 
 Suppose you create a new view that you want to add to a schema called `cockroach_labs`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW expensive_rides (id, revenue) AS SELECT id, revenue FROM rides WHERE revenue > 50;
 ~~~
 
 By default, [unqualified views](sql-name-resolution.html#lookup-with-unqualified-names) created in the database belong to the `public` schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE public.expensive_rides;
 ~~~
@@ -209,19 +209,19 @@ By default, [unqualified views](sql-name-resolution.html#lookup-with-unqualified
 
 If the new schema does not already exist, [create it](create-schema.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
 Then, change the view's schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER VIEW expensive_rides SET SCHEMA cockroach_labs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE public.expensive_rides;
 ~~~
@@ -231,7 +231,7 @@ ERROR: relation "public.expensive_rides" does not exist
 SQLSTATE: 42P01
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE cockroach_labs.expensive_rides;
 ~~~

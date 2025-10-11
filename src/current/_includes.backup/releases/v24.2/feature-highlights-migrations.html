@@ -1,0 +1,44 @@
+<table>
+ <thead>
+  <tr>
+   <th class="center-align" colspan="1" rowspan="2">Feature</th>
+   <th class="center-align" colspan="4" rowspan="1">Availability</th>
+  </tr>
+  <tr>
+   <th colspan="1" rowspan="1">Ver.</th>
+   <th colspan="1" rowspan="1" style="white-space: nowrap;">Self-Hosted</th>
+   <th colspan="1" rowspan="1">Dedicated</th>
+   <th colspan="1" rowspan="1">Serverless</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>
+    <p class="feature-summary">MOLT tooling is now available as a Docker container</p>
+    <p class="feature-description">
+      Users can now deploy CockroachDB's MOLT <a href="https://www.cockroachlabs.com/docs/molt/molt-fetch.html">Fetch</a> and <a href="https://www.cockroachlabs.com/docs/molt/molt-verify.html">Verify</a> tools using a multi-platform Docker image that supports both <code>linux/amd64</code> and <code>linux/arm64</code> architectures. For installation details, refer to <a href="https://www.cockroachlabs.com/docs/releases/molt.html">MOLT Releases</a>.
+    </p>
+   </td>
+   <td>All<sup>&starf;&starf;</sup>
+   </td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+  <tr>
+   <td>
+    <p class="feature-summary">
+       MOLT Fetch transformation rules
+     </p>
+    <p class="feature-description">
+       Column exclusion, computed columns, and partitioned tables are now supported in table migrations with MOLT Fetch. They are supported via a new <a href="https://www.cockroachlabs.com/docs/molt/molt-fetch.html#transformations">transformations framework</a> that allows the user to specify a JSON file with instructions on how MOLT Fetch should treat certain schemas, tables, or underlying columns.
+     </p>
+   </td>
+   <td>All<sup>&starf;&starf;</sup>
+   </td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+   <td class="icon-center">{% include icon-yes.html %}</td>
+  </tr>
+ </tbody>
+</table>

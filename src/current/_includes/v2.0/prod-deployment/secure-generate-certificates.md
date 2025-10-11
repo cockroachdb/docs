@@ -12,12 +12,12 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 2. Create two directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir my-safe-directory
     ~~~
@@ -26,7 +26,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 3. Create the CA certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
   	~~~ shell
   	$ cockroach cert create-ca \
   	--certs-dir=certs \
@@ -35,7 +35,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
   	~~~ shell
   	$ cockroach cert create-node \
   	<node1 internal IP address> \
@@ -53,13 +53,13 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 5. Upload certificates to the first node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
   	~~~ shell
   	# Create the certs directory:
   	$ ssh <username>@<node1 address> "mkdir certs"
   	~~~
 
-  	{% include copy-clipboard.html %}
+  	{% include_cached copy-clipboard.html %}
   	~~~ shell
   	# Upload the CA certificate and node certificate and key:
   	$ scp certs/ca.crt \
@@ -70,7 +70,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 6. Delete the local copy of the node certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm certs/node.crt certs/node.key
     ~~~
@@ -79,7 +79,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
   	~~~ shell
   	$ cockroach cert create-node \
   	<node2 internal IP address> \
@@ -97,13 +97,13 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 8. Upload certificates to the second node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
   	~~~ shell
   	# Create the certs directory:
   	$ ssh <username>@<node2 address> "mkdir certs"
   	~~~
 
-  	{% include copy-clipboard.html %}
+  	{% include_cached copy-clipboard.html %}
   	~~~ shell
   	# Upload the CA certificate and node certificate and key:
   	$ scp certs/ca.crt \
@@ -116,7 +116,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 10. Create a client certificate and key for the `root` user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
   	~~~ shell
   	$ cockroach cert create-client \
   	root \
@@ -126,13 +126,13 @@ Locally, you'll need to [create the following certificates and keys](create-secu
 
 11. Upload certificates to the machine where you will run a sample workload:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh <username>@<workload address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and client certificate and key:
     $ scp certs/ca.crt \

@@ -56,7 +56,7 @@ For a full list of supported privileges, see the [`GRANT`](grant.html) documenta
 
 To grant privileges to a role or user, use the [`GRANT`](grant.html) statement, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT, INSERT ON bank.accounts TO maxroach;
 ~~~
@@ -65,7 +65,7 @@ To grant privileges to a role or user, use the [`GRANT`](grant.html) statement, 
 
 To show privileges granted to roles or users, use the [`SHOW GRANTS`](show-grants.html) statement, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE bank FOR maxroach;
 ~~~
@@ -74,7 +74,7 @@ To show privileges granted to roles or users, use the [`SHOW GRANTS`](show-grant
 
 To revoke privileges from roles or users, use the [`REVOKE`](revoke.html) statement, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE INSERT ON bank.accounts FROM maxroach;
 ~~~
@@ -89,7 +89,7 @@ Note that [`GRANT <roles>`](grant-roles.html) does not require an enterprise lic
 
 For the purpose of this example, you need an [enterprise license](enterprise-licensing.html) and one CockroachDB node running in insecure mode:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -99,38 +99,38 @@ $ cockroach start \
 
 1. As the `root` user, use the [`cockroach user`](create-and-manage-users.html) command to create a new user, `maxroach`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach user set maxroach --insecure
     ~~~
 
 2. As the `root` user, open the [built-in SQL client](use-the-built-in-sql-client.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 3. Create a database and set it as the default:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE test_roles;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET DATABASE = test_roles;
     ~~~
 
 4. [Create a role](create-role.html) and then [list all roles](show-roles.html) in your database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE ROLE system_ops;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ROLES;
     ~~~
@@ -146,12 +146,12 @@ $ cockroach start \
 
 5. Grant privileges to the `system_ops` role you created:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT CREATE, SELECT ON DATABASE test_roles TO system_ops;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW GRANTS ON DATABASE test_roles;
     ~~~
@@ -181,21 +181,21 @@ $ cockroach start \
 
 6. Add the `maxroach` user to the `system_ops` role:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT system_ops TO maxroach;
     ~~~
 
 7. To test the privileges you just added to the `system_ops` role, use `\q` or `ctrl-d` to exit the interactive shell, and then open the shell again as the `maxroach` user (who is a member of the `system_ops` role):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --user=maxroach --database=test_roles --insecure
     ~~~
 
 8. As the `maxroach` user, create a table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE employees (
         id UUID DEFAULT uuid_v4()::UUID PRIMARY KEY,
@@ -207,7 +207,7 @@ $ cockroach start \
 
 9. As the `maxroach` user, try to drop the table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DROP TABLE employees;
     ~~~
@@ -220,7 +220,7 @@ $ cockroach start \
 
 10. `maxroach` has `CREATE` and `SELECT` privileges, so try a `SHOW` statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW GRANTS ON TABLE employees;
     ~~~
@@ -238,19 +238,19 @@ $ cockroach start \
 
 11. Now switch back to the `root` user to test more of the SQL statements related to roles. Use `\q` or `ctrl-d` to exit the interactive shell, and then open the shell again as the `root` user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 12. As the `root` user, revoke privileges and then drop the `system_ops` role:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > REVOKE ALL ON DATABASE test_roles FROM system_ops;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW GRANTS ON DATABASE test_roles;
     ~~~
@@ -269,12 +269,12 @@ $ cockroach start \
     +------------+--------------------+-------+------------+
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > REVOKE ALL ON TABLE test_roles.* FROM system_ops;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW GRANTS ON TABLE test_roles.*;
     ~~~
@@ -289,7 +289,7 @@ $ cockroach start \
 
     {{site.data.alerts.callout_info}}All of a role or user's privileges must be revoked before it can be dropped.{{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DROP ROLE system_ops;
     ~~~

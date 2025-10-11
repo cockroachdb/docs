@@ -46,12 +46,12 @@ table td:first-child {
 
 In this example, we're going to change the increment value of a sequence from its current state (i.e., `1`) to `2`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE customer_seq;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE customer_seq;
 ~~~
@@ -63,7 +63,7 @@ In this example, we're going to change the increment value of a sequence from it
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER SEQUENCE customer_seq INCREMENT 2;
 ~~~

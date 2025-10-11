@@ -1,0 +1,3 @@
+{{site.data.alerts.callout_info}}
+{% include_cached new-in.html version="v23.1" %} By default, changefeeds are integrated with elastic CPU, which helps to prevent changefeeds from affecting foreground traffic. This may affect changefeed latency. For more detail on monitoring, refer to the [Changefeed performance]({% link {{ page.version.version }}/advanced-changefeed-configurations.md %}#changefeed-performance) section.
+{{site.data.alerts.end}}

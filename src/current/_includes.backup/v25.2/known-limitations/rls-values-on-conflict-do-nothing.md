@@ -1,0 +1,1 @@
+`ON CONFLICT ... DO NOTHING`: CockroachDB does not run the constraint and row-level policy checks on the `VALUES` clause if the candidate row has a conflict. [#35370](https://github.com/cockroachdb/cockroach/issues/35370).

@@ -108,7 +108,7 @@ clauses and indexes.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT FLOAT 'NaN' < 1, 1 < FLOAT 'NaN', FLOAT 'NaN' < FLOAT 'NaN';
 ~~~
@@ -120,7 +120,7 @@ For example:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT FLOAT 'NaN' = FLOAT 'NaN' AS result;
 ~~~
@@ -132,7 +132,7 @@ For example:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT FLOAT 'NaN' < FLOAT '-INFINITY' AS result;
 ~~~
@@ -172,7 +172,7 @@ The result of the comparison is true if and only if:
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 12 = ANY (10, 12, 13);
 ~~~
@@ -184,7 +184,7 @@ For example:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 12 = ALL (10, 12, 13);
 ~~~
@@ -196,7 +196,7 @@ For example:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 1 = ANY ARRAY[2, 3, 1];
 ~~~
@@ -232,17 +232,17 @@ the result of evaluating the right operand. In the subquery form, any
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT a IN (1, 2, 3) FROM sometable;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT a IN (SELECT * FROM allowedvalues) FROM sometable;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ('x', 123) IN (SELECT * FROM rows);
 ~~~
@@ -275,7 +275,7 @@ character, or `%` to match any sequence of zero or more characters.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT 'monday' LIKE '%day' AS a, 'tuesday' LIKE 'tue_day' AS b, 'wednesday' ILIKE 'W%' AS c;
 ~~~
@@ -317,7 +317,7 @@ inside a string, not only at the beginning.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT 'monday' ~ 'onday' AS a, 'tuEsday' ~ 't[uU][eE]sday' AS b, 'wednesday' ~* 'W.*y' AS c;
 ~~~
@@ -356,7 +356,7 @@ This is a mix of SQL `LIKE` patterns and POSIX regular expressions:
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT 'monday' SIMILAR TO '_onday' AS a, 'tuEsday' SIMILAR TO 't[uU][eE]sday' AS b, 'wednesday' SIMILAR TO 'w%y' AS c;
 ~~~
@@ -660,7 +660,7 @@ Evaluates to an array containing the specified values.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ARRAY[1,2,3] AS a;
 ~~~
@@ -679,7 +679,7 @@ If there are no expressions specified (empty array), or
 all the values are `NULL`, then the type of the array must be
 specified explicitly using a type annotation. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ARRAY[]:::int[];
 ~~~
@@ -706,7 +706,7 @@ Evaluates to a tuple containing the values of the provided expressions.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ('x', 123, 12.3) AS a;
 ~~~
@@ -723,7 +723,7 @@ Each position in a tuple can have a distinct data type.
 
 <span class="version-tag">New in v20.1:</span> CockroachDB supports accessing the Nth element in a tuple as a single table cell using the syntax `(...).@N`. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (t).@2 FROM (SELECT (1,'b',2.3) AS t);
 ~~~
@@ -737,7 +737,7 @@ Each position in a tuple can have a distinct data type.
 
 CockroachDB also supports expanding all elements of a tuple as a single row in a table with the `(<tuple>).*` notation. This notation works as the inverse of the tuple-creating notation `(<table>.*)`. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH tuples AS (SELECT (t.*) AS tuple FROM (SELECT 1,'b',2.3) AS t(x,y,z))  -- Build the tuples, with labels
    SELECT (tuple).* FROM tuples;  -- Expands the tuples and restore the column labels
@@ -772,7 +772,7 @@ error is returned.
 Type annotations are specially useful to guide the arithmetic on
 numeric values. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (1 / 0):::FLOAT;
 ~~~
@@ -782,7 +782,7 @@ ERROR: division by zero
 SQLSTATE: 22012
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (1 / 0);
 ~~~
@@ -792,7 +792,7 @@ ERROR: division by zero
 SQLSTATE: 22012
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (1 / 0)::FLOAT;
 ~~~
@@ -833,7 +833,7 @@ can be used as subquery.
 For example, the following query returns `TRUE` if there are more rows in table `users` than in table
 `admins`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT (SELECT COUNT(*) FROM users) > (SELECT COUNT(*) FROM admins);
 ~~~

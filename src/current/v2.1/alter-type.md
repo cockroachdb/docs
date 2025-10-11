@@ -37,7 +37,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 The [TPC-C](performance-benchmarking-with-tpc-c.html) database has a `customer` table with a column `c_credit_lim DECIMAL (10,2)`. Suppose you want to change the data type to `DECIMAL (12,2)`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE customer ALTER c_credit_lim type DECIMAL (12,2);
 ~~~
@@ -52,7 +52,7 @@ Time: 80.814044ms
 
 Changing a column data type from `DECIMAL` to `INT` would change the on-disk representation of the column. Therefore, attempting to do so results in an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE customer ALTER c_credit_lim type INT;
 ~~~
@@ -63,7 +63,7 @@ pq: type conversion not yet implemented
 
 Changing a column data type from `DECIMAL(12,2)` to `DECIMAL (8,2)` would invalidate the existing data. Therefore, attempting to do so results in an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE customer ALTER c_credit_lim type DECIMAL (8,2);
 ~~~

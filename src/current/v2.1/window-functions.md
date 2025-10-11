@@ -26,7 +26,7 @@ At a high level, window functions work by:
 
 For example, consider this query:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT(city),
              SUM(revenue) OVER (PARTITION BY city) AS city_revenue
@@ -62,7 +62,7 @@ Because of this, you should be aware of the behavior of any [aggregate function]
 
 The tables used in the examples are shown below.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -83,7 +83,7 @@ The tables used in the examples are shown below.
 +-------+-------------------------------------------------------------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE rides;
 ~~~
@@ -118,7 +118,7 @@ The tables used in the examples are shown below.
 +-------+--------------------------------------------------------------------------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~
@@ -149,7 +149,7 @@ The tables used in the examples are shown below.
 
 To see which customers have taken the most rides, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM
     (SELECT distinct(name) as "name",
@@ -180,7 +180,7 @@ To see which customers have taken the most rides, run:
 
 To see which customers have generated the most revenue, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT name,
     SUM(revenue) OVER (PARTITION BY name) AS "total rider revenue"
@@ -211,7 +211,7 @@ To see which customers have generated the most revenue, run:
 
 To add row numbers to the output, kick the previous query down into a subquery and run the `row_number()` window function.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT row_number() OVER (), *
   FROM (
@@ -248,7 +248,7 @@ To add row numbers to the output, kick the previous query down into a subquery a
 
 To see which customers have taken the most rides while generating the most revenue, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM (
     SELECT DISTINCT name,
@@ -284,7 +284,7 @@ To see which customers have taken the most rides while generating the most reven
 
 To see which customers have the highest average revenue per ride, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name,
     COUNT(*)     OVER w AS "number of rides",
@@ -317,7 +317,7 @@ To see which customers have the highest average revenue per ride, run:
 
 To see which customers have the highest average revenue per ride, given that they have taken at least 3 rides, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM (
     SELECT DISTINCT name,
@@ -353,7 +353,7 @@ To see which customers have the highest average revenue per ride, given that the
 
 To find out the total number of riders and total revenue generated thus far by the app, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
     COUNT("name") AS "total # of riders",
@@ -377,7 +377,7 @@ To find out the total number of riders and total revenue generated thus far by t
 
 ### How many vehicles of each type
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT type, COUNT(*) OVER (PARTITION BY type) AS cnt FROM vehicles ORDER BY cnt DESC;
 ~~~
@@ -395,7 +395,7 @@ To find out the total number of riders and total revenue generated thus far by t
 
 ### How much revenue per city
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT(city), SUM(revenue) OVER (PARTITION BY city) AS city_revenue FROM rides ORDER BY city_revenue DESC;
 ~~~

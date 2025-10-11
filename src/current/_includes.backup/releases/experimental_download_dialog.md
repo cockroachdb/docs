@@ -1,0 +1,1 @@
+return confirm('This experimental binary is not yet qualified for production use and not eligible for support or uptime SLA commitments. Click OK to start the download.');

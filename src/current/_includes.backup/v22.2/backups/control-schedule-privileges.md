@@ -1,0 +1,2 @@
+- Members of the [`admin` role](security-reference/authorization.html#default-roles). By default, the `root` user belongs to the `admin` role.
+- {% include_cached new-in.html version="v22.2" %} Owners of a backup schedule, i.e., the user that [created the backup schedule](create-schedule-for-backup.html).

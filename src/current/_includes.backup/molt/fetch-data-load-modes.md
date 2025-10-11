@@ -1,0 +1,10 @@
+MOLT Fetch can use either [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to load data into CockroachDB:
+
+|   Statement   |         MOLT Fetch flag         |                                                                                                                                                                      Description                                                                                                                                                                       |
+|---------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `IMPORT INTO` | Default mode                    | <ul><li>Fastest option, but takes target tables offline during load.</li><li>Supports compression using the `--compression` flag to reduce storage used during export.</li><li>Executes as a distributed background job in CockroachDB, so is more efficient for large, wide, or heavily partitioned tables.</li></ul>                                 |
+| `COPY FROM`   | `--use-copy` or `--direct-copy` | <ul><li>Slower than `IMPORT INTO`, but keeps target tables online and queryable during load.</li><li>Does not support compression.</li><li>Runs on the MOLT host and streams data row-by-row, which can increase memory usage and limit concurrency for large tables (many rows) or wide tables (many columns or large values like `JSONB`).</li></ul> |
+
+- Use `IMPORT INTO` (the default mode) for large datasets, wide rows, or partitioned tables. 
+- Use `--use-copy` when tables must remain online during data load. 
+- Use `--direct-copy` only when you cannot move data to a public cloud, or want to perform local testing without intermediate storage. In this case, no [intermediate file storage](#intermediate-file-storage) is used.

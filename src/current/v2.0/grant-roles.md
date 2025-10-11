@@ -36,12 +36,12 @@ Parameter | Description
 
 ### Grant Role Membership
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT design TO ernie;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE design;
 ~~~
@@ -58,11 +58,11 @@ Parameter | Description
 
 ### Grant the Admin Option
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT design TO ERNIE WITH ADMIN OPTION;
 ~~~
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE design;
 ~~~

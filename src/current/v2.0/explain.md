@@ -88,7 +88,7 @@ Successful `EXPLAIN` statements return tables with the following columns:
 By default, `EXPLAIN` includes the least detail about the query plan but can be
 useful to find out which indexes and index key ranges are used by a query:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
@@ -116,7 +116,7 @@ information on indexes and key ranges, see the
 
 The `EXPRS` option includes SQL expressions that are involved in each processing stage, providing more granular detail about which portion of your query is represented at each level:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (EXPRS) SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
@@ -139,7 +139,7 @@ The `EXPRS` option includes SQL expressions that are involved in each processing
 The `METADATA` option includes detail about which columns are being used by each
 level, as well as properties of the result set on that level:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (METADATA) SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
@@ -164,7 +164,7 @@ than one row with any given value of `k`.
 
 Note that descending (`DESC`) orderings are indicated by the `-` sign:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (METADATA) SELECT * FROM kv WHERE v > 3 ORDER BY v DESC;
 ~~~
@@ -185,7 +185,7 @@ Another property that is reported in the **Ordering** column is information
 about columns that are known to be equal on any row, and "constant" columns
 that are known to have the same value on all rows. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (METADATA) SELECT * FROM abcd JOIN efg ON a=e AND c=1;
 ~~~
@@ -214,7 +214,7 @@ and that all rows have the same value on column `c`.
 
 `QUALIFY` uses `<table name>.<column name>` notation for columns in the query plan. However, `QUALIFY` must be used with `EXPRS` to show the SQL values used:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (EXPRS, QUALIFY) SELECT a.v, b.v FROM t.kv AS a, t.kv AS b;
 ~~~
@@ -239,7 +239,7 @@ and that all rows have the same value on column `c`.
 
 You can contrast this with the same statement not including the `QUALIFY` option to see that the column references are not qualified, which can lead to ambiguity if multiple tables have columns with the same names:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 >  EXPLAIN (EXPRS) SELECT a.v, b.v FROM kv AS a, kv AS b;
 ~~~
@@ -264,7 +264,7 @@ You can contrast this with the same statement not including the `QUALIFY` option
 
 The `VERBOSE` option is an alias for the combination of `EXPRS`, `METADATA`, and `QUALIFY` options:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (VERBOSE) SELECT * FROM kv AS a JOIN kv USING (k) WHERE a.v > 3 ORDER BY a.v DESC;
 ~~~
@@ -297,7 +297,7 @@ The `VERBOSE` option is an alias for the combination of `EXPRS`, `METADATA`, and
 
 The `TYPES` mode includes the types of the values used in the query plan, and implies the `METADATA` and `EXPRS` options as well:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (TYPES) SELECT * FROM kv WHERE v > 3 ORDER BY v;
 ~~~
@@ -320,14 +320,14 @@ The `TYPES` mode includes the types of the values used in the query plan, and im
 You can use `EXPLAIN` to understand which indexes and key ranges queries use,
 which can help you ensure a query isn't performing a full table scan.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 ~~~
 
 Because column `v` is not indexed, queries filtering on it alone scan the entire table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
@@ -345,12 +345,12 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
 If there were an index on `v`, CockroachDB would be able to avoid scanning the
 entire table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX v ON kv (v);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~

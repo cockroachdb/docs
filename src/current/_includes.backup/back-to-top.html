@@ -1,0 +1,61 @@
+<!-- back to top button -->
+<div class="scroll-to-top"><img src="{{ 'images/back_to_top.png' | relative_url }}" alt="Scroll back to top" onmouseover="this.src='../images/back_to_top_hover.png';" onmouseout="this.src='../images/back_to_top.png';"/></div>
+
+<script>
+(function($){
+  $(document).ready(function(){
+    var last = 0;
+    var $window = $(window);
+    var $scroll_to_top = $('.scroll-to-top');
+    var footer_top = $(".footer").offset().top;
+    var scroll_button_height = $scroll_to_top.height();
+    var visible = false, loaded = false;
+
+    $window.on('resize', function(){
+      //get new footer_top & scroll_button_height values
+      scroll_button_height = $scroll_to_top.height();
+      footer_top = $(".footer").offset().top;
+    });
+
+
+    $window.on('scroll', function(){
+      //check to see if the window is top if not then display button
+      var next = $window.scrollTop();
+      var going_up = next < last;
+
+      if ((going_up && next > 2000)) {
+        if(!visible){
+          $scroll_to_top.stop().fadeIn();
+        }
+        visible = true;
+      } else {
+        if(visible){
+          $scroll_to_top.stop().fadeOut();
+          visible = false;
+        }
+      }
+
+      last = next;
+
+      //keep scroll back to top above help buttons + footer
+      var window_bottom = $(this).scrollTop() + $window.height();
+      if (window_bottom >= footer_top) {
+        $scroll_to_top.removeClass("fixed").css('top', (-scroll_button_height - 225) + 'px');
+      }else {
+        $scroll_to_top.addClass("fixed").css('top', 'auto');
+      }
+
+      if(!loaded){
+        $scroll_to_top.addClass('loaded');
+        loaded = true;
+      }
+    });
+
+    //click event to scroll to top
+    $scroll_to_top.on('click', function(){
+      $('html, body').animate({scrollTop : 0}, 100);
+      return false;
+    });
+  });
+})(jQuery)
+</script>

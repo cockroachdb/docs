@@ -2,7 +2,7 @@
 
 The `crdb_internal.partitions` internal table contains information about the partitions in your database. In testing, scripting, and other programmatic environments, we recommend querying this table for partition information instead of using the `SHOW PARTITIONS` statement. For example, to get all `us_west` partitions of in your database, you can run the following query:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM crdb_internal.partitions WHERE name='us_west';
 ~~~
@@ -25,7 +25,7 @@ Other internal tables, like `crdb_internal.tables`, include information that cou
 
 For example, if you want the output for your partitions to include the name of the table and database, you can perform a join of the two tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT
   partitions.name AS partition_name, column_names, list_value, tables.name AS table_name, database_name

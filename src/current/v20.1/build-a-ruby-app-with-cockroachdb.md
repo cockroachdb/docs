@@ -20,7 +20,7 @@ This tutorial shows you how build a simple Ruby application with CockroachDB and
 
 To install the [Ruby pg driver](https://rubygems.org/gems/pg), run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ gem install pg
 ~~~
@@ -35,7 +35,7 @@ $ gem install pg
 
 Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -50,14 +50,14 @@ The following code connects as the `maxroach` user and executes some basic SQL s
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.rb" download><code>basic-sample.rb</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 {% include {{page.version.version}}/app/basic-sample.rb %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ruby basic-sample.rb
 ~~~
@@ -78,28 +78,28 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include {{ page.version.version }}/client-transaction-retry.md %}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 {% include {{page.version.version}}/app/txn-sample.rb %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ruby txn-sample.rb
 ~~~
 
 To verify that funds were transferred from one account to another, start the [built-in SQL client](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --database=bank
 ~~~
 
 To check the account balances, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts;
 ~~~
@@ -132,14 +132,14 @@ The following code connects as the `maxroach` user and executes some basic SQL s
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/basic-sample.rb" download><code>basic-sample.rb</code></a> file, or create the file yourself and copy the code into it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 {% include {{page.version.version}}/app/insecure/basic-sample.rb %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ruby basic-sample.rb
 ~~~
@@ -160,28 +160,28 @@ Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/
 
 {% include {{ page.version.version }}/client-transaction-retry.md %}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 {% include {{page.version.version}}/app/insecure/txn-sample.rb %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ruby txn-sample.rb
 ~~~
 
 To verify that funds were transferred from one account to another, start the [built-in SQL client](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --database=bank
 ~~~
 
 To check the account balances, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts;
 ~~~

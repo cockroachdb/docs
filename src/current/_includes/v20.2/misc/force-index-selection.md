@@ -6,28 +6,28 @@ Index selection can impact [performance](performance-best-practices-overview.htm
 
 The syntax to force a scan of a specific index is:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM table@my_idx;
 ~~~
 
 This is equivalent to the longer expression:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM table@{FORCE_INDEX=my_idx};
 ~~~
 
 The syntax to force a **reverse scan** of a specific index is:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM table@{FORCE_INDEX=my_idx,DESC};
 ~~~
 
 Forcing a reverse scan is sometimes useful during [performance tuning](performance-best-practices-overview.html). For reference, the full syntax for choosing an index and its scan direction is
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT * FROM table@{FORCE_INDEX=idx[,DIRECTION]}
 ~~~
@@ -38,14 +38,14 @@ When a direction is specified, that scan direction is forced; otherwise the [cos
 
 You can verify that the optimizer is choosing your desired scan direction using [`EXPLAIN (OPT)`](explain.html#opt-option). For example, given the table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE kv (K INT PRIMARY KEY, v INT);
 ~~~
 
 you can check the scan direction with:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (opt) SELECT * FROM users@{FORCE_INDEX=primary,DESC};
 ~~~

@@ -42,19 +42,19 @@ The replica count on each node is identical, indicating that all data in the clu
 
 Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ docker stop roach1 roach2 roach3
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ docker rm roach1 roach2 roach3
 ~~~
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ rm -rf cockroach-data
 ~~~
@@ -81,19 +81,19 @@ For more insight into how CockroachDB automatically replicates and rebalances da
 
 Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ docker stop roach1 roach2 roach3
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ docker rm roach1 roach2 roach3
 ~~~
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ rm -rf cockroach-data
 ~~~
@@ -175,22 +175,22 @@ Now that you've scaled to 3 nodes, you can use any node as a SQL gateway to the 
 
 Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE bank;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO bank.accounts VALUES (1, 1000.50);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
@@ -206,7 +206,7 @@ Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
 Exit the SQL shell on node 1:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -220,7 +220,7 @@ Then start the SQL shell in the second container:
 
 Now run the same `SELECT` query:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.accounts;
 ~~~
@@ -238,7 +238,7 @@ As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
 When you're done, exit the SQL shell on node 2:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~

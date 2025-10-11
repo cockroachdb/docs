@@ -61,7 +61,7 @@ The heart of this step is running a Kubernetes script that creates 4 GCE or AWS 
 
 Follow Kubernetes' [documentation](http://kubernetes.io/docs/getting-started-guides/minikube/) to install `minikube` and `kubectl` for your OS. Then start a local Kubernetes cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ minikube start
 ~~~
@@ -79,14 +79,14 @@ Kubectl is now configured to use the cluster.
 
 2. From your local workstation, use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
     ~~~
 
 2. Use the `kubectl get` command to verify that the persistent volumes and corresponding claims were created successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get persistentvolumes
     ~~~
@@ -100,7 +100,7 @@ Kubectl is now configured to use the cluster.
 
 3. Wait a bit and then verify that three pods were created successfully. If you do not see three pods, wait longer and check again.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -118,14 +118,14 @@ Kubectl is now configured to use the cluster.
 
 1. Use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
     ~~~
 
 2. Use the `kubectl get` command to verify that the persistent volumes and corresponding claims were created successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get persistentvolumes
     ~~~
@@ -139,7 +139,7 @@ Kubectl is now configured to use the cluster.
 
 3. Wait a bit and then verify that three pods were created successfully. If you do not see three pods, wait longer and check again.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -159,7 +159,7 @@ Kubectl is now configured to use the cluster.
 
 1. Start the [built-in SQL client](use-the-built-in-sql-client.html) in a one-off interactive pod, using the `cockroachdb-public` hostname to access the CockroachDB cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl run cockroachdb -it --image=cockroachdb/cockroach --rm --restart=Never \
     -- sql --insecure --host=cockroachdb-public
@@ -167,22 +167,22 @@ Kubectl is now configured to use the cluster.
 
 2. Run some [CockroachDB SQL statements](sql-statements.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1234, 10000.50);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -206,7 +206,7 @@ To see this in action:
 
 1. Stop one of CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod cockroachdb-2
     ~~~
@@ -217,7 +217,7 @@ To see this in action:
 
 2. Verify that the pod was restarted:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pod cockroachdb-2
     ~~~
@@ -228,7 +228,7 @@ To see this in action:
 
 3. Wait a bit and then verify that the pod is ready:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pod cockroachdb-2
     ~~~
@@ -250,7 +250,7 @@ The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed
 
 2. Use the `kubectl scale` command to add a pod to your StatefulSet:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
     ~~~
@@ -261,7 +261,7 @@ The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed
 
 3. Verify that a fourth pod was added successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -280,7 +280,7 @@ The Kubernetes script created 4 nodes, one master and 3 workers. Pods get placed
 
 To increase the number of pods in your cluster, use the `kubectl scale` command to alter the `replicas: 3` configuration for your StatefulSet:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl scale statefulset cockroachdb --replicas=4
 ~~~
@@ -291,7 +291,7 @@ statefulset "cockroachdb" scaled
 
 Verify that a fourth pod was added successfully:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl get pods
 ~~~
@@ -314,7 +314,7 @@ To shut down the CockroachDB cluster:
 
 1. Use the `kubectl delete` command to clean up all of the resources you created, including the logs and remote persistent volumes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget \
     -l app=cockroachdb
@@ -330,7 +330,7 @@ To shut down the CockroachDB cluster:
 
 - **If you plan to restart the cluster**, use the `minikube stop` command. This shuts down the minikube virtual machine but preserves all the resources you created:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ minikube stop
     ~~~
@@ -344,7 +344,7 @@ To shut down the CockroachDB cluster:
 
 - **If you do not plan to restart the cluster**, use the `minikube delete` command. This shuts down and deletes the minikube virtual machine and all the resources you created, including persistent volumes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ minikube delete
     ~~~

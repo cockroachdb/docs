@@ -1,0 +1,28 @@
+/Users/eeshan/Documents/docs/src/current/vendor/bundle/ruby/3.4.0/gems/jekyll-4.3.4/lib/jekyll.rb:26: warning: logger was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 3.5.0.
+You can add logger to your Gemfile or gemspec to silence this warning.
+/Users/eeshan/Documents/docs/src/current/vendor/bundle/ruby/3.4.0/gems/jekyll-4.3.4/lib/jekyll.rb:28: warning: csv was loaded from the standard library, but is not part of the default gems starting from Ruby 3.4.0.
+You can add csv to your Gemfile or gemspec to silence this warning.
+bundler: failed to load command: jekyll (/Users/eeshan/Documents/docs/src/current/vendor/bundle/ruby/3.4.0/bin/jekyll)
+/Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundled_gems.rb:82:in 'Kernel.require': cannot load such file -- csv (LoadError)
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundled_gems.rb:82:in 'block (2 levels) in Kernel#replace_require'
+	from /Users/eeshan/Documents/docs/src/current/vendor/bundle/ruby/3.4.0/gems/jekyll-4.3.4/lib/jekyll.rb:28:in '<top (required)>'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundled_gems.rb:82:in 'Kernel.require'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundled_gems.rb:82:in 'block (2 levels) in Kernel#replace_require'
+	from /Users/eeshan/Documents/docs/src/current/vendor/bundle/ruby/3.4.0/gems/jekyll-4.3.4/exe/jekyll:8:in '<top (required)>'
+	from /Users/eeshan/Documents/docs/src/current/vendor/bundle/ruby/3.4.0/bin/jekyll:25:in 'Kernel#load'
+	from /Users/eeshan/Documents/docs/src/current/vendor/bundle/ruby/3.4.0/bin/jekyll:25:in '<top (required)>'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundler/cli/exec.rb:59:in 'Kernel.load'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundler/cli/exec.rb:59:in 'Bundler::CLI::Exec#kernel_load'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundler/cli/exec.rb:23:in 'Bundler::CLI::Exec#run'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundler/cli.rb:452:in 'Bundler::CLI#exec'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundler/vendor/thor/lib/thor/command.rb:28:in 'Bundler::Thor::Command#run'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundler/vendor/thor/lib/thor/invocation.rb:127:in 'Bundler::Thor::Invocation#invoke_command'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundler/vendor/thor/lib/thor.rb:538:in 'Bundler::Thor.dispatch'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundler/cli.rb:35:in 'Bundler::CLI.dispatch'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundler/vendor/thor/lib/thor/base.rb:584:in 'Bundler::Thor::Base::ClassMethods#start'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundler/cli.rb:29:in 'Bundler::CLI.start'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/gems/3.4.0/gems/bundler-2.6.7/exe/bundle:28:in 'block in <top (required)>'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/3.4.0/bundler/friendly_errors.rb:117:in 'Bundler.with_friendly_errors'
+	from /Users/eeshan/.rbenv/versions/3.4.3/lib/ruby/gems/3.4.0/gems/bundler-2.6.7/exe/bundle:20:in '<top (required)>'
+	from /Users/eeshan/.rbenv/versions/3.4.3/bin/bundle:25:in 'Kernel#load'
+	from /Users/eeshan/.rbenv/versions/3.4.3/bin/bundle:25:in '<main>'

@@ -30,7 +30,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM orders;
 ~~~
@@ -43,7 +43,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 +--------+---------------------------+-------------+-----------+----------------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE orders DROP CONSTRAINT fk_customer_ref_customers;
 ~~~
@@ -51,7 +51,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 ALTER TABLE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM orders;
 ~~~

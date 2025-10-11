@@ -28,7 +28,7 @@ Make sure you have already:
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE from accounts WHERE id = 1;
 ~~~
@@ -39,7 +39,7 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 // 'db' is an open database connection
 
@@ -54,7 +54,7 @@ if _, err := db.Exec("DELETE FROM accounts WHERE id = 1"); err != nil {
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
@@ -73,7 +73,7 @@ try (Connection connection = ds.getConnection()) {
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 # conn is a psycopg2 connection
 
@@ -92,14 +92,14 @@ You can delete multiple rows from a table in several ways:
 
 - Using a `WHERE` clause to limit the number of rows based on one or more predicates:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     DELETE FROM student_loan_accounts WHERE loan_amount < 30000;
     ~~~
 
 - Using a `WHERE` clause to specify multiple records by a specific column's value (in this case, `id`):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     DELETE FROM accounts WHERE id IN (1, 2, 3, 4, 5);
     ~~~

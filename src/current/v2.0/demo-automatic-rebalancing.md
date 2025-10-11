@@ -18,7 +18,7 @@ In this tutorial, you'll use an example Go program to quickly insert data into a
 
 Use the [`cockroach start`](start-a-node.html) command to start 3 nodes:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # In a new terminal, start node 1:
 $ cockroach start --insecure \
@@ -29,7 +29,7 @@ $ cockroach start --insecure \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # In a new terminal, start node 2:
 $ cockroach start --insecure \
@@ -40,7 +40,7 @@ $ cockroach start --insecure \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # In a new terminal, start node 3:
 $ cockroach start --insecure \
@@ -55,7 +55,7 @@ $ cockroach start --insecure \
 
 In a new terminal, use the [`cockroach init`](initialize-a-cluster.html) command to perform a one-time initialization of the cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init \
 --insecure \
@@ -67,12 +67,12 @@ $ cockroach init \
 
 In a new terminal, connect the [built-in SQL shell](use-the-built-in-sql-client.html) to any node to verify that the cluster is live:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --port=26257
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -88,7 +88,7 @@ $ cockroach sql --insecure --port=26257
 
 Exit the SQL shell:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \q
 ~~~
@@ -99,7 +99,7 @@ In CockroachDB, you use [replication zones](configure-replication-zones.html) to
 
 However, the default replication zone also defines the size at which a single range of data spits into two ranges. Since you want to create many ranges quickly and then see how CockroachDB automatically rebalances them, reduce the max range size from the default 67108864 bytes (64MB) to cause ranges to split more quickly:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ echo -e "range_min_bytes: 1\nrange_max_bytes: 262144" | cockroach zone set .default --insecure -f -
 ~~~
@@ -119,14 +119,14 @@ CockroachDB provides a number of [example programs in Go](https://github.com/coc
 
 Download and install the program:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go get github.com/cockroachdb/examples-go/block_writer
 ~~~
 
 Then run the program for 1 minute, long enough to generate plenty of ranges:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ block_writer -duration 1m
 ~~~
@@ -156,7 +156,7 @@ Open the Admin UI at `http://localhost:8080` and you’ll see the bytes, replica
 
 Adding capacity is as simple as starting more nodes and joining them to the running cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # In a new terminal, start node 4:
 $ cockroach start --insecure \
@@ -167,7 +167,7 @@ $ cockroach start --insecure \
 --join=localhost:26257,localhost:26258,localhost:26259
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # In a new terminal, start node 5:
 $ cockroach start --insecure \
@@ -192,7 +192,7 @@ Once you're done with your test cluster, stop each node by switching to its term
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ rm -rf scale-node1 scale-node2 scale-node3 scale-node4 scale-node5
 ~~~

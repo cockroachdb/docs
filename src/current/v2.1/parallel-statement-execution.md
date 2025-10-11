@@ -30,7 +30,7 @@ Let's understand how sequential and parallel execution works in the following sc
 
 Then the traditional transaction to update the user's information is as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > UPDATE users SET last_name = 'Smith' WHERE id = 1;
@@ -47,7 +47,7 @@ The SQL statements in our sample scenario can be executed in parallel since they
 
 In our sample scenario, the transaction would be as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > UPDATE users SET last_name = 'Smith' WHERE id = 1 RETURNING NOTHING;
@@ -80,7 +80,7 @@ If two consecutive statements are not independent, and yet a `RETURNING NOTHING`
 
 Revising our sample scenario, suppose we want to create a new user on the social networking app. We need to create entries for the last name of the user, their favorite movie, and favorite song. We need to insert entries into three tables: `users`, `favorite_movies`, and `favorite_songs`. The transaction would be as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > INSERT INTO users VALUES last_name = 'Pavlo' WHERE id = 2 RETURNING NOTHING;
@@ -99,13 +99,13 @@ SQL statements within a single transaction can be executed in parallel if the st
 
 For example, the following statements are considered independent since reordering the statements does not affect the results:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO a VALUES (100);
 > INSERT INTO b VALUES (100);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO a VALUES (100);
 > INSERT INTO a VALUES (200);
@@ -113,13 +113,13 @@ For example, the following statements are considered independent since reorderin
 
 The following pairs of statements are dependent since reordering them will affect their results:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE a SET b = 2 WHERE y = 1;
 > UPDATE a SET b = 3 WHERE y = 1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE a SET y = true  WHERE y = false;
 > UPDATE a SET y = false WHERE y = true;

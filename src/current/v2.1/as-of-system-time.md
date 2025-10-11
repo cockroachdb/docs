@@ -45,7 +45,7 @@ negative [`INTERVAL`](interval.html) | Added to `statement_timestamp()`, and thu
 
 Imagine this example represents the database's current data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name, balance
     FROM accounts
@@ -62,7 +62,7 @@ Imagine this example represents the database's current data:
 
 We could instead retrieve the values as they were on October 3, 2016 at 12:45 UTC:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name, balance
     FROM accounts
@@ -83,27 +83,27 @@ We could instead retrieve the values as they were on October 3, 2016 at 12:45 UT
 
 Assuming the following statements are run at `2016-01-01 12:00:00`, they would execute as of `2016-01-01 08:00:00`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t AS OF SYSTEM TIME '2016-01-01 08:00:00'
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t AS OF SYSTEM TIME 1451635200000000000
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t AS OF SYSTEM TIME '1451635200000000000'
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT * FROM t AS OF SYSTEM TIME '-4h'
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t AS OF SYSTEM TIME INTERVAL '-4h'
 ~~~
@@ -120,17 +120,17 @@ entire `SELECT` clause.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT * FROM t, u, v AS OF SYSTEM TIME '-4h';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT * FROM t JOIN u ON t.x = u.y AS OF SYSTEM TIME '-4h';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT * FROM (SELECT * FROM t), (SELECT * FROM u) AS OF SYSTEM TIME '-4h';
 ~~~
@@ -156,7 +156,7 @@ following conditions:
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 > SELECT * FROM (SELECT * FROM t AS OF SYSTEM TIME '-4h') tp
            JOIN u ON tp.x = u.y

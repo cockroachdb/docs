@@ -91,14 +91,14 @@ Index selection can impact [performance](performance-best-practices-overview.htm
 
 The syntax to force a specific index for a delete is:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM table@my_idx;
 ~~~
 
 This is equivalent to the longer expression:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM table@{FORCE_INDEX=my_idx};
 ~~~
@@ -111,7 +111,7 @@ To view how the index hint modifies the query plan that CockroachDB follows for 
 
 You can delete all rows from a table by not including a `WHERE` clause in your `DELETE` statement.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details;
 ~~~
@@ -133,7 +133,7 @@ Using columns with the [Primary Key](primary-key.html) or [Unique](unique.html) 
 
 In this example, `account_id` is our primary key and we want to delete the row where it equals 1. Because we're positive no other rows have that value in the `account_id` column, there's no risk of accidentally removing another row.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE account_id = 1 RETURNING *;
 ~~~
@@ -150,7 +150,7 @@ DELETE 1
 
 Deleting rows using non-unique columns removes _every_ row that returns `TRUE` for the `WHERE` clause's `a_expr`. This can easily result in deleting data you didn't intend to.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE balance = 30000 RETURNING *;
 ~~~
@@ -174,7 +174,7 @@ To see which rows your statement deleted, include the `RETURNING` clause to retr
 
 By specifying `*`, you retrieve all columns of the delete rows.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE balance < 23000 RETURNING *;
 ~~~
@@ -191,7 +191,7 @@ DELETE 1
 
 To retrieve specific columns, name them in the `RETURNING` clause.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE account_id = 5 RETURNING account_id, account_type;
 ~~~
@@ -208,7 +208,7 @@ DELETE 1
 
 When `RETURNING` specific columns, you can change their labels using `AS`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM account_details WHERE balance < 24500 RETURNING account_id, balance AS final_balance;
 ~~~
@@ -225,7 +225,7 @@ DELETE 1
 
 To sort and return deleted rows, use a statement like the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [DELETE FROM account_details RETURNING *] ORDER BY account_id;
 ~~~

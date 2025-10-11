@@ -43,12 +43,12 @@ Parameter | Description
 
 `UPSERT` considers uniqueness only for [primary key](primary-key.html) columns. For example, assuming that columns `a` and `b` are the primary key, the following `UPSERT` and `INSERT ON CONFLICT` statements are equivalent:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t (a, b, c)
     VALUES (1, 2, 3)
@@ -64,7 +64,7 @@ Parameter | Description
 
 In this example, the `id` column is the primary key. Because the inserted `id` value does not conflict with the `id` value of any existing row, the `UPSERT` statement inserts a new row into the table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -78,12 +78,12 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (3, 6325.20);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -102,7 +102,7 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 
 In this example, the `UPSERT` statement inserts multiple rows into the table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -117,12 +117,12 @@ In this example, the `UPSERT` statement inserts multiple rows into the table.
 +----+----------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (4, 1970.4), (5, 2532.9), (6, 4473.0);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -144,7 +144,7 @@ In this example, the `UPSERT` statement inserts multiple rows into the table.
 
 In this example, the `id` column is the primary key. Because the inserted `id` value is not unique, the `UPSERT` statement updates the row with the new `balance`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -162,12 +162,12 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (3, 7500.83);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -189,7 +189,7 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 
 `UPSERT` will not update rows when the uniquness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [`UNIQUE` constraint](unique.html). Because the inserted `b` value is not unique, the `UPSERT` fails.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM unique_test;
 ~~~
@@ -204,7 +204,7 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +---+---+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO unique_test VALUES (4, 1);
 ~~~
@@ -215,12 +215,12 @@ pq: duplicate key value (b)=(1) violates unique constraint "unique_test_b_key"
 
 In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) statement to specify the `b` column as the column with the `UNIQUE` constraint.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO unique_test VALUES (4, 1) ON CONFLICT (b) DO UPDATE SET a = excluded.a;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM unique_test;
 ~~~
@@ -243,7 +243,7 @@ ensure there is only one row for each value of the primary key.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH
     -- the following data contains duplicates on the conflict column "id":
@@ -257,7 +257,7 @@ The `DISTINCT ON` clause does not guarantee which of the duplicates is
 considered. To force the selection of a particular duplicate, use an
 `ORDER BY` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH
     -- the following data contains duplicates on the conflict column "id":

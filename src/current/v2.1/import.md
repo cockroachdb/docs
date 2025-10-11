@@ -162,7 +162,7 @@ After the import has been initiated, you can control it with [`PAUSE JOB`](pause
 
 To manually specify the table schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -175,7 +175,7 @@ CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE
 
 To use a file to specify the table schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
 CREATE USING 'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
@@ -185,7 +185,7 @@ CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE
 
 ### Import a table from multiple CSV files
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -203,7 +203,7 @@ CSV DATA (
 
 ### Import a table from a TSV file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -218,7 +218,7 @@ WITH
 
 ### Skip commented lines
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -233,7 +233,7 @@ WITH
 
 ### Skip first *n* lines
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -248,7 +248,7 @@ WITH
 
 ### Use blank characters as `NULL`
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -265,7 +265,7 @@ WITH
 
 CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -278,7 +278,7 @@ CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZ
 
 Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -293,7 +293,7 @@ WITH
 
 ### Import a Postgres database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
 ~~~
@@ -302,7 +302,7 @@ For the command above to succeed, you need to have created the dump file with sp
 
 ### Import a table from a Postgres database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys;
 ~~~
@@ -315,7 +315,7 @@ For the command above to succeed, you need to have created the dump file with sp
 
 Cockroach dump files can be imported using the `IMPORT PGDUMP`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
 ~~~
@@ -324,7 +324,7 @@ For more information, see [SQL Dump (Export)](sql-dump.html).
 
 ### Import a MySQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456';
 ~~~
@@ -333,7 +333,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 ### Import a table from a MySQL database dump
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees FROM MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys
 ~~~
@@ -346,7 +346,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 `IMPORT` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
 ~~~

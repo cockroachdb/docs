@@ -47,12 +47,12 @@ Yes. By default, CockroachDB stores timeseries data for the last 30 days for dis
 
 To reduce the interval for storage of timeseries data, change the `timeseries.resolution_10s.storage_duration` cluster setting to an [`INTERVAL`](interval.html) value less than `720h0m0s` (30 days). For example, to store timeseries data for the last 15 days, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.resolution_10s.storage_duration = '360h0m0s';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING timeseries.resolution_10s.storage_duration;
 ~~~
@@ -72,12 +72,12 @@ To reduce the interval for storage of timeseries data, change the `timeseries.re
 
 To disable the storage of timeseries data entirely, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.enabled = false;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING timeseries.storage.enabled;
 ~~~
@@ -93,7 +93,7 @@ To disable the storage of timeseries data entirely, run the following command:
 
 If you want all existing timeseries data to be deleted, change the `timeseries.resolution_10s.storage_duration` cluster setting as well:     
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.resolution_10s.storage_duration = '0s';
 ~~~

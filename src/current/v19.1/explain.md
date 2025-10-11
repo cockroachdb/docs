@@ -67,7 +67,7 @@ Successful `EXPLAIN` statements return tables with the following columns:
 
 By default, `EXPLAIN` includes the least detail about the query plan but can be useful to find out which indexes and index key ranges are used by a query. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
 ~~~
@@ -104,7 +104,7 @@ The `VERBOSE` option:
 - Includes SQL expressions that are involved in each processing stage, providing more granular detail about which portion of your query is represented at each level.
 - Includes detail about which columns are being used by each level, as well as properties of the result set on that level.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (VERBOSE) SELECT * FROM quotes AS q \
 JOIN episodes AS e ON q.episode = e.id \
@@ -135,7 +135,7 @@ ORDER BY e.stardate ASC;
 
 The `TYPES` mode includes the types of the values used in the query plan. It also includes the SQL expressions that were involved in each processing stage, and includes the columns used by each level.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (TYPES) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
 ~~~
@@ -158,7 +158,7 @@ The `OPT` option displays a query plan tree, if the query will be run with the [
 
 For example, the following query returns the query plan tree, which means that it will be run with the cost-based optimizer:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
 ~~~
@@ -178,7 +178,7 @@ For example, the following query returns the query plan tree, which means that i
 
 <span class="version-tag">New in v19.1</span>: To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT, VERBOSE) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
 ~~~
@@ -217,7 +217,7 @@ For example, the following query returns the query plan tree, which means that i
 
 <span class="version-tag">New in v19.1</span>: To include cost and type details, use `OPT, TYPES`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT, TYPES) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
 ~~~
@@ -258,7 +258,7 @@ For example, the following query returns the query plan tree, which means that i
 
 <span class="version-tag">New in v19.1</span>: To include all details used by the optimizer, including statistics, use `OPT, ENV`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT, ENV) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
 ~~~
@@ -354,7 +354,7 @@ The `DISTSQL` option generates a URL for a physical query plan that provides hig
 {% include {{ page.version.version }}/sql/physical-plan-url.md %}
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (DISTSQL) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
@@ -373,14 +373,14 @@ To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), poi
 
 You can use `EXPLAIN` to understand which indexes and key ranges queries use, which can help you ensure a query isn't performing a full table scan.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 ~~~
 
 Because column `v` is not indexed, queries filtering on it alone scan the entire table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
@@ -397,12 +397,12 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
 
 If there were an index on `v`, CockroachDB would be able to avoid scanning the entire table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX v ON kv (v);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~

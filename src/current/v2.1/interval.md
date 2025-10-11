@@ -39,12 +39,12 @@ An `INTERVAL` column supports values up to 24 bytes in width, but the total stor
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE intervals (a INT PRIMARY KEY, b INTERVAL);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM intervals;
 ~~~
@@ -59,7 +59,7 @@ An `INTERVAL` column supports values up to 24 bytes in width, but the total stor
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO intervals VALUES
   (1, INTERVAL '1h2m3s4ms5us6ns'),
@@ -71,7 +71,7 @@ An `INTERVAL` column supports values up to 24 bytes in width, but the total stor
 INSERT 3
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM intervals;
 ~~~

@@ -26,12 +26,12 @@ For another use of GORM with CockroachDB, see our [`examples-orms`](https://gith
 
 To install [GORM](http://gorm.io), run the following commands:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go get -u github.com/lib/pq # dependency
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go get -u github.com/jinzhu/gorm
 ~~~
@@ -46,7 +46,7 @@ $ go get -u github.com/jinzhu/gorm
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -68,14 +68,14 @@ To clone a version of the code below that connects to insecure clusters, run the
 `git clone https://github.com/cockroachlabs/hello-world-go-gorm`
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/app/gorm-sample.go %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go run gorm-sample.go
 ~~~
@@ -110,19 +110,19 @@ The following code uses the [GORM](http://gorm.io) ORM to map Go-specific object
 
 To get the code below, clone the `hello-world-go-gorm` repo to your machine:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/cockroachlabs/hello-world-go-gorm
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/app/insecure/gorm-sample.go %}
 ~~~
 
 Change to the directory where you cloned the repo and run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go run main.go
 ~~~

@@ -33,12 +33,12 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Add a single column
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN names STRING;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
 ~~~
@@ -56,12 +56,12 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Add multiple columns
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location STRING, ADD COLUMN amount DECIMAL;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
 ~~~
@@ -81,12 +81,12 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Add a column with a `NOT NULL` constraint and a `DEFAULT` value
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN interest DECIMAL NOT NULL DEFAULT (DECIMAL '1.3');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM accounts;
 ~~~
@@ -106,14 +106,14 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ### Add a column with `NOT NULL` and `UNIQUE` constraints
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN cust_number DECIMAL UNIQUE NOT NULL;
 ~~~
 
 ### Add a column with collation
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN more_names STRING COLLATE en;
 ~~~
@@ -122,21 +122,21 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 #### Add a column and assign it to a new column family
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location1 STRING CREATE FAMILY new_family;
 ~~~
 
 #### Add a column and assign it to an existing column family
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN location2 STRING FAMILY existing_family;
 ~~~
 
 #### Add a column and create a new column family if column family does not exist
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE accounts ADD COLUMN new_name STRING CREATE IF NOT EXISTS FAMILY f1;
 ~~~

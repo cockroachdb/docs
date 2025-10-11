@@ -35,7 +35,7 @@ Parameter | Description
 
 For non-interactive sessions (e.g., client applications), `DROP DATABASE` applies the `CASCADE` option by default, which drops all tables and views in the database as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db2;
 ~~~
@@ -50,12 +50,12 @@ For non-interactive sessions (e.g., client applications), `DROP DATABASE` applie
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE db2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db2;
 ~~~
@@ -70,7 +70,7 @@ For interactive sessions from the [built-in SQL client](cockroach-sql.html), eit
 
 When a database is not empty, the `RESTRICT` option prevents the database from being dropped:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM db2;
 ~~~
@@ -85,7 +85,7 @@ When a database is not empty, the `RESTRICT` option prevents the database from b
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE db2 RESTRICT;
 ~~~

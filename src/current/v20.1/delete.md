@@ -86,14 +86,14 @@ Index selection can impact [performance](performance-best-practices-overview.htm
 
 The syntax to force a specific index for a delete is:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM table@my_idx;
 ~~~
 
 This is equivalent to the longer expression:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM table@{FORCE_INDEX=my_idx};
 ~~~
@@ -131,7 +131,7 @@ For example, suppose that you want to delete all rows in the [`tpcc`](cockroach-
 
 In Python, the script would look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -176,7 +176,7 @@ For example, suppose that you want to delete all rows in the [`tpcc`](cockroach-
 
 In Python, the script would look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 #!/usr/bin/env python3
 
@@ -219,18 +219,18 @@ For example, suppose that every morning you want to delete all rows in the [`tpc
 To run the script with a daily `cron` job:
 
 1. Make the file executable:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chmod +x cleanup.py
     ~~~
 
 2. Create a new `cron` job:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ crontab -e
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ txt
     30 10 * * * DB_URI='cockroachdb://user@host:26257/bank' cleanup.py >> ~/cron.log 2>&1
     ~~~
@@ -259,7 +259,7 @@ Using columns with the [Primary Key](primary-key.html) or [Unique](unique.html) 
 
 In this example, `code` is our primary key and we want to delete the row where the code equals "about_stuff_city". Because we're positive no other rows have that value in the `code` column, there's no risk of accidentally removing another row.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM promo_codes WHERE code = 'about_stuff_city';
 ~~~
@@ -271,7 +271,7 @@ DELETE 1
 
 Deleting rows using non-unique columns removes _every_ row that returns `TRUE` for the `WHERE` clause's `a_expr`. This can easily result in deleting data you didn't intend to.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM promo_codes WHERE creation_time > '2019-01-30 00:00:00+00:00';
 ~~~
@@ -293,7 +293,7 @@ By specifying `*`, you retrieve all columns of the delete rows.
 
 To retrieve specific columns, name them in the `RETURNING` clause.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM promo_codes WHERE creation_time > '2019-01-29 00:00:00+00:00' RETURNING code, rules;
 ~~~
@@ -313,7 +313,7 @@ To retrieve specific columns, name them in the `RETURNING` clause.
 
 When `RETURNING` specific columns, you can change their labels using `AS`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM promo_codes WHERE creation_time > '2019-01-28 00:00:00+00:00' RETURNING code, rules AS discount;
 ~~~
@@ -329,7 +329,7 @@ When `RETURNING` specific columns, you can change their labels using `AS`.
 
 To sort and return deleted rows, use a statement like the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH a AS (DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00:00' RETURNING *)
   SELECT * FROM a ORDER BY expiration_time;
@@ -350,14 +350,14 @@ To sort and return deleted rows, use a statement like the following:
 
 Suppose you create a multi-column index on the `users` table with the `name` and `city` columns.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name, city);
 ~~~
 
 Now suppose you want to delete the two users named "Jon Snow". You can use the [`EXPLAIN (OPT)`](explain.html#opt-option) command to see how the [cost-based optimizer](cost-based-optimizer.html) decides to perform the delete:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT) DELETE FROM users WHERE name='Jon Snow';
 ~~~
@@ -394,7 +394,7 @@ The output of the `EXPLAIN` statement shows that the optimizer scans the newly-c
 
 Now suppose that instead you want to perform a delete, but using the `id` column instead.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT) DELETE FROM users WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
 ~~~
@@ -431,7 +431,7 @@ The optimizer still scans the newly-created `users_name_city_idx` index when per
 
 If you provide an index hint (i.e., force the index selection) to use the primary index on the column instead, the CockroachDB will scan the users table using the primary index, on `city`, and `id`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT) DELETE FROM users@primary WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
 ~~~

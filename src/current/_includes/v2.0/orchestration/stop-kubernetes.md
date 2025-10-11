@@ -1,6 +1,6 @@
     <div class="filter-content" markdown="1" data-scope="gke-hosted">
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters delete cockroachdb
     ~~~
@@ -9,7 +9,7 @@
 
     <div class="filter-content" markdown="1" data-scope="gce-manual">
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cluster/kube-down.sh
     ~~~
@@ -18,7 +18,7 @@
 
     <div class="filter-content" markdown="1" data-scope="aws-manual">
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cluster/kube-down.sh
     ~~~

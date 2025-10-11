@@ -64,7 +64,7 @@ using the [scalar expressions](scalar-expressions.html) listed with `ON`. When t
 
 Retrieve specific columns by naming them in a comma-separated list:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, name, balance
 FROM accounts;
@@ -84,7 +84,7 @@ FROM accounts;
 
 Retrieve all columns by using `*`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *
 FROM accounts;
@@ -106,7 +106,7 @@ FROM accounts;
 
 Filter rows with expressions that use columns and return Boolean values in the `WHERE` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name, balance
 FROM accounts
@@ -126,7 +126,7 @@ WHERE balance < 300;
 
 To use multiple `WHERE` filters join them with `AND` or `OR`. You can also create negative filters with `NOT`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *
 FROM accounts
@@ -145,7 +145,7 @@ WHERE balance > 2500 AND NOT type = 'checking';
 
 Columns without the [Primary Key](primary-key.html) or [Unique](unique.html) constraints can have multiple instances of the same value:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -162,7 +162,7 @@ WHERE state_opened = 'VT';
 
 Using `DISTINCT`, you can remove all but one instance of duplicate values from your retrieved data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT name
 FROM accounts
@@ -180,7 +180,7 @@ WHERE state_opened = 'VT';
 
 Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` search for listed values in the specified column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name, balance, state_opened
 FROM accounts
@@ -202,7 +202,7 @@ WHERE state_opened IN ('AZ', 'NY', 'WA');
 
 Instead of outputting a column's name in the retrieved table, you can change its label using `AS`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name AS NY_accounts, balance
 FROM accounts
@@ -228,7 +228,7 @@ Search for partial [string](string.html) matches in columns using `LIKE`, which 
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, name, type
 FROM accounts
@@ -265,7 +265,7 @@ FROM accounts;
 
 You can also use the retrieved value as part of an expression. For example, you can use the result in the `WHERE` clause to select additional rows that were not part of the aggregate function itself:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, name, balance
 FROM accounts
@@ -290,7 +290,7 @@ WHERE balance = (
 
 By filtering the statement, you can perform the calculation only on retrieved rows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT SUM(balance)
 FROM accounts
@@ -308,7 +308,7 @@ WHERE state_opened IN ('AZ', 'NY', 'WA');
 
 You can use `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter which rows are processed by an aggregate function; those that return `FALSE` or `NULL` for the `FILTER` clause's Boolean expression are not fed into the aggregate function:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT count(*) AS unfiltered, count(*) FILTER (WHERE balance > 1500) AS filtered FROM accounts;
 ~~~
@@ -328,7 +328,7 @@ When creating aggregate groups, each column used as a `target_elem` must be incl
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT state_opened AS state, SUM(balance) AS state_balance
 FROM accounts
@@ -351,7 +351,7 @@ To filter aggregate groups, use `HAVING`, which is the equivalent of the `WHERE`
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT state_opened, AVG(balance) as avg
 FROM accounts
@@ -375,7 +375,7 @@ Aggregate functions can also be used in the `HAVING` clause without needing to b
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name, state_opened
 FROM accounts

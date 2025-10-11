@@ -79,7 +79,7 @@ Use the [`CONFIGURE ZONE`](configure-zone.html) statement to [add](#create-a-rep
 
 Use the [`ALTER ... CONFIGURE ZONE`](configure-zone.html) [statement](sql-statements.html) to set a replication zone:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 5, constraints = '[-region=west]';
 ~~~
@@ -298,21 +298,21 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 2. On any node, open the [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 3. Create the database for the West Coast application:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE west_app_db;
     ~~~
 
 4. Configure a replication zone for the database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER DATABASE west_app_db
     CONFIGURE ZONE USING constraints = '{"+region=us-west1": 2, "+region=us-central1": 1}', num_replicas = 3;
@@ -324,7 +324,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 5. View the replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR DATABASE west_app_db;
     ~~~
@@ -389,21 +389,21 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 2. On any node, open the [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 3. Create the database for application 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE app1_db;
     ~~~
 
 4. Configure a replication zone for the database used by application 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER DATABASE app1_db CONFIGURE ZONE USING num_replicas = 5;
     ~~~
@@ -414,7 +414,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 5. View the replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR DATABASE app1_db;
     ~~~
@@ -436,21 +436,21 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 6. Still in the SQL client, create a database for application 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE app2_db;
     ~~~
 
 7. Configure a replication zone for the database used by application 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER DATABASE app2_db CONFIGURE ZONE USING constraints = '[+az=us-2]';
     ~~~
 
 8. View the replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR DATABASE app2_db;
     ~~~
@@ -514,33 +514,33 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 2. On any node, open the [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 3. Create a database and table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE db;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE db.important_table;
     ~~~
 
 4. Configure a replication zone for the table that must be replicated more strictly:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE db.important_table CONFIGURE ZONE USING num_replicas = 5, constraints = '[+ssd]'
     ~~~
 
 5. View the replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR TABLE db.important_table;
     ~~~
@@ -598,21 +598,21 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 2. On any node, open the [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 3. Configure the default replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE default CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
 4. View the replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR RANGE default;
     ~~~
@@ -633,12 +633,12 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 5. Configure the `meta` replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 7;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR RANGE meta;
     ~~~
@@ -659,12 +659,12 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 6. Configure the `timeseries` replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE timeseries CONFIGURE ZONE USING num_replicas = 3;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR RANGE timeseries;
     ~~~

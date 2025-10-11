@@ -96,14 +96,14 @@ Inverted indexes on `JSONB` columns support the following [comparison operators]
 - "contains": `@>`
 - "equals": `=`, but only when you've reached into the JSON document with the `->` operator.  For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM a WHERE j ->'foo' = '"1"';
     ~~~
 
     This is equivalent to using `@>`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM a WHERE j @> '{"foo": "1"}';
     ~~~
@@ -112,7 +112,7 @@ If you require comparisons using `<`, `<=`, etc., you can create an index on a c
 
 1. Create your table with a computed column:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE test (
         id INT,
@@ -123,14 +123,14 @@ If you require comparisons using `<`, `<=`, etc., you can create an index on a c
 
 2. Create an index on your computed column:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX test_idx ON test (foo);
     ~~~
 
 3. Execute your query with your comparison:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM test where foo > 3;
     ~~~
@@ -152,7 +152,7 @@ CockroachDB does not support partitioning inverted indexes. For details, see [tr
 
 In this example, let's create a table with a `JSONB` column and an inverted index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
     profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -164,7 +164,7 @@ In this example, let's create a table with a `JSONB` column and an inverted inde
 
 Then, insert a few rows of data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
@@ -173,7 +173,7 @@ Then, insert a few rows of data:
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *, jsonb_pretty(user_profile) FROM users;
 ~~~
@@ -208,7 +208,7 @@ Then, insert a few rows of data:
 
 Now, run a query that filters on the `JSONB` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users where user_profile @> '{"location":"NYC"}';
 ~~~
@@ -228,7 +228,7 @@ Now, run a query that filters on the `JSONB` column:
 
 In this example, let's create a table with an `ARRAY` column first, and add the inverted index later:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
     student_id  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -238,7 +238,7 @@ In this example, let's create a table with an `ARRAY` column first, and add the 
 
 Insert a few rows of data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO students (marks) VALUES
     (ARRAY[10,20,50]),
@@ -247,7 +247,7 @@ Insert a few rows of data:
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM students;
 ~~~
@@ -268,12 +268,12 @@ Insert a few rows of data:
 
 Now, let’s add an inverted index to the table and run a query that filters on the `ARRAY`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INVERTED INDEX student_marks ON students (marks);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM students where marks @> ARRAY[100];
 ~~~

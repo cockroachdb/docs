@@ -32,7 +32,7 @@ To show each of these rules in action, we will optimize a query against the [Mov
 
 2. Populate the cluster with data by running the following [`cockroach workload`](cockroach-workload.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach workload init movr --num-histories 250000 --num-promo-codes 250000 --num-rides 125000 --num-users 12500 --num-vehicles 3750 'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
@@ -47,14 +47,14 @@ First, let's study the schema so we understand the relationships between the tab
 
 Start a SQL shell:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure
 ~~~
 
 Next, set `movr` as the current database and run [`SHOW TABLES`](show-tables.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 USE movr;
 SHOW TABLES;
@@ -74,7 +74,7 @@ SHOW TABLES;
 
 Let's look at the schema for the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE TABLE users;
 ~~~
@@ -95,7 +95,7 @@ SHOW CREATE TABLE users;
 
 There's no information about the number of rides taken here, nor anything about the days on which rides occurred. Luckily, there is also a `rides` table. Let's look at it:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE TABLE rides;
 ~~~
@@ -134,7 +134,7 @@ As specified above by our [`cockroach workload`](cockroach-workload.html) comman
 
 Below is a query that fetches the right answer to our question: "Who are the top 10 users by number of rides on a given date?"
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 	name, count(rides.id) AS sum
@@ -172,7 +172,7 @@ Unfortunately, this query is a bit slow. 160 milliseconds puts us [over the limi
 
 We can see why if we look at the output of [`EXPLAIN`](explain.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT
 	name, count(rides.id) AS sum
@@ -223,7 +223,7 @@ It's also possible that there is not an index on the `rider_id` column that we a
 
 Before creating any more indexes, let's see what indexes already exist on the `rides` table by running [`SHOW INDEXES`](show-index.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW INDEXES FROM rides;
 ~~~
@@ -246,14 +246,14 @@ As we suspected, there are no indexes on `start_time` or `rider_id`, so we'll ne
 
 Because another performance best practice is to [create an index on the `WHERE` condition storing the join key](sql-tuning-with-explain.html#solution-create-a-secondary-index-on-the-where-condition-storing-the-join-key), we will create an index on `start_time` that stores the join key `rider_id`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON rides (start_time) storing (rider_id);
 ~~~
 
 Now that we have an index on the column in our `WHERE` clause that stores the join key, let's run the query again:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 	name, count(rides.id) AS sum
@@ -291,7 +291,7 @@ This query is now running about 7x faster than it was before we added the indexe
 
 To see what changed, let's look at the [`EXPLAIN`](explain.html) output:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT
 	name, count(rides.id) AS sum
@@ -346,14 +346,14 @@ For example, we might think that a [lookup join](joins.html#lookup-joins) could 
 
 In order to get CockroachDB to plan a lookup join in this case, we will need to add an explicit index on the join key for the right-hand-side table, in this case, `rides`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON rides (rider_id);
 ~~~
 
 Next, we can specify the lookup join with a join hint:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 	name, count(rides.id) AS sum
@@ -391,7 +391,7 @@ The results, however, are not good. The query is much slower using a lookup join
 
 The query is also not faster when we force CockroachDB to use a merge join:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT
 	name, count(rides.id) AS sum

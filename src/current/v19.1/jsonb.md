@@ -75,7 +75,7 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
 
 ### Create a Table with a `JSONB` Column
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
     profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -84,7 +84,7 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -100,14 +100,14 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
     ('{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users;
 ~~~
@@ -126,7 +126,7 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
 
 To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()` function. For example, retrieve data from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT profile_id, last_updated, jsonb_pretty(user_profile) FROM users;
 ~~~
@@ -153,7 +153,7 @@ To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()
 
 To retrieve a specific field from a `JSONB` value, use the `->` operator. For example, retrieve a field from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT user_profile->'first_name',user_profile->'location' FROM users;
 ~~~
@@ -168,7 +168,7 @@ To retrieve a specific field from a `JSONB` value, use the `->` operator. For ex
 
 You can also use the `->>` operator to return `JSONB` field values as `STRING` values:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT user_profile->>'first_name', user_profile->>'location' FROM users;
 ~~~

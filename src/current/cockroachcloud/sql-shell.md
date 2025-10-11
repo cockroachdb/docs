@@ -39,7 +39,7 @@ The following examples assume you have already [created a CockroachDB {{ site.da
 
 1. In the SQL Shell, run [`CREATE TABLE`]({% link {{ site.current_cloud_version }}/create-table.md %}) followed by a table name, the column names, and the [data type]({% link {{ site.current_cloud_version }}/data-types.md %}) and [constraint]({% link {{ site.current_cloud_version }}/constraints.md %}), if any, for each column:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE dogs (
         id INT PRIMARY KEY,
@@ -49,21 +49,21 @@ The following examples assume you have already [created a CockroachDB {{ site.da
 
 1. Insert rows into the table using [`INSERT INTO`]({% link {{ site.current_cloud_version }}/insert.md %}) followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO dogs VALUES (1, 'Petee'), (2, 'Carl');
     ~~~
 
 1. Click the copy icon next to the successful `INSERT INTO` statement, paste it into the input field, edit the values, and run it again:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO dogs VALUES (3, 'Blue'), (4, 'Clifford');
     ~~~
 
 1. Query the table with [`SELECT`]({% link {{ site.current_cloud_version }}/select-clause.md %}) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT name FROM dogs;
     ~~~
@@ -79,7 +79,7 @@ The following examples assume you have already [created a CockroachDB {{ site.da
 
 1. Edit the executed `SELECT` statement to replace `name` with the `*` wildcard symbol and click **Run**:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM dogs;
     ~~~

@@ -1,4 +1,4 @@
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FOR DATABASE tpch;
 ~~~

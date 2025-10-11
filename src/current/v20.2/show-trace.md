@@ -99,7 +99,7 @@ Column | Type | Description
 
 ### Trace a session
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET tracing = on;
 ~~~
@@ -108,7 +108,7 @@ Column | Type | Description
 SET TRACING
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TRACE FOR SESSION;
 ~~~
@@ -133,19 +133,19 @@ In this example, we use two terminals concurrently to generate conflicting trans
 
 1. In terminal 1, create a table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE t (k INT);
     ~~~
 
 2. Still in terminal 1, open a transaction and perform a write without closing the transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO t VALUES (1);
     ~~~
@@ -160,7 +160,7 @@ In this example, we use two terminals concurrently to generate conflicting trans
 
 4.  Still in terminal 2, execute a conflicting read:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM t;
     ~~~
@@ -169,7 +169,7 @@ In this example, we use two terminals concurrently to generate conflicting trans
 
 4. Back in terminal 1, finish the transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
@@ -185,12 +185,12 @@ In this example, we use two terminals concurrently to generate conflicting trans
 
 6. Still in terminal 2, stop tracing and then view the completed trace:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET tracing = off;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TRACE FOR SESSION;
     ~~~

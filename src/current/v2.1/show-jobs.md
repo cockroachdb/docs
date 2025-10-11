@@ -52,7 +52,7 @@ Field | Description
 
 ### Show jobs
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW JOBS;
 ~~~
@@ -69,7 +69,7 @@ Field | Description
 
 You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the values with the `WHERE` clause.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW JOBS] WHERE job_type = 'RESTORE' AND status IN ('running', 'failed') ORDER BY created DESC;
 ~~~

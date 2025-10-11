@@ -189,7 +189,7 @@ Field | Description
 To start a single-node cluster, run the `cockroach start` command without the `--join` flag:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
@@ -200,7 +200,7 @@ $ cockroach start \
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -220,7 +220,7 @@ $ cockroach start \
 To start a multi-node cluster, run the `cockroach start` command for each node, setting the `--join` flag to the addresses of 3-5 of the initial nodes:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
@@ -230,7 +230,7 @@ $ cockroach start \
 --max-sql-memory=.25
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
@@ -240,7 +240,7 @@ $ cockroach start \
 --max-sql-memory=.25
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
@@ -252,7 +252,7 @@ $ cockroach start \
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -262,7 +262,7 @@ $ cockroach start \
 --max-sql-memory=.25
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -272,7 +272,7 @@ $ cockroach start \
 --max-sql-memory=.25
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -286,7 +286,7 @@ $ cockroach start \
 Then run the [`cockroach init`](initialize-a-cluster.html) command against any node to perform a one-time cluster initialization:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init \
 --certs-dir=certs \
@@ -295,7 +295,7 @@ $ cockroach init \
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init \
 --insecure \
@@ -314,7 +314,7 @@ $ cockroach init \
 
 1. Start each node on GCE with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes in on GCE, `--advertise-addr` set to advertise its public address to nodes on AWS, and `--join` set to the public addresses of 3-5 of the initial nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -328,7 +328,7 @@ $ cockroach init \
 
 2. Start each node on AWS with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes on AWS, `--advertise-addr` set to advertise its public address to nodes on GCE, and `--join` set to the public addresses of 3-5 of the initial nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --certs-dir=certs \
@@ -342,7 +342,7 @@ $ cockroach init \
 
 3. Run the [`cockroach init`](initialize-a-cluster.html) command against any node to perform a one-time cluster initialization:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init \
     --certs-dir=certs \
@@ -359,7 +359,7 @@ $ cockroach init \
 To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the addresses of 3-5 of the nodes already in the cluster:
 
 <div class="filter-content" markdown="1" data-scope="secure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --certs-dir=certs \
@@ -371,7 +371,7 @@ $ cockroach start \
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \

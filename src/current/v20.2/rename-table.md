@@ -46,7 +46,7 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 
 ### Rename a table
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -63,12 +63,12 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users RENAME TO riders;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES;
 ~~~
@@ -87,7 +87,7 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 
 To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE IF EXISTS customers RENAME TO clients;
 ~~~
@@ -96,7 +96,7 @@ To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
 To move a table from one database to another, use the above syntax but specify the source database after `ALTER TABLE` and the target database after `RENAME TO`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -113,7 +113,7 @@ To move a table from one database to another, use the above syntax but specify t
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM defaultdb;
 ~~~
@@ -124,12 +124,12 @@ To move a table from one database to another, use the above syntax but specify t
 (0 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE movr.promo_codes RENAME TO defaultdb.promos;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr;
 ~~~
@@ -145,7 +145,7 @@ To move a table from one database to another, use the above syntax but specify t
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM defaultdb;
 ~~~

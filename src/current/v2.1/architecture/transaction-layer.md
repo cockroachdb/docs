@@ -184,7 +184,7 @@ If the refreshing is unsuccessful, then the transaction must be retried at the p
 
 <span class="version-tag">New in v2.1:</span> Transactional writes are pipelined when being replicated and when being written to disk, dramatically reducing the latency of transactions that perform multiple writes. For example, consider the following transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 -- CREATE TABLE kv (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), key VARCHAR, value VARCHAR);
 > BEGIN;

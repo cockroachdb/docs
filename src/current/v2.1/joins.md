@@ -140,14 +140,14 @@ To use a lookup join:
 
 1. Open the [built-in SQL shell](use-the-built-in-sql-client.html) and enable the feature:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET experimental_force_lookup_join = true;
     ~~~
 
 2. In your query, specify the indexes to use if not the default index. For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM weather@index_1 LEFT OUTER JOIN cities ON (weather.city = cities.name);
     ~~~

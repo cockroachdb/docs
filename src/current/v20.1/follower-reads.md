@@ -45,7 +45,7 @@ Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.closed_timestam
 - `true` to enable follower reads _(default)_
 - `false` to disable follower reads
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.closed_timestamp.follower_reads_enabled = false;
 ~~~

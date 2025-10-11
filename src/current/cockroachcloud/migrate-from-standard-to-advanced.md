@@ -27,7 +27,7 @@ First, upload your CockroachDB {{ site.data.products.standard }} data to a cloud
 
 1. [Connect to your CockroachDB {{ site.data.products.standard }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and run the [`EXPORT`]({% link {{site.current_cloud_version}}/export.md %}) statement for each table you need to migrate. For example, the following statement exports the `warehouse` table from the [`tpcc`]({% link {{site.current_cloud_version}}/cockroach-workload.md %}#workloads) database to an Amazon S3 bucket:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPORT INTO CSV
       's3://{BUCKET NAME}/migration-data?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -52,7 +52,7 @@ First, upload your CockroachDB {{ site.data.products.standard }} data to a cloud
 
 1. Repeat this step for each table you want to migrate. For example, export one more table (`district`) from the `tpcc` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPORT INTO CSV
       's3://{BUCKET NAME}/migration-data?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
@@ -92,7 +92,7 @@ For best practices for optimizing import performance in CockroachDB, refer to [I
 
 1. [Connect to your CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and [create the database]({% link {{site.current_cloud_version}}/create-database.md %}) you want to import the tables into. For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE DATABASE tpcc;
     ~~~
@@ -107,7 +107,7 @@ For best practices for optimizing import performance in CockroachDB, refer to [I
 
     For example, to import the `tpcc.warehouse` data into a `warehouse` table, issue the following statement to create the new table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE tpcc.warehouse (
       w_id INT8 NOT NULL,
@@ -126,7 +126,7 @@ For best practices for optimizing import performance in CockroachDB, refer to [I
 
     Next, use `IMPORT INTO` to import the data into the new table, specifying the filename of the export from [Step 1](#step-1-export-data-to-cloud-storage):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     IMPORT INTO tpcc.warehouse (w_id, w_name, w_street_1, w_street_2, w_city, w_state, w_zip, w_tax, w_ytd)
       CSV DATA ('s3://{BUCKET NAME}/migration-data/{EXPORT FILENAME}?AWS_ACCESS_KEY_ID={ACCESS_KEY}&AWS_SECRET_ACCESS_KEY={SECRET_KEY}')
@@ -143,7 +143,7 @@ For best practices for optimizing import performance in CockroachDB, refer to [I
 
     Issue the following statement to create a new `district` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE tpcc.district (
       d_id INT8 NOT NULL,
@@ -164,7 +164,7 @@ For best practices for optimizing import performance in CockroachDB, refer to [I
 
     Next, use `IMPORT INTO` to import the data into the new table, specifying the filename of the export from [Step 1](#step-1-export-data-to-cloud-storage):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     IMPORT INTO tpcc.district (d_id, d_w_id, d_name, d_street_1, d_street_2, d_city, d_state, d_zip, d_tax, d_ytd, d_next_o_id)
       CSV DATA ('s3://{BUCKET NAME}/migration-data/{EXPORT FILENAME}?AWS_ACCESS_KEY_ID={ACCESS_KEY}&AWS_SECRET_ACCESS_KEY={SECRET_KEY}');
@@ -179,7 +179,7 @@ For best practices for optimizing import performance in CockroachDB, refer to [I
 
 1. **(Optional)** To verify that the data was imported, use [`SHOW TABLES`]({% link {{site.current_cloud_version}}/show-tables.md %}):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SHOW TABLES FROM tpcc;
     ~~~
@@ -196,7 +196,7 @@ For best practices for optimizing import performance in CockroachDB, refer to [I
 
 Once all of the tables you want to migrate have been imported into the CockroachDB {{ site.data.products.advanced }} cluster, add the [foreign key]({% link {{site.current_cloud_version}}/foreign-key.md %}) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`]({% link {{site.current_cloud_version}}/alter-table.md %}#add-constraint). For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE tpcc.district ADD CONSTRAINT fk_d_w_id_ref_warehouse FOREIGN KEY (d_w_id) REFERENCES tpcc.warehouse(w_id);
 ~~~

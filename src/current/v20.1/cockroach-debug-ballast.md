@@ -40,14 +40,14 @@ Flag | Description
 
 ### Create a 1GB ballast file (default)
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug ballast cockroach-data/ballast.txt
 ~~~
 
 ### Create a ballast file of a different size
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach debug ballast cockroach-data/ballast.txt --size=2GB
 ~~~

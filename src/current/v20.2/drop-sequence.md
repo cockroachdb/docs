@@ -39,12 +39,12 @@ table td:first-child {
 
 In this example, other objects do not depend on the sequence being dropped.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE even_numbers INCREMENT 2 START 2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -56,12 +56,12 @@ In this example, other objects do not depend on the sequence being dropped.
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP SEQUENCE even_numbers;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~

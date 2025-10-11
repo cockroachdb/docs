@@ -25,7 +25,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 To install [GORM](http://gorm.io), run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go get -u github.com/jinzhu/gorm
 ~~~
@@ -39,14 +39,14 @@ The following code uses the [GORM](http://gorm.io) ORM to map Go-specific object
 Copy the code or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/gorm-basic-sample.go" download>download it directly</a>.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/app/gorm-basic-sample.go %}
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go run gorm-basic-sample.go
 ~~~
@@ -61,7 +61,7 @@ Initial balances:
 
 To verify that the table and rows were created successfully, you can again use the [built-in SQL client](use-the-built-in-sql-client.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SHOW TABLES' --database=bank
 ~~~
@@ -75,7 +75,7 @@ $ cockroach sql --insecure -e 'SHOW TABLES' --database=bank
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 ~~~

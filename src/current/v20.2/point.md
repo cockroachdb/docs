@@ -14,7 +14,7 @@ A Point can be created in SQL by the `st_point` function.
 
 The statement below creates a Point (using the common [SRID 4326](spatial-glossary.html#srid)).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_SetSRID(ST_Makepoint(0,0), 4326);
 ~~~
@@ -30,7 +30,7 @@ SELECT ST_SetSRID(ST_Makepoint(0,0), 4326);
 
 A Point can be created from SQL by calling the `st_geomfromtext` function on a Point definition expressed in the [Well Known Text (WKT)](spatial-glossary.html#wkt) format as shown below.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_GeomFromText('POINT(0 0)');
 ~~~

@@ -1,0 +1,39 @@
+# Tiny test config - only build a few pages
+baseurl: /docs
+destination: _site/docs
+homepage_title: CockroachDB Docs
+versions:
+  stable: v25.3
+  dev: v25.4
+
+# Exclude almost everything to test just a few pages
+exclude:
+  - "v1*/**"
+  - "v2*/**" 
+  - "v19*/**"
+  - "v20*/**"
+  - "v21*/**"
+  - "v22*/**"
+  - "v23*/**"
+  - "v24*/**"
+  - "v25.1/**"
+  - "v25.2/**" 
+  - "archived/**"
+  - "ci/**"
+  - "scripts/**"
+  - "vendor/**"
+  - "node_modules/**"
+  - "_includes/v*/**"
+
+# Fast build settings
+jekyll_get_json: []
+sitemap: false
+plugins:
+  - jekyll-include-cache
+
+# Enable optimizations  
+layout_optimizations:
+  cache_includes: true
+  simple_version_switcher: true
+  minimal_toc: true
+development_mode: true
