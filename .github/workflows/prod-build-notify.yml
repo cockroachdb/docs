@@ -1,0 +1,137 @@
+name: Production Build Notification
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notify-prod-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Wait for Netlify deployment
+        run: sleep 90
+        
+      - name: Check Netlify deployment status
+        id: netlify-status
+        run: |
+          # Get latest deployment from Netlify API
+          DEPLOY_DATA=$(curl -s -H "Authorization: Bearer ${{ secrets.NETLIFY_TOKEN }}" \
+            "https://api.netlify.com/api/v1/sites/cockroachdb-docs/deploys?per_page=1")
+          
+          DEPLOY_STATE=$(echo "$DEPLOY_DATA" | jq -r '.[0].state')
+          DEPLOY_URL=$(echo "$DEPLOY_DATA" | jq -r '.[0].deploy_ssl_url')
+          COMMIT_SHA=$(echo "$DEPLOY_DATA" | jq -r '.[0].commit_ref')
+          DEPLOY_ID=$(echo "$DEPLOY_DATA" | jq -r '.[0].id')
+          
+          echo "deploy_state=$DEPLOY_STATE" >> $GITHUB_OUTPUT
+          echo "deploy_url=$DEPLOY_URL" >> $GITHUB_OUTPUT
+          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "deploy_id=$DEPLOY_ID" >> $GITHUB_OUTPUT
+          
+          echo "Deployment state: $DEPLOY_STATE"
+          echo "Deployment URL: $DEPLOY_URL"
+          echo "Commit SHA: $COMMIT_SHA"
+          
+      - name: Create GitHub deployment
+        id: deployment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha,
+              environment: 'production',
+              description: 'Production deployment via Netlify',
+              auto_merge: false,
+              required_contexts: []
+            });
+            return deployment.data.id;
+            
+      - name: Update GitHub deployment status - Success
+        if: steps.netlify-status.outputs.deploy_state == 'ready'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ steps.deployment.outputs.result }},
+              state: 'success',
+              environment: 'production',
+              environment_url: 'https://www.cockroachlabs.com',
+              description: 'Production deployment successful'
+            });
+            
+      - name: Update GitHub deployment status - Failure
+        if: steps.netlify-status.outputs.deploy_state == 'error'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ steps.deployment.outputs.result }},
+              state: 'failure',
+              environment: 'production',
+              description: 'Production deployment failed'
+            });
+            
+      - name: Send Slack notification - Success
+        if: steps.netlify-status.outputs.deploy_state == 'ready'
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": "✅ Production build successful!",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Production Build Successful* ✅\n\n*Site:* <https://www.cockroachlabs.com|cockroachlabs.com>\n*Commit:* `${{ steps.netlify-status.outputs.commit_sha }}`\n*Branch:* main\n*Deploy ID:* ${{ steps.netlify-status.outputs.deploy_id }}"
+                  }
+                }
+              ]
+            }' \
+            ${{ secrets.SLACK_WEBHOOK_URL }}
+            
+      - name: Send Slack notification - Failure
+        if: steps.netlify-status.outputs.deploy_state == 'error'
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": "❌ Production build failed!",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Production Build Failed* ❌\n\n*Commit:* `${{ steps.netlify-status.outputs.commit_sha }}`\n*Branch:* main\n*Deploy ID:* ${{ steps.netlify-status.outputs.deploy_id }}\n*Error:* Check Netlify dashboard for details"
+                  }
+                }
+              ]
+            }' \
+            ${{ secrets.SLACK_WEBHOOK_URL }}
+            
+      - name: Handle pending deployment
+        if: steps.netlify-status.outputs.deploy_state == 'building' || steps.netlify-status.outputs.deploy_state == 'enqueued'
+        run: |
+          echo "::warning::Deployment still in progress after 90 seconds: ${{ steps.netlify-status.outputs.deploy_state }}"
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": "⏳ Production build still in progress...",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Production Build In Progress* ⏳\n\n*Status:* ${{ steps.netlify-status.outputs.deploy_state }}\n*Commit:* `${{ steps.netlify-status.outputs.commit_sha }}`\n*Branch:* main\n*Note:* Check Netlify dashboard for completion status"
+                  }
+                }
+              ]
+            }' \
+            ${{ secrets.SLACK_WEBHOOK_URL }}
