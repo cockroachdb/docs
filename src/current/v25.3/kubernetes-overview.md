@@ -8,7 +8,7 @@ docs_area: deploy
 key: operate-cockroachdb-kubernetes.html
 ---
 
-Kubernetes is a portable, extensible, open source platform for managing containerized workloads and services. For a given workload, you provide Kubernetes with a configuration, and Kubernetes applies that configuration to all Kubernetes nodes that are running the application.
+Kubernetes is a portable, extensible platform for managing containerized workloads and services. For a given workload, you provide Kubernetes with a configuration, and Kubernetes applies that configuration to all Kubernetes nodes that are running the application.
 
 {% include {{ page.version.version }}/cockroachdb-operator-recommendation.md %}
 

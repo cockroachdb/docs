@@ -28,6 +28,7 @@ TODO: clean up the SQL diagrams not to link to these missing nonterminals.
 {% endcomment %}
 <a id="col_label"></a>
 <a id="column_constraints"></a>
+<a id="database_option"></a>
 <a id="column_name"></a>
 <a id="count"></a>
 <a id="fk_column_name"></a>

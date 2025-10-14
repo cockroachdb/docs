@@ -239,7 +239,7 @@ For each restore job, the tab will display:
 - **Backup taken on**: The date the backup was originally taken.
 - **Status**: The status of the restore job `Preparing`, `Running`, `Succeeded`, `Failed`.
 - **Restore start**: The date the restore job was initiated.
-- **Restore end**: The date the restore job ened (whether successful or unsuccessful).
+- **Restore end**: The date the restore job ended (whether successful or unsuccessful).
 - **Job ID**: The job ID of the restore job.
 
 ## Cloud API
