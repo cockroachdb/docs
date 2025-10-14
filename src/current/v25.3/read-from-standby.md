@@ -45,6 +45,10 @@ To add read from standby capabilities to an existing PCR stream, use the `ALTER 
 ALTER VIRTUAL CLUSTER main SET REPLICATION READ VIRTUAL CLUSTER;
 ~~~
 
+{{site.data.alerts.callout_info}}
+This command only works if the standby cluster's AppVC has a status of `replicating`. Use the `SHOW VIRTUAL CLUSTERS` command to check the status of the AppVC.
+{{site.data.alerts.end}}
+
 ### Check the status of your reader virtual cluster
 
 To confirm that your reader virtual cluster is active:
@@ -63,6 +67,10 @@ The output shows a `standby-readonly` virtual cluster in addition to the systemV
    3 | standby          | replicating | none
    4 | standby-readonly | ready       | shared
 ~~~
+
+{{site.data.alerts.callout_info}}
+The ReaderVC cannot serve reads until after the PCR initial scan is complete. After completing the initial scan, wait until the ReaderVC's `service_mode` is `shared`, then wait about one minute before connecting to the ReaderVC.
+{{site.data.alerts.end}}
 
 ### Run read-only queries on the standby cluster
 
