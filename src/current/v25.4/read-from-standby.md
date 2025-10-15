@@ -46,7 +46,7 @@ ALTER VIRTUAL CLUSTER main SET REPLICATION READ VIRTUAL CLUSTER;
 ~~~
 
 {{site.data.alerts.callout_info}}
-This command only works if the standby cluster's AppVC has a status of `replicating`. Use the `SHOW VIRTUAL CLUSTERS` command to check the status of the AppVC.
+The standby cluster's AppVC must have a status of `replicating` before you can create your ReaderVC. Use the `SHOW VIRTUAL CLUSTERS` command to check the status of the AppVC.
 {{site.data.alerts.end}}
 
 ### Check the status of your reader virtual cluster
@@ -82,25 +82,11 @@ SELECT COUNT(*) FROM customers;
 SELECT region, SUM(amount) FROM orders GROUP BY region;
 ~~~
 
-The results of queries on the standby cluster reflect the state of the primary cluster as of a historical time that approaches the replicated time.
+The results of queries on the standby cluster reflect the state of the primary cluster as of a historical time that approaches the [replicated time]({% link {{ page.version.version }}/show-virtual-cluster.md %}#show-replication-status).
 
 {{ site.data.alerts.callout_info }}
 Write operations are not permitted on the standby cluster.
 {{ site.data.alerts.end }}
-
-### Monitor replication lag
-
-Reading from the standby cluster may return slightly stale data due to replication lag between the primary cluster and the standby cluster. You can monitor replication lag to understand how current the data in the standby cluster is. To check the standby cluster's replication status:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW VIRTUAL CLUSTER REPLICATION STATUS <standby_name>;
-~~~
-
-The output provides the following information:
-- the replication status of the standby cluster
-- the timestamp of the most recently applied event on the standby cluster
-- any lag relative to the primary cluster
 
 ## See also
 - [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %})
