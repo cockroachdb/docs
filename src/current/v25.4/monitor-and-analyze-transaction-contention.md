@@ -118,13 +118,13 @@ Correlate these metrics with information from the [Insights]({% link {{ page.ver
 
 CockroachDB periodically summarizes resolved contention activity as structured log events on the [`SQL_EXEC` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). Each `aggregated_contention_info` [event]({% link {{ page.version.version }}/eventlog.md %}) reports the waiting statement and transaction fingerprints, the blocking transaction fingerprint, the contended key (if not redacted), and the total wait time for that combination since the previous event. [Configure log sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) to route the SQL_EXEC channel to a destination, such as a log file or external collector, for long-term analysis.
 
-These periodic snapshots complement the in-memory [`crdb_internal.transaction_contention_events`](#transaction_contention_events-table) table by providing a durable view of contention history that persists across node restarts or after contention data expires from the event store. Snapshots are taken at an interval defined by the cluster setting [`sql.contention.event_store.resolution_interval`](#sql-contention-event_store-resolution_interval).
+These periodic reports complement the in-memory [`crdb_internal.transaction_contention_events`](#transaction_contention_events-table) table by providing a durable view of contention history that persists across node restarts or after contention data expires from the event store. Reports are generated at an interval defined by the cluster setting [`sql.contention.event_store.resolution_interval`](#sql-contention-event_store-resolution_interval).
 
 The structured payload makes it easy to ingest the events into log analytics tools and correlate them with statement fingerprints or key hotspots. A typical structured log entry looks like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ json
-{"Timestamp":1756224167482848000,"EventType":"aggregated_contention_info","WaitingStmtFingerprintId":"\\x000000000000007b","WaitingTxnFingerprintId":"\\x00000000000001c8","BlockingTxnFingerprintId":"\\x0000000000000315","ContendedKey":"test-key-1","Duration":300000000}
+{"Timestamp":1756224167482848000,"EventType":"aggregated_contention_info","WaitingStmtFingerprintId":"\\x000000000000007b","WaitingTxnFingerprintId":"\\x00000000000001c8","BlockingTxnFingerprintId":"\\x0000000000000315","ContendedKey":"‹/Table/106/1/8/0›","Duration":300000000}
 ~~~
 
 ## Monitor using `crdb_internal` tables
