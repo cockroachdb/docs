@@ -9593,7 +9593,7 @@
 
 - release_name: v24.1.25
   major_version: v24.1
-  release_date: '2025-11-22'
+  release_date: '2025-10-17'
   release_type: Production
   go_version: go1.23.12
   sha: fc938cc8bc2ed39db52fb0fbc6fdda3774827e33
