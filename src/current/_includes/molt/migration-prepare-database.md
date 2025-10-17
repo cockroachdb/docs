@@ -191,11 +191,14 @@ Enable supplemental logging for primary keys:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+-- Enable minimal supplemental logging for primary keys
 ALTER DATABASE ADD SUPPLEMENTAL LOG DATA (PRIMARY KEY) COLUMNS;
 
--- Verify supplemental logging
+-- Verify supplemental logging status
 SELECT supplemental_log_data_min, supplemental_log_data_pk FROM v$database;
--- Expected: SUPPLEMENTAL_LOG_DATA_MIN: IMPLICIT (or YES), SUPPLEMENTAL_LOG_DATA_PK: YES
+-- Expected:
+--   SUPPLEMENTAL_LOG_DATA_MIN: IMPLICIT (or YES)
+--   SUPPLEMENTAL_LOG_DATA_PK: YES
 ~~~
 
 Enable `FORCE LOGGING` to ensure all changes are logged:
