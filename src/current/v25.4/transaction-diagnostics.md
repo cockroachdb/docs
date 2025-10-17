@@ -29,7 +29,7 @@ crdb_internal.request_transaction_bundle(
 ## Parameters
 
 - `transaction_fingerprint_id`: A hex-encoded ID of the transaction fingerprint to capture. The fingerprint ID must exist in `crdb_internal.transaction_statistics`, which is the system of record for transaction fingerprints.
-- `sampling_probability`: A probability value (between 0 and 1) for sampling whether a transaction bundle should be recorded.
+- `sampling_probability`: A probability value (between 0 and 1) for sampling whether a transaction bundle should be recorded. If 0 is provided, there is no sampling; the next execution of the transaction will be captured.
 - `min_execution_latency`: The minimum execution time required for the transaction to be considered. If `sampling_probability` is non-zero, this value must also be non-zero.
 - `expires_after`: The duration for which the request remains active. A value of 0 keeps the request open until fulfilled or canceled.
 - `redacted`: Specifies whether the resulting bundle should be redacted.
