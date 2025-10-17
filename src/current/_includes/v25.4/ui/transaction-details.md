@@ -5,6 +5,7 @@ The details displayed on the **Transaction Details** page reflect the [time inte
 - The _transaction fingerprint_ is displayed as a list of the individual [SQL statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints) in the transaction.
 - The **Mean transaction time**: The mean average time it took to execute the transaction within the aggregation interval.
 - The **Application name**: The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
+- The **Fingerprint ID**: The hex-encoded ID of the transaction fingerprint.
 - **Transaction resource usage** shows overall statistics about the transaction.
     - **Mean rows/bytes read**: The mean average number of rows and bytes [read from the storage layer]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) during the execution of the transaction within the specified aggregation interval.
     - **Bytes read over network**: The amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for this transaction within the aggregation interval. <br><br>If this value is 0, the statement was executed on a single node.
