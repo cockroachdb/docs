@@ -4,6 +4,12 @@ Define the connection strings for the [source](#source-connection-string) and [t
 
 The `--source` flag specifies the connection string for the source database:
 
+{% if page.name != "migrate-bulk-load.md" %}
+{{site.data.alerts.callout_info}}
+The source connection **must** point to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary). Replicas cannot provide the necessary replication checkpoints and transaction metadata required for ongoing replication.
+{{site.data.alerts.end}}
+{% endif %}
+
 <section class="filter-content" markdown="1" data-scope="postgres">
 ~~~
 --source 'postgres://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full'
@@ -14,8 +20,6 @@ For example:
 ~~~
 --source 'postgres://migration_user:password@localhost:5432/molt?sslmode=verify-full'
 ~~~
-
-The source connection must point to the PostgreSQL primary instance, not a read replica.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">

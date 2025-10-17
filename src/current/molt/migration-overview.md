@@ -136,7 +136,7 @@ Refer to [Load and Replicate]({% link molt/migrate-load-replicate.md %}) for det
 
 If the migration is interrupted or cutover must be aborted, MOLT Replicator provides safe recovery options:
 
-- Resume a previously interrupted replication stream. Refer to [Resume Replication]({% link molt/migrate-resume-replication.md %}).
+- Resume a previously interrupted replication stream. Refer to [Start or Resume Replication]({% link molt/migrate-resume-replication.md %}).
 - Use failback mode to reverse the migration, synchronizing changes from CockroachDB back to the original source. This ensures data consistency on the source so that you can retry the migration later. Refer to [Migration Failback]({% link molt/migrate-failback.md %}).
 
 ## See also

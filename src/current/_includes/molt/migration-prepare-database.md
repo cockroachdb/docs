@@ -129,10 +129,12 @@ GRANT SELECT, FLASHBACK ON migration_schema.tbl TO MIGRATION_USER;
 {% if page.name != "migrate-bulk-load.md" %}
 #### Configure source database for replication
 
-<section class="filter-content" markdown="1" data-scope="postgres">
 {{site.data.alerts.callout_info}}
-Connect to the primary PostgreSQL instance, **not** a read replica. Read replicas cannot create or manage logical replication slots. Verify that you are connected to the primary server by running `SELECT pg_is_in_recovery();` and getting a `false` result.
+Connect to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary), **not** a replica. Replicas cannot provide the necessary replication checkpoints and transaction metadata required for ongoing replication.
 {{site.data.alerts.end}}
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+Verify that you are connected to the primary server by running `SELECT pg_is_in_recovery();` and getting a `false` result.
 
 Enable logical replication by setting `wal_level` to `logical` in `postgresql.conf` or in the SQL shell. For example:
 
@@ -140,65 +142,22 @@ Enable logical replication by setting `wal_level` to `logical` in `postgresql.co
 ~~~ sql
 ALTER SYSTEM SET wal_level = 'logical';
 ~~~
-
-Create a publication for the tables you want to replicate. Do this **before** creating the replication slot. 
-
-To create a publication for all tables:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE PUBLICATION molt_publication FOR ALL TABLES;
-~~~
-
-To create a publication for specific tables:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE PUBLICATION molt_publication FOR TABLE employees, payments, orders;
-~~~
-
-Create a logical replication slot:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
-~~~
-
-##### Verify logical replication setup
-
-Verify the publication was created successfully:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT * FROM pg_publication;
-~~~
-
-~~~
-  oid  |     pubname      | pubowner | puballtables | pubinsert | pubupdate | pubdelete | pubtruncate | pubviaroot
--------+------------------+----------+--------------+-----------+-----------+-----------+-------------+------------
- 59084 | molt_publication |       10 | t            | t         | t         | t         | t           | f
-~~~
-
-Verify the replication slot was created:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT * FROM pg_replication_slots;
-~~~
-
-~~~
- slot_name |  plugin  | slot_type | datoid | database | temporary | active | active_pid | xmin | catalog_xmin | restart_lsn | confirmed_flush_lsn | wal_status | safe_wal_size | two_phase
------------+----------+-----------+--------+----------+-----------+--------+------------+------+--------------+-------------+---------------------+------------+---------------+-----------
- molt_slot | pgoutput | logical   |  16385 | molt     | f         | f      |            |      |         2261 | 0/49913A20  | 0/49913A58          | reserved   |               | f
-~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
 Enable [global transaction identifiers (GTID)](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) and configure binary logging. Set `binlog-row-metadata` or `binlog-row-image` to `full` to provide complete metadata for replication.
 
+Configure binlog retention to ensure GTIDs remain available throughout the migration:
+
+- MySQL 8.0.1+: Set `binlog_expire_logs_seconds` (default: 2592000 = 30 days) based on your migration timeline.
+- MySQL < 8.0: Set `expire_logs_days`, or manually manage retention by setting `max_binlog_size` and using `PURGE BINARY LOGS BEFORE NOW() - INTERVAL 1 HOUR` (adjusting the interval as needed). Force binlog rotation with `FLUSH BINARY LOGS` if needed.
+- Managed services: Refer to provider-specific configuration for [Amazon RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html) or [Google Cloud SQL](https://cloud.google.com/sql/docs/mysql/flags#mysql-b).
+
+{% comment %}
 {{site.data.alerts.callout_info}}
-GTID replication sends all database changes to Replicator. To limit replication to specific tables or schemas, use the `--table-filter` and `--schema-filter` flags in the `replicator` command.
+GTID replication sends all database changes to Replicator. To limit replication to specific tables or schemas, use a userscript.
 {{site.data.alerts.end}}
+{% endcomment %}
 
 |  Version   |                                                                                         Configuration                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -206,41 +165,6 @@ GTID replication sends all database changes to Replicator. To limit replication 
 | MySQL 5.7  | `--gtid-mode=on`<br>`--enforce-gtid-consistency=on`<br>`--binlog-row-image=full`<br>`--server-id={unique_id}`<br>`--log-bin=log-bin`                                                           |
 | MySQL 8.0+ | `--gtid-mode=on`<br>`--enforce-gtid-consistency=on`<br>`--binlog-row-metadata=full`                                                                                                            |
 | MariaDB    | `--log-bin`<br>`--server_id={unique_id}`<br>`--log-basename=master1`<br>`--binlog-format=row`<br>`--binlog-row-metadata=full`                                                                  |
-
-##### Verify MySQL GTID setup
-
-Get the current GTID set to use as the starting point for replication:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
--- For MySQL < 8.0:
-SHOW MASTER STATUS;
--- For MySQL 8.0+:
-SHOW BINARY LOG STATUS;
-~~~
-
-~~~
-+---------------+----------+--------------+------------------+-------------------------------------------+
-| File          | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set                         |
-+---------------+----------+--------------+------------------+-------------------------------------------+
-| binlog.000005 |      197 |              |                  | 77263736-7899-11f0-81a5-0242ac120002:1-38 |
-+---------------+----------+--------------+------------------+-------------------------------------------+
-~~~
-
-Use the `Executed_Gtid_Set` value for the `--defaultGTIDSet` flag in MOLT Replicator.
-
-To verify that a GTID set is valid and not purged, use the following queries:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
--- Verify the GTID set is in the executed set
-SELECT GTID_SUBSET('77263736-7899-11f0-81a5-0242ac120002:1-38', @@GLOBAL.gtid_executed) AS in_executed;
-
--- Verify the GTID set is not in the purged set
-SELECT GTID_SUBSET('77263736-7899-11f0-81a5-0242ac120002:1-38', @@GLOBAL.gtid_purged) AS in_purged;
-~~~
-
-If `in_executed` returns `1` and `in_purged` returns `0`, the GTID set is valid for replication.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
@@ -353,11 +277,11 @@ ON
 ~~~
 
 ~~~
-   GROUP# MEMBER                                       START_SCN                END_SCN 
-_________ _________________________________________ ____________ ______________________ 
-        3 /opt/oracle/oradata/ORCLCDB/redo03.log         1232896    9295429630892703743 
-        2 /opt/oracle/oradata/ORCLCDB/redo02.log         1155042                1232896 
-        1 /opt/oracle/oradata/ORCLCDB/redo01.log         1141934                1155042 
+   GROUP# MEMBER                                       START_SCN                END_SCN
+_________ _________________________________________ ____________ ______________________
+        3 /opt/oracle/oradata/ORCLCDB/redo03.log         1232896    9295429630892703743
+        2 /opt/oracle/oradata/ORCLCDB/redo02.log         1155042                1232896
+        1 /opt/oracle/oradata/ORCLCDB/redo01.log         1141934                1155042
 
 3 rows selected.
 ~~~
@@ -376,24 +300,6 @@ CURRENT_SCN
 
 1 row selected.
 ~~~
-
-##### Get SCNs for replication startup
-
-If you plan to use [initial data load](#start-fetch) followed by [replication](#start-replicator), obtain the correct SCNs **before** starting the initial data load to ensure no active transactions are missed. Run the following queries on the PDB in the order shown:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
--- Query the current SCN from Oracle
-SELECT CURRENT_SCN FROM V$DATABASE;
-
--- Query the starting SCN of the earliest active transaction
-SELECT MIN(t.START_SCNB) FROM V$TRANSACTION t;
-~~~
-
-Use the results as follows:
-
-- `--scn`: Use the result from the first query (current SCN)
-- `--backfillFromSCN`: Use the result from the second query (earliest active transaction SCN). If the second query returns no results, use the result from the first query instead.
 
 Add the redo log files to LogMiner, using the redo log file paths you queried:
 

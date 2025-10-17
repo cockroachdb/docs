@@ -199,7 +199,7 @@ URL-encode the connection strings for the source and target databases. This ensu
 
 - Pay close attention to warning and error level logging, as it indicates when Replicator is misbehaving. Enable trace logging with `-vv` for additional visibility when troubleshooting.
 
-By default, MOLT Replicator exports [Prometheus](https://prometheus.io/) metrics at the address specified by `--metricsAddr` (default `:30005`) at the path `/_/varz`. For example: `http://localhost:30005/_/varz`.
+MOLT Replicator can export [Prometheus](https://prometheus.io/) metrics by setting the `--metricsAddr` flag to a port (for example, `--metricsAddr :30005`). Metrics are not enabled by default. When enabled, metrics are available at the path `/_/varz`. For example: `http://localhost:30005/_/varz`.
 
 Cockroach Labs recommends monitoring the following metrics during replication:
 
@@ -214,7 +214,7 @@ Cockroach Labs recommends monitoring the following metrics during replication:
 
 You can use the [Replicator Grafana dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) to visualize these metrics. For Oracle-specific metrics, import [this Oracle Grafana dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
 
-To check MOLT Replicator health, run `curl http://localhost:30005/_/healthz`. This returns a status code of `200` if Replicator is running.
+To check MOLT Replicator health when metrics are enabled, run `curl http://localhost:30005/_/healthz` (replacing the port with your `--metricsAddr` value). This returns a status code of `200` if Replicator is running.
 
 ### Logging
 
@@ -268,7 +268,7 @@ Client certificates in changefeed webhook URLs must correspond to server certifi
 For detailed examples of using MOLT Replicator usage, refer to the migration workflow tutorials:
 
 - [Load and replicate]({% link molt/migrate-load-replicate.md %}): Load data with MOLT Fetch and set up ongoing replication with MOLT Replicator.
-- [Resume Replication]({% link molt/migrate-resume-replication.md %}): Resume replication to CockroachDB after an interruption.
+- [Start or Resume Replication]({% link molt/migrate-resume-replication.md %}): Start replication without MOLT Fetch or resume replication after an interruption.
 - [Migration failback]({% link molt/migrate-failback.md %}): Replicate changes from CockroachDB back to the source database.
 
 ## See also
@@ -277,5 +277,5 @@ For detailed examples of using MOLT Replicator usage, refer to the migration wor
 - [Migration Strategy]({% link molt/migration-strategy.md %})
 - [MOLT Fetch]({% link molt/molt-fetch.md %})
 - [Load and replicate]({% link molt/migrate-load-replicate.md %})
-- [Resume Replication]({% link molt/migrate-resume-replication.md %})
+- [Start or Resume Replication]({% link molt/migrate-resume-replication.md %})
 - [Migration Failback]({% link molt/migrate-failback.md %})

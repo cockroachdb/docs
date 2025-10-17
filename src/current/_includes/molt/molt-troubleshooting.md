@@ -87,9 +87,11 @@ If you shut down `molt` or `replicator` unexpectedly (e.g., with `kill -9` or a 
 <section class="filter-content" markdown="1" data-scope="postgres">
 ##### Unable to create publication or slot
 
-This error occurs when the source database does not support logical replication.
+This error occurs when logical replication is not supported.
 
-**Resolution:** Verify that the source database supports logical replication by checking the `wal_level` parameter on PostgreSQL:
+**Resolution:** If you are connected to a replica, connect to the primary instance instead. Replicas cannot create or manage logical replication slots or publications.
+
+Verify that the source database supports logical replication by checking the `wal_level` parameter on PostgreSQL:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -154,23 +156,35 @@ run SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput'); in sourc
 ~~~ sql
 SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
 ~~~
+</section>
 
 {% if page.name == "migrate-resume-replication.md" %}
 ##### Resuming from stale location
 
-**Resolution:** Clear the `_replicator.memo` table to remove stale LSN (log sequence number) checkpoints:
+<section class="filter-content" markdown="1" data-scope="postgres">
+For PostgreSQL, the replication slot on the source database tracks progress automatically. Clearing the memo table is only necessary if the replication slot was destroyed and you need to restart replication from a specific LSN.
+
+**Resolution:** Clear the `_replicator.memo` table:
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+**Resolution:** Clear the `_replicator.memo` table to remove stale GTID checkpoints:
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+**Resolution:** Clear the `_replicator.memo` table to remove stale SCN (System Change Number) checkpoints:
+</section>
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 DELETE FROM _replicator.memo WHERE true;
 ~~~
 {% endif %}
-</section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
 ##### Repeated binlog syncing restarts
 
-If Replicator repeatedly restarts binlog syncing, this indicates an invalid or purged GTID.
+If Replicator repeatedly restarts binlog syncing or starts replication from an unexpectedly old location, this indicates an invalid or purged GTID. When an invalid GTID is provided, the binlog syncer will fall back to the first valid GTID.
 
 **Resolution:** Verify the GTID set is valid and **not** purged:
 
@@ -208,6 +222,16 @@ If the GTID is purged or invalid, follow these steps:
     -- For MySQL 8.0+:
     SHOW BINARY LOG STATUS;
     ~~~
+
+    ~~~
+    +---------------+----------+--------------+------------------+-------------------------------------------+
+    | File          | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set                         |
+    +---------------+----------+--------------+------------------+-------------------------------------------+
+    | binlog.000005 |      197 |              |                  | 77263736-7899-11f0-81a5-0242ac120002:1-38 |
+    +---------------+----------+--------------+------------------+-------------------------------------------+
+    ~~~
+
+    Use the `Executed_Gtid_Set` value for the `--defaultGTIDSet` flag.
 
 ##### Invalid GTID format
 
@@ -276,7 +300,7 @@ WARNING: warning during tryCommit: ERROR: duplicate key value violates unique co
 ERROR: maximum number of retries (10) exceeded
 ~~~
 
-**Resolution:** Check target database constraints and connection stability. MOLT Replicator will log warnings for each retry attempt and surface a final error after exhausting all retry attempts, then restart the apply loop to continue processing.
+**Resolution:** Check target database constraints and connection stability. MOLT Replicator will log warnings for each retry attempt. If you see warnings but no final error, the apply succeeded after retrying. If all retry attempts are exhausted, Replicator will surface a final error and restart the apply loop to continue processing.
 
 ##### CockroachDB changefeed connection issues
 

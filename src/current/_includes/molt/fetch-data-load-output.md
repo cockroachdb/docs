@@ -1,5 +1,16 @@
 1. Check the output to observe `fetch` progress. 
 
+	{% if page.name == "migrate-load-replicate.md" %}
+	<section class="filter-content" markdown="1" data-scope="oracle">
+	The following message shows the appropriate values for the `--backfillFromSCN` and `--scn` replication flags to use when [starting Replicator](#start-replicator):
+
+	{% include_cached copy-clipboard.html %}
+	~~~ 
+	replication-only mode should include the following replicator flags: --backfillFromSCN 26685444 --scn 26685786
+	~~~
+	</section>
+	{% endif %}
+
 	A `starting fetch` message indicates that the task has started:
 
 	<section class="filter-content" markdown="1" data-scope="postgres">
@@ -16,7 +27,7 @@
 
 	<section class="filter-content" markdown="1" data-scope="oracle">
 	~~~ json
-	{"level":"info","type":"summary","num_tables":3,"cdc_cursor":"2358840","time":"2025-02-10T14:28:11-05:00","message":"starting fetch"}
+	{"level":"info","type":"summary","num_tables":3,"cdc_cursor":"26685786","time":"2025-02-10T14:28:11-05:00","message":"starting fetch"}
 	~~~
 	</section>
 
@@ -82,14 +93,3 @@
 	{"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["migration_schema.employees","migration_schema.payments","migration_schema.payments"],"cdc_cursor":"2358840","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
 	~~~
 	</section>
-
-	{% if page.name == "migrate-load-replicate.md" %}
-	<section class="filter-content" markdown="1" data-scope="oracle">
-	The following message shows the appropriate values for the `--backfillFromSCN` and `--scn` replication flags to use when [starting Replicator](#start-replicator):
-
-	{% include_cached copy-clipboard.html %}
-	~~~ 
-	replication-only mode should include the following replicator flags: --backfillFromSCN 26685444 --scn 26685786
-	~~~
-	</section>
-	{% endif %}

@@ -14,7 +14,9 @@ The following binaries are included:
 - `molt`
 - `replicator`
 
-Both `molt` and `replicator` must be in your current **working directory**.
+{{site.data.alerts.callout_success}}
+For ease of use, keep both `molt` and `replicator` in your current **working directory**.
+{{site.data.alerts.end}}
 
 To display the current version of each binary, run `molt --version` and `replicator --version`.
 

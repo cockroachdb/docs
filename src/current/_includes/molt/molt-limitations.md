@@ -17,9 +17,7 @@
 {% if page.name != "migrate-bulk-load.md" %}
 #### Replicator limitations
 
-<section class="filter-content" markdown="1" data-scope="postgres">
-- Replication modes require write access to the PostgreSQL primary instance. MOLT cannot create replication slots or run replication against a read replica.
-</section>
+- Replication modes require connection to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary). MOLT cannot obtain replication checkpoints or transaction metadata from replicas.
 
 <section class="filter-content" markdown="1" data-scope="mysql">
 - MySQL replication is supported only with [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html)-based configurations. Binlog-based features that do not use GTID are not supported.

@@ -78,9 +78,9 @@ When you run `replicator`, you can configure the following options for replicati
 
 ### Connection strings
 
-For failback, MOLT Replicator uses `--targetConn` to specify the original source database and `--stagingConn` for the CockroachDB staging database.
+For failback, MOLT Replicator uses `--targetConn` to specify the destination database where you want to replicate CockroachDB changes, and `--stagingConn` for the CockroachDB staging database.
 
-`--targetConn` is the connection string of the database you migrated from.
+`--targetConn` is the connection string of the database you want to replicate changes to (the database you originally migrated from).
 
 For example:
 
@@ -183,7 +183,7 @@ For additional details on the webhook sink URI, refer to [Webhook sink]({% link 
 
 ## Create the CockroachDB changefeed
 
-Create a CockroachDB changefeed to send changes to MOLT Replicator. 
+Create a CockroachDB changefeed to send changes to MOLT Replicator.
 
 1. Get the current logical timestamp from CockroachDB, after [ensuring that forward replication has fully drained](#stop-forward-replication):
 

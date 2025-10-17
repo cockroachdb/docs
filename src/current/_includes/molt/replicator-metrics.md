@@ -1,6 +1,6 @@
 ### Replicator metrics
 
-By default, MOLT Replicator exports [Prometheus](https://prometheus.io/) metrics at the address specified by `--metricsAddr` (default `:30005`) at the path `/_/varz`. For example: `http://localhost:30005/_/varz`.
+MOLT Replicator can export [Prometheus](https://prometheus.io/) metrics by setting the `--metricsAddr` flag to a port (for example, `--metricsAddr :30005`). Metrics are not enabled by default. When enabled, metrics are available at the path `/_/varz`. For example: `http://localhost:30005/_/varz`.
 
 Cockroach Labs recommends monitoring the following metrics during replication:
 
@@ -24,4 +24,4 @@ Cockroach Labs recommends monitoring the following metrics during replication:
 
 You can use the [Replicator Grafana dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) to visualize these metrics. <section class="filter-content" markdown="1" data-scope="oracle">For Oracle-specific metrics, import [this Oracle Grafana dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).</section>
 
-To check MOLT Replicator health, run `curl http://localhost:30005/_/healthz`. This returns a status code of `200` if Replicator is running.
+To check MOLT Replicator health when metrics are enabled, run `curl http://localhost:30005/_/healthz` (replacing the port with your `--metricsAddr` value). This returns a status code of `200` if Replicator is running.

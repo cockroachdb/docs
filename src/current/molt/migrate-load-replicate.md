@@ -18,6 +18,8 @@ Perform the initial load of the source data.
 1. Issue the [MOLT Fetch]({% link molt/molt-fetch.md %}) command to move the source data to CockroachDB. This example command passes the source and target connection strings [as environment variables](#secure-connections), writes [intermediate files](#intermediate-file-storage) to S3 storage, and uses the `truncate-if-exists` [table handling mode](#table-handling-mode) to truncate the target tables before loading data. It also limits the migration to a single schema and filters three specific tables to migrate. The [data load mode](#data-load-mode) defaults to `IMPORT INTO`.
 
 	<section class="filter-content" markdown="1" data-scope="postgres">
+	You **must** include `--pglogical-replication-slot-name` and `--pglogical-publication-and-slot-drop-and-recreate` to automatically create the publication and replication slot during the data load.
+
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
 	molt fetch \
@@ -26,7 +28,9 @@ Perform the initial load of the source data.
 	--schema-filter 'migration_schema' \
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
-	--table-handling truncate-if-exists
+	--table-handling truncate-if-exists \
+	--pglogical-replication-slot-name molt_slot \
+	--pglogical-publication-and-slot-drop-and-recreate
 	~~~
 	</section>
 
@@ -85,8 +89,12 @@ Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and
 
 With initial load complete, start replication of ongoing changes on the source to CockroachDB using [MOLT Replicator]({% link molt/molt-replicator.md %}).
 
+{{site.data.alerts.callout_info}}
+MOLT Fetch captures a consistent point-in-time checkpoint at the start of the data load (shown as `cdc_cursor` in the fetch output). Starting replication from this checkpoint ensures that all changes made during and after the data load are replicated to CockroachDB, preventing data loss or duplication. The following steps use the checkpoint values from the fetch output to start replication at the correct position.
+{{site.data.alerts.end}}
+
 <section class="filter-content" markdown="1" data-scope="postgres">
-1. Run the `replicator` command, specifying the same `--slotName` value that you configured during [source database setup](#configure-source-database-for-replication). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
+1. Run the `replicator` command, using the same slot name that you specified with `--pglogical-replication-slot-name` in the [Fetch command](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
@@ -103,25 +111,7 @@ With initial load complete, start replication of ongoing changes on the source t
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-1. Get the executed GTID set from the MySQL source, which shows what transactions have been applied on the source database. Use the `Executed_Gtid_Set` value as your `--defaultGTIDSet`:
-
-	{% include_cached copy-clipboard.html %}
-	~~~ sql
-	-- For MySQL < 8.0:
-	SHOW MASTER STATUS;
-	-- For MySQL 8.0+:
-	SHOW BINARY LOG STATUS;
-	~~~
-
-	~~~
-	+---------------+----------+--------------+------------------+-------------------------------------------+
-	| File          | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set                         |
-	+---------------+----------+--------------+------------------+-------------------------------------------+
-	| binlog.000005 |      197 |              |                  | 77263736-7899-11f0-81a5-0242ac120002:1-38 |
-	+---------------+----------+--------------+------------------+-------------------------------------------+
-	~~~
-
-1. Run the `replicator` command, specifying the GTID set from the previous step. Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
+1. Run the `replicator` command, specifying the GTID from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
@@ -129,7 +119,7 @@ With initial load complete, start replication of ongoing changes on the source t
 	--sourceConn $SOURCE \
 	--targetConn $TARGET \
 	--targetSchema defaultdb.public \
-	--defaultGTIDSet 77263736-7899-11f0-81a5-0242ac120002:1-38 \
+	--defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29 \
 	--stagingSchema _replicator \
 	--stagingCreateSchema \
 	--metricsAddr :30005 \

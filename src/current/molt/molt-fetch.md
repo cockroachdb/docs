@@ -932,5 +932,5 @@ After successfully running MOLT Fetch, you can run [`molt verify`]({% link molt/
 - [MOLT Verify]({% link molt/molt-verify.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
 - [Load and replicate]({% link molt/migrate-load-replicate.md %})
-- [Resume Replication]({% link molt/migrate-resume-replication.md %})
+- [Start or Resume Replication]({% link molt/migrate-resume-replication.md %})
 - [Migration Failback]({% link molt/migrate-failback.md %})
