@@ -284,44 +284,44 @@ The following events may be logged to the `SENSITIVE_ACCESS` channel, depending 
 
 These events record both successful and denied attempts to access internal system objects.
 
-This command enables access to unsafe internals for the user `max`:
+This command enables access to unsafe internals for the user `allow_unsafe_internals_on`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER ROLE max SET allow_unsafe_internals = on;
+ALTER ROLE allow_unsafe_internals_on SET allow_unsafe_internals = on;
 ~~~
 
-When the user `max` connects to a session and accesses an unsafe internal object, an event is logged:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT count(*) FROM crdb_internal.active_range_feeds;
-~~~
-
-This `unsafe_internals_accessed` event shows that the internal table `crdb_internal.active_range_feeds` was accessed by user `max` who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
-
-~~~
-W250930 19:51:01.128927 464484 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,client=127.0.0.1:65020,hostssl,user=‹max›] 23 ={"Timestamp":1759261861128925000,"EventType":"unsafe_internals_accessed","Query":"SELECT count(*) FROM \"\".crdb_internal.active_range_feeds"}
-~~~
-
-This command disables access to unsafe internals for the user `max`:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER ROLE max SET allow_unsafe_internals = off;
-~~~
-
-When the user `max` connects to a session and tries to access an unsafe internal object, an event is logged:
+When the user `allow_unsafe_internals_on` connects to a session and accesses an unsafe internal object, an event is logged:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT count(*) FROM crdb_internal.active_range_feeds;
 ~~~
 
-This `unsafe_internals_denied` event shows that access to the internal table `crdb_internal.active_range_feeds` was denied to the user `max`, who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
+This `unsafe_internals_accessed` event shows that the internal table `crdb_internal.active_range_feeds` was accessed by user `allow_unsafe_internals_on` who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
 
 ~~~
-W250930 15:47:06.906181 122782 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,client=127.0.0.1:57104,hostssl,user=‹max›] 18 ={"Timestamp":1759247226906172000,"EventType":"unsafe_internals_denied","Query":"SELECT count(*) FROM \"\".crdb_internal.active_range_feeds"}
+W250930 19:51:01.128927 464484 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,client=127.0.0.1:65020,hostssl,user=‹allow_unsafe_internals_on›] 23 ={"Timestamp":1759261861128925000,"EventType":"unsafe_internals_accessed","Query":"SELECT count(*) FROM \"\".crdb_internal.active_range_feeds"}
+~~~
+
+This command disables access to unsafe internals for the user `allow_unsafe_internals_off`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER ROLE allow_unsafe_internals_off SET allow_unsafe_internals = off;
+~~~
+
+When the user `allow_unsafe_internals_off` connects to a session and tries to access an unsafe internal object, an event is logged:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT count(*) FROM crdb_internal.active_range_feeds;
+~~~
+
+This `unsafe_internals_denied` event shows that access to the internal table `crdb_internal.active_range_feeds` was denied to the user `allow_unsafe_internals_off`, who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
+
+~~~
+W250930 15:47:06.906181 122782 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,client=127.0.0.1:57104,hostssl,user=‹allow_unsafe_internals_off›] 18 ={"Timestamp":1759247226906172000,"EventType":"unsafe_internals_denied","Query":"SELECT count(*) FROM \"\".crdb_internal.active_range_feeds"}
 ~~~
 
 - Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) for details on the fields.
