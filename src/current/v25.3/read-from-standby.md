@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-In addition to providing [failover]({% link {{ page.version.version }}/failover-replication.md %}) capabilities for disaster recovery, [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to direct read-only queries to your standby cluster. This process offloads traffic such as application reads, analytics queries, and ad-hoc reporting from the primary cluster.
+In addition to providing [failover]({% link {{ page.version.version }}/failover-replication.md %}) capabilities for [disaster recovery]({% link {{ page.version.version }}/disaster-recovery-overview.md %}), [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) allows you to direct read-only queries to your standby cluster. This process offloads traffic such as application reads, analytics queries, and ad-hoc reporting from the primary cluster.
 
 Use this page to understand how the _read from standby_ feature works and how to utilize it.
 
@@ -15,7 +15,7 @@ PCR utilizes [cluster virtualization]({% link {{ page.version.version }}/cluster
 
 When using read from standby, applications can read from the standby cluster, but they do not connect directly to the standby cluster's AppVC. Instead, PCR introduces a _reader virtual cluster (ReaderVC)_. The ReaderVC ensures a clean, isolated environment specifically for serving read queries without interfering with replication or system metadata. It reads continuously from the standby cluster's AppVC using internal pointers, providing access to the replicated data while keeping the AppVC offline. The ReaderVC itself only stores a small amount of metadata and no user data, so it is not expected to take up additional storage space.
 
-The standby cluster's ReaderVC has its own system tables and cluster settings. The ReaderVC replicates a subset of system tables, including **Users** and **Roles**, from the AppVC, so that existing primary users can authenticate using the same users and roles as on the primary cluster's AppVC. Other system tables and cluster settings are set to defaults in the ReaderVC.
+The standby cluster's ReaderVC has its own system tables and [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}). The ReaderVC replicates a subset of system tables, including **Users** and **Roles**, from the AppVC, so that existing primary users can authenticate using the same [users and roles]({% link {{ page.version.version }}/security-reference/authorization.md %}) as on the primary cluster's AppVC. Other system tables and cluster settings are set to defaults in the ReaderVC. For more information, consult [Physical Cluster Replication Technical Overview]({% link {{ page.version.version }}/physical-cluster-replication-technical-overview.md %}).
 
 In the event of failover, the ReaderVC's response depends on the type of failover. After failover to the latest timestamp, the ReaderVC continues pointing to the AppVC but stops receiving updates. After failover to a point-in-time timestamp, the ReaderVC is destroyed.
 
@@ -24,12 +24,12 @@ In the event of failover, the ReaderVC's response depends on the type of failove
 
 Prior to setting up read from standby, ensure that:
 
-- you have already configured PCR between a _primary_ cluster and a _standby_ cluster. For information on configuring PCR, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
-- your CockroachDB version is v24.3 or later. The `read from standby` option is not supported in earlier versions.
+- You have already configured PCR between a _primary_ cluster and a _standby_ cluster. For information on configuring PCR, refer to [Set Up Physical Cluster Replication]({% link {{ page.version.version }}/set-up-physical-cluster-replication.md %}).
+- Your CockroachDB version is v24.3 or later. The `read from standby` option is not supported in earlier versions.
 
 ### Start a PCR stream with read from standby
 
-To start a PCR stream that allows read access to the standby cluster, use the `CREATE VIRTUAL CLUSTER ... REPLICATION` statement with the `READ VIRTUAL CLUSTER` option:
+To start a PCR stream that allows read access to the standby cluster, use the [`CREATE VIRTUAL CLUSTER ... REPLICATION`]({% link {{ page.version.version }}/create-virtual-cluster.md %}) statement with the `READ VIRTUAL CLUSTER` option:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -38,7 +38,7 @@ CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connectio
 
 ### Add read from standby to a PCR stream
 
-To add read from standby capabilities to an existing PCR stream, use the `ALTER VIRTUAL CLUSTER` statement:
+To add read from standby capabilities to an existing PCR stream, use the [`ALTER VIRTUAL CLUSTER`]({% link {{ page.version.version }}/alter-virtual-cluster.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -46,7 +46,7 @@ ALTER VIRTUAL CLUSTER main SET REPLICATION READ VIRTUAL CLUSTER;
 ~~~
 
 {{site.data.alerts.callout_info}}
-The standby cluster's AppVC must have a status of `replicating` before you can create your ReaderVC. Use the `SHOW VIRTUAL CLUSTERS` command to check the status of the AppVC.
+The standby cluster's AppVC must have a status of `replicating` before you can create your ReaderVC. Use the [`SHOW VIRTUAL CLUSTERS`]({% link {{ page.version.version }}/show-virtual-cluster.md %}) command to check the status of the AppVC.
 {{site.data.alerts.end}}
 
 ### Check the status of your reader virtual cluster
@@ -74,7 +74,7 @@ The ReaderVC cannot serve reads until after the PCR initial scan is complete. Af
 
 ### Run read-only queries on the standby cluster
 
-Once you have created a reader virtual cluster on the standby cluster, you can connect to it and run read (`SELECT`) queries. For example:
+Once you have created a reader virtual cluster on the standby cluster, you can connect to it and run [read (`SELECT`) queries]({% link {{ page.version.version }}/selection-queries.md %}). For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
