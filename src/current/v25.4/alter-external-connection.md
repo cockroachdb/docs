@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-You can use external connections to specify and interact with resources that are external from CockroachDB. When creating an external connection, you define a name for an external connection while passing the provider URI and query parameters. `ALTER EXTERNAL CONNECTION` allows you to change the [storage/sink]({% link {{ page.version.version }}/create-external-connection.md %}/#supported-external-storage-and-sinks) URI that an external connection references. 
+You can use external connections to specify and interact with resources that are external from CockroachDB. When creating an external connection, you define a name for an external connection while passing the provider URI and query parameters. `ALTER EXTERNAL CONNECTION` allows you to change the [storage/sink]({% link {{ page.version.version }}/create-external-connection.md %}#supported-external-storage-and-sinks) URI that an external connection references. 
 
 Use `ALTER EXTERNAL CONNECTION` to rotate your authentication token for an external connection by updating the connection string for the external connection to use a new auth token before the old auth token expires.
 
