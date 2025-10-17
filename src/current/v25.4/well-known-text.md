@@ -52,5 +52,5 @@ CockroachDB only supports 2-dimensional geometries.
 - [Well known binary]({% link {{ page.version.version }}/well-known-binary.md %})
 - [GeoJSON]({% link {{ page.version.version }}/geojson.md %})
 - [SRID 4326 - longitude and latitude]({% link {{ page.version.version }}/srid-4326.md %})
-- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
+- [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})
