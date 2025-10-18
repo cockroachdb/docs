@@ -34,8 +34,8 @@ api.configureSource("defaultdb.migration_schema", {
 });
 ~~~
 
-Pass the userscript to MOLT Fetch with the `--userscript` [replication flag](#replication-flags):
+Pass the userscript to MOLT Replicator with the `--userscript` [flag](#replication-flags):
 
 ~~~
---replicator-flags "--userscript table_filter.ts"
+--userscript table_filter.ts
 ~~~

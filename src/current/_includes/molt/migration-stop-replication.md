@@ -1,4 +1,6 @@
+{% if page.name != "migrate-failback.md" %}
 1. Stop application traffic to your source database. **This begins downtime.**
+{% endif %}
 
 1. Wait for replication to drain, which means that all transactions that occurred on the source database have been fully processed and replicated to CockroachDB. There are two ways to determine that replication has fully drained:
 	- When replication is caught up, you will not see new `upserted rows` logs.

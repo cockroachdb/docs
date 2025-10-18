@@ -2,7 +2,7 @@
 
 #### Oracle Instant Client
 
-Install Oracle Instant Client on the machine that will run `molt` and `replicator`:
+Install Oracle Instant Client on the machine that will run `molt` and `replicator`. If using the MOLT Replicator binary (instead of Docker), the Oracle Instant Client libraries must be accessible at `/usr/lib`.
 
 - On macOS ARM machines, download the [Oracle Instant Client](https://www.oracle.com/database/technologies/instant-client/macos-arm64-downloads.html#ic_osx_inst). After installation, you should have a new directory at `/Users/$USER/Downloads/instantclient_23_3` containing `.dylib` files. Set the `LD_LIBRARY_PATH` environment variable to this directory:
 
@@ -17,11 +17,14 @@ Install Oracle Instant Client on the machine that will run `molt` and `replicato
 	~~~ shell
 	sudo apt-get install -yqq --no-install-recommends libaio1t64
 	sudo ln -s /usr/lib/x86_64-linux-gnu/libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1
-	curl -o /tmp/ora-libs.zip https://replicator.cockroachdb.com/third_party/instantclient-basiclite-linux-amd64.zip
-	unzip -d /tmp /tmp/ora-libs.zip
+	unzip -d /tmp /tmp/instantclient-basiclite-linux-amd64.zip
 	sudo mv /tmp/instantclient_21_13/* /usr/lib
 	export LD_LIBRARY_PATH=/usr/lib
 	~~~
+
+	{{site.data.alerts.callout_success}}
+	You can also download Oracle Instant Client directly	 from the Oracle site for [Linux ARM64](https://www.oracle.com/database/technologies/instant-client/linux-amd64-downloads.html) or [Linux x86-64](https://www.oracle.com/ca-en/database/technologies/instant-client/linux-x86-64-downloads.html).
+	{{site.data.alerts.end}}
 
 {% if page.name != "migrate-bulk-load.md" %}
 #### Enable `ARCHIVELOG`
