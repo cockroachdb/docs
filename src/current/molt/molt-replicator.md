@@ -57,9 +57,13 @@ Oracle source (`oraclelogminer`): MOLT Replicator uses Oracle LogMiner to captur
 
 MOLT Replicator offers three consistency modes for balancing throughput and transactional guarantees:
 
-1. Consistent (default for CockroachDB sources): Preserves per-row order and source transaction atomicity. Concurrent transactions are controlled by `--parallelism`.
+1. Consistent (default for CockroachDB sources, failback mode only): Preserves per-row order and source transaction atomicity. Concurrent transactions are controlled by `--parallelism`.
 
-1. BestEffort: Relaxes atomicity across tables that do not have foreign key constraints between them (maintains coherence within FK-connected groups). Enable with `--bestEffortOnly` or allow auto-entry via `--bestEffortWindow` set to a positive duration (e.g., `1s`).
+1. BestEffort (failback mode only): Relaxes atomicity across tables that do not have foreign key constraints between them (maintains coherence within FK-connected groups). Enable with `--bestEffortOnly` or allow auto-entry via `--bestEffortWindow` set to a positive duration (e.g., `1s`).
+
+	{{site.data.alerts.callout_info}}
+	For independent tables (with no foreign key constraints), BestEffort mode applies changes immediately as they arrive, without waiting for the resolved timestamp. This provides higher throughput for tables that have no relationships with other tables.
+	{{site.data.alerts.end}}
 
 1. Immediate (default for PostgreSQL, MySQL, and Oracle sources): Applies updates as they arrive to Replicator with no buffering or waiting for resolved timestamps. Provides highest throughput but requires no foreign keys on the target schema.
 

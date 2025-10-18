@@ -22,133 +22,114 @@ To resume replication after an interruption, refer to [Resume replication after 
 If you want to start replication without first running [MOLT Fetch]({% link molt/molt-fetch.md %}), you need to manually obtain a replication checkpoint from the source database and then start MOLT Replicator with the appropriate checkpoint flags.
 
 <section class="filter-content" markdown="1" data-scope="postgres">
-### Create publication and replication slot
+1. Create a publication for the tables you want to replicate:
 
-Create a publication for the tables you want to replicate:
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	CREATE PUBLICATION molt_publication FOR TABLE employees, payments, orders;
+	~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE PUBLICATION molt_publication FOR TABLE employees, payments, orders;
-~~~
+1. Create a replication slot to track the LSN checkpoint:
 
-Create a replication slot to track the LSN checkpoint:
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
+	~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
-~~~
+	~~~
+	 pg_create_logical_replication_slot
+	-------------------------------------
+	 (molt_slot,0/167A220)
+	~~~
 
-~~~
- pg_create_logical_replication_slot
--------------------------------------
- (molt_slot,0/167A220)
-~~~
+1. Run the `replicator pglogical` command, specifying the slot name with `--slotName`. The replication slot automatically tracks the LSN checkpoint, so you don't need to specify an LSN value. Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
 
-### Start Replicator
-
-Run the `replicator pglogical` command, specifying the slot name with `--slotName`. The replication slot automatically tracks the LSN checkpoint, so you don't need to specify an LSN value. Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-replicator pglogical \
---sourceConn $SOURCE \
---targetConn $TARGET \
---targetSchema defaultdb.public \
---slotName molt_slot \
---stagingSchema _replicator \
---stagingCreateSchema \
---metricsAddr :30005 \
---verbose
-~~~
+	{% include_cached copy-clipboard.html %}
+	~~~ shell
+	replicator pglogical \
+	--sourceConn $SOURCE \
+	--targetConn $TARGET \
+	--targetSchema defaultdb.public \
+	--slotName molt_slot \
+	--stagingSchema _replicator \
+	--stagingCreateSchema \
+	--metricsAddr :30005 \
+	--verbose
+	~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-### Get GTID checkpoint
+1. Get the current GTID set to use as the starting point for replication:
 
-Get the current GTID set to use as the starting point for replication:
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	-- For MySQL < 8.0:
+	SHOW MASTER STATUS;
+	-- For MySQL 8.0+:
+	SHOW BINARY LOG STATUS;
+	~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
--- For MySQL < 8.0:
-SHOW MASTER STATUS;
--- For MySQL 8.0+:
-SHOW BINARY LOG STATUS;
-~~~
+	~~~
+	+---------------+----------+--------------+------------------+-------------------------------------------+
+	| File          | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set                         |
+	+---------------+----------+--------------+------------------+-------------------------------------------+
+	| binlog.000005 |      197 |              |                  | 77263736-7899-11f0-81a5-0242ac120002:1-38 |
+	+---------------+----------+--------------+------------------+-------------------------------------------+
+	~~~
 
-~~~
-+---------------+----------+--------------+------------------+-------------------------------------------+
-| File          | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set                         |
-+---------------+----------+--------------+------------------+-------------------------------------------+
-| binlog.000005 |      197 |              |                  | 77263736-7899-11f0-81a5-0242ac120002:1-38 |
-+---------------+----------+--------------+------------------+-------------------------------------------+
-~~~
+1. Run the `replicator mylogical` command, specifying the GTID from the `Executed_Gtid_Set` value with `--defaultGTIDSet`. Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
 
-### Start Replicator
+	{% include_cached copy-clipboard.html %}
+	~~~ shell
+	replicator mylogical \
+	--sourceConn $SOURCE \
+	--targetConn $TARGET \
+	--targetSchema defaultdb.public \
+	--defaultGTIDSet 77263736-7899-11f0-81a5-0242ac120002:1-38 \
+	--stagingSchema _replicator \
+	--stagingCreateSchema \
+	--metricsAddr :30005 \
+	--userscript table_filter.ts \
+	--verbose
+	~~~
 
-Run the `replicator mylogical` command, specifying the GTID from the `Executed_Gtid_Set` value with `--defaultGTIDSet`. Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-replicator mylogical \
---sourceConn $SOURCE \
---targetConn $TARGET \
---targetSchema defaultdb.public \
---defaultGTIDSet 77263736-7899-11f0-81a5-0242ac120002:1-38 \
---stagingSchema _replicator \
---stagingCreateSchema \
---metricsAddr :30005 \
---userscript table_filter.ts \
---verbose
-~~~
-
-{{site.data.alerts.callout_success}}
-For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON source_database.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
-{{site.data.alerts.end}}
+	{{site.data.alerts.callout_success}}
+	For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON source_database.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
+	{{site.data.alerts.end}}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-### Get SCN checkpoint
+1. Get the current SCN to use as the starting point for replication:
 
-Obtain the correct SCNs to use as the starting point for replication. Run the following queries on the PDB in the order shown:
+	{% include_cached copy-clipboard.html %}
+	~~~ sql
+	SELECT CURRENT_SCN FROM V$DATABASE;
+	~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
--- Query the current SCN from Oracle
-SELECT CURRENT_SCN FROM V$DATABASE;
+	Use this SCN value for both `--backfillFromSCN` and `--scn` flags.
 
--- Query the starting SCN of the earliest active transaction
-SELECT MIN(t.START_SCNB) FROM V$TRANSACTION t;
-~~~
+1. Run the `replicator oraclelogminer` command, specifying the SCN values from the checkpoint queries. Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
 
-Use the results as follows:
+	{% include_cached copy-clipboard.html %}
+	~~~ shell
+	replicator oraclelogminer \
+	--sourceConn $SOURCE \
+	--sourcePDBConn $SOURCE_PDB \
+	--targetConn $TARGET \
+	--sourceSchema migration_schema \
+	--targetSchema defaultdb.public \
+	--backfillFromSCN 26685444 \
+	--scn 26685786 \
+	--stagingSchema _replicator \
+	--stagingCreateSchema \
+	--metricsAddr :30005 \
+	--userscript table_filter.ts \
+	--verbose
+	~~~
 
-- `--scn`: Use the result from the first query (current SCN)
-- `--backfillFromSCN`: Use the result from the second query (earliest active transaction SCN). If the second query returns no results, use the result from the first query instead.
-
-### Start Replicator
-
-Run the `replicator oraclelogminer` command, specifying the SCN values from the checkpoint queries. Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-replicator oraclelogminer \
---sourceConn $SOURCE \
---sourcePDBConn $SOURCE_PDB \
---targetConn $TARGET \
---sourceSchema migration_schema \
---targetSchema defaultdb.public \
---backfillFromSCN 26685444 \
---scn 26685786 \
---stagingSchema _replicator \
---stagingCreateSchema \
---metricsAddr :30005 \
---userscript table_filter.ts \
---verbose
-~~~
-
-{{site.data.alerts.callout_info}}
-When filtering out tables in a schema with a userscript, replication performance may decrease because filtered tables are still included in LogMiner queries and processed before being discarded.
-{{site.data.alerts.end}}
+	{{site.data.alerts.callout_info}}
+	When filtering out tables in a schema with a userscript, replication performance may decrease because filtered tables are still included in LogMiner queries and processed before being discarded.
+	{{site.data.alerts.end}}
 </section>
 
 ## Resume replication after interruption
