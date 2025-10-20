@@ -110,9 +110,9 @@ Do not scale down to fewer than 3 nodes. This is considered an anti-pattern on C
 When a Kubernetes node is scheduled for removal or maintenance, the {{ site.data.products.cockroachdb-operator }} can be instructed to decommission the CockroachDB nodes scheduled on this Kubernetes node. Decommissioning safely moves data and workloads away before the node goes offline.
 
 {{site.data.alerts.callout_info}}
-Once annotated, the Kubernetes node is cordoned so no further pods are scheduled on the node. The annotation is not a mark for future removal, as CockroachDB is decommissioned on the node immediately.
+Once annotated, the Kubernetes node is cordoned so no further pods are scheduled on the node and the decommissioning process for the CockroachDB pods scheduled on this Kubernetes node begins immediately.
 
-If cluster capacity is limited, replacement pods may remain in the `Pending` state until new nodes are available.
+If cluster resources are constrained, replacement pods may remain in the Pending state until the Kubernetes scheduler identifies suitable nodes.
 {{site.data.alerts.end}}
 
 The following prerequisites are necessary for the {{ site.data.products.cockroachdb-operator }} to be able to decommission a CockroachDB node:
