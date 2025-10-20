@@ -73,6 +73,46 @@ Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and
 
 ## Configure Replicator
 
+### Replication connection strings
+
+MOLT Replicator uses `--sourceConn` and `--targetConn` to specify the source and target database connections.
+
+`--sourceConn` specifies the connection string of the source database:
+
+<section class="filter-content" markdown="1" data-scope="postgres">
+~~~
+--sourceConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+~~~
+--sourceConn 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+~~~
+--sourceConn 'oracle://{username}:{password}@{host}:{port}/{service_name}'
+~~~
+
+For Oracle Multitenant databases, also specify `--sourcePDBConn` with the PDB connection string:
+
+~~~
+--sourcePDBConn 'oracle://{username}:{password}@{host}:{port}/{pdb_service_name}'
+~~~
+</section>
+
+`--targetConn` specifies the target CockroachDB connection string:
+
+~~~
+--targetConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
+~~~
+
+{{site.data.alerts.callout_success}}
+Follow best practices for securing connection strings. Refer to [Secure connections](#secure-connections).
+{{site.data.alerts.end}}
+
 ### Replication flags
 
 {% include molt/replicator-flags-usage.md %}

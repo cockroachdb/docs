@@ -37,7 +37,7 @@ Complete the following items before using MOLT Replicator:
 
 - Configure the source database for replication based on your source type. Refer to the migration workflow tutorials for [PostgreSQL]({% link molt/migrate-load-replicate.md %}#prepare-the-source-database), [MySQL]({% link molt/migrate-load-replicate.md %}?filters=mysql#prepare-the-source-database), [Oracle]({% link molt/migrate-load-replicate.md %}?filters=oracle#prepare-the-source-database), and [CockroachDB]({% link molt/migrate-failback.md %}) sources.
 
-- Ensure that the SQL user running MOLT Replicator has appropriate privileges on the source and target databases, as described in the migration workflow tutorials.
+- Ensure that the SQL user running MOLT Replicator has appropriate privileges on the source and target databases, as described in the corresponding tutorial.
 
 ## Docker usage
 
@@ -45,13 +45,13 @@ Complete the following items before using MOLT Replicator:
 
 ## How it works
 
-Failback from CockroachDB (`start`): MOLT Replicator acts as an HTTP webhook sink for a CockroachDB changefeed. To avoid mixing streams of incoming data, only **one** changefeed should point to Replicator at a time. Replicator receives mutations from source cluster nodes, can optionally buffer them in a CockroachDB staging cluster, and then applies time-ordered transactional batches to the target database. Mutations are applied as `UPSERT` or `DELETE` statements while respecting foreign-key and table dependencies.
+Failback from CockroachDB (`start`): MOLT Replicator acts as an HTTP webhook sink for a single CockroachDB changefeed. Replicator receives mutations from source cluster nodes, can optionally buffer them in a CockroachDB staging cluster, and then applies time-ordered transactional batches to the target database. Mutations are applied as [`UPSERT`]({% link {{ site.current_cloud_version }}/upsert.md %}) or [`DELETE`]({% link {{ site.current_cloud_version }}/delete.md %}) statements while respecting [foreign-key]({% link {{ site.current_cloud_version }}/foreign-key.md %}) and table dependencies.
 
 PostgreSQL source (`pglogical`): MOLT Replicator uses [PostgreSQL logical replication](https://www.postgresql.org/docs/current/logical-replication.html), which is based on publications and replication slots. You create a publication for the target tables, and a slot marks consistent replication points. MOLT Replicator consumes this logical feed directly and applies the data in sorted batches to the target.
 
 MySQL source (`mylogical`): MOLT Replicator relies on [MySQL GTID-based replication](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html) to read change data from MySQL binlogs. It works with MySQL versions that support GTID-based replication and applies transactionally consistent feeds to the target. Binlog features that do not use GTIDs are not supported.
 
-Oracle source (`oraclelogminer`): MOLT Replicator uses Oracle LogMiner to capture change data from Oracle redo logs, supporting replication for a single database user/schema. Both multitenant (CDB) and non-CDB Oracle architectures are supported. Replicator periodically queries LogMiner-populated views and processes transactional data in ascending SCN windows for reliable throughput while maintaining consistency.
+Oracle source (`oraclelogminer`): MOLT Replicator uses [Oracle LogMiner](https://docs.oracle.com/en/database/oracle/oracle-database/21/sutil/oracle-logminer-utility.html) to capture change data from Oracle redo logs. Both Oracle Multitenant (CDB/PDB) and single-tenant Oracle architectures are supported. Replicator periodically queries LogMiner-populated views and processes transactional data in ascending SCN windows for reliable throughput while maintaining consistency.
 
 ### Consistency modes
 

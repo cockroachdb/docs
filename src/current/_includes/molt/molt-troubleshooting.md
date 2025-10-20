@@ -1,5 +1,6 @@
 ## Troubleshooting
 
+{% if page.name != "migrate-resume-replication.md" %}
 ### Fetch issues
 
 ##### Fetch exits early due to mismatches
@@ -41,7 +42,7 @@ GRANT SELECT, FLASHBACK ON migration_schema.orders TO C##MIGRATION_USER;
 
 ##### Table or view does not exist
 
-If the Oracle migration user lacks privileges on certain tables, you may receive errors stating that the table or view does not exist. Either use `--table-filter` to [limit the tables to be migrated](#schema-and-table-filtering), or grant the migration user `SELECT` privileges on all objects in the schema. Refer to [Create migration user on source database](#create-migration-user-on-source-database).
+If the Oracle migration user lacks privileges on certain tables, you may receive errors stating that the table or view does not exist. Either use `--table-filter` to {% if page.name == "migrate-resume-replication.md" %}[limit the tables to be migrated]({% link molt/migrate-load-replicate.md %}#schema-and-table-filtering){% else %}[limit the tables to be migrated](#schema-and-table-filtering){% endif %}, or grant the migration user `SELECT` privileges on all objects in the schema. Refer to {% if page.name == "migrate-resume-replication.md" %}[Create migration user on source database]({% link molt/migrate-load-replicate.md %}#create-migration-user-on-source-database){% else %}[Create migration user on source database](#create-migration-user-on-source-database){% endif %}.
 
 {% if page.name != "migrate-bulk-load.md" %}
 ##### Missing redo logs or unavailable SCN
@@ -80,6 +81,7 @@ If you shut down `molt` or `replicator` unexpectedly (e.g., with `kill -9` or a 
 
     Replace `sid` and `serial#` in the preceding statement with the values returned by the `SELECT` query.
 </section>
+{% endif %}
 
 {% if page.name != "migrate-bulk-load.md" %}
 ### Replicator issues
@@ -128,7 +130,7 @@ Dropping a replication slot can be destructive and delete data that is not yet r
 run CREATE PUBLICATION molt_fetch FOR ALL TABLES;
 ~~~
 
-**Resolution:** [Create the publication](#configure-source-database-for-replication) on the source database. Ensure you also create the replication slot:
+**Resolution:** {% if page.name == "migrate-resume-replication.md" %}[Create the publication]({% link molt/migrate-load-replicate.md %}#configure-source-database-for-replication){% else %}[Create the publication](#configure-source-database-for-replication){% endif %} on the source database. Ensure you also create the replication slot:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -150,7 +152,7 @@ could not connect to source database: failed to connect to `user=migration_user 
 run SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput'); in source database
 ~~~
 
-**Resolution:** [Create the replication slot](#configure-source-database-for-replication) or verify the correct slot name:
+**Resolution:** {% if page.name == "migrate-resume-replication.md" %}[Create the replication slot]({% link molt/migrate-load-replicate.md %}#configure-source-database-for-replication){% else %}[Create the replication slot](#configure-source-database-for-replication){% endif %} or verify the correct slot name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
