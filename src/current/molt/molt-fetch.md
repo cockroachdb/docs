@@ -125,7 +125,7 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 
 - {% include molt/molt-drop-constraints-indexes.md %}
 
-- MOLT Fetch does not support migrating sequences. If your source database contains sequences, please read [our advice on indexing with sequential keys]({% link {{site.current_cloud_version}}/sql-faqs.md %}#how-do-i-generate-unique-slowly-increasing-sequential-numbers-in-cockroachdb). If a sequential key is necessary in your CockroachDB table, you will need to create it manually, after using MOLT Fetch.
+- MOLT Fetch does not support migrating sequences. If your source database contains sequences, read [our advice on indexing with sequential keys]({% link {{site.current_cloud_version}}/sql-faqs.md %}#how-do-i-generate-unique-slowly-increasing-sequential-numbers-in-cockroachdb). If a sequential key is necessary in your CockroachDB table, you will need to create it manually. After using MOLT Fetch to load and replicate the data onto the target, but before cutover, make sure to update each sequence's current value using [`setval()`]({% link {{site.current_cloud_version}}/functions-and-operators.md %}#sequence-functions) so that new inserts continue from the correct point.
 
 ## Security recommendations
 
