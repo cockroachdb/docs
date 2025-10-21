@@ -15,7 +15,7 @@ Statement | Usage
 ----------|------------
 [`ALTER DATABASE`]({% link {{ page.version.version }}/alter-database.md %}) | Apply a schema change to a database.
 [`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}) | Change the default [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) for objects created by specific roles/users in the current database.
-[`ALTER EXTERNAL CONNECTION`]({% link {{ page.version.version }}/alter-external-connection.md %}) | Update an external conection's URI.
+[`ALTER EXTERNAL CONNECTION`]({% link {{ page.version.version }}/alter-external-connection.md %}) | Update an external connection's URI.
 [`ALTER FUNCTION`]({% link {{ page.version.version }}/alter-function.md %}) | Modify a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
 [`ALTER INDEX`]({% link {{ page.version.version }}/alter-index.md %}) | Apply a schema change to an index.
 [`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %}) | Configure the replication zone for a partition.

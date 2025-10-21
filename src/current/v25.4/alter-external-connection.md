@@ -1,6 +1,6 @@
 ---
 title: ALTER EXTERNAL CONNECTION
-summary: Use the ALTER EXTERNAL CONNECTION statement to update an external conection's URI.
+summary: Use the ALTER EXTERNAL CONNECTION statement to update an external connection's URI.
 toc: true
 docs_area: reference.sql
 ---
@@ -24,7 +24,7 @@ For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-GRANT UPDATE ON EXTERNAL CONNECTION example_conn TO user;
+GRANT UPDATE ON EXTERNAL CONNECTION backup_bucket TO user;
 ~~~
 
 ## Synopsis
@@ -66,7 +66,7 @@ For more information on authentication and forming the URI that an external conn
 
 ### Update the URI of an external connection
 
-In this example, you update the `backupbucket` external connection to a new Amazon S3 URI to rotate your auth token.
+In this example, you update the `backup_bucket` external connection to a new Amazon S3 URI to rotate your auth token.
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
