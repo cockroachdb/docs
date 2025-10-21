@@ -37,8 +37,8 @@ GRANT UPDATE ON EXTERNAL CONNECTION backup_bucket TO user;
 
 Parameter | Description
 ----------+-------------
-`label_spec` | The name of the existing external connection.
-`string_or_placeholder` | The new [storage/sink]({% link {{ page.version.version }}/create-external-connection.md %}#supported-external-storage-and-sinks) URI that the external connection will be updated to reference.
+`connection_name` | The name of the existing external connection.
+`connection_uri` | The new [storage/sink]({% link {{ page.version.version }}/create-external-connection.md %}#supported-external-storage-and-sinks) URI that the external connection will be updated to reference.
 
 ## Supported external storage and sinks
 
