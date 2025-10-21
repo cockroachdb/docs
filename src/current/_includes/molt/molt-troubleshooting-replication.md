@@ -1,90 +1,22 @@
-## Troubleshooting
+### Forward replication issues
 
-{% if page.name != "migrate-resume-replication.md" %}
-### Fetch issues
+##### Performance troubleshooting
 
-##### Fetch exits early due to mismatches
+If MOLT Replicator appears hung or performs poorly:
 
-`molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
+1. Enable trace logging with `-vv` to get more visibility into the replicator's state and behavior.
 
-- A source table is missing a primary key.
-- A source primary key and target primary key have mismatching types.
-- A [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) primary key has a different [collation]({% link {{site.current_cloud_version}}/collate.md %}) on the source and target.
-- A source and target column have mismatching types that are not [allowable mappings]({% link molt/molt-fetch.md %}#type-mapping).
-- A target table is missing a column that is in the corresponding source table.
-- A source column is nullable, but the corresponding target column is not nullable (i.e., the constraint is more strict on the target).
+1. If MOLT Replicator is in an unknown, hung, or erroneous state, collect performance profiles to include with support tickets:
 
-`molt fetch` can continue in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `false`:
-
-- A target table has a column that is not in the corresponding source table.
-- A source column has a `NOT NULL` constraint, and the corresponding target column is nullable (i.e., the constraint is less strict on the target).
-- A [`DEFAULT`]({% link {{site.current_cloud_version}}/default-value.md %}), [`CHECK`]({% link {{site.current_cloud_version}}/check.md %}), [`FOREIGN KEY`]({% link {{site.current_cloud_version}}/foreign-key.md %}), or [`UNIQUE`]({% link {{site.current_cloud_version}}/unique.md %}) constraint is specified on a target column and not on the source column.
-
-<section class="filter-content" markdown="1" data-scope="oracle">
-##### ORA-01950: no privileges on tablespace
-
-If you receive `ORA-01950: no privileges on tablespace 'USERS'`, it means the Oracle table owner (`migration_schema` in the preceding examples) does not have sufficient quota on the tablespace used to store its data. By default, this tablespace is `USERS`, but it can vary. To resolve this issue, grant a quota to the table owner. For example:
-
-~~~ sql
--- change UNLIMITED to a suitable limit for the table owner
-ALTER USER migration_schema QUOTA UNLIMITED ON USERS;
-~~~
-
-##### No tables to drop and recreate on target
-
-When expecting a bulk load but seeing `no tables to drop and recreate on the target`, ensure the migration user has `SELECT` and `FLASHBACK` privileges on each table to be migrated. For example:
-
-~~~ sql
-GRANT SELECT, FLASHBACK ON migration_schema.employees TO C##MIGRATION_USER;
-GRANT SELECT, FLASHBACK ON migration_schema.payments TO C##MIGRATION_USER;
-GRANT SELECT, FLASHBACK ON migration_schema.orders TO C##MIGRATION_USER;
-~~~
-
-##### Table or view does not exist
-
-If the Oracle migration user lacks privileges on certain tables, you may receive errors stating that the table or view does not exist. Either use `--table-filter` to {% if page.name == "migrate-resume-replication.md" %}[limit the tables to be migrated]({% link molt/migrate-load-replicate.md %}#schema-and-table-filtering){% else %}[limit the tables to be migrated](#schema-and-table-filtering){% endif %}, or grant the migration user `SELECT` privileges on all objects in the schema. Refer to {% if page.name == "migrate-resume-replication.md" %}[Create migration user on source database]({% link molt/migrate-load-replicate.md %}#create-migration-user-on-source-database){% else %}[Create migration user on source database](#create-migration-user-on-source-database){% endif %}.
-
-{% if page.name != "migrate-bulk-load.md" %}
-##### Missing redo logs or unavailable SCN
-
-If the Oracle redo log files are too small or do not retain enough history, you may get errors indicating that required log files are missing for a given SCN range, or that a specific SCN is unavailable.
-
-Increase the number and size of online redo log files, and verify that archived log files are being generated and retained correctly in your Oracle environment.
-
-##### Missing replicator flags
-
-If required `--replicator-flags` are missing, ensure that the necessary flags for your mode are included. For details, refer to [Replication flags](#replication-flags).
-
-##### Replicator lag
-
-If the `replicator` process is lagging significantly behind the current Oracle SCN, you may see log messages like: `replicator is catching up to the current SCN at 5000 from 1000…`. This indicates that replication is progressing but is still behind the most recent changes on the source database.
-{% endif %}
-
-##### Oracle sessions remain open after forcefully stopping `molt` or `replicator`
-
-If you shut down `molt` or `replicator` unexpectedly (e.g., with `kill -9` or a system crash), Oracle sessions opened by these tools may remain active.
-
-- Check your operating system for any running `molt` or `replicator` processes and terminate them manually.
-- After confirming that both processes have stopped, ask a DBA to check for active Oracle sessions using:
-
-    ~~~ sql
-    SELECT sid, serial#, username, status, osuser, machine, program
-    FROM v$session
-    WHERE username = 'C##MIGRATION_USER';
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl 'localhost:30005/debug/pprof/trace?seconds=15' > trace.out
+    curl 'localhost:30005/debug/pprof/profile?seconds=15' > profile.out
+    curl 'localhost:30005/debug/pprof/goroutine?seconds=15' > gr.out
+    curl 'localhost:30005/debug/pprof/heap?seconds=15' > heap.out
     ~~~
 
-    Wait until any remaining sessions display an `INACTIVE` status, then terminate them using:
-
-    ~~~ sql
-    ALTER SYSTEM KILL SESSION 'sid,serial#' IMMEDIATE;
-    ~~~
-
-    Replace `sid` and `serial#` in the preceding statement with the values returned by the `SELECT` query.
-</section>
-{% endif %}
-
-{% if page.name != "migrate-bulk-load.md" %}
-### Replicator issues
+1. Monitor lag metrics and adjust performance parameters as needed.
 
 <section class="filter-content" markdown="1" data-scope="postgres">
 ##### Unable to create publication or slot
@@ -130,7 +62,7 @@ Dropping a replication slot can be destructive and delete data that is not yet r
 run CREATE PUBLICATION molt_fetch FOR ALL TABLES;
 ~~~
 
-**Resolution:** {% if page.name == "migrate-resume-replication.md" %}[Create the publication]({% link molt/migrate-load-replicate.md %}#configure-source-database-for-replication){% else %}[Create the publication](#configure-source-database-for-replication){% endif %} on the source database. Ensure you also create the replication slot:
+**Resolution:** {% if page.name != "migrate-load-replicate.md" %}[Create the publication]({% link molt/migrate-load-replicate.md %}#configure-source-database-for-replication){% else %}[Create the publication](#configure-source-database-for-replication){% endif %} on the source database. Ensure you also create the replication slot:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -152,7 +84,7 @@ could not connect to source database: failed to connect to `user=migration_user 
 run SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput'); in source database
 ~~~
 
-**Resolution:** {% if page.name == "migrate-resume-replication.md" %}[Create the replication slot]({% link molt/migrate-load-replicate.md %}#configure-source-database-for-replication){% else %}[Create the replication slot](#configure-source-database-for-replication){% endif %} or verify the correct slot name:
+**Resolution:** {% if page.name != "migrate-load-replicate.md" %}[Create the replication slot]({% link molt/migrate-load-replicate.md %}#configure-source-database-for-replication){% else %}[Create the replication slot](#configure-source-database-for-replication){% endif %} or verify the correct slot name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -281,6 +213,16 @@ UPDATE statements that only modify LOB columns are not supported by Oracle LogMi
 SQL NULL and JSON null values are not distinguishable in JSON payloads during replication.
 
 **Resolution:** Avoid using nullable JSONB columns where the distinction between SQL NULL and JSON null is important.
+
+##### Missing redo logs or unavailable SCN
+
+If the Oracle redo log files are too small or do not retain enough history, you may get errors indicating that required log files are missing for a given SCN range, or that a specific SCN is unavailable.
+
+Increase the number and size of online redo log files, and verify that archived log files are being generated and retained correctly in your Oracle environment.
+
+##### Replicator lag
+
+If the `replicator` process is lagging significantly behind the current Oracle SCN, you may see log messages like: `replicator is catching up to the current SCN at 5000 from 1000…`. This indicates that replication is progressing but is still behind the most recent changes on the source database.
 </section>
 
 ##### Schema drift errors
@@ -304,16 +246,6 @@ ERROR: maximum number of retries (10) exceeded
 
 **Resolution:** Check target database constraints and connection stability. MOLT Replicator will log warnings for each retry attempt. If you see warnings but no final error, the apply succeeded after retrying. If all retry attempts are exhausted, Replicator will surface a final error and restart the apply loop to continue processing.
 
-##### CockroachDB changefeed connection issues
-
-Connection errors when setting up changefeeds:
-
-~~~
-transient error: Post "https://localhost:30004/molt/public": dial tcp [::1]:30004: connect: connection refused
-~~~
-
-**Resolution:** Verify MOLT Replicator is running on the specified port and the webhook URL is correct.
-
 ##### Incorrect schema path errors
 
 Schema path mismatches in changefeed URLs:
@@ -323,22 +255,3 @@ transient error: 400 Bad Request: unknown schema:
 ~~~
 
 **Resolution:** Verify the webhook path matches your target database schema. Use `/database/schema` for CockroachDB/PostgreSQL targets and `/DATABASE` for MySQL/Oracle targets.
-
-### Performance troubleshooting
-
-If MOLT Replicator appears hung or performs poorly:
-
-1. Enable trace logging with `-vv` to get more visibility into the replicator's state and behavior.
-
-1. If MOLT Replicator is in an unknown, hung, or erroneous state, collect performance profiles to include with support tickets:
-
-	{% include_cached copy-clipboard.html %}
-	~~~shell
-	curl 'localhost:30005/debug/pprof/trace?seconds=15' > trace.out
-	curl 'localhost:30005/debug/pprof/profile?seconds=15' > profile.out
-	curl 'localhost:30005/debug/pprof/goroutine?seconds=15' > gr.out
-	curl 'localhost:30005/debug/pprof/heap?seconds=15' > heap.out
-	~~~
-
-1. Monitor lag metrics and adjust performance parameters as needed.
-{% endif %}

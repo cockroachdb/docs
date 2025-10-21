@@ -76,7 +76,9 @@ Perform the bulk load of the source data.
 
 Perform a cutover by resuming application traffic, now to CockroachDB.
 
-{% include molt/molt-troubleshooting.md %}
+## Troubleshooting
+
+{% include molt/molt-troubleshooting-fetch.md %}
 
 ## See also
 

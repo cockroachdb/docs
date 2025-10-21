@@ -89,7 +89,9 @@ These instructions assume you have already started replication at least once. To
 {% include molt/optimize-replicator-performance.md %}
 </section>
 
-{% include molt/molt-troubleshooting.md %}
+## Troubleshooting
+
+{% include molt/molt-troubleshooting-replication.md %}
 
 ## See also
 

@@ -254,7 +254,10 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 
 Perform a cutover by resuming application traffic, now to CockroachDB.
 
-{% include molt/molt-troubleshooting.md %}
+## Troubleshooting
+
+{% include molt/molt-troubleshooting-fetch.md %}
+{% include molt/molt-troubleshooting-replication.md %}
 
 ## See also
 

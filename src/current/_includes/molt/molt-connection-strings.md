@@ -72,4 +72,4 @@ For details, refer to [Connect using a URL]({% link {{site.current_cloud_version
 
 #### Secure connections
 
-{% include molt/fetch-secure-connection-strings.md %}
+{% include molt/molt-secure-connection-strings.md %}
