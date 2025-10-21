@@ -32,9 +32,9 @@ Convert the source schema into a CockroachDB-compatible schema. CockroachDB supp
 
 - Every table **must** have an explicit primary key. For more information, refer to [Primary key best practices]({% link {{ site.current_cloud_version }}/schema-design-table.md %}#primary-key-best-practices).
 
-{{site.data.alerts.callout_danger}}
-Avoid using sequential keys. To learn more about the performance issues that can result from their use, read [our advice on indexing with sequential keys]({% link {{site.current_cloud_version}}/sql-faqs.md %}#how-do-i-generate-unique-slowly-increasing-sequential-numbers-in-cockroachdb). If a sequential key is necessary in your CockroachDB table, you will need to create it manually, after using [MOLT Fetch]({% link molt/molt-fetch.md %}).
-{{site.data.alerts.end}}
+	{{site.data.alerts.callout_danger}}
+	Avoid using sequential keys. To learn more about the performance issues that can result from their use, refer to the [guidance on indexing with sequential keys]({% link {{site.current_cloud_version}}/sql-faqs.md %}#how-do-i-generate-unique-slowly-increasing-sequential-numbers-in-cockroachdb). If a sequential key is necessary in your CockroachDB table, you must create it manually, after using [MOLT Fetch]({% link molt/molt-fetch.md %}) to load and replicate the data.
+	{{site.data.alerts.end}}
 
 - Review [Transformations]({% link molt/molt-fetch.md %}#transformations) to understand how computed columns and partitioned tables can be mapped to the target, and how target tables can be renamed.
 
