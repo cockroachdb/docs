@@ -272,7 +272,7 @@ All possible `SENSITIVE_ACCESS` event types are detailed in the [reference docum
 #### Example: Unsafe internals
 
 {{site.data.alerts.callout_danger}}
-In future releases, the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals) will default to `off` and then will be removed. To assess potential downstream impacts on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
+In a future release, the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals) will default to `off`. To [assess potential downstream impacts](#unsafe-internals-disabled) on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
 {{site.data.alerts.end}}
 
 CockroachDB emits log events to the `SENSITIVE_ACCESS` channel when a user overrides or is denied access to [unsafe internals]({% link {{ page.version.version }}/crdb-internal.md %}#access-control), creating a log of emergency access to system internals.
@@ -284,6 +284,8 @@ The following events may be logged to the `SENSITIVE_ACCESS` channel, depending 
 
 These events record both successful and denied attempts to access internal system objects.
 
+##### Unsafe internals enabled
+
 This command enables access to unsafe internals for the user `allow_unsafe_internals_on`:
 
 {% include_cached copy-clipboard.html %}
@@ -291,18 +293,24 @@ This command enables access to unsafe internals for the user `allow_unsafe_inter
 ALTER ROLE allow_unsafe_internals_on SET allow_unsafe_internals = on;
 ~~~
 
-When the user `allow_unsafe_internals_on` connects to a session and accesses an unsafe internal object, an event is logged:
+When the user `allow_unsafe_internals_on` connects to a session and accesses an unsafe internal object, the event is logged:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT count(*) FROM crdb_internal.active_range_feeds;
 ~~~
 
-This `unsafe_internals_accessed` event shows that the internal table `crdb_internal.active_range_feeds` was accessed by user `allow_unsafe_internals_on` who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
+This `unsafe_internals_accessed` event indicates that the internal table `crdb_internal.active_range_feeds` was accessed by user `allow_unsafe_internals_on`, who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
 
 ~~~
 W250930 19:51:01.128927 464484 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,client=127.0.0.1:65020,hostssl,user=‹allow_unsafe_internals_on›] 23 ={"Timestamp":1759261861128925000,"EventType":"unsafe_internals_accessed","Query":"SELECT count(*) FROM \"\".crdb_internal.active_range_feeds"}
 ~~~
+
+##### Unsafe internals disabled
+
+To assess potential downstream impacts, disable `allow_unsafe_internals` in a test or staging environment. Monitoring tools or scripts that rely on these internals may be affected. `unsafe_internals_denied` events indentify which tools or scripts attempted to access these internals.
+
+This example shows how to identify users denied access to unsafe internal tables.
 
 This command disables access to unsafe internals for the user `allow_unsafe_internals_off`:
 
@@ -311,14 +319,14 @@ This command disables access to unsafe internals for the user `allow_unsafe_inte
 ALTER ROLE allow_unsafe_internals_off SET allow_unsafe_internals = off;
 ~~~
 
-When the user `allow_unsafe_internals_off` connects to a session and tries to access an unsafe internal object, an event is logged:
+When the user `allow_unsafe_internals_off` connects to a session and attempts to access an unsafe internal object, the event is logged:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT count(*) FROM crdb_internal.active_range_feeds;
 ~~~
 
-This `unsafe_internals_denied` event shows that access to the internal table `crdb_internal.active_range_feeds` was denied to the user `allow_unsafe_internals_off`, who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
+This `unsafe_internals_denied` event indicates that access to the internal table `crdb_internal.active_range_feeds` was denied for the user `allow_unsafe_internals_off`, who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
 
 ~~~
 W250930 15:47:06.906181 122782 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,client=127.0.0.1:57104,hostssl,user=‹allow_unsafe_internals_off›] 18 ={"Timestamp":1759247226906172000,"EventType":"unsafe_internals_denied","Query":"SELECT count(*) FROM \"\".crdb_internal.active_range_feeds"}
