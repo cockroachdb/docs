@@ -1,6 +1,6 @@
 ---
 title: Upgrade with Physical Cluster Replication Enabled
-summary: Upgrade your clusters when using PCR.
+summary: Upgrade your primary and standby clusters when using PCR.
 toc: true
 docs_area: manage
 ---
