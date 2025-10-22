@@ -50,7 +50,7 @@ The SQL user running MOLT Replicator requires specific privileges on both the so
 | PostgreSQL source                        | <ul><li>`SUPERUSER` role (recommended), or the following granular permissions:</li><li>`CREATE` and `SELECT` on database and tables to replicate.</li><li>Table ownership for adding tables to publications.</li><li>`LOGIN` and `REPLICATION` privileges to create replication slots and access replication data.</li></ul>                                                                                                                                                                                                                        | [Create PostgreSQL migration user]({% link molt/migrate-load-replicate.md %}#create-migration-user-on-source-database)                                                                                                                                                                                                                   |
 | MySQL source                             | <ul><li>`SELECT` on tables to replicate.</li><li>`REPLICATION SLAVE` and `REPLICATION CLIENT` privileges for binlog access.</li><li>For `--fetchMetadata`, either `SELECT` on the source database or `PROCESS` globally.</li></ul>                                                                                                                                                                                                                                                                                                                  | [Create MySQL migration user]({% link molt/migrate-load-replicate.md %}?filters=mysql#create-migration-user-on-source-database)                                                                                                                                                                                                          |
 | Oracle source                            | <ul><li>`SELECT`, `INSERT`, `UPDATE` on `_replicator_sentinel` table.</li><li>`SELECT` on `V$` views (`V$LOG`, `V$LOGFILE`, `V$LOGMNR_CONTENTS`, `V$ARCHIVED_LOG`, `V$LOG_HISTORY`).</li><li>`SELECT` on `SYS.V$LOGMNR_*` views (`SYS.V$LOGMNR_DICTIONARY`, `SYS.V$LOGMNR_LOGS`, `SYS.V$LOGMNR_PARAMETERS`, `SYS.V$LOGMNR_SESSION`).</li><li>`LOGMINING` privilege.</li><li>`EXECUTE` on `DBMS_LOGMNR`.</li><li>For Oracle Multitenant, the user must be a common user (prefixed with `C##`) with privileges granted on both CDB and PDB.</li></ul> | [Create Oracle migration user]({% link molt/migrate-load-replicate.md %}?filters=oracle#create-migration-user-on-source-database)<br>[Create sentinel table]({% link molt/migrate-load-replicate.md %}#create-source-sentinel-table)<br>[Grant LogMiner privileges]({% link molt/migrate-load-replicate.md %}#grant-logminer-privileges) |
-| CockroachDB target (forward replication) | <ul><li>`SELECT`, `INSERT`, `UPDATE`, `DELETE` on target tables.</li><li>`CREATEDB` privilege for creating staging schema.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                | [Create CockroachDB user]({% link molt/migrate-load-replicate.md %}#create-the-sql-user)                                                                                                                                                                                                                                                 |
+| CockroachDB target (forward replication) | <ul><li>`ALL` on target database.</li><li>`CREATE` on schema.</li><li>`SELECT`, `INSERT`, `UPDATE`, `DELETE` on target tables.</li><li>`CREATEDB` privilege for creating staging schema.</li></ul>                                                                                                                                                                                                                                                                                                                                             | [Create CockroachDB user]({% link molt/migrate-load-replicate.md %}#create-the-sql-user)                                                                                                                                                                                                                                                 |
 | Source target (failback)                 | <ul><li>`SELECT`, `INSERT`, `UPDATE` on tables to fail back to.</li><li>For Oracle, `FLASHBACK` is also required.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                         | [Grant target database permissions]({% link molt/migrate-failback.md %}#grant-target-database-user-permissions)                                                                                                                                                                                                                          |
 
 ## Installation
@@ -404,7 +404,7 @@ replicator oraclelogminer
 ~~~
 </section>
 
-Specify the source and target database connections. For connection string formats, refer to [Connection strings](#connection-strings):
+Specify the source and target database connections. For connection string formats, refer to [Source connection strings](#source-connection-strings) and [Target connection strings](#target-connection-strings):
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -567,14 +567,14 @@ Use the `start` command for failback:
 replicator start
 ~~~
 
-Specify the target database connection (the database you originally migrated from). For connection string formats, refer to [Connection strings](#connection-strings):
+Specify the target database connection (the database you originally migrated from). For connection string formats, refer to [Target connection strings](#target-connection-strings):
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --targetConn $TARGET
 ~~~
 
-Specify the CockroachDB connection string. For details, refer to [Connect using a URL]({% link {{ site.current_cloud_version }}/connection-parameters.md %}#connect-using-a-url.md %}).
+Specify the CockroachDB connection string. For details, refer to [Connect using a URL]({% link {{ site.current_cloud_version }}/connection-parameters.md %}#connect-using-a-url %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~
