@@ -15,13 +15,11 @@ MOLT Fetch replication modes will be deprecated in favor of a separate replicati
 
 ## Terminology
 
-- [*Shard*](#table-sharding): A portion of a table's data exported concurrently during the data export phase. Tables are divided into shards to enable parallel processing.
+- *Shard*: A portion of a table's data exported concurrently during the data export phase. Tables are divided into shards to enable parallel processing. For details, refer to [Table sharding](#table-sharding).
 
-- [*Continuation token*](#fetch-continuation): An identifier that marks the progress of a fetch task. Used to resume data loading from the point of interruption when a fetch task fails.
+- *Continuation token*: An identifier that marks the progress of a fetch task. Used to resume data loading from the point of interruption when a fetch task fails. For details, refer to [Fetch continuation](#fetch-continuation).
 
-- [*CDC cursor*](#cdc-cursor): A change data capture checkpoint value (GTID for MySQL, LSN for PostgreSQL, SCN for Oracle) that marks the position in the transaction log at the time of data export. Used to start replication from the correct position.
-
-- [*Direct copy*](#direct-copy): A mode where data is copied directly from source to target without using intermediate storage. Data is held in memory during transfer.
+- *Intermediate files*: Temporary data files written to cloud storage or a local file server during the data export phase. These files are used to stage exported data before importing it into CockroachDB during the data import phase. For details, refer to [Data path](#data-path).
 
 ## Prerequisites
 
@@ -41,7 +39,14 @@ If you plan to use cloud storage for the data migration, follow the steps in [Cl
 
 ### User permissions
 
-The SQL user running MOLT Fetch requires specific privileges on both source and target databases. Required permissions vary by database type. For detailed permission requirements, refer to the migration workflow tutorials for [PostgreSQL]({% link molt/migrate-bulk-load.md %}#create-migration-user-on-source-database), [MySQL]({% link molt/migrate-bulk-load.md %}?filters=mysql#create-migration-user-on-source-database), and [Oracle]({% link molt/migrate-bulk-load.md %}?filters=oracle#create-migration-user-on-source-database) sources. For the target CockroachDB database, ensure the user has [`SELECT` privileges]({% link {{site.current_cloud_version}}/grant.md %}#supported-privileges) and the required privileges to run [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}#required-privileges) (depending on the command used for [data movement](#data-load-mode)).
+The SQL user running MOLT Fetch requires specific privileges on both the source and target databases:
+
+|  Database/Target   |                                                                                                                      Required Privileges                                                                                                                      |                                                           Details                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| PostgreSQL source  | <ul><li>`CONNECT` on database.</li><li>`USAGE` on schema.</li><li>`SELECT` on tables to migrate.</li></ul>                                                                                                                                                    | [Create PostgreSQL migration user]({% link molt/migrate-bulk-load.md %}#create-migration-user-on-source-database)            |
+| MySQL source       | <ul><li>`SELECT` on tables to migrate.</li></ul>                                                                                                                                                                                                              | [Create MySQL migration user]({% link molt/migrate-bulk-load.md %}?filters=mysql#create-migration-user-on-source-database)   |
+| Oracle source      | <ul><li>`CONNECT` and `CREATE SESSION`.</li><li>`SELECT` and `FLASHBACK` on tables to migrate.</li><li>`SELECT` on metadata views (`ALL_USERS`, `DBA_USERS`, `DBA_OBJECTS`, `DBA_SYNONYMS`, `DBA_TABLES`).</li></ul>                                          | [Create Oracle migration user]({% link molt/migrate-bulk-load.md %}?filters=oracle#create-migration-user-on-source-database) |
+| CockroachDB target | <ul><li>`SELECT` on target tables.</li><li>Privileges to run [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}#required-privileges).</li></ul> | [Create CockroachDB user]({% link molt/migrate-bulk-load.md %}#create-the-sql-user)                                          |
 
 ## Installation
 
@@ -50,16 +55,6 @@ The SQL user running MOLT Fetch requires specific privileges on both source and 
 ### Docker usage
 
 {% include molt/molt-docker.md %}
-
-## Setup
-
-Complete the following items before using MOLT Fetch:
-
-- Follow the recommendations in [Best practices](#best-practices).
-
-{{site.data.alerts.callout_success}}
-During a [bulk load migration]({% link molt/migrate-bulk-load.md %}) or when doing a one-time data export from a read replica, use the [`--ignore-replication-check`](#global-flags) flag with MOLT Fetch. This flag instructs MOLT Fetch to skip querying for replication checkpoints (such as `pg_current_wal_insert_lsn()` on PostgreSQL, `gtid_executed` on MySQL, and `CURRENT_SCN` on Oracle).
-{{site.data.alerts.end}}
 
 ## Migration phases
 
@@ -78,8 +73,6 @@ MOLT Fetch loads the exported data into the target CockroachDB database. The pro
 
 - [Data movement](#data-load-mode)
 - [Target table handling](#target-table-handling)
-
-
 
 ## Commands
 
@@ -163,83 +156,67 @@ The following sections describe how to use the `molt fetch` [flags](#flags).
 Follow the recommendations in [Connection security](#connection-security).
 {{site.data.alerts.end}}
 
-#### `--source`
-
 `--source` specifies the connection string of the source database.
 
-PostgreSQL or CockroachDB: 
+PostgreSQL or CockroachDB connection string:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --source 'postgresql://{username}:{password}@{host}:{port}/{database}'
 ~~~
 
-MySQL:
+MySQL connection string:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --source 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
 ~~~
 
-Oracle:
+Oracle connection string:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --source 'oracle://{username}:{password}@{host}:{port}/{service_name}'
 ~~~
 
-In Oracle migrations, the `--source` connection string specifies a PDB (in [Oracle Multitenant databases](https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/CDBs-and-PDBs.html)) or single database. The `{username}` corresponds to the owner of the tables you will migrate.
-
-#### `--source-cdb`
-
-The `--source-cdb` flag specifies the connection string for the Oracle container database (CDB) in an Oracle Multitenant deployment. Omit this flag on a non‑multitenant Oracle database.
+For Oracle Multitenant databases, `--source-cdb` specifies the container database (CDB) connection. `--source` specifies the pluggable database (PDB):
 
 {% include_cached copy-clipboard.html %}
 ~~~
---source oracle://{username}:{password}@{host}:{port}/{service_name}
---source-cdb oracle://{username}:{password}@{host}:{port}/{container_service}
+--source 'oracle://{username}:{password}@{host}:{port}/{pdb_service_name}'
+--source-cdb 'oracle://{username}:{password}@{host}:{port}/{cdb_service_name}'
 ~~~
-
-#### `--target`
 
 `--target` specifies the [CockroachDB connection string]({% link {{site.current_cloud_version}}/connection-parameters.md %}#connect-using-a-url):
 
 {% include_cached copy-clipboard.html %}
 ~~~
---target 'postgresql://{username}:{password}@{host}:{port}/{database}
+--target 'postgresql://{username}:{password}@{host}:{port}/{database}'
 ~~~
 
 ### Fetch mode
 
-`--mode` specifies the MOLT Fetch behavior:
-
-- [Load data into CockroachDB](#data-load)
-- [Export and import the data only](#export-only-and-import-only)
+`--mode` specifies the MOLT Fetch behavior.
 
 {{site.data.alerts.callout_danger}}
 MOLT Fetch replication modes will be deprecated in favor of a separate replication workflow in an upcoming release. This includes the `data-load-and-replication`, `replication-only`, and `failback` modes.
 {{site.data.alerts.end}}
 
-#### `data-load`
-
-`data-load` (default) instructs MOLT Fetch to load the source data into CockroachDB. It does not replicate any subsequent changes on the source.
+`data-load` (default) instructs MOLT Fetch to load the source data into CockroachDB:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --mode data-load
 ~~~
 
-
-#### `export-only` and `import-only`
-
-`export-only` instructs MOLT Fetch to export the source data to the specified [cloud storage](#bucket-path) or [local file server](#local-path). It does not load the data into CockroachDB.
+`export-only` instructs MOLT Fetch to export the source data to the specified [cloud storage](#bucket-path) or [local file server](#local-path). It does not load the data into CockroachDB:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --mode export-only
 ~~~
 
-`import-only` instructs MOLT Fetch to load the source data in the specified [cloud storage](#bucket-path) or [local file server](#local-path) into the CockroachDB target.
+`import-only` instructs MOLT Fetch to load the source data in the specified [cloud storage](#bucket-path) or [local file server](#local-path) into the CockroachDB target:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -331,7 +308,7 @@ Because stats-based sharding analyzes the entire table, running `--use-stats-bas
 
 MOLT Fetch can move the source data to CockroachDB via [cloud storage](#bucket-path), a [local file server](#local-path), or [directly](#direct-copy) without an intermediate store.
 
-#### `--bucket-path`
+#### Bucket path
 
 {{site.data.alerts.callout_success}}
 Only the path specified in `--bucket-path` is used. Query parameters, such as credentials, are ignored. To authenticate cloud storage, follow the steps in [Secure cloud storage](#cloud-storage-security).
@@ -368,7 +345,7 @@ Connect to an Azure Blob Storage container with [implicit authentication]({% lin
 --use-implicit-auth
 ~~~
 
-#### `--local-path`
+#### Local path
 
 `--local-path` instructs MOLT Fetch to write intermediate files to a path within a [local file server]({% link {{site.current_cloud_version}}/use-a-local-file-server.md %}). `local-path-listen-addr` specifies the address of the local file server. For example:
 
@@ -393,7 +370,7 @@ For example, if you are migrating to CockroachDB {{ site.data.products.cloud }},
 [Cloud storage](#bucket-path) is often preferable to a local file server, which can require considerable disk space.
 {{site.data.alerts.end}}
 
-#### `--direct-copy`
+#### Direct copy
 
 `--direct-copy` specifies that MOLT Fetch should use `COPY FROM` to move the source data directly to CockroachDB without an intermediate store:
 
@@ -845,7 +822,7 @@ A change data capture (CDC) cursor is written to the output as `cdc_cursor` at t
 {"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":1,"tables":["public.employees"],"cdc_cursor":"b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21","net_duration_ms":4879.890041,"net_duration":"000h 00m 04s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
 ~~~
 
-Use the `cdc_cursor` value as the starting GTID set for MySQL replication with [MOLT Replicator]({% link molt/molt-replicator.md %}).
+Use the `cdc_cursor` value as the checkpoint for MySQL or Oracle replication with [MOLT Replicator]({% link molt/molt-replicator.md %}#replication-checkpoints).
 
 You can also use the `cdc_cursor` value with an external change data capture (CDC) tool to continuously replicate subsequent changes from the source database to CockroachDB.
 
@@ -916,9 +893,37 @@ Specify how to handle target tables. By default, `--table-handling` is set to `n
 --table-handling truncate-if-exists
 ~~~
 
-{{site.data.alerts.callout_success}}
-During a bulk load migration, use `--ignore-replication-check` to skip querying for replication checkpoints (such as `pg_current_wal_insert_lsn()` on PostgreSQL, `gtid_executed` on MySQL, and `CURRENT_SCN` on Oracle).
-{{site.data.alerts.end}}
+When performing a bulk load without subsequent replication, use `--ignore-replication-check` to skip querying for replication checkpoints (such as `pg_current_wal_insert_lsn()` on PostgreSQL, `gtid_executed` on MySQL, and `CURRENT_SCN` on Oracle). This is appropriate when:
+
+- Performing a one-time data migration with no plan to replicate ongoing changes.
+- Exporting data from a read replica where replication checkpoints are unavailable.
+
+{% include_cached copy-clipboard.html %}
+~~~
+--ignore-replication-check
+~~~
+
+At minimum, the `molt fetch` command should include the source, target, data path, and `--ignore-replication-check` flags:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+molt fetch \
+--source $SOURCE \
+--target $TARGET \
+--bucket-path 's3://bucket/path' \
+--ignore-replication-check
+~~~
+
+For detailed steps, refer to [Bulk load migration]({% link molt/migrate-bulk-load.md %}).
+
+### Load before replication
+
+To perform an initial data load before setting up ongoing replication with [MOLT Replicator]({% link molt/molt-replicator.md %}), run the `molt fetch` command without `--ignore-replication-check`. This captures replication checkpoints during the data load.
+
+The workflow is the same as [Bulk data load](#bulk-data-load), except:
+
+- Exclude `--ignore-replication-check`. MOLT Fetch will query and record replication checkpoints.
+- After the data load completes, check the [CDC cursor](#cdc-cursor) in the output for the checkpoint value to use with MOLT Replicator.
 
 At minimum, the `molt fetch` command should include the source, target, and data path flags:
 
@@ -930,7 +935,13 @@ molt fetch \
 --bucket-path 's3://bucket/path'
 ~~~
 
-For detailed steps, refer to [Bulk load migration]({% link molt/migrate-bulk-load.md %}).
+The output will include a `cdc_cursor` value at the end of the fetch task:
+
+~~~ json
+{"level":"info","type":"summary","fetch_id":"735a4fe0-c478-4de7-a342-cfa9738783dc","num_tables":1,"tables":["public.employees"],"cdc_cursor":"b7f9e0fa-2753-1e1f-5d9b-2402ac810003:3-21","net_duration_ms":4879.890041,"net_duration":"000h 00m 04s","time":"2024-03-18T12:37:02-04:00","message":"fetch complete"}
+~~~
+
+Use this `cdc_cursor` value when starting MOLT Replicator to ensure replication begins from the correct position. For detailed steps, refer to [Load and replicate]({% link molt/migrate-load-replicate.md %}).
 
 ## Monitoring
 
@@ -1002,8 +1013,8 @@ To verify that your connections and configuration work properly, run MOLT Fetch 
 
 - [Migration Overview]({% link molt/migration-overview.md %})
 - [Migration Strategy]({% link molt/migration-strategy.md %})
-- [MOLT Verify]({% link molt/molt-verify.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
+- [MOLT Verify]({% link molt/molt-verify.md %})
 - [Load and replicate]({% link molt/migrate-load-replicate.md %})
 - [Resume Replication]({% link molt/migrate-resume-replication.md %})
 - [Migration Failback]({% link molt/migrate-failback.md %})
