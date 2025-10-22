@@ -23,7 +23,7 @@ MOLT Fetch replication modes will be deprecated in favor of a separate replicati
 
 - [*Direct copy*](#direct-copy): A mode where data is copied directly from source to target without using intermediate storage. Data is held in memory during transfer.
 
-## Requirements
+## Prerequisites
 
 ### Supported databases
 
@@ -41,11 +41,15 @@ If you plan to use cloud storage for the data migration, follow the steps in [Cl
 
 ### User permissions
 
-The SQL user running MOLT Fetch requires specific privileges on both source and target databases. Required permissions vary by database type. For detailed permission requirements, refer to the migration workflow tutorials for [PostgreSQL]({% link molt/migrate-bulk-load.md %}#create-migration-user), [MySQL]({% link molt/migrate-bulk-load.md %}?filters=mysql#create-migration-user), and [Oracle]({% link molt/migrate-bulk-load.md %}?filters=oracle#create-migration-user) sources. For the target CockroachDB database, ensure the user has [`SELECT` privileges]({% link {{site.current_cloud_version}}/grant.md %}#supported-privileges) and the required privileges to run [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}#required-privileges) (depending on the command used for [data movement](#data-load-mode)).
+The SQL user running MOLT Fetch requires specific privileges on both source and target databases. Required permissions vary by database type. For detailed permission requirements, refer to the migration workflow tutorials for [PostgreSQL]({% link molt/migrate-bulk-load.md %}#create-migration-user-on-source-database), [MySQL]({% link molt/migrate-bulk-load.md %}?filters=mysql#create-migration-user-on-source-database), and [Oracle]({% link molt/migrate-bulk-load.md %}?filters=oracle#create-migration-user-on-source-database) sources. For the target CockroachDB database, ensure the user has [`SELECT` privileges]({% link {{site.current_cloud_version}}/grant.md %}#supported-privileges) and the required privileges to run [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}#required-privileges) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}#required-privileges) (depending on the command used for [data movement](#data-load-mode)).
 
 ## Installation
 
 {% include molt/molt-install.md %}
+
+### Docker usage
+
+{% include molt/molt-docker.md %}
 
 ## Setup
 
@@ -56,10 +60,6 @@ Complete the following items before using MOLT Fetch:
 {{site.data.alerts.callout_success}}
 During a [bulk load migration]({% link molt/migrate-bulk-load.md %}) or when doing a one-time data export from a read replica, use the [`--ignore-replication-check`](#global-flags) flag with MOLT Fetch. This flag instructs MOLT Fetch to skip querying for replication checkpoints (such as `pg_current_wal_insert_lsn()` on PostgreSQL, `gtid_executed` on MySQL, and `CURRENT_SCN` on Oracle).
 {{site.data.alerts.end}}
-
-## Docker usage
-
-{% include molt/molt-docker.md %}
 
 ## Migration phases
 
@@ -126,7 +126,7 @@ MOLT Fetch loads the exported data into the target CockroachDB database. The pro
 | `--local-path-listen-addr`      | Write intermediate files to a [local file server](#local-path) at the specified address (e.g., `'localhost:3000'`). `--local-path` must be specified.                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `--log-file`                    | Write messages to the specified log filename. If no filename is provided, messages write to `fetch-{datetime}.log`. If `"stdout"` is provided, messages write to `stdout`.                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `--logging`                     | Level at which to log messages (`trace`/`debug`/`info`/`warn`/`error`/`fatal`/`panic`).<br><br>**Default:** `info`                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `--metrics-listen-addr`         | Address of the Prometheus metrics endpoint, which has the path `{address}/metrics`. For details on important metrics to monitor, see [Monitoring and observability](#monitoring-and-observability).<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                 |
+| `--metrics-listen-addr`         | Address of the Prometheus metrics endpoint, which has the path `{address}/metrics`. For details on important metrics to monitor, refer to [Monitoring](#monitoring).<br><br>**Default:** `'127.0.0.1:3030'`                                                                                                                                                                                                                                                                                                                                 |
 | `--mode`                        | Configure the MOLT Fetch behavior: `data-load`, `export-only`, or `import-only`. For details, refer to [Fetch mode](#fetch-mode).<br><br>**Default:** `data-load`                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `--non-interactive`             | Run the fetch task without interactive prompts. This is recommended **only** when running `molt fetch` in an automated process (i.e., a job or continuous integration).                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `--pprof-listen-addr`           | Address of the pprof endpoint.<br><br>**Default:** `'127.0.0.1:3031'`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
@@ -160,7 +160,7 @@ The following sections describe how to use the `molt fetch` [flags](#flags).
 ### Source and target databases
 
 {{site.data.alerts.callout_success}}
-Follow the recommendations in [Connection strings](#connection-strings).
+Follow the recommendations in [Connection security](#connection-security).
 {{site.data.alerts.end}}
 
 #### `--source`
@@ -849,13 +849,29 @@ Use the `cdc_cursor` value as the starting GTID set for MySQL replication with [
 
 You can also use the `cdc_cursor` value with an external change data capture (CDC) tool to continuously replicate subsequent changes from the source database to CockroachDB.
 
+## Security
+
+Cockroach Labs strongly recommends the following security practices.
+
+### Connection security
+
+{% include molt/molt-secure-connection-strings.md %}
+
+{{site.data.alerts.callout_info}}
+By default, insecure connections (i.e., `sslmode=disable` on PostgreSQL; `sslmode` not set on MySQL) are disallowed. When using an insecure connection, `molt fetch` returns an error. To override this check, you can enable the `--allow-tls-mode-disable` flag. Do this **only** when testing, or if a secure SSL/TLS connection to the source or target database is not possible.
+{{site.data.alerts.end}}
+
+### Cloud storage security
+
+{% include molt/fetch-secure-cloud-storage.md %}
+
 ## Common workflows
 
 ### Bulk data load
 
 To perform a bulk data load migration from your source database to CockroachDB, run the `molt fetch` command with the required flags.
 
-Specify the source and target database connections. For connection string formats, refer to [Connection strings](#connection-strings):
+Specify the source and target database connections. For connection string formats, refer to [Source and target databases](#source-and-target-databases):
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -916,53 +932,6 @@ molt fetch \
 
 For detailed steps, refer to [Bulk load migration]({% link molt/migrate-bulk-load.md %}).
 
-## Best practices
-
-### Test and validate
-
-To verify that your connections and configuration work properly, run MOLT Fetch in a staging environment before migrating any data in production. Use a test or development environment that closely resembles production.
-
-### Connection strings
-
-{% include molt/molt-secure-connection-strings.md %}
-
-
-### Configure the source database and connection
-
-- To prevent connections from terminating prematurely during the [data export phase](#data-export-phase), set the following to high values on the source database:
-
-	- **Maximum allowed number of connections.** MOLT Fetch can export data across multiple connections. The number of connections it will create is the number of shards ([`--export-concurrency`](#global-flags)) multiplied by the number of tables ([`--table-concurrency`](#global-flags)) being exported concurrently.
-
-		{{site.data.alerts.callout_info}}
-		With the default numerical range sharding, only tables with [primary key]({% link {{ site.current_cloud_version }}/primary-key.md %}) types of [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) can be sharded. PostgreSQL users can enable [`--use-stats-based-sharding`](#global-flags) to use statistics-based sharding for tables with primary keys of any data type. For details, refer to [Table sharding](#table-sharding).
-		{{site.data.alerts.end}}
-
-	- **Maximum lifetime of a connection.**
-
-- If a PostgreSQL database is set as a [source](#source-and-target-databases), ensure that [`idle_in_transaction_session_timeout`](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT) on PostgreSQL is either disabled or set to a value longer than the duration of the [data export phase](#data-export-phase). Otherwise, the connection will be prematurely terminated. To estimate the time needed to export the PostgreSQL tables, you can perform a dry run and sum the value of [`molt_fetch_table_export_duration_ms`](#monitoring-and-observability) for all exported tables.
-
-### Optimize performance
-
-- {% include molt/molt-drop-constraints-indexes.md %}
-
-- For PostgreSQL sources using [`--use-stats-based-sharding`](#global-flags), run [`ANALYZE`]({% link {{ site.current_cloud_version }}/create-statistics.md %}) on source tables before migration to ensure optimal shard distribution. This is especially important for large tables where even distribution can significantly improve export performance.
-
-- To prevent memory outages during `READ COMMITTED` [data export](#data-export-phase) of tables with large rows, estimate the amount of memory used to export a table:
-
-	~~~
-	--row-batch-size * --export-concurrency * average size of the table rows
-	~~~
-
-	If you are exporting more than one table at a time (i.e., [`--table-concurrency`](#global-flags) is set higher than `1`), add the estimated memory usage for the tables with the largest row sizes. Ensure that you have sufficient memory to run `molt fetch`, and adjust `--row-batch-size` accordingly. For details on how concurrency and sharding interact, refer to [Table sharding](#table-sharding).
-
-- If a table in the source database is much larger than the other tables, [filter and export the largest table](#schema-and-table-selection) in its own `molt fetch` task. Repeat this for each of the largest tables. Then export the remaining tables in another task.
-
-- Ensure that the machine running MOLT Fetch is large enough to handle the amount of data being migrated. Fetch performance can sometimes be limited by available resources, but should always be making progress. To identify possible resource constraints, observe the `molt_fetch_rows_exported` [metric](#monitoring-and-observability) for decreases in the number of rows being processed. You can use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view metrics. For details on optimizing export performance through sharding, refer to [Table sharding](#table-sharding).
-
-### Import and continuation handling
-
-- When using [`IMPORT INTO`](#data-load-mode) during the [data import phase](#data-import-phase) to load tables into CockroachDB, if the fetch task terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation](#fetch-continuation), or restart the task from the beginning.
-
 ## Monitoring
 
 ### Metrics
@@ -983,19 +952,47 @@ Cockroach Labs recommends monitoring the following metrics:
 
 You can also use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view the preceding metrics.
 
-## Security
+## Best practices
 
-Cockroach Labs strongly recommends the following security practices.
+### Test and validate
 
-### Connection security
+To verify that your connections and configuration work properly, run MOLT Fetch in a staging environment before migrating any data in production. Use a test or development environment that closely resembles production.
 
-Use secure connections to the source and [target CockroachDB database]({% link {{site.current_cloud_version}}/connection-parameters.md %}#additional-connection-parameters) whenever possible.
+### Configure the source database and connection
 
-By default, insecure connections (i.e., `sslmode=disable` on PostgreSQL; `sslmode` not set on MySQL) are disallowed. When using an insecure connection, `molt fetch` returns an error. To override this check, you can enable the `--allow-tls-mode-disable` flag. Do this **only** when testing, or if a secure SSL/TLS connection to the source or target database is not possible.
+- To prevent connections from terminating prematurely during the [data export phase](#data-export-phase), set the following to high values on the source database:
 
-### Cloud storage security
+	- **Maximum allowed number of connections.** MOLT Fetch can export data across multiple connections. The number of connections it will create is the number of shards ([`--export-concurrency`](#global-flags)) multiplied by the number of tables ([`--table-concurrency`](#global-flags)) being exported concurrently.
 
-{% include molt/fetch-secure-cloud-storage.md %}
+		{{site.data.alerts.callout_info}}
+		With the default numerical range sharding, only tables with [primary key]({% link {{ site.current_cloud_version }}/primary-key.md %}) types of [`INT`]({% link {{ site.current_cloud_version }}/int.md %}), [`FLOAT`]({% link {{ site.current_cloud_version }}/float.md %}), or [`UUID`]({% link {{ site.current_cloud_version }}/uuid.md %}) can be sharded. PostgreSQL users can enable [`--use-stats-based-sharding`](#global-flags) to use statistics-based sharding for tables with primary keys of any data type. For details, refer to [Table sharding](#table-sharding).
+		{{site.data.alerts.end}}
+
+	- **Maximum lifetime of a connection.**
+
+- If a PostgreSQL database is set as a [source](#source-and-target-databases), ensure that [`idle_in_transaction_session_timeout`](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT) on PostgreSQL is either disabled or set to a value longer than the duration of the [data export phase](#data-export-phase). Otherwise, the connection will be prematurely terminated. To estimate the time needed to export the PostgreSQL tables, you can perform a dry run and sum the value of [`molt_fetch_table_export_duration_ms`](#monitoring) for all exported tables.
+
+### Optimize performance
+
+- {% include molt/molt-drop-constraints-indexes.md %}
+
+- For PostgreSQL sources using [`--use-stats-based-sharding`](#global-flags), run [`ANALYZE`]({% link {{ site.current_cloud_version }}/create-statistics.md %}) on source tables before migration to ensure optimal shard distribution. This is especially important for large tables where even distribution can significantly improve export performance.
+
+- To prevent memory outages during `READ COMMITTED` [data export](#data-export-phase) of tables with large rows, estimate the amount of memory used to export a table:
+
+	~~~
+	--row-batch-size * --export-concurrency * average size of the table rows
+	~~~
+
+	If you are exporting more than one table at a time (i.e., [`--table-concurrency`](#global-flags) is set higher than `1`), add the estimated memory usage for the tables with the largest row sizes. Ensure that you have sufficient memory to run `molt fetch`, and adjust `--row-batch-size` accordingly. For details on how concurrency and sharding interact, refer to [Table sharding](#table-sharding).
+
+- If a table in the source database is much larger than the other tables, [filter and export the largest table](#schema-and-table-selection) in its own `molt fetch` task. Repeat this for each of the largest tables. Then export the remaining tables in another task.
+
+- Ensure that the machine running MOLT Fetch is large enough to handle the amount of data being migrated. Fetch performance can sometimes be limited by available resources, but should always be making progress. To identify possible resource constraints, observe the `molt_fetch_rows_exported` [metric](#monitoring) for decreases in the number of rows being processed. You can use the [sample Grafana dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json) to view metrics. For details on optimizing export performance through sharding, refer to [Table sharding](#table-sharding).
+
+### Import and continuation handling
+
+- When using [`IMPORT INTO`](#data-load-mode) during the [data import phase](#data-import-phase) to load tables into CockroachDB, if the fetch task terminates before the import job completes, the hanging import job on the target database will keep the table offline. To make this table accessible again, [manually resume or cancel the job]({% link {{site.current_cloud_version}}/import-into.md %}#view-and-control-import-jobs). Then resume `molt fetch` using [continuation](#fetch-continuation), or restart the task from the beginning.
 
 ## Troubleshooting
 
@@ -1008,5 +1005,5 @@ By default, insecure connections (i.e., `sslmode=disable` on PostgreSQL; `sslmod
 - [MOLT Verify]({% link molt/molt-verify.md %})
 - [MOLT Replicator]({% link molt/molt-replicator.md %})
 - [Load and replicate]({% link molt/migrate-load-replicate.md %})
-- [Start or Resume Replication]({% link molt/migrate-resume-replication.md %})
+- [Resume Replication]({% link molt/migrate-resume-replication.md %})
 - [Migration Failback]({% link molt/migrate-failback.md %})

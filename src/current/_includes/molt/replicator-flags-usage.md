@@ -63,7 +63,7 @@ When using `--table-filter`, you must also include `--userscript`. Refer to [Tab
 | `--tlsPrivateKey`  | Path to the server TLS private key for the webhook sink. Refer to [TLS certificate and key](#tls-certificate-and-key). |
 | `--metricsAddr`    | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                       |
 
-- Failback requires `--stagingSchema`, which specifies the staging database name used for replication checkpoints and metadata. The staging schema is first created with [`--stagingCreateSchema`]({% link molt/migrate-load-replicate.md %}). For details on the staging schema, refer to [Staging schema]({% link molt/molt-replicator.md %}#staging-schema).
+- Failback requires `--stagingSchema`, which specifies the staging database name used for replication checkpoints and metadata. The staging schema is first created with [`--stagingCreateSchema`]({% link molt/migrate-load-replicate.md %}). For details on the staging schema, refer to [Staging database]({% link molt/molt-replicator.md %}#staging-database).
 
 - When configuring a [secure changefeed](#tls-certificate-and-key) for failback, you **must** include `--tlsCertificate` and `--tlsPrivateKey`, which specify the paths to the server certificate and private key for the webhook sink connection.
 

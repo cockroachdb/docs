@@ -235,7 +235,19 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="oracle">
-	TODO: Oracle verification logs
+	When transactions are read from the Oracle source, you should see registered transaction IDs (XIDs):
+
+	~~~
+	DEBUG  [Jul  3 15:55:12] registered xid 0f001f0040060000
+	DEBUG  [Jul  3 15:55:12] registered xid 0b001f00bb090000
+	~~~
+
+	When rows are successfully replicated, you should see debug output like the following:
+
+	~~~
+	DEBUG  [Jul  3 15:55:12] upserted rows                                 conflicts=0 duration=2.620009ms proposed=13 target="\"molt_movies\".\"USERS\".\"CUSTOMER_CONTACT\"" upserted=13
+	DEBUG  [Jul  3 15:55:12] upserted rows                                 conflicts=0 duration=2.212807ms proposed=16 target="\"molt_movies\".\"USERS\".\"CUSTOMER_DEVICE\"" upserted=16
+	~~~
 	</section>
 
 	These messages confirm successful replication. You can disable verbose logging after verifying the connection.

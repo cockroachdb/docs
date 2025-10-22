@@ -28,7 +28,11 @@ For details on enabling CockroachDB changefeeds, refer to [Create and Configure 
 SET CLUSTER SETTING kv.rangefeed.enabled = true;
 ~~~
 
-Use the following optional settings to increase changefeed throughput. **Note** that these can impact source cluster performance and stability, especially SQL foreground latency during writes. For details, refer to [Advanced Changefeed Configuration]({% link {{ site.current_cloud_version }}/advanced-changefeed-configuration.md %}).
+Use the following optional settings to increase changefeed throughput. 
+
+{{site.data.alerts.callout_danger}}
+The following settings can impact source cluster performance and stability, especially SQL foreground latency during writes. For details, refer to [Advanced Changefeed Configuration]({% link {{ site.current_cloud_version }}/advanced-changefeed-configuration.md %}).
+{{site.data.alerts.end}}
 
 To lower changefeed emission latency, but increase SQL foreground latency:
 
@@ -51,22 +55,41 @@ To improve catchup speeds but increase cluster CPU usage:
 SET CLUSTER SETTING kv.rangefeed.concurrent_catchup_iterators = 64;
 ~~~
 
-<section class="filter-content" markdown="1" data-scope="oracle">
-## Grant Oracle user permissions
+## Grant target database user permissions
 
-You should have already created a migration user on the source database with the necessary privileges. Refer to [Create migration user on source database]({% link molt/migrate-load-replicate.md %}?filters=oracle#create-migration-user-on-source-database).
+You should have already created a migration user on the target database (your original source database) with the necessary privileges. Refer to [Create migration user on source database]({% link molt/migrate-load-replicate.md %}#create-migration-user-on-source-database).
 
-Grant the Oracle user additional `INSERT` and `UPDATE` privileges on the tables to fail back:
+For failback replication, grant the user additional privileges to write data back to the target database:
 
+<section class="filter-content" markdown="1" data-scope="postgres">
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+-- Grant INSERT and UPDATE on tables to fail back to
+GRANT INSERT, UPDATE ON ALL TABLES IN SCHEMA migration_schema TO migration_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT INSERT, UPDATE ON TABLES TO migration_user;
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="mysql">
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Grant INSERT and UPDATE on tables to fail back to
+GRANT SELECT, INSERT, UPDATE ON source_database.* TO 'migration_user'@'%';
+FLUSH PRIVILEGES;
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="oracle">
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Grant INSERT, UPDATE, and FLASHBACK on tables to fail back to
 GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.employees TO MIGRATION_USER;
 GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.payments TO MIGRATION_USER;
 GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.orders TO MIGRATION_USER;
 ~~~
 </section>
 
-## Configure replication
+## Configure Replicator
 
 When you run `replicator`, you can configure the following options for replication:
 

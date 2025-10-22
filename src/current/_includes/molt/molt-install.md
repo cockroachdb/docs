@@ -15,7 +15,7 @@ The following binaries are included:
 - `replicator`
 
 {{site.data.alerts.callout_success}}
-For ease of use, keep both `molt` and `replicator` in your current **working directory**.
+For ease of use, keep both `molt` and `replicator` in your current working directory.
 {{site.data.alerts.end}}
 
 To display the current version of each binary, run `molt --version` and `replicator --version`.
@@ -72,5 +72,3 @@ To pull a specific version (for example, `v1.1.1`):
 docker pull cockroachdb/replicator:v1.1.1
 ~~~
 {% endif %}
-
-{% if page.name != "molt.md" %}For details on running in Docker, refer to [Docker usage](#docker-usage).{% endif %}

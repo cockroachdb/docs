@@ -23,52 +23,5 @@ Install Oracle Instant Client on the machine that will run `molt` and `replicato
 	~~~
 
 	{{site.data.alerts.callout_success}}
-	You can also download Oracle Instant Client directly	 from the Oracle site for [Linux ARM64](https://www.oracle.com/database/technologies/instant-client/linux-amd64-downloads.html) or [Linux x86-64](https://www.oracle.com/ca-en/database/technologies/instant-client/linux-x86-64-downloads.html).
+	You can also download Oracle Instant Client directly from the Oracle site for [Linux ARM64](https://www.oracle.com/database/technologies/instant-client/linux-amd64-downloads.html) or [Linux x86-64](https://www.oracle.com/ca-en/database/technologies/instant-client/linux-x86-64-downloads.html).
 	{{site.data.alerts.end}}
-
-{% if page.name != "migrate-bulk-load.md" %}
-#### Enable `ARCHIVELOG`
-
-Enable `ARCHIVELOG` mode on the Oracle database. This is required for Oracle LogMiner, Oracle's built-in changefeed tool that captures DML events for replication.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT log_mode FROM v$database;
-SHUTDOWN IMMEDIATE;
-STARTUP MOUNT;
-ALTER DATABASE ARCHIVELOG;
-ALTER DATABASE OPEN;
-SELECT log_mode FROM v$database;
-~~~
-
-~~~
-LOG_MODE
---------
-ARCHIVELOG
-
-1 row selected.
-~~~
-
-Enable supplemental primary key logging for logical replication:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER DATABASE ADD SUPPLEMENTAL LOG DATA (PRIMARY KEY) COLUMNS;
-SELECT supplemental_log_data_min, supplemental_log_data_pk FROM v$database;
-~~~
-
-~~~
-SUPPLEMENTAL_LOG_DATA_MIN SUPPLEMENTAL_LOG_DATA_PK
-------------------------- ------------------------
-IMPLICIT                  YES
-
-1 row selected.
-~~~
-
-Enable `FORCE_LOGGING` to ensure that all data changes are captured for the tables to migrate:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER DATABASE FORCE LOGGING;
-~~~
-{% endif %}

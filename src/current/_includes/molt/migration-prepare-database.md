@@ -1,6 +1,6 @@
 #### Create migration user on source database
 
-Create a dedicated migration user (e.g., `MIGRATION_USER`) on the source database. This user is responsible for reading data from source tables during the migration. You will pass this username in the [source connection string](#source-connection-string).
+Create a dedicated migration user (for example, `MIGRATION_USER`) on the source database. This user is responsible for reading data from source tables during the migration. You will pass this username in the [source connection string](#source-connection-string).
 
 <section class="filter-content" markdown="1" data-scope="postgres">
 {% include_cached copy-clipboard.html %}
@@ -12,11 +12,31 @@ Grant the user privileges to connect, view schema objects, and select the tables
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT CONNECT ON DATABASE source_database TO MIGRATION_USER;
-GRANT USAGE ON SCHEMA migration_schema TO MIGRATION_USER;
-GRANT SELECT ON ALL TABLES IN SCHEMA migration_schema TO MIGRATION_USER;
-ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT SELECT ON TABLES TO MIGRATION_USER;
+GRANT CONNECT ON DATABASE source_database TO migration_user;
+GRANT USAGE ON SCHEMA migration_schema TO migration_user;
+GRANT SELECT ON ALL TABLES IN SCHEMA migration_schema TO migration_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT SELECT ON TABLES TO migration_user;
 ~~~
+
+{% if page.name != "migrate-bulk-load.md" %}
+Grant the `SUPERUSER` role to the user (recommended for replication configuration):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER USER migration_user WITH SUPERUSER;
+~~~
+
+Alternatively, grant the following permissions to create replication slots, access replication data, create publications, and add tables to publications:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER USER migration_user WITH LOGIN REPLICATION;
+GRANT CREATE ON DATABASE source_database TO migration_user;
+ALTER TABLE migration_schema.table_name OWNER TO migration_user;
+~~~
+
+Run the `ALTER TABLE` command for each table to replicate.
+{% endif %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
@@ -29,9 +49,19 @@ Grant the user privileges to select only the tables you migrate:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT SELECT ON source_database.* TO MIGRATION_USER@'%';
+GRANT SELECT ON source_database.* TO 'migration_user'@'%';
 FLUSH PRIVILEGES;
 ~~~
+
+{% if page.name != "migrate-bulk-load.md" %}
+For replication, grant additional privileges for binlog access:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'migration_user'@'%';
+FLUSH PRIVILEGES;
+~~~
+{% endif %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">

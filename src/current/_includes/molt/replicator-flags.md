@@ -1,5 +1,4 @@
-### Replication flags
-
+### Global flags
 
 |                  Flag                  |    Type    |                                                                                                                                                           Description                                                                                                                                                           |
 |----------------------------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -21,7 +20,7 @@
 | `--retryMultiplier`                    | `INT`      | Multiplier that controls how quickly the backoff interval increases between successive retries of failed applies to the target database.<br><br>**Default:** `2`                                                                                                                                                                |
 | `--scanSize`                           | `INT`      | The number of rows to retrieve from the staging database used to store metadata for replication.<br><br>**Default:** `10000`                                                                                                                                                                                                    |
 | `--schemaRefresh`                      | `DURATION` | How often a watcher will refresh its schema. If this value is zero or negative, refresh behavior will be disabled.<br><br>**Default:** `1m0s`                                                                                                                                                                                   |
-| `--sourceConn`                         | `STRING`   | The source database's connection string. When replicating from Oracle, this is the connection string of the Oracle container database (CDB). Refer to [Oracle replication flags](#oracle-replication-flags).                                                                                                                    |
+| `--sourceConn`                         | `STRING`   | The source database's connection string. When replicating from Oracle, this is the connection string of the Oracle container database (CDB). Refer to [Oracle replication flags](#oraclelogminer-replication-flags).                                                                                                            |
 | `--stageDisableCreateTableReaderIndex` | `BOOL`     | Disable the creation of partial covering indexes to improve read performance on staging tables. Set to `true` if creating indexes on existing tables would cause a significant operational impact.<br><br>**Default:** `false`                                                                                                  |
 | `--stageMarkAppliedLimit`              | `INT`      | Limit the number of mutations to be marked applied in a single statement.<br><br>**Default:** `100000`                                                                                                                                                                                                                          |
 | `--stageSanityCheckPeriod`             | `DURATION` | How often to validate staging table apply order (`-1` to disable).<br><br>**Default:** `10m0s`                                                                                                                                                                                                                                  |
@@ -47,9 +46,9 @@
 | `--userscript`                         | `STRING`   | The path to a TypeScript configuration script. For example, `--userscript 'script.ts'`.                                                                                                                                                                                                                                         |
 | `-v`, `--verbose`                      | `COUNT`    | Increase logging verbosity to `debug`; repeat for `trace`.                                                                                                                                                                                                                                                                      |
 
-##### PostgreSQL replication flags
+### `pglogical` replication flags
 
-The following flags are used when replicating from a [PostgreSQL source database](#source-and-target-databases).
+The following flags are used when replicating from a [PostgreSQL source database](#connection-strings).
 
 |         Flag        |    Type    |                                   Description                                   |
 |---------------------|------------|---------------------------------------------------------------------------------|
@@ -57,9 +56,9 @@ The following flags are used when replicating from a [PostgreSQL source database
 | `--slotName`        | `STRING`   | The replication slot in the source database.<br><br>**Default:** `"replicator"`   |
 | `--standbyTimeout`  | `DURATION` | How often to report WAL progress to the source server.<br><br>**Default:** `5s` |
 
-##### MySQL replication flags
+### `mylogical` replication flags
 
-The following flags are used when replicating from a [MySQL source database](#source-and-target-databases).
+The following flags are used when replicating from a [MySQL source database](#connection-strings).
 
 |           Flag           |   Type   |                                                                                                                                                Description                                                                                                                                                 |
 |--------------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -67,20 +66,19 @@ The following flags are used when replicating from a [MySQL source database](#so
 | `--fetchMetadata`        |          | Fetch column metadata explicitly, for older versions of MySQL that do not support `binlog_row_metadata`.                                                                                                                                                                                                   |
 | `--replicationProcessID` | `UINT32` | The replication process ID to report to the source database.<br><br>**Default:** `10`                                                                                                                                                                                                                      |
 
-##### Oracle replication flags
+### `oraclelogminer` replication flags
 
-The following flags are used when replicating from an [Oracle source database](#source-and-target-databases).
+The following flags are used when replicating from an [Oracle source database](#connection-strings).
 
 |             Flag             |   Type   |                                                                                                                                  Description                                                                                                                                  |
 |------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `--sourceSchema`             | `STRING` | **Required.** Source schema name on Oracle where tables will be replicated from.                                                                                                                                                                                              |
-| `--scn`                      | `INT`    | The snapshot System Change Number (SCN) queried by MOLT Fetch for the initial data load.                                                                                                                                                                                      |
+| `--scn`                      | `INT`    | The snapshot System Change Number (SCN) from the initial data load. **Required** the first time `replicator` is run, as the SCN provides a replication marker for streaming changes.                                                                                                                                                                                      |
 | `--backfillFromSCN`          | `INT`    | The SCN of the earliest active transaction at the time of the initial snapshot. Ensures no transactions are skipped when starting replication from Oracle.                                                                                                                    |
 | `--sourcePDBConn`            | `STRING` | Connection string for the Oracle pluggable database (PDB). Only required when using an [Oracle multitenant configuration](https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/CDBs-and-PDBs.html). [`--sourceConn`](#replication-flags) **must** be included. |
-| `--schema-filter`            | `STRING` | Restricts replication to the specified Oracle PDB schema (user). Set to the PDB user that owns the tables you want to replicate. Without this flag, replication will be attempted on tables from other users.                                                                 |
 | `--oracle-application-users` | `STRING` | List of Oracle usernames responsible for DML transactions in the PDB schema. Enables replication from the latest-possible starting point. Usernames are case-sensitive and must match the internal Oracle usernames (e.g., `PDB_USER`).                                       |
 
-##### Failback replication flags
+### `start` failback flags
 
 The following flags are used for failback from CockroachDB.
 
@@ -102,3 +100,14 @@ The following flags are used for failback from CockroachDB.
 | `--tlsCertificate`         | `STRING`   | A path to a PEM-encoded TLS certificate chain.                                                                                                                                                                                                                        |
 | `--tlsPrivateKey`          | `STRING`   | A path to a PEM-encoded TLS private key.                                                                                                                                                                                                                              |
 | `--tlsSelfSigned`          |            | If true, generate a self-signed TLS certificate valid for `localhost`.                                                                                                                                                                                                |
+
+### `make-jwt` flags
+
+The following flags are used with the [`make-jwt` command](#token-quickstart) to generate JWT tokens for changefeed authentication.
+
+|       Flag      |   Type   |                                   Description                                    |
+|-----------------|----------|----------------------------------------------------------------------------------|
+| `-a`, `--allow` | `STRING` | One or more `database.schema` identifiers. Can be repeated for multiple schemas. |
+| `--claim`       |          | If `true`, print a minimal JWT claim instead of signing.                         |
+| `-k`, `--key`   | `STRING` | The path to a PEM-encoded private key to sign the token with.                    |
+| `-o`, `--out`   | `STRING` | A file to write the token to.                                                    |
