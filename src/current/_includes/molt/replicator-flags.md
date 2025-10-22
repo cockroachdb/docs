@@ -48,7 +48,7 @@
 
 ### `pglogical` replication flags
 
-The following flags are used when replicating from a [PostgreSQL source database](#connection-strings).
+The following flags are used when replicating from a [PostgreSQL source database](#source-connection-strings).
 
 |         Flag        |    Type    |                                   Description                                   |
 |---------------------|------------|---------------------------------------------------------------------------------|
@@ -58,7 +58,7 @@ The following flags are used when replicating from a [PostgreSQL source database
 
 ### `mylogical` replication flags
 
-The following flags are used when replicating from a [MySQL source database](#connection-strings).
+The following flags are used when replicating from a [MySQL source database](#source-connection-strings).
 
 |           Flag           |   Type   |                                                                                                                                                Description                                                                                                                                                 |
 |--------------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -68,15 +68,15 @@ The following flags are used when replicating from a [MySQL source database](#co
 
 ### `oraclelogminer` replication flags
 
-The following flags are used when replicating from an [Oracle source database](#connection-strings).
+The following flags are used when replicating from an [Oracle source database](#source-connection-strings).
 
-|             Flag             |   Type   |                                                                                                                                  Description                                                                                                                                  |
-|------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--sourceSchema`             | `STRING` | **Required.** Source schema name on Oracle where tables will be replicated from.                                                                                                                                                                                              |
-| `--scn`                      | `INT`    | The snapshot System Change Number (SCN) from the initial data load. **Required** the first time `replicator` is run, as the SCN provides a replication marker for streaming changes.                                                                                                                                                                                      |
-| `--backfillFromSCN`          | `INT`    | The SCN of the earliest active transaction at the time of the initial snapshot. Ensures no transactions are skipped when starting replication from Oracle.                                                                                                                    |
-| `--sourcePDBConn`            | `STRING` | Connection string for the Oracle pluggable database (PDB). Only required when using an [Oracle multitenant configuration](https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/CDBs-and-PDBs.html). [`--sourceConn`](#replication-flags) **must** be included. |
-| `--oracle-application-users` | `STRING` | List of Oracle usernames responsible for DML transactions in the PDB schema. Enables replication from the latest-possible starting point. Usernames are case-sensitive and must match the internal Oracle usernames (e.g., `PDB_USER`).                                       |
+|             Flag             |   Type   |                                                                                                                               Description                                                                                                                                |
+|------------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--sourceSchema`             | `STRING` | **Required.** Source schema name on Oracle where tables will be replicated from.                                                                                                                                                                                         |
+| `--scn`                      | `INT`    | The snapshot System Change Number (SCN) from the initial data load. **Required** the first time `replicator` is run, as the SCN provides a replication marker for streaming changes.                                                                                     |
+| `--backfillFromSCN`          | `INT`    | The SCN of the earliest active transaction at the time of the initial snapshot. Ensures no transactions are skipped when starting replication from Oracle.                                                                                                               |
+| `--sourcePDBConn`            | `STRING` | Connection string for the Oracle pluggable database (PDB). Only required when using an [Oracle multitenant configuration](https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/CDBs-and-PDBs.html). [`--sourceConn`](#global-flags) **must** be included. |
+| `--oracle-application-users` | `STRING` | List of Oracle usernames responsible for DML transactions in the PDB schema. Enables replication from the latest-possible starting point. Usernames are case-sensitive and must match the internal Oracle usernames (e.g., `PDB_USER`).                                  |
 
 ### `start` failback flags
 

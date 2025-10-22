@@ -574,7 +574,7 @@ Specify the target database connection (the database you originally migrated fro
 --targetConn $TARGET
 ~~~
 
-Specify the CockroachDB connection string. For details, refer to [Connect using a URL]({% link {{ site.current_cloud_version }}/connection-parameters.md %}#connect-using-a-url %}).
+Specify the CockroachDB connection string. For details, refer to [Connect using a URL]({% link {{ site.current_cloud_version }}/connection-parameters.md %}#connect-using-a-url).
 
 {% include_cached copy-clipboard.html %}
 ~~~
