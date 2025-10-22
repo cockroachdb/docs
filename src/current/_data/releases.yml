@@ -9723,7 +9723,7 @@
       a CockroachDB self-hosted cluster to this version,
       [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
-      
+
 - release_name: v25.3.3
   major_version: v25.3
   release_date: '2025-10-17'
@@ -9757,3 +9757,31 @@
       CockroachDB Cloud clusters. To request to upgrade
       a CockroachDB self-hosted cluster to this version,
       [contact support](https://support.cockroachlabs.com/hc/requests/new).
+
+
+- release_name: v25.4.0-rc.1
+  major_version: v25.4
+  release_date: '2025-10-22'
+  release_type: Testing
+  go_version: go1.23.12
+  sha: 1de9c4bc217dca385a4f912dbdf828bc5629711a
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.4.0-beta.3
