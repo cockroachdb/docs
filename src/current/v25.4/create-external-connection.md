@@ -9,7 +9,7 @@ You can use external connections to specify and interact with resources that are
 
 `CREATE EXTERNAL CONNECTION` will validate the URI by writing, reading, and listing a test file to the external storage URI. If you're using a [KMS URI]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}), `CREATE EXTERNAL CONNECTION` will encrypt and decrypt a file. You'll find a `crdb_external_storage_location` file in your external storage as a result of this test. Each of the operations that access the external connection is aware of the raw URI that is parsed to configure, authenticate, and interact with the connection.
 
-You may need to periodically rotate your authentication token for an external connection by updating the URI for the connection to use a new auth token before the old auth token expires. For information on how to do this, consult [`ALTER EXTERNAL CONNECTION`]({% link {{ page.version.version }}/alter-external-connection.md %}).
+You may need to periodically rotate your authentication token for an external connection before the old token expires. For information on how to update the connection URI to use a new token, consult [`ALTER EXTERNAL CONNECTION`]({% link {{ page.version.version }}/alter-external-connection.md %}).
 
 The [privilege model](#required-privileges) for external connections means that you can delegate the creation and usage of external connections to the necessary users or roles.
 
@@ -190,3 +190,4 @@ In this example, you create an external connection to a Kafka sink to which a ch
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 - [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %})
 - [`SHOW CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-create-external-connection.md %})
+- [`ALTER EXTERNAL CONNECTION`]({% link {{ page.version.version }}/alter-external-connection.md %})

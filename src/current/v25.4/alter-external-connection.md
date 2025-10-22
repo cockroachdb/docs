@@ -5,9 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-You can use external connections to specify and interact with resources that are external from CockroachDB. When creating an external connection, you define a name for an external connection while passing the provider URI and query parameters. `ALTER EXTERNAL CONNECTION` allows you to change the [storage/sink]({% link {{ page.version.version }}/create-external-connection.md %}#supported-external-storage-and-sinks) URI that an external connection references. 
+The `ALTER EXTERNAL CONNECTION` [statement]({% link {{ page.version.version }}/sql-statements.md %}) allows you to change the [storage/sink](#supported-external-storage-and-sinks) URI that an external connection references. 
 
-Use `ALTER EXTERNAL CONNECTION` to rotate your authentication token for an external connection by updating the connection string for the external connection to use a new auth token before the old auth token expires.
+You can use external connections to specify and interact with resources that are external to CockroachDB. When creating an external connection, you must define a name for the external connection while passing the provider URI and query parameters.
+
+You can use `ALTER EXTERNAL CONNECTION` to update the connection string for an external connection to use a new authentication token. This allows you to rotate your auth token before the old token expires.
 
 You can also use the following SQL statements to work with external connections:
 
@@ -38,7 +40,7 @@ GRANT UPDATE ON EXTERNAL CONNECTION backup_bucket TO user;
 Parameter | Description
 ----------+-------------
 `connection_name` | The name of the existing external connection.
-`connection_uri` | The new [storage/sink]({% link {{ page.version.version }}/create-external-connection.md %}#supported-external-storage-and-sinks) URI that the external connection will be updated to reference.
+`connection_uri` | The new [storage/sink](#supported-external-storage-and-sinks) URI that the external connection will be updated to reference.
 
 ## Supported external storage and sinks
 
@@ -72,3 +74,9 @@ In this example, you update the `backup_bucket` external connection to a new Ama
 ~~~sql
 ALTER EXTERNAL CONNECTION backup_bucket AS 's3://bucket name?AWS_ACCESS_KEY_ID={new access key}&AWS_SECRET_ACCESS_KEY={new secret access key}';
 ~~~
+
+## See also
+
+- [`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %})
+- [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %})
+- [`SHOW CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-create-external-connection.md %})
