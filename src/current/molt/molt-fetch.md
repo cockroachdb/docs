@@ -9,16 +9,10 @@ MOLT Fetch moves data from a source database into CockroachDB as part of a [data
 
 MOLT Fetch uses [`IMPORT INTO`]({% link {{site.current_cloud_version}}/import-into.md %}) or [`COPY FROM`]({% link {{site.current_cloud_version}}/copy.md %}) to move the source data to cloud storage (Google Cloud Storage, Amazon S3, or Azure Blob Storage), a local file server, or local memory. Once the data is exported, MOLT Fetch loads the data into a target CockroachDB database. For details, refer to [Migration phases](#migration-phases).
 
-{{site.data.alerts.callout_danger}}
-MOLT Fetch replication modes will be deprecated in favor of a separate replication workflow in an upcoming release. This includes the `data-load-and-replication`, `replication-only`, and `failback` modes.
-{{site.data.alerts.end}}
-
 ## Terminology
 
 - *Shard*: A portion of a table's data exported concurrently during the data export phase. Tables are divided into shards to enable parallel processing. For details, refer to [Table sharding](#table-sharding).
-
-- *Continuation token*: An identifier that marks the progress of a fetch task. Used to resume data loading from the point of interruption when a fetch task fails. For details, refer to [Fetch continuation](#fetch-continuation).
-
+- *Continuation token*: An identifier that marks the progress of a fetch task. Used to resume data loading from the point of interruption if a fetch task fails. For details, refer to [Fetch continuation](#fetch-continuation).
 - *Intermediate files*: Temporary data files written to cloud storage or a local file server during the data export phase. These files are used to stage exported data before importing it into CockroachDB during the data import phase. For details, refer to [Data path](#data-path).
 
 ## Prerequisites
@@ -45,11 +39,11 @@ If you plan to use cloud storage for the data migration, follow the steps in [Cl
 
 The SQL user running MOLT Fetch requires specific privileges on both the source and target databases:
 
-|  Database/Target   |                                                                                                                      Required Privileges                                                                                                                      |                                                           Details                                                            |
-|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
-| PostgreSQL source  | <ul><li>`CONNECT` on database.</li><li>`USAGE` on schema.</li><li>`SELECT` on tables to migrate.</li></ul>                                                                                                                                                    | [Create PostgreSQL migration user]({% link molt/migrate-bulk-load.md %}#create-migration-user-on-source-database)            |
-| MySQL source       | <ul><li>`SELECT` on tables to migrate.</li></ul>                                                                                                                                                                                                              | [Create MySQL migration user]({% link molt/migrate-bulk-load.md %}?filters=mysql#create-migration-user-on-source-database)   |
-| Oracle source      | <ul><li>`CONNECT` and `CREATE SESSION`.</li><li>`SELECT` and `FLASHBACK` on tables to migrate.</li><li>`SELECT` on metadata views (`ALL_USERS`, `DBA_USERS`, `DBA_OBJECTS`, `DBA_SYNONYMS`, `DBA_TABLES`).</li></ul>                                          | [Create Oracle migration user]({% link molt/migrate-bulk-load.md %}?filters=oracle#create-migration-user-on-source-database) |
+|      Database      |                                                                                                                                                           Required Privileges                                                                                                                                                            |                                                           Details                                                            |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| PostgreSQL source  | <ul><li>`CONNECT` on database.</li><li>`USAGE` on schema.</li><li>`SELECT` on tables to migrate.</li></ul>                                                                                                                                                                                                                               | [Create PostgreSQL migration user]({% link molt/migrate-bulk-load.md %}#create-migration-user-on-source-database)            |
+| MySQL source       | <ul><li>`SELECT` on tables to migrate.</li></ul>                                                                                                                                                                                                                                                                                         | [Create MySQL migration user]({% link molt/migrate-bulk-load.md %}?filters=mysql#create-migration-user-on-source-database)   |
+| Oracle source      | <ul><li>`CONNECT` and `CREATE SESSION`.</li><li>`SELECT` and `FLASHBACK` on tables to migrate.</li><li>`SELECT` on metadata views (`ALL_USERS`, `DBA_USERS`, `DBA_OBJECTS`, `DBA_SYNONYMS`, `DBA_TABLES`).</li></ul>                                                                                                                     | [Create Oracle migration user]({% link molt/migrate-bulk-load.md %}?filters=oracle#create-migration-user-on-source-database) |
 | CockroachDB target | <ul><li>`ALL` on target database.</li><li>`CREATE` on schema.</li><li>`SELECT`, `INSERT`, `UPDATE`, `DELETE` on target tables.</li><li>For `IMPORT INTO`: `SELECT`, `INSERT`, `DROP` on target tables. Optionally `EXTERNALIOIMPLICITACCESS` for implicit cloud storage authentication.</li><li>For `COPY FROM`: `admin` role.</li></ul> | [Create CockroachDB user]({% link molt/migrate-bulk-load.md %}#create-the-sql-user)                                          |
 
 ## Installation
@@ -203,10 +197,6 @@ For Oracle Multitenant databases, `--source-cdb` specifies the container databas
 ### Fetch mode
 
 `--mode` specifies the MOLT Fetch behavior.
-
-{{site.data.alerts.callout_danger}}
-MOLT Fetch replication modes will be deprecated in favor of a separate replication workflow in an upcoming release. This includes the `data-load-and-replication`, `replication-only`, and `failback` modes.
-{{site.data.alerts.end}}
 
 `data-load` (default) instructs MOLT Fetch to load the source data into CockroachDB:
 
@@ -509,34 +499,15 @@ When using the `drop-on-target-and-recreate` option, MOLT Fetch creates a new Co
 
 #### Mismatch handling
 
-If either [`none`](#target-table-handling) or [`truncate-if-exists`](#target-table-handling) is set, `molt fetch` loads data into the existing tables on the target CockroachDB database. If the target schema mismatches the source schema, `molt fetch` will exit early in [certain cases](#exit-early), and will need to be re-run from the beginning.
+If either [`none`](#target-table-handling) or [`truncate-if-exists`](#target-table-handling) is set, `molt fetch` loads data into the existing tables on the target CockroachDB database. If the target schema mismatches the source schema, `molt fetch` will exit early in certain cases, and will need to be re-run from the beginning. For details, refer to [Fetch exits early due to mismatches](#fetch-exits-early-due-to-mismatches).
 
 {{site.data.alerts.callout_info}}
 This does not apply when [`drop-on-target-and-recreate`](#target-table-handling) is specified, since this option automatically creates a compatible CockroachDB schema.
 {{site.data.alerts.end}}
 
-<a id="exit-early"></a>`molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
-
-- A source table is missing a primary key.
-- A source and table primary key have mismatching types.
-	{{site.data.alerts.callout_success}}
-	These restrictions (missing or mismatching primary keys) can be bypassed with [`--skip-pk-check`](#skip-primary-key-matching).
-	{{site.data.alerts.end}}
-
-- A [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) primary key has a different [collation]({% link {{site.current_cloud_version}}/collate.md %}) on the source and target.
-- A source and target column have mismatching types that are not [allowable mappings](#type-mapping).
-- A target table is missing a column that is in the corresponding source table.
-- A source column is nullable, but the corresponding target column is not nullable (i.e., the constraint is more strict on the target).
-
-`molt fetch` can continue in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `false`:
-
-- A target table has a column that is not in the corresponding source table.
-- A source column has a `NOT NULL` constraint, and the corresponding target column is nullable (i.e., the constraint is less strict on the target).
-- A [`DEFAULT`]({% link {{site.current_cloud_version}}/default-value.md %}), [`CHECK`]({% link {{site.current_cloud_version}}/check.md %}), [`FOREIGN KEY`]({% link {{site.current_cloud_version}}/foreign-key.md %}), or [`UNIQUE`]({% link {{site.current_cloud_version}}/unique.md %}) constraint is specified on a target column and not on the source column.
-
 #### Skip primary key matching
 
-`--skip-pk-check` removes the [requirement that source and target tables share matching primary keys](#exit-early) for data load. When this flag is set:
+`--skip-pk-check` removes the [requirement that source and target tables share matching primary keys](#fetch-exits-early-due-to-mismatches) for data load. When this flag is set:
 
 - The data load proceeds even if the source or target table lacks a primary key, or if their primary key columns do not match.
 - [Table sharding](#table-sharding) is disabled. Each table is exported in a single batch within one shard, bypassing `--export-concurrency` and `--row-batch-size`. As a result, memory usage and execution time may increase due to full table scans.

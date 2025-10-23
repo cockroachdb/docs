@@ -12,11 +12,8 @@ MOLT Replicator consumes change data from PostgreSQL [logical replication](https
 ## Terminology
 
 - *Checkpoint*: The position in the source database's transaction log from which replication begins or resumes: LSN (PostgreSQL), GTID (MySQL), or SCN (Oracle).
-
 - *Staging database*: A CockroachDB database used by Replicator to store replication metadata, checkpoints, and buffered mutations. Specified with `--stagingSchema` and automatically created with `--stagingCreateSchema`. For details, refer to [Staging database](#staging-database).
-
 - *Forward replication*: Replicate changes from a source database (PostgreSQL, MySQL, or Oracle) to CockroachDB during a migration. For usage details, refer to [Forward replication with initial load](#forward-replication-with-initial-load).
-
 - *Failback*: Replicate changes from CockroachDB back to the source database. Used for migration rollback or to maintain data consistency on the source during migration. For usage details, refer to [Failback to source database](#failback-to-source-database).
 
 ## Prerequisites
@@ -28,7 +25,7 @@ MOLT Replicator supports the following source and target databases:
 - PostgreSQL 11-16
 - MySQL 5.7, 8.0 and later
 - Oracle Database 19c (Enterprise Edition) and 21c (Express Edition)
-- CockroachDB (all currently [supported versions]({% link releases/release-support-policy.md %})#supported-versions)
+- CockroachDB (all currently [supported versions]({% link releases/release-support-policy.md %}#supported-versions))
 
 ### Database configuration
 
@@ -39,7 +36,7 @@ The source database must be configured for replication:
 | PostgreSQL source             | <ul><li>Enable logical replication by setting `wal_level = logical`.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | [Configure PostgreSQL for replication]({% link molt/migrate-load-replicate.md %}#configure-source-database-for-replication)            |
 | MySQL source                  | <ul><li>Enable [global transaction identifiers (GTID)](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html) and configure binary logging. Set `binlog-row-metadata` or `binlog-row-image` to `full`.</li><li>Configure sufficient binlog retention for migration duration.</li></ul>                                                                                                                                                                                                                                                                                                  | [Configure MySQL for replication]({% link molt/migrate-load-replicate.md %}?filters=mysql#configure-source-database-for-replication)   |
 | Oracle source                 | <ul><li>Install [Oracle Instant Client]({% link molt/migrate-load-replicate.md %}?filters=oracle#oracle-instant-client).</li><li>[Enable `ARCHIVELOG` mode]({% link molt/migrate-load-replicate.md %}?filters=oracle#enable-archivelog-and-force-logging), supplemental logging for primary keys, and `FORCE LOGGING`.</li><li>[Create sentinel table]({% link molt/migrate-load-replicate.md %}#create-source-sentinel-table) (`_replicator_sentinel`) in source schema.</li><li>Grant and verify [LogMiner privileges]({% link molt/migrate-load-replicate.md %}#grant-logminer-privileges).</li></ul> | [Configure Oracle for replication]({% link molt/migrate-load-replicate.md %}?filters=oracle#configure-source-database-for-replication) |
-| CockroachDB source (failback) | <ul><li>[Enable rangefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) (`kv.rangefeed.enabled = true`).</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                | [Configure CockroachDB for replication]({% link molt/migrate-failback.md %}#prepare-the-cockroachdb-cluster)                           |
+| CockroachDB source (failback) | <ul><li>[Enable rangefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) (`kv.rangefeed.enabled = true`) (CockroachDB {{ site.data.products.core }} clusters only).</li></ul>                                                                                                                                                                                                                                                                                                                                                                      | [Configure CockroachDB for replication]({% link molt/migrate-failback.md %}#prepare-the-cockroachdb-cluster)                           |
 
 ### User permissions
 
@@ -77,7 +74,7 @@ MOLT Replicator supports forward replication from PostgreSQL, MySQL, and Oracle,
 
 MOLT Replicator supports three consistency modes for balancing throughput and transactional guarantees:
 
-1. *Consistent* (default for CockroachDB sources, failback mode only): Preserves per-row order and source transaction atomicity. Concurrent transactions are controlled by `--parallelism`.
+1. *Consistent* (failback mode only, default for CockroachDB sources): Preserves per-row order and source transaction atomicity. Concurrent transactions are controlled by `--parallelism`.
 
 1. *BestEffort* (failback mode only): Relaxes atomicity across tables that do not have foreign key constraints between them (maintains coherence within FK-connected groups). Enable with `--bestEffortOnly` or allow auto-entry via `--bestEffortWindow` set to a positive duration (such as `1s`).
 
@@ -85,7 +82,7 @@ MOLT Replicator supports three consistency modes for balancing throughput and tr
 	For independent tables (with no foreign key constraints), BestEffort mode applies changes immediately as they arrive, without waiting for the resolved timestamp. This provides higher throughput for tables that have no relationships with other tables.
 	{{site.data.alerts.end}}
 
-1. *Immediate* (default for PostgreSQL, MySQL, and Oracle sources): Applies updates as they arrive to Replicator with no buffering or waiting for resolved timestamps. Provides highest throughput but requires no foreign keys on the target schema.
+1. *Immediate* (default for PostgreSQL, MySQL, and Oracle sources): Applies updates as they arrive to Replicator with no buffering or waiting for resolved timestamps. For CockroachDB sources, provides highest throughput but requires no foreign keys on the target schema.
 
 ## Commands
 
@@ -458,7 +455,7 @@ Use the `--scn` and `--backfillFromSCN` values from the MOLT Fetch output:
 ~~~
 </section>
 
-Specify the staging database. Use `--stagingCreateSchema` to create it automatically on first run:
+Use `--stagingSchema` to specify the staging database. Use `--stagingCreateSchema` to create it automatically on first run:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -519,7 +516,7 @@ For detailed steps, refer to [Load and replicate]({% link molt/migrate-load-repl
 
 When resuming replication after an interruption, MOLT Replicator automatically uses the stored checkpoint to resume from the correct position. 
 
-Rerun the same `replicator` command used during [Forward replication with initial load](#forward-replication-with-initial-load), but omit `--stagingCreateSchema` and any checkpoint flags. For example:
+Rerun the same `replicator` command used during [forward replication](#forward-replication-with-initial-load), specifying the same `--stagingSchema` value as before. Omit `--stagingCreateSchema` and any checkpoint flags. For example:
 
 <section class="filter-content" markdown="1" data-scope="postgres">
 {% include_cached copy-clipboard.html %}
@@ -624,18 +621,12 @@ For detailed steps, refer to [Migration failback]({% link molt/migrate-failback.
 
 MOLT Replicator can export [Prometheus](https://prometheus.io/) metrics by setting the `--metricsAddr` flag to a port (for example, `--metricsAddr :30005`). Metrics are not enabled by default. When enabled, metrics are available at the path `/_/varz`. For example: `http://localhost:30005/_/varz`.
 
-Cockroach Labs recommends monitoring the following metrics during replication:
+For a list of recommended metrics to monitor during replication, refer to:
 
-|              Metric Name              |                                                         Description                                                         |
-|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| `source_lag_seconds`                  | **CockroachDB sources only:** Time between when an incoming resolved MVCC timestamp originated on the source CockroachDB cluster and when it was received by Replicator. |
-| `target_lag_seconds`                  | **CockroachDB sources only:** End-to-end lag from when an incoming resolved MVCC timestamp originated on the source CockroachDB to when all data changes up to that timestamp were written to the target database. |
-| `source_lag_seconds_histogram`        | **CockroachDB sources:** Same as `source_lag_seconds` but stored as a histogram for analyzing distributions over time.<br>**Non-CockroachDB sources:** Time between when a source transaction is committed and when its COMMIT transaction log arrives at Replicator. |
-| `target_lag_seconds_histogram`        | **CockroachDB sources:** Same as `target_lag_seconds` but stored as a histogram for analyzing distributions over time.<br>**Non-CockroachDB sources:** End-to-end lag from when a source transaction is committed to when its changes are fully written to the target CockroachDB. |
-| `replicator_applier_mutations_staged` | Number of mutations that have been staged for application to the target database.                                          |
-| `replicator_applier_mutations_applied` | Number of mutations that have been successfully applied to the target database.                                           |
+- [Forward replication metrics]({% link molt/migrate-load-replicate.md %}#replicator-metrics) (PostgreSQL, MySQL, and Oracle sources)
+- [Failback replication metrics]({% link molt/migrate-failback.md %}#replicator-metrics) (CockroachDB source)
 
-You can use the [Replicator Grafana dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) to visualize these metrics. For Oracle-specific metrics, import [this Oracle Grafana dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
+You can use the [Replicator Grafana dashboard](https://replicator.cockroachdb.com/replicator_grafana_dashboard.json) to visualize the metrics. For Oracle-specific metrics, import the [Oracle Grafana dashboard](https://replicator.cockroachdb.com/replicator_oracle_grafana_dashboard.json).
 
 To check MOLT Replicator health when metrics are enabled, run `curl http://localhost:30005/_/healthz` (replacing the port with your `--metricsAddr` value). This returns a status code of `200` if Replicator is running.
 
@@ -660,7 +651,7 @@ Redirect both streams properly to ensure all logs are captured for troubleshooti
 ./replicator --logDestination replicator.log ...
 ~~~
 
-Enable debug logging with `--verbose`. Pay close attention to warning- and error-level logs, as these indicate when Replicator is misbehaving.
+Enable debug logging with `-v`. For more granularity and system insights, enable trace logging with `-vv`. Pay close attention to warning- and error-level logs, as these indicate when Replicator is misbehaving.
 
 ## Best practices
 

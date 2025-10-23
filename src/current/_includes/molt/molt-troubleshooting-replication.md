@@ -6,14 +6,14 @@ If MOLT Replicator appears hung or performs poorly:
 
 1. Enable trace logging with `-vv` to get more visibility into the replicator's state and behavior.
 
-1. If MOLT Replicator is in an unknown, hung, or erroneous state, collect performance profiles to include with support tickets:
+1. If MOLT Replicator is in an unknown, hung, or erroneous state, collect performance profiles to include with support tickets. Replace `{host}` and `{metrics-port}` with your Replicator host and the port specified by `--metricsAddr`:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    curl 'localhost:30005/debug/pprof/trace?seconds=15' > trace.out
-    curl 'localhost:30005/debug/pprof/profile?seconds=15' > profile.out
-    curl 'localhost:30005/debug/pprof/goroutine?seconds=15' > gr.out
-    curl 'localhost:30005/debug/pprof/heap?seconds=15' > heap.out
+    curl '{host}:{metrics-port}/debug/pprof/trace?seconds=15' > trace.out
+    curl '{host}:{metrics-port}/debug/pprof/profile?seconds=15' > profile.out
+    curl '{host}:{metrics-port}/debug/pprof/goroutine?seconds=15' > gr.out
+    curl '{host}:{metrics-port}/debug/pprof/heap?seconds=15' > heap.out
     ~~~
 
 1. Monitor lag metrics and adjust performance parameters as needed.
@@ -62,7 +62,7 @@ Dropping a replication slot can be destructive and delete data that is not yet r
 run CREATE PUBLICATION molt_fetch FOR ALL TABLES;
 ~~~
 
-**Resolution:** {% if page.name != "migrate-load-replicate.md" %}[Create the publication]({% link molt/migrate-load-replicate.md %}#configure-source-database-for-replication){% else %}[Create the publication](#configure-source-database-for-replication){% endif %} on the source database. Ensure you also create the replication slot:
+**Resolution:** Create the publication on the source database. Ensure you also create the replication slot:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -139,13 +139,17 @@ Interpret the results as follows:
 
 If the GTID is purged or invalid, follow these steps:
 
-1. Increase binlog retention by configuring `binlog_expire_logs_seconds` in MySQL or through your cloud provider:
+1. Increase binlog retention by configuring `binlog_expire_logs_seconds` in MySQL:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     -- Increase binlog retention (example: 7 days = 604800 seconds)
     SET GLOBAL binlog_expire_logs_seconds = 604800;
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    For managed MySQL services (such as Amazon RDS, Google Cloud SQL, or Azure Database for MySQL), binlog retention is typically configured through the provider's console or CLI. Consult your provider's documentation for how to adjust binlog retention settings.
+    {{site.data.alerts.end}}
 
 1. Get a current GTID set to restart replication:
 
@@ -195,10 +199,12 @@ Oracle LogMiner excludes tables and columns with names longer than 30 characters
 ##### Unsupported data types
 
 LogMiner and replication do not support:
-- Long BLOB/CLOBs (4000+ characters)
+
+- Long `BLOB`/`CLOB`s (4000+ characters)
 - User-defined types (UDTs)
 - Nested tables
 - Varrays
+- `GEOGRAPHY` and `GEOMETRY`
 
 **Resolution:** Convert unsupported data types or exclude affected tables from replication.
 
@@ -218,7 +224,7 @@ SQL NULL and JSON null values are not distinguishable in JSON payloads during re
 
 If the Oracle redo log files are too small or do not retain enough history, you may get errors indicating that required log files are missing for a given SCN range, or that a specific SCN is unavailable.
 
-Increase the number and size of online redo log files, and verify that archived log files are being generated and retained correctly in your Oracle environment.
+**Resolution:** Increase the number and size of online redo log files, and verify that archived log files are being generated and retained correctly in your Oracle environment.
 
 ##### Replicator lag
 
@@ -245,13 +251,3 @@ ERROR: maximum number of retries (10) exceeded
 ~~~
 
 **Resolution:** Check target database constraints and connection stability. MOLT Replicator will log warnings for each retry attempt. If you see warnings but no final error, the apply succeeded after retrying. If all retry attempts are exhausted, Replicator will surface a final error and restart the apply loop to continue processing.
-
-##### Incorrect schema path errors
-
-Schema path mismatches in changefeed URLs:
-
-~~~
-transient error: 400 Bad Request: unknown schema:
-~~~
-
-**Resolution:** Verify the webhook path matches your target database schema. Use `/database/schema` for CockroachDB/PostgreSQL targets and `/DATABASE` for MySQL/Oracle targets.

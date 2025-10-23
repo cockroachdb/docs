@@ -30,7 +30,7 @@ To minimize downtime during migration, MOLT Fetch supports replication streams t
 
 If the migration is interrupted or you need to abort cutover, MOLT Fetch supports safe recovery flows:
 
-- Use `replication-only` to resume a previously interrupted replication stream. Refer to [Start or Resume Replication]({% link molt/migrate-resume-replication.md %}).
+- Use `replication-only` to resume a previously interrupted replication stream. Refer to [Resume Replication]({% link molt/migrate-resume-replication.md %}).
 - Use `failback` to reverse the migration, syncing changes from CockroachDB back to the original source. This ensures data consistency on the source so that you can retry later. Refer to [Migration Failback]({% link molt/migrate-failback.md %}).
 
 ## See also

@@ -21,7 +21,7 @@ These instructions assume you have already [installed MOLT and completed the pre
 For details on enabling CockroachDB changefeeds, refer to [Create and Configure Changefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}).
 {{site.data.alerts.end}}
 
-[Enable rangefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) on the CockroachDB cluster:
+If you are migrating to a CockroachDB {{ site.data.products.core }} cluster, [enable rangefeeds]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}#enable-rangefeeds) on the cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -95,7 +95,10 @@ When you run `replicator`, you can configure the following options for replicati
 
 - [Connection strings](#connection-strings): Specify URL‑encoded source and target connections.
 - [TLS certificate and key](#tls-certificate-and-key): Configure secure TLS connections.
+- [Replication flags](#replication-flags): Specify required and optional flags to configure replicator behavior.
+<section class="filter-content" markdown="1" data-scope="postgres oracle">
 - [Tuning parameters](#tuning-parameters): Optimize failback performance and resource usage.
+</section>
 - [Replicator metrics](#replicator-metrics): Monitor failback replication performance.
 
 ### Connection strings
@@ -148,7 +151,7 @@ replicator start \
 --tlsPrivateKey ./certs/server.key
 ~~~
 
-The client certificates defined in the changefeed webhook URI must correspond to the server certificates specified in the `replicator` command. This ensures proper TLS handshake between the changefeed and MOLT Replicator. To include client certificates in the changefeed webhook URL, use URL encoding and base64 encoding:
+The client certificates defined in the changefeed webhook URI must correspond to the server certificates specified in the `replicator` command. This ensures proper TLS handshake between the changefeed and MOLT Replicator. To include client certificates in the changefeed webhook URL, encode them with `base64` and then URL-encode the output with `jq`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -200,7 +203,7 @@ For additional details on the webhook sink URI, refer to [Webhook sink]({% link 
     --bindAddr :30004 \
     --tlsCertificate ./certs/server.crt \
     --tlsPrivateKey ./certs/server.key \
-    --verbose
+    -v
     ~~~
 
 ## Create the CockroachDB changefeed
@@ -283,7 +286,7 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
     `running: resolved` may be reported even if data isn't being sent properly. This typically indicates incorrect host/port configuration or network connectivity issues.
     {{site.data.alerts.end}}
 
-1. Verify that Replicator is reporting incoming HTTP requests from the changefeed. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `--verbose`, you should see periodic HTTP request successes:
+1. Verify that Replicator is reporting incoming HTTP requests from the changefeed. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see periodic HTTP request successes:
 
     ~~~
     DEBUG  [Aug 25 11:52:47]  httpRequest="&{0x14000b068c0 45 200 3 9.770958ms   false false}"

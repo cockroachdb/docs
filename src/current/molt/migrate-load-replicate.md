@@ -73,6 +73,15 @@ Use [MOLT Verify]({% link molt/molt-verify.md %}) to confirm that the source and
 
 ## Configure Replicator
 
+When you run `replicator`, you can configure the following options for replication:
+
+- [Replication connection strings](#replication-connection-strings): Specify URL-encoded source and target database connections.
+- [Replication flags](#replication-flags): Specify required and optional flags to configure replicator behavior.
+<section class="filter-content" markdown="1" data-scope="postgres oracle">
+- [Tuning parameters](#tuning-parameters): Optimize replication performance and resource usage.
+</section>
+- [Replicator metrics](#replicator-metrics): Monitor replication progress and performance.
+
 ### Replication connection strings
 
 MOLT Replicator uses `--sourceConn` and `--targetConn` to specify the source and target database connections.
@@ -146,7 +155,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	--stagingSchema _replicator \
 	--stagingCreateSchema \
 	--metricsAddr :30005 \
-	--verbose
+	-v
 	~~~
 </section>
 
@@ -164,7 +173,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	--stagingCreateSchema \
 	--metricsAddr :30005 \
 	--userscript table_filter.ts \
-	--verbose
+	-v
 	~~~
 
 	{{site.data.alerts.callout_success}}
@@ -189,7 +198,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 	--stagingCreateSchema \
 	--metricsAddr :30005 \
 	--userscript table_filter.ts \
-	--verbose
+	-v
 	~~~
 
 	{{site.data.alerts.callout_info}}
@@ -199,7 +208,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 
 ## Verify replication
 
-1. Verify that Replicator is processing changes successfully. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `--verbose`, you should see connection and row processing messages:
+1. Verify that Replicator is processing changes successfully. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see connection and row processing messages:
 
 	<section class="filter-content" markdown="1" data-scope="postgres">
 	You should see periodic primary keepalive messages:

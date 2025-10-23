@@ -2,10 +2,14 @@
 
 ##### Fetch exits early due to mismatches
 
-`molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
+When run in `none` or `truncate-if-exists` mode, `molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
 
 - A source table is missing a primary key.
 - A source primary key and target primary key have mismatching types.
+    {{site.data.alerts.callout_success}}
+    These restrictions (missing or mismatching primary keys) can be bypassed with [`--skip-pk-check`]({% link molt/molt-fetch.md %}#skip-primary-key-matching).
+    {{site.data.alerts.end}}
+
 - A [`STRING`]({% link {{site.current_cloud_version}}/string.md %}) primary key has a different [collation]({% link {{site.current_cloud_version}}/collate.md %}) on the source and target.
 - A source and target column have mismatching types that are not [allowable mappings]({% link molt/molt-fetch.md %}#type-mapping).
 - A target table is missing a column that is in the corresponding source table.

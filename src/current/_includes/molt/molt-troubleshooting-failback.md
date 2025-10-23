@@ -12,20 +12,23 @@ This indicates that Replicator is down, the webhook URL is incorrect, or the por
 
 **Resolution:** Verify that MOLT Replicator is running on the port specified in the changefeed `INTO` configuration. Confirm the host and port are correct.
 
-##### Unknown schema error
+##### Incorrect schema path errors
+
+This error occurs when the [CockroachDB changefeed]({% link {{ site.current_cloud_version }}/create-and-configure-changefeeds.md %}) webhook URL path does not match the target database schema naming convention:
 
 ~~~
 transient error: 400 Bad Request: unknown schema:
 ~~~
 
-This indicates the webhook URL path is incorrectly formatted. Common causes include using the wrong path format for your target database type or incorrect database names.
+The webhook URL path is specified in the `INTO` clause when you [create the changefeed](#create-the-cockroachdb-changefeed). For example: `webhook-https://replicator-host:30004/database/schema`.
 
-**Resolution:** Check the webhook URL path mapping:
+**Resolution:** Verify the webhook path format matches your target database type:
 
-- **PostgreSQL targets:** Use `/database/schema` format (for example, `/molt_db/public`).
-- **MySQL/Oracle targets:** Use `/SCHEMA` format (for example, `/MOLT_DB`). Use only the schema name (for example, `molt` instead of `molt/public`).
+- PostgreSQL or CockroachDB targets: Use `/database/schema` format. For example, `webhook-https://replicator-host:30004/migration_schema/public`.
+- MySQL targets: Use `/database` format (schema is implicit). For example, `webhook-https://replicator-host:30004/migration_schema`.
+- Oracle targets: Use `/DATABASE` format in uppercase. For example, `webhook-https://replicator-host:30004/MIGRATION_SCHEMA`.
 
-Verify that the target database and schema names match the webhook URL.
+For details on configuring the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
 
 ##### GC threshold error
 
