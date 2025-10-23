@@ -15,13 +15,11 @@ The entire standby cluster must be on the same version as the primary cluster or
 
 To upgrade your primary and standby clusters:
 
+1. Ensure that the virtual clusters on both your primary cluster and your standby cluster are finalized on the current version. If their versions have not been finalized, [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) them before beginning the upgrade process.
+
 1. [Upgrade the binaries]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#perform-a-major-version-upgrade) on the standby cluster. Replace the binary on each node of the cluster and restart the node.
 
-    After upgrading the binaries on the standby cluster, the primary cluster is not upgradable until the standby cluster's upgrade has finalized.
-
-    If auto-finalization is enabled, the upgrade auto-finalizes after 72 hours.
-
-1. If auto-finalization is disabled, [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the standby cluster's SystemVC. 
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the standby cluster's SystemVC. 
 
     {{site.data.alerts.callout_info}}
     If you need to [roll back]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#roll-back-a-major-version-upgrade) an upgrade, you must do so before the upgrade has been finalized.
@@ -31,15 +29,13 @@ To upgrade your primary and standby clusters:
 
 1. [Upgrade the binaries]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#perform-a-major-version-upgrade) on the primary cluster. Replace the binary on each node of the cluster and restart the node.
 
-    After upgrading the binaries on the primary cluster, the standby cluster is not upgradable until the primary cluster's upgrade has finalized.
-
-1. If auto-finalization is disabled, [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the primary cluster's SystemVC. 
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the primary cluster's SystemVC. 
 
     {{site.data.alerts.callout_info}}
     If you need to [roll back]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#roll-back-a-major-version-upgrade) an upgrade, you must do so before the upgrade has been finalized. Rolling back the upgrade on the primary cluster does not also roll back the standby cluster.
     {{site.data.alerts.end}}
 
-1. If auto-finalization is disabled, [finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the primary cluster's AppVC. 
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the primary cluster's AppVC. 
 
     Upgrading the primary cluster's AppVC also upgrades the standby cluster's AppVC, since it replicates from the primary.
 
