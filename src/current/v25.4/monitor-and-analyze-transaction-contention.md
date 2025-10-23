@@ -116,11 +116,18 @@ Correlate these metrics with information from the [Insights]({% link {{ page.ver
 
 ## Monitor using logs
 
-CockroachDB periodically summarizes resolved contention activity as structured log events on the [`SQL_EXEC` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). Each `aggregated_contention_info` [event]({% link {{ page.version.version }}/eventlog.md %}) reports the waiting statement and transaction fingerprints, the blocking transaction fingerprint, the contended key (if not redacted), and the total wait time for that combination since the previous event. [Configure log sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) to route the SQL_EXEC channel to a destination, such as a log file or external collector, for long-term analysis.
+CockroachDB periodically summarizes resolved contention activity as structured log events on the [`SQL_EXEC` logging channel]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). Each `aggregated_contention_info` [event]({% link {{ page.version.version }}/eventlog.md %}) reports:
 
-These periodic reports complement the in-memory [`crdb_internal.transaction_contention_events`](#transaction_contention_events-table) table by providing a durable view of contention history that persists across node restarts or after contention data expires from the event store. Reports are generated at an interval defined by the cluster setting [`sql.contention.event_store.resolution_interval`](#sql-contention-event_store-resolution_interval).
+- the waiting statement and transaction fingerprints
+- the blocking transaction fingerprint
+- the contended key (if not redacted)
+- the total wait time for that combination since the previous event
+ 
+[Configure log sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) to route the `SQL_EXEC` channel to a destination, such as a log file or external collector, for long-term analysis.
 
-The structured payload makes it easy to ingest the events into log analytics tools and correlate them with statement fingerprints or key hotspots. A typical structured log entry looks like the following:
+These periodic reports complement the in-memory [`crdb_internal.transaction_contention_events`](#transaction_contention_events-table) table by providing a durable view of contention history that persists across [node restarts]({% link {{ page.version.version }}/node-shutdown.md %}) or after contention data expires from the event store. Reports are generated at an interval defined by the cluster setting [`sql.contention.event_store.resolution_interval`](#sql-contention-event_store-resolution_interval).
+
+The structured payload makes it easy to ingest the events into log analytics tools and correlate them with statement fingerprints or [key hotspots]({% link {{ page.version.version }}/understand-hotspots.md %}#row-hotspot). A typical structured log entry looks like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ json
