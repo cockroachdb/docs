@@ -6,6 +6,7 @@ The details displayed on the **Transaction Details** page reflect the [time inte
 - The **Mean transaction time**: The mean average time it took to execute the transaction within the aggregation interval.
 - The **Application name**: The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
 - **Transaction resource usage** shows overall statistics about the transaction.
+    - **Idle latency**: The time the transaction spent waiting on the client while the transaction remained open.
     - **Mean rows/bytes read**: The mean average number of rows and bytes [read from the storage layer]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) during the execution of the transaction within the specified aggregation interval.
     - **Bytes read over network**: The amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for this transaction within the aggregation interval. <br><br>If this value is 0, the statement was executed on a single node.
     - **Mean rows written**: The mean number of rows written by this transaction.
