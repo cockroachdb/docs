@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-MOLT Replicator continuously replicates changes from a source database to CockroachDB as part of a [database migration]({% link molt/migration-overview.md %}). It supports minimal-downtime migrations to CockroachDB from a source database, and enables backfill from CockroachDB to your source database for failback scenarios to preserve a rollback option during a migration window.
+MOLT Replicator continuously replicates changes from a source database to CockroachDB as part of a [database migration]({% link molt/migration-overview.md %}). It supports migrations from a source database to CockroachDB with minimal downtime, and enables backfill from CockroachDB to your source database for failback scenarios to preserve a rollback option during a migration window.
 
 MOLT Replicator consumes change data from PostgreSQL [logical replication](https://www.postgresql.org/docs/current/logical-replication.html) streams, MySQL [GTID-based replication](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html), Oracle [LogMiner](https://docs.oracle.com/en/database/oracle/oracle-database/21/sutil/oracle-logminer-utility.html), and [CockroachDB changefeeds]({% link {{ site.current_cloud_version }}/change-data-capture-overview.md %}) (for failback). For details, refer to [How it works](#how-it-works).
 
@@ -230,7 +230,8 @@ The staging database stores replication metadata, checkpoints, and buffered muta
 
 {% include_cached copy-clipboard.html %}
 ~~~
---stagingSchema _replicator --stagingCreateSchema
+--stagingSchema _replicator
+--stagingCreateSchema
 ~~~
 
 The staging database is used to:
@@ -353,7 +354,7 @@ For details on the `make-jwt` command flags, refer to [`make-jwt` flags](#make-j
 
 ### Supply chain security
 
-Use the `version` command to verify the integrity of your MOLT Replicator build and identify potential upstream vulnerabilities. The output includes all Go modules, their checksums, and versions:
+Use the `version` command to verify the integrity of your MOLT Replicator build and identify potential upstream vulnerabilities.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -634,7 +635,7 @@ To check MOLT Replicator health when metrics are enabled, run `curl http://local
 
 By default, MOLT Replicator writes two streams of logs: operational logs to `stdout` (including `warning`, `info`, `trace`, and some errors) and final errors to `stderr`.
 
-Redirect both streams properly to ensure all logs are captured for troubleshooting:
+Redirect both streams to ensure all logs are captured for troubleshooting:
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
