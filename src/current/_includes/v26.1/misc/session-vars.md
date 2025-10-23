@@ -110,7 +110,7 @@ The following session variables are exposed only for backwards compatibility wit
 | <a id="integer-datetimes"></a> `integer_datetimes` | `on` | No | Yes |
 | <a id="max-identifier-length"></a> `max_identifier_length` | `128` | No | Yes |
 | <a id="max-index-keys"></a> `max_index_keys` | `32` | No | Yes |
-| <a id="row-security"></a> `row_security` | `off` | No | Yes |
+| <a id="row-security"></a> `row_security` | `on` | Yes | Yes |
 | <a id="standard-conforming-strings"></a> `standard_conforming_strings` | `on` | No | Yes |
 | <a id="server-encoding"></a> `server_encoding` | `UTF8` | Yes | Yes |
 | <a id="synchronize-seqscans"></a> `synchronize_seqscans` | `on` | No | Yes |
