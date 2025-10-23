@@ -42,13 +42,13 @@ The source database must be configured for replication:
 
 The SQL user running MOLT Replicator requires specific privileges on both the source and target databases:
 
-|             Database/Target              |                                                                                                                                                                                                                                                                 Required Privileges                                                                                                                                                                                                                                                                 |                                                                                                                                                                 Details                                                                                                                                                                  |
-|------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| PostgreSQL source                        | <ul><li>`SUPERUSER` role (recommended), or the following granular permissions:</li><li>`CREATE` and `SELECT` on database and tables to replicate.</li><li>Table ownership for adding tables to publications.</li><li>`LOGIN` and `REPLICATION` privileges to create replication slots and access replication data.</li></ul>                                                                                                                                                                                                                        | [Create PostgreSQL migration user]({% link molt/migrate-load-replicate.md %}#create-migration-user-on-source-database)                                                                                                                                                                                                                   |
-| MySQL source                             | <ul><li>`SELECT` on tables to replicate.</li><li>`REPLICATION SLAVE` and `REPLICATION CLIENT` privileges for binlog access.</li><li>For `--fetchMetadata`, either `SELECT` on the source database or `PROCESS` globally.</li></ul>                                                                                                                                                                                                                                                                                                                  | [Create MySQL migration user]({% link molt/migrate-load-replicate.md %}?filters=mysql#create-migration-user-on-source-database)                                                                                                                                                                                                          |
-| Oracle source                            | <ul><li>`SELECT`, `INSERT`, `UPDATE` on `_replicator_sentinel` table.</li><li>`SELECT` on `V$` views (`V$LOG`, `V$LOGFILE`, `V$LOGMNR_CONTENTS`, `V$ARCHIVED_LOG`, `V$LOG_HISTORY`).</li><li>`SELECT` on `SYS.V$LOGMNR_*` views (`SYS.V$LOGMNR_DICTIONARY`, `SYS.V$LOGMNR_LOGS`, `SYS.V$LOGMNR_PARAMETERS`, `SYS.V$LOGMNR_SESSION`).</li><li>`LOGMINING` privilege.</li><li>`EXECUTE` on `DBMS_LOGMNR`.</li><li>For Oracle Multitenant, the user must be a common user (prefixed with `C##`) with privileges granted on both CDB and PDB.</li></ul> | [Create Oracle migration user]({% link molt/migrate-load-replicate.md %}?filters=oracle#create-migration-user-on-source-database)<br>[Create sentinel table]({% link molt/migrate-load-replicate.md %}#create-source-sentinel-table)<br>[Grant LogMiner privileges]({% link molt/migrate-load-replicate.md %}#grant-logminer-privileges) |
-| CockroachDB target (forward replication) | <ul><li>`ALL` on target database.</li><li>`CREATE` on schema.</li><li>`SELECT`, `INSERT`, `UPDATE`, `DELETE` on target tables.</li><li>`CREATEDB` privilege for creating staging schema.</li></ul>                                                                                                                                                                                                                                                                                                                                             | [Create CockroachDB user]({% link molt/migrate-load-replicate.md %}#create-the-sql-user)                                                                                                                                                                                                                                                 |
-| Source target (failback)                 | <ul><li>`SELECT`, `INSERT`, `UPDATE` on tables to fail back to.</li><li>For Oracle, `FLASHBACK` is also required.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                         | [Grant target database permissions]({% link molt/migrate-failback.md %}#grant-target-database-user-permissions)                                                                                                                                                                                                                          |
+|                    Database                    |                                                                                                                                                                                                                                                                 Required Privileges                                                                                                                                                                                                                                                                 |                                                                                                                                                                                 Details                                                                                                                                                                                 |
+|------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| PostgreSQL source                              | <ul><li>`SUPERUSER` role (recommended), or the following granular permissions:</li><li>`CREATE` and `SELECT` on database and tables to replicate.</li><li>Table ownership for adding tables to publications.</li><li>`LOGIN` and `REPLICATION` privileges to create replication slots and access replication data.</li></ul>                                                                                                                                                                                                                        | [Create PostgreSQL migration user]({% link molt/migrate-load-replicate.md %}#create-migration-user-on-source-database)                                                                                                                                                                                                                                                  |
+| MySQL source                                   | <ul><li>`SELECT` on tables to replicate.</li><li>`REPLICATION SLAVE` and `REPLICATION CLIENT` privileges for binlog access.</li><li>For `--fetchMetadata`, either `SELECT` on the source database or `PROCESS` globally.</li></ul>                                                                                                                                                                                                                                                                                                                  | [Create MySQL migration user]({% link molt/migrate-load-replicate.md %}?filters=mysql#create-migration-user-on-source-database)                                                                                                                                                                                                                                         |
+| Oracle source                                  | <ul><li>`SELECT`, `INSERT`, `UPDATE` on `_replicator_sentinel` table.</li><li>`SELECT` on `V$` views (`V$LOG`, `V$LOGFILE`, `V$LOGMNR_CONTENTS`, `V$ARCHIVED_LOG`, `V$LOG_HISTORY`).</li><li>`SELECT` on `SYS.V$LOGMNR_*` views (`SYS.V$LOGMNR_DICTIONARY`, `SYS.V$LOGMNR_LOGS`, `SYS.V$LOGMNR_PARAMETERS`, `SYS.V$LOGMNR_SESSION`).</li><li>`LOGMINING` privilege.</li><li>`EXECUTE` on `DBMS_LOGMNR`.</li><li>For Oracle Multitenant, the user must be a common user (prefixed with `C##`) with privileges granted on both CDB and PDB.</li></ul> | [Create Oracle migration user]({% link molt/migrate-load-replicate.md %}?filters=oracle#create-migration-user-on-source-database)<br>[Create sentinel table]({% link molt/migrate-load-replicate.md %}#create-source-sentinel-table)<br>[Grant LogMiner privileges]({% link molt/migrate-load-replicate.md %}#grant-logminer-privileges)                                |
+| CockroachDB target (forward replication)       | <ul><li>`ALL` on target database.</li><li>`CREATE` on schema.</li><li>`SELECT`, `INSERT`, `UPDATE`, `DELETE` on target tables.</li><li>`CREATEDB` privilege for creating staging schema.</li></ul>                                                                                                                                                                                                                                                                                                                                                  | [Create CockroachDB user]({% link molt/migrate-load-replicate.md %}#create-the-sql-user)                                                                                                                                                                                                                                                                                |
+| PostgreSQL, MySQL, or Oracle target (failback) | <ul><li>`SELECT`, `INSERT`, `UPDATE` on tables to fail back to.</li><li>For Oracle, `FLASHBACK` is also required.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                         | [Grant PostgreSQL user permissions]({% link molt/migrate-failback.md %}#grant-target-database-user-permissions)<br>[Grant MySQL user permissions]({% link molt/migrate-failback.md %}?filter=mysql#grant-target-database-user-permissions)<br>[Grant Oracle user permissions]({% link molt/migrate-failback.md %}?filter=oracle#grant-target-database-user-permissions) |
 
 ## Installation
 
@@ -209,14 +209,14 @@ For PostgreSQL, use `--slotName` to specify the [replication slot created during
 --slotName molt_slot
 ~~~
 
-For MySQL, use `--defaultGTIDSet` with the GTID set from the [MOLT Fetch output]({% link molt/migrate-load-replicate.md %}#start-fetch):
+For MySQL, use `--defaultGTIDSet` with the GTID set from the [MOLT Fetch output]({% link molt/migrate-load-replicate.md %}?filters=mysql#start-fetch):
 
 {% include_cached copy-clipboard.html %}
 ~~~
 --defaultGTIDSet '4c658ae6-e8ad-11ef-8449-0242ac140006:1-29'
 ~~~
 
-For Oracle, use `--scn` and `--backfillFromSCN` with the SCN values from the [MOLT Fetch output]({% link molt/migrate-load-replicate.md %}#start-fetch):
+For Oracle, use `--scn` and `--backfillFromSCN` with the SCN values from the [MOLT Fetch output]({% link molt/migrate-load-replicate.md %}?filters=oracle#start-fetch):
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -379,9 +379,9 @@ Use this information to determine if your build may be subject to vulnerabilitie
     <button class="filter-button" data-scope="oracle">Oracle</button>
 </div>
 
-To start replication after an [initial data load with MOLT Fetch]({% link molt/migrate-load-replicate.md %}#start-fetch), use the appropriate `replicator` command for your source database:
-
 <section class="filter-content" markdown="1" data-scope="postgres">
+To start replication after an [initial data load with MOLT Fetch]({% link molt/migrate-load-replicate.md %}#start-fetch), use the `pglogical` command:
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 replicator pglogical
@@ -389,6 +389,8 @@ replicator pglogical
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
+To start replication after an [initial data load with MOLT Fetch]({% link molt/migrate-load-replicate.md %}?filters=mysql#start-fetch), use the `mylogical` command:
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 replicator mylogical
@@ -396,7 +398,9 @@ replicator mylogical
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-{% include_cached copy-clipboard.html %}
+{To start replication after an [initial data load with MOLT Fetch]({% link molt/migrate-load-replicate.md %}?filters=oracle#start-fetch), use the `oraclelogminer` command:
+
+% include_cached copy-clipboard.html %}
 ~~~ shell
 replicator oraclelogminer
 ~~~
@@ -476,6 +480,8 @@ replicator pglogical \
 --stagingSchema _replicator \
 --stagingCreateSchema
 ~~~
+
+For detailed steps, refer to [Load and replicate]({% link molt/migrate-load-replicate.md %}#start-replicator).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
@@ -488,6 +494,8 @@ replicator mylogical \
 --stagingSchema _replicator \
 --stagingCreateSchema
 ~~~
+
+For detailed steps, refer to [Load and replicate]({% link molt/migrate-load-replicate.md %}?filters=mysql#start-replicator).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
@@ -503,9 +511,9 @@ replicator oraclelogminer \
 --stagingSchema _replicator \
 --stagingCreateSchema
 ~~~
-</section>
 
-For detailed steps, refer to [Load and replicate]({% link molt/migrate-load-replicate.md %}#start-replicator).
+For detailed steps, refer to [Load and replicate]({% link molt/migrate-load-replicate.md %}?filters=oracle#start-replicator).
+</section>
 
 ### Resume after interruption
 
@@ -528,6 +536,8 @@ replicator pglogical \
 --slotName molt_slot \
 --stagingSchema _replicator
 ~~~
+
+For detailed steps, refer to [Resume replication]({% link molt/migrate-resume-replication.md %}).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
@@ -538,6 +548,8 @@ replicator mylogical \
 --targetConn $TARGET \
 --stagingSchema _replicator
 ~~~
+
+For detailed steps, refer to [Resume replication]({% link molt/migrate-resume-replication.md %}?filters=mysql).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
@@ -550,9 +562,9 @@ replicator oraclelogminer \
 --targetConn $TARGET \
 --stagingSchema _replicator
 ~~~
-</section>
 
-For detailed steps, refer to [Resume replication]({% link molt/migrate-resume-replication.md %}).
+For detailed steps, refer to [Resume replication]({% link molt/migrate-resume-replication.md %}?filters=oracle).
+</section>
 
 ### Failback to source database
 

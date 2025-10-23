@@ -44,7 +44,7 @@ Perform the initial load of the source data.
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
 	--table-handling truncate-if-exists \
-		~~~
+	~~~
 	</section>
 
 	<section class="filter-content" markdown="1" data-scope="oracle">
@@ -60,7 +60,7 @@ Perform the initial load of the source data.
 	--table-filter 'employees|payments|orders' \
 	--bucket-path 's3://migration/data/cockroach' \
 	--table-handling truncate-if-exists \
-		~~~
+	~~~
 	</section>
 
 {% include molt/fetch-data-load-output.md %}
