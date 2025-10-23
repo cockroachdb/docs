@@ -1,0 +1,298 @@
+name: Production Build Notification
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notify-prod-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Find merged PR
+        id: find-pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Get the commit that triggered this push
+            const commit = context.sha;
+            
+            // Find PRs that were merged with this commit
+            const prs = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: commit
+            });
+            
+            // Find the merged PR
+            const mergedPR = prs.data.find(pr => pr.merged_at && pr.base.ref === 'main');
+            
+            if (mergedPR) {
+              console.log(`Found merged PR: #${mergedPR.number}`);
+              return {
+                number: mergedPR.number,
+                title: mergedPR.title,
+                author: mergedPR.user.login,
+                url: mergedPR.html_url
+              };
+            } else {
+              console.log('No merged PR found for this commit');
+              return null;
+            }
+        
+      - name: Wait for Netlify deployment
+        run: sleep 90
+        
+      - name: Check Netlify deployment status
+        id: netlify-status
+        run: |
+          # Get latest deployment from Netlify API
+          DEPLOY_DATA=$(curl -s -H "Authorization: Bearer ${{ secrets.NETLIFY_TOKEN }}" \
+            "https://api.netlify.com/api/v1/sites/cockroachdb-docs/deploys?per_page=1")
+          
+          DEPLOY_STATE=$(echo "$DEPLOY_DATA" | jq -r '.[0].state')
+          DEPLOY_URL=$(echo "$DEPLOY_DATA" | jq -r '.[0].deploy_ssl_url')
+          COMMIT_SHA=$(echo "$DEPLOY_DATA" | jq -r '.[0].commit_ref')
+          DEPLOY_ID=$(echo "$DEPLOY_DATA" | jq -r '.[0].id')
+          
+          echo "deploy_state=$DEPLOY_STATE" >> $GITHUB_OUTPUT
+          echo "deploy_url=$DEPLOY_URL" >> $GITHUB_OUTPUT
+          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "deploy_id=$DEPLOY_ID" >> $GITHUB_OUTPUT
+          
+          echo "Deployment state: $DEPLOY_STATE"
+          echo "Deployment URL: $DEPLOY_URL"
+          echo "Commit SHA: $COMMIT_SHA"
+          
+      - name: Create GitHub deployment
+        id: deployment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha,
+              environment: 'production',
+              description: 'Production deployment via Netlify',
+              auto_merge: false,
+              required_contexts: []
+            });
+            return deployment.data.id;
+            
+      - name: Update GitHub deployment status - Success
+        if: steps.netlify-status.outputs.deploy_state == 'ready'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ steps.deployment.outputs.result }},
+              state: 'success',
+              environment: 'production',
+              environment_url: 'https://www.cockroachlabs.com',
+              description: 'Production deployment successful'
+            });
+            
+      - name: Update GitHub deployment status - Failure
+        if: steps.netlify-status.outputs.deploy_state == 'error'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ steps.deployment.outputs.result }},
+              state: 'failure',
+              environment: 'production',
+              description: 'Production deployment failed'
+            });
+            
+      - name: Send Slack notification - Success
+        if: steps.netlify-status.outputs.deploy_state == 'ready'
+        run: |
+          echo "🔔 Sending production success notification to Slack..."
+          RESPONSE=$(curl -X POST -H 'Content-type: application/json' \
+            --data "{
+              \"text\": \"✅ Production build successful!\",
+              \"blocks\": [
+                {
+                  \"type\": \"section\",
+                  \"text\": {
+                    \"type\": \"mrkdwn\",
+                    \"text\": \"*Production Build Successful* ✅\\n\\n*Site:* <https://www.cockroachlabs.com|cockroachlabs.com>\\n*Commit:* \\\`${{ steps.netlify-status.outputs.commit_sha }}\\\`\\n*Branch:* main\\n*Deploy ID:* ${{ steps.netlify-status.outputs.deploy_id }}\"
+                  }
+                }
+              ]
+            }" \
+            --write-out "%{http_code}" \
+            --silent \
+            --output /tmp/slack_response.txt \
+            ${{ secrets.SLACK_WEBHOOK_URL }})
+          
+          echo "Slack response code: $RESPONSE"
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Slack notification sent successfully"
+          else
+            echo "❌ Slack notification failed with code: $RESPONSE"
+            echo "Response body:"
+            cat /tmp/slack_response.txt
+          fi
+            
+      - name: Comment on PR - Success
+        if: steps.netlify-status.outputs.deploy_state == 'ready' && fromJSON(steps.find-pr.outputs.result) != null
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prInfo = ${{ steps.find-pr.outputs.result }};
+            if (prInfo) {
+              const commentBody = `## 🚀 Production Deployment Successful!
+
+            **✅ Your changes are now live on [cockroachlabs.com](https://www.cockroachlabs.com)**
+
+            **Deployment Details:**
+            - **PR:** #${prInfo.number} - ${prInfo.title}
+            - **Author:** @${prInfo.author}
+            - **Commit:** \`${{ steps.netlify-status.outputs.commit_sha }}\`
+            - **Deploy ID:** ${{ steps.netlify-status.outputs.deploy_id }}
+            - **Deploy URL:** ${{ steps.netlify-status.outputs.deploy_url }}
+
+            *Deployment completed successfully! 🎉*`;
+            
+              await github.rest.issues.createComment({
+                issue_number: prInfo.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              });
+            }
+            
+      - name: Send Slack notification - Failure
+        if: steps.netlify-status.outputs.deploy_state == 'error'
+        run: |
+          echo "🔔 Sending production failure notification to Slack..."
+          RESPONSE=$(curl -X POST -H 'Content-type: application/json' \
+            --data "{
+              \"text\": \"❌ Production build failed!\",
+              \"blocks\": [
+                {
+                  \"type\": \"section\",
+                  \"text\": {
+                    \"type\": \"mrkdwn\",
+                    \"text\": \"*Production Build Failed* ❌\\n\\n*Commit:* \\\`${{ steps.netlify-status.outputs.commit_sha }}\\\`\\n*Branch:* main\\n*Deploy ID:* ${{ steps.netlify-status.outputs.deploy_id }}\\n*Error:* Check Netlify dashboard for details\"
+                  }
+                }
+              ]
+            }" \
+            --write-out "%{http_code}" \
+            --silent \
+            --output /tmp/slack_response.txt \
+            ${{ secrets.SLACK_WEBHOOK_URL }})
+          
+          echo "Slack response code: $RESPONSE"
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Slack notification sent successfully"
+          else
+            echo "❌ Slack notification failed with code: $RESPONSE"
+            echo "Response body:"
+            cat /tmp/slack_response.txt
+          fi
+            
+      - name: Comment on PR - Failure
+        if: steps.netlify-status.outputs.deploy_state == 'error' && fromJSON(steps.find-pr.outputs.result) != null
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prInfo = ${{ steps.find-pr.outputs.result }};
+            if (prInfo) {
+              const commentBody = `## ❌ Production Deployment Failed
+
+            **🚨 There was an issue deploying your changes to production**
+
+            **Deployment Details:**
+            - **PR:** #${prInfo.number} - ${prInfo.title}
+            - **Author:** @${prInfo.author}
+            - **Commit:** \`${{ steps.netlify-status.outputs.commit_sha }}\`
+            - **Deploy ID:** ${{ steps.netlify-status.outputs.deploy_id }}
+            - **Status:** Failed
+
+            **Next Steps:**
+            - Check the [Netlify dashboard](https://app.netlify.com/sites/cockroachdb-docs/deploys) for error details
+            - Review build logs for the specific error
+            - Contact the docs team if you need assistance
+
+            *Please investigate and resolve the deployment issue.*`;
+            
+              await github.rest.issues.createComment({
+                issue_number: prInfo.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              });
+            }
+            
+      - name: Handle pending deployment
+        if: steps.netlify-status.outputs.deploy_state == 'building' || steps.netlify-status.outputs.deploy_state == 'enqueued'
+        run: |
+          echo "::warning::Deployment still in progress after 90 seconds: ${{ steps.netlify-status.outputs.deploy_state }}"
+          echo "🔔 Sending production pending notification to Slack..."
+          RESPONSE=$(curl -X POST -H 'Content-type: application/json' \
+            --data "{
+              \"text\": \"⏳ Production build still in progress...\",
+              \"blocks\": [
+                {
+                  \"type\": \"section\",
+                  \"text\": {
+                    \"type\": \"mrkdwn\",
+                    \"text\": \"*Production Build In Progress* ⏳\\n\\n*Status:* ${{ steps.netlify-status.outputs.deploy_state }}\\n*Commit:* \\\`${{ steps.netlify-status.outputs.commit_sha }}\\\`\\n*Branch:* main\\n*Note:* Check Netlify dashboard for completion status\"
+                  }
+                }
+              ]
+            }" \
+            --write-out "%{http_code}" \
+            --silent \
+            --output /tmp/slack_response.txt \
+            ${{ secrets.SLACK_WEBHOOK_URL }})
+          
+          echo "Slack response code: $RESPONSE"
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Slack notification sent successfully"
+          else
+            echo "❌ Slack notification failed with code: $RESPONSE"
+            echo "Response body:"
+            cat /tmp/slack_response.txt
+          fi
+            
+      - name: Comment on PR - Pending
+        if: (steps.netlify-status.outputs.deploy_state == 'building' || steps.netlify-status.outputs.deploy_state == 'enqueued') && fromJSON(steps.find-pr.outputs.result) != null
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prInfo = ${{ steps.find-pr.outputs.result }};
+            if (prInfo) {
+              const commentBody = `## ⏳ Production Deployment In Progress
+
+            **🔄 Your changes are currently being deployed to production**
+
+            **Deployment Details:**
+            - **PR:** #${prInfo.number} - ${prInfo.title}
+            - **Author:** @${prInfo.author}
+            - **Commit:** \`${{ steps.netlify-status.outputs.commit_sha }}\`
+            - **Deploy ID:** ${{ steps.netlify-status.outputs.deploy_id }}
+            - **Status:** ${{ steps.netlify-status.outputs.deploy_state }}
+
+            **Note:** Deployment is taking longer than expected (>90 seconds). Please check the [Netlify dashboard](https://app.netlify.com/sites/cockroachdb-docs/deploys) for current status.
+
+            *Will update when deployment completes.*`;
+            
+              await github.rest.issues.createComment({
+                issue_number: prInfo.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              });
+            }
