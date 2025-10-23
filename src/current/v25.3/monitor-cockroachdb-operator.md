@@ -14,7 +14,7 @@ The {{ site.data.products.cockroachdb-operator }} is in [Preview]({% link {{ pag
 
 ## Configure Prometheus
 
-Every node of a CockroachDB cluster exports granular timeseries metrics formatted for easy integration with [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying timeseries data. This section shows you how to orchestrate Prometheus as part of your Kubernetes cluster and pull these metrics into Prometheus for external monitoring.
+Every node of a CockroachDB cluster exports granular timeseries metrics formatted for easy integration with [Prometheus](https://prometheus.io/), a tool for storing, aggregating, and querying timeseries data. This section shows you how to orchestrate Prometheus as part of your Kubernetes cluster and pull these metrics into Prometheus for external monitoring.
 
 This guidance is based on [CoreOS's Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/tree/main), which allows a Prometheus instance to be managed using built-in Kubernetes concepts.
 
