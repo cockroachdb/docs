@@ -1798,6 +1798,16 @@
   source: true
   previous_release: v19.1.10
  
+- release_name: v19.2.0
+  major_version: v19.2
+  release_date: '2019-11-12'
+  release_type: Production
+  go_version: go1.12.12
+  sha: 338deb20a6e34750635d6be5385498d5871ff68c
+  windows: true
+  docker:
+    docker_image: cockroachdb/cockroach
+  source: true
 
 - release_name: v20.2.0-alpha.2
   major_version: v20.2
