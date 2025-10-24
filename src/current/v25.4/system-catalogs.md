@@ -17,7 +17,7 @@ The following system catalogs are available as schemas preloaded to every databa
 {% include_cached new-in.html version="v25.4" %} Access to the `crdb_internal` schema and to tables and built-in functions in the `system` database is controlled by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals). For more information, see [`crdb_internal` access control]({% link {{ page.version.version }}/crdb-internal.md %}#access-control). The `system` and `crdb_internal` schemas are intended for advanced support scenarios only, and should be accessed under the guidance of Cockroach Labs.
 
 {{site.data.alerts.callout_danger}}
-In a future release, the `allow_unsafe_internals` session variable will default to `off`. To [assess potential downstream impacts]({% link {{ page.version.version }}/logging-use-cases.md %}#unsafe-internals-disabled) on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
+In a future release, the `allow_unsafe_internals` session variable will default to `off`. To prepare for this change and [assess potential downstream impacts]({% link {{ page.version.version }}/logging-use-cases.md %}#unsafe-internals-disabled) on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
