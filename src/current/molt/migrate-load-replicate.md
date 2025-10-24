@@ -239,7 +239,7 @@ MOLT Fetch captures a consistent point-in-time checkpoint at the start of the da
 
 	~~~
 	DEBUG  [Aug 25 15:29:38] upserted rows                                 conflicts=0 duration=1.801ms proposed=1 target="\"molt\".\"public\".\"tbl1\"" upserted=1
-	<!-- DEBUG  [Aug 25 15:29:38] progressed to consistent point: 77263736-7899-11f0-81a5-0242ac120002:1-39 -->
+	DEBUG  [Aug 25 15:29:38] progressed to consistent point: 77263736-7899-11f0-81a5-0242ac120002:1-39
 	~~~
 	</section>
 
