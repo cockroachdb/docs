@@ -1212,6 +1212,8 @@ Contention events are stored in memory. You can control the amount of contention
 
 The `sql.contention.event_store.duration_threshold` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) specifies the minimum contention duration to cause the contention events to be collected into the `crdb_internal.transaction_contention_events` table. The default value is `0`. If contention event collection is overwhelming the CPU or memory you can raise this value to reduce the load.
 
+You can also [monitor transaction contention using logs]({% link {{ page.version.version }}/monitor-and-analyze-transaction-contention.md %}#monitor-using-logs) for a durable history of contention.
+
 {% include {{ page.version.version }}/transaction-contention-events-columns.md %}
 
 #### Transaction contention - example
