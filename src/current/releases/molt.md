@@ -16,7 +16,7 @@ Cockroach Labs recommends using the latest available version of each tool. See [
 
 {% include molt/molt-install.md %}
 
-## October 23, 2025
+## October 24, 2025
 
 `molt` 1.3.2 is [available](#installation):
 
