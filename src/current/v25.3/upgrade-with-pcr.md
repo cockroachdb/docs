@@ -8,7 +8,7 @@ docs_area: manage
 When [**physical cluster replication (PCR)**]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}) is enabled, you must use the process on this page to upgrade your clusters. This process ensures that the standby cluster safely upgrades before the primary cluster, preventing any version incompatibility. You cannot replicate data from a cluster on a newer version to a cluster on an older version. 
 
 {{site.data.alerts.callout_info}}
-The entire standby cluster must be on the same major version as the primary cluster or a major version the primary cluster [can directly upgrade to]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#compatible-versions). Within the primary and standby CockroachDB clusters, the _system virtual cluster (SystemVC)_ must be at a cluster major version greater than or equal to the _app virtual cluster (AppVC)_.
+The entire standby cluster must be on the same major version as the primary cluster or a major version the primary cluster [can directly upgrade to]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#compatible-versions). Within the primary and standby CockroachDB clusters, the _system virtual cluster (system VC)_ must be at a cluster major version greater than or equal to the _application virtual cluster (app VC)_.
 {{site.data.alerts.end}}
 
 ## Upgrade primary and standby clusters
@@ -19,7 +19,7 @@ To upgrade your primary and standby clusters:
 
 1. [Upgrade the binaries]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#perform-a-major-version-upgrade) on the standby cluster. Replace the binary on each node of the cluster and restart the node.
 
-1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the standby cluster's SystemVC. 
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the standby cluster's system VC. 
 
     {{site.data.alerts.callout_info}}
     If you need to [roll back]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#roll-back-a-major-version-upgrade) an upgrade, you must do so before the upgrade has been finalized.
@@ -27,43 +27,43 @@ To upgrade your primary and standby clusters:
 
 1. [Upgrade the binaries]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#perform-a-major-version-upgrade) on the primary cluster. Replace the binary on each node of the cluster and restart the node.
 
-1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the primary cluster's SystemVC. 
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the primary cluster's system VC. 
 
     {{site.data.alerts.callout_info}}
     If you need to [roll back]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#roll-back-a-major-version-upgrade) an upgrade, you must do so before the upgrade has been finalized. Rolling back the upgrade on the primary cluster does not roll back the standby cluster.
     {{site.data.alerts.end}}
 
-1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the primary cluster's AppVC. 
+1. [Finalize]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#finalize-a-major-version-upgrade-manually) the upgrade on the primary cluster's app VC. 
 
-    Upgrading the primary cluster's AppVC also upgrades the standby cluster's AppVC, since it replicates from the primary.
+    Upgrading the primary cluster's app VC also upgrades the standby cluster's app VC, since it replicates from the primary.
 
-## Upgrade ReaderVC
+## Upgrade reader VC
 
-If you have a [_reader virtual cluster (ReaderVC)_]({% link {{ page.version.version }}/read-from-standby.md %}), you must upgrade it independently from the primary and standby clusters, after completing the main upgrade process. Use the following steps to upgrade your ReaderVC by dropping and re-creating it:
+If you have a [_reader virtual cluster (reader VC)_]({% link {{ page.version.version }}/read-from-standby.md %}), you must upgrade it independently from the primary and standby clusters, after completing the main upgrade process. Use the following steps to upgrade your reader VC by dropping and re-creating it:
 
-1. After upgrading the AppVC on your primary cluster, wait for the replicated time to pass the time at which the upgrade completed.
-1. On the standby cluster, stop the ReaderVC service:
+1. After upgrading the app VC on your primary cluster, wait for the replicated time to pass the time at which the upgrade completed.
+1. On the standby cluster, stop the reader VC service:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER <readervc-name> STOP SERVICE;
     ~~~
 
-1. Drop the ReaderVC:
+1. Drop the reader VC:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     DROP VIRTUAL CLUSTER <readervc-name>;
     ~~~
 
-1. On the standby cluster, re-create the ReaderVC:
+1. On the standby cluster, re-create the reader VC:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER VIRTUAL CLUSTER dest-system SET REPLICATION READ VIRTUAL CLUSTER;
     ~~~
 
-At this point, the ReaderVC is on the same version as the standby cluster.
+At this point, the reader VC is on the same version as the standby cluster.
 
 ## Failover and fast failback during upgrade
 
