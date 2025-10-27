@@ -684,6 +684,10 @@ For example:
 (3 rows)
 ~~~
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/view-limitations.md %}
+
 ## See also
 
 - [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
