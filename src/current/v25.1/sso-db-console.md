@@ -28,7 +28,7 @@ This SSO implementation uses the [authorization code grant type](https://tools.i
 
 - **CockroachDB cluster**: you must have access to one of the following:
 	- A {{ site.data.products.core }} cluster enabled with a valid [CockroachDB Enterprise license]({% link {{ page.version.version }}/licensing-faqs.md %}#types-of-licenses).
-	- A [CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
+	- A [CockroachDB {{ site.data.products.advanced }} cluster]({% link cockroachcloud/create-your-cluster.md %}).
 
 
 ## Log in to a cluster's DB Console with SSO
@@ -54,7 +54,7 @@ These steps demonstrate how to create an OIDC auth client in Google Cloud Platfo
 
 1. Add your cluster's callback URL to the list of **Authorized redirect URIs**. On a local cluster, this will be `https://{ your cluster's domain }:8080/oidc/v1/callback`. Subsequently, when configuring your cluster, you will need to ensure that the cluster setting `server.oidc_authentication.redirect_url` has the same value.
     - For a {{ site.data.products.core }} cluster, the domain is `localhost`.
-    - For a {{ site.data.products.dedicated }} cluster, find the domain by opening the DB Console from your cluster's **Tools** tab in DB Console.
+    - For a {{ site.data.products.advanced }} cluster, find the domain by opening the DB Console from your cluster's **Tools** tab in DB Console.
 
 ## Configure your cluster to use an OIDC client and provider
 
@@ -104,7 +104,7 @@ Cluster Setting | Description
 	SET CLUSTER SETTING server.oidc_authentication.provider_url = 'https://accounts.google.com';
 	~~~
 
-1. Specify the callback URL to redirect the user to the CockroachDB cluster. On a local cluster, this will be `https://localhost:8080/oidc/v1/callback`. For a {{ site.data.products.dedicated }} cluster, replace 'localhost' with your cluster's domain, which can be found by opening the DB Console from the **Tools** tab in your cluster's page in Cloud Console.
+1. Specify the callback URL to redirect the user to the CockroachDB cluster. On a local cluster, this will be `https://localhost:8080/oidc/v1/callback`. For a {{ site.data.products.advanced }} cluster, replace 'localhost' with your cluster's domain, which can be found by opening the DB Console from the **Tools** tab in your cluster's page in Cloud Console.
 
 	{% include_cached copy-clipboard.html %}
 	~~~sql

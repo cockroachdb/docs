@@ -9,7 +9,7 @@ docs_area: reference.db_console
 The DB Console provides details about your cluster and database configuration, and helps you optimize cluster performance.
 
 {{site.data.alerts.callout_info}}
-Authorized CockroachDB {{ site.data.products.dedicated }} cluster users can visit the DB Console at a URL provisioned for the cluster.
+Authorized CockroachDB {{ site.data.products.advanced }} cluster users can visit the DB Console at a URL provisioned for the cluster.
 
 Refer to: [Network Authorization for CockroachDB Cloud Clusters&mdash;DB Console]({% link cockroachcloud/network-authorization.md %}#db-console)
 {{site.data.alerts.end}}
@@ -122,7 +122,7 @@ DB Console area | System-level privilege | Privileged information
 [Transactions]({% link {{ page.version.version }}/ui-transactions-page.md %}) | [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) | Transactions
 [Sessions]({% link {{ page.version.version }}/ui-sessions-page.md %}) | [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) | Sessions
 [Insights]({% link {{ page.version.version }}/ui-insights-page.md %}) | [`VIEWACTIVITY`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivity) or [`VIEWACTIVITYREDACTED`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewactivityredacted) | Insights
-[Hot Ranges]({% link {{ page.version.version }}/ui-hot-ranges-page.md %}) | [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewclustermetadata) | Ranges
+[Top Ranges]({% link {{ page.version.version }}/ui-top-ranges-page.md %}) | [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewclustermetadata) | Ranges
 [Jobs]({% link {{ page.version.version }}/ui-jobs-page.md %}) | [`VIEWJOB`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewjob) | Jobs
 [Advanced Debug]({% link {{ page.version.version }}/ui-debug-pages.md %}) | [`VIEWDEBUG`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewdebug) | Debugging and profiling endpoints
 [Advanced Debug > Problem Ranges]({% link {{ page.version.version }}/ui-debug-pages.md %}#reports) | [`VIEWCLUSTERMETADATA`]({% link {{ page.version.version }}/security-reference/authorization.md %}#viewclustermetadata) | Ranges

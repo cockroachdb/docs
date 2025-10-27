@@ -213,7 +213,7 @@ toc: true
     - **Impact**: May cause higher latencies for operations that need to write to that range.
     - **Action**: Identify if the range has a disproportionate amount of load and mitigate appropriately, such as splitting ranges manually or using a hash-sharded index.
     - **Related metrics**: NONE
-    - **See also**: [Hot Ranges page]({% link {{ page.version.version }}/ui-hot-ranges-page.md %})
+    - **See also**: [Top Ranges page]({% link {{ page.version.version }}/ui-top-ranges-page.md %})
 
 ## Data Availability
 

@@ -233,11 +233,11 @@
 
 - destination: dev/failover-replication.md
   sources: ['cutover-replication.md']
-  versions: ['24.3']
+  versions: ['24.3', '24.1']
 
 - destination: failover-replication.md
   sources: ['cutover-replication.md']
-  versions: ['24.3']
+  versions: ['24.3', '24.1']
 
 - destination: fips.md
   sources: ['fips-compliance.md']
@@ -298,6 +298,12 @@
 
 - destination: molt/migrate-data-load-and-replication.md
   sources: [':version/migrate-from-postgres.md']
+
+- destination: molt/migrate-load-replicate.md
+  sources: ['molt/migrate-data-load-replicate-only.md']
+
+- destination: molt/migrate-resume-replication.md
+  sources: ['molt/migrate-replicate-only.md']
 
 - destination: molt/migration-overview.md
   sources: [':version/migration-overview.md']
@@ -520,6 +526,10 @@
 - destination: ui-storage-dashboard.md
   sources: ['admin-ui-storage-dashboard.md']
   versions: ['v20.2', 'v21.1']
+
+- destination: ui-top-ranges-page.md
+  sources: ['ui-hot-ranges-page.md']
+  versions: ['v25.4']
 
 - destination: use-a-local-file-server-for-bulk-operations.md
   sources: ['create-a-file-server.md']
