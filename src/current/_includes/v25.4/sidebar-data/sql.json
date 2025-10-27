@@ -41,6 +41,12 @@
               ]
             },
             {
+              "title": "<code>ALTER EXTERNAL CONNECTION</code>",
+              "urls": [
+                "/${VERSION}/alter-external-connection.html"
+              ]
+            },
+            {
               "title": "<code>ALTER FUNCTION</code>",
               "urls": [
                 "/${VERSION}/alter-function.html"

@@ -1,11 +1,9 @@
-For details on pulling Docker images, see [Docker image](#docker-image).
+#### Performance
 
-### Performance
-
-MOLT Fetch and Verify are likely to run more slowly in a Docker container than on a local machine. To improve performance, increase the memory or compute resources, or both, on your Docker container.
+MOLT Fetch, Verify, and Replicator are likely to run more slowly in a Docker container than on a local machine. To improve performance, increase the memory or compute resources, or both, on your Docker container.
 
 {% if page.name == "molt-fetch.md" %}
-### Authentication
+#### Authentication
 
 When using MOLT Fetch with [cloud storage](#bucket-path), it is necessary to specify volumes and environment variables, as described in the following sections for [Google Cloud Storage](#google-cloud-storage) and [Amazon S3](#amazon-s3). 
 
@@ -17,7 +15,7 @@ docker run -it cockroachdb/molt fetch ...
 
 For more information on `docker run`, see the [Docker documentation](https://docs.docker.com/reference/cli/docker/container/run/).
 
-#### Google Cloud Storage
+##### Google Cloud Storage
 
 If you are using [Google Cloud Storage](https://cloud.google.com/storage/docs/access-control) for [cloud storage](#bucket-path):
 
@@ -44,7 +42,7 @@ docker run \
 
 For details on Google Cloud Storage authentication, see [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials).
 
-#### Amazon S3
+##### Amazon S3
 
 If you are using [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html) for [cloud storage](#bucket-path):
 
@@ -61,20 +59,34 @@ docker run \
 ~~~
 {% endif %}
 
-### Local connection strings
+#### Local connection strings
 
 When testing locally, specify the host as follows:
 
 - For macOS, use `host.docker.internal`. For example:
 
-~~~
---source 'postgres://postgres:postgres@host.docker.internal:5432/molt?sslmode=disable'
---target "postgres://root@host.docker.internal:26257/molt?sslmode=disable"
-~~~
+    {% if page.name == "molt-replicator.md" %}
+    ~~~
+    --sourceConn 'postgres://postgres:postgres@host.docker.internal:5432/molt?sslmode=disable'
+    --targetConn "postgres://root@host.docker.internal:26257/molt?sslmode=disable"
+    ~~~
+    {% else %}
+    ~~~
+    --source 'postgres://postgres:postgres@host.docker.internal:5432/molt?sslmode=disable'
+    --target "postgres://root@host.docker.internal:26257/molt?sslmode=disable"
+    ~~~
+    {% endif %}
 
 - For Linux and Windows, use `172.17.0.1`. For example:
 
-~~~
---source 'postgres://postgres:postgres@172.17.0.1:5432/molt?sslmode=disable'
---target "postgres://root@172.17.0.1:26257/molt?sslmode=disable"
-~~~
+    {% if page.name == "molt-replicator.md" %}
+    ~~~
+    --sourceConn 'postgres://postgres:postgres@172.17.0.1:5432/molt?sslmode=disable'
+    --targetConn "postgres://root@172.17.0.1:26257/molt?sslmode=disable"
+    ~~~
+    {% else %}
+    ~~~
+    --source 'postgres://postgres:postgres@172.17.0.1:5432/molt?sslmode=disable'
+    --target "postgres://root@172.17.0.1:26257/molt?sslmode=disable"
+    ~~~
+    {% endif %}
