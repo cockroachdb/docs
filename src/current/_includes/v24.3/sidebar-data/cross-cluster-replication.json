@@ -47,7 +47,7 @@
             ]
           },
           {
-            "title": "Upgrade with Physical Cluster Replication Enabled",
+            "title": "Upgrade a Cluster Running PCR",
             "urls": [
               "/${VERSION}/upgrade-with-pcr.html"
             ]
