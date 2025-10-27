@@ -4,10 +4,10 @@ summary: Use the built-in function `crdb_internal.request_transaction_bundle` to
 toc: true
 ---
 
-Transaction diagnostics allows operators and support engineers to investigate issues involving [transactions]({% link {{ page.version.version }}/transactions.md %}) in user workloads. Use the built-in function `crdb_internal.request_transaction_bundle` to request a transaction diagnostics bundle for a specified [transaction fingerprint ID]({% link {{ page.version.version }}/ui-transactions-page.md %}).
+{% include_cached new-in.html version="v25.4" %} Transaction diagnostics allow operators and support engineers to investigate issues involving [transactions]({% link {{ page.version.version }}/transactions.md %}) in user workloads. Use the built-in function [`crdb_internal`]({% link {{ page.version.version }}/crdb-internal.md %})`.request_transaction_bundle` to request a transaction diagnostics bundle for a specified [transaction fingerprint ID]({% link {{ page.version.version }}/ui-transactions-page.md %}).
 
 {{site.data.alerts.callout_info}}
-Transaction diagnostics introduces a performance overhead. This feature is primarily intended for use under the guidance of [Cockroach Labs Support](https://support.cockroachlabs.com/).
+Requesting a transaction diagnostics bundle introduces performance overhead. This feature is primarily intended for use under the guidance of [Cockroach Labs Support](https://support.cockroachlabs.com/).
 {{site.data.alerts.end}}
 
 ## Required privileges 
@@ -28,7 +28,7 @@ crdb_internal.request_transaction_bundle(
 
 ## Parameters
 
-- `transaction_fingerprint_id`: A hex-encoded ID of the transaction fingerprint to capture. The fingerprint ID must exist in `crdb_internal.transaction_statistics`, which is the system of record for transaction fingerprints.
+- `transaction_fingerprint_id`: A hex-encoded ID of the [transaction fingerprint]({% link {{ page.version.version }}/ui-transactions-page.md %}#transaction_fingerprint) to capture. The fingerprint ID must exist in `crdb_internal.transaction_statistics`, which is the system of record for transaction fingerprints.
 - `sampling_probability`: A probability value (between 0 and 1) for sampling whether a transaction bundle should be recorded. If 0 is provided, there is no sampling; the next execution of the transaction will be captured.
 - `min_execution_latency`: The minimum execution time required for the transaction to be considered. If `sampling_probability` is non-zero, this value must also be non-zero.
 - `expires_after`: The duration for which the request remains active. A value of 0 keeps the request open until fulfilled or canceled.
@@ -87,7 +87,7 @@ Create a transaction diagnostics request to be fulfilled the next time the relev
 SELECT * FROM crdb_internal.request_transaction_bundle('afdd4059a899442e', 0, '0', '0', false);
 ~~~
 
-where
+The parameters to the call to `crdb_internal.request_transaction_bundle()` are:
 
 - `transaction_fingerprint_id`: `'afdd4059a899442e'`, the hexadecimal fingerprint ID from [Step 1](#step-1-identify-the-transaction-fingerprint-id).
 - `sampling_probability`: `0`, which disables sampling.
@@ -111,10 +111,10 @@ Calling the function will return a `request_id` and a `created` boolean flag. Th
 
 In the DB Console, go to [**Advanced Debug**]({% link {{ page.version.version }}/ui-debug-pages.md %}) > [**Diagnostics History**]({% link {{ page.version.version }}/ui-debug-pages.md %}#diagnostics-history). Under the **Transactions** tab, there will be a row for the bundle request. You could also use the URL `https://{host}:{port}/#/reports/diagnosticshistory?tab=Transactions`. The page initially displays the following information:
 
-- the date and time the request was **Activated on**
-- `Transaction 12672355680315327534` (the decimal form of the transaction fingerprint ID from [Step 1](#step-1-identify-the-transaction-fingerprint-id))
-- a **Status** of `WAITING`
-- a button to **Cancel request** (Use this if a transaction diagnostics bundle is no longer needed.)
+- The date and time the request was **Activated on**.
+- `Transaction 12672355680315327534` (the decimal form of the transaction fingerprint ID from [Step 1](#step-1-identify-the-transaction-fingerprint-id)).
+- A **Status** of `WAITING`.
+- A button to **Cancel request** (Use this if a transaction diagnostics bundle is no longer needed).
 
 <img src="{{ 'images/v25.4/transaction-diagnostics-3.png' | relative_url }}" alt="Diagnostics History, Transactions, Status Waiting" style="border:0px solid #eee;max-width:100%" />
 
@@ -129,10 +129,10 @@ BEGIN; SELECT pg_sleep(12), 'cockroachdb_test_2' ; COMMIT;
 
 Navigate to the [**Advanced Debug**]({% link {{ page.version.version }}/ui-debug-pages.md %}) > [**Diagnostics History**]({% link {{ page.version.version }}/ui-debug-pages.md %}#diagnostics-history) page in the DB Console. Under the **Transactions** tab, the row for the bundle request now shows:
 
-- the date and time the request was **Activated on**
-- the statements for the transaction fingerprint
-- a **Status** of `READY`
-- a **Bundle.zip** link
+- The date and time the request was **Activated on**.
+- The statements for the transaction fingerprint.
+- A **Status** of `READY`.
+- A **Bundle.zip** link.
 
 <img src="{{ 'images/v25.4/transaction-diagnostics-4.png' | relative_url }}" alt="Diagnostics History, Transactions, Status Ready" style="border:0px solid #eee;max-width:100%" />
 
@@ -164,3 +164,4 @@ trace.txt
 - [`cockroach statement-diag`]({% link {{ page.version.version }}/cockroach-statement-diag.md %})
 - [Identify slow queries]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#identify-slow-queries)
 - [Visualize statement traces in Jaeger]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#visualize-statement-traces-in-jaeger)
+- [`crdb_internal`]({% link {{ page.version.version }}/crdb-internal.md %})

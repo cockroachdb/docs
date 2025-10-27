@@ -5,7 +5,7 @@ The details displayed on the **Transaction Details** page reflect the [time inte
 - The _transaction fingerprint_ is displayed as a list of the individual [SQL statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints) in the transaction.
 - The **Mean transaction time**: The mean average time it took to execute the transaction within the aggregation interval.
 - The **Application name**: The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
-- The **Fingerprint ID**: The hex-encoded ID of the transaction fingerprint.
+- The **Fingerprint ID**: The hex-encoded ID of the [transaction fingerprint](#transaction_fingerprint).
 - **Transaction resource usage** shows overall statistics about the transaction.
     - **Idle latency**: The time the transaction spent waiting on the client while the transaction remained open.
     - **Commit latency**: The time required to finish committing the transaction after the commit phase began.
