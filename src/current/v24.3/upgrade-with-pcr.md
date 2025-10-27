@@ -39,7 +39,7 @@ To upgrade your primary and standby clusters:
 
 ## Upgrade ReaderVC
 
-If you have a [_reader virtual cluster (ReaderVC)_]({% link {{ page.version.version }}/read-from-standby.md %}), you must upgrade it independently from the primary and standby clusters, after completing the main upgrade process. Use the following steps to upgrade your ReaderVC by dropping and re-creating it:
+If you have a _reader virtual cluster (ReaderVC)_, you must upgrade it independently from the primary and standby clusters, after completing the main upgrade process. Use the following steps to upgrade your ReaderVC by dropping and re-creating it:
 
 1. After upgrading the AppVC on your primary cluster, wait for the replicated time to pass the time at which the upgrade completed.
 1. On the standby cluster, stop the ReaderVC service:
