@@ -96,7 +96,7 @@ docker pull {{ release.docker.docker_image }}:{{ release.release_name }}
 
 {% comment %}IBM only releases production versions{% endcomment %}
 {% if release.release_type != "Testing" %}
-<h3>IBM</h3>
+<h3>s390x</h3>
 
 Downloads and documentation for {{ site.data.products.ibm-cockroachdb }} {{ release.release_name }} are available through [IBM Passport Advantage](https://www.ibm.com/software/passportadvantage/pao_customer.html).
 {% endif %}

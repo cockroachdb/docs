@@ -254,7 +254,7 @@ To learn what's new in this release, refer to [Feature Highlights]({% link relea
     <button id="mac" class="filter-button" data-scope="mac">Mac</button>
     <button id="windows" class="filter-button" data-scope="windows">Windows</button>
     <button id="docker" class="filter-button" data-scope="docker">Docker</button>
-    <button id="ibm" class="filter-button" data-scope="ibm">IBM</button>
+    <button id="ibm" class="filter-button" data-scope="ibm">s390x</button>
     <button id="source" class="filter-button" data-scope="source">Source</button>
 </div>
 
@@ -652,9 +652,10 @@ macOS downloads are **experimental**. Experimental downloads are not yet qualifi
       v.major_version == 'v24.2' or
       v.major_version == 'v24.3' or
       v.major_version == 'v24.4' or
-      v.major_version == 'v25.1' or
-      v.major_version == 'v25.2' %}
+      v.major_version == 'v25.1' %}
     <p>{{ site.data.products.ibm-cockroachdb }} is <b>unavailable</b> for {{ v.major_version }}. This deployment is available for production releases of CockroachDB v25.3 and later.</p>
+{% elsif v.major_version == 'v25.2' and s== "Production" %}
+    <p>{{ site.data.products.ibm-cockroachdb }} for IBM s390x architecture is <b>unavailable</b> for {{ v.major_version }}. For other IBM OEM support of {{ v.major_version }}, see <a href="https://www.ibm.com/software/passportadvantage/pao_customer.html" >IBM Passport Advantage</a>.</p>
 {% elsif s != "Production" %}
     <p>{{ site.data.products.ibm-cockroachdb }} is <b>unavailable</b> for testing releases.</p>
 {% else %}
