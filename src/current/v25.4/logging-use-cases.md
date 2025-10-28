@@ -286,50 +286,50 @@ These events record both successful and denied attempts to access internal syste
 
 ##### Unsafe internals enabled
 
-This command enables access to unsafe internals for the user `allow_unsafe_internals_on`:
+This command enables access to unsafe internals for the user `can_access_unsafe_internals`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER ROLE allow_unsafe_internals_on SET allow_unsafe_internals = on;
+ALTER ROLE can_access_unsafe_internals SET allow_unsafe_internals = on;
 ~~~
 
-When the user `allow_unsafe_internals_on` connects to a session and accesses an unsafe internal object, the event is logged:
+When the user `can_access_unsafe_internals` connects to a session and accesses an unsafe internal object, the event is logged:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT count(*) FROM crdb_internal.active_range_feeds;
 ~~~
 
-This `unsafe_internals_accessed` event indicates that the internal table `crdb_internal.active_range_feeds` was accessed by user `allow_unsafe_internals_on`, who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
+This `unsafe_internals_accessed` event indicates that the internal table `crdb_internal.active_range_feeds` was accessed by user `can_access_unsafe_internals`, who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
 
 ~~~
-W250930 19:51:01.128927 464484 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,client=127.0.0.1:65020,hostssl,user=‹allow_unsafe_internals_on›] 23 ={"Timestamp":1759261861128925000,"EventType":"unsafe_internals_accessed","Query":"SELECT count(*) FROM \"\".crdb_internal.active_range_feeds"}
+W250930 19:51:01.128927 464484 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,client=127.0.0.1:65020,hostssl,user=‹can_access_unsafe_internals›] 23 ={"Timestamp":1759261861128925000,"EventType":"unsafe_internals_accessed","Query":"SELECT count(*) FROM \"\".crdb_internal.active_range_feeds"}
 ~~~
 
 ##### Unsafe internals disabled
 
-To assess potential downstream impacts, disable `allow_unsafe_internals` in a test or staging environment. Monitoring tools or scripts that rely on these internals may be affected. `unsafe_internals_denied` events indentify which tools or scripts attempted to access these internals.
+To assess potential downstream impacts, disable `allow_unsafe_internals` in a test or staging environment. Monitoring tools or scripts that rely on these internals may be affected. `unsafe_internals_denied` events identify which tools or scripts attempted to access these internals.
 
 This example shows how to identify users denied access to unsafe internal tables.
 
-This command disables access to unsafe internals for the user `allow_unsafe_internals_off`:
+This command disables access to unsafe internals for the user `can_not_access_unsafe_internals`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-ALTER ROLE allow_unsafe_internals_off SET allow_unsafe_internals = off;
+ALTER ROLE can_not_access_unsafe_internals SET allow_unsafe_internals = off;
 ~~~
 
-When the user `allow_unsafe_internals_off` connects to a session and attempts to access an unsafe internal object, the event is logged:
+When the user `can_not_access_unsafe_internals` connects to a session and attempts to access an unsafe internal object, the event is logged:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT count(*) FROM crdb_internal.active_range_feeds;
 ~~~
 
-This `unsafe_internals_denied` event indicates that access to the internal table `crdb_internal.active_range_feeds` was denied for the user `allow_unsafe_internals_off`, who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
+This `unsafe_internals_denied` event indicates that access to the internal table `crdb_internal.active_range_feeds` was denied for the user `can_not_access_unsafe_internals`, who issued a [`SELECT`]({% link {{ page.version.version }}/selection-queries.md %}) statement:
 
 ~~~
-W250930 15:47:06.906181 122782 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,client=127.0.0.1:57104,hostssl,user=‹allow_unsafe_internals_off›] 18 ={"Timestamp":1759247226906172000,"EventType":"unsafe_internals_denied","Query":"SELECT count(*) FROM \"\".crdb_internal.active_range_feeds"}
+W250930 15:47:06.906181 122782 8@util/log/event_log.go:90 ⋮ [T1,Vsystem,n1,client=127.0.0.1:57104,hostssl,user=‹can_not_access_unsafe_internals›] 18 ={"Timestamp":1759247226906172000,"EventType":"unsafe_internals_denied","Query":"SELECT count(*) FROM \"\".crdb_internal.active_range_feeds"}
 ~~~
 
 - Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation]({% link {{ page.version.version }}/log-formats.md %}#format-crdb-v2) for details on the fields.

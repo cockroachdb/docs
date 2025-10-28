@@ -6,7 +6,7 @@ ALTER DATABASE system CONFIGURE ZONE USING constraints = '{"+region=us-east1": 1
 ~~~
 
 {{site.data.alerts.callout_info}}
-Access to tables and built-in functions in the `system` database is controlled by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals). However, the above `ALTER DATABASE system` statement executes regardless of the variable's setting because it does not access tables or invoke built-in functions.
+Access to tables and built-in functions in the `system` database is controlled by the [`allow_unsafe_internals` session variable]({% link {{ page.version.version }}/session-variables.md %}#allow-unsafe-internals). The above `ALTER DATABASE system` statement executes regardless of the variable's setting because it does not access tables or invoke built-in functions.
 {{site.data.alerts.end}}
 
 Run all subsequent schema changes from a node in the specified region.
