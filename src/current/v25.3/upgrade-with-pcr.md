@@ -15,7 +15,7 @@ The entire standby cluster must be on the same major version as the primary clus
 
 ## Minor version upgrades
 
-Minor versions are not relevant when determining PCR compatibility. There is no need to consider PCR compatibility when upgrading to a specific minor version within a major version.
+Minor versions are not relevant when determining PCR compatibility. There is no need to consider PCR compatibility when upgrading to a specific minor version within a major version, so you can follow the normal [patch upgrade process]({% link {{ page.version.version }}/upgrade-cockroach-version.md %}#perform-a-patch-upgrade).
 
 ## Upgrade primary and standby clusters
 
