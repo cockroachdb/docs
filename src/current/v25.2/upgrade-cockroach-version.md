@@ -9,7 +9,7 @@ This page describes how major-version and patch upgrades work and shows how to u
 
 To upgrade a cluster in CockroachDB {{ site.data.products.cloud }}, refer to [Upgrade a cluster in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/upgrade-cockroach-version.md %}) instead.
 
-To upgrade a cluster with with [physical cluster replication (PCR)]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}), refer to [Upgrade a Cluster Running PCR]({% link cockroachcloud/upgrade-with-pcr.md %}).
+To upgrade a cluster with with [physical cluster replication (PCR)]({% link {{ page.version.version }}/physical-cluster-replication-overview.md %}), refer to [Upgrade a Cluster Running PCR]({% link {{ page.version.version }}/upgrade-with-pcr.md %}).
 
 ## Overview
 
