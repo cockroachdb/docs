@@ -67,6 +67,10 @@ Statement | Action
 [`SHOW VIRTUAL CLUSTER`]({% link {{ page.version.version }}/show-virtual-cluster.md %}) | Show all virtual clusters.
 [`DROP VIRTUAL CLUSTER`]({% link {{ page.version.version }}/drop-virtual-cluster.md %}) | Remove a virtual cluster.
 
+## Cluster versions and upgrades
+
+To safely perform a major version upgrade on a cluster with PCR, you must upgrade the standby cluster before the primary cluster to avoid version incompatibility. If you are using a reader virtual cluster (reader VC), you must upgrade it separately from the primary and standby clusters. For information about the upgrade process, refer to [Upgrade a Cluster Running PCR]({% link {{ page.version.version }}/upgrade-with-pcr.md %}).
+
 ## Demo video
 
 Learn how to use PCR to meet your RTO and RPO requirements with the following demo:
