@@ -164,6 +164,7 @@ Statement | Usage
 [`CREATE STATISTICS`]({% link {{ page.version.version }}/create-statistics.md %}) | Create table statistics for the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) to use.
 [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) | View debugging and analysis details for a statement that operates over tabular data.
 [`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) | Execute the query and generate a physical query plan with execution statistics.
+[`SHOW STATEMENT HINTS`]({% link {{ page.version.version }}/show-statement-hints.md %}) | <span class="version-tag">New in v26.1:</span> List [injected hints]({% link {{ page.version.version }}/cost-based-optimizer.md %}#hint-injection) for a SQL statement fingerprint.
 [`SHOW STATISTICS`]({% link {{ page.version.version }}/show-statistics.md %}) | List table statistics used by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}).
 
 ## Job management statements

@@ -797,6 +797,12 @@
               ]
             },
             {
+              "title": "<code>SHOW STATEMENT HINTS</code>",
+              "urls": [
+                "/${VERSION}/show-statement-hints.html"
+              ]
+            },
+            {
               "title": "<code>SHOW STATEMENTS</code>",
               "urls": [
                 "/${VERSION}/show-statements.html"
