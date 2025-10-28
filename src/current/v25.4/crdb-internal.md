@@ -1395,3 +1395,4 @@ FROM crdb_internal.transaction_statistics WHERE app_name = 'movr' LIMIT 20;
 - [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
 - [SQL Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %})
 - [System Catalogs]({% link {{ page.version.version }}/system-catalogs.md %})
+- [Transaction Diagnostics (`crdb_internal.request_transaction_bundle`)]({% link {{ page.version.version }}/transaction-diagnostics.md %})
