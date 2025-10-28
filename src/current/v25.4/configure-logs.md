@@ -16,9 +16,9 @@ This page describes how to configure CockroachDB logs with the [`--log` or `log-
 For examples of how these settings can be used in practice, see [Logging Use Cases]({% link {{ page.version.version }}/logging-use-cases.md %}).
 
 {{site.data.alerts.callout_info}}
-In a future release, certain events will be directed to new [logging channels]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels). For more details, refer to [`log.channel_compatibility_mode.enabled`]({% link {{ page.version.version }}/logging-overview.md %}#log-channel_compatibility_mode-enabled).
+In a future major release, certain events will be directed by default to new [logging channels]({% link {{ page.version.version }}/logging-overview.md %}#logging-channels).
 
-To assess potential downstream impacts on your logging setup and pipelines, set the `log.channel_compatibility_mode.enabled` cluster setting to `false` in a non-production environment.
+To prepare for the change and assess potential downstream impacts on your logging setup and pipelines, review the [`log.channel_compatibility_mode.enabled`]({% link {{ page.version.version }}/logging-overview.md %}#log-channel_compatibility_mode-enabled) cluster setting. After reviewing the documentation, set `log.channel_compatibility_mode.enabled` to `false` in a non-production environment.
 {{site.data.alerts.end}}
 
 ## Flag
