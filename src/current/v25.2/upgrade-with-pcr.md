@@ -108,7 +108,7 @@ To upgrade your primary and standby clusters:
 
 ## Upgrade reader VC
 
-If you have a _reader virtual cluster (ReaderVC)_, you must drop and recreate it to upgrade after completing the main upgrade process on the primary and standby clusters. Follow these steps to upgrade your reader VC:
+If you have a _reader virtual cluster (reader VC)_, you must drop and recreate it to upgrade after completing the main upgrade process on the primary and standby clusters. Follow these steps to upgrade your reader VC:
 
 1. After upgrading the app VC on your primary cluster, wait for the replicated time to pass the time at which the upgrade completed.
 1. On the standby cluster, stop the reader VC service:
