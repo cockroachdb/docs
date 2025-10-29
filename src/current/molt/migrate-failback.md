@@ -101,6 +101,12 @@ When you run `replicator`, you can configure the following options for replicati
 </section>
 - [Replicator metrics](#replicator-metrics): Monitor failback replication performance.
 
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="postgres">PostgreSQL</button>
+    <button class="filter-button" data-scope="mysql">MySQL</button>
+    <button class="filter-button" data-scope="oracle">Oracle</button>
+</div>
+
 ### Connection strings
 
 For failback, MOLT Replicator uses `--targetConn` to specify the destination database where you want to replicate CockroachDB changes, and `--stagingConn` for the CockroachDB staging database.
@@ -225,11 +231,19 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
 
 1. Create the CockroachDB changefeed pointing to the MOLT Replicator webhook endpoint. Use `cursor` to specify the logical timestamp from the preceding step.
 
-    {{site.data.alerts.callout_info}}
-    Ensure that only **one** changefeed points to MOLT Replicator at a time to avoid mixing streams of incoming data.
-    {{site.data.alerts.end}}
+    <section class="filter-content" markdown="1" data-scope="postgres">
+    The target schema is specified in the webhook URL path in the fully-qualified format `/database/schema`. For example, `/migration_schema/public` routes changes to the `public` schema in the `migration_schema` database.
+    </section>
 
-    {{site.data.alerts.callout_success}}
+    <section class="filter-content" markdown="1" data-scope="mysql">
+    The target schema is specified in the webhook URL path. For example, `/migration_schema` routes changes to the `migration_schema` schema.
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="oracle">
+    The target schema is specified in the webhook URL path. For example, `/MIGRATION_SCHEMA` routes changes to the `MIGRATION_SCHEMA` schema.
+    </section>
+
+    {{site.data.alerts.callout_info}}
     For details on the webhook sink URI, refer to [Webhook sink]({% link {{ site.current_cloud_version }}/changefeed-sinks.md %}#webhook-sink).
     {{site.data.alerts.end}}
 
@@ -267,6 +281,10 @@ Create a CockroachDB changefeed to send changes to MOLT Replicator.
     -----------------------
       1101234051444375553
     ~~~
+
+    {{site.data.alerts.callout_success}}
+    Ensure that only **one** changefeed points to MOLT Replicator at a time to avoid mixing streams of incoming data.
+    {{site.data.alerts.end}}
 
 1. Monitor the changefeed status, specifying the job ID:
 

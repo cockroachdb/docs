@@ -70,10 +70,12 @@ replicator oraclelogminer \
 --sourceConn $SOURCE \
 --sourcePDBConn $SOURCE_PDB \
 --sourceSchema migration_schema \
+--targetSchema defaultdb.public \
 --targetConn $TARGET \
 --stagingSchema _replicator \
 --metricsAddr :30005 \
---userscript table_filter.ts
+--userscript table_filter.ts \
+-v
 ~~~
 
 {{site.data.alerts.callout_info}}
