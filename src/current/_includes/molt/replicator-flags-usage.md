@@ -5,7 +5,7 @@ The following [MOLT Replicator]({% link molt/molt-replicator.md %}) flags are **
 |           Flag          |                                                                              Description                                                                               |
 |-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `--slotName`            | **Required.** PostgreSQL replication slot name. Must match the slot name specified with `--pglogical-replication-slot-name` in the [MOLT Fetch command](#start-fetch). |
-| `--targetSchema`        | **Required.** Target schema name on CockroachDB where tables will be replicated.                                                                                       |
+| `--targetSchema`        | **Required.** Target schema name on CockroachDB where tables will be replicated. Schema name must be fully qualified in the format `database.schema`.                  |
 | `--stagingSchema`       | **Required.** Staging schema name for replication metadata and checkpoints.                                                                                            |
 | `--stagingCreateSchema` | **Required.** Automatically create the staging schema if it does not exist. Include this flag when starting replication for the first time.                            |
 | `--metricsAddr`         | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                                                         |
@@ -14,7 +14,7 @@ The following [MOLT Replicator]({% link molt/molt-replicator.md %}) flags are **
 <section class="filter-content" markdown="1" data-scope="mysql">
 |           Flag          |                                                                                 Description                                                                                  |
 |-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--targetSchema`        | **Required.** Target schema name on CockroachDB where tables will be replicated.                                                                                             |
+| `--targetSchema`        | **Required.** Target schema name on CockroachDB where tables will be replicated. Schema name must be fully qualified in the format `database.schema`.                        |
 | `--defaultGTIDSet`      | **Required.** Default GTID set for changefeed.                                                                                                                               |
 | `--stagingSchema`       | **Required.** Staging schema name for replication metadata and checkpoints.                                                                                                  |
 | `--stagingCreateSchema` | **Required.** Automatically create the staging schema if it does not exist. Include this flag when starting replication for the first time.                                  |
@@ -26,16 +26,16 @@ You can find the starting GTID in the `cdc_cursor` field of the `fetch complete`
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-|           Flag          |                                                                 Description                                                                 |
-|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| `--sourceSchema`        | **Required.** Source schema name on Oracle where tables will be replicated from.                                                            |
-| `--targetSchema`        | **Required.** Target schema name on CockroachDB where tables will be replicated.                                                            |
-| `--scn`                 | **Required.** Snapshot System Change Number (SCN) for the initial changefeed starting point.                                                |
-| `--backfillFromSCN`     | **Required.** SCN of the earliest active transaction at the time of the snapshot. Ensures no transactions are skipped.                      |
-| `--stagingSchema`       | **Required.** Staging schema name for replication metadata and checkpoints.                                                                 |
-| `--stagingCreateSchema` | **Required.** Automatically create the staging schema if it does not exist. Include this flag when starting replication for the first time. |
-| `--metricsAddr`         | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                              |
-| `--userscript`          | Path to a userscript that enables table filtering from Oracle sources. Refer to [Table filter userscript](#table-filter-userscript).        |
+|           Flag          |                                                                      Description                                                                      |
+|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--sourceSchema`        | **Required.** Source schema name on Oracle where tables will be replicated from.                                                                      |
+| `--targetSchema`        | **Required.** Target schema name on CockroachDB where tables will be replicated. Schema name must be fully qualified in the format `database.schema`. |
+| `--scn`                 | **Required.** Snapshot System Change Number (SCN) for the initial changefeed starting point.                                                          |
+| `--backfillFromSCN`     | **Required.** SCN of the earliest active transaction at the time of the snapshot. Ensures no transactions are skipped.                                |
+| `--stagingSchema`       | **Required.** Staging schema name for replication metadata and checkpoints.                                                                           |
+| `--stagingCreateSchema` | **Required.** Automatically create the staging schema if it does not exist. Include this flag when starting replication for the first time.           |
+| `--metricsAddr`         | Enable Prometheus metrics at a specified `{host}:{port}`. Metrics are served at `http://{host}:{port}/_/varz`.                                        |
+| `--userscript`          | Path to a userscript that enables table filtering from Oracle sources. Refer to [Table filter userscript](#table-filter-userscript).                  |
 
 You can find the SCN values in the message `replication-only mode should include the following replicator flags` after the [initial data load](#start-fetch) completes.
 </section>
