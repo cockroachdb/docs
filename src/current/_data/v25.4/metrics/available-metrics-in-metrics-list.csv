@@ -483,3 +483,11 @@ rebalancing.range.rebalances
 rebalancing.replicas.cpunanospersecond
 rebalancing.replicas.queriespersecond
 rebalancing.state.imbalanced_overfull_options_exhausted
+sql.routine.delete.count
+sql.routine.delete.started.count
+sql.routine.insert.count
+sql.routine.insert.started.count
+sql.routine.select.count
+sql.routine.select.started.count
+sql.routine.update.count
+sql.routine.update.started.count
