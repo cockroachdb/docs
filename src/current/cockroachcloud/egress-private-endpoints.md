@@ -20,7 +20,7 @@ CockroachDB {{ site.data.products.cloud }} supports egress private endpoints wit
 - [Confluent Cloud on GCP or AWS](https://www.confluent.io/confluent-cloud/)
 
 {{site.data.alerts.callout_info}}
-Egress private endpoint usage is billed based on bytes processed over the endpoint, which includes the cloud provider's per-GB data processing fees and any applicable data transfer charges with no additional markup for Cockroach Labs. These charges appear as separate line items on your invoice under _Private endpoint - bytes processed_.
+Billing for egress private endpoint usage is based on bytes processed over the endpoint, which includes the cloud provider's per-GB data processing fees and any applicable data transfer charges. There is no additional markup from Cockroach Labs. These charges appear as separate line items on your invoice under **Private endpoint - bytes processed**.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
