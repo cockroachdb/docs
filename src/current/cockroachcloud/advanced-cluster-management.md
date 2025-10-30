@@ -142,7 +142,7 @@ Setting maintenance windows requires the [Cluster Admin]({% link cockroachcloud/
 Maintenance operations that are critical for cluster security or stability may be applied outside of the maintenance window, and upgrades that begin in a maintenance window may not always be completed by the end of the window.
 {{site.data.alerts.end}}
 
-To set a maintenance window:
+To set a maintenance window in the {{ site.data.products.cloud }} console:
 
 1. Click the pencil icon next to **Cluster maintenance** to edit the maintenance window.
 1. From the **Day** dropdown, select the day of the week during which maintenance may be applied.
@@ -150,9 +150,11 @@ To set a maintenance window:
 
     The window will last for 6 hours from the start time.
 
-1. (Optional) If you want to delay automatic patch upgrades for 60 days, switch **Delay patch upgrades** to **On**.
+1. (Optional) If you want to delay automatic patch upgrades, switch **Delay patch upgrades** to **On**. You can set a deferral period of 30, 60, or 90 days after the patch is released.
 
-    Enable this setting for production clusters to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch versions and not to other kinds of upgrades.
+    Enable this setting for production clusters to ensure that development and testing clusters are upgraded before production clusters. This setting applies only to patch versions and not to other kinds of upgrades. The patch upgrade occurs during a maintenance window after the deferral period.
+
+You can also configure maintenance windows and patch upgrade deferral periods using the [{{ site.data.products.cloud }} API]({% link cockroachcloud/cloud-api.md %}#configure-a-cockroachdb-advanced-clusters-maintenance-window).
 
 ## Restore data from a backup
 
