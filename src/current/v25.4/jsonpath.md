@@ -11,6 +11,8 @@ docs_area: reference.sql
 
 JSONPath expressions and functions are used to query and filter [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) data. A [JSONPath expression](#jsonpath-expression) is a string that identifies one or more elements in a JSON document, and is used as a [JSONPath function](#jsonpath-functions) argument.
 
+{% include_cached new-in.html version="v25.4" %} [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}) on `JSONB` columns automatically accelerate [`jsonb_path_exists`](#jsonpath-functions) queries in certain [filter patterns](#index-accelerated-patterns). This can significantly improve query performance when filtering large datasets.
+
 ## JSONPath expression
 
 A JSONPath expression consists of an optional [mode](#structural-error-handling) (`lax` or `strict`), followed by a scalar expression (such as `1 + 2`), a predicate expression (such as `1 != 2` or `exists($)`), or a path-based expression rooted at `$`. A path-based expression is composed of one or more [accessor](#accessor-operators) operators that are optionally interleaved with one or more [filter expressions](#filter-expressions) introduced by `?`. Expressions can optionally include scalar expressions, [predicate operators](#predicate-operators) for conditional logic, and a [method](#methods) applied to the current value. The path is evaluated left to right, and each stage refines or filters the result.
@@ -135,7 +137,7 @@ Use JSONPath functions to extract or evaluate target `JSONB` data according to a
 
 |                  Function                 |                                                                           Description                                                                            | If no match |
 |-------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `jsonb_path_exists(jsonb, jsonpath)`      | Returns true if any match is found.                                                                                                                              | `false`     |
+| `jsonb_path_exists(jsonb, jsonpath)`      | Returns true if any match is found. Accelerated by GIN indexes for certain [filter patterns](#index-accelerated-patterns).                                       | `false`     |
 | `jsonb_path_match(jsonb, jsonpath)`       | Returns true if the path expression evaluates to true. Only useful with [predicate check expressions](#check-expressions), as it expects a single Boolean value. | `false`     |
 | `jsonb_path_query(jsonb, jsonpath)`       | Returns all matches as a set of `JSONB` values.                                                                                                                  | `NULL`      |
 | `jsonb_path_query_array(jsonb, jsonpath)` | Returns all matches as a single `JSONB` array.                                                                                                                   | `[]`        |
@@ -415,6 +417,22 @@ For example, the following JSONPath expression selects all elements in an `items
 ~~~
 $.items[*] ? (@.price > 100).name;
 ~~~
+
+<a name="index-accelerated-patterns"></a>
+
+[GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}) on `JSONB` columns automatically accelerate [`jsonb_path_exists`](#jsonpath-functions) when used in `WHERE` clause filters with the following patterns:
+
+- Keychain mode (accessing nested fields): `$.[key|wildcard].[key|wildcard]...`
+  - For example, `WHERE jsonb_path_exists(data, '$.players[*].stats.ppg')`
+- Filter with equality check: `$.[key|wildcard]? (@.[key|wildcard]... == value)` where `value` is a string, number, `null`, or boolean
+  - For example, `WHERE jsonb_path_exists(data, '$.players[*] ? (@.stats.ppg == 25)')`
+
+Index acceleration is **not** supported for:
+
+- [`strict` mode](#structural-error-handling) queries
+- Root-level paths (`$` or `$[*]`)
+- Filters with inequality checks (for example, `@.price > 100`)
+- Comparison expressions without filters (for example, `$.a.b.c == 12`)
 
 ### Filter with comparison operators
 
