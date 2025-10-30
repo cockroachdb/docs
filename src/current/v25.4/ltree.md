@@ -22,7 +22,7 @@ SELECT 'Animals.Mammals.Carnivora'::LTREE;
   Animals.Mammals.Carnivora
 ~~~
 
-Each label in the path must contain only alphanumeric characters (`A`-`Z`, `a`-`z`, `0`-`9`), underscores (`_`), and hyphens (`-`).
+Each label in the path must contain only alphanumeric characters (`A`-`Z`, `a`-`z`, `0`-`9`), underscores (`_`), and hyphens (`-`). The maximum label length is 1,000 characters, and the maximum number of labels in a path is 65,535.
 
 The following are valid `LTREE` values:
 
@@ -33,7 +33,7 @@ The following are valid `LTREE` values:
 
 ## Size
 
-The size of an `LTREE` value is variable and equals the total number of characters in all labels plus the dot separators. The maximum label length is 1,000 characters, and the maximum number of labels in a path is 65,535.
+The size of an `LTREE` value is variable and equals the total number of characters in all labels plus the dot separators. Cockroach Labs recommends keeping values below 64 kilobytes. Above that threshold, [write amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#write-amplification) and other considerations may cause significant performance degradation.
 
 ## Operators
 
@@ -126,20 +126,24 @@ INSERT INTO org_structure (id, path, name) VALUES
 
 ### Query `LTREE` with comparison operator
 
-Find all entries named `Episode 1`:
+Find all entries that come before `Studio.ShowB` using lexicographic ordering. The `<` operator returns entries where the path is lexicographically less than `Studio.ShowB`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT name, path FROM org_structure
-WHERE name = 'Episode 1';
+WHERE path < 'Studio.ShowB'
+ORDER BY path;
 ~~~
 
 ~~~
-    name    |             path
-------------+--------------------------------
-  Episode 1 | Studio.ShowA.Season1.Episode1
-  Episode 1 | Studio.ShowB.Season1.Episode1
-(2 rows)
+        name        |             path
+--------------------+--------------------------------
+  Production Studio | Studio
+  Show A            | Studio.ShowA
+  Season 1          | Studio.ShowA.Season1
+  Episode 1         | Studio.ShowA.Season1.Episode1
+  Episode 2         | Studio.ShowA.Season1.Episode2
+(5 rows)
 ~~~
 
 ### Query `LTREE` with containment operator
