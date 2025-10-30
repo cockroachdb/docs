@@ -342,7 +342,9 @@ For details about available backup and restore types in CockroachDB, see [Backup
 
 CockroachDB manages its own memory caches, independently of the operating system. These are configured via the [`--cache`]({% link {{ page.version.version }}/cockroach-start.md %}#flags) and [`--max-sql-memory`]({% link {{ page.version.version }}/cockroach-start.md %}#flags) flags.
 
-Each node has a default cache size of `128MiB` that is passively consumed. The default was chosen to facilitate development and testing, where users are likely to run multiple CockroachDB nodes on a single machine. Increasing the cache size will generally improve the node's read performance.
+The default cache size is per-node and is passively consumed; it was chosen to facilitate development and testing, where users are likely to run multiple CockroachDB nodes on a single machine. Increasing the cache size will generally improve the node's read performance. Production systems should always configure this setting.
+
+The [`--cache`]({% link {{ page.version.version }}/cockroach-start.md %}#flags) flag controls the [Pebble storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}#pebble) block cache, which holds uncompressed blocks of persisted [key-value data]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#overview) in memory. If a read misses within the block cache, the storage engine reads the file via the operating system's page cache, which may hold the relevant block in-memory in its compressed form. Otherwise, the read is served from the storage device. The block cache fills to the configured size and is then recycled using a least-recently-used (LRU) policy.
 
 Each node has a default SQL memory size of `25%`. This memory is used as-needed by active operations to store temporary data for SQL queries.
 
