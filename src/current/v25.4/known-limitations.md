@@ -27,7 +27,7 @@ This section describes newly identified limitations in CockroachDB {{ page.versi
 
 ### Mixed-isolation workloads
 
-- Mixed-isolation-level workloads must enable foreign-key check locking for `SERIALIZABLE` transactions to avoid race conditions. [#151663](https://github.com/cockroachdb/cockroach/issues/151663)
+- Mixed-isolation-level workloads must enable foreign-key check locking for `SERIALIZABLE` transactions to avoid race conditions. [#151663](https://github.com/cockroachdb/cockroach/issues/151663#issuecomment-3222083180)
 
 ### Data domiciling
 
