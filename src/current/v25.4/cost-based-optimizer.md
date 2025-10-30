@@ -419,6 +419,10 @@ Due to SQL's implicit `AS` syntax, you cannot specify a join hint with only the 
 
 For a join hint example, see [Use the right join type]({% link {{ page.version.version }}/apply-statement-performance-rules.md %}#rule-3-use-the-right-join-type).
 
+{{site.data.alerts.callout_success}}
+You can apply join hints without modifying the original query text. Refer to [Hint injection](#hint-injection).
+{{site.data.alerts.end}}
+
 ### Supported join algorithms
 
 - `HASH`: Forces a hash join; in other words, it disables merge and lookup joins. A hash join is always possible, even if there are no equality columns: CockroachDB treats a nested loop join without an index as a special case of a hash join, where the hash table effectively has one bucket.
@@ -456,6 +460,105 @@ To make the optimizer prefer lookup joins to merge joins when performing foreign
   - `(a JOIN b) JOIN c` might be changed to `a JOIN (b JOIN c)`, but this does not happen if `a JOIN b` uses a hint; the hint forces that particular join to happen as written in the query.
 
 - You should reconsider hint usage with each new release of CockroachDB. Due to improvements in the optimizer, hints specified to work with an older version may cause decreased performance in a newer version.
+
+## Hint injection
+
+<span class="version-tag">New in v25.4.1:</span> *Hint injection* allows you to apply [index hints]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) and [join hints](#join-hints) without modifying the original query text. This is useful when you cannot modify application code, need to optimize queries from ORMs or third-party applications, or want to test different hints without changing production queries.
+
+Instead of relying on inline hints (such as `SELECT * FROM table@index_name` or `INNER HASH JOIN`), hint injection stores hints in the `system.statement_hints` table and automatically applies them to statements that match a [fingerprint]({% link {{ page.version.version }}/ui-statements-page.md %}#sql-statement-fingerprints). To inject a hint, invoke the `crdb_internal.inject_hint()` function with a SQL statement fingerprint and a matching statement with hints applied:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT crdb_internal.inject_hint(
+  '{statement fingerprint}',
+  '{statement with hints}'
+);
+~~~
+
+For example, the following invocation stores the `users_email_idx` hint in the `system.statement_hints` table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT crdb_internal.inject_hint(
+  'SELECT * FROM users WHERE email = _',
+  'SELECT * FROM users@users_email_idx WHERE email = _'
+);
+~~~
+
+{{site.data.alerts.callout_info}}
+The statement with hints must have the same syntactic structure as the statement fingerprint. Constants in the second parameter are ignored, and only hints are extracted and applied.
+{{site.data.alerts.end}}
+
+The function returns a unique hint ID:
+
+~~~
+  crdb_internal.inject_hint
+-----------------------------
+        1119388019656228865
+~~~
+
+Afterward, any query matching the `SELECT * FROM users WHERE email = _` fingerprint will use the `users_email_idx` index, regardless of the `email` value.
+
+Similarly, to force a specific join algorithm:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT crdb_internal.inject_hint(
+  'SELECT * FROM orders AS o INNER JOIN customers AS c ON o.customer_id = c.id',
+  'SELECT * FROM orders AS o INNER HASH JOIN customers AS c ON o.customer_id = c.id'
+);
+~~~
+
+You can inject both index and join hints in a single statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT crdb_internal.inject_hint(
+  'SELECT * FROM orders AS o INNER JOIN customers AS c ON o.customer_id = c.id WHERE o.status = _',
+  'SELECT * FROM orders@orders_status_idx AS o INNER LOOKUP JOIN customers@primary AS c ON o.customer_id = c.id WHERE o.status = _'
+);
+~~~
+
+Hint injection supports all inline hint types, including:
+
+- [Index hints]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection): `@index_name`, `@{FORCE_INDEX=idx}`, `@{FORCE_INDEX=idx,DESC}`, `@{NO_FULL_SCAN}`, `@{AVOID_FULL_SCAN}`, `@{NO_ZIGZAG_JOIN}`, `@{FORCE_ZIGZAG}`
+- [Join hints](#join-hints): `HASH`, `MERGE`, `LOOKUP`, `INVERTED`, `STRAIGHT`
+
+### Manage injected hints
+
+To view all injected hints, query the `system.statement_hints` table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT row_id, fingerprint, created_at FROM system.statement_hints;
+~~~
+
+~~~
+        row_id        |                                          fingerprint                                           |          created_at
+----------------------+------------------------------------------------------------------------------------------------+--------------------------------
+  1119388019656228865 | SELECT * FROM users WHERE email = _                                                            | 2025-10-28 19:41:53.416787+00
+  1119394099211304961 | SELECT * FROM orders AS o INNER JOIN customers AS c ON o.customer_id = c.id                    | 2025-10-28 20:12:48.75263+00
+  1119397773284343809 | SELECT * FROM orders AS o INNER JOIN customers AS c ON o.customer_id = c.id WHERE o.status = _ | 2025-10-28 20:31:29.990728+00
+(3 rows)
+~~~
+
+{{site.data.alerts.callout_success}}
+The `hint` column is stored in a format that is not human-readable. Use the `fingerprint` column to identify which hints are stored.
+{{site.data.alerts.end}}
+
+To remove a hint by its hint ID:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+DELETE FROM system.statement_hints WHERE row_id = {hint_id};
+~~~
+
+To remove all hints for a specific query fingerprint:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+DELETE FROM system.statement_hints WHERE fingerprint = '{statement_fingerprint}';
+~~~
 
 ## Zigzag joins
 
