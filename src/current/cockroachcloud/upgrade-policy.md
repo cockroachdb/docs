@@ -9,21 +9,9 @@ This page describes the support and upgrade policy for clusters deployed in Cock
 
 ## CockroachDB Cloud Support Policy
 
-[Major versions]({% link releases/index.md %}) of CockroachDB are labeled either [Regular releases]({% link releases/index.md %}#major-releases) or [Innovation releases]({% link releases/index.md %}).
-
-- **Regular releases** are supported for 12 months from their initial production release date.
-- **Innovation releases** are supported for 6 months from their initial production release date.
-
-For each release type, the end date of this period is called End of Support (EOS).
+CockroachDB {{ site.data.products.cloud }} clusters are intended to always run a supported, recent major version of CockroachDB. Clusters receive regular patch updates to ensure they have the latest stability and security updates. Different {{ site.data.products.cloud }} plans offer different options for version selection and upgrade windows, as described on this page.
 
 A cluster running an unsupported CockroachDB version is not eligible for Cockroach Labs’ [availability SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/).
-
-All CockroachDB {{ site.data.products.basic }} clusters, and CockroachDB {{ site.data.products.standard }} clusters by default, will automatically be upgraded to the next major version while the current one is still supported, to prevent the cluster from reaching EOS.
-
-- If you [disable automatic major-version upgrades for CockroachDB {{ site.data.products.standard }}]({% link cockroachcloud/cluster-management.md %}#manage-cluster-upgrades), you are responsible for upgrading the cluster before its version reaches its EOS date to maintain uninterrupted support and SLA guarantees. Clusters that have not upgraded for one year may be upgraded automatically.
-- You are responsible for upgrading a CockroachDB {{ site.data.products.advanced }} cluster before its current version reaches its EOS date to maintain uninterrupted support and SLA guarantees.
-
-When a CockroachDB {{ site.data.products.advanced }} cluster is nearing its EOS date, you will be reminded to upgrade the cluster at least 30 days before the EOS date to avoid losing support. {% capture who_can_upgrade %}A user with the Cluster Admin or Cluster Operator [role]({% link cockroachcloud/authorization.md %}) can [upgrade a cluster]({% link cockroachcloud/upgrade-cockroach-version.md %}) directly from the CockroachDB Cloud Console. An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can assign these roles.{% endcapture %}{{ who_can_upgrade }}
 
 {{site.data.alerts.callout_info}}
 This page describes the support of CockroachDB versions on CockroachDB Cloud, which is not affected by LTS or End of Support timelines specified for CockroachDB Self-Hosted.
@@ -31,12 +19,33 @@ This page describes the support of CockroachDB versions on CockroachDB Cloud, wh
 The CockroachDB Self-Hosted [Release Support Policy]({% link releases/release-support-policy.md %}) does not apply to CockroachDB Cloud.
 {{site.data.alerts.end}}
 
+### Version and upgrade support by cloud plan
+
+[Major versions]({% link releases/index.md %}) of CockroachDB are labeled either as [Regular releases]({% link releases/index.md %}#major-releases) or [Innovation releases]({% link releases/index.md %}).
+
+- **Regular releases** are supported for 12 months from their initial production release date.
+- **Innovation releases** are supported for 6 months from their initial production release date.
+
+CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters only support **Regular releases**. This ensures that these clusters are using versions of CockroachDB that receive a full year of support with patches, offering long-term stability. All CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters are automatically upgraded to the next major regular release upon its GA release.
+
+{{site.data.alerts.callout_info}}
+CockroachDB {{ site.data.products.standard }} clusters have the option to [disable automatic major-version upgrades]({% link cockroachcloud/cluster-management.md %}#manage-cluster-upgrades). In this case, you are responsible for upgrading the cluster before the current version hits the end-of-support (EOS) date in order to maintain uninterrupted support and SLA guarantees. Clusters that have not upgraded for one year may be upgraded automatically.
+{{site.data.alerts.end}}
+
+CockroachDB {{ site.data.products.advanced }} clusters optionally support **Innovation releases** as well as regular releases, allowing users to access the latest CockroachDB features on an accelerated timeline, while still receiving 6 months of patch support before a recommended upgrade to another major version.
+
+When a CockroachDB {{ site.data.products.advanced }} cluster is nearing its EOS date, you will be reminded to upgrade the cluster at least 30 days before the EOS date to avoid losing support. {% capture who_can_upgrade %}A user with the Cluster Admin or Cluster Operator [role]({% link cockroachcloud/authorization.md %}) can [upgrade a cluster]({% link cockroachcloud/upgrade-cockroach-version.md %}) directly from the CockroachDB Cloud Console. An [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin) can assign these roles.{% endcapture %}{{ who_can_upgrade }}
+
+{{site.data.alerts.callout_info}}
+You are responsible for upgrading a CockroachDB {{ site.data.products.advanced }} cluster before its current version reaches its EOS date to maintain uninterrupted support and SLA guarantees.
+{{site.data.alerts.end}}
+
 ### Currently supported versions
 
 Version | Release Type | Support period | Release date | EOS date
 :------:|:------------:|:--------------:|:------------:|:---------:
+v25.3   | Innovation   | 6 months       | 2025-08-04   | 2026-02-04
 v25.2   | Regular      | 12 months      | 2025-05-12   | 2026-05-12
-v25.1   | Innovation   | 6 months       | 2025-02-18   | 2025-08-18
 v24.3   | Regular      | 12 months      | 2024-11-18   | 2025-11-18
 
 To review a version's release notes, click its link in the Version column.
@@ -47,6 +56,7 @@ For expected future versions, refer to [Upcoming releases]({% link releases/inde
 
 Version | Release Type | Support period | Release date | EOS date
 :------:|:------------:|:--------------:|:------------:|:--------:
+v25.1   | Innovation   | 6 months       | 2025-02-18   | 2025-08-18
 v24.1   | Regular      | 12 months      | 2024-05-20   | 2025-05-20
 v24.2   | Innovation   | 6 months       | 2024-08-12   | 2025-02-12
 v23.2   | Regular      | 12 months      | 2024-02-05   | 2025-02-05
@@ -82,9 +92,9 @@ Major version [releases]({% link releases/index.md %}) contain new functionality
 
 Major version upgrades are:
 
-- Automatic for CockroachDB {{ site.data.products.basic }}.
-- Automatic by default for {{ site.data.products.standard }}.
-- Customer-initiated on CockroachDB {{ site.data.products.advanced }}.
+- Automatic for CockroachDB {{ site.data.products.basic }}. Only regular releases are supported.
+- Automatic by default for {{ site.data.products.standard }}. Only regular releases are supported.
+- Customer-initiated on CockroachDB {{ site.data.products.advanced }}. Both regular and innovation releases are supported.
 
 On CockroachDB {{ site.data.products.standard }} with manual upgrades, and on CockroachDB {{ site.data.products.advanced }}, a major-version upgrade can be initiated by an [Organization Admin]({% link cockroachcloud/authorization.md %}#organization-admin). Major versions labeled Regular releases are required upgrades, and Innovation releases are optional. When a new major version is available, you can [start an upgrade]({% link cockroachcloud/upgrade-cockroach-version.md %}) from the CockroachDB {{ site.data.products.cloud }} Console. The cluster will be upgraded to the latest patch release within that major version.
 
@@ -94,7 +104,7 @@ On CockroachDB {{ site.data.products.standard }} with manual upgrades, and on Co
 As of v24.2, Cockroach Labs releases a major version of CockroachDB once per quarter, alternating between releases classified as a [Regular release or an Innovation release]({% link releases/index.md %}#release-types). Regular releases provide a longer support period and a longer period between upgrades, while Innovation releases offer a shorter support period and faster access to new features.
 
 - Regular releases are not optional; they must be applied to CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.standard }} clusters within their support periods. They are applied automatically to CockroachDB {{ site.data.products.basic }} and {{ site.data.products.standard }} clusters that are configured for automatic upgrades. Regular releases are produced twice a year, alternating with Innovation Releases. They are supported for one year. It is supported to upgrade CockroachDB {{ site.data.products.advanced }} directly from one regular release to the next regular release and skip the intervening Innovation release.
-- Innovation releases are optional and can be skipped for CockroachDB {{ site.data.products.advanced }} and CockroachDB {{ site.data.products.standard }} clusters, but are required for CockroachDB {{ site.data.products.basic }}. Innovation releases are produced twice a year, alternating with Regular releases. An Innovation release is supported for 6 months, at which time the cluster must be upgraded to the next Regular Release. At a given time, only one Innovation release is typically supported. Upgrading a cluster directly from one Innovation release to the next Innovation release is not supported.
+- Innovation releases are optional and can be skipped for CockroachDB {{ site.data.products.advanced }}, and are not available for CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }}. Innovation releases are produced twice a year, alternating with Regular releases. An Innovation release is supported for 6 months, at which time the cluster must be upgraded to the next Regular Release. At a given time, only one Innovation release is typically supported. Upgrading a cluster directly from one Innovation release to the next Innovation release is not supported.
 
 {{site.data.alerts.callout_info}}
 To opt out of Innovation releases entirely and hide them from your CockroachDB organization, contact Support.
