@@ -714,6 +714,30 @@ def get_git_last_modified(file_path: pathlib.Path) -> str:
         GIT_DATE_CACHE[cache_key] = date
         return date
 
+def enhance_session_variable_content(content: str, element, context: Dict[str, str]) -> str:
+    """Add session variable name to description records where missing for better discoverability."""
+    # Only for session-variables.html page
+    if 'session-variables.html' not in context.get('url', ''):
+        return content
+        
+    # Check if this is a description cell adjacent to a variable name cell
+    if element.name == 'td':
+        prev_sibling = element.find_previous_sibling('td')
+        if prev_sibling:
+            prev_text = extract_text_with_spaces(prev_sibling).strip()
+            
+            # If previous cell contains a session variable name pattern
+            if (re.match(r'^\w+(_\w+)+$', prev_text) and 
+                '_' in prev_text and 
+                len(prev_text) > 5 and
+                len(prev_text) < 50 and
+                prev_text not in content):
+                
+                # Prepend variable name to description for discoverability
+                return f"{prev_text}: {content}"
+    
+    return content
+
 def extract_records_from_html(html_path: pathlib.Path, versions: Dict[str, str] = None) -> List[Dict[str, Any]]:
     """Proven extraction + intelligent bloat removal."""
     if should_exclude_file(str(html_path), versions):
@@ -780,6 +804,9 @@ def extract_records_from_html(html_path: pathlib.Path, versions: Dict[str, str] 
             continue
 
         text = extract_text_with_spaces(element)
+        
+        # Enhance session variable content for better discoverability
+        text = enhance_session_variable_content(text, element, filter_context)
 
         # INTELLIGENT BLOAT REMOVAL - context-aware filtering
         if bloat_filter.is_bloat_content(text, filter_context):
