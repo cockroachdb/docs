@@ -18,14 +18,15 @@ Type | Description | Example
 [`COLLATE`]({% link {{ page.version.version }}/collate.md %}) | The `COLLATE` feature lets you sort [`STRING`]({% link {{ page.version.version }}/string.md %}) values according to language- and country-specific rules, known as collations.  | `'a1b2c3' COLLATE en`
 [`CITEXT`]({% link {{ page.version.version }}/citext.md %}) | Case-insensitive text. | `'Roach'`
 [`DATE`]({% link {{ page.version.version }}/date.md %}) | A date.  | `DATE '2016-01-25'`
-[`ENUM`]({% link {{ page.version.version }}/enum.md %}) |  A user-defined data type comprised of a set of static values. | `ENUM ('club, 'diamond', 'heart', 'spade')`
 [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}) | An exact, fixed-point number.  | `1.2345`
+[`ENUM`]({% link {{ page.version.version }}/enum.md %}) |  A user-defined data type comprised of a set of static values. | `ENUM ('club, 'diamond', 'heart', 'spade')`
 [`FLOAT`]({% link {{ page.version.version }}/float.md %}) | A 64-bit, inexact, floating-point number.  | `1.2345`
 [`INET`]({% link {{ page.version.version }}/inet.md %}) | An IPv4 or IPv6 address.  | `192.168.0.1`
 [`INT`]({% link {{ page.version.version }}/int.md %}) | A signed integer, up to 64 bits. | `12345`
 [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) | A span of time.  | `INTERVAL '2h30m30s'`
-[`NULL`]({% link {{ page.version.version }}/null-handling.md %}) | The undefined value. | `NULL`
 [`JSONB`]({% link {{ page.version.version }}/jsonb.md %}) | JSON (JavaScript Object Notation) data.  | `'{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'`
+[`LTREE`]({% link {{ page.version.version }}/ltree.md %}) | A label path representing a hierarchical tree-like structure. | `'Top.Countries.Europe.France'`
+[`NULL`]({% link {{ page.version.version }}/null-handling.md %}) | The undefined value. | `NULL`
 [`OID`]({% link {{ page.version.version }}/oid.md %}) | An unsigned 32-bit integer. | `4294967295`
 [`SERIAL`]({% link {{ page.version.version }}/serial.md %}) | A pseudo-type that combines an [integer type]({% link {{ page.version.version }}/int.md %}) with a [`DEFAULT` expression]({% link {{ page.version.version }}/default-value.md %}).  | `148591304110702593`
 [`STRING`]({% link {{ page.version.version }}/string.md %}) | A string of Unicode characters. | `'a1b2c3'`
