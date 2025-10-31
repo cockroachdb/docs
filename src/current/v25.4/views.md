@@ -623,12 +623,6 @@ To speed up queries on materialized views, you can add an [index]({% link {{ pag
     (7 rows)
     ~~~
 
-### Known limitations
-
-{% include {{page.version.version}}/known-limitations/materialized-views-no-stats.md %}
-
-{% include {{page.version.version}}/known-limitations/cannot-refresh-materialized-views-inside-transactions.md %}
-
 ## Temporary views
 
 CockroachDB supports session-scoped temporary views. Unlike persistent views, temporary views can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary views on both persistent tables and [temporary tables]({% link {{ page.version.version }}/temporary-tables.md %}).
@@ -687,6 +681,10 @@ For example:
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/view-limitations.md %}
+
+{% include {{page.version.version}}/known-limitations/materialized-views-no-stats.md %}
+
+{% include {{page.version.version}}/known-limitations/cannot-refresh-materialized-views-inside-transactions.md %}
 
 ## See also
 
