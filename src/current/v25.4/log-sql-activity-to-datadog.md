@@ -7,6 +7,12 @@ docs_area: manage
 
 This tutorial describes how to configure logging of telemetry events, including [`sampled_query`]({% link {{ page.version.version }}/eventlog.md %}#sampled_query) and [`sampled_transaction`]({% link {{ page.version.version }}/eventlog.md %}#sampled_query), to [Datadog](https://www.datadoghq.com/) for finer granularity and long-term retention of SQL activity. The `sampled_query` and `sampled_transaction` events contain common SQL event and execution details for [statements]({% link {{ page.version.version }}/sql-statements.md %}) and [transactions]({% link {{ page.version.version }}/transactions.md %}).
 
+{{site.data.alerts.callout_info}}
+`sampled_query` and `sampled_transaction` events, which are sent by default to the [`TELEMETRY`]({% link {{ page.version.version }}/logging-overview.md %}#telemetry) channel in {{ page.version.version }} and earlier versions, will instead be routed by default to the [`SQL_EXEC`]({% link {{ page.version.version }}/logging-overview.md %}#sql_exec) channel in a future major release.
+
+To prepare for the change and assess potential downstream impacts on your logging setup and pipelines, review the [`log.channel_compatibility_mode.enabled`]({% link {{ page.version.version }}/logging-overview.md %}#log-channel_compatibility_mode-enabled) cluster setting. After reviewing the documentation, set `log.channel_compatibility_mode.enabled` to `false` in a non-production environment to log `sampled_query` and `sampled_transaction` events to the [SQL_EXEC]({% link {{ page.version.version }}/logging-overview.md %}#sql_exec) channel.
+{{site.data.alerts.end}}
+
 CockroachDB supports a built-in integration with Datadog which sends these events as logs via the [Datadog HTTP API](https://docs.datadoghq.com/api/latest/logs/). This integration is the recommended path to achieve high throughput data ingestion, which will in turn provide more query and transaction events for greater workload observability.
 
 {{site.data.alerts.callout_info}}
